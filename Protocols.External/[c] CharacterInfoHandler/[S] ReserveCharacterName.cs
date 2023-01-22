@@ -27,7 +27,7 @@ public class ReserveCharacterName : ExternalProtocol
 
             SendXt("cT", "0", string.Join('%', names.Select(s => string.Join(',', s))));
         }
-        else if (NameGenSyllables.IsPossible(isMale, name))
+        else if (!NameGenSyllables.IsPossible(isMale, name))
         {
             SendXt("cT", "1");
         }

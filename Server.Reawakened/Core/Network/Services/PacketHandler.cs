@@ -52,9 +52,12 @@ public class PacketHandler : IService
         _protocolsSystem = new Dictionary<string, SystemCallback>();
     }
 
-    public void Initialize() => _sink.ServerStarted += AddProtocols;
+    public void Initialize() {
+        _sink.ServerStarted += AddProtocols;
+        _sink.WorldLoad += AskProtocolIgnore;
+    }
 
-    private void AddProtocols(ServerStartedEventArgs e)
+    private void AskProtocolIgnore()
     {
         if (_internalServerConfig.IgnoreProtocolType.Length < _serverConfig.DefaultProtocolTypeIgnore.Length)
             if (_logger.Ask(
@@ -73,7 +76,10 @@ public class PacketHandler : IService
 
                 _internalServerConfig.IgnoreProtocolType = internalDebugs.ToArray();
             }
+    }
 
+    private void AddProtocols(ServerStartedEventArgs e)
+    {
         foreach (var type in e.Modules.Select(m => m.GetType().Assembly.GetTypes())
                      .SelectMany(sl => sl).Where(myType => myType.IsClass && !myType.IsAbstract))
         {

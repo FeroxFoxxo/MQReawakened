@@ -60,6 +60,8 @@ public class StartGame : IService
             "Runs the launcher and hooks it into the current process.",
             _ => LaunchGame()));
 
+        _logger.LogInformation("Getting Game Executable");
+
         try
         {
             _lConfig.GameSettingsFile = SetFileValue.SetIfNotNull(_lConfig.GameSettingsFile, "Get Settings File",
@@ -74,7 +76,6 @@ public class StartGame : IService
 
         while (true)
         {
-            _logger.LogInformation("Getting Game Executable");
 
             if (string.IsNullOrEmpty(_lConfig.GameSettingsFile) || !_lConfig.GameSettingsFile.EndsWith("settings.txt"))
             {
@@ -90,9 +91,10 @@ public class StartGame : IService
 
             CurrentVersion = File.ReadAllText(Path.Join(_directory, "current.txt"));
 
-            _logger.LogDebug("Got launcher directory: {Directory}", Path.GetDirectoryName(_lConfig.GameSettingsFile));
             break;
         }
+
+        _logger.LogDebug("Got launcher directory: {Directory}", Path.GetDirectoryName(_lConfig.GameSettingsFile));
 
         _dirSet = true;
 

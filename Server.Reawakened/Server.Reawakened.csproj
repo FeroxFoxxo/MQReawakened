@@ -59,4 +59,8 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Core\Dependencies\" />
+    </ItemGroup>
+    
 </Project>

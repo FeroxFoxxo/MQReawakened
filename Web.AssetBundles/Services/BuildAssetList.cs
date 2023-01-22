@@ -103,9 +103,7 @@ public class BuildAssetList : IService
 
                 if (_config.WebPlayerInfoFile != _config.CacheInfoFile)
                 {
-                    EmptyWebCacheDirectory();
-
-                    if (!_config.DefaultDelete)
+                    if (!_config.DefaultDelete && EmptyWebCacheDirectory())
                         if (_logger.Ask(
                                 "It is recommended to clean your caches each time in debug mode. " +
                                 "Do you want to set this as the default action?"
@@ -125,7 +123,17 @@ public class BuildAssetList : IService
         GenerateDefaultAssetList(false);
     }
 
-    public void EmptyWebCacheDirectory() => Empty(Path.GetDirectoryName(_config.WebPlayerInfoFile));
+    public bool EmptyWebCacheDirectory()
+    {
+        _config.WebPlayerInfoFile = TryGetCacheInfoFile(_config.WebPlayerInfoFile, CacheType.WebPlayer);
+
+        var isDifferent = _config.WebPlayerInfoFile != _config.CacheInfoFile;
+
+        if (isDifferent)
+            Empty(Path.GetDirectoryName(_config.WebPlayerInfoFile));
+
+        return isDifferent;
+    }
 
     public static void Empty(string path)
     {
@@ -143,6 +151,8 @@ public class BuildAssetList : IService
             _ => throw new ArgumentOutOfRangeException(nameof(cache), cache, null)
         };
 
+        _logger.LogInformation("Getting The {Type} Cache Directory", name);
+
         try
         {
             defaultFile = SetFileValue.SetIfNotNull(defaultFile, $"Get the {name} '__info' Cache File",
@@ -155,7 +165,6 @@ public class BuildAssetList : IService
 
         while (true)
         {
-            _logger.LogInformation("Getting The {Type} Cache Directory", name);
 
             name = name.ToLower();
 
@@ -166,10 +175,10 @@ public class BuildAssetList : IService
                 continue;
             }
 
-            _logger.LogDebug("Got the {Type} cache directory: {Directory}", name, Path.GetDirectoryName(defaultFile));
-
             break;
         }
+
+        _logger.LogDebug("Got the {Type} cache directory: {Directory}", name, Path.GetDirectoryName(defaultFile));
 
         return defaultFile;
     }

@@ -176,14 +176,16 @@ public class NetState : IDisposable
         Socket.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, _onReceiveCallback, Socket);
     }
 
-    public void Send(string packet)
+    public void Send(string packet, string protocolType)
     {
         if (Socket == null)
             return;
 
         packet += "\0";
 
-        WriteServer(packet);
+        if (!string.IsNullOrEmpty(protocolType))
+            if (!_config.IgnoreProtocolType.Contains(protocolType))
+                WriteServer(packet);
 
         var buffer = Encoding.UTF8.GetBytes(packet);
         var length = buffer.Length;
