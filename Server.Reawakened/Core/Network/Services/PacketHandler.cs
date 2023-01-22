@@ -1,9 +1,13 @@
-﻿using Server.Base.Core.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
+using Server.Base.Core.Models;
 using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Base.Network.Services;
+using Server.Reawakened.Core.Models;
 using Server.Reawakened.Core.Network.Helpers;
 using Server.Reawakened.Core.Network.Protocols;
 using System.Reflection;
@@ -19,7 +23,11 @@ public class PacketHandler : IService
 
     private readonly NetStateHandler _handler;
 
-    private readonly NetworkLogger _logger;
+    private readonly NetworkLogger _networkLogger;
+    private readonly ILogger<PacketHandler> _logger;
+
+    private readonly InternalServerConfig _internalServerConfig;
+    private readonly ServerConfig _serverConfig;
 
     private readonly Dictionary<string, SystemCallback> _protocolsSystem;
     private readonly Dictionary<string, ExternalCallback> _protocolsXt;
@@ -28,14 +36,18 @@ public class PacketHandler : IService
     private readonly IServiceProvider _services;
     private readonly EventSink _sink;
 
-    public PacketHandler(IServiceProvider services, ReflectionUtils reflectionUtils, NetworkLogger logger,
-        NetStateHandler handler, EventSink sink)
+    public PacketHandler(IServiceProvider services, ReflectionUtils reflectionUtils, NetworkLogger networkLogger,
+        NetStateHandler handler, EventSink sink, ILogger<PacketHandler> logger, ServerConfig serverConfig,
+        InternalServerConfig internalServerConfig)
     {
         _services = services;
         _reflectionUtils = reflectionUtils;
-        _logger = logger;
+        _networkLogger = networkLogger;
         _handler = handler;
         _sink = sink;
+        _logger = logger;
+        _serverConfig = serverConfig;
+        _internalServerConfig = internalServerConfig;
         _protocolsXt = new Dictionary<string, ExternalCallback>();
         _protocolsSystem = new Dictionary<string, SystemCallback>();
     }
@@ -44,6 +56,24 @@ public class PacketHandler : IService
 
     private void AddProtocols(ServerStartedEventArgs e)
     {
+        if (_internalServerConfig.IgnoreProtocolType.Length < _serverConfig.DefaultProtocolTypeIgnore.Length)
+            if (_logger.Ask(
+                    $"It's recommended to add the protocols '{string.Join(", ", _serverConfig.DefaultProtocolTypeIgnore)}' " +
+                    "to the server ignore config, as to reduce spam. Please press 'y' to enable this. " +
+                    "You are able to add to this later in the related config file.")
+               )
+            {
+                var internalDebugs = _internalServerConfig.IgnoreProtocolType.ToList();
+
+                foreach (var protocol in _serverConfig.DefaultProtocolTypeIgnore)
+                {
+                    if (!internalDebugs.Contains(protocol))
+                        internalDebugs.Add(protocol);
+                }
+
+                _internalServerConfig.IgnoreProtocolType = internalDebugs.ToArray();
+            }
+
         foreach (var type in e.Modules.Select(m => m.GetType().Assembly.GetTypes())
                      .SelectMany(sl => sl).Where(myType => myType.IsClass && !myType.IsAbstract))
         {
@@ -91,7 +121,7 @@ public class PacketHandler : IService
         if (_protocolsXt.ContainsKey(actionType))
             _protocolsXt[actionType](netState, splitPacket, _services);
         else
-            _logger.TracePacketError(actionType, packet, netState);
+            _networkLogger.TracePacketError(actionType, packet, netState);
 
         return actionType;
     }
@@ -105,7 +135,7 @@ public class PacketHandler : IService
         if (actionType != null && _protocolsSystem.ContainsKey(actionType))
             _protocolsSystem[actionType](netState, xmlDocument, _services);
         else
-            _logger.TracePacketError(actionType, packet, netState);
+            _networkLogger.TracePacketError(actionType, packet, netState);
 
         return actionType;
     }
