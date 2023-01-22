@@ -1,0 +1,63 @@
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
+using Server.Base.Core.Helpers;
+using Server.Reawakened.Core.Models;
+using Server.Reawakened.XMLs;
+using WorldGraphDefines;
+
+namespace Server.Reawakened.Levels.Services;
+
+public class LevelHandler : IService
+{
+    private readonly ServerConfig _config;
+    private readonly Dictionary<int, Level> _levels;
+    private readonly ILogger<LevelHandler> _logger;
+    private readonly EventSink _sink;
+    private readonly WorldGraph _worldGraph;
+
+    public LevelHandler(EventSink sink, ServerConfig config, WorldGraph worldGraph, ILogger<LevelHandler> logger)
+    {
+        _sink = sink;
+        _config = config;
+        _worldGraph = worldGraph;
+        _logger = logger;
+        _levels = new Dictionary<int, Level>();
+    }
+
+    public void Initialize() => _sink.WorldLoad += LoadLevels;
+
+    private void LoadLevels()
+    {
+        foreach (var level in _levels.Values.Where(level => level.LevelData.LevelId != -1))
+            level.DumpPlayersToLobby();
+
+        _levels.Clear();
+    }
+
+    public Level GetLevelFromId(int levelId)
+    {
+        if (_levels.ContainsKey(levelId))
+            return _levels[levelId];
+
+        LevelInfo levelInfo;
+
+        try
+        {
+            levelInfo = _worldGraph?.GetInfoLevel(levelId);
+        }
+        catch (NullReferenceException)
+        {
+            _logger.LogError(_levels.Count == 0
+                ? "Could not find any levels! Are you sure you have your cache set up correctly?"
+                : "Could not find the required level! Are you sure your caches contain this?");
+
+            return new Level(new LevelInfo(), _config, this);
+        }
+
+        var level = new Level(levelInfo, _config, this);
+
+        _levels.Add(levelId, level);
+
+        return level;
+    }
+}

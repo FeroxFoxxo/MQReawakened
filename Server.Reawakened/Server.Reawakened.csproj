@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Server.Base\Server.Base.csproj" />
+
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="A2mCore">
+        <HintPath>Core\Dependencies\A2mCore.dll</HintPath>
+      </Reference>
+      <Reference Include="Assembly-CSharp">
+        <HintPath>Core\Dependencies\Assembly-CSharp.dll</HintPath>
+      </Reference>
+      <Reference Include="Assembly-CSharp-firstpass">
+        <HintPath>Core\Dependencies\Assembly-CSharp-firstpass.dll</HintPath>
+      </Reference>
+      <Reference Include="Assembly-UnityScript">
+        <HintPath>Core\Dependencies\Assembly-UnityScript.dll</HintPath>
+      </Reference>
+      <Reference Include="Assembly-UnityScript-firstpass">
+        <HintPath>Core\Dependencies\Assembly-UnityScript-firstpass.dll</HintPath>
+      </Reference>
+      <Reference Include="Boo.Lang">
+        <HintPath>Core\Dependencies\Boo.Lang.dll</HintPath>
+      </Reference>
+      <Reference Include="Crisp.AutoSuggest">
+        <HintPath>Core\Dependencies\Crisp.AutoSuggest.dll</HintPath>
+      </Reference>
+      <Reference Include="Crisp.AutoSuggest.Interfaces">
+        <HintPath>Core\Dependencies\Crisp.AutoSuggest.Interfaces.dll</HintPath>
+      </Reference>
+      <Reference Include="ICSharpCode.SharpZipLib">
+        <HintPath>Core\Dependencies\ICSharpCode.SharpZipLib.dll</HintPath>
+      </Reference>
+      <Reference Include="LitJson">
+        <HintPath>Core\Dependencies\LitJson.dll</HintPath>
+      </Reference>
+      <Reference Include="MQXMPP">
+        <HintPath>Core\Dependencies\MQXMPP.dll</HintPath>
+      </Reference>
+      <Reference Include="NGGManager">
+        <HintPath>Core\Dependencies\NGGManager.dll</HintPath>
+      </Reference>
+      <Reference Include="SmartFoxClient">
+        <HintPath>Core\Dependencies\SmartFoxClient.dll</HintPath>
+      </Reference>
+      <Reference Include="Thrift">
+        <HintPath>Core\Dependencies\Thrift.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine">
+        <HintPath>Core\Dependencies\UnityEngine.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Init": {
+      "commandName": "Project",
+      "launchUrl": "http://localhost",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:80"
+    }
+  }
+}
