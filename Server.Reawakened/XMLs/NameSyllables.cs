@@ -5,13 +5,13 @@ namespace Server.Reawakened.XMLs;
 
 public class NameSyllables : NamegenSyllablesXML, IBundledXml
 {
-    public Dictionary<bool, List<List<string>>> Syllables;
+    public Dictionary<int, List<List<string>>> Syllables;
 
     public string BundleName => "NamegenSyllabes";
 
     public void LoadBundle(string xml)
     {
-        Syllables = new Dictionary<bool, List<List<string>>>();
+        Syllables = new Dictionary<int, List<List<string>>>();
 
         var wGType = typeof(NamegenSyllablesXML);
 
@@ -20,24 +20,24 @@ public class NameSyllables : NamegenSyllablesXML, IBundledXml
 
         ReadDescriptionXml(xml);
 
-        Syllables = new Dictionary<bool, List<List<string>>>
+        Syllables = new Dictionary<int, List<List<string>>>
         {
             {
-                false,
-                new List<List<string>>
-                {
-                    GetSyllables(0, false),
-                    GetSyllables(1, false),
-                    GetSyllables(2, false)
-                }
-            },
-            {
-                true,
+                0,
                 new List<List<string>>
                 {
                     GetSyllables(0, true),
                     GetSyllables(1, true),
                     GetSyllables(2, true)
+                }
+            },
+            {
+                1,
+                new List<List<string>>
+                {
+                    GetSyllables(0, false),
+                    GetSyllables(1, false),
+                    GetSyllables(2, false)
                 }
             }
         };

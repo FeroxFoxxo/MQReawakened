@@ -12,5 +12,5 @@ public class RandomName : ExternalProtocol
     public UserInfoHandler UserInfoHandler { get; set; }
 
     public override void Run(string[] message) =>
-        SendXt("cR", NameGenSyllables.GetRandomName(message[5] == "0", UserInfoHandler));
+        SendXt("cR", NameGenSyllables.GetRandomName(int.Parse(message[5]), UserInfoHandler));
 }

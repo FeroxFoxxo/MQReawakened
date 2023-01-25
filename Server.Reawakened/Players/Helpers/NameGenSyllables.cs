@@ -24,20 +24,20 @@ public class NameGenSyllables
             .SelectMany(cl => cl).Any(c => c.Name == name);
     }
 
-    public bool IsPossible(bool isMale, string[] names) =>
-        _nameGen.Syllables[isMale][0].Contains(names[0]) &&
-        _nameGen.Syllables[isMale][1].Contains(names[1]) &&
-        _nameGen.Syllables[isMale][2].Contains(names[2]);
+    public bool IsPossible(int gender, string[] names) =>
+        _nameGen.Syllables[gender][0].Contains(names[0]) &&
+        _nameGen.Syllables[gender][1].Contains(names[1]) &&
+        _nameGen.Syllables[gender][2].Contains(names[2]);
 
-    public string[] GetRandomName(bool isMale, UserInfoHandler handler)
+    public string[] GetRandomName(int gender, UserInfoHandler handler)
     {
         while (true)
         {
             var names = new[]
             {
-                GetRandomFromList(_nameGen.Syllables[isMale][0]),
-                GetRandomFromList(_nameGen.Syllables[isMale][1]),
-                GetRandomFromList(_nameGen.Syllables[isMale][2])
+                GetRandomFromList(_nameGen.Syllables[gender][0]),
+                GetRandomFromList(_nameGen.Syllables[gender][1]),
+                GetRandomFromList(_nameGen.Syllables[gender][2])
             };
 
             if (IsNameReserved(names, handler))

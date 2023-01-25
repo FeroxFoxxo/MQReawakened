@@ -15,7 +15,7 @@ public class ReserveCharacterName : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var isMale = message[5] == "0";
+        var gender = int.Parse(message[5]);
         var name = new[] { message[6], message[7], message[8] };
 
         if (NameGenSyllables.IsNameReserved(name, UserInfoHandler))
@@ -23,11 +23,11 @@ public class ReserveCharacterName : ExternalProtocol
             var names = new List<string[]>();
 
             for (var i = 0; i < Count; i++)
-                names.Add(NameGenSyllables.GetRandomName(isMale, UserInfoHandler));
+                names.Add(NameGenSyllables.GetRandomName(gender, UserInfoHandler));
 
             SendXt("cT", "0", string.Join('%', names.Select(s => string.Join(',', s))));
         }
-        else if (!NameGenSyllables.IsPossible(isMale, name))
+        else if (!NameGenSyllables.IsPossible(gender, name))
         {
             SendXt("cT", "1");
         }

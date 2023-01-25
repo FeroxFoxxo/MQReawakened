@@ -39,4 +39,10 @@
         <ProjectReference Include="..\Web.AssetBundles\Web.AssetBundles.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="A2mCore">
+        <HintPath>..\Server.Reawakened\Core\Dependencies\A2mCore.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

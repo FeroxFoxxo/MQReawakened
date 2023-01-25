@@ -74,7 +74,7 @@ public class ReplaceCaches : IService
         }
 
         if (!_config.StartLauncherOnReplace)
-            if (_logger.Ask("The launcher is not set to restart on flush, would you like to enable this?"))
+            if (_logger.Ask("The launcher is not set to restart on replacement, would you like to enable this?"))
                 _config.StartLauncherOnReplace = true;
 
         if (_config.StartLauncherOnReplace)

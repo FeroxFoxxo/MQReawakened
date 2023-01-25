@@ -220,6 +220,8 @@ public class NetState : IDisposable
 
     private void OnReceive(IAsyncResult asyncResult)
     {
+        var packet = "Unknown Packet";
+
         try
         {
             var socket = (Socket)asyncResult.AsyncState;
@@ -242,7 +244,7 @@ public class NetState : IDisposable
                 lock (AsyncLock)
                     Array.Copy(Buffer, buffered, byteCount);
 
-                var packet = Encoding.UTF8.GetString(buffered);
+                packet = Encoding.UTF8.GetString(buffered);
 
                 NetStateHandler.RunProtocol protocol = null;
 
@@ -286,6 +288,7 @@ public class NetState : IDisposable
         }
         catch (Exception ex)
         {
+            WriteClient(packet);
             _networkLogger.TraceNetworkError(ex, this);
             Dispose();
         }
