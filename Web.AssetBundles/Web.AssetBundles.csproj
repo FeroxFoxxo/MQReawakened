@@ -33,4 +33,13 @@
         </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="LocalAssets\PetAbilities.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="LocalAssets\vendor_catalogs.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
