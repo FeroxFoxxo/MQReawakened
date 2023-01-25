@@ -34,7 +34,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="LocalAssets\ItemCatalogDict_en-US.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="LocalAssets\PetAbilities.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="LocalAssets\PetBattlePets.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="LocalAssets\vendor_catalogs.xml">

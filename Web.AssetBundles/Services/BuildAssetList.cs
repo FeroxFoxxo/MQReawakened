@@ -195,7 +195,7 @@ public class BuildAssetList : IService
             ? GetAssetsFromCache(Path.GetDirectoryName(_config.CacheInfoFile))
             : GetAssetsFromDictionary(File.ReadAllText(AssetDictLocation)).OrderAssets();
 
-        InternalAssets.AddLocalXmlFiles(_logger);
+        InternalAssets.AddLocalXmlFiles(_logger, _config);
 
         _logger.LogDebug("Loaded {Count} assets to memory.", InternalAssets.Count);
 

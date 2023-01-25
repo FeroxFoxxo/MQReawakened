@@ -19,7 +19,7 @@ public class AssetBundleConfig : IConfig
 
     public Dictionary<string, string> PublishConfigs { get; set; }
     public Dictionary<string, string> AssetDictConfigs { get; set; }
-    public List<string> VirtualGoods { get; set; }
+    public string[] VirtualGoods { get; set; }
 
     public string BundleSaveDirectory { get; set; }
     public string AssetSaveDirectory { get; set; }
@@ -33,6 +33,8 @@ public class AssetBundleConfig : IConfig
     public bool DebugInfo { get; set; }
     public bool DefaultDelete { get; set; }
     public bool StartLauncherOnReplace { get; set; }
+
+    public string[] ForceLocalAsset { get; set; }
 
     public AssetBundleConfig()
     {
@@ -71,7 +73,7 @@ public class AssetBundleConfig : IConfig
             { PublishConfigVgmtKey, "assetDictionary.VGMT.xml" }
         };
 
-        VirtualGoods = new List<string>
+        VirtualGoods = new[]
         {
             "ItemCatalog",
             "PetAbilities",
@@ -79,6 +81,11 @@ public class AssetBundleConfig : IConfig
             "vendor_catalogs",
             "IconBank_VGMT",
             "IconBank_Pets"
+        };
+
+        ForceLocalAsset = new[]
+        {
+            "vendor_catalogs"
         };
     }
 }

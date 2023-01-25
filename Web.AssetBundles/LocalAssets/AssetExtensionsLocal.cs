@@ -8,7 +8,7 @@ namespace Web.AssetBundles.LocalAssets;
 public static class AssetExtensionsLocal
 {
     public static void AddLocalXmlFiles(this Dictionary<string, InternalAssetInfo> assets,
-        ILogger<BuildAssetList> logger)
+        ILogger<BuildAssetList> logger, AssetBundleConfig config)
     {
         var localPath = Path.Combine(InternalDirectory.GetBaseDirectory(), "LocalAssets");
 
@@ -30,10 +30,12 @@ public static class AssetExtensionsLocal
                      {
                          if (assets.ContainsKey(a.Name))
                          {
-                             logger.LogTrace("Replacing asset {Name} in cache with local asset.", a.Name);
+                             if (!config.ForceLocalAsset.Contains(a.Name))
+                                 return false;
                              assets.Remove(a.Name);
                          }
 
+                         logger.LogTrace("Adding asset {Name} from local assets.", a.Name);
                          return true;
                      }))
 
