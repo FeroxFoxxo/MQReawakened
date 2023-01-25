@@ -2,13 +2,15 @@
     <img width="100%" src="Banner.png?raw=true">
 </p>
 
-### This server is completely free of intellectual property from the original game. If you see infringing code, please let me know and I will take it down to be rewritten.
+### This server is completely free of assets / intellectual property from the original game. If you see infringing code, please let me know and I will take it down to be rewritten.
+
+#### None of the repo, the tool, nor the repo owner is affiliated with, or sponsored or authorized by any affiliates of the original game.
+
+This project purely meant for educational use, as to show how games like this are created (through reverse engineering) - the tutorial series of which can be found on YouTube. It is not, and should never be, commercialised in any way. It is also transformative, as a server fundamentally operates differently from its clients. Thus any of the few snippits of code shared between each should be covered under Fair Use. Users must provide the original game's code, assets, executables etc themselves. Please email me (see below) if anything is in breach, which will be rectified ASAP.
 
 My email is feroxfoxxo@gmail.com if you need to get into contact with me directly.
 
-The logo above was made by Z6mbie through vector art. Big thanks to him for the design!
-
-#### None of the repo, the tool, nor the repo owner is affiliated with, or sponsored or authorized by any affiliates of the original game.
+#### The logo above was made by Z6mbie through vector art. Big thanks to him for the design!
 
 MQReawaken is a private server meant for educational use only. It's built off the Ultima server emulator, written by the guys at [ServUO](https://github.com/ServUO/ServUO/), as well as [Asset Studio](https://github.com/Perfare/AssetStudio), by Perfare, and heavily modified.
 
