@@ -41,7 +41,7 @@ public class AutoJoin : SystemProtocol
         user.JoinLevel(NetState, newLevel);
         SendXt("cx", user.UserInfo.GetPropertyValues(account));
         SendXt("cl", $"{user.UserInfo.LastCharacterSelected}{(user.UserInfo.Characters.Count > 0 ? "%" : "")}" +
-                     string.Join('%', user.UserInfo.Characters.Select(c => c.ToServerString()))
+                     string.Join('%', user.UserInfo.Characters.Select(c => c.ToString()))
         );
     }
 }

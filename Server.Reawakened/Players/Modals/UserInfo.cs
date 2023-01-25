@@ -1,5 +1,5 @@
-﻿using A2m.Server;
-using Server.Base.Core.Models;
+﻿using Server.Base.Core.Models;
+using Server.Reawakened.Characters.Models;
 using Server.Reawakened.Core.Network.Services;
 using Server.Reawakened.Players.Enums;
 using System.Globalization;
@@ -10,7 +10,7 @@ public class UserInfo : PersistantData
 {
     public string LastCharacterSelected { get; set; }
 
-    public List<CharacterData> Characters { get; set; }
+    public List<CharacterDetailedModel> Characters { get; set; }
 
     public string AuthToken { get; set; }
 
@@ -37,7 +37,7 @@ public class UserInfo : PersistantData
         Gender = gender;
         DateOfBirth = dateOfBirth.ToString(CultureInfo.CurrentCulture);
         LastCharacterSelected = "";
-        Characters = new List<CharacterData>();
+        Characters = new List<CharacterDetailedModel>();
         SignUpExperience = "unknown";
         Member = true;
         TrackingShortId = "false";
