@@ -7,6 +7,7 @@ using Server.Base.Network.Enums;
 using Server.Base.Network.Events;
 using Server.Base.Network.Helpers;
 using Server.Base.Network.Services;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -24,6 +25,7 @@ public class NetState : IDisposable
     private readonly NetworkLogger _networkLogger;
     private readonly EventSink _sink;
     private readonly InternalServerConfig _config;
+    private readonly ConcurrentBag<string> _currentLogs;
 
     private readonly string _toString;
     public readonly IPAddress Address;
@@ -49,6 +51,7 @@ public class NetState : IDisposable
         Socket = socket;
         AsyncLock = new object();
         Buffer = new byte[config.BufferSize];
+        _currentLogs = new ConcurrentBag<string>();
 
         _logger = logger;
         _networkLogger = networkLogger;
@@ -120,11 +123,11 @@ public class NetState : IDisposable
             _handler.Disposed.Enqueue(this);
     }
 
-    public void WriteServer(string text) =>
-        _logger.LogTrace("{NetState}: {Written} (SERVER)", this, text);
+    private void WriteServer(string text) =>
+        _logger.LogTrace("{NetState}: [SERVER] {Written}", this, text);
 
-    public void WriteClient(string text) =>
-        _logger.LogTrace("{NetState}: {Written} (CLIENT)", this, text);
+    private void WriteClient(string text) =>
+        _logger.LogTrace("{NetState}: [CLIENT] {Written}", this, text);
 
     public void CheckAlive(double curTicks)
     {
@@ -185,7 +188,7 @@ public class NetState : IDisposable
 
         if (!string.IsNullOrEmpty(protocolType))
             if (!_config.IgnoreProtocolType.Contains(protocolType))
-                WriteServer(packet);
+                _currentLogs.Add(packet);
 
         var buffer = Encoding.UTF8.GetBytes(packet);
         var length = buffer.Length;
@@ -263,7 +266,15 @@ public class NetState : IDisposable
 
                 if (!string.IsNullOrEmpty(protocolType))
                     if (!_config.IgnoreProtocolType.Contains(protocolType))
+                    {
                         WriteClient(packet);
+                        lock (AsyncLock)
+                        {
+                            foreach (var log in _currentLogs)
+                                WriteServer(log);
+                            _currentLogs.Clear();
+                        }
+                    }
 
                 lock (AsyncLock)
                 {

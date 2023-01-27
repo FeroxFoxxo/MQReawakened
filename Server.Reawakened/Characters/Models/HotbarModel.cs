@@ -8,7 +8,8 @@ public class HotbarModel
 
     public Dictionary<int, ItemModel> HotbarButtons { get; set; }
 
-    public HotbarModel() {}
+    public HotbarModel() =>
+        HotbarButtons = new Dictionary<int, ItemModel>();
 
     public override string ToString()
     {

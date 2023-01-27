@@ -8,7 +8,8 @@ public class RecipeListModel
 
     public List<RecipeModel> RecipeList { get; set; }
 
-    public RecipeListModel() {}
+    public RecipeListModel() =>
+        RecipeList = new List<RecipeModel>();
 
     public override string ToString()
     {

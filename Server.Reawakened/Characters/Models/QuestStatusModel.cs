@@ -12,7 +12,8 @@ public class QuestStatusModel
     public QuestStatus.QuestState QuestStatus { get; set; }
     public Dictionary<int, ObjectiveModel> Objectives { get; set; }
 
-    public QuestStatusModel() {}
+    public QuestStatusModel() =>
+        Objectives = new Dictionary<int, ObjectiveModel>();
 
     public override string ToString()
     {

@@ -120,29 +120,15 @@ public class StartGame : IService
     {
         var config = Path.Join(_directory, "game", "LocalBuildConfig.xml");
 
-        var oldDoc = XDocument.Load(config);
         var newDoc = new XDocument();
-
-        var root = oldDoc.Elements().FirstOrDefault(x => x.Name == "MQBuildConfg") ??
-                   new XElement("MQBuildConfg");
+        var root = new XElement("MQBuildConfg");
 
         foreach (var item in GetConfigValues())
         {
-            var xmlItem = root.Elements().FirstOrDefault(x => x.Attributes().Any(a =>
-                a.Name == "name" && a.Value == item.Key
-            ));
-
-            if (xmlItem == null)
-            {
-                xmlItem = new XElement("item");
-                xmlItem.Add(new XAttribute("name", item.Key));
-                xmlItem.Add(new XAttribute("value", item.Value));
-                root.Add(xmlItem);
-            }
-            else
-            {
-                xmlItem.Attributes().First(a => a.Name == "value").Value = item.Value;
-            }
+            var xmlItem = new XElement("item");
+            xmlItem.Add(new XAttribute("name", item.Key));
+            xmlItem.Add(new XAttribute("value", item.Value));
+            root.Add(xmlItem);
         }
 
         newDoc.Add(root);

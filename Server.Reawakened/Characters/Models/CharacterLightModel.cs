@@ -31,6 +31,10 @@ public class CharacterLightModel
         var array = serverData.Split('[');
         Gender = int.Parse(array[0]);
         Customization = new CharacterCustomDataModel(array[1]);
+
+        CharacterId = Customization.CharacterId;
+        Equipment = new EquipmentModel();
+        DiscoveredStats = new HashSet<int>();
     }
 
     public override string ToString()

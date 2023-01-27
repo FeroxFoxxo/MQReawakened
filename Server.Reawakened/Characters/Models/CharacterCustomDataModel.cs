@@ -12,7 +12,11 @@ public class CharacterCustomDataModel
     public Dictionary<CustomDataProperties, int> Properties { get; set; }
     public Dictionary<CustomDataProperties, ColorModel> Colors { get; set; }
 
-    public CharacterCustomDataModel() {}
+    public CharacterCustomDataModel()
+    {
+        Properties = new Dictionary<CustomDataProperties, int>();
+        Colors = new Dictionary<CustomDataProperties, ColorModel>();
+    }
 
     public CharacterCustomDataModel(string serverString)
     {

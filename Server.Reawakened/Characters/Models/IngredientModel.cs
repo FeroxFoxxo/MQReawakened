@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Text;
+﻿using System.Text;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -9,6 +8,8 @@ public class IngredientModel
 
     public int ItemId { get; set; }
     public int Count { get; set; }
+
+    public IngredientModel() {}
 
     public string GenerateIngredientString()
     {

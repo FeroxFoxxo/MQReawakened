@@ -8,7 +8,7 @@ public class CharacterDetailedModel : CharacterLightModel
 {
     public const char FieldJoiner = '&';
 
-    public InventoryModel InventoryModel { get; set; }
+    public InventoryModel Inventory { get; set; }
     public List<QuestStatusModel> QuestLog { get; set; }
     public List<int> CompletedQuests { get; set; }
     public HotbarModel Hotbar { get; set; }
@@ -45,6 +45,13 @@ public class CharacterDetailedModel : CharacterLightModel
         IdolCount = new Dictionary<int, int>();
         TribesProgression = new Dictionary<TribeType, TribeDataModel>();
         DiscoveredStats = new HashSet<int>();
+
+        Inventory = new InventoryModel();
+        Hotbar = new HotbarModel();
+        FriendList = new FriendListModel();
+        BlockList = new BlockListModel();
+        Resistances = new CharacterResistancesModel();
+        RecipeList = new RecipeListModel();
     }
 
     public override string ToString()
@@ -53,7 +60,7 @@ public class CharacterDetailedModel : CharacterLightModel
 
         sb.Append(Customization);
         sb.Append(CharacterDataEndDelimiter);
-        sb.Append(InventoryModel);
+        sb.Append(Inventory);
         sb.Append(CharacterDataEndDelimiter);
         foreach (var qs in QuestLog)
         {
@@ -137,7 +144,7 @@ public class CharacterDetailedModel : CharacterLightModel
         sb.Append(AbilityPower);
         sb.Append(FieldSeparator);
         sb.Append(ChatLevel);
-        sb.Append(BuildTribeDataString(TribesProgression));
+        sb.Append(string.Join(FieldSeparator, BuildTribeDataString(TribesProgression)));
 
         return sb.ToString();
     }

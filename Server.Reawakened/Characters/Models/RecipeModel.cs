@@ -10,7 +10,8 @@ public class RecipeModel
     public int ItemId { get; set; }
     public List<IngredientModel> Ingredients { get; set; }
 
-    public RecipeModel() {}
+    public RecipeModel() =>
+        Ingredients = new List<IngredientModel>();
 
     public override string ToString()
     {

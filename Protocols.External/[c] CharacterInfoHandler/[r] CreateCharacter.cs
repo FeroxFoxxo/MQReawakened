@@ -34,8 +34,11 @@ public class CreateCharacter : ExternalProtocol
 
         characterData.Allegiance = tribe;
         characterData.CharacterName = string.Join(' ', names);
-        characterData.Gender = gender;
         characterData.UserUuid = userInfo.UserId.ToString();
+
+        // DEFAULTS
+        characterData.ChatLevel = 2;
+        characterData.Registered = true;
 
         if (NameGenSyllables.IsNameReserved(names, UserInfoHandler))
         {
@@ -48,7 +51,7 @@ public class CreateCharacter : ExternalProtocol
         }
         else
         {
-            SendXt("cr", userInfo.UserId.ToString(), characterData.ToString(), "0", "0");
+            SendXt("cr", userInfo.UserId.ToString(), characterData.ToString(), characterData.UserUuid + characterData.CharacterId, "LV_CRS_NewbZoneNew01");
         }
     }
 }

@@ -11,7 +11,11 @@ public class EquipmentModel
     public Dictionary<ItemSubCategory, int> EquippedItems { get; set; }
     public List<ItemSubCategory> EquippedBinding { get; set; }
 
-    public EquipmentModel () {}
+    public EquipmentModel()
+    {
+        EquippedItems = new Dictionary<ItemSubCategory, int>();
+        EquippedBinding = new List<ItemSubCategory>();
+    }
 
     public EquipmentModel(string serverString)
     {

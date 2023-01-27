@@ -8,7 +8,8 @@ public class BlockListModel
 
     public Dictionary<string, FriendDataModel> BlockList { get; set; }
 
-    public BlockListModel() {}
+    public BlockListModel() =>
+        BlockList = new Dictionary<string, FriendDataModel>();
 
     public override string ToString()
     {
