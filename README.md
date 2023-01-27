@@ -2,11 +2,11 @@
     <img width="100%" src="Banner.png?raw=true">
 </p>
 
-### This server is completely free of assets / intellectual property from the original game. If you see infringing code, please let me know and I will take it down to be rewritten.
+### This server should be completely free of assets / intellectual property from the original game. If you see infringing code, please let me know and I will take it down to be rewritten.
 
 #### None of the repo, the tool, nor the repo owner is affiliated with, or sponsored or authorized by any affiliates of the original game.
 
-This project purely meant for educational use, as to show how games like this are created (through reverse engineering) - the tutorial series of which can be found on YouTube. It is not, and should never be, commercialised in any way. It is also transformative, as a server fundamentally operates differently from its clients. Thus any of the few snippits of code shared between each should be covered under Fair Use. Users must provide the original game's code, assets, executables etc themselves. Please email me (see below) if anything is in breach, which will be rectified ASAP.
+This project purely meant for educational use, as to show how games like this are created (through reverse engineering) - the tutorial series of which can be found on [YouTube](https://www.youtube.com/channel/UCDxjJNFDufgHbypygWkQlNg). It is not, and should never be, commercialised in any way. It a transformative work, and is fundamentally different from the client - only sharing similar data models, and communicating based on the same protocols. Thus any of the few snippits of code shared between each should be covered under Fair Use. Users must provide the original game's code, assets, executables etc themselves. Please email me (see below) if anything is in breach, which will be rectified ASAP.
 
 My email is feroxfoxxo@gmail.com if you need to get into contact with me directly.
 
