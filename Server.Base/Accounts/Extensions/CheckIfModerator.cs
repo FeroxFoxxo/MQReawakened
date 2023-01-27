@@ -1,5 +1,5 @@
 ﻿using Server.Base.Accounts.Enums;
-using Server.Base.Accounts.Modals;
+using Server.Base.Accounts.Models;
 
 namespace Server.Base.Accounts.Extensions;
 

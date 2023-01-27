@@ -22,10 +22,11 @@ public class EquipmentModel
         EquippedItems = new Dictionary<ItemSubCategory, int>();
         EquippedBinding = new List<ItemSubCategory>();
 
-        var items = serverString.Split(':');
+        var items = serverString.Split(PropertyDelimiter);
+
         foreach (var item in items)
         {
-            var values = item.Split('=');
+            var values = item.Split(KeyValueDelimiter);
             if (values.Length != 3)
                 continue;
 

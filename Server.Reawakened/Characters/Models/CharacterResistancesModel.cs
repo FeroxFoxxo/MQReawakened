@@ -6,19 +6,19 @@ public class CharacterResistancesModel
 {
     public const char DataDelimiter = '|';
 
-    public int StandardDamageResistPointsInt;
-    public int FireDamageResistPointsInt;
-    public int IceDamageResistPointsInt;
-    public int PoisonDamageResistPointsInt;
-    public int LightningDamageResistPointsInt;
-    public int StandardDamageResistPointsExt;
-    public int FireDamageResistPointsExt;
-    public int IceDamageResistPointsExt;
-    public int PoisonDamageResistPointsExt;
-    public int LightningDamageResistPointsExt;
-    public int StunStatusEffectResistSecsExt;
-    public int SlowStatusEffectResistSecsExt;
-    public int FreezeStatusEffectResistSecsExt;
+    public int StandardDamageResistPointsInt { get; set; }
+    public int FireDamageResistPointsInt { get; set; }
+    public int IceDamageResistPointsInt { get; set; }
+    public int PoisonDamageResistPointsInt { get; set; }
+    public int LightningDamageResistPointsInt { get; set; }
+    public int StandardDamageResistPointsExt { get; set; }
+    public int FireDamageResistPointsExt { get; set; }
+    public int IceDamageResistPointsExt { get; set; }
+    public int PoisonDamageResistPointsExt { get; set; }
+    public int LightningDamageResistPointsExt { get; set; }
+    public int StunStatusEffectResistSecsExt { get; set; }
+    public int SlowStatusEffectResistSecsExt { get; set; }
+    public int FreezeStatusEffectResistSecsExt { get; set; }
 
     public CharacterResistancesModel() { }
 

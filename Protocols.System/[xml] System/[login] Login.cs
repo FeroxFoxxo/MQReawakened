@@ -1,6 +1,6 @@
 ﻿using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Extensions;
-using Server.Base.Accounts.Modals;
+using Server.Base.Accounts.Models;
 using Server.Base.Accounts.Services;
 using Server.Reawakened.Core.Network.Protocols;
 using Server.Reawakened.Players.Services;

@@ -1,4 +1,4 @@
-﻿namespace Server.Base.Accounts.Modals;
+﻿namespace Server.Base.Accounts.Models;
 
 public class AccountTag
 {

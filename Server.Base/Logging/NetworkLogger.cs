@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Helpers;
-using Server.Base.Accounts.Modals;
+using Server.Base.Accounts.Models;
 using Server.Base.Logging.Internal;
 using Server.Base.Network;
 using Server.Base.Network.Helpers;

@@ -1,5 +1,5 @@
 ﻿using Server.Base.Accounts.Extensions;
-using Server.Base.Accounts.Modals;
+using Server.Base.Accounts.Models;
 using Server.Base.Logging;
 using Server.Base.Network;
 

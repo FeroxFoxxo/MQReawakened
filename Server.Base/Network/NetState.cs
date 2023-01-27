@@ -270,7 +270,7 @@ public class NetState : IDisposable
                         WriteClient(packet);
                         lock (AsyncLock)
                         {
-                            foreach (var log in _currentLogs)
+                            foreach (var log in _currentLogs.Reverse())
                                 WriteServer(log);
                             _currentLogs.Clear();
                         }

@@ -2,7 +2,7 @@
 using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Helpers;
-using Server.Base.Accounts.Modals;
+using Server.Base.Accounts.Models;
 using Server.Base.Core.Helpers;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;

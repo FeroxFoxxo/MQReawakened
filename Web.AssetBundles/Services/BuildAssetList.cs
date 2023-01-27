@@ -255,17 +255,15 @@ public class BuildAssetList : IService
 
         foreach (var newAsset in assets)
         {
-            if (singleAssets.ContainsKey(newAsset.Name))
+            if (singleAssets.TryGetValue(newAsset.Name, out var value))
             {
-                var oldAsset = singleAssets[newAsset.Name];
-
-                if (oldAsset.Type == newAsset.Type)
+                if (value.Type == newAsset.Type)
                 {
-                    var oldAssetVersion = new UnityVersion(oldAsset.UnityVersion).GetVersionInfo();
+                    var oldAssetVersion = new UnityVersion(value.UnityVersion).GetVersionInfo();
                     var newAssetVersion = new UnityVersion(newAsset.UnityVersion).GetVersionInfo();
 
                     if (oldAssetVersion < newAssetVersion || oldAssetVersion == newAssetVersion &&
-                        oldAsset.BundleSize < newAsset.BundleSize)
+                        value.BundleSize < newAsset.BundleSize)
                         singleAssets[newAsset.Name] = newAsset;
                 }
                 else

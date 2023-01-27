@@ -6,11 +6,13 @@ using Server.Base.Network;
 using Server.Base.Network.Services;
 using System.Globalization;
 
-namespace Server.Base.Accounts.Modals;
+namespace Server.Base.Accounts.Models;
 
 public class Account : PersistantData, INetStateData
 {
     public AccessLevel AccessLevel { get; set; }
+
+    public GameMode GameMode { get; set; }
 
     public string Created { get; set; }
 
@@ -37,6 +39,7 @@ public class Account : PersistantData, INetStateData
         Username = username;
         Password = hasher.GetPassword(username, password);
         AccessLevel = AccessLevel.Player;
+        GameMode = GameMode.Spectator;
         Created = DateTime.UtcNow.ToString(CultureInfo.CurrentCulture);
         LastLogin = DateTime.UtcNow.ToString(CultureInfo.CurrentCulture);
         IpRestrictions = Array.Empty<string>();

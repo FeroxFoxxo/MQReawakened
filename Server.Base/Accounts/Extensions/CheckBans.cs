@@ -1,4 +1,4 @@
-﻿using Server.Base.Accounts.Modals;
+﻿using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
 using System.Xml;
 

@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Modals;
+using Server.Base.Accounts.Models;
 using Server.Base.Core.Helpers;
 using Server.Base.Core.Services;
 using Server.Base.Network;
 using Server.Reawakened.Core.Network.Services;
 using Server.Reawakened.Players.Enums;
-using Server.Reawakened.Players.Modals;
+using Server.Reawakened.Players.Models;
 using System.Globalization;
 
 namespace Server.Reawakened.Players.Services;

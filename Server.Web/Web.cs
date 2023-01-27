@@ -89,6 +89,6 @@ public class Web : WebModule
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseEndpoints(endpoints => endpoints.MapControllers());
+        app.MapControllers();
     }
 }

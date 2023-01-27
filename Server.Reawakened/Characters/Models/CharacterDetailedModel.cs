@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Core.Models;
 using System.Globalization;
 using System.Text;
 
@@ -7,6 +8,7 @@ namespace Server.Reawakened.Characters.Models;
 public class CharacterDetailedModel : CharacterLightModel
 {
     public const char FieldJoiner = '&';
+    public const char PortalJoiner = '|';
 
     public InventoryModel Inventory { get; set; }
     public List<QuestStatusModel> QuestLog { get; set; }
@@ -37,7 +39,7 @@ public class CharacterDetailedModel : CharacterLightModel
 
     public CharacterDetailedModel() {}
 
-    public CharacterDetailedModel(string serverData) : base(serverData)
+    public CharacterDetailedModel(string serverData, ServerConfig config) : base(serverData, config)
     {
         QuestLog = new List<QuestStatusModel>();
         CompletedQuests = new List<int>();
@@ -96,11 +98,11 @@ public class CharacterDetailedModel : CharacterLightModel
         sb.Append(CharacterDataEndDelimiter);
         sb.Append(RecipeList);
         sb.Append(CharacterDataEndDelimiter);
-        sb.Append(BuildTribesDiscoveredString(TribesDiscovered));
+        sb.Append(BuildTribesDiscoveredString());
         sb.Append(CharacterDataEndDelimiter);
-        sb.Append(BuildIdolCountString(IdolCount));
+        sb.Append(BuildIdolCountString());
         sb.Append(CharacterDataEndDelimiter);
-        sb.Append(BuildStatsDiscoveredString(DiscoveredStats));
+        sb.Append(BuildStatsDiscoveredString());
         sb.Append(CharacterDataEndDelimiter);
 
         sb.Append(FieldSeparator);
@@ -144,16 +146,16 @@ public class CharacterDetailedModel : CharacterLightModel
         sb.Append(AbilityPower);
         sb.Append(FieldSeparator);
         sb.Append(ChatLevel);
-        sb.Append(string.Join(FieldSeparator, BuildTribeDataString(TribesProgression)));
+        sb.Append(string.Join(FieldSeparator, BuildTribeDataString()));
 
         return sb.ToString();
     }
 
-    private static string BuildTribesDiscoveredString(Dictionary<TribeType, bool> tribesDiscovered)
+    private string BuildTribesDiscoveredString()
     {
         var sb = new StringBuilder();
 
-        foreach (var kvp in tribesDiscovered)
+        foreach (var kvp in TribesDiscovered)
         {
             sb.Append((int)kvp.Key);
             sb.Append(FieldSeparator);
@@ -164,11 +166,11 @@ public class CharacterDetailedModel : CharacterLightModel
         return sb.ToString();
     }
 
-    private static string BuildIdolCountString(Dictionary<int, int> idolCount)
+    private string BuildIdolCountString()
     {
         var sb = new StringBuilder();
 
-        foreach (var kvp in idolCount)
+        foreach (var kvp in IdolCount)
         {
             sb.Append(kvp.Key);
             sb.Append(FieldSeparator);
@@ -179,11 +181,11 @@ public class CharacterDetailedModel : CharacterLightModel
         return sb.ToString();
     }
 
-    private static string BuildStatsDiscoveredString(HashSet<int> discoveredStats)
+    private string BuildStatsDiscoveredString()
     {
         var sb = new StringBuilder();
 
-        foreach (var stat in discoveredStats)
+        foreach (var stat in DiscoveredStats)
         {
             sb.Append(stat.ToString(CultureInfo.InvariantCulture));
             sb.Append(FieldSeparator);
@@ -192,6 +194,19 @@ public class CharacterDetailedModel : CharacterLightModel
         return sb.ToString();
     }
 
-    private static string[] BuildTribeDataString(Dictionary<TribeType, TribeDataModel> tribesProgression) =>
-        tribesProgression.Values.Select(tribeType => tribeType.ToString()).ToArray();
+    private string[] BuildTribeDataString() =>
+        TribesProgression.Values.Select(tribeType => tribeType.ToString()).ToArray();
+
+    public string GetPortalData()
+    {
+        var sb = new StringBuilder();
+
+        sb.Append(SpawnPositionX);
+        sb.Append(PortalJoiner);
+        sb.Append(SpawnPositionY);
+        sb.Append(PortalJoiner);
+        sb.Append(SpawnOnBackPlane ? 1 : 0);
+
+        return sb.ToString();
+    }
 }

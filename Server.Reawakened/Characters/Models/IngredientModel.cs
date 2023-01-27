@@ -11,7 +11,7 @@ public class IngredientModel
 
     public IngredientModel() {}
 
-    public string GenerateIngredientString()
+    public override string ToString()
     {
         var sb = new StringBuilder();
 

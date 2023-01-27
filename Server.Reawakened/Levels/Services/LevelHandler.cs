@@ -47,9 +47,10 @@ public class LevelHandler : IService
         }
         catch (NullReferenceException)
         {
-            _logger.LogError(_levels.Count == 0
-                ? "Could not find any levels! Are you sure you have your cache set up correctly?"
-                : "Could not find the required level! Are you sure your caches contain this?");
+            if (_levels.Count == 0)
+                _logger.LogCritical("Could not find any levels! Are you sure you have your cache set up correctly?");
+            else
+                _logger.LogError("Could not find the required level! Are you sure your caches contain this?");
 
             return new Level(new LevelInfo(), _config, this);
         }

@@ -4,13 +4,13 @@ using Server.Reawakened.Core.Network.Services;
 using Server.Reawakened.Players.Enums;
 using System.Globalization;
 
-namespace Server.Reawakened.Players.Modals;
+namespace Server.Reawakened.Players.Models;
 
 public class UserInfo : PersistantData
 {
     public string LastCharacterSelected { get; set; }
 
-    public List<CharacterDetailedModel> Characters { get; set; }
+    public Dictionary<int, CharacterDetailedModel> Characters { get; set; }
 
     public string AuthToken { get; set; }
 
@@ -26,6 +26,8 @@ public class UserInfo : PersistantData
 
     public string TrackingShortId { get; set; }
 
+    public int ChatLevel { get; set; }
+
     public UserInfo()
     {
     }
@@ -37,10 +39,11 @@ public class UserInfo : PersistantData
         Gender = gender;
         DateOfBirth = dateOfBirth.ToString(CultureInfo.CurrentCulture);
         LastCharacterSelected = "";
-        Characters = new List<CharacterDetailedModel>();
+        Characters = new Dictionary<int, CharacterDetailedModel>();
         SignUpExperience = "unknown";
         Member = true;
         TrackingShortId = "false";
         AuthToken = kGen.GetRandomKey<UserInfo>(userId.ToString());
+        ChatLevel = 3;
     }
 }

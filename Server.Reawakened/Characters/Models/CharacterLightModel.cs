@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Core.Models;
 using System.Text;
 
 namespace Server.Reawakened.Characters.Models;
@@ -14,7 +15,7 @@ public class CharacterLightModel
     public bool Registered { get; set; }
     public int CharacterId { get; set; }
     public string CharacterName { get; set; }
-    public string UserUuid { get; set; }
+    public int UserUuid { get; set; }
     public int Gender { get; set; }
     public int MaxLife { get; set; }
     public int CurrentLife { get; set; }
@@ -26,18 +27,25 @@ public class CharacterLightModel
 
     public CharacterLightModel() {}
 
-    public CharacterLightModel(string serverData)
+    public CharacterLightModel(string serverData, ServerConfig config)
     {
-        var array = serverData.Split('[');
+        var array = serverData.Split(CharacterDataEndDelimiter);
         Gender = int.Parse(array[0]);
         Customization = new CharacterCustomDataModel(array[1]);
+
+        if (Customization.CharacterId > config.MaxCharacterCount || Customization.CharacterId < 0)
+            throw new InvalidDataException();
 
         CharacterId = Customization.CharacterId;
         Equipment = new EquipmentModel();
         DiscoveredStats = new HashSet<int>();
     }
 
-    public override string ToString()
+    public override string ToString() => GetLightCharacterData();
+
+    public int GetGoId() => UserUuid + CharacterId;
+
+    public string GetLightCharacterData()
     {
         var sb = new StringBuilder();
 

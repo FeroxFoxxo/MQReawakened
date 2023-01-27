@@ -21,7 +21,7 @@ public class NameGenSyllables
     {
         var name = $"{names[0]}{names[1]}{names[2]}";
         return handler.Data.Select(a => a.Value.Characters)
-            .SelectMany(cl => cl).Any(c => c.CharacterName == name);
+            .SelectMany(cl => cl).Any(c => c.Value.CharacterName == name);
     }
 
     public bool IsPossible(int gender, string[] names) =>

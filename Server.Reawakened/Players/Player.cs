@@ -2,40 +2,45 @@
 using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
+using Server.Reawakened.Characters.Models;
 using Server.Reawakened.Levels;
-using Server.Reawakened.Players.Modals;
+using Server.Reawakened.Levels.Enums;
+using Server.Reawakened.Players.Models;
 
 namespace Server.Reawakened.Players;
 
 public class Player : INetStateData
 {
-    private Level _currentLevel;
-    private int _playerId;
-
+    public Level CurrentLevel;
+    public int PlayerId;
     public UserInfo UserInfo;
+    public int CurrentCharacter;
 
     public Player(UserInfo userInfo) => UserInfo = userInfo;
 
     public void RemovedState(NetState state, NetStateHandler handler,
         Microsoft.Extensions.Logging.ILogger logger)
     {
-        if (_currentLevel != null)
+        if (CurrentLevel != null)
         {
-            var levelName = _currentLevel.LevelData.Name;
+            var levelName = CurrentLevel.LevelData.Name;
 
             if (!string.IsNullOrEmpty(levelName))
-                logger.LogDebug("Dumped player with ID '{User}' from level '{Level}'", _playerId, levelName);
+                logger.LogDebug("Dumped player with ID '{User}' from level '{Level}'", PlayerId, levelName);
         }
 
-        _currentLevel?.DumpPlayerToLobby(_playerId);
+        CurrentLevel?.DumpPlayerToLobby(PlayerId);
     }
 
     public void JoinLevel(NetState state, Level level)
     {
-        _currentLevel?.RemoveClient(_playerId);
-        _currentLevel = level;
-        _playerId = _currentLevel.AddClient(state);
+        CurrentLevel?.RemoveClient(PlayerId);
+        CurrentLevel = level;
+        CurrentLevel.AddClient(state);
     }
 
-    public int GetLevelId() => _currentLevel != null ? _currentLevel.LevelData.LevelId : -1;
+    public int GetLevelId() => CurrentLevel != null ? CurrentLevel.LevelData.LevelId : -1;
+
+    public CharacterDetailedModel GetCurrentCharacter()
+        => UserInfo.Characters[CurrentCharacter];
 }

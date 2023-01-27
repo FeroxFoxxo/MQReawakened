@@ -1,10 +1,12 @@
-﻿using Server.Base.Network;
+﻿using Server.Base.Accounts.Extensions;
+using Server.Base.Accounts.Models;
+using Server.Base.Network;
 using Server.Reawakened.Core.Models;
 using Server.Reawakened.Core.Network.Extensions;
 using Server.Reawakened.Levels.Enums;
-using Server.Reawakened.Levels.Extensions;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Players;
+using System.Security.Principal;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Levels;
@@ -27,7 +29,7 @@ public class Level
         _clientIds = new HashSet<int>();
     }
 
-    public int AddClient(NetState state)
+    public void AddClient(NetState state)
     {
         var playerId = -1;
         JoinReason reason;
@@ -48,11 +50,73 @@ public class Level
             reason = JoinReason.Accepted;
         }
 
-        if (reason == JoinReason.Accepted)
-            state.SendXml("joinOK", $"<pid id='{playerId}' /><uLs />");
-        else
-            state.SendXml("joinKO", $"<error>{reason.GetErrorValue()}</error>");
-        return playerId;
+        state.Get<Player>().PlayerId = playerId;
+
+        SendClientJoin(state, reason);
+    }
+
+    public void SendClientJoin(NetState newClient, JoinReason reason)
+    {
+        switch (reason)
+        {
+            case JoinReason.Accepted:
+            {
+                var newPlayer = newClient.Get<Player>();
+
+                newClient.SendXml("joinOK", $"<pid id='{newPlayer.PlayerId}' /><uLs />");
+
+                if (LevelData.LevelId == -1)
+                    return;
+
+                var newAccount = newClient.Get<Account>();
+
+                foreach (var currentClient in _clients.Values)
+                {
+                    var currentPlayer = currentClient.Get<Player>();
+                    var currentAccount = currentClient.Get<Account>();
+
+                    var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
+
+                        SendUserEnterData(newClient, currentPlayer, currentAccount);
+                        
+                        if (areDifferentClients)
+                            SendUserEnterData(currentClient, newPlayer, newAccount);
+                        
+                        SendCharacterInfoData(newClient, currentPlayer, areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals);
+
+                        if (areDifferentClients)
+                            SendCharacterInfoData(currentClient, newPlayer, CharacterInfoType.Lite);
+                }
+                break;
+                }
+            case JoinReason.Full:
+                newClient.SendXml("joinKO", "<error>This room is full!</error>");
+                break;
+            default:
+                newClient.SendXml("joinKO", "<error>" +
+                                            "You seem to have reached an error that shouldn't have happened!" +
+                                            " Please report this error to the developers." +
+                                            "</error>");
+                break;
+        }
+    }
+
+    private static void SendUserEnterData(NetState state, Player player, Account account) =>
+        state.SendXml("uER", $"<u i='{player.UserInfo.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.PlayerId}'><n>{account.Username}</n></u>");
+
+    public void SendCharacterInfoData(NetState state, Player player, CharacterInfoType type)
+    {
+        var character = player.GetCurrentCharacter();
+
+        var info = type switch
+        {
+            CharacterInfoType.Lite => character.GetLightCharacterData(),
+            CharacterInfoType.Portals => character.GetPortalData(),
+            CharacterInfoType.Detailed => character.ToString(),
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+
+        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, character.GetGoId().ToString(), LevelData.Name);
     }
 
     public void DumpPlayersToLobby()
@@ -64,9 +128,7 @@ public class Level
     public void DumpPlayerToLobby(int playerId)
     {
         var client = _clients[playerId];
-
         client.Get<Player>().JoinLevel(client, _handler.GetLevelFromId(-1));
-
         RemoveClient(playerId);
     }
 
