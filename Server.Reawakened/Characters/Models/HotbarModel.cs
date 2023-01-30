@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -13,14 +13,14 @@ public class HotbarModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(FieldSeparator);
+
         foreach (var button in HotbarButtons)
         {
             sb.Append(button.Key);
-            sb.Append(FieldSeparator);
             sb.Append(button.Value);
-            sb.Append(FieldSeparator);
         }
+
         return sb.ToString();
     }
 }

@@ -1,5 +1,5 @@
 ﻿using A2m.Server;
-using System.Text;
+using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -43,18 +43,22 @@ public class CharacterCustomDataModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(PropertyDelimiter);
         sb.Append(CharacterId);
 
-        foreach (var kvp in Properties)
-        {
-            sb.Append(PropertyDelimiter);
-            sb.Append(kvp.Key);
-            sb.Append(KeyValueDelimiter);
-            sb.Append(kvp.Value);
-            sb.Append(KeyValueDelimiter);
-            sb.Append(Colors[kvp.Key]);
-        }
+        foreach (var property in Properties)
+            sb.Append(BuildProperty(property));
+
+        return sb.ToString();
+    }
+
+    private string BuildProperty(KeyValuePair<CustomDataProperties, int> property)
+    {
+        var sb = new SeparatedStringBuilder(KeyValueDelimiter);
+
+        sb.Append(property.Key);
+        sb.Append(property.Value);
+        sb.Append(Colors[property.Key]);
 
         return sb.ToString();
     }

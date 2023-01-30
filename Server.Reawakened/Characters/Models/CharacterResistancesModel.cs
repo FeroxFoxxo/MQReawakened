@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -24,31 +24,20 @@ public class CharacterResistancesModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(DataDelimiter);
+
         sb.Append(StandardDamageResistPointsInt);
-        sb.Append(DataDelimiter);
         sb.Append(FireDamageResistPointsInt);
-        sb.Append(DataDelimiter);
         sb.Append(IceDamageResistPointsInt);
-        sb.Append(DataDelimiter);
         sb.Append(PoisonDamageResistPointsInt);
-        sb.Append(DataDelimiter);
         sb.Append(LightningDamageResistPointsInt);
-        sb.Append(DataDelimiter);
         sb.Append(StandardDamageResistPointsExt);
-        sb.Append(DataDelimiter);
         sb.Append(FireDamageResistPointsExt);
-        sb.Append(DataDelimiter);
         sb.Append(IceDamageResistPointsExt);
-        sb.Append(DataDelimiter);
         sb.Append(PoisonDamageResistPointsExt);
-        sb.Append(DataDelimiter);
         sb.Append(LightningDamageResistPointsExt);
-        sb.Append(DataDelimiter);
         sb.Append(StunStatusEffectResistSecsExt);
-        sb.Append(DataDelimiter);
         sb.Append(SlowStatusEffectResistSecsExt);
-        sb.Append(DataDelimiter);
         sb.Append(FreezeStatusEffectResistSecsExt);
 
         return sb.ToString();

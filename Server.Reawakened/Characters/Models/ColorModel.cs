@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -15,6 +15,7 @@ public class ColorModel
     public ColorModel(string serverString)
     {
         var values = serverString.Split(ColorDelimiter);
+
         Red = float.Parse(values[0]);
         Green = float.Parse(values[1]);
         Blue = float.Parse(values[2]);
@@ -22,12 +23,12 @@ public class ColorModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(ColorDelimiter);
+
         sb.Append(Red);
-        sb.Append(ColorDelimiter);
         sb.Append(Green);
-        sb.Append(ColorDelimiter);
         sb.Append(Blue);
+
         return sb.ToString();
     }
 }

@@ -4,7 +4,6 @@ using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Characters.Models;
 using Server.Reawakened.Levels;
-using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Players.Models;
 
 namespace Server.Reawakened.Players;
@@ -41,6 +40,6 @@ public class Player : INetStateData
 
     public int GetLevelId() => CurrentLevel != null ? CurrentLevel.LevelData.LevelId : -1;
 
-    public CharacterDetailedModel GetCurrentCharacter()
+    public CharacterDataModel GetCurrentCharacter()
         => UserInfo.Characters[CurrentCharacter];
 }

@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -13,13 +13,10 @@ public class FriendListModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(FieldSeparator);
 
         foreach (var friend in FriendList)
-        {
             sb.Append(friend.Value);
-            sb.Append(FieldSeparator);
-        }
 
         return sb.ToString();
     }

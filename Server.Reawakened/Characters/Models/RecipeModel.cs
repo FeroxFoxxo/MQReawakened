@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -15,17 +15,15 @@ public class RecipeModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(FieldSeparator);
+
         sb.Append(RecipeId);
-        sb.Append(FieldSeparator);
         sb.Append(ItemId);
-        sb.Append(FieldSeparator);
         sb.Append(Ingredients.Count);
+
         foreach (var ingredient in Ingredients)
-        {
-            sb.Append(FieldSeparator);
             sb.Append(ingredient);
-        }
+
         return sb.ToString();
     }
 }

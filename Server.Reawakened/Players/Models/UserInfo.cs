@@ -10,7 +10,7 @@ public class UserInfo : PersistantData
 {
     public string LastCharacterSelected { get; set; }
 
-    public Dictionary<int, CharacterDetailedModel> Characters { get; set; }
+    public Dictionary<int, CharacterDataModel> Characters { get; set; }
 
     public string AuthToken { get; set; }
 
@@ -39,7 +39,7 @@ public class UserInfo : PersistantData
         Gender = gender;
         DateOfBirth = dateOfBirth.ToString(CultureInfo.CurrentCulture);
         LastCharacterSelected = "";
-        Characters = new Dictionary<int, CharacterDetailedModel>();
+        Characters = new Dictionary<int, CharacterDataModel>();
         SignUpExperience = "unknown";
         Member = true;
         TrackingShortId = "false";

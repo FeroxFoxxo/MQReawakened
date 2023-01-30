@@ -6,7 +6,6 @@ using Server.Reawakened.Core.Network.Extensions;
 using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Players;
-using System.Security.Principal;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Levels;

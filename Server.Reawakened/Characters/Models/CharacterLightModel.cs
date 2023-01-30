@@ -1,6 +1,6 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Characters.Helpers;
 using Server.Reawakened.Core.Models;
-using System.Text;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -30,6 +30,7 @@ public class CharacterLightModel
     public CharacterLightModel(string serverData, ServerConfig config)
     {
         var array = serverData.Split(CharacterDataEndDelimiter);
+
         Gender = int.Parse(array[0]);
         Customization = new CharacterCustomDataModel(array[1]);
 
@@ -47,54 +48,43 @@ public class CharacterLightModel
 
     public string GetLightCharacterData()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(CharacterDataEndDelimiter);
+
+        sb.Append(GetCharacterInformation());
+        sb.Append(Customization);
+        sb.Append(Equipment);
+        sb.Append(PetItemId);
+        sb.Append(Registered ? 1 : 0);
+        sb.Append(GetDiscoveredStats());
+
+        return sb.ToString();
+    }
+
+    private string GetCharacterInformation()
+    {
+        var sb = new SeparatedStringBuilder(FieldSeparator);
 
         sb.Append(CharacterId);
-        sb.Append(FieldSeparator);
         sb.Append(CharacterName);
-        sb.Append(FieldSeparator);
         sb.Append(UserUuid);
-        sb.Append(FieldSeparator);
         sb.Append(Gender);
-        sb.Append(FieldSeparator);
         sb.Append(MaxLife);
-        sb.Append(FieldSeparator);
         sb.Append(CurrentLife);
-        sb.Append(FieldSeparator);
         sb.Append(GlobalLevel);
-        sb.Append(FieldSeparator);
         sb.Append(InteractionStatus);
-        sb.Append(FieldSeparator);
         sb.Append((int)Allegiance);
-        sb.Append(FieldSeparator);
         sb.Append(ForceTribeSelection ? 1 : 0);
-        sb.Append(FieldSeparator);
-
-        sb.Append(CharacterDataEndDelimiter);
-        sb.Append(Customization);
-        sb.Append(CharacterDataEndDelimiter);
-        sb.Append(Equipment);
-        sb.Append(CharacterDataEndDelimiter);
-        sb.Append(PetItemId);
-        sb.Append(CharacterDataEndDelimiter);
-        sb.Append(Registered ? "1" : "0");
-        sb.Append(CharacterDataEndDelimiter);
-        sb.Append(GetDiscoveredStats());
-        sb.Append(CharacterDataEndDelimiter);
 
         return sb.ToString();
     }
 
     private string GetDiscoveredStats()
     {
-        var discoveredStatsString = new StringBuilder();
+        var sb = new SeparatedStringBuilder(FieldSeparator);
 
         foreach (var item in DiscoveredStats)
-        {
-            discoveredStatsString.Append(item);
-            discoveredStatsString.Append(FieldSeparator);
-        }
+            sb.Append(item);
 
-        return discoveredStatsString.ToString();
+        return sb.ToString();
     }
 }

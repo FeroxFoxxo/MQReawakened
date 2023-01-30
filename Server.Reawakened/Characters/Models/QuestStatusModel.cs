@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
-using System.Globalization;
-using System.Text;
+using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -17,20 +16,16 @@ public class QuestStatusModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
-        sb.Append(Id.ToString(CultureInfo.InvariantCulture));
-        sb.Append(FieldSeparator);
+        var sb = new SeparatedStringBuilder(FieldSeparator);
+
+        sb.Append(Id);
         sb.Append((int)QuestStatus);
-        sb.Append(FieldSeparator);
 
         foreach (var objective in Objectives)
         {
             sb.Append(objective.Key);
-            sb.Append(FieldSeparator);
-            sb.Append(objective.Value.Completed ? "1" : "0");
-            sb.Append(FieldSeparator);
+            sb.Append(objective.Value.Completed ? 1 : 0);
             sb.Append(objective.Value.CountLeft);
-            sb.Append(FieldSeparator);
         }
 
         return sb.ToString();

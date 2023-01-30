@@ -18,6 +18,8 @@ public class LauncherConfig : IConfig
     public bool DisableVersions { get; set; }
     public string CacheLicense { get; set; }
 
+    public bool OverwriteGameConfig { get; set; }
+
     public LauncherConfig()
     {
         News = $"You expected there to be news here? It's {DateTime.Now.Year}!";
@@ -31,5 +33,7 @@ public class LauncherConfig : IConfig
         LogAssets = true;
         DisableVersions = true;
         CacheLicense = "UNKNOWN";
+
+        OverwriteGameConfig = true;
     }
 }

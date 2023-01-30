@@ -106,7 +106,9 @@ public class StartGame : IService
         if (!_appStart || !_dirSet)
             return;
 
-        WriteConfig();
+        if (_lConfig.OverwriteGameConfig)
+            WriteConfig();
+
         LaunchGame();
     }
 
@@ -119,6 +121,8 @@ public class StartGame : IService
     private void WriteConfig()
     {
         var config = Path.Join(_directory, "game", "LocalBuildConfig.xml");
+
+        _logger.LogInformation("Writing Build Config To {Place}", config);
 
         var newDoc = new XDocument();
         var root = new XElement("MQBuildConfg");
@@ -133,13 +137,15 @@ public class StartGame : IService
 
         newDoc.Add(root);
         newDoc.Save(config);
+
+        _logger.LogDebug("Written build configuration");
     }
 
     private Dictionary<string, string> GetConfigValues()
     {
         // Split to avoid search engine indexing, I don't
         // believe we're doing anything wrong, but I'd
-        // rather not chance it. Trademark ran out in 2018.
+        // rather not chance it. Trademark expired in 2018.
 
         const string header = "mon" + "key" + "que" + "st";
         const string nCsh = "nick" + "cash";

@@ -1,11 +1,11 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Characters.Helpers;
 using Server.Reawakened.Core.Models;
 using System.Globalization;
-using System.Text;
 
 namespace Server.Reawakened.Characters.Models;
 
-public class CharacterDetailedModel : CharacterLightModel
+public class CharacterDataModel : CharacterLightModel
 {
     public const char FieldJoiner = '&';
     public const char PortalJoiner = '|';
@@ -37,9 +37,9 @@ public class CharacterDetailedModel : CharacterLightModel
     public Dictionary<TribeType, TribeDataModel> TribesProgression { get; set; }
     public int ChatLevel { get; set; }
 
-    public CharacterDetailedModel() {}
+    public CharacterDataModel() {}
 
-    public CharacterDetailedModel(string serverData, ServerConfig config) : base(serverData, config)
+    public CharacterDataModel(string serverData, ServerConfig config) : base(serverData, config)
     {
         QuestLog = new List<QuestStatusModel>();
         CompletedQuests = new List<int>();
@@ -58,109 +58,91 @@ public class CharacterDetailedModel : CharacterLightModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(CharacterDataEndDelimiter);
 
+        sb.Append(GetCharacterDataInternal());
         sb.Append(Customization);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(Inventory);
-        sb.Append(CharacterDataEndDelimiter);
-        foreach (var qs in QuestLog)
-        {
-            sb.Append(qs);
-            sb.Append(FieldJoiner);
-        }
-        sb.Append(CharacterDataEndDelimiter);
-        foreach (var completedQuest in CompletedQuests)
-        {
-            sb.Append(completedQuest);
-            sb.Append(FieldJoiner);
-        }
-        sb.Append(CharacterDataEndDelimiter);
+        sb.Append(GetQuestStatusList());
+        sb.Append(GetCompletedQuestList());
         sb.Append(Hotbar);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(FriendList);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(BlockList);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(Equipment);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(PetItemId);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(PetAutonomous ? 1 : 0);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(GuestPassExpiry);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(ShouldExpireGuestPass ? 1 : 0);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(Registered ? 1 : 0);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(Resistances);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(RecipeList);
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(BuildTribesDiscoveredString());
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(BuildIdolCountString());
-        sb.Append(CharacterDataEndDelimiter);
         sb.Append(BuildStatsDiscoveredString());
-        sb.Append(CharacterDataEndDelimiter);
 
-        sb.Append(FieldSeparator);
+        return sb.ToString();
+    }
+
+    private string GetCompletedQuestList()
+    {
+        var sb = new SeparatedStringBuilder(FieldJoiner);
+
+        foreach (var completedQuest in CompletedQuests)
+            sb.Append(completedQuest);
+
+        return sb.ToString();
+    }
+
+    private string GetQuestStatusList()
+    {
+        var sb = new SeparatedStringBuilder(FieldJoiner);
+
+        foreach (var qs in QuestLog)
+            sb.Append(qs);
+
+        return sb.ToString();
+    }
+
+    private string GetCharacterDataInternal()
+    {
+        var sb = new SeparatedStringBuilder(FieldSeparator);
+        
         sb.Append(CharacterId);
-        sb.Append(FieldSeparator);
         sb.Append(CharacterName);
-        sb.Append(FieldSeparator);
         sb.Append(Gender);
-        sb.Append(FieldSeparator);
         sb.Append(Cash);
-        sb.Append(FieldSeparator);
         sb.Append(NCash);
-        sb.Append(FieldSeparator);
         sb.Append(ActiveQuestId);
-        sb.Append(FieldSeparator);
         sb.Append(MaxLife);
-        sb.Append(FieldSeparator);
-        sb.Append(FieldSeparator);
+        sb.Append(string.Empty);
         sb.Append(CurrentLife);
-        sb.Append(FieldSeparator);
         sb.Append(GlobalLevel);
-        sb.Append(FieldSeparator);
         sb.Append(InteractionStatus);
-        sb.Append(FieldSeparator);
         sb.Append(Reputation);
-        sb.Append(FieldSeparator);
         sb.Append(ReputationForCurrentLevel);
-        sb.Append(FieldSeparator);
         sb.Append(ReputationForNextLevel);
-        sb.Append(FieldSeparator);
         sb.Append(SpawnPositionX);
-        sb.Append(FieldSeparator);
         sb.Append(SpawnPositionY);
-        sb.Append(FieldSeparator);
         sb.Append(SpawnOnBackPlane ? 1 : 0);
-        sb.Append(FieldSeparator);
         sb.Append(BadgePoints);
-        sb.Append(FieldSeparator);
         sb.Append((int)Allegiance);
-        sb.Append(FieldSeparator);
         sb.Append(AbilityPower);
-        sb.Append(FieldSeparator);
         sb.Append(ChatLevel);
-        sb.Append(string.Join(FieldSeparator, BuildTribeDataString()));
+
+        foreach (var tribeData in BuildTribeDataString())
+            sb.Append(tribeData);
 
         return sb.ToString();
     }
 
     private string BuildTribesDiscoveredString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(FieldSeparator);
 
         foreach (var kvp in TribesDiscovered)
         {
             sb.Append((int)kvp.Key);
-            sb.Append(FieldSeparator);
-            sb.Append(kvp.Value ? "1" : "0");
-            sb.Append(FieldSeparator);
+            sb.Append(kvp.Value ? 1 : 0);
         }
 
         return sb.ToString();
@@ -168,14 +150,12 @@ public class CharacterDetailedModel : CharacterLightModel
 
     private string BuildIdolCountString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(FieldSeparator);
 
         foreach (var kvp in IdolCount)
         {
             sb.Append(kvp.Key);
-            sb.Append(FieldSeparator);
             sb.Append(kvp.Value);
-            sb.Append(FieldSeparator);
         }
 
         return sb.ToString();
@@ -183,28 +163,23 @@ public class CharacterDetailedModel : CharacterLightModel
 
     private string BuildStatsDiscoveredString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(FieldSeparator);
 
         foreach (var stat in DiscoveredStats)
-        {
             sb.Append(stat.ToString(CultureInfo.InvariantCulture));
-            sb.Append(FieldSeparator);
-        }
 
         return sb.ToString();
     }
 
-    private string[] BuildTribeDataString() =>
+    private IEnumerable<string> BuildTribeDataString() =>
         TribesProgression.Values.Select(tribeType => tribeType.ToString()).ToArray();
 
     public string GetPortalData()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(PortalJoiner);
 
         sb.Append(SpawnPositionX);
-        sb.Append(PortalJoiner);
         sb.Append(SpawnPositionY);
-        sb.Append(PortalJoiner);
         sb.Append(SpawnOnBackPlane ? 1 : 0);
 
         return sb.ToString();

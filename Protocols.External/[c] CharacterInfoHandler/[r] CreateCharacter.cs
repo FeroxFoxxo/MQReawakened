@@ -33,7 +33,7 @@ public class CreateCharacter : ExternalProtocol
         var middleName = message[6];
         var lastName = message[7];
         var gender = int.Parse(message[8]);
-        var characterData = new CharacterDetailedModel(message[9], ServerConfig);
+        var characterData = new CharacterDataModel(message[9], ServerConfig);
         var tribe = (TribeType)int.Parse(message[10]);
 
         var names = new [] { firstName, middleName, lastName };

@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -15,14 +15,13 @@ public class ItemModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(FieldSeparator);
+
         sb.Append(ItemId);
-        sb.Append(FieldSeparator);
         sb.Append(Count);
-        sb.Append(FieldSeparator);
         sb.Append(BindingCount);
-        sb.Append(FieldSeparator);
-        sb.Append(DelayUseExpiry.Equals(DateTime.MinValue) ? "0" : DelayUseExpiry.Ticks.ToString());
+        sb.Append(DelayUseExpiry.Equals(DateTime.MinValue) ? 0 : DelayUseExpiry.Ticks);
+        
         return sb.ToString();
     }
 }

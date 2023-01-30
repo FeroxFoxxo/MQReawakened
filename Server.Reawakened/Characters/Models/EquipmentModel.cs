@@ -1,5 +1,5 @@
 ﻿using A2m.Server;
-using System.Text;
+using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -43,16 +43,22 @@ public class EquipmentModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(PropertyDelimiter);
+
         foreach (var equipped in EquippedItems)
-        {
-            sb.Append((int)equipped.Key);
-            sb.Append(KeyValueDelimiter);
-            sb.Append(equipped.Value);
-            sb.Append(KeyValueDelimiter);
-            sb.Append(EquippedBinding.Contains(equipped.Key) ? 1 : 0);
-            sb.Append(PropertyDelimiter);
-        }
+            sb.Append(GetEquippedItemString(equipped));
+
+        return sb.ToString();
+    }
+
+    public string GetEquippedItemString(KeyValuePair<ItemSubCategory, int> equipped)
+    {
+        var sb = new SeparatedStringBuilder(KeyValueDelimiter);
+
+        sb.Append((int)equipped.Key);
+        sb.Append(equipped.Value);
+        sb.Append(EquippedBinding.Contains(equipped.Key) ? 1 : 0);
+
         return sb.ToString();
     }
 }

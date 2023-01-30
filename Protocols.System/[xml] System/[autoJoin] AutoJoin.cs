@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Models;
 using Server.Reawakened.Core.Network.Protocols;
 using Server.Reawakened.Levels;
-using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Players;
 using System.Xml;
@@ -66,9 +65,9 @@ public class AutoJoin : SystemProtocol
         };
 
         SendXt("cx", string.Join('|', properties.Select(x => $"{(int)x.Key}|{x.Value}")));
-
+        
         SendXt("cl", $"{user.UserInfo.LastCharacterSelected}{(user.UserInfo.Characters.Count > 0 ? "%" : "")}" +
-                     string.Join('%', user.UserInfo.Characters.Select(c => c.ToString()))
+                     string.Join('%', user.UserInfo.Characters.Select(c => c.Value.GetLightCharacterData()))
         );
     }
 }

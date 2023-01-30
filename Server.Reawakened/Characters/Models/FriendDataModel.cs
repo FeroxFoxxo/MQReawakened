@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -19,22 +19,15 @@ public class FriendDataModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(FieldSeparator);
 
         sb.Append(CharacterId);
-        sb.Append(FieldSeparator);
         sb.Append(CharacterName);
-        sb.Append(FieldSeparator);
-        sb.Append(IsOnline ? "1" : "0");
-        sb.Append(FieldSeparator); 
+        sb.Append(IsOnline ? 1 : 0);
         sb.Append(Level);
-        sb.Append(FieldSeparator);
         sb.Append(Location);
-        sb.Append(FieldSeparator);
-        sb.Append(IsBlocked ? "1" : "0");
-        sb.Append(FieldSeparator); 
-        sb.Append(IsMuted ? "1" : "0");
-        sb.Append(FieldSeparator); 
+        sb.Append(IsBlocked ? 1 : 0);
+        sb.Append(IsMuted ? 1 : 0);
         sb.Append(InteractionStatus);
 
         return sb.ToString();

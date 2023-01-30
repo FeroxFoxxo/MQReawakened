@@ -1,5 +1,5 @@
 ﻿using A2m.Server;
-using System.Text;
+using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -23,12 +23,10 @@ public class TribeDataModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(FieldSeparator);
 
         sb.Append((int)TribeType);
-        sb.Append(FieldSeparator);
         sb.Append(BadgePoints);
-        sb.Append(FieldSeparator);
         sb.Append(Unlocked ? 1 : 0);
 
         return sb.ToString();

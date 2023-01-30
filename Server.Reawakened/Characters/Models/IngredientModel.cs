@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Server.Reawakened.Characters.Helpers;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -13,13 +13,11 @@ public class IngredientModel
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        var sb = new SeparatedStringBuilder(FieldSeparator);
 
         sb.Append(ItemId);
-        sb.Append(FieldSeparator);
         sb.Append(Count);
 
         return sb.ToString();
     }
-
 }
