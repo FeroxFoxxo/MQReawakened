@@ -120,14 +120,26 @@ public class StartGame : IService
 
     private void WriteConfig()
     {
-        var config = Path.Join(_directory, "game", "LocalBuildConfig.xml");
+        var directory = Path.Join(_directory, "game");
+        var config = Path.Join(directory, "LocalBuildConfig.xml");
+
+        _logger.LogInformation("Looking For Header In {Directory} Ending In {Header}.", directory, _lConfig.HeaderFolderFilter);
+
+        var parentUri = new Uri(directory);
+        var headerFolders = Directory.GetDirectories(directory, "", SearchOption.AllDirectories)
+            .Select(d => Path.GetDirectoryName(d)?.ToLower()).Where(d => new Uri(new DirectoryInfo(d!).Parent?.FullName!) == parentUri).ToArray();
+        
+        var headerFolder = headerFolders.FirstOrDefault(a => a?.EndsWith(_lConfig.HeaderFolderFilter) == true);
+        headerFolder = Path.GetFileName(headerFolder?.Remove(headerFolder.Length - _lConfig.HeaderFolderFilter.Length));
+
+        _logger.LogDebug("Found header: {Header}", headerFolder);
 
         _logger.LogInformation("Writing Build Config To {Place}", config);
 
         var newDoc = new XDocument();
         var root = new XElement("MQBuildConfg");
 
-        foreach (var item in GetConfigValues())
+        foreach (var item in GetConfigValues(headerFolder))
         {
             var xmlItem = new XElement("item");
             xmlItem.Add(new XAttribute("name", item.Key));
@@ -141,23 +153,14 @@ public class StartGame : IService
         _logger.LogDebug("Written build configuration");
     }
 
-    private Dictionary<string, string> GetConfigValues()
+    private Dictionary<string, string> GetConfigValues(string header) => new()
     {
-        // Split to avoid search engine indexing, I don't
-        // believe we're doing anything wrong, but I'd
-        // rather not chance it. Trademark expired in 2018.
-
-        const string header = "mon" + "key" + "que" + "st";
-        const string nCsh = "nick" + "cash";
-
-        return new Dictionary<string, string>
-        {
             { $"{header}.unity.url.membership", $"{_lConfig.BaseUrl}/Membership" },
-            { $"{header}.unity.url.{nCsh}", $"{_lConfig.BaseUrl}/Cash" },
             { $"{header}.unity.cache.domain", $"{_lConfig.BaseUrl}/Cache" },
             { $"{header}.unity.cache.license", $"{_lConfig.CacheLicense}" },
-            { $"{header}.unity.cache.size", "0" },
-            { $"{header}.unity.cache.expiration", "0" },
+            { $"{header}.unity.cache.size", _lConfig.CacheSize.ToString() },
+            { $"{header}.unity.cache.expiration", _lConfig.CacheExpiration.ToString() },
+            { "game.cacheversion", _lConfig.CacheVersion.ToString() },
             { $"{header}.unity.url.crisp.host", $"{_lConfig.BaseUrl}/Chat/" },
             { "asset.log", _lConfig.LogAssets ? "true" : "false" },
             { "asset.disableversioning", _lConfig.DisableVersions ? "true" : "false" },
@@ -171,8 +174,6 @@ public class StartGame : IService
             { "analytics.baseurl", $"{_lConfig.BaseUrl}/Analytics/" },
             { "analytics.enabled", _lConfig.AnalyticsEnabled ? "true" : "false" },
             { "analytics.apikey", _lConfig.AnalyticsApiKey },
-            { "project.name", "MQReawakened" },
-            { "game.cacheversion", "1" }
+            { "project.name", _lConfig.ProjectName}
         };
-    }
 }

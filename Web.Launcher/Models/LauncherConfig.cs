@@ -12,11 +12,18 @@ public class LauncherConfig : IConfig
     public string AnalyticsApiKey { get; set; }
 
     public string BaseUrl { get; set; }
+    public string HeaderFolderFilter { get; set; }
+
+    public string ProjectName { get; set; }
 
     public bool CrashOnError { get; set; }
     public bool LogAssets { get; set; }
     public bool DisableVersions { get; set; }
     public string CacheLicense { get; set; }
+
+    public int CacheVersion { get; set; }
+    public int CacheSize { get; set; }
+    public int CacheExpiration { get; set; }
 
     public bool OverwriteGameConfig { get; set; }
 
@@ -35,5 +42,11 @@ public class LauncherConfig : IConfig
         CacheLicense = "UNKNOWN";
 
         OverwriteGameConfig = true;
+        ProjectName = "MQReawakened";
+        HeaderFolderFilter = "_data";
+
+        CacheVersion = 1;
+        CacheSize = 0;
+        CacheExpiration = 0;
     }
 }
