@@ -16,20 +16,13 @@ public class ServerConsole : IService
     private readonly Thread _consoleThread;
     private readonly ServerHandler _handler;
     private readonly ILogger<ServerConsole> _logger;
-    private readonly EventSink _sink;
     private readonly TimerThread _timerThread;
-    private string _command;
-
-    private bool _runningCommand;
-
-    public Timer PollTimer;
 
     public ServerConsole(TimerThread timerThread, ServerHandler handler, EventSink sink, ILogger<ServerConsole> logger,
         IHostApplicationLifetime appLifetime)
     {
         _timerThread = timerThread;
         _handler = handler;
-        _sink = sink;
         _logger = logger;
         _appLifetime = appLifetime;
 
@@ -41,16 +34,14 @@ public class ServerConsole : IService
         };
     }
 
-    public void Initialize()
-    {
-        _appLifetime.ApplicationStarted.Register(DisplayHelp);
-        _sink.ServerStarted += _ => RunConsoleListener();
-    }
+    public void Initialize() => _appLifetime.ApplicationStarted.Register(RunConsoleListener);
 
     public void AddCommand(ConsoleCommand consoleCommand) => _commands.Add(consoleCommand.Name, consoleCommand);
 
     public void RunConsoleListener()
     {
+        _logger.LogInformation("Setting Up Console Commands");
+
         AddCommand(new ConsoleCommand(
             "restart",
             "Sends a message to players informing them that the server is\n" +
@@ -70,9 +61,9 @@ public class ServerConsole : IService
             "Forces an exception to be thrown.",
             _ => _timerThread.DelayCall(() => throw new Exception("Forced Crash"))
         ));
-
-        PollTimer = _timerThread.DelayCall(ProcessCommand, TimeSpan.Zero, TimeSpan.FromMilliseconds(100), 0);
-
+        
+        DisplayHelp();
+        
         _consoleThread.Start();
     }
 
@@ -82,10 +73,7 @@ public class ServerConsole : IService
         {
             while (!_handler.IsClosing && !_handler.HasCrashed)
             {
-                if (_runningCommand)
-                    continue;
-
-                Interlocked.Exchange(ref _command, Console.ReadLine());
+                ProcessCommand(Console.ReadLine());
             }
         }
         catch (IOException)
@@ -94,34 +82,25 @@ public class ServerConsole : IService
         }
     }
 
-    private void ProcessCommand()
+    private void ProcessCommand(string input)
     {
         if (_handler.IsClosing || _handler.HasCrashed)
             return;
 
-        if (string.IsNullOrEmpty(_command))
-            return;
-
-        ProcessCommand(_command);
-        Interlocked.Exchange(ref _command, string.Empty);
-    }
-
-    private void ProcessCommand(string input)
-    {
-        var inputs = input.Trim().Split();
-        var name = inputs.FirstOrDefault();
-
-        if (name != null && _commands.TryGetValue(name, out var value))
+        if (!string.IsNullOrEmpty(input))
         {
-            _runningCommand = true;
-            value.CommandMethod(inputs);
-            _logger.LogInformation("Successfully Ran Command '{Name}'", name);
-            _runningCommand = false;
+            var inputs = input.Trim().Split();
+            var name = inputs.FirstOrDefault();
+
+            if (name != null && _commands.TryGetValue(name, out var value))
+            {
+                value.CommandMethod(inputs);
+                _logger.LogDebug("Successfully ran command '{Name}'", name);
+                return;
+            }
         }
-        else
-        {
-            DisplayHelp();
-        }
+
+        DisplayHelp();
     }
 
     private void DisplayHelp()
@@ -132,7 +111,7 @@ public class ServerConsole : IService
         {
             var padding = 8 - command.Name.Length;
             if (padding < 0) padding = 0;
-            _logger.LogDebug("{Name} - {Description}", command.Name.PadRight(padding), command.Description);
+            _logger.LogDebug("  {Name} - {Description}", command.Name.PadRight(padding), command.Description);
         }
     }
 }

@@ -58,7 +58,7 @@ public class CreateCharacter : ExternalProtocol
         else
         {
             player.UserInfo.Characters.Add(characterData.CharacterId, characterData);
-            player.CurrentCharacter = characterData.CharacterId;
+            player.SetCharacterSelected(characterData.CharacterId);
 
             var error = string.Empty;
             var levelName = string.Empty;

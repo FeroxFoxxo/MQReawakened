@@ -42,4 +42,10 @@ public class Player : INetStateData
 
     public CharacterDataModel GetCurrentCharacter()
         => UserInfo.Characters[CurrentCharacter];
+
+    public void SetCharacterSelected(int characterId)
+    {
+        CurrentCharacter = characterId;
+        UserInfo.LastCharacterSelected = GetCurrentCharacter().CharacterName;
+    }
 }
