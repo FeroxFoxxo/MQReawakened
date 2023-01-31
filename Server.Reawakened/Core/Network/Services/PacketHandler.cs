@@ -124,8 +124,8 @@ public class PacketHandler : IService
         var splitPacket = packet.Split('%');
         var actionType = splitPacket[3];
 
-        if (_protocolsXt.ContainsKey(actionType))
-            _protocolsXt[actionType](netState, splitPacket, _services);
+        if (_protocolsXt.TryGetValue(actionType, out var value))
+            value(netState, splitPacket, _services);
         else
             _networkLogger.TracePacketError(actionType, packet, netState);
 
@@ -138,8 +138,8 @@ public class PacketHandler : IService
         xmlDocument.LoadXml(packet);
         var actionType = xmlDocument.SelectSingleNode("/msg/body/@action")?.Value;
 
-        if (actionType != null && _protocolsSystem.ContainsKey(actionType))
-            _protocolsSystem[actionType](netState, xmlDocument, _services);
+        if (actionType != null && _protocolsSystem.TryGetValue(actionType, out var value))
+            value(netState, xmlDocument, _services);
         else
             _networkLogger.TracePacketError(actionType, packet, netState);
 

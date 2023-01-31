@@ -142,8 +142,8 @@ public class AccountHandler : DataHandler<Account>
         {
             if (IPAddress.TryParse(account.LoginIPs[0], out var ipAddress))
             {
-                if (IpTable.ContainsKey(ipAddress))
-                    IpTable[ipAddress]++;
+                if (IpTable.TryGetValue(ipAddress, out var value))
+                    value++;
                 else
                     IpTable[ipAddress] = 1;
             }

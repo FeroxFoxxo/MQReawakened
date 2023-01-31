@@ -36,8 +36,8 @@ public class LevelHandler : IService
 
     public Level GetLevelFromId(int levelId)
     {
-        if (_levels.ContainsKey(levelId))
-            return _levels[levelId];
+        if (_levels.TryGetValue(levelId, out var value))
+            return value;
 
         LevelInfo levelInfo;
 

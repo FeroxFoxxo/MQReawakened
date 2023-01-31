@@ -60,8 +60,8 @@ public static class CheckAccessRights
     public static void LogAccess(this Account account, IPAddress ipAddress, AccountHandler handler)
     {
         if (account.LoginIPs.Length == 0)
-            if (handler.IpTable.ContainsKey(ipAddress))
-                handler.IpTable[ipAddress]++;
+            if (handler.IpTable.TryGetValue(ipAddress, out var value))
+                value++;
             else
                 handler.IpTable[ipAddress] = 1;
 

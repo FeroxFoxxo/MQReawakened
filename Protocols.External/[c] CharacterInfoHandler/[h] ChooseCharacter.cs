@@ -1,9 +1,7 @@
-﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Network.Protocols;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Players;
-using Server.Reawakened.XMLs;
 
 namespace Protocols.External._c__CharacterInfoHandler;
 
@@ -12,7 +10,6 @@ public class ChooseCharacter : ExternalProtocol
     public ILogger<ChooseCharacter> Logger { get; set; }
 
     public LevelHandler LevelHandler { get; set; }
-    public WorldGraph WorldGraph { get; set; }
 
     public override string ProtocolName => "ch";
 
@@ -21,7 +18,6 @@ public class ChooseCharacter : ExternalProtocol
         var player = NetState.Get<Player>();
 
         var name = message[5];
-        
         var character = player.GetCharacterFromName(name);
 
         if (character == null)
@@ -31,6 +27,6 @@ public class ChooseCharacter : ExternalProtocol
             return;
         }
         
-        player.SendStartPlay(character.CharacterId, NetState, LevelHandler, WorldGraph);
+        player.SendStartPlay(character.CharacterId, NetState, LevelHandler);
     }
 }

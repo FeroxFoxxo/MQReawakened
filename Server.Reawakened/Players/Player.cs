@@ -57,36 +57,10 @@ public class Player : INetStateData
         UserInfo.LastCharacterSelected = GetCurrentCharacter().CharacterName;
     }
     
-    public void SendStartPlay(int characterId, NetState state, 
-        LevelHandler levelHandler, WorldGraph worldGraph)
+    public void SendStartPlay(int characterId, NetState state, LevelHandler levelHandler)
     {
-        const char levelDelimiter = '!';
-
         SetCharacterSelected(characterId);
-
-        var error = string.Empty;
-        var levelName = string.Empty;
-        var surroundingLevels = string.Empty;
-
-        Level level = null;
-
-        try
-        {
-            level = levelHandler.GetLevelFromId(UserInfo.CharacterLevel[characterId]);
-            levelName = level.LevelData.Name;
-            surroundingLevels = string.Join(levelDelimiter,
-                worldGraph.GetLevelWorldGraphNodes(level.LevelData.LevelId)
-                    .Where(x => x.ToLevelID != x.LevelID)
-                    .Select(x => worldGraph.GetInfoLevel(x.ToLevelID).Name)
-                    .Distinct()
-            );
-        }
-        catch (Exception e)
-        {
-            error = e.Message;
-        }
-
-        state.SendXt("lw", error, levelName, surroundingLevels);
+        var level = levelHandler.GetLevelFromId(UserInfo.CharacterLevel[characterId]);
         level?.SendCharacterInfoData(state, this, CharacterInfoType.Detailed);
     }
 

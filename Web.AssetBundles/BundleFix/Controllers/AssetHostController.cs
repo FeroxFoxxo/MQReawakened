@@ -58,9 +58,7 @@ public class AssetHostController : Controller
         var asset = _bundles.InternalAssets[name];
 
         var path = file.EndsWith(".xml")
-            ? _xmlFiles.XmlFiles.ContainsKey(name)
-                ? _xmlFiles.XmlFiles[name]
-                : throw new FileNotFoundException(
+            ? _xmlFiles.XmlFiles.TryGetValue(name, out var value) ? value : throw new FileNotFoundException(
                     $"Could not find: {name}. Did you mean:\n{string.Join('\n', _xmlFiles.XmlFiles.Keys)}")
             : WriteFixedBundle(asset);
 
@@ -71,20 +69,22 @@ public class AssetHostController : Controller
 
     private string WriteFixedBundle(InternalAssetInfo asset)
     {
+        var assetName = asset.Name.Trim();
+
         var baseDirectory =
             _config.DebugInfo
-                ? Path.Join(_config.BundleSaveDirectory, asset.Name)
+                ? Path.Join(_config.BundleSaveDirectory, assetName)
                 : _config.BundleSaveDirectory;
 
         Directory.CreateDirectory(baseDirectory);
 
-        var basePath = Path.Join(baseDirectory, asset.Name);
+        var basePath = Path.Join(baseDirectory, assetName);
 
         var bundlePath = $"{basePath}.{_config.SaveBundleExtension}";
 
         if (!FileIO.Exists(bundlePath) || _config.AlwaysRecreateBundle)
         {
-            _logger.LogInformation("Creating Bundle {Name} [{Type}]", asset.Name,
+            _logger.LogInformation("Creating Bundle {Name} [{Type}]", assetName,
                 _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST");
 
             using var stream = new MemoryStream();

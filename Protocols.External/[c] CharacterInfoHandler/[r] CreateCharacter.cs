@@ -1,15 +1,12 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Core.Models;
 using Server.Reawakened.Core.Network.Protocols;
-using Server.Reawakened.Levels;
-using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Services;
-using Server.Reawakened.XMLs;
 
 namespace Protocols.External._c__CharacterInfoHandler;
 
@@ -21,7 +18,6 @@ public class CreateCharacter : ExternalProtocol
     public NameGenSyllables NameGenSyllables { get; set; }
     public ServerConfig ServerConfig { get; set; }
     public LevelHandler LevelHandler { get; set; }
-    public WorldGraph WorldGraph { get; set; }
 
     public override void Run(string[] message)
     {
@@ -39,15 +35,6 @@ public class CreateCharacter : ExternalProtocol
 
         var names = new [] { firstName, middleName, lastName };
         
-        characterData.Allegiance = tribe;
-        characterData.CharacterName = string.Join(string.Empty, names);
-        characterData.UserUuid = player.UserInfo.UserId;
-
-        // DEFAULTS
-        characterData.ChatLevel = 2;
-        characterData.Registered = true;
-        characterData.GlobalLevel = 1;
-
         if (NameGenSyllables.IsNameReserved(names, UserInfoHandler))
         {
             var suggestion = NameGenSyllables.GetRandomName(gender, UserInfoHandler);
@@ -59,10 +46,18 @@ public class CreateCharacter : ExternalProtocol
         }
         else
         {
+            characterData.Allegiance = tribe;
+            characterData.CharacterName = string.Join(string.Empty, names);
+            characterData.UserUuid = player.UserInfo.UserId;
+
+            // DEFAULTS
+            characterData.ChatLevel = 2;
+            characterData.Registered = true;
+            characterData.GlobalLevel = 1;
+
             player.AddCharacter(characterData);
             player.SetLevel(ServerConfig.StartLevel, characterData.CharacterId);
-
-            player.SendStartPlay(characterData.CharacterId, NetState, LevelHandler, WorldGraph);
+            player.SendStartPlay(characterData.CharacterId, NetState, LevelHandler);
         }
     }
 }
