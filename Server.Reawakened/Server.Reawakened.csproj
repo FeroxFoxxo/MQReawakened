@@ -58,5 +58,9 @@
         <HintPath>Core\Dependencies\UnityEngine.dll</HintPath>
       </Reference>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Core\Dependencies\" />
+    </ItemGroup>
     
 </Project>

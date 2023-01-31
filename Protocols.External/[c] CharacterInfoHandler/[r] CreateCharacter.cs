@@ -16,9 +16,7 @@ namespace Protocols.External._c__CharacterInfoHandler;
 public class CreateCharacter : ExternalProtocol
 {
     public override string ProtocolName => "cr";
-
-    public const char LevelDelimiter = '!';
-
+    
     public UserInfoHandler UserInfoHandler { get; set; }
     public NameGenSyllables NameGenSyllables { get; set; }
     public ServerConfig ServerConfig { get; set; }
@@ -61,33 +59,10 @@ public class CreateCharacter : ExternalProtocol
         }
         else
         {
-            player.UserInfo.Characters.Add(characterData.CharacterId, characterData);
-            player.SetCharacterSelected(characterData.CharacterId);
+            player.AddCharacter(characterData);
+            player.SetLevel(ServerConfig.StartLevel, characterData.CharacterId);
 
-            var error = string.Empty;
-            var levelName = string.Empty;
-            var surroundingLevels = string.Empty;
-
-            Level level = null;
-
-            try
-            {
-                level = LevelHandler.GetLevelFromId(ServerConfig.StartLevel);
-                levelName = level.LevelData.Name;
-                surroundingLevels = string.Join(LevelDelimiter,
-                    WorldGraph.GetLevelWorldGraphNodes(level.LevelData.LevelId)
-                        .Where(x => x.ToLevelID != x.LevelID)
-                        .Select(x => WorldGraph.GetInfoLevel(x.ToLevelID).Name)
-                        .Distinct()
-                    );
-            }
-            catch (Exception e)
-            {
-                error = e.Message;
-            }
-
-            SendXt("lw", error, levelName, surroundingLevels);
-            level?.SendCharacterInfoData(NetState, player, CharacterInfoType.Detailed);
+            player.SendStartPlay(characterData.CharacterId, NetState, LevelHandler, WorldGraph);
         }
     }
 }

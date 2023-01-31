@@ -9,6 +9,7 @@ namespace Server.Reawakened.Players.Models;
 public class UserInfo : PersistantData
 {
     public Dictionary<int, CharacterDataModel> Characters { get; set; }
+    public Dictionary<int, int> CharacterLevel { get; set; }
     public Dictionary<int, SystemMailModel> Mail { get; set; }
 
     public string LastCharacterSelected { get; set; }
@@ -25,6 +26,9 @@ public class UserInfo : PersistantData
 
     public UserInfo()
     {
+        Characters = new Dictionary<int, CharacterDataModel>();
+        CharacterLevel = new Dictionary<int, int>();
+        Mail = new Dictionary<int, SystemMailModel>();
     }
 
     public UserInfo(int userId, Gender gender, DateTime dateOfBirth, string region, RandomKeyGenerator kGen)
@@ -42,6 +46,7 @@ public class UserInfo : PersistantData
         ChatLevel = 3;
         
         Characters = new Dictionary<int, CharacterDataModel>();
+        CharacterLevel = new Dictionary<int, int>();
         Mail = new Dictionary<int, SystemMailModel>();
     }
 }

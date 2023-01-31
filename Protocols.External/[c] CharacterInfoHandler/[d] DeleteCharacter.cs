@@ -11,15 +11,11 @@ public class DeleteCharacter : ExternalProtocol
     {
         var player = NetState.Get<Player>();
 
-        var characterName = message[5];
-
-        var character = player.UserInfo.Characters
-            .FirstOrDefault(c => c.Value.CharacterName == characterName);
-
-        var characterExists = character.Value != null;
+        var character = player.GetCharacterFromName(message[5]);
+        var characterExists = character != null;
 
         if (characterExists)
-            player.UserInfo.Characters.Remove(character.Key);
+            player.UserInfo.Characters.Remove(character.CharacterId);
          
         SendXt("cd", characterExists ? 0 : 1);
     }
