@@ -7,7 +7,6 @@ using Server.Reawakened.Levels;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Models;
-using System.Globalization;
 using System.Xml;
 
 namespace Protocols.System._xml__System;
@@ -21,8 +20,6 @@ public class AutoJoin : SystemProtocol
 
     public override void Run(XmlDocument xmlDoc)
     {
-        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
         var user = NetState.Get<Player>();
         var account = NetState.Get<Account>();
 

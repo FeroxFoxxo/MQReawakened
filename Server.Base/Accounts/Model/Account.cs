@@ -39,7 +39,7 @@ public class Account : PersistantData, INetStateData
         Username = username;
         Password = hasher.GetPassword(username, password);
         AccessLevel = AccessLevel.Player;
-        GameMode = GameMode.Spectator;
+        GameMode = GameMode.Default;
         Created = DateTime.UtcNow;
         LastLogin = DateTime.UtcNow;
         IpRestrictions = Array.Empty<string>();

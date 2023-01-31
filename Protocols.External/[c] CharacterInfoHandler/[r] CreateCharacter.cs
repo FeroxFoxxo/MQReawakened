@@ -27,8 +27,6 @@ public class CreateCharacter : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
         var firstName = message[5];
         var middleName = message[6];
         var lastName = message[7];

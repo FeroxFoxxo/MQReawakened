@@ -8,6 +8,7 @@ using Server.Base.Network.Events;
 using Server.Base.Network.Helpers;
 using Server.Base.Network.Services;
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -111,16 +112,16 @@ public class NetState : IDisposable
         _sink.InvokeNetStateRemoved(new NetStateRemovedEventArgs(this));
 
         Socket = null;
-
         _onReceiveCallback = null;
         _onSendCallback = null;
-
         Throttler = null;
 
         Running = false;
 
         lock (_handler.Disposed)
             _handler.Disposed.Enqueue(this);
+
+        GC.SuppressFinalize(this);
     }
 
     private void WriteServer(string text) =>
@@ -161,6 +162,10 @@ public class NetState : IDisposable
         {
             lock (AsyncLock)
             {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                _logger.LogTrace("Beginning receiving information for {NetState}. Using thread culture {Culture}",
+                    this, Thread.CurrentThread.CurrentCulture.NativeName);
+
                 if ((AsyncState & (AsyncStates.Pending | AsyncStates.Paused)) == 0)
                     BeginReceive();
             }
@@ -175,7 +180,6 @@ public class NetState : IDisposable
     public void BeginReceive()
     {
         AsyncState |= AsyncStates.Pending;
-
         Socket.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, _onReceiveCallback, Socket);
     }
 
@@ -246,7 +250,7 @@ public class NetState : IDisposable
 
                 lock (AsyncLock)
                     Array.Copy(Buffer, buffered, byteCount);
-
+                
                 packet = Encoding.UTF8.GetString(buffered);
 
                 NetStateHandler.RunProtocol protocol = null;
@@ -268,12 +272,11 @@ public class NetState : IDisposable
                     if (!_config.IgnoreProtocolType.Contains(protocolType))
                     {
                         WriteClient(packet);
-                        lock (AsyncLock)
-                        {
-                            foreach (var log in _currentLogs.Reverse())
-                                WriteServer(log);
-                            _currentLogs.Clear();
-                        }
+
+                        foreach (var log in _currentLogs.Reverse())
+                            WriteServer(log);
+
+                        _currentLogs.Clear();
                     }
 
                 lock (AsyncLock)
