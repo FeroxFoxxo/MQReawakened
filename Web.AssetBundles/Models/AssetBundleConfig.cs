@@ -35,6 +35,7 @@ public class AssetBundleConfig : IConfig
     public bool StartLauncherOnReplace { get; set; }
 
     public string[] ForceLocalAsset { get; set; }
+    public string[] AssetModifiers { get; set; }
 
     public AssetBundleConfig()
     {
@@ -55,6 +56,7 @@ public class AssetBundleConfig : IConfig
         CacheInfoFile = string.Empty;
         Message = "Loading Asset Bundles";
         DefaultWebPlayerCacheLocation = "AppData/LocalLow/Unity/WebPlayer/Cache";
+        AssetModifiers = new[] {"_nomesh"};
 
         PublishConfigKey = "unity.game.publishconfig";
         PublishConfigVgmtKey = "unity.game.vgmt.publishconfig";

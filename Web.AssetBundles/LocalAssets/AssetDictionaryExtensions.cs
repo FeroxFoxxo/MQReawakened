@@ -1,12 +1,37 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using Server.Base.Core.Helpers.Internal;
 using Web.AssetBundles.Models;
 using Web.AssetBundles.Services;
 
 namespace Web.AssetBundles.LocalAssets;
 
-public static class AssetExtensionsLocal
+public static class AssetDictionaryExtensions
 {
+    public static void AddModifiedAssets(this Dictionary<string, InternalAssetInfo> assets, AssetBundleConfig config)
+    {
+        var assetsToAdd = new Dictionary<string, InternalAssetInfo>();
+
+        foreach (var modifier in config.AssetModifiers)
+        {
+            foreach (var storedAsset in assets.Keys.Where(a => a.EndsWith(modifier)))
+            {
+                var assetName = storedAsset[..^modifier.Length];
+
+                if (assets.ContainsKey(assetName))
+                    continue;
+
+                var asset = assets[storedAsset].DeepCopy();
+                asset.Name = assetName;
+
+                assetsToAdd.Add(assetName, asset);
+            }
+        }
+
+        foreach (var asset in assetsToAdd)
+            assets.Add(asset.Key, asset.Value);
+    }
+    
     public static void AddLocalXmlFiles(this Dictionary<string, InternalAssetInfo> assets,
         ILogger<BuildAssetList> logger, AssetBundleConfig config)
     {

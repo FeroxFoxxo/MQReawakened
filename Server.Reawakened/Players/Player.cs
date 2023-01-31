@@ -2,13 +2,11 @@
 using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
-using Server.Reawakened.Core.Network.Extensions;
 using Server.Reawakened.Levels;
 using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs;
 
 namespace Server.Reawakened.Players;
 

@@ -42,8 +42,9 @@ public class ReplaceCaches : IService
             if (_logger.Ask("Flushing the cache on start is enabled, would you like to disable this?"))
                 _config.FlushCacheOnStart = false;
 
-        var assetDictionary = _buildAssetList.InternalAssets
-            .ToDictionary(a => Path.GetFileName(a.Value.Path), a => a.Value);
+        var assetDictionary = _buildAssetList.InternalAssets.Values
+            .Select(a => new KeyValuePair<string, InternalAssetInfo>(Path.GetFileName(a.Path), a))
+            .DistinctBy(a => a.Key).ToDictionary(a => a.Key, a => a.Value);
 
         var cachedFiles = Directory.GetFiles(Path.GetDirectoryName(_config.WebPlayerInfoFile)!, "*.*",
                 SearchOption.AllDirectories).Select(c => new KeyValuePair<string, string>(Path.GetFileName(c), c))
