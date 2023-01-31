@@ -38,7 +38,7 @@ public class CharacterDataModel : CharacterLightModel
 
     public CharacterDataModel() {}
 
-    public CharacterDataModel(string serverData, ServerConfig config) : base(serverData, config)
+    public CharacterDataModel(string serverData, int id, ServerConfig config) : base(serverData)
     {
         QuestLog = new List<QuestStatusModel>();
         CompletedQuests = new List<int>();
@@ -53,6 +53,12 @@ public class CharacterDataModel : CharacterLightModel
         BlockList = new BlockListModel();
         Resistances = new CharacterResistancesModel();
         RecipeList = new RecipeListModel();
+
+        CharacterId = id;
+        Customization.CharacterId = id;
+
+        if (CharacterId > config.MaxCharacterCount || CharacterId < 0)
+            throw new InvalidDataException();
     }
 
     public override string ToString()

@@ -27,17 +27,20 @@ public class CreateCharacter : ExternalProtocol
 
     public override void Run(string[] message)
     {
+        var player = NetState.Get<Player>();
+
+        var lowestCharacterAvailable = Enumerable.Range(1, ServerConfig.MaxCharacterCount)
+            .Except(player.UserInfo.Characters.Keys).Min();
+
         var firstName = message[5];
         var middleName = message[6];
         var lastName = message[7];
         var gender = int.Parse(message[8]);
-        var characterData = new CharacterDataModel(message[9], ServerConfig);
+        var characterData = new CharacterDataModel(message[9], lowestCharacterAvailable, ServerConfig);
         var tribe = (TribeType)int.Parse(message[10]);
 
         var names = new [] { firstName, middleName, lastName };
-
-        var player = NetState.Get<Player>();
-
+        
         characterData.Allegiance = tribe;
         characterData.CharacterName = string.Join(string.Empty, names);
         characterData.UserUuid = player.UserInfo.UserId;

@@ -27,17 +27,13 @@ public class CharacterLightModel
 
     public CharacterLightModel() {}
 
-    public CharacterLightModel(string serverData, ServerConfig config)
+    public CharacterLightModel(string serverData)
     {
         var array = serverData.Split(CharacterDataEndDelimiter);
 
         Gender = int.Parse(array[0]);
         Customization = new CharacterCustomDataModel(array[1]);
-
-        if (Customization.CharacterId > config.MaxCharacterCount || Customization.CharacterId < 0)
-            throw new InvalidDataException();
-
-        CharacterId = Customization.CharacterId;
+        
         Equipment = new EquipmentModel();
         DiscoveredStats = new HashSet<int>();
     }
