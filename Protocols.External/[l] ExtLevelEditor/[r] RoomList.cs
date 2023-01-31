@@ -6,5 +6,5 @@ public class RoomList : ExternalProtocol
 {
     public override string ProtocolName => "lr";
 
-    public override void Run(string[] message) => SendXml("rmList", "");
+    public override void Run(string[] message) => SendXml("rmList", string.Empty);
 }

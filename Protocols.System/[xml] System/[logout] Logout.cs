@@ -7,5 +7,5 @@ public class Logout : SystemProtocol
 {
     public override string ProtocolName => "logout";
 
-    public override void Run(XmlDocument xmlDoc) => SendXml("logout", "");
+    public override void Run(XmlDocument xmlDoc) => SendXml("logout", string.Empty);
 }

@@ -187,7 +187,7 @@ public class AccountHandler : DataHandler<Account>
             Logger.LogWarning(
                 "Login: {NetState}: Account '{Username}' not created, ip already has {Accounts} account{Plural}.",
                 netState, username, _internalServerConfig.MaxAccountsPerIp,
-                _internalServerConfig.MaxAccountsPerIp == 1 ? "" : "s");
+                _internalServerConfig.MaxAccountsPerIp == 1 ? string.Empty : "s");
             return null;
         }
 

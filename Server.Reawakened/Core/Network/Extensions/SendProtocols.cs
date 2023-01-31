@@ -10,6 +10,9 @@ public static class SendProtocols
             $"<msg t=\"sys\"><body action='{actionType}' r='{state.GetLevelId()}'>{message}</body></msg>", actionType
         );
 
+    public static void SendXt(this NetState state, string actionType, params object[] messages) =>
+        state.SendXt(actionType, messages.Select(x => x.ToString()).ToArray());
+
     public static void SendXt(this NetState state, string actionType, params string[] messages) =>
         state.Send(
             $"%xt%{actionType}%{state.GetLevelId()}%{string.Join('%', messages)}%", actionType

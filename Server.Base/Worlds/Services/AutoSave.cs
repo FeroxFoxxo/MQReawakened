@@ -166,13 +166,13 @@ public class AutoSave : IService
             {
                 case > 0 when seconds > 0:
                     _world.Broadcast(
-                        $"The world will save in {minutes} minute{(minutes != 1 ? "s" : "")} and {seconds} second{(seconds != 1 ? "s" : "")}.");
+                        $"The world will save in {minutes} minute{(minutes != 1 ? "s" : string.Empty)} and {seconds} second{(seconds != 1 ? "s" : string.Empty)}.");
                     break;
                 case > 0:
-                    _world.Broadcast($"The world will save in {minutes} minute{(minutes != 1 ? "s" : "")}.");
+                    _world.Broadcast($"The world will save in {minutes} minute{(minutes != 1 ? "s" : string.Empty)}.");
                     break;
                 default:
-                    _world.Broadcast($"The world will save in {seconds} second{(seconds != 1 ? "s" : "")}.");
+                    _world.Broadcast($"The world will save in {seconds} second{(seconds != 1 ? "s" : string.Empty)}.");
                     break;
             }
 

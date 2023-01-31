@@ -14,13 +14,13 @@ public class Account : PersistantData, INetStateData
 
     public GameMode GameMode { get; set; }
 
-    public string Created { get; set; }
+    public DateTime Created { get; set; }
 
     public int Flags { get; set; }
 
     public string[] IpRestrictions { get; set; }
 
-    public string LastLogin { get; set; }
+    public DateTime LastLogin { get; set; }
 
     public string[] LoginIPs { get; set; }
 
@@ -40,8 +40,8 @@ public class Account : PersistantData, INetStateData
         Password = hasher.GetPassword(username, password);
         AccessLevel = AccessLevel.Player;
         GameMode = GameMode.Spectator;
-        Created = DateTime.UtcNow.ToString(CultureInfo.CurrentCulture);
-        LastLogin = DateTime.UtcNow.ToString(CultureInfo.CurrentCulture);
+        Created = DateTime.UtcNow;
+        LastLogin = DateTime.UtcNow;
         IpRestrictions = Array.Empty<string>();
         LoginIPs = Array.Empty<string>();
         Tags = new List<AccountTag>();

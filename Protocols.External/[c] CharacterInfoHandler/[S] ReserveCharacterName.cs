@@ -1,4 +1,6 @@
-﻿using Server.Reawakened.Core.Network.Protocols;
+﻿using Server.Reawakened.Characters.Helpers;
+using Server.Reawakened.Core.Network.Protocols;
+using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Services;
 
@@ -19,21 +21,20 @@ public class ReserveCharacterName : ExternalProtocol
         var name = new[] { message[6], message[7], message[8] };
 
         if (NameGenSyllables.IsNameReserved(name, UserInfoHandler))
-        {
-            var names = new List<string[]>();
-
-            for (var i = 0; i < Count; i++)
-                names.Add(NameGenSyllables.GetRandomName(gender, UserInfoHandler));
-
-            SendXt("cT", "0", string.Join('%', names.Select(s => string.Join(',', s))));
-        }
+            SendXt("cT", 0, GetNames(gender));
         else if (!NameGenSyllables.IsPossible(gender, name))
-        {
-            SendXt("cT", "1");
-        }
+            SendXt("cT", 1);
         else
-        {
-            SendXt("cS", "");
-        }
+            SendXt("cS", string.Empty);
+    }
+
+    private string GetNames(int gender)
+    {
+        var sb = new SeparatedStringBuilder('%');
+
+        for (var i = 0; i < Count; i++)
+            sb.Append(NameGenSyllables.GetRandomName(gender, UserInfoHandler));
+
+        return sb.ToString();
     }
 }

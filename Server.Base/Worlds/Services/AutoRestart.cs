@@ -70,7 +70,7 @@ public class AutoRestart : Timer, IService
         if (_delayWarning > TimeSpan.Zero && !DoneWarning && RestartTime - _delayWarning < DateTime.Now)
         {
             _world.Broadcast($"The server will be going down in about {_delayWarning.TotalMinutes} " +
-                             $"minute{(Convert.ToInt32(_delayWarning.TotalMinutes) == 1 ? "" : "s")}.");
+                             $"minute{(Convert.ToInt32(_delayWarning.TotalMinutes) == 1 ? string.Empty : "s")}.");
 
             DoneWarning = true;
             return;

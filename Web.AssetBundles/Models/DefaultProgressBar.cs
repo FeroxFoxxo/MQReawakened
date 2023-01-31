@@ -29,7 +29,7 @@ public class DefaultProgressBar : IDisposable
         var topBarOptions = bottomBarOptions.DeepCopy();
         topBarOptions.DisableBottomPercentage = true;
 
-        _topBar = new ProgressBar(count, "", topBarOptions);
+        _topBar = new ProgressBar(count, string.Empty, topBarOptions);
         _bottomBar = _topBar.Spawn(count, message, bottomBarOptions);
     }
 

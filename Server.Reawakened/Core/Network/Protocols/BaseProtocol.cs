@@ -14,6 +14,9 @@ public abstract class BaseProtocol
     public void SendXml(string actionType, string message) =>
         NetState.SendXml(actionType, message);
 
+    public void SendXt(string actionType, params object[] messages) =>
+        NetState.SendXt(actionType, messages);
+
     public void SendXt(string actionType, params string[] messages) =>
         NetState.SendXt(actionType, messages);
 }

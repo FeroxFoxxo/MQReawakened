@@ -126,7 +126,7 @@ public class StartGame : IService
         _logger.LogInformation("Looking For Header In {Directory} Ending In {Header}.", directory, _lConfig.HeaderFolderFilter);
 
         var parentUri = new Uri(directory);
-        var headerFolders = Directory.GetDirectories(directory, "", SearchOption.AllDirectories)
+        var headerFolders = Directory.GetDirectories(directory, string.Empty, SearchOption.AllDirectories)
             .Select(d => Path.GetDirectoryName(d)?.ToLower()).Where(d => new Uri(new DirectoryInfo(d!).Parent?.FullName!) == parentUri).ToArray();
         
         var headerFolder = headerFolders.FirstOrDefault(a => a?.EndsWith(_lConfig.HeaderFolderFilter) == true);

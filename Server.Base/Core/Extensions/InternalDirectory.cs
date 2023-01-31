@@ -30,7 +30,7 @@ public static class InternalDirectory
         }
         catch
         {
-            _baseDirectory = "";
+            _baseDirectory = string.Empty;
         }
 
         return _baseDirectory;

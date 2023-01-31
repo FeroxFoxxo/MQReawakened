@@ -23,7 +23,7 @@ public class ChatHandler : IService
     public void Initialize() => _eventSink.WorldLoad += GenerateChat;
 
     private void GenerateChat() => EncryptedWordList =
-        Encrypt(string.Join("", _chatConfig.Words.Select(x => $"{x}{_chatConfig.TerminationCharacter}")));
+        Encrypt(string.Join(string.Empty, _chatConfig.Words.Select(x => $"{x}{_chatConfig.TerminationCharacter}")));
 
     public byte[] Encrypt(string data)
     {

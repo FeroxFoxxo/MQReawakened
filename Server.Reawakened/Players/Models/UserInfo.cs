@@ -2,7 +2,6 @@
 using Server.Reawakened.Characters.Models;
 using Server.Reawakened.Core.Network.Services;
 using Server.Reawakened.Players.Enums;
-using System.Globalization;
 
 namespace Server.Reawakened.Players.Models;
 
@@ -16,7 +15,7 @@ public class UserInfo : PersistantData
 
     public Gender Gender { get; set; }
 
-    public string DateOfBirth { get; set; }
+    public DateTime DateOfBirth { get; set; }
 
     public bool Member { get; set; }
 
@@ -37,8 +36,8 @@ public class UserInfo : PersistantData
         Region = region;
         UserId = userId;
         Gender = gender;
-        DateOfBirth = dateOfBirth.ToString(CultureInfo.CurrentCulture);
-        LastCharacterSelected = "";
+        DateOfBirth = dateOfBirth;
+        LastCharacterSelected = string.Empty;
         Characters = new Dictionary<int, CharacterDataModel>();
         SignUpExperience = "unknown";
         Member = true;

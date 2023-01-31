@@ -52,7 +52,7 @@ public abstract class DataHandler<T> : IService where T : PersistantData
                 var count = Data.Count;
 
                 Logger.LogDebug("Loaded {Count} {Name}{Plural} to memory from {Directory}", count,
-                    typeof(T).Name.ToLower(), count != 1 ? "s" : "", filePath);
+                    typeof(T).Name.ToLower(), count != 1 ? "s" : string.Empty, filePath);
 
                 streamReader.Close();
             }

@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Core.Network.Protocols;
+﻿using Server.Reawakened.Characters.Helpers;
+using Server.Reawakened.Core.Network.Protocols;
 using Web.AssetBundles.Models;
 
 namespace Protocols.External._z__ZoneControlHandler;
@@ -10,7 +11,22 @@ public class PublishInformation : ExternalProtocol
     public AssetBundleConfig Config { get; set; }
 
     public override void Run(string[] message) =>
-        SendXt("zp", string.Join(',',
-            Config.PublishConfigs.Select(x => $"{x.Key}={x.Value}")
-        ));
+        SendXt("zp", GetPublishConfigs(Config.PublishConfigs));
+
+    private static string GetPublishConfigs(Dictionary<string, string> configs)
+    {
+        var sb = new SeparatedStringBuilder(',');
+
+        foreach (var config in configs)
+        {
+            var sb2 = new SeparatedStringBuilder('=');
+
+            sb2.Append(config.Key);
+            sb2.Append(config.Value);
+
+            sb.Append(sb2.ToString());
+        }
+
+        return sb.ToString();
+    }
 }

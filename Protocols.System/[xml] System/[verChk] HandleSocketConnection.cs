@@ -15,9 +15,9 @@ public class HandleSocketConnection : SystemProtocol
         var version = xmlDoc.SelectSingleNode("/msg/body/ver/@v")?.Value;
 
         SendXml(
-            version == SmartFoxClient.GetVersion().Replace(".", "")
+            version == SmartFoxClient.GetVersion().Replace(".", string.Empty)
                 ? "apiOK"
                 : "apiKO",
-            "");
+            string.Empty);
     }
 }

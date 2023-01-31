@@ -111,7 +111,7 @@ public class CrashGuard : IService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unable to get root.");
-            return "";
+            return string.Empty;
         }
     }
 

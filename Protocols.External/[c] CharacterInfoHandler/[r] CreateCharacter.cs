@@ -51,11 +51,11 @@ public class CreateCharacter : ExternalProtocol
         if (NameGenSyllables.IsNameReserved(names, UserInfoHandler))
         {
             var suggestion = NameGenSyllables.GetRandomName(gender, UserInfoHandler);
-            SendXt("cr", "0", suggestion[0], suggestion[1], suggestion[2]);
+            SendXt("cr", 0, suggestion[0], suggestion[1], suggestion[2]);
         }
         else if (player.UserInfo.Characters.Count > ServerConfig.MaxCharacterCount)
         {
-            SendXt("cr", "1");
+            SendXt("cr", 1);
         }
         else
         {
