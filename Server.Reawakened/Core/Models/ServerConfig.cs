@@ -7,18 +7,23 @@ public class ServerConfig : IConfig
 {
     public int RandomKeyLength { get; set; }
     public int PlayerCap { get; set; }
-    public string[] DefaultProtocolTypeIgnore { get; set; }
+    public int ReservedNameCount { get; set; }
     public int MaxCharacterCount { get; set; }
     public int StartLevel { get; set; }
+
+    public string[] DefaultProtocolTypeIgnore { get; set; }
+
     public Dictionary<DebugHandler.DebugVariables, bool> DefaultDebugVariables { get; set; }
 
     public ServerConfig()
     {
         RandomKeyLength = 24;
         PlayerCap = 20;
-        DefaultProtocolTypeIgnore = new[] { "ss", "Pp" };
+        ReservedNameCount = 4;
         MaxCharacterCount = 3;
         StartLevel = 47;
+
+        DefaultProtocolTypeIgnore = new[] { "ss", "Pp" };
 
         DefaultDebugVariables = new Dictionary<DebugHandler.DebugVariables, bool>()
         {

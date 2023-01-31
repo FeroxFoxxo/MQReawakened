@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Characters.Helpers;
 using Server.Reawakened.Core.Models;
-using System.Globalization;
 
 namespace Server.Reawakened.Characters.Models;
 
@@ -166,7 +165,7 @@ public class CharacterDataModel : CharacterLightModel
         var sb = new SeparatedStringBuilder(FieldSeparator);
 
         foreach (var stat in DiscoveredStats)
-            sb.Append(stat.ToString(CultureInfo.InvariantCulture));
+            sb.Append(stat);
 
         return sb.ToString();
     }

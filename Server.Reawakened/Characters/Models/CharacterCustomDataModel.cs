@@ -56,7 +56,7 @@ public class CharacterCustomDataModel
     {
         var sb = new SeparatedStringBuilder(KeyValueDelimiter);
 
-        sb.Append(property.Key);
+        sb.Append((int) property.Key);
         sb.Append(property.Value);
         sb.Append(Colors[property.Key]);
 

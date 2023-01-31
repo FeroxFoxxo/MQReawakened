@@ -39,7 +39,7 @@ public class CreateCharacter : ExternalProtocol
         var player = NetState.Get<Player>();
 
         characterData.Allegiance = tribe;
-        characterData.CharacterName = string.Join(' ', names);
+        characterData.CharacterName = string.Join(string.Empty, names);
         characterData.UserUuid = player.UserInfo.UserId;
 
         // DEFAULTS

@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Characters.Helpers;
+using Server.Reawakened.Core.Models;
 using Server.Reawakened.Core.Network.Protocols;
-using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Services;
 
@@ -8,12 +8,11 @@ namespace Protocols.External._c__CharacterInfoHandler;
 
 public class ReserveCharacterName : ExternalProtocol
 {
-    public const int Count = 4;
-
     public override string ProtocolName => "cS";
 
     public NameGenSyllables NameGenSyllables { get; set; }
     public UserInfoHandler UserInfoHandler { get; set; }
+    public ServerConfig ServerConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -32,7 +31,7 @@ public class ReserveCharacterName : ExternalProtocol
     {
         var sb = new SeparatedStringBuilder('%');
 
-        for (var i = 0; i < Count; i++)
+        for (var i = 0; i < ServerConfig.ReservedNameCount; i++)
             sb.Append(NameGenSyllables.GetRandomName(gender, UserInfoHandler));
 
         return sb.ToString();

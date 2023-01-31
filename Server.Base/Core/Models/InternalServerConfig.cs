@@ -39,7 +39,7 @@ public class InternalServerConfig : IConfig
         BreakCount = 20000;
         Delays = new double[] { 0, 10, 25, 50, 250, 1000, 5000, 60000 };
         GlobalUpdateRange = 18;
-        BufferSize = 65535;
+        BufferSize = 4096;
         BackupCapacity = 64;
         RestartWarningSeconds = 60;
         RestartDelaySeconds = 10;
