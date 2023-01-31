@@ -4,9 +4,8 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Helpers;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
-using Server.Reawakened.Players.Services;
 
-namespace Server.Reawakened.Characters.Services;
+namespace Server.Reawakened.Players.Services;
 
 public class NameChange : IService
 {
@@ -59,10 +58,8 @@ public class NameChange : IService
         _logger.LogInformation("Please select the ID for the character you want to change the name for:");
 
         foreach (var possibleCharacter in user.Characters)
-        {
             _logger.LogInformation("    {CharacterId}: {CharacterName}",
                 possibleCharacter.Key, possibleCharacter.Value.CharacterName);
-        }
 
         var id = Console.ReadLine();
 

@@ -2,9 +2,9 @@
 using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
-using Server.Reawakened.Characters.Models;
 using Server.Reawakened.Levels;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Models.Character;
 
 namespace Server.Reawakened.Players;
 

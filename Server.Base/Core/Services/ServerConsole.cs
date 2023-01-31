@@ -5,7 +5,6 @@ using Server.Base.Core.Helpers;
 using Server.Base.Core.Models;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Timer = Server.Base.Timers.Timer;
 
 namespace Server.Base.Core.Services;
 

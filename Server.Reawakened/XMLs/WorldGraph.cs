@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.XMLs.Abstractions;
+﻿using Server.Reawakened.Core.Abstractions;
 using System.Reflection;
 using WorldGraphDefines;
 

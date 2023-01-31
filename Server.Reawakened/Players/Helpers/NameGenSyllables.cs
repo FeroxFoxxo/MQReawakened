@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Players.Services;
+﻿using Server.Reawakened.Players.Enums;
+using Server.Reawakened.Players.Services;
 using Server.Reawakened.XMLs;
 
 namespace Server.Reawakened.Players.Helpers;
@@ -24,12 +25,12 @@ public class NameGenSyllables
             .SelectMany(cl => cl).Any(c => c.Value.CharacterName == name);
     }
 
-    public bool IsPossible(int gender, string[] names) =>
+    public bool IsPossible(Gender gender, string[] names) =>
         _nameGen.Syllables[gender][0].Contains(names[0]) &&
         _nameGen.Syllables[gender][1].Contains(names[1]) &&
         _nameGen.Syllables[gender][2].Contains(names[2]);
 
-    public string[] GetRandomName(int gender, UserInfoHandler handler)
+    public string[] GetRandomName(Gender gender, UserInfoHandler handler)
     {
         while (true)
         {

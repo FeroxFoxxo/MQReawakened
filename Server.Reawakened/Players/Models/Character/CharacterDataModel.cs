@@ -1,8 +1,8 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Characters.Helpers;
 using Server.Reawakened.Core.Models;
+using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Characters.Models;
+namespace Server.Reawakened.Players.Models.Character;
 
 public class CharacterDataModel : CharacterLightModel
 {
@@ -34,7 +34,7 @@ public class CharacterDataModel : CharacterLightModel
     public int AbilityPower { get; set; }
     public int ChatLevel { get; set; }
 
-    public CharacterDataModel() {}
+    public CharacterDataModel() { }
 
     public CharacterDataModel(string serverData, int id, ServerConfig config) : base(serverData)
     {
@@ -109,7 +109,7 @@ public class CharacterDataModel : CharacterLightModel
     private string GetCharacterDataInternal()
     {
         var sb = new SeparatedStringBuilder('<');
-        
+
         sb.Append(CharacterId);
         sb.Append(CharacterName);
         sb.Append(Gender);

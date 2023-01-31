@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Characters.Helpers;
+﻿using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Characters.Models;
+namespace Server.Reawakened.Players.Models.Character;
 
 public class CharacterResistancesModel
 {
@@ -9,7 +9,7 @@ public class CharacterResistancesModel
     public int InternalDamageResistPointsIce { get; set; }
     public int InternalDamageResistPointsPoison { get; set; }
     public int InternalDamageResistPointsLightning { get; set; }
-    
+
     public int ExternalDamageResistPointsStandard { get; set; }
     public int ExternalDamageResistPointsFire { get; set; }
     public int ExternalDamageResistPointsIce { get; set; }

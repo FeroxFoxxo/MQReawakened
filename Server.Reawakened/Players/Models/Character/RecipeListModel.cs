@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Characters.Helpers;
+﻿using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Characters.Models;
+namespace Server.Reawakened.Players.Models.Character;
 
 public class RecipeListModel
 {

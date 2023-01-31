@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
-using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.Core.Abstractions;
 using System.Text;
 using System.Xml;
 using Web.AssetBundles.Events;

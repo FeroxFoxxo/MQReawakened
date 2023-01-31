@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Characters.Helpers;
+﻿namespace Server.Reawakened.Players.Helpers;
 
 public class SeparatedStringBuilder
 {

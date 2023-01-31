@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Core.Network.Protocols;
+using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Services;
 
@@ -12,5 +13,5 @@ public class RandomName : ExternalProtocol
     public UserInfoHandler UserInfoHandler { get; set; }
 
     public override void Run(string[] message) =>
-        SendXt("cR", NameGenSyllables.GetRandomName(int.Parse(message[5]), UserInfoHandler));
+        SendXt("cR", NameGenSyllables.GetRandomName((Gender) int.Parse(message[5]), UserInfoHandler));
 }

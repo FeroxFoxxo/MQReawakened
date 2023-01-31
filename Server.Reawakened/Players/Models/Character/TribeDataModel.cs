@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Characters.Helpers;
+using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Characters.Models;
+namespace Server.Reawakened.Players.Models.Character;
 
 public class TribeDataModel
 {
@@ -9,12 +9,12 @@ public class TribeDataModel
     public int BadgePoints { get; set; }
     public bool Unlocked { get; set; }
 
-    public TribeDataModel() {}
+    public TribeDataModel() { }
 
     public TribeDataModel(string serverData)
     {
         var inputValues = serverData.Split('|');
-        TribeType = (TribeType) int.Parse(inputValues[0]);
+        TribeType = (TribeType)int.Parse(inputValues[0]);
         BadgePoints = int.Parse(inputValues[1]);
         Unlocked = inputValues[2] == "1";
     }

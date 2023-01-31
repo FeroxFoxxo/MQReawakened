@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Characters.Helpers;
+﻿using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Characters.Models;
+namespace Server.Reawakened.Players.Models.Character;
 
 public class ItemModel
 {
@@ -9,7 +9,7 @@ public class ItemModel
     public int BindingCount { get; set; }
     public DateTime DelayUseExpiry { get; set; }
 
-    public ItemModel() {}
+    public ItemModel() { }
 
     public override string ToString()
     {
@@ -19,7 +19,7 @@ public class ItemModel
         sb.Append(Count);
         sb.Append(BindingCount);
         sb.Append(DelayUseExpiry.Equals(DateTime.MinValue) ? 0 : DelayUseExpiry.Ticks);
-        
+
         return sb.ToString();
     }
 }

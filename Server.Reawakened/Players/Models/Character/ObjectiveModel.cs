@@ -1,9 +1,9 @@
-﻿namespace Server.Reawakened.Characters.Models;
+﻿namespace Server.Reawakened.Players.Models.Character;
 
 public class ObjectiveModel
 {
     public bool Completed { get; set; }
     public int CountLeft { get; set; }
 
-    public ObjectiveModel() {}
+    public ObjectiveModel() { }
 }

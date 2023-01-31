@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Characters.Helpers;
+﻿using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Characters.Models;
+namespace Server.Reawakened.Players.Models.Character;
 
 public class FriendDataModel
 {
@@ -13,7 +13,7 @@ public class FriendDataModel
     public bool IsMuted { get; set; }
     public int InteractionStatus { get; set; }
 
-    public FriendDataModel() {}
+    public FriendDataModel() { }
 
     public override string ToString()
     {

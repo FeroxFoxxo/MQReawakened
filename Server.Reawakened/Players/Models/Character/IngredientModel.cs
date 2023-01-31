@@ -1,13 +1,13 @@
-﻿using Server.Reawakened.Characters.Helpers;
+﻿using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Characters.Models;
+namespace Server.Reawakened.Players.Models.Character;
 
 public class IngredientModel
 {
     public int ItemId { get; set; }
     public int Count { get; set; }
 
-    public IngredientModel() {}
+    public IngredientModel() { }
 
     public override string ToString()
     {

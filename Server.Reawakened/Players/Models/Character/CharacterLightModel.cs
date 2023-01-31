@@ -1,8 +1,7 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Characters.Helpers;
-using Server.Reawakened.Core.Models;
+using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Characters.Models;
+namespace Server.Reawakened.Players.Models.Character;
 
 public class CharacterLightModel
 {
@@ -22,7 +21,7 @@ public class CharacterLightModel
     public bool ForceTribeSelection { get; set; }
     public HashSet<int> DiscoveredStats { get; set; }
 
-    public CharacterLightModel() {}
+    public CharacterLightModel() { }
 
     public CharacterLightModel(string serverData)
     {
@@ -30,7 +29,7 @@ public class CharacterLightModel
 
         Gender = int.Parse(array[0]);
         Customization = new CharacterCustomDataModel(array[1]);
-        
+
         Equipment = new EquipmentModel();
         DiscoveredStats = new HashSet<int>();
     }

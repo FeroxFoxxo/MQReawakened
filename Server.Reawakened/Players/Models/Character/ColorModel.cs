@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Characters.Helpers;
+﻿using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Characters.Models;
+namespace Server.Reawakened.Players.Models.Character;
 
 public class ColorModel
 {
@@ -8,7 +8,7 @@ public class ColorModel
     public float Green { get; set; }
     public float Blue { get; set; }
 
-    public ColorModel () {}
+    public ColorModel() { }
 
     public ColorModel(string serverString)
     {

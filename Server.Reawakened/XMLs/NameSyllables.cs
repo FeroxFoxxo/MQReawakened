@@ -1,17 +1,18 @@
-﻿using Server.Reawakened.XMLs.Abstractions;
+﻿using Server.Reawakened.Core.Abstractions;
+using Server.Reawakened.Players.Enums;
 using System.Reflection;
 
 namespace Server.Reawakened.XMLs;
 
 public class NameSyllables : NamegenSyllablesXML, IBundledXml
 {
-    public Dictionary<int, List<List<string>>> Syllables;
+    public Dictionary<Gender, List<List<string>>> Syllables;
 
     public string BundleName => "NamegenSyllabes";
 
     public void LoadBundle(string xml)
     {
-        Syllables = new Dictionary<int, List<List<string>>>();
+        Syllables = new Dictionary<Gender, List<List<string>>>();
 
         var wGType = typeof(NamegenSyllablesXML);
 
@@ -20,10 +21,10 @@ public class NameSyllables : NamegenSyllablesXML, IBundledXml
 
         ReadDescriptionXml(xml);
 
-        Syllables = new Dictionary<int, List<List<string>>>
+        Syllables = new Dictionary<Gender, List<List<string>>>
         {
             {
-                0,
+                Gender.Male,
                 new List<List<string>>
                 {
                     GetSyllables(0, true),
@@ -32,7 +33,7 @@ public class NameSyllables : NamegenSyllablesXML, IBundledXml
                 }
             },
             {
-                1,
+                Gender.Female,
                 new List<List<string>>
                 {
                     GetSyllables(0, false),

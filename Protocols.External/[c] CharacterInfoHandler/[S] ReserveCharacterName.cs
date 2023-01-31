@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Characters.Helpers;
-using Server.Reawakened.Core.Models;
+﻿using Server.Reawakened.Core.Models;
 using Server.Reawakened.Core.Network.Protocols;
+using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Services;
 
@@ -16,7 +16,7 @@ public class ReserveCharacterName : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var gender = int.Parse(message[5]);
+        var gender = (Gender) int.Parse(message[5]);
         var name = new[] { message[6], message[7], message[8] };
 
         if (NameGenSyllables.IsNameReserved(name, UserInfoHandler))
@@ -27,7 +27,7 @@ public class ReserveCharacterName : ExternalProtocol
             SendXt("cS", string.Empty);
     }
 
-    private string GetNames(int gender)
+    private string GetNames(Gender gender)
     {
         var sb = new SeparatedStringBuilder('%');
 

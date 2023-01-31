@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Characters.Helpers;
+using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Characters.Models;
+namespace Server.Reawakened.Players.Models.Character;
 
 public class CharacterCustomDataModel
 {
@@ -53,7 +53,7 @@ public class CharacterCustomDataModel
     {
         var sb = new SeparatedStringBuilder('=');
 
-        sb.Append((int) property.Key);
+        sb.Append((int)property.Key);
         sb.Append(property.Value);
         sb.Append(Colors[property.Key]);
 
