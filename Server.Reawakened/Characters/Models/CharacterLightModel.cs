@@ -6,9 +6,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class CharacterLightModel
 {
-    public const char FieldSeparator = '<';
-    public const char CharacterDataEndDelimiter = '[';
-
     public CharacterCustomDataModel Customization { get; set; }
     public EquipmentModel Equipment { get; set; }
     public int PetItemId { get; set; }
@@ -29,7 +26,7 @@ public class CharacterLightModel
 
     public CharacterLightModel(string serverData)
     {
-        var array = serverData.Split(CharacterDataEndDelimiter);
+        var array = serverData.Split('[');
 
         Gender = int.Parse(array[0]);
         Customization = new CharacterCustomDataModel(array[1]);
@@ -44,21 +41,21 @@ public class CharacterLightModel
 
     public string GetLightCharacterData()
     {
-        var sb = new SeparatedStringBuilder(CharacterDataEndDelimiter);
+        var sb = new SeparatedStringBuilder('[');
 
         sb.Append(GetCharacterInformation());
         sb.Append(Customization);
         sb.Append(Equipment);
         sb.Append(PetItemId);
         sb.Append(Registered ? 1 : 0);
-        sb.Append(GetDiscoveredStats());
+        sb.Append(BuildDiscoveredStats());
 
         return sb.ToString();
     }
 
     private string GetCharacterInformation()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('<');
 
         sb.Append(CharacterId);
         sb.Append(CharacterName);
@@ -74,9 +71,9 @@ public class CharacterLightModel
         return sb.ToString();
     }
 
-    private string GetDiscoveredStats()
+    private string BuildDiscoveredStats()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('<');
 
         foreach (var item in DiscoveredStats)
             sb.Append(item);

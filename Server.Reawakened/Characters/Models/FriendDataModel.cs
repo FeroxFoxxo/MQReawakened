@@ -4,8 +4,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class FriendDataModel
 {
-    public const char FieldSeparator = '>';
-
     public string CharacterName { get; set; }
     public int CharacterId { get; set; }
     public bool IsOnline { get; set; }
@@ -19,7 +17,7 @@ public class FriendDataModel
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('>');
 
         sb.Append(CharacterId);
         sb.Append(CharacterName);

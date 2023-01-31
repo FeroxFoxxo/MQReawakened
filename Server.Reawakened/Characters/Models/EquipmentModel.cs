@@ -5,9 +5,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class EquipmentModel
 {
-    public const char KeyValueDelimiter = '=';
-    public const char PropertyDelimiter = ':';
-
     public Dictionary<ItemSubCategory, int> EquippedItems { get; set; }
     public List<ItemSubCategory> EquippedBinding { get; set; }
 
@@ -22,11 +19,11 @@ public class EquipmentModel
         EquippedItems = new Dictionary<ItemSubCategory, int>();
         EquippedBinding = new List<ItemSubCategory>();
 
-        var items = serverString.Split(PropertyDelimiter);
+        var items = serverString.Split(':');
 
         foreach (var item in items)
         {
-            var values = item.Split(KeyValueDelimiter);
+            var values = item.Split('=');
             if (values.Length != 3)
                 continue;
 
@@ -43,7 +40,7 @@ public class EquipmentModel
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(PropertyDelimiter);
+        var sb = new SeparatedStringBuilder(':');
 
         foreach (var equipped in EquippedItems)
             sb.Append(GetEquippedItemString(equipped));
@@ -53,7 +50,7 @@ public class EquipmentModel
 
     public string GetEquippedItemString(KeyValuePair<ItemSubCategory, int> equipped)
     {
-        var sb = new SeparatedStringBuilder(KeyValueDelimiter);
+        var sb = new SeparatedStringBuilder('=');
 
         sb.Append((int)equipped.Key);
         sb.Append(equipped.Value);

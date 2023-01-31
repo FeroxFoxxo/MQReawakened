@@ -5,8 +5,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class TribeDataModel
 {
-    public const char FieldSeparator = '|';
-
     public TribeType TribeType { get; set; }
     public int BadgePoints { get; set; }
     public bool Unlocked { get; set; }
@@ -15,7 +13,7 @@ public class TribeDataModel
 
     public TribeDataModel(string serverData)
     {
-        var inputValues = serverData.Split(FieldSeparator);
+        var inputValues = serverData.Split('|');
         TribeType = (TribeType) int.Parse(inputValues[0]);
         BadgePoints = int.Parse(inputValues[1]);
         Unlocked = inputValues[2] == "1";
@@ -23,7 +21,7 @@ public class TribeDataModel
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('|');
 
         sb.Append((int)TribeType);
         sb.Append(BadgePoints);

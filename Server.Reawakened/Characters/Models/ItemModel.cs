@@ -4,8 +4,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class ItemModel
 {
-    public const char FieldSeparator = '{';
-
     public int ItemId { get; set; }
     public int Count { get; set; }
     public int BindingCount { get; set; }
@@ -15,7 +13,7 @@ public class ItemModel
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('{');
 
         sb.Append(ItemId);
         sb.Append(Count);

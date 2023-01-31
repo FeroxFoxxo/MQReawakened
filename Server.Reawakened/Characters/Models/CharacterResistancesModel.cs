@@ -4,41 +4,43 @@ namespace Server.Reawakened.Characters.Models;
 
 public class CharacterResistancesModel
 {
-    public const char DataDelimiter = '|';
+    public int InternalDamageResistPointsStandard { get; set; }
+    public int InternalDamageResistPointsFire { get; set; }
+    public int InternalDamageResistPointsIce { get; set; }
+    public int InternalDamageResistPointsPoison { get; set; }
+    public int InternalDamageResistPointsLightning { get; set; }
+    
+    public int ExternalDamageResistPointsStandard { get; set; }
+    public int ExternalDamageResistPointsFire { get; set; }
+    public int ExternalDamageResistPointsIce { get; set; }
+    public int ExternalDamageResistPointsPoison { get; set; }
+    public int ExternalDamageResistPointsLightning { get; set; }
 
-    public int StandardDamageResistPointsInt { get; set; }
-    public int FireDamageResistPointsInt { get; set; }
-    public int IceDamageResistPointsInt { get; set; }
-    public int PoisonDamageResistPointsInt { get; set; }
-    public int LightningDamageResistPointsInt { get; set; }
-    public int StandardDamageResistPointsExt { get; set; }
-    public int FireDamageResistPointsExt { get; set; }
-    public int IceDamageResistPointsExt { get; set; }
-    public int PoisonDamageResistPointsExt { get; set; }
-    public int LightningDamageResistPointsExt { get; set; }
-    public int StunStatusEffectResistSecsExt { get; set; }
-    public int SlowStatusEffectResistSecsExt { get; set; }
-    public int FreezeStatusEffectResistSecsExt { get; set; }
+    public int ExternalStatusEffectResistSecondsStun { get; set; }
+    public int ExternalStatusEffectResistSecondsSlow { get; set; }
+    public int ExternalStatusEffectResistSecondsFreeze { get; set; }
 
     public CharacterResistancesModel() { }
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(DataDelimiter);
+        var sb = new SeparatedStringBuilder('|');
 
-        sb.Append(StandardDamageResistPointsInt);
-        sb.Append(FireDamageResistPointsInt);
-        sb.Append(IceDamageResistPointsInt);
-        sb.Append(PoisonDamageResistPointsInt);
-        sb.Append(LightningDamageResistPointsInt);
-        sb.Append(StandardDamageResistPointsExt);
-        sb.Append(FireDamageResistPointsExt);
-        sb.Append(IceDamageResistPointsExt);
-        sb.Append(PoisonDamageResistPointsExt);
-        sb.Append(LightningDamageResistPointsExt);
-        sb.Append(StunStatusEffectResistSecsExt);
-        sb.Append(SlowStatusEffectResistSecsExt);
-        sb.Append(FreezeStatusEffectResistSecsExt);
+        sb.Append(InternalDamageResistPointsStandard);
+        sb.Append(InternalDamageResistPointsFire);
+        sb.Append(InternalDamageResistPointsIce);
+        sb.Append(InternalDamageResistPointsPoison);
+        sb.Append(InternalDamageResistPointsLightning);
+
+        sb.Append(ExternalDamageResistPointsStandard);
+        sb.Append(ExternalDamageResistPointsFire);
+        sb.Append(ExternalDamageResistPointsIce);
+        sb.Append(ExternalDamageResistPointsPoison);
+        sb.Append(ExternalDamageResistPointsLightning);
+
+        sb.Append(ExternalStatusEffectResistSecondsStun);
+        sb.Append(ExternalStatusEffectResistSecondsSlow);
+        sb.Append(ExternalStatusEffectResistSecondsFreeze);
 
         return sb.ToString();
     }

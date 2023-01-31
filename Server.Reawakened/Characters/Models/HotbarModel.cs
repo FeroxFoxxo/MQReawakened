@@ -4,8 +4,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class HotbarModel
 {
-    public const char FieldSeparator = '|';
-
     public Dictionary<int, ItemModel> HotbarButtons { get; set; }
 
     public HotbarModel() =>
@@ -13,7 +11,7 @@ public class HotbarModel
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('|');
 
         foreach (var button in HotbarButtons)
         {

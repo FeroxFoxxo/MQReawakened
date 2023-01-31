@@ -4,8 +4,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class ColorModel
 {
-    public const char ColorDelimiter = '&';
-
     public float Red { get; set; }
     public float Green { get; set; }
     public float Blue { get; set; }
@@ -14,7 +12,7 @@ public class ColorModel
 
     public ColorModel(string serverString)
     {
-        var values = serverString.Split(ColorDelimiter);
+        var values = serverString.Split('&');
 
         Red = float.Parse(values[0]);
         Green = float.Parse(values[1]);
@@ -23,7 +21,7 @@ public class ColorModel
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(ColorDelimiter);
+        var sb = new SeparatedStringBuilder('&');
 
         sb.Append(Red);
         sb.Append(Green);

@@ -5,9 +5,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class CharacterCustomDataModel
 {
-    public const char KeyValueDelimiter = '=';
-    public const char PropertyDelimiter = ':';
-
     public int CharacterId { get; set; }
     public Dictionary<CustomDataProperties, int> Properties { get; set; }
     public Dictionary<CustomDataProperties, ColorModel> Colors { get; set; }
@@ -23,11 +20,11 @@ public class CharacterCustomDataModel
         Properties = new Dictionary<CustomDataProperties, int>();
         Colors = new Dictionary<CustomDataProperties, ColorModel>();
 
-        var properties = serverString.Split(PropertyDelimiter);
+        var properties = serverString.Split(':');
 
         foreach (var prop in properties)
         {
-            var values = prop.Split(KeyValueDelimiter);
+            var values = prop.Split('=');
 
             if (values.Length != 3)
                 continue;
@@ -43,7 +40,7 @@ public class CharacterCustomDataModel
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(PropertyDelimiter);
+        var sb = new SeparatedStringBuilder(':');
         sb.Append(CharacterId);
 
         foreach (var property in Properties)
@@ -54,7 +51,7 @@ public class CharacterCustomDataModel
 
     private string BuildProperty(KeyValuePair<CustomDataProperties, int> property)
     {
-        var sb = new SeparatedStringBuilder(KeyValueDelimiter);
+        var sb = new SeparatedStringBuilder('=');
 
         sb.Append((int) property.Key);
         sb.Append(property.Value);

@@ -110,7 +110,7 @@ public class Level
         var info = type switch
         {
             CharacterInfoType.Lite => character.GetLightCharacterData(),
-            CharacterInfoType.Portals => character.GetPortalData(),
+            CharacterInfoType.Portals => character.BuildPortalData(),
             CharacterInfoType.Detailed => character.ToString(),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };

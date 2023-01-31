@@ -4,16 +4,13 @@ namespace Server.Reawakened.Characters.Models;
 
 public class InventoryModel
 {
-    public const char DictSeparator = '{';
-    public const char FieldSeparator = '>';
-
     public Dictionary<int, ItemModel> Items { get; set; }
 
     public InventoryModel() => Items = new Dictionary<int, ItemModel>();
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('>');
 
         foreach (var item in Items)
             sb.Append(GetItem(item));
@@ -23,7 +20,7 @@ public class InventoryModel
 
     public static string GetItem(KeyValuePair<int, ItemModel> item)
     {
-        var sb = new SeparatedStringBuilder(DictSeparator);
+        var sb = new SeparatedStringBuilder('{');
 
         sb.Append(item.Key);
         sb.Append(item.Value);

@@ -6,9 +6,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class CharacterDataModel : CharacterLightModel
 {
-    public const char FieldJoiner = '&';
-    public const char PortalJoiner = '|';
-
     public InventoryModel Inventory { get; set; }
     public List<QuestStatusModel> QuestLog { get; set; }
     public List<int> CompletedQuests { get; set; }
@@ -22,18 +19,19 @@ public class CharacterDataModel : CharacterLightModel
     public RecipeListModel RecipeList { get; set; }
     public Dictionary<TribeType, bool> TribesDiscovered { get; set; }
     public Dictionary<int, int> IdolCount { get; set; }
-    public bool SpawnOnBackPlane { get; set; }
-    public float SpawnPositionX { get; set; }
-    public float SpawnPositionY { get; set; }
-    public int BadgePoints { get; set; }
+    public Dictionary<TribeType, TribeDataModel> TribesProgression { get; set; }
+
     public int Cash { get; set; }
     public int NCash { get; set; }
     public int ActiveQuestId { get; set; }
     public int Reputation { get; set; }
     public int ReputationForCurrentLevel { get; set; }
     public int ReputationForNextLevel { get; set; }
+    public float SpawnPositionX { get; set; }
+    public float SpawnPositionY { get; set; }
+    public bool SpawnOnBackPlane { get; set; }
+    public int BadgePoints { get; set; }
     public int AbilityPower { get; set; }
-    public Dictionary<TribeType, TribeDataModel> TribesProgression { get; set; }
     public int ChatLevel { get; set; }
 
     public CharacterDataModel() {}
@@ -63,7 +61,7 @@ public class CharacterDataModel : CharacterLightModel
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(CharacterDataEndDelimiter);
+        var sb = new SeparatedStringBuilder('[');
 
         sb.Append(GetCharacterDataInternal());
         sb.Append(Customization);
@@ -90,7 +88,7 @@ public class CharacterDataModel : CharacterLightModel
 
     private string GetCompletedQuestList()
     {
-        var sb = new SeparatedStringBuilder(FieldJoiner);
+        var sb = new SeparatedStringBuilder('&');
 
         foreach (var completedQuest in CompletedQuests)
             sb.Append(completedQuest);
@@ -100,7 +98,7 @@ public class CharacterDataModel : CharacterLightModel
 
     private string GetQuestStatusList()
     {
-        var sb = new SeparatedStringBuilder(FieldJoiner);
+        var sb = new SeparatedStringBuilder('&');
 
         foreach (var qs in QuestLog)
             sb.Append(qs);
@@ -110,7 +108,7 @@ public class CharacterDataModel : CharacterLightModel
 
     private string GetCharacterDataInternal()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('<');
         
         sb.Append(CharacterId);
         sb.Append(CharacterName);
@@ -142,7 +140,7 @@ public class CharacterDataModel : CharacterLightModel
 
     private string BuildTribesDiscoveredString()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('<');
 
         foreach (var kvp in TribesDiscovered)
         {
@@ -155,7 +153,7 @@ public class CharacterDataModel : CharacterLightModel
 
     private string BuildIdolCountString()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('<');
 
         foreach (var kvp in IdolCount)
         {
@@ -168,7 +166,7 @@ public class CharacterDataModel : CharacterLightModel
 
     private string BuildStatsDiscoveredString()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('<');
 
         foreach (var stat in DiscoveredStats)
             sb.Append(stat);
@@ -179,9 +177,9 @@ public class CharacterDataModel : CharacterLightModel
     private IEnumerable<string> BuildTribeDataString() =>
         TribesProgression.Values.Select(tribeType => tribeType.ToString()).ToArray();
 
-    public string GetPortalData()
+    public string BuildPortalData()
     {
-        var sb = new SeparatedStringBuilder(PortalJoiner);
+        var sb = new SeparatedStringBuilder('|');
 
         sb.Append(SpawnPositionX);
         sb.Append(SpawnPositionY);

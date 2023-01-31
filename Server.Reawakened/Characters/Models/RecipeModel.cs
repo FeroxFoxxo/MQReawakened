@@ -4,8 +4,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class RecipeModel
 {
-    public const char FieldSeparator = ',';
-
     public int RecipeId { get; set; }
     public int ItemId { get; set; }
     public List<IngredientModel> Ingredients { get; set; }
@@ -15,7 +13,7 @@ public class RecipeModel
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder(',');
 
         sb.Append(RecipeId);
         sb.Append(ItemId);

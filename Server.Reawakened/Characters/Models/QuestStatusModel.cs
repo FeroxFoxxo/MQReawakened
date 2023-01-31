@@ -5,8 +5,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class QuestStatusModel
 {
-    public const char FieldSeparator = '|';
-
     public int Id { get; set; }
     public QuestStatus.QuestState QuestStatus { get; set; }
     public Dictionary<int, ObjectiveModel> Objectives { get; set; }
@@ -16,7 +14,7 @@ public class QuestStatusModel
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('|');
 
         sb.Append(Id);
         sb.Append((int)QuestStatus);

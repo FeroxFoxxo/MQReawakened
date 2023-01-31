@@ -4,8 +4,6 @@ namespace Server.Reawakened.Characters.Models;
 
 public class BlockListModel
 {
-    public const char FieldSeparator = '|';
-
     public Dictionary<string, FriendDataModel> BlockList { get; set; }
 
     public BlockListModel() =>
@@ -13,7 +11,7 @@ public class BlockListModel
 
     public override string ToString()
     {
-        var sb = new SeparatedStringBuilder(FieldSeparator);
+        var sb = new SeparatedStringBuilder('|');
 
         foreach (var block in BlockList)
             sb.Append(block.Value);
