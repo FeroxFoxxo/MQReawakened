@@ -1,5 +1,6 @@
 ﻿using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
+using Server.Base.Core.Extensions;
 using Server.Base.Network;
 using Server.Reawakened.Core.Models;
 using Server.Reawakened.Core.Network.Extensions;
@@ -19,16 +20,19 @@ public class Level
     private readonly ServerConfig _serverConfig;
 
     public readonly LevelInfo LevelData;
+    public readonly long TimeOffset;
 
     public Level(LevelInfo levelData, ServerConfig serverConfig, LevelHandler handler)
     {
-        LevelData = levelData;
         _serverConfig = serverConfig;
         _handler = handler;
         _clients = new Dictionary<int, NetState>();
         _clientIds = new HashSet<int>();
-    }
 
+        LevelData = levelData;
+        TimeOffset = GetTime.GetCurrentUnixMilliseconds();
+    }
+    
     public void AddClient(NetState state, out JoinReason reason)
     {
         var playerId = -1;

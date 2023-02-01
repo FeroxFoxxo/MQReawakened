@@ -23,7 +23,7 @@ public class ServerConfig : IConfig
         MaxCharacterCount = 3;
         StartLevel = 47;
 
-        DefaultProtocolTypeIgnore = new[] { "ss", "Pp" };
+        DefaultProtocolTypeIgnore = new[] { "ss", "Pp", "ku" };
 
         DefaultDebugVariables = new Dictionary<DebugHandler.DebugVariables, bool>()
         {

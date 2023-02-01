@@ -26,7 +26,6 @@
         <Folder Include="[w] WarningMessageHandler\" />
         <Folder Include="[t] TradeHandler\" />
         <Folder Include="[s] Synchronizer\" />
-        <Folder Include="[k] SyncClock\" />
         <Folder Include="[r] RoomHandler\" />
         <Folder Include="[o] ReportMessageHandler\" />
         <Folder Include="[Z] PetHandler\" />

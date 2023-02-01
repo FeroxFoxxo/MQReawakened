@@ -26,7 +26,7 @@ public class StartPlayLevel : ExternalProtocol
             SendXt("cB", (int) level.LevelData.Tribe);
     }
 
-    public bool TribeDiscovered(LevelInfo lInfo, CharacterDataModel character)
+    public static bool TribeDiscovered(LevelInfo lInfo, CharacterDataModel character)
     {
         if (!lInfo.Name.Contains("highway", StringComparison.OrdinalIgnoreCase))
             return false;
