@@ -33,11 +33,11 @@ public class Player : INetStateData
         CurrentLevel?.DumpPlayerToLobby(PlayerId);
     }
 
-    public void JoinLevel(NetState state, Level level)
+    public void JoinLevel(NetState state, Level level, out JoinReason reason)
     {
         CurrentLevel?.RemoveClient(PlayerId);
         CurrentLevel = level;
-        CurrentLevel.AddClient(state);
+        CurrentLevel.AddClient(state, out reason);
     }
 
     public int GetLevelId() => CurrentLevel != null ? CurrentLevel.LevelData.LevelId : -1;

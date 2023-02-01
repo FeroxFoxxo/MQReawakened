@@ -40,7 +40,7 @@ public class AutoJoin : SystemProtocol
             return;
         }
 
-        user.JoinLevel(NetState, newLevel);
+        user.JoinLevel(NetState, newLevel, out var _);
         
         SendXt("cx", GetPropertyList(GetPropertiesOfUser(user.UserInfo, account)));
         SendXt("cl", GetCharacterList(user.UserInfo));

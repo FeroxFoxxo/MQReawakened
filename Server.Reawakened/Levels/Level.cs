@@ -4,6 +4,7 @@ using Server.Base.Network;
 using Server.Reawakened.Core.Models;
 using Server.Reawakened.Core.Network.Extensions;
 using Server.Reawakened.Levels.Enums;
+using Server.Reawakened.Levels.Extensions;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Players;
 using WorldGraphDefines;
@@ -28,10 +29,9 @@ public class Level
         _clientIds = new HashSet<int>();
     }
 
-    public void AddClient(NetState state)
+    public void AddClient(NetState state, out JoinReason reason)
     {
         var playerId = -1;
-        JoinReason reason;
 
         if (_clientIds.Count > _serverConfig.PlayerCap)
         {
@@ -76,26 +76,21 @@ public class Level
 
                     var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
 
-                        SendUserEnterData(newClient, currentPlayer, currentAccount);
-                        
-                        if (areDifferentClients)
-                            SendUserEnterData(currentClient, newPlayer, newAccount);
-                        
-                        SendCharacterInfoData(newClient, currentPlayer, areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals);
+                    SendUserEnterData(newClient, currentPlayer, currentAccount);
 
-                        if (areDifferentClients)
-                            SendCharacterInfoData(currentClient, newPlayer, CharacterInfoType.Lite);
+                    if (areDifferentClients)
+                        SendUserEnterData(currentClient, newPlayer, newAccount);
+
+                    SendCharacterInfoData(newClient, currentPlayer, areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals);
+
+                    if (areDifferentClients)
+                        SendCharacterInfoData(currentClient, newPlayer, CharacterInfoType.Lite);
                 }
                 break;
-                }
+            }
             case JoinReason.Full:
-                newClient.SendXml("joinKO", "<error>This room is full!</error>");
-                break;
             default:
-                newClient.SendXml("joinKO", "<error>" +
-                                            "You seem to have reached an error that shouldn't have happened!" +
-                                            " Please report this error to the developers." +
-                                            "</error>");
+                newClient.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
                 break;
         }
     }
@@ -127,7 +122,7 @@ public class Level
     public void DumpPlayerToLobby(int playerId)
     {
         var client = _clients[playerId];
-        client.Get<Player>().JoinLevel(client, _handler.GetLevelFromId(-1));
+        client.Get<Player>().JoinLevel(client, _handler.GetLevelFromId(-1), out var _);
         RemoveClient(playerId);
     }
 
