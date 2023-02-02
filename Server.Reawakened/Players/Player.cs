@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Models;
-using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Levels;
@@ -8,7 +7,6 @@ using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
-using SmartFoxClientAPI.Data;
 
 namespace Server.Reawakened.Players;
 

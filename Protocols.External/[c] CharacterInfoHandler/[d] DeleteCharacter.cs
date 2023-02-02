@@ -15,7 +15,7 @@ public class DeleteCharacter : ExternalProtocol
         var characterExists = character != null;
 
         if (characterExists)
-            player.UserInfo.Characters.Remove(character.CharacterId);
+            player.UserInfo.DeleteCharacter(character.CharacterId);
          
         SendXt("cd", characterExists ? 0 : 1);
     }

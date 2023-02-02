@@ -49,4 +49,10 @@ public class UserInfo : PersistantData
         CharacterLevel = new Dictionary<int, int>();
         Mail = new Dictionary<int, SystemMailModel>();
     }
+
+    public void DeleteCharacter(int id)
+    {
+        Characters.Remove(id);
+        CharacterLevel.Remove(id);
+    }
 }
