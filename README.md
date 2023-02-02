@@ -6,13 +6,13 @@
 
 #### None of the repo, the tool, nor the repo owner is affiliated with, or sponsored or authorized by any affiliates of the original game.
 
-This project purely meant for educational use, as to show how games like this are created (through reverse engineering) - the tutorial series of which can be found on [YouTube](https://www.youtube.com/channel/UCDxjJNFDufgHbypygWkQlNg). It is not, and should never be, commercialised in any way. It is a transformative work, and is fundamentally different from the client - only sharing similar data models, and communicating based on the same protocols. Thus any of the few snippits of code shared between each should be covered under Fair Use. Users must provide the original game's code, assets, executables etc themselves. Please email me (see below) if anything is in breach, which will be rectified ASAP.
+MQReawakened is a private server meant for **non-commercial, educational use only**. It's built off the Ultima server emulator, written by the guys at [ServUO](https://github.com/ServUO/ServUO/), as well as [Asset Studio](https://github.com/Perfare/AssetStudio), by Perfare, and heavily modified.
 
-My email is feroxfoxxo@gmail.com if you need to get into contact with me directly.
+This project purely meant for educational use, as to show how games like this are created through reverse engineering. It is not, and should never be, commercialised in any way. It is a transformative work, and is fundamentally different from the client - only sharing similar data models, and communicating based on the same protocols. Thus any of the few snippits of code shared between each should be covered under Fair Use. Users must provide the original game's code, assets, executables etc themselves.
 
-#### The logo above was made by Z6mbie through vector art. Big thanks to him for the design!
+Please email me at feroxfoxxo@gmail.com if anything is in breach, which will be rectified ASAP.
 
-MQReawaken is a private server meant for **non-commercial, educational use only**. It's built off the Ultima server emulator, written by the guys at [ServUO](https://github.com/ServUO/ServUO/), as well as [Asset Studio](https://github.com/Perfare/AssetStudio), by Perfare, and heavily modified.
+#### The logo above was made by Z6mbie. Big thanks to him for the design!
 
 ### Prerequisites
 
