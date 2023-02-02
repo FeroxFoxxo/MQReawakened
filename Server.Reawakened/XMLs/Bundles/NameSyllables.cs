@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Core.Abstractions;
-using Server.Reawakened.Players.Enums;
-using System.Reflection;
+﻿using Server.Reawakened.Players.Enums;
+using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Extensions;
 
-namespace Server.Reawakened.XMLs;
+namespace Server.Reawakened.XMLs.Bundles;
 
 public class NameSyllables : NamegenSyllablesXML, IBundledXml
 {
@@ -14,10 +14,7 @@ public class NameSyllables : NamegenSyllablesXML, IBundledXml
     {
         Syllables = new Dictionary<Gender, List<List<string>>>();
 
-        var wGType = typeof(NamegenSyllablesXML);
-
-        var field = wGType.GetField("_nameSyllables", BindingFlags.NonPublic | BindingFlags.Instance);
-        field?.SetValue(this, new Dictionary<int, List<string>>());
+        this.SetPrivateField<NamegenSyllablesXML>("_nameSyllables", new Dictionary<int, List<string>>());
 
         ReadDescriptionXml(xml);
 

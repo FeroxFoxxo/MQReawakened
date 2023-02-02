@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
-using Server.Reawakened.Core.Abstractions;
+using Server.Reawakened.XMLs.Abstractions;
 using Server.Web.Abstractions;
 using System.Runtime.Serialization;
 using Web.AssetBundles.Helpers;

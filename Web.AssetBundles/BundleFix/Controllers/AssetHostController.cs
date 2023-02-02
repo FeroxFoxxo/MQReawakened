@@ -58,7 +58,9 @@ public class AssetHostController : Controller
         var asset = _bundles.InternalAssets[name];
 
         var path = file.EndsWith(".xml")
-            ? _xmlFiles.XmlFiles.TryGetValue(name, out var value) ? value : throw new FileNotFoundException(
+            ? _xmlFiles.XmlFiles.TryGetValue(name, out var value)
+                ? value
+                : throw new FileNotFoundException(
                     $"Could not find: {name}. Did you mean:\n{string.Join('\n', _xmlFiles.XmlFiles.Keys)}")
             : WriteFixedBundle(asset);
 

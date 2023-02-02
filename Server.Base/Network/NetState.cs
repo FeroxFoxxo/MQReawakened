@@ -19,14 +19,15 @@ public class NetState : IDisposable
 {
     public delegate bool ThrottlePacketCallback(NetState state);
 
+    private readonly InternalServerConfig _config;
+    private readonly ConcurrentBag<string> _currentLogs;
+
     private readonly Dictionary<Type, INetStateData> _data;
 
     private readonly NetStateHandler _handler;
     private readonly ILogger<MessagePump> _logger;
     private readonly NetworkLogger _networkLogger;
     private readonly EventSink _sink;
-    private readonly InternalServerConfig _config;
-    private readonly ConcurrentBag<string> _currentLogs;
 
     private readonly string _toString;
     public readonly IPAddress Address;
@@ -250,9 +251,9 @@ public class NetState : IDisposable
 
                 lock (AsyncLock)
                     Array.Copy(Buffer, buffered, byteCount);
-                
+
                 bufferedPacket = Encoding.UTF8.GetString(buffered);
-                
+
                 foreach (var packet in bufferedPacket.Split('\0'))
                 {
                     if (string.IsNullOrEmpty(packet))
@@ -287,7 +288,7 @@ public class NetState : IDisposable
 
                     _currentLogs.Clear();
                 }
-                
+
                 lock (AsyncLock)
                 {
                     AsyncState &= ~AsyncStates.Pending;

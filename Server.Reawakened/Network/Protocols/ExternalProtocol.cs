@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Core.Network.Protocols;
+﻿namespace Server.Reawakened.Network.Protocols;
 
 public abstract class ExternalProtocol : BaseProtocol
 {

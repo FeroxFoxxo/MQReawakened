@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Core.Abstractions;
+﻿namespace Server.Reawakened.XMLs.Abstractions;
 
 public interface IBundledXml
 {

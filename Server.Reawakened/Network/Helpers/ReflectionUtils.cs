@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Server.Reawakened.Core.Network.Helpers;
+namespace Server.Reawakened.Network.Helpers;
 
 /// <summary>
 ///     Based on Discord.Net Reflection Utils.

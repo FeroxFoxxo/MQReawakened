@@ -165,7 +165,6 @@ public class BuildAssetList : IService
 
         while (true)
         {
-
             name = name.ToLower();
 
             if (string.IsNullOrEmpty(defaultFile) || !defaultFile.EndsWith("__info"))

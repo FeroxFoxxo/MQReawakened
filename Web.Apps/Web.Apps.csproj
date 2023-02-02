@@ -11,10 +11,10 @@
 
     <ItemGroup>
       <Reference Include="Assembly-CSharp">
-        <HintPath>..\Server.Reawakened\Core\Dependencies\Assembly-CSharp.dll</HintPath>
+        <HintPath>..\Server.Reawakened\Dependencies\Assembly-CSharp.dll</HintPath>
       </Reference>
         <Reference Include="Crisp.AutoSuggest">
-            <HintPath>..\Server.Reawakened\Core\Dependencies\Crisp.AutoSuggest.dll</HintPath>
+            <HintPath>..\Server.Reawakened\Dependencies\Crisp.AutoSuggest.dll</HintPath>
         </Reference>
     </ItemGroup>
 

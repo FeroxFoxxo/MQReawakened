@@ -9,11 +9,11 @@ namespace Server.Reawakened.Players.Services;
 
 public class NameChange : IService
 {
-    private readonly ServerConsole _console;
-    private readonly EventSink _sink;
-    private readonly ILogger<NameChange> _logger;
-    private readonly UserInfoHandler _userInfoHandler;
     private readonly AccountHandler _accountHandler;
+    private readonly ServerConsole _console;
+    private readonly ILogger<NameChange> _logger;
+    private readonly EventSink _sink;
+    private readonly UserInfoHandler _userInfoHandler;
 
     public NameChange(ServerConsole console, EventSink sink,
         ILogger<NameChange> logger, UserInfoHandler userInfoHandler,
@@ -58,8 +58,10 @@ public class NameChange : IService
         _logger.LogInformation("Please select the ID for the character you want to change the name for:");
 
         foreach (var possibleCharacter in user.Characters)
+        {
             _logger.LogInformation("    {CharacterId}: {CharacterName}",
                 possibleCharacter.Key, possibleCharacter.Value.CharacterName);
+        }
 
         var id = Console.ReadLine();
 
@@ -77,7 +79,8 @@ public class NameChange : IService
 
         var character = user.Characters[intId];
 
-        _logger.LogInformation("What would you like to set the character '{CharacterName}''s name to?", character.CharacterName);
+        _logger.LogInformation("What would you like to set the character '{CharacterName}''s name to?",
+            character.CharacterName);
 
         var name = Console.ReadLine()?.Trim();
 

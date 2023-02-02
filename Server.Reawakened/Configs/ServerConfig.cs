@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Core.Abstractions;
 
-namespace Server.Reawakened.Core.Models;
+namespace Server.Reawakened.Configs;
 
 public class ServerConfig : IConfig
 {
@@ -10,6 +10,7 @@ public class ServerConfig : IConfig
     public int ReservedNameCount { get; set; }
     public int MaxCharacterCount { get; set; }
     public int StartLevel { get; set; }
+    public int DefaultQuest { get; set; }
 
     public string[] DefaultProtocolTypeIgnore { get; set; }
 
@@ -22,6 +23,7 @@ public class ServerConfig : IConfig
         ReservedNameCount = 4;
         MaxCharacterCount = 3;
         StartLevel = 47;
+        DefaultQuest = 802;
 
         DefaultProtocolTypeIgnore = new[] { "ss", "Pp", "ku" };
 

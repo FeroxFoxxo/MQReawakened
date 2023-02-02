@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
-using Server.Reawakened.Core.Network.Helpers;
+using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players.Helpers;
 using SmartFoxClientAPI;
 

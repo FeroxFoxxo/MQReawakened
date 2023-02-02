@@ -2,7 +2,7 @@
 using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
 using Server.Base.Accounts.Services;
-using Server.Reawakened.Core.Network.Protocols;
+using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Services;
 using System.Xml;
 

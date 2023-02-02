@@ -1,5 +1,5 @@
 ﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.Core.Network.Protocols;
+using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 
 namespace Protocols.External._k__SyncClock;

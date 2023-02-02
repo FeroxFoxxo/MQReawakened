@@ -7,13 +7,13 @@ using Server.Base.Core.Models;
 using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Base.Network.Services;
-using Server.Reawakened.Core.Models;
-using Server.Reawakened.Core.Network.Helpers;
-using Server.Reawakened.Core.Network.Protocols;
+using Server.Reawakened.Configs;
+using Server.Reawakened.Network.Helpers;
+using Server.Reawakened.Network.Protocols;
 using System.Reflection;
 using System.Xml;
 
-namespace Server.Reawakened.Core.Network.Services;
+namespace Server.Reawakened.Network.Services;
 
 public class PacketHandler : IService
 {

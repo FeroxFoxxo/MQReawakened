@@ -6,11 +6,11 @@ namespace Web.AssetBundles.Models;
 
 public class DefaultProgressBar : IDisposable
 {
-    private readonly ProgressBar _topBar;
     private readonly ChildProgressBar _bottomBar;
 
     private readonly Microsoft.Extensions.Logging.ILogger _logger;
     private readonly List<string> _messages;
+    private readonly ProgressBar _topBar;
 
     public DefaultProgressBar(int count, string message, Microsoft.Extensions.Logging.ILogger logger)
     {
@@ -33,18 +33,6 @@ public class DefaultProgressBar : IDisposable
         _bottomBar = _topBar.Spawn(count, message, bottomBarOptions);
     }
 
-    public void TickBar()
-    {
-        _topBar.Tick();
-        _bottomBar.Tick();
-    }
-
-    public void SetMessage(string message)
-    {
-        _bottomBar.Message = message;
-        _messages.Add(message);
-    }
-
     public void Dispose()
     {
         _bottomBar.AsProgress<float>().Report(1f);
@@ -65,5 +53,17 @@ public class DefaultProgressBar : IDisposable
         Console.WriteLine();
 
         GC.SuppressFinalize(this);
+    }
+
+    public void TickBar()
+    {
+        _topBar.Tick();
+        _bottomBar.Tick();
+    }
+
+    public void SetMessage(string message)
+    {
+        _bottomBar.Message = message;
+        _messages.Add(message);
     }
 }

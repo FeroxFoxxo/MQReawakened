@@ -1,5 +1,5 @@
 ﻿using Server.Base.Core.Models;
-using Server.Reawakened.Core.Network.Services;
+using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.System;
@@ -44,15 +44,9 @@ public class UserInfo : PersistantData
         TrackingShortId = "false";
         AuthToken = kGen.GetRandomKey<UserInfo>(userId.ToString());
         ChatLevel = 3;
-        
+
         Characters = new Dictionary<int, CharacterDataModel>();
         CharacterLevel = new Dictionary<int, int>();
         Mail = new Dictionary<int, SystemMailModel>();
-    }
-
-    public void DeleteCharacter(int id)
-    {
-        Characters.Remove(id);
-        CharacterLevel.Remove(id);
     }
 }

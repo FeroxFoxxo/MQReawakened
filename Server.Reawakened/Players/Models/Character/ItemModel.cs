@@ -9,8 +9,6 @@ public class ItemModel
     public int BindingCount { get; set; }
     public DateTime DelayUseExpiry { get; set; }
 
-    public ItemModel() { }
-
     public override string ToString()
     {
         var sb = new SeparatedStringBuilder('{');

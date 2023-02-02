@@ -60,9 +60,9 @@ public class ServerConsole : IService
             "Forces an exception to be thrown.",
             _ => _timerThread.DelayCall(() => throw new Exception("Forced Crash"))
         ));
-        
+
         DisplayHelp();
-        
+
         _consoleThread.Start();
     }
 
@@ -71,9 +71,7 @@ public class ServerConsole : IService
         try
         {
             while (!_handler.IsClosing && !_handler.HasCrashed)
-            {
                 ProcessCommand(Console.ReadLine());
-            }
         }
         catch (IOException)
         {

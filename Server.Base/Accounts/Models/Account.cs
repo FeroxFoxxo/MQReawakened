@@ -12,7 +12,7 @@ public class Account : PersistantData, INetStateData
     public string Username { get; set; }
 
     public string Password { get; set; }
-    
+
     public AccessLevel AccessLevel { get; set; }
 
     public GameMode GameMode { get; set; }
@@ -28,7 +28,7 @@ public class Account : PersistantData, INetStateData
     public List<AccountTag> Tags { get; set; }
 
     public int Flags { get; set; }
-    
+
     public Account()
     {
     }

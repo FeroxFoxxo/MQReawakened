@@ -51,7 +51,7 @@ public class LoginController : Controller
         dynamic local = new ExpandoObject();
         local.uuid = account.UserId.ToString();
         local.username = account.Username;
-        local.createdTime = ((DateTimeOffset) account.Created).ToUnixTimeSeconds();
+        local.createdTime = ((DateTimeOffset)account.Created).ToUnixTimeSeconds();
         user.local = local;
 
         dynamic sso = new ExpandoObject();

@@ -1,7 +1,7 @@
 ﻿using Server.Base.Network;
-using Server.Reawakened.Core.Network.Extensions;
+using Server.Reawakened.Network.Extensions;
 
-namespace Server.Reawakened.Core.Network.Protocols;
+namespace Server.Reawakened.Network.Protocols;
 
 public abstract class BaseProtocol
 {

@@ -31,7 +31,7 @@ public static class AssetDictionaryExtensions
         foreach (var asset in assetsToAdd)
             assets.Add(asset.Key, asset.Value);
     }
-    
+
     public static void AddLocalXmlFiles(this Dictionary<string, InternalAssetInfo> assets,
         ILogger<BuildAssetList> logger, AssetBundleConfig config)
     {

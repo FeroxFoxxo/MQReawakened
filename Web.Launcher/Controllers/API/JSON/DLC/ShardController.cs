@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using Server.Base.Accounts.Services;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
-using Server.Reawakened.Core.Network.Services;
+using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Services;
 
 namespace Web.Launcher.Controllers.API.JSON.DLC;

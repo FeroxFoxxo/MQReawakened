@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace Server.Reawakened.Core.Network.Protocols;
+namespace Server.Reawakened.Network.Protocols;
 
 public abstract class SystemProtocol : BaseProtocol
 {

@@ -80,7 +80,7 @@ public class NetworkLogger
         {
             if (!_fileLoggers.ContainsKey(fileName))
                 _fileLoggers.Add(fileName, new FileLogger(fileName));
-            
+
             _fileLoggers[fileName].WriteLine(builder.ToString());
         }
         catch (Exception ex)

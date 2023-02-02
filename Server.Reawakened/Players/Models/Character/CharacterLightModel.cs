@@ -21,7 +21,9 @@ public class CharacterLightModel
     public bool ForceTribeSelection { get; set; }
     public HashSet<int> DiscoveredStats { get; set; }
 
-    public CharacterLightModel() { }
+    public CharacterLightModel()
+    {
+    }
 
     public CharacterLightModel(string serverData)
     {

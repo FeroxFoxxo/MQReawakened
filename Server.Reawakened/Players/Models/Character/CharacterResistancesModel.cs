@@ -20,8 +20,6 @@ public class CharacterResistancesModel
     public int ExternalStatusEffectResistSecondsSlow { get; set; }
     public int ExternalStatusEffectResistSecondsFreeze { get; set; }
 
-    public CharacterResistancesModel() { }
-
     public override string ToString()
     {
         var sb = new SeparatedStringBuilder('|');

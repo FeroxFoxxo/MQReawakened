@@ -2,9 +2,9 @@
 using Server.Base.Core.Helpers;
 using Server.Base.Network;
 using Server.Base.Network.Events;
-using Server.Reawakened.Core.Models;
+using Server.Reawakened.Configs;
 
-namespace Server.Reawakened.Core.Network.Services;
+namespace Server.Reawakened.Network.Services;
 
 public class RandomKeyGenerator : IService
 {

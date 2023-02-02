@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Core.Network.Protocols;
+﻿using Server.Reawakened.Network.Protocols;
 
 namespace Protocols.External._P__PingHandler;
 

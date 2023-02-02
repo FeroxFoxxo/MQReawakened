@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Helpers;
-using Server.Reawakened.Core.Models;
-using Server.Reawakened.XMLs;
+using Server.Reawakened.Configs;
+using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Levels.Services;
@@ -63,7 +63,8 @@ public class LevelHandler : IService
             catch (NullReferenceException)
             {
                 if (_levels.Count == 0)
-                    _logger.LogCritical("Could not find any levels! Are you sure you have your cache set up correctly?");
+                    _logger.LogCritical(
+                        "Could not find any levels! Are you sure you have your cache set up correctly?");
                 else
                     _logger.LogError("Could not find the required level! Are you sure your caches contain this?");
 

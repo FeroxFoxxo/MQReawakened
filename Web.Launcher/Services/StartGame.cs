@@ -76,7 +76,6 @@ public class StartGame : IService
 
         while (true)
         {
-
             if (string.IsNullOrEmpty(_lConfig.GameSettingsFile) || !_lConfig.GameSettingsFile.EndsWith("settings.txt"))
             {
                 _logger.LogError("Please enter the absolute file path for your game's 'settings.txt' file.");
@@ -123,12 +122,14 @@ public class StartGame : IService
         var directory = Path.Join(_directory, "game");
         var config = Path.Join(directory, "LocalBuildConfig.xml");
 
-        _logger.LogInformation("Looking For Header In {Directory} Ending In {Header}.", directory, _lConfig.HeaderFolderFilter);
+        _logger.LogInformation("Looking For Header In {Directory} Ending In {Header}.", directory,
+            _lConfig.HeaderFolderFilter);
 
         var parentUri = new Uri(directory);
         var headerFolders = Directory.GetDirectories(directory, string.Empty, SearchOption.AllDirectories)
-            .Select(d => Path.GetDirectoryName(d)?.ToLower()).Where(d => new Uri(new DirectoryInfo(d!).Parent?.FullName!) == parentUri).ToArray();
-        
+            .Select(d => Path.GetDirectoryName(d)?.ToLower())
+            .Where(d => new Uri(new DirectoryInfo(d!).Parent?.FullName!) == parentUri).ToArray();
+
         var headerFolder = headerFolders.FirstOrDefault(a => a?.EndsWith(_lConfig.HeaderFolderFilter) == true);
         headerFolder = Path.GetFileName(headerFolder?.Remove(headerFolder.Length - _lConfig.HeaderFolderFilter.Length));
 
@@ -155,25 +156,25 @@ public class StartGame : IService
 
     private Dictionary<string, string> GetConfigValues(string header) => new()
     {
-            { $"{header}.unity.url.membership", $"{_lConfig.BaseUrl}/Membership" },
-            { $"{header}.unity.cache.domain", $"{_lConfig.BaseUrl}/Cache" },
-            { $"{header}.unity.cache.license", $"{_lConfig.CacheLicense}" },
-            { $"{header}.unity.cache.size", _lConfig.CacheSize.ToString() },
-            { $"{header}.unity.cache.expiration", _lConfig.CacheExpiration.ToString() },
-            { "game.cacheversion", _lConfig.CacheVersion.ToString() },
-            { $"{header}.unity.url.crisp.host", $"{_lConfig.BaseUrl}/Chat/" },
-            { "asset.log", _lConfig.LogAssets ? "true" : "false" },
-            { "asset.disableversioning", _lConfig.DisableVersions ? "true" : "false" },
-            { "asset.jboss", $"{_lConfig.BaseUrl}/Apps/" },
-            { "asset.bundle", $"{_lConfig.BaseUrl}/Client/Bundles" },
-            { "asset.audio", $"{_lConfig.BaseUrl}/Client/Audio" },
-            { "logout.url", $"{_lConfig.BaseUrl}/Logout" },
-            { "contactus.url", $"{_lConfig.BaseUrl}/Contact" },
-            { "tools.urlbase", $"{_lConfig.BaseUrl}/Tools/" },
-            { "leaderboard.domain", $"{_lConfig.BaseUrl}/Apps/" },
-            { "analytics.baseurl", $"{_lConfig.BaseUrl}/Analytics/" },
-            { "analytics.enabled", _lConfig.AnalyticsEnabled ? "true" : "false" },
-            { "analytics.apikey", _lConfig.AnalyticsApiKey },
-            { "project.name", _lConfig.ProjectName}
-        };
+        { $"{header}.unity.url.membership", $"{_lConfig.BaseUrl}/Membership" },
+        { $"{header}.unity.cache.domain", $"{_lConfig.BaseUrl}/Cache" },
+        { $"{header}.unity.cache.license", $"{_lConfig.CacheLicense}" },
+        { $"{header}.unity.cache.size", _lConfig.CacheSize.ToString() },
+        { $"{header}.unity.cache.expiration", _lConfig.CacheExpiration.ToString() },
+        { "game.cacheversion", _lConfig.CacheVersion.ToString() },
+        { $"{header}.unity.url.crisp.host", $"{_lConfig.BaseUrl}/Chat/" },
+        { "asset.log", _lConfig.LogAssets ? "true" : "false" },
+        { "asset.disableversioning", _lConfig.DisableVersions ? "true" : "false" },
+        { "asset.jboss", $"{_lConfig.BaseUrl}/Apps/" },
+        { "asset.bundle", $"{_lConfig.BaseUrl}/Client/Bundles" },
+        { "asset.audio", $"{_lConfig.BaseUrl}/Client/Audio" },
+        { "logout.url", $"{_lConfig.BaseUrl}/Logout" },
+        { "contactus.url", $"{_lConfig.BaseUrl}/Contact" },
+        { "tools.urlbase", $"{_lConfig.BaseUrl}/Tools/" },
+        { "leaderboard.domain", $"{_lConfig.BaseUrl}/Apps/" },
+        { "analytics.baseurl", $"{_lConfig.BaseUrl}/Analytics/" },
+        { "analytics.enabled", _lConfig.AnalyticsEnabled ? "true" : "false" },
+        { "analytics.apikey", _lConfig.AnalyticsApiKey },
+        { "project.name", _lConfig.ProjectName }
+    };
 }

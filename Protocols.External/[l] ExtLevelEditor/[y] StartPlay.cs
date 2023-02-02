@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Core.Network.Extensions;
-using Server.Reawakened.Core.Network.Protocols;
-using Server.Reawakened.Levels.Services;
+﻿using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
-using Server.Reawakened.XMLs;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._l__ExtLevelEditor;
 

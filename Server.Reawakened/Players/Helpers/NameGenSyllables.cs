@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Services;
-using Server.Reawakened.XMLs;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Players.Helpers;
 

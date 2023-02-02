@@ -13,8 +13,6 @@ public class FriendDataModel
     public bool IsMuted { get; set; }
     public int InteractionStatus { get; set; }
 
-    public FriendDataModel() { }
-
     public override string ToString()
     {
         var sb = new SeparatedStringBuilder('>');
