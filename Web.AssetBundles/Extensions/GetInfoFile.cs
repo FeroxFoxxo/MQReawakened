@@ -1,10 +1,15 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Helpers.Internal;
+using Web.AssetBundles.Models;
 
 namespace Web.AssetBundles.Extensions;
 
 public static class GetInfoFile
 {
+    public static string GetWebPlayerInfoFile(this AssetBundleConfig config, Microsoft.Extensions.Logging.ILogger logger) =>
+        config.WebPlayerInfoFile = TryGetInfoFile($"Web Player '{config.DefaultWebPlayerCacheLocation}'", config.WebPlayerInfoFile, logger);
+    
     public static string TryGetInfoFile(string cacheName, string defaultFile, Microsoft.Extensions.Logging.ILogger logger)
     {
         logger.LogInformation("Getting The {Type} Cache Directory", cacheName);

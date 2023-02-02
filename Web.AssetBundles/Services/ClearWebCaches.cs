@@ -37,7 +37,7 @@ public class ClearWebCaches : IService
 
     public bool EmptyWebCacheDirectory()
     {
-        _config.WebPlayerInfoFile = GetInfoFile.TryGetInfoFile($"Web Player '{_config.DefaultWebPlayerCacheLocation}'", _config.WebPlayerInfoFile, _logger);
+        _config.GetWebPlayerInfoFile(_logger);
 
         if (_config.WebPlayerInfoFile == _config.CacheInfoFile)
         {

@@ -4,6 +4,7 @@ using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
+using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Models;
 using Web.Launcher.Services;
 
@@ -38,6 +39,8 @@ public class ReplaceCaches : IService
 
     private void ReplaceWebPlayerCache()
     {
+        _config.GetWebPlayerInfoFile(_logger);
+
         if (_config.FlushCacheOnStart)
             if (_logger.Ask("Flushing the cache on start is enabled, would you like to disable this?"))
                 _config.FlushCacheOnStart = false;
