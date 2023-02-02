@@ -227,7 +227,7 @@ public class NetState : IDisposable
 
     private void OnReceive(IAsyncResult asyncResult)
     {
-        var packet = "Unknown Packet";
+        var bufferedPacket = "Unknown Packet";
 
         try
         {
@@ -251,34 +251,43 @@ public class NetState : IDisposable
                 lock (AsyncLock)
                     Array.Copy(Buffer, buffered, byteCount);
                 
-                packet = Encoding.UTF8.GetString(buffered);
-
-                NetStateHandler.RunProtocol protocol = null;
-
-                lock (_handler.Protocols)
+                bufferedPacket = Encoding.UTF8.GetString(buffered);
+                
+                foreach (var packet in bufferedPacket.Split('\0'))
                 {
-                    if (_handler.Protocols.ContainsKey(packet[0]))
-                        protocol = _handler.Protocols[packet[0]];
-                }
+                    if (string.IsNullOrEmpty(packet))
+                        continue;
 
-                var protocolType = string.Empty;
+                    NetStateHandler.RunProtocol protocol = null;
+                    var protocolType = packet[0];
 
-                if (protocol != null)
-                    protocolType = protocol(this, packet);
-                else
-                    _networkLogger.TracePacketError(packet[0].ToString(), packet, this);
-
-                if (!string.IsNullOrEmpty(protocolType))
-                    if (!_config.IgnoreProtocolType.Contains(protocolType))
+                    lock (_handler.Disposed)
                     {
-                        WriteClient(packet);
-
-                        foreach (var log in _currentLogs.Reverse())
-                            WriteServer(log);
-
-                        _currentLogs.Clear();
+                        if (_handler.Protocols.ContainsKey(protocolType))
+                            protocol = _handler.Protocols[protocolType];
                     }
 
+                    var protocolId = string.Empty;
+
+                    if (protocol != null)
+                        protocolId = protocol(this, packet);
+                    else
+                        _networkLogger.TracePacketError(protocolType.ToString(), packet, this);
+
+                    if (string.IsNullOrEmpty(protocolId))
+                        continue;
+
+                    if (_config.IgnoreProtocolType.Contains(protocolId))
+                        continue;
+
+                    WriteClient(packet);
+
+                    foreach (var log in _currentLogs.Reverse())
+                        WriteServer(log);
+
+                    _currentLogs.Clear();
+                }
+                
                 lock (AsyncLock)
                 {
                     AsyncState &= ~AsyncStates.Pending;
@@ -302,7 +311,7 @@ public class NetState : IDisposable
         }
         catch (Exception ex)
         {
-            WriteClient(packet);
+            WriteClient(bufferedPacket);
             _networkLogger.TraceNetworkError(ex, this);
             Dispose();
         }
