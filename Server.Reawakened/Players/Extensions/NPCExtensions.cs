@@ -30,10 +30,10 @@ public static class NpcExtensions
                                  }
                              )
                          };
-        
+
         if (setActive)
             character.ActiveQuestId = questId;
-        
+
         state.SendXt("na", questModel, setActive);
     }
 }

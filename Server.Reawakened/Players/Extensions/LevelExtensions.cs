@@ -22,7 +22,9 @@ public static class LevelExtensions
         {
             newLevel = levelHandler.GetLevelFromId(id);
         }
-        catch (NullReferenceException) { }
+        catch (NullReferenceException)
+        {
+        }
 
         if (newLevel == null)
             return;

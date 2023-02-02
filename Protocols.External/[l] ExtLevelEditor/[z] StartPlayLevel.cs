@@ -24,7 +24,7 @@ public class StartPlayLevel : ExternalProtocol
         SendXt("lz", reason.GetJoinReasonError(), level.LevelData.LevelId, level.LevelData.Name);
 
         if (TribeDiscovered(level.LevelData, player.GetCurrentCharacter()))
-            SendXt("cB", (int) level.LevelData.Tribe);
+            SendXt("cB", (int)level.LevelData.Tribe);
     }
 
     public static bool TribeDiscovered(LevelInfo lInfo, CharacterDataModel character)

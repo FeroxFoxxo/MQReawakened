@@ -16,7 +16,7 @@ public class WorldGraph : WorldGraphXML, IBundledXml
         this.SetPrivateField<WorldGraphXML>("_worldGraphNodes", new Dictionary<int, List<DestNode>>());
         this.SetPrivateField<WorldGraphXML>("_levelNameToID", new Dictionary<string, int>());
         this.SetPrivateField<WorldGraphXML>("_levelInfos", new Dictionary<int, LevelInfo>());
-        
+
         ReadDescriptionXml(xml);
     }
 }

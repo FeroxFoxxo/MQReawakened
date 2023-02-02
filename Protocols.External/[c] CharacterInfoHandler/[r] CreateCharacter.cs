@@ -14,7 +14,7 @@ namespace Protocols.External._c__CharacterInfoHandler;
 public class CreateCharacter : ExternalProtocol
 {
     public override string ProtocolName => "cr";
-    
+
     public UserInfoHandler UserInfoHandler { get; set; }
     public NameGenSyllables NameGenSyllables { get; set; }
     public ServerConfig ServerConfig { get; set; }
@@ -30,12 +30,12 @@ public class CreateCharacter : ExternalProtocol
         var firstName = message[5];
         var middleName = message[6];
         var lastName = message[7];
-        var gender = (Gender) int.Parse(message[8]);
+        var gender = (Gender)int.Parse(message[8]);
         var characterData = new CharacterDataModel(message[9], lowestCharacterAvailable, ServerConfig);
         var tribe = (TribeType)int.Parse(message[10]);
 
-        var names = new [] { firstName, middleName, lastName };
-        
+        var names = new[] { firstName, middleName, lastName };
+
         if (NameGenSyllables.IsNameReserved(names, UserInfoHandler))
         {
             var suggestion = NameGenSyllables.GetRandomName(gender, UserInfoHandler);

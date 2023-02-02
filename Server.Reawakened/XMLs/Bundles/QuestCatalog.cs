@@ -20,8 +20,9 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
         this.SetPrivateField<QuestCatalogXML>("_questLineCatalog", new Dictionary<int, QuestLineDescription>());
         this.SetPrivateField<QuestCatalogXML>("_activityQuestLineCatalog", new Dictionary<int, QuestLineDescription>());
         this.SetPrivateField<QuestCatalogXML>("_sortedQuestLine", new List<QuestLineGraph>());
-        this.SetPrivateField<QuestCatalogXML>("_questLines", new SortedDictionary<QuestLineDescription, List<QuestDescription>>(new QuestLineSorter()));
-        
+        this.SetPrivateField<QuestCatalogXML>("_questLines",
+            new SortedDictionary<QuestLineDescription, List<QuestDescription>>(new QuestLineSorter()));
+
         ReadDescriptionXml(xml);
     }
 }

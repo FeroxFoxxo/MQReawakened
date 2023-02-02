@@ -3,17 +3,15 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
-using Server.Base.Core.Helpers.Internal;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using System.Xml;
-using Web.AssetBundles.BundleFix.Header.Models;
-using Web.AssetBundles.Enums;
 using Web.AssetBundles.Events;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Helpers;
 using Web.AssetBundles.LocalAssets;
 using Web.AssetBundles.Models;
+using Web.Launcher.Models;
 
 namespace Web.AssetBundles.Services;
 
@@ -21,25 +19,28 @@ public class BuildAssetList : IService
 {
     private readonly AssetEventSink _assetSink;
     private readonly AssetBundleConfig _config;
+    private readonly LauncherConfig _lConfig;
     private readonly ServerConsole _console;
     private readonly ILogger<BuildAssetList> _logger;
     private readonly EventSink _sink;
-    public readonly Dictionary<string, string> AssetDict;
 
+    public readonly Dictionary<string, string> AssetDict;
     public readonly Dictionary<string, string> PublishConfigs;
+
     public string AssetDictLocation;
 
     public Dictionary<string, InternalAssetInfo> InternalAssets;
 
     public BuildAssetList(ILogger<BuildAssetList> logger, AssetBundleConfig config,
         EventSink sink,
-        AssetEventSink assetSink, ServerConsole console)
+        AssetEventSink assetSink, ServerConsole console, LauncherConfig lConfig)
     {
         _logger = logger;
         _config = config;
         _sink = sink;
         _assetSink = assetSink;
         _console = console;
+        _lConfig = lConfig;
 
         PublishConfigs = new Dictionary<string, string>();
         AssetDict = new Dictionary<string, string>();
@@ -49,157 +50,47 @@ public class BuildAssetList : IService
 
     public void Load()
     {
-        _console.AddCommand(new ConsoleCommand("setAssetsToDefault",
+        _console.AddCommand(new ConsoleCommand("refreshCacheDir",
             "Force generates asset dictionary from default caches directory.",
             _ => GenerateDefaultAssetList(true)));
 
-        _console.AddCommand(new ConsoleCommand("changeDefaultCacheDir",
+        _console.AddCommand(new ConsoleCommand("changeCacheDir",
             "Change the default cache directory and regenerate dictionary.",
             _ =>
             {
-                _config.CacheInfoFile = TryGetCacheInfoFile(string.Empty, CacheType.Own);
+                _config.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", string.Empty, _logger);
                 GenerateDefaultAssetList(true);
             }));
 
-        _console.AddCommand(new ConsoleCommand("addCachesToDict",
-            "Adds a cache directory to the current asset dictionary.",
-            _ =>
-            {
-                var cacheDir = Path.GetDirectoryName(TryGetCacheInfoFile(string.Empty, CacheType.Own));
-                var assets = GetAssetsFromCache(cacheDir).Where(a => !InternalAssets.ContainsKey(a.Key));
-                foreach (var asset in assets)
-                {
-                    _logger.LogDebug("Loading new cache file {Name} ({Type})", asset.Key, asset.Value.Type);
-                    InternalAssets.Add(asset.Key, asset.Value);
-                }
-            }));
-
-        _console.AddCommand(new ConsoleCommand("clearCache", "Clears the Web Player cache manually.",
-            _ => EmptyWebCacheDirectory()));
-
-        _config.CacheInfoFile = TryGetCacheInfoFile(_config.CacheInfoFile, CacheType.Own);
+        _config.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", _config.CacheInfoFile, _logger);
 
         Directory.CreateDirectory(_config.AssetSaveDirectory);
         Directory.CreateDirectory(_config.BundleSaveDirectory);
 
         if (_config.FlushCacheOnStart)
-        {
-            Empty(_config.BundleSaveDirectory);
-
-            var shouldDelete = _config.DefaultDelete;
-
-            if (!shouldDelete)
-                shouldDelete = _logger.Ask(
-                    "You have 'FLUSH CACHE ON START' enabled, which may delete cached files from the original game, as they use the same directory. " +
-                    "Please ensure, if this is your first time running this project, that there are not files already in this directory. " +
-                    "These would otherwise be valuable.\n" +
-                    $"Please note: The WEB PLAYER cache is found in your {_config.DefaultWebPlayerCacheLocation} folder. " +
-                    "Please make an __info file in here if it does not exist already."
-                );
-
-            if (shouldDelete)
-            {
-                _config.WebPlayerInfoFile = TryGetCacheInfoFile(_config.WebPlayerInfoFile, CacheType.WebPlayer);
-
-                if (_config.WebPlayerInfoFile != _config.CacheInfoFile)
-                {
-                    if (!_config.DefaultDelete && EmptyWebCacheDirectory())
-                        if (_logger.Ask(
-                                "It is recommended to clean your caches each time in debug mode. " +
-                                "Do you want to set this as the default action?"
-                            ))
-                            _config.DefaultDelete = true;
-                }
-                else
-                {
-                    _logger.LogError("Web player cache and saved directory should not be the same! Skipping...");
-                    _config.WebPlayerInfoFile = string.Empty;
-                }
-            }
-        }
+            GetDirectory.Empty(_config.BundleSaveDirectory);
 
         AssetDictLocation = Path.Combine(_config.AssetSaveDirectory, _config.StoredAssetDict);
 
         GenerateDefaultAssetList(false);
     }
-
-    public bool EmptyWebCacheDirectory()
-    {
-        _config.WebPlayerInfoFile = TryGetCacheInfoFile(_config.WebPlayerInfoFile, CacheType.WebPlayer);
-
-        var isDifferent = _config.WebPlayerInfoFile != _config.CacheInfoFile;
-
-        if (isDifferent)
-            Empty(Path.GetDirectoryName(_config.WebPlayerInfoFile));
-
-        return isDifferent;
-    }
-
-    public static void Empty(string path)
-    {
-        var directory = new DirectoryInfo(path);
-        foreach (var file in directory.GetFiles()) file.Delete();
-        foreach (var subDirectory in directory.GetDirectories()) subDirectory.Delete(true);
-    }
-
-    private string TryGetCacheInfoFile(string defaultFile, CacheType cache)
-    {
-        var name = cache switch
-        {
-            CacheType.Own => "Original",
-            CacheType.WebPlayer => $"Web Player '{_config.DefaultWebPlayerCacheLocation}'",
-            _ => throw new ArgumentOutOfRangeException(nameof(cache), cache, null)
-        };
-
-        _logger.LogInformation("Getting The {Type} Cache Directory", name);
-
-        try
-        {
-            defaultFile = SetFileValue.SetIfNotNull(defaultFile, $"Get the {name} '__info' Cache File",
-                $"{name} Info File (__info)\0__info\0");
-        }
-        catch
-        {
-            // ignored
-        }
-
-        while (true)
-        {
-            name = name.ToLower();
-
-            if (string.IsNullOrEmpty(defaultFile) || !defaultFile.EndsWith("__info"))
-            {
-                _logger.LogError("Please enter the absolute file path for the {Type} '__info' cache file.", name);
-                defaultFile = Console.ReadLine() ?? string.Empty;
-                continue;
-            }
-
-            break;
-        }
-
-        _logger.LogDebug("Got the {Type} cache directory: {Directory}", name, Path.GetDirectoryName(defaultFile));
-
-        return defaultFile;
-    }
-
+    
     private void GenerateDefaultAssetList(bool forceGenerate)
     {
         _logger.LogInformation("Getting Asset Dictionary");
 
         var dictExists = File.Exists(AssetDictLocation);
 
-        InternalAssets = new Dictionary<string, InternalAssetInfo>();
-
-        InternalAssets = !dictExists || forceGenerate
+        var assets = !dictExists || forceGenerate
             ? GetAssetsFromCache(Path.GetDirectoryName(_config.CacheInfoFile))
-            : GetAssetsFromDictionary(File.ReadAllText(AssetDictLocation)).OrderAssets();
+            : GetAssetsFromDictionary(File.ReadAllText(AssetDictLocation));
+
+        InternalAssets = assets.GetClosestBundles(_lConfig);
 
         InternalAssets.AddModifiedAssets(_config);
         InternalAssets.AddLocalXmlFiles(_logger, _config);
 
         _logger.LogDebug("Loaded {Count} assets to memory.", InternalAssets.Count);
-
-        SaveStoredAssets(InternalAssets.Values, AssetDictLocation);
 
         foreach (var asset in InternalAssets.Values.Where(x => x.Type == AssetInfo.TypeAsset.Unknown))
             _logger.LogError("Could not find type for asset '{Name}' in '{File}'.", asset.Name, asset.Path);
@@ -230,7 +121,7 @@ public class BuildAssetList : IService
         _assetSink.InvokeAssetBundlesLoaded(new AssetBundleLoadEventArgs(InternalAssets));
     }
 
-    private Dictionary<string, InternalAssetInfo> GetAssetsFromCache(string directoryPath)
+    private IEnumerable<InternalAssetInfo> GetAssetsFromCache(string directoryPath)
     {
         if (_config.ShouldLogAssets)
             Logger.Default = new AssetBundleLogger(_logger);
@@ -238,8 +129,6 @@ public class BuildAssetList : IService
         var assets = new List<InternalAssetInfo>();
 
         var directories = directoryPath.GetLowestDirectories();
-
-        var singleAssets = new Dictionary<string, InternalAssetInfo>();
 
         using var defaultBar = new DefaultProgressBar(directories.Count, _config.Message, _logger);
 
@@ -252,32 +141,10 @@ public class BuildAssetList : IService
         }
 
         defaultBar.SetMessage($"Finished {_config.Message}");
+        
+        SaveStoredAssets(assets.OrderAssets(), AssetDictLocation);
 
-        foreach (var newAsset in assets)
-        {
-            if (singleAssets.TryGetValue(newAsset.Name, out var value))
-            {
-                if (value.Type == newAsset.Type)
-                {
-                    var oldAssetVersion = new UnityVersion(value.UnityVersion).GetVersionInfo();
-                    var newAssetVersion = new UnityVersion(newAsset.UnityVersion).GetVersionInfo();
-
-                    if (oldAssetVersion < newAssetVersion || oldAssetVersion == newAssetVersion &&
-                        value.BundleSize < newAsset.BundleSize)
-                        singleAssets[newAsset.Name] = newAsset;
-                }
-                else
-                {
-                    throw new InvalidDataException();
-                }
-            }
-            else
-            {
-                singleAssets.Add(newAsset.Name, newAsset);
-            }
-        }
-
-        return singleAssets.Values.OrderAssets();
+        return assets;
     }
 
     private InternalAssetInfo GetAssetBundle(string folderName, DefaultProgressBar bar)
@@ -288,11 +155,30 @@ public class BuildAssetList : IService
             return null;
         }
 
+        var infoFile = Path.Join(folderName, "__info");
+
+        if (!File.Exists(infoFile))
+        {
+            bar.SetMessage($"Could not find info file in {folderName}, skipping!");
+            return null;
+        }
+
+        var text = File.ReadAllLines(infoFile);
+
+        if (text.Length < 4)
+        {
+            bar.SetMessage($"Info file for {Path.GetDirectoryName(infoFile)} has only {text.Length} lines of text, skipping!");
+            return null;
+        }
+
+        var time = long.Parse(text[1]);
+        var file = Path.Join(folderName, text[3]);
+
         var manager = new AssetsManager();
-        manager.LoadFolder(folderName);
+        manager.LoadFiles(file);
 
         var assetFile = manager.assetsFileList.FirstOrDefault();
-
+        
         if (assetFile == null)
         {
             bar.SetMessage($"Could not find asset in {folderName}, skipping!");
@@ -303,7 +189,7 @@ public class BuildAssetList : IService
         {
             Name = assetFile.GetMainAssetName(),
             Path = assetFile.fullName,
-
+            CacheTime = time,
             Version = 0,
             Type = AssetInfo.TypeAsset.Unknown,
             BundleSize = Convert.ToInt32(new FileInfo(assetFile.fullName).Length / 1024),

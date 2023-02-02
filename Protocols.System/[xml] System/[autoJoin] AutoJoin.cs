@@ -27,8 +27,9 @@ public class AutoJoin : SystemProtocol
         SendXt("cl", GetCharacterList(player.UserInfo));
     }
 
-    private static Dictionary<CharacterInfoHandler.ExternalProperties, object> GetPropertiesOfUser(UserInfo userInfo, Account account) =>
-        new ()
+    private static Dictionary<CharacterInfoHandler.ExternalProperties, object> GetPropertiesOfUser(UserInfo userInfo,
+        Account account) =>
+        new()
         {
             { CharacterInfoHandler.ExternalProperties.Chat_Level, userInfo.ChatLevel },
             { CharacterInfoHandler.ExternalProperties.Gender, Enum.GetName(userInfo.Gender) },

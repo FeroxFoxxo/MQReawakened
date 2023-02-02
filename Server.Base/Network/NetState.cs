@@ -189,11 +189,11 @@ public class NetState : IDisposable
         if (Socket == null)
             return;
 
-        packet += "\0";
-
         if (!string.IsNullOrEmpty(protocolType))
             if (!_config.IgnoreProtocolType.Contains(protocolType))
                 _currentLogs.Add(packet);
+
+        packet += "\0";
 
         var buffer = Encoding.UTF8.GetBytes(packet);
         var length = buffer.Length;

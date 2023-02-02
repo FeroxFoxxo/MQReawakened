@@ -27,6 +27,10 @@ public class LauncherConfig : IConfig
 
     public bool OverwriteGameConfig { get; set; }
 
+    public bool Is2014Client { get; set; }
+    public string TimeFilter { get; set; }
+    public string OldClientLastUpdate { get; set; }
+
     public LauncherConfig()
     {
         News = $"You expected there to be news here? It's {DateTime.Now.Year}!";
@@ -48,5 +52,9 @@ public class LauncherConfig : IConfig
         CacheVersion = 1;
         CacheSize = 0;
         CacheExpiration = 0;
+
+        Is2014Client = true;
+        TimeFilter = "yyyy-MM-dd_HH-mm-ss";
+        OldClientLastUpdate = "2013-11-01_12-00-00";
     }
 }

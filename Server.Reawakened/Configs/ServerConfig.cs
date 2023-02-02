@@ -27,7 +27,7 @@ public class ServerConfig : IConfig
 
         DefaultProtocolTypeIgnore = new[] { "ss", "Pp", "ku" };
 
-        DefaultDebugVariables = new Dictionary<DebugHandler.DebugVariables, bool>()
+        DefaultDebugVariables = new Dictionary<DebugHandler.DebugVariables, bool>
         {
             { DebugHandler.DebugVariables.Sharder_active, false },
             { DebugHandler.DebugVariables.Sharder_1, false },

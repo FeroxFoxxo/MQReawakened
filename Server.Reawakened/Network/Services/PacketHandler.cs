@@ -23,16 +23,16 @@ public class PacketHandler : IService
 
     private readonly NetStateHandler _handler;
 
-    private readonly NetworkLogger _networkLogger;
+    private readonly InternalServerConfig _internalServerConfig;
     private readonly ILogger<PacketHandler> _logger;
 
-    private readonly InternalServerConfig _internalServerConfig;
-    private readonly ServerConfig _serverConfig;
+    private readonly NetworkLogger _networkLogger;
 
     private readonly Dictionary<string, SystemCallback> _protocolsSystem;
     private readonly Dictionary<string, ExternalCallback> _protocolsXt;
 
     private readonly ReflectionUtils _reflectionUtils;
+    private readonly ServerConfig _serverConfig;
     private readonly IServiceProvider _services;
     private readonly EventSink _sink;
 
@@ -52,7 +52,8 @@ public class PacketHandler : IService
         _protocolsSystem = new Dictionary<string, SystemCallback>();
     }
 
-    public void Initialize() {
+    public void Initialize()
+    {
         _sink.ServerStarted += AddProtocols;
         _sink.WorldLoad += AskProtocolIgnore;
     }

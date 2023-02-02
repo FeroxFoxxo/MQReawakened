@@ -7,6 +7,7 @@ using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Extensions;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using WorldGraphDefines;
 
@@ -32,7 +33,7 @@ public class Level
         LevelData = levelData;
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
     }
-    
+
     public void AddClient(NetState newClient, out JoinReason reason)
     {
         var playerId = -1;
@@ -53,13 +54,13 @@ public class Level
             reason = JoinReason.Accepted;
         }
 
-        newClient.Get<Players.Player>().PlayerId = playerId;
-        
+        newClient.Get<Player>().PlayerId = playerId;
+
         switch (reason)
         {
             case JoinReason.Accepted:
             {
-                var newPlayer = newClient.Get<Players.Player>();
+                var newPlayer = newClient.Get<Player>();
 
                 if (LevelData.LevelId == -1)
                     return;
@@ -73,7 +74,7 @@ public class Level
 
                 foreach (var currentClient in _clients.Values)
                 {
-                    var currentPlayer = currentClient.Get<Players.Player>();
+                    var currentPlayer = currentClient.Get<Player>();
                     var currentAccount = currentClient.Get<Account>();
 
                     var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
@@ -83,11 +84,13 @@ public class Level
                     if (areDifferentClients)
                         SendUserEnterData(currentClient, newPlayer, newAccount);
 
-                    SendCharacterInfoData(newClient, currentPlayer, areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals);
+                    SendCharacterInfoData(newClient, currentPlayer,
+                        areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals);
 
                     if (areDifferentClients)
                         SendCharacterInfoData(currentClient, newPlayer, CharacterInfoType.Lite);
                 }
+
                 break;
             }
             case JoinReason.Full:
@@ -97,10 +100,11 @@ public class Level
         }
     }
 
-    private static void SendUserEnterData(NetState state, Players.Player player, Account account) =>
-        state.SendXml("uER", $"<u i='{player.UserInfo.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.PlayerId}'><n>{account.Username}</n></u>");
+    private static void SendUserEnterData(NetState state, Player player, Account account) =>
+        state.SendXml("uER",
+            $"<u i='{player.UserInfo.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.PlayerId}'><n>{account.Username}</n></u>");
 
-    public void SendCharacterInfoData(NetState state, Players.Player player, CharacterInfoType type)
+    public void SendCharacterInfoData(NetState state, Player player, CharacterInfoType type)
     {
         var character = player.GetCurrentCharacter();
 
@@ -124,7 +128,7 @@ public class Level
     public void DumpPlayerToLobby(int playerId)
     {
         var client = _clients[playerId];
-        client.Get<Players.Player>().JoinLevel(client, _handler.GetLevelFromId(-1), out var _);
+        client.Get<Player>().JoinLevel(client, _handler.GetLevelFromId(-1), out var _);
         RemoveClient(playerId);
     }
 

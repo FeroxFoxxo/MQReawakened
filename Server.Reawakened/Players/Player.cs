@@ -9,10 +9,10 @@ namespace Server.Reawakened.Players;
 
 public class Player : INetStateData
 {
+    public int CurrentCharacter;
     public Level CurrentLevel;
     public int PlayerId;
     public UserInfo UserInfo;
-    public int CurrentCharacter;
 
     public Player(UserInfo userInfo) => UserInfo = userInfo;
 

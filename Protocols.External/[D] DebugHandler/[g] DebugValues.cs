@@ -19,7 +19,7 @@ public class DebugValues : ExternalProtocol
 
         foreach (var debug in Config.DefaultDebugVariables)
         {
-            sb.Append((int) debug.Key);
+            sb.Append((int)debug.Key);
             sb.Append(debug.Value ? "On" : "Off");
         }
 

@@ -1,9 +1,9 @@
 ﻿using Server.Reawakened.Players.Models.Character;
 
 namespace Server.Reawakened.Players.Extensions;
+
 public static class CharacterExtensions
 {
-
     public static CharacterDataModel GetCurrentCharacter(this Player player)
         => player.UserInfo.Characters[player.CurrentCharacter];
 

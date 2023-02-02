@@ -7,7 +7,7 @@ namespace Protocols.External._k__SyncClock;
 public class SendRoomUpdate : ExternalProtocol
 {
     public override string ProtocolName => "ku";
-    
+
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();

@@ -6,8 +6,11 @@ using Server.Base.Core.Helpers.Internal;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using System.Diagnostics;
+using System.Globalization;
+using System.Text.Json;
 using System.Xml.Linq;
 using Web.Launcher.Models;
+using Web.Launcher.Models.Current;
 
 namespace Web.Launcher.Services;
 
@@ -23,7 +26,7 @@ public class StartGame : IService
     private bool _dirSet, _appStart;
     private Process _game;
 
-    public string CurrentVersion { get; private set; }
+    public PackageInformation CurrentVersion { get; private set; }
 
     public StartGame(EventSink sink, LauncherConfig lConfig, SettingsConfig sConfig,
         IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console)
@@ -88,12 +91,20 @@ public class StartGame : IService
             if (string.IsNullOrEmpty(_directory))
                 continue;
 
-            CurrentVersion = File.ReadAllText(Path.Join(_directory, "current.txt"));
+            CurrentVersion = JsonSerializer.Deserialize<PackageInformation>(File.ReadAllText(Path.Join(_directory, "current.txt")));
 
             break;
         }
 
         _logger.LogDebug("Got launcher directory: {Directory}", Path.GetDirectoryName(_lConfig.GameSettingsFile));
+
+        var lastUpdate = DateTime.ParseExact(CurrentVersion.game.lastUpdate, _lConfig.TimeFilter, CultureInfo.InvariantCulture);
+        var lastOldClientUpdate = DateTime.ParseExact(_lConfig.OldClientLastUpdate, _lConfig.TimeFilter, CultureInfo.InvariantCulture);
+
+        _lConfig.Is2014Client = lastUpdate < lastOldClientUpdate;
+
+        if (_lConfig.Is2014Client)
+            _directory = new DirectoryInfo(_directory).Parent?.FullName;
 
         _dirSet = true;
 

@@ -30,23 +30,40 @@ public static class ConvertAssetInfo
 
         var pathXml = document.CreateElement("path");
         pathXml.InnerText = asset.Path;
-
-        assetXml.SetAttribute("unityVersion", asset.UnityVersion);
-
         assetXml.AppendChild(pathXml);
+
+        var versionXml = document.CreateElement("unityVersion");
+        versionXml.InnerText = asset.UnityVersion;
+        assetXml.AppendChild(versionXml);
+
+        var timeXml = document.CreateElement("cacheTime");
+        timeXml.InnerText = asset.CacheTime.ToString();
+        assetXml.AppendChild(timeXml);
+        
         return assetXml;
     }
 
-    public static InternalAssetInfo XmlToAsset(this XmlElement assetElement) =>
-        new()
-        {
-            Name = assetElement.GetAttribute("name"),
-            Version = Convert.ToInt32(assetElement.GetAttribute("version")),
-            Type = Enum.Parse<AssetInfo.TypeAsset>(assetElement.GetAttribute("type")),
-            Locale = Enum.Parse<RFC1766Locales.LanguageCodes>(assetElement.GetAttribute("language")
-                .Replace('-', '_')),
-            BundleSize = Convert.ToInt32(assetElement.GetAttribute("size")),
-            Path = assetElement.ChildNodes.Cast<XmlNode>().FirstOrDefault(x => x.Name == "path").InnerText,
-            UnityVersion = assetElement.GetAttribute("unityVersion")
-        };
+    public static InternalAssetInfo XmlToAsset(this XmlElement assetElement)
+    {
+        var cacheTime = assetElement.ChildNodes.Cast<XmlNode>()
+            .FirstOrDefault(x => x.Name == "cacheTime")
+            ?.InnerText;
+
+        return cacheTime != null
+            ? new InternalAssetInfo
+            {
+                Name = assetElement.GetAttribute("name"),
+                Version = Convert.ToInt32(assetElement.GetAttribute("version")),
+                Type = Enum.Parse<AssetInfo.TypeAsset>(assetElement.GetAttribute("type")),
+                Locale = Enum.Parse<RFC1766Locales.LanguageCodes>(assetElement.GetAttribute("language")
+                    .Replace('-', '_')),
+                BundleSize = Convert.ToInt32(assetElement.GetAttribute("size")),
+
+                Path = assetElement.ChildNodes.Cast<XmlNode>().FirstOrDefault(x => x.Name == "path")?.InnerText,
+                UnityVersion = assetElement.ChildNodes.Cast<XmlNode>().FirstOrDefault(x => x.Name == "unityVersion")
+                    ?.InnerText,
+                CacheTime = long.Parse(cacheTime)
+            }
+            : null;
+    }
 }

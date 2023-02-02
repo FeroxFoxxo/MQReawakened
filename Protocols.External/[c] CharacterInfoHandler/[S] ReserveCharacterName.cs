@@ -16,7 +16,7 @@ public class ReserveCharacterName : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var gender = (Gender) int.Parse(message[5]);
+        var gender = (Gender)int.Parse(message[5]);
         var name = new[] { message[6], message[7], message[8] };
 
         if (NameGenSyllables.IsNameReserved(name, UserInfoHandler))

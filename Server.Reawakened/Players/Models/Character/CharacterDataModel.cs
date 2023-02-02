@@ -34,7 +34,9 @@ public class CharacterDataModel : CharacterLightModel
     public int AbilityPower { get; set; }
     public int ChatLevel { get; set; }
 
-    public CharacterDataModel() { }
+    public CharacterDataModel()
+    {
+    }
 
     public CharacterDataModel(string serverData, int id, ServerConfig config) : base(serverData)
     {
