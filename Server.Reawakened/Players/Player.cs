@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Models;
+using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Levels;
@@ -7,6 +8,7 @@ using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using SmartFoxClientAPI.Data;
 
 namespace Server.Reawakened.Players;
 
@@ -22,15 +24,18 @@ public class Player : INetStateData
     public void RemovedState(NetState state, NetStateHandler handler,
         Microsoft.Extensions.Logging.ILogger logger)
     {
-        if (CurrentLevel != null)
-        {
-            var levelName = CurrentLevel.LevelData.Name;
+        if (CurrentLevel == null)
+            return;
 
-            if (!string.IsNullOrEmpty(levelName))
-                logger.LogDebug("Dumped player with ID '{User}' from level '{Level}'", PlayerId, levelName);
-        }
+        if (!CurrentLevel.LevelData.IsValid())
+            return;
 
-        CurrentLevel?.DumpPlayerToLobby(PlayerId);
+        var levelName = CurrentLevel.LevelData.Name;
+
+        if (!string.IsNullOrEmpty(levelName))
+            logger.LogDebug("Dumped player with ID '{User}' from level '{Level}'", PlayerId, levelName);
+
+        CurrentLevel.DumpPlayerToLobby(PlayerId);
     }
 
     public void JoinLevel(NetState state, Level level, out JoinReason reason)
@@ -38,6 +43,22 @@ public class Player : INetStateData
         CurrentLevel?.RemoveClient(PlayerId);
         CurrentLevel = level;
         CurrentLevel.AddClient(state, out reason);
+    }
+
+    public void QuickJoinLevel(int id, NetState state, LevelHandler levelHandler)
+    {
+        Level newLevel = null;
+
+        try
+        {
+            newLevel = levelHandler.GetLevelFromId(id);
+        }
+        catch (NullReferenceException) { }
+
+        if (newLevel == null)
+            return;
+
+        JoinLevel(state, newLevel, out var _);
     }
 
     public int GetLevelId() => CurrentLevel != null ? CurrentLevel.LevelData.LevelId : -1;

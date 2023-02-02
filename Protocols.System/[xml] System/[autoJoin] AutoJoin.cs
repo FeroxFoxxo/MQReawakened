@@ -16,34 +16,16 @@ public class AutoJoin : SystemProtocol
     public override string ProtocolName => "autoJoin";
 
     public LevelHandler LevelHandler { get; set; }
-    public ILogger<AutoJoin> Logger { get; set; }
 
     public override void Run(XmlDocument xmlDoc)
     {
-        var user = NetState.Get<Player>();
         var account = NetState.Get<Account>();
+        var player = NetState.Get<Player>();
 
-        Level newLevel;
+        player.QuickJoinLevel(0, NetState, LevelHandler);
 
-        try
-        {
-            newLevel = LevelHandler.GetLevelFromId(0);
-        }
-        catch (NullReferenceException)
-        {
-            newLevel = null;
-        }
-
-        if (newLevel == null)
-        {
-            Logger.LogError("Could not find level! Returning...");
-            return;
-        }
-
-        user.JoinLevel(NetState, newLevel, out var _);
-        
-        SendXt("cx", GetPropertyList(GetPropertiesOfUser(user.UserInfo, account)));
-        SendXt("cl", GetCharacterList(user.UserInfo));
+        SendXt("cx", GetPropertyList(GetPropertiesOfUser(player.UserInfo, account)));
+        SendXt("cl", GetCharacterList(player.UserInfo));
     }
 
     private static Dictionary<CharacterInfoHandler.ExternalProperties, object> GetPropertiesOfUser(UserInfo userInfo, Account account) =>

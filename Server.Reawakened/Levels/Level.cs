@@ -33,7 +33,7 @@ public class Level
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
     }
     
-    public void AddClient(NetState state, out JoinReason reason)
+    public void AddClient(NetState newClient, out JoinReason reason)
     {
         var playerId = -1;
 
@@ -48,27 +48,25 @@ public class Level
             while (_clientIds.Contains(playerId))
                 playerId++;
 
-            _clients.Add(playerId, state);
+            _clients.Add(playerId, newClient);
             _clientIds.Add(playerId);
             reason = JoinReason.Accepted;
         }
 
-        state.Get<Player>().PlayerId = playerId;
-
-        SendClientJoin(state, reason);
-    }
-
-    public void SendClientJoin(NetState newClient, JoinReason reason)
-    {
+        newClient.Get<Player>().PlayerId = playerId;
+        
         switch (reason)
         {
             case JoinReason.Accepted:
             {
                 var newPlayer = newClient.Get<Player>();
 
+                if (LevelData.LevelId == -1)
+                    return;
+
                 newClient.SendXml("joinOK", $"<pid id='{newPlayer.PlayerId}' /><uLs />");
 
-                if (LevelData.LevelId == -1)
+                if (LevelData.LevelId == 0)
                     return;
 
                 var newAccount = newClient.Get<Account>();

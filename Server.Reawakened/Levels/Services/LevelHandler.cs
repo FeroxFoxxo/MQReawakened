@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Helpers;
 using Server.Reawakened.Core.Models;
@@ -41,18 +42,33 @@ public class LevelHandler : IService
 
         LevelInfo levelInfo;
 
-        try
+        if (levelId is -1 or 0)
         {
-            levelInfo = _worldGraph?.GetInfoLevel(levelId);
-        }
-        catch (NullReferenceException)
-        {
-            if (_levels.Count == 0)
-                _logger.LogCritical("Could not find any levels! Are you sure you have your cache set up correctly?");
-            else
-                _logger.LogError("Could not find the required level! Are you sure your caches contain this?");
+            var name = levelId switch
+            {
+                -1 => "Disconnected",
+                0 => "Lobby",
+                _ => throw new ArgumentOutOfRangeException(nameof(levelId), levelId, null)
+            };
 
-            return new Level(new LevelInfo(), _config, this);
+            levelInfo = new LevelInfo(name, name, name, levelId,
+                0, 0, LevelType.Unknown, TribeType._Invalid);
+        }
+        else
+        {
+            try
+            {
+                levelInfo = _worldGraph?.GetInfoLevel(levelId);
+            }
+            catch (NullReferenceException)
+            {
+                if (_levels.Count == 0)
+                    _logger.LogCritical("Could not find any levels! Are you sure you have your cache set up correctly?");
+                else
+                    _logger.LogError("Could not find the required level! Are you sure your caches contain this?");
+
+                return new Level(new LevelInfo(), _config, this);
+            }
         }
 
         var level = new Level(levelInfo, _config, this);
