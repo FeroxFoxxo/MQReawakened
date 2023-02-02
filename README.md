@@ -12,11 +12,7 @@ My email is feroxfoxxo@gmail.com if you need to get into contact with me directl
 
 #### The logo above was made by Z6mbie through vector art. Big thanks to him for the design!
 
-MQReawaken is a private server meant for educational use only. It's built off the Ultima server emulator, written by the guys at [ServUO](https://github.com/ServUO/ServUO/), as well as [Asset Studio](https://github.com/Perfare/AssetStudio), by Perfare, and heavily modified.
-
-**This project is for non-commercial, educational use only.**
-
-I am completely unaffiliated with any prior remake attempts. This has just been a project to progress my own knowledge of C#.
+MQReawaken is a private server meant for **non-commercial, educational use only**. It's built off the Ultima server emulator, written by the guys at [ServUO](https://github.com/ServUO/ServUO/), as well as [Asset Studio](https://github.com/Perfare/AssetStudio), by Perfare, and heavily modified.
 
 ### Prerequisites
 
