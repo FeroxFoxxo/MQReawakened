@@ -32,11 +32,7 @@ public static class AssetBuilderExtensions
         LauncherConfig config)
     {
         var filteredAssets = new Dictionary<string, InternalAssetInfo>();
-
-        var oldTime = (long)DateTime
-            .ParseExact(config.OldClientLastUpdate, config.TimeFilter, CultureInfo.InvariantCulture)
-            .ToUniversalTime().Subtract(DateTime.UnixEpoch).TotalSeconds;
-
+        
         foreach (var newAsset in assets)
         {
             if (!filteredAssets.ContainsKey(newAsset.Name))
@@ -45,19 +41,19 @@ public static class AssetBuilderExtensions
             }
             else
             {
-                var oldAsset = filteredAssets[newAsset.Name];
+                var oldAssetTime = filteredAssets[newAsset.Name].CacheTime - config.LastClientUpdate;
+                var newAssetTime = newAsset.CacheTime - config.LastClientUpdate;
 
-                if (oldAsset.CacheTime > oldTime)
+                if (config.Is2014Client)
                 {
-                    if (oldAsset.CacheTime > newAsset.CacheTime)
+                    if (newAssetTime > oldAssetTime)
                         filteredAssets[newAsset.Name] = newAsset;
                 }
-                else if (oldAsset.CacheTime < newAsset.CacheTime)
+                else
                 {
-                    filteredAssets[newAsset.Name] = newAsset;
+                    if (newAssetTime < oldAssetTime)
+                        filteredAssets[newAsset.Name] = newAsset;
                 }
-
-                filteredAssets[newAsset.Name] = newAsset;
             }
         }
 

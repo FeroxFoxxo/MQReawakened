@@ -9,12 +9,14 @@ public class DefaultProgressBar : IDisposable
     private readonly ChildProgressBar _bottomBar;
 
     private readonly Microsoft.Extensions.Logging.ILogger _logger;
+    private readonly bool _logProgressAfter;
     private readonly List<string> _messages;
     private readonly ProgressBar _topBar;
 
-    public DefaultProgressBar(int count, string message, Microsoft.Extensions.Logging.ILogger logger)
+    public DefaultProgressBar(int count, string message, Microsoft.Extensions.Logging.ILogger logger, bool logProgressAfter = true)
     {
         _logger = logger;
+        _logProgressAfter = logProgressAfter;
         _messages = new List<string>();
 
         var bottomBarOptions = new ProgressBarOptions
@@ -41,14 +43,17 @@ public class DefaultProgressBar : IDisposable
         _bottomBar?.Dispose();
         _topBar?.Dispose();
 
-        Console.WriteLine();
+        if (_logProgressAfter)
+        {
+            Console.WriteLine();
 
-        _logger.LogTrace("-- Log of progress bar --");
+            _logger.LogTrace("-- Log of progress bar --");
 
-        foreach (var message in _messages)
-            _logger.LogTrace(message);
+            foreach (var message in _messages)
+                _logger.LogTrace("{Message}", message);
 
-        _logger.LogTrace("-------------------------");
+            _logger.LogTrace("-------------------------");
+        }
 
         Console.WriteLine();
 

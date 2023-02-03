@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Base.Core.Helpers.Internal;
 using Server.Base.Core.Models;
@@ -104,10 +105,12 @@ public class StartGame : IService
         var lastOldClientUpdate = DateTime.ParseExact(_lConfig.OldClientLastUpdate, _lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
 
-        _lConfig.Is2014Client = lastUpdate < lastOldClientUpdate;
+        _lConfig.Is2014Client = lastUpdate > lastOldClientUpdate;
 
-        if (_lConfig.Is2014Client)
+        if (!_lConfig.Is2014Client)
             _directory = new DirectoryInfo(_directory).Parent?.FullName;
+
+        _lConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
 
         _dirSet = true;
 

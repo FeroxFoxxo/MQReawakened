@@ -58,7 +58,7 @@ public class ReplaceCaches : IService
         _logger.LogInformation("Loaded {NumAssetDict} Assets With {Caches} Caches ({TotalFiles} Total Files).",
             assetDictionary.Count, filteredCaches.Length, cachedFiles.Length);
 
-        using (var bar = new DefaultProgressBar(filteredCaches.Length, "Replacing Caches", _logger))
+        using (var bar = new DefaultProgressBar(filteredCaches.Length, "Replacing Caches", _logger, _config.LogReplacements))
         {
             foreach (var cache in filteredCaches)
             {

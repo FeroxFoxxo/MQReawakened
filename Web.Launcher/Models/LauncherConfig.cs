@@ -1,4 +1,5 @@
 ﻿using Server.Base.Core.Abstractions;
+using Server.Base.Core.Extensions;
 
 namespace Web.Launcher.Models;
 
@@ -30,6 +31,7 @@ public class LauncherConfig : IConfig
     public bool Is2014Client { get; set; }
     public string TimeFilter { get; set; }
     public string OldClientLastUpdate { get; set; }
+    public long LastClientUpdate { get; set; }
 
     public LauncherConfig()
     {
@@ -56,5 +58,6 @@ public class LauncherConfig : IConfig
         Is2014Client = true;
         TimeFilter = "yyyy-MM-dd_HH-mm-ss";
         OldClientLastUpdate = "2013-11-01_12-00-00";
+        LastClientUpdate = DateTime.Now.ToUnixTimestamp();
     }
 }

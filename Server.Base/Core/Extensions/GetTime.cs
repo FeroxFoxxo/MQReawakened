@@ -16,6 +16,9 @@ public static class GetTime
         return timeSpan;
     }
 
+    public static long ToUnixTimestamp(this DateTime time) =>
+        (long)time.ToUniversalTime().Subtract(DateTime.UnixEpoch).TotalSeconds;
+
     public static long GetCurrentUnixMilliseconds() =>
         (long)DateTime.UtcNow.ToUniversalTime().Subtract(DateTime.UnixEpoch).TotalMilliseconds;
 }

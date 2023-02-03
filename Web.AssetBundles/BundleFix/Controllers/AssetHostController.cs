@@ -95,7 +95,7 @@ public class AssetHostController : Controller
             var unityVersion = new UnityVersion(asset.UnityVersion);
             var fileName = Path.GetFileName(asset.Path);
 
-            var data = new FixedAssetFile(asset.Path);
+            var data = new FixedAssetFile(_config.ShouldUseLocalAssetToGenerate ? _config.LocalAssetCache : asset.Path);
             var metadata = new BundleMetadata(fileName, data.FileSize);
             var header = new RawBundleHeader(data.FileSize, metadata.MetadataSize, unityVersion);
 

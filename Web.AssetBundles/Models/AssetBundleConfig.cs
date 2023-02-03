@@ -37,11 +37,19 @@ public class AssetBundleConfig : IConfig
     public string[] ForceLocalAsset { get; set; }
     public string[] AssetModifiers { get; set; }
 
+    public bool ShouldUseLocalAssetToGenerate { get; set; }
+    public string LocalAssetCache { get; set; }
+    public bool LogReplacements { get; set; }
+
     public AssetBundleConfig()
     {
         BundleSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Bundles");
         XmlSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "XMLs");
         AssetSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "AssetDictionaries");
+
+        ShouldUseLocalAssetToGenerate = true;
+        LogReplacements = false;
+        LocalAssetCache = Path.Combine(InternalDirectory.GetBaseDirectory(), "TestAssetCache.cache");
 
         AlwaysRecreateBundle = true;
         FlushCacheOnStart = true;
