@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Thrift;
 using SmartFoxClientAPI;
 
 namespace Server.Reawakened;
@@ -19,6 +20,7 @@ public class Reawakened : Module
         services
             .AddSingleton<ReflectionUtils>()
             .AddSingleton<SmartFoxClient>()
+            .AddSingleton<MessageHandler>()
             .AddSingleton<NameGenSyllables>();
 
     public override string GetModuleInformation() =>

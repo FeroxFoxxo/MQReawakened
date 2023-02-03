@@ -52,7 +52,7 @@
         <HintPath>Dependencies\SmartFoxClient.dll</HintPath>
       </Reference>
       <Reference Include="Thrift">
-        <HintPath>Dependencies\Thrift.dll</HintPath>
+        <HintPath>Thrift\Thrift.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine">
         <HintPath>Dependencies\UnityEngine.dll</HintPath>

@@ -21,11 +21,9 @@
         <Folder Include="[x] ItemHandler\" />
         <Folder Include="[b] LocalizationHandler\" />
         <Folder Include="[j] LootHandler\" />
-        <Folder Include="[y] MessageCenterHandler\" />
         <Folder Include="[M] MinigameHandler\" />
         <Folder Include="[w] WarningMessageHandler\" />
         <Folder Include="[t] TradeHandler\" />
-        <Folder Include="[s] Synchronizer\" />
         <Folder Include="[r] RoomHandler\" />
         <Folder Include="[o] ReportMessageHandler\" />
         <Folder Include="[Z] PetHandler\" />
@@ -42,6 +40,9 @@
         </Reference>
         <Reference Include="Assembly-CSharp">
             <HintPath>..\Server.Reawakened\Dependencies\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Thrift">
+          <HintPath>..\Server.Reawakened\Thrift\Thrift.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine">
             <HintPath>..\Server.Reawakened\Dependencies\UnityEngine.dll</HintPath>

@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Players.Enums;
+﻿using Server.Base.Core.Extensions;
+using Server.Reawakened.Players.Enums;
 using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Extensions;
 
 namespace Server.Reawakened.XMLs.Bundles;
 

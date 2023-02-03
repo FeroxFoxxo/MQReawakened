@@ -12,6 +12,8 @@ public class ServerConfig : IConfig
     public int StartLevel { get; set; }
     public int DefaultQuest { get; set; }
 
+    public bool LogSyncState { get; set; }
+
     public string[] DefaultProtocolTypeIgnore { get; set; }
 
     public Dictionary<DebugHandler.DebugVariables, bool> DefaultDebugVariables { get; set; }
@@ -25,7 +27,8 @@ public class ServerConfig : IConfig
         StartLevel = 47;
         DefaultQuest = 802;
 
-        DefaultProtocolTypeIgnore = new[] { "ss", "Pp", "ku" };
+        LogSyncState = false;
+        DefaultProtocolTypeIgnore = new[] { "ss", "Pp", "ku", "kr" };
 
         DefaultDebugVariables = new Dictionary<DebugHandler.DebugVariables, bool>
         {
