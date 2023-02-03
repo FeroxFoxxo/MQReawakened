@@ -26,7 +26,7 @@ public class StartPlay : ExternalProtocol
 
         try
         {
-            var level = LevelHandler.GetLevelFromId(player.GetCurrentCharacter().Level);
+            var level = player.GetCurrentLevel(LevelHandler);
 
             levelName = level.LevelInfo.Name;
             surroundingLevels = GetSurroundingLevels(level.LevelInfo);
