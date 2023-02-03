@@ -18,13 +18,13 @@ public class StartPlayLevel : ExternalProtocol
     {
         var player = NetState.Get<Player>();
 
-        var level = LevelHandler.GetLevelFromId(player.UserInfo.CharacterLevel[player.CurrentCharacter]);
+        var level = LevelHandler.GetLevelFromId(player.GetCurrentCharacter().Level);
         player.JoinLevel(NetState, level, out var reason);
 
-        SendXt("lz", reason.GetJoinReasonError(), level.LevelData.LevelId, level.LevelData.Name);
+        SendXt("lz", reason.GetJoinReasonError(), level.LevelInfo.LevelId, level.LevelInfo.Name);
 
-        if (TribeDiscovered(level.LevelData, player.GetCurrentCharacter()))
-            SendXt("cB", (int)level.LevelData.Tribe);
+        if (TribeDiscovered(level.LevelInfo, player.GetCurrentCharacter().Data))
+            SendXt("cB", (int)level.LevelInfo.Tribe);
     }
 
     public static bool TribeDiscovered(LevelInfo lInfo, CharacterDataModel character)

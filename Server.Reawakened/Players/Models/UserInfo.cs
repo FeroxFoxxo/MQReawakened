@@ -1,15 +1,13 @@
 ﻿using Server.Base.Core.Models;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Enums;
-using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.System;
 
 namespace Server.Reawakened.Players.Models;
 
 public class UserInfo : PersistantData
 {
-    public Dictionary<int, CharacterDataModel> Characters { get; set; }
-    public Dictionary<int, int> CharacterLevel { get; set; }
+    public Dictionary<int, CharacterModel> Characters { get; set; }
     public Dictionary<int, SystemMailModel> Mail { get; set; }
 
     public string LastCharacterSelected { get; set; }
@@ -26,8 +24,7 @@ public class UserInfo : PersistantData
 
     public UserInfo()
     {
-        Characters = new Dictionary<int, CharacterDataModel>();
-        CharacterLevel = new Dictionary<int, int>();
+        Characters = new Dictionary<int, CharacterModel>();
         Mail = new Dictionary<int, SystemMailModel>();
     }
 
@@ -45,8 +42,7 @@ public class UserInfo : PersistantData
         AuthToken = kGen.GetRandomKey<UserInfo>(userId.ToString());
         ChatLevel = 3;
 
-        Characters = new Dictionary<int, CharacterDataModel>();
-        CharacterLevel = new Dictionary<int, int>();
+        Characters = new Dictionary<int, CharacterModel>();
         Mail = new Dictionary<int, SystemMailModel>();
     }
 }

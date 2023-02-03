@@ -26,7 +26,7 @@ public class SetActiveQuest : ExternalProtocol
         if (activeQuest == -1)
             activeQuest = Config.DefaultQuest;
 
-        if (character.ActiveQuestId == activeQuest || character.CompletedQuests.Contains(activeQuest))
+        if (character.Data.ActiveQuestId == activeQuest || character.Data.CompletedQuests.Contains(activeQuest))
             return;
 
         player.AddQuest(activeQuest, true, NetState, QuestCatalog);

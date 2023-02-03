@@ -22,10 +22,10 @@ public class Player : INetStateData
         if (CurrentLevel == null)
             return;
 
-        if (!CurrentLevel.LevelData.IsValid())
+        if (!CurrentLevel.LevelInfo.IsValid())
             return;
 
-        var levelName = CurrentLevel.LevelData.Name;
+        var levelName = CurrentLevel.LevelInfo.Name;
 
         if (!string.IsNullOrEmpty(levelName))
             logger.LogDebug("Dumped player with ID '{User}' from level '{Level}'", PlayerId, levelName);

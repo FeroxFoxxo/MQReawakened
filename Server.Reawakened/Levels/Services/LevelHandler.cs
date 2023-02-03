@@ -29,7 +29,7 @@ public class LevelHandler : IService
 
     private void LoadLevels()
     {
-        foreach (var level in _levels.Values.Where(level => level.LevelData.LevelId != -1))
+        foreach (var level in _levels.Values.Where(level => level.LevelInfo.LevelId != -1))
             level.DumpPlayersToLobby();
 
         _levels.Clear();

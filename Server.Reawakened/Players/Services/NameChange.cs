@@ -60,7 +60,7 @@ public class NameChange : IService
         foreach (var possibleCharacter in user.Characters)
         {
             _logger.LogInformation("    {CharacterId}: {CharacterName}",
-                possibleCharacter.Key, possibleCharacter.Value.CharacterName);
+                possibleCharacter.Key, possibleCharacter.Value.Data.CharacterName);
         }
 
         var id = Console.ReadLine();
@@ -80,7 +80,7 @@ public class NameChange : IService
         var character = user.Characters[intId];
 
         _logger.LogInformation("What would you like to set the character '{CharacterName}''s name to?",
-            character.CharacterName);
+            character.Data.CharacterName);
 
         var name = Console.ReadLine()?.Trim();
 
@@ -90,7 +90,7 @@ public class NameChange : IService
             return;
         }
 
-        character.CharacterName = name;
+        character.Data.CharacterName = name;
         user.LastCharacterSelected = name;
 
         _logger.LogInformation("Successfully set character {Id}'s name to {Name}!", intId, name);

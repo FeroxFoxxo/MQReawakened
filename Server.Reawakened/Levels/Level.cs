@@ -20,17 +20,17 @@ public class Level
     private readonly LevelHandler _handler;
     private readonly ServerConfig _serverConfig;
 
-    public readonly LevelInfo LevelData;
+    public readonly LevelInfo LevelInfo;
     public readonly long TimeOffset;
 
-    public Level(LevelInfo levelData, ServerConfig serverConfig, LevelHandler handler)
+    public Level(LevelInfo levelInfo, ServerConfig serverConfig, LevelHandler handler)
     {
         _serverConfig = serverConfig;
         _handler = handler;
         _clients = new Dictionary<int, NetState>();
         _clientIds = new HashSet<int>();
 
-        LevelData = levelData;
+        LevelInfo = levelInfo;
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
     }
 
@@ -62,12 +62,12 @@ public class Level
             {
                 var newPlayer = newClient.Get<Player>();
 
-                if (LevelData.LevelId == -1)
+                if (LevelInfo.LevelId == -1)
                     return;
 
                 newClient.SendXml("joinOK", $"<pid id='{newPlayer.PlayerId}' /><uLs />");
 
-                if (LevelData.LevelId == 0)
+                if (LevelInfo.LevelId == 0)
                     return;
 
                 var newAccount = newClient.Get<Account>();
@@ -110,13 +110,13 @@ public class Level
 
         var info = type switch
         {
-            CharacterInfoType.Lite => character.GetLightCharacterData(),
-            CharacterInfoType.Portals => character.BuildPortalData(),
-            CharacterInfoType.Detailed => character.ToString(),
+            CharacterInfoType.Lite => character.Data.GetLightCharacterData(),
+            CharacterInfoType.Portals => character.Data.BuildPortalData(),
+            CharacterInfoType.Detailed => character.Data.ToString(),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 
-        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, character.GetGoId().ToString(), LevelData.Name);
+        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, character.Data.GetGoId().ToString(), LevelInfo.Name);
     }
 
     public void DumpPlayersToLobby()

@@ -16,7 +16,7 @@ public static class NpcExtensions
         if (quest == null || character == null)
             throw new InvalidDataException();
 
-        var questModel = character.QuestLog.FirstOrDefault(x => x.Id == questId) ??
+        var questModel = character.Data.QuestLog.FirstOrDefault(x => x.Id == questId) ??
                          new QuestStatusModel
                          {
                              QuestStatus = QuestStatus.QuestState.IN_PROCESSING,
@@ -32,7 +32,7 @@ public static class NpcExtensions
                          };
 
         if (setActive)
-            character.ActiveQuestId = questId;
+            character.Data.ActiveQuestId = questId;
 
         state.SendXt("na", questModel, setActive);
     }

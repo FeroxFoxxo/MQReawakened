@@ -6,6 +6,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Services;
 
@@ -56,8 +57,11 @@ public class CreateCharacter : ExternalProtocol
             characterData.Registered = true;
             characterData.GlobalLevel = 1;
 
-            player.AddCharacter(characterData);
-            player.SetLevel(ServerConfig.StartLevel, characterData.CharacterId);
+            player.AddCharacter(new CharacterModel
+            {
+                Data = characterData,
+                Level = ServerConfig.StartLevel
+            });
             player.SendStartPlay(characterData.CharacterId, NetState, LevelHandler);
         }
     }

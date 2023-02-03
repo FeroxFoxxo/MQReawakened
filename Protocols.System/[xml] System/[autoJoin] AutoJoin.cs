@@ -70,7 +70,7 @@ public class AutoJoin : SystemProtocol
         sb.Append(userInfo.LastCharacterSelected);
 
         foreach (var character in userInfo.Characters)
-            sb.Append(character.Value.GetLightCharacterData());
+            sb.Append(character.Value.Data.GetLightCharacterData());
 
         return sb.ToString();
     }

@@ -10,7 +10,6 @@
         <Folder Include="[a] ChatHandler\" />
         <Folder Include="[C] CashShopHandler\" />
         <Folder Include="[d] DescriptionHandler\" />
-        <Folder Include="[e] EmailHandler\" />
         <Folder Include="[f] FriendsHandler\" />
         <Folder Include="[m] GameCommandHandler\" />
         <Folder Include="[p] GroupHandler\" />

@@ -33,15 +33,12 @@ public static class LevelExtensions
     }
 
     public static int GetLevelId(this Player player) =>
-        player.CurrentLevel != null ? player.CurrentLevel.LevelData.LevelId : -1;
+        player.CurrentLevel != null ? player.CurrentLevel.LevelInfo.LevelId : -1;
 
     public static void SendStartPlay(this Player player, int characterId, NetState state, LevelHandler levelHandler)
     {
         player.SetCharacterSelected(characterId);
-        var level = levelHandler.GetLevelFromId(player.UserInfo.CharacterLevel[characterId]);
+        var level = levelHandler.GetLevelFromId(player.GetCurrentCharacter().Level);
         level?.SendCharacterInfoData(state, player, CharacterInfoType.Detailed);
     }
-
-    public static void SetLevel(this Player player, int levelId, int characterId) =>
-        player.UserInfo.CharacterLevel[characterId] = levelId;
 }
