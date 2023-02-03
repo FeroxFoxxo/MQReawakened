@@ -19,8 +19,8 @@ public class BuildAssetList : IService
 {
     private readonly AssetEventSink _assetSink;
     private readonly AssetBundleConfig _config;
-    private readonly LauncherConfig _lConfig;
     private readonly ServerConsole _console;
+    private readonly LauncherConfig _lConfig;
     private readonly ILogger<BuildAssetList> _logger;
     private readonly EventSink _sink;
 
@@ -74,7 +74,7 @@ public class BuildAssetList : IService
 
         GenerateDefaultAssetList(false);
     }
-    
+
     private void GenerateDefaultAssetList(bool forceGenerate)
     {
         _logger.LogInformation("Getting Asset Dictionary");
@@ -141,7 +141,7 @@ public class BuildAssetList : IService
         }
 
         defaultBar.SetMessage($"Finished {_config.Message}");
-        
+
         SaveStoredAssets(assets.OrderAssets(), AssetDictLocation);
 
         return assets;
@@ -167,7 +167,8 @@ public class BuildAssetList : IService
 
         if (text.Length < 4)
         {
-            bar.SetMessage($"Info file for {Path.GetDirectoryName(infoFile)} has only {text.Length} lines of text, skipping!");
+            bar.SetMessage(
+                $"Info file for {Path.GetDirectoryName(infoFile)} has only {text.Length} lines of text, skipping!");
             return null;
         }
 
@@ -178,7 +179,7 @@ public class BuildAssetList : IService
         manager.LoadFiles(file);
 
         var assetFile = manager.assetsFileList.FirstOrDefault();
-        
+
         if (assetFile == null)
         {
             bar.SetMessage($"Could not find asset in {folderName}, skipping!");

@@ -8,9 +8,7 @@ public class ColorModel
     public float Green { get; set; }
     public float Blue { get; set; }
 
-    public ColorModel()
-    {
-    }
+    public ColorModel() { }
 
     public ColorModel(string serverString)
     {

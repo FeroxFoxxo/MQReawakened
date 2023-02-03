@@ -9,10 +9,10 @@ namespace Server.Reawakened.Levels.Services;
 public class SyncEventManager : IService
 {
     private readonly EventSink _sink;
+    private MethodInfo _decodeSync;
+    private MethodInfo _encodeSync;
 
     private RoomManager _roomManager;
-    private MethodInfo _encodeSync;
-    private MethodInfo _decodeSync;
 
     public SyncEventManager(EventSink sink) => _sink = sink;
 

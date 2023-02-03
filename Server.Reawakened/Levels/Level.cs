@@ -116,7 +116,8 @@ public class Level
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 
-        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, character.Data.GetGoId().ToString(), LevelInfo.Name);
+        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, character.Data.GetGoId().ToString(),
+            LevelInfo.Name);
     }
 
     public void DumpPlayersToLobby()

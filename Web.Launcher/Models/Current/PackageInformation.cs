@@ -1,4 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
+
 #pragma warning disable IDE1006
 
 namespace Web.Launcher.Models.Current;

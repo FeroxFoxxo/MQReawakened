@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Players.Models;
-using Server.Reawakened.Players.Models.Character;
 
 namespace Server.Reawakened.Players.Extensions;
 

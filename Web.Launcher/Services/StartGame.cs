@@ -91,15 +91,18 @@ public class StartGame : IService
             if (string.IsNullOrEmpty(_directory))
                 continue;
 
-            CurrentVersion = JsonSerializer.Deserialize<PackageInformation>(File.ReadAllText(Path.Join(_directory, "current.txt")));
+            CurrentVersion =
+                JsonSerializer.Deserialize<PackageInformation>(File.ReadAllText(Path.Join(_directory, "current.txt")));
 
             break;
         }
 
         _logger.LogDebug("Got launcher directory: {Directory}", Path.GetDirectoryName(_lConfig.GameSettingsFile));
 
-        var lastUpdate = DateTime.ParseExact(CurrentVersion.game.lastUpdate, _lConfig.TimeFilter, CultureInfo.InvariantCulture);
-        var lastOldClientUpdate = DateTime.ParseExact(_lConfig.OldClientLastUpdate, _lConfig.TimeFilter, CultureInfo.InvariantCulture);
+        var lastUpdate = DateTime.ParseExact(CurrentVersion.game.lastUpdate, _lConfig.TimeFilter,
+            CultureInfo.InvariantCulture);
+        var lastOldClientUpdate = DateTime.ParseExact(_lConfig.OldClientLastUpdate, _lConfig.TimeFilter,
+            CultureInfo.InvariantCulture);
 
         _lConfig.Is2014Client = lastUpdate < lastOldClientUpdate;
 

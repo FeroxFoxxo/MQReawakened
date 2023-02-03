@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Levels;
-using Server.Reawakened.Levels.Services;
+﻿using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -20,7 +19,7 @@ public class StartPlay : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        
+
         var error = string.Empty;
         var levelName = string.Empty;
         var surroundingLevels = string.Empty;

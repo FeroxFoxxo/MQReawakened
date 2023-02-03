@@ -9,9 +9,7 @@ public class TribeDataModel
     public int BadgePoints { get; set; }
     public bool Unlocked { get; set; }
 
-    public TribeDataModel()
-    {
-    }
+    public TribeDataModel() { }
 
     public TribeDataModel(string serverData)
     {

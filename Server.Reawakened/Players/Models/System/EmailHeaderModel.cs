@@ -13,6 +13,8 @@ public class EmailHeaderModel
     public EmailHeader.EmailStatus Status { get; set; }
     public EmailCategory CategoryId { get; set; }
 
+    public EmailHeaderModel() { }
+
     public override string ToString()
     {
         var sb = new SeparatedStringBuilder('!');

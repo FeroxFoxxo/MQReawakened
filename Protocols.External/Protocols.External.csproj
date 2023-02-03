@@ -41,7 +41,7 @@
             <HintPath>..\Server.Reawakened\Dependencies\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="Thrift">
-          <HintPath>..\Server.Reawakened\Thrift\Thrift.dll</HintPath>
+            <HintPath>..\Server.Reawakened\Thrift\Thrift.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine">
             <HintPath>..\Server.Reawakened\Dependencies\UnityEngine.dll</HintPath>

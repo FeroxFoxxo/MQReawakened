@@ -7,8 +7,9 @@ public class MessageHandler
 {
     public delegate void ProcessFunction(int sequenceId, TProtocol inProtocol, TProtocol outProtocol);
 
-    public readonly Dictionary<string, ProcessFunction> ProcessMap;
     private readonly ILogger<MessageHandler> _logger;
+
+    public readonly Dictionary<string, ProcessFunction> ProcessMap;
 
     public MessageHandler(ILogger<MessageHandler> logger)
     {

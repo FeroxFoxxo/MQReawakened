@@ -11,10 +11,10 @@ namespace Web.AssetBundles.Services;
 
 public class ClearWebCaches : IService
 {
-    private readonly EventSink _sink;
-    private readonly ServerConsole _console;
     private readonly AssetBundleConfig _config;
+    private readonly ServerConsole _console;
     private readonly ILogger<ClearWebCaches> _logger;
+    private readonly EventSink _sink;
 
     public ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleConfig config,
         ServerConsole console, EventSink sink)
@@ -72,7 +72,7 @@ public class ClearWebCaches : IService
 
         if (!shouldDelete)
             return;
-        
+
         if (_config.DefaultDelete || !EmptyWebCacheDirectory())
             return;
 

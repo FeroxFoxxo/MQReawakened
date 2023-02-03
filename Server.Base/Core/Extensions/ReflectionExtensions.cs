@@ -26,6 +26,6 @@ public static class ReflectionExtensions
         var mi = o.GetType().GetMethod(methodName, bindingFlags);
 
         return mi ?? throw new MissingMethodException($"{type.Name} is missing method {methodName}. " +
-                                        $"Possible methods: {string.Join(", ", type.GetMethods(bindingFlags).Select(x => x.Name))}");
+                                                      $"Possible methods: {string.Join(", ", type.GetMethods(bindingFlags).Select(x => x.Name))}");
     }
 }

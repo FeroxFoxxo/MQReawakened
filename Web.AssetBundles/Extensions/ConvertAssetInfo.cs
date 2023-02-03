@@ -39,7 +39,7 @@ public static class ConvertAssetInfo
         var timeXml = document.CreateElement("cacheTime");
         timeXml.InnerText = asset.CacheTime.ToString();
         assetXml.AppendChild(timeXml);
-        
+
         return assetXml;
     }
 

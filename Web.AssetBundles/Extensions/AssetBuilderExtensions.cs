@@ -28,11 +28,13 @@ public static class AssetBuilderExtensions
         assets.GroupBy(x => x.Type)
             .SelectMany(g => g.OrderBy(x => x.Name).ToList());
 
-    public static Dictionary<string, InternalAssetInfo> GetClosestBundles(this IEnumerable<InternalAssetInfo> assets, LauncherConfig config)
+    public static Dictionary<string, InternalAssetInfo> GetClosestBundles(this IEnumerable<InternalAssetInfo> assets,
+        LauncherConfig config)
     {
         var filteredAssets = new Dictionary<string, InternalAssetInfo>();
 
-        var oldTime = (long) DateTime.ParseExact(config.OldClientLastUpdate, config.TimeFilter, CultureInfo.InvariantCulture)
+        var oldTime = (long)DateTime
+            .ParseExact(config.OldClientLastUpdate, config.TimeFilter, CultureInfo.InvariantCulture)
             .ToUniversalTime().Subtract(DateTime.UnixEpoch).TotalSeconds;
 
         foreach (var newAsset in assets)

@@ -34,19 +34,10 @@ public class CharacterDataModel : CharacterLightModel
     public int AbilityPower { get; set; }
     public int ChatLevel { get; set; }
 
-    public CharacterDataModel()
-    {
-    }
+    public CharacterDataModel() => InitializeLists();
 
     public CharacterDataModel(string serverData, int id, ServerConfig config) : base(serverData)
     {
-        QuestLog = new List<QuestStatusModel>();
-        CompletedQuests = new List<int>();
-        TribesDiscovered = new Dictionary<TribeType, bool>();
-        IdolCount = new Dictionary<int, int>();
-        TribesProgression = new Dictionary<TribeType, TribeDataModel>();
-        DiscoveredStats = new HashSet<int>();
-
         Inventory = new InventoryModel();
         Hotbar = new HotbarModel();
         FriendList = new FriendListModel();
@@ -57,8 +48,20 @@ public class CharacterDataModel : CharacterLightModel
         CharacterId = id;
         Customization.CharacterId = id;
 
+        InitializeLists();
+
         if (CharacterId > config.MaxCharacterCount || CharacterId < 0)
             throw new InvalidDataException();
+    }
+
+    private void InitializeLists()
+    {
+        QuestLog = new List<QuestStatusModel>();
+        CompletedQuests = new List<int>();
+        TribesDiscovered = new Dictionary<TribeType, bool>();
+        IdolCount = new Dictionary<int, int>();
+        TribesProgression = new Dictionary<TribeType, TribeDataModel>();
+        DiscoveredStats = new HashSet<int>();
     }
 
     public override string ToString()
