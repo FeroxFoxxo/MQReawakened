@@ -20,6 +20,12 @@ public static class CharacterExtensions
     public static void AddCharacter(this Player player, CharacterModel characterData) =>
         player.UserInfo.Characters.Add(characterData.Data.CharacterId, characterData);
 
-    public static void DeleteCharacter(this Player player, int id) =>
+    public static void DeleteCharacter(this Player player, int id)
+    {
         player.UserInfo.Characters.Remove(id);
+        
+        player.UserInfo.LastCharacterSelected = player.UserInfo.Characters.Count > 0 ?
+            player.UserInfo.Characters.First().Value.Data.CharacterName :
+            string.Empty;
+    }
 }
