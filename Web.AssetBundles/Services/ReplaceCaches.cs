@@ -42,7 +42,7 @@ public class ReplaceCaches : IService
         _config.GetWebPlayerInfoFile(_logger);
 
         if (_config.FlushCacheOnStart)
-            if (_logger.Ask("Flushing the cache on start is enabled, would you like to disable this?"))
+            if (_logger.Ask("Flushing the cache on start is enabled, would you like to disable this?", true))
                 _config.FlushCacheOnStart = false;
 
         var assetDictionary = _buildAssetList.InternalAssets.Values
@@ -58,7 +58,7 @@ public class ReplaceCaches : IService
         _logger.LogInformation("Loaded {NumAssetDict} Assets With {Caches} Caches ({TotalFiles} Total Files).",
             assetDictionary.Count, filteredCaches.Length, cachedFiles.Length);
 
-        using (var bar = new DefaultProgressBar(filteredCaches.Length, "Replacing Caches", _logger, _config.LogReplacements))
+        using (var bar = new DefaultProgressBar(filteredCaches.Length, "Replacing Caches", _logger, _config))
         {
             foreach (var cache in filteredCaches)
             {
@@ -78,7 +78,7 @@ public class ReplaceCaches : IService
         }
 
         if (!_config.StartLauncherOnReplace)
-            if (_logger.Ask("The launcher is not set to restart on replacement, would you like to enable this?"))
+            if (_logger.Ask("The launcher is not set to restart on replacement, would you like to enable this?", true))
                 _config.StartLauncherOnReplace = true;
 
         if (_config.StartLauncherOnReplace)

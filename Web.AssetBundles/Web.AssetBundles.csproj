@@ -34,6 +34,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="Licences\LICENSE_ASSETSTUDIO">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Licences\LICENSE_ASSETRIPPER">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="LocalAssets\PetAbilities.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

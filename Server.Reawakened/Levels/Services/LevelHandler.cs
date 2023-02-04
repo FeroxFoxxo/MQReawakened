@@ -1,9 +1,14 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Levels.Models;
+using Server.Reawakened.Levels.Models.LevelData;
 using Server.Reawakened.XMLs.Bundles;
+using System.Text.Json;
+using System.Xml;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Levels.Services;
@@ -29,6 +34,8 @@ public class LevelHandler : IService
 
     private void LoadLevels()
     {
+        GetDirectory.OverwriteDirectory(_config.LevelDataSaveDirectory);
+
         foreach (var level in _levels.Values.Where(level => level.LevelInfo.LevelId != -1))
             level.DumpPlayersToLobby();
 
@@ -41,6 +48,7 @@ public class LevelHandler : IService
             return value;
 
         LevelInfo levelInfo;
+        var levelData = new LevelDataModel();
 
         if (levelId is -1 or 0)
         {
@@ -58,7 +66,16 @@ public class LevelHandler : IService
         {
             try
             {
-                levelInfo = _worldGraph?.GetInfoLevel(levelId);
+                levelInfo = _worldGraph!.GetInfoLevel(levelId);
+
+                var levelInfoPath = Path.Join(_config.LevelSaveDirectory, $"{levelInfo.Name}.xml");
+                var levelDataPath = Path.Join(_config.LevelDataSaveDirectory, $"{levelInfo.Name}.json");
+
+                var xmlDocument = new XmlDocument();
+                xmlDocument.Load(levelInfoPath);
+                levelData.LoadXmlDocument(xmlDocument);
+                
+                File.WriteAllText(levelDataPath, JsonSerializer.Serialize(levelData, new JsonSerializerOptions { WriteIndented = true }));
             }
             catch (NullReferenceException)
             {
@@ -68,11 +85,11 @@ public class LevelHandler : IService
                 else
                     _logger.LogError("Could not find the required level! Are you sure your caches contain this?");
 
-                return new Level(new LevelInfo(), _config, this);
+                return new Level(new LevelInfo(), levelData, _config, this);
             }
         }
 
-        var level = new Level(levelInfo, _config, this);
+        var level = new Level(levelInfo, levelData, _config, this);
 
         _levels.Add(levelId, level);
 

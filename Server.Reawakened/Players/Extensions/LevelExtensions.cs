@@ -1,6 +1,6 @@
 ﻿using Server.Base.Network;
-using Server.Reawakened.Levels;
 using Server.Reawakened.Levels.Enums;
+using Server.Reawakened.Levels.Models;
 using Server.Reawakened.Levels.Services;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -29,7 +29,7 @@ public static class LevelExtensions
         if (newLevel == null)
             return;
 
-        player.JoinLevel(state, newLevel, out var _);
+        player.JoinLevel(state, newLevel, out _);
     }
 
     public static int GetLevelId(this Player player) =>

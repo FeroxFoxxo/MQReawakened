@@ -12,4 +12,11 @@ public class GetDirectory
         foreach (var subDirectory in directory.GetDirectories())
             subDirectory.Delete(true);
     }
+
+    public static void OverwriteDirectory(string path)
+    {
+        if (Directory.Exists(path))
+            Directory.Delete(path, true);
+        Directory.CreateDirectory(path!);
+    }
 }

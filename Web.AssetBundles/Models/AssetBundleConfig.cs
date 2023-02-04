@@ -39,7 +39,7 @@ public class AssetBundleConfig : IConfig
 
     public bool ShouldUseLocalAssetToGenerate { get; set; }
     public string LocalAssetCache { get; set; }
-    public bool LogReplacements { get; set; }
+    public bool LogProgressBars { get; set; }
 
     public AssetBundleConfig()
     {
@@ -48,7 +48,7 @@ public class AssetBundleConfig : IConfig
         AssetSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "AssetDictionaries");
 
         ShouldUseLocalAssetToGenerate = true;
-        LogReplacements = false;
+        LogProgressBars = false;
         LocalAssetCache = Path.Combine(InternalDirectory.GetBaseDirectory(), "TestAssetCache.cache");
 
         AlwaysRecreateBundle = true;

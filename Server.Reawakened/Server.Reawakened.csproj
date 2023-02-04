@@ -62,5 +62,14 @@
     <ItemGroup>
       <Folder Include="Dependencies\" />
     </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Licences\LICENSE_THRIFT">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Thrift\NOTICE_THRIFT">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
     
 </Project>

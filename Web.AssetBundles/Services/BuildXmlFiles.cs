@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using System.Text;
 using System.Xml;
@@ -15,6 +16,7 @@ namespace Web.AssetBundles.Services;
 public class BuildXmlFiles : IService, IInjectModules
 {
     private readonly AssetBundleConfig _config;
+    private readonly ServerConfig _sConfig;
     private readonly AssetEventSink _eventSink;
     private readonly ILogger<BuildXmlFiles> _logger;
     private readonly IServiceProvider _services;
@@ -22,12 +24,13 @@ public class BuildXmlFiles : IService, IInjectModules
     public Dictionary<string, string> XmlFiles;
 
     public BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, ILogger<BuildXmlFiles> logger,
-        AssetBundleConfig config)
+        AssetBundleConfig config, ServerConfig sConfig)
     {
         _eventSink = eventSink;
         _services = services;
         _logger = logger;
         _config = config;
+        _sConfig = sConfig;
     }
 
     public IEnumerable<Module> Modules { get; set; }
@@ -40,14 +43,15 @@ public class BuildXmlFiles : IService, IInjectModules
 
         var assets = assetLoadEvent.InternalAssets
             .Select(x => x.Value)
-            .Where(x => x.Type == AssetInfo.TypeAsset.XML)
+            .Where(x => x.Type is AssetInfo.TypeAsset.XML or AssetInfo.TypeAsset.Level)
             .ToArray();
 
         XmlFiles = new Dictionary<string, string>();
 
-        Directory.CreateDirectory(_config.XmlSaveDirectory);
+        GetDirectory.OverwriteDirectory(_config.XmlSaveDirectory);
+        GetDirectory.OverwriteDirectory(_sConfig.LevelSaveDirectory);
 
-        using (var bar = new DefaultProgressBar(assets.Length, "Loading XML Files", _logger))
+        using (var bar = new DefaultProgressBar(assets.Length, "Loading XML Files", _logger, _config))
         {
             foreach (var asset in assets)
             {
@@ -59,13 +63,22 @@ public class BuildXmlFiles : IService, IInjectModules
                     continue;
                 }
 
-                var path = Path.Join(_config.XmlSaveDirectory, $"{asset.Name}.xml");
+                var directory = asset.Type switch
+                {
+                    AssetInfo.TypeAsset.XML => _config.XmlSaveDirectory,
+                    AssetInfo.TypeAsset.Level => _sConfig.LevelSaveDirectory,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
+                var path = Path.Join(directory, $"{asset.Name}.xml");
 
                 bar.SetMessage($"Writing file to {path}");
 
                 File.WriteAllText(path, text);
 
                 XmlFiles.Add(asset.Name, path);
+
+                bar.TickBar();
             }
         }
 

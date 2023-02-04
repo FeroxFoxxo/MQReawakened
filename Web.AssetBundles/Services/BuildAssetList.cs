@@ -130,7 +130,7 @@ public class BuildAssetList : IService
 
         var directories = directoryPath.GetLowestDirectories();
 
-        using var defaultBar = new DefaultProgressBar(directories.Count, _config.Message, _logger);
+        using var defaultBar = new DefaultProgressBar(directories.Count, _config.Message, _logger, _config);
 
         foreach (var asset in directories.Select(directory => GetAssetBundle(directory, defaultBar)))
         {

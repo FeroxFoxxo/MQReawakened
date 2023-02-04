@@ -64,7 +64,7 @@ public class PacketHandler : IService
             if (_logger.Ask(
                     $"It's recommended to add the protocols '{string.Join(", ", _serverConfig.DefaultProtocolTypeIgnore)}' " +
                     "to the server ignore config, as to reduce spam. Please press 'y' to enable this. " +
-                    "You are able to add to this later in the related config file.")
+                    "You are able to add to this later in the related config file.", true)
                )
             {
                 var internalDebugs = _internalServerConfig.IgnoreProtocolType.ToList();

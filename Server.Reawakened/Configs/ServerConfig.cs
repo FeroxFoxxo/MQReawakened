@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Extensions;
 
 namespace Server.Reawakened.Configs;
 
@@ -14,12 +15,18 @@ public class ServerConfig : IConfig
 
     public bool LogSyncState { get; set; }
 
+    public string LevelSaveDirectory { get; set; }
+    public string LevelDataSaveDirectory { get; set; }
+
     public string[] DefaultProtocolTypeIgnore { get; set; }
 
     public Dictionary<DebugHandler.DebugVariables, bool> DefaultDebugVariables { get; set; }
 
     public ServerConfig()
     {
+        LevelSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Levels");
+        LevelDataSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "LevelData");
+
         RandomKeyLength = 24;
         PlayerCap = 20;
         ReservedNameCount = 4;

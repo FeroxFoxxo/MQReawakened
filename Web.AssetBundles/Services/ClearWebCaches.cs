@@ -67,7 +67,7 @@ public class ClearWebCaches : IService
                 "Please ensure, if this is your first time running this project, that there are not files already in this directory. " +
                 "These would otherwise be valuable.\n" +
                 $"Please note: The WEB PLAYER cache is found in your {_config.DefaultWebPlayerCacheLocation} folder. " +
-                "Please make an __info file in here if it does not exist already."
+                "Please make an __info file in here if it does not exist already.", false
             );
 
         if (!shouldDelete)
@@ -78,7 +78,7 @@ public class ClearWebCaches : IService
 
         if (_logger.Ask(
                 "It is recommended to clean your caches each time in debug mode. " +
-                "Do you want to set this as the default action?"
+                "Do you want to set this as the default action?", true
             ))
             _config.DefaultDelete = true;
     }

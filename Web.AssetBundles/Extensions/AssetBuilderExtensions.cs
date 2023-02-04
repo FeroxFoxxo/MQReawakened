@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Web.AssetBundles.Models;
+﻿using Web.AssetBundles.Models;
 using Web.Launcher.Models;
 
 namespace Web.AssetBundles.Extensions;
