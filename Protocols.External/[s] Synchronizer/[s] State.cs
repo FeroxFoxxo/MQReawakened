@@ -19,5 +19,7 @@ public class State : ExternalProtocol
 
         if (ServerConfig.LogSyncState)
             Logger.LogInformation("Found state: {State}", syncEvent.Type);
+
+        Logger.LogDebug(syncEvent.EncodeData());
     }
 }

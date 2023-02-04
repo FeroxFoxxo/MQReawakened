@@ -10,13 +10,17 @@ public class ServerConfig : IConfig
     public int PlayerCap { get; set; }
     public int ReservedNameCount { get; set; }
     public int MaxCharacterCount { get; set; }
-    public int StartLevel { get; set; }
+
+    public int DefaultStartLevel { get; set; }
+    public int DefaultLastLevel { get; set; }
+    
     public int DefaultQuest { get; set; }
 
     public bool LogSyncState { get; set; }
 
     public string LevelSaveDirectory { get; set; }
     public string LevelDataSaveDirectory { get; set; }
+    public string LevelEntitySaveDirectory { get; set; }
 
     public string[] DefaultProtocolTypeIgnore { get; set; }
 
@@ -24,14 +28,18 @@ public class ServerConfig : IConfig
 
     public ServerConfig()
     {
-        LevelSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Levels");
+        LevelSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Level");
         LevelDataSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "LevelData");
+        LevelEntitySaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "LevelEntity");
 
         RandomKeyLength = 24;
         PlayerCap = 20;
         ReservedNameCount = 4;
         MaxCharacterCount = 3;
-        StartLevel = 47;
+
+        DefaultStartLevel = 47;
+        DefaultLastLevel = 0;
+
         DefaultQuest = 802;
 
         LogSyncState = false;

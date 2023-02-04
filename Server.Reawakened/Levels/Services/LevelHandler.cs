@@ -47,7 +47,7 @@ public class LevelHandler : IService
         if (_levels.TryGetValue(levelId, out var value))
             return value;
 
-        LevelInfo levelInfo;
+        LevelInfo levelInfo = null;
         var levelData = new LevelDataModel();
 
         if (levelId is -1 or 0)
@@ -84,12 +84,10 @@ public class LevelHandler : IService
                         "Could not find any levels! Are you sure you have your cache set up correctly?");
                 else
                     _logger.LogError("Could not find the required level! Are you sure your caches contain this?");
-
-                return new Level(new LevelInfo(), levelData, _config, this);
             }
         }
 
-        var level = new Level(levelInfo, levelData, _config, this);
+        var level = new Level(levelInfo, levelData, _config, this, _worldGraph, _logger);
 
         _levels.Add(levelId, level);
 

@@ -60,7 +60,8 @@ public class CreateCharacter : ExternalProtocol
             player.AddCharacter(new CharacterModel
             {
                 Data = characterData,
-                Level = ServerConfig.StartLevel
+                Level = ServerConfig.DefaultStartLevel,
+                LastLevel = ServerConfig.DefaultLastLevel
             });
             player.SendStartPlay(characterData.CharacterId, NetState, LevelHandler);
         }

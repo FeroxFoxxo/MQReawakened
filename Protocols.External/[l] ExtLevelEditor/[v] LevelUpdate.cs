@@ -13,11 +13,13 @@ public class LevelUpdate : ExternalProtocol
     public override string ProtocolName => "lv";
     
     public ILogger<LevelUpdate> Logger { get; set; }
+    public LevelHandler LevelHandler { get; set; }
 
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
 
+        player.GetCurrentLevel(LevelHandler).SendCharacterInfo(player, NetState);
         SendXt("lv", 0, string.Empty);
     }
 }

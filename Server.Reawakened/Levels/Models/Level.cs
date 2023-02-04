@@ -1,4 +1,5 @@
-﻿using Server.Base.Accounts.Extensions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
 using Server.Base.Network;
@@ -22,6 +23,8 @@ public class Level
     private readonly HashSet<int> _clientIds;
     private readonly Dictionary<int, NetState> _clients;
     private readonly LevelHandler _handler;
+    private readonly WorldGraph _worldGraph;
+    private readonly ILogger<LevelHandler> _logger;
     private readonly ServerConfig _serverConfig;
 
     public readonly LevelInfo LevelInfo;
@@ -30,10 +33,13 @@ public class Level
 
     public readonly long TimeOffset;
 
-    public Level(LevelInfo levelInfo, LevelDataModel levelData, ServerConfig serverConfig, LevelHandler handler)
+    public Level(LevelInfo levelInfo, LevelDataModel levelData, ServerConfig serverConfig,
+        LevelHandler handler, WorldGraph worldGraph, ILogger<LevelHandler> logger)
     {
         _serverConfig = serverConfig;
         _handler = handler;
+        _worldGraph = worldGraph;
+        _logger = logger;
         _clients = new Dictionary<int, NetState>();
         _clientIds = new HashSet<int>();
 
@@ -41,7 +47,7 @@ public class Level
         LevelData = levelData;
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
 
-        LevelEntities = new LevelEntities(levelData);
+        LevelEntities = new LevelEntities(this, _serverConfig);
     }
 
     public void AddClient(NetState newClient, out JoinReason reason)
@@ -49,7 +55,9 @@ public class Level
         var playerId = -1;
 
         if (_clientIds.Count > _serverConfig.PlayerCap)
+        {
             reason = JoinReason.Full;
+        }
         else
         {
             playerId = 1;
@@ -64,72 +72,98 @@ public class Level
 
         newClient.Get<Player>().PlayerId = playerId;
 
-        switch (reason)
+        if (reason == JoinReason.Accepted)
         {
-            case JoinReason.Accepted:
-                {
-                    var newPlayer = newClient.Get<Player>();
+            var newPlayer = newClient.Get<Player>();
 
-                    if (LevelInfo.LevelId == -1)
-                        return;
+            if (LevelInfo.LevelId == -1)
+                return;
 
-                    // JOIN CONDITION
+            // JOIN CONDITION
+            newClient.SendXml("joinOK", $"<pid id='{newPlayer.PlayerId}' /><uLs />");
 
-                    newClient.SendXml("joinOK", $"<pid id='{newPlayer.PlayerId}' /><uLs />");
+            if (LevelInfo.LevelId == 0)
+                return;
 
-                    if (LevelInfo.LevelId == 0)
-                        return;
+            // USER ENTER
+            var newAccount = newClient.Get<Account>();
 
-                    // WHERE SPAWN
+            foreach (var currentClient in _clients.Values)
+            {
+                var currentPlayer = currentClient.Get<Player>();
+                var currentAccount = currentClient.Get<Account>();
 
-                    var character = newPlayer.GetCurrentCharacter();
+                var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
 
-                    var spawnPoints = LevelEntities.SpawnPoints;
+                SendUserEnterData(newClient, currentPlayer, currentAccount);
 
-                    if (character.LastLevel == 0)
-                    {
-                        var spawn = spawnPoints.MinBy(x => x.Key).Value;
+                if (areDifferentClients)
+                    SendUserEnterData(currentClient, newPlayer, newAccount);
+            }
+        }
+        else
+        {
+            newClient.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
+        }
+    }
 
-                        character.Data.SpawnPositionX = spawn.Position.X;
-                        character.Data.SpawnPositionY = spawn.Position.Y;
+    public void SendCharacterInfo(Player newPlayer, NetState newClient)
+    {
+        // WHERE TO SPAWN
+        var character = newPlayer.GetCurrentCharacter();
 
-                        character.Data.SpawnOnBackPlane = spawn.Position.Z > 1;
-                    }
-                    else
-                    {
-                        // TODO: ADD SPAWN FOR WORLD SWITCH
-                        throw new MissingMethodException();
-                    }
+        DestNode node = null;
 
-                    // USER ENTER AND CHARACTER DATA
+        var nodes = _worldGraph.GetLevelWorldGraphNodes(character.LastLevel);
 
-                    var newAccount = newClient.Get<Account>();
+        if (nodes != null)
+            node = nodes.FirstOrDefault(a => a.ToLevelID == character.Level);
 
-                    foreach (var currentClient in _clients.Values)
-                    {
-                        var currentPlayer = currentClient.Get<Player>();
-                        var currentAccount = currentClient.Get<Account>();
+        ObjectInfoModel spawn = null;
 
-                        var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
+        if (node != null)
+        {
+            _logger.LogDebug("Node Found: Portal ID '{Portal}', Spawn ID '{Spawn}'.", node.PortalID, node.ToSpawnID);
+            var portal = LevelEntities.Portals.Values.FirstOrDefault(a => a.ObjectId == node.PortalID);
+            var spawnPoint = LevelEntities.SpawnPoints.Values.FirstOrDefault(a => a.ObjectId == node.ToSpawnID);
 
-                        SendUserEnterData(newClient, currentPlayer, currentAccount);
+            if (portal == null)
+                if (spawnPoint == null)
+                    _logger.LogError("Could not find portal '{PortalId}' or spawn '{SpawnId}'.", node.PortalID, node.ToSpawnID);
+                else
+                    spawn = spawnPoint;
+            else
+                spawn = portal;
+        }
+        else
+        {
+            _logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LastLevel, character.Level);
+        }
 
-                        if (areDifferentClients)
-                            SendUserEnterData(currentClient, newPlayer, newAccount);
+        spawn ??= LevelEntities.SpawnPoints.First().Value;
 
-                        SendCharacterInfoData(newClient, currentPlayer,
-                            areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals);
+        character.Data.SpawnPositionX = spawn.Position.X;
+        character.Data.SpawnPositionY = spawn.Position.Y;
+        character.Data.SpawnOnBackPlane = spawn.Position.Z > 1;
 
-                        if (areDifferentClients)
-                            SendCharacterInfoData(currentClient, newPlayer, CharacterInfoType.Lite);
-                    }
+        _logger.LogDebug("Spawning {CharacterName} at object '{NodePortalId}', from '{OldLevel}' to '{NewLevel}'.",
+            character.Data.CharacterName, node != null ? node.PortalID : "DEFAULT", character.LastLevel, character.Level);
 
-                    break;
-                }
-            case JoinReason.Full:
-            default:
-                newClient.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
-                break;
+        _logger.LogDebug("Position of spawn: {Position}", spawn.Position);
+
+        // CHARACTER DATA
+
+        foreach (var currentClient in _clients.Values)
+        {
+            var currentPlayer = currentClient.Get<Player>();
+
+            var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
+            
+            SendCharacterInfoData(newClient, currentPlayer,
+                areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals);
+
+            if (areDifferentClients)
+                SendCharacterInfoData(currentClient, newPlayer, CharacterInfoType.Lite);
         }
     }
 
