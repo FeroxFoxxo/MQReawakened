@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Services;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.Bundles;
-using SmartFoxClientAPI.Data;
 
 namespace Server.Reawakened.Players.Services;
 
@@ -67,23 +67,44 @@ public class NameChange : IService
 
     private void ChangeCharacterLevel()
     {
-        GetCharacter(out var character, out var user);
+        GetCharacter(out var character, out _);
 
-        _logger.LogInformation("What would you like to set the character '{CharacterName}''s level to?",
+        _logger.LogInformation("What would you like to set the character '{CharacterName}''s level to?\n",
             character.Data.CharacterName);
-        
-        var name = Console.ReadLine()?.Trim();
 
-        if (string.IsNullOrEmpty(name))
+        foreach (var levelValue in (Dictionary<string, int>)
+                 _worldGraph.GetPrivateField<WorldGraphXML>("_levelNameToID"))
         {
-            _logger.LogError("Character name can not be empty!");
+            var name = _worldGraph.GetInfoLevel(levelValue.Value).InGameName;
+
+            if (name != "None")
+                _logger.LogInformation("    {LevelId}: {InGameLevelName} ({LevelName})",
+                    levelValue.Value, name, levelValue.Key);
+        }
+
+        var level = Console.ReadLine()?.Trim();
+
+        if (string.IsNullOrEmpty(level))
+        {
+            _logger.LogError("Character's level can not be empty!");
             return;
         }
 
-        character.Data.CharacterName = name;
-        user.LastCharacterSelected = name;
+        if (!int.TryParse(level, out var levelId))
+        {
+            _logger.LogError("Character's level has to be an integer!");
+            return;
+        }
 
-        _logger.LogInformation("Successfully set character {Id}'s level to {Name}!", character.Data.CharacterId, name);
+        character.LastLevel = 0;
+        character.Level = levelId;
+
+        var levelInfo = _worldGraph.GetInfoLevel(levelId);
+
+        _logger.LogInformation("Successfully set character {Id}'s level to {LevelId} '{InGameLevelName}' ({LevelName})!",
+            character.Data.CharacterId, levelId, levelInfo.InGameName, levelInfo.Name);
+
+        _logger.LogInformation("Please note this will only apply on next login.");
     }
 
     private void GetCharacter(out CharacterModel model, out UserInfo user)
