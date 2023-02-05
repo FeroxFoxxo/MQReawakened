@@ -28,6 +28,7 @@ public class StartGame : IService
     private Process _game;
 
     public PackageInformation CurrentVersion { get; private set; }
+    public List<string> Assets { get; set; }
 
     public StartGame(EventSink sink, LauncherConfig lConfig, SettingsConfig sConfig,
         IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console)
@@ -41,6 +42,8 @@ public class StartGame : IService
 
         _dirSet = false;
         _appStart = false;
+
+        Assets = new List<string>();
     }
 
     public void Initialize()
@@ -141,6 +144,7 @@ public class StartGame : IService
 
     public void LaunchGame()
     {
+        Assets.Clear();
         _game = Process.Start(Path.Join(_directory, "launcher", "launcher.exe"));
         _logger.LogDebug("Running game on process: {GamePath}", _game?.ProcessName);
     }

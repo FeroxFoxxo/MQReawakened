@@ -6,6 +6,7 @@ using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Models;
+using Web.Launcher.Services;
 
 namespace Web.AssetBundles.Services;
 
@@ -15,14 +16,16 @@ public class ClearWebCaches : IService
     private readonly ServerConsole _console;
     private readonly ILogger<ClearWebCaches> _logger;
     private readonly EventSink _sink;
+    private readonly StartGame _game;
 
     public ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleConfig config,
-        ServerConsole console, EventSink sink)
+        ServerConsole console, EventSink sink, StartGame game)
     {
         _logger = logger;
         _config = config;
         _console = console;
         _sink = sink;
+        _game = game;
     }
 
     public void Initialize() => _sink.WorldLoad += Load;
@@ -48,6 +51,8 @@ public class ClearWebCaches : IService
         }
 
         GetDirectory.Empty(Path.GetDirectoryName(_config.WebPlayerInfoFile));
+
+        _game.AskIfRestart();
 
         return true;
     }

@@ -39,6 +39,7 @@ public class AssetBundleConfig : IConfig
     public bool ShouldUseLocalAssetToGenerate { get; set; }
     public string LocalAssetCache { get; set; }
     public bool LogProgressBars { get; set; }
+    public bool KillOnRetry { get; set; }
 
     public AssetBundleConfig()
     {
@@ -55,6 +56,7 @@ public class AssetBundleConfig : IConfig
         DebugInfo = true;
         DefaultDelete = false;
         ShouldLogAssets = false;
+        KillOnRetry = true;
 
         SaveBundleExtension = "bundleGen";
         StoredAssetDict = "StoredAssets.xml";

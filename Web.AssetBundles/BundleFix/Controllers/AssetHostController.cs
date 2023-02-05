@@ -10,6 +10,7 @@ using Web.AssetBundles.BundleFix.Metadata;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Models;
 using Web.AssetBundles.Services;
+using Web.Launcher.Services;
 using FileIO = System.IO.File;
 
 namespace Web.AssetBundles.BundleFix.Controllers;
@@ -21,19 +22,31 @@ public class AssetHostController : Controller
     private readonly AssetBundleConfig _config;
     private readonly ILogger<AssetHostController> _logger;
     private readonly BuildXmlFiles _xmlFiles;
+    private readonly StartGame _game;
 
     public AssetHostController(BuildAssetList bundles, ILogger<AssetHostController> logger,
-        AssetBundleConfig config, BuildXmlFiles xmlFiles)
+        AssetBundleConfig config, BuildXmlFiles xmlFiles, StartGame game)
     {
         _bundles = bundles;
         _logger = logger;
         _config = config;
         _xmlFiles = xmlFiles;
+        _game = game;
     }
-
+    
     [HttpGet]
     public IActionResult GetAsset([FromRoute] string folder, [FromRoute] string file)
     {
+        if (_config.KillOnRetry && !file.EndsWith(".xml"))
+        {
+            var uriPath = $"{folder}/{file}";
+
+            if (_game.Assets.Contains(uriPath))
+                return NotFound();
+
+            _game.Assets.Add(uriPath);
+        }
+
         var publishConfig = _config.PublishConfigs.FirstOrDefault(a => string.Equals(a.Value, file));
 
         if (!publishConfig.IsDefault())

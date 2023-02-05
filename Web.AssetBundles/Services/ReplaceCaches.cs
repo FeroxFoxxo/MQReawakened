@@ -58,22 +58,23 @@ public class ReplaceCaches : IService
         _logger.LogInformation("Loaded {NumAssetDict} Assets With {Caches} Caches ({TotalFiles} Total Files).",
             assetDictionary.Count, filteredCaches.Length, cachedFiles.Length);
 
-        using var bar = new DefaultProgressBar(filteredCaches.Length, "Replacing Caches", _logger, _config);
-
-        foreach (var cache in filteredCaches)
+        using (var bar = new DefaultProgressBar(filteredCaches.Length, "Replacing Caches", _logger, _config))
         {
-            if (!assetDictionary.ContainsKey(cache.Key))
-                continue;
+            foreach (var cache in filteredCaches)
+            {
+                if (!assetDictionary.ContainsKey(cache.Key))
+                    continue;
 
-            var asset = assetDictionary[cache.Key];
+                var asset = assetDictionary[cache.Key];
 
-            bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
+                bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
 
-            File.Copy(asset.Path, cache.Value, true);
+                File.Copy(asset.Path, cache.Value, true);
 
-            bar.SetMessage($"{asset.Path} -> {cache.Value}");
+                bar.SetMessage($"{asset.Path} -> {cache.Value}");
 
-            bar.TickBar();
+                bar.TickBar();
+            }
         }
 
         _game.AskIfRestart();
