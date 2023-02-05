@@ -53,6 +53,9 @@ public class NameChange : IService
     {
         GetCharacter(out var character, out var user);
 
+        if (character == null || user == null)
+            return;
+
         _logger.LogInformation("What would you like to set the character '{CharacterName}''s name to?",
             character.Data.CharacterName);
 
@@ -72,7 +75,10 @@ public class NameChange : IService
 
     private void ChangeCharacterLevel()
     {
-        GetCharacter(out var character, out _);
+        GetCharacter(out var character, out var user);
+
+        if (character == null || user == null)
+            return;
 
         _logger.LogInformation("What would you like to set the character '{CharacterName}''s level to?\n",
             character.Data.CharacterName);
@@ -118,7 +124,7 @@ public class NameChange : IService
 
     private void GetCharacter(out CharacterModel model, out UserInfo user)
     {
-        _logger.LogInformation("Please enter the username of whom you wish to edit the name of:");
+        _logger.LogInformation("Please enter the username of whom you wish to edit:");
 
         var userName = Console.ReadLine()?.Trim();
 
