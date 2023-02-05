@@ -5,6 +5,7 @@ using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.Bundles;
@@ -19,10 +20,12 @@ public class NameChange : IService
     private readonly EventSink _sink;
     private readonly UserInfoHandler _userInfoHandler;
     private readonly WorldGraph _worldGraph;
+    private readonly ServerConfig _config;
 
     public NameChange(ServerConsole console, EventSink sink,
         ILogger<NameChange> logger, UserInfoHandler userInfoHandler,
-        AccountHandler accountHandler, WorldGraph worldGraph)
+        AccountHandler accountHandler, WorldGraph worldGraph,
+        ServerConfig config)
     {
         _console = console;
         _sink = sink;
@@ -30,6 +33,7 @@ public class NameChange : IService
         _userInfoHandler = userInfoHandler;
         _accountHandler = accountHandler;
         _worldGraph = worldGraph;
+        _config = config;
     }
 
     public void Initialize() => _sink.WorldLoad += Load;
@@ -76,11 +80,13 @@ public class NameChange : IService
         foreach (var levelValue in (Dictionary<string, int>)
                  _worldGraph.GetPrivateField<WorldGraphXML>("_levelNameToID"))
         {
+            if (!File.Exists(Path.Join(_config.LevelSaveDirectory, $"{levelValue.Key}.xml")))
+                continue;
+
             var name = _worldGraph.GetInfoLevel(levelValue.Value).InGameName;
 
-            if (name != "None")
-                _logger.LogInformation("    {LevelId}: {InGameLevelName} ({LevelName})",
-                    levelValue.Value, name, levelValue.Key);
+            _logger.LogInformation("    {LevelId}: {InGameLevelName} ({LevelName})",
+                levelValue.Value, name, levelValue.Key);
         }
 
         var level = Console.ReadLine()?.Trim();
