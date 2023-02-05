@@ -3,18 +3,29 @@ using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Levels.Models;
+using Server.Reawakened.Levels.Models.LevelData;
 using Server.Reawakened.Players.Models;
 
 namespace Server.Reawakened.Players;
 
 public class Player : INetStateData
 {
-    public int CurrentCharacter;
-    public Level CurrentLevel;
-    public int PlayerId;
-    public UserInfo UserInfo;
+    public int CurrentCharacter { get; set; }
+    public int PlayerId { get; set; }
+    public Level CurrentLevel { get; set; }
+    public UserInfo UserInfo { get; set; }
 
-    public Player(UserInfo userInfo) => UserInfo = userInfo;
+    public bool OnGround { get; set; }
+    public int Direction { get; set; }
+    public Vector3Model Position { get; set; }
+    public Vector3Model Velocity { get; set; }
+
+    public Player(UserInfo userInfo)
+    {
+        UserInfo = userInfo;
+        Position = new Vector3Model();
+        Velocity = new Vector3Model();
+    }
 
     public void RemovedState(NetState state, NetStateHandler handler,
         Microsoft.Extensions.Logging.ILogger logger)

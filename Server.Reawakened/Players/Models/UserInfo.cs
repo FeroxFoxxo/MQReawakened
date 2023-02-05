@@ -1,4 +1,5 @@
 ﻿using Server.Base.Core.Models;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Models.System;
@@ -28,7 +29,7 @@ public class UserInfo : PersistantData
         Mail = new Dictionary<int, SystemMailModel>();
     }
 
-    public UserInfo(int userId, Gender gender, DateTime dateOfBirth, string region, RandomKeyGenerator kGen)
+    public UserInfo(int userId, Gender gender, DateTime dateOfBirth, string region, RandomKeyGenerator kGen, ServerConfig config)
     {
         Region = region;
         UserId = userId;
@@ -36,11 +37,12 @@ public class UserInfo : PersistantData
         DateOfBirth = dateOfBirth;
 
         LastCharacterSelected = string.Empty;
-        SignUpExperience = "unknown";
-        Member = true;
-        TrackingShortId = "false";
         AuthToken = kGen.GetRandomKey<UserInfo>(userId.ToString());
-        ChatLevel = 3;
+
+        SignUpExperience = config.DefaultSignUpExperience;
+        Member = config.DefaultMemberStatus;
+        TrackingShortId = config.DefaultTrackingShortId;
+        ChatLevel = config.DefaultChatLevel;
 
         Characters = new Dictionary<int, CharacterModel>();
         Mail = new Dictionary<int, SystemMailModel>();

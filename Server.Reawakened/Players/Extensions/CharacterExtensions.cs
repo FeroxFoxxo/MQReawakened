@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Models.Character;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -28,4 +29,19 @@ public static class CharacterExtensions
             player.UserInfo.Characters.First().Value.Data.CharacterName :
             string.Empty;
     }
+
+    public static void LevelUp(this CharacterDataModel characterData, int level)
+    {
+        characterData.GlobalLevel = level;
+
+        characterData.ReputationForCurrentLevel = GetReputationForLevel(level - 1);
+        characterData.ReputationForNextLevel = GetReputationForLevel(level);
+        characterData.Reputation = 0;
+
+        characterData.MaxLife = GetHealthForLevel(level);
+    }
+
+    private static int GetHealthForLevel(int level) => (level - 1) * 270 + 81;
+
+    private static int GetReputationForLevel(int level) => level * 500;
 }

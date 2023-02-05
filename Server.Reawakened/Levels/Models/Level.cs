@@ -27,11 +27,11 @@ public class Level
     private readonly ILogger<LevelHandler> _logger;
     private readonly ServerConfig _serverConfig;
 
-    public readonly LevelInfo LevelInfo;
-    public readonly LevelDataModel LevelData;
-    public readonly LevelEntities LevelEntities;
+    public LevelInfo LevelInfo { get; set; }
+    public LevelDataModel LevelData { get; set; }
+    public LevelEntities LevelEntities { get; set; }
 
-    public readonly long TimeOffset;
+    public long TimeOffset { get; set; }
 
     public Level(LevelInfo levelInfo, LevelDataModel levelData, ServerConfig serverConfig,
         LevelHandler handler, WorldGraph worldGraph, ILogger<LevelHandler> logger)
@@ -113,31 +113,35 @@ public class Level
         var character = newPlayer.GetCurrentCharacter();
 
         DestNode node = null;
-
-        var nodes = _worldGraph.GetLevelWorldGraphNodes(character.LastLevel);
-
-        if (nodes != null)
-            node = nodes.FirstOrDefault(a => a.ToLevelID == character.Level);
-
         ObjectInfoModel spawn = null;
 
-        if (node != null)
+        if (character.LastLevel != 0)
         {
-            _logger.LogDebug("Node Found: Portal ID '{Portal}', Spawn ID '{Spawn}'.", node.PortalID, node.ToSpawnID);
-            var portal = LevelEntities.Portals.Values.FirstOrDefault(a => a.ObjectId == node.PortalID);
-            var spawnPoint = LevelEntities.SpawnPoints.Values.FirstOrDefault(a => a.ObjectId == node.ToSpawnID);
+            var nodes = _worldGraph.GetLevelWorldGraphNodes(character.LastLevel);
 
-            if (portal == null)
-                if (spawnPoint == null)
-                    _logger.LogError("Could not find portal '{PortalId}' or spawn '{SpawnId}'.", node.PortalID, node.ToSpawnID);
+            if (nodes != null)
+                node = nodes.FirstOrDefault(a => a.ToLevelID == character.Level);
+
+            if (node != null)
+            {
+                _logger.LogDebug("Node Found: Portal ID '{Portal}', Spawn ID '{Spawn}'.", node.PortalID,
+                    node.ToSpawnID);
+                var portal = LevelEntities.Portals.Values.FirstOrDefault(a => a.ObjectId == node.PortalID);
+                var spawnPoint = LevelEntities.SpawnPoints.Values.FirstOrDefault(a => a.ObjectId == node.ToSpawnID);
+
+                if (portal == null)
+                    if (spawnPoint == null)
+                        _logger.LogError("Could not find portal '{PortalId}' or spawn '{SpawnId}'.", node.PortalID,
+                            node.ToSpawnID);
+                    else
+                        spawn = spawnPoint;
                 else
-                    spawn = spawnPoint;
+                    spawn = portal;
+            }
             else
-                spawn = portal;
-        }
-        else
-        {
-            _logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LastLevel, character.Level);
+            {
+                _logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LastLevel, character.Level);
+            }
         }
 
         spawn ??= LevelEntities.SpawnPoints.First().Value;
@@ -147,7 +151,8 @@ public class Level
         character.Data.SpawnOnBackPlane = spawn.Position.Z > 1;
 
         _logger.LogDebug("Spawning {CharacterName} at object '{NodePortalId}', from '{OldLevel}' to '{NewLevel}'.",
-            character.Data.CharacterName, node != null ? node.PortalID : "DEFAULT", character.LastLevel, character.Level);
+            character.Data.CharacterName, node != null ? node.PortalID : "DEFAULT", character.LastLevel,
+            character.Level);
 
         _logger.LogDebug("Position of spawn: {Position}", spawn.Position);
 
@@ -158,7 +163,7 @@ public class Level
             var currentPlayer = currentClient.Get<Player>();
 
             var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
-            
+
             SendCharacterInfoData(newClient, currentPlayer,
                 areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals);
 
@@ -204,5 +209,19 @@ public class Level
     {
         _clients.Remove(playerId);
         _clientIds.Remove(playerId);
+    }
+
+    public void RelayClientSync(SyncEvent syncEvent, Player sentPlayer)
+    {
+        var syncEventMsg = syncEvent.EncodeData();
+
+        foreach (
+            var client in
+            from client in _clients.Values
+            let receivedPlayer = client.Get<Player>()
+            where receivedPlayer.UserInfo.UserId != sentPlayer.UserInfo.UserId
+            select client
+        )
+            client.SendXt("ss", syncEventMsg);
     }
 }

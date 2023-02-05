@@ -13,6 +13,11 @@ public class ServerConfig : IConfig
     
     public int DefaultQuest { get; set; }
 
+    public string DefaultSignUpExperience;
+    public int DefaultChatLevel;
+    public string DefaultTrackingShortId;
+    public bool DefaultMemberStatus;
+
     public bool LogSyncState { get; set; }
 
     public string LevelSaveDirectory { get; set; }
@@ -34,7 +39,12 @@ public class ServerConfig : IConfig
         ReservedNameCount = 4;
         MaxCharacterCount = 3;
         
-        DefaultQuest = 802;
+        DefaultSignUpExperience = "UNKNOWN";
+        DefaultChatLevel = 3;
+        DefaultTrackingShortId = "false";
+        DefaultMemberStatus = true;
+
+    DefaultQuest = 802;
 
         LogSyncState = false;
         DefaultProtocolTypeIgnore = new[] { "ss", "Pp", "ku", "kr" };

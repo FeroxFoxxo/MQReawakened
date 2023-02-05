@@ -3,6 +3,7 @@ using Server.Base.Accounts.Models;
 using Server.Base.Core.Helpers;
 using Server.Base.Core.Services;
 using Server.Base.Network;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Models;
@@ -13,9 +14,14 @@ namespace Server.Reawakened.Players.Services;
 public class UserInfoHandler : DataHandler<UserInfo>
 {
     private readonly RandomKeyGenerator _randomKeyGenerator;
+    private readonly ServerConfig _config;
 
-    public UserInfoHandler(EventSink sink, ILogger<UserInfo> logger, RandomKeyGenerator randomKeyGenerator) : base(sink,
-        logger) => _randomKeyGenerator = randomKeyGenerator;
+    public UserInfoHandler(EventSink sink, ILogger<UserInfo> logger,
+        RandomKeyGenerator randomKeyGenerator, ServerConfig config) : base(sink, logger)
+    {
+        _randomKeyGenerator = randomKeyGenerator;
+        _config = config;
+    }
 
     public void InitializeUser(NetState state)
     {
@@ -54,7 +60,7 @@ public class UserInfoHandler : DataHandler<UserInfo>
             Logger.LogWarning("Incorrect input! Must be a date!");
         }
 
-        return new UserInfo(Data.Count, gender, dob, RegionInfo.CurrentRegion.Name, _randomKeyGenerator);
+        return new UserInfo(Data.Count, gender, dob, RegionInfo.CurrentRegion.Name, _randomKeyGenerator, _config);
     }
 
     public override UserInfo Create(NetState netState, params string[] obj) => throw new NotImplementedException();

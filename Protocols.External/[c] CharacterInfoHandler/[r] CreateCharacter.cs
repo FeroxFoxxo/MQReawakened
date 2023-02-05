@@ -34,7 +34,7 @@ public class CreateCharacter : ExternalProtocol
         var middleName = message[6];
         var lastName = message[7];
         var gender = (Gender)int.Parse(message[8]);
-        var characterData = new CharacterDataModel(message[9], lowestCharacterAvailable, ServerConfig);
+        var characterData = new CharacterDataModel(message[9], lowestCharacterAvailable, ServerConfig, player.UserInfo);
         var tribe = (TribeType)int.Parse(message[10]);
 
         var names = new[] { firstName, middleName, lastName };
@@ -55,9 +55,10 @@ public class CreateCharacter : ExternalProtocol
             characterData.UserUuid = player.UserInfo.UserId;
 
             // DEFAULTS
-            characterData.ChatLevel = 2;
             characterData.Registered = true;
-            characterData.GlobalLevel = 1;
+            characterData.LevelUp(1);
+
+            characterData.CurrentLife = characterData.MaxLife;
 
             player.AddCharacter(new CharacterModel
             {

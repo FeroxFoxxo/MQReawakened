@@ -32,12 +32,16 @@ public class CharacterDataModel : CharacterLightModel
     public bool SpawnOnBackPlane { get; set; }
     public int BadgePoints { get; set; }
     public int AbilityPower { get; set; }
-    public int ChatLevel { get; set; }
+
+    public int ChatLevel => _info?.ChatLevel ?? 0;
+
+    private readonly UserInfo _info;
 
     public CharacterDataModel() => InitializeLists();
 
-    public CharacterDataModel(string serverData, int id, ServerConfig config) : base(serverData)
+    public CharacterDataModel(string serverData, int id, ServerConfig config, UserInfo info) : base(serverData)
     {
+        _info = info;
         Inventory = new InventoryModel();
         Hotbar = new HotbarModel();
         FriendList = new FriendListModel();
