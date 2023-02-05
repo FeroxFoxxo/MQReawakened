@@ -10,9 +10,6 @@ public class ServerConfig : IConfig
     public int PlayerCap { get; set; }
     public int ReservedNameCount { get; set; }
     public int MaxCharacterCount { get; set; }
-
-    public int DefaultStartLevel { get; set; }
-    public int DefaultLastLevel { get; set; }
     
     public int DefaultQuest { get; set; }
 
@@ -36,10 +33,7 @@ public class ServerConfig : IConfig
         PlayerCap = 20;
         ReservedNameCount = 4;
         MaxCharacterCount = 3;
-
-        DefaultStartLevel = 47;
-        DefaultLastLevel = 0;
-
+        
         DefaultQuest = 802;
 
         LogSyncState = false;

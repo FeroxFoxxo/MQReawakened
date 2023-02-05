@@ -4,28 +4,38 @@ namespace Server.Base.Core.Extensions;
 
 public static class ReflectionExtensions
 {
+    private const BindingFlags Bindings = BindingFlags.Public | BindingFlags.Static |
+                                              BindingFlags.NonPublic | BindingFlags.Instance;
+
     public static void SetPrivateField<T>(this T instance, string fieldName, object fieldValue)
     {
-        const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-
         var type = typeof(T);
-        var field = type.GetField(fieldName, bindingFlags);
+        var field = type.GetField(fieldName, Bindings);
 
         if (field != null)
             field.SetValue(instance, fieldValue);
         else
             throw new MissingFieldException($"{type.Name} is missing field {fieldName}. " +
-                                            $"Possible fields: {string.Join(", ", type.GetFields(bindingFlags).Select(x => x.Name))}");
+                                            $"Possible fields: {string.Join(", ", type.GetFields(Bindings).Select(x => x.Name))}");
+    }
+
+    public static object GetPrivateField<T>(this T instance, string fieldName)
+    {
+        var type = typeof(T);
+        var field = type.GetField(fieldName, Bindings);
+
+        return field != null
+            ? field.GetValue(instance)
+            : throw new MissingFieldException($"{type.Name} is missing field {fieldName}. " +
+                                              $"Possible fields: {string.Join(", ", type.GetFields(Bindings).Select(x => x.Name))}");
     }
 
     public static MethodInfo GetPrivateMethod<T>(this T o, string methodName)
     {
-        const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-
         var type = typeof(T);
-        var mi = o.GetType().GetMethod(methodName, bindingFlags);
+        var mi = o.GetType().GetMethod(methodName, Bindings);
 
         return mi ?? throw new MissingMethodException($"{type.Name} is missing method {methodName}. " +
-                                                      $"Possible methods: {string.Join(", ", type.GetMethods(bindingFlags).Select(x => x.Name))}");
+                                                      $"Possible methods: {string.Join(", ", type.GetMethods(Bindings).Select(x => x.Name))}");
     }
 }

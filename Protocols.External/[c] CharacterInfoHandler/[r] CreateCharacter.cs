@@ -9,6 +9,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Services;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._c__CharacterInfoHandler;
 
@@ -20,6 +21,7 @@ public class CreateCharacter : ExternalProtocol
     public NameGenSyllables NameGenSyllables { get; set; }
     public ServerConfig ServerConfig { get; set; }
     public LevelHandler LevelHandler { get; set; }
+    public WorldGraph WorldGraph { get; set; }
 
     public override void Run(string[] message)
     {
@@ -60,8 +62,8 @@ public class CreateCharacter : ExternalProtocol
             player.AddCharacter(new CharacterModel
             {
                 Data = characterData,
-                Level = ServerConfig.DefaultStartLevel,
-                LastLevel = ServerConfig.DefaultLastLevel
+                Level = WorldGraph.ClockTowerId,
+                LastLevel = 0
             });
             player.SendStartPlay(characterData.CharacterId, NetState, LevelHandler);
         }

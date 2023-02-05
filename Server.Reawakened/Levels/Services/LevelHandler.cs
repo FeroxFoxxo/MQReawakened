@@ -68,6 +68,9 @@ public class LevelHandler : IService
             {
                 levelInfo = _worldGraph!.GetInfoLevel(levelId);
 
+                if (string.IsNullOrEmpty(levelInfo.Name))
+                    throw new MissingFieldException($"Level '{levelId}' does not have a valid name!");
+
                 var levelInfoPath = Path.Join(_config.LevelSaveDirectory, $"{levelInfo.Name}.xml");
                 var levelDataPath = Path.Join(_config.LevelDataSaveDirectory, $"{levelInfo.Name}.json");
 
