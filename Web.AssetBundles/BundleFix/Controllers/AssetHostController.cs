@@ -37,7 +37,7 @@ public class AssetHostController : Controller
     [HttpGet]
     public IActionResult GetAsset([FromRoute] string folder, [FromRoute] string file)
     {
-        if (_config.KillOnRetry && !file.EndsWith(".xml"))
+        if (_config.KillOnBundleRetry && !file.EndsWith(".xml"))
         {
             var uriPath = $"{folder}/{file}";
 
