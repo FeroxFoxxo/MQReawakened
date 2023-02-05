@@ -58,30 +58,24 @@ public class ReplaceCaches : IService
         _logger.LogInformation("Loaded {NumAssetDict} Assets With {Caches} Caches ({TotalFiles} Total Files).",
             assetDictionary.Count, filteredCaches.Length, cachedFiles.Length);
 
-        using (var bar = new DefaultProgressBar(filteredCaches.Length, "Replacing Caches", _logger, _config))
+        using var bar = new DefaultProgressBar(filteredCaches.Length, "Replacing Caches", _logger, _config);
+
+        foreach (var cache in filteredCaches)
         {
-            foreach (var cache in filteredCaches)
-            {
-                if (!assetDictionary.ContainsKey(cache.Key))
-                    continue;
+            if (!assetDictionary.ContainsKey(cache.Key))
+                continue;
 
-                var asset = assetDictionary[cache.Key];
+            var asset = assetDictionary[cache.Key];
 
-                bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
+            bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
 
-                File.Copy(asset.Path, cache.Value, true);
+            File.Copy(asset.Path, cache.Value, true);
 
-                bar.SetMessage($"{asset.Path} -> {cache.Value}");
+            bar.SetMessage($"{asset.Path} -> {cache.Value}");
 
-                bar.TickBar();
-            }
+            bar.TickBar();
         }
 
-        if (!_config.StartLauncherOnReplace)
-            if (_logger.Ask("The launcher is not set to restart on replacement, would you like to enable this?", true))
-                _config.StartLauncherOnReplace = true;
-
-        if (_config.StartLauncherOnReplace)
-            _game.LaunchGame();
+        _game.AskIfRestart();
     }
 }

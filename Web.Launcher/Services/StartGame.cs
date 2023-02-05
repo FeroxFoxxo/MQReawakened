@@ -117,6 +117,17 @@ public class StartGame : IService
         RunGame();
     }
 
+    public void AskIfRestart()
+    {
+        if (!_lConfig.StartLauncherOnCommand)
+            if (_logger.Ask("The launcher is not set to restart on a related command being run, " +
+                            "would you like to enable this?", true))
+                _lConfig.StartLauncherOnCommand = true;
+
+        if (_lConfig.StartLauncherOnCommand)
+            LaunchGame();
+    }
+
     private void RunGame()
     {
         if (!_appStart || !_dirSet)

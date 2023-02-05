@@ -8,9 +8,10 @@ using Server.Base.Core.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Services;
 using Server.Reawakened.XMLs.Bundles;
 
-namespace Server.Reawakened.Players.Services;
+namespace Web.Launcher.Services;
 
 public class NameChange : IService
 {
@@ -21,11 +22,12 @@ public class NameChange : IService
     private readonly UserInfoHandler _userInfoHandler;
     private readonly WorldGraph _worldGraph;
     private readonly ServerConfig _config;
+    private readonly StartGame _game;
 
     public NameChange(ServerConsole console, EventSink sink,
         ILogger<NameChange> logger, UserInfoHandler userInfoHandler,
         AccountHandler accountHandler, WorldGraph worldGraph,
-        ServerConfig config)
+        ServerConfig config, StartGame game)
     {
         _console = console;
         _sink = sink;
@@ -34,6 +36,7 @@ public class NameChange : IService
         _accountHandler = accountHandler;
         _worldGraph = worldGraph;
         _config = config;
+        _game = game;
     }
 
     public void Initialize() => _sink.WorldLoad += Load;
@@ -71,6 +74,9 @@ public class NameChange : IService
         user.LastCharacterSelected = name;
 
         _logger.LogInformation("Successfully set character {Id}'s name to {Name}!", character.Data.CharacterId, name);
+
+        _logger.LogWarning("Please note this will only apply on next login.");
+        _game.AskIfRestart();
     }
 
     private void ChangeCharacterLevel()
@@ -120,6 +126,7 @@ public class NameChange : IService
             character.Data.CharacterId, levelId, levelInfo.InGameName, levelInfo.Name);
 
         _logger.LogWarning("Please note this will only apply on next login.");
+        _game.AskIfRestart();
     }
 
     private void GetCharacter(out CharacterModel model, out UserInfo user)

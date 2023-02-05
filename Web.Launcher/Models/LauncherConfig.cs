@@ -33,6 +33,8 @@ public class LauncherConfig : IConfig
     public string OldClientLastUpdate { get; set; }
     public long LastClientUpdate { get; set; }
 
+    public bool StartLauncherOnCommand { get; set; }
+
     public LauncherConfig()
     {
         News = $"You expected there to be news here? It's {DateTime.Now.Year}!";
@@ -59,5 +61,7 @@ public class LauncherConfig : IConfig
         TimeFilter = "yyyy-MM-dd_HH-mm-ss";
         OldClientLastUpdate = "2013-11-01_12-00-00";
         LastClientUpdate = DateTime.Now.ToUnixTimestamp();
+
+        StartLauncherOnCommand = false;
     }
 }

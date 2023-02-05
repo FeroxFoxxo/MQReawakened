@@ -10,7 +10,7 @@ public class ServerConfig : IConfig
     public int PlayerCap { get; set; }
     public int ReservedNameCount { get; set; }
     public int MaxCharacterCount { get; set; }
-    
+
     public int DefaultQuest { get; set; }
 
     public string DefaultSignUpExperience;
@@ -38,13 +38,13 @@ public class ServerConfig : IConfig
         PlayerCap = 20;
         ReservedNameCount = 4;
         MaxCharacterCount = 3;
-        
+
         DefaultSignUpExperience = "UNKNOWN";
-        DefaultChatLevel = 3;
+        DefaultChatLevel = 2;
         DefaultTrackingShortId = "false";
         DefaultMemberStatus = true;
 
-    DefaultQuest = 802;
+        DefaultQuest = 802;
 
         LogSyncState = false;
         DefaultProtocolTypeIgnore = new[] { "ss", "Pp", "ku", "kr" };

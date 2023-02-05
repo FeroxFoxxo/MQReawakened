@@ -32,7 +32,6 @@ public class AssetBundleConfig : IConfig
     public bool FlushCacheOnStart { get; set; }
     public bool DebugInfo { get; set; }
     public bool DefaultDelete { get; set; }
-    public bool StartLauncherOnReplace { get; set; }
 
     public string[] ForceLocalAsset { get; set; }
     public string[] AssetModifiers { get; set; }
@@ -55,7 +54,6 @@ public class AssetBundleConfig : IConfig
         FlushCacheOnStart = true;
         DebugInfo = true;
         DefaultDelete = false;
-        StartLauncherOnReplace = false;
         ShouldLogAssets = false;
 
         SaveBundleExtension = "bundleGen";
