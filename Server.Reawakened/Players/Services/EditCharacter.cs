@@ -5,6 +5,7 @@ using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.Bundles;
 
@@ -101,10 +102,12 @@ public class NameChange : IService
 
         var levelInfo = _worldGraph.GetInfoLevel(levelId);
 
+        character.DiscoverTribe(levelInfo);
+        
         _logger.LogInformation("Successfully set character {Id}'s level to {LevelId} '{InGameLevelName}' ({LevelName})!",
             character.Data.CharacterId, levelId, levelInfo.InGameName, levelInfo.Name);
 
-        _logger.LogInformation("Please note this will only apply on next login.");
+        _logger.LogWarning("Please note this will only apply on next login.");
     }
 
     private void GetCharacter(out CharacterModel model, out UserInfo user)

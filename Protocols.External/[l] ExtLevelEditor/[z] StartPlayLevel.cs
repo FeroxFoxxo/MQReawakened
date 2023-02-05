@@ -23,27 +23,7 @@ public class StartPlayLevel : ExternalProtocol
 
         SendXt("lz", reason.GetJoinReasonError(), level.LevelInfo.LevelId, level.LevelInfo.Name);
 
-        if (TribeDiscovered(level.LevelInfo, player.GetCurrentCharacter().Data))
+        if (player.GetCurrentCharacter().DiscoverTribe(level.LevelInfo))
             SendXt("cB", (int)level.LevelInfo.Tribe);
-    }
-
-    public static bool TribeDiscovered(LevelInfo lInfo, CharacterDataModel character)
-    {
-        if (!lInfo.Name.Contains("highway", StringComparison.OrdinalIgnoreCase))
-            return false;
-
-        if (character.TribesDiscovered.ContainsKey(lInfo.Tribe))
-        {
-            if (character.TribesDiscovered[lInfo.Tribe])
-                return false;
-
-            character.TribesDiscovered[lInfo.Tribe] = true;
-        }
-        else
-        {
-            character.TribesDiscovered.Add(lInfo.Tribe, true);
-        }
-
-        return true;
     }
 }
