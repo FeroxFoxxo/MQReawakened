@@ -175,6 +175,13 @@ public class BuildAssetList : IService
         var time = long.Parse(text[1]);
         var file = Path.Join(folderName, text[3]);
 
+        if (!File.Exists(file))
+        {
+            bar.SetMessage(
+                $"Asset bundle for {Path.GetDirectoryName(file)} does not exist, skipping!!");
+            return null;
+        }
+
         var manager = new AssetsManager();
         manager.LoadFiles(file);
 
