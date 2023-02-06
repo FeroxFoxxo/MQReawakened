@@ -5,6 +5,8 @@ public abstract class SynchronizedEntity<T> : BaseSynchronizedEntity
 {
     public readonly T EntityData;
 
+    public override string Name => typeof(T).Name;
+
     protected SynchronizedEntity(StoredEntityModel storedEntity,
         T entityData) : base(storedEntity) =>
         EntityData = entityData;

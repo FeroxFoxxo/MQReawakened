@@ -33,7 +33,7 @@ public class CharacterDataModel : CharacterLightModel
     public int BadgePoints { get; set; }
     public int AbilityPower { get; set; }
 
-    public int ChatLevel => _info?.ChatLevel ?? 0;
+    private int ChatLevel => _info?.ChatLevel ?? 0;
 
     private readonly UserInfo _info;
 

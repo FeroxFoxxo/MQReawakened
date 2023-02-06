@@ -8,7 +8,8 @@ namespace Server.Reawakened.Levels.SyncedData;
 
 public class LevelEntities
 {
-    private readonly Dictionary<string, EntityType> _entityTypes;
+    public readonly Dictionary<int, List<BaseSynchronizedEntity>> Entities;
+
     private readonly Microsoft.Extensions.Logging.ILogger _logger;
 
     public LevelEntities(Level level, Microsoft.Extensions.Logging.ILogger logger)
@@ -18,12 +19,9 @@ public class LevelEntities
         if (level.LevelPlaneHandler.Planes == null)
             return;
 
-        _entityTypes = new Dictionary<string, EntityType>();
-
-        var dataProcessable = typeof(DataComponentAccessor).Assembly.GetServices<DataComponentAccessor>()
-            .ToDictionary(x => x.Name, x => x);
-
-        var invalidProcessable = new List<Type>();
+        Entities = new Dictionary<int, List<BaseSynchronizedEntity>>();
+        
+        var invalidProcessable = new List<string>();
 
         var syncedEntities = typeof(BaseSynchronizedEntity).Assembly.GetServices<BaseSynchronizedEntity>()
             .Where(t => t.BaseType != null)
@@ -36,7 +34,7 @@ public class LevelEntities
             {
                 foreach (var component in entity.Value.ObjectInfo.Components)
                 {
-                    if (!dataProcessable.TryGetValue(component.Key, out var mqType))
+                    if (!level.LevelHandler.ProcessableData.TryGetValue(component.Key, out var mqType))
                         continue;
 
                     if (syncedEntities.TryGetValue(mqType.FullName!, out var internalType))
@@ -56,10 +54,12 @@ public class LevelEntities
 
                             if (field != null)
                             {
-                                if (field.FieldType == typeof(int))
-                                    field.SetValue(dataObj, int.Parse(componentValue.Value));
-                                else if (field.FieldType == typeof(string))
+                                if (field.FieldType == typeof(string))
                                     field.SetValue(dataObj, componentValue.Value);
+                                else if(field.FieldType == typeof(int))
+                                    field.SetValue(dataObj, int.Parse(componentValue.Value));
+                                else if (field.FieldType == typeof(bool))
+                                    field.SetValue(dataObj, componentValue.Value.ToLower() == "true");
                                 else
                                     _logger.LogError("It is unknown how to convert a string to a {FieldType}. " +
                                                      "Please implement this in the {CurrentType} class.", field.FieldType, GetType().Name);
@@ -71,38 +71,41 @@ public class LevelEntities
                             }
                         }
 
-                        var storedData = new StoredEntityModel(entity.Key, entity.Value.ObjectInfo.Position, level, logger);
-                        
-                        Console.WriteLine(internalType.Name);
+                        var storedData = new StoredEntityModel(entity.Key, entity.Value.ObjectInfo.PrefabName,
+                            entity.Value.ObjectInfo.Position, level, logger);
 
-                        if (!_entityTypes.ContainsKey(internalType.FullName!))
-                            _entityTypes.Add(internalType.FullName, new EntityType());
+                        var instancedEntity =
+                            (BaseSynchronizedEntity)Activator.CreateInstance(internalType, storedData, dataObj);
 
-                        _entityTypes[internalType.FullName].Entities
-                            .Add(entity.Key, (BaseSynchronizedEntity) Activator.CreateInstance(internalType, storedData, dataObj));
+                        if (!Entities.ContainsKey(entity.Key))
+                            Entities.Add(entity.Key, new List<BaseSynchronizedEntity>());
+
+                        Entities[entity.Key].Add(instancedEntity);
                     }
                     else
                     {
-                        invalidProcessable.Add(mqType);
-                        dataProcessable.Remove(component.Key);
+                        if (!invalidProcessable.Contains(mqType.Name))
+                            invalidProcessable.Add(mqType.Name);
                     }
                 }
             }
         }
 
-        foreach (var type in invalidProcessable.OrderBy(t => t.Name))
-            _logger.LogWarning("Could not find synced entity for {EntityType}", type.Name);
+        foreach (var type in invalidProcessable.Order())
+            _logger.LogWarning("Could not find synced entity for {EntityType}", type);
     }
 
     public Dictionary<int, T> GetEntities<T>() where T : class
     {
         var type = typeof(T);
 
-        if (_entityTypes.TryGetValue(type.FullName!, out var entityType))
-            return entityType.Entities.ToDictionary(x => x.Key, x => x.Value as T);
+        var entities = Entities.Values.SelectMany(t => t).Where(t => t is T).ToList();
+
+        if (entities.Count > 0)
+            return entities.ToDictionary(x => x.StoredEntity.Id, x => x as T);
         
         _logger.LogError("Could not find entity with type {TypeName}. Returning empty. " +
-                         "Possible types: {Types}", type.Name, string.Join(", ", _entityTypes.Keys));
+                         "Possible types: {Types}", type.Name, string.Join(", ", Entities.Keys));
         return new Dictionary<int, T>();
     }
 }

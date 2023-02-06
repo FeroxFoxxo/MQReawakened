@@ -20,34 +20,38 @@ namespace Server.Reawakened.Levels.Models;
 
 public class Level
 {
-    private readonly HashSet<int> _clientIds;
-    private readonly Dictionary<int, NetState> _clients;
-    private readonly LevelHandler _handler;
     private readonly WorldGraph _worldGraph;
     private readonly ILogger<LevelHandler> _logger;
     private readonly ServerConfig _serverConfig;
 
+    private readonly HashSet<int> _clientIds;
+
+    public readonly Dictionary<int, NetState> Clients;
+    public readonly LevelHandler LevelHandler;
+
     public LevelInfo LevelInfo { get; set; }
     public LevelPlanes LevelPlaneHandler { get; set; }
-    public LevelEntities LevelEntities { get; set; }
+    public LevelEntities LevelEntityHandler { get; set; }
 
     public long TimeOffset { get; set; }
+    
+    public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
 
     public Level(LevelInfo levelInfo, LevelPlanes levelPlaneHandler, ServerConfig serverConfig,
-        LevelHandler handler, WorldGraph worldGraph, ILogger<LevelHandler> logger)
+        LevelHandler levelHandler, WorldGraph worldGraph, ILogger<LevelHandler> logger)
     {
         _serverConfig = serverConfig;
-        _handler = handler;
+        LevelHandler = levelHandler;
         _worldGraph = worldGraph;
         _logger = logger;
-        _clients = new Dictionary<int, NetState>();
+        Clients = new Dictionary<int, NetState>();
         _clientIds = new HashSet<int>();
 
         LevelInfo = levelInfo;
         LevelPlaneHandler = levelPlaneHandler;
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
 
-        LevelEntities = new LevelEntities(this, _logger);
+        LevelEntityHandler = new LevelEntities(this, _logger);
     }
 
     public void AddClient(NetState newClient, out JoinReason reason)
@@ -65,7 +69,7 @@ public class Level
             while (_clientIds.Contains(playerId))
                 playerId++;
 
-            _clients.Add(playerId, newClient);
+            Clients.Add(playerId, newClient);
             _clientIds.Add(playerId);
             reason = JoinReason.Accepted;
         }
@@ -88,7 +92,7 @@ public class Level
             // USER ENTER
             var newAccount = newClient.Get<Account>();
 
-            foreach (var currentClient in _clients.Values)
+            foreach (var currentClient in Clients.Values)
             {
                 var currentPlayer = currentClient.Get<Player>();
                 var currentAccount = currentClient.Get<Account>();
@@ -115,8 +119,8 @@ public class Level
         DestNode node = null;
         Vector3Model spawnLocation = null;
 
-        var spawnPoints = LevelEntities.GetEntities<SpawnPointEntity>();
-        var portals = LevelEntities.GetEntities<PortalControllerEntity>();
+        var spawnPoints = LevelEntityHandler.GetEntities<SpawnPointEntity>();
+        var portals = LevelEntityHandler.GetEntities<PortalControllerEntity>();
 
         if (character.LastLevel != 0)
         {
@@ -149,7 +153,7 @@ public class Level
             }
         }
 
-        var defaultSpawn = spawnPoints.Values.FirstOrDefault();
+        var defaultSpawn = spawnPoints.Values.MinBy(p => p.Index);
 
         if (defaultSpawn != null)
         {
@@ -174,7 +178,7 @@ public class Level
 
         // CHARACTER DATA
 
-        foreach (var currentClient in _clients.Values)
+        foreach (var currentClient in Clients.Values)
         {
             var currentPlayer = currentClient.Get<Player>();
 
@@ -210,32 +214,35 @@ public class Level
 
     public void DumpPlayersToLobby()
     {
-        foreach (var playerId in _clients.Keys)
+        foreach (var playerId in Clients.Keys)
             DumpPlayerToLobby(playerId);
     }
 
     public void DumpPlayerToLobby(int playerId)
     {
-        var client = _clients[playerId];
-        client.Get<Player>().JoinLevel(client, _handler.GetLevelFromId(-1), out _);
+        var client = Clients[playerId];
+        client.Get<Player>().JoinLevel(client, LevelHandler.GetLevelFromId(-1), out _);
         RemoveClient(playerId);
     }
 
     public void RemoveClient(int playerId)
     {
-        _clients.Remove(playerId);
+        Clients.Remove(playerId);
         _clientIds.Remove(playerId);
+
+        if (Clients.Count == 0 && LevelInfo.LevelId > 0)
+            LevelHandler.RemoveLevel(LevelInfo.LevelId);
     }
 
-    public void RelayClientSync(SyncEvent syncEvent, Player sentPlayer)
+    public void SendSyncEvent(SyncEvent syncEvent, Player sentPlayer = null)
     {
         var syncEventMsg = syncEvent.EncodeData();
 
         foreach (
             var client in
-            from client in _clients.Values
+            from client in Clients.Values
             let receivedPlayer = client.Get<Player>()
-            where receivedPlayer.UserInfo.UserId != sentPlayer.UserInfo.UserId
+            where sentPlayer == null || receivedPlayer.UserInfo.UserId != sentPlayer.UserInfo.UserId
             select client
         )
             client.SendXt("ss", syncEventMsg);

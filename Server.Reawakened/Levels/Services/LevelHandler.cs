@@ -20,6 +20,8 @@ public class LevelHandler : IService
     private readonly EventSink _sink;
     private readonly WorldGraph _worldGraph;
 
+    public Dictionary<string, Type> ProcessableData;
+
     public LevelHandler(EventSink sink, ServerConfig config, WorldGraph worldGraph, ILogger<LevelHandler> logger)
     {
         _sink = sink;
@@ -35,6 +37,9 @@ public class LevelHandler : IService
     {
         GetDirectory.OverwriteDirectory(_config.LevelDataSaveDirectory);
 
+        ProcessableData = typeof(DataComponentAccessor).Assembly.GetServices<DataComponentAccessor>()
+            .ToDictionary(x => x.Name, x => x);
+        
         foreach (var level in _levels.Values.Where(level => level.LevelInfo.LevelId != -1))
             level.DumpPlayersToLobby();
 
@@ -95,4 +100,6 @@ public class LevelHandler : IService
 
         return level;
     }
+
+    public void RemoveLevel(int levelId) => _levels.Remove(levelId);
 }

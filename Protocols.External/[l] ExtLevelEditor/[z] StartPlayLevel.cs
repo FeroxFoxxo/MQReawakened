@@ -8,10 +8,10 @@ namespace Protocols.External._l__ExtLevelEditor;
 
 public class StartPlayLevel : ExternalProtocol
 {
-    public LevelHandler LevelHandler { get; set; }
-
     public override string ProtocolName => "lz";
 
+    public LevelHandler LevelHandler { get; set; }
+    
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();

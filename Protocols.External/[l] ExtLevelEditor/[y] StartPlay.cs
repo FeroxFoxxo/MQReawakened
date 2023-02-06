@@ -11,11 +11,11 @@ namespace Protocols.External._l__ExtLevelEditor;
 
 public class StartPlay : ExternalProtocol
 {
-    public LevelHandler LevelHandler { get; set; }
-    public WorldGraph WorldGraph { get; set; }
-
     public override string ProtocolName => "ly";
 
+    public LevelHandler LevelHandler { get; set; }
+    public WorldGraph WorldGraph { get; set; }
+    
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();

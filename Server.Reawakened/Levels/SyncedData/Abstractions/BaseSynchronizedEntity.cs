@@ -7,15 +7,18 @@ public abstract class BaseSynchronizedEntity
 {
     public readonly StoredEntityModel StoredEntity;
 
+    public abstract string Name { get; }
+    
     protected BaseSynchronizedEntity(StoredEntityModel storedEntity) =>
         StoredEntity = storedEntity;
 
-    public virtual string InitData(NetState netState) =>
-        string.Empty;
+    public virtual string[] GetInitData() => Array.Empty<string>();
 
-    public virtual void SendEntityInformationToClient(string[] message, NetState netState) =>
+    public virtual void SendDelayedData(NetState netState) { }
+
+    public virtual void RunSyncedEvent(SyncEvent syncEvent, NetState netState) =>
         StoredEntity.Logger.LogError(
-            "Tried sending entity information of {Id}, which has no override! Skipping...",
+            "The synchronized entity {Id} has no override for events! Skipping...",
             StoredEntity.Id
         );
 }

@@ -38,7 +38,7 @@ public class ServerConfig : IConfig
         MaxCharacterCount = 3;
 
         DefaultSignUpExperience = "UNKNOWN";
-        DefaultChatLevel = 2;
+        DefaultChatLevel = 3;
         DefaultTrackingShortId = "false";
         DefaultMemberStatus = true;
 

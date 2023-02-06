@@ -8,12 +8,11 @@ namespace Protocols.External._c__CharacterInfoHandler;
 
 public class ChooseCharacter : ExternalProtocol
 {
-    public ILogger<ChooseCharacter> Logger { get; set; }
-
-    public LevelHandler LevelHandler { get; set; }
-
     public override string ProtocolName => "ch";
 
+    public ILogger<ChooseCharacter> Logger { get; set; }
+    public LevelHandler LevelHandler { get; set; }
+    
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();

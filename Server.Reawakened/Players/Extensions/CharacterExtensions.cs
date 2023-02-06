@@ -1,4 +1,6 @@
-﻿using Server.Reawakened.Players.Models;
+﻿using Server.Base.Network;
+using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using WorldGraphDefines;
 
@@ -64,5 +66,13 @@ public static class CharacterExtensions
         }
 
         return true;
+    }
+
+    public static void AddBananas(this NetState state, int collectedBananas)
+    {
+        var player = state.Get<Player>();
+        var charData = player.GetCurrentCharacter().Data;
+        charData.Cash += collectedBananas;
+        state.SendXt("ca", charData.Cash, charData.NCash);
     }
 }

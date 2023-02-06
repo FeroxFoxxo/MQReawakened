@@ -9,13 +9,15 @@ public class StoredEntityModel
     public readonly Microsoft.Extensions.Logging.ILogger Logger;
     
     public readonly int Id;
+    public readonly string PrefabName;
     public readonly Vector3Model Position;
 
-    public StoredEntityModel(int id, Vector3Model position, Level level, Microsoft.Extensions.Logging.ILogger logger)
+    public StoredEntityModel(int id, string prefabName, Vector3Model position, Level level, Microsoft.Extensions.Logging.ILogger logger)
     {
         Level = level;
         Logger = logger;
         Position = position;
         Id = id;
+        PrefabName = prefabName;
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Levels.SyncedData.Abstractions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Helpers;
 
 namespace Protocols.External._l__ExtLevelEditor;
 
@@ -16,8 +18,53 @@ public class LevelUpdate : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
+        var level = player.GetCurrentLevel(LevelHandler);
+
+        if (level == null)
+            return;
+
+        var gameObjectStore = GetGameObjectStore(level.LevelEntityHandler.Entities);
+
+        SendXt("lv", 0, gameObjectStore);
+
+        foreach (var entity in level.LevelEntityHandler.Entities.Values.SelectMany(x => x))
+            entity.SendDelayedData(NetState);
 
         player.GetCurrentLevel(LevelHandler).SendCharacterInfo(player, NetState);
-        SendXt("lv", 0, string.Empty);
+    }
+
+    private static string GetGameObjectStore(Dictionary<int, List<BaseSynchronizedEntity>> entities)
+    {
+        var sb = new SeparatedStringBuilder('&');
+
+        foreach (var gameObject in entities.Select(GetGameObject)
+                     .Where(gameObject => gameObject.Split('~').Length > 1))
+            sb.Append(gameObject);
+
+        return sb.ToString();
+    }
+
+    private static string GetGameObject(KeyValuePair<int, List<BaseSynchronizedEntity>> entities)
+    {
+        var sb = new SeparatedStringBuilder('|');
+
+        sb.Append(entities.Key);
+
+        foreach (var entity in entities.Value)
+            sb.Append(GetComponent(entity));
+
+        return sb.ToString();
+    }
+
+    private static string GetComponent(BaseSynchronizedEntity entity)
+    {
+        var sb = new SeparatedStringBuilder('~');
+
+        sb.Append(entity.Name);
+
+        foreach (var setting in entity.GetInitData())
+            sb.Append(setting);
+
+        return sb.ToString();
     }
 }
