@@ -31,14 +31,14 @@ public class GenericCollectibleModel : SynchronizedEntity<GenericCollectible>
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
         Collected = true;
-        var collectedValue = Value * StoredEntity.Level.Clients.Count;
+        var collectedValue = Value * Level.Clients.Count;
 
         var currentPlayer = netState.Get<Player>();
 
-        var collectedEvent = new Trigger_SyncEvent(StoredEntity.Id.ToString(), StoredEntity.Level.Time, true,
+        var collectedEvent = new Trigger_SyncEvent(StoredEntity.Id.ToString(), Level.Time, true,
             currentPlayer.PlayerId.ToString(), true);
 
-        StoredEntity.Level.SendSyncEvent(collectedEvent);
+        Level.SendSyncEvent(collectedEvent);
         
         var effectName = StoredEntity.PrefabName switch
         {
@@ -47,12 +47,12 @@ public class GenericCollectibleModel : SynchronizedEntity<GenericCollectible>
             _ => throw new InvalidDataException(StoredEntity.PrefabName)
         };
 
-        var effectEvent = new FX_SyncEvent(StoredEntity.Id.ToString(), StoredEntity.Level.Time, effectName,
+        var effectEvent = new FX_SyncEvent(StoredEntity.Id.ToString(), Level.Time, effectName,
             StoredEntity.Position.X, StoredEntity.Position.Y, FX_SyncEvent.FXState.Play);
 
-        StoredEntity.Level.SendSyncEvent(effectEvent);
+        Level.SendSyncEvent(effectEvent);
 
-        foreach (var client in StoredEntity.Level.Clients.Values)
+        foreach (var client in Level.Clients.Values)
             client.AddBananas(collectedValue);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Network;
+using Server.Reawakened.Levels.Models;
 
 namespace Server.Reawakened.Levels.SyncedData.Abstractions;
 
@@ -7,8 +8,11 @@ public abstract class BaseSynchronizedEntity
 {
     public readonly StoredEntityModel StoredEntity;
 
+    public Level Level => StoredEntity.Level;
+    public Microsoft.Extensions.Logging.ILogger Logger => StoredEntity.Logger;
+
     public abstract string Name { get; }
-    
+
     protected BaseSynchronizedEntity(StoredEntityModel storedEntity) =>
         StoredEntity = storedEntity;
 

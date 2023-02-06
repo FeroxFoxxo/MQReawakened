@@ -7,5 +7,7 @@ public class SpawnPointEntity : SynchronizedEntity<SpawnPoint>
     public int Index => EntityData.Index;
 
     public SpawnPointEntity(StoredEntityModel storedEntity,
-        SpawnPoint entityData) : base(storedEntity, entityData) { }
+        SpawnPoint entityData) : base(storedEntity, entityData)
+    {
+    }
 }

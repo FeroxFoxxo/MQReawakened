@@ -1,7 +1,10 @@
 ﻿using Server.Base.Network;
+using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -74,5 +77,43 @@ public static class CharacterExtensions
         var charData = player.GetCurrentCharacter().Data;
         charData.Cash += collectedBananas;
         state.SendXt("ca", charData.Cash, charData.NCash);
+    }
+
+    public static void SendLevelChange(this NetState netState, LevelHandler levelHandler, WorldGraphXML worldGraph)
+    {
+        var player = netState.Get<Player>();
+
+        var error = string.Empty;
+        var levelName = string.Empty;
+        var surroundingLevels = string.Empty;
+
+        try
+        {
+            var level = player.GetCurrentLevel(levelHandler);
+
+            levelName = level.LevelInfo.Name;
+            surroundingLevels = GetSurroundingLevels(level.LevelInfo, worldGraph);
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+
+        netState.SendXt("lw", error, levelName, surroundingLevels);
+    }
+
+    private static string GetSurroundingLevels(LevelInfo levelInfo, WorldGraphXML worldGraph)
+    {
+        var sb = new SeparatedStringBuilder('!');
+
+        var levels = worldGraph.GetLevelWorldGraphNodes(levelInfo.LevelId)
+            .Where(x => x.ToLevelID != x.LevelID)
+            .Select(x => worldGraph.GetInfoLevel(x.ToLevelID).Name)
+            .Distinct();
+
+        foreach (var level in levels)
+            sb.Append(level);
+
+        return sb.ToString();
     }
 }

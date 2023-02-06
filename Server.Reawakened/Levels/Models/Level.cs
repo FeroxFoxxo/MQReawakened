@@ -20,7 +20,6 @@ namespace Server.Reawakened.Levels.Models;
 
 public class Level
 {
-    private readonly WorldGraph _worldGraph;
     private readonly ILogger<LevelHandler> _logger;
     private readonly ServerConfig _serverConfig;
 
@@ -28,6 +27,7 @@ public class Level
 
     public readonly Dictionary<int, NetState> Clients;
     public readonly LevelHandler LevelHandler;
+    public readonly WorldGraph WorldGraph;
 
     public LevelInfo LevelInfo { get; set; }
     public LevelPlanes LevelPlaneHandler { get; set; }
@@ -42,7 +42,7 @@ public class Level
     {
         _serverConfig = serverConfig;
         LevelHandler = levelHandler;
-        _worldGraph = worldGraph;
+        WorldGraph = worldGraph;
         _logger = logger;
         Clients = new Dictionary<int, NetState>();
         _clientIds = new HashSet<int>();
@@ -124,7 +124,7 @@ public class Level
 
         if (character.LastLevel != 0)
         {
-            var nodes = _worldGraph.GetLevelWorldGraphNodes(character.LastLevel);
+            var nodes = WorldGraph.GetLevelWorldGraphNodes(character.LastLevel);
 
             if (nodes != null)
                 node = nodes.FirstOrDefault(a => a.ToLevelID == character.Level);
@@ -246,5 +246,12 @@ public class Level
             select client
         )
             client.SendXt("ss", syncEventMsg);
+    }
+
+    public void SendSyncEventToPlayer(SyncEvent syncEvent, NetState state)
+    {
+        var syncEventMsg = syncEvent.EncodeData();
+
+        state.SendXt("ss", syncEventMsg);
     }
 }
