@@ -32,8 +32,7 @@ public class BuildAssetList : IService
     public Dictionary<string, InternalAssetInfo> InternalAssets;
 
     public BuildAssetList(ILogger<BuildAssetList> logger, AssetBundleConfig config,
-        EventSink sink,
-        AssetEventSink assetSink, ServerConsole console, LauncherConfig lConfig)
+        EventSink sink, AssetEventSink assetSink, ServerConsole console, LauncherConfig lConfig)
     {
         _logger = logger;
         _config = config;

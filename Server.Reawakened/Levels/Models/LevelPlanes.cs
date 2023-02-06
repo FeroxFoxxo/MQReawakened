@@ -1,8 +1,9 @@
-﻿using System.Xml;
+﻿using Server.Reawakened.Levels.Models.LevelData;
+using System.Xml;
 
-namespace Server.Reawakened.Levels.Models.LevelData;
+namespace Server.Reawakened.Levels.Models;
 
-public class LevelDataModel
+public class LevelPlanes
 {
     public Dictionary<string, PlaneModel> Planes { get; set; }
 

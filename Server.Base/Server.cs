@@ -41,7 +41,7 @@ public class Server : Module
 
         Logger.LogInformation("Loading Services");
 
-        foreach (var service in RequiredServices.GetServices<IService>(modules))
+        foreach (var service in modules.GetServices<IService>())
         {
             Logger.LogTrace("   Loaded: {ServiceName}", service.Name);
             services.AddSingleton(service);
@@ -50,7 +50,7 @@ public class Server : Module
         Logger.LogDebug("Loaded services");
 
         Logger.LogInformation("Loading Modules");
-        foreach (var service in RequiredServices.GetServices<Module>(modules))
+        foreach (var service in modules.GetServices<Module>())
         {
             Logger.LogTrace("   Loaded: {ServiceName}", service.Name);
             services.AddSingleton(service);
@@ -60,7 +60,7 @@ public class Server : Module
 
         Logger.LogInformation("Loading Configs");
 
-        foreach (var service in RequiredServices.GetServices<IConfig>(modules))
+        foreach (var service in modules.GetServices<IConfig>())
             services.LoadConfigs(service, Logger);
 
         Logger.LogDebug("Loaded configs");

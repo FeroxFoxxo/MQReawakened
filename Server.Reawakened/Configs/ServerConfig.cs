@@ -22,7 +22,6 @@ public class ServerConfig : IConfig
 
     public string LevelSaveDirectory { get; set; }
     public string LevelDataSaveDirectory { get; set; }
-    public string LevelEntitySaveDirectory { get; set; }
 
     public string[] DefaultProtocolTypeIgnore { get; set; }
 
@@ -32,7 +31,6 @@ public class ServerConfig : IConfig
     {
         LevelSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Level");
         LevelDataSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "LevelData");
-        LevelEntitySaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "LevelEntity");
 
         RandomKeyLength = 24;
         PlayerCap = 20;

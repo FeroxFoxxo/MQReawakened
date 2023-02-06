@@ -1,4 +1,5 @@
 ﻿using AssetRipper.IO.Endian;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -41,8 +42,9 @@ public class AssetHostController : Controller
         {
             var uriPath = $"{folder}/{file}";
 
+            // Don't log to console.
             if (_game.Assets.Contains(uriPath))
-                return NotFound();
+                return new StatusCodeResult(StatusCodes.Status418ImATeapot);
 
             _game.Assets.Add(uriPath);
         }

@@ -45,12 +45,19 @@ public class RequestLogger
 
             await _next(context);
 
-            if (context.Response.StatusCode != 404)
-                logger.LogTrace("{StatusCode} {Method} {Path}", context.Response.StatusCode, method,
-                    context.Request.Path.Value);
-            else
-                logger.LogWarning("{StatusCode} {Method} {Path}", context.Response.StatusCode, method,
-                    context.Request.Path.Value);
+            switch (context.Response.StatusCode)
+            {
+                case StatusCodes.Status418ImATeapot:
+                    break;
+                case StatusCodes.Status404NotFound:
+                    logger.LogWarning("{StatusCode} {Method} {Path}", context.Response.StatusCode, method,
+                        context.Request.Path.Value);
+                    break;
+                default:
+                    logger.LogTrace("{StatusCode} {Method} {Path}", context.Response.StatusCode, method,
+                        context.Request.Path.Value);
+                    break;
+            }
         }
         catch (Exception ex)
         {

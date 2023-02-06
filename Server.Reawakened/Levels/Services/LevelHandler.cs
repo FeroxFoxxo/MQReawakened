@@ -5,7 +5,6 @@ using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Levels.Models;
-using Server.Reawakened.Levels.Models.LevelData;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.Json;
 using System.Xml;
@@ -48,7 +47,7 @@ public class LevelHandler : IService
             return value;
 
         LevelInfo levelInfo = null;
-        var levelData = new LevelDataModel();
+        var levelPlanes = new LevelPlanes();
 
         if (levelId is -1 or 0)
         {
@@ -76,9 +75,9 @@ public class LevelHandler : IService
 
                 var xmlDocument = new XmlDocument();
                 xmlDocument.Load(levelInfoPath);
-                levelData.LoadXmlDocument(xmlDocument);
+                levelPlanes.LoadXmlDocument(xmlDocument);
                 
-                File.WriteAllText(levelDataPath, JsonSerializer.Serialize(levelData, new JsonSerializerOptions { WriteIndented = true }));
+                File.WriteAllText(levelDataPath, JsonSerializer.Serialize(levelPlanes, new JsonSerializerOptions { WriteIndented = true }));
             }
             catch (NullReferenceException)
             {
@@ -90,7 +89,7 @@ public class LevelHandler : IService
             }
         }
 
-        var level = new Level(levelInfo, levelData, _config, this, _worldGraph, _logger);
+        var level = new Level(levelInfo, levelPlanes, _config, this, _worldGraph, _logger);
 
         _levels.Add(levelId, level);
 
