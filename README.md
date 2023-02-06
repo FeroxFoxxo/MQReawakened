@@ -8,7 +8,7 @@
 
 MQReawakened is a private server meant for **non-commercial, educational use only**. It's built off the Ultima server emulator, written by the guys at [ServUO](https://github.com/ServUO/ServUO/), as well as [Asset Studio](https://github.com/Perfare/AssetStudio), by Perfare, and heavily modified.
 
-This project purely meant for educational use, as to show how games like this are created through reverse engineering. It is not, and should never be, commercialised in any way. It is a transformative work, and is fundamentally different from the client - only sharing similar data models, and communicating based on the same protocols. Thus any of the few snippits of code shared between each should be covered under Fair Use. Users must provide the original game's code, assets, executables etc themselves.
+This project purely meant for educational use, as to show how games like this are created through reverse engineering. It is not, and should never be, commercialised in any way. It is a transformative work, and is fundamentally different from the client - only sharing similar data models, and communicating based on the same protocols. Users must provide the original game's code, assets, executables etc themselves.
 
 Please email me at feroxfoxxo@gmail.com if anything is in breach, which will be rectified ASAP.
 
