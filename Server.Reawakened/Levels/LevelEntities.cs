@@ -62,6 +62,8 @@ public class LevelEntities
                                     field.SetValue(dataObj, componentValue.Value.ToLower() == "true");
                                 else if (field.FieldType == typeof(float))
                                     field.SetValue(dataObj, float.Parse(componentValue.Value));
+                                else if (field.FieldType.IsEnum)
+                                    field.SetValue(dataObj, Enum.Parse(field.FieldType, componentValue.Value));
                                 else
                                     _logger.LogError("It is unknown how to convert a string to a {FieldType}. " +
                                                      "Please implement this in the {CurrentType} class.", field.FieldType, GetType().Name);

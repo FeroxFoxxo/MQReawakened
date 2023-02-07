@@ -4,17 +4,17 @@ using Server.Reawakened.Thrift.Protocols;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-namespace Protocols.External._y__MessageCenterHandler;
+namespace Protocols.External._d__DescriptionHandler;
 
 public class ClientToServer : ExternalProtocol
 {
-    public override string ProtocolName => "yC";
+    public override string ProtocolName => "dC";
 
-    public MessageHandler MessageHandler { get; set; }
+    public DescriptionHandler DescriptionHandler { get; set; }
 
     public override void Run(string[] message)
     {
-        var server2Client = new ChunkedTransport(delegate(string protocol) { SendXt("yC", protocol); });
+        var server2Client = new ChunkedTransport(delegate (string protocol) { SendXt("dC", protocol); });
 
         var s2CProtocol = new TCompactProtocol(server2Client);
 
@@ -22,6 +22,6 @@ public class ClientToServer : ExternalProtocol
 
         var protocol = new ThriftProtocol(s2CProtocol, s2CProtocol);
 
-        MessageHandler.Process(protocol, NetState);
+        DescriptionHandler.Process(protocol, NetState);
     }
 }

@@ -2,7 +2,6 @@
 using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models;
 
 namespace Server.Reawakened.Entities;
 

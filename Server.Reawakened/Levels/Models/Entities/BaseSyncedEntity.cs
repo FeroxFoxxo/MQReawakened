@@ -23,6 +23,8 @@ public abstract class BaseSyncedEntity
 
     public virtual void SendDelayedData(NetState netState) { }
 
+    public virtual void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, NetState netState) { }
+
     public virtual void RunSyncedEvent(SyncEvent syncEvent, NetState netState) =>
         StoredEntity.Logger.LogError("The synchronized entity {Id} has no override for events! Skipping...", Id);
 

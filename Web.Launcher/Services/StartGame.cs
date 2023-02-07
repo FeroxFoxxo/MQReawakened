@@ -6,6 +6,7 @@ using Server.Base.Core.Helpers;
 using Server.Base.Core.Helpers.Internal;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
+using Server.Base.Worlds;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text.Json;
@@ -26,12 +27,13 @@ public class StartGame : IService
     private string _directory;
     private bool _dirSet, _appStart;
     private Process _game;
+    private World _world;
 
     public PackageInformation CurrentVersion { get; private set; }
     public List<string> Assets { get; set; }
 
     public StartGame(EventSink sink, LauncherConfig lConfig, SettingsConfig sConfig,
-        IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console)
+        IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console, World world)
     {
         _sink = sink;
         _lConfig = lConfig;
@@ -39,6 +41,7 @@ public class StartGame : IService
         _appLifetime = appLifetime;
         _logger = logger;
         _console = console;
+        _world = world;
 
         _dirSet = false;
         _appStart = false;
@@ -139,7 +142,8 @@ public class StartGame : IService
         if (_lConfig.OverwriteGameConfig)
             WriteConfig();
 
-        LaunchGame();
+        if (!_world.Crashed)
+            LaunchGame();
     }
 
     public void LaunchGame()

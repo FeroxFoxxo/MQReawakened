@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
 using Server.Base.Network;
@@ -13,7 +12,6 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Levels;
@@ -107,10 +105,10 @@ public class Level
 
                 var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
 
-                SendUserEnterData(newClient, currentPlayer, currentAccount);
+                newClient.SendUserEnterData(currentPlayer, currentAccount);
 
                 if (areDifferentClients)
-                    SendUserEnterData(currentClient, newPlayer, newAccount);
+                    currentClient.SendUserEnterData(newPlayer, newAccount);
             }
         }
         else
@@ -173,34 +171,14 @@ public class Level
 
             var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
 
-            SendCharacterInfoData(newClient, currentPlayer,
-                areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals);
+            newClient.SendCharacterInfoData(currentPlayer,
+                areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals, LevelInfo);
 
             if (areDifferentClients)
-                SendCharacterInfoData(currentClient, newPlayer, CharacterInfoType.Lite);
+                currentClient.SendCharacterInfoData(newPlayer, CharacterInfoType.Lite, LevelInfo);
         }
     }
-
-    private static void SendUserEnterData(NetState state, Player player, Account account) =>
-        state.SendXml("uER",
-            $"<u i='{player.UserInfo.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.PlayerId}'><n>{account.Username}</n></u>");
-
-    public void SendCharacterInfoData(NetState state, Player player, CharacterInfoType type)
-    {
-        var character = player.GetCurrentCharacter();
-
-        var info = type switch
-        {
-            CharacterInfoType.Lite => character.Data.GetLightCharacterData(),
-            CharacterInfoType.Portals => character.Data.BuildPortalData(),
-            CharacterInfoType.Detailed => character.Data.ToString(),
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-        };
-
-        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, player.PlayerId,
-            LevelInfo.Name);
-    }
-
+    
     public void DumpPlayersToLobby()
     {
         foreach (var playerId in Clients.Keys)

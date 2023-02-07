@@ -17,6 +17,7 @@ public class World
     public bool Saving { get; private set; }
     public bool Loaded { get; private set; }
     public bool Loading { get; private set; }
+    public bool Crashed { get; private set; }
 
     public World(ILogger<World> logger, EventSink sink, NetStateHandler handler)
     {
@@ -27,6 +28,7 @@ public class World
         Saving = false;
         Loaded = false;
         Loading = false;
+        Crashed = false;
 
         _diskWriteHandle = new ManualResetEvent(true);
     }
@@ -51,6 +53,7 @@ public class World
         catch (Exception ex)
         {
             _logger.LogCritical(ex, "FATAL: Exception in world load");
+            Crashed = true;
         }
 
         Loading = false;
