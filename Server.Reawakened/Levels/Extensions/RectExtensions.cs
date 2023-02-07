@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Levels.Models.LevelData;
+﻿using Server.Reawakened.Levels.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Levels.Extensions;

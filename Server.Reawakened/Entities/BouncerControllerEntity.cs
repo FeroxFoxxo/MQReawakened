@@ -1,16 +1,11 @@
 ﻿using Server.Base.Network;
-using Server.Reawakened.Levels.SyncedData.Abstractions;
+using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Players;
 
-namespace Server.Reawakened.Levels.SyncedData.Entities;
+namespace Server.Reawakened.Entities;
 
 public class BouncerControllerModel : SynchronizedEntity<BouncerController>
 {
-    public BouncerControllerModel(StoredEntityModel storedEntity,
-        BouncerController entityData) : base(storedEntity, entityData)
-    {
-    }
-
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
         var bouncer = new Bouncer_SyncEvent(syncEvent);

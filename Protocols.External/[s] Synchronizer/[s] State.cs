@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Levels.Models.LevelData;
+using Server.Reawakened.Levels.Models.Planes;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -32,7 +32,7 @@ public class State : ExternalProtocol
 
         var entityId = int.Parse(syncEvent.TargetID);
 
-        if (entityId == player.PlayerId)
+        if (entityId == player.GetCurrentCharacter().GetCharacterObjectId())
         {
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (syncEvent.Type)
@@ -83,7 +83,7 @@ public class State : ExternalProtocol
                     if (entity.Value != null)
                         foreach (var component in entity.Value.ObjectInfo.Components)
                         {
-                            level.LevelHandler.ProcessableData.TryGetValue(component.Key, out var mqType);
+                            LevelHandler.ProcessableData.TryGetValue(component.Key, out var mqType);
 
                             if (mqType != null)
                                 components.Add(mqType.Name);

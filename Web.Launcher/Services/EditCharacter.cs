@@ -90,7 +90,7 @@ public class NameChange : IService
             character.Data.CharacterName);
 
         foreach (var levelValue in (Dictionary<string, int>)
-                 _worldGraph.GetPrivateField<WorldGraphXML>("_levelNameToID"))
+                 _worldGraph.GetField<WorldGraphXML>("_levelNameToID"))
         {
             if (!File.Exists(Path.Join(_config.LevelSaveDirectory, $"{levelValue.Key}.xml")))
                 continue;
@@ -115,7 +115,9 @@ public class NameChange : IService
             return;
         }
 
-        character.LastLevel = 0;
+        character.PortalId = 0;
+        character.SpawnPoint = 0;
+
         character.Level = levelId;
 
         var levelInfo = _worldGraph.GetInfoLevel(levelId);

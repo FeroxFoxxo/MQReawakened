@@ -1,13 +1,12 @@
-﻿using Server.Reawakened.Levels.Models;
-using Server.Reawakened.Levels.Models.LevelData;
+﻿using Server.Reawakened.Levels.Models.Planes;
 
-namespace Server.Reawakened.Levels.SyncedData.Abstractions;
+namespace Server.Reawakened.Levels.Models.Entities;
 
 public class StoredEntityModel
 {
     public readonly Level Level;
     public readonly Microsoft.Extensions.Logging.ILogger Logger;
-    
+
     public readonly int Id;
     public readonly string PrefabName;
     public readonly Vector3Model Position;

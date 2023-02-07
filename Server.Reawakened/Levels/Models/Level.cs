@@ -4,17 +4,18 @@ using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
 using Server.Base.Network;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Entities;
 using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Extensions;
-using Server.Reawakened.Levels.Models.LevelData;
+using Server.Reawakened.Levels.Models.Planes;
 using Server.Reawakened.Levels.Services;
-using Server.Reawakened.Levels.SyncedData;
-using Server.Reawakened.Levels.SyncedData.Entities;
 using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
+using static NavMesh;
 
 namespace Server.Reawakened.Levels.Models;
 
@@ -24,10 +25,10 @@ public class Level
     private readonly ServerConfig _serverConfig;
 
     private readonly HashSet<int> _clientIds;
-
     public readonly Dictionary<int, NetState> Clients;
-    public readonly LevelHandler LevelHandler;
-    public readonly WorldGraph WorldGraph;
+
+    private readonly LevelHandler _levelHandler;
+    private readonly WorldGraph _worldGraph;
 
     public LevelInfo LevelInfo { get; set; }
     public LevelPlanes LevelPlaneHandler { get; set; }
@@ -38,11 +39,11 @@ public class Level
     public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
 
     public Level(LevelInfo levelInfo, LevelPlanes levelPlaneHandler, ServerConfig serverConfig,
-        LevelHandler levelHandler, WorldGraph worldGraph, ILogger<LevelHandler> logger)
+        LevelHandler levelHandler, WorldGraph worldGraph, ReflectionUtils reflection, IServiceProvider services, ILogger<LevelHandler> logger)
     {
         _serverConfig = serverConfig;
-        LevelHandler = levelHandler;
-        WorldGraph = worldGraph;
+        _levelHandler = levelHandler;
+        _worldGraph = worldGraph;
         _logger = logger;
         Clients = new Dictionary<int, NetState>();
         _clientIds = new HashSet<int>();
@@ -51,7 +52,7 @@ public class Level
         LevelPlaneHandler = levelPlaneHandler;
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
 
-        LevelEntityHandler = new LevelEntities(this, _logger);
+        LevelEntityHandler = new LevelEntities(this, _levelHandler, reflection, services, _logger);
     }
 
     public void AddClient(NetState newClient, out JoinReason reason)
@@ -115,41 +116,27 @@ public class Level
     {
         // WHERE TO SPAWN
         var character = newPlayer.GetCurrentCharacter();
-
-        DestNode node = null;
+        
         Vector3Model spawnLocation = null;
 
         var spawnPoints = LevelEntityHandler.GetEntities<SpawnPointEntity>();
         var portals = LevelEntityHandler.GetEntities<PortalControllerEntity>();
 
-        if (character.LastLevel != 0)
+        var realSpawn = character.SpawnPoint != 0 || character.PortalId != 0;
+
+        if (realSpawn)
         {
-            var nodes = WorldGraph.GetLevelWorldGraphNodes(character.LastLevel);
-
-            if (nodes != null)
-                node = nodes.FirstOrDefault(a => a.ToLevelID == character.Level);
-
-            if (node != null)
+            if (portals.TryGetValue(character.PortalId, out var portal))
             {
-                _logger.LogDebug("Node Found: Portal ID '{Portal}', Spawn ID '{Spawn}'.", node.PortalID,
-                    node.ToSpawnID);
-
-                if (portals.TryGetValue(node.PortalID, out var portal))
-                {
-                    spawnLocation = portal.StoredEntity.Position;
-                }
-                else
-                {
-                    if (spawnPoints.TryGetValue(node.PortalID, out var spawnPoint))
-                        spawnLocation = spawnPoint.StoredEntity.Position;
-                    else
-                        _logger.LogError("Could not find portal '{PortalId}' or spawn '{SpawnId}'.", node.PortalID,
-                            node.ToSpawnID);
-                }
+                spawnLocation = portal.StoredEntity.Position;
             }
             else
             {
-                _logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LastLevel, character.Level);
+                if (spawnPoints.TryGetValue(character.SpawnPoint, out var spawnPoint))
+                    spawnLocation = spawnPoint.StoredEntity.Position;
+                else
+                    _logger.LogError("Could not find portal '{PortalId}' or spawn '{SpawnId}'.",
+                        character.PortalId, character.SpawnPoint);
             }
         }
 
@@ -170,9 +157,12 @@ public class Level
         character.Data.SpawnPositionY = spawnLocation.Y;
         character.Data.SpawnOnBackPlane = spawnLocation.Z > 1;
 
-        _logger.LogDebug("Spawning {CharacterName} at object '{NodePortalId}', from '{OldLevel}' to '{NewLevel}'.",
-            character.Data.CharacterName, node != null ? node.PortalID : "DEFAULT", character.LastLevel,
-            character.Level);
+        _logger.LogDebug("Spawning {CharacterName} at object portal '{NodePortalId} spawn '{SpawnPoint}' to '{NewLevel}'.",
+            character.Data.CharacterName,
+            character.PortalId != 0 ? character.PortalId : "DEFAULT",
+            character.SpawnPoint != 0 ? character.SpawnPoint : "DEFAULT",
+            character.Level
+        );
 
         _logger.LogDebug("Position of spawn: {Position}", spawnLocation);
 
@@ -208,7 +198,7 @@ public class Level
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 
-        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, character.Data.GetGoId().ToString(),
+        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, character.GetCharacterObjectId(),
             LevelInfo.Name);
     }
 
@@ -221,7 +211,7 @@ public class Level
     public void DumpPlayerToLobby(int playerId)
     {
         var client = Clients[playerId];
-        client.Get<Player>().JoinLevel(client, LevelHandler.GetLevelFromId(-1), out _);
+        client.Get<Player>().JoinLevel(client, _levelHandler.GetLevelFromId(-1), out _);
         RemoveClient(playerId);
     }
 
@@ -231,7 +221,7 @@ public class Level
         _clientIds.Remove(playerId);
 
         if (Clients.Count == 0 && LevelInfo.LevelId > 0)
-            LevelHandler.RemoveLevel(LevelInfo.LevelId);
+            _levelHandler.RemoveLevel(LevelInfo.LevelId);
     }
 
     public void SendSyncEvent(SyncEvent syncEvent, Player sentPlayer = null)

@@ -5,6 +5,7 @@ using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Levels.Models;
+using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.Json;
 using System.Xml;
@@ -19,14 +20,19 @@ public class LevelHandler : IService
     private readonly ILogger<LevelHandler> _logger;
     private readonly EventSink _sink;
     private readonly WorldGraph _worldGraph;
+    private readonly ReflectionUtils _reflection;
+    private readonly IServiceProvider _services;
 
     public Dictionary<string, Type> ProcessableData;
 
-    public LevelHandler(EventSink sink, ServerConfig config, WorldGraph worldGraph, ILogger<LevelHandler> logger)
+    public LevelHandler(EventSink sink, ServerConfig config, WorldGraph worldGraph,
+        ReflectionUtils reflection, IServiceProvider services, ILogger<LevelHandler> logger)
     {
         _sink = sink;
         _config = config;
         _worldGraph = worldGraph;
+        _reflection = reflection;
+        _services = services;
         _logger = logger;
         _levels = new Dictionary<int, Level>();
     }
@@ -94,7 +100,7 @@ public class LevelHandler : IService
             }
         }
 
-        var level = new Level(levelInfo, levelPlanes, _config, this, _worldGraph, _logger);
+        var level = new Level(levelInfo, levelPlanes, _config, this, _worldGraph, _reflection, _services, _logger);
 
         _levels.Add(levelId, level);
 

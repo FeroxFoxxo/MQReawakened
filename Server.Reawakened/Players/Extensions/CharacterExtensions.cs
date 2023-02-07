@@ -4,8 +4,8 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
+using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -23,6 +23,9 @@ public static class CharacterExtensions
         player.CurrentCharacter = characterId;
         player.UserInfo.LastCharacterSelected = player.GetCurrentCharacter().Data.CharacterName;
     }
+
+    public static int GetCharacterObjectId(this CharacterModel characterData) =>
+        characterData.Data.UserUuid + characterData.Data.CharacterId;
 
     public static void AddCharacter(this Player player, CharacterModel characterData) =>
         player.UserInfo.Characters.Add(characterData.Data.CharacterId, characterData);
@@ -71,18 +74,15 @@ public static class CharacterExtensions
         return true;
     }
 
-    public static void AddBananas(this NetState state, int collectedBananas)
+    public static void AddBananas(this Player player, NetState state, int collectedBananas)
     {
-        var player = state.Get<Player>();
         var charData = player.GetCurrentCharacter().Data;
         charData.Cash += collectedBananas;
         state.SendXt("ca", charData.Cash, charData.NCash);
     }
 
-    public static void SendLevelChange(this NetState netState, LevelHandler levelHandler, WorldGraphXML worldGraph)
+    public static void SendLevelChange(this Player player, NetState netState, LevelHandler levelHandler, WorldGraphXML worldGraph)
     {
-        var player = netState.Get<Player>();
-
         var error = string.Empty;
         var levelName = string.Empty;
         var surroundingLevels = string.Empty;

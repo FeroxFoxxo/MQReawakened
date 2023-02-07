@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Levels.Models.LevelData;
+﻿using Server.Reawakened.Levels.Models.Planes;
 using System.Xml;
 
 namespace Server.Reawakened.Levels.Models;
@@ -34,6 +34,7 @@ public class LevelPlanes
                         continue;
 
                     foreach (XmlNode gameObjectAttributes in gameObject.ChildNodes)
+                    {
                         switch (data.Name)
                         {
                             case "LoadUnit":
@@ -43,6 +44,7 @@ public class LevelPlanes
                                 plane.LoadColliderXml(gameObjectAttributes);
                                 break;
                         }
+                    }
                 }
             }
     }

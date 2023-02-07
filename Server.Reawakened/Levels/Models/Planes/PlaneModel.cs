@@ -2,7 +2,7 @@
 using System.Xml;
 using UnityEngine;
 
-namespace Server.Reawakened.Levels.Models.LevelData;
+namespace Server.Reawakened.Levels.Models.Planes;
 
 public class PlaneModel
 {

@@ -16,11 +16,11 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
 
         QuestLineMap = new Dictionary<TribeType, GameObject>();
 
-        this.SetPrivateField<QuestCatalogXML>("_questCatalog", new Dictionary<int, QuestDescription>());
-        this.SetPrivateField<QuestCatalogXML>("_questLineCatalog", new Dictionary<int, QuestLineDescription>());
-        this.SetPrivateField<QuestCatalogXML>("_activityQuestLineCatalog", new Dictionary<int, QuestLineDescription>());
-        this.SetPrivateField<QuestCatalogXML>("_sortedQuestLine", new List<QuestLineGraph>());
-        this.SetPrivateField<QuestCatalogXML>("_questLines",
+        this.SetField<QuestCatalogXML>("_questCatalog", new Dictionary<int, QuestDescription>());
+        this.SetField<QuestCatalogXML>("_questLineCatalog", new Dictionary<int, QuestLineDescription>());
+        this.SetField<QuestCatalogXML>("_activityQuestLineCatalog", new Dictionary<int, QuestLineDescription>());
+        this.SetField<QuestCatalogXML>("_sortedQuestLine", new List<QuestLineGraph>());
+        this.SetField<QuestCatalogXML>("_questLines",
             new SortedDictionary<QuestLineDescription, List<QuestDescription>>(new QuestLineSorter()));
 
         ReadDescriptionXml(xml);

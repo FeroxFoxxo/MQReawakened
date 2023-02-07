@@ -23,8 +23,8 @@ public class SyncEventManager : IService
         _roomManager = (RoomManager)
             FormatterServices.GetUninitializedObject(typeof(RoomManager));
 
-        _encodeSync = _roomManager.GetPrivateMethod("EncodeEvent");
-        _decodeSync = _roomManager.GetPrivateMethod("DecodeEvent");
+        _encodeSync = _roomManager.GetMethod("EncodeEvent");
+        _decodeSync = _roomManager.GetMethod("DecodeEvent");
     }
 
     public string EncodeEvent(SyncEvent syncEvent) =>

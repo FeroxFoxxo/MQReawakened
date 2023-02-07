@@ -14,7 +14,7 @@ public class NameSyllables : NamegenSyllablesXML, IBundledXml
     {
         Syllables = new Dictionary<Gender, List<List<string>>>();
 
-        this.SetPrivateField<NamegenSyllablesXML>("_nameSyllables", new Dictionary<int, List<string>>());
+        this.SetField<NamegenSyllablesXML>("_nameSyllables", new Dictionary<int, List<string>>());
 
         ReadDescriptionXml(xml);
 

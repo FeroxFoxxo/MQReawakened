@@ -41,8 +41,6 @@ public class CharacterLightModel
 
     public override string ToString() => GetLightCharacterData();
 
-    public int GetGoId() => UserUuid + CharacterId;
-
     public string GetLightCharacterData()
     {
         var sb = new SeparatedStringBuilder('[');

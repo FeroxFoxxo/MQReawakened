@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
-using Server.Reawakened.Levels.Models;
-using Server.Reawakened.Levels.SyncedData.Abstractions;
+using Server.Reawakened.Levels.Models.Entities;
+using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Network.Helpers;
+using Server.Reawakened.Network.Protocols;
+using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Server.Reawakened.Levels.SyncedData;
+namespace Server.Reawakened.Levels.Models;
 
 public class LevelEntities
 {
@@ -12,7 +15,8 @@ public class LevelEntities
 
     private readonly Microsoft.Extensions.Logging.ILogger _logger;
 
-    public LevelEntities(Level level, Microsoft.Extensions.Logging.ILogger logger)
+    public LevelEntities(Level level, LevelHandler handler, ReflectionUtils reflectionUtils,
+        IServiceProvider serviceProvider, Microsoft.Extensions.Logging.ILogger logger)
     {
         _logger = logger;
 
@@ -20,7 +24,7 @@ public class LevelEntities
             return;
 
         Entities = new Dictionary<int, List<BaseSynchronizedEntity>>();
-        
+
         var invalidProcessable = new List<string>();
 
         var syncedEntities = typeof(BaseSynchronizedEntity).Assembly.GetServices<BaseSynchronizedEntity>()
@@ -29,12 +33,10 @@ public class LevelEntities
             .ToDictionary(t => t.BaseType.GenericTypeArguments.First().FullName, t => t);
         
         foreach (var plane in level.LevelPlaneHandler.Planes)
-        {
             foreach (var entity in plane.Value.GameObjects)
-            {
                 foreach (var component in entity.Value.ObjectInfo.Components)
                 {
-                    if (!level.LevelHandler.ProcessableData.TryGetValue(component.Key, out var mqType))
+                    if (!handler.ProcessableData.TryGetValue(component.Key, out var mqType))
                         continue;
 
                     if (syncedEntities.TryGetValue(mqType.FullName!, out var internalType))
@@ -49,47 +51,57 @@ public class LevelEntities
                         {
                             if (string.IsNullOrEmpty(componentValue.Value))
                                 continue;
-                            
+
                             var field = fields.FirstOrDefault(f => f.Name == componentValue.Key);
 
                             if (field != null)
-                            {
                                 if (field.FieldType == typeof(string))
                                     field.SetValue(dataObj, componentValue.Value);
-                                else if(field.FieldType == typeof(int))
+                                else if (field.FieldType == typeof(int))
                                     field.SetValue(dataObj, int.Parse(componentValue.Value));
                                 else if (field.FieldType == typeof(bool))
                                     field.SetValue(dataObj, componentValue.Value.ToLower() == "true");
+                                else if (field.FieldType == typeof(float))
+                                    field.SetValue(dataObj, float.Parse(componentValue.Value));
                                 else
                                     _logger.LogError("It is unknown how to convert a string to a {FieldType}. " +
                                                      "Please implement this in the {CurrentType} class.", field.FieldType, GetType().Name);
-                            }
                             else
-                            {
                                 _logger.LogWarning("Component {ComponentType} does not have field {FieldName}. Possible fields: {Fields}",
                                     mqType, componentValue.Key, string.Join(", ", fields.Select(f => f.Name)));
-                            }
                         }
 
                         var storedData = new StoredEntityModel(entity.Key, entity.Value.ObjectInfo.PrefabName,
                             entity.Value.ObjectInfo.Position, level, logger);
 
                         var instancedEntity =
-                            (BaseSynchronizedEntity)Activator.CreateInstance(internalType, storedData, dataObj);
+                            reflectionUtils.CreateBuilder<BaseSynchronizedEntity>(internalType.GetTypeInfo()).Invoke(serviceProvider);
+
+                        var methods = internalType.GetMethods().Where(m =>
+                        {
+                            var parameters = m.GetParameters();
+
+                            return parameters.Length == 2 &&
+                                   parameters[0].ParameterType == dataObj.GetType() &&
+                                   parameters[1].ParameterType == storedData.GetType();
+                        }).ToList();
+
+                        if (methods.Count != 1)
+                            _logger.LogError("Found invalid {Count} amount of initialization methods for {EntityId} ({EntityType})",
+                                methods.Count, entity.Key, internalType.Name);
+                        else
+                            methods.First().Invoke(instancedEntity, new [] { dataObj, storedData });
 
                         if (!Entities.ContainsKey(entity.Key))
                             Entities.Add(entity.Key, new List<BaseSynchronizedEntity>());
 
                         Entities[entity.Key].Add(instancedEntity);
                     }
-                    else
+                    else if (!invalidProcessable.Contains(mqType.Name))
                     {
-                        if (!invalidProcessable.Contains(mqType.Name))
-                            invalidProcessable.Add(mqType.Name);
+                        invalidProcessable.Add(mqType.Name);
                     }
                 }
-            }
-        }
 
         foreach (var type in invalidProcessable.Order())
             _logger.LogWarning("Could not find synced entity for {EntityType}", type);
@@ -103,7 +115,7 @@ public class LevelEntities
 
         if (entities.Count > 0)
             return entities.ToDictionary(x => x.StoredEntity.Id, x => x as T);
-        
+
         _logger.LogError("Could not find entity with type {TypeName}. Returning empty. " +
                          "Possible types: {Types}", type.Name, string.Join(", ", Entities.Keys));
         return new Dictionary<int, T>();

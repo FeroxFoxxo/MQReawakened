@@ -1,20 +1,18 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Levels.Models;
 
-namespace Server.Reawakened.Levels.SyncedData.Abstractions;
+namespace Server.Reawakened.Levels.Models.Entities;
 
 public abstract class BaseSynchronizedEntity
 {
-    public readonly StoredEntityModel StoredEntity;
+    public StoredEntityModel StoredEntity { get; private set; }
 
     public Level Level => StoredEntity.Level;
     public Microsoft.Extensions.Logging.ILogger Logger => StoredEntity.Logger;
 
     public abstract string Name { get; }
-
-    protected BaseSynchronizedEntity(StoredEntityModel storedEntity) =>
-        StoredEntity = storedEntity;
+    
+    public virtual void InitializeEntity() { }
 
     public virtual string[] GetInitData() => Array.Empty<string>();
 
@@ -25,4 +23,10 @@ public abstract class BaseSynchronizedEntity
             "The synchronized entity {Id} has no override for events! Skipping...",
             StoredEntity.Id
         );
+
+    protected void SetEntityData(StoredEntityModel storedEntity)
+    {
+        StoredEntity = storedEntity;
+        InitializeEntity();
+    }
 }

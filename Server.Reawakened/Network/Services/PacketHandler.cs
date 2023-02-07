@@ -60,23 +60,24 @@ public class PacketHandler : IService
 
     private void AskProtocolIgnore()
     {
-        if (_internalServerConfig.IgnoreProtocolType.Length < _serverConfig.DefaultProtocolTypeIgnore.Length)
-            if (_logger.Ask(
-                    $"It's recommended to add the protocols '{string.Join(", ", _serverConfig.DefaultProtocolTypeIgnore)}' " +
-                    "to the server ignore config, as to reduce spam. Please press 'y' to enable this. " +
-                    "You are able to add to this later in the related config file.", true)
-               )
-            {
-                var internalDebugs = _internalServerConfig.IgnoreProtocolType.ToList();
+        if (_internalServerConfig.IgnoreProtocolType.Length >= _serverConfig.DefaultProtocolTypeIgnore.Length)
+            return;
 
-                foreach (var protocol in _serverConfig.DefaultProtocolTypeIgnore)
-                {
-                    if (!internalDebugs.Contains(protocol))
-                        internalDebugs.Add(protocol);
-                }
+        if (!_logger.Ask(
+                $"It's recommended to add the protocols '{string.Join(", ", _serverConfig.DefaultProtocolTypeIgnore)}' " +
+                "to the server ignore config, as to reduce spam. Please press 'y' to enable this. " +
+                "You are able to add to this later in the related config file.", true))
+            return;
 
-                _internalServerConfig.IgnoreProtocolType = internalDebugs.ToArray();
-            }
+        var internalDebugs = _internalServerConfig.IgnoreProtocolType.ToList();
+
+        foreach (var protocol in _serverConfig.DefaultProtocolTypeIgnore)
+        {
+            if (!internalDebugs.Contains(protocol))
+                internalDebugs.Add(protocol);
+        }
+
+        _internalServerConfig.IgnoreProtocolType = internalDebugs.ToArray();
     }
 
     private void AddProtocols(ServerStartedEventArgs e)

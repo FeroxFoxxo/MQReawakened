@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Levels.Services;
-using Server.Reawakened.Levels.SyncedData.Abstractions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;

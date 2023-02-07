@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Levels.Models.LevelData;
+﻿namespace Server.Reawakened.Levels.Models.Planes;
 
 public class Vector3Model
 {

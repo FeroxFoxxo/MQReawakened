@@ -15,11 +15,11 @@ public class WorldGraph : WorldGraphXML, IBundledXml
         _rootXmlName = BundleName;
         _hasLocalizationDict = false;
 
-        this.SetPrivateField<WorldGraphXML>("_worldGraphNodes", new Dictionary<int, List<DestNode>>());
-        this.SetPrivateField<WorldGraphXML>("_levelNameToID", new Dictionary<string, int>());
-        this.SetPrivateField<WorldGraphXML>("_levelInfos", new Dictionary<int, LevelInfo>());
+        this.SetField<WorldGraphXML>("_worldGraphNodes", new Dictionary<int, List<DestNode>>());
+        this.SetField<WorldGraphXML>("_levelNameToID", new Dictionary<string, int>());
+        this.SetField<WorldGraphXML>("_levelInfos", new Dictionary<int, LevelInfo>());
 
-        ClockTowerId = int.Parse(this.GetPrivateField<WorldGraphXML>("CLOCK_TOWER_SQUARE_LEVEL_ID").ToString() ?? string.Empty);
+        ClockTowerId = int.Parse(this.GetField<WorldGraphXML>("CLOCK_TOWER_SQUARE_LEVEL_ID").ToString() ?? string.Empty);
 
         ReadDescriptionXml(xml);
     }

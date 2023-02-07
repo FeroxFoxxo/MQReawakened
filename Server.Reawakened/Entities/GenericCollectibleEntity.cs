@@ -1,28 +1,24 @@
 ﻿using Server.Base.Network;
-using Server.Reawakened.Levels.SyncedData.Abstractions;
+using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using SmartFoxClientAPI.Data;
-using UnityEngine;
 
-namespace Server.Reawakened.Levels.SyncedData.Entities;
+namespace Server.Reawakened.Entities;
 
 public class GenericCollectibleModel : SynchronizedEntity<GenericCollectible>
 {
-    public readonly int Value;
-
+    public int Value;
     public bool Collected;
 
-    public GenericCollectibleModel(StoredEntityModel storedEntity,
-        GenericCollectible entityData) : base(storedEntity, entityData)
+    public override void InitializeEntity()
     {
         Collected = false;
 
-        Value = storedEntity.PrefabName switch
+        Value = StoredEntity.PrefabName switch
         {
             "BananaGrapCollectible" => 5,
             "BananeCollectible" => 1,
-            _ => throw new InvalidDataException(storedEntity.PrefabName)
+            _ => throw new InvalidDataException(StoredEntity.PrefabName)
         };
     }
 
@@ -34,12 +30,14 @@ public class GenericCollectibleModel : SynchronizedEntity<GenericCollectible>
         var collectedValue = Value * Level.Clients.Count;
 
         var currentPlayer = netState.Get<Player>();
+        var currentCharacter = currentPlayer.GetCurrentCharacter();
+        var characterId = currentCharacter.GetCharacterObjectId().ToString();
 
         var collectedEvent = new Trigger_SyncEvent(StoredEntity.Id.ToString(), Level.Time, true,
-            currentPlayer.PlayerId.ToString(), true);
+            characterId, true);
 
         Level.SendSyncEvent(collectedEvent);
-        
+
         var effectName = StoredEntity.PrefabName switch
         {
             "BananaGrapCollectible" => "PF_FX_Banana_Level_01",
@@ -53,6 +51,6 @@ public class GenericCollectibleModel : SynchronizedEntity<GenericCollectible>
         Level.SendSyncEvent(effectEvent);
 
         foreach (var client in Level.Clients.Values)
-            client.AddBananas(collectedValue);
+            client.Get<Player>().AddBananas(client, collectedValue);
     }
 }

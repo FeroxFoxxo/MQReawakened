@@ -63,8 +63,7 @@ public class CreateCharacter : ExternalProtocol
             player.AddCharacter(new CharacterModel
             {
                 Data = characterData,
-                Level = WorldGraph.ClockTowerId,
-                LastLevel = 0
+                Level = WorldGraph.ClockTowerId
             });
             player.SendStartPlay(characterData.CharacterId, NetState, LevelHandler);
         }
