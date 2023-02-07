@@ -23,11 +23,10 @@ public class Level
     private readonly ILogger<LevelHandler> _logger;
     private readonly ServerConfig _serverConfig;
 
-    private readonly HashSet<int> _clientIds;
+    private readonly HashSet<int> _gameObjectIds;
     public readonly Dictionary<int, NetState> Clients;
 
     private readonly LevelHandler _levelHandler;
-    private readonly WorldGraph _worldGraph;
 
     public LevelInfo LevelInfo { get; set; }
     public LevelPlanes LevelPlaneHandler { get; set; }
@@ -38,37 +37,48 @@ public class Level
     public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
 
     public Level(LevelInfo levelInfo, LevelPlanes levelPlaneHandler, ServerConfig serverConfig,
-        LevelHandler levelHandler, WorldGraph worldGraph, ReflectionUtils reflection, IServiceProvider services, ILogger<LevelHandler> logger)
+        LevelHandler levelHandler, ReflectionUtils reflection, IServiceProvider services, ILogger<LevelHandler> logger)
     {
         _serverConfig = serverConfig;
         _levelHandler = levelHandler;
-        _worldGraph = worldGraph;
         _logger = logger;
         Clients = new Dictionary<int, NetState>();
-        _clientIds = new HashSet<int>();
+        _gameObjectIds = new HashSet<int>();
 
         LevelInfo = levelInfo;
         LevelPlaneHandler = levelPlaneHandler;
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
 
         LevelEntityHandler = new LevelEntities(this, _levelHandler, reflection, services, _logger);
+
+        if (levelPlaneHandler.Planes == null)
+            return;
+
+        foreach (var gameObjectId in levelPlaneHandler.Planes.Values
+                     .Select(x => x.GameObjects.Values)
+                     .SelectMany(x => x)
+                     .Select(x => x.ObjectInfo.ObjectId)
+                )
+            _gameObjectIds.Add(gameObjectId);
     }
 
     public void AddClient(NetState newClient, out JoinReason reason)
     {
         var playerId = -1;
 
-        if (_clientIds.Count > _serverConfig.PlayerCap)
+        if (Clients.Count > _serverConfig.PlayerCap)
+        {
             reason = JoinReason.Full;
+        }
         else
         {
             playerId = 1;
 
-            while (_clientIds.Contains(playerId))
+            while (_gameObjectIds.Contains(playerId))
                 playerId++;
 
             Clients.Add(playerId, newClient);
-            _clientIds.Add(playerId);
+            _gameObjectIds.Add(playerId);
             reason = JoinReason.Accepted;
         }
 
@@ -104,7 +114,9 @@ public class Level
             }
         }
         else
+        {
             newClient.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
+        }
     }
 
     public void SendCharacterInfo(Player newPlayer, NetState newClient)
@@ -185,7 +197,7 @@ public class Level
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 
-        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, character.GetCharacterObjectId(),
+        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, player.PlayerId,
             LevelInfo.Name);
     }
 
@@ -205,7 +217,7 @@ public class Level
     public void RemoveClient(int playerId)
     {
         Clients.Remove(playerId);
-        _clientIds.Remove(playerId);
+        _gameObjectIds.Remove(playerId);
 
         if (Clients.Count == 0 && LevelInfo.LevelId > 0)
             _levelHandler.RemoveLevel(LevelInfo.LevelId);

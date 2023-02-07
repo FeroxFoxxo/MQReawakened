@@ -18,6 +18,7 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
         {
             "BananaGrapCollectible" => 5,
             "BananeCollectible" => 1,
+            "PF_SHD_SwingingVine01" => 0,
             _ => throw new InvalidDataException(PrefabName)
         };
     }
@@ -37,6 +38,7 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
         {
             "BananaGrapCollectible" => "PF_FX_Banana_Level_01",
             "BananeCollectible" => "PF_FX_Banana_Level_02",
+            "PF_SHD_SwingingVine01" => "PF_FX_Vine_Climb",
             _ => throw new InvalidDataException(PrefabName)
         };
 
@@ -45,7 +47,8 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
 
         Level.SendSyncEvent(effectEvent);
 
-        foreach (var client in Level.Clients.Values)
-            client.Get<Player>().AddBananas(client, collectedValue);
+        if (collectedValue > 0)
+            foreach (var client in Level.Clients.Values)
+                client.Get<Player>().AddBananas(client, collectedValue);
     }
 }

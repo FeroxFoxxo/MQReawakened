@@ -32,7 +32,7 @@ public class State : ExternalProtocol
 
         var entityId = int.Parse(syncEvent.TargetID);
 
-        if (entityId == player.GetCurrentCharacter().GetCharacterObjectId())
+        if (entityId == player.PlayerId)
         {
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (syncEvent.Type)

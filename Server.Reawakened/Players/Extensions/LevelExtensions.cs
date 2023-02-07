@@ -55,11 +55,8 @@ public static class LevelExtensions
 
     public static void SentEntityTriggered(this Player player, int id, Level level)
     {
-        var currentCharacter = player.GetCurrentCharacter();
-        var characterId = currentCharacter.GetCharacterObjectId().ToString();
-
         var collectedEvent = new Trigger_SyncEvent(id.ToString(), level.Time, true,
-            characterId, true);
+            player.PlayerId.ToString(), true);
 
         level.SendSyncEvent(collectedEvent);
     }

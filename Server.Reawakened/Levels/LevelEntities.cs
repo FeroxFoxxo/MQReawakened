@@ -19,10 +19,10 @@ public class LevelEntities
     {
         _logger = logger;
 
+        Entities = new Dictionary<int, List<BaseSyncedEntity>>();
+
         if (level.LevelPlaneHandler.Planes == null)
             return;
-
-        Entities = new Dictionary<int, List<BaseSyncedEntity>>();
 
         var invalidProcessable = new List<string>();
 
@@ -96,7 +96,9 @@ public class LevelEntities
                         Entities[entity.Key].Add(instancedEntity);
                     }
                     else if (!invalidProcessable.Contains(mqType.Name))
+                    {
                         invalidProcessable.Add(mqType.Name);
+                    }
                 }
 
         foreach (var type in invalidProcessable.Order())

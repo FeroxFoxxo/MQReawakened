@@ -22,10 +22,7 @@ public static class CharacterExtensions
         player.CurrentCharacter = characterId;
         player.UserInfo.LastCharacterSelected = player.GetCurrentCharacter().Data.CharacterName;
     }
-
-    public static int GetCharacterObjectId(this CharacterModel characterData) =>
-        characterData.Data.UserUuid + characterData.Data.CharacterId;
-
+    
     public static void AddCharacter(this Player player, CharacterModel characterData) =>
         player.UserInfo.Characters.Add(characterData.Data.CharacterId, characterData);
 

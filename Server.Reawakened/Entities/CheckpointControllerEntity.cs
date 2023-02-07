@@ -20,17 +20,17 @@ public class CheckpointControllerEntity : SyncedEntity<CheckpointController>
 
         var checkpoints = Level.LevelEntityHandler.GetEntities<CheckpointControllerEntity>().Values;
         var possibleLastCheckpoint = checkpoints.FirstOrDefault(c => c.SpawnPoint == character.SpawnPoint);
-        possibleLastCheckpoint?.TriggerCheckpoint(false, netState, character);
+        possibleLastCheckpoint?.TriggerCheckpoint(false, netState, player);
 
         character.SpawnPoint = SpawnPoint;
         
-        TriggerCheckpoint(true, netState, character);
+        TriggerCheckpoint(true, netState, player);
     }
 
-    public void TriggerCheckpoint(bool active, NetState netState, CharacterModel character)
+    public void TriggerCheckpoint(bool active, NetState netState, Player player)
     {
         var trigger = new Trigger_SyncEvent(Id.ToString(), Level.Time, true,
-            character.GetCharacterObjectId().ToString(), active);
+            player.PlayerId.ToString(), active);
 
         netState.SendSyncEventToPlayer(trigger);
     }

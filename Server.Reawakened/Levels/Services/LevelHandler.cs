@@ -100,7 +100,7 @@ public class LevelHandler : IService
             }
         }
 
-        var level = new Level(levelInfo, levelPlanes, _config, this, _worldGraph, _reflection, _services, _logger);
+        var level = new Level(levelInfo, levelPlanes, _config, this, _reflection, _services, _logger);
 
         _levels.Add(levelId, level);
 
