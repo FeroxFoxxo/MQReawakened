@@ -8,7 +8,6 @@ using Server.Reawakened.Entities;
 using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Extensions;
 using Server.Reawakened.Levels.Models.Entities;
-using Server.Reawakened.Levels.Models.Planes;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Helpers;
@@ -16,9 +15,8 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
-using static NavMesh;
 
-namespace Server.Reawakened.Levels.Models;
+namespace Server.Reawakened.Levels;
 
 public class Level
 {
@@ -36,7 +34,7 @@ public class Level
     public LevelEntities LevelEntityHandler { get; set; }
 
     public long TimeOffset { get; set; }
-    
+
     public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
 
     public Level(LevelInfo levelInfo, LevelPlanes levelPlaneHandler, ServerConfig serverConfig,
@@ -61,9 +59,7 @@ public class Level
         var playerId = -1;
 
         if (_clientIds.Count > _serverConfig.PlayerCap)
-        {
             reason = JoinReason.Full;
-        }
         else
         {
             playerId = 1;
@@ -108,9 +104,7 @@ public class Level
             }
         }
         else
-        {
             newClient.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
-        }
     }
 
     public void SendCharacterInfo(Player newPlayer, NetState newClient)
@@ -123,22 +117,19 @@ public class Level
         var spawnPoints = LevelEntityHandler.GetEntities<SpawnPointEntity>();
         var portals = LevelEntityHandler.GetEntities<PortalControllerEntity>();
 
-        var realSpawn = character.SpawnPoint != 0 || character.PortalId != 0;
-
-        if (realSpawn)
-        {
+        if (character.PortalId != 0)
             if (portals.TryGetValue(character.PortalId, out var portal))
-            {
                 spawnLocation = portal;
-            }
-            else
-            {
-                if (spawnPoints.TryGetValue(character.SpawnPoint, out var spawnPoint))
-                    spawnLocation = spawnPoint;
-                else
-                    _logger.LogError("Could not find portal '{PortalId}' or spawn '{SpawnId}'.",
-                        character.PortalId, character.SpawnPoint);
-            }
+
+        if (spawnLocation == null)
+            if (spawnPoints.TryGetValue(character.SpawnPoint, out var spawnPoint))
+                spawnLocation = spawnPoint;
+
+        if (spawnLocation == null)
+        {
+            var spawnPoint = spawnPoints.Values.FirstOrDefault(s => s.Index == character.SpawnPoint);
+            if (spawnPoint != null)
+                spawnLocation = spawnPoint;
         }
 
         var defaultSpawn = spawnPoints.Values.MinBy(p => p.Index);
@@ -152,14 +143,15 @@ public class Level
         character.Data.SpawnPositionY = spawnLocation.Position.Y + spawnLocation.Scale.Y / 2;
         character.Data.SpawnOnBackPlane = spawnLocation.Position.Z > 1;
 
-        _logger.LogDebug("Spawning {CharacterName} at object portal '{NodePortalId} spawn '{SpawnPoint}' to '{NewLevel}'.",
+        _logger.LogDebug("Spawning {CharacterName} at object '{Object}' (portal '{Portal}' spawn '{SpawnPoint}') at '{NewLevel}'.",
             character.Data.CharacterName,
+            spawnLocation.Id != 0 ? spawnLocation.Id : "DEFAULT",
             character.PortalId != 0 ? character.PortalId : "DEFAULT",
             character.SpawnPoint != 0 ? character.SpawnPoint : "DEFAULT",
             character.Level
         );
 
-        _logger.LogDebug("Position of spawn: {Position}", spawnLocation);
+        _logger.LogDebug("Position of spawn: {Position}", spawnLocation.Position);
 
         // CHARACTER DATA
 
@@ -221,8 +213,6 @@ public class Level
 
     public void SendSyncEvent(SyncEvent syncEvent, Player sentPlayer = null)
     {
-        var syncEventMsg = syncEvent.EncodeData();
-
         foreach (
             var client in
             from client in Clients.Values
@@ -230,13 +220,6 @@ public class Level
             where sentPlayer == null || receivedPlayer.UserInfo.UserId != sentPlayer.UserInfo.UserId
             select client
         )
-            client.SendXt("ss", syncEventMsg);
-    }
-
-    public void SendSyncEventToPlayer(SyncEvent syncEvent, NetState state)
-    {
-        var syncEventMsg = syncEvent.EncodeData();
-
-        state.SendXt("ss", syncEventMsg);
+            client.SendSyncEventToPlayer(syncEvent);
     }
 }

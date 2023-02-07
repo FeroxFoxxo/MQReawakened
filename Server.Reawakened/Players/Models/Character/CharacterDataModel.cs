@@ -33,15 +33,12 @@ public class CharacterDataModel : CharacterLightModel
     public int BadgePoints { get; set; }
     public int AbilityPower { get; set; }
 
-    private int ChatLevel => _info?.ChatLevel ?? 0;
-
-    private readonly UserInfo _info;
+    private int _chatLevel;
 
     public CharacterDataModel() => InitializeLists();
 
-    public CharacterDataModel(string serverData, int id, ServerConfig config, UserInfo info) : base(serverData)
+    public CharacterDataModel(string serverData, int id, ServerConfig config) : base(serverData)
     {
-        _info = info;
         Inventory = new InventoryModel();
         Hotbar = new HotbarModel();
         FriendList = new FriendListModel();
@@ -57,6 +54,9 @@ public class CharacterDataModel : CharacterLightModel
         if (CharacterId > config.MaxCharacterCount || CharacterId < 0)
             throw new InvalidDataException();
     }
+
+    public void SetUserInfo(UserInfo info) =>
+        _chatLevel = info?.ChatLevel ?? 0;
 
     private void InitializeLists()
     {
@@ -139,7 +139,7 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(BadgePoints);
         sb.Append((int)Allegiance);
         sb.Append(AbilityPower);
-        sb.Append(ChatLevel);
+        sb.Append(_chatLevel);
 
         foreach (var tribeData in BuildTribeDataString())
             sb.Append(tribeData);

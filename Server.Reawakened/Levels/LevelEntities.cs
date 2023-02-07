@@ -3,11 +3,10 @@ using Server.Base.Core.Extensions;
 using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Helpers;
-using Server.Reawakened.Network.Protocols;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Server.Reawakened.Levels.Models;
+namespace Server.Reawakened.Levels;
 
 public class LevelEntities
 {
@@ -31,7 +30,7 @@ public class LevelEntities
             .Where(t => t.BaseType != null)
             .Where(t => t.BaseType.GenericTypeArguments.Length > 0)
             .ToDictionary(t => t.BaseType.GenericTypeArguments.First().FullName, t => t);
-        
+
         foreach (var plane in level.LevelPlaneHandler.Planes)
             foreach (var entity in plane.Value.GameObjects)
                 foreach (var component in entity.Value.ObjectInfo.Components)
@@ -89,7 +88,7 @@ public class LevelEntities
                             _logger.LogError("Found invalid {Count} amount of initialization methods for {EntityId} ({EntityType})",
                                 methods.Count, entity.Key, internalType.Name);
                         else
-                            methods.First().Invoke(instancedEntity, new [] { dataObj, storedData });
+                            methods.First().Invoke(instancedEntity, new[] { dataObj, storedData });
 
                         if (!Entities.ContainsKey(entity.Key))
                             Entities.Add(entity.Key, new List<BaseSyncedEntity>());
@@ -97,9 +96,7 @@ public class LevelEntities
                         Entities[entity.Key].Add(instancedEntity);
                     }
                     else if (!invalidProcessable.Contains(mqType.Name))
-                    {
                         invalidProcessable.Add(mqType.Name);
-                    }
                 }
 
         foreach (var type in invalidProcessable.Order())

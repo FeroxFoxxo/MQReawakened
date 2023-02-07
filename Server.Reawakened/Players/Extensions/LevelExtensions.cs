@@ -1,7 +1,8 @@
 ﻿using Server.Base.Network;
+using Server.Reawakened.Levels;
 using Server.Reawakened.Levels.Enums;
-using Server.Reawakened.Levels.Models;
 using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Players.Models;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -35,9 +36,11 @@ public static class LevelExtensions
     public static int GetLevelId(this Player player) =>
         player.CurrentLevel != null ? player.CurrentLevel.LevelInfo.LevelId : -1;
 
-    public static void SendStartPlay(this Player player, int characterId, NetState state, LevelHandler levelHandler)
+    public static void SendStartPlay(this Player player, CharacterModel character, NetState state, LevelHandler levelHandler)
     {
-        player.SetCharacterSelected(characterId);
+        character.SpawnPoint = 0;
+        character.Data.SetUserInfo(player.UserInfo);
+        player.SetCharacterSelected(character.Data.CharacterId);
         player.SendPlayerData(CharacterInfoType.Detailed, state, levelHandler);
     }
 

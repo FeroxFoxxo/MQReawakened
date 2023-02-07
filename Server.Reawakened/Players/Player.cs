@@ -2,7 +2,7 @@
 using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
-using Server.Reawakened.Levels.Models;
+using Server.Reawakened.Levels;
 using Server.Reawakened.Levels.Models.Planes;
 using Server.Reawakened.Players.Models;
 
