@@ -33,7 +33,11 @@ public class ClearWebCaches : IService
     public void Load()
     {
         _console.AddCommand(new ConsoleCommand("clearWebCache", "Clears the Web Player cache manually.",
-            _ => EmptyWebCacheDirectory()));
+            _ =>
+            {
+                EmptyWebCacheDirectory();
+                _game.AskIfRestart();
+            }));
 
         RemoveWebCacheOnStart();
     }
@@ -50,9 +54,15 @@ public class ClearWebCaches : IService
             return false;
         }
 
-        GetDirectory.Empty(Path.GetDirectoryName(_config.WebPlayerInfoFile));
+        if (!_config.WebPlayerInfoFile.ToLower().Contains("appdata"))
+        {
+            _logger.LogError("Web player cache has to be in the AppData/LocalLow folder! Skipping...");
+            _config.WebPlayerInfoFile = string.Empty;
 
-        _game.AskIfRestart();
+            return false;
+        }
+        
+        GetDirectory.Empty(Path.GetDirectoryName(_config.WebPlayerInfoFile));
 
         return true;
     }

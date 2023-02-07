@@ -33,7 +33,7 @@ public class LevelUpdate : ExternalProtocol
         player.GetCurrentLevel(LevelHandler).SendCharacterInfo(player, NetState);
     }
 
-    private static string GetGameObjectStore(Dictionary<int, List<BaseSyncedEntity>> entities)
+    private string GetGameObjectStore(Dictionary<int, List<BaseSyncedEntity>> entities)
     {
         var sb = new SeparatedStringBuilder('&');
 
@@ -44,7 +44,7 @@ public class LevelUpdate : ExternalProtocol
         return sb.ToString();
     }
 
-    private static string GetGameObject(KeyValuePair<int, List<BaseSyncedEntity>> entities)
+    private string GetGameObject(KeyValuePair<int, List<BaseSyncedEntity>> entities)
     {
         var sb = new SeparatedStringBuilder('|');
 
@@ -56,13 +56,13 @@ public class LevelUpdate : ExternalProtocol
         return sb.ToString();
     }
 
-    private static string GetComponent(BaseSyncedEntity entity)
+    private string GetComponent(BaseSyncedEntity entity)
     {
         var sb = new SeparatedStringBuilder('~');
 
         sb.Append(entity.Name);
 
-        foreach (var setting in entity.GetInitData())
+        foreach (var setting in entity.GetInitData(NetState))
             sb.Append(setting);
 
         return sb.ToString();

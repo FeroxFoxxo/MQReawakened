@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Levels.Services;
@@ -14,6 +13,8 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
     public WorldGraph WorldGraph { get; set; }
     public LevelHandler LevelHandler { get; set; }
     public ILogger<PortalControllerEntity> Logger { get; set; }
+
+    public override string[] GetInitData(NetState netState) => new []{ string.Empty };
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {

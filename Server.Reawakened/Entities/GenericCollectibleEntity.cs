@@ -22,7 +22,7 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
         };
     }
 
-    public override string[] GetInitData() => new string[Collected ? 1 : 0];
+    public override string[] GetInitData(NetState netState) => new[] { Collected ? "0" : "1" };
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {

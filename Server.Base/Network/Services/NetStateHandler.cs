@@ -1,4 +1,5 @@
-﻿using Server.Base.Core.Abstractions;
+﻿using Server.Base.Accounts.Models;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Base.Logging;
@@ -40,6 +41,14 @@ public class NetStateHandler : IService
     public void Initialize() =>
         _sink.ServerStarted += _ =>
             _thread.DelayCall(CheckAllAlive, TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(1.5), 0);
+
+    public NetState FindUser(int userId) =>
+        (from state in Instances
+            let account = state.Get<Account>()
+            where account != null
+            where account.UserId == userId
+            select state
+        ).FirstOrDefault();
 
     public void ProcessDisposedQueue()
     {
