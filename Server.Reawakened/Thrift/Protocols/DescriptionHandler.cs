@@ -33,7 +33,7 @@ public class DescriptionHandler : ThriftHandler
         protocol.InProtocol.ReadMessageEnd();
 
         var portalId = int.Parse(args.GoId);
-        var newLevelId = _worldGraph.GetDestinationLevelID(args.LevelId, portalId);
+        var newLevelId = _worldGraph.GetDestinationFromPortal(args.LevelId, portalId);
 
         var newLevelName = _worldGraph.GetInfoLevel(newLevelId).InGameName;
         var newLevelNameId = _miscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Value == newLevelName);

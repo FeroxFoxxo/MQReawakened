@@ -23,4 +23,17 @@ public class WorldGraph : WorldGraphXML, IBundledXml
 
         ReadDescriptionXml(xml);
     }
+
+    public int GetDestinationFromPortal(int levelId, int portalId)
+    {
+        var destinationLevelId = 0;
+
+        var worldGraphNodes = (Dictionary<int, List<DestNode>>)this.GetField<WorldGraphXML>("_worldGraphNodes");
+
+        if (worldGraphNodes.TryGetValue(levelId, out var value))
+            foreach (var destNode in value.Where(destNode => destNode.PortalID == portalId && destinationLevelId == 0))
+                destinationLevelId = destNode.ToLevelID;
+        
+        return destinationLevelId;
+    }
 }
