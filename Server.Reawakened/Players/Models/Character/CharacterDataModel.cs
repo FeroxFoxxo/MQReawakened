@@ -1,11 +1,14 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
 
 public class CharacterDataModel : CharacterLightModel
 {
+    private Player _player;
+
     public InventoryModel Inventory { get; set; }
     public List<QuestStatusModel> QuestLog { get; set; }
     public List<int> CompletedQuests { get; set; }
@@ -18,8 +21,12 @@ public class CharacterDataModel : CharacterLightModel
     public CharacterResistancesModel Resistances { get; set; }
     public RecipeListModel RecipeList { get; set; }
     public Dictionary<TribeType, bool> TribesDiscovered { get; set; }
-    public Dictionary<int, int> IdolCount { get; set; }
     public Dictionary<TribeType, TribeDataModel> TribesProgression { get; set; }
+
+    private Dictionary<int, int> IdolCount =>
+        _player?.GetCurrentCharacter().CollectedIdols
+            .ToDictionary(x => x.Key, x => x.Value.Count)
+        ?? new Dictionary<int, int>();
 
     public int Cash { get; set; }
     public int NCash { get; set; }
@@ -33,7 +40,7 @@ public class CharacterDataModel : CharacterLightModel
     public int BadgePoints { get; set; }
     public int AbilityPower { get; set; }
 
-    private int _chatLevel;
+    private int ChatLevel => _player?.UserInfo.ChatLevel ?? 0;
 
     public CharacterDataModel() => InitializeLists();
 
@@ -55,15 +62,14 @@ public class CharacterDataModel : CharacterLightModel
             throw new InvalidDataException();
     }
 
-    public void SetUserInfo(UserInfo info) =>
-        _chatLevel = info?.ChatLevel ?? 0;
+    public void SetPlayerData(Player player) =>
+        _player = player;
 
     private void InitializeLists()
     {
         QuestLog = new List<QuestStatusModel>();
         CompletedQuests = new List<int>();
         TribesDiscovered = new Dictionary<TribeType, bool>();
-        IdolCount = new Dictionary<int, int>();
         TribesProgression = new Dictionary<TribeType, TribeDataModel>();
         DiscoveredStats = new HashSet<int>();
     }
@@ -139,7 +145,7 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(BadgePoints);
         sb.Append((int)Allegiance);
         sb.Append(AbilityPower);
-        sb.Append(_chatLevel);
+        sb.Append(ChatLevel);
 
         foreach (var tribeData in BuildTribeDataString())
             sb.Append(tribeData);

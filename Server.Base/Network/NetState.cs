@@ -278,7 +278,7 @@ public class NetState : IDisposable
                     if (string.IsNullOrEmpty(protocolId))
                         continue;
 
-                    if (_config.IgnoreProtocolType.Contains(protocolId))
+                    if (_config.IgnoreProtocolType.Contains(protocolId) && _currentLogs.IsEmpty)
                         continue;
 
                     WriteClient(packet);

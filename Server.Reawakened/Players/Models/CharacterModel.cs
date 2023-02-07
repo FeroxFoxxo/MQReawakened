@@ -12,10 +12,14 @@ public class CharacterModel
     public int SpawnPoint { get; set; }
     public int PortalId { get; set; }
 
+    public Dictionary<int, List<int>> CollectedIdols { get; set; }
     public List<EmailHeaderModel> Emails { get; set; }
 
-    public CharacterModel() =>
+    public CharacterModel()
+    {
+        CollectedIdols = new Dictionary<int, List<int>>();
         Emails = new List<EmailHeaderModel>();
+    }
 
     public override string ToString() => throw new InvalidOperationException();
 }

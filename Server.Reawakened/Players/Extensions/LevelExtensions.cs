@@ -39,7 +39,7 @@ public static class LevelExtensions
     public static void SendStartPlay(this Player player, CharacterModel character, NetState state, LevelHandler levelHandler)
     {
         character.SpawnPoint = 0;
-        character.Data.SetUserInfo(player.UserInfo);
+        character.Data.SetPlayerData(player);
         player.SetCharacterSelected(character.Data.CharacterId);
         player.SendPlayerData(CharacterInfoType.Detailed, state, levelHandler);
     }
@@ -52,4 +52,15 @@ public static class LevelExtensions
 
     public static Level GetCurrentLevel(this Player player, LevelHandler levelHandler) =>
         levelHandler.GetLevelFromId(player.GetCurrentCharacter().Level);
+
+    public static void SentEntityTriggered(this Player player, int id, Level level)
+    {
+        var currentCharacter = player.GetCurrentCharacter();
+        var characterId = currentCharacter.GetCharacterObjectId().ToString();
+
+        var collectedEvent = new Trigger_SyncEvent(id.ToString(), level.Time, true,
+            characterId, true);
+
+        level.SendSyncEvent(collectedEvent);
+    }
 }

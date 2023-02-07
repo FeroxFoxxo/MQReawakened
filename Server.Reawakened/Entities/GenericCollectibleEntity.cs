@@ -30,13 +30,8 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
         var collectedValue = Value * Level.Clients.Count;
 
         var currentPlayer = netState.Get<Player>();
-        var currentCharacter = currentPlayer.GetCurrentCharacter();
-        var characterId = currentCharacter.GetCharacterObjectId().ToString();
 
-        var collectedEvent = new Trigger_SyncEvent(Id.ToString(), Level.Time, true,
-            characterId, true);
-
-        Level.SendSyncEvent(collectedEvent);
+        currentPlayer.SentEntityTriggered(Id, Level);
 
         var effectName = PrefabName switch
         {
