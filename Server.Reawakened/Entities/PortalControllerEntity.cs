@@ -9,7 +9,7 @@ using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Entities;
 
-public class PortalControllerEntity : SynchronizedEntity<PortalController>
+public class PortalControllerEntity : SyncedEntity<PortalController>
 {
     public WorldGraph WorldGraph { get; set; }
     public LevelHandler LevelHandler { get; set; }
@@ -31,7 +31,7 @@ public class PortalControllerEntity : SynchronizedEntity<PortalController>
         var portalId = (int) portal.EventDataList[0];
 
         if (portalId == 0)
-            portalId = StoredEntity.Id;
+            portalId = Id;
 
         var newLevelId = WorldGraph.GetDestinationLevelID(currentLevel, portalId);
 

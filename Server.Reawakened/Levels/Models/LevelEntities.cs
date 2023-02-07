@@ -11,7 +11,7 @@ namespace Server.Reawakened.Levels.Models;
 
 public class LevelEntities
 {
-    public readonly Dictionary<int, List<BaseSynchronizedEntity>> Entities;
+    public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
 
     private readonly Microsoft.Extensions.Logging.ILogger _logger;
 
@@ -23,11 +23,11 @@ public class LevelEntities
         if (level.LevelPlaneHandler.Planes == null)
             return;
 
-        Entities = new Dictionary<int, List<BaseSynchronizedEntity>>();
+        Entities = new Dictionary<int, List<BaseSyncedEntity>>();
 
         var invalidProcessable = new List<string>();
 
-        var syncedEntities = typeof(BaseSynchronizedEntity).Assembly.GetServices<BaseSynchronizedEntity>()
+        var syncedEntities = typeof(BaseSyncedEntity).Assembly.GetServices<BaseSyncedEntity>()
             .Where(t => t.BaseType != null)
             .Where(t => t.BaseType.GenericTypeArguments.Length > 0)
             .ToDictionary(t => t.BaseType.GenericTypeArguments.First().FullName, t => t);
@@ -71,11 +71,10 @@ public class LevelEntities
                                     mqType, componentValue.Key, string.Join(", ", fields.Select(f => f.Name)));
                         }
 
-                        var storedData = new StoredEntityModel(entity.Key, entity.Value.ObjectInfo.PrefabName,
-                            entity.Value.ObjectInfo.Position, level, logger);
+                        var storedData = new StoredEntityModel(entity.Value, level, logger);
 
                         var instancedEntity =
-                            reflectionUtils.CreateBuilder<BaseSynchronizedEntity>(internalType.GetTypeInfo()).Invoke(serviceProvider);
+                            reflectionUtils.CreateBuilder<BaseSyncedEntity>(internalType.GetTypeInfo()).Invoke(serviceProvider);
 
                         var methods = internalType.GetMethods().Where(m =>
                         {
@@ -93,7 +92,7 @@ public class LevelEntities
                             methods.First().Invoke(instancedEntity, new [] { dataObj, storedData });
 
                         if (!Entities.ContainsKey(entity.Key))
-                            Entities.Add(entity.Key, new List<BaseSynchronizedEntity>());
+                            Entities.Add(entity.Key, new List<BaseSyncedEntity>());
 
                         Entities[entity.Key].Add(instancedEntity);
                     }
@@ -114,7 +113,7 @@ public class LevelEntities
         var entities = Entities.Values.SelectMany(t => t).Where(t => t is T).ToList();
 
         if (entities.Count > 0)
-            return entities.ToDictionary(x => x.StoredEntity.Id, x => x as T);
+            return entities.ToDictionary(x => x.Id, x => x as T);
 
         _logger.LogError("Could not find entity with type {TypeName}. Returning empty. " +
                          "Possible types: {Types}", type.Name, string.Join(", ", Entities.Keys));

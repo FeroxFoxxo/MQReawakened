@@ -4,7 +4,7 @@ using Server.Reawakened.Players;
 
 namespace Server.Reawakened.Entities;
 
-public class BouncerControllerModel : SynchronizedEntity<BouncerController>
+public class BouncerControllerModel : SyncedEntity<BouncerController>
 {
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {

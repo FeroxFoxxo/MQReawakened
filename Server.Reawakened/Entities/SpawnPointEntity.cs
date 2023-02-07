@@ -2,7 +2,7 @@
 
 namespace Server.Reawakened.Entities;
 
-public class SpawnPointEntity : SynchronizedEntity<SpawnPoint>
+public class SpawnPointEntity : SyncedEntity<SpawnPoint>
 {
     public int Index => EntityData.Index;
 }

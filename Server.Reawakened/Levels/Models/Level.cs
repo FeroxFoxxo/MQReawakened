@@ -7,6 +7,7 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Entities;
 using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Extensions;
+using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Levels.Models.Planes;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Extensions;
@@ -116,8 +117,8 @@ public class Level
     {
         // WHERE TO SPAWN
         var character = newPlayer.GetCurrentCharacter();
-        
-        Vector3Model spawnLocation = null;
+
+        BaseSyncedEntity spawnLocation = null;
 
         var spawnPoints = LevelEntityHandler.GetEntities<SpawnPointEntity>();
         var portals = LevelEntityHandler.GetEntities<PortalControllerEntity>();
@@ -128,12 +129,12 @@ public class Level
         {
             if (portals.TryGetValue(character.PortalId, out var portal))
             {
-                spawnLocation = portal.StoredEntity.Position;
+                spawnLocation = portal;
             }
             else
             {
                 if (spawnPoints.TryGetValue(character.SpawnPoint, out var spawnPoint))
-                    spawnLocation = spawnPoint.StoredEntity.Position;
+                    spawnLocation = spawnPoint;
                 else
                     _logger.LogError("Could not find portal '{PortalId}' or spawn '{SpawnId}'.",
                         character.PortalId, character.SpawnPoint);
@@ -143,19 +144,13 @@ public class Level
         var defaultSpawn = spawnPoints.Values.MinBy(p => p.Index);
 
         if (defaultSpawn != null)
-        {
-            spawnLocation ??= defaultSpawn.StoredEntity.Position;
-        }
+            spawnLocation ??= defaultSpawn;
         else
-        {
-            _logger.LogError("Could not find default spawn point in {LevelId}, as there are none initialized!",
-                LevelInfo.LevelId);
-            spawnLocation = new Vector3Model();
-        }
+            throw new InvalidDataException($"Could not find default spawn point in {LevelInfo.LevelId}, as there are none initialized!");
 
-        character.Data.SpawnPositionX = spawnLocation.X;
-        character.Data.SpawnPositionY = spawnLocation.Y;
-        character.Data.SpawnOnBackPlane = spawnLocation.Z > 1;
+        character.Data.SpawnPositionX = spawnLocation.Position.X + spawnLocation.Scale.X / 2;
+        character.Data.SpawnPositionY = spawnLocation.Position.Y + spawnLocation.Scale.Y / 2;
+        character.Data.SpawnOnBackPlane = spawnLocation.Position.Z > 1;
 
         _logger.LogDebug("Spawning {CharacterName} at object portal '{NodePortalId} spawn '{SpawnPoint}' to '{NewLevel}'.",
             character.Data.CharacterName,

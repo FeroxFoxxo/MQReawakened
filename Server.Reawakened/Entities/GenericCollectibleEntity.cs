@@ -5,7 +5,7 @@ using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Entities;
 
-public class GenericCollectibleModel : SynchronizedEntity<GenericCollectible>
+public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
 {
     public int Value;
     public bool Collected;
@@ -14,11 +14,11 @@ public class GenericCollectibleModel : SynchronizedEntity<GenericCollectible>
     {
         Collected = false;
 
-        Value = StoredEntity.PrefabName switch
+        Value = PrefabName switch
         {
             "BananaGrapCollectible" => 5,
             "BananeCollectible" => 1,
-            _ => throw new InvalidDataException(StoredEntity.PrefabName)
+            _ => throw new InvalidDataException(PrefabName)
         };
     }
 
@@ -33,20 +33,20 @@ public class GenericCollectibleModel : SynchronizedEntity<GenericCollectible>
         var currentCharacter = currentPlayer.GetCurrentCharacter();
         var characterId = currentCharacter.GetCharacterObjectId().ToString();
 
-        var collectedEvent = new Trigger_SyncEvent(StoredEntity.Id.ToString(), Level.Time, true,
+        var collectedEvent = new Trigger_SyncEvent(Id.ToString(), Level.Time, true,
             characterId, true);
 
         Level.SendSyncEvent(collectedEvent);
 
-        var effectName = StoredEntity.PrefabName switch
+        var effectName = PrefabName switch
         {
             "BananaGrapCollectible" => "PF_FX_Banana_Level_01",
             "BananeCollectible" => "PF_FX_Banana_Level_02",
-            _ => throw new InvalidDataException(StoredEntity.PrefabName)
+            _ => throw new InvalidDataException(PrefabName)
         };
 
-        var effectEvent = new FX_SyncEvent(StoredEntity.Id.ToString(), Level.Time, effectName,
-            StoredEntity.Position.X, StoredEntity.Position.Y, FX_SyncEvent.FXState.Play);
+        var effectEvent = new FX_SyncEvent(Id.ToString(), Level.Time, effectName,
+            Position.X, Position.Y, FX_SyncEvent.FXState.Play);
 
         Level.SendSyncEvent(effectEvent);
 

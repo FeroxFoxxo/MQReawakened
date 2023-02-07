@@ -1,6 +1,6 @@
 ﻿namespace Server.Reawakened.Levels.Models.Entities;
 
-public abstract class SynchronizedEntity<T> : BaseSynchronizedEntity
+public abstract class SyncedEntity<T> : BaseSyncedEntity
     where T : DataComponentAccessor
 {
     public T EntityData;
