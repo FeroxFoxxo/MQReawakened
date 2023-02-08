@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Server.Reawakened.Entities;
 
-internal class TriggerCoopControllerEntity : SyncedEntity<TriggerCoopController>
+public class TriggerCoopControllerEntity : SyncedEntity<TriggerCoopController>
 {
     public bool Activated = false;
 
