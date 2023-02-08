@@ -1,7 +1,7 @@
 
 <div align="center">
     <h1>
-        <img width="70%" src="IconBanner.png?raw=true" style="border-radius: 50%;" align="center">
+        <img width="70%" src="LogoBanner.png?raw=true" style="border-radius: 50%;" align="center">
         <br>
     </h1>
     <h3>A community driven server emulator, written completely from scratch in C#, for MQ!</h3>
