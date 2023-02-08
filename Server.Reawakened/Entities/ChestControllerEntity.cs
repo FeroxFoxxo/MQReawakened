@@ -9,14 +9,25 @@ internal class ChestControllerEntity : SyncedEntity<ChestController>
 {
     public bool Collected = false;
 
+    private Random _rnd;
+
+    public override void InitializeEntity() => _rnd = new Random();
+
     public override string[] GetInitData(NetState netState) => new[] { Collected ? "0" : "1" };
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
+        if (Collected) return;
+
+        Collected = true;
+
         var player = netState.Get<Player>();
 
-        Level.SendSyncEvent(syncEvent);
-        netState.SendSyncEventToPlayer(syncEvent);
+        var trig = new Trigger_SyncEvent(Id.ToString(), Level.Time, true, player.PlayerId.ToString(), true);
+        trig.EventDataList[0] = _rnd.Next(10, 100);
+
+        Level.SendSyncEvent(trig);
+        netState.SendSyncEventToPlayer(trig);
 
         var rec = new TriggerReceiver_SyncEvent(Id.ToString(), Level.Time, player.PlayerId.ToString(), true, 1f);
         Level.SendSyncEvent(rec);
