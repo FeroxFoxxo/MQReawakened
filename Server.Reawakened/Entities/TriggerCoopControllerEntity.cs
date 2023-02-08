@@ -40,7 +40,7 @@ public class TriggerCoopControllerEntity : SyncedEntity<TriggerCoopController>
         if (!Activated && currentTrigger.Activate)
         {
             Activated = true;
-            var activateTrigger = new Trigger_SyncEvent(currentTrigger.TargetID.ToString(), Level.Time, true, player.PlayerId.ToString(), true);
+            var activateTrigger = new Trigger_SyncEvent(Id.ToString(), Level.Time, true, player.PlayerId.ToString(), true);
 
             Level.SendSyncEvent(activateTrigger);
             netState.SendSyncEventToPlayer(activateTrigger);
