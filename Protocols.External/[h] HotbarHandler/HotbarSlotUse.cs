@@ -6,6 +6,10 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
 using A2m.Server;
+using Server.Reawakened.Levels.Models.Planes;
+using static LeaderBoardTopScoresJson;
+using Server.Reawakened.Players.Models;
+using System.Globalization;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -24,9 +28,12 @@ internal class HotbarSlotUse : ExternalProtocol
         var character = player.GetCurrentCharacter();
 
         // position where to spawn FX
-        //var posX = Convert.ToInt32(message[7]);
-        //var posY = Convert.ToInt32(message[8]);
-        //var posZ = Convert.ToInt32(message[9]);
+        var position = new Vector3Model()
+        {
+            X = Convert.ToSingle(message[7], CultureInfo.InvariantCulture),
+            Y = Convert.ToSingle(message[8], CultureInfo.InvariantCulture),
+            Z = Convert.ToSingle(message[9], CultureInfo.InvariantCulture)
+        };
 
         if (int.TryParse(message[5], out var hotbarSlotId))
         {
@@ -35,23 +42,60 @@ internal class HotbarSlotUse : ExternalProtocol
             
             var usedItem = ItemCatalog.GetItemFromId(slotItem.ItemId);
 
-            if (usedItem.SubCategoryId is ItemSubCategory.Potion or ItemSubCategory.Elixir)
+            switch(usedItem.SubCategoryId)
             {
-                character.Data.Inventory.Items[slotItem.ItemId].Count--;
+            case ItemSubCategory.Potion:
+            case ItemSubCategory.Elixir:
+                HandleConsumablePotion(character, usedItem, hotbarSlotId);
+                break;
+            
+            case ItemSubCategory.Offensive:
+                HandleWeapon(usedItem, position);
+                break;
 
-                if (character.Data.Inventory.Items[slotItem.ItemId].Count <= 0)
-                {
-                    character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
-                    SendXt("hu", character.Data.Hotbar);
+            case ItemSubCategory.Defensive:
+                HandleTrinket();
+                break;
 
-                    character.Data.Inventory.Items[slotItem.ItemId].Count = -1;
-                    SendXt("ip", character.Data.Inventory.ToString().Replace('>', '|'), false);
-
-                    character.Data.Inventory.Items.Remove(slotItem.ItemId);
-                }
-                else SendXt("ip", character.Data.Inventory.ToString().Replace('>', '|'), false);
+            default:
+                File.AppendAllText("./use.txt", $"{usedItem.SubCategoryId}\n");
+                break;
             }
         }
         else Logger.LogError("HotbarSlot ID must be an integer.");
+    }
+
+    private void HandleConsumablePotion(CharacterModel character, ItemDescription item, int hotbarSlotId)
+    {
+        character.Data.Inventory.Items[item.ItemId].Count--;
+
+        if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
+        {
+            character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
+            SendXt("hu", character.Data.Hotbar);
+
+            character.Data.Inventory.Items[item.ItemId].Count = -1;
+            SendXt("ip", character.Data.Inventory.ToString().Replace('>', '|'), false);
+
+            character.Data.Inventory.Items.Remove(item.ItemId);
+        }
+        else SendXt("ip", character.Data.Inventory.ToString().Replace('>', '|'), false);
+    }
+
+    private void HandleWeapon(ItemDescription item, Vector3Model position)
+    {
+        var player = NetState.Get<Player>();
+        
+        var meleeTrigger = new Trigger_SyncEvent("13160481", player.CurrentLevel.Time, true, player.PlayerId.ToString(), true);
+        
+        var entts = player.CurrentLevel.LevelEntityHandler.GetEntities<TriggerCoopController>();
+
+        NetState.SendSyncEventToPlayer(meleeTrigger);
+        player.CurrentLevel.SendSyncEvent(meleeTrigger);
+    }
+
+    private void HandleTrinket()
+    {
+
     }
 }
