@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Core.Helpers.Internal;
+using Server.Base.Core.Extensions;
 using ShellProgressBar;
 
 namespace Web.AssetBundles.Models;

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Server.Base.Core.Helpers.Internal;
+namespace Server.Base.Core.Extensions;
 
 public static class DeepCopyClass
 {
