@@ -17,8 +17,11 @@ public class FastTravel : ExternalProtocol
     {
         var player = NetState.Get<Player>();
         var character = player.GetCurrentCharacter();
+
+        var regionId = int.Parse(message[5]);
+        var levelId = int.Parse(message[6]);
         
-        var newLevelId = WorldGraph.GetDestinationFromPortal(int.Parse(message[5]), int.Parse(message[6]));
+        var newLevelId = WorldGraph.GetDestinationFromPortal(regionId, levelId);
 
         character.Level = newLevelId;
 
