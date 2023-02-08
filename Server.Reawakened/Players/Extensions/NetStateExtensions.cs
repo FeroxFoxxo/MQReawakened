@@ -1,6 +1,7 @@
 ﻿using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Network.Extensions;
+using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -24,4 +25,11 @@ public static class NetStateExtensions
 
         return player != null;
     }
+
+    public static void SendUpdatedInventory(this NetState state)
+    {
+        var character = state.Get<Player>().GetCurrentCharacter();
+        state.SendXt("ip", character.Data.Inventory.ToString().Replace('>', '|'), false);
+    }
+
 }

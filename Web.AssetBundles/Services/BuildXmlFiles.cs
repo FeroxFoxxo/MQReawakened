@@ -97,6 +97,13 @@ public class BuildXmlFiles : IService, IInjectModules
             }
             else
             {
+                if (xmlBundle.GetType().IsAssignableTo(typeof(ILocalizationXml)))
+                {
+                    var locXmlBundle = (ILocalizationXml)xmlBundle;
+                    var localizationAsset = XmlFiles.FirstOrDefault(x => string.Equals(x.Key, locXmlBundle.LocalizationName, StringComparison.OrdinalIgnoreCase));
+
+                    locXmlBundle.LoadLocalization(File.ReadAllText(localizationAsset.Value));
+                }
                 xmlBundle.LoadBundle(File.ReadAllText(asset.Value));
                 _logger.LogInformation("Read {XMLFile} From Disk", asset.Key);
             }
