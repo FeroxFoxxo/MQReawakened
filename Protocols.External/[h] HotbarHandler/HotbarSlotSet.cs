@@ -18,11 +18,6 @@ internal class HotbarSlotSet : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        for (int i = 0; i < message.Length; i++)
-        {
-            Logger.LogInformation("\t{i} {msg}", i, message[i]);
-        }
-
         var player = NetState.Get<Player>();
 
         var character = player.GetCurrentCharacter();

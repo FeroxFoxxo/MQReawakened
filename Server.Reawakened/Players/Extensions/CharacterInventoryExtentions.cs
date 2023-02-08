@@ -42,7 +42,7 @@ public static class CharacterInventoryExtentions
         {
             ItemId = item.ItemId,
             Count = count,
-            BindingCount = 0,
+            BindingCount = item.BindingCount,
             DelayUseExpiry = DateTime.MinValue
         });
     }
