@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Protocols;
@@ -22,6 +23,7 @@ public class CreateCharacter : ExternalProtocol
     public ServerConfig ServerConfig { get; set; }
     public LevelHandler LevelHandler { get; set; }
     public WorldGraph WorldGraph { get; set; }
+    public ILogger<CreateCharacter> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -68,7 +70,7 @@ public class CreateCharacter : ExternalProtocol
 
             player.AddCharacter(model);
 
-            player.SendStartPlay(model, NetState, LevelHandler);
+            player.SendStartPlay(model, NetState, LevelHandler, Logger);
         }
     }
 }
