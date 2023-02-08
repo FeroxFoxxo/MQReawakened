@@ -1,4 +1,4 @@
-﻿namespace Server.Base.Worlds.Events;
+﻿namespace Server.Base.Worlds.EventArguments;
 
 public class WorldBroadcastEventArgs
 {

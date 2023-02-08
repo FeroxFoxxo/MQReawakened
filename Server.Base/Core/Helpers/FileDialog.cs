@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Server.Base.Core.Helpers.Internal;
+namespace Server.Base.Core.Helpers;
 
 internal class FileDialog
 {

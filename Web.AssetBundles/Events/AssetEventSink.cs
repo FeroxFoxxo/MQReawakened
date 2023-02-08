@@ -1,8 +1,9 @@
-﻿using Web.AssetBundles.Events;
+﻿using Server.Base.Core.Abstractions;
+using Web.AssetBundles.Events.Arguments;
 
-namespace Web.AssetBundles.Helpers;
+namespace Web.AssetBundles.Events;
 
-public class AssetEventSink
+public class AssetEventSink : IEventSink
 {
     public delegate void AssetBundlesLoadedEventHandler(AssetBundleLoadEventArgs @event);
 

@@ -1,4 +1,4 @@
-﻿namespace Server.Base.Core.Events;
+﻿namespace Server.Base.Core.Events.Arguments;
 
 public class CrashedEventArgs : EventArgs
 {

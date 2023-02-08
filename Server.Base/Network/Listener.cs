@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Events;
-using Server.Base.Core.Helpers;
+using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Network.Services;

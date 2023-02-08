@@ -1,6 +1,6 @@
 ﻿using Web.AssetBundles.Models;
 
-namespace Web.AssetBundles.Events;
+namespace Web.AssetBundles.Events.Arguments;
 
 public class AssetBundleLoadEventArgs
 {

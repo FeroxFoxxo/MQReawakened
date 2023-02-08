@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
-using Server.Base.Core.Helpers;
 using Server.Base.Core.Services;
 using Server.Base.Core.Workers;
 using Server.Base.Logging;
@@ -48,6 +48,16 @@ public class Server : Module
         }
 
         Logger.LogDebug("Loaded services");
+
+        Logger.LogInformation("Loading Event Sinks");
+
+        foreach (var eventSink in modules.GetServices<IEventSink>())
+        {
+            Logger.LogTrace("   Loaded: {EventSink}", eventSink.Name);
+            services.AddSingleton(eventSink);
+        }
+
+        Logger.LogDebug("Loaded event sinks");
 
         Logger.LogInformation("Loading Modules");
         foreach (var service in modules.GetServices<Module>())

@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace Server.Base.Core.Events;
+namespace Server.Base.Core.Events.Arguments;
 
 public class SocketConnectEventArgs : EventArgs
 {
