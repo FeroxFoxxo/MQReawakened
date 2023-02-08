@@ -115,8 +115,7 @@ public class NameChange : IService
             return;
         }
 
-        character.PortalId = 0;
-        character.SpawnPoint = 0;
+        character.SetCharacterSpawn(0, 0, _logger);
 
         character.Level = levelId;
 

@@ -1,4 +1,5 @@
-﻿using Server.Base.Network;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Network;
 using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -8,6 +9,8 @@ namespace Server.Reawakened.Entities;
 public class CheckpointControllerEntity : SyncedEntity<CheckpointController>
 {
     public int SpawnPoint => EntityData.SpawnpointID;
+
+    public ILogger<CheckpointControllerEntity> Logger { get; set; }
     
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
@@ -21,7 +24,7 @@ public class CheckpointControllerEntity : SyncedEntity<CheckpointController>
         var possibleLastCheckpoint = checkpoints.FirstOrDefault(c => c.SpawnPoint == character.SpawnPoint);
         possibleLastCheckpoint?.TriggerCheckpoint(false, netState, player);
 
-        character.SpawnPoint = SpawnPoint;
+        character.SetCharacterSpawn(0, SpawnPoint, Logger);
         
         TriggerCheckpoint(true, netState, player);
     }

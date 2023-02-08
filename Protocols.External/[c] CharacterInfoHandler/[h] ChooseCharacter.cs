@@ -27,6 +27,6 @@ public class ChooseCharacter : ExternalProtocol
             return;
         }
         
-        player.SendStartPlay(character, NetState, LevelHandler);
+        player.SendStartPlay(character, NetState, LevelHandler, Logger);
     }
 }

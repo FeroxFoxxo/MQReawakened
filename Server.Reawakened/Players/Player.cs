@@ -19,7 +19,7 @@ public class Player : INetStateData
     public int Direction { get; set; }
     public Vector3Model Position { get; set; }
     public Vector3Model Velocity { get; set; }
-
+    
     public Player(UserInfo userInfo)
     {
         UserInfo = userInfo;

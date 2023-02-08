@@ -1,4 +1,5 @@
-﻿using Server.Base.Network;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Network;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -111,5 +112,12 @@ public static class CharacterExtensions
             sb.Append(level);
 
         return sb.ToString();
+    }
+
+    public static void SetCharacterSpawn(this CharacterModel model, int portalId, int spawnId, Microsoft.Extensions.Logging.ILogger logger)
+    {
+        model.PortalId = portalId;
+        model.SpawnPoint = spawnId;
+        logger.LogDebug("Set spawn of '{CharacterName}' to portal {PortalId} spawn {SpawnId}", model.Data.CharacterName, portalId, spawnId);
     }
 }
