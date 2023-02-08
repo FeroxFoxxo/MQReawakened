@@ -4,7 +4,6 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Levels.Models;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.Json;
@@ -100,7 +99,7 @@ public class LevelHandler : IService
             }
         }
 
-        var level = new Level(levelInfo, levelPlanes, _config, this, _worldGraph, _reflection, _services, _logger);
+        var level = new Level(levelInfo, levelPlanes, _config, this, _reflection, _services, _logger);
 
         _levels.Add(levelId, level);
 

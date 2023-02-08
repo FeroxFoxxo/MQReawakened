@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
 using Server.Base.Network;
@@ -13,7 +12,6 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Levels;
@@ -23,11 +21,10 @@ public class Level
     private readonly ILogger<LevelHandler> _logger;
     private readonly ServerConfig _serverConfig;
 
-    private readonly HashSet<int> _clientIds;
+    private readonly HashSet<int> _gameObjectIds;
     public readonly Dictionary<int, NetState> Clients;
 
     private readonly LevelHandler _levelHandler;
-    private readonly WorldGraph _worldGraph;
 
     public LevelInfo LevelInfo { get; set; }
     public LevelPlanes LevelPlaneHandler { get; set; }
@@ -38,37 +35,48 @@ public class Level
     public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
 
     public Level(LevelInfo levelInfo, LevelPlanes levelPlaneHandler, ServerConfig serverConfig,
-        LevelHandler levelHandler, WorldGraph worldGraph, ReflectionUtils reflection, IServiceProvider services, ILogger<LevelHandler> logger)
+        LevelHandler levelHandler, ReflectionUtils reflection, IServiceProvider services, ILogger<LevelHandler> logger)
     {
         _serverConfig = serverConfig;
         _levelHandler = levelHandler;
-        _worldGraph = worldGraph;
         _logger = logger;
         Clients = new Dictionary<int, NetState>();
-        _clientIds = new HashSet<int>();
+        _gameObjectIds = new HashSet<int>();
 
         LevelInfo = levelInfo;
         LevelPlaneHandler = levelPlaneHandler;
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
 
         LevelEntityHandler = new LevelEntities(this, _levelHandler, reflection, services, _logger);
+
+        if (levelPlaneHandler.Planes == null)
+            return;
+
+        foreach (var gameObjectId in levelPlaneHandler.Planes.Values
+                     .Select(x => x.GameObjects.Values)
+                     .SelectMany(x => x)
+                     .Select(x => x.ObjectInfo.ObjectId)
+                )
+            _gameObjectIds.Add(gameObjectId);
     }
 
     public void AddClient(NetState newClient, out JoinReason reason)
     {
         var playerId = -1;
 
-        if (_clientIds.Count > _serverConfig.PlayerCap)
+        if (Clients.Count > _serverConfig.PlayerCap)
+        {
             reason = JoinReason.Full;
+        }
         else
         {
             playerId = 1;
 
-            while (_clientIds.Contains(playerId))
+            while (_gameObjectIds.Contains(playerId))
                 playerId++;
 
             Clients.Add(playerId, newClient);
-            _clientIds.Add(playerId);
+            _gameObjectIds.Add(playerId);
             reason = JoinReason.Accepted;
         }
 
@@ -97,14 +105,16 @@ public class Level
 
                 var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
 
-                SendUserEnterData(newClient, currentPlayer, currentAccount);
+                newClient.SendUserEnterData(currentPlayer, currentAccount);
 
                 if (areDifferentClients)
-                    SendUserEnterData(currentClient, newPlayer, newAccount);
+                    currentClient.SendUserEnterData(newPlayer, newAccount);
             }
         }
         else
+        {
             newClient.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
+        }
     }
 
     public void SendCharacterInfo(Player newPlayer, NetState newClient)
@@ -161,34 +171,14 @@ public class Level
 
             var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
 
-            SendCharacterInfoData(newClient, currentPlayer,
-                areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals);
+            newClient.SendCharacterInfoData(currentPlayer,
+                areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals, LevelInfo);
 
             if (areDifferentClients)
-                SendCharacterInfoData(currentClient, newPlayer, CharacterInfoType.Lite);
+                currentClient.SendCharacterInfoData(newPlayer, CharacterInfoType.Lite, LevelInfo);
         }
     }
-
-    private static void SendUserEnterData(NetState state, Player player, Account account) =>
-        state.SendXml("uER",
-            $"<u i='{player.UserInfo.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.PlayerId}'><n>{account.Username}</n></u>");
-
-    public void SendCharacterInfoData(NetState state, Player player, CharacterInfoType type)
-    {
-        var character = player.GetCurrentCharacter();
-
-        var info = type switch
-        {
-            CharacterInfoType.Lite => character.Data.GetLightCharacterData(),
-            CharacterInfoType.Portals => character.Data.BuildPortalData(),
-            CharacterInfoType.Detailed => character.Data.ToString(),
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-        };
-
-        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, character.GetCharacterObjectId(),
-            LevelInfo.Name);
-    }
-
+    
     public void DumpPlayersToLobby()
     {
         foreach (var playerId in Clients.Keys)
@@ -205,7 +195,7 @@ public class Level
     public void RemoveClient(int playerId)
     {
         Clients.Remove(playerId);
-        _clientIds.Remove(playerId);
+        _gameObjectIds.Remove(playerId);
 
         if (Clients.Count == 0 && LevelInfo.LevelId > 0)
             _levelHandler.RemoveLevel(LevelInfo.LevelId);

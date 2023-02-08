@@ -6,10 +6,10 @@ namespace Server.Reawakened.XMLs.Bundles;
 
 public class NameSyllables : NamegenSyllablesXML, IBundledXml
 {
-    public Dictionary<Gender, List<List<string>>> Syllables;
-
     public string BundleName => "NamegenSyllabes";
 
+    public Dictionary<Gender, List<List<string>>> Syllables;
+    
     public void LoadBundle(string xml)
     {
         Syllables = new Dictionary<Gender, List<List<string>>>();

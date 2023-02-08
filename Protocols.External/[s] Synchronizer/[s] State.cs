@@ -32,11 +32,33 @@ public class State : ExternalProtocol
 
         var entityId = int.Parse(syncEvent.TargetID);
 
-        if (entityId == player.GetCurrentCharacter().GetCharacterObjectId())
+        if (entityId == player.PlayerId)
         {
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (syncEvent.Type)
             {
+                case SyncEvent.EventType.ChargeAttack:
+                    var chargeAttackEvent = new ChargeAttack_SyncEvent(syncEvent);
+
+                    var startEvent = new ChargeAttackStart_SyncEvent(entityId.ToString(), chargeAttackEvent.TriggerTime,
+                        chargeAttackEvent.PosX, chargeAttackEvent.PosY, chargeAttackEvent.SpeedX, chargeAttackEvent.SpeedY,
+                        chargeAttackEvent.ItemId, chargeAttackEvent.ZoneId);
+
+                    NetState.SendSyncEventToPlayer(startEvent);
+
+                    Logger.LogWarning("Collision system not yet written and implemented for {Type}.", chargeAttackEvent.Type);
+                    break;
+                case SyncEvent.EventType.NotifyCollision:
+                    var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
+                    var collisionTarget = int.Parse(notifyCollisionEvent.CollisionTarget);
+
+                    if (level.LevelEntityHandler.Entities.TryGetValue(collisionTarget, out var entities))
+                        foreach (var entity in entities)
+                            entity.NotifyCollision(notifyCollisionEvent, NetState);
+                    else
+                        Logger.LogWarning("Unhandled collision From {TargetId} ", collisionTarget);
+
+                    break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
 
@@ -92,7 +114,7 @@ public class State : ExternalProtocol
                     if (components.Count == 0)
                         components.Add("UNKNOWN");
 
-                    Logger.LogWarning("Unhandled Sync Event For {EntityId} ({EntityName}).", entityId, string.Join(", ", components));
+                    Logger.LogWarning("Unhandled '{EventType}' Sync Event For {EntityId} ({EntityName}).", syncEvent.Type, entityId, string.Join(", ", components));
 
                     break;
             }

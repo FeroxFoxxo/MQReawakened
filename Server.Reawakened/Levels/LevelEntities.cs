@@ -19,10 +19,10 @@ public class LevelEntities
     {
         _logger = logger;
 
+        Entities = new Dictionary<int, List<BaseSyncedEntity>>();
+
         if (level.LevelPlaneHandler.Planes == null)
             return;
-
-        Entities = new Dictionary<int, List<BaseSyncedEntity>>();
 
         var invalidProcessable = new List<string>();
 
@@ -62,12 +62,8 @@ public class LevelEntities
                                     field.SetValue(dataObj, componentValue.Value.ToLower() == "true");
                                 else if (field.FieldType == typeof(float))
                                     field.SetValue(dataObj, float.Parse(componentValue.Value));
-                                else if (field.FieldType == typeof(TriggerCoopController.InteractionType))
-                                    field.SetValue(dataObj, Enum.Parse(typeof(TriggerCoopController.InteractionType), componentValue.Value));
-                                else if (field.FieldType == typeof(FollowCamDefines.FollowCamModes))
-                                    field.SetValue(dataObj, Enum.Parse(typeof(FollowCamDefines.FollowCamModes), componentValue.Value));
-                                else if (field.FieldType == typeof(FollowCamDefines.FollowCamPriority))
-                                    field.SetValue(dataObj, Enum.Parse(typeof(FollowCamDefines.FollowCamPriority), componentValue.Value));
+                                else if (field.FieldType.IsEnum)
+                                    field.SetValue(dataObj, Enum.Parse(field.FieldType, componentValue.Value));
                                 else
                                     _logger.LogError("It is unknown how to convert a string to a {FieldType}. " +
                                                      "Please implement this in the {CurrentType} class.", field.FieldType, GetType().Name);
@@ -102,7 +98,9 @@ public class LevelEntities
                         Entities[entity.Key].Add(instancedEntity);
                     }
                     else if (!invalidProcessable.Contains(mqType.Name))
+                    {
                         invalidProcessable.Add(mqType.Name);
+                    }
                 }
 
         foreach (var type in invalidProcessable.Order())

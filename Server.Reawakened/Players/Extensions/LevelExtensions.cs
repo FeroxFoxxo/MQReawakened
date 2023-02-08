@@ -1,8 +1,12 @@
-﻿using Server.Base.Network;
+﻿using Server.Base.Accounts.Extensions;
+using Server.Base.Accounts.Models;
+using Server.Base.Network;
 using Server.Reawakened.Levels;
 using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models;
+using WorldGraphDefines;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -47,7 +51,7 @@ public static class LevelExtensions
     public static void SendPlayerData(this Player player, CharacterInfoType type, NetState state, LevelHandler levelHandler)
     {
         var level = player.GetCurrentLevel(levelHandler);
-        level?.SendCharacterInfoData(state, player, type);
+        state.SendCharacterInfoData(player, type, level?.LevelInfo);
     }
 
     public static Level GetCurrentLevel(this Player player, LevelHandler levelHandler) =>
@@ -55,12 +59,30 @@ public static class LevelExtensions
 
     public static void SentEntityTriggered(this Player player, int id, Level level)
     {
-        var currentCharacter = player.GetCurrentCharacter();
-        var characterId = currentCharacter.GetCharacterObjectId().ToString();
-
         var collectedEvent = new Trigger_SyncEvent(id.ToString(), level.Time, true,
-            characterId, true);
+            player.PlayerId.ToString(), true);
 
         level.SendSyncEvent(collectedEvent);
     }
+
+    public static void SendUserEnterData(this NetState state, Player player, Account account) =>
+        state.SendXml("uER",
+            $"<u i='{player.UserInfo.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.PlayerId}'><n>{account.Username}</n></u>");
+
+    public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type, LevelInfo levelInfo)
+    {
+        var character = player.GetCurrentCharacter();
+
+        var info = type switch
+        {
+            CharacterInfoType.Lite => character.Data.GetLightCharacterData(),
+            CharacterInfoType.Portals => character.Data.BuildPortalData(),
+            CharacterInfoType.Detailed => character.Data.ToString(),
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+
+        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, player.PlayerId,
+            levelInfo.Name);
+    }
+
 }
