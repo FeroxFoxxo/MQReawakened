@@ -23,11 +23,11 @@ public class LevelUpdate : ExternalProtocol
         if (level == null)
             return;
 
-        var gameObjectStore = GetGameObjectStore(level.LevelEntityHandler.Entities);
+        var gameObjectStore = GetGameObjectStore(level.LevelEntities.Entities);
 
         SendXt("lv", 0, gameObjectStore);
 
-        foreach (var entity in level.LevelEntityHandler.Entities.Values.SelectMany(x => x))
+        foreach (var entity in level.LevelEntities.Entities.Values.SelectMany(x => x))
             entity.SendDelayedData(NetState);
 
         player.GetCurrentLevel(LevelHandler).SendCharacterInfo(player, NetState);

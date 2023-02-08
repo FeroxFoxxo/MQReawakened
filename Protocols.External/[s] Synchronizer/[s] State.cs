@@ -52,7 +52,7 @@ public class State : ExternalProtocol
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
                     var collisionTarget = int.Parse(notifyCollisionEvent.CollisionTarget);
 
-                    if (level.LevelEntityHandler.Entities.TryGetValue(collisionTarget, out var entities))
+                    if (level.LevelEntities.Entities.TryGetValue(collisionTarget, out var entities))
                         foreach (var entity in entities)
                             entity.NotifyCollision(notifyCollisionEvent, NetState);
                     else
@@ -86,7 +86,7 @@ public class State : ExternalProtocol
 
             player.CurrentLevel.SendSyncEvent(syncEvent, player);
         }
-        else if (level.LevelEntityHandler.Entities.TryGetValue(entityId, out var entities))
+        else if (level.LevelEntities.Entities.TryGetValue(entityId, out var entities))
         {
             foreach (var entity in entities)
                 entity.RunSyncedEvent(syncEvent, NetState);
@@ -97,7 +97,7 @@ public class State : ExternalProtocol
             switch (syncEvent.Type)
             {
                 default:
-                    var entity = level.LevelPlaneHandler.Planes.Values.SelectMany(x => x.GameObjects)
+                    var entity = level.LevelPlanes.Planes.Values.SelectMany(x => x.GameObjects)
                         .FirstOrDefault(x => x.Key == entityId);
 
                     var components = new List<string>();

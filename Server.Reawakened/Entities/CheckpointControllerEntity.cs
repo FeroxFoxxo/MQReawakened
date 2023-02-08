@@ -20,7 +20,7 @@ public class CheckpointControllerEntity : SyncedEntity<CheckpointController>
         if (character.SpawnPoint == SpawnPoint)
             return;
 
-        var checkpoints = Level.LevelEntityHandler.GetEntities<CheckpointControllerEntity>().Values;
+        var checkpoints = Level.LevelEntities.GetEntities<CheckpointControllerEntity>().Values;
         var possibleLastCheckpoint = checkpoints.FirstOrDefault(c => c.SpawnPoint == character.SpawnPoint);
         possibleLastCheckpoint?.TriggerCheckpoint(false, netState, player);
 

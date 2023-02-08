@@ -27,14 +27,14 @@ public class Level
     private readonly LevelHandler _levelHandler;
 
     public LevelInfo LevelInfo { get; set; }
-    public LevelPlanes LevelPlaneHandler { get; set; }
-    public LevelEntities LevelEntityHandler { get; set; }
+    public LevelPlanes LevelPlanes { get; set; }
+    public LevelEntities LevelEntities { get; set; }
 
     public long TimeOffset { get; set; }
 
     public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
 
-    public Level(LevelInfo levelInfo, LevelPlanes levelPlaneHandler, ServerConfig serverConfig,
+    public Level(LevelInfo levelInfo, LevelPlanes levelPlanes, ServerConfig serverConfig,
         LevelHandler levelHandler, ReflectionUtils reflection, IServiceProvider services, ILogger<LevelHandler> logger)
     {
         _serverConfig = serverConfig;
@@ -44,15 +44,15 @@ public class Level
         _gameObjectIds = new HashSet<int>();
 
         LevelInfo = levelInfo;
-        LevelPlaneHandler = levelPlaneHandler;
+        LevelPlanes = levelPlanes;
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
 
-        LevelEntityHandler = new LevelEntities(this, _levelHandler, reflection, services, _logger);
+        LevelEntities = new LevelEntities(this, _levelHandler, reflection, services, _logger);
 
-        if (levelPlaneHandler.Planes == null)
+        if (levelPlanes.Planes == null)
             return;
 
-        foreach (var gameObjectId in levelPlaneHandler.Planes.Values
+        foreach (var gameObjectId in levelPlanes.Planes.Values
                      .Select(x => x.GameObjects.Values)
                      .SelectMany(x => x)
                      .Select(x => x.ObjectInfo.ObjectId)
@@ -124,8 +124,8 @@ public class Level
 
         BaseSyncedEntity spawnLocation = null;
 
-        var spawnPoints = LevelEntityHandler.GetEntities<SpawnPointEntity>();
-        var portals = LevelEntityHandler.GetEntities<PortalControllerEntity>();
+        var spawnPoints = LevelEntities.GetEntities<SpawnPointEntity>();
+        var portals = LevelEntities.GetEntities<PortalControllerEntity>();
 
         if (character.PortalId != 0)
             if (portals.TryGetValue(character.PortalId, out var portal))
