@@ -2,8 +2,12 @@
 <div align="center">
     <h1>
         <img width="70%" src="Banner.png?raw=true" style="border-radius: 50%;" align="center">
+        <br>
     </h1>
     <h3>A community driven server emulator, written completely from scratch in C#, for MQ!</h3>
+    <a href="https://github.com/FeroxFoxxo/MQReawakened/blob/master/LICENSE">
+        <img alt="GitHub" src="https://img.shields.io/github/license/feroxfoxxo/mqreawakened?label=License&style=for-the-badge">
+    </a>
     <h4>This server should be completely free of assets / intellectual property from the original game. If you see any infringing code, please let me know at the email below and I will take it down to be removed ❤️</h4>
     <h5>None of the repo, the tool, nor the repo owner is affiliated with, sponsored, or authorized by any affiliates of the original game.</h4>
     <h1></h1>
@@ -27,11 +31,11 @@ Please email me at feroxfoxxo@gmail.com if anything is in breach, which will be 
 
 ### Licensed Works
 
-- <a href="https://github.com/AssetRipper/AssetRipper/">AssetRipper.IO.Endian</a> - Cache binary read/write utility. [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETRIPPER)
-- <a href="https://github.com/Perfare/AssetStudio/">AssetStudio</a> - Tool for exploring the original assetbundles. [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETSTUDIO)
-- <a href="https://github.com/ServUO/ServUO/">ServUO</a> - Server emulator used as a base, written in C# .NET. [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Base/Licences/LICENSE_SERVUO)
+- <a href="https://github.com/AssetRipper/AssetRipper/">AssetRipper.IO.Endian</a> - Cache binary read/write utility [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETRIPPER)
+- <a href="https://github.com/Perfare/AssetStudio/">AssetStudio</a> - Tool for exploring the original assetbundles [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETSTUDIO)
+- <a href="https://github.com/ServUO/ServUO/">ServUO</a> - Server emulator used as a base, written in C# .NET [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Base/Licences/LICENSE_SERVUO)
 - <a href="https://github.com/apache/thrift/">Thrift</a> - Point-to-point RPC implementation [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Reawakened/Licences/LICENSE_THRIFT)
-- <a href="https://github.com/discord-net/Discord.Net/">AssetRipper.IO.Endian</a> - Reflective class initialization. [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Reawakened/Licences/LICENSE_DNET)
+- <a href="https://github.com/discord-net/Discord.Net/">AssetRipper.IO.Endian</a> - Reflective class initialization [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Reawakened/Licences/LICENSE_DNET)
 
 ### Commemorations
 
