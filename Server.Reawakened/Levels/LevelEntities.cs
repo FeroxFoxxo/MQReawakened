@@ -53,23 +53,22 @@ public class LevelEntities
 
                             var field = fields.FirstOrDefault(f => f.Name == componentValue.Key);
 
-                            if (field != null)
-                                if (field.FieldType == typeof(string))
-                                    field.SetValue(dataObj, componentValue.Value);
-                                else if (field.FieldType == typeof(int))
-                                    field.SetValue(dataObj, int.Parse(componentValue.Value));
-                                else if (field.FieldType == typeof(bool))
-                                    field.SetValue(dataObj, componentValue.Value.ToLower() == "true");
-                                else if (field.FieldType == typeof(float))
-                                    field.SetValue(dataObj, float.Parse(componentValue.Value));
-                                else if (field.FieldType.IsEnum)
-                                    field.SetValue(dataObj, Enum.Parse(field.FieldType, componentValue.Value));
-                                else
-                                    _logger.LogError("It is unknown how to convert a string to a {FieldType}. " +
-                                                     "Please implement this in the {CurrentType} class.", field.FieldType, GetType().Name);
+                            if (field == null)
+                                continue;
+
+                            if (field.FieldType == typeof(string))
+                                field.SetValue(dataObj, componentValue.Value);
+                            else if (field.FieldType == typeof(int))
+                                field.SetValue(dataObj, int.Parse(componentValue.Value));
+                            else if (field.FieldType == typeof(bool))
+                                field.SetValue(dataObj, componentValue.Value.ToLower() == "true");
+                            else if (field.FieldType == typeof(float))
+                                field.SetValue(dataObj, float.Parse(componentValue.Value));
+                            else if (field.FieldType.IsEnum)
+                                field.SetValue(dataObj, Enum.Parse(field.FieldType, componentValue.Value));
                             else
-                                _logger.LogWarning("Component {ComponentType} does not have field {FieldName}. Possible fields: {Fields}",
-                                    mqType, componentValue.Key, string.Join(", ", fields.Select(f => f.Name)));
+                                _logger.LogError("It is unknown how to convert a string to a {FieldType}. " +
+                                                 "Please implement this in the {CurrentType} class.", field.FieldType, GetType().Name);
                         }
 
                         var storedData = new StoredEntityModel(entity.Value, level, logger);

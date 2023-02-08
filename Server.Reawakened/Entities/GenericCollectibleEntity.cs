@@ -23,7 +23,7 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
         };
     }
 
-    public override string[] GetInitData(NetState netState) => new[] { Collected ? "0" : "1" };
+    public override string[] GetInitData(NetState netState) => Collected ? new[] { "0" } : Array.Empty<string>();
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
@@ -47,8 +47,10 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
 
         Level.SendSyncEvent(effectEvent);
 
-        if (collectedValue > 0)
-            foreach (var client in Level.Clients.Values)
-                client.Get<Player>().AddBananas(client, collectedValue);
+        if (collectedValue <= 0)
+            return;
+
+        foreach (var client in Level.Clients.Values)
+            client.Get<Player>().AddBananas(client, collectedValue);
     }
 }

@@ -17,8 +17,8 @@ public class IdolControllerEntity : SyncedEntity<IdolController>
 
         if (!character.CollectedIdols.ContainsKey(levelId))
             character.CollectedIdols.Add(levelId, new List<int>());
-        
-        return new [] { character.CollectedIdols[levelId].Contains(Index) ? "0" : "1" };
+
+        return character.CollectedIdols[levelId].Contains(Index) ? new[] { "0" } : Array.Empty<string>();
     }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
@@ -27,9 +27,10 @@ public class IdolControllerEntity : SyncedEntity<IdolController>
         var character = player.GetCurrentCharacter();
         var levelId = Level.LevelInfo.LevelId;
 
-        player.SentEntityTriggered(Id, Level);
+        if (character.CollectedIdols[levelId].Contains(Index))
+            return;
 
-        if (!character.CollectedIdols[levelId].Contains(Index))
-            character.CollectedIdols[levelId].Add(Index);
+        character.CollectedIdols[levelId].Add(Index);
+        player.SentEntityTriggered(Id, Level);
     }
 }

@@ -41,9 +41,6 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
         {
             var character = player.GetCurrentCharacter();
 
-            character.PortalId = portalId;
-            character.SpawnPoint = portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID);
-
             DestNode node = null;
 
             var nodes = WorldGraph.GetLevelWorldGraphNodes(newLevelId);
@@ -54,13 +51,12 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
             if (node != null)
             {
                 Logger.LogDebug("Node Found: Portal ID '{Portal}', Spawn ID '{Spawn}'.", node.PortalID, node.ToSpawnID);
-
-                character.PortalId = node.PortalID;
-                character.SpawnPoint = node.ToSpawnID;
+                character.SetCharacterSpawn(node.PortalID, node.ToSpawnID, Logger);
             }
             else
             {
                 Logger.LogError("Could not find node for '{Old}' -> '{New}'.", currentLevel, newLevelId);
+                character.SetCharacterSpawn(portalId, portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID), Logger);
             }
             
             character.Level = newLevelId;

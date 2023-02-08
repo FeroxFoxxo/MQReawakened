@@ -40,9 +40,9 @@ public static class LevelExtensions
     public static int GetLevelId(this Player player) =>
         player.CurrentLevel != null ? player.CurrentLevel.LevelInfo.LevelId : -1;
 
-    public static void SendStartPlay(this Player player, CharacterModel character, NetState state, LevelHandler levelHandler)
+    public static void SendStartPlay(this Player player, CharacterModel character, NetState state, LevelHandler levelHandler, Microsoft.Extensions.Logging.ILogger logger)
     {
-        character.SpawnPoint = 0;
+        character.SetCharacterSpawn(character.PortalId, 0, logger);
         character.Data.SetPlayerData(player);
         player.SetCharacterSelected(character.Data.CharacterId);
         player.SendPlayerData(CharacterInfoType.Detailed, state, levelHandler);
