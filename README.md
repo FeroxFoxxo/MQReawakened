@@ -5,9 +5,17 @@
         <br>
     </h1>
     <h3>A community driven server emulator, written completely from scratch in C#, for MQ!</h3>
-    <a href="https://github.com/FeroxFoxxo/MQReawakened/blob/master/LICENSE.md">
-        <img alt="GitHub" src="https://img.shields.io/github/license/feroxfoxxo/mqreawakened?label=License&style=for-the-badge">
-    </a>
+    <p>
+        <a href="https://github.com/FeroxFoxxo/MQReawakened/blob/master/LICENSE.md">
+            <img alt="License" src="https://img.shields.io/github/license/feroxfoxxo/mqreawakened?label=License&style=for-the-badge">
+        </a>
+        <a href="https://github.com/FeroxFoxxo/MQReawakened/wiki">
+            <img alt="Wiki" src="https://img.shields.io/badge/Wiki-View%20Docs%20Here-red?style=for-the-badge">
+        </a>
+        <a href="https://github.com/FeroxFoxxo/MQReawakened">
+            <img alt="Stars" src="https://img.shields.io/github/stars/feroxfoxxo/MQReawakened?color=gold&style=for-the-badge">
+        </a>
+    </p>
     <h4>This server should be completely free of assets / intellectual property from the original game. If you see any infringing code, please let me know at the email below and I will take it down to be removed ❤️</h4>
     <h5>None of the repo, the tool, nor the repo owner is affiliated with, sponsored, or authorized by any affiliates of the original game.</h4>
     <h1></h1>
