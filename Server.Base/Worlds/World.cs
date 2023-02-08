@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Core.Helpers;
+using Server.Base.Core.Events;
 using Server.Base.Network.Services;
-using Server.Base.Worlds.Events;
+using Server.Base.Worlds.EventArguments;
 using System.Diagnostics;
 
 namespace Server.Base.Worlds;

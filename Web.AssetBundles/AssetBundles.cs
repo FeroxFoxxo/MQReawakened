@@ -5,7 +5,7 @@ using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Web.Abstractions;
 using System.Runtime.Serialization;
-using Web.AssetBundles.Helpers;
+using Web.AssetBundles.Events;
 
 namespace Web.AssetBundles;
 

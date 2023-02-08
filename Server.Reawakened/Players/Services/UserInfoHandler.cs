@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Models;
-using Server.Base.Core.Helpers;
+using Server.Base.Core.Events;
 using Server.Base.Core.Services;
 using Server.Base.Network;
 using Server.Reawakened.Configs;

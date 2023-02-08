@@ -1,10 +1,11 @@
-﻿using Server.Base.Core.Events;
+﻿using Server.Base.Core.Abstractions;
+using Server.Base.Core.Events.Arguments;
 using Server.Base.Network.Events;
-using Server.Base.Worlds.Events;
+using Server.Base.Worlds.EventArguments;
 
-namespace Server.Base.Core.Helpers;
+namespace Server.Base.Core.Events;
 
-public class EventSink
+public class EventSink : IEventSink
 {
     public delegate void CrashedEventHandler(CrashedEventArgs @event);
 

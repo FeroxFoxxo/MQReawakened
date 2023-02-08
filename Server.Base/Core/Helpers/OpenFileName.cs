@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Server.Base.Core.Helpers.Internal;
+namespace Server.Base.Core.Helpers;
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 public struct OpenFileName

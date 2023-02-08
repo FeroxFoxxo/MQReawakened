@@ -1,5 +1,5 @@
 ﻿using Server.Base.Core.Abstractions;
-using Server.Base.Core.Helpers;
+using Server.Base.Core.Events;
 
 namespace Web.Apps.Leaderboards.Services;
 
