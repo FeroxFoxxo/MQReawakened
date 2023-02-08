@@ -21,7 +21,7 @@ public class LevelEntities
 
         Entities = new Dictionary<int, List<BaseSyncedEntity>>();
 
-        if (level.LevelPlaneHandler.Planes == null)
+        if (level.LevelPlanes.Planes == null)
             return;
 
         var invalidProcessable = new List<string>();
@@ -31,7 +31,7 @@ public class LevelEntities
             .Where(t => t.BaseType.GenericTypeArguments.Length > 0)
             .ToDictionary(t => t.BaseType.GenericTypeArguments.First().FullName, t => t);
 
-        foreach (var plane in level.LevelPlaneHandler.Planes)
+        foreach (var plane in level.LevelPlanes.Planes)
             foreach (var entity in plane.Value.GameObjects)
                 foreach (var component in entity.Value.ObjectInfo.Components)
                 {
