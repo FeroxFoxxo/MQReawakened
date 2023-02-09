@@ -12,7 +12,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
     public void LoadBundle(string xml)
     {
         _rootXmlName = BundleName;
-		_hasLocalizationDict = false;
+		_hasLocalizationDict = true;
 
         this.SetField<VendorCatalogsXML>("_levelUpCatalogs", new Dictionary<int, List<int>>());
         this.SetField<VendorCatalogsXML>("_vendorCatalogs", new Dictionary<int, List<int>>());

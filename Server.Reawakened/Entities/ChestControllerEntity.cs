@@ -23,8 +23,11 @@ internal class ChestControllerEntity : SyncedEntity<ChestController>
 
         var player = netState.Get<Player>();
 
+        var bananas = _rnd.Next(10, 100);
+        player.AddBananas(netState, bananas);
+
         var trig = new Trigger_SyncEvent(Id.ToString(), Level.Time, true, player.PlayerId.ToString(), true);
-        trig.EventDataList[0] = _rnd.Next(10, 100);
+        trig.EventDataList[0] = bananas;
 
         Level.SendSyncEvent(trig);
         netState.SendSyncEventToPlayer(trig);
