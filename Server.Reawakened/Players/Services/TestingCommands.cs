@@ -16,6 +16,7 @@ using System;
 using Server.Base.Logging;
 using Server.Base.Network.Services;
 using Server.Reawakened.Network.Extensions;
+using Server.Base.Core.Events;
 
 namespace Server.Reawakened.Players.Services;
 
