@@ -28,6 +28,8 @@ public class BuildAssetList : IService
     public readonly Dictionary<string, string> AssetDict;
     public readonly Dictionary<string, string> PublishConfigs;
 
+    public readonly List<string> CurrentlyLoadedAssets;
+
     public string AssetDictLocation;
 
     public Dictionary<string, InternalAssetInfo> InternalAssets;
@@ -44,6 +46,8 @@ public class BuildAssetList : IService
 
         PublishConfigs = new Dictionary<string, string>();
         AssetDict = new Dictionary<string, string>();
+
+        CurrentlyLoadedAssets = new List<string>();
     }
 
     public void Initialize() => _sink.WorldLoad += Load;

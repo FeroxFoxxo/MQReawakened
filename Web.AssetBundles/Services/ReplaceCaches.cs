@@ -1,9 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
+using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
+using System.Text.Json;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Models;
 using Web.Launcher.Services;
@@ -16,11 +19,13 @@ public class ReplaceCaches : IService
     private readonly AssetBundleConfig _config;
     private readonly ServerConsole _console;
     private readonly StartGame _game;
-    private readonly ILogger<ReplaceCaches> _logger;
     private readonly EventSink _sink;
 
+    private readonly ILogger<ReplaceCaches> _logger;
+    private readonly IHostApplicationLifetime _appLifetime;
+
     public ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList, AssetBundleConfig config,
-        ILogger<ReplaceCaches> logger, StartGame game)
+        ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime)
     {
         _console = console;
         _sink = sink;
@@ -28,9 +33,24 @@ public class ReplaceCaches : IService
         _config = config;
         _logger = logger;
         _game = game;
+        _appLifetime = appLifetime;
     }
 
-    public void Initialize() => _sink.WorldLoad += Load;
+    public void Initialize()
+    {
+        _sink.WorldLoad += Load;
+
+        _appLifetime.ApplicationStarted.Register(LogInformation);
+    }
+
+    private void LogInformation()
+    {
+        if (_config.UseCacheReplacementScheme)
+            _logger.LogError("Note: Dynamically loading cache files is not currently supported. " +
+                             "When the client requests these, the first attempt will be in light blue (INFORMATION). " +
+                             "When this changes to a purple (TRACE), with no more blue queries, " +
+                             "please close the client and run the 'replaceCaches' command!");
+    }
 
     public void Load() =>
         _console.AddCommand(new ConsoleCommand("replaceCaches",
@@ -39,43 +59,38 @@ public class ReplaceCaches : IService
 
     private void ReplaceWebPlayerCache()
     {
+        _buildAssetList.CurrentlyLoadedAssets.Clear();
+
         _config.GetWebPlayerInfoFile(_logger);
 
         if (_config.FlushCacheOnStart)
             if (_logger.Ask("Flushing the cache on start is enabled, would you like to disable this?", true))
                 _config.FlushCacheOnStart = false;
 
-        var assetDictionary = _buildAssetList.InternalAssets.Values
-            .Select(a => new KeyValuePair<string, InternalAssetInfo>(Path.GetFileName(a.Path), a))
-            .DistinctBy(a => a.Key).ToDictionary(a => a.Key, a => a.Value);
+        var cacheModel = new CacheModel(_buildAssetList, _config);
 
-        var cachedFiles = Directory.GetFiles(Path.GetDirectoryName(_config.WebPlayerInfoFile)!, "*.*",
-                SearchOption.AllDirectories).Select(c => new KeyValuePair<string, string>(Path.GetFileName(c), c))
-            .Where(c => c.Key != "__info").ToArray();
+        _logger.LogInformation("Loaded {NumAssetDict} Assets With {Caches} Caches ({TotalFiles} Total Files, {Unknown} Unidentified).",
+            cacheModel.TotalAssetDictionaryFiles, cacheModel.TotalFoundCaches, cacheModel.TotalCachedAssetFiles, cacheModel.TotalUnknownCaches);
 
-        var filteredCaches = cachedFiles.Where(c => assetDictionary.ContainsKey(c.Key!)).ToArray();
-
-        _logger.LogInformation("Loaded {NumAssetDict} Assets With {Caches} Caches ({TotalFiles} Total Files).",
-            assetDictionary.Count, filteredCaches.Length, cachedFiles.Length);
-
-        using (var bar = new DefaultProgressBar(filteredCaches.Length, "Replacing Caches", _logger, _config))
+        using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", _logger, _config))
         {
-            foreach (var cache in filteredCaches)
+            foreach (var cache in cacheModel.FoundCaches)
             {
-                if (!assetDictionary.ContainsKey(cache.Key))
-                    continue;
-
-                var asset = assetDictionary[cache.Key];
+                var asset = cacheModel.GetAssetInfoFromCacheName(cache.Key);
 
                 bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
 
                 File.Copy(asset.Path, cache.Value, true);
-
-                bar.SetMessage($"{asset.Path} -> {cache.Value}");
-
+                
                 bar.TickBar();
             }
         }
+        
+        Directory.CreateDirectory(_config.AssetSaveDirectory);
+        var replacementLogPath = Path.Join(_config.AssetSaveDirectory, "replacedAssets.json");
+        File.WriteAllText(replacementLogPath, JsonSerializer.Serialize(cacheModel, new JsonSerializerOptions() { WriteIndented = true }));
+
+        _logger.LogInformation("Logged Cache Replacements To {ReplacementFile}", replacementLogPath);
 
         _game.AskIfRestart();
     }
