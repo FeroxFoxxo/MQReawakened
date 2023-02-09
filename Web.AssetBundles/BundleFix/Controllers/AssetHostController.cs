@@ -11,7 +11,7 @@ using Web.AssetBundles.BundleFix.Metadata;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Models;
 using Web.AssetBundles.Services;
-using Web.Launcher.Services;
+
 using FileIO = System.IO.File;
 
 namespace Web.AssetBundles.BundleFix.Controllers;
@@ -19,20 +19,18 @@ namespace Web.AssetBundles.BundleFix.Controllers;
 [Route("/Client/{folder}/{file}")]
 public class AssetHostController : Controller
 {
-    private readonly BuildAssetList _bundles;
+    private readonly BuildAssetList _buildAssetList;
     private readonly AssetBundleConfig _config;
     private readonly ILogger<AssetHostController> _logger;
-    private readonly BuildXmlFiles _xmlFiles;
-    private readonly StartGame _game;
+    private readonly BuildXmlFiles _buildXmlList;
 
-    public AssetHostController(BuildAssetList bundles, ILogger<AssetHostController> logger,
-        AssetBundleConfig config, BuildXmlFiles xmlFiles, StartGame game)
+    public AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
+        AssetBundleConfig config, BuildXmlFiles buildXmlList)
     {
-        _bundles = bundles;
+        _buildAssetList = buildAssetList;
         _logger = logger;
         _config = config;
-        _xmlFiles = xmlFiles;
-        _game = game;
+        _buildXmlList = buildXmlList;
     }
     
     [HttpGet]
@@ -43,10 +41,10 @@ public class AssetHostController : Controller
             var uriPath = $"{folder}/{file}";
 
             // Don't log to console.
-            if (_game.Assets.Contains(uriPath))
+            if (_buildAssetList.CurrentlyLoadedAssets.Contains(uriPath))
                 return new StatusCodeResult(StatusCodes.Status418ImATeapot);
 
-            _game.Assets.Add(uriPath);
+            _buildAssetList.CurrentlyLoadedAssets.Add(uriPath);
         }
 
         var publishConfig = _config.PublishConfigs.FirstOrDefault(a => string.Equals(a.Value, file));
@@ -54,7 +52,7 @@ public class AssetHostController : Controller
         if (!publishConfig.IsDefault())
         {
             _logger.LogDebug("Getting Publish Configuration {Type} ({Folder})", publishConfig.Key, folder);
-            return Ok(_bundles.PublishConfigs[publishConfig.Key]);
+            return Ok(_buildAssetList.PublishConfigs[publishConfig.Key]);
         }
 
         var assetDict = _config.AssetDictConfigs.FirstOrDefault(a => string.Equals(a.Value, file));
@@ -62,21 +60,21 @@ public class AssetHostController : Controller
         if (!assetDict.IsDefault())
         {
             _logger.LogDebug("Getting Asset Dictionary {Type} ({Folder})", assetDict.Key, folder);
-            return Ok(_bundles.AssetDict[assetDict.Key]);
+            return Ok(_buildAssetList.AssetDict[assetDict.Key]);
         }
 
         var name = file.Split('.')[0];
 
-        if (!_bundles.InternalAssets.ContainsKey(name))
+        if (!_buildAssetList.InternalAssets.ContainsKey(name))
             return NotFound();
 
-        var asset = _bundles.InternalAssets[name];
+        var asset = _buildAssetList.InternalAssets[name];
 
         var path = file.EndsWith(".xml")
-            ? _xmlFiles.XmlFiles.TryGetValue(name, out var value)
+            ? _buildXmlList.XmlFiles.TryGetValue(name, out var value)
                 ? value
                 : throw new FileNotFoundException(
-                    $"Could not find: {name}. Did you mean:\n{string.Join('\n', _xmlFiles.XmlFiles.Keys)}")
+                    $"Could not find: {name}. Did you mean:\n{string.Join('\n', _buildXmlList.XmlFiles.Keys)}")
             : WriteFixedBundle(asset);
 
         _logger.LogDebug("Getting asset {Name} from {File} ({Folder})", asset.Name, path, folder);
@@ -104,13 +102,21 @@ public class AssetHostController : Controller
             _logger.LogInformation("Creating Bundle {Name} [{Type}]", assetName,
                 _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST");
 
+            if (_config.UseCacheReplacementScheme)
+            {
+                _logger.LogError("After you stop seeing this light blue [I]nformational message, " +
+                                 "please close the client and run the 'replaceCaches' command, " +
+                                 "otherwise the client may stop loading or crash! " +
+                                 "Subsequent purple [T]race messages can be ignored.");
+            }
+
             using var stream = new MemoryStream();
             var writer = new EndianWriter(stream, EndianType.BigEndian);
 
             var unityVersion = new UnityVersion(asset.UnityVersion);
             var fileName = Path.GetFileName(asset.Path);
 
-            var data = new FixedAssetFile(_config.ShouldUseLocalAssetToGenerate ? _config.LocalAssetCache : asset.Path);
+            var data = new FixedAssetFile(_config.UseCacheReplacementScheme ? _config.LocalAssetCache : asset.Path);
             var metadata = new BundleMetadata(fileName, data.FileSize);
             var header = new RawBundleHeader(data.FileSize, metadata.MetadataSize, unityVersion);
 

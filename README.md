@@ -10,7 +10,10 @@
             <img alt="License" src="https://img.shields.io/github/license/feroxfoxxo/mqreawakened?label=License&style=for-the-badge">
         </a>
         <a href="https://github.com/FeroxFoxxo/MQReawakened/wiki">
-            <img alt="Wiki" src="https://img.shields.io/badge/Wiki-View%20Docs%20Here-red?style=for-the-badge">
+            <img alt="Wiki" src="https://img.shields.io/badge/Wiki-View%20Docs-purple?style=for-the-badge">
+        </a>
+        <a href="https://github.com/FeroxFoxxo/MQReawakened/projects">
+            <img alt="Wiki" src="https://img.shields.io/badge/To%20Do-View%20Projects-darkgreen?style=for-the-badge">
         </a>
         <a href="https://github.com/FeroxFoxxo/MQReawakened">
             <img alt="Stars" src="https://img.shields.io/github/stars/feroxfoxxo/MQReawakened?color=gold&style=for-the-badge">

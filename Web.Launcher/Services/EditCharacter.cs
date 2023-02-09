@@ -5,7 +5,10 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
+using Server.Base.Network;
+using Server.Base.Network.Services;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Services;
@@ -13,21 +16,23 @@ using Server.Reawakened.XMLs.Bundles;
 
 namespace Web.Launcher.Services;
 
-public class NameChange : IService
+public class EditCharacter : IService
 {
     private readonly AccountHandler _accountHandler;
     private readonly ServerConsole _console;
-    private readonly ILogger<NameChange> _logger;
+    private readonly ILogger<EditCharacter> _logger;
     private readonly EventSink _sink;
     private readonly UserInfoHandler _userInfoHandler;
     private readonly WorldGraph _worldGraph;
+    private readonly LevelHandler _levelHandler;
     private readonly ServerConfig _config;
     private readonly StartGame _game;
+    private readonly NetStateHandler _handler;
 
-    public NameChange(ServerConsole console, EventSink sink,
-        ILogger<NameChange> logger, UserInfoHandler userInfoHandler,
+    public EditCharacter(ServerConsole console, EventSink sink,
+        ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
         AccountHandler accountHandler, WorldGraph worldGraph,
-        ServerConfig config, StartGame game)
+        ServerConfig config, StartGame game, NetStateHandler handler, LevelHandler levelHandler)
     {
         _console = console;
         _sink = sink;
@@ -37,6 +42,8 @@ public class NameChange : IService
         _worldGraph = worldGraph;
         _config = config;
         _game = game;
+        _handler = handler;
+        _levelHandler = levelHandler;
     }
 
     public void Initialize() => _sink.WorldLoad += Load;
@@ -122,12 +129,14 @@ public class NameChange : IService
         var levelInfo = _worldGraph.GetInfoLevel(levelId);
 
         character.DiscoverTribe(levelInfo);
-        
+
         _logger.LogInformation("Successfully set character {Id}'s level to {LevelId} '{InGameLevelName}' ({LevelName})!",
             character.Data.CharacterId, levelId, levelInfo.InGameName, levelInfo.Name);
 
-        _logger.LogWarning("Please note this will only apply on next login.");
-        _game.AskIfRestart();
+        if (_handler.IsPlayerOnline(user.UserId, out var netState, out var player))
+            player.SendLevelChange(netState, _levelHandler, _worldGraph);
+        else
+            _game.AskIfRestart();
     }
 
     private void GetCharacter(out CharacterModel model, out UserInfo user)

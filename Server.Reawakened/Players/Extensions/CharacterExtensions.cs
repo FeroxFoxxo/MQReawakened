@@ -53,9 +53,6 @@ public static class CharacterExtensions
     
     public static bool DiscoverTribe(this CharacterModel character, LevelInfo lInfo)
     {
-        if (!lInfo.Name.Contains("highway", StringComparison.OrdinalIgnoreCase))
-            return false;
-
         if (character.Data.TribesDiscovered.ContainsKey(lInfo.Tribe))
         {
             if (character.Data.TribesDiscovered[lInfo.Tribe])

@@ -36,7 +36,8 @@ public class AssetBundleConfig : IConfig
     public string[] ForceLocalAsset { get; set; }
     public string[] AssetModifiers { get; set; }
 
-    public bool ShouldUseLocalAssetToGenerate { get; set; }
+    public bool UseCacheReplacementScheme { get; set; }
+
     public string LocalAssetCache { get; set; }
     public bool LogProgressBars { get; set; }
     public bool KillOnBundleRetry { get; set; }
@@ -47,7 +48,7 @@ public class AssetBundleConfig : IConfig
         XmlSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "XMLs");
         AssetSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "AssetDictionaries");
 
-        ShouldUseLocalAssetToGenerate = true;
+        UseCacheReplacementScheme = true;
         LogProgressBars = false;
         LocalAssetCache = Path.Combine(InternalDirectory.GetBaseDirectory(), "TestAssetCache.cache");
 
