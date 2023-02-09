@@ -30,6 +30,12 @@ MQReawakened is a community-driven server emulator meant for **non-commercial, e
 
 Please email me at feroxfoxxo@gmail.com if anything is in breach, which will be rectified ASAP.
 
+#### Developer information
+
+We use [GitHub Projects](https://github.com/FeroxFoxxo/MQReawakened/projects) for managing what teams are working on, and [Github Wiki](https://github.com/FeroxFoxxo/MQReawakened/wiki) for documenting the codebase.
+
+If you have anything you wish to report, please submit an issue through [the repo's issue system](https://github.com/FeroxFoxxo/MQReawakened/issues), and it will be assigned to someone accordingly.
+
 ### Prerequisites
 
 - You **must** have your own copy of the game and its associated asset bundles.
