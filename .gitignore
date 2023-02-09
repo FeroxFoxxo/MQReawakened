@@ -365,3 +365,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /Server.Reawakened/Dependencies/*.dll
+/Web.AssetBundles/LocalAssets/vendor_catalogs.xml
+/Web.AssetBundles/LocalAssets/vendor_catalogs.xml
