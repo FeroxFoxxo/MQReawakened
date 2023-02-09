@@ -10,7 +10,10 @@
             <img alt="License" src="https://img.shields.io/github/license/feroxfoxxo/mqreawakened?label=License&style=for-the-badge">
         </a>
         <a href="https://github.com/FeroxFoxxo/MQReawakened/wiki">
-            <img alt="Wiki" src="https://img.shields.io/badge/Wiki-View%20Docs%20Here-red?style=for-the-badge">
+            <img alt="Wiki" src="https://img.shields.io/badge/Wiki-View%20Docs-purple?style=for-the-badge">
+        </a>
+        <a href="https://github.com/FeroxFoxxo/MQReawakened/projects">
+            <img alt="Wiki" src="https://img.shields.io/badge/To%20Do-View%20Projects-darkgreen?style=for-the-badge">
         </a>
         <a href="https://github.com/FeroxFoxxo/MQReawakened">
             <img alt="Stars" src="https://img.shields.io/github/stars/feroxfoxxo/MQReawakened?color=gold&style=for-the-badge">
@@ -26,6 +29,12 @@
 MQReawakened is a community-driven server emulator meant for **non-commercial, educational use only**. It is meant to show how games like these are created, through reverse engineering how they work. It is not, and should never be, commercialised in any way. It is fundamentally transformative from the original client it's based on, and only shares similar data models with it. Users **must provide** the original game's code, assets, executables etc themselves.
 
 Please email me at feroxfoxxo@gmail.com if anything is in breach, which will be rectified ASAP.
+
+#### Developer information
+
+We use [GitHub Projects](https://github.com/FeroxFoxxo/MQReawakened/projects) for managing what teams are working on, and [Github Wiki](https://github.com/FeroxFoxxo/MQReawakened/wiki) for documenting the codebase.
+
+If you have anything you wish to report, please submit an issue through [the repo's issue system](https://github.com/FeroxFoxxo/MQReawakened/issues), and it will be assigned to someone accordingly.
 
 ### Prerequisites
 
