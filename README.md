@@ -48,4 +48,4 @@ Please email me at feroxfoxxo@gmail.com if anything is in breach, which will be 
 ### Commemorations
 
 - Z6mbie - Logo designer.
-- <a href="https://github.com/victti/">Victti</a> - Concept contributor.
+- <a href="https://github.com/victti/">Victti</a> - Concept contributor & mentor.
