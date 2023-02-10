@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities;
 using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Protocols;
@@ -30,7 +31,12 @@ public class LevelUpdate : ExternalProtocol
         foreach (var entity in level.LevelEntities.Entities.Values.SelectMany(x => x))
             entity.SendDelayedData(NetState);
 
-        player.GetCurrentLevel(LevelHandler).SendCharacterInfo(player, NetState);
+        level.SendCharacterInfo(player, NetState);
+
+        foreach(var npc in level.LevelEntities.GetEntities<NpcControllerEntity>())
+        {
+            npc.Value.SendNpcInfo(player.GetCurrentCharacter(), NetState);
+        }
     }
 
     private string GetGameObjectStore(Dictionary<int, List<BaseSyncedEntity>> entities)

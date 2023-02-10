@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.XMLs.Abstractions;
+﻿using A2m.Server;
+using Server.Reawakened.XMLs.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,14 @@ public class NpcDescription
     public readonly int Id;
     public readonly int ObjectId;
     public readonly int NameTextId;
+    public readonly NPCController.NPCStatus Status;
 
-    public NpcDescription(int id, int objectId, int nameTextId)
+    public NpcDescription(int id, int objectId, int nameTextId, NPCController.NPCStatus status)
     {
         Id = id;
         ObjectId = objectId;
         NameTextId = nameTextId;
+        Status = status;
     }
 }
 
@@ -54,6 +57,7 @@ public class NPCCatalog : IBundledXml
                 var id = -1;
                 var objectId = -1;
                 var nameTextId = -1;
+                var status = NPCController.NPCStatus.Unknown;
                     
                 if (childNode2.Name == "npc")
                 {
@@ -72,13 +76,17 @@ public class NPCCatalog : IBundledXml
                             case "nameid":
                                 nameTextId = int.Parse(item.Value);
                                 continue;
+
+                            case "vendortype":
+                                status = (NPCController.NPCStatus)int.Parse(item.Value);
+                                continue;
                         }
                     }
                 }
 
                 if (!_cacheNpcs.ContainsKey(id))
                 {
-                    var npcDesc = new NpcDescription(id, objectId, nameTextId);
+                    var npcDesc = new NpcDescription(id, objectId, nameTextId, status);
                     _cacheNpcs.Add(id, npcDesc);
                     _cacheNpcByObjectId.Add(objectId, npcDesc);
                 }

@@ -1,5 +1,21 @@
 ﻿<?xml version="1.0"?>
 
 <NPCCatalog>
-    <npc id="1" objectid="937" nameid="1074210158" />
+    <npc id="1" objectid="937" nameid="10807" />
+    <npc id="2" objectid="213205" nameid="21743849"/>
+    <npc id="3" objectid="98648" nameid="21743849" vendortype="10" />
+    <npc id="4" objectid="243" nameid="166249430" vendortype="2"/>
+    <npc id="5" objectid="244" nameid="21743849" vendortype="6"/>
+    <npc id="6" objectid="343" nameid="21743849" vendortype="7"/>
+
+    <npc id="7" objectid="741" nameid="991"/>
+    <npc id="8" objectid="2611" nameid="11530"/>
+    <npc id="9" objectid="128" nameid="2334"/>
+
+    <npc id="10" objectid="213182" nameid="1539801045"/>
+    <npc id="11" objectid="97236" nameid="903865723"/>
+    <npc id="12" objectid="193" nameid="1289"/>
+    <npc id="13" objectid="467754513" nameid="467754513"/>
+    <npc id="14" objectid="13161359" nameid="955551996"/>
+    <npc id="15" objectid="945" nameid="2021301178"/>
 </NPCCatalog>
