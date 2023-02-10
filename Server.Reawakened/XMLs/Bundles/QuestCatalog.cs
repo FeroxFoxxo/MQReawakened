@@ -10,6 +10,9 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
 {
     public string BundleName => "QuestCatalog";
 
+    private Dictionary<int, QuestDescription> _quests;
+    private SortedDictionary<QuestLineDescription, List<QuestDescription>> _questLines;
+
     public void InitializeVariables()
     {
         _rootXmlName = BundleName;
@@ -22,14 +25,21 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
         this.SetField<QuestCatalogXML>("_sortedQuestLine", new List<QuestLineGraph>());
         this.SetField<QuestCatalogXML>("_questLines",
             new SortedDictionary<QuestLineDescription, List<QuestDescription>>(new QuestLineSorter()));
+
+        _quests = new Dictionary<int, QuestDescription>();
+        _questLines = new SortedDictionary<QuestLineDescription, List<QuestDescription>>();
     }
 
     public void EditXml(XmlDocument xml)
     {
     }
 
-    public void ReadXml(string xml) =>
-        ReadDescriptionXml(xml);
+    public void ReadXml(string xml) => ReadDescriptionXml(xml);
+
+    public void FinalizeBundle()
+    {
+        _quests = this.GetField<QuestCatalogXML>("_questCatalog") as Dictionary<int, QuestDescription>;
+        _questLines = this.GetField<QuestCatalogXML>("_questLines") as SortedDictionary<QuestLineDescription, List<QuestDescription>>;
     }
 
     public List<QuestDescription> GetQuestsBy(int npcId)

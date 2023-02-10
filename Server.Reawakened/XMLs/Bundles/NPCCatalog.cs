@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using static Analytics;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
@@ -34,14 +36,6 @@ public class NPCCatalog : IBundledXml
 
     public NpcDescription GetNpc(int id) => _cacheNpcs.TryGetValue(id, out var npc) ? npc : null;
     public NpcDescription GetNpcByObjectId(int id) => _cacheNpcByObjectId.TryGetValue(id, out var npc) ? npc : null;
-
-    public void LoadBundle(string xml)
-    {
-        _cacheNpcs = new Dictionary<int, NpcDescription>();
-        _cacheNpcByObjectId = new Dictionary<int, NpcDescription>();
-
-        ReadDescriptionXml(xml);
-    }
 
     private void ReadDescriptionXml(string xml)
     {
@@ -92,5 +86,21 @@ public class NPCCatalog : IBundledXml
                 }
             }
         }
+    }
+
+    public void InitializeVariables()
+    {
+        _cacheNpcs = new Dictionary<int, NpcDescription>();
+        _cacheNpcByObjectId = new Dictionary<int, NpcDescription>();
+    }
+
+    public void EditXml(XmlDocument xml)
+    {
+    }
+
+    public void ReadXml(string xml) => ReadDescriptionXml(xml);
+
+    public void FinalizeBundle()
+    {
     }
 }

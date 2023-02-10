@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
+using Server.Base.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using System.Text;
@@ -83,6 +84,15 @@ public class BuildXmlFiles : IService, IInjectModules
 
                         if (bundles.TryGetValue(asset.Name, out var bundle))
                         {
+                            if (bundle.GetType().IsAssignableTo(typeof(ILocalizationXml)))
+                            {
+                                var locXmlBundle = (ILocalizationXml)bundle;
+                                var localizationAsset = assets.FirstOrDefault(x => string.Equals(x.Name, locXmlBundle.LocalizationName, StringComparison.OrdinalIgnoreCase));
+
+                                var loctext = GetXmlData(localizationAsset, bar);
+                                locXmlBundle.LoadLocalization(loctext);
+                            }
+
                             var xml = new XmlDocument();
                             xml.LoadXml(text);
 

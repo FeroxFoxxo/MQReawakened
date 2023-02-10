@@ -9,6 +9,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
 {
     public string BundleName => "vendor_catalogs";
 
+    public void InitializeVariables()
     {
         _rootXmlName = BundleName;
 		_hasLocalizationDict = true;
@@ -47,8 +48,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
         }
     }
 
-    public void ReadXml(string xml) =>
-        ReadDescriptionXml(xml);
+    public void ReadXml(string xml) => ReadDescriptionXml(xml);
 
     public void FinalizeBundle()
     {
