@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Extensions;
@@ -11,6 +12,18 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterExtensions
 {
+    public static bool HasDiscoveredTribe(this CharacterDataModel characterData, TribeType tribe)
+    {
+        if (characterData == null) return false;
+
+        if (characterData.TribesDiscovered.TryGetValue(tribe, out var discovered))
+        {
+            if (discovered) return true;
+        }
+
+        return characterData.Allegiance == tribe;
+    }
+
     public static CharacterModel GetCurrentCharacter(this Player player)
         => player.UserInfo.Characters[player.CurrentCharacter];
 

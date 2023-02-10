@@ -83,7 +83,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             if (model != null || status != NPCController.NPCStatus.Unknown) break;
             if (character.Data.CompletedQuests.Contains(quest.Id)) continue;
             else if (HasQuest(character, quest.Id)) continue;
-            else if (quest.Tribe != character.Data.Allegiance) continue;
+            else if (!character.Data.HasDiscoveredTribe(quest.Tribe)) continue;
 
             var qld = QuestCatalog.GetQuestLineData(quest.QuestLineId);
             if (qld == null)
@@ -104,7 +104,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                         status = NPCController.NPCStatus.QuestInProgress;
                         break;
                     } 
-                    else if (quest.Tribe != character.Data.Allegiance)
+                    else if (!character.Data.HasDiscoveredTribe(quest.Tribe))
                     {
                         status = NPCController.NPCStatus.QuestUnavailable;
                         break;
@@ -123,10 +123,12 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             }
         }
 
-        if (model == null)
+        if (model == null || status == NPCController.NPCStatus.Unknown)
         {
             if (Description.Status != NPCController.NPCStatus.Unknown)
                 netState.SendXt("nt", Id, (int)Description.Status, 0);
+
+            netState.SendXt("nl", "", Id, NpcName ?? "", "");
         }
         else
         {
