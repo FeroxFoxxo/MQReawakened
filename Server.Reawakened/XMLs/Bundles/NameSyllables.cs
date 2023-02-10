@@ -1,6 +1,7 @@
 ﻿using Server.Base.Core.Extensions;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.XMLs.Abstractions;
+using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
@@ -9,15 +10,18 @@ public class NameSyllables : NamegenSyllablesXML, IBundledXml
     public string BundleName => "NamegenSyllabes";
 
     public Dictionary<Gender, List<List<string>>> Syllables;
-    
-    public void LoadBundle(string xml)
-    {
-        Syllables = new Dictionary<Gender, List<List<string>>>();
 
+    public void InitializeVariables() =>
         this.SetField<NamegenSyllablesXML>("_nameSyllables", new Dictionary<int, List<string>>());
 
+    public void EditXml(XmlDocument xml)
+    {
+    }
+
+    public void ReadXml(string xml) =>
         ReadDescriptionXml(xml);
 
+    public void FinalizeBundle() =>
         Syllables = new Dictionary<Gender, List<List<string>>>
         {
             {
@@ -39,5 +43,4 @@ public class NameSyllables : NamegenSyllablesXML, IBundledXml
                 }
             }
         };
-    }
 }
