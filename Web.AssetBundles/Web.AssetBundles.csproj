@@ -44,9 +44,6 @@
       <None Update="LocalAssets\PetAbilities.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="LocalAssets\vendor_catalogs.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
       <None Update="TestAssetCache.cache">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

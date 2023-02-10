@@ -80,9 +80,11 @@ public class LevelEntities
                         {
                             var parameters = m.GetParameters();
 
-                            return parameters.Length == 2 &&
-                                   parameters[0].ParameterType == dataObj.GetType() &&
-                                   parameters[1].ParameterType == storedData.GetType();
+                            return
+                                m.Name == "SetEntityData" &&
+                                parameters.Length == 2 &&
+                                parameters[0].ParameterType == dataObj.GetType() &&
+                                parameters[1].ParameterType == storedData.GetType();
                         }).ToList();
 
                         if (methods.Count != 1)

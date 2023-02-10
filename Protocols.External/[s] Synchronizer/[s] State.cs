@@ -115,6 +115,7 @@ public class State : ExternalProtocol
                         components.Add("UNKNOWN");
 
                     Logger.LogWarning("Unhandled '{EventType}' Sync Event For {EntityId} ({EntityName}).", syncEvent.Type, entityId, string.Join(", ", components));
+                    Logger.LogDebug("Sync Event: {Encoded Event}", syncEvent.EncodeData());
 
                     break;
             }
