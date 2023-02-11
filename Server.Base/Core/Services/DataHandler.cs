@@ -27,6 +27,7 @@ public abstract class DataHandler<T> : IService where T : PersistantData
     {
         Sink.WorldLoad += Load;
         Sink.WorldSave += Save;
+        Sink.CreateData += () => CreateInternal($"new {typeof(T).Name.ToLower()}");
     }
 
     public string GetDirectory() =>
@@ -67,28 +68,28 @@ public abstract class DataHandler<T> : IService where T : PersistantData
         }
 
         if (Data.Count <= 0)
-            CreateDefaultInternal();
+            CreateInternal("server owner");
 
         OnAfterLoad();
     }
 
-    private void CreateDefaultInternal()
+    public void CreateInternal(string name)
     {
-        var name = typeof(T).Name.ToLower();
+        var type = typeof(T).Name.ToLower();
 
-        Logger.LogInformation("This server does not have a(n) {Type}.", name);
-        Logger.LogInformation("Please create a(n) {Type} for the server owner now", name);
+        Logger.LogInformation("This server does not have a(n) {Type}.", type);
+        Logger.LogInformation("Please create a(n) {Type} for the {Name} now", type, name);
 
         var t = CreateDefault();
 
         if (t == null)
         {
-            Logger.LogError("Failed to create {Type}.", name);
+            Logger.LogError("Failed to create {Type}.", type);
         }
         else
         {
             Data.Add(Data.Count, t);
-            Logger.LogInformation("Created {Name}.", name);
+            Logger.LogInformation("Created {Name}.", type);
         }
     }
 
