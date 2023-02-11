@@ -3,9 +3,9 @@
 <NPCCatalog>
     <npc id="1" objectid="937" nameid="10807" />
     <npc id="2" objectid="213205" nameid="21743849"/>
-    <npc id="3" objectid="98648" nameid="21743849" vendortype="10" />
+    <npc id="3" objectid="98648" nameid="5747" vendortype="10" />
     <npc id="4" objectid="243" nameid="166249430" vendortype="2"/>
-    <npc id="5" objectid="244" nameid="21743849" vendortype="6"/>
+    <npc id="5" objectid="244" nameid="5815" vendortype="6"/>
     <npc id="6" objectid="343" nameid="10990" vendortype="7"/>
 
     <npc id="7" objectid="741" nameid="991"/>
