@@ -6,7 +6,7 @@
     <npc id="3" objectid="98648" nameid="21743849" vendortype="10" />
     <npc id="4" objectid="243" nameid="166249430" vendortype="2"/>
     <npc id="5" objectid="244" nameid="21743849" vendortype="6"/>
-    <npc id="6" objectid="343" nameid="21743849" vendortype="7"/>
+    <npc id="6" objectid="343" nameid="10990" vendortype="7"/>
 
     <npc id="7" objectid="741" nameid="991"/>
     <npc id="8" objectid="2611" nameid="11530"/>
@@ -18,4 +18,6 @@
     <npc id="13" objectid="467754513" nameid="467754513"/>
     <npc id="14" objectid="13161359" nameid="955551996"/>
     <npc id="15" objectid="945" nameid="2021301178"/>
+
+    <npc id="16" objectid="2466370" nameid="7471"/>
 </NPCCatalog>

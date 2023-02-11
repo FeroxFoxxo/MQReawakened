@@ -31,7 +31,7 @@ public class LevelUpdate : ExternalProtocol
         foreach (var entity in level.LevelEntities.Entities.Values.SelectMany(x => x))
             entity.SendDelayedData(NetState);
 
-        level.SendCharacterInfo(player, NetState);
+        player.GetCurrentLevel(LevelHandler).SendCharacterInfo(player, NetState);
 
         foreach(var npc in level.LevelEntities.GetEntities<NpcControllerEntity>())
         {

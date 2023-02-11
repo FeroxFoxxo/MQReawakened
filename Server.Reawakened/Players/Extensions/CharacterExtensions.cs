@@ -7,6 +7,8 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using WorldGraphDefines;
+using static Analytics;
+using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -129,5 +131,72 @@ public static class CharacterExtensions
         model.PortalId = portalId;
         model.SpawnPoint = spawnId;
         logger.LogDebug("Set spawn of '{CharacterName}' to portal {PortalId} spawn {SpawnId}", model.Data.CharacterName, portalId, spawnId);
+    }
+
+    public static void AddQuest(this CharacterModel model, QuestDescription quest, bool setActive)
+    {
+        if (model.HasQuest(quest.Id)) return;
+
+        model.Data.QuestLog.Add(new QuestStatusModel
+        {
+            QuestStatus = QuestStatus.QuestState.IN_PROCESSING,
+            Id = quest.Id,
+            Objectives = quest.Objectives.ToDictionary(
+                x => x.Key,
+                x => new ObjectiveModel
+                {
+                    Completed = false,
+                    CountLeft = x.Value.TotalCount
+                }
+            )
+        });
+
+        if (setActive)
+            model.Data.ActiveQuestId = quest.Id;
+    }
+
+    public static bool HasQuest(this CharacterModel model, int questId)
+    {
+        if (model.Data.QuestLog.Count == 0) return false;
+
+        foreach(var quest in model.Data.QuestLog)
+        {
+            if (quest.Id == questId) return true;
+        }
+
+        return false;
+    }
+
+    public static bool TryGetQuest(this CharacterModel model, int questId, out QuestStatusModel outQuest)
+    {
+        outQuest = null;
+        if (model.Data.QuestLog.Count == 0) return false;
+
+        foreach(var quest in model.Data.QuestLog)
+        {
+            if (quest.Id == questId)
+            {
+                outQuest = quest;
+                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool HasPreviousQuests(this CharacterModel model, QuestDescription quest)
+    {
+        if (model.Data.CompletedQuests.Count == 0) return false;
+
+        foreach (var prevId in quest.PreviousQuests)
+        {
+            if (prevId.Key == 0) continue;
+            if (!model.Data.CompletedQuests.Contains(prevId.Key))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

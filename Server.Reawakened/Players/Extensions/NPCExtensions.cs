@@ -12,7 +12,7 @@ public static class NpcExtensions
     {
         var character = player.GetCurrentCharacter();
         var quest = catalog.GetQuestData(questId);
-
+        
         if (quest == null || character == null)
             throw new InvalidDataException();
 

@@ -29,6 +29,11 @@ public class SetActiveQuest : ExternalProtocol
         if (character.Data.ActiveQuestId == activeQuest || character.Data.CompletedQuests.Contains(activeQuest))
             return;
 
+        if (character.TryGetQuest(activeQuest, out var quest))
+        {
+            quest.QuestStatus = A2m.Server.QuestStatus.QuestState.IN_PROCESSING;
+        }
+
         player.AddQuest(activeQuest, true, NetState, QuestCatalog);
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Linq;
+using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Levels.Models.Entities;
@@ -29,7 +31,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
     {
         Description = NpcCatalog.GetNpcByObjectId(Id);
 
-        Quests = QuestCatalog.GetQuestsBy(Id);
+        Quests = QuestCatalog.GetQuestsBy(Id).OrderBy(x => x.Id).ToList();
 
         if (Description != null)
         {
@@ -50,13 +52,22 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         var player = netState.Get<Player>();
         var character = player.GetCurrentCharacter();
 
-        Logger.LogDebug(syncEvent.EncodeData());
-
+        var status = TryGetQuest(character, Quests, out var model);
+        if (status == NPCController.NPCStatus.QuestAvailable)
+        {
+            netState.SendXt("nl", $"{model}&", Id, NpcName ?? "", "1516|3843");
+            character.Data.QuestLog.Add(model);
+            netState.SendXt("nt", Id, (int)NPCController.NPCStatus.QuestInProgress, 0);
+        }
+        else if (status != NPCController.NPCStatus.Unknown)
+        {
+            netState.SendXt("nt", Id, (int)status, 0);
+        }
         /*
         if (character.Data.QuestLog.Count == 0)
         {
             netState.SendXt("nd", Id, Description.NameTextId, "1516|3843");
-            character.Data.QuestLog.Add(GetQuestStatusModel(QuestCatalog.GetQuestData(969)));
+            character.Data.QuestLog.Add(GetQuestStatusModel(QuestCatalog.GetQuestData(805)));
         }
         else
         {
@@ -72,77 +83,81 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         if (Quests == null)
         {
             if (Description.Status != NPCController.NPCStatus.Unknown) netState.SendXt("nt", Id, (int)Description.Status, 0);
+            //netState.SendXt("nl", "", Id, NpcName ?? "", "");
             return;
         }
 
-        QuestStatusModel model = null;
-        var status = NPCController.NPCStatus.Unknown;
-
-        foreach(var quest in Quests)
-        {
-            if (model != null || status != NPCController.NPCStatus.Unknown) break;
-            if (character.Data.CompletedQuests.Contains(quest.Id)) continue;
-            else if (HasQuest(character, quest.Id)) continue;
-            else if (!character.Data.HasDiscoveredTribe(quest.Tribe)) continue;
-
-            var qld = QuestCatalog.GetQuestLineData(quest.QuestLineId);
-            if (qld == null)
-            {
-                if (quest.LevelRequired > character.Data.GlobalLevel) continue;
-
-                status = NPCController.NPCStatus.QuestAvailable;
-                model = GetQuestStatusModel(quest);
-            }
-            else
-            {
-                var lineQuests = QuestCatalog.GetQuestLineQuests(qld);
-                foreach(var lineQuest in lineQuests)
-                {
-                    if (character.Data.CompletedQuests.Contains(lineQuest.Id)) continue;
-                    else if (HasQuest(character, lineQuest.Id))
-                    { 
-                        status = NPCController.NPCStatus.QuestInProgress;
-                        break;
-                    } 
-                    else if (!character.Data.HasDiscoveredTribe(quest.Tribe))
-                    {
-                        status = NPCController.NPCStatus.QuestUnavailable;
-                        break;
-                    }
-
-                    if (lineQuest.LevelRequired > character.Data.GlobalLevel)
-                    {
-                        status = NPCController.NPCStatus.QuestUnavailable;
-                        break;
-                    }
-
-                    status = NPCController.NPCStatus.QuestAvailable;
-                    model = GetQuestStatusModel(lineQuest);
-                    break;
-                }
-            }
-        }
+        var status = TryGetQuest(character, Quests, out var model);
 
         if (model == null || status == NPCController.NPCStatus.Unknown)
         {
             if (Description.Status != NPCController.NPCStatus.Unknown)
                 netState.SendXt("nt", Id, (int)Description.Status, 0);
 
-            netState.SendXt("nl", "", Id, NpcName ?? "", "");
+            //netState.SendXt("nl", "", Id, NpcName ?? "", "");
         }
         else
         {
             netState.SendXt("nt", Id, (int)status, 0);
-            netState.SendXt("nl", model.ToString(), Id, NpcName ?? "", "");
         }
     }
 
-    private QuestStatusModel GetQuestStatusModel(QuestDescription quest)
+    private NPCController.NPCStatus TryGetQuest(CharacterModel character, List<QuestDescription> quests, out QuestStatusModel outQuest)
+    {
+        outQuest = null;
+
+        foreach(var quest in quests)
+        {
+            if (character.Data.CompletedQuests.Contains(quest.Id)) continue;
+            else if (!character.Data.HasDiscoveredTribe(quest.Tribe)) return NPCController.NPCStatus.QuestUnavailable;
+            else if (quest.LevelRequired > character.Data.GlobalLevel) return NPCController.NPCStatus.QuestUnavailable;
+            else if (character.HasQuest(quest.Id))
+            {
+                outQuest = GetQuestStatusModel(quest);
+                return NPCController.NPCStatus.QuestInProgress;
+            }
+
+            var qld = QuestCatalog.GetQuestLineData(quest.QuestLineId);
+            if (qld == null)
+            {
+                outQuest = GetQuestStatusModel(quest);
+                return NPCController.NPCStatus.QuestAvailable;
+            }
+            else
+            {
+                var lineQuests = QuestCatalog.GetQuestLineQuests(qld);
+                if (lineQuests == null)
+                {
+                    outQuest = GetQuestStatusModel(quest);
+                    return NPCController.NPCStatus.QuestAvailable;
+                }
+
+                foreach(var lineQuest in lineQuests)
+                {
+                    if (character.Data.CompletedQuests.Contains(lineQuest.Id)) continue;
+                    else if (!character.Data.HasDiscoveredTribe(lineQuest.Tribe)) return NPCController.NPCStatus.QuestUnavailable;
+                    else if (lineQuest.LevelRequired > character.Data.GlobalLevel) return NPCController.NPCStatus.QuestUnavailable;
+                    else if (character.HasQuest(lineQuest.Id))
+                    {
+                        outQuest = GetQuestStatusModel(lineQuest);
+                        return NPCController.NPCStatus.QuestInProgress;
+                    }
+
+                    outQuest = GetQuestStatusModel(lineQuest);
+                    return NPCController.NPCStatus.QuestAvailable;
+                }
+            }
+        }
+
+        return NPCController.NPCStatus.Unknown;
+    }
+
+    private static QuestStatusModel GetQuestStatusModel(QuestDescription quest)
     {
         var model = new QuestStatusModel()
         {
             Id = quest.Id,
-            QuestStatus = A2m.Server.QuestStatus.QuestState.NOT_START,
+            QuestStatus = QuestStatus.QuestState.NOT_START,
         };
 
         foreach(var obj in quest.Objectives)
@@ -155,33 +170,5 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         }
 
         return model;
-    }
-
-    public bool HasQuest(CharacterModel character, int questId)
-    {
-        if (character.Data.QuestLog.Count == 0) return false;
-
-        foreach(var quest in character.Data.QuestLog)
-        {
-            if (quest.Id == questId) return true;
-        }
-
-        return false;
-    }
-
-    public bool HasPreviousQuests(CharacterModel character, QuestDescription quest)
-    {
-        if (character.Data.CompletedQuests.Count == 0) return false;
-
-        foreach (var prevId in quest.PreviousQuests)
-        {
-            if (prevId.Key == 0) continue;
-            if (!character.Data.CompletedQuests.Contains(prevId.Key))
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
