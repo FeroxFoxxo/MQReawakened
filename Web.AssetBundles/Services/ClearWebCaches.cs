@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Server.Base.Core.Abstractions;
+﻿using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
@@ -17,16 +16,17 @@ public class ClearWebCaches : IService
     private readonly ILogger<ClearWebCaches> _logger;
     private readonly EventSink _sink;
     private readonly StartGame _game;
-    public readonly BuildAssetList BuildAssetList;
+    public readonly BuildAssetList _buildAssetList;
 
     public ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleConfig config,
-        ServerConsole console, EventSink sink, StartGame game)
+        ServerConsole console, EventSink sink, StartGame game, BuildAssetList buildAssetList)
     {
         _logger = logger;
         _config = config;
         _console = console;
         _sink = sink;
         _game = game;
+        _buildAssetList = buildAssetList;
     }
 
     public void Initialize() => _sink.WorldLoad += Load;
@@ -45,8 +45,8 @@ public class ClearWebCaches : IService
 
     public bool EmptyWebCacheDirectory()
     {
-        BuildAssetList.CurrentlyLoadedAssets.Clear();
-        
+        _buildAssetList.CurrentlyLoadedAssets.Clear();
+
         _config.GetWebPlayerInfoFile(_logger);
 
         if (_config.WebPlayerInfoFile == _config.CacheInfoFile)
