@@ -22,7 +22,7 @@ public class StartPlayLevel : ExternalProtocol
 
         SendXt("lz", reason.GetJoinReasonError(), level.LevelInfo.LevelId, level.LevelInfo.Name);
 
-        if (player.GetCurrentCharacter().DiscoverTribe(level.LevelInfo))
-            SendXt("cB", (int)level.LevelInfo.Tribe);
+        var tribe = level.LevelInfo.Tribe;
+        NetState.DiscoverTribe(tribe);
     }
 }

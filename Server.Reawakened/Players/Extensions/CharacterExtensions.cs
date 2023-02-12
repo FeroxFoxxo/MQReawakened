@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Extensions;
@@ -6,6 +7,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using WorldGraphDefines;
+using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -51,20 +53,28 @@ public static class CharacterExtensions
 
     private static int GetReputationForLevel(int level) => (Convert.ToInt32(Math.Pow(level, 2)) - (level - 1)) * 500;
     
-    public static bool DiscoverTribe(this CharacterModel character, LevelInfo lInfo)
+    public static void DiscoverTribe(this NetState state, TribeType tribe)
     {
-        if (character.Data.TribesDiscovered.ContainsKey(lInfo.Tribe))
+        var player = state.Get<Player>();
+        var character = player.GetCurrentCharacter();
+
+        if (HasAddedDiscoveredTribe(character.Data, tribe))
+            state.SendXt("cB", (int)tribe);
+    }
+
+    public static bool HasAddedDiscoveredTribe(this CharacterDataModel model, TribeType tribe)
+    {
+        if (model.TribesDiscovered.ContainsKey(tribe))
         {
-            if (character.Data.TribesDiscovered[lInfo.Tribe])
+            if (model.TribesDiscovered[tribe])
                 return false;
 
-            character.Data.TribesDiscovered[lInfo.Tribe] = true;
+            model.TribesDiscovered[tribe] = true;
         }
         else
         {
-            character.Data.TribesDiscovered.Add(lInfo.Tribe, true);
+            model.TribesDiscovered.Add(tribe, true);
         }
-
         return true;
     }
 

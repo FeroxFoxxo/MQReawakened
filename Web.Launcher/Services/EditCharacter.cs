@@ -128,15 +128,21 @@ public class EditCharacter : IService
 
         var levelInfo = _worldGraph.GetInfoLevel(levelId);
 
-        character.DiscoverTribe(levelInfo);
-
         _logger.LogInformation("Successfully set character {Id}'s level to {LevelId} '{InGameLevelName}' ({LevelName})!",
             character.Data.CharacterId, levelId, levelInfo.InGameName, levelInfo.Name);
 
+        var tribe = levelInfo.Tribe;
+
         if (_handler.IsPlayerOnline(user.UserId, out var netState, out var player))
+        {
+            netState.DiscoverTribe(tribe);
             player.SendLevelChange(netState, _levelHandler, _worldGraph);
+        }
         else
+        {
+            character.Data.HasAddedDiscoveredTribe(tribe);
             _game.AskIfRestart();
+        }
     }
 
     private void GetCharacter(out CharacterModel model, out UserInfo user)
