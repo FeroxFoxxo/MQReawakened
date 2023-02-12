@@ -23,8 +23,8 @@ public class EquipItem : ExternalProtocol
 
         foreach (var item in newEquipment.EquippedItems)
         {
-            if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var equippedItemId))
-                character.AddItem(ItemCatalog.GetItemFromId(equippedItemId), 1);
+            if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquipped))
+                character.AddItem(ItemCatalog.GetItemFromId(previouslyEquipped), 1);
 
             character.RemoveItem(item.Value, 1);
         }
