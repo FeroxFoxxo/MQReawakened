@@ -8,7 +8,7 @@ public class PublishInformation : ExternalProtocol
 {
     public override string ProtocolName => "zp";
 
-    public AssetBundleConfig Config { get; set; }
+    public AssetBundleStaticConfig Config { get; set; }
 
     public override void Run(string[] message) =>
         SendXt("zp", GetPublishConfigs(Config.PublishConfigs));

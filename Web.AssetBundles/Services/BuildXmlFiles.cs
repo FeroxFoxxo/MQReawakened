@@ -15,16 +15,16 @@ namespace Web.AssetBundles.Services;
 
 public class BuildXmlFiles : IService, IInjectModules
 {
-    private readonly AssetBundleConfig _config;
+    private readonly AssetBundleStaticConfig _config;
     private readonly AssetEventSink _eventSink;
     private readonly ILogger<BuildXmlFiles> _logger;
-    private readonly ServerConfig _sConfig;
+    private readonly ServerStaticConfig _sConfig;
     private readonly IServiceProvider _services;
 
     public readonly Dictionary<string, string> XmlFiles;
 
     public BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, ILogger<BuildXmlFiles> logger,
-        AssetBundleConfig config, ServerConfig sConfig)
+        AssetBundleStaticConfig config, ServerStaticConfig sConfig)
     {
         _eventSink = eventSink;
         _services = services;
@@ -86,12 +86,16 @@ public class BuildXmlFiles : IService, IInjectModules
                             if (bundle.GetType().IsAssignableTo(typeof(ILocalizationXml)))
                             {
                                 var locXmlBundle = (ILocalizationXml)bundle;
-                                var localizationAsset = assets.FirstOrDefault(x =>
-                                    string.Equals(x.Name, locXmlBundle.LocalizationName,
-                                        StringComparison.OrdinalIgnoreCase));
 
-                                var loctext = GetXmlData(localizationAsset, bar);
-                                locXmlBundle.ReadLocalization(loctext);
+                                var localizedAsset = assets.FirstOrDefault(x =>
+                                    string.Equals(x.Name, locXmlBundle.LocalizationName,
+                                        StringComparison.OrdinalIgnoreCase
+                                    )
+                                );
+
+                                var localizedXml = GetXmlData(localizedAsset, bar);
+
+                                locXmlBundle.ReadLocalization(localizedXml);
                             }
 
                             var xml = new XmlDocument();
@@ -128,8 +132,11 @@ public class BuildXmlFiles : IService, IInjectModules
 
         if (bundles.Count > 0)
         {
-            _logger.LogCritical("Could not find XML bundle for {Bundles}, returning...",
-                string.Join(" ,", bundles.Keys));
+            _logger.LogCritical(
+                "Could not find XML bundle for {Bundles}, returning...",
+                string.Join(" ,", bundles.Keys)
+            );
+
             _logger.LogCritical("Possible XML files:");
 
             foreach (var foundAsset in assets)

@@ -8,12 +8,12 @@ namespace Server.Reawakened.Network.Services;
 
 public class RandomKeyGenerator : IService
 {
-    private readonly ServerConfig _config;
+    private readonly ServerStaticConfig _config;
     private readonly Dictionary<Type, Dictionary<string, string>> _keys;
     private readonly Random _random;
     private readonly EventSink _sink;
 
-    public RandomKeyGenerator(Random random, EventSink sink, ServerConfig config)
+    public RandomKeyGenerator(Random random, EventSink sink, ServerStaticConfig config)
     {
         _random = random;
         _sink = sink;

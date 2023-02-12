@@ -6,7 +6,6 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._h__HotbarHandler;
@@ -51,7 +50,7 @@ public class UseSlot : ExternalProtocol
         {
             case ItemActionType.Drink:
             case ItemActionType.Eat:
-                HandleConsumable(character.Data, usedItem, hotbarSlotId);
+                HandleConsumable(character, usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
                 HandleMeleeWeapon(position);
@@ -63,23 +62,23 @@ public class UseSlot : ExternalProtocol
         }
     }
 
-    private void HandleConsumable(CharacterDataModel character, ItemDescription item, int hotbarSlotId)
+    private void HandleConsumable(CharacterModel character, ItemDescription item, int hotbarSlotId)
     {
-        character.Inventory.Items[item.ItemId].Count--;
+        character.Data.Inventory.Items[item.ItemId].Count--;
 
-        if (character.Inventory.Items[item.ItemId].Count <= 0)
+        if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
         {
-            character.Hotbar.HotbarButtons.Remove(hotbarSlotId);
+            character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
 
-            SendXt("hu", character.Hotbar);
+            SendXt("hu", character.Data.Hotbar);
 
-            character.Inventory.Items[item.ItemId].Count = -1;
+            character.Data.Inventory.Items[item.ItemId].Count = -1;
         }
 
-        SendXt("ip", character.Inventory.GetItemListString(), false);
+        character.SendUpdatedInventory(NetState, false);
 
-        if (character.Inventory.Items[item.ItemId].Count < 0)
-            character.Inventory.Items.Remove(item.ItemId);
+        if (character.Data.Inventory.Items[item.ItemId].Count < 0)
+            character.Data.Inventory.Items.Remove(item.ItemId);
     }
 
     private void HandleMeleeWeapon(Vector3Model position)

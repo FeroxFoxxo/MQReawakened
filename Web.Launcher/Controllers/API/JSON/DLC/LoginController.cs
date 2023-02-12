@@ -11,12 +11,12 @@ namespace Web.Launcher.Controllers.API.JSON.DLC;
 public class LoginController : Controller
 {
     private readonly AccountHandler _accHandler;
-    private readonly LauncherConfig _config;
+    private readonly LauncherStaticConfig _config;
     private readonly PasswordHasher _passwordHasher;
     private readonly UserInfoHandler _userInfoHandler;
 
     public LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler,
-        LauncherConfig config, PasswordHasher passwordHasher)
+        LauncherStaticConfig config, PasswordHasher passwordHasher)
     {
         _accHandler = accHandler;
         _userInfoHandler = userInfoHandler;

@@ -6,9 +6,9 @@ namespace Web.AssetBundles.Extensions;
 
 public static class GetInfoFile
 {
-    public static string GetWebPlayerInfoFile(this AssetBundleConfig config,
+    public static string GetWebPlayerInfoFile(this AssetBundleConfig config, AssetBundleStaticConfig sConfig,
         Microsoft.Extensions.Logging.ILogger logger) =>
-        config.WebPlayerInfoFile = TryGetInfoFile($"Web Player '{config.DefaultWebPlayerCacheLocation}'",
+        config.WebPlayerInfoFile = TryGetInfoFile($"Web Player '{sConfig.DefaultWebPlayerCacheLocation}'",
             config.WebPlayerInfoFile, logger);
 
     public static string TryGetInfoFile(string cacheName, string defaultFile,

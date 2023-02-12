@@ -20,11 +20,11 @@ public class AssetHostController : Controller
 {
     private readonly BuildAssetList _buildAssetList;
     private readonly BuildXmlFiles _buildXmlList;
-    private readonly AssetBundleConfig _config;
+    private readonly AssetBundleStaticConfig _config;
     private readonly ILogger<AssetHostController> _logger;
 
     public AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
-        AssetBundleConfig config, BuildXmlFiles buildXmlList)
+        AssetBundleStaticConfig config, BuildXmlFiles buildXmlList)
     {
         _buildAssetList = buildAssetList;
         _logger = logger;

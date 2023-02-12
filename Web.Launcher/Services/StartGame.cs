@@ -20,9 +20,10 @@ public class StartGame : IService
 {
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly ServerConsole _console;
-    private readonly LauncherConfig _lConfig;
+    private readonly LauncherStaticConfig _lConfig;
     private readonly ILogger<StartGame> _logger;
-    private readonly SettingsConfig _sConfig;
+    private readonly SettingsStaticConfig _sConfig;
+    private readonly StartConfig _config;
     private readonly EventSink _sink;
     private readonly World _world;
 
@@ -32,8 +33,8 @@ public class StartGame : IService
 
     public PackageInformation CurrentVersion { get; private set; }
 
-    public StartGame(EventSink sink, LauncherConfig lConfig, SettingsConfig sConfig,
-        IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console, World world)
+    public StartGame(EventSink sink, LauncherStaticConfig lConfig, SettingsStaticConfig sConfig,
+        IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console, World world, StartConfig config)
     {
         _sink = sink;
         _lConfig = lConfig;
@@ -42,6 +43,7 @@ public class StartGame : IService
         _logger = logger;
         _console = console;
         _world = world;
+        _config = config;
 
         _dirSet = false;
         _appStart = false;
@@ -72,10 +74,10 @@ public class StartGame : IService
 
         try
         {
-            _lConfig.GameSettingsFile = SetFileValue.SetIfNotNull(_lConfig.GameSettingsFile, "Get Settings File",
+            _config.GameSettingsFile = SetFileValue.SetIfNotNull(_config.GameSettingsFile, "Get Settings File",
                 "Settings File (*.txt)\0*.txt\0");
 
-            _sConfig.WriteToSettings(_lConfig);
+            _sConfig.SetSettings(_config);
         }
         catch
         {
@@ -84,14 +86,14 @@ public class StartGame : IService
 
         while (true)
         {
-            if (string.IsNullOrEmpty(_lConfig.GameSettingsFile) || !_lConfig.GameSettingsFile.EndsWith("settings.txt"))
+            if (string.IsNullOrEmpty(_config.GameSettingsFile) || !_config.GameSettingsFile.EndsWith("settings.txt"))
             {
                 _logger.LogError("Please enter the absolute file path for your game's 'settings.txt' file.");
-                _lConfig.GameSettingsFile = Console.ReadLine();
+                _config.GameSettingsFile = Console.ReadLine();
                 continue;
             }
 
-            _directory = Path.GetDirectoryName(_lConfig.GameSettingsFile);
+            _directory = Path.GetDirectoryName(_config.GameSettingsFile);
 
             if (string.IsNullOrEmpty(_directory))
                 continue;
@@ -102,19 +104,19 @@ public class StartGame : IService
             break;
         }
 
-        _logger.LogDebug("Got launcher directory: {Directory}", Path.GetDirectoryName(_lConfig.GameSettingsFile));
+        _logger.LogDebug("Got launcher directory: {Directory}", Path.GetDirectoryName(_config.GameSettingsFile));
 
         var lastUpdate = DateTime.ParseExact(CurrentVersion.game.lastUpdate, _lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
         var lastOldClientUpdate = DateTime.ParseExact(_lConfig.OldClientLastUpdate, _lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
 
-        _lConfig.Is2014Client = lastUpdate > lastOldClientUpdate;
+        _config.Is2014Client = lastUpdate > lastOldClientUpdate;
 
-        if (!_lConfig.Is2014Client)
+        if (!_config.Is2014Client)
             _directory = new DirectoryInfo(_directory).Parent?.FullName;
 
-        _lConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
+        _config.LastClientUpdate = lastUpdate.ToUnixTimestamp();
 
         _dirSet = true;
 
@@ -123,12 +125,12 @@ public class StartGame : IService
 
     public void AskIfRestart()
     {
-        if (!_lConfig.StartLauncherOnCommand)
+        if (!_config.StartLauncherOnCommand)
             if (_logger.Ask("The launcher is not set to restart on a related command being run, " +
                             "would you like to enable this?", true))
-                _lConfig.StartLauncherOnCommand = true;
+                _config.StartLauncherOnCommand = true;
 
-        if (_lConfig.StartLauncherOnCommand)
+        if (_config.StartLauncherOnCommand)
             LaunchGame();
     }
 

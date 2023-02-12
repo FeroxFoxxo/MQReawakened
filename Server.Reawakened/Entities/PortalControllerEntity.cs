@@ -65,8 +65,7 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
 
             Logger.LogInformation("Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
                                   "using portals {PortalId} to {NewPortalId}", character.Data.CharacterName,
-                character.Data.CharacterId,
-                Level.LevelInfo.LevelId, Level.LevelInfo.InGameName, portalId, character.PortalId);
+                character.Data.CharacterId, Level.LevelInfo.LevelId, Level.LevelInfo.InGameName, portalId, character.PortalId);
 
             player.SendLevelChange(netState, LevelHandler, WorldGraph);
         }

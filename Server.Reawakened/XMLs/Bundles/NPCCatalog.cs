@@ -6,8 +6,9 @@ namespace Server.Reawakened.XMLs.Bundles;
 
 public class NpcCatalog : IBundledXml
 {
-    public Dictionary<int, NpcDescription> CachedNpcDict;
     public string BundleName => "NPCCatalog";
+
+    public Dictionary<int, NpcDescription> CachedNpcDict;
 
     public void InitializeVariables() =>
         CachedNpcDict = new Dictionary<int, NpcDescription>();
@@ -30,6 +31,7 @@ public class NpcCatalog : IBundledXml
                 var objectId = -1;
                 var nameTextId = -1;
                 var status = NPCController.NPCStatus.Unknown;
+                var vendorId = -1;
 
                 if (childNode2.Name == "npc")
                     foreach (XmlAttribute item in childNode2.Attributes!)
@@ -47,13 +49,16 @@ public class NpcCatalog : IBundledXml
                             case "vendorType":
                                 status = (NPCController.NPCStatus)int.Parse(item.Value);
                                 continue;
+                            case "vendorId":
+                                vendorId = int.Parse(item.Value);
+                                continue;
                         }
                     }
 
                 if (CachedNpcDict.ContainsKey(objectId))
                     continue;
 
-                var npcDesc = new NpcDescription(objectId, nameTextId, status);
+                var npcDesc = new NpcDescription(objectId, nameTextId, status, vendorId);
                 CachedNpcDict.Add(objectId, npcDesc);
             }
         }

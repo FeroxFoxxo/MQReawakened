@@ -16,18 +16,18 @@ namespace Server.Base.Accounts.Services;
 public class AccountHandler : DataHandler<Account>
 {
     private readonly AccountAttackLimiter _attackLimiter;
-    private readonly InternalServerConfig _config;
+    private readonly InternalStaticConfig _config;
     private readonly PasswordHasher _hasher;
-    private readonly InternalServerConfig _internalServerConfig;
+    private readonly InternalStaticConfig _internalServerConfig;
     private readonly IpLimiter _ipLimiter;
     private readonly NetworkLogger _networkLogger;
     private readonly TemporaryDataStorage _temporaryDataStorage;
 
     public Dictionary<IPAddress, int> IpTable;
 
-    public AccountHandler(EventSink sink, ILogger<Account> logger, InternalServerConfig internalServerConfig,
+    public AccountHandler(EventSink sink, ILogger<Account> logger, InternalStaticConfig internalServerConfig,
         PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter,
-        NetworkLogger networkLogger, InternalServerConfig config, TemporaryDataStorage temporaryDataStorage) : base(
+        NetworkLogger networkLogger, InternalStaticConfig config, TemporaryDataStorage temporaryDataStorage) : base(
         sink, logger)
     {
         _internalServerConfig = internalServerConfig;

@@ -22,8 +22,8 @@ public class PacketHandler : IService
     public delegate void SystemCallback(NetState state, XmlDocument document, IServiceProvider serviceProvider);
 
     private readonly NetStateHandler _handler;
-
-    private readonly InternalServerConfig _internalServerConfig;
+    
+    private readonly InternalConfig _internalConfig;
     private readonly ILogger<PacketHandler> _logger;
 
     private readonly NetworkLogger _networkLogger;
@@ -32,13 +32,13 @@ public class PacketHandler : IService
     private readonly Dictionary<string, ExternalCallback> _protocolsXt;
 
     private readonly ReflectionUtils _reflectionUtils;
-    private readonly ServerConfig _serverConfig;
+    private readonly ServerStaticConfig _serverConfig;
     private readonly IServiceProvider _services;
     private readonly EventSink _sink;
 
     public PacketHandler(IServiceProvider services, ReflectionUtils reflectionUtils, NetworkLogger networkLogger,
-        NetStateHandler handler, EventSink sink, ILogger<PacketHandler> logger, ServerConfig serverConfig,
-        InternalServerConfig internalServerConfig)
+        NetStateHandler handler, EventSink sink, ILogger<PacketHandler> logger, ServerStaticConfig serverConfig,
+        InternalConfig internalConfig)
     {
         _services = services;
         _reflectionUtils = reflectionUtils;
@@ -47,7 +47,7 @@ public class PacketHandler : IService
         _sink = sink;
         _logger = logger;
         _serverConfig = serverConfig;
-        _internalServerConfig = internalServerConfig;
+        _internalConfig = internalConfig;
         _protocolsXt = new Dictionary<string, ExternalCallback>();
         _protocolsSystem = new Dictionary<string, SystemCallback>();
     }
@@ -60,7 +60,7 @@ public class PacketHandler : IService
 
     private void AskProtocolIgnore()
     {
-        if (_internalServerConfig.IgnoreProtocolType.Length >= _serverConfig.DefaultProtocolTypeIgnore.Length)
+        if (_internalConfig.IgnoreProtocolType.Length >= _serverConfig.DefaultProtocolTypeIgnore.Length)
             return;
 
         if (!_logger.Ask(
@@ -69,7 +69,7 @@ public class PacketHandler : IService
                 "You are able to add to this later in the related config file.", true))
             return;
 
-        var internalDebugs = _internalServerConfig.IgnoreProtocolType.ToList();
+        var internalDebugs = _internalConfig.IgnoreProtocolType.ToList();
 
         foreach (var protocol in _serverConfig.DefaultProtocolTypeIgnore)
         {
@@ -77,7 +77,7 @@ public class PacketHandler : IService
                 internalDebugs.Add(protocol);
         }
 
-        _internalServerConfig.IgnoreProtocolType = internalDebugs.ToArray();
+        _internalConfig.IgnoreProtocolType = internalDebugs.ToArray();
     }
 
     private void AddProtocols(ServerStartedEventArgs e)

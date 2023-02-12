@@ -20,7 +20,7 @@ public class CreateCharacter : ExternalProtocol
 
     public UserInfoHandler UserInfoHandler { get; set; }
     public NameGenSyllables NameGenSyllables { get; set; }
-    public ServerConfig ServerConfig { get; set; }
+    public ServerStaticConfig ServerConfig { get; set; }
     public LevelHandler LevelHandler { get; set; }
     public WorldGraph WorldGraph { get; set; }
     public QuestCatalog QuestCatalog { get; set; }

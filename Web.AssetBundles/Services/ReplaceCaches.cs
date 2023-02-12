@@ -17,22 +17,23 @@ public class ReplaceCaches : IService
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly BuildAssetList _buildAssetList;
     private readonly AssetBundleConfig _config;
+    private readonly AssetBundleStaticConfig _sConfig;
     private readonly ServerConsole _console;
     private readonly StartGame _game;
-
     private readonly ILogger<ReplaceCaches> _logger;
     private readonly EventSink _sink;
 
-    public ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList, AssetBundleConfig config,
-        ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime)
+    public ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList, AssetBundleStaticConfig sConfig,
+        ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime, AssetBundleConfig config)
     {
         _console = console;
         _sink = sink;
         _buildAssetList = buildAssetList;
-        _config = config;
         _logger = logger;
         _game = game;
         _appLifetime = appLifetime;
+        _sConfig = sConfig;
+        _config = config;
     }
 
     public void Initialize()
@@ -44,7 +45,7 @@ public class ReplaceCaches : IService
 
     private void LogInformation()
     {
-        if (_config.UseCacheReplacementScheme)
+        if (_sConfig.UseCacheReplacementScheme)
             _logger.LogError("Note: Dynamically loading cache files is not currently supported. " +
                              "When the client requests these, the first attempt will be in light blue (INFORMATION). " +
                              "When this changes to a purple (TRACE), with no more blue queries, " +
@@ -60,7 +61,7 @@ public class ReplaceCaches : IService
     {
         _buildAssetList.CurrentlyLoadedAssets.Clear();
 
-        _config.GetWebPlayerInfoFile(_logger);
+        _config.GetWebPlayerInfoFile(_sConfig, _logger);
 
         if (_config.FlushCacheOnStart)
             if (_logger.Ask("Flushing the cache on start is enabled, would you like to disable this?", true))
@@ -74,7 +75,7 @@ public class ReplaceCaches : IService
             cacheModel.TotalUnknownCaches
         );
 
-        using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", _logger, _config))
+        using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", _logger, _sConfig))
         {
             foreach (var cache in cacheModel.FoundCaches)
             {
@@ -82,14 +83,17 @@ public class ReplaceCaches : IService
 
                 bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
 
-                File.Copy(asset.Path, cache.Value, true);
+                foreach (var cachePath in cache.Value)
+                    File.Copy(asset.Path, cachePath, true);
 
                 bar.TickBar();
             }
         }
 
-        Directory.CreateDirectory(_config.AssetSaveDirectory);
-        var replacementLogPath = Path.Join(_config.AssetSaveDirectory, "replacedAssets.json");
+        Directory.CreateDirectory(_sConfig.AssetSaveDirectory);
+        
+        var replacementLogPath = Path.Join(_sConfig.AssetSaveDirectory, "replacedAssets.json");
+
         File.WriteAllText(
             replacementLogPath,
             JsonSerializer.Serialize(cacheModel, new JsonSerializerOptions { WriteIndented = true })

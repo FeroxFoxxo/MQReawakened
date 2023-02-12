@@ -1,8 +1,6 @@
-﻿using A2m.Server;
-using Server.Reawakened.Network.Protocols;
+﻿using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
 
@@ -32,6 +30,6 @@ public class EquipItem : ExternalProtocol
         character.Data.Equipment = newEquipment;
 
         SendXt("iq", character.Data.Equipment);
-        SendXt("ip", character.Data.Inventory.GetItemListString(), true);
+        character.SendUpdatedInventory(NetState, true);
     }
 }

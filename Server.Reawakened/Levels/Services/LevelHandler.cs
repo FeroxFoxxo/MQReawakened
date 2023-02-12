@@ -14,7 +14,7 @@ namespace Server.Reawakened.Levels.Services;
 
 public class LevelHandler : IService
 {
-    private readonly ServerConfig _config;
+    private readonly ServerStaticConfig _config;
     private readonly Dictionary<int, Level> _levels;
     private readonly ILogger<LevelHandler> _logger;
     private readonly ReflectionUtils _reflection;
@@ -24,7 +24,7 @@ public class LevelHandler : IService
 
     public Dictionary<string, Type> ProcessableData;
 
-    public LevelHandler(EventSink sink, ServerConfig config, WorldGraph worldGraph,
+    public LevelHandler(EventSink sink, ServerStaticConfig config, WorldGraph worldGraph,
         ReflectionUtils reflection, IServiceProvider services, ILogger<LevelHandler> logger)
     {
         _sink = sink;
