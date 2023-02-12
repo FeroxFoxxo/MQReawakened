@@ -73,7 +73,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             return;
         }
 
-        var status = TryGetQuest(character, Quests, out var _);
+        var status = TryGetQuest(character, Quests, out _);
 
         if (status == NPCController.NPCStatus.Unknown)
         {

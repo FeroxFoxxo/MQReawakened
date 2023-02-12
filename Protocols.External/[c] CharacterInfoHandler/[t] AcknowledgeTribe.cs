@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 
 namespace Protocols.External._c__CharacterInfoHandler;
