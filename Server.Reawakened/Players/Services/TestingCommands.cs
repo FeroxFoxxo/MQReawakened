@@ -7,7 +7,6 @@ using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Network.Services;
-using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
@@ -47,47 +46,37 @@ internal class TestingCommands : IService
 
     private void GiveItem()
     {
-        if (!GetCharacter(out var character, out var user)) return;
-
-        var cache = _itemCatalog.GetField<ItemHandler>("_itemDescriptionCache") as Dictionary<int, ItemDescription>;
+        Ask.GetCharacter(_logger, _accountHandler, _userInfoHandler, out var character, out var user);
+        
+        if (character == null || user == null)
+            return;
 
         _logger.LogInformation("Enter Item ID:");
 
         var item = Console.ReadLine()?.Trim();
-
-        if (string.IsNullOrEmpty(item))
-        {
-            _logger.LogError("Item's id can not be empty!");
-            return;
-        }
-
+        
         if (!int.TryParse(item, out var itemId))
         {
-            _logger.LogError("Item's id has to be an integer!");
+            _logger.LogError("Item ID has to be an integer");
             return;
         }
 
         _logger.LogInformation("Enter Amount:");
 
         var c = Console.ReadLine()?.Trim();
-
-        if (string.IsNullOrEmpty(c))
-        {
-            _logger.LogError("Item's count can not be empty!");
-            return;
-        }
-
+        
         if (!int.TryParse(c, out var count))
         {
-            _logger.LogError("Item's count has to be an integer!");
+            _logger.LogError("Item count has to be an integer");
             return;
         }
 
-        if (cache.TryGetValue(itemId, out var itemDesc))
+        if (_itemCatalog.GetField<ItemHandler>("_itemDescriptionCache") is Dictionary<int, ItemDescription> items &&
+            items.TryGetValue(itemId, out var itemDescription))
         {
-            character.Data.Inventory.Items.Add(itemDesc.ItemId, new ItemModel
+            character.Data.Inventory.Items.Add(itemDescription.ItemId, new ItemModel
             {
-                ItemId = itemDesc.ItemId,
+                ItemId = itemDescription.ItemId,
                 Count = count,
                 BindingCount = 0,
                 DelayUseExpiry = DateTime.MinValue
@@ -98,58 +87,7 @@ internal class TestingCommands : IService
         }
         else
         {
-            _logger.LogError("Could not find item with id {itemId}", itemId);
+            _logger.LogError("Could not find item with ID {ItemId}", itemId);
         }
-    }
-
-    private bool GetCharacter(out CharacterModel model, out UserInfo user)
-    {
-        _logger.LogInformation("Please enter the username of whom you wish to edit:");
-
-        var userName = Console.ReadLine()?.Trim();
-
-        var account = _accountHandler.Data.Values.FirstOrDefault(x => x.Username == userName);
-        model = null;
-        user = null;
-
-        if (account == null)
-        {
-            _logger.LogError("Could not find user with username: {Username}", userName);
-            return false;
-        }
-
-        user = _userInfoHandler.Data.Values.FirstOrDefault(x => x.UserId == account.UserId);
-
-        if (user == null)
-        {
-            _logger.LogError("Could not find user info for account: {AccountId}", account.UserId);
-            return false;
-        }
-
-        _logger.LogInformation("Please select the ID for the character you want to change the name for:");
-
-        foreach (var possibleCharacter in user.Characters)
-        {
-            _logger.LogInformation("    {CharacterId}: {CharacterName}",
-                possibleCharacter.Key, possibleCharacter.Value.Data.CharacterName);
-        }
-
-        var id = Console.ReadLine();
-
-        if (!int.TryParse(id, out var intId))
-        {
-            _logger.LogError("Character Id {CharacterId} is not a number!", id);
-            return false;
-        }
-
-        if (!user.Characters.ContainsKey(intId))
-        {
-            _logger.LogError("Character list does not contain ID {Id}", id);
-            return false;
-        }
-
-        model = user.Characters[intId];
-
-        return true;
     }
 }
