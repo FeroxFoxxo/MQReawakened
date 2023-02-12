@@ -8,11 +8,11 @@ namespace Web.Launcher.Controllers.API.JSON.Logging;
 [Route("/api/json/logging/crash_log")]
 public class CrashLog : Controller
 {
-    private readonly LauncherConfig _config;
+    private readonly LauncherStaticConfig _config;
     private readonly ServerHandler _handler;
     private readonly ILogger<CrashLog> _logger;
 
-    public CrashLog(ILogger<CrashLog> logger, ServerHandler handler, LauncherConfig config)
+    public CrashLog(ILogger<CrashLog> logger, ServerHandler handler, LauncherStaticConfig config)
     {
         _logger = logger;
         _handler = handler;

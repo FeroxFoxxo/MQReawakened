@@ -22,7 +22,7 @@ public class Level
 
     private readonly LevelHandler _levelHandler;
     private readonly ILogger<LevelHandler> _logger;
-    private readonly ServerConfig _serverConfig;
+    private readonly ServerStaticConfig _serverConfig;
     public readonly Dictionary<int, NetState> Clients;
 
     public LevelInfo LevelInfo { get; set; }
@@ -33,7 +33,7 @@ public class Level
 
     public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
 
-    public Level(LevelInfo levelInfo, LevelPlanes levelPlanes, ServerConfig serverConfig,
+    public Level(LevelInfo levelInfo, LevelPlanes levelPlanes, ServerStaticConfig serverConfig,
         LevelHandler levelHandler, ReflectionUtils reflection, IServiceProvider services, ILogger<LevelHandler> logger)
     {
         _serverConfig = serverConfig;

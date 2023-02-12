@@ -18,7 +18,7 @@ namespace Web.Launcher.Services;
 public class EditCharacter : IService
 {
     private readonly AccountHandler _accountHandler;
-    private readonly ServerConfig _config;
+    private readonly ServerStaticConfig _config;
     private readonly ServerConsole _console;
     private readonly StartGame _game;
     private readonly NetStateHandler _handler;
@@ -31,7 +31,7 @@ public class EditCharacter : IService
     public EditCharacter(ServerConsole console, EventSink sink,
         ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
         AccountHandler accountHandler, WorldGraph worldGraph,
-        ServerConfig config, StartGame game, NetStateHandler handler, LevelHandler levelHandler)
+        ServerStaticConfig config, StartGame game, NetStateHandler handler, LevelHandler levelHandler)
     {
         _console = console;
         _sink = sink;

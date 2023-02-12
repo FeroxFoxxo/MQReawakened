@@ -11,7 +11,7 @@ public class SetActiveQuest : ExternalProtocol
 {
     public override string ProtocolName => "nz";
 
-    public ServerConfig Config { get; set; }
+    public ServerStaticConfig Config { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
 
     public override void Run(string[] message)
@@ -29,11 +29,6 @@ public class SetActiveQuest : ExternalProtocol
 
         if (character.Data.ActiveQuestId == activeQuest || character.Data.CompletedQuests.Contains(activeQuest))
             return;
-
-        foreach(var q in character.Data.QuestLog)
-        {
-            q.QuestStatus = QuestStatus.QuestState.NOT_START;
-        }
 
         if (character.TryGetQuest(activeQuest, out var quest))
             quest.QuestStatus = QuestStatus.QuestState.IN_PROCESSING;

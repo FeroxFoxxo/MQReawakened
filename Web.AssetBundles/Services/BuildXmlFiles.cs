@@ -15,16 +15,16 @@ namespace Web.AssetBundles.Services;
 
 public class BuildXmlFiles : IService, IInjectModules
 {
-    private readonly AssetBundleConfig _config;
+    private readonly AssetBundleStaticConfig _config;
     private readonly AssetEventSink _eventSink;
     private readonly ILogger<BuildXmlFiles> _logger;
-    private readonly ServerConfig _sConfig;
+    private readonly ServerStaticConfig _sConfig;
     private readonly IServiceProvider _services;
 
     public readonly Dictionary<string, string> XmlFiles;
 
     public BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, ILogger<BuildXmlFiles> logger,
-        AssetBundleConfig config, ServerConfig sConfig)
+        AssetBundleStaticConfig config, ServerStaticConfig sConfig)
     {
         _eventSink = eventSink;
         _services = services;

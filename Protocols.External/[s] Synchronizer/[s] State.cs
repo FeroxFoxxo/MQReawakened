@@ -14,7 +14,7 @@ public class State : ExternalProtocol
 
     public SyncEventManager SyncEventManager { get; set; }
     public ILogger<State> Logger { get; set; }
-    public ServerConfig ServerConfig { get; set; }
+    public ServerStaticConfig ServerConfig { get; set; }
     public LevelHandler LevelHandler { get; set; }
 
     public override void Run(string[] message)

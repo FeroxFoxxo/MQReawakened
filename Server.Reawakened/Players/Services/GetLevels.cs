@@ -12,11 +12,11 @@ public class GetLevels : IService
 {
     private readonly ServerConsole _serverConsole;
     private readonly ILogger<GetLevels> _logger;
-    private readonly ServerConfig _config;
+    private readonly ServerStaticConfig _config;
     private readonly WorldGraph _worldGraph;
 
     public GetLevels(ServerConsole serverConsole, ILogger<GetLevels> logger,
-        ServerConfig config, WorldGraph worldGraph)
+        ServerStaticConfig config, WorldGraph worldGraph)
     {
         _serverConsole = serverConsole;
         _logger = logger;

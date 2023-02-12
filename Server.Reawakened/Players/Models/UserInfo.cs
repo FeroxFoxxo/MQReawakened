@@ -30,7 +30,7 @@ public class UserInfo : PersistantData
     }
 
     public UserInfo(int userId, Gender gender, DateTime dateOfBirth, string region, RandomKeyGenerator kGen,
-        ServerConfig config)
+        ServerStaticConfig config)
     {
         Region = region;
         UserId = userId;

@@ -4,30 +4,31 @@ using Server.Base.Core.Extensions;
 
 namespace Server.Reawakened.Configs;
 
-public class ServerConfig : IConfig
+public class ServerStaticConfig : IStaticConfig
 {
-    public int DefaultChatLevel;
-    public bool DefaultMemberStatus;
+    public int DefaultChatLevel { get; }
+    public bool DefaultMemberStatus { get; }
 
-    public string DefaultSignUpExperience;
-    public string DefaultTrackingShortId;
-    public int RandomKeyLength { get; set; }
-    public int PlayerCap { get; set; }
-    public int ReservedNameCount { get; set; }
-    public int MaxCharacterCount { get; set; }
+    public string DefaultSignUpExperience { get; }
+    public string DefaultTrackingShortId { get; }
 
-    public int DefaultQuest { get; set; }
+    public int RandomKeyLength { get; }
+    public int PlayerCap { get; }
+    public int ReservedNameCount { get; }
+    public int MaxCharacterCount { get; }
 
-    public bool LogSyncState { get; set; }
+    public int DefaultQuest { get; }
 
-    public string LevelSaveDirectory { get; set; }
-    public string LevelDataSaveDirectory { get; set; }
+    public bool LogSyncState { get; }
 
-    public string[] DefaultProtocolTypeIgnore { get; set; }
+    public string LevelSaveDirectory { get; }
+    public string LevelDataSaveDirectory { get; }
 
-    public Dictionary<DebugHandler.DebugVariables, bool> DefaultDebugVariables { get; set; }
+    public string[] DefaultProtocolTypeIgnore { get; }
 
-    public ServerConfig()
+    public Dictionary<DebugHandler.DebugVariables, bool> DefaultDebugVariables { get; }
+
+    public ServerStaticConfig()
     {
         LevelSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Level");
         LevelDataSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "LevelData");

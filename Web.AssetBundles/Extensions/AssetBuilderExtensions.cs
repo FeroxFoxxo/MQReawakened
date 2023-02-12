@@ -28,7 +28,7 @@ public static class AssetBuilderExtensions
             .SelectMany(g => g.OrderBy(x => x.Name).ToList());
 
     public static Dictionary<string, InternalAssetInfo> GetClosestBundles(this IEnumerable<InternalAssetInfo> assets,
-        LauncherConfig config)
+        StartConfig config)
     {
         var filteredAssets = new Dictionary<string, InternalAssetInfo>();
 
