@@ -13,6 +13,17 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterExtensions
 {
+    public static bool HasDiscoveredTribe(this CharacterDataModel characterData, TribeType tribe)
+    {
+        if (characterData == null) return false;
+
+        if (characterData.TribesDiscovered.TryGetValue(tribe, out var discovered))
+            if (discovered)
+                return true;
+
+        return characterData.Allegiance == tribe;
+    }
+
     public static CharacterModel GetCurrentCharacter(this Player player)
         => player.UserInfo.Characters[player.CurrentCharacter];
 
@@ -25,17 +36,17 @@ public static class CharacterExtensions
         player.CurrentCharacter = characterId;
         player.UserInfo.LastCharacterSelected = player.GetCurrentCharacter().Data.CharacterName;
     }
-    
+
     public static void AddCharacter(this Player player, CharacterModel characterData) =>
         player.UserInfo.Characters.Add(characterData.Data.CharacterId, characterData);
 
     public static void DeleteCharacter(this Player player, int id)
     {
         player.UserInfo.Characters.Remove(id);
-        
-        player.UserInfo.LastCharacterSelected = player.UserInfo.Characters.Count > 0 ?
-            player.UserInfo.Characters.First().Value.Data.CharacterName :
-            string.Empty;
+
+        player.UserInfo.LastCharacterSelected = player.UserInfo.Characters.Count > 0
+            ? player.UserInfo.Characters.First().Value.Data.CharacterName
+            : string.Empty;
     }
 
     public static void LevelUp(this CharacterDataModel characterData, int level)
@@ -85,7 +96,8 @@ public static class CharacterExtensions
         state.SendXt("ca", charData.Cash, charData.NCash);
     }
 
-    public static void SendLevelChange(this Player player, NetState netState, LevelHandler levelHandler, WorldGraphXML worldGraph)
+    public static void SendLevelChange(this Player player, NetState netState, LevelHandler levelHandler,
+        WorldGraphXML worldGraph)
     {
         var error = string.Empty;
         var levelName = string.Empty;
@@ -121,10 +133,76 @@ public static class CharacterExtensions
         return sb.ToString();
     }
 
-    public static void SetCharacterSpawn(this CharacterModel model, int portalId, int spawnId, Microsoft.Extensions.Logging.ILogger logger)
+    public static void SetCharacterSpawn(this CharacterModel model, int portalId, int spawnId,
+        Microsoft.Extensions.Logging.ILogger logger)
     {
         model.PortalId = portalId;
         model.SpawnPoint = spawnId;
-        logger.LogDebug("Set spawn of '{CharacterName}' to portal {PortalId} spawn {SpawnId}", model.Data.CharacterName, portalId, spawnId);
+        logger.LogDebug("Set spawn of '{CharacterName}' to portal {PortalId} spawn {SpawnId}", model.Data.CharacterName,
+            portalId, spawnId);
+    }
+
+    public static void AddQuest(this CharacterModel model, QuestDescription quest, bool setActive)
+    {
+        if (model.HasQuest(quest.Id)) return;
+
+        model.Data.QuestLog.Add(new QuestStatusModel
+        {
+            QuestStatus = QuestStatus.QuestState.IN_PROCESSING,
+            Id = quest.Id,
+            Objectives = quest.Objectives.ToDictionary(
+                x => x.Key,
+                x => new ObjectiveModel
+                {
+                    Completed = false,
+                    CountLeft = x.Value.TotalCount
+                }
+            )
+        });
+
+        if (setActive)
+            model.Data.ActiveQuestId = quest.Id;
+    }
+
+    public static bool HasQuest(this CharacterModel model, int questId)
+    {
+        if (model.Data.QuestLog.Count == 0) return false;
+
+        foreach (var quest in model.Data.QuestLog)
+            if (quest.Id == questId)
+                return true;
+
+        return false;
+    }
+
+    public static bool TryGetQuest(this CharacterModel model, int questId, out QuestStatusModel outQuest)
+    {
+        outQuest = null;
+        if (model.Data.QuestLog.Count == 0) return false;
+
+        foreach (var quest in model.Data.QuestLog)
+        {
+            if (quest.Id == questId)
+            {
+                outQuest = quest;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool HasPreviousQuests(this CharacterModel model, QuestDescription quest)
+    {
+        if (model.Data.CompletedQuests.Count == 0) return false;
+
+        foreach (var prevId in quest.PreviousQuests)
+        {
+            if (prevId.Key == 0) continue;
+            if (!model.Data.CompletedQuests.Contains(prevId.Key))
+                return false;
+        }
+
+        return true;
     }
 }

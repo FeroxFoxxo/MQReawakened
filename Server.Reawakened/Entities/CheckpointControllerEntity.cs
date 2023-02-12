@@ -11,7 +11,7 @@ public class CheckpointControllerEntity : SyncedEntity<CheckpointController>
     public int SpawnPoint => EntityData.SpawnpointID;
 
     public ILogger<CheckpointControllerEntity> Logger { get; set; }
-    
+
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
         var player = netState.Get<Player>();
@@ -25,7 +25,7 @@ public class CheckpointControllerEntity : SyncedEntity<CheckpointController>
         possibleLastCheckpoint?.TriggerCheckpoint(false, netState, player);
 
         character.SetCharacterSpawn(0, SpawnPoint, Logger);
-        
+
         TriggerCheckpoint(true, netState, player);
     }
 

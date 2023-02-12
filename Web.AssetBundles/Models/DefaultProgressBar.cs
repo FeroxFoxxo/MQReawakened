@@ -13,7 +13,8 @@ public class DefaultProgressBar : IDisposable
     private readonly List<string> _messages;
     private readonly ProgressBar _topBar;
 
-    public DefaultProgressBar(int count, string message, Microsoft.Extensions.Logging.ILogger logger, AssetBundleConfig config)
+    public DefaultProgressBar(int count, string message, Microsoft.Extensions.Logging.ILogger logger,
+        AssetBundleConfig config)
     {
         _logger = logger;
         _logProgressAfter = config.LogProgressBars;

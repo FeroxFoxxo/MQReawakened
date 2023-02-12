@@ -22,7 +22,7 @@ public class State : ExternalProtocol
         var player = NetState.Get<Player>();
         var level = player.GetCurrentLevel(LevelHandler);
 
-        if (level == null) 
+        if (level == null)
             return;
 
         var syncEvent = SyncEventManager.DecodeEvent(message[5].Split('&'));
@@ -41,12 +41,14 @@ public class State : ExternalProtocol
                     var chargeAttackEvent = new ChargeAttack_SyncEvent(syncEvent);
 
                     var startEvent = new ChargeAttackStart_SyncEvent(entityId.ToString(), chargeAttackEvent.TriggerTime,
-                        chargeAttackEvent.PosX, chargeAttackEvent.PosY, chargeAttackEvent.SpeedX, chargeAttackEvent.SpeedY,
+                        chargeAttackEvent.PosX, chargeAttackEvent.PosY, chargeAttackEvent.SpeedX,
+                        chargeAttackEvent.SpeedY,
                         chargeAttackEvent.ItemId, chargeAttackEvent.ZoneId);
 
                     NetState.SendSyncEventToPlayer(startEvent);
 
-                    Logger.LogWarning("Collision system not yet written and implemented for {Type}.", chargeAttackEvent.Type);
+                    Logger.LogWarning("Collision system not yet written and implemented for {Type}.",
+                        chargeAttackEvent.Type);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
@@ -93,7 +95,6 @@ public class State : ExternalProtocol
         }
         else
         {
-            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (syncEvent.Type)
             {
                 default:
@@ -114,7 +115,8 @@ public class State : ExternalProtocol
                     if (components.Count == 0)
                         components.Add("UNKNOWN");
 
-                    Logger.LogWarning("Unhandled '{EventType}' Sync Event For {EntityId} ({EntityName}).", syncEvent.Type, entityId, string.Join(", ", components));
+                    Logger.LogWarning("Unhandled '{EventType}' Sync Event For {EntityId} ({EntityName}).",
+                        syncEvent.Type, entityId, string.Join(", ", components));
                     Logger.LogDebug("Sync Event: {Encoded Event}", syncEvent.EncodeData());
 
                     break;

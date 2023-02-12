@@ -22,7 +22,7 @@ public class InventoryModel
     {
         var sb = new SeparatedStringBuilder('{');
 
-        sb.Append(item.Key);
+        //sb.Append(item.Key);
         sb.Append(item.Value);
 
         return sb.ToString();

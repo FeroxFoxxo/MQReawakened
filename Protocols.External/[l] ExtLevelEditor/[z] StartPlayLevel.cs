@@ -11,7 +11,7 @@ public class StartPlayLevel : ExternalProtocol
     public override string ProtocolName => "lz";
 
     public LevelHandler LevelHandler { get; set; }
-    
+
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();

@@ -9,12 +9,18 @@ public class MiscTextDictionary : LocalizationHandler, IBundledXml
 {
     public Dictionary<int, string> LocalizationDict;
 
-    public MiscTextDictionary(GameClient client) : base(client) => LocalizationDict = new Dictionary<int, string>();
+    public MiscTextDictionary() : base(null)
+    {
+    }
 
     public string BundleName => "MiscTextDict_en-US";
 
-    public void InitializeVariables() =>
+    public void InitializeVariables()
+    {
+        LocalizationDict = new Dictionary<int, string>();
+
         this.SetField<LocalizationHandler>("_localizationDict", new Dictionary<int, string>());
+    }
 
     public void EditXml(XmlDocument xml)
     {

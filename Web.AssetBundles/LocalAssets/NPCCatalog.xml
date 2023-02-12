@@ -1,0 +1,23 @@
+﻿<?xml version="1.0"?>
+
+<NPCCatalog>
+    <npc id="1" objectId="937" nameId="10807" />
+    <npc id="2" objectId="213205" nameId="21743849" />
+    <npc id="3" objectId="98648" nameId="5747" vendorType="10" />
+    <npc id="4" objectId="243" nameId="166249430" vendorType="2" />
+    <npc id="5" objectId="244" nameId="5815" vendorType="6" />
+    <npc id="6" objectId="343" nameId="10990" vendorType="7" />
+
+    <npc id="7" objectId="741" nameId="991" />
+    <npc id="8" objectId="2611" nameId="11530" />
+    <npc id="9" objectId="128" nameId="2334" />
+
+    <npc id="10" objectId="213182" nameId="1539801045" />
+    <npc id="11" objectId="97236" nameId="903865723" />
+    <npc id="12" objectId="193" nameId="1289" />
+    <npc id="13" objectId="467754513" nameId="467754513" />
+    <npc id="14" objectId="13161359" nameId="955551996" />
+    <npc id="15" objectId="945" nameId="2021301178" />
+
+    <npc id="16" objectId="2466370" nameId="7471" />
+</NPCCatalog>

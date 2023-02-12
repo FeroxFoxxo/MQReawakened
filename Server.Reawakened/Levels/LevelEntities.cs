@@ -10,9 +10,8 @@ namespace Server.Reawakened.Levels;
 
 public class LevelEntities
 {
-    public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
-
     private readonly Microsoft.Extensions.Logging.ILogger _logger;
+    public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
 
     public LevelEntities(Level level, LevelHandler handler, ReflectionUtils reflectionUtils,
         IServiceProvider serviceProvider, Microsoft.Extensions.Logging.ILogger logger)
@@ -32,77 +31,79 @@ public class LevelEntities
             .ToDictionary(t => t.BaseType.GenericTypeArguments.First().FullName, t => t);
 
         foreach (var plane in level.LevelPlanes.Planes)
-            foreach (var entity in plane.Value.GameObjects)
-                foreach (var component in entity.Value.ObjectInfo.Components)
+        foreach (var entity in plane.Value.GameObjects)
+        foreach (var component in entity.Value.ObjectInfo.Components)
+        {
+            if (!handler.ProcessableData.TryGetValue(component.Key, out var mqType))
+                continue;
+
+            if (syncedEntities.TryGetValue(mqType.FullName!, out var internalType))
+            {
+                var dataObj = FormatterServices.GetUninitializedObject(mqType);
+
+                var fields = mqType.GetFields()
+                    .Where(prop => prop.IsDefined(typeof(MQAttribute), false))
+                    .ToList();
+
+                foreach (var componentValue in component.Value.ComponentAttributes)
                 {
-                    if (!handler.ProcessableData.TryGetValue(component.Key, out var mqType))
+                    if (string.IsNullOrEmpty(componentValue.Value))
                         continue;
 
-                    if (syncedEntities.TryGetValue(mqType.FullName!, out var internalType))
-                    {
-                        var dataObj = FormatterServices.GetUninitializedObject(mqType);
+                    var field = fields.FirstOrDefault(f => f.Name == componentValue.Key);
 
-                        var fields = mqType.GetFields()
-                            .Where(prop => prop.IsDefined(typeof(MQAttribute), false))
-                            .ToList();
+                    if (field == null)
+                        continue;
 
-                        foreach (var componentValue in component.Value.ComponentAttributes)
-                        {
-                            if (string.IsNullOrEmpty(componentValue.Value))
-                                continue;
-
-                            var field = fields.FirstOrDefault(f => f.Name == componentValue.Key);
-
-                            if (field == null)
-                                continue;
-
-                            if (field.FieldType == typeof(string))
-                                field.SetValue(dataObj, componentValue.Value);
-                            else if (field.FieldType == typeof(int))
-                                field.SetValue(dataObj, int.Parse(componentValue.Value));
-                            else if (field.FieldType == typeof(bool))
-                                field.SetValue(dataObj, componentValue.Value.ToLower() == "true");
-                            else if (field.FieldType == typeof(float))
-                                field.SetValue(dataObj, float.Parse(componentValue.Value));
-                            else if (field.FieldType.IsEnum)
-                                field.SetValue(dataObj, Enum.Parse(field.FieldType, componentValue.Value));
-                            else
-                                _logger.LogError("It is unknown how to convert a string to a {FieldType}. " +
-                                                 "Please implement this in the {CurrentType} class.", field.FieldType, GetType().Name);
-                        }
-
-                        var storedData = new StoredEntityModel(entity.Value, level, logger);
-
-                        var instancedEntity =
-                            reflectionUtils.CreateBuilder<BaseSyncedEntity>(internalType.GetTypeInfo()).Invoke(serviceProvider);
-
-                        var methods = internalType.GetMethods().Where(m =>
-                        {
-                            var parameters = m.GetParameters();
-
-                            return
-                                m.Name == "SetEntityData" &&
-                                parameters.Length == 2 &&
-                                parameters[0].ParameterType == dataObj.GetType() &&
-                                parameters[1].ParameterType == storedData.GetType();
-                        }).ToList();
-
-                        if (methods.Count != 1)
-                            _logger.LogError("Found invalid {Count} amount of initialization methods for {EntityId} ({EntityType})",
-                                methods.Count, entity.Key, internalType.Name);
-                        else
-                            methods.First().Invoke(instancedEntity, new[] { dataObj, storedData });
-
-                        if (!Entities.ContainsKey(entity.Key))
-                            Entities.Add(entity.Key, new List<BaseSyncedEntity>());
-
-                        Entities[entity.Key].Add(instancedEntity);
-                    }
-                    else if (!invalidProcessable.Contains(mqType.Name))
-                    {
-                        invalidProcessable.Add(mqType.Name);
-                    }
+                    if (field.FieldType == typeof(string))
+                        field.SetValue(dataObj, componentValue.Value);
+                    else if (field.FieldType == typeof(int))
+                        field.SetValue(dataObj, int.Parse(componentValue.Value));
+                    else if (field.FieldType == typeof(bool))
+                        field.SetValue(dataObj, componentValue.Value.ToLower() == "true");
+                    else if (field.FieldType == typeof(float))
+                        field.SetValue(dataObj, float.Parse(componentValue.Value));
+                    else if (field.FieldType.IsEnum)
+                        field.SetValue(dataObj, Enum.Parse(field.FieldType, componentValue.Value));
+                    else
+                        _logger.LogError("It is unknown how to convert a string to a {FieldType}. " +
+                                         "Please implement this in the {CurrentType} class.", field.FieldType,
+                            GetType().Name);
                 }
+
+                var storedData = new StoredEntityModel(entity.Value, level, logger);
+
+                var instancedEntity =
+                    reflectionUtils.CreateBuilder<BaseSyncedEntity>(internalType.GetTypeInfo()).Invoke(serviceProvider);
+
+                var methods = internalType.GetMethods().Where(m =>
+                {
+                    var parameters = m.GetParameters();
+
+                    return
+                        m.Name == "SetEntityData" &&
+                        parameters.Length == 2 &&
+                        parameters[0].ParameterType == dataObj.GetType() &&
+                        parameters[1].ParameterType == storedData.GetType();
+                }).ToList();
+
+                if (methods.Count != 1)
+                    _logger.LogError(
+                        "Found invalid {Count} amount of initialization methods for {EntityId} ({EntityType})",
+                        methods.Count, entity.Key, internalType.Name);
+                else
+                    methods.First().Invoke(instancedEntity, new[] { dataObj, storedData });
+
+                if (!Entities.ContainsKey(entity.Key))
+                    Entities.Add(entity.Key, new List<BaseSyncedEntity>());
+
+                Entities[entity.Key].Add(instancedEntity);
+            }
+            else if (!invalidProcessable.Contains(mqType.Name))
+            {
+                invalidProcessable.Add(mqType.Name);
+            }
+        }
 
         foreach (var type in invalidProcessable.Order())
             _logger.LogWarning("Could not find synced entity for {EntityType}", type);

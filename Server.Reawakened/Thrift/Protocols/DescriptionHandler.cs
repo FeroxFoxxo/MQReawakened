@@ -12,8 +12,8 @@ namespace Server.Reawakened.Thrift.Protocols;
 
 public class DescriptionHandler : ThriftHandler
 {
-    private readonly WorldGraph _worldGraph;
     private readonly MiscTextDictionary _miscTextDictionary;
+    private readonly WorldGraph _worldGraph;
 
     public DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph worldGraph,
         MiscTextDictionary miscTextDictionary) : base(logger)

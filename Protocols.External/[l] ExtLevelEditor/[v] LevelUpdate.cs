@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities;
 using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Protocols;
@@ -11,7 +12,7 @@ namespace Protocols.External._l__ExtLevelEditor;
 public class LevelUpdate : ExternalProtocol
 {
     public override string ProtocolName => "lv";
-    
+
     public ILogger<LevelUpdate> Logger { get; set; }
     public LevelHandler LevelHandler { get; set; }
 
@@ -31,6 +32,9 @@ public class LevelUpdate : ExternalProtocol
             entity.SendDelayedData(NetState);
 
         player.GetCurrentLevel(LevelHandler).SendCharacterInfo(player, NetState);
+
+        foreach (var npc in level.LevelEntities.GetEntities<NpcControllerEntity>())
+            npc.Value.SendNpcInfo(player.GetCurrentCharacter(), NetState);
     }
 
     private string GetGameObjectStore(Dictionary<int, List<BaseSyncedEntity>> entities)

@@ -26,9 +26,9 @@ public class BuildAssetList : IService
     private readonly EventSink _sink;
 
     public readonly Dictionary<string, string> AssetDict;
-    public readonly Dictionary<string, string> PublishConfigs;
 
     public readonly List<string> CurrentlyLoadedAssets;
+    public readonly Dictionary<string, string> PublishConfigs;
 
     public string AssetDictLocation;
 

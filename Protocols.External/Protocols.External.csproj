@@ -7,15 +7,12 @@
 
     <ItemGroup>
         <Folder Include="[A] AchievementsHandler\" />
-        <Folder Include="[a] ChatHandler\" />
         <Folder Include="[C] CashShopHandler\" />
         <Folder Include="[f] FriendsHandler\" />
         <Folder Include="[m] GameCommandHandler\" />
         <Folder Include="[p] GroupHandler\" />
         <Folder Include="[u] GuildHandler\" />
-        <Folder Include="[h] HotbarHandler\" />
         <Folder Include="[H] HousingHandler\" />
-        <Folder Include="[i] InventoryHandler\" />
         <Folder Include="[x] ItemHandler\" />
         <Folder Include="[b] LocalizationHandler\" />
         <Folder Include="[j] LootHandler\" />

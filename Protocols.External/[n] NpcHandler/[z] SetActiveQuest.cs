@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Configs;
+﻿using A2m.Server;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -28,6 +29,9 @@ public class SetActiveQuest : ExternalProtocol
 
         if (character.Data.ActiveQuestId == activeQuest || character.Data.CompletedQuests.Contains(activeQuest))
             return;
+
+        if (character.TryGetQuest(activeQuest, out var quest))
+            quest.QuestStatus = QuestStatus.QuestState.IN_PROCESSING;
 
         player.AddQuest(activeQuest, true, NetState, QuestCatalog);
     }

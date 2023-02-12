@@ -29,7 +29,8 @@ public class UserInfo : PersistantData
         Mail = new Dictionary<int, SystemMailModel>();
     }
 
-    public UserInfo(int userId, Gender gender, DateTime dateOfBirth, string region, RandomKeyGenerator kGen, ServerConfig config)
+    public UserInfo(int userId, Gender gender, DateTime dateOfBirth, string region, RandomKeyGenerator kGen,
+        ServerConfig config)
     {
         Region = region;
         UserId = userId;

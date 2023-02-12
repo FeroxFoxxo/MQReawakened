@@ -10,6 +10,9 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
 
     public void InitializeVariables()
     {
+        _rootXmlName = BundleName;
+        _hasLocalizationDict = true;
+
         this.SetField<VendorCatalogsXML>("_levelUpCatalogs", new Dictionary<int, List<int>>());
         this.SetField<VendorCatalogsXML>("_vendorCatalogs", new Dictionary<int, List<int>>());
         this.SetField<VendorCatalogsXML>("_vendorCatalogIds", new Dictionary<string, int>());
@@ -44,8 +47,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
         }
     }
 
-    public void ReadXml(string xml) =>
-        ReadDescriptionXml(xml);
+    public void ReadXml(string xml) => ReadDescriptionXml(xml);
 
     public void FinalizeBundle()
     {

@@ -6,17 +6,17 @@ namespace Server.Reawakened.Configs;
 
 public class ServerConfig : IConfig
 {
+    public int DefaultChatLevel;
+    public bool DefaultMemberStatus;
+
+    public string DefaultSignUpExperience;
+    public string DefaultTrackingShortId;
     public int RandomKeyLength { get; set; }
     public int PlayerCap { get; set; }
     public int ReservedNameCount { get; set; }
     public int MaxCharacterCount { get; set; }
 
     public int DefaultQuest { get; set; }
-
-    public string DefaultSignUpExperience;
-    public int DefaultChatLevel;
-    public string DefaultTrackingShortId;
-    public bool DefaultMemberStatus;
 
     public bool LogSyncState { get; set; }
 
