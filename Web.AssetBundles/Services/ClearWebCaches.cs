@@ -17,7 +17,6 @@ public class ClearWebCaches : IService
     private readonly StartGame _game;
     private readonly ILogger<ClearWebCaches> _logger;
     private readonly EventSink _sink;
-    private readonly StartGame _game;
     private readonly BuildAssetList _buildAssetList;
 
     public ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleConfig config,
@@ -28,7 +27,7 @@ public class ClearWebCaches : IService
         _console = console;
         _sink = sink;
         _game = game;
-        BuildAssetList = buildAssetList;
+        _buildAssetList = buildAssetList;
     }
 
     public void Initialize() => _sink.WorldLoad += Load;
@@ -47,7 +46,7 @@ public class ClearWebCaches : IService
 
     public bool EmptyWebCacheDirectory()
     {
-        BuildAssetList.CurrentlyLoadedAssets.Clear();
+        _buildAssetList.CurrentlyLoadedAssets.Clear();
 
         _config.GetWebPlayerInfoFile(_logger);
 
