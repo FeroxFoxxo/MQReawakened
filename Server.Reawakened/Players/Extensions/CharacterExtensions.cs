@@ -93,6 +93,12 @@ public static class CharacterExtensions
     {
         var charData = player.GetCurrentCharacter().Data;
         charData.Cash += collectedBananas;
+        player.SendCashUpdate(state);
+    }
+
+    public static void SendCashUpdate(this Player player, NetState state)
+    {
+        var charData = player.GetCurrentCharacter().Data;
         state.SendXt("ca", charData.Cash, charData.NCash);
     }
 
