@@ -46,7 +46,7 @@ internal class UseItem : ExternalProtocol
                     character.AddItem(packItem, pair.Value);
                 }
 
-                NetState.SendUpdatedInventory();
+                character.SendUpdatedInventory(NetState, false);
                 break;
             default:
                 Logger.LogWarning("Could not find use for item {ItemId}, type {ItemType}.",

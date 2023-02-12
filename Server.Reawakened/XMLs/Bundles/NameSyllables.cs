@@ -7,8 +7,9 @@ namespace Server.Reawakened.XMLs.Bundles;
 
 public class NameSyllables : NamegenSyllablesXML, IBundledXml
 {
-    public Dictionary<Gender, List<List<string>>> Syllables;
     public string BundleName => "NamegenSyllabes";
+
+    public Dictionary<Gender, List<List<string>>> Syllables;
 
     public void InitializeVariables() =>
         this.SetField<NamegenSyllablesXML>("_nameSyllables", new Dictionary<int, List<string>>());

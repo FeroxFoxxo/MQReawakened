@@ -93,8 +93,8 @@ internal class TestingCommands : IService
                 DelayUseExpiry = DateTime.MinValue
             });
 
-            if (_netStateHandler.IsPlayerOnline(user.UserId, out var netState, out var _))
-                netState.SendXt("ip", character.Data.Inventory.ToString().Replace('>', '|'), false);
+            if (_netStateHandler.IsPlayerOnline(user.UserId, out var netState, out _))
+                character.SendUpdatedInventory(netState, false);
         }
         else
         {

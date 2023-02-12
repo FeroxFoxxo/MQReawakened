@@ -19,7 +19,6 @@ public class ReplaceCaches : IService
     private readonly AssetBundleConfig _config;
     private readonly ServerConsole _console;
     private readonly StartGame _game;
-
     private readonly ILogger<ReplaceCaches> _logger;
     private readonly EventSink _sink;
 
