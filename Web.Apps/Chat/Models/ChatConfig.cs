@@ -2,11 +2,11 @@
 
 namespace Web.Apps.Chat.Models;
 
-public class ChatConfig : IConfig
+public class ChatConfig : IStaticConfig
 {
-    public string CrispKey { get; set; }
-    public string TerminationCharacter { get; set; }
-    public string[] Words { get; set; }
+    public string CrispKey { get; }
+    public string TerminationCharacter { get; }
+    public string[] Words { get; }
 
     public ChatConfig()
     {

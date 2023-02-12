@@ -13,10 +13,11 @@ namespace Server.Base.Network.Services;
 
 public class MessagePump : IService
 {
-    private readonly InternalServerConfig _config;
+    private readonly InternalStaticConfig _sConfig;
     private readonly NetStateHandler _handler;
     private readonly IPEndPoint[] _ipEndPoints;
     private readonly IpLimiter _limiter;
+    private readonly InternalConfig _config;
     private readonly ILogger<MessagePump> _logger;
     private readonly NetworkLogger _networkLogger;
     private readonly ServerHandler _serverHandler;
@@ -25,20 +26,21 @@ public class MessagePump : IService
     public readonly Listener[] Listeners;
 
     public MessagePump(ILogger<MessagePump> logger, NetworkLogger networkLogger,
-        NetStateHandler handler, IpLimiter limiter,
-        InternalServerConfig config, EventSink sink, ServerHandler serverHandler)
+        NetStateHandler handler, IpLimiter limiter, InternalConfig config,
+        InternalStaticConfig sConfig, EventSink sink, ServerHandler serverHandler)
     {
         _logger = logger;
         _networkLogger = networkLogger;
         _handler = handler;
         _limiter = limiter;
         _config = config;
+        _sConfig = sConfig;
         _sink = sink;
         _serverHandler = serverHandler;
 
         _ipEndPoints = new IPEndPoint[]
         {
-            new(IPAddress.Any, config.Port)
+            new(IPAddress.Any, sConfig.Port)
         };
 
         Listeners = new Listener[_ipEndPoints.Length];
@@ -87,7 +89,7 @@ public class MessagePump : IService
             foreach (var socket in accepted)
             {
                 new NetState(socket, _logger, _networkLogger,
-                        _handler, _limiter, _config, _sink)
+                        _handler, _limiter, _config, _sConfig, _sink)
                     .Start();
             }
         }

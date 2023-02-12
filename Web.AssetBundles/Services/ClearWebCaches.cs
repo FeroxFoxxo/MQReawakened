@@ -13,21 +13,24 @@ namespace Web.AssetBundles.Services;
 public class ClearWebCaches : IService
 {
     private readonly AssetBundleConfig _config;
+    private readonly AssetBundleStaticConfig _sConfig;
     private readonly ServerConsole _console;
     private readonly StartGame _game;
     private readonly ILogger<ClearWebCaches> _logger;
     private readonly EventSink _sink;
     private readonly BuildAssetList _buildAssetList;
 
-    public ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleConfig config,
-        ServerConsole console, EventSink sink, StartGame game, BuildAssetList buildAssetList)
+    public ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleStaticConfig sConfig,
+        ServerConsole console, EventSink sink, StartGame game, BuildAssetList buildAssetList,
+        AssetBundleConfig config)
     {
         _logger = logger;
-        _config = config;
+        _sConfig = sConfig;
         _console = console;
         _sink = sink;
         _game = game;
         _buildAssetList = buildAssetList;
+        _config = config;
     }
 
     public void Initialize() => _sink.WorldLoad += Load;
@@ -48,7 +51,7 @@ public class ClearWebCaches : IService
     {
         _buildAssetList.CurrentlyLoadedAssets.Clear();
 
-        _config.GetWebPlayerInfoFile(_logger);
+        _config.GetWebPlayerInfoFile(_sConfig, _logger);
 
         if (_config.WebPlayerInfoFile == _config.CacheInfoFile)
         {
@@ -76,7 +79,7 @@ public class ClearWebCaches : IService
         if (!_config.FlushCacheOnStart)
             return;
 
-        GetDirectory.Empty(_config.BundleSaveDirectory);
+        GetDirectory.Empty(_sConfig.BundleSaveDirectory);
 
         var shouldDelete = _config.DefaultDelete;
 
@@ -85,7 +88,7 @@ public class ClearWebCaches : IService
                 "You have 'FLUSH CACHE ON START' enabled, which may delete cached files from the original game, as they use the same directory. " +
                 "Please ensure, if this is your first time running this project, that there are not files already in this directory. " +
                 "These would otherwise be valuable.\n" +
-                $"Please note: The WEB PLAYER cache is found in your {_config.DefaultWebPlayerCacheLocation} folder. " +
+                $"Please note: The WEB PLAYER cache is found in your {_sConfig.DefaultWebPlayerCacheLocation} folder. " +
                 "Please make an __info file in here if it does not exist already.", false
             );
 

@@ -17,11 +17,14 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
     public ILogger<NpcControllerEntity> Logger { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public NpcCatalog NpcCatalog { get; set; }
+    public VendorCatalog VendorCatalog { get; set; }
     public MiscTextDictionary MiscText { get; set; }
     
     public NpcDescription Description;
     public List<QuestDescription> Quests;
     public string NpcName;
+
+    private bool _vendorOpen = false;
 
     public override void InitializeEntity()
     {
@@ -29,8 +32,9 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
         Quests = QuestCatalog.GetQuestsBy(Id).OrderBy(x => x.Id).ToList();
 
-        if (Description != null)
-            NpcName = MiscText.GetLocalizationTextById(Description.NameTextId);
+        if (Description == null) return;
+        
+        NpcName = MiscText.GetLocalizationTextById(Description.NameTextId);
     }
 
     public override string[] GetInitData(NetState netState) =>
@@ -46,6 +50,18 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
         var player = netState.Get<Player>();
         var character = player.GetCurrentCharacter();
+
+        if (Description.Status is > NPCController.NPCStatus.Dialog and < NPCController.NPCStatus.Unknown)
+        {
+            _vendorOpen = !_vendorOpen;
+            if (_vendorOpen)
+            {
+                 netState.SendXt("nv", Id, Description.NameTextId, 0, 0, 0, Description.VendorId, "", "1021|2813", "1021|2812");
+                return;
+            }
+        }
+
+        if (Quests == null) return;
 
         var status = TryGetQuest(character, Quests, out var model);
 
@@ -73,9 +89,9 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             return;
         }
 
-        var status = TryGetQuest(character, Quests, out var model);
+        var status = TryGetQuest(character, Quests, out _);
 
-        if (model == null || status == NPCController.NPCStatus.Unknown)
+        if (status == NPCController.NPCStatus.Unknown)
         {
             if (Description.Status != NPCController.NPCStatus.Unknown)
                 netState.SendXt("nt", Id, (int)Description.Status, 0);
@@ -83,6 +99,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         else
         {
             netState.SendXt("nt", Id, (int)status, 0);
+            Logger.LogDebug("Npc: {n} - {s}", NpcName, status);
         }
     }
 
@@ -96,8 +113,17 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             if (!character.Data.HasDiscoveredTribe(quest.Tribe))
                 return NPCController.NPCStatus.QuestUnavailable;
 
-            if (quest.LevelRequired > character.Data.GlobalLevel)
+            if (!character.HasPreviousQuests(quest))
+            {
+                outQuest = GetQuestStatusModel(quest);
                 return NPCController.NPCStatus.QuestUnavailable;
+            }
+
+            if (quest.LevelRequired > character.Data.GlobalLevel)
+            {
+                outQuest = GetQuestStatusModel(quest);
+                return NPCController.NPCStatus.QuestUnavailable;
+            }
 
             if (character.HasQuest(quest.Id))
             {
@@ -124,8 +150,17 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                 if (!character.Data.HasDiscoveredTribe(lineQuest.Tribe))
                     return NPCController.NPCStatus.QuestUnavailable;
 
-                if (lineQuest.LevelRequired > character.Data.GlobalLevel)
+                if (!character.HasPreviousQuests(lineQuest))
+                {
+                    outQuest = GetQuestStatusModel(lineQuest);
                     return NPCController.NPCStatus.QuestUnavailable;
+                }
+
+                if (lineQuest.LevelRequired > character.Data.GlobalLevel)
+                {
+                    outQuest = GetQuestStatusModel(lineQuest);
+                    return NPCController.NPCStatus.QuestUnavailable;
+                }
 
                 if (character.HasQuest(lineQuest.Id))
                 {

@@ -19,7 +19,7 @@ public class NetState : IDisposable
 {
     public delegate bool ThrottlePacketCallback(NetState state);
 
-    private readonly InternalServerConfig _config;
+    private readonly InternalConfig _config;
     private readonly ConcurrentBag<string> _currentLogs;
 
     private readonly Dictionary<Type, INetStateData> _data;
@@ -48,11 +48,11 @@ public class NetState : IDisposable
 
     public NetState(Socket socket, ILogger<MessagePump> logger,
         NetworkLogger networkLogger, NetStateHandler handler, IpLimiter limiter,
-        InternalServerConfig config, EventSink sink)
+        InternalConfig config, InternalStaticConfig sConfig, EventSink sink)
     {
         Socket = socket;
         AsyncLock = new object();
-        Buffer = new byte[config.BufferSize];
+        Buffer = new byte[sConfig.BufferSize];
         _currentLogs = new ConcurrentBag<string>();
 
         _logger = logger;
@@ -80,7 +80,7 @@ public class NetState : IDisposable
 
         ConnectedOn = DateTime.UtcNow;
 
-        UpdateRange = config.GlobalUpdateRange;
+        UpdateRange = sConfig.GlobalUpdateRange;
 
         _sink.InvokeNetStateAdded(new NetStateAddedEventArgs(this));
     }

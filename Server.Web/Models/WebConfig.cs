@@ -2,8 +2,10 @@
 
 namespace Server.Web.Models;
 
-public class WebConfig : IConfig
+public class WebConfig : IStaticConfig
 {
     public bool ShouldConcat { get; set; }
-    public WebConfig() => ShouldConcat = true;
+
+    public WebConfig() =>
+        ShouldConcat = true;
 }

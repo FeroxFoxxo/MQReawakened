@@ -25,10 +25,4 @@ public static class NetStateExtensions
 
         return player != null;
     }
-
-    public static void SendUpdatedInventory(this NetState state)
-    {
-        var character = state.Get<Player>().GetCurrentCharacter();
-        state.SendXt("ip", character.Data.Inventory.ToString().Replace('>', '|'), false);
-    }
 }

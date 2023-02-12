@@ -7,14 +7,14 @@ namespace Server.Reawakened.XMLs.Bundles;
 
 public class MiscTextDictionary : LocalizationHandler, IBundledXml
 {
+    public string BundleName => "MiscTextDict_en-US";
+
     public Dictionary<int, string> LocalizationDict;
 
     public MiscTextDictionary() : base(null)
     {
     }
-
-    public string BundleName => "MiscTextDict_en-US";
-
+    
     public void InitializeVariables()
     {
         LocalizationDict = new Dictionary<int, string>();

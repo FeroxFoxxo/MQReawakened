@@ -13,17 +13,7 @@ public class InventoryModel
         var sb = new SeparatedStringBuilder('>');
 
         foreach (var item in Items)
-            sb.Append(GetItem(item));
-
-        return sb.ToString();
-    }
-
-    public static string GetItem(KeyValuePair<int, ItemModel> item)
-    {
-        var sb = new SeparatedStringBuilder('{');
-
-        //sb.Append(item.Key);
-        sb.Append(item.Value);
+            sb.Append(item.Value);
 
         return sb.ToString();
     }

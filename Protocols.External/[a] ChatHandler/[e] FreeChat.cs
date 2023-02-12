@@ -58,8 +58,7 @@ public class FreeChat : ExternalProtocol
                         }
 
                         character.AddItem(item, amount);
-
-                        NetState.SendUpdatedInventory();
+                        character.SendUpdatedInventory(NetState, false);
 
                         Logger.LogInformation(
                             "{CharacterId} received {ItemName} x{Amount}",

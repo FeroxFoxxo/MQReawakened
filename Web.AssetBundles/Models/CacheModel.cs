@@ -10,12 +10,12 @@ public class CacheModel
     public int TotalFoundCaches { get; set; }
     public int TotalUnknownCaches { get; set; }
 
-    public Dictionary<string, string> FoundCaches { get; set; }
+    public Dictionary<string, List<string>> FoundCaches { get; set; }
     public Dictionary<string, string> UnknownCaches { get; set; }
 
     public CacheModel(BuildAssetList buildAssetList, AssetBundleConfig config)
     {
-        FoundCaches = new Dictionary<string, string>();
+        FoundCaches = new Dictionary<string, List<string>>();
         UnknownCaches = new Dictionary<string, string>();
 
         _assetDictionary = buildAssetList.InternalAssets.Values
@@ -29,9 +29,16 @@ public class CacheModel
         foreach (var cache in caches)
         {
             if (_assetDictionary.ContainsKey(cache.Key!))
-                FoundCaches.Add(cache.Key, cache.Value);
+            {
+                if (!FoundCaches.ContainsKey(cache.Key))
+                    FoundCaches.Add(cache.Key, new List<string>());
+
+                FoundCaches[cache.Key].Add(cache.Value);
+            }
             else
+            {
                 UnknownCaches.Add(cache.Key, cache.Value);
+            }
         }
 
         TotalAssetDictionaryFiles = _assetDictionary.Count;

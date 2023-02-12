@@ -20,9 +20,10 @@ public class CreateCharacter : ExternalProtocol
 
     public UserInfoHandler UserInfoHandler { get; set; }
     public NameGenSyllables NameGenSyllables { get; set; }
-    public ServerConfig ServerConfig { get; set; }
+    public ServerStaticConfig ServerConfig { get; set; }
     public LevelHandler LevelHandler { get; set; }
     public WorldGraph WorldGraph { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
     public ILogger<CreateCharacter> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -65,6 +66,16 @@ public class CreateCharacter : ExternalProtocol
                 Data = characterData,
                 Level = WorldGraph.ClockTowerId
             };
+
+            var welcomeQuests = QuestCatalog.GetQuestLineQuests(QuestCatalog.GetQuestLineData(139));
+            foreach(var quest in welcomeQuests)
+            {
+                if (quest.Tribe == tribe)
+                {
+                    model.AddQuest(quest, true);
+                    break;
+                }
+            }
 
             player.AddCharacter(model);
 
