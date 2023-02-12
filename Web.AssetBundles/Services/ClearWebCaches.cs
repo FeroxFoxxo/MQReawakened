@@ -17,7 +17,8 @@ public class ClearWebCaches : IService
     private readonly StartGame _game;
     private readonly ILogger<ClearWebCaches> _logger;
     private readonly EventSink _sink;
-    public readonly BuildAssetList BuildAssetList;
+    private readonly StartGame _game;
+    private readonly BuildAssetList _buildAssetList;
 
     public ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleConfig config,
         ServerConsole console, EventSink sink, StartGame game, BuildAssetList buildAssetList)
