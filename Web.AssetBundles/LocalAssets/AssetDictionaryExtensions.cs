@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using System.Linq;
 using Web.AssetBundles.Models;
 using Web.AssetBundles.Services;
 
@@ -13,22 +14,36 @@ public static class AssetDictionaryExtensions
 
         foreach (var modifier in config.AssetModifiers)
         {
-            foreach (var storedAsset in assets.Keys.Where(a => a.EndsWith(modifier)))
+            foreach (var oldAsset in assets.Keys.Where(a => a.EndsWith(modifier)))
             {
-                var assetName = storedAsset[..^modifier.Length];
-
-                if (assets.ContainsKey(assetName))
-                    continue;
-
-                var asset = assets[storedAsset].DeepCopy();
-                asset.Name = assetName;
-
-                assetsToAdd.Add(assetName, asset);
+                var assetName = oldAsset[..^modifier.Length];
+                assetsToAdd.AddChangedNameToDict(assetName, assets[oldAsset]);
             }
         }
 
-        foreach (var asset in assetsToAdd)
+        foreach (var replacement in config.AssetRenames)
+        {
+            foreach (var oldAsset in assets.Keys.Where(a => a.Contains(replacement.Key)))
+            {
+                var assetName = oldAsset.Replace(replacement.Key, replacement.Value);
+                assetsToAdd.AddChangedNameToDict(assetName, assets[oldAsset]);
+            }
+        }
+
+        foreach (var asset in assetsToAdd
+                     .Where(asset => !assets.ContainsKey(asset.Key)))
             assets.Add(asset.Key, asset.Value);
+    }
+
+    public static void AddChangedNameToDict(this Dictionary<string, InternalAssetInfo> assets, string assetName, InternalAssetInfo oldAsset)
+    {
+        if (assets.ContainsKey(assetName))
+            return;
+
+        var asset = oldAsset.DeepCopy();
+        asset.Name = assetName;
+
+        assets.Add(assetName, asset);
     }
 
     public static void AddLocalXmlFiles(this Dictionary<string, InternalAssetInfo> assets,

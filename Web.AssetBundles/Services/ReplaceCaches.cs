@@ -81,7 +81,8 @@ public class ReplaceCaches : IService
 
                 bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
 
-                File.Copy(asset.Path, cache.Value, true);
+                foreach (var cachePath in cache.Value)
+                    File.Copy(asset.Path, cachePath, true);
 
                 bar.TickBar();
             }

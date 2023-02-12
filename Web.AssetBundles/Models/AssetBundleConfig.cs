@@ -35,6 +35,7 @@ public class AssetBundleConfig : IConfig
 
     public string[] ForceLocalAsset { get; set; }
     public string[] AssetModifiers { get; set; }
+    public Dictionary<string, string> AssetRenames { get; set; }
 
     public bool UseCacheReplacementScheme { get; set; }
 
@@ -66,6 +67,13 @@ public class AssetBundleConfig : IConfig
         Message = "Loading Asset Bundles";
         DefaultWebPlayerCacheLocation = "AppData/LocalLow/Unity/WebPlayer/Cache";
         AssetModifiers = new[] { "_nomesh" };
+
+        AssetRenames = new Dictionary<string, string>
+        {
+            // UNKNOWN
+            { "WelcomeGamePopup", "NotificationNoMailPopup" },
+            { "FX_GiftBoxconfettis", "FX_GiftBoxConfettis" }
+        };
 
         PublishConfigKey = "unity.game.publishconfig";
         PublishConfigVgmtKey = "unity.game.vgmt.publishconfig";
