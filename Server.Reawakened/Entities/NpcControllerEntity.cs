@@ -73,9 +73,9 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             return;
         }
 
-        var status = TryGetQuest(character, Quests, out var model);
+        var status = TryGetQuest(character, Quests, out var _);
 
-        if (model == null || status == NPCController.NPCStatus.Unknown)
+        if (status == NPCController.NPCStatus.Unknown)
         {
             if (Description.Status != NPCController.NPCStatus.Unknown)
                 netState.SendXt("nt", Id, (int)Description.Status, 0);
@@ -83,6 +83,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         else
         {
             netState.SendXt("nt", Id, (int)status, 0);
+            Logger.LogDebug("Npc: {n} - {s}", NpcName, status);
         }
     }
 
@@ -96,8 +97,17 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             if (!character.Data.HasDiscoveredTribe(quest.Tribe))
                 return NPCController.NPCStatus.QuestUnavailable;
 
-            if (quest.LevelRequired > character.Data.GlobalLevel)
+            if (!character.HasPreviousQuests(quest))
+            {
+                outQuest = GetQuestStatusModel(quest);
                 return NPCController.NPCStatus.QuestUnavailable;
+            }
+
+            if (quest.LevelRequired > character.Data.GlobalLevel)
+            {
+                outQuest = GetQuestStatusModel(quest);
+                return NPCController.NPCStatus.QuestUnavailable;
+            }
 
             if (character.HasQuest(quest.Id))
             {
@@ -124,8 +134,17 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                 if (!character.Data.HasDiscoveredTribe(lineQuest.Tribe))
                     return NPCController.NPCStatus.QuestUnavailable;
 
-                if (lineQuest.LevelRequired > character.Data.GlobalLevel)
+                if (!character.HasPreviousQuests(lineQuest))
+                {
+                    outQuest = GetQuestStatusModel(lineQuest);
                     return NPCController.NPCStatus.QuestUnavailable;
+                }
+
+                if (lineQuest.LevelRequired > character.Data.GlobalLevel)
+                {
+                    outQuest = GetQuestStatusModel(lineQuest);
+                    return NPCController.NPCStatus.QuestUnavailable;
+                }
 
                 if (character.HasQuest(lineQuest.Id))
                 {
