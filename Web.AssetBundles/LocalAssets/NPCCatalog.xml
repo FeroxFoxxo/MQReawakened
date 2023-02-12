@@ -3,10 +3,10 @@
 <NPCCatalog>
     <npc id="1" objectId="937" nameId="10807" />
     <npc id="2" objectId="213205" nameId="21743849" />
-    <npc id="3" objectId="98648" nameId="166249430" vendorType="10" />
-    <npc id="4" objectId="243" nameId="5747" vendorType="2" />
-    <npc id="5" objectId="244" nameId="5815" vendorType="6" />
-    <npc id="6" objectId="343" nameId="10990" vendorType="7" />
+    <npc id="3" objectId="98648" nameId="166249430" vendorType="10" vendorId="60" />
+    <npc id="4" objectId="243" nameId="5747" vendorType="2" vendorId="61" />
+    <npc id="5" objectId="244" nameId="5815" vendorType="6" vendorId="63" />
+    <npc id="6" objectId="343" nameId="10990" vendorType="7" vendorId="64" />
 
     <npc id="7" objectId="741" nameId="991" />
     <npc id="8" objectId="2611" nameId="11530" />
