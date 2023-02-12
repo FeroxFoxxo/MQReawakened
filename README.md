@@ -48,7 +48,7 @@ If you have anything you wish to report, please submit an issue through [the rep
 
 ### Licensed (Open Source) Works
 
-- <a href="https://github.com/AssetRipper/AssetRipper/">AssetRipper.IO.Endian</a> - Cache binary read/write utility [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETRIPPER)
+- <a href="https://github.com/AssetRipper/AssetRipper/">AssetRipper.IO.Endian</a> - Binary read/write utility [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETRIPPER)
 - <a href="https://github.com/Perfare/AssetStudio/">AssetStudio</a> - Tool for exploring the original assetbundles [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETSTUDIO)
 - <a href="https://github.com/ServUO/ServUO/">ServUO</a> - Server emulator used as a base, written in C# .NET [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Base/Licences/LICENSE_SERVUO)
 - <a href="https://github.com/apache/thrift/">Thrift</a> - Point-to-point RPC implementation [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Reawakened/Licences/LICENSE_THRIFT)
