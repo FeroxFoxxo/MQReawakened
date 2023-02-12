@@ -5,7 +5,6 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
-using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Levels.Services;
@@ -19,15 +18,15 @@ namespace Web.Launcher.Services;
 public class EditCharacter : IService
 {
     private readonly AccountHandler _accountHandler;
+    private readonly ServerConfig _config;
     private readonly ServerConsole _console;
+    private readonly StartGame _game;
+    private readonly NetStateHandler _handler;
+    private readonly LevelHandler _levelHandler;
     private readonly ILogger<EditCharacter> _logger;
     private readonly EventSink _sink;
     private readonly UserInfoHandler _userInfoHandler;
     private readonly WorldGraph _worldGraph;
-    private readonly LevelHandler _levelHandler;
-    private readonly ServerConfig _config;
-    private readonly StartGame _game;
-    private readonly NetStateHandler _handler;
 
     public EditCharacter(ServerConsole console, EventSink sink,
         ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
@@ -130,8 +129,10 @@ public class EditCharacter : IService
 
         character.DiscoverTribe(levelInfo);
 
-        _logger.LogInformation("Successfully set character {Id}'s level to {LevelId} '{InGameLevelName}' ({LevelName})!",
-            character.Data.CharacterId, levelId, levelInfo.InGameName, levelInfo.Name);
+        _logger.LogInformation(
+            "Successfully set character {Id}'s level to {LevelId} '{InGameLevelName}' ({LevelName})!",
+            character.Data.CharacterId, levelId, levelInfo.InGameName, levelInfo.Name
+        );
 
         if (_handler.IsPlayerOnline(user.UserId, out var netState, out var player))
             player.SendLevelChange(netState, _levelHandler, _worldGraph);

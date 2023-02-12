@@ -27,18 +27,21 @@ public static class RectExtensions
                 var vector6 = polygon[i];
                 x = vector6.x;
             }
+
             var vector7 = polygon[i];
             if (vector7.x > x2)
             {
                 var vector8 = polygon[i];
                 x2 = vector8.x;
             }
+
             var vector9 = polygon[i];
             if (vector9.y < y)
             {
                 var vector10 = polygon[i];
                 y = vector10.y;
             }
+
             var vector11 = polygon[i];
             if (vector11.y > y2)
             {
@@ -46,6 +49,7 @@ public static class RectExtensions
                 y2 = vector12.y;
             }
         }
+
         return new RectModel(x, y, x2 - x, y2 - y);
     }
 }

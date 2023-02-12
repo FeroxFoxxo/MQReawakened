@@ -13,7 +13,7 @@ public class BouncerControllerModel : SyncedEntity<BouncerController>
 
         var bouncer = new Bouncer_SyncEvent(syncEvent);
         Level.SendSyncEvent(new Bouncer_SyncEvent(bouncer.TargetID, bouncer.TriggerTime, false), player);
-        
+
         netState.SendSyncEventToPlayer(bouncer);
     }
 }

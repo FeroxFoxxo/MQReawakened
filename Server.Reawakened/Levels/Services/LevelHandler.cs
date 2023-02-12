@@ -17,10 +17,10 @@ public class LevelHandler : IService
     private readonly ServerConfig _config;
     private readonly Dictionary<int, Level> _levels;
     private readonly ILogger<LevelHandler> _logger;
-    private readonly EventSink _sink;
-    private readonly WorldGraph _worldGraph;
     private readonly ReflectionUtils _reflection;
     private readonly IServiceProvider _services;
+    private readonly EventSink _sink;
+    private readonly WorldGraph _worldGraph;
 
     public Dictionary<string, Type> ProcessableData;
 
@@ -44,7 +44,7 @@ public class LevelHandler : IService
 
         ProcessableData = typeof(DataComponentAccessor).Assembly.GetServices<DataComponentAccessor>()
             .ToDictionary(x => x.Name, x => x);
-        
+
         foreach (var level in _levels.Values.Where(level => level.LevelInfo.LevelId != -1))
             level.DumpPlayersToLobby();
 
@@ -86,8 +86,9 @@ public class LevelHandler : IService
                 var xmlDocument = new XmlDocument();
                 xmlDocument.Load(levelInfoPath);
                 levelPlanes.LoadXmlDocument(xmlDocument);
-                
-                File.WriteAllText(levelDataPath, JsonSerializer.Serialize(levelPlanes, new JsonSerializerOptions { WriteIndented = true }));
+
+                File.WriteAllText(levelDataPath,
+                    JsonSerializer.Serialize(levelPlanes, new JsonSerializerOptions { WriteIndented = true }));
             }
             catch (NullReferenceException)
             {

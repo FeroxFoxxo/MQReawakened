@@ -14,7 +14,8 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
     public LevelHandler LevelHandler { get; set; }
     public ILogger<PortalControllerEntity> Logger { get; set; }
 
-    public override string[] GetInitData(NetState netState) => new []{ string.Empty };
+    public override string[] GetInitData(NetState netState) =>
+        new[] { string.Empty };
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
@@ -30,7 +31,7 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
         if (portal.EventDataList[0] is not int)
             throw new InvalidDataException($"Portal with id '{portal.EventDataList[0]}' could not be cast to int.");
 
-        var portalId = (int) portal.EventDataList[0];
+        var portalId = (int)portal.EventDataList[0];
 
         if (portalId == 0)
             portalId = Id;
@@ -56,13 +57,15 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
             else
             {
                 Logger.LogError("Could not find node for '{Old}' -> '{New}'.", currentLevel, newLevelId);
-                character.SetCharacterSpawn(portalId, portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID), Logger);
+                character.SetCharacterSpawn(portalId,
+                    portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID), Logger);
             }
-            
+
             character.Level = newLevelId;
 
             Logger.LogInformation("Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
-                                  "using portals {PortalId} to {NewPortalId}", character.Data.CharacterName, character.Data.CharacterId,
+                                  "using portals {PortalId} to {NewPortalId}", character.Data.CharacterName,
+                character.Data.CharacterId,
                 Level.LevelInfo.LevelId, Level.LevelInfo.InGameName, portalId, character.PortalId);
 
             player.SendLevelChange(netState, LevelHandler, WorldGraph);

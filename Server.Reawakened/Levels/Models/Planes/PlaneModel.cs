@@ -15,13 +15,14 @@ public class PlaneModel
         var id = int.Parse(colliderNode.Attributes!.GetNamedItem("id")!.Value!);
 
         var colliderList = (from XmlNode collider in colliderNode.ChildNodes
-                            where collider.Name == "vertex"
-                            select collider.Attributes! into vertex
-                            select new Vector2
-                            {
-                                x = Convert.ToSingle(vertex.GetNamedItem("x")!.Value),
-                                y = Convert.ToSingle(vertex.GetNamedItem("y")!.Value)
-                            }).ToList();
+            where collider.Name == "vertex"
+            select collider.Attributes!
+            into vertex
+            select new Vector2
+            {
+                x = Convert.ToSingle(vertex.GetNamedItem("x")!.Value),
+                y = Convert.ToSingle(vertex.GetNamedItem("y")!.Value)
+            }).ToList();
 
         if (!GameObjects.ContainsKey(id))
             return;

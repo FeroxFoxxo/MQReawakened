@@ -4,8 +4,8 @@ namespace Server.Reawakened.Levels.Models.Entities;
 
 public class StoredEntityModel
 {
-    public readonly Level Level;
     public readonly GameObjectModel GameObject;
+    public readonly Level Level;
     public readonly Microsoft.Extensions.Logging.ILogger Logger;
 
     public StoredEntityModel(GameObjectModel gameObject, Level level, Microsoft.Extensions.Logging.ILogger logger)

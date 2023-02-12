@@ -31,7 +31,7 @@ public static class AssetBuilderExtensions
         LauncherConfig config)
     {
         var filteredAssets = new Dictionary<string, InternalAssetInfo>();
-        
+
         foreach (var newAsset in assets)
         {
             if (!filteredAssets.ContainsKey(newAsset.Name))

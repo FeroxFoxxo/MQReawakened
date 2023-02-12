@@ -18,13 +18,12 @@ namespace Server.Reawakened.Levels;
 
 public class Level
 {
-    private readonly ILogger<LevelHandler> _logger;
-    private readonly ServerConfig _serverConfig;
-
     private readonly HashSet<int> _gameObjectIds;
-    public readonly Dictionary<int, NetState> Clients;
 
     private readonly LevelHandler _levelHandler;
+    private readonly ILogger<LevelHandler> _logger;
+    private readonly ServerConfig _serverConfig;
+    public readonly Dictionary<int, NetState> Clients;
 
     public LevelInfo LevelInfo { get; set; }
     public LevelPlanes LevelPlanes { get; set; }
@@ -147,13 +146,15 @@ public class Level
         if (defaultSpawn != null)
             spawnLocation ??= defaultSpawn;
         else
-            throw new InvalidDataException($"Could not find default spawn point in {LevelInfo.LevelId}, as there are none initialized!");
+            throw new InvalidDataException(
+                $"Could not find default spawn point in {LevelInfo.LevelId}, as there are none initialized!");
 
         character.Data.SpawnPositionX = spawnLocation.Position.X + spawnLocation.Scale.X / 2;
         character.Data.SpawnPositionY = spawnLocation.Position.Y + spawnLocation.Scale.Y / 2;
         character.Data.SpawnOnBackPlane = spawnLocation.Position.Z > 1;
 
-        _logger.LogDebug("Spawning {CharacterName} at object '{Object}' (portal '{Portal}' spawn '{SpawnPoint}') at '{NewLevel}'.",
+        _logger.LogDebug(
+            "Spawning {CharacterName} at object '{Object}' (portal '{Portal}' spawn '{SpawnPoint}') at '{NewLevel}'.",
             character.Data.CharacterName,
             spawnLocation.Id != 0 ? spawnLocation.Id : "DEFAULT",
             character.PortalId != 0 ? character.PortalId : "DEFAULT",
@@ -178,7 +179,7 @@ public class Level
                 currentClient.SendCharacterInfoData(newPlayer, CharacterInfoType.Lite, LevelInfo);
         }
     }
-    
+
     public void DumpPlayersToLobby()
     {
         foreach (var playerId in Clients.Keys)

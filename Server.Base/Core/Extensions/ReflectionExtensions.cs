@@ -5,7 +5,7 @@ namespace Server.Base.Core.Extensions;
 public static class ReflectionExtensions
 {
     private const BindingFlags Bindings = BindingFlags.Public | BindingFlags.Static |
-                                              BindingFlags.NonPublic | BindingFlags.Instance;
+                                          BindingFlags.NonPublic | BindingFlags.Instance;
 
     public static void SetField<T>(this T instance, string fieldName, object fieldValue)
     {

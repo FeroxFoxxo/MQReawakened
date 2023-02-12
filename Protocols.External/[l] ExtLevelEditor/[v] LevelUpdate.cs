@@ -12,7 +12,7 @@ namespace Protocols.External._l__ExtLevelEditor;
 public class LevelUpdate : ExternalProtocol
 {
     public override string ProtocolName => "lv";
-    
+
     public ILogger<LevelUpdate> Logger { get; set; }
     public LevelHandler LevelHandler { get; set; }
 
@@ -33,10 +33,8 @@ public class LevelUpdate : ExternalProtocol
 
         player.GetCurrentLevel(LevelHandler).SendCharacterInfo(player, NetState);
 
-        foreach(var npc in level.LevelEntities.GetEntities<NpcControllerEntity>())
-        {
+        foreach (var npc in level.LevelEntities.GetEntities<NpcControllerEntity>())
             npc.Value.SendNpcInfo(player.GetCurrentCharacter(), NetState);
-        }
     }
 
     private string GetGameObjectStore(Dictionary<int, List<BaseSyncedEntity>> entities)

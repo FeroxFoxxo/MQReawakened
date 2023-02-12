@@ -20,7 +20,7 @@ public class FastTravel : ExternalProtocol
 
         var regionId = int.Parse(message[5]);
         var levelId = int.Parse(message[6]);
-        
+
         var newLevelId = WorldGraph.GetDestinationFromPortal(regionId, levelId);
 
         character.Level = newLevelId;

@@ -7,8 +7,6 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using WorldGraphDefines;
-using static Analytics;
-using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -19,9 +17,8 @@ public static class CharacterExtensions
         if (characterData == null) return false;
 
         if (characterData.TribesDiscovered.TryGetValue(tribe, out var discovered))
-        {
-            if (discovered) return true;
-        }
+            if (discovered)
+                return true;
 
         return characterData.Allegiance == tribe;
     }
@@ -38,17 +35,17 @@ public static class CharacterExtensions
         player.CurrentCharacter = characterId;
         player.UserInfo.LastCharacterSelected = player.GetCurrentCharacter().Data.CharacterName;
     }
-    
+
     public static void AddCharacter(this Player player, CharacterModel characterData) =>
         player.UserInfo.Characters.Add(characterData.Data.CharacterId, characterData);
 
     public static void DeleteCharacter(this Player player, int id)
     {
         player.UserInfo.Characters.Remove(id);
-        
-        player.UserInfo.LastCharacterSelected = player.UserInfo.Characters.Count > 0 ?
-            player.UserInfo.Characters.First().Value.Data.CharacterName :
-            string.Empty;
+
+        player.UserInfo.LastCharacterSelected = player.UserInfo.Characters.Count > 0
+            ? player.UserInfo.Characters.First().Value.Data.CharacterName
+            : string.Empty;
     }
 
     public static void LevelUp(this CharacterDataModel characterData, int level)
@@ -65,7 +62,7 @@ public static class CharacterExtensions
     private static int GetHealthForLevel(int level) => (level - 1) * 270 + 81;
 
     private static int GetReputationForLevel(int level) => (Convert.ToInt32(Math.Pow(level, 2)) - (level - 1)) * 500;
-    
+
     public static bool DiscoverTribe(this CharacterModel character, LevelInfo lInfo)
     {
         if (character.Data.TribesDiscovered.ContainsKey(lInfo.Tribe))
@@ -90,7 +87,8 @@ public static class CharacterExtensions
         state.SendXt("ca", charData.Cash, charData.NCash);
     }
 
-    public static void SendLevelChange(this Player player, NetState netState, LevelHandler levelHandler, WorldGraphXML worldGraph)
+    public static void SendLevelChange(this Player player, NetState netState, LevelHandler levelHandler,
+        WorldGraphXML worldGraph)
     {
         var error = string.Empty;
         var levelName = string.Empty;
@@ -126,11 +124,13 @@ public static class CharacterExtensions
         return sb.ToString();
     }
 
-    public static void SetCharacterSpawn(this CharacterModel model, int portalId, int spawnId, Microsoft.Extensions.Logging.ILogger logger)
+    public static void SetCharacterSpawn(this CharacterModel model, int portalId, int spawnId,
+        Microsoft.Extensions.Logging.ILogger logger)
     {
         model.PortalId = portalId;
         model.SpawnPoint = spawnId;
-        logger.LogDebug("Set spawn of '{CharacterName}' to portal {PortalId} spawn {SpawnId}", model.Data.CharacterName, portalId, spawnId);
+        logger.LogDebug("Set spawn of '{CharacterName}' to portal {PortalId} spawn {SpawnId}", model.Data.CharacterName,
+            portalId, spawnId);
     }
 
     public static void AddQuest(this CharacterModel model, QuestDescription quest, bool setActive)
@@ -159,10 +159,9 @@ public static class CharacterExtensions
     {
         if (model.Data.QuestLog.Count == 0) return false;
 
-        foreach(var quest in model.Data.QuestLog)
-        {
-            if (quest.Id == questId) return true;
-        }
+        foreach (var quest in model.Data.QuestLog)
+            if (quest.Id == questId)
+                return true;
 
         return false;
     }
@@ -172,12 +171,12 @@ public static class CharacterExtensions
         outQuest = null;
         if (model.Data.QuestLog.Count == 0) return false;
 
-        foreach(var quest in model.Data.QuestLog)
+        foreach (var quest in model.Data.QuestLog)
         {
             if (quest.Id == questId)
             {
                 outQuest = quest;
-                 return true;
+                return true;
             }
         }
 
@@ -192,9 +191,7 @@ public static class CharacterExtensions
         {
             if (prevId.Key == 0) continue;
             if (!model.Data.CompletedQuests.Contains(prevId.Key))
-            {
                 return false;
-            }
         }
 
         return true;

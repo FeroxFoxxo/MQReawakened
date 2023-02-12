@@ -20,32 +20,32 @@ public class LevelPlanes
         Planes = planeNames.ToDictionary(name => name, name => new PlaneModel());
 
         foreach (XmlNode data in doc.FirstChild!.NextSibling!)
-            foreach (XmlNode planeNode in data.ChildNodes)
+        foreach (XmlNode planeNode in data.ChildNodes)
+        {
+            if (planeNode.Name != "Plane")
+                continue;
+
+            var planeName = planeNode.Attributes!.GetNamedItem("name")!.Value!;
+            var plane = Planes[planeName];
+
+            foreach (XmlNode gameObject in planeNode.ChildNodes)
             {
-                if (planeNode.Name != "Plane")
+                if (gameObject.Name != "GameObject")
                     continue;
 
-                var planeName = planeNode.Attributes!.GetNamedItem("name")!.Value!;
-                var plane = Planes[planeName];
-
-                foreach (XmlNode gameObject in planeNode.ChildNodes)
+                foreach (XmlNode gameObjectAttributes in gameObject.ChildNodes)
                 {
-                    if (gameObject.Name != "GameObject")
-                        continue;
-
-                    foreach (XmlNode gameObjectAttributes in gameObject.ChildNodes)
+                    switch (data.Name)
                     {
-                        switch (data.Name)
-                        {
-                            case "LoadUnit":
-                                plane.LoadGameObjectXml(gameObjectAttributes);
-                                break;
-                            case "Collider":
-                                plane.LoadColliderXml(gameObjectAttributes);
-                                break;
-                        }
+                        case "LoadUnit":
+                            plane.LoadGameObjectXml(gameObjectAttributes);
+                            break;
+                        case "Collider":
+                            plane.LoadColliderXml(gameObjectAttributes);
+                            break;
                     }
                 }
             }
+        }
     }
 }

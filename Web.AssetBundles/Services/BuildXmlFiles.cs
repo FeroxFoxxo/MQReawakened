@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
-using Server.Base.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using System.Text;
@@ -17,9 +16,9 @@ namespace Web.AssetBundles.Services;
 public class BuildXmlFiles : IService, IInjectModules
 {
     private readonly AssetBundleConfig _config;
-    private readonly ServerConfig _sConfig;
     private readonly AssetEventSink _eventSink;
     private readonly ILogger<BuildXmlFiles> _logger;
+    private readonly ServerConfig _sConfig;
     private readonly IServiceProvider _services;
 
     public readonly Dictionary<string, string> XmlFiles;
@@ -50,12 +49,12 @@ public class BuildXmlFiles : IService, IInjectModules
             .Select(x => x.Value)
             .Where(x => x.Type is AssetInfo.TypeAsset.XML or AssetInfo.TypeAsset.Level)
             .ToArray();
-        
+
         GetDirectory.OverwriteDirectory(_config.XmlSaveDirectory);
         GetDirectory.OverwriteDirectory(_sConfig.LevelSaveDirectory);
 
         var bundles = _services.GetRequiredServices<IBundledXml>(Modules).ToDictionary(x => x.BundleName, x => x);
-        
+
         foreach (var bundle in bundles)
             bundle.Value.InitializeVariables();
 
@@ -87,10 +86,12 @@ public class BuildXmlFiles : IService, IInjectModules
                             if (bundle.GetType().IsAssignableTo(typeof(ILocalizationXml)))
                             {
                                 var locXmlBundle = (ILocalizationXml)bundle;
-                                var localizationAsset = assets.FirstOrDefault(x => string.Equals(x.Name, locXmlBundle.LocalizationName, StringComparison.OrdinalIgnoreCase));
+                                var localizationAsset = assets.FirstOrDefault(x =>
+                                    string.Equals(x.Name, locXmlBundle.LocalizationName,
+                                        StringComparison.OrdinalIgnoreCase));
 
                                 var loctext = GetXmlData(localizationAsset, bar);
-                                locXmlBundle.LoadLocalization(loctext);
+                                locXmlBundle.ReadLocalization(loctext);
                             }
 
                             var xml = new XmlDocument();
@@ -106,12 +107,13 @@ public class BuildXmlFiles : IService, IInjectModules
                             bar.SetMessage($"Loaded {asset.Name} From Disk");
                             bundles.Remove(asset.Name);
                         }
+
                         break;
                     default:
                         bar.SetMessage($"Could not find a way of handling a {asset.Type} asset type. Skipping!");
                         continue;
                 }
-                
+
                 var path = Path.Join(directory, fileName);
 
                 bar.SetMessage($"Writing file to {path}");
@@ -126,7 +128,8 @@ public class BuildXmlFiles : IService, IInjectModules
 
         if (bundles.Count > 0)
         {
-            _logger.LogCritical("Could not find XML bundle for {Bundles}, returning...", string.Join(" ,", bundles.Keys));
+            _logger.LogCritical("Could not find XML bundle for {Bundles}, returning...",
+                string.Join(" ,", bundles.Keys));
             _logger.LogCritical("Possible XML files:");
 
             foreach (var foundAsset in assets)

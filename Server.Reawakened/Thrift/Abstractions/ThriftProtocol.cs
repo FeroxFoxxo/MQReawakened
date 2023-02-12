@@ -4,10 +4,10 @@ namespace Server.Reawakened.Thrift.Abstractions;
 
 public class ThriftProtocol
 {
-    public int SequenceId;
-    public string Name;
     public TProtocol InProtocol;
+    public string Name;
     public TProtocol OutProtocol;
+    public int SequenceId;
 
     public ThriftProtocol(TProtocol inProtocol, TProtocol outProtocol)
     {

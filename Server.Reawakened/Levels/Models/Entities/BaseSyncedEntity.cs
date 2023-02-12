@@ -16,14 +16,20 @@ public abstract class BaseSyncedEntity
     public Vector3Model Scale => StoredEntity.GameObject.ObjectInfo.Scale;
 
     public abstract string Name { get; }
-    
-    public virtual void InitializeEntity() { }
+
+    public virtual void InitializeEntity()
+    {
+    }
 
     public virtual string[] GetInitData(NetState netState) => Array.Empty<string>();
 
-    public virtual void SendDelayedData(NetState netState) { }
+    public virtual void SendDelayedData(NetState netState)
+    {
+    }
 
-    public virtual void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, NetState netState) { }
+    public virtual void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, NetState netState)
+    {
+    }
 
     public virtual void RunSyncedEvent(SyncEvent syncEvent, NetState netState) =>
         StoredEntity.Logger.LogError("The synchronized entity {Id} has no override for events! Skipping...", Id);

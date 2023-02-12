@@ -1,5 +1,4 @@
-﻿using A2m.Server;
-using Server.Base.Core.Extensions;
+﻿using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using System.Xml;
 
@@ -12,7 +11,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
     public void InitializeVariables()
     {
         _rootXmlName = BundleName;
-		_hasLocalizationDict = true;
+        _hasLocalizationDict = true;
 
         this.SetField<VendorCatalogsXML>("_levelUpCatalogs", new Dictionary<int, List<int>>());
         this.SetField<VendorCatalogsXML>("_vendorCatalogs", new Dictionary<int, List<int>>());

@@ -12,7 +12,7 @@ public class ChooseCharacter : ExternalProtocol
 
     public ILogger<ChooseCharacter> Logger { get; set; }
     public LevelHandler LevelHandler { get; set; }
-    
+
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
@@ -26,7 +26,7 @@ public class ChooseCharacter : ExternalProtocol
                 name, player.UserInfo.UserId);
             return;
         }
-        
+
         player.SendStartPlay(character, NetState, LevelHandler, Logger);
     }
 }

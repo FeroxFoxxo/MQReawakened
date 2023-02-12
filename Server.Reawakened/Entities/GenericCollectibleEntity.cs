@@ -7,8 +7,8 @@ namespace Server.Reawakened.Entities;
 
 public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
 {
-    public int Value;
     public bool Collected;
+    public int Value;
 
     public override void InitializeEntity()
     {
@@ -23,7 +23,8 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
         };
     }
 
-    public override string[] GetInitData(NetState netState) => Collected ? new[] { "0" } : Array.Empty<string>();
+    public override string[] GetInitData(NetState netState) =>
+        Collected ? new[] { "0" } : Array.Empty<string>();
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {

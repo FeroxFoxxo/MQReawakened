@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
-using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
@@ -15,14 +14,14 @@ namespace Web.AssetBundles.Services;
 
 public class ReplaceCaches : IService
 {
+    private readonly IHostApplicationLifetime _appLifetime;
     private readonly BuildAssetList _buildAssetList;
     private readonly AssetBundleConfig _config;
     private readonly ServerConsole _console;
     private readonly StartGame _game;
-    private readonly EventSink _sink;
 
     private readonly ILogger<ReplaceCaches> _logger;
-    private readonly IHostApplicationLifetime _appLifetime;
+    private readonly EventSink _sink;
 
     public ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList, AssetBundleConfig config,
         ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime)
@@ -69,8 +68,11 @@ public class ReplaceCaches : IService
 
         var cacheModel = new CacheModel(_buildAssetList, _config);
 
-        _logger.LogInformation("Loaded {NumAssetDict} Assets With {Caches} Caches ({TotalFiles} Total Files, {Unknown} Unidentified).",
-            cacheModel.TotalAssetDictionaryFiles, cacheModel.TotalFoundCaches, cacheModel.TotalCachedAssetFiles, cacheModel.TotalUnknownCaches);
+        _logger.LogInformation(
+            "Loaded {NumAssetDict} Assets With {Caches} Caches ({TotalFiles} Total Files, {Unknown} Unidentified).",
+            cacheModel.TotalAssetDictionaryFiles, cacheModel.TotalFoundCaches, cacheModel.TotalCachedAssetFiles,
+            cacheModel.TotalUnknownCaches
+        );
 
         using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", _logger, _config))
         {
@@ -81,14 +83,17 @@ public class ReplaceCaches : IService
                 bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
 
                 File.Copy(asset.Path, cache.Value, true);
-                
+
                 bar.TickBar();
             }
         }
-        
+
         Directory.CreateDirectory(_config.AssetSaveDirectory);
         var replacementLogPath = Path.Join(_config.AssetSaveDirectory, "replacedAssets.json");
-        File.WriteAllText(replacementLogPath, JsonSerializer.Serialize(cacheModel, new JsonSerializerOptions() { WriteIndented = true }));
+        File.WriteAllText(
+            replacementLogPath,
+            JsonSerializer.Serialize(cacheModel, new JsonSerializerOptions { WriteIndented = true })
+        );
 
         _logger.LogInformation("Logged Cache Replacements To {ReplacementFile}", replacementLogPath);
 

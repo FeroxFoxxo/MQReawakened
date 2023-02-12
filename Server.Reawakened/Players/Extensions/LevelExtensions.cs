@@ -40,7 +40,8 @@ public static class LevelExtensions
     public static int GetLevelId(this Player player) =>
         player.CurrentLevel != null ? player.CurrentLevel.LevelInfo.LevelId : -1;
 
-    public static void SendStartPlay(this Player player, CharacterModel character, NetState state, LevelHandler levelHandler, Microsoft.Extensions.Logging.ILogger logger)
+    public static void SendStartPlay(this Player player, CharacterModel character, NetState state,
+        LevelHandler levelHandler, Microsoft.Extensions.Logging.ILogger logger)
     {
         character.SetCharacterSpawn(character.PortalId, 0, logger);
         character.Data.SetPlayerData(player);
@@ -48,7 +49,8 @@ public static class LevelExtensions
         player.SendPlayerData(CharacterInfoType.Detailed, state, levelHandler);
     }
 
-    public static void SendPlayerData(this Player player, CharacterInfoType type, NetState state, LevelHandler levelHandler)
+    public static void SendPlayerData(this Player player, CharacterInfoType type, NetState state,
+        LevelHandler levelHandler)
     {
         var level = player.GetCurrentLevel(levelHandler);
         state.SendCharacterInfoData(player, type, level?.LevelInfo);
@@ -69,7 +71,8 @@ public static class LevelExtensions
         state.SendXml("uER",
             $"<u i='{player.UserInfo.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.PlayerId}'><n>{account.Username}</n></u>");
 
-    public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type, LevelInfo levelInfo)
+    public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type,
+        LevelInfo levelInfo)
     {
         var character = player.GetCurrentCharacter();
 
@@ -84,5 +87,4 @@ public static class LevelExtensions
         state.SendXt("ci", player.UserInfo.UserId.ToString(), info, player.PlayerId,
             levelInfo.Name);
     }
-
 }

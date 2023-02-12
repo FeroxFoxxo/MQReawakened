@@ -1,7 +1,6 @@
 ﻿using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Network.Extensions;
-using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -13,7 +12,8 @@ public static class NetStateExtensions
         state.SendXt("ss", syncEventMsg);
     }
 
-    public static bool IsPlayerOnline(this NetStateHandler handler, int userId, out NetState netState, out Player player)
+    public static bool IsPlayerOnline(this NetStateHandler handler, int userId, out NetState netState,
+        out Player player)
     {
         netState = handler.FindUser(userId);
         player = null;
@@ -31,5 +31,4 @@ public static class NetStateExtensions
         var character = state.Get<Player>().GetCurrentCharacter();
         state.SendXt("ip", character.Data.Inventory.ToString().Replace('>', '|'), false);
     }
-
 }

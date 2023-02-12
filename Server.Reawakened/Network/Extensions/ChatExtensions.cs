@@ -1,8 +1,6 @@
 ﻿using A2m.Server;
 using Server.Base.Network;
 using Server.Reawakened.Levels;
-using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Network.Extensions;
 

@@ -1,43 +1,22 @@
-﻿using A2m.Server;
-using Server.Base.Core.Extensions;
-using Server.Reawakened.XMLs.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Models;
 using System.Xml;
-using static Analytics;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class NpcDescription
+public class NpcCatalog : IBundledXml
 {
-    public readonly int Id;
-    public readonly int ObjectId;
-    public readonly int NameTextId;
-    public readonly NPCController.NPCStatus Status;
-
-    public NpcDescription(int id, int objectId, int nameTextId, NPCController.NPCStatus status)
-    {
-        Id = id;
-        ObjectId = objectId;
-        NameTextId = nameTextId;
-        Status = status;
-    }
-}
-
-public class NPCCatalog : IBundledXml
-{
+    public Dictionary<int, NpcDescription> CachedNpcDict;
     public string BundleName => "NPCCatalog";
 
-    public Dictionary<int, NpcDescription> _cacheNpcs;
-    public Dictionary<int, NpcDescription> _cacheNpcByObjectId;
+    public void InitializeVariables() =>
+        CachedNpcDict = new Dictionary<int, NpcDescription>();
 
-    public NpcDescription GetNpc(int id) => _cacheNpcs.TryGetValue(id, out var npc) ? npc : null;
-    public NpcDescription GetNpcByObjectId(int id) => _cacheNpcByObjectId.TryGetValue(id, out var npc) ? npc : null;
+    public void EditXml(XmlDocument xml)
+    {
+    }
 
-    private void ReadDescriptionXml(string xml)
+    public void ReadXml(string xml)
     {
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
@@ -45,62 +24,45 @@ public class NPCCatalog : IBundledXml
         foreach (XmlNode childNode in xmlDocument.ChildNodes)
         {
             if (childNode.Name != "NPCCatalog") continue;
-            
+
             foreach (XmlNode childNode2 in childNode.ChildNodes)
             {
-                var id = -1;
                 var objectId = -1;
                 var nameTextId = -1;
                 var status = NPCController.NPCStatus.Unknown;
-                    
+
                 if (childNode2.Name == "npc")
-                {
                     foreach (XmlAttribute item in childNode2.Attributes!)
                     {
-                        switch(item.Name)
+                        switch (item.Name)
                         {
-                            case "id":
-                                id = int.Parse(item.Value);
-                                continue;
-
-                            case "objectid":
+                            case "objectId":
                                 objectId = int.Parse(item.Value);
                                 continue;
 
-                            case "nameid":
+                            case "nameId":
                                 nameTextId = int.Parse(item.Value);
                                 continue;
 
-                            case "vendortype":
+                            case "vendorType":
                                 status = (NPCController.NPCStatus)int.Parse(item.Value);
                                 continue;
                         }
                     }
-                }
 
-                if (!_cacheNpcs.ContainsKey(id))
-                {
-                    var npcDesc = new NpcDescription(id, objectId, nameTextId, status);
-                    _cacheNpcs.Add(id, npcDesc);
-                    _cacheNpcByObjectId.Add(objectId, npcDesc);
-                }
+                if (CachedNpcDict.ContainsKey(objectId))
+                    continue;
+
+                var npcDesc = new NpcDescription(objectId, nameTextId, status);
+                CachedNpcDict.Add(objectId, npcDesc);
             }
         }
     }
 
-    public void InitializeVariables()
-    {
-        _cacheNpcs = new Dictionary<int, NpcDescription>();
-        _cacheNpcByObjectId = new Dictionary<int, NpcDescription>();
-    }
-
-    public void EditXml(XmlDocument xml)
-    {
-    }
-
-    public void ReadXml(string xml) => ReadDescriptionXml(xml);
-
     public void FinalizeBundle()
     {
     }
+
+    public NpcDescription GetNpc(int id) =>
+        CachedNpcDict.TryGetValue(id, out var npc) ? npc : null;
 }

@@ -1,34 +1,29 @@
-﻿using Server.Base.Core.Abstractions;
+﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Services;
+using Server.Base.Core.Abstractions;
+using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
-using Server.Base.Core.Helpers;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
-using Server.Reawakened.Configs;
-using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models;
-using Server.Reawakened.Players.Services;
-using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Bundles;
-using A2m.Server;
-using System;
-using Server.Base.Logging;
 using Server.Base.Network.Services;
 using Server.Reawakened.Network.Extensions;
-using Server.Base.Core.Events;
+using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Players.Services;
 
 internal class TestingCommands : IService
 {
-    private readonly ServerConsole _console;
-    private readonly EventSink _sink;
-    private readonly ILogger<TestingCommands> _logger;
-    private readonly UserInfoHandler _userInfoHandler;
     private readonly AccountHandler _accountHandler;
+    private readonly ServerConsole _console;
     private readonly ItemCatalog _itemCatalog;
+    private readonly ILogger<TestingCommands> _logger;
     private readonly NetStateHandler _netStateHandler;
+    private readonly EventSink _sink;
+    private readonly UserInfoHandler _userInfoHandler;
 
     public TestingCommands(ServerConsole console, EventSink sink,
         ILogger<TestingCommands> logger, UserInfoHandler userInfoHandler,
@@ -47,8 +42,8 @@ internal class TestingCommands : IService
     public void Initialize() => _sink.WorldLoad += Load;
 
     public void Load() => _console.AddCommand(new ConsoleCommand("giveItem",
-            "Gives an item to a requested user's character.",
-            _ => GiveItem()));
+        "Gives an item to a requested user's character.",
+        _ => GiveItem()));
 
     private void GiveItem()
     {
@@ -90,7 +85,7 @@ internal class TestingCommands : IService
 
         if (cache.TryGetValue(itemId, out var itemDesc))
         {
-            character.Data.Inventory.Items.Add(itemDesc.ItemId, new ItemModel()
+            character.Data.Inventory.Items.Add(itemDesc.ItemId, new ItemModel
             {
                 ItemId = itemDesc.ItemId,
                 Count = count,
@@ -99,11 +94,12 @@ internal class TestingCommands : IService
             });
 
             if (_netStateHandler.IsPlayerOnline(user.UserId, out var netState, out var _))
-            {
                 netState.SendXt("ip", character.Data.Inventory.ToString().Replace('>', '|'), false);
-            }
         }
-        else _logger.LogError("Could not find item with id {itemId}", itemId);
+        else
+        {
+            _logger.LogError("Could not find item with id {itemId}", itemId);
+        }
     }
 
     private bool GetCharacter(out CharacterModel model, out UserInfo user)

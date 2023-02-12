@@ -13,8 +13,8 @@ namespace Server.Reawakened.Players.Services;
 
 public class UserInfoHandler : DataHandler<UserInfo>
 {
-    private readonly RandomKeyGenerator _randomKeyGenerator;
     private readonly ServerConfig _config;
+    private readonly RandomKeyGenerator _randomKeyGenerator;
 
     public UserInfoHandler(EventSink sink, ILogger<UserInfo> logger,
         RandomKeyGenerator randomKeyGenerator, ServerConfig config) : base(sink, logger)

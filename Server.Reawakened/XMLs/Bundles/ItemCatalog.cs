@@ -1,23 +1,18 @@
 ﻿using A2m.Server;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
+
 public class ItemCatalog : ItemHandler, ILocalizationXml
 {
-    public ItemCatalog() : base(null) {}
+    public ItemCatalog() : base(null)
+    {
+    }
 
     public string BundleName => "ItemCatalog";
     public string LocalizationName => "ItemCatalogDict_en-US";
-
-    public void EditXml(XmlDocument xml) { }
-    public void FinalizeBundle() { }
 
     public void InitializeVariables()
     {
@@ -30,7 +25,15 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         this.SetField<ItemHandler>("_pendingRequests", new Dictionary<int, ItemDescriptionRequest>());
     }
 
+    public void EditXml(XmlDocument xml)
+    {
+    }
+
     public void ReadXml(string xml) => ReadDescriptionXml(xml);
 
-    public void LoadLocalization(string xml) => ReadLocalizationXml(xml);
+    public void ReadLocalization(string xml) => ReadLocalizationXml(xml);
+
+    public void FinalizeBundle()
+    {
+    }
 }

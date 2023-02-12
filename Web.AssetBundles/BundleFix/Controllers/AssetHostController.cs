@@ -11,7 +11,6 @@ using Web.AssetBundles.BundleFix.Metadata;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Models;
 using Web.AssetBundles.Services;
-
 using FileIO = System.IO.File;
 
 namespace Web.AssetBundles.BundleFix.Controllers;
@@ -20,9 +19,9 @@ namespace Web.AssetBundles.BundleFix.Controllers;
 public class AssetHostController : Controller
 {
     private readonly BuildAssetList _buildAssetList;
+    private readonly BuildXmlFiles _buildXmlList;
     private readonly AssetBundleConfig _config;
     private readonly ILogger<AssetHostController> _logger;
-    private readonly BuildXmlFiles _buildXmlList;
 
     public AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
         AssetBundleConfig config, BuildXmlFiles buildXmlList)
@@ -32,7 +31,7 @@ public class AssetHostController : Controller
         _config = config;
         _buildXmlList = buildXmlList;
     }
-    
+
     [HttpGet]
     public IActionResult GetAsset([FromRoute] string folder, [FromRoute] string file)
     {
@@ -103,12 +102,10 @@ public class AssetHostController : Controller
                 _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST");
 
             if (_config.UseCacheReplacementScheme)
-            {
                 _logger.LogError("After you stop seeing this light blue [I]nformational message, " +
                                  "please close the client and run the 'replaceCaches' command, " +
                                  "otherwise the client may stop loading or crash! " +
                                  "Subsequent purple [T]race messages can be ignored.");
-            }
 
             using var stream = new MemoryStream();
             var writer = new EndianWriter(stream, EndianType.BigEndian);
