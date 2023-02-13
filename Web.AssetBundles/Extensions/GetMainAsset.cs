@@ -1,11 +1,12 @@
 ﻿using AssetStudio;
+using Microsoft.Extensions.Logging;
 using Web.AssetBundles.Models;
 
 namespace Web.AssetBundles.Extensions;
 
 public static class GetMainAsset
 {
-    public static string GetMainAssetName(this SerializedFile assetFile)
+    public static string GetMainAssetName(this SerializedFile assetFile, DefaultProgressBar bar)
     {
         var assetBundle = assetFile.ObjectsDic.Values.First(o => o.type == ClassIDType.AssetBundle);
 
@@ -13,29 +14,59 @@ public static class GetMainAsset
         var lines = dump.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
         var tree = GetTree(lines);
 
-        var baseBundle = tree.First(a => a.Name == "AssetBundle Base");
-        var mainAsset = baseBundle.SubTrees.First(a => a.Name == "AssetInfo m_MainAsset");
+        var baseBundle = tree.FirstOrDefault(a => a.Name == "AssetBundle Base");
+
+        if (baseBundle == null)
+        {
+            bar.SetMessage($"Bundle '{assetFile.fileName}' does not have base. Returning...");
+            return null;
+        }
+
+        var mainAsset = baseBundle.SubTrees.FirstOrDefault(a => a.Name == "AssetInfo m_MainAsset");
+
+        if (mainAsset == null)
+        {
+            bar.SetMessage($"Bundle '{assetFile.fileName}' does not have main asset. Returning...");
+            return null;
+        }
+
         var asset = GetAssetString(mainAsset);
 
-        var container = baseBundle.SubTrees.First(a => a.Name == "map m_Container");
-        var array = container.SubTrees.First(a => a.Name.StartsWith("int size = "));
+        var container = baseBundle.SubTrees.FirstOrDefault(a => a.Name == "map m_Container");
+
+        if (container == null)
+        {
+            bar.SetMessage($"Bundle '{assetFile.fileName}' does not have map container. Returning...");
+            return null;
+        }
+
+        var array = container.SubTrees.FirstOrDefault(a => a.Name.StartsWith("int size = "));
+
+        if (array == null)
+        {
+            bar.SetMessage($"Bundle '{assetFile.fileName}' does not have container size. Returning...");
+            return null;
+        }
 
         foreach (var data in array.SubTrees.Where(a => a.Name == "pair data"))
         {
-            var dAssetInfo = data.SubTrees.First(a => a.Name == "AssetInfo second");
+            var dAssetInfo = data.SubTrees.FirstOrDefault(a => a.Name == "AssetInfo second");
 
             if (GetAssetString(dAssetInfo) != asset)
                 continue;
 
             const string nameStart = "string first = \"";
-            return data.SubTrees.First(a => a.Name.StartsWith(nameStart)).Name[nameStart.Length..][..^1];
+            var main = data.SubTrees.FirstOrDefault(a => a.Name.StartsWith(nameStart));
+
+            if (main != null)
+                return main.Name[nameStart.Length..][..^1];
         }
 
         throw new InvalidDataException();
     }
 
     private static string GetAssetString(TreeInfo info) =>
-        GenerateStringFromTree(info.SubTrees.First(a => a.Name == "PPtr<Object> asset"));
+        GenerateStringFromTree(info.SubTrees.FirstOrDefault(a => a.Name == "PPtr<Object> asset"));
 
     private static string GenerateStringFromTree(TreeInfo tree) =>
         $"{tree.Name}\n{string.Join('\t', tree.SubTrees.Select(GenerateStringFromTree))}";
