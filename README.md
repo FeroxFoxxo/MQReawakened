@@ -46,7 +46,7 @@ If you have anything you wish to report, please submit an issue through [the rep
 - You may also wish to download ILSpy to peek around any dependencies of the original game, to understand how they work, as to reverse engineer them in order to develop a server side implementation.
 - https://sourceforge.net/projects/ilspy.mirror
 
-### Licensed (Open Source) Works
+### Open Source Licenses
 
 - <a href="https://github.com/AssetRipper/AssetRipper/">AssetRipper.IO.Endian</a> - Binary read/write utility [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETRIPPER)
 - <a href="https://github.com/Perfare/AssetStudio/">AssetStudio</a> - Tool for exploring the original assetbundles [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETSTUDIO)
