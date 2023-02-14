@@ -23,6 +23,7 @@ public class InternalStaticConfig : IStaticConfig
     public int SaveWarningMinutes { get; }
     public int SaveAutomaticallyMinutes { get; }
     public string[] Backups { get; }
+    public int CommandPadding { get; }
 
     public InternalStaticConfig()
     {
@@ -44,6 +45,7 @@ public class InternalStaticConfig : IStaticConfig
         RestartAutomaticallyHours = 24;
         SaveWarningMinutes = 1;
         SaveAutomaticallyMinutes = 5;
+        CommandPadding = 8;
         Backups = new[]
         {
             "Third Backup",

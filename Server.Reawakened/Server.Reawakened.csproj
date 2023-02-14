@@ -65,7 +65,7 @@
       <None Update="Licences\LICENSE_THRIFT">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Thrift\NOTICE_THRIFT">
+      <None Update="Thrift\NOTICE">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

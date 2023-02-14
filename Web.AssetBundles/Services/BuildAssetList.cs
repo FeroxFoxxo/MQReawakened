@@ -202,7 +202,7 @@ public class BuildAssetList : IService
 
         var asset = new InternalAssetInfo
         {
-            Name = assetFile.GetMainAssetName(),
+            Name = assetFile.GetMainAssetName(bar),
             Path = assetFile.fullName,
             CacheTime = time,
             Version = 0,

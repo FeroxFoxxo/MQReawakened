@@ -200,7 +200,7 @@ public class Level
         _gameObjectIds.Remove(playerId);
 
         if (Clients.Count == 0 && LevelInfo.LevelId > 0)
-            _levelHandler.RemoveLevel(LevelInfo.LevelId);
+            _levelHandler.RemoveLevel(this);
     }
 
     public void SendSyncEvent(SyncEvent syncEvent, Player sentPlayer = null)

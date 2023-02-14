@@ -7,6 +7,7 @@ using Server.Base.Core.Helpers;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Worlds;
+using Server.Reawakened.Players.Events;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text.Json;
@@ -26,6 +27,7 @@ public class StartGame : IService
     private readonly StartConfig _config;
     private readonly EventSink _sink;
     private readonly World _world;
+    private readonly PlayerEventSink _playerEventSink;
 
     private string _directory;
     private bool _dirSet, _appStart;
@@ -34,7 +36,7 @@ public class StartGame : IService
     public PackageInformation CurrentVersion { get; private set; }
 
     public StartGame(EventSink sink, LauncherStaticConfig lConfig, SettingsStaticConfig sConfig,
-        IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console, World world, StartConfig config)
+        IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console, World world, StartConfig config, PlayerEventSink playerEventSink)
     {
         _sink = sink;
         _lConfig = lConfig;
@@ -44,6 +46,7 @@ public class StartGame : IService
         _console = console;
         _world = world;
         _config = config;
+        _playerEventSink = playerEventSink;
 
         _dirSet = false;
         _appStart = false;
@@ -54,6 +57,7 @@ public class StartGame : IService
         _appLifetime.ApplicationStarted.Register(AppStarted);
         _sink.WorldLoad += GetGameInformation;
         _sink.Shutdown += StopGame;
+        _playerEventSink.PlayerRefreshed += AskIfRestart;
     }
 
     private void StopGame() => _game?.CloseMainWindow();

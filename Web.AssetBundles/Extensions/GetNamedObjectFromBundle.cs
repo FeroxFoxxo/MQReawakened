@@ -1,5 +1,4 @@
 ﻿using AssetStudio;
-using System.Xml.Linq;
 using Object = AssetStudio.Object;
 
 namespace Web.AssetBundles.Extensions;

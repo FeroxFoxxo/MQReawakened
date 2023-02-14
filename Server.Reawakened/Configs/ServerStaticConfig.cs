@@ -26,6 +26,9 @@ public class ServerStaticConfig : IStaticConfig
 
     public string[] DefaultProtocolTypeIgnore { get; }
 
+    public char ChatCommandStart { get; }
+    public int ChatCommandPadding { get; }
+
     public Dictionary<DebugHandler.DebugVariables, bool> DefaultDebugVariables { get; }
 
     public ServerStaticConfig()
@@ -47,6 +50,9 @@ public class ServerStaticConfig : IStaticConfig
 
         LogSyncState = false;
         DefaultProtocolTypeIgnore = new[] { "ss", "Pp", "ku", "kr" };
+
+        ChatCommandStart = '.';
+        ChatCommandPadding = 8;
 
         DefaultDebugVariables = new Dictionary<DebugHandler.DebugVariables, bool>
         {

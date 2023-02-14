@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
-using Server.Base.Core.Events;
 using Server.Base.Core.Models;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
@@ -11,19 +10,21 @@ namespace Server.Base.Core.Services;
 public class ServerConsole : IService
 {
     private readonly IHostApplicationLifetime _appLifetime;
+    private readonly InternalStaticConfig _config;
     private readonly Dictionary<string, ConsoleCommand> _commands;
     private readonly Thread _consoleThread;
     private readonly ServerHandler _handler;
     private readonly ILogger<ServerConsole> _logger;
     private readonly TimerThread _timerThread;
 
-    public ServerConsole(TimerThread timerThread, ServerHandler handler, EventSink sink, ILogger<ServerConsole> logger,
-        IHostApplicationLifetime appLifetime)
+    public ServerConsole(TimerThread timerThread, ServerHandler handler, ILogger<ServerConsole> logger,
+        IHostApplicationLifetime appLifetime, InternalStaticConfig config)
     {
         _timerThread = timerThread;
         _handler = handler;
         _logger = logger;
         _appLifetime = appLifetime;
+        _config = config;
 
         _commands = new Dictionary<string, ConsoleCommand>();
 
@@ -34,9 +35,7 @@ public class ServerConsole : IService
     }
 
     public void Initialize() => _appLifetime.ApplicationStarted.Register(RunConsoleListener);
-
-    public void AddCommand(ConsoleCommand consoleCommand) => _commands.Add(consoleCommand.Name, consoleCommand);
-
+    
     public void RunConsoleListener()
     {
         _logger.LogInformation("Setting Up Console Commands");
@@ -65,6 +64,8 @@ public class ServerConsole : IService
 
         _consoleThread.Start();
     }
+
+    public void AddCommand(ConsoleCommand consoleCommand) => _commands.Add(consoleCommand.Name, consoleCommand);
 
     public void ConsoleLoopThread()
     {
@@ -106,7 +107,7 @@ public class ServerConsole : IService
 
         foreach (var command in _commands.Values)
         {
-            var padding = 8 - command.Name.Length;
+            var padding = _config.CommandPadding - command.Name.Length;
             if (padding < 0) padding = 0;
             _logger.LogDebug("  {Name} - {Description}", command.Name.PadRight(padding), command.Description);
         }
