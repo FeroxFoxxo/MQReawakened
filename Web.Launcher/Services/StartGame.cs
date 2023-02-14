@@ -54,10 +54,17 @@ public class StartGame : IService
 
     public void Initialize()
     {
-        _appLifetime.ApplicationStarted.Register(AppStarted);
-        _sink.WorldLoad += GetGameInformation;
-        _sink.Shutdown += StopGame;
-        _playerEventSink.PlayerRefreshed += AskIfRestart;
+        if (_config.IsHeadless)
+        {
+            _logger.LogWarning("NOT RESTARTING: SERVER IS HEADLESS");
+        }
+        else
+        {
+            _appLifetime.ApplicationStarted.Register(AppStarted);
+            _sink.WorldLoad += GetGameInformation;
+            _sink.Shutdown += StopGame;
+            _playerEventSink.PlayerRefreshed += AskIfRestart;
+        }
     }
 
     private void StopGame() => _game?.CloseMainWindow();

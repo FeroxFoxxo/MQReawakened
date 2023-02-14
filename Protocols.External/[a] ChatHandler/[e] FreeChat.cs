@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Chat.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -14,6 +15,7 @@ public class FreeChat : ExternalProtocol
 
     public ILogger<ChatCommands> Logger { get; set; }
     public ChatCommands ChatCommands { get; set; }
+    public ServerStaticConfig Config { get; set; }
 
     public override void Run(string[] message)
     {
@@ -21,7 +23,7 @@ public class FreeChat : ExternalProtocol
         var chatMessage = message[6];
         var recipientName = message[7];
 
-        if (chatMessage.StartsWith("."))
+        if (chatMessage.StartsWith(Config.ChatCommandStart))
         {
             var args = chatMessage.Contains(' ') ? chatMessage[1..].Split(' ') :
                 new[] { chatMessage[1..] };

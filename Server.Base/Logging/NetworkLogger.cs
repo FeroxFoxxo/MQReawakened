@@ -28,7 +28,7 @@ public class NetworkLogger
                         $"Past IP limit threshold\t" +
                         $"{netState}");
 
-        WriteToFile<IpLimiter>("ipLimits.log", builder, ConsoleColor.DarkGray);
+        WriteToFile<IpLimiter>("ipLimits.log", builder, LoggerType.Debug);
     }
 
     public void ThrottledError(NetState netState, InvalidAccountAccessLog accessLog)
@@ -38,7 +38,7 @@ public class NetworkLogger
                         $"{netState}\t" +
                         $"{accessLog.Counts}");
 
-        WriteToFile<AccountAttackLimiter>("throttle.log", builder, ConsoleColor.DarkGray);
+        WriteToFile<AccountAttackLimiter>("throttle.log", builder, LoggerType.Debug);
     }
 
     public void TracePacketError(string packetId, string packet, NetState state)
@@ -51,7 +51,7 @@ public class NetworkLogger
             .AppendLine()
             .AppendLine(packet);
 
-        WriteToFile<MessagePump>("packets.log", builder, ConsoleColor.Yellow);
+        WriteToFile<MessagePump>("packets.log", builder, LoggerType.Warning);
     }
 
     public void TraceNetworkError(Exception ex, NetState state)
@@ -61,7 +61,7 @@ public class NetworkLogger
             .AppendLine()
             .AppendLine(ex.ToString());
 
-        WriteToFile<NetState>("network-errors.log", builder, ConsoleColor.Red);
+        WriteToFile<NetState>("network-errors.log", builder, LoggerType.Error);
     }
 
     public void TraceListenerError(Exception ex, Socket socket)
@@ -71,10 +71,10 @@ public class NetworkLogger
             .AppendLine()
             .AppendLine(ex.ToString());
 
-        WriteToFile<Listener>("listener-errors.log", builder, ConsoleColor.Red);
+        WriteToFile<Listener>("listener-errors.log", builder, LoggerType.Error);
     }
 
-    private void WriteToFile<T>(string fileName, StringBuilder builder, ConsoleColor color)
+    public void WriteToFile<T>(string fileName, StringBuilder builder, LoggerType type)
     {
         try
         {
@@ -88,11 +88,17 @@ public class NetworkLogger
             _logger.LogError(ex, "Could not log file {NAME}", fileName);
         }
 
-        if (color == ConsoleColor.Red)
-            _logger.LogError("{Name}: {Information}", typeof(T).Name, builder.ToString());
-        else if (color == ConsoleColor.Yellow)
-            _logger.LogWarning("{Name}: {Information}", typeof(T).Name, builder.ToString());
-        else if (color == ConsoleColor.DarkGray)
-            _logger.LogDebug("{Name}: {Information}", typeof(T).Name, builder.ToString());
+        switch (type)
+        {
+            case LoggerType.Error:
+                _logger.LogError("{Name}: {Information}", typeof(T).Name, builder.ToString());
+                break;
+            case LoggerType.Warning:
+                _logger.LogWarning("{Name}: {Information}", typeof(T).Name, builder.ToString());
+                break;
+            case LoggerType.Debug:
+                _logger.LogDebug("{Name}: {Information}", typeof(T).Name, builder.ToString());
+                break;
+        }
     }
 }

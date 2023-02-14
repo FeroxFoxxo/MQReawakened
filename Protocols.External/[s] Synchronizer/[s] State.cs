@@ -1,10 +1,15 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Logging;
+using Server.Base.Network;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Levels.Models.Planes;
 using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using System.Net.Sockets;
+using System.Text;
+using WorldGraphDefines;
 
 namespace Protocols.External._s__Synchronizer;
 
@@ -16,6 +21,7 @@ public class State : ExternalProtocol
     public ILogger<State> Logger { get; set; }
     public ServerStaticConfig ServerConfig { get; set; }
     public LevelHandler LevelHandler { get; set; }
+    public NetworkLogger NetworkLogger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -34,7 +40,6 @@ public class State : ExternalProtocol
 
         if (entityId == player.PlayerId)
         {
-            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.ChargeAttack:
@@ -115,12 +120,24 @@ public class State : ExternalProtocol
                     if (components.Count == 0)
                         components.Add("UNKNOWN");
 
-                    Logger.LogWarning("Unhandled '{EventType}' Sync Event For {EntityId} ({EntityName}).",
-                        syncEvent.Type, entityId, string.Join(", ", components));
-                    Logger.LogDebug("Sync Event: {Encoded Event}", syncEvent.EncodeData());
+                    var names = string.Join(", ", components);
+                    
+                    TraceSyncEventError(entityId, syncEvent, level.LevelInfo, names);
 
                     break;
             }
         }
+    }
+
+    public void TraceSyncEventError(int entityId, SyncEvent syncEvent, LevelInfo levelInfo, string names)
+    {
+        var builder = new StringBuilder()
+            .AppendLine($"# {DateTime.UtcNow} @ Sync Entity: {entityId} ({names})")
+            .AppendLine($"Level: {levelInfo.LevelId} ({levelInfo.InGameName})")
+            .AppendLine($"Sync Event Type: {syncEvent.Type}")
+            .AppendLine()
+            .AppendLine(syncEvent.EncodeData());
+
+        NetworkLogger.WriteToFile<SyncEvent>("event-errors.log", builder, LoggerType.Warning);
     }
 }
