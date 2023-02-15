@@ -57,7 +57,7 @@ public class Level
 
         if (levelPlanes.Planes == null)
             return;
-
+         
         foreach (var gameObjectId in levelPlanes.Planes.Values
                      .Select(x => x.GameObjects.Values)
                      .SelectMany(x => x)

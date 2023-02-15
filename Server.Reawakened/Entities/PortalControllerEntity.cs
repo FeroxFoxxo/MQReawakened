@@ -14,8 +14,8 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
     public LevelHandler LevelHandler { get; set; }
     public ILogger<PortalControllerEntity> Logger { get; set; }
 
-    public override string[] GetInitData(NetState netState) =>
-        new[] { string.Empty };
+    public override object[] GetInitData(NetState netState) =>
+        new object[] { string.Empty };
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {

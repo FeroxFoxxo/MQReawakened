@@ -11,7 +11,7 @@ internal class ChestControllerEntity : SyncedEntity<ChestController>
 
     public Random Random { get; set; }
 
-    public override string[] GetInitData(NetState netState) => new[] { Collected ? "0" : "1" };
+    public override object[] GetInitData(NetState netState) => new object[] { Collected ? 0 : 1 };
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {

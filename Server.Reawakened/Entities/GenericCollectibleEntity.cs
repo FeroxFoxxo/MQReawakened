@@ -31,8 +31,8 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
         }
     }
 
-    public override string[] GetInitData(NetState netState) =>
-        Collected ? new[] { "0" } : Array.Empty<string>();
+    public override object[] GetInitData(NetState netState) =>
+        Collected ? new object[] { 0 } : Array.Empty<object>();
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {

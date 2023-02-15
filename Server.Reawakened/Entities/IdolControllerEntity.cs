@@ -9,7 +9,7 @@ public class IdolControllerEntity : SyncedEntity<IdolController>
 {
     public int Index => EntityData.Index;
 
-    public override string[] GetInitData(NetState netState)
+    public override object[] GetInitData(NetState netState)
     {
         var player = netState.Get<Player>();
         var character = player.GetCurrentCharacter();
@@ -18,7 +18,7 @@ public class IdolControllerEntity : SyncedEntity<IdolController>
         if (!character.CollectedIdols.ContainsKey(levelId))
             character.CollectedIdols.Add(levelId, new List<int>());
 
-        return character.CollectedIdols[levelId].Contains(Index) ? new[] { "0" } : Array.Empty<string>();
+        return character.CollectedIdols[levelId].Contains(Index) ? new object[] { 0 } : Array.Empty<object>();
     }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)

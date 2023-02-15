@@ -21,7 +21,7 @@ public abstract class BaseSyncedEntity
     {
     }
     
-    public virtual string[] GetInitData(NetState netState) => Array.Empty<string>();
+    public virtual object[] GetInitData(NetState netState) => Array.Empty<object>();
 
     public virtual void SendDelayedData(NetState netState)
     {

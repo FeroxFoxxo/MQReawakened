@@ -17,14 +17,13 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
     public ILogger<NpcControllerEntity> Logger { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public NpcCatalog NpcCatalog { get; set; }
-    public VendorCatalog VendorCatalog { get; set; }
     public MiscTextDictionary MiscText { get; set; }
     
     public NpcDescription Description;
     public List<QuestDescription> Quests;
     public string NpcName;
 
-    private bool _vendorOpen = false;
+    private bool _vendorOpen;
 
     public override void InitializeEntity()
     {
@@ -37,8 +36,8 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         NpcName = MiscText.GetLocalizationTextById(Description.NameTextId);
     }
 
-    public override string[] GetInitData(NetState netState) =>
-        Description == null ? Array.Empty<string>() : new[] { Description.NameTextId.ToString() };
+    public override object[] GetInitData(NetState netState) =>
+        Description == null ? Array.Empty<object>() : new object[] { Description.NameTextId.ToString() };
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
