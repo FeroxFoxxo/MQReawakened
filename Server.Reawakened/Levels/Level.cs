@@ -2,6 +2,7 @@
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
 using Server.Base.Network;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities;
 using Server.Reawakened.Levels.Enums;
@@ -13,6 +14,7 @@ using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using WorldGraphDefines;
+using Timer = Server.Base.Timers.Timer;
 
 namespace Server.Reawakened.Levels;
 
@@ -22,7 +24,9 @@ public class Level
 
     private readonly LevelHandler _levelHandler;
     private readonly ILogger<LevelHandler> _logger;
-    private readonly ServerStaticConfig _serverConfig;
+    private readonly ServerStaticConfig _config;
+    private readonly Timer _timer;
+
     public readonly Dictionary<int, NetState> Clients;
 
     public LevelInfo LevelInfo { get; set; }
@@ -30,13 +34,13 @@ public class Level
     public LevelEntities LevelEntities { get; set; }
 
     public long TimeOffset { get; set; }
-
     public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
 
-    public Level(LevelInfo levelInfo, LevelPlanes levelPlanes, ServerStaticConfig serverConfig,
-        LevelHandler levelHandler, ReflectionUtils reflection, IServiceProvider services, ILogger<LevelHandler> logger)
+    public Level(LevelInfo levelInfo, LevelPlanes levelPlanes, ServerStaticConfig config,
+        LevelHandler levelHandler, ReflectionUtils reflection, TimerThread timerThread,
+        IServiceProvider services, ILogger<LevelHandler> logger)
     {
-        _serverConfig = serverConfig;
+        _config = config;
         _levelHandler = levelHandler;
         _logger = logger;
         Clients = new Dictionary<int, NetState>();
@@ -44,9 +48,12 @@ public class Level
 
         LevelInfo = levelInfo;
         LevelPlanes = levelPlanes;
+        
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
 
         LevelEntities = new LevelEntities(this, _levelHandler, reflection, services, _logger);
+
+        _timer = new LevelTimer(config, timerThread, LevelEntities);
 
         if (levelPlanes.Planes == null)
             return;
@@ -57,13 +64,15 @@ public class Level
                      .Select(x => x.ObjectInfo.ObjectId)
                 )
             _gameObjectIds.Add(gameObjectId);
+
+        _timer.Start();
     }
 
     public void AddClient(NetState newClient, out JoinReason reason)
     {
         var playerId = -1;
 
-        if (Clients.Count > _serverConfig.PlayerCap)
+        if (Clients.Count > _config.PlayerCap)
         {
             reason = JoinReason.Full;
         }
@@ -199,8 +208,11 @@ public class Level
         Clients.Remove(playerId);
         _gameObjectIds.Remove(playerId);
 
-        if (Clients.Count == 0 && LevelInfo.LevelId > 0)
-            _levelHandler.RemoveLevel(this);
+        if (Clients.Count != 0 || LevelInfo.LevelId <= 0)
+            return;
+
+        _levelHandler.RemoveLevel(this);
+        _timer.Stop();
     }
 
     public void SendSyncEvent(SyncEvent syncEvent, Player sentPlayer = null)

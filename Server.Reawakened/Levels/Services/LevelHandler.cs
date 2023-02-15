@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.XMLs.Bundles;
@@ -19,6 +20,7 @@ public class LevelHandler : IService
     private readonly Dictionary<int, LevelInfo> _levelInfos;
     private readonly ILogger<LevelHandler> _logger;
     private readonly ReflectionUtils _reflection;
+    private readonly TimerThread _timerThread;
     private readonly IServiceProvider _services;
     private readonly EventSink _sink;
     private readonly WorldGraph _worldGraph;
@@ -26,12 +28,14 @@ public class LevelHandler : IService
     public Dictionary<string, Type> ProcessableData;
 
     public LevelHandler(EventSink sink, ServerStaticConfig config, WorldGraph worldGraph,
-        ReflectionUtils reflection, IServiceProvider services, ILogger<LevelHandler> logger)
+        ReflectionUtils reflection, TimerThread timerThread, IServiceProvider services,
+        ILogger<LevelHandler> logger)
     {
         _sink = sink;
         _config = config;
         _worldGraph = worldGraph;
         _reflection = reflection;
+        _timerThread = timerThread;
         _services = services;
         _logger = logger;
 
@@ -124,7 +128,8 @@ public class LevelHandler : IService
                 JsonSerializer.Serialize(levelPlanes, new JsonSerializerOptions { WriteIndented = true }));
         }
 
-        var level = new Level(levelInfo, levelPlanes, _config, this, _reflection, _services, _logger);
+        var level = new Level(levelInfo, levelPlanes, _config, this,
+            _reflection, _timerThread, _services, _logger);
 
         _levels[levelId].Add(level);
 

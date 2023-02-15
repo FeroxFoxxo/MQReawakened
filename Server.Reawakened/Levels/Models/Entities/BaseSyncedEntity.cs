@@ -20,10 +20,14 @@ public abstract class BaseSyncedEntity
     public virtual void InitializeEntity()
     {
     }
-
+    
     public virtual string[] GetInitData(NetState netState) => Array.Empty<string>();
 
     public virtual void SendDelayedData(NetState netState)
+    {
+    }
+
+    public virtual void Update()
     {
     }
 
