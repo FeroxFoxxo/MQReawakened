@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-internal class LootsInfo : LootsInfoXML, IBundledXml
+public class LootsInfo : LootsInfoXML, IBundledXml
 {
     public string BundleName => "LootsInfo";
 

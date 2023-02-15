@@ -3,7 +3,7 @@ using Server.Reawakened.Levels.Models.Entities;
 
 namespace Server.Reawakened.Entities;
 
-internal class StomperControllerEntity : SyncedEntity<StomperController>
+public class StomperControllerEntity : SyncedEntity<StomperController>
 {
     public bool Active = true;
 

@@ -5,7 +5,7 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-internal class Dialog : DialogXML, ILocalizationXml
+public class Dialog : DialogXML, ILocalizationXml
 {
     public string BundleName => "Dialog";
     public string LocalizationName => "DialogDict_en-US";

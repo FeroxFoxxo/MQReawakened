@@ -2,7 +2,7 @@
 
 namespace Server.Base.Core.Helpers;
 
-internal class FileDialog
+public class FileDialog
 {
     [DllImport("comdlg32.dll", SetLastError = true, CharSet = CharSet.Auto)]
     private static extern bool GetOpenFileName(ref OpenFileName ofn);

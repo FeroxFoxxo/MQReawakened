@@ -5,7 +5,7 @@ using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Entities;
 
-internal class ChestControllerEntity : SyncedEntity<ChestController>
+public class ChestControllerEntity : SyncedEntity<ChestController>
 {
     public bool Collected;
 

@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._i__InventoryHandler;
 
-internal class UseItem : ExternalProtocol
+public class UseItem : ExternalProtocol
 {
     public override string ProtocolName => "iu";
 
