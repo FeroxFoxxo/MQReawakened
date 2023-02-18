@@ -105,7 +105,7 @@ public class ServerConsole : IService
     {
         _logger.LogDebug("Commands:");
 
-        foreach (var command in _commands.Values)
+        foreach (var command in _commands.Values.OrderBy(x => x.Name))
         {
             var padding = _config.CommandPadding - command.Name.Length;
             if (padding < 0) padding = 0;

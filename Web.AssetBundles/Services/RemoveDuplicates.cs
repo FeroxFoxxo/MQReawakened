@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
@@ -8,7 +9,7 @@ using Web.Launcher.Models;
 
 namespace Web.AssetBundles.Services;
 
-public class RemoveDuplicates
+public class RemoveDuplicates : IService
 {
     private readonly BuildAssetList _buildAssetList;
     private readonly ServerConsole _console;
@@ -55,12 +56,14 @@ public class RemoveDuplicates
         {
             foreach (var asset in allAssets)
             {
-                if (!assetList.ContainsKey(asset.Name))
-                    assetList.Add(asset.Name, new List<InternalAssetInfo>());
+                var assetName = asset.Name.Trim().ToUpper();
+
+                if (!assetList.ContainsKey(assetName))
+                    assetList.Add(assetName, new List<InternalAssetInfo>());
 
                 var hasFoundExisting = false;
 
-                foreach (var containedAsset in assetList[asset.Name]
+                foreach (var containedAsset in assetList[assetName]
                              .Where(containedAsset =>
                                  containedAsset.BundleSize == asset.BundleSize &&
                                  containedAsset.UnityVersion == asset.UnityVersion &&
@@ -76,7 +79,7 @@ public class RemoveDuplicates
                     if (containedAsset.CacheTime > asset.CacheTime && _startConfig.Is2014Client ||
                         containedAsset.CacheTime < asset.CacheTime && !_startConfig.Is2014Client)
 
-                        assetList[asset.Name].Remove(containedAsset);
+                        assetList[assetName].Remove(containedAsset);
                     else
                         hasFoundExisting = true;
 
@@ -84,7 +87,7 @@ public class RemoveDuplicates
                 }
 
                 if (!hasFoundExisting)
-                    assetList[asset.Name].Add(asset);
+                    assetList[assetName].Add(asset);
 
                 bar.TickBar();
             }
@@ -128,22 +131,16 @@ public class RemoveDuplicates
             {
                 for (var i = 0; i < assets.Value.Count; i++)
                 {
-                    var assetPath = Path.Combine(directories[i], assets.Key);
-                    Directory.CreateDirectory(assetPath);
+                    var targetDirectory = Path.Combine(directories[i], assets.Key);
+                    Directory.CreateDirectory(targetDirectory);
 
-                    var directory = Path.GetDirectoryName(assets.Value[i].Path);
+                    var sourceDirectory = Path.GetDirectoryName(assets.Value[i].Path);
 
-                    if (directory == null)
+                    if (sourceDirectory == null)
                         continue;
 
-                    var files = Directory.GetFiles(directory);
-
-                    foreach (var file in files)
-                    {
-                        var fileName = Path.GetFileName(file);
-                        var newFile = Path.Combine(assetPath, fileName);
-                        File.Copy(file, newFile);
-                    }
+                    foreach (var file in Directory.GetFiles(sourceDirectory))
+                        File.Copy(file, Path.Combine(targetDirectory, Path.GetFileName(file)));
 
                     bar.TickBar();
                 }
