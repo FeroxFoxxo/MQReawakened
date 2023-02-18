@@ -44,32 +44,50 @@ public class RemoveDuplicates
         var assetDict = File.ReadAllText(_buildAssetList.AssetDictLocation);
         var allAssets = BuildAssetList.GetAssetsFromDictionary(assetDict).ToList();
 
-        foreach (var asset in allAssets)
+        using (
+            var bar = new DefaultProgressBar(
+                allAssets.Count,
+                "Reading assets from disk",
+                _logger,
+                _sConfig
+            )
+        )
         {
-            if (!assetList.ContainsKey(asset.Name))
-                assetList.Add(asset.Name, new List<InternalAssetInfo>());
-
-            var hasFoundExisting = false;
-
-            foreach (var containedAsset in assetList[asset.Name]
-                         .Where(containedAsset => containedAsset.BundleSize == asset.BundleSize &&
-                                                  containedAsset.UnityVersion == asset.UnityVersion &&
-                                                  containedAsset.Locale == asset.Locale &&
-                                                  containedAsset.Type == asset.Type &&
-                                                  Path.GetFileName(containedAsset.Path) == Path.GetFileName(asset.Path)
-                         )
-                    )
+            foreach (var asset in allAssets)
             {
-                if (containedAsset.CacheTime > asset.CacheTime && _startConfig.Is2014Client ||
-                    containedAsset.CacheTime < asset.CacheTime && !_startConfig.Is2014Client)
-                    assetList[asset.Name].Remove(containedAsset);
-                else
-                    hasFoundExisting = true;
-                break;
-            }
+                if (!assetList.ContainsKey(asset.Name))
+                    assetList.Add(asset.Name, new List<InternalAssetInfo>());
 
-            if (!hasFoundExisting)
-                assetList[asset.Name].Add(asset);
+                var hasFoundExisting = false;
+
+                foreach (var containedAsset in assetList[asset.Name]
+                             .Where(containedAsset =>
+                                 containedAsset.BundleSize == asset.BundleSize &&
+                                 containedAsset.UnityVersion == asset.UnityVersion &&
+                                 containedAsset.Locale == asset.Locale &&
+                                 containedAsset.Type == asset.Type &&
+                                 Path.GetFileName(containedAsset.Path) == Path.GetFileName(asset.Path)
+                             )
+                        )
+                {
+                    if (!AreFileContentsEqual(containedAsset.Path, asset.Path))
+                        continue;
+
+                    if (containedAsset.CacheTime > asset.CacheTime && _startConfig.Is2014Client ||
+                        containedAsset.CacheTime < asset.CacheTime && !_startConfig.Is2014Client)
+
+                        assetList[asset.Name].Remove(containedAsset);
+                    else
+                        hasFoundExisting = true;
+
+                    break;
+                }
+
+                if (!hasFoundExisting)
+                    assetList[asset.Name].Add(asset);
+
+                bar.TickBar();
+            }
         }
 
         var replacedCount = assetList.Sum(s => s.Value.Count);
@@ -134,4 +152,7 @@ public class RemoveDuplicates
 
         _logger.LogDebug("Written all assets to directory: {Path}", _sConfig.RemovedDuplicateDirectory);
     }
+
+    public static bool AreFileContentsEqual(string path1, string path2) =>
+        File.ReadAllBytes(path1).SequenceEqual(File.ReadAllBytes(path2));
 }
