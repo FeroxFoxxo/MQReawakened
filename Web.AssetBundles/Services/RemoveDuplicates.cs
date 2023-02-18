@@ -56,7 +56,7 @@ public class RemoveDuplicates : IService
         {
             foreach (var asset in allAssets)
             {
-                var assetName = asset.Name.Trim().ToUpper();
+                var assetName = asset.Name.Trim().ToLower();
 
                 if (!assetList.ContainsKey(assetName))
                     assetList.Add(assetName, new List<InternalAssetInfo>());
@@ -106,7 +106,6 @@ public class RemoveDuplicates : IService
         GetDirectory.Empty(_sConfig.RemovedDuplicateDirectory);
         _logger.LogDebug("Emptied folder");
 
-        var directories = new List<string>();
         var totalDirectories = assetList.Max(s => s.Value.Count);
 
         using (
@@ -118,20 +117,11 @@ public class RemoveDuplicates : IService
             )
         )
         {
-            for (var i = 0; i < totalDirectories; i++)
-            {
-                var path = Path.Combine(_sConfig.RemovedDuplicateDirectory, $"Cache_{i}");
-                directories.Add(path);
-                Directory.CreateDirectory(path);
-
-                bar.TickBar();
-            }
-
             foreach (var assets in assetList)
             {
                 for (var i = 0; i < assets.Value.Count; i++)
                 {
-                    var targetDirectory = Path.Combine(directories[i], assets.Key);
+                    var targetDirectory = Path.Combine(_sConfig.RemovedDuplicateDirectory, assets.Key, i.ToString());
                     Directory.CreateDirectory(targetDirectory);
 
                     var sourceDirectory = Path.GetDirectoryName(assets.Value[i].Path);
