@@ -63,6 +63,9 @@ public class ReplaceCaches : IService
 
         _config.GetWebPlayerInfoFile(_sConfig, _logger);
 
+        if (string.IsNullOrEmpty(_config.WebPlayerInfoFile))
+            return;
+
         if (_config.FlushCacheOnStart)
             if (_logger.Ask("Flushing the cache on start is enabled, would you like to disable this?", true))
                 _config.FlushCacheOnStart = false;
