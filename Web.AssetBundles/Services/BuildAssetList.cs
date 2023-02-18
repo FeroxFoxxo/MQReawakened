@@ -69,10 +69,6 @@ public class BuildAssetList : IService
                 GenerateDefaultAssetList(true);
             }));
 
-        _console.AddCommand(new ConsoleCommand("removeDuplicates",
-            "Creates a directory that does not include duplicated caches.",
-            _ => RemoveDuplicates()));
-
         _config.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", _config.CacheInfoFile, _logger);
 
         Directory.CreateDirectory(_sConfig.AssetSaveDirectory);
@@ -84,94 +80,6 @@ public class BuildAssetList : IService
         AssetDictLocation = Path.Combine(_sConfig.AssetSaveDirectory, _sConfig.StoredAssetDict);
 
         GenerateDefaultAssetList(false);
-    }
-
-    private void RemoveDuplicates()
-    {
-        _logger.LogInformation("Removing Duplicates");
-
-        var assetList = new Dictionary<string, List<InternalAssetInfo>>();
-        var allAssets = GetAssetsFromDictionary(File.ReadAllText(AssetDictLocation)).ToList();
-
-        foreach (var asset in allAssets)
-        {
-            if (!assetList.ContainsKey(asset.Name))
-                assetList.Add(asset.Name, new List<InternalAssetInfo>());
-
-            var hasFoundExisting = false;
-
-            foreach (var containedAsset in assetList[asset.Name]
-                         .Where(containedAsset => containedAsset.BundleSize == asset.BundleSize &&
-                                                  containedAsset.UnityVersion == asset.UnityVersion &&
-                                                  containedAsset.Locale == asset.Locale &&
-                                                  containedAsset.Type == asset.Type &&
-                                                  Path.GetFileName(containedAsset.Path) == Path.GetFileName(asset.Path)
-                         )
-                    )
-            {
-                if (containedAsset.CacheTime > asset.CacheTime && _startConfig.Is2014Client ||
-                    containedAsset.CacheTime < asset.CacheTime && !_startConfig.Is2014Client)
-                    assetList[asset.Name].Remove(containedAsset);
-                else
-                    hasFoundExisting = true;
-                break;
-            }
-
-            if (!hasFoundExisting)
-                assetList[asset.Name].Add(asset);
-        }
-
-        var replacedCount = assetList.Sum(s => s.Value.Count);
-
-        _logger.LogDebug("Removed {Count} duplicates, asset count: {Total} (of {OldTotal})",
-            allAssets.Count - replacedCount, replacedCount, allAssets.Count);
-
-        _logger.LogInformation("Writing Assets");
-
-        Directory.CreateDirectory(_sConfig.RemovedDuplicateDirectory);
-        GetDirectory.Empty(_sConfig.RemovedDuplicateDirectory);
-
-        var directories = new List<string>();
-
-        for (var i = 0; i < assetList.Max(s => s.Value.Count); i++)
-        {
-            var path = Path.Combine(_sConfig.RemovedDuplicateDirectory, $"Cache_{i}");
-            directories.Add(path);
-            Directory.CreateDirectory(path);
-        }
-
-        Console.WriteLine(replacedCount);
-
-        using (var bar = new DefaultProgressBar(replacedCount, "Writing Assets To Disk", _logger, _sConfig))
-        {
-            foreach (var assets in assetList)
-            {
-                for (var i = 0; i < assets.Value.Count; i++)
-                {
-                    var assetPath = Path.Combine(directories[i], assets.Key);
-                    Directory.CreateDirectory(assetPath);
-
-
-                    var directory = Path.GetDirectoryName(assets.Value[i].Path);
-
-                    if (directory == null)
-                        continue;
-
-                    var files = Directory.GetFiles(directory);
-
-                    foreach (var file in files)
-                    {
-                        var fileName = Path.GetFileName(file);
-                        var newFile = Path.Combine(assetPath, fileName);
-                        File.Copy(file, newFile);
-                    }
-
-                    bar.TickBar();
-                }
-            }
-        }
-
-        _logger.LogDebug("Written all assets to directory: {Path}", _sConfig.RemovedDuplicateDirectory);
     }
 
     private void GenerateDefaultAssetList(bool forceGenerate)
@@ -412,7 +320,7 @@ public class BuildAssetList : IService
         File.WriteAllText(saveDir, document.WriteToString());
     }
 
-    private static IEnumerable<InternalAssetInfo> GetAssetsFromDictionary(string xml)
+    public static IEnumerable<InternalAssetInfo> GetAssetsFromDictionary(string xml)
     {
         var configuration = new List<InternalAssetInfo>();
 
