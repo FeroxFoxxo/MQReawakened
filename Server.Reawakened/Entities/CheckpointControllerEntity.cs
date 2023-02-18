@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Levels.Models.Entities;
+using Server.Reawakened.Entities.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Entities;
 
-public class CheckpointControllerEntity : SyncedEntity<CheckpointController>
+public class CheckpointControllerEntity : AbstractTriggerCoop<CheckpointController>
 {
     public int SpawnPoint => EntityData.SpawnpointID;
 

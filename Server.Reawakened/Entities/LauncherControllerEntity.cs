@@ -7,6 +7,10 @@ namespace Server.Reawakened.Entities;
 
 public class LauncherControllerEntity : SyncedEntity<LauncherController>
 {
+    public float RotationSpeed => EntityData.RotationSpeed;
+    public float MaxLaunchVelocity => EntityData.MaxLaunchVelocity;
+    public float MinLaunchVelocity => EntityData.MinLaunchVelocity;
+
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
         var player = netState.Get<Player>();

@@ -1,6 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities;
+using Server.Reawakened.Entities.Abstractions;
 using Server.Reawakened.Levels.Models.Planes;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -22,7 +22,7 @@ public class UseSlot : ExternalProtocol
     {
         var player = NetState.Get<Player>();
         var character = player.GetCurrentCharacter();
-        
+
         if (!int.TryParse(message[5], out var hotbarSlotId))
         {
             Logger.LogError("Hotbar slot ID must be an integer.");
@@ -97,23 +97,26 @@ public class UseSlot : ExternalProtocol
                 switch (obj.ObjectInfo.PrefabName)
                 {
                     case "PF_GLB_SwitchWall02":
-                        var triggerEvent = new Trigger_SyncEvent(obj.ObjectInfo.ObjectId.ToString(), player.CurrentLevel.Time,
+                        var triggerEvent = new Trigger_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
+                            player.CurrentLevel.Time,
                             true, player.PlayerId.ToString(), true);
-                            
+
                         player.CurrentLevel.SendSyncEvent(triggerEvent);
 
-                        foreach (var syncedEntity in player.CurrentLevel.LevelEntities.Entities[obj.ObjectInfo.ObjectId])
+                        foreach (var syncedEntity in player.CurrentLevel.LevelEntities.Entities[obj.ObjectInfo.ObjectId]
+                                     .Where(syncedEntity =>
+                                         typeof(AbstractTriggerCoop<>).IsAssignableTo(syncedEntity.GetType())
+                                     )
+                                )
                         {
-                            if (syncedEntity is not TriggerCoopControllerEntity triggerEntity)
-                                continue;
-
-                            triggerEntity.RunSyncedEvent(triggerEvent, NetState);
+                            syncedEntity.RunSyncedEvent(triggerEvent, NetState);
                             break;
                         }
 
                         return;
                     case "PF_CRS_BARREL01":
-                        var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(), player.CurrentLevel.Time,
+                        var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
+                            player.CurrentLevel.Time,
                             0, 0, 0, 0, "now", false, false);
 
                         player.CurrentLevel.SendSyncEvent(aiEvent);

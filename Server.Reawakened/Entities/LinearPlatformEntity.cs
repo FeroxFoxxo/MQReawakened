@@ -1,29 +1,32 @@
-﻿using Server.Base.Network;
+﻿using Server.Reawakened.Entities.Abstractions;
 
 namespace Server.Reawakened.Entities;
 
-public class LinearPlatformEntity : MovingObjectControllerEntity<LinearPlatform>
+public class LinearPlatformEntity : AbstractMovingObject<LinearPlatform>
 {
+    public float WaitTime => EntityData.WaitTime;
+    public float DistanceX => EntityData.DistanceX;
+    public float DistanceY => EntityData.DistanceY;
+    public float DistanceZ => EntityData.DistanceZ;
+    public float DistanceTime => EntityData.DistanceTime;
+    public bool SmoothMove => EntityData.SmoothMove;
+    public bool StayHalfwayWhileTriggered => EntityData.StayHalfwayWhileTriggered;
+    public bool StopIfNotTriggered => EntityData.StopIfNotTriggered;
+    public float DelayBeforeStart => EntityData.DelayBeforeStart;
+    public bool TriggeredBySwitch => EntityData.TriggeredBySwitch;
+
     public override void InitializeEntity()
     {
-        var distance = new vector3(EntityData.DistanceX, EntityData.DistanceY, EntityData.DistanceZ);
+        var distance = new vector3(DistanceX, DistanceY, DistanceZ);
 
-        Movement = new Platform_Linear_Movement(EntityData.WaitTime, distance, EntityData.DistanceTime,
-            EntityData.DelayBeforeStart, EntityData.SmoothMove, EntityData.StayHalfwayWhileTriggered,
-            EntityData.StopIfNotTriggered);
+        Movement = new Platform_Linear_Movement(WaitTime, distance, DistanceTime, DelayBeforeStart, SmoothMove,
+            StayHalfwayWhileTriggered, StopIfNotTriggered);
 
         Movement.Init(
             new vector3(Position.X, Position.Y, Position.Z),
-            true, Level.Time, EntityData.InitialProgressRatio
+            true, Level.Time, InitialProgressRatio
         );
     }
-
-    public override object[] GetInitData(NetState netState) => new object[]
-    {
-        Level.Time,
-        Movement.GetBehaviorRatio(Level.Time),
-        Movement.Activated
-    };
 
     public override void Update()
     {

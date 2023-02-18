@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using FollowCamDefines;
 using Microsoft.Extensions.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Levels.Models.Entities;
@@ -14,6 +15,10 @@ namespace Server.Reawakened.Entities;
 
 public class NpcControllerEntity : SyncedEntity<NPCController>
 {
+    public FollowCamModes CameraMode => EntityData.CameraMode;
+    public FollowCamPriority CameraPriority => EntityData.CameraPriority;
+    public bool ShouldDisableNpcInteraction => EntityData.ShouldDisableNPCInteraction;
+
     public ILogger<NpcControllerEntity> Logger { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public NpcCatalog NpcCatalog { get; set; }

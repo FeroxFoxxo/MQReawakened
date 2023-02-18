@@ -10,6 +10,13 @@ namespace Server.Reawakened.Entities;
 
 public class PortalControllerEntity : SyncedEntity<PortalController>
 {
+    public string OverrideCondition => EntityData.OverrideCondition;
+    public bool LaunchMinigame => EntityData.LaunchMinigame;
+    public string TimedEventId => EntityData.timedEventId;
+    public string TimedEventPortalObjectName => EntityData.TimedEventPortalObjectName;
+    public string TimedEventPortalOnAnim => EntityData.TimedEventPortalOnAnim;
+    public string TimedEventPortalOffAnim => EntityData.TimedEventPortalOffAnim;
+
     public WorldGraph WorldGraph { get; set; }
     public LevelHandler LevelHandler { get; set; }
     public ILogger<PortalControllerEntity> Logger { get; set; }

@@ -1,11 +1,14 @@
-﻿using Server.Reawakened.Levels.Models.Entities;
+﻿using Server.Base.Network;
+using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Levels.Models.Planes;
 
-namespace Server.Reawakened.Entities;
+namespace Server.Reawakened.Entities.Abstractions;
 
-public abstract class MovingObjectControllerEntity<T> : SyncedEntity<T> where T : MovingObjectController
+public abstract class AbstractMovingObject<T> : SyncedEntity<T> where T : MovingObjectController
 {
-    protected IMovement Movement;
+    public float InitialProgressRatio => EntityData.InitialProgressRatio;
+
+    public IMovement Movement;
 
     public override void Update()
     {
@@ -21,6 +24,13 @@ public abstract class MovingObjectControllerEntity<T> : SyncedEntity<T> where T 
             Z = position.z
         };
     }
+
+    public override object[] GetInitData(NetState netState) => new object[]
+    {
+        Level.Time,
+        Movement.GetBehaviorRatio(Level.Time),
+        Movement.Activated
+    };
 
     public void Activate() => Movement?.Activate(Level.Time);
 

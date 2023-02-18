@@ -32,6 +32,12 @@ public static class Ask
             return;
         }
 
+        if (user.Characters.Count == 0)
+        {
+            logger.LogError("Could not find any characters for account: {AccountId}", account.UserId);
+            return;
+        }
+
         logger.LogInformation("Please select the ID for the character you want to change the name for:");
 
         foreach (var possibleCharacter in user.Characters)
