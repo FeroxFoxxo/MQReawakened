@@ -69,4 +69,50 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
     public TriggerCoopController.InteractionType InteractType => EntityData.InteractType;
 
     public float ActivationTimeAfterFirstInteraction => EntityData.ActivationTimeAfterFirstInteraction;
+
+    public List<int> TargetIds;
+    public List<int> TargetDeactivateIds;
+    public List<int> TargetEnableIds;
+    public List<int> TargetDisableIds;
+
+    public override void InitializeEntity()
+    {
+        TargetIds = new List<int>
+        {
+            TargetLevelEditorId,
+            Target02LevelEditorId,
+            Target03LevelEditorId,
+            Target04LevelEditorId,
+            Target05LevelEditorId,
+            Target06LevelEditorId,
+            Target07LevelEditorId,
+            Target08LevelEditorId
+        };
+
+        TargetDeactivateIds = new List<int>
+        {
+            TargetToDeactivateLevelEditorId,
+            Target02ToDeactivateLevelEditorId,
+            Target03ToDeactivateLevelEditorId,
+            Target04ToDeactivateLevelEditorId
+        };
+
+        TargetEnableIds = new List<int>
+        {
+            Target01ToEnableLevelEditorId,
+            Target02ToEnableLevelEditorId,
+            Target03ToEnableLevelEditorId,
+            Target04ToEnableLevelEditorId,
+            Target05ToEnableLevelEditorId
+        };
+
+        TargetDisableIds = new List<int>
+        {
+            Target01ToDisableLevelEditorId,
+            Target02ToDisableLevelEditorId,
+            Target03ToDisableLevelEditorId,
+            Target04ToDisableLevelEditorId,
+            Target05ToDisableLevelEditorId
+        };
+    }
 }
