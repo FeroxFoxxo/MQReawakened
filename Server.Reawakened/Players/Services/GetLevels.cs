@@ -25,8 +25,8 @@ public class GetLevels : IService
     }
 
     public void Initialize() =>
-        _serverConsole.AddCommand(new ConsoleCommand("printLevels",
-            "Prints out all the levels in the world graph.", PrintLevels));
+        _serverConsole.AddCommand(new ConsoleCommand("listLevels",
+            "Lists out all the levels in the world graph.", PrintLevels));
 
     private void PrintLevels(string[] command)
     {
