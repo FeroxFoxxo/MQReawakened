@@ -130,10 +130,10 @@ public class State : ExternalProtocol
     public void TraceSyncEventError(int entityId, SyncEvent syncEvent, LevelInfo levelInfo, string names)
     {
         var builder = new StringBuilder()
-            .AppendLine($"# {DateTime.UtcNow} @ Sync Entity: {entityId} ({names})")
+            .AppendLine($"# {DateTime.UtcNow} @ Sync Event")
+            .AppendLine($"Entity: {entityId} ({names})")
             .AppendLine($"Level: {levelInfo.LevelId} ({levelInfo.InGameName})")
-            .AppendLine($"Sync Event Type: {syncEvent.Type}")
-            .AppendLine()
+            .AppendLine($"Event Type: {syncEvent.Type}")
             .AppendLine(syncEvent.EncodeData());
 
         NetworkLogger.WriteToFile<SyncEvent>("event-errors.log", builder, LoggerType.Warning);
