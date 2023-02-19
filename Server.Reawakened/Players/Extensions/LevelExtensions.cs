@@ -37,32 +37,33 @@ public static class LevelExtensions
         player.JoinLevel(state, newLevel, out _);
     }
 
-    public static int GetLevelId(this Player player) =>
-        player.CurrentLevel != null ? player.CurrentLevel.LevelInfo.LevelId : -1;
+    public static int GetSetLevelId(this Player player) =>
+        player.GetCurrentCharacter()?.Level ?? -1;
 
     public static void SendStartPlay(this Player player, CharacterModel character, NetState state,
-        LevelHandler levelHandler, Microsoft.Extensions.Logging.ILogger logger)
+        LevelInfo levelInfo, Microsoft.Extensions.Logging.ILogger logger)
     {
         character.SetCharacterSpawn(character.PortalId, 0, logger);
         character.Data.SetPlayerData(player);
         player.SetCharacterSelected(character.Data.CharacterId);
-        player.SendPlayerData(CharacterInfoType.Detailed, state, levelHandler);
+        state.SendCharacterInfoData(player, CharacterInfoType.Detailed, levelInfo);
     }
 
-    public static void SendPlayerData(this Player player, CharacterInfoType type, NetState state,
-        LevelHandler levelHandler)
+    public static void SentEntityTriggered(this NetState netState, int id, bool success, bool active)
     {
-        var level = player.GetCurrentLevel(levelHandler);
-        state.SendCharacterInfoData(player, type, level?.LevelInfo);
+        var player = netState.Get<Player>();
+        var level = player.CurrentLevel;
+
+        var collectedEvent = new Trigger_SyncEvent(id.ToString(), level.Time, success,
+            player.PlayerId.ToString(), active);
+
+        netState.SendSyncEventToPlayer(collectedEvent);
     }
 
-    public static Level GetCurrentLevel(this Player player, LevelHandler levelHandler) =>
-        levelHandler.GetLevelFromId(player.GetCurrentCharacter().Level);
-
-    public static void SentEntityTriggered(this Player player, int id, Level level)
+    public static void SentEntityTriggered(this Level level, int id, Player player, bool success, bool active)
     {
-        var collectedEvent = new Trigger_SyncEvent(id.ToString(), level.Time, true,
-            player.PlayerId.ToString(), true);
+        var collectedEvent = new Trigger_SyncEvent(id.ToString(), level.Time, success,
+            player.PlayerId.ToString(), active);
 
         level.SendSyncEvent(collectedEvent);
     }
@@ -84,7 +85,6 @@ public static class LevelExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 
-        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, player.PlayerId,
-            levelInfo.Name);
+        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, player.PlayerId, levelInfo.Name);
     }
 }

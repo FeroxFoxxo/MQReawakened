@@ -1,6 +1,5 @@
 ﻿using Server.Base.Network;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Network.Extensions;
 
@@ -19,9 +18,6 @@ public static class SendProtocols
             $"%xt%{actionType}%{state.GetLevelId()}%{string.Join('%', messages)}%", actionType
         );
 
-    private static int GetLevelId(this NetState state)
-    {
-        var user = state.Get<Player>();
-        return user?.GetLevelId() ?? -1;
-    }
+    private static int GetLevelId(this NetState state) =>
+        state.Get<Player>()?.CurrentLevel?.LevelInfo.LevelId ?? -1;
 }

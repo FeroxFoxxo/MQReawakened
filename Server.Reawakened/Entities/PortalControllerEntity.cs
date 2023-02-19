@@ -10,6 +10,13 @@ namespace Server.Reawakened.Entities;
 
 public class PortalControllerEntity : SyncedEntity<PortalController>
 {
+    public string OverrideCondition => EntityData.OverrideCondition;
+    public bool LaunchMinigame => EntityData.LaunchMinigame;
+    public string TimedEventId => EntityData.timedEventId;
+    public string TimedEventPortalObjectName => EntityData.TimedEventPortalObjectName;
+    public string TimedEventPortalOnAnim => EntityData.TimedEventPortalOnAnim;
+    public string TimedEventPortalOffAnim => EntityData.TimedEventPortalOffAnim;
+
     public WorldGraph WorldGraph { get; set; }
     public LevelHandler LevelHandler { get; set; }
     public ILogger<PortalControllerEntity> Logger { get; set; }
@@ -20,13 +27,12 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
         var player = netState.Get<Player>();
+        var character = player.GetCurrentCharacter();
 
         var portal = new Portal_SyncEvent(syncEvent);
 
         if (portal.IsAllowedEntry == false)
             return;
-
-        var currentLevel = player.GetLevelId();
 
         if (portal.EventDataList[0] is not int)
             throw new InvalidDataException($"Portal with id '{portal.EventDataList[0]}' could not be cast to int.");
@@ -36,12 +42,10 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
         if (portalId == 0)
             portalId = Id;
 
-        var newLevelId = WorldGraph.GetDestinationLevelID(currentLevel, portalId);
+        var newLevelId = WorldGraph.GetDestinationLevelID(character.Level, portalId);
 
         if (newLevelId > 0)
         {
-            var character = player.GetCurrentCharacter();
-
             DestNode node = null;
 
             var nodes = WorldGraph.GetLevelWorldGraphNodes(newLevelId);
@@ -56,7 +60,7 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
             }
             else
             {
-                Logger.LogError("Could not find node for '{Old}' -> '{New}'.", currentLevel, newLevelId);
+                Logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.Level, newLevelId);
                 character.SetCharacterSpawn(portalId,
                     portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID), Logger);
             }
@@ -65,13 +69,14 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
 
             Logger.LogInformation("Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
                                   "using portals {PortalId} to {NewPortalId}", character.Data.CharacterName,
-                character.Data.CharacterId, Level.LevelInfo.LevelId, Level.LevelInfo.InGameName, portalId, character.PortalId);
+                character.Data.CharacterId, Level.LevelInfo.LevelId, Level.LevelInfo.InGameName, portalId,
+                character.PortalId);
 
             player.SendLevelChange(netState, LevelHandler, WorldGraph);
         }
         else
         {
-            throw new InvalidDataException($"Portal '{portalId}' is null for world {currentLevel}!");
+            throw new InvalidDataException($"Portal '{portalId}' is null for world {character.Level}!");
         }
     }
 }

@@ -107,7 +107,10 @@ public class LevelHandler : IService
             {
                 // Check if friends are in level.
             }
-            return _levels[levelId].FirstOrDefault();
+            else
+            {
+                return _levels[levelId].FirstOrDefault();
+            }
         }
 
         var levelPlanes = new LevelPlanes();

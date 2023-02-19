@@ -23,8 +23,8 @@ public static class CharacterExtensions
         return characterData.Allegiance == tribe;
     }
 
-    public static CharacterModel GetCurrentCharacter(this Player player)
-        => player.UserInfo.Characters[player.CurrentCharacter];
+    public static CharacterModel GetCurrentCharacter(this Player player) =>
+        player.UserInfo.Characters.TryGetValue(player.CurrentCharacter, out var value) ? value : null;
 
     public static CharacterModel GetCharacterFromName(this Player player, string characterName)
         => player.UserInfo.Characters.Values
@@ -110,10 +110,9 @@ public static class CharacterExtensions
 
         try
         {
-            var level = player.GetCurrentLevel(levelHandler);
-
-            levelName = level.LevelInfo.Name;
-            surroundingLevels = GetSurroundingLevels(level.LevelInfo, worldGraph);
+            var level = levelHandler.GetLevelInfo(player.GetSetLevelId());
+            levelName = level.Name;
+            surroundingLevels = GetSurroundingLevels(level, worldGraph);
         }
         catch (Exception e)
         {

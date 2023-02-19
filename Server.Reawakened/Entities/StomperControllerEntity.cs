@@ -1,12 +1,30 @@
-﻿using Server.Base.Network;
-using Server.Reawakened.Levels.Models.Entities;
+﻿using Server.Reawakened.Entities.Abstractions;
 
 namespace Server.Reawakened.Entities;
 
-public class StomperControllerEntity : SyncedEntity<StomperController>
+public class StomperControllerEntity : AbstractMovingObject<StomperController>
 {
-    public bool Active = true;
+    public float WaitTimeUp => EntityData.WaitTimeUp;
+    public float WaitTimeDown => EntityData.WaitTimeDown;
+    public float DownMoveTime => EntityData.DownMoveTime;
+    public float UpMoveTime => EntityData.UpMoveTime;
+    public float VerticalDistance => EntityData.VerticalDistance;
+    public bool Hazard => EntityData.Hazard;
 
-    public override object[] GetInitData(NetState netState) =>
-        new object[] { "1.0", "1.0", Active ? 1 : 0 };
+    public override void InitializeEntity()
+    {
+        Movement = new Stomper_Movement(DownMoveTime, WaitTimeDown, UpMoveTime, WaitTimeUp, VerticalDistance);
+
+        Movement.Init(
+            new vector3(Position.X, Position.Y, Position.Z),
+            true, Level.Time, InitialProgressRatio
+        );
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        var movement = (Stomper_Movement)Movement;
+        movement.UpdateState(Level.Time);
+    }
 }

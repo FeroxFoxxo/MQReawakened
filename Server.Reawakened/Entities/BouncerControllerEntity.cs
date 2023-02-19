@@ -7,6 +7,10 @@ namespace Server.Reawakened.Entities;
 
 public class BouncerControllerModel : SyncedEntity<BouncerController>
 {
+    public float BounceVerticalVelocity => EntityData.BounceVerticalVelocity;
+    public float BounceHorizontalVelocity => EntityData.BounceHorizontalVelocity;
+    public float BounceHorizontalInputVelocity => EntityData.BounceHorizontalInputVelocity;
+
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
         var player = netState.Get<Player>();

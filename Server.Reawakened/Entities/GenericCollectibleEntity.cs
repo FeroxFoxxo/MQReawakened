@@ -39,9 +39,8 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
         Collected = true;
         var collectedValue = Value * Level.Clients.Count;
 
-        var currentPlayer = netState.Get<Player>();
-
-        currentPlayer.SentEntityTriggered(Id, Level);
+        var player = netState.Get<Player>();
+        Level.SentEntityTriggered(Id, player, true, true);
 
         var effectName = string.Empty;
 

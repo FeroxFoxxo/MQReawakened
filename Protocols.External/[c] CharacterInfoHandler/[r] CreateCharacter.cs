@@ -21,9 +21,9 @@ public class CreateCharacter : ExternalProtocol
     public UserInfoHandler UserInfoHandler { get; set; }
     public NameGenSyllables NameGenSyllables { get; set; }
     public ServerStaticConfig ServerConfig { get; set; }
-    public LevelHandler LevelHandler { get; set; }
     public WorldGraph WorldGraph { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
+    public LevelHandler LevelHandler { get; set; }
     public ILogger<CreateCharacter> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -68,18 +68,18 @@ public class CreateCharacter : ExternalProtocol
             };
 
             var welcomeQuests = QuestCatalog.GetQuestLineQuests(QuestCatalog.GetQuestLineData(139));
-            foreach(var quest in welcomeQuests)
+
+            foreach (var quest in welcomeQuests.Where(quest => quest.Tribe == tribe))
             {
-                if (quest.Tribe == tribe)
-                {
-                    model.AddQuest(quest, true);
-                    break;
-                }
+                model.AddQuest(quest, true);
+                break;
             }
 
             player.AddCharacter(model);
 
-            player.SendStartPlay(model, NetState, LevelHandler, Logger);
+            var levelInfo = LevelHandler.GetLevelInfo(model.Level);
+
+            player.SendStartPlay(model, NetState, levelInfo, Logger);
         }
     }
 }

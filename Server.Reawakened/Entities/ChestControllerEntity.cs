@@ -1,11 +1,11 @@
 ﻿using Server.Base.Network;
-using Server.Reawakened.Levels.Models.Entities;
+using Server.Reawakened.Entities.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Entities;
 
-public class ChestControllerEntity : SyncedEntity<ChestController>
+public class ChestControllerEntity : AbstractBaseChest<ChestController>
 {
     public bool Collected;
 

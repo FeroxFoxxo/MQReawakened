@@ -16,7 +16,7 @@ public class StartPlayLevel : ExternalProtocol
     {
         var player = NetState.Get<Player>();
 
-        var level = player.GetCurrentLevel(LevelHandler);
+        var level = LevelHandler.GetLevelFromId(player.GetSetLevelId());
 
         player.JoinLevel(NetState, level, out var reason);
 

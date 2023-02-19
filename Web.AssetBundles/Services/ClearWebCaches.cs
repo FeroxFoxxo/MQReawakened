@@ -53,24 +53,10 @@ public class ClearWebCaches : IService
 
         _config.GetWebPlayerInfoFile(_sConfig, _logger);
 
-        if (_config.WebPlayerInfoFile == _config.CacheInfoFile)
-        {
-            _logger.LogError("Web player cache and saved directory should not be the same! Skipping...");
-            _config.WebPlayerInfoFile = string.Empty;
-
+        if (string.IsNullOrEmpty(_config.WebPlayerInfoFile))
             return false;
-        }
-
-        if (!_config.WebPlayerInfoFile.ToLower().Contains("appdata"))
-        {
-            _logger.LogError("Web player cache has to be in the AppData/LocalLow folder! Skipping...");
-            _config.WebPlayerInfoFile = string.Empty;
-
-            return false;
-        }
 
         GetDirectory.Empty(Path.GetDirectoryName(_config.WebPlayerInfoFile));
-
         return true;
     }
 

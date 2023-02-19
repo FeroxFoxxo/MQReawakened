@@ -111,8 +111,10 @@ public class BuildAssetList : IService
                              "Try adding them into the LocalAsset directory. " +
                              "The game will not run without these.");
 
-        var gameAssets = InternalAssets.Where(x => !vgmtAssets.ContainsKey(x.Key))
-            .Select(x => x.Value).ToList();
+        var gameAssets = InternalAssets
+            .Where(x => !vgmtAssets.ContainsKey(x.Key))
+            .Select(x => x.Value)
+            .ToList();
 
         PublishConfigs.Clear();
         AssetDict.Clear();
@@ -318,7 +320,7 @@ public class BuildAssetList : IService
         File.WriteAllText(saveDir, document.WriteToString());
     }
 
-    private static IEnumerable<InternalAssetInfo> GetAssetsFromDictionary(string xml)
+    public static IEnumerable<InternalAssetInfo> GetAssetsFromDictionary(string xml)
     {
         var configuration = new List<InternalAssetInfo>();
 
