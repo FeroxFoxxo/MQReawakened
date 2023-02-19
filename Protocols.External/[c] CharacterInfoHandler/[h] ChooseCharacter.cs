@@ -10,8 +10,8 @@ public class ChooseCharacter : ExternalProtocol
 {
     public override string ProtocolName => "ch";
 
-    public ILogger<ChooseCharacter> Logger { get; set; }
     public LevelHandler LevelHandler { get; set; }
+    public ILogger<ChooseCharacter> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -27,6 +27,8 @@ public class ChooseCharacter : ExternalProtocol
             return;
         }
 
-        player.SendStartPlay(character, NetState, LevelHandler, Logger);
+        var levelInfo = LevelHandler.GetLevelInfo(character.Level);
+
+        player.SendStartPlay(character, NetState, levelInfo, Logger);
     }
 }

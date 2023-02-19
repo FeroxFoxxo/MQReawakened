@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities;
 using Server.Reawakened.Levels.Models.Entities;
-using Server.Reawakened.Levels.Services;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -14,12 +13,11 @@ public class LevelUpdate : ExternalProtocol
     public override string ProtocolName => "lv";
 
     public ILogger<LevelUpdate> Logger { get; set; }
-    public LevelHandler LevelHandler { get; set; }
 
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var level = player.GetCurrentLevel(LevelHandler);
+        var level = player.CurrentLevel;
 
         if (level == null)
             return;
@@ -31,7 +29,7 @@ public class LevelUpdate : ExternalProtocol
         foreach (var entity in level.LevelEntities.Entities.Values.SelectMany(x => x))
             entity.SendDelayedData(NetState);
 
-        player.GetCurrentLevel(LevelHandler).SendCharacterInfo(player, NetState);
+        player.CurrentLevel.SendCharacterInfo(player, NetState);
 
         foreach (var npc in level.LevelEntities.GetEntities<NpcControllerEntity>())
             npc.Value.SendNpcInfo(player.GetCurrentCharacter(), NetState);

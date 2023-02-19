@@ -24,7 +24,7 @@ public class State : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var level = player.GetCurrentLevel(LevelHandler);
+        var level = player.CurrentLevel;
 
         if (level == null)
             return;

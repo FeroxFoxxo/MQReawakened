@@ -1,4 +1,7 @@
-﻿using Server.Reawakened.Levels.Models.Entities;
+﻿using Server.Base.Network;
+using Server.Reawakened.Levels.Models.Entities;
+using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Entities.Abstractions;
 
@@ -74,9 +77,15 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
     public List<int> TargetDeactivateIds;
     public List<int> TargetEnableIds;
     public List<int> TargetDisableIds;
+    public bool Enabled;
+    public List<int> CurrentInteractors;
 
     public override void InitializeEntity()
     {
+        Enabled = IsEnable;
+
+        CurrentInteractors = new List<int>();
+
         TargetIds = new List<int>
         {
             TargetLevelEditorId,
@@ -114,5 +123,36 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             Target04ToDisableLevelEditorId,
             Target05ToDisableLevelEditorId
         };
+    }
+
+    public override void SendDelayedData(NetState netState) =>
+        netState.SentEntityTriggered(Id, true, Enabled);
+
+    public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
+    {
+        var tEvent = new Trigger_SyncEvent(syncEvent);
+        var player = netState.Get<Player>();
+
+        var hasUpdated = false;
+
+        if (tEvent.Activate)
+        {
+            if (!CurrentInteractors.Contains(player.PlayerId))
+            {
+                CurrentInteractors.Add(player.PlayerId);
+                hasUpdated = true;
+            }
+        }
+        else
+        {
+            if (CurrentInteractors.Contains(player.PlayerId))
+            {
+                CurrentInteractors.Remove(player.PlayerId);
+                hasUpdated = true;
+            }
+        }
+
+        if (!hasUpdated)
+            return;
     }
 }

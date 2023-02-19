@@ -31,6 +31,6 @@ public class IdolControllerEntity : SyncedEntity<IdolController>
             return;
 
         character.CollectedIdols[levelId].Add(Index);
-        player.SentEntityTriggered(Id, Level);
+        Level.SentEntityTriggered(Id, player, true, true);
     }
 }
