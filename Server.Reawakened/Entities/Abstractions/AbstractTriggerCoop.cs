@@ -1,11 +1,15 @@
-﻿using Server.Base.Network;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
+using Server.Base.Network;
+using Server.Reawakened.Levels;
+using Server.Reawakened.Levels.Enums;
 using Server.Reawakened.Levels.Models.Entities;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Entities.Abstractions;
 
-public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : TriggerCoopController
+public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable where T : TriggerCoopController
 {
     public bool DisabledAfterActivation => EntityData.DisabledAfterActivation;
 
@@ -73,20 +77,22 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
 
     public float ActivationTimeAfterFirstInteraction => EntityData.ActivationTimeAfterFirstInteraction;
 
-    public List<int> TargetIds;
-    public List<int> TargetDeactivateIds;
-    public List<int> TargetEnableIds;
-    public List<int> TargetDisableIds;
-    public bool Enabled;
+    public ILogger<TriggerCoopController> Logger { get; set; }
+
+    public Dictionary<int, TriggerType> Triggers;
+
     public List<int> CurrentInteractors;
 
     public override void InitializeEntity()
     {
-        Enabled = IsEnable;
+        IsEnabled = IsEnable;
+        IsActive = false;
 
         CurrentInteractors = new List<int>();
 
-        TargetIds = new List<int>
+        Triggers = new Dictionary<int, TriggerType>();
+
+        AddToTriggers(new List<int>
         {
             TargetLevelEditorId,
             Target02LevelEditorId,
@@ -96,40 +102,51 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             Target06LevelEditorId,
             Target07LevelEditorId,
             Target08LevelEditorId
-        };
+        }, TriggerType.Activate);
 
-        TargetDeactivateIds = new List<int>
+        AddToTriggers(new List<int>
         {
             TargetToDeactivateLevelEditorId,
             Target02ToDeactivateLevelEditorId,
             Target03ToDeactivateLevelEditorId,
             Target04ToDeactivateLevelEditorId
-        };
+        }, TriggerType.Deactivate);
 
-        TargetEnableIds = new List<int>
+        AddToTriggers(new List<int>
         {
             Target01ToEnableLevelEditorId,
             Target02ToEnableLevelEditorId,
             Target03ToEnableLevelEditorId,
             Target04ToEnableLevelEditorId,
             Target05ToEnableLevelEditorId
-        };
+        }, TriggerType.Enable);
 
-        TargetDisableIds = new List<int>
+        AddToTriggers(new List<int>
         {
             Target01ToDisableLevelEditorId,
             Target02ToDisableLevelEditorId,
             Target03ToDisableLevelEditorId,
             Target04ToDisableLevelEditorId,
             Target05ToDisableLevelEditorId
-        };
+        }, TriggerType.Disable);
+
+        CheckTriggered();
+    }
+
+    public void AddToTriggers(List<int> triggers, TriggerType triggerType)
+    {
+        foreach (var trigger in triggers.Where(trigger => trigger > 0))
+            Triggers.Add(trigger, triggerType);
     }
 
     public override void SendDelayedData(NetState netState) =>
-        netState.SentEntityTriggered(Id, true, Enabled);
+        netState.SentEntityTriggered(Id, true, IsActive);
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
+        if (!IsEnabled)
+            return;
+
         var tEvent = new Trigger_SyncEvent(syncEvent);
         var player = netState.Get<Player>();
 
@@ -154,5 +171,82 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
 
         if (!hasUpdated)
             return;
+
+        // ReSharper disable once InvertIf
+        if (
+            (!IsActive || !StayTriggeredOnUnpressed) && !StayTriggeredOnReceiverActivated ||
+            StayTriggeredOnReceiverActivated && !TriggerReceiverActivated() ||
+            IsActive && StayTriggeredOnUnpressed && !StayTriggeredOnReceiverActivated
+        )
+        {
+            Level.SentEntityTriggered(Id, player, true, tEvent.Activate);
+            CheckTriggered();
+        }
     }
+
+    private void CheckTriggered()
+    {
+        switch (IsActive)
+        {
+            case false when CurrentInteractors.Count >= NbInteractionsNeeded:
+                IsActive = true;
+                Trigger();
+                break;
+            case true when !StayTriggeredOnReceiverActivated || !TriggerReceiverActivated():
+                IsActive = false;
+                Trigger();
+                break;
+        }
+    }
+
+    private void Trigger()
+    {
+        Logger.LogTrace("Trigger for {Id} has been set to {IsActive}, affecting {EntityCount}.", Id, IsActive, Triggers.Count);
+
+        foreach (var triggers in Level.LevelEntities.Entities.Where(e => Triggers.ContainsKey(e.Key)))
+        {
+            var triggerType = Triggers[triggers.Key];
+
+            foreach (var trigger in triggers.Value)
+            {
+                switch (triggerType)
+                {
+                    case TriggerType.Activate:
+                        trigger.IsActive = true;
+                        break;
+                    case TriggerType.Deactivate:
+                        trigger.IsActive = false;
+                        break;
+                    case TriggerType.Enable:
+                        trigger.IsEnabled = true;
+                        break;
+                    case TriggerType.Disable:
+                        trigger.IsEnabled = false;
+                        break;
+                }
+            }
+
+            var canTriggerEntities = triggers.Value.OfType<ITriggerable>().ToList();
+
+            if (canTriggerEntities.Any())
+                foreach (var trigger in canTriggerEntities)
+                    trigger.TriggerStateChange(triggerType, Level);
+            else
+                Logger.LogError("Cannot trigger entity {Id} to state {State}, no class implements 'TriggerableEntity'.", triggers.Key, triggerType);
+        }
+    }
+
+    private bool TriggerReceiverActivated()
+    {
+        var receivers = Level.LevelEntities.GetEntities<TriggerReceiverEntity>();
+
+        return Triggers
+            .Where(r => r.Value == TriggerType.Activate)
+            .Where(trigger => receivers.ContainsKey(trigger.Key))
+            .Select(trigger => receivers[trigger.Key]).All(receiver => receiver.IsActive);
+    }
+
+    public void TriggerStateChange(TriggerType triggerType, Level level) =>
+        Logger.LogError("Trigger not implemented for {TypeName} (tried to change to {TriggerType}).",
+            GetType().Name, triggerType);
 }

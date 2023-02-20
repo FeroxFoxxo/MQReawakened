@@ -10,10 +10,12 @@ public class CheckpointControllerEntity : AbstractTriggerCoop<CheckpointControll
 {
     public int SpawnPoint => EntityData.SpawnpointID;
 
-    public ILogger<CheckpointControllerEntity> Logger { get; set; }
+    public new ILogger<CheckpointControllerEntity> Logger { get; set; }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
+        base.RunSyncedEvent(syncEvent, netState);
+
         var player = netState.Get<Player>();
         var character = player.GetCurrentCharacter();
 

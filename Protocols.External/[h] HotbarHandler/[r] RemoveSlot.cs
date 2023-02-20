@@ -14,14 +14,9 @@ public class RemoveSlot : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-
         var character = player.GetCurrentCharacter();
 
-        if (!int.TryParse(message[5], out var hotbarSlotId))
-        {
-            Logger.LogError("Hotbar slot ID must be an integer.");
-            return;
-        }
+        var hotbarSlotId = int.Parse(message[5]);
 
         character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
 

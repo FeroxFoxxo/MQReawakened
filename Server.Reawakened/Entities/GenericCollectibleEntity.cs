@@ -9,14 +9,11 @@ namespace Server.Reawakened.Entities;
 public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
 {
     public ILogger<GenericCollectibleModel> Logger { get; set; }
-
-    public bool Collected;
+    
     public int Value;
 
     public override void InitializeEntity()
     {
-        Collected = false;
-
         switch (PrefabName)
         {
             case "BananaGrapCollectible":
@@ -32,11 +29,11 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
     }
 
     public override object[] GetInitData(NetState netState) =>
-        Collected ? new object[] { 0 } : Array.Empty<object>();
+        !IsActive ? new object[] { 0 } : Array.Empty<object>();
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
-        Collected = true;
+        IsActive = false;
         var collectedValue = Value * Level.Clients.Count;
 
         var player = netState.Get<Player>();

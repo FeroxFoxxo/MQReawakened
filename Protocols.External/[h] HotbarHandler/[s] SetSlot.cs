@@ -16,17 +16,8 @@ public class SetSlot : ExternalProtocol
         var player = NetState.Get<Player>();
         var character = player.GetCurrentCharacter();
 
-        if (!int.TryParse(message[5], out var hotbarSlotId))
-        {
-            Logger.LogError("Hotbar slot ID must be an integer.");
-            return;
-        }
-
-        if (!int.TryParse(message[6], out var itemId))
-        {
-            Logger.LogError("Item ID must be an integer.");
-            return;
-        }
+        var hotbarSlotId = int.Parse(message[5]);
+        var itemId = int.Parse(message[6]);
 
         if (!character.TryGetItem(itemId, out var item))
         {

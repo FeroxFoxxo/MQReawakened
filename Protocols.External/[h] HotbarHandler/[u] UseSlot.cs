@@ -23,19 +23,9 @@ public class UseSlot : ExternalProtocol
         var player = NetState.Get<Player>();
         var character = player.GetCurrentCharacter();
 
-        if (!int.TryParse(message[5], out var hotbarSlotId))
-        {
-            Logger.LogError("Hotbar slot ID must be an integer.");
-            return;
-        }
-
-        if (!int.TryParse(message[6], out var targetUserId))
-        {
-            Logger.LogError("Target user ID must be an integer.");
-            return;
-        }
-
-        // FX Spawn Point
+        var hotbarSlotId = int.Parse(message[5]);
+        var targetUserId = int.Parse(message[6]);
+        
         var position = new Vector3Model
         {
             X = Convert.ToSingle(message[7]),
@@ -98,8 +88,7 @@ public class UseSlot : ExternalProtocol
                 {
                     case "PF_GLB_SwitchWall02":
                         var triggerEvent = new Trigger_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                            player.CurrentLevel.Time,
-                            true, player.PlayerId.ToString(), true);
+                            player.CurrentLevel.Time, true, player.PlayerId.ToString(), true);
 
                         player.CurrentLevel.SendSyncEvent(triggerEvent);
 

@@ -67,14 +67,6 @@ public class CreateCharacter : ExternalProtocol
                 Level = WorldGraph.ClockTowerId
             };
 
-            var welcomeQuests = QuestCatalog.GetQuestLineQuests(QuestCatalog.GetQuestLineData(139));
-
-            foreach (var quest in welcomeQuests.Where(quest => quest.Tribe == tribe))
-            {
-                model.AddQuest(quest, true);
-                break;
-            }
-
             player.AddCharacter(model);
 
             var levelInfo = LevelHandler.GetLevelInfo(model.Level);
