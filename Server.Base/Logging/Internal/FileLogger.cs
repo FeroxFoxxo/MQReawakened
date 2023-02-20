@@ -23,19 +23,6 @@ public class FileLogger : TextWriter
         _newLine = true;
     }
 
-    public override void Write(char character)
-    {
-        using var writer = GetFile.GetStreamWriter(FileName, "Logs", FileMode.Append);
-
-        if (_newLine)
-        {
-            writer.Write(DateTime.UtcNow.ToString(DateFormat));
-            _newLine = false;
-        }
-
-        writer.Write(character);
-    }
-
     public override void Write(string @string)
     {
         using var writer = GetFile.GetStreamWriter(FileName, "Logs", FileMode.Append);

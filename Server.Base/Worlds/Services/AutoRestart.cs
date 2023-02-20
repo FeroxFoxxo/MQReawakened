@@ -54,10 +54,10 @@ public class AutoRestart : Timer, IService
 
     private void ServerStarted()
     {
-        _logger.LogDebug("Configured for {RestartHour}:{RestartMinute}:00, every {TotalHours} hours!",
+        _logger.LogInformation("Configured for {RestartHour}:{RestartMinute}:00, every {TotalHours} hours!",
             RestartTime.Hour, RestartTime.Minute, _delayAutoRestart.TotalHours);
 
-        _logger.LogDebug("Next Restart: {RestartTime}", RestartTime);
+        _logger.LogInformation("Next Restart: {RestartTime}", RestartTime);
 
         Start();
     }

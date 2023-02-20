@@ -39,7 +39,7 @@ public class UserInfoHandler : DataHandler<UserInfo>
 
         while (true)
         {
-            Logger.LogDebug("Gender: ");
+            Logger.LogInformation("Gender: ");
 
             if (Enum.TryParse(Console.ReadLine(), true, out gender))
                 break;
@@ -52,7 +52,7 @@ public class UserInfoHandler : DataHandler<UserInfo>
 
         while (true)
         {
-            Logger.LogDebug("Date Of Birth: ");
+            Logger.LogInformation("Date Of Birth: ");
 
             if (DateTime.TryParse(Console.ReadLine(), out dob))
                 break;

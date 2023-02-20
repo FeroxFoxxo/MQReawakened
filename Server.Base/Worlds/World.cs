@@ -40,7 +40,7 @@ public class World
 
         Loaded = true;
 
-        _logger.LogInformation("Loading...");
+        _logger.LogInformation("Loading world...");
 
         var stopWatch = Stopwatch.StartNew();
 
@@ -68,7 +68,7 @@ public class World
     public void NotifyDiskWriteComplete()
     {
         if (_diskWriteHandle.Set())
-            _logger.LogDebug("Closing Save Files.");
+            _logger.LogDebug("Closing save files.");
     }
 
     public void Save(bool message, bool permitBackgroundWrite)
@@ -104,7 +104,7 @@ public class World
         if (!permitBackgroundWrite)
             NotifyDiskWriteComplete();
 
-        _logger.LogDebug("Save finished in {SECONDS} seconds.", stopWatch.Elapsed.TotalSeconds);
+        _logger.LogInformation("Save finished in {SECONDS} seconds.", stopWatch.Elapsed.TotalSeconds);
 
         _handler.Resume();
     }

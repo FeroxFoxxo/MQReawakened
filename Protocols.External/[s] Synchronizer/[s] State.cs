@@ -32,7 +32,7 @@ public class State : ExternalProtocol
         var syncEvent = SyncEventManager.DecodeEvent(message[5].Split('&'));
 
         if (ServerConfig.LogSyncState)
-            Logger.LogInformation("Found state: {State}", syncEvent.Type);
+            Logger.LogDebug("Found state: {State}", syncEvent.Type);
 
         var entityId = int.Parse(syncEvent.TargetID);
 

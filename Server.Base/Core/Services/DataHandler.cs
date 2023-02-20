@@ -52,7 +52,7 @@ public abstract class DataHandler<T> : IService where T : PersistantData
 
                 var count = Data.Count;
 
-                Logger.LogDebug("Loaded {Count} {Name}{Plural} to memory from {Directory}", count,
+                Logger.LogInformation("Loaded {Count} {Name}{Plural} to memory from {Directory}", count,
                     typeof(T).Name.ToLower(), count != 1 ? "s" : string.Empty, filePath);
 
                 streamReader.Close();
@@ -77,8 +77,8 @@ public abstract class DataHandler<T> : IService where T : PersistantData
     {
         var type = typeof(T).Name.ToLower();
 
-        Logger.LogInformation("This server does not have a(n) {Type}.", type);
-        Logger.LogInformation("Please create a(n) {Type} for the {Name} now", type, name);
+        Logger.LogDebug("This server does not have a(n) {Type}.", type);
+        Logger.LogDebug("Please create a(n) {Type} for the {Name} now", type, name);
 
         var t = CreateDefault();
 
@@ -89,7 +89,7 @@ public abstract class DataHandler<T> : IService where T : PersistantData
         else
         {
             Data.Add(Data.Count, t);
-            Logger.LogInformation("Created {Name}.", type);
+            Logger.LogDebug("Created {Name}.", type);
         }
     }
 

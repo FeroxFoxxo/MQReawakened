@@ -33,7 +33,7 @@ public class BuildLevelFiles : IService
 
     private void LoadXmlFiles(AssetBundleLoadEventArgs assetLoadEvent)
     {
-        _logger.LogInformation("Reading Level Files From Bundles");
+        _logger.LogDebug("Reading level files from bundles");
 
         LevelFiles.Clear();
 

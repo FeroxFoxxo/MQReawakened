@@ -48,7 +48,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
     {
         if (Description == null)
         {
-            Logger.LogDebug("No description found for NPC! Id: {id}", Id);
+            Logger.LogWarning("No description found for NPC! Id: {id}", Id);
             return;
         }
 
@@ -103,7 +103,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         else
         {
             netState.SendXt("nt", Id, (int)status, 0);
-            Logger.LogDebug("Npc: {n} - {s}", NpcName, status);
+            Logger.LogTrace("Npc: {n} - {s}", NpcName, status);
         }
     }
 

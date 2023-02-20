@@ -45,12 +45,12 @@ public class CrashGuard : IService
 
     private void Restart(CrashedEventArgs e)
     {
-        _logger.LogInformation("Restarting...");
+        _logger.LogDebug("Restarting...");
 
         try
         {
             Process.Start(GetExePath.Path());
-            _logger.LogDebug("Successfully restarted!");
+            _logger.LogInformation("Successfully restarted!");
 
             e.Close = true;
         }
@@ -62,7 +62,7 @@ public class CrashGuard : IService
 
     private void Backup()
     {
-        _logger.LogInformation("Backing up...");
+        _logger.LogDebug("Backing up...");
 
         try
         {
@@ -76,7 +76,7 @@ public class CrashGuard : IService
 
             CopyFiles(rootOrigin, rootBackup);
 
-            _logger.LogDebug("Backed up!");
+            _logger.LogInformation("Backed up!");
         }
         catch (Exception ex)
         {
@@ -117,7 +117,7 @@ public class CrashGuard : IService
 
     private void GenerateCrashReport(CrashedEventArgs crashedEventArgs)
     {
-        _logger.LogInformation("Generating report...");
+        _logger.LogDebug("Generating report...");
 
         try
         {
@@ -171,7 +171,7 @@ public class CrashGuard : IService
             }
 
 
-            _logger.LogDebug("Logged error!");
+            _logger.LogInformation("Logged error!");
         }
         catch (Exception ex)
         {

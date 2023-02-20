@@ -41,13 +41,13 @@ public class ChatCommands : IService
 
     public void RunChatListener()
     {
-        _logger.LogInformation("Setting Up Chat Commands");
+        _logger.LogDebug("Setting up chat commands");
 
         AddCommand(new ChatCommand("listlevels", "[filterUnknown](true/false)", ListLevels));
         AddCommand(new ChatCommand("level", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("item", "[itemId] [amount]", AddItem));
 
-        _logger.LogDebug("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
+        _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
     
     public void RunCommand(NetState netState, string[] args)

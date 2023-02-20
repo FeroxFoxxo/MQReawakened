@@ -44,10 +44,10 @@ public class AccountHandler : DataHandler<Account>
 
     public override Account CreateDefault()
     {
-        Logger.LogDebug("Username: ");
+        Logger.LogInformation("Username: ");
         var username = Console.ReadLine();
 
-        Logger.LogDebug("Password: ");
+        Logger.LogInformation("Password: ");
         var password = Console.ReadLine();
 
         if (username != null)

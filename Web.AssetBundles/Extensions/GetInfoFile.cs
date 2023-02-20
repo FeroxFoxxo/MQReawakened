@@ -30,7 +30,9 @@ public static class GetInfoFile
     public static string TryGetInfoFile(string cacheName, string defaultFile,
         Microsoft.Extensions.Logging.ILogger logger)
     {
-        logger.LogInformation("Getting The {Type} Cache Directory", cacheName);
+        var lowerName = cacheName.ToLower();
+
+        logger.LogDebug("Getting the {Type} cache directory...", lowerName);
 
         try
         {
@@ -44,11 +46,9 @@ public static class GetInfoFile
 
         while (true)
         {
-            cacheName = cacheName.ToLower();
-
             if (string.IsNullOrEmpty(defaultFile) || !defaultFile.EndsWith("__info"))
             {
-                logger.LogError("Please enter the absolute file path for the {Type} '__info' cache file.", cacheName);
+                logger.LogError("Please enter the absolute file path for the {Type} '__info' cache file.", lowerName);
                 defaultFile = Console.ReadLine() ?? string.Empty;
                 continue;
             }
@@ -56,7 +56,7 @@ public static class GetInfoFile
             break;
         }
 
-        logger.LogDebug("Got the {Type} cache directory: {Directory}", cacheName, Path.GetDirectoryName(defaultFile));
+        logger.LogInformation("{Type} Cache Directory: {Directory}", cacheName, Path.GetDirectoryName(defaultFile));
 
         return defaultFile;
     }

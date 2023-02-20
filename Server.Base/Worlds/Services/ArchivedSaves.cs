@@ -73,7 +73,7 @@ public class ArchivedSaves : IService
         if (pending <= 0)
             return;
 
-        _logger.LogInformation("Waiting for {TaskCount} pending tasks...", pending);
+        _logger.LogDebug("Waiting for {TaskCount} pending tasks...", pending);
 
         while (GetPendingTasks() > 0)
             _sync.WaitOne(10);
@@ -86,7 +86,7 @@ public class ArchivedSaves : IService
         if (!Directory.Exists(_defaultDestination))
             return;
 
-        _logger.LogInformation("Pruning started...");
+        _logger.LogDebug("Pruning started...");
 
         var stopwatch = Stopwatch.StartNew();
 
@@ -114,12 +114,12 @@ public class ArchivedSaves : IService
 
         stopwatch.Stop();
 
-        _logger.LogDebug("Pruning done in {Seconds} seconds.", stopwatch.Elapsed.TotalSeconds);
+        _logger.LogInformation("Pruning done in {Seconds} seconds.", stopwatch.Elapsed.TotalSeconds);
     }
 
     private void InternalPack(string source)
     {
-        _logger.LogInformation("Packing started...");
+        _logger.LogDebug("Packing started...");
 
         var stopwatch = Stopwatch.StartNew();
 
@@ -168,7 +168,7 @@ public class ArchivedSaves : IService
 
         stopwatch.Stop();
 
-        _logger.LogDebug("Packing done in {Seconds} seconds.", stopwatch.Elapsed.TotalSeconds);
+        _logger.LogInformation("Packing done in {Seconds} seconds.", stopwatch.Elapsed.TotalSeconds);
     }
 
     private void BeginPrune(DateTime threshold)

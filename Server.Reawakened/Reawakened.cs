@@ -19,7 +19,7 @@ public class Reawakened : Module
 
     public override void AddServices(IServiceCollection services, Module[] modules)
     {
-        Logger.LogInformation("Loading Thrift Handlers");
+        Logger.LogDebug("Loading thrift handlers");
 
         foreach (var service in modules.GetServices<ThriftHandler>())
         {
@@ -27,7 +27,7 @@ public class Reawakened : Module
             services.AddSingleton(service);
         }
 
-        Logger.LogDebug("Loaded thrift handlers");
+        Logger.LogInformation("Loaded thrift handlers");
 
         services
             .AddSingleton<ReflectionUtils>()

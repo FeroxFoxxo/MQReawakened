@@ -116,13 +116,13 @@ public class Listener : IDisposable
                 foreach (var uniCast in properties.UnicastAddresses)
                 {
                     if (ipEndPoint.AddressFamily == uniCast.Address.AddressFamily)
-                        _logger.LogInformation("Listening: {Address}:{Port}", uniCast.Address, ipEndPoint.Port);
+                        _logger.LogDebug("Listening: {Address}:{Port}", uniCast.Address, ipEndPoint.Port);
                 }
             }
         }
         else
         {
-            _logger.LogInformation("Listening: {Address}:{Port}", ipEndPoint.Address, ipEndPoint.Port);
+            _logger.LogDebug("Listening: {Address}:{Port}", ipEndPoint.Address, ipEndPoint.Port);
         }
     }
 

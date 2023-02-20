@@ -39,7 +39,7 @@ public class RemoveDuplicates : IService
 
     private void RemoveDuplicateFiles()
     {
-        _logger.LogInformation("Removing Duplicates");
+        _logger.LogDebug("Removing duplicates");
 
         var assetList = new Dictionary<string, List<InternalAssetInfo>>();
         var assetDict = File.ReadAllText(_buildAssetList.AssetDictLocation);
@@ -95,10 +95,10 @@ public class RemoveDuplicates : IService
 
         var replacedCount = assetList.Sum(s => s.Value.Count);
 
-        _logger.LogDebug("Removed {Count} duplicates, asset count: {Total} (of {OldTotal})",
+        _logger.LogInformation("Removed {Count} duplicates, asset count: {Total} (of {OldTotal})",
             allAssets.Count - replacedCount, replacedCount, allAssets.Count);
 
-        _logger.LogInformation("Writing Assets");
+        _logger.LogDebug("Writing assets");
 
         Directory.CreateDirectory(_sConfig.RemovedDuplicateDirectory);
 
@@ -137,7 +137,7 @@ public class RemoveDuplicates : IService
             }
         }
 
-        _logger.LogDebug("Written all assets to directory: {Path}", _sConfig.RemovedDuplicateDirectory);
+        _logger.LogInformation("Written all assets to directory: {Path}", _sConfig.RemovedDuplicateDirectory);
     }
 
     public static bool AreFileContentsEqual(string path1, string path2) =>

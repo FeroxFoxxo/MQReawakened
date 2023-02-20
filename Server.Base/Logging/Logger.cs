@@ -82,8 +82,7 @@ public class Logger : ILogger
 
     private void WriteLine(ConsoleColor color, string message, string shortLogLevel, int eventId)
     {
-        var currentTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
-        var prefix = $"[{currentTime}] [{shortLogLevel}] {_categoryName.Split('.').Last()}[{eventId}]";
+        var prefix = $"[{shortLogLevel}] {_categoryName.Split('.').Last()}[{eventId}]";
 
         if (_offset < prefix.Length) _offset = prefix.Length;
         var length = _offset - prefix.Length;

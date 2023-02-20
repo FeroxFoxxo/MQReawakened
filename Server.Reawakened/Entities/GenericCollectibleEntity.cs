@@ -24,7 +24,7 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
                 Value = 1;
                 break;
             default:
-                Logger.LogInformation("Collectible not implemented for {PrefabName}", PrefabName);
+                Logger.LogWarning("Collectible not implemented for {PrefabName}", PrefabName);
                 break;
         }
     }
@@ -51,7 +51,7 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
                 effectName = "PF_FX_Banana_Level_02";
                 break;
             default:
-                Logger.LogInformation("Collectible not implemented for {PrefabName}", PrefabName);
+                Logger.LogWarning("Collectible not implemented for {PrefabName}", PrefabName);
                 break;
         }
 

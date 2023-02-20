@@ -30,16 +30,16 @@ public class Server : Module
 
     public override void AddServices(IServiceCollection services, Module[] modules)
     {
-        Logger.LogInformation("Loading Hosted Services");
+        Logger.LogDebug("Loading hosted services");
 
         {
             services.AddHostedService<ServerWorker>();
             Logger.LogTrace("   Loaded: Service Worker");
         }
 
-        Logger.LogDebug("Loaded hosted services");
+        Logger.LogInformation("Loaded hosted services");
 
-        Logger.LogInformation("Loading Services");
+        Logger.LogDebug("Loading services");
 
         foreach (var service in modules.GetServices<IService>())
         {
@@ -47,9 +47,9 @@ public class Server : Module
             services.AddSingleton(service);
         }
 
-        Logger.LogDebug("Loaded services");
+        Logger.LogInformation("Loaded services");
 
-        Logger.LogInformation("Loading Event Sinks");
+        Logger.LogDebug("Loading event sinks");
 
         foreach (var eventSink in modules.GetServices<IEventSink>())
         {
@@ -57,30 +57,30 @@ public class Server : Module
             services.AddSingleton(eventSink);
         }
 
-        Logger.LogDebug("Loaded event sinks");
+        Logger.LogInformation("Loaded event sinks");
 
-        Logger.LogInformation("Loading Modules");
+        Logger.LogDebug("Loading modules");
         foreach (var service in modules.GetServices<Module>())
         {
             Logger.LogTrace("   Loaded: {ServiceName}", service.Name);
             services.AddSingleton(service);
         }
 
-        Logger.LogDebug("Loaded modules");
+        Logger.LogInformation("Loaded modules");
 
-        Logger.LogInformation("Loading Configs");
+        Logger.LogDebug("Loading Configs");
 
         foreach (var config in modules.GetServices<IConfig>())
             services.LoadConfigs(config, Logger);
 
-        Logger.LogDebug("Loaded configs");
+        Logger.LogInformation("Loaded configs");
 
-        Logger.LogInformation("Loading Static Configs");
+        Logger.LogDebug("Loading static configs");
 
         foreach (var staticConfig in modules.GetServices<IStaticConfig>())
             services.AddSingleton(staticConfig);
 
-        Logger.LogDebug("Loaded configs");
+        Logger.LogInformation("Loaded configs");
 
         services
             .AddSingleton<Random>()

@@ -40,10 +40,10 @@ public class ReplaceCaches : IService
     {
         _sink.WorldLoad += Load;
 
-        _appLifetime.ApplicationStarted.Register(LogInformation);
+        _appLifetime.ApplicationStarted.Register(LogDynamicAssetWarning);
     }
 
-    private void LogInformation()
+    private void LogDynamicAssetWarning()
     {
         if (_sConfig.UseCacheReplacementScheme)
             _logger.LogError("Note: Dynamically loading cache files is not currently supported. " +
@@ -73,7 +73,7 @@ public class ReplaceCaches : IService
         var cacheModel = new CacheModel(_buildAssetList, _config);
 
         _logger.LogInformation(
-            "Loaded {NumAssetDict} Assets With {Caches} Caches ({TotalFiles} Total Files, {Unknown} Unidentified).",
+            "Loaded {NumAssetDict} assets with {Caches} caches ({TotalFiles} total files, {Unknown} unidentified).",
             cacheModel.TotalAssetDictionaryFiles, cacheModel.TotalFoundCaches, cacheModel.TotalCachedAssetFiles,
             cacheModel.TotalUnknownCaches
         );
@@ -102,7 +102,7 @@ public class ReplaceCaches : IService
             JsonSerializer.Serialize(cacheModel, new JsonSerializerOptions { WriteIndented = true })
         );
 
-        _logger.LogInformation("Logged Cache Replacements To {ReplacementFile}", replacementLogPath);
+        _logger.LogDebug("Logged cache replacements to {ReplacementFile}", replacementLogPath);
 
         _game.AskIfRestart();
     }

@@ -71,6 +71,9 @@ public class BuildAssetList : IService
 
         _config.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", _config.CacheInfoFile, _logger);
 
+        if (!string.IsNullOrEmpty(_config.WebPlayerInfoFile))
+            _config.WebPlayerInfoFile = _config.GetWebPlayerInfoFile(_sConfig, _logger);
+
         Directory.CreateDirectory(_sConfig.AssetSaveDirectory);
         Directory.CreateDirectory(_sConfig.BundleSaveDirectory);
 
@@ -84,7 +87,7 @@ public class BuildAssetList : IService
 
     private void GenerateDefaultAssetList(bool forceGenerate)
     {
-        _logger.LogInformation("Getting Asset Dictionary");
+        _logger.LogDebug("Getting asset dictionary");
 
         var dictExists = File.Exists(AssetDictLocation);
 
@@ -97,7 +100,7 @@ public class BuildAssetList : IService
         InternalAssets.AddModifiedAssets(_sConfig);
         InternalAssets.AddLocalXmlFiles(_logger, _sConfig);
 
-        _logger.LogDebug("Loaded {Count} assets to memory.", InternalAssets.Count);
+        _logger.LogInformation("Loaded {Count} assets to memory.", InternalAssets.Count);
 
         foreach (var asset in InternalAssets.Values.Where(x => x.Type == AssetInfo.TypeAsset.Unknown))
             _logger.LogError("Could not find type for asset '{Name}' in '{File}'.", asset.Name, asset.Path);
@@ -125,7 +128,7 @@ public class BuildAssetList : IService
         AddPublishConfiguration(vgmtAssets.Values, _sConfig.PublishConfigVgmtKey);
         AddAssetDictionary(vgmtAssets.Values, _sConfig.PublishConfigVgmtKey);
 
-        _logger.LogDebug("Generated default dictionaries.");
+        _logger.LogInformation("Generated default dictionaries.");
 
         _assetSink.InvokeAssetBundlesLoaded(new AssetBundleLoadEventArgs(InternalAssets));
     }

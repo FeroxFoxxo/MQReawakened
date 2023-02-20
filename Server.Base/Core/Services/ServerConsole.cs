@@ -38,7 +38,7 @@ public class ServerConsole : IService
     
     public void RunConsoleListener()
     {
-        _logger.LogInformation("Setting Up Console Commands");
+        _logger.LogDebug("Setting up console commands");
 
         AddCommand(new ConsoleCommand(
             "restart",
@@ -93,7 +93,7 @@ public class ServerConsole : IService
             if (name != null && _commands.TryGetValue(name, out var value))
             {
                 value.CommandMethod(inputs);
-                _logger.LogDebug("Successfully ran command '{Name}'", name);
+                _logger.LogInformation("Successfully ran command '{Name}'", name);
                 return;
             }
         }
@@ -103,13 +103,13 @@ public class ServerConsole : IService
 
     private void DisplayHelp()
     {
-        _logger.LogDebug("Commands:");
+        _logger.LogInformation("Commands:");
 
         foreach (var command in _commands.Values.OrderBy(x => x.Name))
         {
             var padding = _config.CommandPadding - command.Name.Length;
             if (padding < 0) padding = 0;
-            _logger.LogDebug("  {Name} - {Description}", command.Name.PadRight(padding), command.Description);
+            _logger.LogInformation("  {Name} - {Description}", command.Name.PadRight(padding), command.Description);
         }
     }
 }

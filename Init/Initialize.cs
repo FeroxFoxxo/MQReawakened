@@ -21,17 +21,17 @@ public class Initialize
 
             var builder = WebApplication.CreateBuilder();
 
-            logger.LogInformation("Getting Modules");
+            logger.LogDebug("Getting modules");
             var modules = GetModules(logger);
 
-            logger.LogInformation("Importing Modules");
+            logger.LogDebug("Importing modules");
             InitializeModules(modules, builder, logger);
 
-            logger.LogInformation("Building Application");
+            logger.LogDebug("Building application");
             var app = builder.Build();
-            logger.LogDebug("Application built");
+            logger.LogInformation("Application built");
 
-            logger.LogInformation("Configuring Application");
+            logger.LogDebug("Configuring application");
             ConfigureApp(modules, app, logger);
 
             logger.LogInformation("======== Running Application =======");
@@ -51,7 +51,7 @@ public class Initialize
 
         foreach (var module in modules)
         {
-            logger.LogDebug("Imported {ModuleInfo}", module.GetModuleInformation());
+            logger.LogInformation("Imported {ModuleInfo}", module.GetModuleInformation());
 
             if (module.Contributors.Length <= 0)
                 continue;
@@ -60,29 +60,29 @@ public class Initialize
             logger.LogTrace("        {Contributors}", string.Join(", ", module.Contributors));
         }
 
-        logger.LogDebug("Fetched {ModuleCount} modules", modules.Length);
+        logger.LogInformation("Fetched {ModuleCount} modules", modules.Length);
 
         return modules;
     }
 
     private static void InitializeModules(Module[] modules, WebApplicationBuilder builder, ILogger logger)
     {
-        logger.LogInformation("Initializing Logging");
+        logger.LogDebug("Initializing logging");
         foreach (var startup in modules)
             startup.AddLogging(builder.Logging);
-        logger.LogDebug("Successfully initialized logging");
+        logger.LogInformation("Successfully initialized logging");
 
-        logger.LogInformation("Initializing Services");
+        logger.LogDebug("Initializing services");
         foreach (var startup in modules)
             startup.AddServices(builder.Services, modules);
-        logger.LogDebug("Successfully initialized services");
+        logger.LogInformation("Successfully initialized services");
 
-        logger.LogInformation("Configuring Services");
+        logger.LogDebug("Configuring services");
         foreach (var startup in modules)
             startup.ConfigureServices(builder.Configuration, builder.Services);
-        logger.LogDebug("Successfully configured services");
+        logger.LogInformation("Successfully configured services");
 
-        logger.LogInformation("Initializing Web Services");
+        logger.LogDebug("Initializing web services");
 
         var controller = builder.Services.AddControllers();
 
@@ -94,7 +94,7 @@ public class Initialize
             controller.AddApplicationPart(module.GetType().Assembly);
         }
 
-        logger.LogDebug("Successfully initialized web services");
+        logger.LogInformation("Successfully initialized web services");
     }
 
     private static void ConfigureApp(Module[] modules, WebApplication app, ILogger logger)
@@ -107,6 +107,6 @@ public class Initialize
                 module.PostWebBuild(app);
         }
 
-        logger.LogDebug("Successfully post built application");
+        logger.LogInformation("Successfully post built application");
     }
 }

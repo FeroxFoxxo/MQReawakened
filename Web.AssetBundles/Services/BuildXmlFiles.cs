@@ -1,10 +1,7 @@
-﻿using AssetStudio;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
-using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
-using System.Text;
 using System.Xml;
 using Web.AssetBundles.Events;
 using Web.AssetBundles.Events.Arguments;
@@ -39,7 +36,7 @@ public class BuildXmlFiles : IService, IInjectModules
 
     private void LoadXmlFiles(AssetBundleLoadEventArgs assetLoadEvent)
     {
-        _logger.LogInformation("Reading XML Files From Bundles");
+        _logger.LogDebug("Reading XML files from bundles");
 
         XmlFiles.Clear();
 
@@ -112,6 +109,15 @@ public class BuildXmlFiles : IService, IInjectModules
         if (bundles.Count <= 0)
             return;
 
+        if (bundles.Keys.Any(b => assets.FirstOrDefault(a => a.Name == b && a.Type == AssetInfo.TypeAsset.XML) != null))
+        {
+            _logger.LogCritical(
+                "Your asset bundle cache seems to have moved! Please run 'changeCacheDir' and select the correct directory."
+            );
+
+            return;
+        }
+
         _logger.LogCritical(
             "Could not find XML bundle for {Bundles}, returning...",
             string.Join(", ", bundles.Keys)
@@ -122,6 +128,6 @@ public class BuildXmlFiles : IService, IInjectModules
         foreach (var foundAsset in assets.Where(x => x.Type == AssetInfo.TypeAsset.XML))
             _logger.LogError("    {BundleName}", foundAsset.Name);
 
-        _logger.LogDebug("Read XML files");
+        _logger.LogInformation("Read XML files");
     }
 }

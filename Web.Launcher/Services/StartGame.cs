@@ -81,7 +81,7 @@ public class StartGame : IService
             "Runs the launcher and hooks it into the current process.",
             _ => LaunchGame()));
 
-        _logger.LogInformation("Getting Game Executable");
+        _logger.LogDebug("Getting the game executable...");
 
         try
         {
@@ -115,7 +115,7 @@ public class StartGame : IService
             break;
         }
 
-        _logger.LogDebug("Got launcher directory: {Directory}", Path.GetDirectoryName(_config.GameSettingsFile));
+        _logger.LogInformation("Launcher Directory: {Directory}", Path.GetDirectoryName(_config.GameSettingsFile));
 
         var lastUpdate = DateTime.ParseExact(CurrentVersion.game.lastUpdate, _lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
@@ -160,7 +160,7 @@ public class StartGame : IService
     public void LaunchGame()
     {
         _game = Process.Start(Path.Join(_directory, "launcher", "launcher.exe"));
-        _logger.LogDebug("Running game on process: {GamePath}", _game?.ProcessName);
+        _logger.LogInformation("Running game on process: {GamePath}", _game?.ProcessName);
     }
 
     private void WriteConfig()
@@ -168,7 +168,7 @@ public class StartGame : IService
         var directory = Path.Join(_directory, "game");
         var config = Path.Join(directory, "LocalBuildConfig.xml");
 
-        _logger.LogInformation("Looking For Header In {Directory} Ending In {Header}.", directory,
+        _logger.LogDebug("Looking For Header In {Directory} Ending In {Header}.", directory,
             _lConfig.HeaderFolderFilter);
 
         var parentUri = new Uri(directory);

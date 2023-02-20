@@ -21,7 +21,7 @@ public class AssetBundles : WebModule
     {
         services.AddSingleton<AssetEventSink>();
 
-        Logger.LogInformation("Loading Bundles");
+        Logger.LogDebug("Loading bundles");
 
         foreach (var xml in modules.GetServices<IBundledXml>())
         {
@@ -29,6 +29,6 @@ public class AssetBundles : WebModule
             services.AddSingleton(xml, FormatterServices.GetUninitializedObject(xml));
         }
 
-        Logger.LogDebug("Loaded bundles");
+        Logger.LogInformation("Loaded bundles");
     }
 }
