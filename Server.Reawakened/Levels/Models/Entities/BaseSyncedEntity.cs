@@ -15,9 +15,6 @@ public abstract class BaseSyncedEntity
     public Vector3Model Rotation => StoredEntity.GameObject.ObjectInfo.Rotation;
     public Vector3Model Scale => StoredEntity.GameObject.ObjectInfo.Scale;
 
-    public bool IsEnabled = true;
-    public bool IsActive = true;
-
     public abstract string Name { get; }
 
     public virtual void InitializeEntity()
@@ -42,9 +39,6 @@ public abstract class BaseSyncedEntity
         StoredEntity.Logger.LogError(
             "The entity '{Id}' of type '{Type}' has no sync event override. Skipping...", Id, GetType().Name);
     
-    protected void SetEntityData(StoredEntityModel storedEntity)
-    {
+    protected void SetEntityData(StoredEntityModel storedEntity) =>
         StoredEntity = storedEntity;
-        InitializeEntity();
-    }
 }

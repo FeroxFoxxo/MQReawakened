@@ -52,7 +52,7 @@ public class Level
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
 
         LevelEntities = new LevelEntities(this, _levelHandler, reflection, services, _logger);
-
+        
         _timer = new LevelTimer(config, timerThread, LevelEntities);
 
         if (levelPlanes.Planes == null)
@@ -64,6 +64,9 @@ public class Level
                      .Select(x => x.ObjectInfo.ObjectId)
                 )
             _gameObjectIds.Add(gameObjectId);
+
+        foreach (var entity in LevelEntities.Entities.Values.SelectMany(x => x))
+            entity.InitializeEntity();
 
         _timer.Start();
     }

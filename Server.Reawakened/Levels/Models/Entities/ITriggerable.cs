@@ -4,5 +4,5 @@ namespace Server.Reawakened.Levels.Models.Entities;
 
 public interface ITriggerable
 {
-    public void TriggerStateChange(TriggerType triggerType, Level level);
+    public void TriggerStateChange(TriggerType triggerType, Level level, bool triggered);
 }

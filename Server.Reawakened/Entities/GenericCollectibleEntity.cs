@@ -11,6 +11,7 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
     public ILogger<GenericCollectibleModel> Logger { get; set; }
     
     public int Value;
+    public bool Collected;
 
     public override void InitializeEntity()
     {
@@ -29,11 +30,11 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
     }
 
     public override object[] GetInitData(NetState netState) =>
-        !IsActive ? new object[] { 0 } : Array.Empty<object>();
+        Collected ? new object[] { 0 } : Array.Empty<object>();
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
-        IsActive = false;
+        Collected = true;
         var collectedValue = Value * Level.Clients.Count;
 
         var player = netState.Get<Player>();

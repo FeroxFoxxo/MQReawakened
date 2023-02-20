@@ -4,11 +4,19 @@ using Server.Reawakened.Levels.Models.Planes;
 
 namespace Server.Reawakened.Entities.Abstractions;
 
-public abstract class AbstractMovingObject<T> : SyncedEntity<T> where T : MovingObjectController
+public abstract class AbstractMovingObject<T> : SyncedEntity<T>, IMoveable where T : MovingObjectController
 {
     public float InitialProgressRatio => EntityData.InitialProgressRatio;
 
     public IMovement Movement;
+
+    public override void InitializeEntity()
+    {
+        if (!Level.LevelEntities.Entities[Id].OfType<ITriggerable>().Any())
+            return;
+
+        Movement?.Activate(Level.Time);
+    }
 
     public override void Update()
     {
@@ -29,10 +37,12 @@ public abstract class AbstractMovingObject<T> : SyncedEntity<T> where T : Moving
     {
         Level.Time,
         Movement.GetBehaviorRatio(Level.Time),
-        Movement.Activated
+        Movement.Activated ? 1 : 0
     };
 
     public void Activate() => Movement?.Activate(Level.Time);
 
     public void Deactivate() => Movement?.Deactivate(Level.Time);
+
+    public IMovement GetMovement() => Movement;
 }

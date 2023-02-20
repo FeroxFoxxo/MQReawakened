@@ -83,6 +83,9 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
 
     public List<int> CurrentInteractors;
 
+    public bool IsEnabled = true;
+    public bool IsActive = true;
+
     public override void InitializeEntity()
     {
         IsEnabled = IsEnable;
@@ -203,36 +206,31 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
     {
         Logger.LogTrace("Trigger for {Id} has been set to {IsActive}, affecting {EntityCount}.", Id, IsActive, Triggers.Count);
 
-        foreach (var triggers in Level.LevelEntities.Entities.Where(e => Triggers.ContainsKey(e.Key)))
+        foreach (var trigger in Triggers)
         {
-            var triggerType = Triggers[triggers.Key];
-
-            foreach (var trigger in triggers.Value)
-            {
-                switch (triggerType)
+            if (Level.LevelEntities.Entities.ContainsKey(trigger.Key))
+                if (Level.LevelEntities.Entities[trigger.Key].Count > 0)
                 {
-                    case TriggerType.Activate:
-                        trigger.IsActive = true;
-                        break;
-                    case TriggerType.Deactivate:
-                        trigger.IsActive = false;
-                        break;
-                    case TriggerType.Enable:
-                        trigger.IsEnabled = true;
-                        break;
-                    case TriggerType.Disable:
-                        trigger.IsEnabled = false;
-                        break;
+                    var triggers = Level.LevelEntities.Entities[trigger.Key];
+
+                    var canTriggerEntities = triggers.OfType<ITriggerable>().ToList();
+
+                    if (canTriggerEntities.Any())
+                        foreach (var triggerEntity in canTriggerEntities)
+                            triggerEntity.TriggerStateChange(trigger.Value, Level, IsActive);
+                    else
+                        Logger.LogError("Cannot trigger entity {Id} to state {State}, no class implements 'TriggerableEntity'.", trigger.Key, trigger.Value);
+
+                    continue;
                 }
-            }
 
-            var canTriggerEntities = triggers.Value.OfType<ITriggerable>().ToList();
+            var entityType = "Unknown";
 
-            if (canTriggerEntities.Any())
-                foreach (var trigger in canTriggerEntities)
-                    trigger.TriggerStateChange(triggerType, Level);
-            else
-                Logger.LogError("Cannot trigger entity {Id} to state {State}, no class implements 'TriggerableEntity'.", triggers.Key, triggerType);
+            if (Level.LevelEntities.UnknownEntities.TryGetValue(trigger.Key, out var value))
+                entityType = string.Join(", ", value);
+
+            Logger.LogError("Cannot trigger entity {Id} to state {State}, no entity for {EntityType}.",
+                trigger.Key, trigger.Value, entityType);
         }
     }
 
@@ -243,10 +241,10 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
         return Triggers
             .Where(r => r.Value == TriggerType.Activate)
             .Where(trigger => receivers.ContainsKey(trigger.Key))
-            .Select(trigger => receivers[trigger.Key]).All(receiver => receiver.IsActive);
+            .Select(trigger => receivers[trigger.Key]).All(receiver => receiver.Activated);
     }
 
-    public void TriggerStateChange(TriggerType triggerType, Level level) =>
+    public void TriggerStateChange(TriggerType triggerType, Level level, bool triggered) =>
         Logger.LogError("Trigger not implemented for {TypeName} (tried to change to {TriggerType}).",
             GetType().Name, triggerType);
 }

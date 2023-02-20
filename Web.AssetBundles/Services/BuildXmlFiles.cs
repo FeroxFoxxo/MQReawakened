@@ -18,19 +18,17 @@ public class BuildXmlFiles : IService, IInjectModules
     private readonly AssetBundleStaticConfig _config;
     private readonly AssetEventSink _eventSink;
     private readonly ILogger<BuildXmlFiles> _logger;
-    private readonly ServerStaticConfig _sConfig;
     private readonly IServiceProvider _services;
 
     public readonly Dictionary<string, string> XmlFiles;
 
     public BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, ILogger<BuildXmlFiles> logger,
-        AssetBundleStaticConfig config, ServerStaticConfig sConfig)
+        AssetBundleStaticConfig config)
     {
         _eventSink = eventSink;
         _services = services;
         _logger = logger;
         _config = config;
-        _sConfig = sConfig;
 
         XmlFiles = new Dictionary<string, string>();
     }
@@ -47,13 +45,13 @@ public class BuildXmlFiles : IService, IInjectModules
 
         var assets = assetLoadEvent.InternalAssets
             .Select(x => x.Value)
-            .Where(x => x.Type is AssetInfo.TypeAsset.XML or AssetInfo.TypeAsset.Level)
+            .Where(x => x.Type is AssetInfo.TypeAsset.XML)
             .ToArray();
 
         GetDirectory.OverwriteDirectory(_config.XmlSaveDirectory);
-        GetDirectory.OverwriteDirectory(_sConfig.LevelSaveDirectory);
 
-        var bundles = _services.GetRequiredServices<IBundledXml>(Modules).ToDictionary(x => x.BundleName, x => x);
+        var bundles = _services.GetRequiredServices<IBundledXml>(Modules)
+            .ToDictionary(x => x.BundleName, x => x);
 
         foreach (var bundle in bundles)
             bundle.Value.InitializeVariables();
@@ -62,7 +60,7 @@ public class BuildXmlFiles : IService, IInjectModules
         {
             foreach (var asset in assets)
             {
-                var text = GetXmlData(asset, bar);
+                var text = asset.GetXmlData(bar);
 
                 if (string.IsNullOrEmpty(text))
                 {
@@ -70,55 +68,36 @@ public class BuildXmlFiles : IService, IInjectModules
                     continue;
                 }
 
-                var fileName = $"{asset.Name}.xml";
-                string directory;
-
-                switch (asset.Type)
+                if (bundles.TryGetValue(asset.Name, out var bundle))
                 {
-                    case AssetInfo.TypeAsset.Level:
-                        directory = _sConfig.LevelSaveDirectory;
-                        break;
-                    case AssetInfo.TypeAsset.XML:
-                        directory = _config.XmlSaveDirectory;
+                    if (bundle is ILocalizationXml localizedXmlBundle)
+                    {
+                        var localizedAsset = assets.FirstOrDefault(x =>
+                            string.Equals(x.Name, localizedXmlBundle.LocalizationName,
+                                StringComparison.OrdinalIgnoreCase
+                            )
+                        );
 
-                        if (bundles.TryGetValue(asset.Name, out var bundle))
-                        {
-                            if (bundle.GetType().IsAssignableTo(typeof(ILocalizationXml)))
-                            {
-                                var locXmlBundle = (ILocalizationXml)bundle;
+                        var localizedXml = localizedAsset.GetXmlData(bar);
 
-                                var localizedAsset = assets.FirstOrDefault(x =>
-                                    string.Equals(x.Name, locXmlBundle.LocalizationName,
-                                        StringComparison.OrdinalIgnoreCase
-                                    )
-                                );
+                        localizedXmlBundle.ReadLocalization(localizedXml);
+                    }
 
-                                var localizedXml = GetXmlData(localizedAsset, bar);
+                    var xml = new XmlDocument();
+                    xml.LoadXml(text);
 
-                                locXmlBundle.ReadLocalization(localizedXml);
-                            }
+                    bundle.EditXml(xml);
 
-                            var xml = new XmlDocument();
-                            xml.LoadXml(text);
+                    text = xml.WriteToString();
 
-                            bundle.EditXml(xml);
+                    bundle.ReadXml(text);
+                    bundle.FinalizeBundle();
 
-                            text = xml.WriteToString();
-
-                            bundle.ReadXml(text);
-                            bundle.FinalizeBundle();
-
-                            bar.SetMessage($"Loaded {asset.Name} From Disk");
-                            bundles.Remove(asset.Name);
-                        }
-
-                        break;
-                    default:
-                        bar.SetMessage($"Could not find a way of handling a {asset.Type} asset type. Skipping!");
-                        continue;
+                    bar.SetMessage($"Loaded {asset.Name} From Disk");
+                    bundles.Remove(asset.Name);
                 }
 
-                var path = Path.Join(directory, fileName);
+                var path = Path.Join(_config.XmlSaveDirectory, $"{asset.Name}.xml");
 
                 bar.SetMessage($"Writing file to {path}");
 
@@ -130,55 +109,19 @@ public class BuildXmlFiles : IService, IInjectModules
             }
         }
 
-        if (bundles.Count > 0)
-        {
-            _logger.LogCritical(
-                "Could not find XML bundle for {Bundles}, returning...",
-                string.Join(" ,", bundles.Keys)
-            );
+        if (bundles.Count <= 0)
+            return;
 
-            _logger.LogCritical("Possible XML files:");
+        _logger.LogCritical(
+            "Could not find XML bundle for {Bundles}, returning...",
+            string.Join(", ", bundles.Keys)
+        );
 
-            foreach (var foundAsset in assets)
-                _logger.LogError("    {BundleName}", foundAsset.Name);
-        }
+        _logger.LogCritical("Possible XML files:");
+
+        foreach (var foundAsset in assets.Where(x => x.Type == AssetInfo.TypeAsset.XML))
+            _logger.LogError("    {BundleName}", foundAsset.Name);
 
         _logger.LogDebug("Read XML files");
-    }
-
-    private string GetXmlData(InternalAssetInfo asset, DefaultProgressBar bar)
-    {
-        try
-        {
-            var file = File.ReadAllText(asset.Path);
-
-            if (file.FirstOrDefault() == '<')
-                try
-                {
-                    new XmlDocument().LoadXml(file);
-                    return file;
-                }
-                catch (XmlException)
-                {
-                }
-
-            var manager = new AssetsManager();
-
-            manager.LoadFiles(asset.Path);
-
-            var textAsset = manager.assetsFileList.First().ObjectsDic.Values.GetText(asset.Name);
-
-            var text = Encoding.UTF8.GetString(textAsset.m_Script);
-            var length = text.Split('\n').Length;
-
-            bar.SetMessage($"Read XML {asset.Name} for {length} lines.");
-
-            return text;
-        }
-        catch (Exception e)
-        {
-            _logger.LogError("{Name} could not load! Exception: {ExceptionName}. Skipping...", asset.Name, e);
-            return string.Empty;
-        }
     }
 }

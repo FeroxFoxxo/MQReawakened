@@ -14,8 +14,6 @@ public class CheckpointControllerEntity : AbstractTriggerCoop<CheckpointControll
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
-        base.RunSyncedEvent(syncEvent, netState);
-
         var player = netState.Get<Player>();
         var character = player.GetCurrentCharacter();
 

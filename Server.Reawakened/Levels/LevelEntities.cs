@@ -12,6 +12,7 @@ public class LevelEntities
 {
     private readonly Microsoft.Extensions.Logging.ILogger _logger;
     public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
+    public readonly Dictionary<int, List<string>> UnknownEntities;
 
     public LevelEntities(Level level, LevelHandler handler, ReflectionUtils reflectionUtils,
         IServiceProvider serviceProvider, Microsoft.Extensions.Logging.ILogger logger)
@@ -19,6 +20,7 @@ public class LevelEntities
         _logger = logger;
 
         Entities = new Dictionary<int, List<BaseSyncedEntity>>();
+        UnknownEntities = new Dictionary<int, List<string>>();
 
         if (level.LevelPlanes.Planes == null)
             return;
@@ -101,6 +103,11 @@ public class LevelEntities
             }
             else if (!invalidProcessable.Contains(mqType.Name))
             {
+                if (!UnknownEntities.ContainsKey(entity.Key))
+                    UnknownEntities.Add(entity.Key, new List<string>());
+
+                UnknownEntities[entity.Key].Add(mqType.Name);
+
                 invalidProcessable.Add(mqType.Name);
             }
         }

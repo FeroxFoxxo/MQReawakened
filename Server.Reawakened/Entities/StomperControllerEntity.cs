@@ -17,8 +17,10 @@ public class StomperControllerEntity : AbstractMovingObject<StomperController>
 
         Movement.Init(
             new vector3(Position.X, Position.Y, Position.Z),
-            IsActive, Level.Time, InitialProgressRatio
+            Movement.Activated, Level.Time, InitialProgressRatio
         );
+
+        base.InitializeEntity();
     }
 
     public override void Update()
