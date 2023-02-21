@@ -55,9 +55,10 @@ public class ReflectionUtils
         };
     }
 
-    private PropertyInfo[] GetProperties(TypeInfo ownerType)
+    private List<PropertyInfo> GetProperties(TypeInfo ownerType)
     {
         var result = new List<PropertyInfo>();
+
         while (ownerType != _objectTypeInfo)
         {
             result.AddRange(
@@ -70,7 +71,7 @@ public class ReflectionUtils
                 ownerType = ownerType.BaseType.GetTypeInfo();
         }
 
-        return result.ToArray();
+        return result;
     }
 
     private static object GetMember(IServiceProvider services, Type memberType, Type ownerType)

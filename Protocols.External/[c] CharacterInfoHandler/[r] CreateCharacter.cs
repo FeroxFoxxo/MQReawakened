@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Enums;
@@ -22,8 +22,7 @@ public class CreateCharacter : ExternalProtocol
     public NameGenSyllables NameGenSyllables { get; set; }
     public ServerStaticConfig ServerConfig { get; set; }
     public WorldGraph WorldGraph { get; set; }
-    public QuestCatalog QuestCatalog { get; set; }
-    public LevelHandler LevelHandler { get; set; }
+    public WorldHandler WorldHandler { get; set; }
     public ILogger<CreateCharacter> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -64,14 +63,19 @@ public class CreateCharacter : ExternalProtocol
             var model = new CharacterModel
             {
                 Data = characterData,
-                Level = WorldGraph.ClockTowerId
+                LevelInfo = new LevelInformation
+                {
+                    LevelId = WorldGraph.DefaultLevel,
+                    PortalId = 0,
+                    SpawnPointId = 0
+                }
             };
 
             player.AddCharacter(model);
 
-            var levelInfo = LevelHandler.GetLevelInfo(model.Level);
+            var levelInfo = WorldHandler.GetLevelInfo(model.LevelInfo.LevelId);
 
-            player.SendStartPlay(model, NetState, levelInfo, Logger);
+            player.SendStartPlay(model, NetState, levelInfo);
         }
     }
 }

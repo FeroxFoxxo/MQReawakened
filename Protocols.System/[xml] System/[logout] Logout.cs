@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Levels.Services;
+﻿using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -10,13 +10,13 @@ public class Logout : SystemProtocol
 {
     public override string ProtocolName => "logout";
 
-    public LevelHandler LevelHandler { get; set; }
+    public WorldHandler WorldHandler { get; set; }
 
     public override void Run(XmlDocument xmlDoc)
     {
         var player = NetState.Get<Player>();
 
-        player?.QuickJoinLevel(-1, NetState, LevelHandler);
+        player?.QuickJoinRoom(-1, NetState, WorldHandler);
 
         SendXml("logout", string.Empty);
     }

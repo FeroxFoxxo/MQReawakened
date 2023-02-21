@@ -4,7 +4,7 @@ using Server.Base.Core.Extensions;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Server.Reawakened.Levels.Services;
+namespace Server.Reawakened.Rooms.Services;
 
 public class SyncEventManager : IService
 {

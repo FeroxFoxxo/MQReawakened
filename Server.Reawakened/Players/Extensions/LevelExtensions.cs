@@ -1,49 +1,47 @@
 ﻿using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
 using Server.Base.Network;
-using Server.Reawakened.Levels;
-using Server.Reawakened.Levels.Enums;
-using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Enums;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Players.Extensions;
 
-public static class LevelExtensions
+public static class RoomExtensions
 {
-    public static void JoinLevel(this Player player, NetState state, Level level, out JoinReason reason)
+    public static void JoinRoom(this Player player, NetState state, Room room, out JoinReason reason)
     {
-        player.CurrentLevel?.RemoveClient(player.PlayerId);
-        player.CurrentLevel = level;
-        player.CurrentLevel.AddClient(state, out reason);
+        player.CurrentRoom?.RemoveClient(player.PlayerId);
+        player.CurrentRoom = room;
+        player.CurrentRoom.AddClient(state, out reason);
     }
 
-    public static void QuickJoinLevel(this Player player, int id, NetState state, LevelHandler levelHandler)
+    public static void QuickJoinRoom(this Player player, int id, NetState state, WorldHandler worldHandler)
     {
-        Level newLevel = null;
+        Room newRoom = null;
 
         try
         {
-            newLevel = levelHandler.GetLevelFromId(id);
+            newRoom = worldHandler.GetRoomFromLevelId(id);
         }
         catch (NullReferenceException)
         {
         }
 
-        if (newLevel == null)
+        if (newRoom == null)
             return;
 
-        player.JoinLevel(state, newLevel, out _);
+        player.JoinRoom(state, newRoom, out _);
     }
 
-    public static int GetSetLevelId(this Player player) =>
-        player.GetCurrentCharacter()?.Level ?? -1;
+    public static int GetLevelId(this Player player) =>
+        player.GetCurrentCharacter()?.LevelInfo.LevelId ?? -1;
 
-    public static void SendStartPlay(this Player player, CharacterModel character, NetState state,
-        LevelInfo levelInfo, Microsoft.Extensions.Logging.ILogger logger)
+    public static void SendStartPlay(this Player player, CharacterModel character, NetState state, LevelInfo levelInfo)
     {
-        character.SetCharacterSpawn(character.PortalId, 0, logger);
         character.Data.SetPlayerData(player);
         player.SetCharacterSelected(character.Data.CharacterId);
         state.SendCharacterInfoData(player, CharacterInfoType.Detailed, levelInfo);
@@ -52,28 +50,27 @@ public static class LevelExtensions
     public static void SentEntityTriggered(this NetState netState, int id, bool success, bool active)
     {
         var player = netState.Get<Player>();
-        var level = player.CurrentLevel;
+        var room = player.CurrentRoom;
 
-        var collectedEvent = new Trigger_SyncEvent(id.ToString(), level.Time, success,
+        var collectedEvent = new Trigger_SyncEvent(id.ToString(), room.Time, success,
             player.PlayerId.ToString(), active);
 
         netState.SendSyncEventToPlayer(collectedEvent);
     }
 
-    public static void SentEntityTriggered(this Level level, int id, Player player, bool success, bool active)
+    public static void SentEntityTriggered(this Room room, int id, Player player, bool success, bool active)
     {
-        var collectedEvent = new Trigger_SyncEvent(id.ToString(), level.Time, success,
+        var collectedEvent = new Trigger_SyncEvent(id.ToString(), room.Time, success,
             player.PlayerId.ToString(), active);
 
-        level.SendSyncEvent(collectedEvent);
+        room.SendSyncEvent(collectedEvent);
     }
 
     public static void SendUserEnterData(this NetState state, Player player, Account account) =>
         state.SendXml("uER",
             $"<u i='{player.UserInfo.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.PlayerId}'><n>{account.Username}</n></u>");
 
-    public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type,
-        LevelInfo levelInfo)
+    public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type, LevelInfo levelInfo)
     {
         var character = player.GetCurrentCharacter();
 

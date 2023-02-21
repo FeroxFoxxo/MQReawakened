@@ -8,7 +8,7 @@ using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Network.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Players.Events;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
@@ -22,7 +22,7 @@ public class EditCharacter : IService
     private readonly ServerStaticConfig _config;
     private readonly ServerConsole _console;
     private readonly NetStateHandler _handler;
-    private readonly LevelHandler _levelHandler;
+    private readonly WorldHandler _worldHandler;
     private readonly ILogger<EditCharacter> _logger;
     private readonly EventSink _sink;
     private readonly UserInfoHandler _userInfoHandler;
@@ -33,7 +33,7 @@ public class EditCharacter : IService
     public EditCharacter(ServerConsole console, EventSink sink,
         ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
         AccountHandler accountHandler, WorldGraph worldGraph,
-        ServerStaticConfig config, NetStateHandler handler, LevelHandler levelHandler, ItemCatalog itemCatalog, PlayerEventSink playerEventSink)
+        ServerStaticConfig config, NetStateHandler handler, WorldHandler worldHandler, ItemCatalog itemCatalog, PlayerEventSink playerEventSink)
     {
         _console = console;
         _sink = sink;
@@ -43,7 +43,7 @@ public class EditCharacter : IService
         _worldGraph = worldGraph;
         _config = config;
         _handler = handler;
-        _levelHandler = levelHandler;
+        _worldHandler = worldHandler;
         _itemCatalog = itemCatalog;
         _playerEventSink = playerEventSink;
     }
@@ -128,18 +128,16 @@ public class EditCharacter : IService
             return;
         }
 
-        character.SetCharacterSpawn(0, 0, _logger);
-
-        character.Level = levelId;
+        character.SetLevel(levelId, 0, 0, _logger);
 
         var levelInfo = _worldGraph.GetInfoLevel(levelId);
-        
+
         var tribe = levelInfo.Tribe;
 
         if (_handler.IsPlayerOnline(user.UserId, out var netState, out var player))
         {
             netState.DiscoverTribe(tribe);
-            player.SendLevelChange(netState, _levelHandler, _worldGraph);
+            player.SendLevelChange(netState, _worldHandler, _worldGraph);
         }
         else
         {

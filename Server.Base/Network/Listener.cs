@@ -15,7 +15,7 @@ public class Listener : IDisposable
 {
     private readonly Queue<Socket> _accepted;
     private readonly object _acceptedSyncRoot;
-    private readonly Socket[] _emptySockets = Array.Empty<Socket>();
+    private readonly Socket[] _emptySockets;
     private readonly ServerHandler _handler;
     private readonly ILogger<MessagePump> _logger;
     private readonly NetworkLogger _networkLogger;
@@ -32,6 +32,7 @@ public class Listener : IDisposable
         _handler = handler;
         _sink = sink;
         _accepted = new Queue<Socket>();
+        _emptySockets = Array.Empty<Socket>();
         _acceptedSyncRoot = ((ICollection)_accepted).SyncRoot;
 
         _listener = Bind(ipEp);

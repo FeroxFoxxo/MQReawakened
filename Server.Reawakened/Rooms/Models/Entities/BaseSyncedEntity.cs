@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Levels.Models.Planes;
+using Server.Reawakened.Rooms.Models.Planes;
 
-namespace Server.Reawakened.Levels.Models.Entities;
+namespace Server.Reawakened.Rooms.Models.Entities;
 
 public abstract class BaseSyncedEntity
 {
     public StoredEntityModel StoredEntity { get; private set; }
 
-    public Level Level => StoredEntity.Level;
+    public Room Room => StoredEntity.Room;
     public int Id => StoredEntity.GameObject.ObjectInfo.ObjectId;
     public string PrefabName => StoredEntity.GameObject.ObjectInfo.PrefabName;
     public Vector3Model Position => StoredEntity.GameObject.ObjectInfo.Position;

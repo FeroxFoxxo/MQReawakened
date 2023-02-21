@@ -1,7 +1,7 @@
-﻿using Server.Reawakened.Levels.Models.Planes;
+﻿using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
-namespace Server.Reawakened.Levels.Extensions;
+namespace Server.Reawakened.Rooms.Extensions;
 
 public static class RectExtensions
 {
@@ -43,6 +43,7 @@ public static class RectExtensions
             }
 
             var vector11 = polygon[i];
+            // ReSharper disable once InvertIf
             if (vector11.y > y2)
             {
                 var vector12 = polygon[i];

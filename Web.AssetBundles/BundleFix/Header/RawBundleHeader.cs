@@ -18,7 +18,7 @@ public record RawBundleHeader : BundleHeader
     // Offset to the bundle data or size of the bundle header
     public int HeaderSize { get; set; }
 
-    // Equal to 1 if it's a streamed bundle, number of levelX + mainData assets otherwise
+    // Equal to 1 if it's a streamed bundle, number of levels + mainData assets otherwise
     public int NumberOfScenesToDownloadBeforeStreaming { get; set; }
 
     // List of compressed and uncompressed offsets

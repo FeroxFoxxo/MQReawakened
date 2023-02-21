@@ -5,10 +5,13 @@ namespace Web.AssetBundles.Extensions;
 
 public static class GetNamedObjectFromBundle
 {
-    public static GameObject GetGameObject(this List<Object> objects, string assetName) =>
-        objects.OfType<GameObject>()
-            .FirstOrDefault(x => AreSameAsset(x.m_Name, assetName))
-        ?? (assetName.EndsWith("_v2") ? objects.GetGameObject(assetName[..^3]) : null);
+    public static GameObject GetGameObject(this IEnumerable<Object> objects, string assetName)
+    {
+        var objArray = objects as Object[] ?? objects.ToArray();
+        return objArray.OfType<GameObject>()
+                   .FirstOrDefault(x => AreSameAsset(x.m_Name, assetName))
+               ?? (assetName.EndsWith("_v2") ? objArray.GetGameObject(assetName[..^3]) : null);
+    }
 
     public static AudioClip GetMusic(this IEnumerable<Object> objects, string assetName) =>
         objects.OfType<AudioClip>()

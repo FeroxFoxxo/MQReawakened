@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Levels.Services;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -10,7 +11,8 @@ public class GoToEvent : ExternalProtocol
 {
     public override string ProtocolName => "le";
 
-    public LevelHandler LevelHandler { get; set; }
+    public ILogger<GoToEvent> Logger { get; set; }
+    public WorldHandler WorldHandler { get; set; }
     public WorldGraph WorldGraph { get; set; }
 
     public override void Run(string[] message)
@@ -20,9 +22,11 @@ public class GoToEvent : ExternalProtocol
 
         var destinationIds = message[5].Split('|');
 
-        character.Level = int.Parse(destinationIds[0]);
-        character.SpawnPoint = int.Parse(destinationIds[1]);
+        var levelId = int.Parse(destinationIds[0]);
+        var spawnId = int.Parse(destinationIds[1]);
 
-        player.SendLevelChange(NetState, LevelHandler, WorldGraph);
+        character.SetLevel(levelId, 0, spawnId, Logger);
+
+        player.SendLevelChange(NetState, WorldHandler, WorldGraph);
     }
 }

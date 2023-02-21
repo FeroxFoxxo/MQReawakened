@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Levels.Extensions;
+﻿using Server.Reawakened.Rooms.Extensions;
 using System.Xml;
 using UnityEngine;
 
-namespace Server.Reawakened.Levels.Models.Planes;
+namespace Server.Reawakened.Rooms.Models.Planes;
 
 public class PlaneModel
 {
@@ -22,7 +22,7 @@ public class PlaneModel
             {
                 x = Convert.ToSingle(vertex.GetNamedItem("x")!.Value),
                 y = Convert.ToSingle(vertex.GetNamedItem("y")!.Value)
-            }).ToList();
+            }).ToArray();
 
         if (!GameObjects.ContainsKey(id))
             return;

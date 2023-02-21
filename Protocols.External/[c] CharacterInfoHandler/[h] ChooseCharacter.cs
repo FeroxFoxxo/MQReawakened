@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._c__CharacterInfoHandler;
 
@@ -10,8 +11,9 @@ public class ChooseCharacter : ExternalProtocol
 {
     public override string ProtocolName => "ch";
 
-    public LevelHandler LevelHandler { get; set; }
+    public WorldHandler WorldHandler { get; set; }
     public ILogger<ChooseCharacter> Logger { get; set; }
+    public WorldGraph WorldGraph { get; set; }
 
     public override void Run(string[] message)
     {
@@ -27,8 +29,11 @@ public class ChooseCharacter : ExternalProtocol
             return;
         }
 
-        var levelInfo = LevelHandler.GetLevelInfo(character.Level);
+        if (character.LevelInfo.LevelId == 0)
+            character.SetLevel(WorldGraph.DefaultLevel, Logger);
 
-        player.SendStartPlay(character, NetState, levelInfo, Logger);
+        var levelInfo = WorldHandler.GetLevelInfo(character.LevelInfo.LevelId);
+
+        player.SendStartPlay(character, NetState, levelInfo);
     }
 }

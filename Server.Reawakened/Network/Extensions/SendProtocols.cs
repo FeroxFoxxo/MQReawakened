@@ -19,5 +19,5 @@ public static class SendProtocols
         );
 
     private static int GetLevelId(this NetState state) =>
-        state.Get<Player>()?.CurrentLevel?.LevelInfo.LevelId ?? -1;
+        state.Get<Player>()?.CurrentRoom?.LevelInfo.LevelId ?? -1;
 }

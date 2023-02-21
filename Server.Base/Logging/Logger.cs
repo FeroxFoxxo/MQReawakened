@@ -12,6 +12,7 @@ public class Logger : ILogger
 
     private static int _offset;
     private static StreamWriter _output;
+    private static bool _criticalErrored;
 
     private readonly string _categoryName;
 
@@ -71,6 +72,9 @@ public class Logger : ILogger
                 LogLevel.Critical => "C",
                 _ => "U"
             };
+
+            if (logLevel == LogLevel.Critical)
+                _criticalErrored = true;
 
             WriteLine(color, message, shortLogLevel, eventId.Id);
         }
@@ -138,4 +142,6 @@ public class Logger : ILogger
         Output.WriteLine(ex);
         Output.WriteLine();
     }
+
+    public static bool HasCriticallyErrored() => _criticalErrored;
 }

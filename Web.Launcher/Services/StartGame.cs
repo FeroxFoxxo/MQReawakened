@@ -6,6 +6,7 @@ using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
+using Server.Base.Logging;
 using Server.Base.Worlds;
 using Server.Reawakened.Players.Events;
 using System.Diagnostics;
@@ -149,6 +150,13 @@ public class StartGame : IService
     {
         if (!_appStart || !_dirSet)
             return;
+
+        if (Logger.HasCriticallyErrored())
+        {
+            _logger.LogCritical("Server ran into a critical error during execution. " +
+                                "The game will not start until this is resolved.");
+            return;
+        }
 
         if (_lConfig.OverwriteGameConfig)
             WriteConfig();

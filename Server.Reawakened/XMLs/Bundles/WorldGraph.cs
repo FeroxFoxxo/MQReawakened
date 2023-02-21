@@ -9,7 +9,7 @@ public class WorldGraph : WorldGraphXML, IBundledXml
 {
     public string BundleName => "world_graph";
 
-    public int ClockTowerId;
+    public int DefaultLevel;
 
     public void InitializeVariables()
     {
@@ -20,7 +20,7 @@ public class WorldGraph : WorldGraphXML, IBundledXml
         this.SetField<WorldGraphXML>("_levelNameToID", new Dictionary<string, int>());
         this.SetField<WorldGraphXML>("_levelInfos", new Dictionary<int, LevelInfo>());
 
-        ClockTowerId =
+        DefaultLevel =
             int.Parse(this.GetField<WorldGraphXML>("CLOCK_TOWER_SQUARE_LEVEL_ID").ToString() ?? string.Empty);
     }
 

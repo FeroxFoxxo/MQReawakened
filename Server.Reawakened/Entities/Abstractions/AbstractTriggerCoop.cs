@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Levels;
-using Server.Reawakened.Levels.Enums;
-using Server.Reawakened.Levels.Models.Entities;
+using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Enums;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 
@@ -146,7 +146,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
-        if (!IsEnabled)
+        if (!IsEnabled || !TriggerOnPressed || syncEvent.Type != SyncEvent.EventType.Trigger)
             return;
 
         var tEvent = new Trigger_SyncEvent(syncEvent);
@@ -180,62 +180,63 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
             StayTriggeredOnReceiverActivated && !TriggerReceiverActivated() ||
             IsActive && StayTriggeredOnUnpressed && !StayTriggeredOnReceiverActivated
         )
-        {
-            Level.SentEntityTriggered(Id, player, true, tEvent.Activate);
-            CheckTriggered();
-        }
+            if (CheckTriggered())
+                Room.SentEntityTriggered(Id, player, true, IsActive);
     }
 
-    private void CheckTriggered()
+    private bool CheckTriggered()
     {
         switch (IsActive)
         {
             case false when CurrentInteractors.Count >= NbInteractionsNeeded:
-                IsActive = true;
-                Trigger();
-                break;
+                Trigger(true);
+
+                if (DisabledAfterActivation)
+                    IsEnabled = false;
+                return true;
             case true when !StayTriggeredOnReceiverActivated || !TriggerReceiverActivated():
-                IsActive = false;
-                Trigger();
-                break;
+                Trigger(false);
+                return true;
         }
+
+        return false;
     }
 
-    private void Trigger()
+    private void Trigger(bool active)
     {
+        IsActive = active;
+
         Logger.LogTrace("Trigger for {Id} has been set to {IsActive}, affecting {EntityCount}.", Id, IsActive, Triggers.Count);
+
+        Logger.LogTrace("Trigger {Id} activation duration: {Duration}, repeat delay: {Delay}, after first interaction of: {After}, " +
+                        "for type: {Type}", Id, ActiveDuration, TriggerRepeatDelay, ActivationTimeAfterFirstInteraction, InteractType);
 
         foreach (var trigger in Triggers)
         {
-            if (Level.LevelEntities.Entities.ContainsKey(trigger.Key))
-                if (Level.LevelEntities.Entities[trigger.Key].Count > 0)
+            if (Room.RoomEntities.Entities.ContainsKey(trigger.Key))
+                if (Room.RoomEntities.Entities[trigger.Key].Count > 0)
                 {
-                    var triggers = Level.LevelEntities.Entities[trigger.Key];
+                    var triggers = Room.RoomEntities.Entities[trigger.Key];
 
-                    var canTriggerEntities = triggers.OfType<ITriggerable>().ToList();
+                    var canTriggerEntities = triggers.OfType<ITriggerable>().ToArray();
 
                     if (canTriggerEntities.Any())
                         foreach (var triggerEntity in canTriggerEntities)
-                            triggerEntity.TriggerStateChange(trigger.Value, Level, IsActive);
+                            triggerEntity.TriggerStateChange(trigger.Value, Room, IsActive);
                     else
-                        Logger.LogError("Cannot trigger entity {Id} to state {State}, no class implements 'TriggerableEntity'.", trigger.Key, trigger.Value);
+                        Logger.LogWarning("Cannot trigger entity {Id} to state {State}, no class implements 'TriggerableEntity'.", trigger.Key, trigger.Value);
 
                     continue;
                 }
 
-            var entityType = "Unknown";
-
-            if (Level.LevelEntities.UnknownEntities.TryGetValue(trigger.Key, out var value))
-                entityType = string.Join(", ", value);
-
-            Logger.LogError("Cannot trigger entity {Id} to state {State}, no entity for {EntityType}.",
-                trigger.Key, trigger.Value, entityType);
+            Logger.LogWarning("Cannot trigger entity {Id} to state {State}, no entity for {EntityType}.",
+                trigger.Key, trigger.Value, Room.RoomEntities.GetUnknownEntityTypes(trigger.Key));
         }
     }
 
     private bool TriggerReceiverActivated()
     {
-        var receivers = Level.LevelEntities.GetEntities<TriggerReceiverEntity>();
+        var receivers = Room.RoomEntities.GetEntities<TriggerReceiverEntity>();
 
         return Triggers
             .Where(r => r.Value == TriggerType.Activate)
@@ -243,7 +244,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
             .Select(trigger => receivers[trigger.Key]).All(receiver => receiver.Activated);
     }
 
-    public void TriggerStateChange(TriggerType triggerType, Level level, bool triggered) =>
+    public void TriggerStateChange(TriggerType triggerType, Room room, bool triggered) =>
         Logger.LogError("Trigger not implemented for {TypeName} (tried to change to {TriggerType}).",
             GetType().Name, triggerType);
 }

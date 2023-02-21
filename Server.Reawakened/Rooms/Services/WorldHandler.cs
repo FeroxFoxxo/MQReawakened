@@ -7,18 +7,21 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.XMLs.Bundles;
-using System.Text.Json;
-using System.Xml;
 using WorldGraphDefines;
+using LevelType = A2m.Server.LevelType;
 
-namespace Server.Reawakened.Levels.Services;
+namespace Server.Reawakened.Rooms.Services;
 
-public class LevelHandler : IService
+public class WorldHandler : IService
 {
     private readonly ServerStaticConfig _config;
-    private readonly Dictionary<int, List<Level>> _levels;
+    private readonly Dictionary<int, List<Room>> _rooms;
     private readonly Dictionary<int, LevelInfo> _levelInfos;
-    private readonly ILogger<LevelHandler> _logger;
+
+    private readonly ILogger<WorldHandler> _handlerLogger;
+    private readonly ILogger<Room> _roomLogger;
+    private readonly ILogger<RoomEntities> _entityLogger;
+
     private readonly ReflectionUtils _reflection;
     private readonly TimerThread _timerThread;
     private readonly IServiceProvider _services;
@@ -27,9 +30,9 @@ public class LevelHandler : IService
 
     public Dictionary<string, Type> ProcessableData;
 
-    public LevelHandler(EventSink sink, ServerStaticConfig config, WorldGraph worldGraph,
+    public WorldHandler(EventSink sink, ServerStaticConfig config, WorldGraph worldGraph,
         ReflectionUtils reflection, TimerThread timerThread, IServiceProvider services,
-        ILogger<LevelHandler> logger)
+        ILogger<WorldHandler> handlerLogger, ILogger<Room> roomLogger, ILogger<RoomEntities> entityLogger)
     {
         _sink = sink;
         _config = config;
@@ -37,26 +40,28 @@ public class LevelHandler : IService
         _reflection = reflection;
         _timerThread = timerThread;
         _services = services;
-        _logger = logger;
+        _handlerLogger = handlerLogger;
+        _roomLogger = roomLogger;
+        _entityLogger = entityLogger;
 
         _levelInfos = new Dictionary<int, LevelInfo>();
-        _levels = new Dictionary<int, List<Level>>();
+        _rooms = new Dictionary<int, List<Room>>();
     }
 
-    public void Initialize() => _sink.WorldLoad += LoadLevels;
+    public void Initialize() => _sink.WorldLoad += LoadRooms;
 
-    private void LoadLevels()
+    private void LoadRooms()
     {
         GetDirectory.OverwriteDirectory(_config.LevelDataSaveDirectory);
 
         ProcessableData = typeof(DataComponentAccessor).Assembly.GetServices<DataComponentAccessor>()
             .ToDictionary(x => x.Name, x => x);
 
-        foreach (var levelList in _levels.Where(level => level.Key != -1))
-        foreach (var level in levelList.Value)
-            level.DumpPlayersToLobby();
+        foreach (var roomList in _rooms.Where(room => room.Key != -1))
+        foreach (var room in roomList.Value)
+            room.DumpPlayersToLobby();
 
-        _levels.Clear();
+        _rooms.Clear();
         _levelInfos.Clear();
     }
 
@@ -68,16 +73,16 @@ public class LevelHandler : IService
                 var levelInfo = _worldGraph!.GetInfoLevel(levelId);
 
                 return string.IsNullOrEmpty(levelInfo.Name)
-                    ? throw new MissingFieldException($"Level '{levelId}' does not have a valid name!")
+                    ? throw new MissingFieldException($"Room '{levelId}' does not have a valid name!")
                     : levelInfo;
             }
             catch (NullReferenceException)
             {
-                if (_levels.Count == 0)
-                    _logger.LogCritical(
-                        "Could not find any levels! Are you sure you have your cache set up correctly?");
+                if (_rooms.Count == 0)
+                    _handlerLogger.LogCritical(
+                        "Could not find any rooms! Are you sure you have your cache set up correctly?");
                 else
-                    _logger.LogError("Could not find the required level! Are you sure your caches contain this?");
+                    _handlerLogger.LogError("Could not find the required room! Are you sure your caches contain this?");
             }
 
         var name = levelId switch
@@ -91,50 +96,35 @@ public class LevelHandler : IService
             0, 0, LevelType.Unknown, TribeType._Invalid);
     }
 
-    public Level GetLevelFromId(int levelId)
+    public Room GetRoomFromLevelId(int levelId)
     {
         if (!_levelInfos.ContainsKey(levelId))
             _levelInfos.Add(levelId, GetLevelInfo(levelId));
 
         var levelInfo = _levelInfos[levelId];
 
-        if (!_levels.ContainsKey(levelId))
-            _levels.Add(levelId, new List<Level>());
+        if (!_rooms.ContainsKey(levelId))
+            _rooms.Add(levelId, new List<Room>());
 
-        if (_levels[levelId].Count > 0)
+        if (_rooms[levelId].Count > 0)
         {
             if (levelInfo.IsATrailLevel())
             {
-                // Check if friends are in level.
+                // Check if friends are in room.
             }
             else
             {
-                return _levels[levelId].FirstOrDefault();
+                return _rooms[levelId].FirstOrDefault();
             }
         }
 
-        var levelPlanes = new LevelPlanes();
+        var room = new Room(levelInfo, _config, this,
+            _reflection, _timerThread, _services, _roomLogger, _entityLogger);
 
-        if (levelInfo.Type != LevelType.Unknown)
-        {
-            var levelInfoPath = Path.Join(_config.LevelSaveDirectory, $"{levelInfo.Name}.xml");
-            var levelDataPath = Path.Join(_config.LevelDataSaveDirectory, $"{levelInfo.Name}.json");
+        _rooms[levelId].Add(room);
 
-            var xmlDocument = new XmlDocument();
-            xmlDocument.Load(levelInfoPath);
-            levelPlanes.LoadXmlDocument(xmlDocument);
-
-            File.WriteAllText(levelDataPath,
-                JsonSerializer.Serialize(levelPlanes, new JsonSerializerOptions { WriteIndented = true }));
-        }
-
-        var level = new Level(levelInfo, levelPlanes, _config, this,
-            _reflection, _timerThread, _services, _logger);
-
-        _levels[levelId].Add(level);
-
-        return level;
+        return room;
     }
 
-    public void RemoveLevel(Level level) => _levels[level.LevelInfo.LevelId].Remove(level);
+    public void RemoveRoom(Room room) => _rooms[room.LevelInfo.LevelId].Remove(room);
 }

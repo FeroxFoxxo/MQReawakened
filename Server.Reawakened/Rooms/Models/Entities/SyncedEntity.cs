@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Levels.Models.Entities;
+﻿namespace Server.Reawakened.Rooms.Models.Entities;
 
 public abstract class SyncedEntity<T> : BaseSyncedEntity
     where T : DataComponentAccessor

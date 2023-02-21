@@ -1,28 +1,31 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
-using Server.Reawakened.Levels.Models.Entities;
-using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Helpers;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Server.Reawakened.Levels;
+namespace Server.Reawakened.Rooms;
 
-public class LevelEntities
+public class RoomEntities
 {
-    private readonly Microsoft.Extensions.Logging.ILogger _logger;
     public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
     public readonly Dictionary<int, List<string>> UnknownEntities;
 
-    public LevelEntities(Level level, LevelHandler handler, ReflectionUtils reflectionUtils,
-        IServiceProvider serviceProvider, Microsoft.Extensions.Logging.ILogger logger)
+    private readonly ILogger<RoomEntities> _logger;
+    private readonly Room _room;
+
+    public RoomEntities(Room room, WorldHandler handler, ReflectionUtils reflectionUtils,
+        IServiceProvider serviceProvider, ILogger<RoomEntities> logger)
     {
         _logger = logger;
+        _room = room;
 
         Entities = new Dictionary<int, List<BaseSyncedEntity>>();
         UnknownEntities = new Dictionary<int, List<string>>();
 
-        if (level.LevelPlanes.Planes == null)
+        if (room.Planes == null)
             return;
 
         var invalidProcessable = new List<string>();
@@ -32,7 +35,7 @@ public class LevelEntities
             .Where(t => t.BaseType.GenericTypeArguments.Length > 0)
             .ToDictionary(t => t.BaseType.GenericTypeArguments.First().FullName, t => t);
 
-        foreach (var plane in level.LevelPlanes.Planes)
+        foreach (var plane in room.Planes)
         foreach (var entity in plane.Value.GameObjects)
         foreach (var component in entity.Value.ObjectInfo.Components)
         {
@@ -45,7 +48,7 @@ public class LevelEntities
 
                 var fields = mqType.GetFields()
                     .Where(prop => prop.IsDefined(typeof(MQAttribute), false))
-                    .ToList();
+                    .ToArray();
 
                 foreach (var componentValue in component.Value.ComponentAttributes)
                 {
@@ -73,7 +76,7 @@ public class LevelEntities
                             GetType().Name);
                 }
 
-                var storedData = new StoredEntityModel(entity.Value, level, logger);
+                var storedData = new StoredEntityModel(entity.Value, room, logger);
 
                 var instancedEntity =
                     reflectionUtils.CreateBuilder<BaseSyncedEntity>(internalType.GetTypeInfo()).Invoke(serviceProvider);
@@ -87,12 +90,12 @@ public class LevelEntities
                         parameters.Length == 2 &&
                         parameters[0].ParameterType == dataObj.GetType() &&
                         parameters[1].ParameterType == storedData.GetType();
-                }).ToList();
+                }).ToArray();
 
-                if (methods.Count != 1)
+                if (methods.Length != 1)
                     _logger.LogError(
                         "Found invalid {Count} amount of initialization methods for {EntityId} ({EntityType})",
-                        methods.Count, entity.Key, internalType.Name);
+                        methods.Length, entity.Key, internalType.Name);
                 else
                     methods.First().Invoke(instancedEntity, new[] { dataObj, storedData });
 
@@ -120,13 +123,37 @@ public class LevelEntities
     {
         var type = typeof(T);
 
-        var entities = Entities.Values.SelectMany(t => t).Where(t => t is T).ToList();
+        var entities = Entities.Values.SelectMany(t => t).Where(t => t is T).ToArray();
 
-        if (entities.Count > 0)
+        if (entities.Length > 0)
             return entities.ToDictionary(x => x.Id, x => x as T);
 
         _logger.LogError("Could not find entity with type {TypeName}. Returning empty. " +
                          "Possible types: {Types}", type.Name, string.Join(", ", Entities.Keys));
         return new Dictionary<int, T>();
+    }
+
+    public string GetUnknownEntityTypes(int id)
+    {
+        var entityInfo = new Dictionary<string, IEnumerable<string>>();
+
+        if (UnknownEntities.TryGetValue(id, out var value))
+            entityInfo.Add("entities", value);
+
+        var components = _room.Planes.Values
+            .Where(p => p.GameObjects.ContainsKey(id))
+            .Select(p => p.GameObjects[id])
+            .SelectMany(g => g.ObjectInfo.Components.Keys)
+            .Where(c => !entityInfo.Values.SelectMany(s => s).Contains(c))
+            .ToArray();
+
+        if (components.Any())
+            entityInfo.Add("components", components);
+
+        entityInfo.Add("game object", new [] { id.ToString() });
+
+        return $"unknown {string.Join(", ",
+            entityInfo.Select(a => $"{a.Key}: {string.Join(", ", a.Value)}")
+        )}";
     }
 }

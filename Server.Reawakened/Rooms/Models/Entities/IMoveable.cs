@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Levels.Models.Entities;
+﻿namespace Server.Reawakened.Rooms.Models.Entities;
 
 public interface IMoveable
 {

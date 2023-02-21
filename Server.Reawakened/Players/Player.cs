@@ -2,8 +2,8 @@
 using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
-using Server.Reawakened.Levels;
-using Server.Reawakened.Levels.Models.Planes;
+using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Players.Models;
 
 namespace Server.Reawakened.Players;
@@ -12,7 +12,7 @@ public class Player : INetStateData
 {
     public int CurrentCharacter { get; set; }
     public int PlayerId { get; set; }
-    public Level CurrentLevel { get; set; }
+    public Room CurrentRoom { get; set; }
     public UserInfo UserInfo { get; set; }
 
     public bool OnGround { get; set; }
@@ -30,17 +30,17 @@ public class Player : INetStateData
     public void RemovedState(NetState state, NetStateHandler handler,
         Microsoft.Extensions.Logging.ILogger logger)
     {
-        if (CurrentLevel == null)
+        if (CurrentRoom == null)
             return;
 
-        if (!CurrentLevel.LevelInfo.IsValid())
+        if (!CurrentRoom.LevelInfo.IsValid())
             return;
 
-        var levelName = CurrentLevel.LevelInfo.Name;
+        var roomName = CurrentRoom.LevelInfo.Name;
 
-        if (!string.IsNullOrEmpty(levelName))
-            logger.LogDebug("Dumped player with ID '{User}' from level '{Level}'", PlayerId, levelName);
+        if (!string.IsNullOrEmpty(roomName))
+            logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", PlayerId, roomName);
 
-        CurrentLevel.DumpPlayerToLobby(PlayerId);
+        CurrentRoom.DumpPlayerToLobby(PlayerId);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Server.Base.Network;
-using Server.Reawakened.Levels.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 
@@ -16,7 +16,7 @@ public class BouncerControllerModel : SyncedEntity<BouncerController>
         var player = netState.Get<Player>();
 
         var bouncer = new Bouncer_SyncEvent(syncEvent);
-        Level.SendSyncEvent(new Bouncer_SyncEvent(bouncer.TargetID, bouncer.TriggerTime, false), player);
+        Room.SendSyncEvent(new Bouncer_SyncEvent(bouncer.TargetID, bouncer.TriggerTime, false), player);
 
         netState.SendSyncEventToPlayer(bouncer);
     }

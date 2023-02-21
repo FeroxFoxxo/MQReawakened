@@ -1,5 +1,5 @@
 ﻿using Server.Base.Network;
-using Server.Reawakened.Levels.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 
@@ -15,7 +15,7 @@ public class LauncherControllerEntity : SyncedEntity<LauncherController>
     {
         var player = netState.Get<Player>();
 
-        var launchEvent = new Trigger_SyncEvent(Id.ToString(), Level.Time, true,
+        var launchEvent = new Trigger_SyncEvent(Id.ToString(), Room.Time, true,
             player.PlayerId.ToString(), true);
 
         netState.SendSyncEventToPlayer(launchEvent);

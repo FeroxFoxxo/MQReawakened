@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities;
-using Server.Reawakened.Levels.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -8,30 +8,26 @@ using Server.Reawakened.Players.Helpers;
 
 namespace Protocols.External._l__ExtLevelEditor;
 
-public class LevelUpdate : ExternalProtocol
+public class RoomUpdate : ExternalProtocol
 {
     public override string ProtocolName => "lv";
 
-    public ILogger<LevelUpdate> Logger { get; set; }
+    public ILogger<RoomUpdate> Logger { get; set; }
 
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var level = player.CurrentLevel;
 
-        if (level == null)
-            return;
-
-        var gameObjectStore = GetGameObjectStore(level.LevelEntities.Entities);
+        var gameObjectStore = GetGameObjectStore(player.CurrentRoom.RoomEntities.Entities);
 
         SendXt("lv", 0, gameObjectStore);
 
-        foreach (var entity in level.LevelEntities.Entities.Values.SelectMany(x => x))
+        foreach (var entity in player.CurrentRoom.RoomEntities.Entities.Values.SelectMany(x => x))
             entity.SendDelayedData(NetState);
 
-        player.CurrentLevel.SendCharacterInfo(player, NetState);
+        player.CurrentRoom.SendCharacterInfo(player, NetState);
 
-        foreach (var npc in level.LevelEntities.GetEntities<NpcControllerEntity>())
+        foreach (var npc in player.CurrentRoom.RoomEntities.GetEntities<NpcControllerEntity>())
             npc.Value.SendNpcInfo(player.GetCurrentCharacter(), NetState);
     }
 

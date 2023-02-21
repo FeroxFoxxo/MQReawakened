@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Levels.Enums;
+﻿namespace Server.Reawakened.Rooms.Enums;
 
 public enum TriggerType
 {

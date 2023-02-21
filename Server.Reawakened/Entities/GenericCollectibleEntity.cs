@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Levels.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 
@@ -35,10 +35,10 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
         Collected = true;
-        var collectedValue = Value * Level.Clients.Count;
+        var collectedValue = Value * Room.Clients.Count;
 
         var player = netState.Get<Player>();
-        Level.SentEntityTriggered(Id, player, true, true);
+        Room.SentEntityTriggered(Id, player, true, true);
 
         var effectName = string.Empty;
 
@@ -55,15 +55,15 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
                 break;
         }
 
-        var effectEvent = new FX_SyncEvent(Id.ToString(), Level.Time, effectName,
+        var effectEvent = new FX_SyncEvent(Id.ToString(), Room.Time, effectName,
             Position.X, Position.Y, FX_SyncEvent.FXState.Play);
 
-        Level.SendSyncEvent(effectEvent);
+        Room.SendSyncEvent(effectEvent);
 
         if (collectedValue <= 0)
             return;
 
-        foreach (var client in Level.Clients.Values)
+        foreach (var client in Room.Clients.Values)
             client.Get<Player>().AddBananas(client, collectedValue);
     }
 }

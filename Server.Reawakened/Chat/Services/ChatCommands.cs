@@ -2,13 +2,12 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
-using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -23,15 +22,16 @@ public class ChatCommands : IService
     private readonly ServerStaticConfig _config;
     private readonly ILogger<ServerConsole> _logger;
     private readonly IHostApplicationLifetime _appLifetime;
-    private readonly LevelHandler _levelHandler;
+    private readonly WorldHandler _worldHandler;
     private readonly WorldGraph _worldGraph;
 
-    public ChatCommands(ItemCatalog itemCatalog, ServerStaticConfig config, ILogger<ServerConsole> logger, EventSink eventSink, LevelHandler levelHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime)
+    public ChatCommands(ItemCatalog itemCatalog, ServerStaticConfig config, ILogger<ServerConsole> logger,
+        WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime)
     {
         _itemCatalog = itemCatalog;
         _config = config;
         _logger = logger;
-        _levelHandler = levelHandler;
+        _worldHandler = worldHandler;
         _worldGraph = worldGraph;
         _appLifetime = appLifetime;
         _commands = new Dictionary<string, ChatCommand>();
@@ -94,16 +94,15 @@ public class ChatCommands : IService
             return false;
 
         var levelId = Convert.ToInt32(args[1]);
+        
+        character.SetLevel(levelId, _logger);
 
-        character.SetCharacterSpawn(0, 0, _logger);
-
-        character.Level = levelId;
         var levelInfo = _worldGraph.GetInfoLevel(levelId);
 
         var tribe = levelInfo.Tribe;
 
         netState.DiscoverTribe(tribe);
-        player.SendLevelChange(netState, _levelHandler, _worldGraph);
+        player.SendLevelChange(netState, _worldHandler, _worldGraph);
 
         Log(
             $"Successfully set character {character.Data.CharacterId}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
@@ -171,16 +170,17 @@ public class ChatCommands : IService
 
         Log("Levels:", netState);
 
-        foreach (var levelValue in (Dictionary<string, int>)
+        foreach (var levels in (Dictionary<string, int>)
                  _worldGraph.GetField<WorldGraphXML>("_levelNameToID"))
         {
             if (shouldFilter)
-                if (!File.Exists(Path.Join(_config.LevelSaveDirectory, $"{levelValue.Key}.xml")))
+                if (!File.Exists(Path.Join(_config.LevelSaveDirectory, $"{levels.Key}.xml")))
                     continue;
 
-            var name = _worldGraph.GetInfoLevel(levelValue.Value).InGameName;
+            var levelInfo = _worldGraph.GetInfoLevel(levels.Value);
+            var name = levelInfo.InGameName;
 
-            Log($"{levelValue.Value}: {name}", netState);
+            Log($"{levels.Value}: {name}", netState);
         }
 
         return true;

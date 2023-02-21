@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Abstractions;
-using Server.Reawakened.Levels.Models.Planes;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -80,7 +80,7 @@ public class UseSlot : ExternalProtocol
         foreach (var planeName in planes)
         {
             foreach (var obj in
-                     player.CurrentLevel.LevelPlanes.Planes[planeName].GameObjects.Values
+                     player.CurrentRoom.Planes[planeName].GameObjects.Values
                          .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3f)
                     )
             {
@@ -88,11 +88,11 @@ public class UseSlot : ExternalProtocol
                 {
                     case "PF_GLB_SwitchWall02":
                         var triggerEvent = new Trigger_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                            player.CurrentLevel.Time, true, player.PlayerId.ToString(), true);
+                            player.CurrentRoom.Time, true, player.PlayerId.ToString(), true);
 
-                        player.CurrentLevel.SendSyncEvent(triggerEvent);
+                        player.CurrentRoom.SendSyncEvent(triggerEvent);
 
-                        foreach (var syncedEntity in player.CurrentLevel.LevelEntities.Entities[obj.ObjectInfo.ObjectId]
+                        foreach (var syncedEntity in player.CurrentRoom.RoomEntities.Entities[obj.ObjectInfo.ObjectId]
                                      .Where(syncedEntity =>
                                          typeof(AbstractTriggerCoop<>).IsAssignableTo(syncedEntity.GetType())
                                      )
@@ -105,10 +105,10 @@ public class UseSlot : ExternalProtocol
                         return;
                     case "PF_CRS_BARREL01":
                         var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                            player.CurrentLevel.Time,
+                            player.CurrentRoom.Time,
                             0, 0, 0, 0, "now", false, false);
 
-                        player.CurrentLevel.SendSyncEvent(aiEvent);
+                        player.CurrentRoom.SendSyncEvent(aiEvent);
 
                         return;
                     default:

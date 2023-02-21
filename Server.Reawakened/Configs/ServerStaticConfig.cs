@@ -29,7 +29,7 @@ public class ServerStaticConfig : IStaticConfig
     public char ChatCommandStart { get; }
     public int ChatCommandPadding { get; }
 
-    public double LevelTickRate { get; }
+    public double RoomTickRate { get; }
 
     public Dictionary<DebugHandler.DebugVariables, bool> DefaultDebugVariables { get; }
 
@@ -38,7 +38,7 @@ public class ServerStaticConfig : IStaticConfig
         LevelSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Level");
         LevelDataSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "LevelData");
 
-        LevelTickRate = 32;
+        RoomTickRate = 32;
 
         RandomKeyLength = 24;
         PlayerCap = 20;

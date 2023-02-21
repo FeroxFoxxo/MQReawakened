@@ -17,7 +17,7 @@ public class StomperControllerEntity : AbstractMovingObject<StomperController>
 
         Movement.Init(
             new vector3(Position.X, Position.Y, Position.Z),
-            Movement.Activated, Level.Time, InitialProgressRatio
+            Movement.Activated, Room.Time, InitialProgressRatio
         );
 
         base.InitializeEntity();
@@ -27,6 +27,6 @@ public class StomperControllerEntity : AbstractMovingObject<StomperController>
     {
         base.Update();
         var movement = (Stomper_Movement)Movement;
-        movement.UpdateState(Level.Time);
+        movement.UpdateState(Room.Time);
     }
 }

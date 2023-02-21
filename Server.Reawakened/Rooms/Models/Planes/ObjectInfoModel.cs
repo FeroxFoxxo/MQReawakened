@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Levels.Models.Planes;
+﻿namespace Server.Reawakened.Rooms.Models.Planes;
 
 public class ObjectInfoModel
 {

@@ -24,7 +24,7 @@ public class LinearPlatformEntity : AbstractMovingObject<LinearPlatform>
 
         Movement.Init(
             new vector3(Position.X, Position.Y, Position.Z),
-            Movement.Activated, Level.Time, InitialProgressRatio
+            Movement.Activated, Room.Time, InitialProgressRatio
         );
 
         base.InitializeEntity();
@@ -34,6 +34,6 @@ public class LinearPlatformEntity : AbstractMovingObject<LinearPlatform>
     {
         base.Update();
         var movement = (Platform_Linear_Movement) Movement;
-        movement.UpdateState(Level.Time);
+        movement.UpdateState(Room.Time);
     }
 }

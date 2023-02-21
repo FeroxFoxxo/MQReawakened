@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Levels;
-using Server.Reawakened.Levels.Enums;
-using Server.Reawakened.Levels.Models.Entities;
+using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Enums;
+using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities;
 
@@ -27,7 +27,7 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
 
     public override object[] GetInitData(NetState netState) => new object[] { Activated ? 1 : 0 };
 
-    public void TriggerStateChange(TriggerType triggerType, Level level, bool triggered)
+    public void TriggerStateChange(TriggerType triggerType, Room room, bool triggered)
     {
         Enabled = triggerType switch
         {
@@ -75,19 +75,19 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
 
         Logger.LogTrace("Triggering entity '{Id}', triggered: {Bool}.", Id, Activated);
 
-        var entities = Level.LevelEntities.Entities[Id];
+        var entities = Room.RoomEntities.Entities[Id];
 
         foreach (var entity in entities)
         {
             if (activated)
             {
                 if (entity is IMoveable moveable)
-                    moveable.GetMovement().Activate(Level.Time);
+                    moveable.GetMovement().Activate(Room.Time);
             }
             else
             {
                 if (entity is IMoveable moveable)
-                    moveable.GetMovement().Deactivate(Level.Time);
+                    moveable.GetMovement().Deactivate(Room.Time);
             }
         }
 
@@ -95,5 +95,5 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
     }
 
     public void SendTriggerState(bool activated) =>
-        Level.SendSyncEvent(new TriggerReceiver_SyncEvent(Id.ToString(), Level.Time, "now", activated, 0));
+        Room.SendSyncEvent(new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, "now", activated, 0));
 }

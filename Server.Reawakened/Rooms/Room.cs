@@ -1,74 +1,101 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
 using Server.Base.Network;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities;
-using Server.Reawakened.Levels.Enums;
-using Server.Reawakened.Levels.Extensions;
-using Server.Reawakened.Levels.Models.Entities;
-using Server.Reawakened.Levels.Services;
+using Server.Reawakened.Rooms.Enums;
+using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using WorldGraphDefines;
 using Timer = Server.Base.Timers.Timer;
+using Server.Reawakened.Rooms.Models.Planes;
+using System.Xml;
+using System.Text.Json;
+using SmartFoxClientAPI.Util;
 
-namespace Server.Reawakened.Levels;
+namespace Server.Reawakened.Rooms;
 
-public class Level
+public class Room : Timer
 {
     private readonly HashSet<int> _gameObjectIds;
-
-    private readonly LevelHandler _levelHandler;
-    private readonly ILogger<LevelHandler> _logger;
+    private readonly WorldHandler _worldHandler;
+    private readonly ILogger<Room> _logger;
     private readonly ServerStaticConfig _config;
-    private readonly Timer _timer;
 
     public readonly Dictionary<int, NetState> Clients;
 
     public LevelInfo LevelInfo { get; set; }
-    public LevelPlanes LevelPlanes { get; set; }
-    public LevelEntities LevelEntities { get; set; }
+    public Dictionary<string, PlaneModel> Planes { get; set; }
+    public RoomEntities RoomEntities { get; set; }
+
+    public SpawnPointEntity DefaultSpawn { get; set; }
 
     public long TimeOffset { get; set; }
     public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
 
-    public Level(LevelInfo levelInfo, LevelPlanes levelPlanes, ServerStaticConfig config,
-        LevelHandler levelHandler, ReflectionUtils reflection, TimerThread timerThread,
-        IServiceProvider services, ILogger<LevelHandler> logger)
+    public Room(LevelInfo levelInfo, ServerStaticConfig config,
+        WorldHandler worldHandler, ReflectionUtils reflection, TimerThread timerThread,
+        IServiceProvider services, ILogger<Room> logger, ILogger<RoomEntities> entityLogger) :
+        base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
         _config = config;
-        _levelHandler = levelHandler;
+        _worldHandler = worldHandler;
         _logger = logger;
+        LevelInfo = levelInfo;
+
         Clients = new Dictionary<int, NetState>();
         _gameObjectIds = new HashSet<int>();
 
-        LevelInfo = levelInfo;
-        LevelPlanes = levelPlanes;
-        
-        TimeOffset = GetTime.GetCurrentUnixMilliseconds();
-
-        LevelEntities = new LevelEntities(this, _levelHandler, reflection, services, _logger);
-        
-        _timer = new LevelTimer(config, timerThread, LevelEntities);
-
-        if (levelPlanes.Planes == null)
+        if (levelInfo.Type == LevelType.Unknown)
             return;
-         
-        foreach (var gameObjectId in levelPlanes.Planes.Values
+
+        var levelInfoPath = Path.Join(_config.LevelSaveDirectory, $"{levelInfo.Name}.xml");
+        var levelDataPath = Path.Join(_config.LevelDataSaveDirectory, $"{levelInfo.Name}.json");
+
+        var xmlDocument = new XmlDocument();
+        xmlDocument.Load(levelInfoPath);
+
+        Planes = xmlDocument.LoadPlanes();
+
+        File.WriteAllText(levelDataPath,
+            JsonSerializer.Serialize(Planes, new JsonSerializerOptions { WriteIndented = true }));
+
+        RoomEntities = new RoomEntities(this, _worldHandler, reflection, services, entityLogger);
+
+        foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects.Values)
                      .SelectMany(x => x)
                      .Select(x => x.ObjectInfo.ObjectId)
                 )
             _gameObjectIds.Add(gameObjectId);
 
-        foreach (var entity in LevelEntities.Entities.Values.SelectMany(x => x))
+        foreach (var entity in RoomEntities.Entities.Values.SelectMany(x => x))
             entity.InitializeEntity();
 
-        _timer.Start();
+        var spawnPoints = RoomEntities.GetEntities<SpawnPointEntity>();
+
+        DefaultSpawn = spawnPoints.Values.MinBy(p => p.Index);
+
+        if (DefaultSpawn == null)
+            _logger.LogError("Could not find default spawn for level: {RoomId} ({RoomName})",
+                levelInfo.LevelId, levelInfo.Name);
+
+        TimeOffset = GetTime.GetCurrentUnixMilliseconds();
+        Start();
+    }
+
+    public override void OnTick()
+    {
+        foreach (var entity in RoomEntities.Entities.Values.SelectMany(entityList => entityList))
+            entity.Update();
     }
 
     public void AddClient(NetState newClient, out JoinReason reason)
@@ -135,44 +162,37 @@ public class Level
 
         BaseSyncedEntity spawnLocation = null;
 
-        var spawnPoints = LevelEntities.GetEntities<SpawnPointEntity>();
-        var portals = LevelEntities.GetEntities<PortalControllerEntity>();
+        var spawnPoints = RoomEntities.GetEntities<SpawnPointEntity>();
+        var portals = RoomEntities.GetEntities<PortalControllerEntity>();
 
-        if (character.PortalId != 0)
-            if (portals.TryGetValue(character.PortalId, out var portal))
+        if (character.LevelInfo.PortalId != 0)
+            if (portals.TryGetValue(character.LevelInfo.PortalId, out var portal))
                 spawnLocation = portal;
 
         if (spawnLocation == null)
-            if (spawnPoints.TryGetValue(character.SpawnPoint, out var spawnPoint))
+            if (spawnPoints.TryGetValue(character.LevelInfo.SpawnPointId, out var spawnPoint))
                 spawnLocation = spawnPoint;
 
         if (spawnLocation == null)
         {
-            var spawnPoint = spawnPoints.Values.FirstOrDefault(s => s.Index == character.SpawnPoint);
+            var spawnPoint = spawnPoints.Values.FirstOrDefault(s => s.Index == character.LevelInfo.SpawnPointId);
             if (spawnPoint != null)
                 spawnLocation = spawnPoint;
         }
 
-        var defaultSpawn = spawnPoints.Values.MinBy(p => p.Index);
-
-        if (defaultSpawn != null)
-            spawnLocation ??= defaultSpawn;
-        else
-            throw new InvalidDataException(
-                $"Could not find default spawn point in {LevelInfo.LevelId}, as there are none initialized!"
-                );
+        spawnLocation ??= DefaultSpawn;
 
         character.Data.SpawnPositionX = spawnLocation.Position.X + spawnLocation.Scale.X / 2;
         character.Data.SpawnPositionY = spawnLocation.Position.Y + spawnLocation.Scale.Y / 2;
         character.Data.SpawnOnBackPlane = spawnLocation.Position.Z > 1;
 
         _logger.LogDebug(
-            "Spawning {CharacterName} at object '{Object}' (portal '{Portal}' spawn '{SpawnPoint}') at '{NewLevel}'.",
+            "Spawning {CharacterName} at object '{Object}' (portal '{Portal}' spawn '{SpawnPoint}') at '{NewRoom}'.",
             character.Data.CharacterName,
             spawnLocation.Id != 0 ? spawnLocation.Id : "DEFAULT",
-            character.PortalId != 0 ? character.PortalId : "DEFAULT",
-            character.SpawnPoint != 0 ? character.SpawnPoint : "DEFAULT",
-            character.Level
+            character.LevelInfo.PortalId != 0 ? character.LevelInfo.PortalId : "DEFAULT",
+            character.LevelInfo.SpawnPointId != 0 ? character.LevelInfo.SpawnPointId : "DEFAULT",
+            character.LevelInfo.LevelId
         );
 
         _logger.LogDebug("Position of spawn: {Position}", spawnLocation.Position);
@@ -202,7 +222,7 @@ public class Level
     public void DumpPlayerToLobby(int playerId)
     {
         var client = Clients[playerId];
-        client.Get<Player>().JoinLevel(client, _levelHandler.GetLevelFromId(-1), out _);
+        client.Get<Player>().JoinRoom(client, _worldHandler.GetRoomFromLevelId(-1), out _);
         RemoveClient(playerId);
     }
 
@@ -214,8 +234,8 @@ public class Level
         if (Clients.Count != 0 || LevelInfo.LevelId <= 0)
             return;
 
-        _levelHandler.RemoveLevel(this);
-        _timer.Stop();
+        _worldHandler.RemoveRoom(this);
+        Stop();
     }
 
     public void SendSyncEvent(SyncEvent syncEvent, Player sentPlayer = null)

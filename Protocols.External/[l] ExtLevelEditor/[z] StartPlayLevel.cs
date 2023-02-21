@@ -1,28 +1,28 @@
-﻿using Server.Reawakened.Levels.Extensions;
-using Server.Reawakened.Levels.Services;
+﻿using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 
 namespace Protocols.External._l__ExtLevelEditor;
 
-public class StartPlayLevel : ExternalProtocol
+public class StartPlayRoom : ExternalProtocol
 {
     public override string ProtocolName => "lz";
 
-    public LevelHandler LevelHandler { get; set; }
+    public WorldHandler WorldHandler { get; set; }
 
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
 
-        var level = LevelHandler.GetLevelFromId(player.GetSetLevelId());
+        var room = WorldHandler.GetRoomFromLevelId(player.GetLevelId());
 
-        player.JoinLevel(NetState, level, out var reason);
+        player.JoinRoom(NetState, room, out var reason);
 
-        SendXt("lz", reason.GetJoinReasonError(), level.LevelInfo.LevelId, level.LevelInfo.Name);
+        SendXt("lz", reason.GetJoinReasonError(), room.LevelInfo.LevelId, room.LevelInfo.Name);
 
-        var tribe = level.LevelInfo.Tribe;
+        var tribe = room.LevelInfo.Tribe;
         NetState.DiscoverTribe(tribe);
     }
 }

@@ -29,9 +29,9 @@ public class BuildLevelFiles : IService
         LevelFiles = new Dictionary<string, string>();
     }
 
-    public void Initialize() => _eventSink.AssetBundlesLoaded += LoadXmlFiles;
+    public void Initialize() => _eventSink.AssetBundlesLoaded += LoadLevelFiles;
 
-    private void LoadXmlFiles(AssetBundleLoadEventArgs assetLoadEvent)
+    private void LoadLevelFiles(AssetBundleLoadEventArgs assetLoadEvent)
     {
         _logger.LogDebug("Reading level files from bundles");
 

@@ -6,12 +6,7 @@ namespace Server.Reawakened.Players.Models;
 public class CharacterModel
 {
     public CharacterDataModel Data { get; set; }
-
-    public int Level { get; set; }
-
-    public int SpawnPoint { get; set; }
-    public int PortalId { get; set; }
-
+    public LevelInformation LevelInfo { get; set; }
     public Dictionary<int, List<int>> CollectedIdols { get; set; }
     public List<EmailHeaderModel> Emails { get; set; }
 
@@ -19,6 +14,8 @@ public class CharacterModel
     {
         CollectedIdols = new Dictionary<int, List<int>>();
         Emails = new List<EmailHeaderModel>();
+        Data = new CharacterDataModel();
+        LevelInfo = new LevelInformation();
     }
 
     public override string ToString() => throw new InvalidOperationException();

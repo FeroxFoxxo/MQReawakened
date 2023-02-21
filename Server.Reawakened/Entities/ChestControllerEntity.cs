@@ -25,7 +25,7 @@ public class ChestControllerEntity : AbstractBaseChest<ChestController>
         var bananas = Random.Next(10, 100);
         player.AddBananas(netState, bananas);
 
-        var trig = new Trigger_SyncEvent(Id.ToString(), Level.Time, true, player.PlayerId.ToString(), true)
+        var trig = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.PlayerId.ToString(), true)
             {
                 EventDataList =
                 {
@@ -33,10 +33,10 @@ public class ChestControllerEntity : AbstractBaseChest<ChestController>
                 }
             };
 
-        Level.SendSyncEvent(trig);
+        Room.SendSyncEvent(trig);
 
-        var rec = new TriggerReceiver_SyncEvent(Id.ToString(), Level.Time, player.PlayerId.ToString(), true, 1f);
+        var rec = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.PlayerId.ToString(), true, 1f);
         
-        Level.SendSyncEvent(rec);
+        Room.SendSyncEvent(rec);
     }
 }

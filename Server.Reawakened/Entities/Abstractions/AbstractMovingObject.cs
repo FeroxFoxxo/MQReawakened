@@ -1,6 +1,6 @@
 ﻿using Server.Base.Network;
-using Server.Reawakened.Levels.Models.Entities;
-using Server.Reawakened.Levels.Models.Planes;
+using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.Abstractions;
 
@@ -12,10 +12,10 @@ public abstract class AbstractMovingObject<T> : SyncedEntity<T>, IMoveable where
 
     public override void InitializeEntity()
     {
-        if (!Level.LevelEntities.Entities[Id].OfType<ITriggerable>().Any())
+        if (!Room.RoomEntities.Entities[Id].OfType<ITriggerable>().Any())
             return;
 
-        Movement?.Activate(Level.Time);
+        Movement?.Activate(Room.Time);
     }
 
     public override void Update()
@@ -23,7 +23,7 @@ public abstract class AbstractMovingObject<T> : SyncedEntity<T>, IMoveable where
         if (Movement == null)
             return;
 
-        var position = Movement.GetPositionBasedOnTime(Level.Time);
+        var position = Movement.GetPositionBasedOnTime(Room.Time);
 
         StoredEntity.GameObject.ObjectInfo.Position = new Vector3Model
         {
@@ -35,14 +35,14 @@ public abstract class AbstractMovingObject<T> : SyncedEntity<T>, IMoveable where
 
     public override object[] GetInitData(NetState netState) => new object[]
     {
-        Level.Time,
-        Movement.GetBehaviorRatio(Level.Time),
+        Room.Time,
+        Movement.GetBehaviorRatio(Room.Time),
         Movement.Activated ? 1 : 0
     };
 
-    public void Activate() => Movement?.Activate(Level.Time);
+    public void Activate() => Movement?.Activate(Room.Time);
 
-    public void Deactivate() => Movement?.Deactivate(Level.Time);
+    public void Deactivate() => Movement?.Deactivate(Room.Time);
 
     public IMovement GetMovement() => Movement;
 }

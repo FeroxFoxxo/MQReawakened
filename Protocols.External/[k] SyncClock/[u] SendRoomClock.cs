@@ -17,7 +17,7 @@ public class SendRoomUpdate : ExternalProtocol
         var now = GetTime.GetCurrentUnixMilliseconds();
 
         if (isSynchronized)
-            SendXt("ku", ticks, now, player.CurrentLevel.TimeOffset);
+            SendXt("ku", ticks, now, player.CurrentRoom.TimeOffset);
         else
             SendXt("ku", ticks, now);
     }

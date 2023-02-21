@@ -25,7 +25,7 @@ public static class AssetBuilderExtensions
 
     public static IEnumerable<InternalAssetInfo> OrderAssets(this IEnumerable<InternalAssetInfo> assets) =>
         assets.GroupBy(x => x.Type)
-            .SelectMany(g => g.OrderBy(x => x.Name).ToList());
+            .SelectMany(g => g.OrderBy(x => x.Name).ToArray());
 
     public static Dictionary<string, InternalAssetInfo> GetClosestBundles(this IEnumerable<InternalAssetInfo> assets,
         StartConfig config)

@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Levels.Models.Entities;
+﻿using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities;
 

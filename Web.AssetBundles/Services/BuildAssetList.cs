@@ -117,7 +117,7 @@ public class BuildAssetList : IService
         var gameAssets = InternalAssets
             .Where(x => !vgmtAssets.ContainsKey(x.Key))
             .Select(x => x.Value)
-            .ToList();
+            .ToArray();
 
         PublishConfigs.Clear();
         AssetDict.Clear();

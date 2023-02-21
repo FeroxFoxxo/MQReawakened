@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Levels.Enums;
+﻿using Server.Reawakened.Rooms.Enums;
 
-namespace Server.Reawakened.Levels.Extensions;
+namespace Server.Reawakened.Rooms.Extensions;
 
 public static class GetJoinReason
 {

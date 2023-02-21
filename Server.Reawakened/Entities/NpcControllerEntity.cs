@@ -2,7 +2,7 @@
 using FollowCamDefines;
 using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Levels.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -25,7 +25,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
     public MiscTextDictionary MiscText { get; set; }
     
     public NpcDescription Description;
-    public List<QuestDescription> Quests;
+    public QuestDescription[] Quests;
     public string NpcName;
 
     private bool _vendorOpen;
@@ -34,7 +34,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
     {
         Description = NpcCatalog.GetNpc(Id);
 
-        Quests = QuestCatalog.GetQuestsBy(Id).OrderBy(x => x.Id).ToList();
+        Quests = QuestCatalog.GetQuestsBy(Id).OrderBy(x => x.Id).ToArray();
 
         if (Description == null) return;
         

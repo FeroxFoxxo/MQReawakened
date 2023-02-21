@@ -43,11 +43,11 @@ public class RemoveDuplicates : IService
 
         var assetList = new Dictionary<string, List<InternalAssetInfo>>();
         var assetDict = File.ReadAllText(_buildAssetList.AssetDictLocation);
-        var allAssets = BuildAssetList.GetAssetsFromDictionary(assetDict).ToList();
+        var allAssets = BuildAssetList.GetAssetsFromDictionary(assetDict).ToArray();
 
         using (
             var bar = new DefaultProgressBar(
-                allAssets.Count,
+                allAssets.Length,
                 "Reading assets from disk",
                 _logger,
                 _sConfig
@@ -96,7 +96,7 @@ public class RemoveDuplicates : IService
         var replacedCount = assetList.Sum(s => s.Value.Count);
 
         _logger.LogInformation("Removed {Count} duplicates, asset count: {Total} (of {OldTotal})",
-            allAssets.Count - replacedCount, replacedCount, allAssets.Count);
+            allAssets.Length - replacedCount, replacedCount, allAssets.Length);
 
         _logger.LogDebug("Writing assets");
 

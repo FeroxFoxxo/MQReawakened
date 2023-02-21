@@ -44,8 +44,8 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
                 SortedDictionary<QuestLineDescription, List<QuestDescription>>;
     }
 
-    public List<QuestDescription> GetQuestsBy(int npcId) =>
-        _quests.Values.Where(q => q.QuestGiverGoId == npcId).ToList();
+    public QuestDescription[] GetQuestsBy(int npcId) =>
+        _quests.Values.Where(q => q.QuestGiverGoId == npcId).ToArray();
 
     public List<QuestDescription> GetQuestLineQuests(QuestLineDescription questLine) =>
         _questLines.TryGetValue(questLine, out var v) ? v : null;
