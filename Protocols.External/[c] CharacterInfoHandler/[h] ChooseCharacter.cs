@@ -29,10 +29,10 @@ public class ChooseCharacter : ExternalProtocol
             return;
         }
 
-        if (character.LevelInfo.LevelId == 0)
+        if (character.LevelData.LevelId == 0)
             character.SetLevel(WorldGraph.DefaultLevel, Logger);
 
-        var levelInfo = WorldHandler.GetLevelInfo(character.LevelInfo.LevelId);
+        var levelInfo = WorldHandler.GetLevelInfo(character.LevelData.LevelId);
 
         player.SendStartPlay(character, NetState, levelInfo);
     }

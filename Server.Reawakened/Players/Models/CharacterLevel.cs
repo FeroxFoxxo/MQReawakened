@@ -1,6 +1,6 @@
 ﻿namespace Server.Reawakened.Players.Models;
 
-public class LevelInformation
+public class LevelData
 {
     public int LevelId { get; set; }
     public int PortalId { get; set; }

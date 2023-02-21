@@ -42,7 +42,7 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
         if (portalId == 0)
             portalId = Id;
 
-        var newLevelId = WorldGraph.GetDestinationLevelID(character.LevelInfo.LevelId, portalId);
+        var newLevelId = WorldGraph.GetDestinationLevelID(character.LevelData.LevelId, portalId);
 
         if (newLevelId > 0)
         {
@@ -51,7 +51,7 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
             var nodes = WorldGraph.GetLevelWorldGraphNodes(newLevelId);
 
             if (nodes != null)
-                node = nodes.FirstOrDefault(a => a.ToLevelID == character.LevelInfo.LevelId);
+                node = nodes.FirstOrDefault(a => a.ToLevelID == character.LevelData.LevelId);
 
             if (node != null)
             {
@@ -60,22 +60,24 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
             }
             else
             {
-                Logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LevelInfo, newLevelId);
+                Logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LevelData, newLevelId);
                 character.SetLevel(newLevelId, portalId, portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID), Logger);
             }
 
+            var levelInfo = WorldGraph.GetInfoLevel(newLevelId);
+
             Logger.LogInformation(
                 "Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
-                "using portals {PortalId} to {NewPortalId}", character.Data.CharacterName,
-                character.Data.CharacterId, Room.LevelInfo.LevelId, Room.LevelInfo.InGameName, portalId,
-                character.LevelInfo.PortalId
+                "using portals {PortalId} -> {NewPortalId}", character.Data.CharacterName,
+                character.Data.CharacterId, levelInfo.InGameName, levelInfo.LevelId, portalId,
+                character.LevelData.PortalId
             );
 
             player.SendLevelChange(netState, WorldHandler, WorldGraph);
         }
         else
         {
-            throw new InvalidDataException($"Portal '{portalId}' is null for world {character.LevelInfo}!");
+            throw new InvalidDataException($"Portal '{portalId}' is null for world {character.LevelData}!");
         }
     }
 }

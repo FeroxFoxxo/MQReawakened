@@ -63,7 +63,7 @@ public class CreateCharacter : ExternalProtocol
             var model = new CharacterModel
             {
                 Data = characterData,
-                LevelInfo = new LevelInformation
+                LevelData = new LevelData
                 {
                     LevelId = WorldGraph.DefaultLevel,
                     PortalId = 0,
@@ -73,7 +73,7 @@ public class CreateCharacter : ExternalProtocol
 
             player.AddCharacter(model);
 
-            var levelInfo = WorldHandler.GetLevelInfo(model.LevelInfo.LevelId);
+            var levelInfo = WorldHandler.GetLevelInfo(model.LevelData.LevelId);
 
             player.SendStartPlay(model, NetState, levelInfo);
         }

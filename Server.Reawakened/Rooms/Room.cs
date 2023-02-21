@@ -153,17 +153,17 @@ public class Room : Timer
         var spawnPoints = this.GetEntities<SpawnPointEntity>();
         var portals = this.GetEntities<PortalControllerEntity>();
 
-        if (character.LevelInfo.PortalId != 0)
-            if (portals.TryGetValue(character.LevelInfo.PortalId, out var portal))
+        if (character.LevelData.PortalId != 0)
+            if (portals.TryGetValue(character.LevelData.PortalId, out var portal))
                 spawnLocation = portal;
 
         if (spawnLocation == null)
-            if (spawnPoints.TryGetValue(character.LevelInfo.SpawnPointId, out var spawnPoint))
+            if (spawnPoints.TryGetValue(character.LevelData.SpawnPointId, out var spawnPoint))
                 spawnLocation = spawnPoint;
 
         if (spawnLocation == null)
         {
-            var spawnPoint = spawnPoints.Values.FirstOrDefault(s => s.Index == character.LevelInfo.SpawnPointId);
+            var spawnPoint = spawnPoints.Values.FirstOrDefault(s => s.Index == character.LevelData.SpawnPointId);
             if (spawnPoint != null)
                 spawnLocation = spawnPoint;
         }
@@ -178,9 +178,9 @@ public class Room : Timer
             "Spawning {CharacterName} at object '{Object}' (portal '{Portal}' spawn '{SpawnPoint}') at '{NewRoom}'.",
             character.Data.CharacterName,
             spawnLocation.Id != 0 ? spawnLocation.Id : "DEFAULT",
-            character.LevelInfo.PortalId != 0 ? character.LevelInfo.PortalId : "DEFAULT",
-            character.LevelInfo.SpawnPointId != 0 ? character.LevelInfo.SpawnPointId : "DEFAULT",
-            character.LevelInfo.LevelId
+            character.LevelData.PortalId != 0 ? character.LevelData.PortalId : "DEFAULT",
+            character.LevelData.SpawnPointId != 0 ? character.LevelData.SpawnPointId : "DEFAULT",
+            character.LevelData.LevelId
         );
 
         Logger.LogDebug("Position of spawn: {Position}", spawnLocation.Position);

@@ -142,9 +142,9 @@ public static class CharacterExtensions
 
     public static void SetLevel(this CharacterModel character, int levelId, int portalId, int spawnId, Microsoft.Extensions.Logging.ILogger logger)
     {
-        character.LevelInfo.LevelId = levelId;
-        character.LevelInfo.PortalId = portalId;
-        character.LevelInfo.SpawnPointId = spawnId;
+        character.LevelData.LevelId = levelId;
+        character.LevelData.PortalId = portalId;
+        character.LevelData.SpawnPointId = spawnId;
 
         logger.LogDebug("Set spawn of '{CharacterName}' to portal {PortalId} spawn {SpawnId}", character.Data.CharacterName,
             portalId, spawnId);

@@ -38,7 +38,7 @@ public static class RoomExtensions
     }
 
     public static int GetLevelId(this Player player) =>
-        player.GetCurrentCharacter()?.LevelInfo.LevelId ?? -1;
+        player.GetCurrentCharacter()?.LevelData.LevelId ?? -1;
 
     public static void SendStartPlay(this Player player, CharacterModel character, NetState state, LevelInfo levelInfo)
     {
