@@ -19,7 +19,7 @@
             <img alt="Stars" src="https://img.shields.io/github/stars/feroxfoxxo/MQReawakened?color=gold&style=for-the-badge">
         </a>
     </p>
-    <h4>This server should be completely free of assets / intellectual property from the original game. If you see any infringing code, please let me know at the email below and I will take it down to be removed ❤️</h4>
+    <h4>This server emulator is completely free of assets / intellectual property from the original game. If you see any infringing code, please let me know at the email below and I will take it down to be removed ❤️</h4>
     <h5>None of the repo, the tool, nor the repo owner is affiliated with, sponsored, or authorized by any affiliates of the original game.</h4>
     <h1></h1>
 </div>
