@@ -5,6 +5,7 @@ using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Entities.Abstractions;
 
@@ -213,10 +214,10 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
 
         foreach (var trigger in Triggers)
         {
-            if (Room.RoomEntities.Entities.ContainsKey(trigger.Key))
-                if (Room.RoomEntities.Entities[trigger.Key].Count > 0)
+            if (Room.Entities.ContainsKey(trigger.Key))
+                if (Room.Entities[trigger.Key].Count > 0)
                 {
-                    var triggers = Room.RoomEntities.Entities[trigger.Key];
+                    var triggers = Room.Entities[trigger.Key];
 
                     var canTriggerEntities = triggers.OfType<ITriggerable>().ToArray();
 
@@ -230,13 +231,13 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
                 }
 
             Logger.LogWarning("Cannot trigger entity {Id} to state {State}, no entity for {EntityType}.",
-                trigger.Key, trigger.Value, Room.RoomEntities.GetUnknownEntityTypes(trigger.Key));
+                trigger.Key, trigger.Value, Room.GetUnknownEntityTypes(trigger.Key));
         }
     }
 
     private bool TriggerReceiverActivated()
     {
-        var receivers = Room.RoomEntities.GetEntities<TriggerReceiverEntity>();
+        var receivers = Room.GetEntities<TriggerReceiverEntity>();
 
         return Triggers
             .Where(r => r.Value == TriggerType.Activate)

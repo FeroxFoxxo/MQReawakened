@@ -3,6 +3,7 @@ using Server.Base.Network;
 using Server.Reawakened.Entities.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Entities;
 
@@ -25,7 +26,7 @@ public class CheckpointControllerEntity : AbstractTriggerCoop<CheckpointControll
             return;
         }
 
-        var spawns = Room.RoomEntities.GetEntities<SpawnPointEntity>()
+        var spawns = Room.GetEntities<SpawnPointEntity>()
             .Values.OrderBy(s => s.Index).ToArray();
 
         var spawnPoint = spawns.FirstOrDefault(s => s.Index == SpawnPoint);

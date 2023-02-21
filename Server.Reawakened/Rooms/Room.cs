@@ -17,9 +17,6 @@ using Server.Reawakened.Players.Extensions;
 using WorldGraphDefines;
 using Timer = Server.Base.Timers.Timer;
 using Server.Reawakened.Rooms.Models.Planes;
-using System.Xml;
-using System.Text.Json;
-using SmartFoxClientAPI.Util;
 
 namespace Server.Reawakened.Rooms;
 
@@ -27,14 +24,15 @@ public class Room : Timer
 {
     private readonly HashSet<int> _gameObjectIds;
     private readonly WorldHandler _worldHandler;
-    private readonly ILogger<Room> _logger;
     private readonly ServerStaticConfig _config;
 
     public readonly Dictionary<int, NetState> Clients;
 
-    public LevelInfo LevelInfo { get; set; }
-    public Dictionary<string, PlaneModel> Planes { get; set; }
-    public RoomEntities RoomEntities { get; set; }
+    public readonly Dictionary<string, PlaneModel> Planes;
+    public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
+    public readonly Dictionary<int, List<string>> UnknownEntities;
+    public readonly ILogger<Room> Logger;
+    public readonly LevelInfo LevelInfo;
 
     public SpawnPointEntity DefaultSpawn { get; set; }
 
@@ -43,12 +41,12 @@ public class Room : Timer
 
     public Room(LevelInfo levelInfo, ServerStaticConfig config,
         WorldHandler worldHandler, ReflectionUtils reflection, TimerThread timerThread,
-        IServiceProvider services, ILogger<Room> logger, ILogger<RoomEntities> entityLogger) :
+        IServiceProvider services, ILogger<Room> logger) :
         base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
         _config = config;
         _worldHandler = worldHandler;
-        _logger = logger;
+        Logger = logger;
         LevelInfo = levelInfo;
 
         Clients = new Dictionary<int, NetState>();
@@ -57,18 +55,8 @@ public class Room : Timer
         if (levelInfo.Type == LevelType.Unknown)
             return;
 
-        var levelInfoPath = Path.Join(_config.LevelSaveDirectory, $"{levelInfo.Name}.xml");
-        var levelDataPath = Path.Join(_config.LevelDataSaveDirectory, $"{levelInfo.Name}.json");
-
-        var xmlDocument = new XmlDocument();
-        xmlDocument.Load(levelInfoPath);
-
-        Planes = xmlDocument.LoadPlanes();
-
-        File.WriteAllText(levelDataPath,
-            JsonSerializer.Serialize(Planes, new JsonSerializerOptions { WriteIndented = true }));
-
-        RoomEntities = new RoomEntities(this, _worldHandler, reflection, services, entityLogger);
+        Planes = LevelInfo.LoadPlanes(_config);
+        Entities = this.LoadEntities(reflection, services, out UnknownEntities);
 
         foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects.Values)
@@ -77,15 +65,15 @@ public class Room : Timer
                 )
             _gameObjectIds.Add(gameObjectId);
 
-        foreach (var entity in RoomEntities.Entities.Values.SelectMany(x => x))
+        foreach (var entity in Entities.Values.SelectMany(x => x))
             entity.InitializeEntity();
 
-        var spawnPoints = RoomEntities.GetEntities<SpawnPointEntity>();
+        var spawnPoints = this.GetEntities<SpawnPointEntity>();
 
         DefaultSpawn = spawnPoints.Values.MinBy(p => p.Index);
 
         if (DefaultSpawn == null)
-            _logger.LogError("Could not find default spawn for level: {RoomId} ({RoomName})",
+            Logger.LogError("Could not find default spawn for level: {RoomId} ({RoomName})",
                 levelInfo.LevelId, levelInfo.Name);
 
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
@@ -94,7 +82,7 @@ public class Room : Timer
 
     public override void OnTick()
     {
-        foreach (var entity in RoomEntities.Entities.Values.SelectMany(entityList => entityList))
+        foreach (var entity in Entities.Values.SelectMany(entityList => entityList))
             entity.Update();
     }
 
@@ -162,8 +150,8 @@ public class Room : Timer
 
         BaseSyncedEntity spawnLocation = null;
 
-        var spawnPoints = RoomEntities.GetEntities<SpawnPointEntity>();
-        var portals = RoomEntities.GetEntities<PortalControllerEntity>();
+        var spawnPoints = this.GetEntities<SpawnPointEntity>();
+        var portals = this.GetEntities<PortalControllerEntity>();
 
         if (character.LevelInfo.PortalId != 0)
             if (portals.TryGetValue(character.LevelInfo.PortalId, out var portal))
@@ -186,7 +174,7 @@ public class Room : Timer
         character.Data.SpawnPositionY = spawnLocation.Position.Y + spawnLocation.Scale.Y / 2;
         character.Data.SpawnOnBackPlane = spawnLocation.Position.Z > 1;
 
-        _logger.LogDebug(
+        Logger.LogDebug(
             "Spawning {CharacterName} at object '{Object}' (portal '{Portal}' spawn '{SpawnPoint}') at '{NewRoom}'.",
             character.Data.CharacterName,
             spawnLocation.Id != 0 ? spawnLocation.Id : "DEFAULT",
@@ -195,7 +183,7 @@ public class Room : Timer
             character.LevelInfo.LevelId
         );
 
-        _logger.LogDebug("Position of spawn: {Position}", spawnLocation.Position);
+        Logger.LogDebug("Position of spawn: {Position}", spawnLocation.Position);
 
         // CHARACTER DATA
 

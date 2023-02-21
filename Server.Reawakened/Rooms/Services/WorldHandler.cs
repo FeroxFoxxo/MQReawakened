@@ -20,7 +20,6 @@ public class WorldHandler : IService
 
     private readonly ILogger<WorldHandler> _handlerLogger;
     private readonly ILogger<Room> _roomLogger;
-    private readonly ILogger<RoomEntities> _entityLogger;
 
     private readonly ReflectionUtils _reflection;
     private readonly TimerThread _timerThread;
@@ -28,11 +27,9 @@ public class WorldHandler : IService
     private readonly EventSink _sink;
     private readonly WorldGraph _worldGraph;
 
-    public Dictionary<string, Type> ProcessableData;
-
     public WorldHandler(EventSink sink, ServerStaticConfig config, WorldGraph worldGraph,
         ReflectionUtils reflection, TimerThread timerThread, IServiceProvider services,
-        ILogger<WorldHandler> handlerLogger, ILogger<Room> roomLogger, ILogger<RoomEntities> entityLogger)
+        ILogger<WorldHandler> handlerLogger, ILogger<Room> roomLogger)
     {
         _sink = sink;
         _config = config;
@@ -42,7 +39,6 @@ public class WorldHandler : IService
         _services = services;
         _handlerLogger = handlerLogger;
         _roomLogger = roomLogger;
-        _entityLogger = entityLogger;
 
         _levelInfos = new Dictionary<int, LevelInfo>();
         _rooms = new Dictionary<int, List<Room>>();
@@ -53,10 +49,7 @@ public class WorldHandler : IService
     private void LoadRooms()
     {
         GetDirectory.OverwriteDirectory(_config.LevelDataSaveDirectory);
-
-        ProcessableData = typeof(DataComponentAccessor).Assembly.GetServices<DataComponentAccessor>()
-            .ToDictionary(x => x.Name, x => x);
-
+        
         foreach (var roomList in _rooms.Where(room => room.Key != -1))
         foreach (var room in roomList.Value)
             room.DumpPlayersToLobby();
@@ -119,7 +112,7 @@ public class WorldHandler : IService
         }
 
         var room = new Room(levelInfo, _config, this,
-            _reflection, _timerThread, _services, _roomLogger, _entityLogger);
+            _reflection, _timerThread, _services, _roomLogger);
 
         _rooms[levelId].Add(room);
 

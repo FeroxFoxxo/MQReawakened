@@ -6,12 +6,10 @@ public class StoredEntityModel
 {
     public readonly GameObjectModel GameObject;
     public readonly Room Room;
-    public readonly Microsoft.Extensions.Logging.ILogger Logger;
 
-    public StoredEntityModel(GameObjectModel gameObject, Room room, Microsoft.Extensions.Logging.ILogger logger)
+    public StoredEntityModel(GameObjectModel gameObject, Room room)
     {
         GameObject = gameObject;
         Room = room;
-        Logger = logger;
     }
 }

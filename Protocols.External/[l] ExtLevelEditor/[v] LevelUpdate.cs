@@ -5,6 +5,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Rooms.Extensions;
 
 namespace Protocols.External._l__ExtLevelEditor;
 
@@ -18,16 +19,16 @@ public class RoomUpdate : ExternalProtocol
     {
         var player = NetState.Get<Player>();
 
-        var gameObjectStore = GetGameObjectStore(player.CurrentRoom.RoomEntities.Entities);
+        var gameObjectStore = GetGameObjectStore(player.CurrentRoom.Entities);
 
         SendXt("lv", 0, gameObjectStore);
 
-        foreach (var entity in player.CurrentRoom.RoomEntities.Entities.Values.SelectMany(x => x))
+        foreach (var entity in player.CurrentRoom.Entities.Values.SelectMany(x => x))
             entity.SendDelayedData(NetState);
 
         player.CurrentRoom.SendCharacterInfo(player, NetState);
 
-        foreach (var npc in player.CurrentRoom.RoomEntities.GetEntities<NpcControllerEntity>())
+        foreach (var npc in player.CurrentRoom.GetEntities<NpcControllerEntity>())
             npc.Value.SendNpcInfo(player.GetCurrentCharacter(), NetState);
     }
 

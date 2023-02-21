@@ -75,7 +75,7 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
 
         Logger.LogTrace("Triggering entity '{Id}', triggered: {Bool}.", Id, Activated);
 
-        var entities = Room.RoomEntities.Entities[Id];
+        var entities = Room.Entities[Id];
 
         foreach (var entity in entities)
         {

@@ -12,7 +12,7 @@ public abstract class AbstractMovingObject<T> : SyncedEntity<T>, IMoveable where
 
     public override void InitializeEntity()
     {
-        if (!Room.RoomEntities.Entities[Id].OfType<ITriggerable>().Any())
+        if (!Room.Entities[Id].OfType<ITriggerable>().Any())
             return;
 
         Movement?.Activate(Room.Time);

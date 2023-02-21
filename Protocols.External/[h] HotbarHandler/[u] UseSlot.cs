@@ -92,7 +92,7 @@ public class UseSlot : ExternalProtocol
 
                         player.CurrentRoom.SendSyncEvent(triggerEvent);
 
-                        foreach (var syncedEntity in player.CurrentRoom.RoomEntities.Entities[obj.ObjectInfo.ObjectId]
+                        foreach (var syncedEntity in player.CurrentRoom.Entities[obj.ObjectInfo.ObjectId]
                                      .Where(syncedEntity =>
                                          typeof(AbstractTriggerCoop<>).IsAssignableTo(syncedEntity.GetType())
                                      )

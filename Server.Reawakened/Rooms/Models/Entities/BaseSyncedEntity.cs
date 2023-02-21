@@ -36,7 +36,7 @@ public abstract class BaseSyncedEntity
     }
 
     public virtual void RunSyncedEvent(SyncEvent syncEvent, NetState netState) =>
-        StoredEntity.Logger.LogError(
+        StoredEntity.Room.Logger.LogError(
             "The entity '{Id}' of type '{Type}' has no sync event override. Skipping...", Id, GetType().Name);
     
     protected void SetEntityData(StoredEntityModel storedEntity) =>
