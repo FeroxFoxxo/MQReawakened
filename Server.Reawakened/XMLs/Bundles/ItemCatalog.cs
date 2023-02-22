@@ -25,14 +25,18 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         this.SetField<ItemHandler>("_pendingRequests", new Dictionary<int, ItemDescriptionRequest>());
     }
 
-    public void EditXml(XmlDocument xml)
+    public void EditLocalization(XmlDocument xml)
     {
     }
 
-    public void ReadXml(string xml) => ReadDescriptionXml(xml);
-
     public void ReadLocalization(string xml) => ReadLocalizationXml(xml);
 
+    public void EditDescription(XmlDocument xml)
+    {
+    }
+
+    public void ReadDescription(string xml) => ReadDescriptionXml(xml);
+    
     public void FinalizeBundle()
     {
     }

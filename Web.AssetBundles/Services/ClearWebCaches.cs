@@ -2,7 +2,6 @@
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
-using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Models;
@@ -37,12 +36,15 @@ public class ClearWebCaches : IService
 
     public void Load()
     {
-        _console.AddCommand(new ConsoleCommand("clearWebCache", "Clears the Web Player cache manually.",
+        _console.AddCommand(
+            "clearWebCache",
+            "Clears the Web Player cache manually.",
             _ =>
             {
                 EmptyWebCacheDirectory();
                 _game.AskIfRestart();
-            }));
+            }
+        );
 
         RemoveWebCacheOnStart();
     }

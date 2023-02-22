@@ -52,17 +52,23 @@ public class EditCharacter : IService
 
     public void Load()
     {
-        _console.AddCommand(new ConsoleCommand("changeName",
+        _console.AddCommand(
+            "changeName",
             "Changes the name of a requested user's character.",
-            _ => ChangeCharacterName()));
+            _ => ChangeCharacterName()
+        );
 
-        _console.AddCommand(new ConsoleCommand("changeLevel",
+        _console.AddCommand(
+            "changeLevel",
             "Changes the level of a requested user's character.",
-            _ => ChangeCharacterLevel()));
+            _ => ChangeCharacterLevel()
+        );
 
-        _console.AddCommand(new ConsoleCommand("giveItem",
+        _console.AddCommand(
+            "giveItem",
             "Gives an item to a requested user's character.",
-            _ => GiveItem()));
+            _ => GiveItem()
+        );
     }
 
     private void ChangeCharacterName()

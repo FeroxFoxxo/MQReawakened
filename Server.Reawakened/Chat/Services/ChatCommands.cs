@@ -42,8 +42,7 @@ public class ChatCommands : IService
     public void RunChatListener()
     {
         _logger.LogDebug("Setting up chat commands");
-
-        AddCommand(new ChatCommand("listlevels", "[filterUnknown](true/false)", ListLevels));
+        
         AddCommand(new ChatCommand("level", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("item", "[itemId] [amount]", AddItem));
 
@@ -145,43 +144,6 @@ public class ChatCommands : IService
         character.SendUpdatedInventory(netState, false);
 
         Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", netState);
-
-        return true;
-    }
-
-    private bool ListLevels(NetState netState, string[] args)
-    {
-        if (args.Length != 2)
-            return false;
-        
-        bool shouldFilter;
-
-        switch (args[1].ToLower())
-        {
-            case "true":
-                shouldFilter = true;
-                break;
-            case "false":
-                shouldFilter = false;
-                break;
-            default:
-                return false;
-        }
-
-        Log("Levels:", netState);
-
-        foreach (var levels in (Dictionary<string, int>)
-                 _worldGraph.GetField<WorldGraphXML>("_levelNameToID"))
-        {
-            if (shouldFilter)
-                if (!File.Exists(Path.Join(_config.LevelSaveDirectory, $"{levels.Key}.xml")))
-                    continue;
-
-            var levelInfo = _worldGraph.GetInfoLevel(levels.Value);
-            var name = levelInfo.InGameName;
-
-            Log($"{levels.Value}: {name}", netState);
-        }
 
         return true;
     }

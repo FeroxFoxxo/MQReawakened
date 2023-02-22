@@ -78,9 +78,11 @@ public class StartGame : IService
 
     private void GetGameInformation()
     {
-        _console.AddCommand(new ConsoleCommand("runLauncher",
+        _console.AddCommand(
+            "runLauncher",
             "Runs the launcher and hooks it into the current process.",
-            _ => LaunchGame()));
+            _ => LaunchGame()
+        );
 
         _logger.LogDebug("Getting the game executable...");
 

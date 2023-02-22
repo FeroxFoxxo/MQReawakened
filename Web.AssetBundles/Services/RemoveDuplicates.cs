@@ -33,9 +33,11 @@ public class RemoveDuplicates : IService
     public void Initialize() => _sink.WorldLoad += Load;
 
     public void Load() =>
-        _console.AddCommand(new ConsoleCommand("removeDuplicates",
+        _console.AddCommand(
+            "removeDuplicates",
             "Creates a directory that does not include duplicated caches.",
-            _ => RemoveDuplicateFiles()));
+            _ => RemoveDuplicateFiles()
+        );
 
     private void RemoveDuplicateFiles()
     {

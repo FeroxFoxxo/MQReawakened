@@ -8,9 +8,9 @@ public interface IBundledXml
 
     public void InitializeVariables();
 
-    public void EditXml(XmlDocument xml);
+    public void EditDescription(XmlDocument xml);
 
-    public void ReadXml(string xml);
+    public void ReadDescription(string xml);
 
     public void FinalizeBundle();
 }

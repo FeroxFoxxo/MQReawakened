@@ -83,11 +83,11 @@ public class BuildXmlFiles : IService, IInjectModules
                     var xml = new XmlDocument();
                     xml.LoadXml(text);
 
-                    bundle.EditXml(xml);
+                    bundle.EditDescription(xml);
 
                     text = xml.WriteToString();
 
-                    bundle.ReadXml(text);
+                    bundle.ReadDescription(text);
                     bundle.FinalizeBundle();
 
                     bar.SetMessage($"Loaded {asset.Name} From Disk");

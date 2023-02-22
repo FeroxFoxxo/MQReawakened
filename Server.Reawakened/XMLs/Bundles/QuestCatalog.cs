@@ -30,11 +30,11 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
         _questLines = new SortedDictionary<QuestLineDescription, List<QuestDescription>>();
     }
 
-    public void EditXml(XmlDocument xml)
+    public void EditDescription(XmlDocument xml)
     {
     }
 
-    public void ReadXml(string xml) => ReadDescriptionXml(xml);
+    public void ReadDescription(string xml) => ReadDescriptionXml(xml);
 
     public void FinalizeBundle()
     {

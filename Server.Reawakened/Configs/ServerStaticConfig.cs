@@ -23,6 +23,7 @@ public class ServerStaticConfig : IStaticConfig
 
     public string LevelSaveDirectory { get; }
     public string LevelDataSaveDirectory { get; }
+    public string DataDirectory { get; }
 
     public string[] DefaultProtocolTypeIgnore { get; }
 
@@ -37,6 +38,7 @@ public class ServerStaticConfig : IStaticConfig
     {
         LevelSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Level");
         LevelDataSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "LevelData");
+        DataDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Data");
 
         RoomTickRate = 32;
 

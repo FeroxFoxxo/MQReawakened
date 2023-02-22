@@ -57,17 +57,21 @@ public class BuildAssetList : IService
 
     public void Load()
     {
-        _console.AddCommand(new ConsoleCommand("refreshCacheDir",
+        _console.AddCommand(
+            "refreshCacheDir",
             "Force generates asset dictionary from default caches directory.",
-            _ => GenerateDefaultAssetList(true)));
+            _ => GenerateDefaultAssetList(true)
+        );
 
-        _console.AddCommand(new ConsoleCommand("changeCacheDir",
+        _console.AddCommand(
+            "changeCacheDir",
             "Change the default cache directory and regenerate dictionary.",
             _ =>
             {
                 _config.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", string.Empty, _logger);
                 GenerateDefaultAssetList(true);
-            }));
+            }
+        );
 
         _config.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", _config.CacheInfoFile, _logger);
 

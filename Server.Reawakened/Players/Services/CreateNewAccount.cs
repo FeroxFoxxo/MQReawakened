@@ -18,8 +18,11 @@ public class CreateNewAccount : IService
     }
 
     public void Initialize() =>
-        _serverConsole.AddCommand(new ConsoleCommand("createAccount",
-            "Adds a new account to the server", AddAccount));
+        _serverConsole.AddCommand(
+            "createAccount",
+            "Adds a new account to the server.",
+            AddAccount
+        );
 
     private void AddAccount(string[] command) =>
         _eventSink.InvokeCreateData();
