@@ -9,7 +9,6 @@ public class StartConfig : IConfig
     public string GameSettingsFile { get; set; }
     public bool Is2014Client { get; set; }
     public bool StartLauncherOnCommand { get; set; }
-    public bool IsHeadless { get; set; }
     public string AnalyticsApiKey { get; set; }
 
     public StartConfig()
@@ -18,7 +17,6 @@ public class StartConfig : IConfig
         LastClientUpdate = DateTime.Now.ToUnixTimestamp();
         StartLauncherOnCommand = false;
         GameSettingsFile = string.Empty;
-        IsHeadless = false;
         AnalyticsApiKey = string.Empty;
     }
 }

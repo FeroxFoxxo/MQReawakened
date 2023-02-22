@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
+using Server.Base.Network.Enums;
 using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Bundles;
 
@@ -36,12 +37,14 @@ public class GetXmlData : IService
         _serverConsole.AddCommand(
             "listLevels",
             "Lists out all the levels in the world graph.",
+            NetworkType.Both,
             PrintLevels
         );
 
         _serverConsole.AddCommand(
             "listItems",
             "Lists out all the items in the catalog.",
+            NetworkType.Both,
             PrintItems
         );
 

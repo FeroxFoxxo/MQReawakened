@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using Server.Base.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -68,7 +69,7 @@ public static class LoadRoomData
     }
 
     public static Dictionary<int, List<BaseSyncedEntity>> LoadEntities(this Room room, ReflectionUtils reflectionUtils,
-        IServiceProvider services, out Dictionary<int, List<string>> unknownEntities)
+        FileLogger fileLogger, IServiceProvider services, out Dictionary<int, List<string>> unknownEntities)
     {
         var entities = new Dictionary<int, List<BaseSyncedEntity>>();
         unknownEntities = new Dictionary<int, List<string>>();
@@ -124,7 +125,7 @@ public static class LoadRoomData
                             field.FieldType);
                 }
 
-                var storedData = new StoredEntityModel(entity.Value, room);
+                var storedData = new StoredEntityModel(entity.Value, room, fileLogger);
 
                 var instancedEntity = reflectionUtils.CreateBuilder<BaseSyncedEntity>(internalType.GetTypeInfo())
                     .Invoke(services);
@@ -203,7 +204,7 @@ public static class LoadRoomData
 
         entityInfo.Add("game object", new[] { id.ToString() });
 
-        return $"unknown {string.Join(", ",
+        return $"Unknown {string.Join(", ",
             entityInfo.Select(a => $"{a.Key}: {string.Join(", ", a.Value)}")
         )}";
     }

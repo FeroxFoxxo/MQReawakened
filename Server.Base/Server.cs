@@ -91,7 +91,7 @@ public class Server : Module
             .AddSingleton<TimerChangePool>()
             .AddSingleton<AccountAttackLimiter>()
             .AddSingleton<PasswordHasher>()
-            .AddSingleton<NetworkLogger>()
+            .AddSingleton<FileLogger>()
             .AddSingleton<IpLimiter>();
     }
 

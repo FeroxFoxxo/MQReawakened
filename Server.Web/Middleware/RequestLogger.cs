@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Server.Base.Logging;
 using Server.Web.Models;
+using System.Text;
 
 namespace Server.Web.Middleware;
 
@@ -10,7 +13,7 @@ public class RequestLogger
 
     public RequestLogger(RequestDelegate next) => _next = next;
 
-    public async Task Invoke(HttpContext context, ILogger<RequestLogger> logger, WebConfig webConfig)
+    public async Task Invoke(HttpContext context, ILogger<RequestLogger> logger, WebConfig webConfig, FileLogger fileLogger)
     {
         var method = context.Request.Method;
 
@@ -26,45 +29,78 @@ public class RequestLogger
             _ => method
         };
 
+        var postData = string.Empty;
+
+        if (context.Request.HasFormContentType & webConfig.ShouldConcat)
+        {
+            postData = $" | Post Data: {string.Join(", ", context.Request.Form.Select(x => $"{x.Key}:{x.Value}"))}";
+            var split = postData.Split('\n');
+
+            if (split.Length > 1)
+                postData = $"{string.Join('\n', split.Take(1))}\n" +
+                           "More data found, but was concatenated. To view the full log, enable WebConfig.ShouldConcat.";
+        }
+        
+        var ip = GetIp(context, logger);
+
+        var sb = new StringBuilder();
+
+        var queryValue = context.Request.QueryString.HasValue;
+        var postValue = !string.IsNullOrEmpty(postData);
+
+        var path = $"Path: {context.Request.Path.Value}";
+
+        if (queryValue || postValue)
+            sb.AppendLine(path);
+        else
+            sb.Append(path);
+
         try
         {
-            var postData = string.Empty;
-
-            if (context.Request.HasFormContentType & webConfig.ShouldConcat)
-            {
-                postData = $" | Post Data: {string.Join(", ", context.Request.Form.Select(x => $"{x.Key}:{x.Value}"))}";
-                var split = postData.Split('\n');
-
-                if (split.Length > 1)
-                    postData = $"{string.Join('\n', split.Take(1))}\n" +
-                               "More data found, but was concatenated. To view the full log, enable WebConfig.ShouldConcat.";
-            }
-
-            logger.LogTrace("INC {Method} {Path}{Query}{Post} | {IP}", method,
-                context.Request.Path.Value, context.Request.QueryString, postData, GetIp(context, logger));
-
             await _next(context);
 
-            switch (context.Response.StatusCode)
+            var logType = context.Response.StatusCode switch
             {
-                case StatusCodes.Status418ImATeapot:
-                    break;
-                case StatusCodes.Status404NotFound:
-                    logger.LogWarning("{StatusCode} {Method} {Path}", context.Response.StatusCode, method,
-                        context.Request.Path.Value);
-                    break;
-                default:
-                    logger.LogTrace("{StatusCode} {Method} {Path}", context.Response.StatusCode, method,
-                        context.Request.Path.Value);
-                    break;
+                StatusCodes.Status418ImATeapot => LoggerType.Unknown,
+                StatusCodes.Status404NotFound => LoggerType.Warning,
+                _ => LoggerType.Trace
+            };
+            
+            if (postValue)
+            {
+                var post = $"Post: {postData}";
+
+                if (queryValue)
+                    sb.AppendLine(post);
+                else
+                    sb.Append(post);
             }
+
+            if (queryValue)
+                sb.Append($"Query: {context.Request.QueryString}");
+
+            LogRequest(fileLogger, context.Response.StatusCode, method, sb, ip, logType);
         }
         catch (Exception ex)
         {
-            logger.LogError("Error 500 {Method} {Path}", method, context.Request.Path.Value);
-            logger.LogError(ex, "Unable to run web request");
+            sb.AppendLine("Unable to run web request");
+            sb.Append($"Error: {ex}");
+
+            LogRequest(fileLogger, 500, method, sb, ip, LoggerType.Error);
             throw;
         }
+    }
+
+    public static void LogRequest(FileLogger fileLogger, int statusCode, string method, StringBuilder info, string ip, LoggerType loggerType)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"Address: {ip}")
+            .AppendLine(method);
+        
+        sb.Append(info);
+
+        fileLogger.WriteGenericLog<Controller>("http-requests", $"Status {statusCode}", sb.ToString(), loggerType);
     }
 
     private static string GetIp(HttpContext context, ILogger logger)

@@ -53,7 +53,8 @@ public class HazardControllerEntity : SyncedEntity<HazardController>
         switch (effectType)
         {
             default:
-                Logger.LogWarning("No status effect action for {EffectType} created yet!", effectType);
+                SendEntityMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
+                    $"Effect Type: {effectType}");
                 break;
         }
     }

@@ -69,7 +69,10 @@ public static class RoomExtensions
     // Player Id is unused
     public static void SendUserEnterData(this NetState state, Player player, Account account) =>
         state.SendXml("uER",
-            $"<u i='{player.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{0}'><n>{account.Username}</n></u>");
+            $"<u i='{player.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.UserId}'>" +
+            $"<n>{account.Username}</n>" +
+            "</u>"
+        );
 
     public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type,
         LevelInfo levelInfo)

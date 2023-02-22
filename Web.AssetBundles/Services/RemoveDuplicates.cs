@@ -3,6 +3,7 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
+using Server.Base.Network.Enums;
 using Web.AssetBundles.Models;
 using Web.Launcher.Models;
 
@@ -35,6 +36,7 @@ public class RemoveDuplicates : IService
         _console.AddCommand(
             "removeDuplicates",
             "Creates a directory that does not include duplicated caches.",
+            NetworkType.Both,
             _ => RemoveDuplicateFiles()
         );
 

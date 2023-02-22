@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
+using Server.Base.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Helpers;
@@ -25,10 +26,11 @@ public class WorldHandler : IService
     private readonly EventSink _sink;
     private readonly TimerThread _timerThread;
     private readonly WorldGraph _worldGraph;
+    private readonly FileLogger _fileLogger;
 
     public WorldHandler(EventSink sink, ServerStaticConfig config, WorldGraph worldGraph,
         ReflectionUtils reflection, TimerThread timerThread, IServiceProvider services,
-        ILogger<WorldHandler> handlerLogger, ILogger<Room> roomLogger)
+        ILogger<WorldHandler> handlerLogger, ILogger<Room> roomLogger, FileLogger fileLogger)
     {
         _sink = sink;
         _config = config;
@@ -38,6 +40,7 @@ public class WorldHandler : IService
         _services = services;
         _handlerLogger = handlerLogger;
         _roomLogger = roomLogger;
+        _fileLogger = fileLogger;
 
         _levelInfos = new Dictionary<int, LevelInfo>();
         _rooms = new Dictionary<int, List<Room>>();
@@ -111,7 +114,7 @@ public class WorldHandler : IService
         }
 
         var room = new Room(levelInfo, _config, this,
-            _reflection, _timerThread, _services, _roomLogger);
+            _reflection, _timerThread, _services, _roomLogger, _fileLogger);
 
         _rooms[levelId].Add(room);
 

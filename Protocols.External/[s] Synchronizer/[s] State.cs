@@ -19,12 +19,14 @@ public class State : ExternalProtocol
     public SyncEventManager SyncEventManager { get; set; }
     public ILogger<State> Logger { get; set; }
     public ServerStaticConfig ServerConfig { get; set; }
-    public WorldHandler WorldHandler { get; set; }
-    public NetworkLogger NetworkLogger { get; set; }
+    public FileLogger FileLogger { get; set; }
 
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
+
+        if (player.CurrentRoom.Entities == null)
+            return;
 
         var syncEvent = SyncEventManager.DecodeEvent(message[5].Split('&'));
 
@@ -108,12 +110,12 @@ public class State : ExternalProtocol
     public void TraceSyncEventError(int entityId, SyncEvent syncEvent, LevelInfo levelInfo, string entityInfo)
     {
         var builder = new StringBuilder()
-            .AppendLine($"# {DateTime.UtcNow} @ Sync Event")
-            .AppendLine($"Entity: {entityId} ({entityInfo})")
+            .AppendLine($"Entity: {entityId}")
+            .AppendLine(entityInfo)
             .AppendLine($"Level: {levelInfo.LevelId} ({levelInfo.InGameName})")
             .AppendLine($"Event Type: {syncEvent.Type}")
-            .AppendLine(syncEvent.EncodeData());
+            .Append($"Data: {syncEvent.EncodeData()}");
 
-        NetworkLogger.WriteToFile<SyncEvent>("event-errors.log", builder, LoggerType.Warning);
+        FileLogger.WriteGenericLog<SyncEvent>("event-errors", "State Change", builder.ToString(), LoggerType.Warning);
     }
 }

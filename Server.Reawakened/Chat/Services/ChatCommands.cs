@@ -67,7 +67,7 @@ public class ChatCommands : IService
     private static void Log(string logMessage, NetState netState) =>
         netState.Chat(CannedChatChannel.Tell, "Console", logMessage);
 
-    private void DisplayHelp(NetState netState)
+    public void DisplayHelp(NetState netState)
     {
         Log("Chat Commands:", netState);
 

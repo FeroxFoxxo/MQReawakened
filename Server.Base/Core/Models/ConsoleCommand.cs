@@ -1,4 +1,6 @@
-﻿namespace Server.Base.Core.Models;
+﻿using Server.Base.Network.Enums;
+
+namespace Server.Base.Core.Models;
 
 public class ConsoleCommand
 {
@@ -7,11 +9,5 @@ public class ConsoleCommand
     public string Name { get; set; }
     public string Description { get; set; }
     public RunConsoleCommand CommandMethod { get; set; }
-
-    public ConsoleCommand(string name, string description, RunConsoleCommand commandMethod)
-    {
-        CommandMethod = commandMethod;
-        Name = name;
-        Description = description;
-    }
+    public NetworkType NetworkType { get; set; }
 }

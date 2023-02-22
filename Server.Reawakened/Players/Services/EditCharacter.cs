@@ -5,14 +5,14 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
+using Server.Base.Network.Enums;
 using Server.Base.Network.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Players.Events;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Base.Network;
 
 namespace Server.Reawakened.Players.Services;
 
@@ -22,13 +22,13 @@ public class EditCharacter : IService
     private readonly ServerStaticConfig _config;
     private readonly ServerConsole _console;
     private readonly NetStateHandler _handler;
-    private readonly WorldHandler _worldHandler;
+    private readonly ItemCatalog _itemCatalog;
     private readonly ILogger<EditCharacter> _logger;
+    private readonly PlayerEventSink _playerEventSink;
     private readonly EventSink _sink;
     private readonly UserInfoHandler _userInfoHandler;
     private readonly WorldGraph _worldGraph;
-    private readonly ItemCatalog _itemCatalog;
-    private readonly PlayerEventSink _playerEventSink;
+    private readonly WorldHandler _worldHandler;
 
     public EditCharacter(ServerConsole console, EventSink sink,
         ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
@@ -56,24 +56,28 @@ public class EditCharacter : IService
         _console.AddCommand(
             "changeName",
             "Changes the name of a requested user's character.",
+            NetworkType.Server,
             _ => ChangeCharacterName()
         );
 
         _console.AddCommand(
             "changeLevel",
             "Changes the level of a requested user's character.",
+            NetworkType.Server,
             _ => ChangeCharacterLevel()
         );
 
         _console.AddCommand(
             "levelUp",
             "Changes a player's XP level.",
+            NetworkType.Server,
             _ => LevelUp()
         );
 
         _console.AddCommand(
             "giveItem",
             "Gives an item to a requested user's character.",
+            NetworkType.Server,
             _ => GiveItem()
         );
     }
@@ -128,7 +132,7 @@ public class EditCharacter : IService
         }
 
         var level = Console.ReadLine()?.Trim();
-        
+
         if (!int.TryParse(level, out var levelId))
         {
             _logger.LogError("Level ID has to be an integer");
@@ -156,7 +160,7 @@ public class EditCharacter : IService
             "Successfully set character {Id}'s level to {LevelId} '{InGameLevelName}' ({LevelName})!",
             character.Data.CharacterId, levelId, levelInfo.InGameName, levelInfo.Name);
     }
-    
+
     private void LevelUp()
     {
         Ask.GetCharacter(_logger, _accountHandler, _userInfoHandler, out var character, out var user);

@@ -23,12 +23,17 @@ public class Player : INetStateData
     public Vector3Model Velocity { get; set; }
     public bool Invincible { get; set; }
 
+    public bool FirstLogin { get; set; }
+
     public Player(UserInfo userInfo)
     {
         UserInfo = userInfo;
+
         Position = new Vector3Model();
         Velocity = new Vector3Model();
+
         Invincible = false;
+        FirstLogin = true;
     }
 
     public void RemovedState(NetState state, NetStateHandler handler,

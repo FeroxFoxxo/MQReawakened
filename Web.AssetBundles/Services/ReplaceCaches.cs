@@ -4,6 +4,7 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
+using Server.Base.Network.Enums;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Models;
 using Web.Launcher.Services;
@@ -63,6 +64,7 @@ public class ReplaceCaches : IService
         _console.AddCommand(
             "replaceCaches",
             "Replaces all generated Web Player cache files with their real counterparts.",
+            NetworkType.Client,
             _ => ReplaceWebPlayerCache()
         );
 

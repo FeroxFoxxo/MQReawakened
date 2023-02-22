@@ -3,6 +3,7 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
+using Server.Base.Network.Enums;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Models;
 using Web.Launcher.Services;
@@ -39,6 +40,7 @@ public class ClearWebCaches : IService
         _console.AddCommand(
             "clearWebCache",
             "Clears the Web Player cache manually.",
+            NetworkType.Client,
             _ =>
             {
                 EmptyWebCacheDirectory();
@@ -68,11 +70,8 @@ public class ClearWebCaches : IService
             return;
 
         GetDirectory.Empty(_sConfig.BundleSaveDirectory);
-
-        var shouldDelete = _config.DefaultDelete;
-
-        if (!shouldDelete)
-            shouldDelete = _logger.Ask(
+        
+        var shouldDelete = _logger.Ask(
                 "You have 'FLUSH CACHE ON START' enabled, which may delete cached files from the original game, as they use the same directory. " +
                 "Please ensure, if this is your first time running this project, that there are not files already in this directory. " +
                 "These would otherwise be valuable.\n" +
@@ -83,13 +82,8 @@ public class ClearWebCaches : IService
         if (!shouldDelete)
             return;
 
-        if (_config.DefaultDelete || !EmptyWebCacheDirectory())
-            return;
+        var hasDeleted = !EmptyWebCacheDirectory();
 
-        if (_logger.Ask(
-                "It is recommended to clean your caches each time in debug mode. " +
-                "Do you want to set this as the default action?", true
-            ))
-            _config.DefaultDelete = true;
+        _logger.LogError("Empty web caches has been run. Deleted: {HasDeleted}", hasDeleted);
     }
 }

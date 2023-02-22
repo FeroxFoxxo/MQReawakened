@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Entities;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -14,6 +15,7 @@ public class RoomUpdate : ExternalProtocol
     public override string ProtocolName => "lv";
 
     public ILogger<RoomUpdate> Logger { get; set; }
+    public ChatCommands ChatCommands { get; set; }
 
     public override void Run(string[] message)
     {
@@ -30,6 +32,12 @@ public class RoomUpdate : ExternalProtocol
 
         foreach (var npc in player.CurrentRoom.GetEntities<NpcControllerEntity>())
             npc.Value.SendNpcInfo(player.GetCurrentCharacter(), NetState);
+
+        if (!player.FirstLogin)
+            return;
+
+        ChatCommands.DisplayHelp(NetState);
+        player.FirstLogin = false;
     }
 
     private string GetGameObjectStore(Dictionary<int, List<BaseSyncedEntity>> entities)

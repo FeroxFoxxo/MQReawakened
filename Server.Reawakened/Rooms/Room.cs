@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
+using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
@@ -42,7 +43,7 @@ public class Room : Timer
 
     public Room(LevelInfo levelInfo, ServerStaticConfig config,
         WorldHandler worldHandler, ReflectionUtils reflection, TimerThread timerThread,
-        IServiceProvider services, ILogger<Room> logger) :
+        IServiceProvider services, ILogger<Room> logger, FileLogger fileLogger) :
         base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
         _config = config;
@@ -57,7 +58,7 @@ public class Room : Timer
             return;
 
         Planes = LevelInfo.LoadPlanes(_config);
-        Entities = this.LoadEntities(reflection, services, out UnknownEntities);
+        Entities = this.LoadEntities(reflection, fileLogger, services, out UnknownEntities);
 
         foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects.Values)

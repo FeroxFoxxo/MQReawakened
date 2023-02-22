@@ -13,7 +13,7 @@ public class NetStateHandler : IService
 {
     public delegate string RunProtocol(NetState state, string protocol);
 
-    private readonly NetworkLogger _networkLogger;
+    private readonly FileLogger _fileLogger;
     private readonly EventSink _sink;
     private readonly TimerThread _thread;
 
@@ -24,10 +24,10 @@ public class NetStateHandler : IService
 
     public bool Paused;
 
-    public NetStateHandler(NetworkLogger networkLogger, TimerThread thread,
+    public NetStateHandler(FileLogger fileLogger, TimerThread thread,
         EventSink sink)
     {
-        _networkLogger = networkLogger;
+        _fileLogger = fileLogger;
         _thread = thread;
         _sink = sink;
 
@@ -95,7 +95,7 @@ public class NetStateHandler : IService
                 }
                 catch (Exception ex)
                 {
-                    _networkLogger.TraceNetworkError(ex, ns);
+                    TraceNetworkError(ex, ns);
                     ns.Dispose();
                 }
             }
@@ -121,8 +121,11 @@ public class NetStateHandler : IService
             }
             catch (Exception ex)
             {
-                _networkLogger.TraceNetworkError(ex, instance);
+                TraceNetworkError(ex, instance);
             }
         }
     }
+
+    public void TraceNetworkError(Exception ex, NetState state) =>
+        _fileLogger.WriteGenericLog<NetState>("network-errors", $"Client {state}", ex.ToString(), LoggerType.Error);
 }

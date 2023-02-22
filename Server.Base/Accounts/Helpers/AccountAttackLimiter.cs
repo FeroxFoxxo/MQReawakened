@@ -8,11 +8,11 @@ namespace Server.Base.Accounts.Helpers;
 public class AccountAttackLimiter
 {
     private readonly List<InvalidAccountAccessLog> _invalidAccessors;
-    private readonly NetworkLogger _networkLogger;
+    private readonly FileLogger _fileLogger;
 
-    public AccountAttackLimiter(NetworkLogger networkLogger)
+    public AccountAttackLimiter(FileLogger fileLogger)
     {
-        _networkLogger = networkLogger;
+        _fileLogger = fileLogger;
         _invalidAccessors = new List<InvalidAccountAccessLog>();
     }
 
@@ -64,6 +64,9 @@ public class AccountAttackLimiter
         if (accessLog.Counts < 3)
             return;
 
-        _networkLogger.ThrottledError(netState, accessLog);
+        ThrottledError(netState, accessLog);
     }
+
+    public void ThrottledError(NetState netState, InvalidAccountAccessLog accessLog) =>
+        _fileLogger.WriteNetStateLog<AccountAttackLimiter>("throttle", netState, accessLog.Counts.ToString(), LoggerType.Debug);
 }

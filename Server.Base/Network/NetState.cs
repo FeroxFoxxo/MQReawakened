@@ -26,7 +26,7 @@ public class NetState : IDisposable
 
     private readonly NetStateHandler _handler;
     private readonly ILogger<MessagePump> _logger;
-    private readonly NetworkLogger _networkLogger;
+    private readonly FileLogger _fileLogger;
     private readonly EventSink _sink;
 
     private readonly string _toString;
@@ -47,7 +47,7 @@ public class NetState : IDisposable
     public bool Running { get; private set; }
 
     public NetState(Socket socket, ILogger<MessagePump> logger,
-        NetworkLogger networkLogger, NetStateHandler handler, IpLimiter limiter,
+        FileLogger fileLogger, NetStateHandler handler, IpLimiter limiter,
         InternalConfig config, InternalStaticConfig sConfig, EventSink sink)
     {
         Socket = socket;
@@ -56,7 +56,7 @@ public class NetState : IDisposable
         _currentLogs = new ConcurrentBag<string>();
 
         _logger = logger;
-        _networkLogger = networkLogger;
+        _fileLogger = fileLogger;
         _handler = handler;
         _config = config;
         _sink = sink;
@@ -73,7 +73,7 @@ public class NetState : IDisposable
         }
         catch (Exception ex)
         {
-            networkLogger.TraceNetworkError(ex, this);
+            _handler.TraceNetworkError(ex, this);
             Address = IPAddress.None;
             _toString = "(error)";
         }
@@ -98,7 +98,7 @@ public class NetState : IDisposable
         }
         catch (SocketException ex)
         {
-            _networkLogger.TraceNetworkError(ex, this);
+            _handler.TraceNetworkError(ex, this);
         }
 
         try
@@ -107,7 +107,7 @@ public class NetState : IDisposable
         }
         catch (SocketException ex)
         {
-            _networkLogger.TraceNetworkError(ex, this);
+            _handler.TraceNetworkError(ex, this);
         }
 
         _sink.InvokeNetStateRemoved(new NetStateRemovedEventArgs(this));
@@ -173,7 +173,11 @@ public class NetState : IDisposable
         }
         catch (Exception ex)
         {
-            _networkLogger.TraceNetworkError(ex, this);
+            lock (_handler.Disposed)
+            {
+                _handler.TraceNetworkError(ex, this);
+            }
+
             Dispose();
         }
     }
@@ -273,7 +277,7 @@ public class NetState : IDisposable
                     if (protocol != null)
                         protocolId = protocol(this, packet);
                     else
-                        _networkLogger.TracePacketError(protocolType.ToString(), packet, this);
+                        TracePacketError(protocolType.ToString(), packet, this);
 
                     if (string.IsNullOrEmpty(protocolId))
                         continue;
@@ -300,7 +304,7 @@ public class NetState : IDisposable
                     }
                     catch (Exception ex)
                     {
-                        _networkLogger.TraceNetworkError(ex, this);
+                        _handler.TraceNetworkError(ex, this);
                         Dispose();
                     }
                 }
@@ -313,7 +317,10 @@ public class NetState : IDisposable
         catch (Exception ex)
         {
             WriteClient(bufferedPacket);
-            _networkLogger.TraceNetworkError(ex, this);
+            lock (_handler.Disposed)
+            {
+                _handler.TraceNetworkError(ex, this);
+            }
             Dispose();
         }
     }
@@ -331,5 +338,19 @@ public class NetState : IDisposable
             lock (_handler.Disposed)
                 data.Value?.RemovedState(this, _handler, _logger);
         }
+    }
+
+    public void TracePacketError(string packetId, string packet, NetState state)
+    {
+        if (packet.Length <= 0)
+            return;
+
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"Unhandled packet '{packetId}'");
+        sb.Append(packet);
+
+        _fileLogger.WriteGenericLog<MessagePump>("network-errors", $"Client {state}",
+            sb.ToString(), LoggerType.Warning);
     }
 }

@@ -4,7 +4,6 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
-using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Configs;
@@ -26,8 +25,6 @@ public class PacketHandler : IService
     private readonly InternalConfig _internalConfig;
     private readonly ILogger<PacketHandler> _logger;
 
-    private readonly NetworkLogger _networkLogger;
-
     private readonly Dictionary<string, SystemCallback> _protocolsSystem;
     private readonly Dictionary<string, ExternalCallback> _protocolsXt;
 
@@ -36,13 +33,12 @@ public class PacketHandler : IService
     private readonly IServiceProvider _services;
     private readonly EventSink _sink;
 
-    public PacketHandler(IServiceProvider services, ReflectionUtils reflectionUtils, NetworkLogger networkLogger,
+    public PacketHandler(IServiceProvider services, ReflectionUtils reflectionUtils,
         NetStateHandler handler, EventSink sink, ILogger<PacketHandler> logger, ServerStaticConfig serverConfig,
         InternalConfig internalConfig)
     {
         _services = services;
         _reflectionUtils = reflectionUtils;
-        _networkLogger = networkLogger;
         _handler = handler;
         _sink = sink;
         _logger = logger;
@@ -129,7 +125,7 @@ public class PacketHandler : IService
         if (_protocolsXt.TryGetValue(actionType, out var value))
             value(netState, splitPacket, _services);
         else
-            _networkLogger.TracePacketError(actionType, packet, netState);
+            netState.TracePacketError(actionType, packet, netState);
 
         return actionType;
     }
@@ -143,7 +139,7 @@ public class PacketHandler : IService
         if (actionType != null && _protocolsSystem.TryGetValue(actionType, out var value))
             value(netState, xmlDocument, _services);
         else
-            _networkLogger.TracePacketError(actionType, packet, netState);
+            netState.TracePacketError(actionType, packet, netState);
 
         return actionType;
     }

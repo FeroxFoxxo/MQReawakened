@@ -4,6 +4,7 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
+using Server.Base.Network.Enums;
 using System.Xml;
 using Web.AssetBundles.Events;
 using Web.AssetBundles.Events.Arguments;
@@ -56,12 +57,14 @@ public class BuildAssetList : IService
         _console.AddCommand(
             "refreshCacheDir",
             "Force generates asset dictionary from default caches directory.",
+            NetworkType.Both,
             _ => GenerateDefaultAssetList(true)
         );
 
         _console.AddCommand(
             "changeCacheDir",
             "Change the default cache directory and regenerate dictionary.",
+            NetworkType.Both,
             _ =>
             {
                 _config.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", string.Empty, _logger);

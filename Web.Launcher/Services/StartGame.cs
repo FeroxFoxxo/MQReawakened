@@ -4,8 +4,10 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
+using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Logging;
+using Server.Base.Network.Enums;
 using Server.Base.Worlds;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Events;
@@ -24,6 +26,7 @@ public class StartGame : IService
     private readonly StartConfig _config;
     private readonly ServerConsole _console;
     private readonly RandomKeyGenerator _generator;
+    private readonly InternalConfig _internalConfig;
     private readonly LauncherStaticConfig _lConfig;
     private readonly ILogger<StartGame> _logger;
     private readonly PlayerEventSink _playerEventSink;
@@ -39,7 +42,8 @@ public class StartGame : IService
 
     public StartGame(EventSink sink, LauncherStaticConfig lConfig, SettingsStaticConfig sConfig,
         IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console,
-        World world, StartConfig config, PlayerEventSink playerEventSink, RandomKeyGenerator generator)
+        World world, StartConfig config, PlayerEventSink playerEventSink, RandomKeyGenerator generator,
+        InternalConfig internalConfig)
     {
         _sink = sink;
         _lConfig = lConfig;
@@ -51,6 +55,7 @@ public class StartGame : IService
         _config = config;
         _playerEventSink = playerEventSink;
         _generator = generator;
+        _internalConfig = internalConfig;
 
         _dirSet = false;
         _appStart = false;
@@ -58,7 +63,7 @@ public class StartGame : IService
 
     public void Initialize()
     {
-        if (_config.IsHeadless)
+        if (_internalConfig.NetworkType == NetworkType.Server)
         {
             _logger.LogWarning("NOT RESTARTING: SERVER IS HEADLESS");
         }
@@ -84,6 +89,7 @@ public class StartGame : IService
         _console.AddCommand(
             "runLauncher",
             "Runs the launcher and hooks it into the current process.",
+            NetworkType.Client,
             _ => LaunchGame()
         );
 

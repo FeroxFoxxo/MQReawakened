@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Rooms.Models.Planes;
+using System.Text;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
 
@@ -31,13 +33,28 @@ public abstract class BaseSyncedEntity
     {
     }
 
-    public virtual void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, NetState netState)
-    {
-    }
-
+    public virtual void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, NetState netState) =>
+        SendEntityMethodUnknown("unran-collision", "Failed Collision", "NotifyCollision",
+            $"Collision Event: {notifyCollisionEvent.EncodeData()}");
+    
     public virtual void RunSyncedEvent(SyncEvent syncEvent, NetState netState) =>
-        StoredEntity.Room.Logger.LogError(
-            "The entity '{Id}' of type '{Type}' has no sync event override. Skipping...", Id, GetType().Name);
+        SendEntityMethodUnknown("unran-synced-events", "Failed Sync Event", "RunSyncedEvent",
+            $"Sync Data: {syncEvent.EncodeData()}");
+
+    public void SendEntityMethodUnknown(string file, string title, string method, string data = "")
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"Entity: {Id}")
+            .AppendLine($"Name: {GetType().Name}");
+
+        if (!string.IsNullOrEmpty(data))
+            sb.AppendLine(data);
+
+        sb.Append($"No override for '{method}'");
+
+        StoredEntity.Logger.WriteGenericLog<BaseSyncedEntity>(file, title, sb.ToString(), LoggerType.Warning);
+    }
 
     protected void SetEntityData(StoredEntityModel storedEntity) =>
         StoredEntity = storedEntity;

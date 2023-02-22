@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Server.Base.Logging;
 using System.Text;
 using Web.Apps.Analytics.Models;
 using Web.AssetBundles.Models;
@@ -19,14 +20,16 @@ public class AnalyticsController : Controller
     private readonly StartConfig _config;
     private readonly ILogger<AnalyticsController> _logger;
     private readonly ReplaceCaches _replaceCaches;
+    private readonly FileLogger _fileLogger;
 
     public AnalyticsController(ILogger<AnalyticsController> logger, StartConfig config, ReplaceCaches replaceCaches,
-        AssetBundleStaticConfig aConfig)
+        AssetBundleStaticConfig aConfig, FileLogger fileLogger)
     {
         _logger = logger;
         _config = config;
         _replaceCaches = replaceCaches;
         _aConfig = aConfig;
+        _fileLogger = fileLogger;
     }
 
     // b = Birthday
@@ -161,7 +164,14 @@ public class AnalyticsController : Controller
         return new CommonProperties(sessionId, timestamp);
     }
 
-    public void SendLog(CommonProperties properties, string message) =>
-        _logger.LogDebug("[{Timestamp:g}] Session {Id}: {Message}",
-            properties.Timestamp, properties.SessionId, message);
+    public void SendLog(CommonProperties properties, string message)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"{properties.Timestamp:g}");
+        sb.Append(message);
+
+        _fileLogger.WriteGenericLog<global::Analytics>("analytics", $"Session {properties.SessionId}",
+            sb.ToString(), LoggerType.Debug);
+    }
 }

@@ -18,19 +18,19 @@ public class MessagePump : IService
     private readonly IPEndPoint[] _ipEndPoints;
     private readonly IpLimiter _limiter;
     private readonly ILogger<MessagePump> _logger;
-    private readonly NetworkLogger _networkLogger;
+    private readonly FileLogger _fileLogger;
     private readonly InternalStaticConfig _sConfig;
     private readonly ServerHandler _serverHandler;
     private readonly EventSink _sink;
 
     public readonly Listener[] Listeners;
 
-    public MessagePump(ILogger<MessagePump> logger, NetworkLogger networkLogger,
+    public MessagePump(ILogger<MessagePump> logger, FileLogger fileLogger,
         NetStateHandler handler, IpLimiter limiter, InternalConfig config,
         InternalStaticConfig sConfig, EventSink sink, ServerHandler serverHandler)
     {
         _logger = logger;
-        _networkLogger = networkLogger;
+        _fileLogger = fileLogger;
         _handler = handler;
         _limiter = limiter;
         _config = config;
@@ -60,7 +60,7 @@ public class MessagePump : IService
         {
             for (var i = 0; i < _ipEndPoints.Length; i++)
             {
-                Listeners[i] = new Listener(_ipEndPoints[i], _networkLogger, _logger, _serverHandler, _sink);
+                Listeners[i] = new Listener(_ipEndPoints[i], _fileLogger, _logger, _serverHandler, _sink);
                 success = true;
             }
 
@@ -88,7 +88,7 @@ public class MessagePump : IService
 
             foreach (var socket in accepted)
             {
-                new NetState(socket, _logger, _networkLogger,
+                new NetState(socket, _logger, _fileLogger,
                         _handler, _limiter, _config, _sConfig, _sink)
                     .Start();
             }

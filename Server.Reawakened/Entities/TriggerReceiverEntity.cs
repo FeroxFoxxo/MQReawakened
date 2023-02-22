@@ -1,8 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Models.Entities;
+using System.Text;
+using System;
 
 namespace Server.Reawakened.Entities;
 
@@ -21,6 +24,7 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
     public TriggerReceiver.ReceiverCollisionType CollisionType => EntityData.CollisionType;
 
     public ILogger<TriggerReceiverEntity> Logger { get; set; }
+    public FileLogger FileLogger { get; set; }
 
     public void TriggerStateChange(TriggerType triggerType, Room room, bool triggered)
     {
@@ -30,14 +34,15 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
             TriggerType.Disable => false,
             _ => Enabled
         };
+        var sb = new StringBuilder();
 
-        Logger.LogTrace("Triggering state changed for receiver entity '{Id}'. Enabled: {Enabled}. " +
-                        "Activations: {Current}/{Total}. Deactivations: {Current}/{Total}. Trigger: {Type}.",
-            Id, Enabled,
-            _activations, NbActivationsNeeded,
-            _deactivations, NbDeactivationsNeeded,
-            triggerType
-        );
+        sb.AppendLine($"Entity: {Id}")
+            .AppendLine($"Enabled: {Enabled}")
+            .AppendLine($"Activations: {_activations}/{NbActivationsNeeded}")
+            .AppendLine($"Deactivations: {_deactivations}/{NbDeactivationsNeeded}")
+            .Append($"Trigger: {triggerType}");
+
+        FileLogger.WriteGenericLog<TriggerReceiver>("triggered-receivers", "Receiver Triggered", sb.ToString(), LoggerType.Trace);
 
         if (!Enabled)
             return;

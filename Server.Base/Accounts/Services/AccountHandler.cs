@@ -20,21 +20,21 @@ public class AccountHandler : DataHandler<Account>
     private readonly PasswordHasher _hasher;
     private readonly InternalStaticConfig _internalServerConfig;
     private readonly IpLimiter _ipLimiter;
-    private readonly NetworkLogger _networkLogger;
+    private readonly FileLogger _fileLogger;
     private readonly TemporaryDataStorage _temporaryDataStorage;
 
     public Dictionary<IPAddress, int> IpTable;
 
     public AccountHandler(EventSink sink, ILogger<Account> logger, InternalStaticConfig internalServerConfig,
         PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter,
-        NetworkLogger networkLogger, InternalStaticConfig config, TemporaryDataStorage temporaryDataStorage) : base(
+        FileLogger fileLogger, InternalStaticConfig config, TemporaryDataStorage temporaryDataStorage) : base(
         sink, logger)
     {
         _internalServerConfig = internalServerConfig;
         _hasher = hasher;
         _attackLimiter = attackLimiter;
         _ipLimiter = ipLimiter;
-        _networkLogger = networkLogger;
+        _fileLogger = fileLogger;
         _config = config;
         _temporaryDataStorage = temporaryDataStorage;
         IpTable = new Dictionary<IPAddress, int>();
@@ -66,7 +66,7 @@ public class AccountHandler : DataHandler<Account>
 
         if (!_internalServerConfig.SocketBlock && !_ipLimiter.Verify(netState.Address))
         {
-            _networkLogger.IpLimitedError(netState);
+            IpLimitedError(netState);
             rejectReason = AlrReason.InUse;
         }
         else
@@ -196,4 +196,7 @@ public class AccountHandler : DataHandler<Account>
 
         return new Account(username, password, Data.Count, _hasher);
     }
+
+    public void IpLimitedError(NetState netState) =>
+        _fileLogger.WriteNetStateLog<IpLimiter>("ipLimits", netState, "Past IP limit threshold", LoggerType.Debug);
 }

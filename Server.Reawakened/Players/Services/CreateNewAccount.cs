@@ -1,6 +1,7 @@
 ﻿using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Services;
+using Server.Base.Network.Enums;
 
 namespace Server.Reawakened.Players.Services;
 
@@ -20,6 +21,7 @@ public class CreateNewAccount : IService
         _serverConsole.AddCommand(
             "createAccount",
             "Adds a new account to the server.",
+            NetworkType.Server,
             AddAccount
         );
 

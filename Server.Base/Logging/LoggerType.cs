@@ -2,6 +2,8 @@
 
 public enum LoggerType
 {
+    Unknown,
+    Trace,
     Debug,
     Warning,
     Error
