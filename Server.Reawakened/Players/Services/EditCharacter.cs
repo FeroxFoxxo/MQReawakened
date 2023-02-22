@@ -12,6 +12,7 @@ using Server.Reawakened.Players.Events;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Base.Network;
 
 namespace Server.Reawakened.Players.Services;
 
@@ -61,6 +62,12 @@ public class EditCharacter : IService
             "changeLevel",
             "Changes the level of a requested user's character.",
             _ => ChangeCharacterLevel()
+        );
+
+        _console.AddCommand(
+            "levelUp",
+            "Changes a player's XP level.",
+            _ => LevelUp()
         );
 
         _console.AddCommand(
@@ -120,16 +127,10 @@ public class EditCharacter : IService
         }
 
         var level = Console.ReadLine()?.Trim();
-
-        if (string.IsNullOrEmpty(level))
-        {
-            _logger.LogError("Character's level can not be empty!");
-            return;
-        }
-
+        
         if (!int.TryParse(level, out var levelId))
         {
-            _logger.LogError("Character's level has to be an integer!");
+            _logger.LogError("Level ID has to be an integer");
             return;
         }
 
@@ -154,6 +155,29 @@ public class EditCharacter : IService
             "Successfully set character {Id}'s level to {LevelId} '{InGameLevelName}' ({LevelName})!",
             character.Data.CharacterId, levelId, levelInfo.InGameName, levelInfo.Name);
     }
+    
+    private void LevelUp()
+    {
+        Ask.GetCharacter(_logger, _accountHandler, _userInfoHandler, out var character, out var user);
+
+        if (character == null || user == null)
+            return;
+
+        _logger.LogInformation("Enter experience level:");
+
+        var level = Console.ReadLine()?.Trim();
+
+        if (!int.TryParse(level, out var levelId))
+        {
+            _logger.LogError("Level has to be an integer");
+            return;
+        }
+
+        if (_handler.IsPlayerOnline(user.UserId, out _, out var player))
+            player.LevelUp(levelId, _logger);
+        else
+            character.SetLevelXp(levelId);
+    }
 
     private void GiveItem()
     {
@@ -162,13 +186,13 @@ public class EditCharacter : IService
         if (character == null || user == null)
             return;
 
-        _logger.LogInformation("Enter Item ID:");
+        _logger.LogInformation("Enter item id:");
 
         var item = Console.ReadLine()?.Trim();
 
         if (!int.TryParse(item, out var itemId))
         {
-            _logger.LogError("Item ID has to be an integer");
+            _logger.LogError("Item id has to be an integer");
             return;
         }
 
@@ -198,7 +222,7 @@ public class EditCharacter : IService
         }
         else
         {
-            _logger.LogError("Could not find item with ID {ItemId}", itemId);
+            _logger.LogError("Could not find item with id: '{ItemId}'", itemId);
         }
     }
 }

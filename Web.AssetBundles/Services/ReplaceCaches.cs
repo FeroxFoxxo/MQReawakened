@@ -21,6 +21,10 @@ public class ReplaceCaches : IService
     private readonly StartGame _game;
     private readonly ILogger<ReplaceCaches> _logger;
     private readonly EventSink _sink;
+    private readonly object _lock;
+
+    public readonly List<string> CurrentlyLoadedAssets;
+    public readonly List<string> ReplacedBundles;
 
     public ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList, AssetBundleStaticConfig sConfig,
         ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime, AssetBundleConfig config)
@@ -33,6 +37,10 @@ public class ReplaceCaches : IService
         _appLifetime = appLifetime;
         _sConfig = sConfig;
         _config = config;
+
+        CurrentlyLoadedAssets = new List<string>();
+        ReplacedBundles = new List<string>();
+        _lock = new object();
     }
 
     public void Initialize()
@@ -58,18 +66,19 @@ public class ReplaceCaches : IService
             _ => ReplaceWebPlayerCache()
         );
 
-    private void ReplaceWebPlayerCache()
+    public void ReplaceWebPlayerCache()
     {
-        _buildAssetList.CurrentlyLoadedAssets.Clear();
-
         _config.GetWebPlayerInfoFile(_sConfig, _logger);
 
         if (string.IsNullOrEmpty(_config.WebPlayerInfoFile))
             return;
 
-        if (_config.FlushCacheOnStart)
-            if (_logger.Ask("Flushing the cache on start is enabled, would you like to disable this?", true))
-                _config.FlushCacheOnStart = false;
+        lock (_lock)
+        {
+            if (_config.FlushCacheOnStart)
+                if (_logger.Ask("Flushing the cache on start is enabled, would you like to disable this?", true))
+                    _config.FlushCacheOnStart = false;
+        }
 
         var cacheModel = new CacheModel(_buildAssetList, _config);
 
@@ -79,32 +88,33 @@ public class ReplaceCaches : IService
             cacheModel.TotalUnknownCaches
         );
 
+        CurrentlyLoadedAssets.Clear();
+
         using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", _logger, _sConfig))
         {
             foreach (var cache in cacheModel.FoundCaches)
             {
                 var asset = cacheModel.GetAssetInfoFromCacheName(cache.Key);
 
+                ReplaceCacheFiles(asset, cache.Value);
+
                 bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
-
-                foreach (var cachePath in cache.Value)
-                    File.Copy(asset.Path, cachePath, true);
-
                 bar.TickBar();
             }
         }
-
-        Directory.CreateDirectory(_sConfig.AssetSaveDirectory);
         
-        var replacementLogPath = Path.Join(_sConfig.AssetSaveDirectory, "replacedAssets.json");
-
-        File.WriteAllText(
-            replacementLogPath,
-            JsonSerializer.Serialize(cacheModel, new JsonSerializerOptions { WriteIndented = true })
-        );
-
-        _logger.LogDebug("Logged cache replacements to {ReplacementFile}", replacementLogPath);
-
         _game.AskIfRestart();
+    }
+
+    private void ReplaceCacheFiles(InternalAssetInfo asset, IEnumerable<string> paths)
+    {
+        lock (_lock)
+        {
+            foreach (var cachePath in paths.Where(cachePath => !ReplacedBundles.Contains(cachePath)).Where(File.Exists))
+            {
+                File.Copy(asset.Path, cachePath, true);
+                ReplacedBundles.Add(cachePath);
+            }
+        }
     }
 }

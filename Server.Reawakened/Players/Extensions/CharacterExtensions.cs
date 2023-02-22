@@ -50,7 +50,7 @@ public static class CharacterExtensions
             : string.Empty;
     }
 
-    public static void SetLevel(this CharacterModel characterData, int level)
+    public static void SetLevelXp(this CharacterModel characterData, int level)
     {
         characterData.Data.GlobalLevel = level;
 
@@ -59,6 +59,7 @@ public static class CharacterExtensions
         characterData.Data.Reputation = 0;
 
         characterData.Data.MaxLife = GetHealthForLevel(level);
+        characterData.Data.CurrentLife = characterData.Data.MaxLife;
     }
 
     public static void LevelUp(this Player player, int level, Microsoft.Extensions.Logging.ILogger logger)
@@ -70,7 +71,7 @@ public static class CharacterExtensions
             Level = level
         };
 
-        SetLevel(character, level);
+        SetLevelXp(character, level);
 
         player.CurrentRoom.SendLevelUp(player, levelUpData);
 

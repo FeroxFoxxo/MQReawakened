@@ -3,7 +3,10 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Text;
 using Web.Apps.Analytics.Models;
+using Web.AssetBundles.Models;
+using Web.AssetBundles.Services;
 using Web.Launcher.Models;
+using static GameError.TNNWCode;
 
 // ReSharper disable RouteTemplates.ControllerRouteParameterIsNotPassedToMethods
 // ReSharper disable RouteTemplates.MethodMissingRouteParameters
@@ -15,11 +18,15 @@ public class AnalyticsController : Controller
 {
     private readonly ILogger<AnalyticsController> _logger;
     private readonly StartConfig _config;
+    private readonly AssetBundleStaticConfig _aConfig;
+    private readonly ReplaceCaches _replaceCaches;
 
-    public AnalyticsController(ILogger<AnalyticsController> logger, StartConfig config)
+    public AnalyticsController(ILogger<AnalyticsController> logger, StartConfig config, ReplaceCaches replaceCaches, AssetBundleStaticConfig aConfig)
     {
         _logger = logger;
         _config = config;
+        _replaceCaches = replaceCaches;
+        _aConfig = aConfig;
     }
 
     // b = Birthday
@@ -95,6 +102,45 @@ public class AnalyticsController : Controller
         }
 
         SendLog(properties, string.Join('\n', messages));
+        
+        switch (labels[0])
+        {
+            case "ErrorsType" when labels.Count < 2:
+                _logger.LogWarning("Unknown analytics error");
+                break;
+            case "ErrorsType":
+            {
+                var errorInfo = labels[1].Split('-');
+                var errorType = errorInfo[0];
+
+                switch (errorType)
+                {
+                    case "Fatal":
+                        var errorId = int.Parse(errorInfo[1]);
+                        _logger.LogError("Client ran into fatal error: {ErrorId}", errorId);
+
+                        if (errorId is 2306 or 2302 or 2305)
+                        {
+                            _logger.LogError("Error likely due to caching system. Replacing!");
+                            _replaceCaches.ReplaceWebPlayerCache();
+                        }
+
+                        break;
+                    default:
+                        _logger.LogWarning("Unknown error type: {ErrorType}", errorType);
+                        break;
+                }
+
+                break;
+            }
+            case "Omniture":
+            {
+                if (n == "applicationStart")
+                    if (_replaceCaches.CurrentlyLoadedAssets.Count > 0 && _aConfig.UseCacheReplacementScheme)
+                        _replaceCaches.ReplaceWebPlayerCache();
+                break;
+            }
+        }
     }
 
     public bool CheckAnalytics()

@@ -22,14 +22,16 @@ public class AssetHostController : Controller
     private readonly BuildXmlFiles _buildXmlList;
     private readonly AssetBundleStaticConfig _config;
     private readonly ILogger<AssetHostController> _logger;
+    private readonly ReplaceCaches _replaceCaches;
 
     public AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
-        AssetBundleStaticConfig config, BuildXmlFiles buildXmlList)
+        AssetBundleStaticConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches)
     {
         _buildAssetList = buildAssetList;
         _logger = logger;
         _config = config;
         _buildXmlList = buildXmlList;
+        _replaceCaches = replaceCaches;
     }
 
     [HttpGet]
@@ -40,10 +42,10 @@ public class AssetHostController : Controller
             var uriPath = $"{folder}/{file}";
 
             // Don't log to console.
-            if (_buildAssetList.CurrentlyLoadedAssets.Contains(uriPath))
+            if (_replaceCaches.CurrentlyLoadedAssets.Contains(uriPath))
                 return new StatusCodeResult(StatusCodes.Status418ImATeapot);
 
-            _buildAssetList.CurrentlyLoadedAssets.Add(uriPath);
+            _replaceCaches.CurrentlyLoadedAssets.Add(uriPath);
         }
 
         var publishConfig = _config.PublishConfigs.FirstOrDefault(a => string.Equals(a.Value, file));
@@ -100,12 +102,7 @@ public class AssetHostController : Controller
         {
             _logger.LogInformation("Creating Bundle {Name} [{Type}]", assetName,
                 _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST");
-
-            if (_config.UseCacheReplacementScheme)
-                _logger.LogError("After you stop seeing this light blue [I]nformational message, " +
-                                 "please close the client and run the 'replaceCaches' command, " +
-                                 "otherwise the client may stop loading or crash! " +
-                                 "Subsequent purple [T]race messages can be ignored.");
+            
 
             using var stream = new MemoryStream();
             var writer = new EndianWriter(stream, EndianType.BigEndian);

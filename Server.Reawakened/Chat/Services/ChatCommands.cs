@@ -56,12 +56,14 @@ public class ChatCommands : IService
         var name = args.FirstOrDefault();
 
         if (name != null && _commands.TryGetValue(name, out var value))
-            Log(value.CommandMethod(netState, args)
-                    ? $"Successfully ran command '{name}'"
-                    : $"Usage: {_config.ChatCommandStart}{value.Name} {value.Arguments}",
-                netState);
+        {
+            if (!value.CommandMethod(netState, args))
+                Log($"Usage: {_config.ChatCommandStart}{value.Name} {value.Arguments}", netState);
+        }
         else
+        {
             DisplayHelp(netState);
+        }
     }
 
     private static void Log(string logMessage, NetState netState) =>

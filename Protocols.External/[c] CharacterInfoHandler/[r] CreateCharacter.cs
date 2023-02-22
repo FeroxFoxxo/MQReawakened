@@ -69,8 +69,7 @@ public class CreateCharacter : ExternalProtocol
                 }
             };
 
-            model.SetLevel(1);
-            characterData.CurrentLife = characterData.MaxLife;
+            model.SetLevelXp(1);
 
             player.AddCharacter(model);
 
