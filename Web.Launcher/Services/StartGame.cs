@@ -4,13 +4,14 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
-using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Worlds;
+using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Events;
 using System.Diagnostics;
 using System.Globalization;
+using System.Reflection.Emit;
 using System.Text.Json;
 using System.Xml.Linq;
 using Web.Launcher.Models;
@@ -29,6 +30,7 @@ public class StartGame : IService
     private readonly EventSink _sink;
     private readonly World _world;
     private readonly PlayerEventSink _playerEventSink;
+    private readonly RandomKeyGenerator _generator;
 
     private string _directory;
     private bool _dirSet, _appStart;
@@ -37,7 +39,8 @@ public class StartGame : IService
     public PackageInformation CurrentVersion { get; private set; }
 
     public StartGame(EventSink sink, LauncherStaticConfig lConfig, SettingsStaticConfig sConfig,
-        IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console, World world, StartConfig config, PlayerEventSink playerEventSink)
+        IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console,
+        World world, StartConfig config, PlayerEventSink playerEventSink, RandomKeyGenerator generator)
     {
         _sink = sink;
         _lConfig = lConfig;
@@ -48,6 +51,7 @@ public class StartGame : IService
         _world = world;
         _config = config;
         _playerEventSink = playerEventSink;
+        _generator = generator;
 
         _dirSet = false;
         _appStart = false;
@@ -132,6 +136,12 @@ public class StartGame : IService
 
         _config.LastClientUpdate = lastUpdate.ToUnixTimestamp();
 
+        if (string.IsNullOrEmpty(_config.AnalyticsApiKey))
+        {
+            _config.AnalyticsApiKey = _generator.GetRandomKey<Analytics>(string.Empty);
+            _logger.LogDebug("Set API key to: {ApiKey}", _config.AnalyticsApiKey);
+        }
+
         _dirSet = true;
 
         RunGame();
@@ -198,6 +208,9 @@ public class StartGame : IService
 
         foreach (var item in GetConfigValues(headerFolder))
         {
+            if (string.IsNullOrEmpty(item.Key) || string.IsNullOrEmpty(item.Value))
+                continue;
+                
             var xmlItem = new XElement("item");
             xmlItem.Add(new XAttribute("name", item.Key));
             xmlItem.Add(new XAttribute("value", item.Value));
@@ -230,7 +243,7 @@ public class StartGame : IService
         { "leaderboard.domain", $"{_lConfig.BaseUrl}/Apps/" },
         { "analytics.baseurl", $"{_lConfig.BaseUrl}/Analytics/" },
         { "analytics.enabled", _lConfig.AnalyticsEnabled ? "true" : "false" },
-        { "analytics.apikey", _lConfig.AnalyticsApiKey },
+        { "analytics.apikey", _config.AnalyticsApiKey },
         { "project.name", _lConfig.ProjectName }
     };
 }

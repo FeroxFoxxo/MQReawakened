@@ -54,11 +54,9 @@ public class CreateCharacter : ExternalProtocol
         {
             characterData.Allegiance = tribe;
             characterData.CharacterName = string.Join(string.Empty, names);
-            characterData.UserUuid = player.UserInfo.UserId;
+            characterData.UserUuid = player.UserId;
             
             characterData.Registered = true;
-            characterData.LevelUp(1);
-            characterData.CurrentLife = characterData.MaxLife;
 
             var model = new CharacterModel
             {
@@ -70,6 +68,9 @@ public class CreateCharacter : ExternalProtocol
                     SpawnPointId = 0
                 }
             };
+
+            model.SetLevel(1);
+            characterData.CurrentLife = characterData.MaxLife;
 
             player.AddCharacter(model);
 

@@ -157,17 +157,17 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
 
         if (tEvent.Activate)
         {
-            if (!CurrentInteractors.Contains(player.PlayerId))
+            if (!CurrentInteractors.Contains(player.GameObjectId))
             {
-                CurrentInteractors.Add(player.PlayerId);
+                CurrentInteractors.Add(player.GameObjectId);
                 hasUpdated = true;
             }
         }
         else
         {
-            if (CurrentInteractors.Contains(player.PlayerId))
+            if (CurrentInteractors.Contains(player.GameObjectId))
             {
-                CurrentInteractors.Remove(player.PlayerId);
+                CurrentInteractors.Remove(player.GameObjectId);
                 hasUpdated = true;
             }
         }

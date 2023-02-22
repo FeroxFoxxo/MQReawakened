@@ -114,7 +114,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
         foreach (var quest in quests.Where(quest => !character.Data.CompletedQuests.Contains(quest.Id)))
         {
-            if (!character.Data.HasDiscoveredTribe(quest.Tribe))
+            if (!character.HasDiscoveredTribe(quest.Tribe))
                 return NPCController.NPCStatus.QuestUnavailable;
 
             if (!character.HasPreviousQuests(quest))
@@ -151,7 +151,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
             foreach (var lineQuest in lineQuests.Where(lineQuest => !character.Data.CompletedQuests.Contains(lineQuest.Id)))
             {
-                if (!character.Data.HasDiscoveredTribe(lineQuest.Tribe))
+                if (!character.HasDiscoveredTribe(lineQuest.Tribe))
                     return NPCController.NPCStatus.QuestUnavailable;
 
                 if (!character.HasPreviousQuests(lineQuest))

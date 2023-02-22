@@ -1,5 +1,6 @@
 ﻿using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.Network.Services;
 
 namespace Web.Launcher.Models;
 
@@ -10,6 +11,7 @@ public class StartConfig : IConfig
     public bool Is2014Client { get; set; }
     public bool StartLauncherOnCommand { get; set; }
     public bool IsHeadless { get; set; }
+    public string AnalyticsApiKey { get; set; }
 
     public StartConfig()
     {
@@ -18,5 +20,6 @@ public class StartConfig : IConfig
         StartLauncherOnCommand = false;
         GameSettingsFile = string.Empty;
         IsHeadless = false;
+        AnalyticsApiKey = string.Empty;
     }
 }

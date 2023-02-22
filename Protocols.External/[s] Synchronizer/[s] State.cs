@@ -33,7 +33,7 @@ public class State : ExternalProtocol
 
         var entityId = int.Parse(syncEvent.TargetID);
 
-        if (entityId == player.PlayerId)
+        if (entityId == player.GameObjectId)
         {
             switch (syncEvent.Type)
             {

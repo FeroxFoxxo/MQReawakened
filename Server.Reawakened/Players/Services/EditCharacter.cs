@@ -4,7 +4,6 @@ using Server.Base.Accounts.Services;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
-using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Network.Services;
 using Server.Reawakened.Configs;
@@ -147,7 +146,7 @@ public class EditCharacter : IService
         }
         else
         {
-            character.Data.HasAddedDiscoveredTribe(tribe);
+            character.HasAddedDiscoveredTribe(tribe);
             _playerEventSink.InvokePlayerRefresh();
         }
 

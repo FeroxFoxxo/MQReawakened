@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
-using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network;
 using Server.Reawakened.Chat.Models;
@@ -12,6 +11,8 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Base.Accounts.Models;
+using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -43,8 +44,9 @@ public class ChatCommands : IService
     {
         _logger.LogDebug("Setting up chat commands");
         
-        AddCommand(new ChatCommand("level", "[levelId]", ChangeLevel));
-        AddCommand(new ChatCommand("item", "[itemId] [amount]", AddItem));
+        AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
+        AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
+        AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
@@ -109,6 +111,19 @@ public class ChatCommands : IService
         );
 
         Log($"{character.Data.CharacterName} changed to level {levelId}", netState);
+
+        return true;
+    }
+
+    private bool LevelUp(NetState netState, string[] args)
+    {
+        var player = netState.Get<Player>();
+
+        if (args.Length != 2)
+            return false;
+
+        var newLevel = Convert.ToInt32(args[1]);
+        player.LevelUp(newLevel, _logger);
 
         return true;
     }

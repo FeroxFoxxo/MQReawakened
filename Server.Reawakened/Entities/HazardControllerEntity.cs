@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -43,7 +42,7 @@ public class HazardControllerEntity : SyncedEntity<HazardController>
             return;
         }
 
-        var statusEffect = new StatusEffect_SyncEvent(player.PlayerId.ToString(), Room.Time, (int)effectType,
+        var statusEffect = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), Room.Time, (int)effectType,
             0, Convert.ToInt32(HurtLength), true, StoredEntity.GameObject.ObjectInfo.PrefabName, false);
 
         Room.SendSyncEvent(statusEffect);

@@ -2,7 +2,6 @@
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
-using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Web.AssetBundles.Models;
 using Web.Launcher.Models;

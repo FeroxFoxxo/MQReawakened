@@ -24,8 +24,7 @@ public class ChooseCharacter : ExternalProtocol
 
         if (character == null)
         {
-            Logger.LogError("Character of {CharacterName} for user {User} was null.",
-                name, player.UserInfo.UserId);
+            Logger.LogError("Character of {CharacterName} for user {User} was null.", name, player.UserId);
             return;
         }
 

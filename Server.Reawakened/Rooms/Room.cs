@@ -14,6 +14,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Models.Protocol;
 using WorldGraphDefines;
 using Timer = Server.Base.Timers.Timer;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -88,7 +89,7 @@ public class Room : Timer
 
     public void AddClient(NetState newClient, out JoinReason reason)
     {
-        var playerId = -1;
+        var gameObjectId = -1;
 
         if (Clients.Count > _config.PlayerCap)
         {
@@ -96,17 +97,17 @@ public class Room : Timer
         }
         else
         {
-            playerId = 1;
+            gameObjectId = 1;
 
-            while (_gameObjectIds.Contains(playerId))
-                playerId++;
+            while (_gameObjectIds.Contains(gameObjectId))
+                gameObjectId++;
 
-            Clients.Add(playerId, newClient);
-            _gameObjectIds.Add(playerId);
+            Clients.Add(gameObjectId, newClient);
+            _gameObjectIds.Add(gameObjectId);
             reason = JoinReason.Accepted;
         }
 
-        newClient.Get<Player>().PlayerId = playerId;
+        newClient.Get<Player>().GameObjectId = gameObjectId;
 
         if (reason == JoinReason.Accepted)
         {
@@ -116,7 +117,7 @@ public class Room : Timer
                 return;
 
             // JOIN CONDITION
-            newClient.SendXml("joinOK", $"<pid id='{newPlayer.PlayerId}' /><uLs />");
+            newClient.SendXml("joinOK", $"<pid id='{newPlayer.UserId}' /><uLs />");
 
             if (LevelInfo.LevelId == 0)
                 return;
@@ -129,7 +130,7 @@ public class Room : Timer
                 var currentPlayer = currentClient.Get<Player>();
                 var currentAccount = currentClient.Get<Account>();
 
-                var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
+                var areDifferentClients = currentPlayer.UserId != newPlayer.UserId;
 
                 newClient.SendUserEnterData(currentPlayer, currentAccount);
 
@@ -191,7 +192,7 @@ public class Room : Timer
         {
             var currentPlayer = currentClient.Get<Player>();
 
-            var areDifferentClients = currentPlayer.UserInfo.UserId != newPlayer.UserInfo.UserId;
+            var areDifferentClients = currentPlayer.UserId != newPlayer.UserId;
 
             newClient.SendCharacterInfoData(currentPlayer,
                 areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals, LevelInfo);
@@ -232,9 +233,15 @@ public class Room : Timer
             var client in
             from client in Clients.Values
             let receivedPlayer = client.Get<Player>()
-            where sentPlayer == null || receivedPlayer.UserInfo.UserId != sentPlayer.UserInfo.UserId
+            where sentPlayer == null || receivedPlayer.UserId != sentPlayer.UserId
             select client
         )
             client.SendSyncEventToPlayer(syncEvent);
+    }
+
+    public void SendLevelUp(Player player, LevelUpDataModel levelUpData)
+    {
+        foreach (var client in Clients.Values)
+            client.SendXt("ce", levelUpData, player.UserId);
     }
 }

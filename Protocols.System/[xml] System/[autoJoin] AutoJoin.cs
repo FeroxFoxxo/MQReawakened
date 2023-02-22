@@ -32,7 +32,7 @@ public class AutoJoin : SystemProtocol
         new()
         {
             { CharacterInfoHandler.ExternalProperties.Chat_Level, userInfo.ChatLevel },
-            { CharacterInfoHandler.ExternalProperties.Gender, Enum.GetName(userInfo.Gender) },
+            { CharacterInfoHandler.ExternalProperties.Gender, Enum.GetName(userInfo.Gender)!.ToLower()[0] },
             { CharacterInfoHandler.ExternalProperties.Country, userInfo.Region },
             {
                 CharacterInfoHandler.ExternalProperties.Age,

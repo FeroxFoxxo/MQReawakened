@@ -88,7 +88,7 @@ public class UseSlot : ExternalProtocol
                 {
                     case "PF_GLB_SwitchWall02":
                         var triggerEvent = new Trigger_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                            player.CurrentRoom.Time, true, player.PlayerId.ToString(), true);
+                            player.CurrentRoom.Time, true, player.GameObjectId.ToString(), true);
 
                         player.CurrentRoom.SendSyncEvent(triggerEvent);
 

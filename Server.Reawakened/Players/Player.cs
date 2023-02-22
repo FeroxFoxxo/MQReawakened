@@ -11,20 +11,24 @@ namespace Server.Reawakened.Players;
 public class Player : INetStateData
 {
     public int CurrentCharacter { get; set; }
-    public int PlayerId { get; set; }
     public Room CurrentRoom { get; set; }
     public UserInfo UserInfo { get; set; }
+
+    public int UserId => UserInfo.UserId;
+    public int GameObjectId { get; set; }
 
     public bool OnGround { get; set; }
     public int Direction { get; set; }
     public Vector3Model Position { get; set; }
     public Vector3Model Velocity { get; set; }
+    public bool Invincible { get; set; }
 
     public Player(UserInfo userInfo)
     {
         UserInfo = userInfo;
         Position = new Vector3Model();
         Velocity = new Vector3Model();
+        Invincible = false;
     }
 
     public void RemovedState(NetState state, NetStateHandler handler,
@@ -39,8 +43,8 @@ public class Player : INetStateData
         var roomName = CurrentRoom.LevelInfo.Name;
 
         if (!string.IsNullOrEmpty(roomName))
-            logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", PlayerId, roomName);
+            logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
 
-        CurrentRoom.DumpPlayerToLobby(PlayerId);
+        CurrentRoom.DumpPlayerToLobby(UserId);
     }
 }

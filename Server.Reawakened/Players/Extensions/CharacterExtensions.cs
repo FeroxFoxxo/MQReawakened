@@ -6,21 +6,23 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Models.Protocol;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterExtensions
 {
-    public static bool HasDiscoveredTribe(this CharacterDataModel characterData, TribeType tribe)
+    public static bool HasDiscoveredTribe(this CharacterModel characterData, TribeType tribe)
     {
         if (characterData == null) return false;
 
-        if (characterData.TribesDiscovered.TryGetValue(tribe, out var discovered))
+        // ReSharper disable once InvertIf
+        if (characterData.Data.TribesDiscovered.TryGetValue(tribe, out var discovered))
             if (discovered)
                 return true;
 
-        return characterData.Allegiance == tribe;
+        return characterData.Data.Allegiance == tribe;
     }
 
     public static CharacterModel GetCurrentCharacter(this Player player) =>
@@ -48,15 +50,31 @@ public static class CharacterExtensions
             : string.Empty;
     }
 
-    public static void LevelUp(this CharacterDataModel characterData, int level)
+    public static void SetLevel(this CharacterModel characterData, int level)
     {
-        characterData.GlobalLevel = level;
+        characterData.Data.GlobalLevel = level;
 
-        characterData.ReputationForCurrentLevel = GetReputationForLevel(level - 1);
-        characterData.ReputationForNextLevel = GetReputationForLevel(level);
-        characterData.Reputation = 0;
+        characterData.Data.ReputationForCurrentLevel = GetReputationForLevel(level - 1);
+        characterData.Data.ReputationForNextLevel = GetReputationForLevel(level);
+        characterData.Data.Reputation = 0;
 
-        characterData.MaxLife = GetHealthForLevel(level);
+        characterData.Data.MaxLife = GetHealthForLevel(level);
+    }
+
+    public static void LevelUp(this Player player, int level, Microsoft.Extensions.Logging.ILogger logger)
+    {
+        var character = player.GetCurrentCharacter();
+
+        var levelUpData = new LevelUpDataModel
+        {
+            Level = level
+        };
+
+        SetLevel(character, level);
+
+        player.CurrentRoom.SendLevelUp(player, levelUpData);
+
+        logger.LogTrace("{Name} leveled up to {Level}", character.Data.CharacterName, level);
     }
 
     private static int GetHealthForLevel(int level) => (level - 1) * 270 + 81;
@@ -68,22 +86,22 @@ public static class CharacterExtensions
         var player = state.Get<Player>();
         var character = player.GetCurrentCharacter();
 
-        if (HasAddedDiscoveredTribe(character.Data, tribe))
+        if (HasAddedDiscoveredTribe(character, tribe))
             state.SendXt("cB", (int)tribe);
     }
 
-    public static bool HasAddedDiscoveredTribe(this CharacterDataModel characterData, TribeType tribe)
+    public static bool HasAddedDiscoveredTribe(this CharacterModel characterData, TribeType tribe)
     {
-        if (characterData.TribesDiscovered.ContainsKey(tribe))
+        if (characterData.Data.TribesDiscovered.ContainsKey(tribe))
         {
-            if (characterData.TribesDiscovered[tribe])
+            if (characterData.Data.TribesDiscovered[tribe])
                 return false;
 
-            characterData.TribesDiscovered[tribe] = true;
+            characterData.Data.TribesDiscovered[tribe] = true;
         }
         else
         {
-            characterData.TribesDiscovered.Add(tribe, true);
+            characterData.Data.TribesDiscovered.Add(tribe, true);
         }
         return true;
     }

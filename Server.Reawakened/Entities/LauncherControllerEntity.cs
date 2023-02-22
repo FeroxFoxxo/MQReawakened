@@ -16,7 +16,7 @@ public class LauncherControllerEntity : SyncedEntity<LauncherController>
         var player = netState.Get<Player>();
 
         var launchEvent = new Trigger_SyncEvent(Id.ToString(), Room.Time, true,
-            player.PlayerId.ToString(), true);
+            player.GameObjectId.ToString(), true);
 
         netState.SendSyncEventToPlayer(launchEvent);
     }

@@ -14,7 +14,7 @@ public static class RoomExtensions
 {
     public static void JoinRoom(this Player player, NetState state, Room room, out JoinReason reason)
     {
-        player.CurrentRoom?.RemoveClient(player.PlayerId);
+        player.CurrentRoom?.RemoveClient(player.UserId);
         player.CurrentRoom = room;
         player.CurrentRoom.AddClient(state, out reason);
     }
@@ -52,23 +52,22 @@ public static class RoomExtensions
         var player = netState.Get<Player>();
         var room = player.CurrentRoom;
 
-        var collectedEvent = new Trigger_SyncEvent(id.ToString(), room.Time, success,
-            player.PlayerId.ToString(), active);
+        var collectedEvent = new Trigger_SyncEvent(id.ToString(), room.Time, success, player.GameObjectId.ToString(), active);
 
         netState.SendSyncEventToPlayer(collectedEvent);
     }
 
     public static void SentEntityTriggered(this Room room, int id, Player player, bool success, bool active)
     {
-        var collectedEvent = new Trigger_SyncEvent(id.ToString(), room.Time, success,
-            player.PlayerId.ToString(), active);
+        var collectedEvent = new Trigger_SyncEvent(id.ToString(), room.Time, success, player.GameObjectId.ToString(), active);
 
         room.SendSyncEvent(collectedEvent);
     }
 
+    // Player Id is unused
     public static void SendUserEnterData(this NetState state, Player player, Account account) =>
         state.SendXml("uER",
-            $"<u i='{player.UserInfo.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.PlayerId}'><n>{account.Username}</n></u>");
+            $"<u i='{player.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{0}'><n>{account.Username}</n></u>");
 
     public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type, LevelInfo levelInfo)
     {
@@ -82,6 +81,6 @@ public static class RoomExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 
-        state.SendXt("ci", player.UserInfo.UserId.ToString(), info, player.PlayerId, levelInfo.Name);
+        state.SendXt("ci", player.UserId, info, player.GameObjectId, levelInfo.Name);
     }
 }
