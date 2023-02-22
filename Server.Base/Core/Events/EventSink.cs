@@ -9,6 +9,8 @@ public class EventSink : IEventSink
 {
     public delegate void CrashedEventHandler(CrashedEventArgs @event);
 
+    public delegate void CreateDataEventHandler();
+
     public delegate void InternalShutdownEventHandler();
 
     public delegate void NetStateAddedHandler(NetStateAddedEventArgs @event);
@@ -20,8 +22,6 @@ public class EventSink : IEventSink
     public delegate void ShutdownEventHandler();
 
     public delegate void SocketConnectEventHandler(SocketConnectEventArgs @event);
-
-    public delegate void CreateDataEventHandler();
 
     public delegate void WorldBroadcastEventHandler(WorldBroadcastEventArgs @event);
 

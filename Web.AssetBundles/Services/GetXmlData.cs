@@ -10,13 +10,13 @@ namespace Web.AssetBundles.Services;
 
 public class GetXmlData : IService
 {
-    private readonly ServerConsole _serverConsole;
-    private readonly ILogger<GetXmlData> _logger;
-    private readonly ServerStaticConfig _config;
-    private readonly WorldGraph _worldGraph;
-    private readonly ItemCatalog _itemCatalog;
     private readonly BuildAssetList _assets;
+    private readonly ServerStaticConfig _config;
+    private readonly ItemCatalog _itemCatalog;
     private readonly BuildLevelFiles _levels;
+    private readonly ILogger<GetXmlData> _logger;
+    private readonly ServerConsole _serverConsole;
+    private readonly WorldGraph _worldGraph;
 
     public GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
         ServerStaticConfig config, WorldGraph worldGraph, ItemCatalog itemCatalog,
@@ -62,14 +62,15 @@ public class GetXmlData : IService
             "Would you like the items filtered to only the ones that you have cached?",
             true
         );
-        
+
         foreach (var item in items)
         {
             if (shouldFilter)
                 if (!_assets.InternalAssets.ContainsKey(item.Value.PrefabName))
                     continue;
 
-            var filteredText = shouldSimplify ? string.Empty : $" -{string.Join(',', item.ToString().Split(',').Skip(2))}";
+            var filteredText =
+                shouldSimplify ? string.Empty : $" -{string.Join(',', item.ToString().Split(',').Skip(2))}";
             itemInformation.Add(item.Key, $"{item.Value.ItemName} ({item.Value.PrefabName}){filteredText}");
         }
 
@@ -85,7 +86,7 @@ public class GetXmlData : IService
             true
         );
 
-        var levels = (Dictionary<string, int>) _worldGraph.GetField<WorldGraphXML>("_levelNameToID");
+        var levels = (Dictionary<string, int>)_worldGraph.GetField<WorldGraphXML>("_levelNameToID");
 
         var lowercasedLevels = _levels.LevelFiles.Keys.Select(x => x.ToLower()).ToArray();
 

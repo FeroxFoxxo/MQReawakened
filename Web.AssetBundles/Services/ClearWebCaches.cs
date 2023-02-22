@@ -12,12 +12,12 @@ namespace Web.AssetBundles.Services;
 public class ClearWebCaches : IService
 {
     private readonly AssetBundleConfig _config;
-    private readonly AssetBundleStaticConfig _sConfig;
     private readonly ServerConsole _console;
     private readonly StartGame _game;
     private readonly ILogger<ClearWebCaches> _logger;
-    private readonly EventSink _sink;
     private readonly ReplaceCaches _replaceCaches;
+    private readonly AssetBundleStaticConfig _sConfig;
+    private readonly EventSink _sink;
 
     public ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleStaticConfig sConfig,
         ServerConsole console, EventSink sink, StartGame game,

@@ -57,7 +57,7 @@ public class AssetBundleStaticConfig : IStaticConfig
 
         SaveBundleExtension = "bundleGen";
         StoredAssetDict = "StoredAssets.xml";
-        
+
         Message = "Loading Asset Bundles";
         DefaultWebPlayerCacheLocation = "AppData/LocalLow/Unity/WebPlayer/Cache";
         AssetModifiers = new[] { "_nomesh" };

@@ -7,9 +7,8 @@ namespace Server.Reawakened.XMLs.Bundles;
 
 public class WorldGraph : WorldGraphXML, IBundledXml
 {
-    public string BundleName => "world_graph";
-
     public int DefaultLevel;
+    public string BundleName => "world_graph";
 
     public void InitializeVariables()
     {

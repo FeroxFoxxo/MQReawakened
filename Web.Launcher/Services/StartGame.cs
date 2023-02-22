@@ -11,7 +11,6 @@ using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Events;
 using System.Diagnostics;
 using System.Globalization;
-using System.Reflection.Emit;
 using System.Text.Json;
 using System.Xml.Linq;
 using Web.Launcher.Models;
@@ -22,15 +21,15 @@ namespace Web.Launcher.Services;
 public class StartGame : IService
 {
     private readonly IHostApplicationLifetime _appLifetime;
+    private readonly StartConfig _config;
     private readonly ServerConsole _console;
+    private readonly RandomKeyGenerator _generator;
     private readonly LauncherStaticConfig _lConfig;
     private readonly ILogger<StartGame> _logger;
+    private readonly PlayerEventSink _playerEventSink;
     private readonly SettingsStaticConfig _sConfig;
-    private readonly StartConfig _config;
     private readonly EventSink _sink;
     private readonly World _world;
-    private readonly PlayerEventSink _playerEventSink;
-    private readonly RandomKeyGenerator _generator;
 
     private string _directory;
     private bool _dirSet, _appStart;
@@ -210,7 +209,7 @@ public class StartGame : IService
         {
             if (string.IsNullOrEmpty(item.Key) || string.IsNullOrEmpty(item.Value))
                 continue;
-                
+
             var xmlItem = new XElement("item");
             xmlItem.Add(new XAttribute("name", item.Key));
             xmlItem.Add(new XAttribute("value", item.Value));

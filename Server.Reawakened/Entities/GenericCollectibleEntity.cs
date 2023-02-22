@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities;
 
 public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
 {
-    public ILogger<GenericCollectibleModel> Logger { get; set; }
-    
-    public int Value;
     public bool Collected;
+
+    public int Value;
+    public ILogger<GenericCollectibleModel> Logger { get; set; }
 
     public override void InitializeEntity()
     {

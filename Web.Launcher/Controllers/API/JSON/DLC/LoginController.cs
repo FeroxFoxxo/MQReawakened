@@ -11,9 +11,9 @@ namespace Web.Launcher.Controllers.API.JSON.DLC;
 public class LoginController : Controller
 {
     private readonly AccountHandler _accHandler;
-    private readonly LauncherStaticConfig _sConfig;
     private readonly StartConfig _config;
     private readonly PasswordHasher _passwordHasher;
+    private readonly LauncherStaticConfig _sConfig;
     private readonly UserInfoHandler _userInfoHandler;
 
     public LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler,

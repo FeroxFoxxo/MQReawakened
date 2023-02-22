@@ -6,34 +6,34 @@ using Server.Base.Network;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities;
-using Server.Reawakened.Rooms.Enums;
-using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Protocol;
+using Server.Reawakened.Rooms.Enums;
+using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.Rooms.Services;
 using WorldGraphDefines;
 using Timer = Server.Base.Timers.Timer;
-using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Rooms;
 
 public class Room : Timer
 {
+    private readonly ServerStaticConfig _config;
     private readonly HashSet<int> _gameObjectIds;
     private readonly WorldHandler _worldHandler;
-    private readonly ServerStaticConfig _config;
 
     public readonly Dictionary<int, NetState> Clients;
+    public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
+    public readonly LevelInfo LevelInfo;
+    public readonly ILogger<Room> Logger;
 
     public readonly Dictionary<string, PlaneModel> Planes;
-    public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
     public readonly Dictionary<int, List<string>> UnknownEntities;
-    public readonly ILogger<Room> Logger;
-    public readonly LevelInfo LevelInfo;
 
     public SpawnPointEntity DefaultSpawn { get; set; }
 

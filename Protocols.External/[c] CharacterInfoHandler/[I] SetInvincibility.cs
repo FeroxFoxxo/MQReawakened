@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Network.Extensions;
-using Server.Reawakened.Network.Protocols;
+﻿using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 
 namespace Protocols.External._c__CharacterInfoHandler;

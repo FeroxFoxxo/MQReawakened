@@ -33,7 +33,7 @@ public class LinearPlatformEntity : AbstractMovingObject<LinearPlatform>
     public override void Update()
     {
         base.Update();
-        var movement = (Platform_Linear_Movement) Movement;
+        var movement = (Platform_Linear_Movement)Movement;
         movement.UpdateState(Room.Time);
     }
 }

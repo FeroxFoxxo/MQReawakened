@@ -7,12 +7,12 @@ namespace Server.Reawakened.XMLs.Bundles;
 
 public class ItemCatalog : ItemHandler, ILocalizationXml
 {
-    public string BundleName => "ItemCatalog";
-    public string LocalizationName => "ItemCatalogDict_en-US";
-
     public ItemCatalog() : base(null)
     {
     }
+
+    public string BundleName => "ItemCatalog";
+    public string LocalizationName => "ItemCatalogDict_en-US";
 
     public void InitializeVariables()
     {
@@ -36,7 +36,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
     }
 
     public void ReadDescription(string xml) => ReadDescriptionXml(xml);
-    
+
     public void FinalizeBundle()
     {
     }

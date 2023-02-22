@@ -41,7 +41,7 @@ public class ServerHandler : IService
         AppDomain.CurrentDomain.UnhandledException += UnhandledException;
         _appLifetime.ApplicationStopped.Register(HandleClosed);
     }
-    
+
     public void SetModules(IEnumerable<Module> modules) => Modules = modules;
 
     public void UnhandledException(object sender, UnhandledExceptionEventArgs ex)

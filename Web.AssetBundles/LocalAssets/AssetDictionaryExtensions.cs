@@ -7,7 +7,8 @@ namespace Web.AssetBundles.LocalAssets;
 
 public static class AssetDictionaryExtensions
 {
-    public static void AddModifiedAssets(this Dictionary<string, InternalAssetInfo> assets, AssetBundleStaticConfig config)
+    public static void AddModifiedAssets(this Dictionary<string, InternalAssetInfo> assets,
+        AssetBundleStaticConfig config)
     {
         var assetsToAdd = new Dictionary<string, InternalAssetInfo>();
 
@@ -34,7 +35,8 @@ public static class AssetDictionaryExtensions
             assets.Add(asset.Key, asset.Value);
     }
 
-    public static void AddChangedNameToDict(this Dictionary<string, InternalAssetInfo> assets, string assetName, InternalAssetInfo oldAsset)
+    public static void AddChangedNameToDict(this Dictionary<string, InternalAssetInfo> assets, string assetName,
+        InternalAssetInfo oldAsset)
     {
         if (assets.ContainsKey(assetName))
             return;

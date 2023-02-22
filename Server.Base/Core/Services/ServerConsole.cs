@@ -11,8 +11,8 @@ namespace Server.Base.Core.Services;
 public class ServerConsole : IService
 {
     private readonly IHostApplicationLifetime _appLifetime;
-    private readonly InternalStaticConfig _config;
     private readonly Dictionary<string, ConsoleCommand> _commands;
+    private readonly InternalStaticConfig _config;
     private readonly Thread _consoleThread;
     private readonly ServerHandler _handler;
     private readonly ILogger<ServerConsole> _logger;

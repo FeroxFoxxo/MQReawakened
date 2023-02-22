@@ -22,7 +22,7 @@ public class PacketHandler : IService
     public delegate void SystemCallback(NetState state, XmlDocument document, IServiceProvider serviceProvider);
 
     private readonly NetStateHandler _handler;
-    
+
     private readonly InternalConfig _internalConfig;
     private readonly ILogger<PacketHandler> _logger;
 

@@ -30,7 +30,7 @@ public class Dialog : DialogXML, ILocalizationXml
     }
 
     public void ReadDescription(string xml) => ReadDescriptionXml(xml);
-    
+
     public void FinalizeBundle()
     {
     }

@@ -33,7 +33,8 @@ public class EditCharacter : IService
     public EditCharacter(ServerConsole console, EventSink sink,
         ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
         AccountHandler accountHandler, WorldGraph worldGraph,
-        ServerStaticConfig config, NetStateHandler handler, WorldHandler worldHandler, ItemCatalog itemCatalog, PlayerEventSink playerEventSink)
+        ServerStaticConfig config, NetStateHandler handler, WorldHandler worldHandler,
+        ItemCatalog itemCatalog, PlayerEventSink playerEventSink)
     {
         _console = console;
         _sink = sink;

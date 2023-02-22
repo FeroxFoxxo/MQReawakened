@@ -6,7 +6,6 @@ using Web.Apps.Analytics.Models;
 using Web.AssetBundles.Models;
 using Web.AssetBundles.Services;
 using Web.Launcher.Models;
-using static GameError.TNNWCode;
 
 // ReSharper disable RouteTemplates.ControllerRouteParameterIsNotPassedToMethods
 // ReSharper disable RouteTemplates.MethodMissingRouteParameters
@@ -16,12 +15,13 @@ namespace Web.Apps.Analytics.Controllers;
 [Route("/Analytics/{AnalyticsKey}")]
 public class AnalyticsController : Controller
 {
-    private readonly ILogger<AnalyticsController> _logger;
-    private readonly StartConfig _config;
     private readonly AssetBundleStaticConfig _aConfig;
+    private readonly StartConfig _config;
+    private readonly ILogger<AnalyticsController> _logger;
     private readonly ReplaceCaches _replaceCaches;
 
-    public AnalyticsController(ILogger<AnalyticsController> logger, StartConfig config, ReplaceCaches replaceCaches, AssetBundleStaticConfig aConfig)
+    public AnalyticsController(ILogger<AnalyticsController> logger, StartConfig config, ReplaceCaches replaceCaches,
+        AssetBundleStaticConfig aConfig)
     {
         _logger = logger;
         _config = config;
@@ -37,7 +37,7 @@ public class AnalyticsController : Controller
     {
         if (!CheckAnalytics())
             return;
-        
+
         var properties = GetCommonProperties();
         SendLog(properties, $"User joined from source '{f}'. Year of birth: '{b}'. Gender: '{g}'.");
     }
@@ -73,7 +73,7 @@ public class AnalyticsController : Controller
 
         if (!string.IsNullOrEmpty(n))
             messages.Add($"Page Name: {n}");
-        
+
         if (v > 0)
             messages.Add($"Value: {v}");
 
@@ -102,7 +102,7 @@ public class AnalyticsController : Controller
         }
 
         SendLog(properties, string.Join('\n', messages));
-        
+
         switch (labels[0])
         {
             case "ErrorsType" when labels.Count < 2:

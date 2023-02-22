@@ -1,12 +1,12 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Protocol;
+using Server.Reawakened.Rooms.Services;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -81,7 +81,7 @@ public static class CharacterExtensions
     private static int GetHealthForLevel(int level) => (level - 1) * 270 + 81;
 
     private static int GetReputationForLevel(int level) => (Convert.ToInt32(Math.Pow(level, 2)) - (level - 1)) * 500;
-    
+
     public static void DiscoverTribe(this NetState state, TribeType tribe)
     {
         var player = state.Get<Player>();
@@ -104,6 +104,7 @@ public static class CharacterExtensions
         {
             characterData.Data.TribesDiscovered.Add(tribe, true);
         }
+
         return true;
     }
 
@@ -156,16 +157,19 @@ public static class CharacterExtensions
         return sb.ToString();
     }
 
-    public static void SetLevel(this CharacterModel character, int levelId, Microsoft.Extensions.Logging.ILogger logger) =>
+    public static void SetLevel(this CharacterModel character, int levelId,
+        Microsoft.Extensions.Logging.ILogger logger) =>
         character.SetLevel(levelId, 0, 0, logger);
 
-    public static void SetLevel(this CharacterModel character, int levelId, int portalId, int spawnId, Microsoft.Extensions.Logging.ILogger logger)
+    public static void SetLevel(this CharacterModel character, int levelId, int portalId, int spawnId,
+        Microsoft.Extensions.Logging.ILogger logger)
     {
         character.LevelData.LevelId = levelId;
         character.LevelData.PortalId = portalId;
         character.LevelData.SpawnPointId = spawnId;
 
-        logger.LogDebug("Set spawn of '{CharacterName}' to portal {PortalId} spawn {SpawnId}", character.Data.CharacterName,
+        logger.LogDebug("Set spawn of '{CharacterName}' to portal {PortalId} spawn {SpawnId}",
+            character.Data.CharacterName,
             portalId, spawnId);
     }
 

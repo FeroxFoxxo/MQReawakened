@@ -1,16 +1,22 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Rooms;
-using Server.Reawakened.Rooms.Enums;
-using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Abstractions;
 
 public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable where T : TriggerCoopController
 {
+    public List<int> CurrentInteractors;
+    public bool IsActive = true;
+
+    public bool IsEnabled = true;
+
+    public Dictionary<int, TriggerType> Triggers;
     public bool DisabledAfterActivation => EntityData.DisabledAfterActivation;
 
     public int NbInteractionsNeeded => EntityData.NbInteractionsNeeded;
@@ -79,12 +85,9 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
 
     public ILogger<TriggerCoopController> Logger { get; set; }
 
-    public Dictionary<int, TriggerType> Triggers;
-
-    public List<int> CurrentInteractors;
-
-    public bool IsEnabled = true;
-    public bool IsActive = true;
+    public void TriggerStateChange(TriggerType triggerType, Room room, bool triggered) =>
+        Logger.LogError("Trigger not implemented for {TypeName} (tried to change to {TriggerType}).",
+            GetType().Name, triggerType);
 
     public override void InitializeEntity()
     {
@@ -207,10 +210,13 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
     {
         IsActive = active;
 
-        Logger.LogTrace("Trigger for {Id} has been set to {IsActive}, affecting {EntityCount}.", Id, IsActive, Triggers.Count);
+        Logger.LogTrace("Trigger for {Id} has been set to {IsActive}, affecting {EntityCount}.", Id, IsActive,
+            Triggers.Count);
 
-        Logger.LogTrace("Trigger {Id} activation duration: {Duration}, repeat delay: {Delay}, after first interaction of: {After}, " +
-                        "for type: {Type}", Id, ActiveDuration, TriggerRepeatDelay, ActivationTimeAfterFirstInteraction, InteractType);
+        Logger.LogTrace(
+            "Trigger {Id} activation duration: {Duration}, repeat delay: {Delay}, after first interaction of: {After}, " +
+            "for type: {Type}", Id, ActiveDuration, TriggerRepeatDelay, ActivationTimeAfterFirstInteraction,
+            InteractType);
 
         foreach (var trigger in Triggers)
         {
@@ -225,7 +231,9 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
                         foreach (var triggerEntity in canTriggerEntities)
                             triggerEntity.TriggerStateChange(trigger.Value, Room, IsActive);
                     else
-                        Logger.LogWarning("Cannot trigger entity {Id} to state {State}, no class implements 'TriggerableEntity'.", trigger.Key, trigger.Value);
+                        Logger.LogWarning(
+                            "Cannot trigger entity {Id} to state {State}, no class implements 'TriggerableEntity'.",
+                            trigger.Key, trigger.Value);
 
                     continue;
                 }
@@ -244,8 +252,4 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T>, ITriggerable whe
             .Where(trigger => receivers.ContainsKey(trigger.Key))
             .Select(trigger => receivers[trigger.Key]).All(receiver => receiver.Activated);
     }
-
-    public void TriggerStateChange(TriggerType triggerType, Room room, bool triggered) =>
-        Logger.LogError("Trigger not implemented for {TypeName} (tried to change to {TriggerType}).",
-            GetType().Name, triggerType);
 }

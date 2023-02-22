@@ -6,25 +6,23 @@ using Server.Base.Core.Services;
 using Server.Base.Network;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Base.Accounts.Models;
-using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Chat.Services;
 
 public class ChatCommands : IService
 {
-    private readonly Dictionary<string, ChatCommand> _commands;
-    private readonly ItemCatalog _itemCatalog;
-    private readonly ServerStaticConfig _config;
-    private readonly ILogger<ServerConsole> _logger;
     private readonly IHostApplicationLifetime _appLifetime;
-    private readonly WorldHandler _worldHandler;
+    private readonly Dictionary<string, ChatCommand> _commands;
+    private readonly ServerStaticConfig _config;
+    private readonly ItemCatalog _itemCatalog;
+    private readonly ILogger<ServerConsole> _logger;
     private readonly WorldGraph _worldGraph;
+    private readonly WorldHandler _worldHandler;
 
     public ChatCommands(ItemCatalog itemCatalog, ServerStaticConfig config, ILogger<ServerConsole> logger,
         WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime)
@@ -43,14 +41,14 @@ public class ChatCommands : IService
     public void RunChatListener()
     {
         _logger.LogDebug("Setting up chat commands");
-        
+
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
-    
+
     public void RunCommand(NetState netState, string[] args)
     {
         var name = args.FirstOrDefault();
@@ -97,7 +95,7 @@ public class ChatCommands : IService
             return false;
 
         var levelId = Convert.ToInt32(args[1]);
-        
+
         character.SetLevel(levelId, _logger);
 
         var levelInfo = _worldGraph.GetInfoLevel(levelId);

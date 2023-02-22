@@ -1,20 +1,20 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.Configs;
-using Web.AssetBundles.Events.Arguments;
 using Web.AssetBundles.Events;
-using Web.AssetBundles.Models;
-using Server.Base.Core.Abstractions;
+using Web.AssetBundles.Events.Arguments;
 using Web.AssetBundles.Extensions;
+using Web.AssetBundles.Models;
 
 namespace Web.AssetBundles.Services;
 
 public class BuildLevelFiles : IService
 {
+    private readonly AssetBundleStaticConfig _config;
     private readonly AssetEventSink _eventSink;
     private readonly ILogger<BuildXmlFiles> _logger;
     private readonly ServerStaticConfig _sConfig;
-    private readonly AssetBundleStaticConfig _config;
 
     public readonly Dictionary<string, string> LevelFiles;
 
@@ -55,7 +55,7 @@ public class BuildLevelFiles : IService
                 bar.SetMessage($"XML for {asset.Name} is empty! Skipping...");
                 continue;
             }
-            
+
             var path = Path.Join(_sConfig.LevelSaveDirectory, $"{asset.Name}.xml");
 
             bar.SetMessage($"Writing file to {path}");

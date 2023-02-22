@@ -13,13 +13,13 @@ namespace Server.Base.Network.Services;
 
 public class MessagePump : IService
 {
-    private readonly InternalStaticConfig _sConfig;
+    private readonly InternalConfig _config;
     private readonly NetStateHandler _handler;
     private readonly IPEndPoint[] _ipEndPoints;
     private readonly IpLimiter _limiter;
-    private readonly InternalConfig _config;
     private readonly ILogger<MessagePump> _logger;
     private readonly NetworkLogger _networkLogger;
+    private readonly InternalStaticConfig _sConfig;
     private readonly ServerHandler _serverHandler;
     private readonly EventSink _sink;
 

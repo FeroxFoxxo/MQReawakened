@@ -20,7 +20,7 @@ public abstract class BaseSyncedEntity
     public virtual void InitializeEntity()
     {
     }
-    
+
     public virtual object[] GetInitData(NetState netState) => Array.Empty<object>();
 
     public virtual void SendDelayedData(NetState netState)
@@ -38,7 +38,7 @@ public abstract class BaseSyncedEntity
     public virtual void RunSyncedEvent(SyncEvent syncEvent, NetState netState) =>
         StoredEntity.Room.Logger.LogError(
             "The entity '{Id}' of type '{Type}' has no sync event override. Skipping...", Id, GetType().Name);
-    
+
     protected void SetEntityData(StoredEntityModel storedEntity) =>
         StoredEntity = storedEntity;
 }

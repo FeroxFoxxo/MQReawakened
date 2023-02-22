@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Entities;
@@ -61,7 +61,8 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
             else
             {
                 Logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LevelData, newLevelId);
-                character.SetLevel(newLevelId, portalId, portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID), Logger);
+                character.SetLevel(newLevelId, portalId,
+                    portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID), Logger);
             }
 
             var levelInfo = WorldGraph.GetInfoLevel(newLevelId);

@@ -47,7 +47,8 @@ public class HazardControllerEntity : SyncedEntity<HazardController>
 
         Room.SendSyncEvent(statusEffect);
 
-        Logger.LogTrace("Triggered status effect for {Character} of {HurtType}", character.Data.CharacterName, effectType);
+        Logger.LogTrace("Triggered status effect for {Character} of {HurtType}", character.Data.CharacterName,
+            effectType);
 
         switch (effectType)
         {

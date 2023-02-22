@@ -1,11 +1,11 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Abstractions;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._h__HotbarHandler;
@@ -25,7 +25,7 @@ public class UseSlot : ExternalProtocol
 
         var hotbarSlotId = int.Parse(message[5]);
         var targetUserId = int.Parse(message[6]);
-        
+
         var position = new Vector3Model
         {
             X = Convert.ToSingle(message[7]),

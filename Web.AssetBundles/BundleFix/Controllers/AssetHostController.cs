@@ -102,7 +102,7 @@ public class AssetHostController : Controller
         {
             _logger.LogInformation("Creating Bundle {Name} [{Type}]", assetName,
                 _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST");
-            
+
 
             using var stream = new MemoryStream();
             var writer = new EndianWriter(stream, EndianType.BigEndian);

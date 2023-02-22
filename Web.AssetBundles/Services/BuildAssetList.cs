@@ -19,14 +19,14 @@ public class BuildAssetList : IService
 {
     private readonly AssetEventSink _assetSink;
     private readonly AssetBundleConfig _config;
-    private readonly AssetBundleStaticConfig _sConfig;
     private readonly ServerConsole _console;
-    private readonly StartConfig _startConfig;
     private readonly ILogger<BuildAssetList> _logger;
+    private readonly AssetBundleStaticConfig _sConfig;
     private readonly EventSink _sink;
+    private readonly StartConfig _startConfig;
 
     public readonly Dictionary<string, string> AssetDict;
-    
+
     public readonly Dictionary<string, string> PublishConfigs;
 
     public string AssetDictLocation;

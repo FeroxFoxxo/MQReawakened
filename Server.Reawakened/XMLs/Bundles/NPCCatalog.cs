@@ -6,9 +6,8 @@ namespace Server.Reawakened.XMLs.Bundles;
 
 public class NpcCatalog : IBundledXml
 {
-    public string BundleName => "NPCCatalog";
-
     public Dictionary<int, NpcDescription> CachedNpcDict;
+    public string BundleName => "NPCCatalog";
 
     public void InitializeVariables() =>
         CachedNpcDict = new Dictionary<int, NpcDescription>();

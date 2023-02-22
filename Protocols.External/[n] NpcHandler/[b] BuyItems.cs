@@ -4,6 +4,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._n__NpcHandler;
+
 public class BuyItems : ExternalProtocol
 {
     public override string ProtocolName => "nb";

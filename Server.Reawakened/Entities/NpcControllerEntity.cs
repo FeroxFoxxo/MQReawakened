@@ -2,12 +2,12 @@
 using FollowCamDefines;
 using Microsoft.Extensions.Logging;
 using Server.Base.Network;
-using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Models;
 
@@ -15,6 +15,11 @@ namespace Server.Reawakened.Entities;
 
 public class NpcControllerEntity : SyncedEntity<NPCController>
 {
+    private bool _vendorOpen;
+
+    public NpcDescription Description;
+    public string NpcName;
+    public QuestDescription[] Quests;
     public FollowCamModes CameraMode => EntityData.CameraMode;
     public FollowCamPriority CameraPriority => EntityData.CameraPriority;
     public bool ShouldDisableNpcInteraction => EntityData.ShouldDisableNPCInteraction;
@@ -23,12 +28,6 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
     public QuestCatalog QuestCatalog { get; set; }
     public NpcCatalog NpcCatalog { get; set; }
     public MiscTextDictionary MiscText { get; set; }
-    
-    public NpcDescription Description;
-    public QuestDescription[] Quests;
-    public string NpcName;
-
-    private bool _vendorOpen;
 
     public override void InitializeEntity()
     {
@@ -37,7 +36,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         Quests = QuestCatalog.GetQuestsBy(Id).OrderBy(x => x.Id).ToArray();
 
         if (Description == null) return;
-        
+
         NpcName = MiscText.GetLocalizationTextById(Description.NameTextId);
     }
 
@@ -60,7 +59,8 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             _vendorOpen = !_vendorOpen;
             if (_vendorOpen)
             {
-                 netState.SendXt("nv", Id, Description.NameTextId, 0, 0, 0, Description.VendorId, "", "1021|2813", "1021|2812");
+                netState.SendXt("nv", Id, Description.NameTextId, 0, 0, 0, Description.VendorId, "", "1021|2813",
+                    "1021|2812");
                 return;
             }
         }
@@ -149,7 +149,8 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                 return NPCController.NPCStatus.QuestAvailable;
             }
 
-            foreach (var lineQuest in lineQuests.Where(lineQuest => !character.Data.CompletedQuests.Contains(lineQuest.Id)))
+            foreach (var lineQuest in lineQuests.Where(lineQuest =>
+                         !character.Data.CompletedQuests.Contains(lineQuest.Id)))
             {
                 if (!character.HasDiscoveredTribe(lineQuest.Tribe))
                     return NPCController.NPCStatus.QuestUnavailable;

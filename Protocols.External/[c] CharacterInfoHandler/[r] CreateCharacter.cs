@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Enums;
@@ -10,6 +9,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Services;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._c__CharacterInfoHandler;
@@ -55,7 +55,7 @@ public class CreateCharacter : ExternalProtocol
             characterData.Allegiance = tribe;
             characterData.CharacterName = string.Join(string.Empty, names);
             characterData.UserUuid = player.UserId;
-            
+
             characterData.Registered = true;
 
             var model = new CharacterModel

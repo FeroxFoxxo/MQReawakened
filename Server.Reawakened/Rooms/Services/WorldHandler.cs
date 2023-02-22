@@ -8,23 +8,22 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
-using LevelType = A2m.Server.LevelType;
 
 namespace Server.Reawakened.Rooms.Services;
 
 public class WorldHandler : IService
 {
     private readonly ServerStaticConfig _config;
-    private readonly Dictionary<int, List<Room>> _rooms;
-    private readonly Dictionary<int, LevelInfo> _levelInfos;
 
     private readonly ILogger<WorldHandler> _handlerLogger;
-    private readonly ILogger<Room> _roomLogger;
+    private readonly Dictionary<int, LevelInfo> _levelInfos;
 
     private readonly ReflectionUtils _reflection;
-    private readonly TimerThread _timerThread;
+    private readonly ILogger<Room> _roomLogger;
+    private readonly Dictionary<int, List<Room>> _rooms;
     private readonly IServiceProvider _services;
     private readonly EventSink _sink;
+    private readonly TimerThread _timerThread;
     private readonly WorldGraph _worldGraph;
 
     public WorldHandler(EventSink sink, ServerStaticConfig config, WorldGraph worldGraph,
@@ -49,7 +48,7 @@ public class WorldHandler : IService
     private void LoadRooms()
     {
         GetDirectory.OverwriteDirectory(_config.LevelDataSaveDirectory);
-        
+
         foreach (var roomList in _rooms.Where(room => room.Key != -1))
         foreach (var room in roomList.Value)
             room.DumpPlayersToLobby();

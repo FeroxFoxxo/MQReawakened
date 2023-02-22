@@ -1,11 +1,11 @@
 ﻿using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
 using Server.Base.Network;
+using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.Network.Extensions;
-using Server.Reawakened.Players.Models;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -52,14 +52,16 @@ public static class RoomExtensions
         var player = netState.Get<Player>();
         var room = player.CurrentRoom;
 
-        var collectedEvent = new Trigger_SyncEvent(id.ToString(), room.Time, success, player.GameObjectId.ToString(), active);
+        var collectedEvent =
+            new Trigger_SyncEvent(id.ToString(), room.Time, success, player.GameObjectId.ToString(), active);
 
         netState.SendSyncEventToPlayer(collectedEvent);
     }
 
     public static void SentEntityTriggered(this Room room, int id, Player player, bool success, bool active)
     {
-        var collectedEvent = new Trigger_SyncEvent(id.ToString(), room.Time, success, player.GameObjectId.ToString(), active);
+        var collectedEvent =
+            new Trigger_SyncEvent(id.ToString(), room.Time, success, player.GameObjectId.ToString(), active);
 
         room.SendSyncEvent(collectedEvent);
     }
@@ -69,7 +71,8 @@ public static class RoomExtensions
         state.SendXml("uER",
             $"<u i='{player.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{0}'><n>{account.Username}</n></u>");
 
-    public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type, LevelInfo levelInfo)
+    public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type,
+        LevelInfo levelInfo)
     {
         var character = player.GetCurrentCharacter();
 

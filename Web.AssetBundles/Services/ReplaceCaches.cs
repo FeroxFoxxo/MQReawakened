@@ -4,7 +4,6 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
-using System.Text.Json;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Models;
 using Web.Launcher.Services;
@@ -16,17 +15,18 @@ public class ReplaceCaches : IService
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly BuildAssetList _buildAssetList;
     private readonly AssetBundleConfig _config;
-    private readonly AssetBundleStaticConfig _sConfig;
     private readonly ServerConsole _console;
     private readonly StartGame _game;
-    private readonly ILogger<ReplaceCaches> _logger;
-    private readonly EventSink _sink;
     private readonly object _lock;
+    private readonly ILogger<ReplaceCaches> _logger;
+    private readonly AssetBundleStaticConfig _sConfig;
+    private readonly EventSink _sink;
 
     public readonly List<string> CurrentlyLoadedAssets;
     public readonly List<string> ReplacedBundles;
 
-    public ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList, AssetBundleStaticConfig sConfig,
+    public ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList,
+        AssetBundleStaticConfig sConfig,
         ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime, AssetBundleConfig config)
     {
         _console = console;
@@ -102,7 +102,7 @@ public class ReplaceCaches : IService
                 bar.TickBar();
             }
         }
-        
+
         _game.AskIfRestart();
     }
 

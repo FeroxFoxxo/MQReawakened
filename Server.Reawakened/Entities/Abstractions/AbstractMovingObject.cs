@@ -6,9 +6,10 @@ namespace Server.Reawakened.Entities.Abstractions;
 
 public abstract class AbstractMovingObject<T> : SyncedEntity<T>, IMoveable where T : MovingObjectController
 {
+    public IMovement Movement;
     public float InitialProgressRatio => EntityData.InitialProgressRatio;
 
-    public IMovement Movement;
+    public IMovement GetMovement() => Movement;
 
     public override void InitializeEntity()
     {
@@ -43,6 +44,4 @@ public abstract class AbstractMovingObject<T> : SyncedEntity<T>, IMoveable where
     public void Activate() => Movement?.Activate(Room.Time);
 
     public void Deactivate() => Movement?.Deactivate(Room.Time);
-
-    public IMovement GetMovement() => Movement;
 }

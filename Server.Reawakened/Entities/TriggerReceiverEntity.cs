@@ -8,6 +8,11 @@ namespace Server.Reawakened.Entities;
 
 public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
 {
+    private int _activations;
+    private int _deactivations;
+
+    public bool Activated = true;
+    public bool Enabled = true;
     public int NbActivationsNeeded => EntityData.NbActivationsNeeded;
     public int NbDeactivationsNeeded => EntityData.NbDeactivationsNeeded;
     public bool DisabledUntilTriggered => EntityData.DisabledUntilTriggered;
@@ -15,17 +20,7 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
     public bool ActiveByDefault => EntityData.ActiveByDefault;
     public TriggerReceiver.ReceiverCollisionType CollisionType => EntityData.CollisionType;
 
-    private int _activations;
-    private int _deactivations;
-
-    public bool Activated = true;
-    public bool Enabled = true;
-
     public ILogger<TriggerReceiverEntity> Logger { get; set; }
-
-    public override void InitializeEntity() => Trigger(ActiveByDefault);
-
-    public override object[] GetInitData(NetState netState) => new object[] { Activated ? 1 : 0 };
 
     public void TriggerStateChange(TriggerType triggerType, Room room, bool triggered)
     {
@@ -62,12 +57,16 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
                     _deactivations--;
                 break;
         }
-        
+
         if (_activations >= NbActivationsNeeded)
             Trigger(true);
         else if (_deactivations >= NbDeactivationsNeeded)
             Trigger(false);
     }
+
+    public override void InitializeEntity() => Trigger(ActiveByDefault);
+
+    public override object[] GetInitData(NetState netState) => new object[] { Activated ? 1 : 0 };
 
     public void Trigger(bool activated)
     {

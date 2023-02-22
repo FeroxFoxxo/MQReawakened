@@ -6,8 +6,8 @@ namespace Server.Reawakened.Players.Services;
 
 public class CreateNewAccount : IService
 {
-    private readonly ServerConsole _serverConsole;
     private readonly EventSink _eventSink;
+    private readonly ServerConsole _serverConsole;
 
     public CreateNewAccount(ServerConsole serverConsole,
         EventSink eventSink)
