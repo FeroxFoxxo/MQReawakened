@@ -11,6 +11,6 @@ public class InternalRwConfig : IRwConfig
     public InternalRwConfig()
     {
         IgnoreProtocolType = Array.Empty<string>();
-        NetworkType = NetworkType.Server | NetworkType.Client;
+        NetworkType = NetworkType.Unknown;
     }
 }
