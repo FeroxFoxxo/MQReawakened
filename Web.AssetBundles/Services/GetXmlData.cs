@@ -12,7 +12,7 @@ namespace Web.AssetBundles.Services;
 public class GetXmlData : IService
 {
     private readonly BuildAssetList _assets;
-    private readonly ServerStaticConfig _config;
+    private readonly ServerRConfig _config;
     private readonly ItemCatalog _itemCatalog;
     private readonly BuildLevelFiles _levels;
     private readonly ILogger<GetXmlData> _logger;
@@ -20,7 +20,7 @@ public class GetXmlData : IService
     private readonly WorldGraph _worldGraph;
 
     public GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
-        ServerStaticConfig config, WorldGraph worldGraph, ItemCatalog itemCatalog,
+        ServerRConfig config, WorldGraph worldGraph, ItemCatalog itemCatalog,
         BuildAssetList assets, BuildLevelFiles levels)
     {
         _serverConsole = serverConsole;
@@ -37,14 +37,14 @@ public class GetXmlData : IService
         _serverConsole.AddCommand(
             "listLevels",
             "Lists out all the levels in the world graph.",
-            NetworkType.Both,
+            NetworkType.Server | NetworkType.Client,
             PrintLevels
         );
 
         _serverConsole.AddCommand(
             "listItems",
             "Lists out all the items in the catalog.",
-            NetworkType.Both,
+            NetworkType.Server | NetworkType.Client,
             PrintItems
         );
 

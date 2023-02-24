@@ -10,7 +10,7 @@ namespace Server.Base.Timers.Services;
 public class TimerThread : IService
 {
     private readonly Dictionary<Timer, TimerChangeEntry> _changed;
-    private readonly InternalStaticConfig _config;
+    private readonly InternalRConfig _config;
     private readonly ServerHandler _handler;
     private readonly double[] _nextPriorities;
     private readonly TimerChangePool _pool;
@@ -20,7 +20,7 @@ public class TimerThread : IService
     private readonly List<Timer>[] _timers;
     private readonly Thread _timerThread;
 
-    public TimerThread(InternalStaticConfig config, TimerChangePool pool, EventSink sink, ServerHandler handler)
+    public TimerThread(InternalRConfig config, TimerChangePool pool, EventSink sink, ServerHandler handler)
     {
         _config = config;
         _pool = pool;

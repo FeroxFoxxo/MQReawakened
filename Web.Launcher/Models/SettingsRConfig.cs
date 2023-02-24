@@ -4,20 +4,20 @@ using System.Dynamic;
 
 namespace Web.Launcher.Models;
 
-public class SettingsStaticConfig : IStaticConfig
+public class SettingsRConfig : IRConfig
 {
     public string BaseUrl { get; }
     public bool Fullscreen { get; }
     public bool OnGameClosePopup { get; }
 
-    public SettingsStaticConfig()
+    public SettingsRConfig()
     {
         BaseUrl = "http://localhost";
         Fullscreen = false;
         OnGameClosePopup = false;
     }
 
-    public void SetSettings(StartConfig config)
+    public void SetSettings(LauncherRwConfig config)
     {
         if (config.GameSettingsFile == null)
             return;

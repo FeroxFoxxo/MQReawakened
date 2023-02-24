@@ -2,7 +2,7 @@
 
 namespace Web.Launcher.Models;
 
-public class LauncherStaticConfig : IStaticConfig
+public class LauncherRConfig : IRConfig
 {
     public string News { get; }
 
@@ -27,7 +27,7 @@ public class LauncherStaticConfig : IStaticConfig
     public string TimeFilter { get; }
     public string OldClientLastUpdate { get; }
 
-    public LauncherStaticConfig()
+    public LauncherRConfig()
     {
         News = $"You expected there to be news here? It's {DateTime.Now.Year}!";
 

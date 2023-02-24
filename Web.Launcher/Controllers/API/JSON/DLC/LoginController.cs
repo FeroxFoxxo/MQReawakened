@@ -11,17 +11,17 @@ namespace Web.Launcher.Controllers.API.JSON.DLC;
 public class LoginController : Controller
 {
     private readonly AccountHandler _accHandler;
-    private readonly StartConfig _config;
+    private readonly LauncherRwConfig _config;
     private readonly PasswordHasher _passwordHasher;
-    private readonly LauncherStaticConfig _sConfig;
+    private readonly LauncherRConfig _rConfig;
     private readonly UserInfoHandler _userInfoHandler;
 
     public LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler,
-        LauncherStaticConfig sConfig, PasswordHasher passwordHasher, StartConfig config)
+        LauncherRConfig rConfig, PasswordHasher passwordHasher, LauncherRwConfig config)
     {
         _accHandler = accHandler;
         _userInfoHandler = userInfoHandler;
-        _sConfig = sConfig;
+        _rConfig = rConfig;
         _passwordHasher = passwordHasher;
         _config = config;
     }
@@ -65,12 +65,12 @@ public class LoginController : Controller
         resp.user = user;
 
         dynamic analytics = new ExpandoObject();
-        analytics.id = _sConfig.AnalyticsId.ToString();
+        analytics.id = _rConfig.AnalyticsId.ToString();
         analytics.trackingShortId = userInfo.TrackingShortId;
-        analytics.enabled = _sConfig.AnalyticsEnabled;
+        analytics.enabled = _rConfig.AnalyticsEnabled;
         analytics.firstTimeLogin = account.Created == account.LastLogin ? "true" : "false";
         analytics.firstLoginToday = (DateTime.UtcNow - account.LastLogin).TotalDays >= 1;
-        analytics.baseUrl = $"{_sConfig.BaseUrl}/Analytics";
+        analytics.baseUrl = $"{_rConfig.BaseUrl}/Analytics";
         analytics.apiKey = _config.AnalyticsApiKey;
         resp.analytics = analytics;
 

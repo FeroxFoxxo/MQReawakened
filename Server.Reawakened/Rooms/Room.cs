@@ -17,6 +17,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
+using System.Collections.Generic;
 using WorldGraphDefines;
 using Timer = Server.Base.Timers.Timer;
 
@@ -24,7 +25,7 @@ namespace Server.Reawakened.Rooms;
 
 public class Room : Timer
 {
-    private readonly ServerStaticConfig _config;
+    private readonly ServerRConfig _config;
     private readonly HashSet<int> _gameObjectIds;
     private readonly WorldHandler _worldHandler;
 
@@ -41,7 +42,7 @@ public class Room : Timer
     public long TimeOffset { get; set; }
     public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
 
-    public Room(LevelInfo levelInfo, ServerStaticConfig config,
+    public Room(LevelInfo levelInfo, ServerRConfig config,
         WorldHandler worldHandler, ReflectionUtils reflection, TimerThread timerThread,
         IServiceProvider services, ILogger<Room> logger, FileLogger fileLogger) :
         base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
@@ -90,58 +91,56 @@ public class Room : Timer
 
     public void AddClient(NetState newClient, out JoinReason reason)
     {
-        var gameObjectId = -1;
+        reason = Clients.Count > _config.PlayerCap ? JoinReason.Full : JoinReason.Accepted;
 
-        if (Clients.Count > _config.PlayerCap)
-        {
-            reason = JoinReason.Full;
-        }
-        else
-        {
-            gameObjectId = 1;
-
-            while (_gameObjectIds.Contains(gameObjectId))
-                gameObjectId++;
-
-            Clients.Add(gameObjectId, newClient);
-            _gameObjectIds.Add(gameObjectId);
-            reason = JoinReason.Accepted;
-        }
-
-        newClient.Get<Player>().GameObjectId = gameObjectId;
+        if (LevelInfo.LevelId == -1)
+            return;
 
         if (reason == JoinReason.Accepted)
         {
-            var newPlayer = newClient.Get<Player>();
+            Clients.Add(newClient.Get<Player>().UserId, newClient);
 
-            if (LevelInfo.LevelId == -1)
-                return;
-
-            // JOIN CONDITION
-            newClient.SendXml("joinOK", $"<pid id='{newPlayer.UserId}' /><uLs />");
+            newClient.SendXml("joinOK", "<pid id='0' /><uLs />");
 
             if (LevelInfo.LevelId == 0)
                 return;
 
-            // USER ENTER
-            var newAccount = newClient.Get<Account>();
-
-            foreach (var currentClient in Clients.Values)
-            {
-                var currentPlayer = currentClient.Get<Player>();
-                var currentAccount = currentClient.Get<Account>();
-
-                var areDifferentClients = currentPlayer.UserId != newPlayer.UserId;
-
-                newClient.SendUserEnterData(currentPlayer, currentAccount);
-
-                if (areDifferentClients)
-                    currentClient.SendUserEnterData(newPlayer, newAccount);
-            }
+            JoinRoom(newClient);
         }
         else
         {
             newClient.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
+        }
+
+    }
+
+    public void JoinRoom(NetState newClient)
+    {
+        var newPlayer = newClient.Get<Player>();
+
+        var gameObjectId = 1;
+
+        while (_gameObjectIds.Contains(gameObjectId))
+            gameObjectId++;
+
+        _gameObjectIds.Add(gameObjectId);
+
+        newPlayer.GameObjectId = gameObjectId;
+        
+        // USER ENTER
+        var newAccount = newClient.Get<Account>();
+
+        foreach (var currentClient in Clients.Values)
+        {
+            var currentPlayer = currentClient.Get<Player>();
+            var currentAccount = currentClient.Get<Account>();
+
+            var areDifferentClients = currentPlayer.UserId != newPlayer.UserId;
+
+            newClient.SendUserEnterData(currentPlayer, currentAccount);
+
+            if (areDifferentClients)
+                currentClient.SendUserEnterData(newPlayer, newAccount);
         }
     }
 
@@ -212,14 +211,15 @@ public class Room : Timer
     public void DumpPlayerToLobby(int playerId)
     {
         var client = Clients[playerId];
-        client.Get<Player>().JoinRoom(client, _worldHandler.GetRoomFromLevelId(-1), out _);
-        RemoveClient(playerId);
+        var player = client.Get<Player>();
+        player.JoinRoom(client, _worldHandler.GetRoomFromLevelId(-1), out _);
+        RemoveClient(player);
     }
 
-    public void RemoveClient(int playerId)
+    public void RemoveClient(Player player)
     {
-        Clients.Remove(playerId);
-        _gameObjectIds.Remove(playerId);
+        Clients.Remove(player.UserId);
+        _gameObjectIds.Remove(player.GameObjectId);
 
         if (Clients.Count != 0 || LevelInfo.LevelId <= 0)
             return;

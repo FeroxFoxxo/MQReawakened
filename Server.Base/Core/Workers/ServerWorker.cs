@@ -41,7 +41,7 @@ public class ServerWorker : IHostedService
         _sink = sink;
         _services = services;
 
-        MultiConsoleOut = new MultiTextWriter(Console.Out, new FileLogger("console.log"));
+        MultiConsoleOut = new MultiTextWriter(Console.Out, new ConsoleFileLogger("console.log"));
 
         _serverThread = new Thread(ServerLoopThread)
         {

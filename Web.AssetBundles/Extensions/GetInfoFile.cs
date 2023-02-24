@@ -6,25 +6,25 @@ namespace Web.AssetBundles.Extensions;
 
 public static class GetInfoFile
 {
-    public static string GetWebPlayerInfoFile(this AssetBundleConfig config, AssetBundleStaticConfig sConfig,
+    public static string GetWebPlayerInfoFile(this AssetBundleRwConfig rwConfig, AssetBundleRConfig rConfig,
         Microsoft.Extensions.Logging.ILogger logger)
     {
-        config.WebPlayerInfoFile = TryGetInfoFile($"Web Player '{sConfig.DefaultWebPlayerCacheLocation}'",
-            config.WebPlayerInfoFile, logger);
+        rwConfig.WebPlayerInfoFile = TryGetInfoFile($"Web Player '{rConfig.DefaultWebPlayerCacheLocation}'",
+            rwConfig.WebPlayerInfoFile, logger);
 
-        if (config.WebPlayerInfoFile == config.CacheInfoFile)
+        if (rwConfig.WebPlayerInfoFile == rwConfig.CacheInfoFile)
         {
             logger.LogError("Web player cache and saved directory should not be the same! Skipping...");
-            config.WebPlayerInfoFile = string.Empty;
+            rwConfig.WebPlayerInfoFile = string.Empty;
         }
 
-        if (!config.WebPlayerInfoFile.ToLower().Contains("appdata"))
+        if (!rwConfig.WebPlayerInfoFile.ToLower().Contains("appdata"))
         {
             logger.LogError("Web player cache has to be in the AppData/LocalLow folder! Skipping...");
-            config.WebPlayerInfoFile = string.Empty;
+            rwConfig.WebPlayerInfoFile = string.Empty;
         }
 
-        return config.WebPlayerInfoFile;
+        return rwConfig.WebPlayerInfoFile;
     }
 
     public static string TryGetInfoFile(string cacheName, string defaultFile,

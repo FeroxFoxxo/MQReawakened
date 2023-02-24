@@ -15,20 +15,20 @@ public class ReplaceCaches : IService
 {
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly BuildAssetList _buildAssetList;
-    private readonly AssetBundleConfig _config;
+    private readonly AssetBundleRwConfig _rwConfig;
     private readonly ServerConsole _console;
     private readonly StartGame _game;
     private readonly object _lock;
     private readonly ILogger<ReplaceCaches> _logger;
-    private readonly AssetBundleStaticConfig _sConfig;
+    private readonly AssetBundleRConfig _rConfig;
     private readonly EventSink _sink;
 
     public readonly List<string> CurrentlyLoadedAssets;
     public readonly List<string> ReplacedBundles;
 
     public ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList,
-        AssetBundleStaticConfig sConfig,
-        ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime, AssetBundleConfig config)
+        AssetBundleRConfig rConfig,
+        ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime, AssetBundleRwConfig rwConfig)
     {
         _console = console;
         _sink = sink;
@@ -36,8 +36,8 @@ public class ReplaceCaches : IService
         _logger = logger;
         _game = game;
         _appLifetime = appLifetime;
-        _sConfig = sConfig;
-        _config = config;
+        _rConfig = rConfig;
+        _rwConfig = rwConfig;
 
         CurrentlyLoadedAssets = new List<string>();
         ReplacedBundles = new List<string>();
@@ -48,16 +48,15 @@ public class ReplaceCaches : IService
     {
         _sink.WorldLoad += Load;
 
-        _appLifetime.ApplicationStarted.Register(LogDynamicAssetWarning);
+        _appLifetime.ApplicationStarted.Register(EnsureCacheReplaced);
     }
 
-    private void LogDynamicAssetWarning()
+    private void EnsureCacheReplaced()
     {
-        if (_sConfig.UseCacheReplacementScheme)
-            _logger.LogError("Note: Dynamically loading cache files is not currently supported. " +
-                             "When the client requests these, the first attempt will be in light blue (INFORMATION). " +
-                             "When this changes to a purple (TRACE), with no more blue queries, " +
-                             "please close the client and run the 'replaceCaches' command!");
+        if (string.IsNullOrEmpty(_rwConfig.WebPlayerInfoFile))
+            return;
+
+        ReplaceWebPlayerCache(true);
     }
 
     public void Load() =>
@@ -65,34 +64,37 @@ public class ReplaceCaches : IService
             "replaceCaches",
             "Replaces all generated Web Player cache files with their real counterparts.",
             NetworkType.Client,
-            _ => ReplaceWebPlayerCache()
+            _ => ReplaceWebPlayerCache(true)
         );
 
-    public void ReplaceWebPlayerCache()
+    public void ReplaceWebPlayerCache(bool overrideCheckForCached)
     {
-        _config.GetWebPlayerInfoFile(_sConfig, _logger);
+        if (!overrideCheckForCached && CurrentlyLoadedAssets.Count == 0)
+            return;
 
-        if (string.IsNullOrEmpty(_config.WebPlayerInfoFile))
+        CurrentlyLoadedAssets.Clear();
+
+        _rwConfig.GetWebPlayerInfoFile(_rConfig, _logger);
+
+        if (string.IsNullOrEmpty(_rwConfig.WebPlayerInfoFile))
             return;
 
         lock (_lock)
         {
-            if (_config.FlushCacheOnStart)
+            if (_rwConfig.FlushCacheOnStart)
                 if (_logger.Ask("Flushing the cache on start is enabled, would you like to disable this?", true))
-                    _config.FlushCacheOnStart = false;
+                    _rwConfig.FlushCacheOnStart = false;
         }
 
-        var cacheModel = new CacheModel(_buildAssetList, _config);
+        var cacheModel = new CacheModel(_buildAssetList, _rwConfig);
 
         _logger.LogInformation(
             "Loaded {NumAssetDict} assets with {Caches} caches ({TotalFiles} total files, {Unknown} unidentified).",
             cacheModel.TotalAssetDictionaryFiles, cacheModel.TotalFoundCaches, cacheModel.TotalCachedAssetFiles,
             cacheModel.TotalUnknownCaches
         );
-
-        CurrentlyLoadedAssets.Clear();
-
-        using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", _logger, _sConfig))
+        
+        using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", _logger, _rConfig))
         {
             foreach (var cache in cacheModel.FoundCaches)
             {
@@ -105,7 +107,8 @@ public class ReplaceCaches : IService
             }
         }
 
-        _game.AskIfRestart();
+        if (!overrideCheckForCached)
+            _game.AskIfRestart();
     }
 
     private void ReplaceCacheFiles(InternalAssetInfo asset, IEnumerable<string> paths)

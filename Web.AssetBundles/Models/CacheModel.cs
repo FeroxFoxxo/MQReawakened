@@ -13,7 +13,7 @@ public class CacheModel
     public Dictionary<string, List<string>> FoundCaches { get; set; }
     public Dictionary<string, string> UnknownCaches { get; set; }
 
-    public CacheModel(BuildAssetList buildAssetList, AssetBundleConfig config)
+    public CacheModel(BuildAssetList buildAssetList, AssetBundleRwConfig rwConfig)
     {
         FoundCaches = new Dictionary<string, List<string>>();
         UnknownCaches = new Dictionary<string, string>();
@@ -22,7 +22,7 @@ public class CacheModel
             .Select(a => new KeyValuePair<string, InternalAssetInfo>(Path.GetFileName(a.Path), a))
             .DistinctBy(a => a.Key).ToDictionary(a => a.Key, a => a.Value);
 
-        var caches = Directory.GetFiles(Path.GetDirectoryName(config.WebPlayerInfoFile)!, "*.*",
+        var caches = Directory.GetFiles(Path.GetDirectoryName(rwConfig.WebPlayerInfoFile)!, "*.*",
                 SearchOption.AllDirectories).Select(c => new KeyValuePair<string, string>(Path.GetFileName(c), c))
             .Where(c => c.Key != "__info").ToArray();
 

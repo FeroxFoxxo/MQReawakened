@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Server.Base.Logging.Internal;
 
-public class FileLogger : TextWriter
+public class ConsoleFileLogger : TextWriter
 {
     public const string DateFormat = "[MMMM dd hh:mm:ss.f tt]: ";
 
@@ -13,7 +13,7 @@ public class FileLogger : TextWriter
 
     public override Encoding Encoding => Encoding.Default;
 
-    public FileLogger(string file)
+    public ConsoleFileLogger(string file)
     {
         FileName = file;
 

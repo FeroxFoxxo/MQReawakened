@@ -3,14 +3,14 @@ using Server.Base.Network.Enums;
 
 namespace Server.Base.Core.Models;
 
-public class InternalConfig : IConfig
+public class InternalRwConfig : IRwConfig
 {
     public string[] IgnoreProtocolType { get; set; }
     public NetworkType NetworkType { get; set; }
 
-    public InternalConfig()
+    public InternalRwConfig()
     {
         IgnoreProtocolType = Array.Empty<string>();
-        NetworkType = NetworkType.Both;
+        NetworkType = NetworkType.Server | NetworkType.Client;
     }
 }

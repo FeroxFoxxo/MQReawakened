@@ -16,14 +16,14 @@ namespace Web.Apps.Analytics.Controllers;
 [Route("/Analytics/{AnalyticsKey}")]
 public class AnalyticsController : Controller
 {
-    private readonly AssetBundleStaticConfig _aConfig;
-    private readonly StartConfig _config;
+    private readonly AssetBundleRConfig _aConfig;
+    private readonly LauncherRwConfig _config;
     private readonly ILogger<AnalyticsController> _logger;
     private readonly ReplaceCaches _replaceCaches;
     private readonly FileLogger _fileLogger;
 
-    public AnalyticsController(ILogger<AnalyticsController> logger, StartConfig config, ReplaceCaches replaceCaches,
-        AssetBundleStaticConfig aConfig, FileLogger fileLogger)
+    public AnalyticsController(ILogger<AnalyticsController> logger, LauncherRwConfig config, ReplaceCaches replaceCaches,
+        AssetBundleRConfig aConfig, FileLogger fileLogger)
     {
         _logger = logger;
         _config = config;
@@ -125,7 +125,7 @@ public class AnalyticsController : Controller
                         if (errorId is 2306 or 2302 or 2305)
                         {
                             _logger.LogError("Error likely due to caching system. Replacing!");
-                            _replaceCaches.ReplaceWebPlayerCache();
+                            _replaceCaches.ReplaceWebPlayerCache(false);
                         }
 
                         break;
@@ -140,7 +140,7 @@ public class AnalyticsController : Controller
             {
                 if (n == "applicationStart")
                     if (_replaceCaches.CurrentlyLoadedAssets.Count > 0 && _aConfig.UseCacheReplacementScheme)
-                        _replaceCaches.ReplaceWebPlayerCache();
+                        _replaceCaches.ReplaceWebPlayerCache(false);
                 break;
             }
         }
@@ -164,14 +164,10 @@ public class AnalyticsController : Controller
         return new CommonProperties(sessionId, timestamp);
     }
 
-    public void SendLog(CommonProperties properties, string message)
-    {
-        var sb = new StringBuilder();
-
-        sb.AppendLine($"{properties.Timestamp:g}");
-        sb.Append(message);
-
-        _fileLogger.WriteGenericLog<global::Analytics>("analytics", $"Session {properties.SessionId}",
-            sb.ToString(), LoggerType.Debug);
-    }
+    public void SendLog(CommonProperties properties, string message) =>
+        _fileLogger.WriteGenericLog<AnalyticsController>(
+            "analytics",
+            $"{properties.Timestamp:g} @ Session {properties.SessionId}",
+            message, LoggerType.Debug
+        );
 }

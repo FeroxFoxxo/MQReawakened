@@ -11,29 +11,31 @@ public static class GetConfigs
 
     public static void LoadConfigs(this IServiceCollection services, Type config, ILogger logger)
     {
-        var configName = config.Name;
         try
         {
-            using var stream = GetFile.GetFileStream($"{configName}.json", ConfigDir, FileMode.Open);
+            using var stream = GetFile.GetFileStream(GetFileName(config), ConfigDir, FileMode.Open);
             services.AddSingleton(config,
                 JsonSerializer.Deserialize(stream, config) ?? throw new InvalidCastException());
-            logger.LogTrace("   Config: Found {Name} in {Directory}", configName, Path.GetDirectoryName(stream.Name));
+            logger.LogTrace("   Config: Found {Name} in {Directory}", config.Name, Path.GetDirectoryName(stream.Name));
         }
         catch (FileNotFoundException)
         {
             services.AddSingleton(config);
-            logger.LogTrace("   Config: {Name} was not found, creating!", configName);
+            logger.LogTrace("   Config: {Name} was not found, creating!", config.Name);
         }
     }
 
     public static void SaveConfigs(this IServiceProvider services, IEnumerable<Module> modules)
     {
-        foreach (var config in services.GetRequiredServices<IConfig>(modules))
+        foreach (var config in services.GetRequiredServices<IRwConfig>(modules))
         {
             var configName = config.GetType().Name;
-            using var stream = GetFile.GetFileStream($"{config.GetType().Name}.json", ConfigDir, FileMode.Create);
+            using var stream = GetFile.GetFileStream(GetFileName(config.GetType()), ConfigDir, FileMode.Create);
             JsonSerializer.Serialize(stream, config, config.GetType(),
                 new JsonSerializerOptions { WriteIndented = true });
         }
     }
+
+    public static string GetFileName(Type config) =>
+        $"{config.Name.Replace("RwConfig", "")}.json";
 }

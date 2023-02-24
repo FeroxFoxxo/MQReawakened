@@ -16,18 +16,18 @@ namespace Server.Base.Accounts.Services;
 public class AccountHandler : DataHandler<Account>
 {
     private readonly AccountAttackLimiter _attackLimiter;
-    private readonly InternalStaticConfig _config;
+    private readonly InternalRConfig _config;
     private readonly PasswordHasher _hasher;
-    private readonly InternalStaticConfig _internalServerConfig;
+    private readonly InternalRConfig _internalServerConfig;
     private readonly IpLimiter _ipLimiter;
     private readonly FileLogger _fileLogger;
     private readonly TemporaryDataStorage _temporaryDataStorage;
 
     public Dictionary<IPAddress, int> IpTable;
 
-    public AccountHandler(EventSink sink, ILogger<Account> logger, InternalStaticConfig internalServerConfig,
+    public AccountHandler(EventSink sink, ILogger<Account> logger, InternalRConfig internalServerConfig,
         PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter,
-        FileLogger fileLogger, InternalStaticConfig config, TemporaryDataStorage temporaryDataStorage) : base(
+        FileLogger fileLogger, InternalRConfig config, TemporaryDataStorage temporaryDataStorage) : base(
         sink, logger)
     {
         _internalServerConfig = internalServerConfig;
@@ -123,10 +123,8 @@ public class AccountHandler : DataHandler<Account>
             _ => throw new ArgumentOutOfRangeException(rejectReason.ToString())
         };
 
-        if (rejectReason == AlrReason.Accepted)
-            Logger.LogInformation("Login: {NetState}: {Reason} for '{Username}'", netState, errorReason, username);
-        else
-            Logger.LogError("Login: {NetState}: {Reason} for '{Username}'", netState, errorReason, username);
+        _fileLogger.WriteGenericLog<AccountHandler>("login", $"Login: {netState}", $"{errorReason} for '{username}'",
+            rejectReason == AlrReason.Accepted ? LoggerType.Debug : LoggerType.Error);
 
         if (rejectReason is not AlrReason.Accepted and not AlrReason.InUse)
             _attackLimiter.RegisterInvalidAccess(netState);
@@ -142,8 +140,8 @@ public class AccountHandler : DataHandler<Account>
         {
             if (IPAddress.TryParse(account.LoginIPs[0], out var ipAddress))
             {
-                if (IpTable.TryGetValue(ipAddress, out var value))
-                    value++;
+                if (IpTable.ContainsKey(ipAddress))
+                    IpTable[ipAddress]++;
                 else
                     IpTable[ipAddress] = 1;
             }
@@ -198,5 +196,5 @@ public class AccountHandler : DataHandler<Account>
     }
 
     public void IpLimitedError(NetState netState) =>
-        _fileLogger.WriteNetStateLog<IpLimiter>("ipLimits", netState, "Past IP limit threshold", LoggerType.Debug);
+        _fileLogger.WriteGenericLog<IpLimiter>("ipLimits", netState.ToString(), "Past IP limit threshold", LoggerType.Debug);
 }

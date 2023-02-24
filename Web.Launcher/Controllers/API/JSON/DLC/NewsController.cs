@@ -6,9 +6,9 @@ namespace Web.Launcher.Controllers.API.JSON.DLC;
 [Route("api/json/dlc/news")]
 public class NewsController : Controller
 {
-    private readonly LauncherStaticConfig _config;
+    private readonly LauncherRConfig _config;
 
-    public NewsController(LauncherStaticConfig config) => _config = config;
+    public NewsController(LauncherRConfig config) => _config = config;
 
     [HttpGet]
     public IActionResult GetNews() => Ok(_config.News);

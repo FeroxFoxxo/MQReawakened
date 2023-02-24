@@ -2,7 +2,7 @@
 
 namespace Web.Apps.Chat.Models;
 
-public class ChatConfig : IStaticConfig
+public class ChatConfig : IRConfig
 {
     public string CrispKey { get; }
     public string TerminationCharacter { get; }

@@ -70,14 +70,14 @@ public class Server : Module
 
         Logger.LogDebug("Loading Configs");
 
-        foreach (var config in modules.GetServices<IConfig>())
+        foreach (var config in modules.GetServices<IRwConfig>())
             services.LoadConfigs(config, Logger);
 
         Logger.LogInformation("Loaded configs");
 
         Logger.LogDebug("Loading static configs");
 
-        foreach (var staticConfig in modules.GetServices<IStaticConfig>())
+        foreach (var staticConfig in modules.GetServices<IRConfig>())
             services.AddSingleton(staticConfig);
 
         Logger.LogInformation("Loaded configs");

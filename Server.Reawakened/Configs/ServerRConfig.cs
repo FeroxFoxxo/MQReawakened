@@ -4,7 +4,7 @@ using Server.Base.Core.Extensions;
 
 namespace Server.Reawakened.Configs;
 
-public class ServerStaticConfig : IStaticConfig
+public class ServerRConfig : IRConfig
 {
     public int DefaultChatLevel { get; }
     public bool DefaultMemberStatus { get; }
@@ -34,7 +34,7 @@ public class ServerStaticConfig : IStaticConfig
 
     public Dictionary<DebugHandler.DebugVariables, bool> DefaultDebugVariables { get; }
 
-    public ServerStaticConfig()
+    public ServerRConfig()
     {
         LevelSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Level");
         LevelDataSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "LevelData");

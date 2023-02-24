@@ -3,7 +3,7 @@ using Server.Base.Core.Abstractions;
 
 namespace Server.Base.Core.Models;
 
-public class InternalStaticConfig : IStaticConfig
+public class InternalRConfig : IRConfig
 {
     public string Host { get; }
     public int Port { get; }
@@ -25,7 +25,7 @@ public class InternalStaticConfig : IStaticConfig
     public string[] Backups { get; }
     public int CommandPadding { get; }
 
-    public InternalStaticConfig()
+    public InternalRConfig()
     {
         MaxAccountsPerIp = 1;
         ForbiddenChars = new[]

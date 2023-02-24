@@ -15,7 +15,7 @@ namespace Server.Reawakened.Rooms.Extensions;
 
 public static class LoadRoomData
 {
-    public static Dictionary<string, PlaneModel> LoadPlanes(this LevelInfo levelInfo, ServerStaticConfig config)
+    public static Dictionary<string, PlaneModel> LoadPlanes(this LevelInfo levelInfo, ServerRConfig config)
     {
         var levelInfoPath = Path.Join(config.LevelSaveDirectory, $"{levelInfo.Name}.xml");
         var levelDataPath = Path.Join(config.LevelDataSaveDirectory, $"{levelInfo.Name}.json");

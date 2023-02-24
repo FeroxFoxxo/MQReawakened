@@ -13,22 +13,22 @@ public class ServerConsole : IService
 {
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly Dictionary<string, ConsoleCommand> _commands;
-    private readonly InternalStaticConfig _sConfig;
-    private readonly InternalConfig _config;
+    private readonly InternalRConfig _rConfig;
+    private readonly InternalRwConfig _rwConfig;
     private readonly Thread _consoleThread;
     private readonly ServerHandler _handler;
     private readonly ILogger<ServerConsole> _logger;
     private readonly TimerThread _timerThread;
 
     public ServerConsole(TimerThread timerThread, ServerHandler handler, ILogger<ServerConsole> logger,
-        IHostApplicationLifetime appLifetime, InternalStaticConfig sConfig, InternalConfig config)
+        IHostApplicationLifetime appLifetime, InternalRConfig rConfig, InternalRwConfig rwConfig)
     {
         _timerThread = timerThread;
         _handler = handler;
         _logger = logger;
         _appLifetime = appLifetime;
-        _sConfig = sConfig;
-        _config = config;
+        _rConfig = rConfig;
+        _rwConfig = rwConfig;
 
         _commands = new Dictionary<string, ConsoleCommand>();
 
@@ -120,11 +120,11 @@ public class ServerConsole : IService
         _logger.LogInformation("Commands:");
 
         foreach (var command in _commands.Values
-                     .Where(x => x.NetworkType == _config.NetworkType || _config.NetworkType == NetworkType.Both)
+                     .Where(x => _rwConfig.NetworkType.HasFlag(x.NetworkType))
                      .OrderBy(x => x.Name)
                 )
         {
-            var padding = _sConfig.CommandPadding - command.Name.Length;
+            var padding = _rConfig.CommandPadding - command.Name.Length;
             if (padding < 0) padding = 0;
             _logger.LogInformation("  {Name} - {Description}", command.Name.PadRight(padding), command.Description);
         }

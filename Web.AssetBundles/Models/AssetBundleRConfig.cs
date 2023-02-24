@@ -3,7 +3,7 @@ using Server.Base.Core.Extensions;
 
 namespace Web.AssetBundles.Models;
 
-public class AssetBundleStaticConfig : IStaticConfig
+public class AssetBundleRConfig : IRConfig
 {
     public string AssetDictKey { get; }
     public string StoredAssetDict { get; }
@@ -39,7 +39,7 @@ public class AssetBundleStaticConfig : IStaticConfig
     public bool LogProgressBars { get; }
     public bool KillOnBundleRetry { get; }
 
-    public AssetBundleStaticConfig()
+    public AssetBundleRConfig()
     {
         BundleSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Bundles");
         XmlSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "XMLs");

@@ -8,7 +8,7 @@ public class DebugValues : ExternalProtocol
 {
     public override string ProtocolName => "Dg";
 
-    public ServerStaticConfig Config { get; set; }
+    public ServerRConfig Config { get; set; }
 
     public override void Run(string[] message) =>
         SendXt("Dg", GetDebugValues());

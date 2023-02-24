@@ -14,7 +14,7 @@ public static class RoomExtensions
 {
     public static void JoinRoom(this Player player, NetState state, Room room, out JoinReason reason)
     {
-        player.CurrentRoom?.RemoveClient(player.UserId);
+        player.CurrentRoom?.RemoveClient(player);
         player.CurrentRoom = room;
         player.CurrentRoom.AddClient(state, out reason);
     }

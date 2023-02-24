@@ -23,14 +23,14 @@ namespace Web.Launcher.Services;
 public class StartGame : IService
 {
     private readonly IHostApplicationLifetime _appLifetime;
-    private readonly StartConfig _config;
     private readonly ServerConsole _console;
     private readonly RandomKeyGenerator _generator;
-    private readonly InternalConfig _internalConfig;
-    private readonly LauncherStaticConfig _lConfig;
+    private readonly InternalRwConfig _internalWConfig;
     private readonly ILogger<StartGame> _logger;
     private readonly PlayerEventSink _playerEventSink;
-    private readonly SettingsStaticConfig _sConfig;
+    private readonly SettingsRConfig _sConfig;
+    private readonly LauncherRConfig _lConfig;
+    private readonly LauncherRwConfig _lWConfig;
     private readonly EventSink _sink;
     private readonly World _world;
 
@@ -40,10 +40,10 @@ public class StartGame : IService
 
     public PackageInformation CurrentVersion { get; private set; }
 
-    public StartGame(EventSink sink, LauncherStaticConfig lConfig, SettingsStaticConfig sConfig,
+    public StartGame(EventSink sink, LauncherRConfig lConfig, SettingsRConfig sConfig,
         IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console,
-        World world, StartConfig config, PlayerEventSink playerEventSink, RandomKeyGenerator generator,
-        InternalConfig internalConfig)
+        World world, LauncherRwConfig lWConfig, PlayerEventSink playerEventSink, RandomKeyGenerator generator,
+        InternalRwConfig internalWConfig)
     {
         _sink = sink;
         _lConfig = lConfig;
@@ -52,10 +52,10 @@ public class StartGame : IService
         _logger = logger;
         _console = console;
         _world = world;
-        _config = config;
+        _lWConfig = lWConfig;
         _playerEventSink = playerEventSink;
         _generator = generator;
-        _internalConfig = internalConfig;
+        _internalWConfig = internalWConfig;
 
         _dirSet = false;
         _appStart = false;
@@ -63,7 +63,7 @@ public class StartGame : IService
 
     public void Initialize()
     {
-        if (_internalConfig.NetworkType == NetworkType.Server)
+        if (!_internalWConfig.NetworkType.HasFlag(NetworkType.Client))
         {
             _logger.LogWarning("NOT RESTARTING: SERVER IS HEADLESS");
         }
@@ -97,10 +97,10 @@ public class StartGame : IService
 
         try
         {
-            _config.GameSettingsFile = SetFileValue.SetIfNotNull(_config.GameSettingsFile, "Get Settings File",
+            _lWConfig.GameSettingsFile = SetFileValue.SetIfNotNull(_lWConfig.GameSettingsFile, "Get Settings File",
                 "Settings File (*.txt)\0*.txt\0");
 
-            _sConfig.SetSettings(_config);
+            _sConfig.SetSettings(_lWConfig);
         }
         catch
         {
@@ -109,14 +109,14 @@ public class StartGame : IService
 
         while (true)
         {
-            if (string.IsNullOrEmpty(_config.GameSettingsFile) || !_config.GameSettingsFile.EndsWith("settings.txt"))
+            if (string.IsNullOrEmpty(_lWConfig.GameSettingsFile) || !_lWConfig.GameSettingsFile.EndsWith("settings.txt"))
             {
                 _logger.LogError("Please enter the absolute file path for your game's 'settings.txt' file.");
-                _config.GameSettingsFile = Console.ReadLine();
+                _lWConfig.GameSettingsFile = Console.ReadLine();
                 continue;
             }
 
-            _directory = Path.GetDirectoryName(_config.GameSettingsFile);
+            _directory = Path.GetDirectoryName(_lWConfig.GameSettingsFile);
 
             if (string.IsNullOrEmpty(_directory))
                 continue;
@@ -127,24 +127,24 @@ public class StartGame : IService
             break;
         }
 
-        _logger.LogInformation("Launcher Directory: {Directory}", Path.GetDirectoryName(_config.GameSettingsFile));
+        _logger.LogInformation("Launcher Directory: {Directory}", Path.GetDirectoryName(_lWConfig.GameSettingsFile));
 
         var lastUpdate = DateTime.ParseExact(CurrentVersion.game.lastUpdate, _lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
         var lastOldClientUpdate = DateTime.ParseExact(_lConfig.OldClientLastUpdate, _lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
 
-        _config.Is2014Client = lastUpdate > lastOldClientUpdate;
+        _lWConfig.Is2014Client = lastUpdate > lastOldClientUpdate;
 
-        if (!_config.Is2014Client)
+        if (!_lWConfig.Is2014Client)
             _directory = new DirectoryInfo(_directory).Parent?.FullName;
 
-        _config.LastClientUpdate = lastUpdate.ToUnixTimestamp();
+        _lWConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
 
-        if (string.IsNullOrEmpty(_config.AnalyticsApiKey))
+        if (string.IsNullOrEmpty(_lWConfig.AnalyticsApiKey))
         {
-            _config.AnalyticsApiKey = _generator.GetRandomKey<Analytics>(string.Empty);
-            _logger.LogDebug("Set API key to: {ApiKey}", _config.AnalyticsApiKey);
+            _lWConfig.AnalyticsApiKey = _generator.GetRandomKey<Analytics>(string.Empty);
+            _logger.LogDebug("Set API key to: {ApiKey}", _lWConfig.AnalyticsApiKey);
         }
 
         _dirSet = true;
@@ -154,12 +154,12 @@ public class StartGame : IService
 
     public void AskIfRestart()
     {
-        if (!_config.StartLauncherOnCommand)
+        if (!_lWConfig.StartLauncherOnCommand)
             if (_logger.Ask("The launcher is not set to restart on a related command being run, " +
                             "would you like to enable this?", true))
-                _config.StartLauncherOnCommand = true;
+                _lWConfig.StartLauncherOnCommand = true;
 
-        if (_config.StartLauncherOnCommand)
+        if (_lWConfig.StartLauncherOnCommand)
             LaunchGame();
     }
 
@@ -248,7 +248,7 @@ public class StartGame : IService
         { "leaderboard.domain", $"{_lConfig.BaseUrl}/Apps/" },
         { "analytics.baseurl", $"{_lConfig.BaseUrl}/Analytics/" },
         { "analytics.enabled", _lConfig.AnalyticsEnabled ? "true" : "false" },
-        { "analytics.apikey", _config.AnalyticsApiKey },
+        { "analytics.apikey", _lWConfig.AnalyticsApiKey },
         { "project.name", _lConfig.ProjectName }
     };
 }

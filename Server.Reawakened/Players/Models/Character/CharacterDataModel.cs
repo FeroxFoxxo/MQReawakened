@@ -44,7 +44,7 @@ public class CharacterDataModel : CharacterLightModel
 
     public CharacterDataModel() => InitializeLists();
 
-    public CharacterDataModel(string serverData, int id, ServerStaticConfig config) : base(serverData)
+    public CharacterDataModel(string serverData, int id, ServerRConfig config) : base(serverData)
     {
         Inventory = new InventoryModel();
         Hotbar = new HotbarModel();

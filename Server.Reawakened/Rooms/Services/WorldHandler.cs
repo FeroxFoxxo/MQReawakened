@@ -14,7 +14,7 @@ namespace Server.Reawakened.Rooms.Services;
 
 public class WorldHandler : IService
 {
-    private readonly ServerStaticConfig _config;
+    private readonly ServerRConfig _config;
 
     private readonly ILogger<WorldHandler> _handlerLogger;
     private readonly Dictionary<int, LevelInfo> _levelInfos;
@@ -28,7 +28,7 @@ public class WorldHandler : IService
     private readonly WorldGraph _worldGraph;
     private readonly FileLogger _fileLogger;
 
-    public WorldHandler(EventSink sink, ServerStaticConfig config, WorldGraph worldGraph,
+    public WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph,
         ReflectionUtils reflection, TimerThread timerThread, IServiceProvider services,
         ILogger<WorldHandler> handlerLogger, ILogger<Room> roomLogger, FileLogger fileLogger)
     {

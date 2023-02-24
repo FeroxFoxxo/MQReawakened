@@ -1,5 +1,5 @@
 ﻿namespace Server.Base.Core.Abstractions;
 
-public interface IConfig
+public interface IRConfig
 {
 }

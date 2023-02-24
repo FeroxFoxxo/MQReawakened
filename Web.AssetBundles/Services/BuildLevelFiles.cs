@@ -11,20 +11,20 @@ namespace Web.AssetBundles.Services;
 
 public class BuildLevelFiles : IService
 {
-    private readonly AssetBundleStaticConfig _config;
+    private readonly AssetBundleRConfig _aBConfig;
     private readonly AssetEventSink _eventSink;
     private readonly ILogger<BuildXmlFiles> _logger;
-    private readonly ServerStaticConfig _sConfig;
+    private readonly ServerRConfig _sConfig;
 
     public readonly Dictionary<string, string> LevelFiles;
 
-    public BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> logger, ServerStaticConfig sConfig,
-        AssetBundleStaticConfig config)
+    public BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> logger, ServerRConfig sConfig,
+        AssetBundleRConfig aBConfig)
     {
         _eventSink = eventSink;
         _logger = logger;
         _sConfig = sConfig;
-        _config = config;
+        _aBConfig = aBConfig;
 
         LevelFiles = new Dictionary<string, string>();
     }
@@ -44,7 +44,7 @@ public class BuildLevelFiles : IService
 
         GetDirectory.OverwriteDirectory(_sConfig.LevelSaveDirectory);
 
-        using var bar = new DefaultProgressBar(assets.Length, "Loading Level Files", _logger, _config);
+        using var bar = new DefaultProgressBar(assets.Length, "Loading Level Files", _logger, _aBConfig);
 
         foreach (var asset in assets)
         {

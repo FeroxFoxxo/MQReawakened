@@ -30,7 +30,7 @@ public class ArchivedSaves : IService
     public MergeType Merge;
 
     public ArchivedSaves(ILogger<ArchivedSaves> logger, EventSink eventSink, ServerHandler serverHandler,
-        InternalStaticConfig config)
+        InternalRConfig config)
     {
         _logger = logger;
         _eventSink = eventSink;

@@ -8,7 +8,7 @@ namespace Web.AssetBundles.LocalAssets;
 public static class AssetDictionaryExtensions
 {
     public static void AddModifiedAssets(this Dictionary<string, InternalAssetInfo> assets,
-        AssetBundleStaticConfig config)
+        AssetBundleRConfig config)
     {
         var assetsToAdd = new Dictionary<string, InternalAssetInfo>();
 
@@ -48,7 +48,7 @@ public static class AssetDictionaryExtensions
     }
 
     public static void AddLocalXmlFiles(this Dictionary<string, InternalAssetInfo> assets,
-        ILogger<BuildAssetList> logger, AssetBundleStaticConfig config)
+        ILogger<BuildAssetList> logger, AssetBundleRConfig config)
     {
         var localPath = Path.Combine(InternalDirectory.GetBaseDirectory(), "LocalAssets");
 

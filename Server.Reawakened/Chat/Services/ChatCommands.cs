@@ -18,13 +18,13 @@ public class ChatCommands : IService
 {
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly Dictionary<string, ChatCommand> _commands;
-    private readonly ServerStaticConfig _config;
+    private readonly ServerRConfig _config;
     private readonly ItemCatalog _itemCatalog;
     private readonly ILogger<ServerConsole> _logger;
     private readonly WorldGraph _worldGraph;
     private readonly WorldHandler _worldHandler;
 
-    public ChatCommands(ItemCatalog itemCatalog, ServerStaticConfig config, ILogger<ServerConsole> logger,
+    public ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
         WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime)
     {
         _itemCatalog = itemCatalog;

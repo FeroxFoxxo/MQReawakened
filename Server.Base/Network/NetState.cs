@@ -19,7 +19,7 @@ public class NetState : IDisposable
 {
     public delegate bool ThrottlePacketCallback(NetState state);
 
-    private readonly InternalConfig _config;
+    private readonly InternalRwConfig _rwConfig;
     private readonly ConcurrentBag<string> _currentLogs;
 
     private readonly Dictionary<Type, INetStateData> _data;
@@ -48,17 +48,17 @@ public class NetState : IDisposable
 
     public NetState(Socket socket, ILogger<MessagePump> logger,
         FileLogger fileLogger, NetStateHandler handler, IpLimiter limiter,
-        InternalConfig config, InternalStaticConfig sConfig, EventSink sink)
+        InternalRwConfig rwConfig, InternalRConfig rConfig, EventSink sink)
     {
         Socket = socket;
         AsyncLock = new object();
-        Buffer = new byte[sConfig.BufferSize];
+        Buffer = new byte[rConfig.BufferSize];
         _currentLogs = new ConcurrentBag<string>();
 
         _logger = logger;
         _fileLogger = fileLogger;
         _handler = handler;
-        _config = config;
+        _rwConfig = rwConfig;
         _sink = sink;
 
         _nextCheckActivity = GetTicks.Ticks + 30000000;
@@ -80,7 +80,7 @@ public class NetState : IDisposable
 
         ConnectedOn = DateTime.UtcNow;
 
-        UpdateRange = sConfig.GlobalUpdateRange;
+        UpdateRange = rConfig.GlobalUpdateRange;
 
         _sink.InvokeNetStateAdded(new NetStateAddedEventArgs(this));
     }
@@ -126,10 +126,10 @@ public class NetState : IDisposable
     }
 
     private void WriteServer(string text) =>
-        _logger.LogTrace("{NetState}: [SERVER] {Written}", this, text);
+        _logger.LogTrace("Outbound: {Written}", text);
 
     private void WriteClient(string text) =>
-        _logger.LogTrace("{NetState}: [CLIENT] {Written}", this, text);
+        _logger.LogTrace("Inbound:  {Written}", text);
 
     public void CheckAlive(double curTicks)
     {
@@ -194,7 +194,7 @@ public class NetState : IDisposable
             return;
 
         if (!string.IsNullOrEmpty(protocolType))
-            if (!_config.IgnoreProtocolType.Contains(protocolType))
+            if (!_rwConfig.IgnoreProtocolType.Contains(protocolType))
                 _currentLogs.Add(packet);
 
         packet += "\0";
@@ -272,23 +272,27 @@ public class NetState : IDisposable
                             protocol = _handler.Protocols[protocolType];
                     }
 
-                    var protocolId = string.Empty;
-
                     if (protocol != null)
-                        protocolId = protocol(this, packet);
+                    {
+                        var protocolId = protocol(this, packet);
+
+                        if (string.IsNullOrEmpty(protocolId))
+                            continue;
+
+                        if (_rwConfig.IgnoreProtocolType.Contains(protocolId) && _currentLogs.IsEmpty)
+                            continue;
+
+                        _logger.LogTrace("Client: {ClientAddress}", this);
+
+                        WriteClient(packet);
+
+                        foreach (var log in _currentLogs.Reverse())
+                            WriteServer(log);
+                    }
                     else
+                    {
                         TracePacketError(protocolType.ToString(), packet, this);
-
-                    if (string.IsNullOrEmpty(protocolId))
-                        continue;
-
-                    if (_config.IgnoreProtocolType.Contains(protocolId) && _currentLogs.IsEmpty)
-                        continue;
-
-                    WriteClient(packet);
-
-                    foreach (var log in _currentLogs.Reverse())
-                        WriteServer(log);
+                    }
 
                     _currentLogs.Clear();
                 }

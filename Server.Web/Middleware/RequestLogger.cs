@@ -13,7 +13,7 @@ public class RequestLogger
 
     public RequestLogger(RequestDelegate next) => _next = next;
 
-    public async Task Invoke(HttpContext context, ILogger<RequestLogger> logger, WebConfig webConfig, FileLogger fileLogger)
+    public async Task Invoke(HttpContext context, ILogger<RequestLogger> logger, WebRConfig webRConfig, FileLogger fileLogger)
     {
         var method = context.Request.Method;
 
@@ -31,7 +31,7 @@ public class RequestLogger
 
         var postData = string.Empty;
 
-        if (context.Request.HasFormContentType & webConfig.ShouldConcat)
+        if (context.Request.HasFormContentType & webRConfig.ShouldConcat)
         {
             postData = $" | Post Data: {string.Join(", ", context.Request.Form.Select(x => $"{x.Key}:{x.Value}"))}";
             var split = postData.Split('\n');

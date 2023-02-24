@@ -19,12 +19,12 @@ namespace Web.AssetBundles.Services;
 public class BuildAssetList : IService
 {
     private readonly AssetEventSink _assetSink;
-    private readonly AssetBundleConfig _config;
+    private readonly AssetBundleRwConfig _rwConfig;
     private readonly ServerConsole _console;
     private readonly ILogger<BuildAssetList> _logger;
-    private readonly AssetBundleStaticConfig _sConfig;
+    private readonly AssetBundleRConfig _rConfig;
     private readonly EventSink _sink;
-    private readonly StartConfig _startConfig;
+    private readonly LauncherRwConfig _launcherWConfig;
 
     public readonly Dictionary<string, string> AssetDict;
 
@@ -34,17 +34,17 @@ public class BuildAssetList : IService
 
     public Dictionary<string, InternalAssetInfo> InternalAssets;
 
-    public BuildAssetList(ILogger<BuildAssetList> logger, AssetBundleStaticConfig sConfig,
-        EventSink sink, AssetEventSink assetSink, ServerConsole console, StartConfig startConfig,
-        AssetBundleConfig config)
+    public BuildAssetList(ILogger<BuildAssetList> logger, AssetBundleRConfig rConfig,
+        EventSink sink, AssetEventSink assetSink, ServerConsole console, LauncherRwConfig launcherWConfig,
+        AssetBundleRwConfig rwConfig)
     {
         _logger = logger;
-        _sConfig = sConfig;
+        _rConfig = rConfig;
         _sink = sink;
         _assetSink = assetSink;
         _console = console;
-        _startConfig = startConfig;
-        _config = config;
+        _launcherWConfig = launcherWConfig;
+        _rwConfig = rwConfig;
 
         PublishConfigs = new Dictionary<string, string>();
         AssetDict = new Dictionary<string, string>();
@@ -57,33 +57,33 @@ public class BuildAssetList : IService
         _console.AddCommand(
             "refreshCacheDir",
             "Force generates asset dictionary from default caches directory.",
-            NetworkType.Both,
+            NetworkType.Server | NetworkType.Client,
             _ => GenerateDefaultAssetList(true)
         );
 
         _console.AddCommand(
             "changeCacheDir",
             "Change the default cache directory and regenerate dictionary.",
-            NetworkType.Both,
+            NetworkType.Server | NetworkType.Client,
             _ =>
             {
-                _config.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", string.Empty, _logger);
+                _rwConfig.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", string.Empty, _logger);
                 GenerateDefaultAssetList(true);
             }
         );
 
-        _config.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", _config.CacheInfoFile, _logger);
+        _rwConfig.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", _rwConfig.CacheInfoFile, _logger);
 
-        if (!string.IsNullOrEmpty(_config.WebPlayerInfoFile))
-            _config.WebPlayerInfoFile = _config.GetWebPlayerInfoFile(_sConfig, _logger);
+        if (!string.IsNullOrEmpty(_rwConfig.WebPlayerInfoFile))
+            _rwConfig.WebPlayerInfoFile = _rwConfig.GetWebPlayerInfoFile(_rConfig, _logger);
 
-        Directory.CreateDirectory(_sConfig.AssetSaveDirectory);
-        Directory.CreateDirectory(_sConfig.BundleSaveDirectory);
+        Directory.CreateDirectory(_rConfig.AssetSaveDirectory);
+        Directory.CreateDirectory(_rConfig.BundleSaveDirectory);
 
-        if (_config.FlushCacheOnStart)
-            GetDirectory.Empty(_sConfig.BundleSaveDirectory);
+        if (_rwConfig.FlushCacheOnStart)
+            GetDirectory.Empty(_rConfig.BundleSaveDirectory);
 
-        AssetDictLocation = Path.Combine(_sConfig.AssetSaveDirectory, _sConfig.StoredAssetDict);
+        AssetDictLocation = Path.Combine(_rConfig.AssetSaveDirectory, _rConfig.StoredAssetDict);
 
         GenerateDefaultAssetList(false);
     }
@@ -95,13 +95,13 @@ public class BuildAssetList : IService
         var dictExists = File.Exists(AssetDictLocation);
 
         var assets = !dictExists || forceGenerate
-            ? GetAssetsFromCache(Path.GetDirectoryName(_config.CacheInfoFile))
+            ? GetAssetsFromCache(Path.GetDirectoryName(_rwConfig.CacheInfoFile))
             : GetAssetsFromDictionary(File.ReadAllText(AssetDictLocation));
 
-        InternalAssets = assets.GetClosestBundles(_startConfig);
+        InternalAssets = assets.GetClosestBundles(_launcherWConfig);
 
-        InternalAssets.AddModifiedAssets(_sConfig);
-        InternalAssets.AddLocalXmlFiles(_logger, _sConfig);
+        InternalAssets.AddModifiedAssets(_rConfig);
+        InternalAssets.AddLocalXmlFiles(_logger, _rConfig);
 
         _logger.LogInformation("Loaded {Count} assets to memory.", InternalAssets.Count);
 
@@ -109,7 +109,7 @@ public class BuildAssetList : IService
             _logger.LogError("Could not find type for asset '{Name}' in '{File}'.", asset.Name, asset.Path);
 
         var vgmtAssets = InternalAssets.Where(x =>
-                _sConfig.VirtualGoods.Any(a => string.Equals(a, x.Key) || x.Key.StartsWith($"{a}Dict_")))
+                _rConfig.VirtualGoods.Any(a => string.Equals(a, x.Key) || x.Key.StartsWith($"{a}Dict_")))
             .ToDictionary(x => x.Key, x => x.Value);
 
         if (!vgmtAssets.Any())
@@ -125,11 +125,11 @@ public class BuildAssetList : IService
         PublishConfigs.Clear();
         AssetDict.Clear();
 
-        AddPublishConfiguration(gameAssets, _sConfig.PublishConfigKey);
-        AddAssetDictionary(gameAssets, _sConfig.PublishConfigKey);
+        AddPublishConfiguration(gameAssets, _rConfig.PublishConfigKey);
+        AddAssetDictionary(gameAssets, _rConfig.PublishConfigKey);
 
-        AddPublishConfiguration(vgmtAssets.Values, _sConfig.PublishConfigVgmtKey);
-        AddAssetDictionary(vgmtAssets.Values, _sConfig.PublishConfigVgmtKey);
+        AddPublishConfiguration(vgmtAssets.Values, _rConfig.PublishConfigVgmtKey);
+        AddAssetDictionary(vgmtAssets.Values, _rConfig.PublishConfigVgmtKey);
 
         _logger.LogInformation("Generated default dictionaries.");
 
@@ -138,14 +138,14 @@ public class BuildAssetList : IService
 
     private IEnumerable<InternalAssetInfo> GetAssetsFromCache(string directoryPath)
     {
-        if (_sConfig.ShouldLogAssets)
+        if (_rConfig.ShouldLogAssets)
             Logger.Default = new AssetBundleLogger(_logger);
 
         var assets = new List<InternalAssetInfo>();
 
         var directories = directoryPath.GetLowestDirectories();
 
-        using var defaultBar = new DefaultProgressBar(directories.Count, _sConfig.Message, _logger, _sConfig);
+        using var defaultBar = new DefaultProgressBar(directories.Count, _rConfig.Message, _logger, _rConfig);
 
         foreach (var asset in directories.Select(directory => GetAssetBundle(directory, defaultBar)))
         {
@@ -155,7 +155,7 @@ public class BuildAssetList : IService
             defaultBar.TickBar();
         }
 
-        defaultBar.SetMessage($"Finished {_sConfig.Message}");
+        defaultBar.SetMessage($"Finished {_rConfig.Message}");
 
         SaveStoredAssets(assets.OrderAssets(), AssetDictLocation);
 
@@ -233,7 +233,7 @@ public class BuildAssetList : IService
                 {
                     asset.Type = AssetInfo.TypeAsset.Level;
                     bar.SetMessage(
-                        $"{_sConfig.Message} - found possible level '{asset.Name}' in {assetFile.fileName.Split('/').Last()}");
+                        $"{_rConfig.Message} - found possible level '{asset.Name}' in {assetFile.fileName.Split('/').Last()}");
                 }
 
             if (asset.Type == AssetInfo.TypeAsset.Unknown)
@@ -255,7 +255,7 @@ public class BuildAssetList : IService
             else
             {
                 bar.SetMessage(
-                    $"{_sConfig.Message} - found possible XML '{asset.Name}' in {assetFile.fileName.Split('/').Last()}");
+                    $"{_rConfig.Message} - found possible XML '{asset.Name}' in {assetFile.fileName.Split('/').Last()}");
 
                 if (Enum.TryParse<RFC1766Locales.LanguageCodes>(
                         asset.Name.Split('_').Last().Replace('-', '_'),
@@ -269,7 +269,7 @@ public class BuildAssetList : IService
         }
 
         if (asset.Type == AssetInfo.TypeAsset.Unknown)
-            bar.SetMessage($"{_sConfig.Message} - WARNING: could not find type of asset {asset.Name}");
+            bar.SetMessage($"{_rConfig.Message} - WARNING: could not find type of asset {asset.Name}");
 
         return asset;
     }
@@ -287,14 +287,14 @@ public class BuildAssetList : IService
         root.AppendChild(xmlElements);
 
         var dict = document.CreateElement("item");
-        dict.SetAttribute("name", _sConfig.AssetDictKey);
-        dict.SetAttribute("value", _sConfig.AssetDictConfigs[key]);
+        dict.SetAttribute("name", _rConfig.AssetDictKey);
+        dict.SetAttribute("value", _rConfig.AssetDictConfigs[key]);
         root.AppendChild(dict);
 
         document.AppendChild(root);
 
         var config = document.WriteToString();
-        File.WriteAllText(Path.Combine(_sConfig.AssetSaveDirectory, _sConfig.PublishConfigs[key]), config);
+        File.WriteAllText(Path.Combine(_rConfig.AssetSaveDirectory, _rConfig.PublishConfigs[key]), config);
         PublishConfigs.Add(key, config);
     }
 
@@ -309,7 +309,7 @@ public class BuildAssetList : IService
         document.AppendChild(root);
 
         var assetDict = document.WriteToString();
-        File.WriteAllText(Path.Combine(_sConfig.AssetSaveDirectory, _sConfig.AssetDictConfigs[key]), assetDict);
+        File.WriteAllText(Path.Combine(_rConfig.AssetSaveDirectory, _rConfig.AssetDictConfigs[key]), assetDict);
         AssetDict.Add(key, assetDict);
     }
 

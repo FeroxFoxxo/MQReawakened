@@ -19,7 +19,7 @@ namespace Server.Reawakened.Players.Services;
 public class EditCharacter : IService
 {
     private readonly AccountHandler _accountHandler;
-    private readonly ServerStaticConfig _config;
+    private readonly ServerRConfig _config;
     private readonly ServerConsole _console;
     private readonly NetStateHandler _handler;
     private readonly ItemCatalog _itemCatalog;
@@ -33,7 +33,7 @@ public class EditCharacter : IService
     public EditCharacter(ServerConsole console, EventSink sink,
         ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
         AccountHandler accountHandler, WorldGraph worldGraph,
-        ServerStaticConfig config, NetStateHandler handler, WorldHandler worldHandler,
+        ServerRConfig config, NetStateHandler handler, WorldHandler worldHandler,
         ItemCatalog itemCatalog, PlayerEventSink playerEventSink)
     {
         _console = console;

@@ -12,7 +12,7 @@ public class ReserveCharacterName : ExternalProtocol
 
     public NameGenSyllables NameGenSyllables { get; set; }
     public UserInfoHandler UserInfoHandler { get; set; }
-    public ServerStaticConfig ServerConfig { get; set; }
+    public ServerRConfig ServerConfig { get; set; }
 
     public override void Run(string[] message)
     {

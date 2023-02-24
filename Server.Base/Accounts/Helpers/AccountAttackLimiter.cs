@@ -68,5 +68,5 @@ public class AccountAttackLimiter
     }
 
     public void ThrottledError(NetState netState, InvalidAccountAccessLog accessLog) =>
-        _fileLogger.WriteNetStateLog<AccountAttackLimiter>("throttle", netState, accessLog.Counts.ToString(), LoggerType.Debug);
+        _fileLogger.WriteGenericLog<AccountAttackLimiter>("throttle", netState.ToString(), accessLog.Counts.ToString(), LoggerType.Debug);
 }

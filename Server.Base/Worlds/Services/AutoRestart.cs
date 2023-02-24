@@ -27,7 +27,7 @@ public class AutoRestart : Timer, IService
 
     public DateTime RestartTime;
 
-    public AutoRestart(ILogger<AutoRestart> logger, TimerThread timerThread, InternalStaticConfig config,
+    public AutoRestart(ILogger<AutoRestart> logger, TimerThread timerThread, InternalRConfig config,
         ServerHandler handler, World world, AutoSave autoSave, EventSink sink)
         : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), 0, timerThread)
     {

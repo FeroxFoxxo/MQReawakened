@@ -7,10 +7,10 @@ namespace Server.Base.Network.Helpers;
 public class IpLimiter
 {
     private readonly NetStateHandler _handler;
-    private readonly InternalStaticConfig _internalServerConfig;
+    private readonly InternalRConfig _internalServerConfig;
     private readonly Dictionary<IPAddress, IPAddress> _ipAddressTable;
 
-    public IpLimiter(InternalStaticConfig internalServerConfig, NetStateHandler handler)
+    public IpLimiter(InternalRConfig internalServerConfig, NetStateHandler handler)
     {
         _internalServerConfig = internalServerConfig;
         _handler = handler;

@@ -2,10 +2,10 @@
 
 namespace Server.Web.Models;
 
-public class WebConfig : IStaticConfig
+public class WebRConfig : IRConfig
 {
     public bool ShouldConcat { get; set; }
 
-    public WebConfig() =>
+    public WebRConfig() =>
         ShouldConcat = true;
 }

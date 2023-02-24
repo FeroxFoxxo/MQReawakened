@@ -14,19 +14,19 @@ public class RemoveDuplicates : IService
     private readonly BuildAssetList _buildAssetList;
     private readonly ServerConsole _console;
     private readonly ILogger<RemoveDuplicates> _logger;
-    private readonly AssetBundleStaticConfig _sConfig;
+    private readonly AssetBundleRConfig _config;
     private readonly EventSink _sink;
-    private readonly StartConfig _startConfig;
+    private readonly LauncherRwConfig _launcherWConfig;
 
     public RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
-        AssetBundleStaticConfig sConfig, ServerConsole console, StartConfig startConfig,
+        AssetBundleRConfig config, ServerConsole console, LauncherRwConfig launcherWConfig,
         BuildAssetList buildAssetList)
     {
         _logger = logger;
         _sink = sink;
-        _sConfig = sConfig;
+        _config = config;
         _console = console;
-        _startConfig = startConfig;
+        _launcherWConfig = launcherWConfig;
         _buildAssetList = buildAssetList;
     }
 
@@ -36,7 +36,7 @@ public class RemoveDuplicates : IService
         _console.AddCommand(
             "removeDuplicates",
             "Creates a directory that does not include duplicated caches.",
-            NetworkType.Both,
+            NetworkType.Server | NetworkType.Client,
             _ => RemoveDuplicateFiles()
         );
 
@@ -53,7 +53,7 @@ public class RemoveDuplicates : IService
                 allAssets.Length,
                 "Reading assets from disk",
                 _logger,
-                _sConfig
+                _config
             )
         )
         {
@@ -79,8 +79,8 @@ public class RemoveDuplicates : IService
                     if (!AreFileContentsEqual(containedAsset.Path, asset.Path))
                         continue;
 
-                    if (containedAsset.CacheTime > asset.CacheTime && _startConfig.Is2014Client ||
-                        containedAsset.CacheTime < asset.CacheTime && !_startConfig.Is2014Client)
+                    if (containedAsset.CacheTime > asset.CacheTime && _launcherWConfig.Is2014Client ||
+                        containedAsset.CacheTime < asset.CacheTime && !_launcherWConfig.Is2014Client)
 
                         assetList[assetName].Remove(containedAsset);
                     else
@@ -103,10 +103,10 @@ public class RemoveDuplicates : IService
 
         _logger.LogDebug("Writing assets");
 
-        Directory.CreateDirectory(_sConfig.RemovedDuplicateDirectory);
+        Directory.CreateDirectory(_config.RemovedDuplicateDirectory);
 
         _logger.LogDebug("Emptying duplicated directory folder...");
-        GetDirectory.Empty(_sConfig.RemovedDuplicateDirectory);
+        GetDirectory.Empty(_config.RemovedDuplicateDirectory);
         _logger.LogDebug("Emptied folder");
 
         var totalDirectories = assetList.Max(s => s.Value.Count);
@@ -116,7 +116,7 @@ public class RemoveDuplicates : IService
                 replacedCount + totalDirectories,
                 "Writing Assets To Disk",
                 _logger,
-                _sConfig
+                _config
             )
         )
         {
@@ -124,7 +124,7 @@ public class RemoveDuplicates : IService
             {
                 for (var i = 0; i < assets.Value.Count; i++)
                 {
-                    var targetDirectory = Path.Combine(_sConfig.RemovedDuplicateDirectory, assets.Key, i.ToString());
+                    var targetDirectory = Path.Combine(_config.RemovedDuplicateDirectory, assets.Key, i.ToString());
                     Directory.CreateDirectory(targetDirectory);
 
                     var sourceDirectory = Path.GetDirectoryName(assets.Value[i].Path);
@@ -140,7 +140,7 @@ public class RemoveDuplicates : IService
             }
         }
 
-        _logger.LogInformation("Written all assets to directory: {Path}", _sConfig.RemovedDuplicateDirectory);
+        _logger.LogInformation("Written all assets to directory: {Path}", _config.RemovedDuplicateDirectory);
     }
 
     public static bool AreFileContentsEqual(string path1, string path2) =>

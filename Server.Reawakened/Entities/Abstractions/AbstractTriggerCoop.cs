@@ -216,7 +216,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             .AppendLine($"Duration: {ActiveDuration}")
             .AppendLine($"Repeat Delay: {TriggerRepeatDelay}")
             .AppendLine($"After First Interaction: {ActivationTimeAfterFirstInteraction}")
-            .AppendLine($"Interaction Type: {InteractType}");
+            .Append($"Interaction Type: {InteractType}");
 
         FileLogger.WriteGenericLog<TriggerCoopController>("triggers", $"Trigger {Id}", sb.ToString(), LoggerType.Trace);
 
@@ -239,7 +239,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             var sb2 = new StringBuilder();
 
             sb2.AppendLine($"State: {trigger.Value}")
-                .AppendLine($"Entities: {Room.GetUnknownEntityTypes(trigger.Key)}");
+                .Append($"Entities: {Room.GetUnknownEntityTypes(trigger.Key)}");
 
             FileLogger.WriteGenericLog<TriggerCoopController>("trigger-fails", $"Trigger {Id}", sb2.ToString(), LoggerType.Error);
         }

@@ -11,7 +11,7 @@ public class SetActiveQuest : ExternalProtocol
 {
     public override string ProtocolName => "nz";
 
-    public ServerStaticConfig Config { get; set; }
+    public ServerRConfig Config { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
 
     public override void Run(string[] message)

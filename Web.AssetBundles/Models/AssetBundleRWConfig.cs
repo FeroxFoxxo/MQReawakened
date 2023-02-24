@@ -2,13 +2,13 @@
 
 namespace Web.AssetBundles.Models;
 
-public class AssetBundleConfig : IConfig
+public class AssetBundleRwConfig : IRwConfig
 {
     public string CacheInfoFile { get; set; }
     public string WebPlayerInfoFile { get; set; }
     public bool FlushCacheOnStart { get; set; }
 
-    public AssetBundleConfig()
+    public AssetBundleRwConfig()
     {
         FlushCacheOnStart = true;
         WebPlayerInfoFile = string.Empty;

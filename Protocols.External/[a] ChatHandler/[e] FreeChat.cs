@@ -15,7 +15,7 @@ public class FreeChat : ExternalProtocol
 
     public ILogger<ChatCommands> Logger { get; set; }
     public ChatCommands ChatCommands { get; set; }
-    public ServerStaticConfig Config { get; set; }
+    public ServerRConfig Config { get; set; }
 
     public override void Run(string[] message)
     {
