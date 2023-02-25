@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Network.Enums;
 using Server.Base.Timers.Extensions;
@@ -72,13 +73,14 @@ public class ServerConsole : IService
         _consoleThread.Start();
     }
 
-    public void AddCommand(string name, string description, NetworkType networkType, RunConsoleCommand commandMethod) =>
+    public void AddCommand(string name, string description, NetworkType networkType, RunConsoleCommand commandMethod, bool strictCheck = false) =>
         _commands.Add(name, new ConsoleCommand
         {
             CommandMethod = commandMethod,
             Description = description,
             NetworkType = networkType,
-            Name = name
+            Name = name,
+            StrictCheck = strictCheck
         });
 
     public void ConsoleLoopThread()
@@ -119,14 +121,21 @@ public class ServerConsole : IService
     {
         _logger.LogInformation("Commands:");
 
-        foreach (var command in _commands.Values
-                     .Where(x => _rwConfig.NetworkType.HasFlag(x.NetworkType))
-                     .OrderBy(x => x.Name)
-                )
-        {
-            var padding = _rConfig.CommandPadding - command.Name.Length;
-            if (padding < 0) padding = 0;
-            _logger.LogInformation("  {Name} - {Description}", command.Name.PadRight(padding), command.Description);
-        }
+        var commands = _commands.Values
+            .Where(x => _rwConfig.NetworkType.HasFlag(x.NetworkType))
+            .Where(x => !x.StrictCheck || _rwConfig.StrictNetworkCheck())
+            .OrderBy(x => x.Name)
+            .ToArray();
+
+        if (commands.Any())
+            foreach (var command in commands)
+            {
+                var padding = _rConfig.CommandPadding - command.Name.Length;
+                if (padding < 0) padding = 0;
+                _logger.LogInformation("  {Name} - {Description}", command.Name.PadRight(padding), command.Description);
+            }
+        else
+            _logger.LogError("Could not find any commands! Are you sure you are running the correct operational type? " +
+                             "Current flags: {Flags}", _rwConfig.NetworkType);
     }
 }

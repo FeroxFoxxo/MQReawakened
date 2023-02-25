@@ -35,6 +35,8 @@ public class Web : WebModule
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+
+        services.AddRazorPages();
     }
 
     public override void ConfigureServices(ConfigurationManager configuration, IServiceCollection services)
@@ -46,8 +48,6 @@ public class Web : WebModule
     public override void InitializeWeb(WebApplicationBuilder builder)
     {
         builder.WebHost.CaptureStartupErrors(true);
-
-        builder.WebHost.UseUrls("http://*:80");
 
         builder.Services.AddMemoryCache();
 
@@ -72,8 +72,13 @@ public class Web : WebModule
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 options.RoutePrefix = string.Empty;
             });
+            
+            app.UseHsts();
         }
 
+        //app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        
         app.UseIpRateLimiting();
 
         app.UseMiddleware<RequestLogger>();
@@ -88,7 +93,8 @@ public class Web : WebModule
 
         app.UseAuthentication();
         app.UseAuthorization();
-
+        
+        app.MapRazorPages();
         app.MapControllers();
     }
 }

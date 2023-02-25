@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFramework>net7</TargetFramework>
@@ -12,16 +12,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Server.Base\Server.Base.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Static\" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="Static\favicon.ico">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
     </ItemGroup>
 
 </Project>

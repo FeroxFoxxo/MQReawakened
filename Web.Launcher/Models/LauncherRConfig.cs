@@ -9,7 +9,7 @@ public class LauncherRConfig : IRConfig
     public ulong AnalyticsId { get; }
     public bool AnalyticsEnabled { get; }
 
-    public string BaseUrl { get; }
+    public string ServerBaseUrl { get; }
     public string HeaderFolderFilter { get; }
 
     public string ProjectName { get; }
@@ -33,7 +33,7 @@ public class LauncherRConfig : IRConfig
 
         AnalyticsId = 0;
         AnalyticsEnabled = true;
-        BaseUrl = "http://localhost";
+        ServerBaseUrl = "http://localhost";
 
         CrashOnError = false;
         LogAssets = true;

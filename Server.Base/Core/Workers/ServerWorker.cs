@@ -55,7 +55,12 @@ public class ServerWorker : IHostedService
         _sink.ServerStarted += _ => _serverThread.Start();
 
         Thread.CurrentThread.Name = "Main Thread";
+        
+        var baseDirectory = InternalDirectory.GetBaseDirectory();
 
+        if (baseDirectory.Length > 0)
+            Directory.SetCurrentDirectory(baseDirectory);
+        
         try
         {
             if (!Directory.Exists("Logs"))
@@ -67,11 +72,6 @@ public class ServerWorker : IHostedService
         {
             _logger.LogError(ex, "Could not get log directory!");
         }
-
-        var baseDirectory = InternalDirectory.GetBaseDirectory();
-
-        if (baseDirectory.Length > 0)
-            Directory.SetCurrentDirectory(baseDirectory);
 
         foreach (var module in _serverHandler.Modules)
             _logger.LogDebug("{ModuleInfo}", module.GetModuleInformation());

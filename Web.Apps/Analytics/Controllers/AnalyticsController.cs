@@ -146,7 +146,7 @@ public class AnalyticsController : Controller
         }
     }
 
-    public bool CheckAnalytics()
+    private bool CheckAnalytics()
     {
         var analyticsKey = Request.RouteValues["AnalyticsKey"] as string;
 
@@ -157,14 +157,14 @@ public class AnalyticsController : Controller
         return false;
     }
 
-    public CommonProperties GetCommonProperties()
+    private CommonProperties GetCommonProperties()
     {
         var sessionId = ulong.Parse(Request.Query["s"].First());
         var timestamp = DateTimeOffset.FromUnixTimeSeconds(long.Parse(Request.Query["ts"].First()));
         return new CommonProperties(sessionId, timestamp);
     }
 
-    public void SendLog(CommonProperties properties, string message) =>
+    private void SendLog(CommonProperties properties, string message) =>
         _fileLogger.WriteGenericLog<AnalyticsController>(
             "analytics",
             $"{properties.Timestamp:g} @ Session {properties.SessionId}",

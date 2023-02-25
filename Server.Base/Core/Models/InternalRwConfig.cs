@@ -7,10 +7,12 @@ public class InternalRwConfig : IRwConfig
 {
     public string[] IgnoreProtocolType { get; set; }
     public NetworkType NetworkType { get; set; }
+    public string ServerAddress { get; set; }
 
     public InternalRwConfig()
     {
         IgnoreProtocolType = Array.Empty<string>();
         NetworkType = NetworkType.Unknown;
+        ServerAddress = string.Empty;
     }
 }

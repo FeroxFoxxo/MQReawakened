@@ -10,4 +10,5 @@ public class ConsoleCommand
     public string Description { get; set; }
     public RunConsoleCommand CommandMethod { get; set; }
     public NetworkType NetworkType { get; set; }
+    public bool StrictCheck { get; set; }
 }

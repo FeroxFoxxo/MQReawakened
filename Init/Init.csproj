@@ -28,6 +28,7 @@
         <ProjectReference Include="..\Web.Apps\Web.Apps.csproj" />
         <ProjectReference Include="..\Web.AssetBundles\Web.AssetBundles.csproj" />
         <ProjectReference Include="..\Web.Launcher\Web.Launcher.csproj" />
+        <ProjectReference Include="..\Web.Razor\Web.Razor.csproj" />
     </ItemGroup>
 
 </Project>

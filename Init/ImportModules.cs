@@ -9,6 +9,7 @@ using System.Linq;
 using Web.Apps;
 using Web.AssetBundles;
 using Web.Launcher;
+using Web.Razor;
 
 namespace Init;
 
@@ -25,7 +26,8 @@ public static class ImportModules
             typeof(XtProtocol),
             typeof(Launcher),
             typeof(Apps),
-            typeof(AssetBundles)
+            typeof(AssetBundles),
+            typeof(Web.Razor.Razor)
         };
 
         var services = new ServiceCollection();

@@ -63,17 +63,10 @@ public class StartGame : IService
 
     public void Initialize()
     {
-        if (!_internalWConfig.NetworkType.HasFlag(NetworkType.Client))
-        {
-            _logger.LogWarning("NOT RESTARTING: SERVER IS HEADLESS");
-        }
-        else
-        {
-            _appLifetime.ApplicationStarted.Register(AppStarted);
-            _sink.WorldLoad += GetGameInformation;
-            _sink.Shutdown += StopGame;
-            _playerEventSink.PlayerRefreshed += AskIfRestart;
-        }
+        _appLifetime.ApplicationStarted.Register(AppStarted);
+        _sink.WorldLoad += GetGameInformation;
+        _sink.Shutdown += StopGame;
+        _playerEventSink.PlayerRefreshed += AskIfRestart;
     }
 
     private void StopGame() => _game?.CloseMainWindow();
@@ -154,6 +147,9 @@ public class StartGame : IService
 
     public void AskIfRestart()
     {
+        if (!ShouldRun())
+            return;
+        
         if (!_lWConfig.StartLauncherOnCommand)
             if (_logger.Ask("The launcher is not set to restart on a related command being run, " +
                             "would you like to enable this?", true))
@@ -163,9 +159,21 @@ public class StartGame : IService
             LaunchGame();
     }
 
+    public bool ShouldRun()
+    {
+        if (_internalWConfig.NetworkType.HasFlag(NetworkType.Client))
+            return true;
+
+        _logger.LogWarning("NOT RESTARTING: SERVER IS HEADLESS");
+        return false;
+    }
+
     private void RunGame()
     {
         if (!_appStart || !_dirSet)
+            return;
+
+        if (!ShouldRun())
             return;
 
         if (Logger.HasCriticallyErrored())
@@ -230,23 +238,23 @@ public class StartGame : IService
 
     private Dictionary<string, string> GetConfigValues(string header) => new()
     {
-        { $"{header}.unity.url.membership", $"{_lConfig.BaseUrl}/Membership" },
-        { $"{header}.unity.cache.domain", $"{_lConfig.BaseUrl}/Cache" },
+        { $"{header}.unity.url.membership", $"{_lConfig.ServerBaseUrl}/Membership" },
+        { $"{header}.unity.cache.domain", $"{_lConfig.ServerBaseUrl}/Cache" },
         { $"{header}.unity.cache.license", $"{_lConfig.CacheLicense}" },
         { $"{header}.unity.cache.size", _lConfig.CacheSize.ToString() },
         { $"{header}.unity.cache.expiration", _lConfig.CacheExpiration.ToString() },
         { "game.cacheversion", _lConfig.CacheVersion.ToString() },
-        { $"{header}.unity.url.crisp.host", $"{_lConfig.BaseUrl}/Chat/" },
+        { $"{header}.unity.url.crisp.host", $"{_lConfig.ServerBaseUrl}/Chat/" },
         { "asset.log", _lConfig.LogAssets ? "true" : "false" },
         { "asset.disableversioning", _lConfig.DisableVersions ? "true" : "false" },
-        { "asset.jboss", $"{_lConfig.BaseUrl}/Apps/" },
-        { "asset.bundle", $"{_lConfig.BaseUrl}/Client/Bundles" },
-        { "asset.audio", $"{_lConfig.BaseUrl}/Client/Audio" },
-        { "logout.url", $"{_lConfig.BaseUrl}/Logout" },
-        { "contactus.url", $"{_lConfig.BaseUrl}/Contact" },
-        { "tools.urlbase", $"{_lConfig.BaseUrl}/Tools/" },
-        { "leaderboard.domain", $"{_lConfig.BaseUrl}/Apps/" },
-        { "analytics.baseurl", $"{_lConfig.BaseUrl}/Analytics/" },
+        { "asset.jboss", $"{_lConfig.ServerBaseUrl}/Apps/" },
+        { "asset.bundle", $"{_lConfig.ServerBaseUrl}/Client/Bundles" },
+        { "asset.audio", $"{_lConfig.ServerBaseUrl}/Client/Audio" },
+        { "logout.url", $"{_lConfig.ServerBaseUrl}/Logout" },
+        { "contactus.url", $"{_lConfig.ServerBaseUrl}/Contact" },
+        { "tools.urlbase", $"{_lConfig.ServerBaseUrl}/Tools/" },
+        { "leaderboard.domain", $"{_lConfig.ServerBaseUrl}/Apps/" },
+        { "analytics.baseurl", $"{_lConfig.ServerBaseUrl}/Analytics/" },
         { "analytics.enabled", _lConfig.AnalyticsEnabled ? "true" : "false" },
         { "analytics.apikey", _lWConfig.AnalyticsApiKey },
         { "project.name", _lConfig.ProjectName }
