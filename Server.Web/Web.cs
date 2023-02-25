@@ -82,13 +82,7 @@ public class Web : WebModule
         app.UseIpRateLimiting();
 
         app.UseMiddleware<RequestLogger>();
-
-        app.UseStaticFiles(new StaticFileOptions
-        {
-            FileProvider = new PhysicalFileProvider(
-                Path.Combine(InternalDirectory.GetBaseDirectory(), @"Static"))
-        });
-
+        
         app.UseRouting();
 
         app.UseAuthentication();

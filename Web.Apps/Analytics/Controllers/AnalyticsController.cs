@@ -125,7 +125,7 @@ public class AnalyticsController : Controller
                         if (errorId is 2306 or 2302 or 2305)
                         {
                             _logger.LogError("Error likely due to caching system. Replacing!");
-                            _replaceCaches.ReplaceWebPlayerCache(false);
+                            _replaceCaches.ReplaceWebPlayerCache(true, true);
                         }
 
                         break;
@@ -139,8 +139,8 @@ public class AnalyticsController : Controller
             case "Omniture":
             {
                 if (n == "applicationStart")
-                    if (_replaceCaches.CurrentlyLoadedAssets.Count > 0 && _aConfig.UseCacheReplacementScheme)
-                        _replaceCaches.ReplaceWebPlayerCache(false);
+                    if (_aConfig.UseCacheReplacementScheme)
+                        _replaceCaches.ReplaceWebPlayerCache(true, true);
                 break;
             }
         }

@@ -20,8 +20,11 @@ public static class AskPrompt
             return true;
 
         if (choice != 'n')
+        {
             logger.LogWarning("Invalid output detected, found: '{Character}'. Defaulting to {DefaultValue}...",
                 choice, defaultValue);
+            return defaultValue;
+        }
 
         return false;
     }

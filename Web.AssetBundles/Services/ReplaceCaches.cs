@@ -56,7 +56,7 @@ public class ReplaceCaches : IService
         if (string.IsNullOrEmpty(_rwConfig.WebPlayerInfoFile))
             return;
 
-        ReplaceWebPlayerCache(true);
+        ReplaceWebPlayerCache(false, false);
     }
 
     public void Load() =>
@@ -64,12 +64,12 @@ public class ReplaceCaches : IService
             "replaceCaches",
             "Replaces all generated Web Player cache files with their real counterparts.",
             NetworkType.Client,
-            _ => ReplaceWebPlayerCache(true)
+            _ => ReplaceWebPlayerCache(false, true)
         );
 
-    public void ReplaceWebPlayerCache(bool overrideCheckForCached)
+    public void ReplaceWebPlayerCache(bool checkHasCached, bool startAfterReplace)
     {
-        if (!overrideCheckForCached && CurrentlyLoadedAssets.Count == 0)
+        if (checkHasCached && CurrentlyLoadedAssets.Count == 0)
             return;
 
         CurrentlyLoadedAssets.Clear();
@@ -107,7 +107,7 @@ public class ReplaceCaches : IService
             }
         }
 
-        if (!overrideCheckForCached)
+        if (startAfterReplace)
             _game.AskIfRestart();
     }
 
