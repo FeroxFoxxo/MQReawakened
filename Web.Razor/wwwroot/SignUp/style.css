@@ -1,0 +1,86 @@
+﻿@font-face {
+    font-family: 'grobold';
+    src: url('GROBOLD.ttf');
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #8ED8FF;
+    color: #fffdfa;
+    font: 300 1rem/1.5 grobold;
+    margin: 0;
+    min-height: 100%;
+}
+
+.align {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.site_logo {
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    width: 50%;
+}
+
+input {
+    border: 0;
+    font: inherit;
+    color: #fffdfa;
+}
+
+input::placeholder {
+    color: #FFF893;
+}
+
+.form_field {
+    margin-bottom: 1rem;
+}
+
+.form input {
+    outline: 0;
+    padding: 0.5rem 1rem;
+    width: 100%;
+}
+
+.grid {
+    margin: 0 auto;
+    max-width: 25rem;
+}
+
+h2 {
+    font-size: 2.75rem;
+    font-weight: 100;
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+    text-shadow: black 0px 0px .5rem;
+}
+
+.border {
+    border: 1px solid #A3B15C;
+}
+
+.register {
+    box-shadow: 0 0 250px #000;
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: #577B3D;
+}
+
+.register input {
+    background-color: transparent;
+    text-align: center;
+    border-radius: 999px;
+}
+
+.register input[type=submit] {
+    background-image: linear-gradient(160deg, #BB7D4C 0%, #FDB93A 100%);
+}

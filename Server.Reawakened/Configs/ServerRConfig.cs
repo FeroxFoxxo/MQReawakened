@@ -47,7 +47,7 @@ public class ServerRConfig : IRConfig
         ReservedNameCount = 4;
         MaxCharacterCount = 3;
 
-        DefaultSignUpExperience = "UNKNOWN";
+        DefaultSignUpExperience = "CONSOLE";
         DefaultChatLevel = 3;
         DefaultTrackingShortId = "false";
         DefaultMemberStatus = true;

@@ -5,7 +5,6 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Models.Entities;
 using System.Text;
-using System;
 
 namespace Server.Reawakened.Entities;
 

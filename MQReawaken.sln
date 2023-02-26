@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.AssetBundles", "Web.Ass
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Apps", "Web.Apps\Web.Apps.csproj", "{9DD9192A-9739-455E-B63A-2E5CABB8D27E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Razor", "Web.Razor\Web.Razor.csproj", "{27CBEEA6-A465-4647-A3F1-A7ABCAA4AC92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Razor", "Web.Razor\Web.Razor.csproj", "{27CBEEA6-A465-4647-A3F1-A7ABCAA4AC92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

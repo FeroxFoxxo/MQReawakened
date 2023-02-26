@@ -29,18 +29,18 @@ public class UserInfo : PersistantData
         Mail = new Dictionary<int, SystemMailModel>();
     }
 
-    public UserInfo(int userId, Gender gender, DateTime dateOfBirth, string region, RandomKeyGenerator kGen,
-        ServerRConfig config)
+    public UserInfo(int userId, Gender gender, DateTime dateOfBirth, string region,
+        string signUpExperience, RandomKeyGenerator kGen, ServerRConfig config)
     {
         Region = region;
         UserId = userId;
         Gender = gender;
         DateOfBirth = dateOfBirth;
+        SignUpExperience = signUpExperience;
 
         LastCharacterSelected = string.Empty;
         AuthToken = kGen.GetRandomKey<UserInfo>(userId.ToString());
-
-        SignUpExperience = config.DefaultSignUpExperience;
+        
         Member = config.DefaultMemberStatus;
         TrackingShortId = config.DefaultTrackingShortId;
         ChatLevel = config.DefaultChatLevel;

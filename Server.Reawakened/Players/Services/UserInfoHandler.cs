@@ -60,7 +60,7 @@ public class UserInfoHandler : DataHandler<UserInfo>
             Logger.LogWarning("Incorrect input! Must be a date!");
         }
 
-        return new UserInfo(Data.Count, gender, dob, RegionInfo.CurrentRegion.Name, _randomKeyGenerator, _config);
+        return new UserInfo(Data.Count, gender, dob, RegionInfo.CurrentRegion.Name, _config.DefaultSignUpExperience, _randomKeyGenerator, _config);
     }
 
     public override UserInfo Create(NetState netState, params string[] obj) => throw new NotImplementedException();

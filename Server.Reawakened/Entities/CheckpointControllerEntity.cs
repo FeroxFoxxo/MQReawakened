@@ -2,8 +2,6 @@
 using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Entities.Abstractions;
-using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using System.Text;
 

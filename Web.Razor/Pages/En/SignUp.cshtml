@@ -1,0 +1,40 @@
+﻿@page
+@model Web.Razor.Pages.En.SignUpModel
+
+@section Stylesheets {
+    <link href="~/_content/Web.Razor/SignUp/style.css" rel="stylesheet" />
+}
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<body class="align">
+<div class="grid align_item">
+    <div class="register">
+        <img class="site_logo" src="~/_content/Web.Razor/SignUp/logo.png", alt="Site Logo"/>
+        <h2>Sign Up</h2>
+        <form action="" method="post" class="form">
+            <div class="form_field">
+                <input type="email" class="border" placeholder="info@mailaddress.com">
+            </div>
+            <div class="form_field">
+                <input type="password" class="border" placeholder="••••••••••••">
+            </div>
+            <div class="form_field">
+                <input class="border" placeholder="Male">
+            </div>
+            <div class="form_field">
+                <input class="border" placeholder="24/11/2004">
+            </div>
+            <div class="form_field">
+                <input class="border" placeholder="New Zealand">
+            </div>
+            <br/>
+            <div class="form_field">
+                <input type="submit" value="Sign Up">
+            </div>
+        </form>
+    </div>
+</div>
+</body>

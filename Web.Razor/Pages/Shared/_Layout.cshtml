@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - MQR</title>
+    <meta name="title" content="MQReawakened">
+    <meta name="description" content="An open-source reimplementation & emulation of the backend of MQ, written from scratch without including intellectual property from the original game.">
+    <meta name="keywords" content="MQR, MQReawakened">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    @await RenderSectionAsync("Stylesheets", true)
+</head>
+<body>
+    @RenderBody()
+    @await RenderSectionAsync("Scripts", false)
+</body>
+</html>
