@@ -13,6 +13,8 @@ public class Account : PersistantData, INetStateData
 
     public string Password { get; set; }
 
+    public string Email { get; set; }
+
     public AccessLevel AccessLevel { get; set; }
 
     public GameMode GameMode { get; set; }
@@ -33,12 +35,13 @@ public class Account : PersistantData, INetStateData
     {
     }
 
-    public Account(string username, string password, int userId, PasswordHasher hasher)
+    public Account(string username, string password, string email, int userId, PasswordHasher hasher)
     {
         UserId = userId;
 
         Username = username;
         Password = hasher.GetPassword(username, password);
+        Email = email;
 
         AccessLevel = AccessLevel.Player;
         GameMode = GameMode.Default;

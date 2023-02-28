@@ -119,6 +119,4 @@ public abstract class DataHandler<T> : IService where T : PersistantData
 
         return type;
     }
-
-    public abstract T Create(NetState netState, params string[] obj);
 }

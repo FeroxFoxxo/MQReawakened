@@ -8,6 +8,7 @@ using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Models;
 using System.Globalization;
+using System.Net;
 
 namespace Server.Reawakened.Players.Services;
 
@@ -63,5 +64,13 @@ public class UserInfoHandler : DataHandler<UserInfo>
         return new UserInfo(Data.Count, gender, dob, RegionInfo.CurrentRegion.Name, _config.DefaultSignUpExperience, _randomKeyGenerator, _config);
     }
 
-    public override UserInfo Create(NetState netState, params string[] obj) => throw new NotImplementedException();
+    public UserInfo Create(IPAddress ip, int id, Gender gender, DateTime dob, string region, string signUpExperience)
+    {
+        Logger.LogInformation("Login: {Address}: Creating new user info '{Id}' of gender '{Gender}', DOB '{DOB}', region '{region}' and sign up experience '{SignUpExperience}'.",
+            ip, id, gender, dob, region, signUpExperience);
+
+        var user = new UserInfo(id, gender, dob, region, signUpExperience, _randomKeyGenerator, _config);
+        Data.Add(Data.Count, user);
+        return user;
+    }
 }

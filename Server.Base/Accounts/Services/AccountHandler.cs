@@ -50,8 +50,11 @@ public class AccountHandler : DataHandler<Account>
         Logger.LogInformation("Password: ");
         var password = Console.ReadLine();
 
+        Logger.LogInformation("Email: ");
+        var email = Console.ReadLine();
+
         if (username != null)
-            return new Account(username, password, Data.Count, _hasher)
+            return new Account(username, password, email, Data.Count, _hasher)
             {
                 AccessLevel = AccessLevel.Owner
             };
@@ -155,17 +158,11 @@ public class AccountHandler : DataHandler<Account>
 
     public bool CanCreate(IPAddress ipAddress) => !IpTable.ContainsKey(ipAddress) || IpTable[ipAddress] < 1;
 
-    public override Account Create(NetState netState, params string[] obj)
+    public Account Create(IPAddress ipAddress, string username, string password, string email)
     {
-        var username = obj[0] ?? string.Empty;
-        var password = obj[1] ?? string.Empty;
-
-        if (username.Trim().Length <= 0 || password.Trim().Length <= 0)
+        if (username.Trim().Length <= 0 || password.Trim().Length <= 0 || email.Trim().Length <= 0)
             throw new InvalidOperationException();
-
-        if (username.Length == 0)
-            return null;
-
+        
         var isSafe = !(username.StartsWith(" ") || username.EndsWith(" ") || username.EndsWith("."));
 
         for (var i = 0; isSafe && i < username.Length; ++i)
@@ -180,19 +177,21 @@ public class AccountHandler : DataHandler<Account>
         if (!isSafe)
             return null;
 
-        if (!CanCreate(netState.Address))
+        if (!CanCreate(ipAddress))
         {
             Logger.LogWarning(
-                "Login: {NetState}: Account '{Username}' not created, ip already has {Accounts} account{Plural}.",
-                netState, username, _internalServerConfig.MaxAccountsPerIp,
+                "Login: {Address}: Account '{Username}' not created, ip already has {Accounts} account{Plural}.",
+                ipAddress, username, _internalServerConfig.MaxAccountsPerIp,
                 _internalServerConfig.MaxAccountsPerIp == 1 ? string.Empty : "s");
             return null;
         }
 
-        Logger.LogInformation("Login: {NetState}: Creating new account '{Username}'",
-            netState, username);
+        Logger.LogInformation("Login: {Address}: Creating new account '{Username}'",
+            ipAddress, username);
 
-        return new Account(username, password, Data.Count, _hasher);
+        var account = new Account(username, password, email, Data.Count, _hasher);
+        Data.Add(Data.Count, account);
+        return account;
     }
 
     public void IpLimitedError(NetState netState) =>

@@ -31,21 +31,33 @@ body {
     width: 50%;
 }
 
-input {
+select, input {
     border: 0;
     font: inherit;
     color: #fffdfa;
 }
 
 input::placeholder {
-    color: #FFF893;
+    color: #fffdfa;
+}
+
+option {
+    color: black;
+}
+
+.form label {
+    margin-bottom: 1rem;
+}
+
+.text-danger {
+    color: #BA2221;
 }
 
 .form_field {
     margin-bottom: 1rem;
 }
 
-.form input {
+.form select, input {
     outline: 0;
     padding: 0.5rem 1rem;
     width: 100%;
@@ -75,7 +87,7 @@ h2 {
     background-color: #577B3D;
 }
 
-.register input {
+.register select, input {
     background-color: transparent;
     text-align: center;
     border-radius: 999px;
