@@ -40,7 +40,7 @@ public class SignUpModel : PageModel
 
     [DataType(DataType.Date)]
     [Required(ErrorMessage = "Please Enter Date")]
-    public DateTime Date { get; set; }
+    public DateTime? Date { get; set; }
 
     [Required(ErrorMessage = "Please Enter Region")]
     public string Region { get; set; }
@@ -78,6 +78,9 @@ public class SignUpModel : PageModel
     {
         if (!ModelState.IsValid)
             return Page();
+        
+        if (!Date.HasValue)
+            return Page();
 
         if (_accountHandler.Data.Any(a => a.Value.Username == Username))
             return Unauthorized();
@@ -92,7 +95,7 @@ public class SignUpModel : PageModel
         if (account == null)
             return NotFound();
 
-        var userInfo = _userInfoHandler.Create(ip, account.UserId, Gender, Date, Region, "Website");
+        var userInfo = _userInfoHandler.Create(ip, account.UserId, Gender, Date.Value, Region, "Website");
         
         if (userInfo == null)
             return NotFound();
