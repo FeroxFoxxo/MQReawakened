@@ -11,7 +11,7 @@ namespace Web.AssetBundles.Services;
 
 public class BuildLevelFiles : IService
 {
-    private readonly AssetBundleRConfig _aBConfig;
+    private readonly AssetBundleRwConfig _aBConfig;
     private readonly AssetEventSink _eventSink;
     private readonly ILogger<BuildXmlFiles> _logger;
     private readonly ServerRConfig _sConfig;
@@ -19,7 +19,7 @@ public class BuildLevelFiles : IService
     public readonly Dictionary<string, string> LevelFiles;
 
     public BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> logger, ServerRConfig sConfig,
-        AssetBundleRConfig aBConfig)
+        AssetBundleRwConfig aBConfig)
     {
         _eventSink = eventSink;
         _logger = logger;

@@ -12,20 +12,21 @@ namespace Web.AssetBundles.Services;
 
 public class BuildXmlFiles : IService, IInjectModules
 {
-    private readonly AssetBundleRConfig _config;
+    private readonly AssetBundleRConfig _rConfig;
+    private readonly AssetBundleRwConfig _rwConfig;
     private readonly AssetEventSink _eventSink;
     private readonly ILogger<BuildXmlFiles> _logger;
     private readonly IServiceProvider _services;
 
     public readonly Dictionary<string, string> XmlFiles;
 
-    public BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, ILogger<BuildXmlFiles> logger,
-        AssetBundleRConfig config)
+    public BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, ILogger<BuildXmlFiles> logger, AssetBundleRConfig rConfig, AssetBundleRwConfig rwConfig)
     {
         _eventSink = eventSink;
         _services = services;
         _logger = logger;
-        _config = config;
+        _rConfig = rConfig;
+        _rwConfig = rwConfig;
 
         XmlFiles = new Dictionary<string, string>();
     }
@@ -45,7 +46,7 @@ public class BuildXmlFiles : IService, IInjectModules
             .Where(x => x.Type is AssetInfo.TypeAsset.XML)
             .ToArray();
 
-        InternalDirectory.OverwriteDirectory(_config.XmlSaveDirectory);
+        InternalDirectory.OverwriteDirectory(_rConfig.XmlSaveDirectory);
 
         var bundles = _services.GetRequiredServices<IBundledXml>(Modules)
             .ToDictionary(x => x.BundleName, x => x);
@@ -53,7 +54,7 @@ public class BuildXmlFiles : IService, IInjectModules
         foreach (var bundle in bundles)
             bundle.Value.InitializeVariables();
 
-        using (var bar = new DefaultProgressBar(assets.Length, "Loading XML Files", _logger, _config))
+        using (var bar = new DefaultProgressBar(assets.Length, "Loading XML Files", _logger, _rwConfig))
         {
             foreach (var asset in assets)
             {
@@ -94,7 +95,7 @@ public class BuildXmlFiles : IService, IInjectModules
                     bundles.Remove(asset.Name);
                 }
 
-                var path = Path.Join(_config.XmlSaveDirectory, $"{asset.Name}.xml");
+                var path = Path.Join(_rConfig.XmlSaveDirectory, $"{asset.Name}.xml");
 
                 bar.SetMessage($"Writing file to {path}");
 

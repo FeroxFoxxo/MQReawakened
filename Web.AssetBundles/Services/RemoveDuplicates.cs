@@ -15,20 +15,22 @@ public class RemoveDuplicates : IService
     private readonly BuildAssetList _buildAssetList;
     private readonly ServerConsole _console;
     private readonly ILogger<RemoveDuplicates> _logger;
-    private readonly AssetBundleRConfig _config;
+    private readonly AssetBundleRConfig _rConfig;
+    private readonly AssetBundleRwConfig _rwConfig;
     private readonly EventSink _sink;
     private readonly LauncherRwConfig _launcherWConfig;
 
     public RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
-        AssetBundleRConfig config, ServerConsole console, LauncherRwConfig launcherWConfig,
-        BuildAssetList buildAssetList)
+        ServerConsole console, LauncherRwConfig launcherWConfig, BuildAssetList buildAssetList,
+        AssetBundleRConfig rConfig, AssetBundleRwConfig rwConfig)
     {
         _logger = logger;
         _sink = sink;
-        _config = config;
         _console = console;
         _launcherWConfig = launcherWConfig;
         _buildAssetList = buildAssetList;
+        _rConfig = rConfig;
+        _rwConfig = rwConfig;
     }
 
     public void Initialize() => _sink.WorldLoad += Load;
@@ -64,7 +66,7 @@ public class RemoveDuplicates : IService
                 allAssets.Length,
                 "Reading assets from disk",
                 _logger,
-                _config
+                _rwConfig
             )
         )
         {
@@ -115,7 +117,7 @@ public class RemoveDuplicates : IService
         _logger.LogDebug("Writing assets");
         
         _logger.LogDebug("Emptying duplicated directory folder...");
-        InternalDirectory.Empty(_config.RemovedDuplicateDirectory);
+        InternalDirectory.Empty(_rConfig.RemovedDuplicateDirectory);
         _logger.LogDebug("Emptied folder");
 
         var totalDirectories = assetList.Max(s => s.Value?.Count ?? 0);
@@ -125,7 +127,7 @@ public class RemoveDuplicates : IService
                 replacedCount + totalDirectories,
                 "Writing Assets To Disk",
                 _logger,
-                _config
+                _rwConfig
             )
         )
         {
@@ -133,7 +135,7 @@ public class RemoveDuplicates : IService
             {
                 for (var i = 0; i < assets.Value.Count; i++)
                 {
-                    var targetDirectory = Path.Combine(_config.RemovedDuplicateDirectory, assets.Key, i.ToString());
+                    var targetDirectory = Path.Combine(_rConfig.RemovedDuplicateDirectory, assets.Key, i.ToString());
                     InternalDirectory.CreateDirectory(targetDirectory);
 
                     var sourceDirectory = Path.GetDirectoryName(assets.Value[i].Path);
@@ -149,7 +151,7 @@ public class RemoveDuplicates : IService
             }
         }
 
-        _logger.LogInformation("Written all assets to directory: {Path}", _config.RemovedDuplicateDirectory);
+        _logger.LogInformation("Written all assets to directory: {Path}", _rConfig.RemovedDuplicateDirectory);
     }
 
     public static bool AreFileContentsEqual(string path1, string path2) =>

@@ -37,7 +37,6 @@ public class AssetBundleRConfig : IRConfig
     public bool UseCacheReplacementScheme { get; }
 
     public string LocalAssetCache { get; }
-    public bool LogProgressBars { get; }
     public bool KillOnBundleRetry { get; }
 
     public AssetBundleRConfig()
@@ -45,12 +44,11 @@ public class AssetBundleRConfig : IRConfig
         BundleSaveDirectory = InternalDirectory.GetDirectory("Bundles");
         XmlSaveDirectory = InternalDirectory.GetDirectory("XMLs");
         AssetSaveDirectory = InternalDirectory.GetDirectory("AssetDictionaries");
-        RemovedDuplicateDirectory = InternalDirectory.GetDirectory("RemovedDuplicates");
+        RemovedDuplicateDirectory = InternalDirectory.GetDirectory(Path.Join(AssetSaveDirectory, "RemovedDuplicates"));
         LocalAssetCache = Path.Combine(InternalDirectory.GetBaseDirectory(), "TestAssetCache.cache");
         LocalAssetsDirectory = InternalDirectory.GetDirectory("LocalAssets");
 
         UseCacheReplacementScheme = true;
-        LogProgressBars = false;
 
         AlwaysRecreateBundle = true;
         DebugInfo = true;

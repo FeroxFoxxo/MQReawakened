@@ -94,7 +94,7 @@ public class ReplaceCaches : IService
             cacheModel.TotalUnknownCaches
         );
         
-        using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", _logger, _rConfig))
+        using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", _logger, _rwConfig))
         {
             foreach (var cache in cacheModel.FoundCaches)
             {
