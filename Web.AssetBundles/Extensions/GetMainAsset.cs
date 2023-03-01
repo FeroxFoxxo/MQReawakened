@@ -10,9 +10,9 @@ public static class GetMainAsset
         var assetBundle = assetFile.ObjectsDic.Values.First(o => o.type == ClassIDType.AssetBundle);
 
         var dump = assetBundle.Dump();
-        var lines = dump.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+        var lines = dump.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
         var tree = GetTree(lines);
-
+        
         var baseBundle = tree.FirstOrDefault(a => a.Name == "AssetBundle Base");
 
         if (baseBundle == null)

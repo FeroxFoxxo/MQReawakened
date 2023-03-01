@@ -41,7 +41,7 @@ public class AssetHostController : Controller
     [HttpGet]
     public IActionResult GetAsset([FromRoute] string folder, [FromRoute] string file)
     {
-        if (_internalRwConfig.NetworkType == NetworkType.Server && _internalRwConfig.StrictNetworkCheck())
+        if (_internalRwConfig.NetworkType == NetworkType.Server)
             return NoContent();
 
         if (_config.KillOnBundleRetry && !file.EndsWith(".xml"))

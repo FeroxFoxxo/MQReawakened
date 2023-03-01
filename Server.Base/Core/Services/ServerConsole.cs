@@ -122,7 +122,7 @@ public class ServerConsole : IService
         _logger.LogInformation("Commands:");
 
         var commands = _commands.Values
-            .Where(x => _rwConfig.NetworkType.HasFlag(x.NetworkType))
+            .Where(x => x.NetworkType.HasFlag(_rwConfig.NetworkType))
             .Where(x => !x.StrictCheck || _rwConfig.StrictNetworkCheck())
             .OrderBy(x => x.Name)
             .ToArray();
