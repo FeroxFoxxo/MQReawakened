@@ -22,6 +22,7 @@ public class AssetBundleRConfig : IRConfig
     public string AssetSaveDirectory { get; }
     public string RemovedDuplicateDirectory { get; }
     public string XmlSaveDirectory { get; }
+    public string LocalAssetsDirectory { get; }
 
     public string SaveBundleExtension { get; }
     public string DefaultWebPlayerCacheLocation { get; }
@@ -41,11 +42,12 @@ public class AssetBundleRConfig : IRConfig
 
     public AssetBundleRConfig()
     {
-        BundleSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Bundles");
-        XmlSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "XMLs");
-        AssetSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "AssetDictionaries");
-        RemovedDuplicateDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "RemovedDuplicates");
+        BundleSaveDirectory = InternalDirectory.GetDirectory("Bundles");
+        XmlSaveDirectory = InternalDirectory.GetDirectory("XMLs");
+        AssetSaveDirectory = InternalDirectory.GetDirectory("AssetDictionaries");
+        RemovedDuplicateDirectory = InternalDirectory.GetDirectory("RemovedDuplicates");
         LocalAssetCache = Path.Combine(InternalDirectory.GetBaseDirectory(), "TestAssetCache.cache");
+        LocalAssetsDirectory = InternalDirectory.GetDirectory("LocalAssets");
 
         UseCacheReplacementScheme = true;
         LogProgressBars = false;

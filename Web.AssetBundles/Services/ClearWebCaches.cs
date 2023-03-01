@@ -60,7 +60,7 @@ public class ClearWebCaches : IService
         if (string.IsNullOrEmpty(_rwConfig.WebPlayerInfoFile))
             return false;
 
-        GetDirectory.Empty(Path.GetDirectoryName(_rwConfig.WebPlayerInfoFile));
+        InternalDirectory.Empty(Path.GetDirectoryName(_rwConfig.WebPlayerInfoFile));
         return true;
     }
 
@@ -69,7 +69,7 @@ public class ClearWebCaches : IService
         if (!_rwConfig.FlushCacheOnStart || _rConfig.UseCacheReplacementScheme)
             return;
 
-        GetDirectory.Empty(_rConfig.BundleSaveDirectory);
+        InternalDirectory.Empty(_rConfig.BundleSaveDirectory);
         
         var shouldDelete = _logger.Ask(
                 "You have 'FLUSH CACHE ON START' enabled, which may delete cached files from the original game, as they use the same directory. " +

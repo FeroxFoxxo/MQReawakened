@@ -1,10 +1,18 @@
 ﻿using Server.Base.Accounts.Enums;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Extensions;
 
 namespace Server.Base.Core.Models;
 
 public class InternalRConfig : IRConfig
 {
+    public string CrashBackupDirectory { get; set; }
+    public string AutomaticBackupDirectory { get; set; }
+    public string TempBackupDirectory { get; set; }
+    public string SaveDirectory { get; set; }
+    public string CrashDirectory { get; set; }
+    public string LogDirectory { get; set; }
+
     public string Host { get; }
     public int Port { get; }
     public int MaxAccountsPerIp { get; }
@@ -27,6 +35,12 @@ public class InternalRConfig : IRConfig
 
     public InternalRConfig()
     {
+        CrashBackupDirectory = InternalDirectory.GetDirectory("Backups/Crashed");
+        AutomaticBackupDirectory = InternalDirectory.GetDirectory("Backups/Automatic");
+        TempBackupDirectory = InternalDirectory.GetDirectory("Backups/Temp");
+        SaveDirectory = InternalDirectory.GetDirectory("Saves");
+        LogDirectory = InternalDirectory.GetDirectory("Logs");
+
         MaxAccountsPerIp = 1;
         ForbiddenChars = new[]
         {

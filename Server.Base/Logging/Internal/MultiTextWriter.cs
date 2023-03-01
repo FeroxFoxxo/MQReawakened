@@ -17,9 +17,7 @@ public class MultiTextWriter : TextWriter
     }
 
     public void Add(TextWriter textWriter) => _streams.Add(textWriter);
-
-    public void Remove(TextWriter textWriter) => _streams.Remove(textWriter);
-
+    
     public override void Write(char character)
     {
         foreach (var textWriter in _streams)

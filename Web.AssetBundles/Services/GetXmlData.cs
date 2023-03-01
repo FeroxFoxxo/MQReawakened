@@ -47,8 +47,6 @@ public class GetXmlData : IService
             NetworkType.Server | NetworkType.Client,
             PrintItems
         );
-
-        Directory.CreateDirectory(_config.DataDirectory);
     }
 
     private void PrintItems(string[] command)

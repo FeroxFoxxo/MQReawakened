@@ -36,9 +36,9 @@ public class ServerRConfig : IRConfig
 
     public ServerRConfig()
     {
-        LevelSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Level");
-        LevelDataSaveDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "LevelData");
-        DataDirectory = Path.Combine(InternalDirectory.GetBaseDirectory(), "Data");
+        LevelSaveDirectory = InternalDirectory.GetDirectory("Level");
+        LevelDataSaveDirectory = InternalDirectory.GetDirectory("LevelData");
+        DataDirectory = InternalDirectory.GetDirectory("Data");
 
         RoomTickRate = 32;
 

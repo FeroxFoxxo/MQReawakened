@@ -9,8 +9,7 @@ public static class GetFile
 
         var path = Path.GetDirectoryName(currentLog);
 
-        if (!Directory.Exists(path) && path != null)
-            Directory.CreateDirectory(path);
+        InternalDirectory.CreateDirectory(path);
 
         return File.Open(currentLog, mode);
     }

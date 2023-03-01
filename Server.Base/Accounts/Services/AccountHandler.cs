@@ -27,8 +27,8 @@ public class AccountHandler : DataHandler<Account>
 
     public AccountHandler(EventSink sink, ILogger<Account> logger, InternalRConfig internalServerConfig,
         PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter,
-        FileLogger fileLogger, InternalRConfig config, TemporaryDataStorage temporaryDataStorage) : base(
-        sink, logger)
+        FileLogger fileLogger, InternalRConfig config, TemporaryDataStorage temporaryDataStorage) :
+        base(sink, logger, config)
     {
         _internalServerConfig = internalServerConfig;
         _hasher = hasher;

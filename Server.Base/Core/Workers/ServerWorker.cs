@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Events;
 using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Extensions;
+using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Logging.Internal;
 using Server.Base.Network.Services;
@@ -30,7 +31,7 @@ public class ServerWorker : IHostedService
 
     public ServerWorker(NetStateHandler handler, ILogger<ServerWorker> logger,
         ServerHandler serverHandler, MessagePump pump, TimerThread timerThread, World world,
-        EventSink sink, IServiceProvider services)
+        EventSink sink, IServiceProvider services, InternalRConfig config)
     {
         _handler = handler;
         _logger = logger;
@@ -41,7 +42,8 @@ public class ServerWorker : IHostedService
         _sink = sink;
         _services = services;
 
-        MultiConsoleOut = new MultiTextWriter(Console.Out, new ConsoleFileLogger("console.log"));
+        var fileHandler = new ConsoleFileLogger("console.log", config);
+        MultiConsoleOut = new MultiTextWriter(Console.Out, fileHandler);
 
         _serverThread = new Thread(ServerLoopThread)
         {
@@ -63,9 +65,6 @@ public class ServerWorker : IHostedService
         
         try
         {
-            if (!Directory.Exists("Logs"))
-                Directory.CreateDirectory("Logs");
-
             Console.SetOut(MultiConsoleOut);
         }
         catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
@@ -32,21 +33,31 @@ public class RemoveDuplicates : IService
 
     public void Initialize() => _sink.WorldLoad += Load;
 
-    public void Load() =>
+    public void Load()
+    {
         _console.AddCommand(
             "removeDuplicates",
             "Creates a directory that does not include duplicated caches.",
             NetworkType.Server | NetworkType.Client,
             _ => RemoveDuplicateFiles()
         );
+        _console.AddCommand(
+            "removeXmlDuplicates",
+            "Creates a directory that does not include duplicated XML files (required for servers).",
+            NetworkType.Server | NetworkType.Client,
+            _ => RemoveDuplicateFiles(new []{ AssetInfo.TypeAsset.Level, AssetInfo.TypeAsset.XML})
+        );
+    }
 
-    private void RemoveDuplicateFiles()
+    private void RemoveDuplicateFiles(AssetInfo.TypeAsset[] filters = null)
     {
         _logger.LogDebug("Removing duplicates");
 
         var assetList = new Dictionary<string, List<InternalAssetInfo>>();
         var assetDict = File.ReadAllText(_buildAssetList.AssetDictLocation);
-        var allAssets = BuildAssetList.GetAssetsFromDictionary(assetDict).ToArray();
+        var allAssets = BuildAssetList.GetAssetsFromDictionary(assetDict)
+            .Where(x => filters?.Any(f => x.Type == f) ?? true)
+            .ToArray();
 
         using (
             var bar = new DefaultProgressBar(
@@ -102,14 +113,12 @@ public class RemoveDuplicates : IService
             allAssets.Length - replacedCount, replacedCount, allAssets.Length);
 
         _logger.LogDebug("Writing assets");
-
-        Directory.CreateDirectory(_config.RemovedDuplicateDirectory);
-
+        
         _logger.LogDebug("Emptying duplicated directory folder...");
-        GetDirectory.Empty(_config.RemovedDuplicateDirectory);
+        InternalDirectory.Empty(_config.RemovedDuplicateDirectory);
         _logger.LogDebug("Emptied folder");
 
-        var totalDirectories = assetList.Max(s => s.Value.Count);
+        var totalDirectories = assetList.Max(s => s.Value?.Count ?? 0);
 
         using (
             var bar = new DefaultProgressBar(
@@ -125,7 +134,7 @@ public class RemoveDuplicates : IService
                 for (var i = 0; i < assets.Value.Count; i++)
                 {
                     var targetDirectory = Path.Combine(_config.RemovedDuplicateDirectory, assets.Key, i.ToString());
-                    Directory.CreateDirectory(targetDirectory);
+                    InternalDirectory.CreateDirectory(targetDirectory);
 
                     var sourceDirectory = Path.GetDirectoryName(assets.Value[i].Path);
 

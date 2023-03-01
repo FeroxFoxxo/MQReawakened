@@ -76,12 +76,9 @@ public class BuildAssetList : IService
 
         if (!string.IsNullOrEmpty(_rwConfig.WebPlayerInfoFile))
             _rwConfig.WebPlayerInfoFile = _rwConfig.GetWebPlayerInfoFile(_rConfig, _logger);
-
-        Directory.CreateDirectory(_rConfig.AssetSaveDirectory);
-        Directory.CreateDirectory(_rConfig.BundleSaveDirectory);
-
+        
         if (_rwConfig.FlushCacheOnStart)
-            GetDirectory.Empty(_rConfig.BundleSaveDirectory);
+            InternalDirectory.Empty(_rConfig.BundleSaveDirectory);
 
         AssetDictLocation = Path.Combine(_rConfig.AssetSaveDirectory, _rConfig.StoredAssetDict);
 

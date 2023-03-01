@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Server.Base.Core.Extensions;
+using Server.Base.Core.Models;
+using Server.Base.Network.Enums;
 using Web.AssetBundles.BundleFix.Data;
 using Web.AssetBundles.BundleFix.Header;
 using Web.AssetBundles.BundleFix.Header.Models;
@@ -20,23 +22,28 @@ public class AssetHostController : Controller
 {
     private readonly BuildAssetList _buildAssetList;
     private readonly BuildXmlFiles _buildXmlList;
+    private readonly InternalRwConfig _internalRwConfig;
     private readonly AssetBundleRConfig _config;
     private readonly ILogger<AssetHostController> _logger;
     private readonly ReplaceCaches _replaceCaches;
 
     public AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
-        AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches)
+        AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches, InternalRwConfig internalRwConfig)
     {
         _buildAssetList = buildAssetList;
         _logger = logger;
         _config = config;
         _buildXmlList = buildXmlList;
         _replaceCaches = replaceCaches;
+        _internalRwConfig = internalRwConfig;
     }
 
     [HttpGet]
     public IActionResult GetAsset([FromRoute] string folder, [FromRoute] string file)
     {
+        if (_internalRwConfig.NetworkType == NetworkType.Server && _internalRwConfig.StrictNetworkCheck())
+            return NoContent();
+
         if (_config.KillOnBundleRetry && !file.EndsWith(".xml"))
         {
             var uriPath = $"{folder}/{file}";
@@ -92,7 +99,7 @@ public class AssetHostController : Controller
                 ? Path.Join(_config.BundleSaveDirectory, assetName)
                 : _config.BundleSaveDirectory;
 
-        Directory.CreateDirectory(baseDirectory);
+        InternalDirectory.CreateDirectory(baseDirectory);
 
         var basePath = Path.Join(baseDirectory, assetName);
 

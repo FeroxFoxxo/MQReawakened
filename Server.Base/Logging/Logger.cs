@@ -16,7 +16,7 @@ public class Logger : ILogger
 
     private readonly string _categoryName;
 
-    private static StreamWriter Output
+    public static StreamWriter Output
     {
         get
         {

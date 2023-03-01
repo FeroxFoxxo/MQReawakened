@@ -1,4 +1,5 @@
 ﻿using Server.Base.Core.Extensions;
+using Server.Base.Core.Models;
 using System.Text;
 
 namespace Server.Base.Logging.Internal;
@@ -13,11 +14,11 @@ public class ConsoleFileLogger : TextWriter
 
     public override Encoding Encoding => Encoding.Default;
 
-    public ConsoleFileLogger(string file)
+    public ConsoleFileLogger(string file, InternalRConfig config)
     {
         FileName = file;
 
-        using var writer = GetFile.GetStreamWriter(file, "Logs", FileMode.Create);
+        using var writer = GetFile.GetStreamWriter(file, config.LogDirectory, FileMode.Create);
         writer.WriteLine(">>>Logging started on {0:f}.", DateTime.Now);
 
         _newLine = true;

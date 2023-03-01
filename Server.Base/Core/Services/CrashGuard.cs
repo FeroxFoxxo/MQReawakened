@@ -5,6 +5,7 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Extensions;
+using Server.Base.Core.Models;
 using Server.Base.Network.Services;
 using Server.Base.Worlds;
 using System.Diagnostics;
@@ -18,14 +19,16 @@ public class CrashGuard : IService
     private readonly Module[] _modules;
     private readonly EventSink _sink;
     private readonly World _world;
+    private readonly InternalRConfig _config;
 
     public CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink, World world,
-        IServiceProvider services)
+        IServiceProvider services, InternalRConfig config)
     {
         _handler = handler;
         _logger = logger;
         _sink = sink;
         _world = world;
+        _config = config;
 
         _modules = services.GetServices<Module>().ToArray();
     }
@@ -49,6 +52,7 @@ public class CrashGuard : IService
 
         try
         {
+            Logging.Logger.Output.Dispose();
             Process.Start(GetExePath.Path());
             _logger.LogInformation("Successfully restarted!");
 
@@ -68,13 +72,11 @@ public class CrashGuard : IService
         {
             var timeStamp = GetTime.GetTimeStamp();
 
-            var root = GetRoot();
-            var rootBackup = InternalDirectory.Combine(root, $"Backups/Crashed/{timeStamp}/");
-            var rootOrigin = InternalDirectory.Combine(root, "Saves/");
+            var backup = Path.Combine(_config.CrashBackupDirectory, timeStamp);
 
-            InternalDirectory.CreateDirectory(rootBackup);
+            InternalDirectory.CreateDirectory(backup);
 
-            CopyFiles(rootOrigin, rootBackup);
+            CopyFiles(_config.SaveDirectory, _config.CrashBackupDirectory);
 
             _logger.LogInformation("Backed up!");
         }
@@ -102,19 +104,6 @@ public class CrashGuard : IService
         }
     }
 
-    private string GetRoot()
-    {
-        try
-        {
-            return Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Unable to get root.");
-            return string.Empty;
-        }
-    }
-
     private void GenerateCrashReport(CrashedEventArgs crashedEventArgs)
     {
         _logger.LogDebug("Generating report...");
@@ -123,9 +112,8 @@ public class CrashGuard : IService
         {
             var timeStamp = GetTime.GetTimeStamp();
             var fileName = $"Crash {timeStamp}.log";
-
-            var root = GetRoot();
-            var filePath = InternalDirectory.Combine(root, fileName);
+            
+            var filePath = Path.Combine(_config.CrashDirectory, fileName);
 
             using (var streamWriter = new StreamWriter(filePath))
             {

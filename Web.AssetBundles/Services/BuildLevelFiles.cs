@@ -42,7 +42,7 @@ public class BuildLevelFiles : IService
             .Where(x => x.Type is AssetInfo.TypeAsset.Level)
             .ToArray();
 
-        GetDirectory.OverwriteDirectory(_sConfig.LevelSaveDirectory);
+        InternalDirectory.OverwriteDirectory(_sConfig.LevelSaveDirectory);
 
         using var bar = new DefaultProgressBar(assets.Length, "Loading Level Files", _logger, _aBConfig);
 

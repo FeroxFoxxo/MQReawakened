@@ -50,13 +50,8 @@ public static class AssetDictionaryExtensions
     public static void AddLocalXmlFiles(this Dictionary<string, InternalAssetInfo> assets,
         ILogger<BuildAssetList> logger, AssetBundleRConfig config)
     {
-        var localPath = Path.Combine(InternalDirectory.GetBaseDirectory(), "LocalAssets");
-
-        if (!Directory.Exists(localPath))
-            Directory.CreateDirectory(localPath);
-
         foreach (var asset in Directory
-                     .GetFiles(localPath, "*.xml")
+                     .GetFiles(config.LocalAssetsDirectory, "*.xml")
                      .Select(file => new InternalAssetInfo
                      {
                          BundleSize = Convert.ToInt32(new FileInfo(file).Length / 1024),

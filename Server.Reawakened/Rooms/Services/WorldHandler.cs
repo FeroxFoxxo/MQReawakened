@@ -50,7 +50,7 @@ public class WorldHandler : IService
 
     private void LoadRooms()
     {
-        GetDirectory.OverwriteDirectory(_config.LevelDataSaveDirectory);
+        InternalDirectory.OverwriteDirectory(_config.LevelDataSaveDirectory);
 
         foreach (var roomList in _rooms.Where(room => room.Key != -1))
         foreach (var room in roomList.Value)

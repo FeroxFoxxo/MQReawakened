@@ -1,18 +1,22 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Models;
+using Server.Base.Logging.Internal;
 using System.Text;
 
 namespace Server.Base.Logging;
 
 public class FileLogger
 {
-    private readonly Dictionary<string, Internal.ConsoleFileLogger> _fileLoggers;
+    private readonly Dictionary<string, ConsoleFileLogger> _fileLoggers;
     private readonly ILoggerFactory _loggerFactory;
+    private readonly InternalRConfig _config;
     private readonly object _lock;
 
-    public FileLogger(ILoggerFactory loggerFactory)
+    public FileLogger(ILoggerFactory loggerFactory, InternalRConfig config)
     {
         _loggerFactory = loggerFactory;
-        _fileLoggers = new Dictionary<string, Internal.ConsoleFileLogger>();
+        _config = config;
+        _fileLoggers = new Dictionary<string, ConsoleFileLogger>();
         _lock = new object();
     }
     
@@ -37,7 +41,7 @@ public class FileLogger
             lock (_lock)
             {
                 if (!_fileLoggers.ContainsKey(fileName))
-                    _fileLoggers.Add(fileName, new Internal.ConsoleFileLogger(fileName));
+                    _fileLoggers.Add(fileName, new ConsoleFileLogger(fileName, _config));
 
                 _fileLoggers[fileName].WriteLine($"# {DateTime.UtcNow} @ " + message);
             }

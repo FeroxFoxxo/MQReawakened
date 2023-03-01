@@ -13,13 +13,15 @@ public abstract class DataHandler<T> : IService where T : PersistantData
 {
     public readonly ILogger<T> Logger;
     public readonly EventSink Sink;
+    public readonly InternalRConfig Config;
 
     public Dictionary<int, T> Data;
 
-    protected DataHandler(EventSink sink, ILogger<T> logger)
+    protected DataHandler(EventSink sink, ILogger<T> logger, InternalRConfig config)
     {
         Sink = sink;
         Logger = logger;
+        Config = config;
         Data = new Dictionary<int, T>();
     }
 
@@ -29,12 +31,9 @@ public abstract class DataHandler<T> : IService where T : PersistantData
         Sink.WorldSave += Save;
         Sink.CreateData += () => CreateInternal($"new {typeof(T).Name.ToLower()}");
     }
-
-    public string GetDirectory() =>
-        Path.Combine(InternalDirectory.GetBaseDirectory(), "Saves");
-
+    
     public string GetFileName() =>
-        Path.Combine(GetDirectory(), $"{typeof(T).Name.ToLower()}.json");
+        Path.Combine(Config.SaveDirectory, $"{typeof(T).Name.ToLower()}.json");
 
     public void Load()
     {
@@ -101,9 +100,6 @@ public abstract class DataHandler<T> : IService where T : PersistantData
 
     public void Save(WorldSaveEventArgs worldSaveEventArgs)
     {
-        if (!Directory.Exists(GetDirectory()))
-            Directory.CreateDirectory(GetDirectory());
-
         var filePath = GetFileName();
 
         using StreamWriter streamWriter = new(filePath, false);

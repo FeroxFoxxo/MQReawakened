@@ -13,9 +13,31 @@ public static class InternalDirectory
             Directory.CreateDirectory(path);
     }
 
-    public static void CreateDirectory(string path1, string path2) => CreateDirectory(Combine(path1, path2));
+    public static string GetDirectory(string directoryName)
+    {
+        var path = Path.Combine(GetBaseDirectory(), directoryName);
+        CreateDirectory(path);
+        return path;
+    }
 
-    public static string Combine(string path1, string path2) => path1.Length == 0 ? path2 : Path.Combine(path1, path2);
+    public static void Empty(string path)
+    {
+        var directory = new DirectoryInfo(path);
+
+        foreach (var file in directory.GetFiles())
+            file.Delete();
+
+        foreach (var subDirectory in directory.GetDirectories())
+            subDirectory.Delete(true);
+    }
+
+    public static void OverwriteDirectory(string path)
+    {
+        if (Directory.Exists(path))
+            Directory.Delete(path, true);
+
+        CreateDirectory(path);
+    }
 
     public static string GetBaseDirectory()
     {

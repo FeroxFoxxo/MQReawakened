@@ -36,7 +36,7 @@ public class ArchivedSaves : IService
         _eventSink = eventSink;
         _serverHandler = serverHandler;
 
-        _defaultDestination = Path.Combine(InternalDirectory.GetBaseDirectory(), "Backups", "Archived");
+        _defaultDestination = InternalDirectory.GetDirectory("Backups/Archived");
         ExpireAge = TimeSpan.Zero;
         Merge = MergeType.Minutes;
         _sync = new AutoResetEvent(true);
@@ -225,9 +225,6 @@ public class ArchivedSaves : IService
 
     public bool Process(string source)
     {
-        if (!Directory.Exists(_defaultDestination))
-            Directory.CreateDirectory(_defaultDestination);
-
         if (ExpireAge > TimeSpan.Zero)
             BeginPrune(DateTime.UtcNow - ExpireAge);
 

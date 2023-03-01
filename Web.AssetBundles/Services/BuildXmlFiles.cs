@@ -45,7 +45,7 @@ public class BuildXmlFiles : IService, IInjectModules
             .Where(x => x.Type is AssetInfo.TypeAsset.XML)
             .ToArray();
 
-        GetDirectory.OverwriteDirectory(_config.XmlSaveDirectory);
+        InternalDirectory.OverwriteDirectory(_config.XmlSaveDirectory);
 
         var bundles = _services.GetRequiredServices<IBundledXml>(Modules)
             .ToDictionary(x => x.BundleName, x => x);

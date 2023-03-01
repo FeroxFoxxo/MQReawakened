@@ -18,15 +18,16 @@ public class AutoSave : IService
     private readonly TimeSpan _delayWarning;
 
     private readonly ServerHandler _handler;
+    private readonly InternalRConfig _config;
     private readonly ILogger<AutoSave> _logger;
     private readonly EventSink _sink;
     private readonly TimerThread _timerThread;
     private readonly World _world;
 
     public AutoSave(InternalRConfig config, ILogger<AutoSave> logger, ServerHandler handler, World world,
-        ArchivedSaves archives,
-        EventSink sink, TimerThread timerThread)
+        ArchivedSaves archives, EventSink sink, TimerThread timerThread)
     {
+        _config = config;
         _logger = logger;
         _handler = handler;
         _world = world;
@@ -76,17 +77,9 @@ public class AutoSave : IService
         if (_backups.Length == 0)
             return false;
 
-        var root = Path.Combine(InternalDirectory.GetBaseDirectory(), "Backups/Automatic");
-
-        if (!Directory.Exists(root))
-            Directory.CreateDirectory(root);
-
-        var tempRoot = Path.Combine(InternalDirectory.GetBaseDirectory(), "Backups/Temp");
-
-        if (Directory.Exists(tempRoot))
-            Directory.Delete(tempRoot, true);
-
-        var existing = Directory.GetDirectories(root);
+        InternalDirectory.OverwriteDirectory(_config.TempBackupDirectory);
+        
+        var existing = Directory.GetDirectories(_config.AutomaticBackupDirectory);
 
         var anySuccess = existing.Length == 0;
 
@@ -101,7 +94,7 @@ public class AutoSave : IService
             {
                 try
                 {
-                    directoryInfo.MoveTo(Path.Combine(root, _backups[i - 1]));
+                    directoryInfo.MoveTo(Path.Combine(_config.AutomaticBackupDirectory, _backups[i - 1]));
 
                     anySuccess = true;
                 }
@@ -116,9 +109,9 @@ public class AutoSave : IService
 
                 try
                 {
-                    directoryInfo.MoveTo(tempRoot);
+                    directoryInfo.MoveTo(_config.TempBackupDirectory);
 
-                    delete = !_archives.Process(tempRoot);
+                    delete = !_archives.Process(_config.TempBackupDirectory);
                 }
                 catch (Exception ex)
                 {
@@ -139,10 +132,10 @@ public class AutoSave : IService
             }
         }
 
-        var saves = Path.Combine(InternalDirectory.GetBaseDirectory(), "Saves");
+        var saves = InternalDirectory.GetDirectory("Saves");
 
         if (Directory.Exists(saves))
-            Directory.Move(saves, Path.Combine(root, _backups[^1]));
+            Directory.Move(saves, Path.Combine(_config.AutomaticBackupDirectory, _backups[^1]));
 
         return anySuccess;
     }

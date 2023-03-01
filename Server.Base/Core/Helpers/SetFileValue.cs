@@ -11,7 +11,7 @@ public class SetFileValue
         return string.IsNullOrEmpty(setting)
             ? isWindows
                 ? FileDialog.GetFile(title, filter)
-                : Console.ReadLine()
+                : string.Empty
             : setting;
     }
 }

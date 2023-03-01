@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Events;
+using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Network;
 using Server.Reawakened.Configs;
@@ -18,7 +19,8 @@ public class UserInfoHandler : DataHandler<UserInfo>
     private readonly RandomKeyGenerator _randomKeyGenerator;
 
     public UserInfoHandler(EventSink sink, ILogger<UserInfo> logger,
-        RandomKeyGenerator randomKeyGenerator, ServerRConfig config) : base(sink, logger)
+        RandomKeyGenerator randomKeyGenerator, ServerRConfig config, InternalRConfig internalConfig) :
+        base(sink, logger, internalConfig)
     {
         _randomKeyGenerator = randomKeyGenerator;
         _config = config;
