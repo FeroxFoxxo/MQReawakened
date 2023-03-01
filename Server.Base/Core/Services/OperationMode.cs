@@ -55,19 +55,14 @@ public class OperationMode : IService
         if (_logger.Ask("Would you like to use single-player mode?", true))
         {
             _config.NetworkType = NetworkType.Client | NetworkType.Server;
+            _eventSink.InvokeChangedOperationalMode();
             return;
         }
 
         if (_logger.Ask("Are you setting this app as a client to connect to a server, rather than being the server itself?", true))
         {
             _config.NetworkType = NetworkType.Client;
-
-            _logger.LogInformation("What is the address of the server that you are trying to connect to?");
-
-            var serverAddress = Console.ReadLine();
-
-            _config.ServerAddress = serverAddress;
-
+            SetServerAddress();
             return;
         }
 
@@ -85,9 +80,11 @@ public class OperationMode : IService
             _config.ServerAddress = serverAddress;
 
             if (!string.IsNullOrEmpty(_config.ServerAddress))
-                return;
+                break;
 
             _logger.LogError("Server address cannot be empty!");
         }
+
+        _eventSink.InvokeChangedOperationalMode();
     }
 }

@@ -174,9 +174,7 @@ public class NetState : IDisposable
         catch (Exception ex)
         {
             lock (_handler.Disposed)
-            {
                 _handler.TraceNetworkError(ex, this);
-            }
 
             Dispose();
         }
@@ -322,9 +320,7 @@ public class NetState : IDisposable
         {
             WriteClient(bufferedPacket);
             lock (_handler.Disposed)
-            {
                 _handler.TraceNetworkError(ex, this);
-            }
             Dispose();
         }
     }

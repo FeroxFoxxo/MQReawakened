@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
+using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Base.Core.Models;
@@ -28,7 +29,6 @@ public class StartGame : IService
     private readonly InternalRwConfig _internalWConfig;
     private readonly ILogger<StartGame> _logger;
     private readonly PlayerEventSink _playerEventSink;
-    private readonly SettingsRConfig _sConfig;
     private readonly LauncherRConfig _lConfig;
     private readonly LauncherRwConfig _lWConfig;
     private readonly EventSink _sink;
@@ -40,14 +40,12 @@ public class StartGame : IService
 
     public PackageInformation CurrentVersion { get; private set; }
 
-    public StartGame(EventSink sink, LauncherRConfig lConfig, SettingsRConfig sConfig,
-        IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole console,
-        World world, LauncherRwConfig lWConfig, PlayerEventSink playerEventSink, RandomKeyGenerator generator,
-        InternalRwConfig internalWConfig)
+    public StartGame(EventSink sink, LauncherRConfig lConfig, IHostApplicationLifetime appLifetime,
+        ILogger<StartGame> logger, ServerConsole console, World world, LauncherRwConfig lWConfig,
+        PlayerEventSink playerEventSink, RandomKeyGenerator generator, InternalRwConfig internalWConfig)
     {
         _sink = sink;
         _lConfig = lConfig;
-        _sConfig = sConfig;
         _appLifetime = appLifetime;
         _logger = logger;
         _console = console;
@@ -66,7 +64,16 @@ public class StartGame : IService
         _appLifetime.ApplicationStarted.Register(AppStarted);
         _sink.WorldLoad += GetGameInformation;
         _sink.Shutdown += StopGame;
+        _sink.ChangedOperationalMode += CheckRemakeConfig;
         _playerEventSink.PlayerRefreshed += AskIfRestart;
+    }
+
+    private void CheckRemakeConfig()
+    {
+        if (!ShouldRun())
+            return;
+
+        RunGame();
     }
 
     private void StopGame() => _game?.CloseMainWindow();
@@ -92,8 +99,6 @@ public class StartGame : IService
         {
             _lWConfig.GameSettingsFile = SetFileValue.SetIfNotNull(_lWConfig.GameSettingsFile, "Get Settings File",
                 "Settings File (*.txt)\0*.txt\0");
-
-            _sConfig.SetSettings(_lWConfig);
         }
         catch
         {
@@ -164,7 +169,7 @@ public class StartGame : IService
         if (_internalWConfig.NetworkType.HasFlag(NetworkType.Client))
             return true;
 
-        _logger.LogWarning("NOT RESTARTING: SERVER IS HEADLESS");
+        _logger.LogWarning("NOT RUNNING GAME: SERVER IS HEADLESS");
         return false;
     }
 
@@ -184,7 +189,10 @@ public class StartGame : IService
         }
 
         if (_lConfig.OverwriteGameConfig)
+        {
+            _lConfig.SetSettings(_lWConfig);
             WriteConfig();
+        }
 
         if (!_world.Crashed)
             LaunchGame();

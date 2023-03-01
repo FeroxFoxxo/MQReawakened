@@ -73,13 +73,14 @@ public class Web : WebModule
             
             app.UseHsts();
         }
-
-        //app.UseHttpsRedirection();
+        
         app.UseStaticFiles();
         
         app.UseIpRateLimiting();
 
-        app.UseMiddleware<RequestLogger>();
+        app
+            .UseMiddleware<RequestLoggerMiddleware>()
+            .UseMiddleware<ProxyMiddleware>();
         
         app.UseRouting();
 

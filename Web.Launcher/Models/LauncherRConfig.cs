@@ -1,4 +1,6 @@
-﻿using Server.Base.Core.Abstractions;
+﻿using Newtonsoft.Json;
+using Server.Base.Core.Abstractions;
+using System.Dynamic;
 
 namespace Web.Launcher.Models;
 
@@ -27,6 +29,9 @@ public class LauncherRConfig : IRConfig
     public string TimeFilter { get; }
     public string OldClientLastUpdate { get; }
 
+    public bool Fullscreen { get; }
+    public bool OnGameClosePopup { get; }
+
     public LauncherRConfig()
     {
         News = $"You expected there to be news here? It's {DateTime.Now.Year}!";
@@ -50,5 +55,21 @@ public class LauncherRConfig : IRConfig
 
         TimeFilter = "yyyy-MM-dd_HH-mm-ss";
         OldClientLastUpdate = "2013-11-01_12-00-00";
+
+        Fullscreen = false;
+        OnGameClosePopup = false;
+    }
+
+    public void SetSettings(LauncherRwConfig config)
+    {
+        if (config.GameSettingsFile == null)
+            return;
+
+        dynamic settings = JsonConvert.DeserializeObject<ExpandoObject>(File.ReadAllText(config.GameSettingsFile))!;
+        settings.launcher.baseUrl = ServerBaseUrl;
+        settings.launcher.fullscreen = Fullscreen ? "true" : "false";
+        settings.launcher.onGameClosePopup = OnGameClosePopup ? "true" : "false";
+        settings.patcher.baseUrl = ServerBaseUrl;
+        File.WriteAllText(config.GameSettingsFile, JsonConvert.SerializeObject(settings));
     }
 }

@@ -7,13 +7,13 @@ using System.Text;
 
 namespace Server.Web.Middleware;
 
-public class RequestLogger
+public class RequestLoggerMiddleware
 {
     private readonly RequestDelegate _next;
 
-    public RequestLogger(RequestDelegate next) => _next = next;
+    public RequestLoggerMiddleware(RequestDelegate next) => _next = next;
 
-    public async Task Invoke(HttpContext context, ILogger<RequestLogger> logger, WebRConfig webRConfig, FileLogger fileLogger)
+    public async Task Invoke(HttpContext context, ILogger<RequestLoggerMiddleware> logger, WebRConfig webRConfig, FileLogger fileLogger)
     {
         var method = context.Request.Method;
 
