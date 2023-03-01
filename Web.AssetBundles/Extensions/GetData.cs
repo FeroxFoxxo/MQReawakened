@@ -27,7 +27,7 @@ public static class GetData
 
             manager.LoadFiles(asset.Path);
 
-            var textAsset = manager.assetsFileList.First().ObjectsDic.Values.GetText(asset.Name);
+            var textAsset = manager.assetsFileList.First().ObjectsDic.Values.ToArray().GetText(asset.Name);
 
             var text = Encoding.UTF8.GetString(textAsset.m_Script);
             var length = text.Split('\n').Length;

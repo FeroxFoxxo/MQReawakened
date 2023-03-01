@@ -205,9 +205,17 @@ public class BuildAssetList : IService
             return null;
         }
 
+        var name = assetFile.GetMainAssetName(bar);
+
+        if (string.IsNullOrEmpty(name))
+        {
+            bar.SetMessage($"Could not find asset name in {folderName}, skipping!");
+            return null;
+        }
+
         var asset = new InternalAssetInfo
         {
-            Name = assetFile.GetMainAssetName(bar),
+            Name = name,
             Path = assetFile.fullName,
             CacheTime = time,
             Version = 0,
@@ -217,9 +225,9 @@ public class BuildAssetList : IService
             UnityVersion = assetFile.unityVersion
         };
 
-        var gameObj = assetFile.ObjectsDic.Values.ToList().GetGameObject(asset.Name)?.m_Name;
-        var musicObj = assetFile.ObjectsDic.Values.GetMusic(asset.Name)?.m_Name;
-        var textObj = assetFile.ObjectsDic.Values.GetText(asset.Name)?.m_Name;
+        var gameObj = assetFile.ObjectsDic.Values.ToArray().GetGameObject(asset.Name)?.m_Name;
+        var musicObj = assetFile.ObjectsDic.Values.ToArray().GetMusic(asset.Name)?.m_Name;
+        var textObj = assetFile.ObjectsDic.Values.ToArray().GetText(asset.Name)?.m_Name;
 
         if (!string.IsNullOrEmpty(gameObj))
         {
