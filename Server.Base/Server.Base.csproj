@@ -4,6 +4,7 @@
         <TargetFramework>net7</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <DebugType>embedded</DebugType>
     </PropertyGroup>
 
     <ItemGroup>

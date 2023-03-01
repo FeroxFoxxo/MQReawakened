@@ -41,12 +41,13 @@ public class AssetBundleRConfig : IRConfig
 
     public AssetBundleRConfig()
     {
-        BundleSaveDirectory = InternalDirectory.GetDirectory("Bundles");
-        XmlSaveDirectory = InternalDirectory.GetDirectory("XMLs");
-        AssetSaveDirectory = InternalDirectory.GetDirectory("AssetDictionaries");
-        RemovedDuplicateDirectory = InternalDirectory.GetDirectory(Path.Join(AssetSaveDirectory, "RemovedDuplicates"));
-        LocalAssetCache = Path.Combine(InternalDirectory.GetBaseDirectory(), "TestAssetCache.cache");
-        LocalAssetsDirectory = InternalDirectory.GetDirectory("LocalAssets");
+        XmlSaveDirectory = InternalDirectory.GetDirectory("XMLs/XMLFiles");
+
+        AssetSaveDirectory = InternalDirectory.GetDirectory("Assets/AssetDictionaries");
+        BundleSaveDirectory = InternalDirectory.GetDirectory("Assets/Bundles");
+        RemovedDuplicateDirectory = InternalDirectory.GetDirectory("Assets/RemovedDuplicates");
+        LocalAssetsDirectory = InternalDirectory.GetDirectory("Assets/LocalAssets");
+        LocalAssetCache = Path.Combine(InternalDirectory.GetBaseDirectory(), "Assets/TestAssetCache.cache");
 
         UseCacheReplacementScheme = true;
 

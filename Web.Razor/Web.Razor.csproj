@@ -4,6 +4,7 @@
         <TargetFramework>net7</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+        <DebugType>embedded</DebugType>
     </PropertyGroup>
 
     <ItemGroup>

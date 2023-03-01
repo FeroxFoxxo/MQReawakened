@@ -11,28 +11,9 @@ public class Logger : ILogger
     private static readonly Stack<ConsoleColor> ConsoleColors = new();
 
     private static int _offset;
-    private static StreamWriter _output;
     private static bool _criticalErrored;
 
     private readonly string _categoryName;
-
-    public static StreamWriter Output
-    {
-        get
-        {
-            if (_output != null) return _output;
-
-            var fileName = $"{DateTime.UtcNow.ToShortDateString().Replace('/', '_')}.log";
-
-            _output = GetFile.GetStreamWriter(fileName, "Exceptions", FileMode.OpenOrCreate);
-
-            _output.WriteLine("----------------------------");
-            _output.WriteLine($"Exception log started on {DateTime.UtcNow}");
-            _output.WriteLine();
-
-            return _output;
-        }
-    }
 
     public Logger(string categoryName) => _categoryName = categoryName;
 
@@ -138,9 +119,15 @@ public class Logger : ILogger
     {
         WriteLine(ConsoleColor.DarkRed, $"{ex}", "C", ex.HResult);
 
-        Output.WriteLine($"Exception Caught: {DateTime.UtcNow}");
-        Output.WriteLine(ex);
-        Output.WriteLine();
+        var fileName = $"{DateTime.UtcNow.ToShortDateString().Replace('/', '_')}.log";
+        var exceptionDir = InternalDirectory.GetDirectory("Logs/Exceptions");
+        var file = Path.Combine(exceptionDir, fileName);
+        using var fStream = File.Open(file, FileMode.OpenOrCreate);
+        using var stream = new StreamWriter(fStream);
+
+        stream.WriteLine($"Exception Caught: {DateTime.UtcNow}");
+        stream.WriteLine(ex);
+        stream.WriteLine();
     }
 
     public static bool HasCriticallyErrored() => _criticalErrored;

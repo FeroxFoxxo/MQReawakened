@@ -13,6 +13,7 @@
         <NeutralLanguage>en-NZ</NeutralLanguage>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <ServerGarbageCollection>true</ServerGarbageCollection>
+        <DebugType>embedded</DebugType>
     </PropertyGroup>
 
     <ItemGroup>

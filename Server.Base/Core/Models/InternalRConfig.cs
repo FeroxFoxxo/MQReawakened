@@ -40,6 +40,7 @@ public class InternalRConfig : IRConfig
         TempBackupDirectory = InternalDirectory.GetDirectory("Backups/Temp");
         SaveDirectory = InternalDirectory.GetDirectory("Saves");
         LogDirectory = InternalDirectory.GetDirectory("Logs");
+        CrashDirectory = InternalDirectory.GetDirectory("Logs/Crashes");
 
         MaxAccountsPerIp = 1;
         ForbiddenChars = new[]

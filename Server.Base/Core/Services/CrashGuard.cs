@@ -52,7 +52,6 @@ public class CrashGuard : IService
 
         try
         {
-            Logging.Logger.Output.Dispose();
             Process.Start(GetExePath.Path());
             _logger.LogInformation("Successfully restarted!");
 

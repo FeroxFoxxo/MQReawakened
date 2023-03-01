@@ -36,9 +36,9 @@ public class ServerRConfig : IRConfig
 
     public ServerRConfig()
     {
-        LevelSaveDirectory = InternalDirectory.GetDirectory("Level");
-        LevelDataSaveDirectory = InternalDirectory.GetDirectory("LevelData");
-        DataDirectory = InternalDirectory.GetDirectory("Data");
+        LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
+        LevelDataSaveDirectory = InternalDirectory.GetDirectory("XMLs/LevelData");
+        DataDirectory = InternalDirectory.GetDirectory("XMLs/FormattedData");
 
         RoomTickRate = 32;
 

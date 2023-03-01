@@ -3,7 +3,7 @@ using Server.Base.Core.Extensions;
 using Web.AssetBundles.Models;
 using Web.AssetBundles.Services;
 
-namespace Web.AssetBundles.LocalAssets;
+namespace Web.AssetBundles.Assets.LocalAssets;
 
 public static class AssetDictionaryExtensions
 {
@@ -13,22 +13,18 @@ public static class AssetDictionaryExtensions
         var assetsToAdd = new Dictionary<string, InternalAssetInfo>();
 
         foreach (var modifier in config.AssetModifiers)
-        {
             foreach (var oldAsset in assets.Keys.Where(a => a.EndsWith(modifier)))
             {
                 var assetName = oldAsset[..^modifier.Length];
                 assetsToAdd.AddChangedNameToDict(assetName, assets[oldAsset]);
             }
-        }
 
         foreach (var replacement in config.AssetRenames)
-        {
             foreach (var oldAsset in assets.Keys.Where(a => a.Contains(replacement.Key)))
             {
                 var assetName = oldAsset.Replace(replacement.Key, replacement.Value);
                 assetsToAdd.AddChangedNameToDict(assetName, assets[oldAsset]);
             }
-        }
 
         foreach (var asset in assetsToAdd
                      .Where(asset => !assets.ContainsKey(asset.Key)))

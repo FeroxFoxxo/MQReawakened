@@ -96,11 +96,8 @@ public class SignUpModel : PageModel
             return NotFound();
 
         var userInfo = _userInfoHandler.Create(ip, account.UserId, Gender, Date.Value, Region, "Website");
-        
-        if (userInfo == null)
-            return NotFound();
 
-        return RedirectToPage("Success");
+        return userInfo == null ? NotFound() : RedirectToPage("Success");
     }
 
 }

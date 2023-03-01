@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net7</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DebugType>embedded</DebugType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -38,13 +39,13 @@
       <None Update="Licences\LICENSE_ASSETRIPPER">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="LocalAssets\NPCCatalog.xml">
+      <None Update="Assets\LocalAssets\NPCCatalog.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="LocalAssets\PetAbilities.xml">
+      <None Update="Assets\LocalAssets\PetAbilities.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="TestAssetCache.cache">
+      <None Update="Assets\TestAssetCache.cache">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
