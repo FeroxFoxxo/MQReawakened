@@ -36,8 +36,6 @@ public class OperationMode : IService
 
     private void AskForChange()
     {
-        _logger.LogError("Please note: multi-player mode is not implemented yet. Please use the 'changeOperationalMode' to change back to single-player.");
-
         if (_logger.Ask("Would you like to use single-player mode?", true))
         {
             _config.NetworkType = NetworkType.Client | NetworkType.Server;
