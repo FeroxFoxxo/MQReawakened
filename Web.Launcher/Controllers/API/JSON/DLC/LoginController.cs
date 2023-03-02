@@ -34,12 +34,12 @@ public class LoginController : Controller
         var account = _accHandler.Data.Values.FirstOrDefault(x => x.Username == username);
 
         if (account == null)
-            return Unauthorized();
+            return NotFound();
 
         var userInfo = _userInfoHandler.Data.Values.FirstOrDefault(x => x.UserId == account.UserId);
 
         if (userInfo == null)
-            return Unauthorized();
+            return NotFound();
 
         if (account.Password != hashedPw && userInfo.AuthToken != password)
             return Unauthorized();

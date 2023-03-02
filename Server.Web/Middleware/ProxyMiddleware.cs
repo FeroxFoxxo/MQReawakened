@@ -1,17 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.FileSystemGlobbing.Internal;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
-using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Logging;
 using Server.Base.Network.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Server.Web.Middleware;
 
@@ -39,7 +33,7 @@ public class ProxyMiddleware
         });
     }
 
-    public async Task Invoke(HttpContext context, InternalRwConfig config)
+    public async Task Invoke(HttpContext context, InternalRwConfig config, FileLogger fLogger)
     {
         if (config.NetworkType == NetworkType.Client && config.StrictNetworkCheck())
         {
@@ -47,8 +41,8 @@ public class ProxyMiddleware
 
             if (targetUri != null)
             {
-                var requestMessage = GenerateProxiedRequest(context, targetUri);
-                await SendAsync(context, requestMessage);
+                var requestMessage = await GenerateProxiedRequest(context, targetUri);
+                var response = await SendAsync(context, requestMessage, fLogger);
 
                 return;
             }
@@ -71,9 +65,23 @@ public class ProxyMiddleware
             Task.FromResult((Uri)null);
     }
 
-    private async Task SendAsync(HttpContext context, HttpRequestMessage requestMessage)
+    private async Task<HttpResponseMessage> SendAsync(HttpContext context, HttpRequestMessage requestMessage, FileLogger fLogger)
     {
-        Console.WriteLine(requestMessage);
+        var sb = new StringBuilder();
+
+        sb.AppendLine("[PROXIED]");
+
+        if (requestMessage.Content == null) 
+            sb.Append(requestMessage);
+        else
+        {
+            sb.AppendLine(requestMessage.ToString())
+                .AppendLine("[CONTENT]")
+                .Append(await new StreamReader(await requestMessage.Content.ReadAsStreamAsync()).ReadToEndAsync());
+        }
+
+        fLogger.WriteGenericLog<ProxyMiddleware>("proxied-requests", "Received Web Request", sb.ToString(), LoggerType.Trace);
+
         using var responseMessage = await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead, context.RequestAborted);
         context.Response.StatusCode = (int)responseMessage.StatusCode;
 
@@ -89,12 +97,14 @@ public class ProxyMiddleware
             context.Response.Headers.Add(_cdnHeaderName, "no-cache, no-store");
 
         await responseMessage.Content.CopyToAsync(context.Response.Body);
+
+        return responseMessage;
     }
 
-    private HttpRequestMessage GenerateProxiedRequest(HttpContext context, Uri targetUri)
+    private async Task<HttpRequestMessage> GenerateProxiedRequest(HttpContext context, Uri targetUri)
     {
         var requestMessage = new HttpRequestMessage();
-        CopyRequestContentAndHeaders(context, requestMessage);
+        await CopyRequestContentAndHeaders(context, requestMessage);
 
         requestMessage.RequestUri = targetUri;
         requestMessage.Headers.Host = targetUri.Host;
@@ -103,16 +113,17 @@ public class ProxyMiddleware
         return requestMessage;
     }
 
-    private void CopyRequestContentAndHeaders(HttpContext context, HttpRequestMessage requestMessage)
+    private async Task CopyRequestContentAndHeaders(HttpContext context, HttpRequestMessage requestMessage)
     {
         var requestMethod = context.Request.Method;
+
         if (!HttpMethods.IsGet(requestMethod) &&
             !HttpMethods.IsHead(requestMethod) &&
             !HttpMethods.IsDelete(requestMethod) &&
             !HttpMethods.IsTrace(requestMethod))
         {
-            var streamContent = new StreamContent(context.Request.Body);
-            requestMessage.Content = streamContent;
+            var content = await new StreamReader(context.Request.Body).ReadToEndAsync();
+            requestMessage.Content = new StringContent(content);
         }
 
         foreach (var header in context.Request.Headers)

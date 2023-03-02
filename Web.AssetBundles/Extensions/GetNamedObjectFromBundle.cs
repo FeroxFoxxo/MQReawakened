@@ -1,5 +1,4 @@
 ﻿using AssetStudio;
-using Microsoft.Extensions.Logging;
 using Object = AssetStudio.Object;
 
 namespace Web.AssetBundles.Extensions;

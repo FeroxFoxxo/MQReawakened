@@ -79,6 +79,7 @@ public class Web : WebModule
         app.UseIpRateLimiting();
 
         app
+            .UseMiddleware<EnableRequestBodyBufferingMiddleware>()
             .UseMiddleware<RequestLoggerMiddleware>()
             .UseMiddleware<ProxyMiddleware>();
         
