@@ -48,6 +48,7 @@ public class OperationMode : IService
         {
             _config.NetworkType = NetworkType.Client;
             SetServerAddress("What is the address of the server that you are trying to connect to?");
+            _eventSink.InvokeChangedOperationalMode();
             return;
         }
 
@@ -65,6 +66,7 @@ public class OperationMode : IService
             _config.ServerAddress = externalIpString.ToString();
         }
         _logger.LogInformation("Set IP Address to: {Address}", _config.ServerAddress);
+        _eventSink.InvokeChangedOperationalMode();
     }
 
     public static async Task<IPAddress> GetExternalIpAddress()
