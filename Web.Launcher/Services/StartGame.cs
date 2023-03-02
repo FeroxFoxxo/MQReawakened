@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
@@ -12,11 +13,13 @@ using Server.Base.Worlds;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Events;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Globalization;
 using System.Text.Json;
 using System.Xml.Linq;
 using Web.Launcher.Models;
 using Web.Launcher.Models.Current;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Web.Launcher.Services;
 
@@ -189,12 +192,25 @@ public class StartGame : IService
 
         if (_lConfig.OverwriteGameConfig)
         {
-            _lConfig.SetSettings(_lWConfig);
+            SetSettings();
             WriteConfig();
         }
 
         if (!_world.Crashed)
             LaunchGame();
+    }
+
+    public void SetSettings()
+    {
+        if (_lWConfig.GameSettingsFile == null)
+            return;
+
+        dynamic settings = JsonConvert.DeserializeObject<ExpandoObject>(File.ReadAllText(_lWConfig.GameSettingsFile))!;
+        settings.launcher.baseUrl = _internalWConfig.GetHostAddress();
+        settings.launcher.fullscreen = _lConfig.Fullscreen ? "true" : "false";
+        settings.launcher.onGameClosePopup = _lConfig.OnGameClosePopup ? "true" : "false";
+        settings.patcher.baseUrl = _internalWConfig.GetHostAddress();
+        File.WriteAllText(_lWConfig.GameSettingsFile, JsonConvert.SerializeObject(settings));
     }
 
     public void LaunchGame()
@@ -245,23 +261,23 @@ public class StartGame : IService
 
     private Dictionary<string, string> GetConfigValues(string header) => new()
     {
-        { $"{header}.unity.url.membership", $"{_lConfig.ServerBaseUrl}/Membership" },
-        { $"{header}.unity.cache.domain", $"{_lConfig.ServerBaseUrl}/Cache" },
+        { $"{header}.unity.url.membership", $"{_lConfig.ServerBaseUrl1}/Membership" },
+        { $"{header}.unity.cache.domain", $"{_lConfig.ServerBaseUrl1}/Cache" },
         { $"{header}.unity.cache.license", $"{_lConfig.CacheLicense}" },
         { $"{header}.unity.cache.size", _lConfig.CacheSize.ToString() },
         { $"{header}.unity.cache.expiration", _lConfig.CacheExpiration.ToString() },
         { "game.cacheversion", _lConfig.CacheVersion.ToString() },
-        { $"{header}.unity.url.crisp.host", $"{_lConfig.ServerBaseUrl}/Chat/" },
+        { $"{header}.unity.url.crisp.host", $"{_lConfig.ServerBaseUrl1}/Chat/" },
         { "asset.log", _lConfig.LogAssets ? "true" : "false" },
         { "asset.disableversioning", _lConfig.DisableVersions ? "true" : "false" },
-        { "asset.jboss", $"{_lConfig.ServerBaseUrl}/Apps/" },
-        { "asset.bundle", $"{_lConfig.ServerBaseUrl}/Client/Bundles" },
-        { "asset.audio", $"{_lConfig.ServerBaseUrl}/Client/Audio" },
-        { "logout.url", $"{_lConfig.ServerBaseUrl}/Logout" },
-        { "contactus.url", $"{_lConfig.ServerBaseUrl}/Contact" },
-        { "tools.urlbase", $"{_lConfig.ServerBaseUrl}/Tools/" },
-        { "leaderboard.domain", $"{_lConfig.ServerBaseUrl}/Apps/" },
-        { "analytics.baseurl", $"{_lConfig.ServerBaseUrl}/Analytics/" },
+        { "asset.jboss", $"{_lConfig.ServerBaseUrl1}/Apps/" },
+        { "asset.bundle", $"{_lConfig.ServerBaseUrl1}/Client/Bundles" },
+        { "asset.audio", $"{_lConfig.ServerBaseUrl1}/Client/Audio" },
+        { "logout.url", $"{_lConfig.ServerBaseUrl1}/Logout" },
+        { "contactus.url", $"{_lConfig.ServerBaseUrl1}/Contact" },
+        { "tools.urlbase", $"{_lConfig.ServerBaseUrl1}/Tools/" },
+        { "leaderboard.domain", $"{_lConfig.ServerBaseUrl1}/Apps/" },
+        { "analytics.baseurl", $"{_lConfig.ServerBaseUrl1}/Analytics/" },
         { "analytics.enabled", _lConfig.AnalyticsEnabled ? "true" : "false" },
         { "analytics.apikey", _lWConfig.AnalyticsApiKey },
         { "project.name", _lConfig.ProjectName }

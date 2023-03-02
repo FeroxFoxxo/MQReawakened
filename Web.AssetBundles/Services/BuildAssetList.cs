@@ -71,7 +71,7 @@ public class BuildAssetList : IService
                 GenerateDefaultAssetList(true);
             }
         );
-
+        
         _rwConfig.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", _rwConfig.CacheInfoFile, _logger);
 
         if (!string.IsNullOrEmpty(_rwConfig.WebPlayerInfoFile))

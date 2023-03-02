@@ -41,6 +41,7 @@ public class OperationMode : IService
         if (_logger.Ask("Would you like to use single-player mode?", true))
         {
             _config.NetworkType = NetworkType.Client | NetworkType.Server;
+            _config.ServerAddress = "localhost";
             _eventSink.InvokeChangedOperationalMode();
             return;
         }

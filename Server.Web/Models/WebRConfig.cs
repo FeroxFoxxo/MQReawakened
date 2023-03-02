@@ -2,10 +2,10 @@
 
 namespace Server.Web.Models;
 
-public class WebRConfig : IRConfig
+public class WebRConfig : IRwConfig
 {
-    public bool ShouldConcat { get; set; }
+    public List<string> IgnorePaths { get; }
 
     public WebRConfig() =>
-        ShouldConcat = true;
+        IgnorePaths = new List<string>();
 }

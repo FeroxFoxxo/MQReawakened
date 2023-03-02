@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Logging;
@@ -25,7 +24,8 @@ public class RequestLoggerMiddleware
         });
         _next = next;
     }
-    public async Task Invoke(HttpContext context, ILogger<RequestLoggerMiddleware> logger, WebRConfig webRConfig, InternalRwConfig config, FileLogger fileLogger)
+    public async Task Invoke(HttpContext context, ILogger<RequestLoggerMiddleware> logger, WebRConfig webRConfig,
+        WebRwConfig webRwConfig, InternalRwConfig config, FileLogger fileLogger)
     {
         var method = context.Request.Method;
 
@@ -43,7 +43,7 @@ public class RequestLoggerMiddleware
 
         var postData = string.Empty;
 
-        if (context.Request.HasFormContentType & webRConfig.ShouldConcat)
+        if (context.Request.HasFormContentType & webRwConfig.ShouldConcat)
         {
             postData = $" | Post Data: {string.Join(", ", context.Request.Form.Select(x => $"{x.Key}:{x.Value}"))}";
             var split = postData.Split('\n');
@@ -69,7 +69,12 @@ public class RequestLoggerMiddleware
 
         try
         {
-            if (config.NetworkType == NetworkType.Client && config.StrictNetworkCheck())
+            if (config.NetworkType == NetworkType.Client &&
+                config.StrictNetworkCheck() &&
+                !webRConfig.IgnorePaths.Any(
+                    p => context.Request.Path.ToString().StartsWith(p)
+                )
+               )
             {
                 var baseUrl = new Uri(config.GetHostAddress());
                 var url = new Uri(baseUrl, context.Request.Path);

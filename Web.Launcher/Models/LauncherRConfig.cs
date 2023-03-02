@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Server.Base.Core.Abstractions;
-using System.Dynamic;
+﻿using Server.Base.Core.Abstractions;
 
 namespace Web.Launcher.Models;
 
@@ -11,7 +9,7 @@ public class LauncherRConfig : IRConfig
     public ulong AnalyticsId { get; }
     public bool AnalyticsEnabled { get; }
 
-    public string ServerBaseUrl { get; }
+    public string ServerBaseUrl1 { get; }
     public string HeaderFolderFilter { get; }
 
     public string ProjectName { get; }
@@ -38,7 +36,7 @@ public class LauncherRConfig : IRConfig
 
         AnalyticsId = 0;
         AnalyticsEnabled = true;
-        ServerBaseUrl = "http://localhost";
+        ServerBaseUrl1 = "http://localhost";
 
         CrashOnError = false;
         LogAssets = true;
@@ -58,18 +56,5 @@ public class LauncherRConfig : IRConfig
 
         Fullscreen = false;
         OnGameClosePopup = false;
-    }
-
-    public void SetSettings(LauncherRwConfig config)
-    {
-        if (config.GameSettingsFile == null)
-            return;
-
-        dynamic settings = JsonConvert.DeserializeObject<ExpandoObject>(File.ReadAllText(config.GameSettingsFile))!;
-        settings.launcher.baseUrl = ServerBaseUrl;
-        settings.launcher.fullscreen = Fullscreen ? "true" : "false";
-        settings.launcher.onGameClosePopup = OnGameClosePopup ? "true" : "false";
-        settings.patcher.baseUrl = ServerBaseUrl;
-        File.WriteAllText(config.GameSettingsFile, JsonConvert.SerializeObject(settings));
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using System.Collections;
-using System.Diagnostics;
 
 namespace Server.Base.Logging;
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using Server.Base.Core.Abstractions;
+﻿using Server.Base.Core.Abstractions;
 using Server.Base.Network.Enums;
 
 namespace Server.Base.Core.Models;
@@ -15,10 +14,10 @@ public class InternalRwConfig : IRwConfig
     {
         IgnoreProtocolType = Array.Empty<string>();
         NetworkType = NetworkType.Unknown;
-        ServerAddress = "localhost";
+        ServerAddress = string.Empty;
         Port = 9339;
     }
 
     public string GetHostName() => $"{ServerAddress}:{Port}";
-    public string GetHostAddress() => $"http://{ServerAddress}/";
+    public string GetHostAddress() => $"http://{ServerAddress}";
 }
