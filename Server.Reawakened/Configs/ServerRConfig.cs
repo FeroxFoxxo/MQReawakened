@@ -32,6 +32,8 @@ public class ServerRConfig : IRConfig
 
     public double RoomTickRate { get; }
 
+    public int LogOnLagCount { get; }
+
     public Dictionary<DebugHandler.DebugVariables, bool> DefaultDebugVariables { get; }
 
     public ServerRConfig()
@@ -59,6 +61,8 @@ public class ServerRConfig : IRConfig
 
         ChatCommandStart = '.';
         ChatCommandPadding = 8;
+
+        LogOnLagCount = 200;
 
         DefaultDebugVariables = new Dictionary<DebugHandler.DebugVariables, bool>
         {

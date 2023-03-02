@@ -15,7 +15,7 @@ public class ReportDrift : ExternalProtocol
         var drift = double.Parse(message[6]);
         var lag = float.Parse(message[7]);
 
-        if (lag > 0)
+        if (lag > 0 && Math.Abs(drift) > .01)
             Logger.LogDebug("Client {Client}: Drifting by {Drift:0.####}s. {Error} ticks out of sync. " +
                             "{Lag} effective lag.", NetState, drift, error, lag);
     }

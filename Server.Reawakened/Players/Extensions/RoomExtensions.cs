@@ -74,6 +74,11 @@ public static class RoomExtensions
             "</u>"
         );
 
+    public static void SendUserGoneData(this NetState state, Player player) =>
+        state.SendXml("userGone",
+            $"<user id='{player.UserId}'></user>"
+        );
+
     public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type,
         LevelInfo levelInfo)
     {

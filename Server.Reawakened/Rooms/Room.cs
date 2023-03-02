@@ -220,8 +220,16 @@ public class Room : Timer
         Clients.Remove(player.UserId);
         _gameObjectIds.Remove(player.GameObjectId);
 
-        if (Clients.Count != 0 || LevelInfo.LevelId <= 0)
+        if (LevelInfo.LevelId <= 0)
             return;
+
+        if (Clients.Count != 0)
+        {
+            foreach (var client in Clients.Values)
+                client.SendUserGoneData(player);
+
+            return;
+        }
 
         _worldHandler.RemoveRoom(this);
         Stop();
