@@ -10,12 +10,14 @@ public class FileLogger
     private readonly Dictionary<string, ConsoleFileLogger> _fileLoggers;
     private readonly ILoggerFactory _loggerFactory;
     private readonly InternalRConfig _config;
+    private readonly ILogger<FileLogger> _fLogger;
     private readonly object _lock;
 
-    public FileLogger(ILoggerFactory loggerFactory, InternalRConfig config)
+    public FileLogger(ILoggerFactory loggerFactory, InternalRConfig config, ILogger<FileLogger> fLogger)
     {
         _loggerFactory = loggerFactory;
         _config = config;
+        _fLogger = fLogger;
         _fileLoggers = new Dictionary<string, ConsoleFileLogger>();
         _lock = new object();
     }
@@ -54,16 +56,16 @@ public class FileLogger
         switch (type)
         {
             case LoggerType.Error:
-                logger.LogError("{Information}", message);
+                _fLogger.LogError("{Information}", message);
                 break;
             case LoggerType.Warning:
-                logger.LogWarning("{Information}", message);
+                _fLogger.LogWarning("{Information}", message);
                 break;
             case LoggerType.Debug:
-                logger.LogDebug("{Information}", message);
+                _fLogger.LogDebug("{Information}", message);
                 break;
             case LoggerType.Trace:
-                logger.LogTrace("{Information}", message);
+                _fLogger.LogTrace("{Information}", message);
                 break;
         }
     }

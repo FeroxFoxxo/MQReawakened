@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Accounts.Services;
 using Server.Reawakened.Players.Services;
@@ -15,15 +16,17 @@ public class LoginController : Controller
     private readonly PasswordHasher _passwordHasher;
     private readonly LauncherRConfig _rConfig;
     private readonly UserInfoHandler _userInfoHandler;
+    private readonly ILogger<LoginController> _logger;
 
     public LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler,
-        LauncherRConfig rConfig, PasswordHasher passwordHasher, LauncherRwConfig config)
+        LauncherRConfig rConfig, PasswordHasher passwordHasher, LauncherRwConfig config, ILogger<LoginController> logger)
     {
         _accHandler = accHandler;
         _userInfoHandler = userInfoHandler;
         _rConfig = rConfig;
         _passwordHasher = passwordHasher;
         _config = config;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -34,12 +37,18 @@ public class LoginController : Controller
         var account = _accHandler.Data.Values.FirstOrDefault(x => x.Username == username);
 
         if (account == null)
-            return NotFound();
+        {
+            _logger.LogError("Could not find account for {Username}", username);
+            return BadRequest();
+        }
 
         var userInfo = _userInfoHandler.Data.Values.FirstOrDefault(x => x.UserId == account.UserId);
 
         if (userInfo == null)
-            return NotFound();
+        {
+            _logger.LogError("Could not find user info for {Username} (ID: {Id})", username, account.UserId);
+            return BadRequest();
+        }
 
         if (account.Password != hashedPw && userInfo.AuthToken != password)
             return Unauthorized();

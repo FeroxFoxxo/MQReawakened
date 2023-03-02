@@ -4,6 +4,7 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Network.Enums;
+using System.Net;
 
 namespace Server.Base.Core.Services;
 
@@ -28,24 +29,9 @@ public class OperationMode : IService
     {
         _console.AddCommand("changeOperationalMode", "Changes the mode the game is set to (client/server/both)",
             NetworkType.Unknown | NetworkType.Server | NetworkType.Client, _ => AskForChange());
-
-        _console.AddCommand("changeServerAddress", "Changes the server address the client will connect to.",
-            NetworkType.Client, _ => SetServerAddress(), true);
-
-        switch (_config.NetworkType)
-        {
-            case NetworkType.Unknown:
-                AskForChange();
-                break;
-            case NetworkType.Client when _config.StrictNetworkCheck():
-            {
-                if (string.IsNullOrEmpty(_config.ServerAddress))
-                    SetServerAddress();
-            
-                _logger.LogInformation("Server address set to: {Address}", _config.ServerAddress);
-                break;
-            }
-        }
+        
+        if (_config.NetworkType == NetworkType.Unknown)
+            AskForChange();
     }
 
     private void AskForChange()
@@ -62,26 +48,52 @@ public class OperationMode : IService
         if (_logger.Ask("Are you setting this app as a client to connect to a server, rather than being the server itself?", true))
         {
             _config.NetworkType = NetworkType.Client;
-            SetServerAddress();
+            SetServerAddress("What is the address of the server that you are trying to connect to?");
             return;
         }
 
         _config.NetworkType = NetworkType.Server;
+        
+        if (_logger.Ask("Would you like to manually set your server address, rather than choosing your external IP?", true))
+        {
+            SetServerAddress("What is the address of the server that you are trying to host?");
+        }
+        else
+        {
+            var externalIpTask = GetExternalIpAddress();
+            GetExternalIpAddress().Wait();
+            var externalIpString = externalIpTask.Result ?? IPAddress.Loopback;
+            _config.ServerAddress = externalIpString.ToString();
+        }
+        _logger.LogInformation("Set IP Address to: {Address}", _config.ServerAddress);
     }
 
-    private void SetServerAddress()
+    public static async Task<IPAddress> GetExternalIpAddress()
+    {
+        var externalIpString = (await new HttpClient().GetStringAsync("http://icanhazip.com"))
+            .Replace("\\r\\n", "").Replace("\\n", "").Trim();
+
+        return !IPAddress.TryParse(externalIpString, out var ipAddress) ? null : ipAddress;
+    }
+
+    private void SetServerAddress(string question)
     {
         while (true)
         {
-            _logger.LogInformation("What is the address of the server that you are trying to connect to?");
+            _logger.LogInformation("{Question}", question);
 
             var serverAddress = Console.ReadLine();
 
             _config.ServerAddress = serverAddress;
 
             if (!string.IsNullOrEmpty(_config.ServerAddress))
-                break;
+            {
+                if (!serverAddress!.Contains("http"))
+                    break;
 
+                _logger.LogError("Server address cannot be a url, just a domain or ip address.");
+                continue;
+            }
             _logger.LogError("Server address cannot be empty!");
         }
 

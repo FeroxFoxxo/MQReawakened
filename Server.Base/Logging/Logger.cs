@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using System.Collections;
+using System.Diagnostics;
 
 namespace Server.Base.Logging;
 
@@ -63,7 +64,7 @@ public class Logger : ILogger
 
     public bool IsEnabled(LogLevel logLevel) => logLevel >= Level;
 
-    public IDisposable BeginScope<TState>(TState state) => null;
+    public IDisposable BeginScope<TState>(TState state) => new NoopDisposable();
 
     private void WriteLine(ConsoleColor color, string message, string shortLogLevel, int eventId)
     {

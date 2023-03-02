@@ -80,8 +80,7 @@ public class Web : WebModule
 
         app
             .UseMiddleware<EnableRequestBodyBufferingMiddleware>()
-            .UseMiddleware<RequestLoggerMiddleware>()
-            .UseMiddleware<ProxyMiddleware>();
+            .UseMiddleware<RequestLoggerMiddleware>();
         
         app.UseRouting();
 

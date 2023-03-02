@@ -1,7 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
+using Server.Base.Core.Extensions;
+using Server.Base.Core.Models;
 using Server.Base.Logging;
+using Server.Base.Network.Enums;
+using Server.Web.Extensions;
 using Server.Web.Models;
 using System.Text;
 
@@ -10,10 +15,17 @@ namespace Server.Web.Middleware;
 public class RequestLoggerMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly HttpClient _client;
 
-    public RequestLoggerMiddleware(RequestDelegate next) => _next = next;
-
-    public async Task Invoke(HttpContext context, ILogger<RequestLoggerMiddleware> logger, WebRConfig webRConfig, FileLogger fileLogger)
+    public RequestLoggerMiddleware(RequestDelegate next)
+    {
+        _client = new HttpClient(new HttpClientHandler()
+        {
+            AllowAutoRedirect = false
+        });
+        _next = next;
+    }
+    public async Task Invoke(HttpContext context, ILogger<RequestLoggerMiddleware> logger, WebRConfig webRConfig, InternalRwConfig config, FileLogger fileLogger)
     {
         var method = context.Request.Method;
 
@@ -57,7 +69,19 @@ public class RequestLoggerMiddleware
 
         try
         {
-            await _next(context);
+            if (config.NetworkType == NetworkType.Client && config.StrictNetworkCheck())
+            {
+                var baseUrl = new Uri(config.GetHostAddress());
+                var url = new Uri(baseUrl, context.Request.Path);
+                logger.LogTrace("[PROXIED TO {Address}]", url);
+                var request = context.CreateProxyHttpRequest(url);
+                var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, context.RequestAborted);
+                await context.CopyProxyHttpResponse(response);
+            }
+            else
+            {
+                await _next(context);
+            }
 
             var logType = context.Response.StatusCode switch
             {
@@ -99,7 +123,7 @@ public class RequestLoggerMiddleware
             .AppendLine(method);
         
         sb.Append(info);
-
+        
         fileLogger.WriteGenericLog<Controller>("http-requests", $"Status {statusCode}", sb.ToString(), loggerType);
     }
 

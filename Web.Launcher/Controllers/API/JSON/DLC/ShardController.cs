@@ -13,14 +13,14 @@ namespace Web.Launcher.Controllers.API.JSON.DLC;
 public class ShardController : Controller
 {
     private readonly AccountHandler _accHandler;
-    private readonly InternalRConfig _config;
+    private readonly InternalRwConfig _config;
     private readonly RandomKeyGenerator _keyGenerator;
     private readonly TemporaryDataStorage _temporaryDataStorage;
     private readonly UserInfoHandler _userInfoHandler;
 
     public ShardController(AccountHandler accHandler, UserInfoHandler userInfoHandler,
         TemporaryDataStorage temporaryDataStorage,
-        RandomKeyGenerator keyGenerator, InternalRConfig config)
+        RandomKeyGenerator keyGenerator, InternalRwConfig config)
     {
         _accHandler = accHandler;
         _userInfoHandler = userInfoHandler;

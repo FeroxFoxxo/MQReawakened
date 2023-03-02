@@ -12,9 +12,7 @@ public class InternalRConfig : IRConfig
     public string SaveDirectory { get; set; }
     public string CrashDirectory { get; set; }
     public string LogDirectory { get; set; }
-
-    public string Host { get; }
-    public int Port { get; }
+    
     public int MaxAccountsPerIp { get; }
     public char[] ForbiddenChars { get; }
     public AccessLevel LockDownLevel { get; }
@@ -67,9 +65,5 @@ public class InternalRConfig : IRConfig
             "Second Backup",
             "Most Recent"
         };
-        Port = 9339;
-        Host = "localhost";
     }
-
-    public string GetHostName() => $"{Host}:{Port}";
 }
