@@ -6,8 +6,8 @@ namespace Server.Reawakened.Players.Models.Levels;
 public class RoomInstanceInfoModel
 {
     public string LevelName { get; set; }
-    public string HostIp { get; set; }
 
+    public string HostIp { get; set; }
     public int HostPort { get; set; }
 
     public string RoomName { get; set; }

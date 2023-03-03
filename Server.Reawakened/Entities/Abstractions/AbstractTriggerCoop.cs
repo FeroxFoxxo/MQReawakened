@@ -222,7 +222,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             .AppendLine($"After First Interaction: {ActivationTimeAfterFirstInteraction}")
             .Append($"Interaction Type: {InteractType}");
 
-        FileLogger.WriteGenericLog<TriggerCoopController>("triggers", $"Trigger {Id}", sb.ToString(), LoggerType.Trace);
+        FileLogger.WriteGenericLog<TriggerCoopController>("triggered-coop", $"Trigger {Id}", sb.ToString(), LoggerType.Trace);
 
         foreach (var trigger in Triggers)
         {
@@ -245,7 +245,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             sb2.AppendLine($"State: {trigger.Value}")
                 .Append($"Entities: {Room.GetUnknownEntityTypes(trigger.Key)}");
 
-            FileLogger.WriteGenericLog<TriggerCoopController>("trigger-fails", $"Trigger {Id}", sb2.ToString(),
+            FileLogger.WriteGenericLog<TriggerCoopController>("triggered-errors", $"Trigger {Id}", sb2.ToString(),
                 LoggerType.Error);
         }
     }
