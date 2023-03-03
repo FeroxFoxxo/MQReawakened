@@ -25,11 +25,14 @@ public class CharacterDataModel : CharacterLightModel
             .ToDictionary(x => x.Key, x => x.Value.Count)
         ?? new Dictionary<int, int>();
 
+    private PlayerListModel FriendModels =>
+        new(Friends.Select(f => new PlayerDataModel(f)).ToList());
+
+    private PlayerListModel BlockModels =>
+        new(Blocked.Select(b => new PlayerDataModel(b)).ToList());
+
     public List<int> Friends { get; set; }
     public List<int> Blocked { get; set; }
-
-    public PlayerListModel FriendModels => new(Friends.Select(f => new PlayerDataModel(f)).ToList());
-    public PlayerListModel BlockModels => new(Blocked.Select(b => new PlayerDataModel(b)).ToList());
 
     public int Cash { get; set; }
     public int NCash { get; set; }
@@ -205,4 +208,7 @@ public class CharacterDataModel : CharacterLightModel
 
         return sb.ToString();
     }
+
+    public PlayerListModel GetFriends() => FriendModels;
+    public PlayerListModel GetBlocked() => BlockModels;
 }
