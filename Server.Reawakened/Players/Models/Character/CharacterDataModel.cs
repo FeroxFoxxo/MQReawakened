@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
@@ -13,8 +12,6 @@ public class CharacterDataModel : CharacterLightModel
     public List<QuestStatusModel> QuestLog { get; set; }
     public List<int> CompletedQuests { get; set; }
     public HotbarModel Hotbar { get; set; }
-    public FriendListModel FriendList { get; set; }
-    public BlockListModel BlockList { get; set; }
     public bool PetAutonomous { get; set; }
     public long GuestPassExpiry { get; set; }
     public bool ShouldExpireGuestPass { get; set; }
@@ -24,9 +21,15 @@ public class CharacterDataModel : CharacterLightModel
     public Dictionary<TribeType, TribeDataModel> TribesProgression { get; set; }
 
     private Dictionary<int, int> IdolCount =>
-        _player?.GetCurrentCharacter().CollectedIdols
+        _player?.Character.CollectedIdols
             .ToDictionary(x => x.Key, x => x.Value.Count)
         ?? new Dictionary<int, int>();
+
+    public List<int> Friends { get; set; }
+    public List<int> Blocked { get; set; }
+
+    public PlayerListModel PlayerList => new(Friends.Select(f => new PlayerDataModel(f)).ToList());
+    public PlayerListModel BlockList => new(Blocked.Select(b => new PlayerDataModel(b)).ToList());
 
     public int Cash { get; set; }
     public int NCash { get; set; }
@@ -48,8 +51,8 @@ public class CharacterDataModel : CharacterLightModel
     {
         Inventory = new InventoryModel();
         Hotbar = new HotbarModel();
-        FriendList = new FriendListModel();
-        BlockList = new BlockListModel();
+        Friends = new List<int>();
+        Blocked = new List<int>();
         Resistances = new CharacterResistancesModel();
         RecipeList = new RecipeListModel();
 
@@ -84,7 +87,7 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(GetQuestStatusList());
         sb.Append(GetCompletedQuestList());
         sb.Append(Hotbar);
-        sb.Append(FriendList);
+        sb.Append(PlayerList);
         sb.Append(BlockList);
         sb.Append(Equipment);
         sb.Append(PetItemId);

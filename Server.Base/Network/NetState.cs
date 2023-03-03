@@ -272,13 +272,18 @@ public class NetState : IDisposable
 
                     if (protocol != null)
                     {
-                        var protocolId = protocol(this, packet);
+                        var protocolResponse = protocol(this, packet);
 
-                        if (string.IsNullOrEmpty(protocolId))
+                        if (string.IsNullOrEmpty(protocolResponse.ProtocolId))
                             continue;
 
-                        if (_rwConfig.IgnoreProtocolType.Contains(protocolId) && _currentLogs.IsEmpty)
+                        if (_rwConfig.IgnoreProtocolType.Contains(protocolResponse.ProtocolId) && _currentLogs.IsEmpty)
                             continue;
+
+                        if (protocolResponse.IsUnhandled)
+                            AddUnhandledPacket(packet);
+                        else
+                            RemoveUnhandledPacket(packet);
 
                         _logger.LogTrace("Client: {ClientAddress}", this);
 
@@ -352,5 +357,25 @@ public class NetState : IDisposable
 
         _fileLogger.WriteGenericLog<MessagePump>("network-errors", $"Client {state}",
             sb.ToString(), LoggerType.Warning);
+    }
+
+    public void AddUnhandledPacket(string packetId)
+    {
+        if (_rwConfig.UnhandledPackets.Contains(packetId))
+            return;
+
+        var packets = _rwConfig.UnhandledPackets.ToList();
+        packets.Add(packetId);
+        _rwConfig.UnhandledPackets = packets.ToArray();
+    }
+
+    public void RemoveUnhandledPacket(string packetId)
+    {
+        if (!_rwConfig.UnhandledPackets.Contains(packetId))
+            return;
+
+        var packets = _rwConfig.UnhandledPackets.ToList();
+        packets.Remove(packetId);
+        _rwConfig.UnhandledPackets = packets.ToArray();
     }
 }

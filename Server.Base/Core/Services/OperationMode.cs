@@ -33,6 +33,9 @@ public class OperationMode : IService
 
         if (_config.NetworkType == NetworkType.Unknown)
             AskForChange();
+
+        _logger.LogInformation("Playing as: {Mode} connected to {Address}", _config.NetworkType,
+            _config.GetHostAddress());
     }
 
     private void AskForChange()

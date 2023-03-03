@@ -89,7 +89,7 @@ public class ChatCommands : IService
     private bool ChangeLevel(NetState netState, string[] args)
     {
         var player = netState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         if (args.Length != 2)
             return false;
@@ -131,7 +131,7 @@ public class ChatCommands : IService
     private bool AddItem(NetState netState, string[] args)
     {
         var player = netState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         if (args.Length is < 2 or > 3)
             return false;

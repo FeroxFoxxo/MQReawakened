@@ -2,6 +2,7 @@
 using Server.Reawakened.Entities.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Entities;
 

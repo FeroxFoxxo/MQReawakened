@@ -18,7 +18,7 @@ public class FastTravel : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         var regionId = int.Parse(message[5]);
         var levelId = int.Parse(message[6]);

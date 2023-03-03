@@ -27,7 +27,7 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
         var player = netState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         var portal = new Portal_SyncEvent(syncEvent);
 

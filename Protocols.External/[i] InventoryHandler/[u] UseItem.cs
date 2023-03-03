@@ -19,7 +19,7 @@ public class UseItem : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         var itemId = Convert.ToInt32(message[5]);
 

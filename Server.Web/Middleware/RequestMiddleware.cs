@@ -11,12 +11,12 @@ using System.Text;
 
 namespace Server.Web.Middleware;
 
-public class RequestLoggerMiddleware
+public class RequestMiddleware
 {
     private readonly HttpClient _client;
     private readonly RequestDelegate _next;
 
-    public RequestLoggerMiddleware(RequestDelegate next)
+    public RequestMiddleware(RequestDelegate next)
     {
         _client = new HttpClient(new HttpClientHandler
         {
@@ -25,9 +25,11 @@ public class RequestLoggerMiddleware
         _next = next;
     }
 
-    public async Task Invoke(HttpContext context, ILogger<RequestLoggerMiddleware> logger, WebRConfig webRConfig,
+    public async Task Invoke(HttpContext context, ILogger<RequestMiddleware> logger, WebRConfig webRConfig,
         WebRwConfig webRwConfig, InternalRwConfig config, FileLogger fileLogger)
     {
+        context.Request.EnableBuffering();
+
         var method = context.Request.Method;
 
         method = method switch
@@ -78,7 +80,7 @@ public class RequestLoggerMiddleware
                )
             {
                 var baseUrl = new Uri(config.GetHostAddress());
-                var url = new Uri(baseUrl, context.Request.Path);
+                var url = new Uri(baseUrl, context.Request.Path + context.Request.QueryString);
                 logger.LogTrace("[PROXIED TO {Address}]", url);
                 var request = context.CreateProxyHttpRequest(url);
                 var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead,

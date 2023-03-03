@@ -24,7 +24,7 @@ public abstract record BundleHeader : IEndianReadableWritable
     // 1 in Unity 1 to 2.5
     public BundleVersion StreamVersion { get; set; }
 
-    // Player version string
+    // PlayerList version string
     // 2.x.x for Unity 2
     // 3.x.x for Unity 3/4
     public string? UnityVersion { get; set; }

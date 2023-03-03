@@ -5,6 +5,7 @@ using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Network;
+using Server.Base.Network.Models;
 using Server.Base.Network.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Helpers;
@@ -117,30 +118,42 @@ public class PacketHandler : IService
         _handler.Protocols.Add('<', SendSys);
     }
 
-    public string SendXt(NetState netState, string packet)
+    public ProtocolResponse SendXt(NetState netState, string packet)
     {
         var splitPacket = packet.Split('%');
         var actionType = splitPacket[3];
+        var unhandled = false;
 
         if (_protocolsXt.TryGetValue(actionType, out var value))
+        {
             value(netState, splitPacket, _services);
+        }
         else
+        {
             netState.TracePacketError(actionType, packet, netState);
+            unhandled = true;
+        }
 
-        return actionType;
+        return new ProtocolResponse(actionType, unhandled);
     }
 
-    public string SendSys(NetState netState, string packet)
+    public ProtocolResponse SendSys(NetState netState, string packet)
     {
         XmlDocument xmlDocument = new();
         xmlDocument.LoadXml(packet);
         var actionType = xmlDocument.SelectSingleNode("/msg/body/@action")?.Value;
+        var unhandled = false;
 
         if (actionType != null && _protocolsSystem.TryGetValue(actionType, out var value))
+        {
             value(netState, xmlDocument, _services);
+        }
         else
+        {
             netState.TracePacketError(actionType, packet, netState);
+            unhandled = true;
+        }
 
-        return actionType;
+        return new ProtocolResponse(actionType, unhandled);
     }
 }

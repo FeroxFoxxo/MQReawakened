@@ -78,9 +78,7 @@ public class Web : WebModule
 
         app.UseIpRateLimiting();
 
-        app
-            .UseMiddleware<EnableRequestBodyBufferingMiddleware>()
-            .UseMiddleware<RequestLoggerMiddleware>();
+        app.UseMiddleware<RequestMiddleware>();
 
         app.UseRouting();
 

@@ -63,7 +63,7 @@ public class ReplaceCaches : IService
     public void Load() =>
         _console.AddCommand(
             "replaceCaches",
-            "Replaces all generated Web Player cache files with their real counterparts.",
+            "Replaces all generated Web PlayerList cache files with their real counterparts.",
             NetworkType.Client,
             _ => ReplaceWebPlayerCache(false, true)
         );
@@ -101,26 +101,23 @@ public class ReplaceCaches : IService
             {
                 var asset = cacheModel.GetAssetInfoFromCacheName(cache.Key);
 
-                ReplaceCacheFiles(asset, cache.Value);
+                lock (_lock)
+                {
+                    foreach (var cachePath in cache.Value.Where(cachePath => !ReplacedBundles.Contains(cachePath))
+                                 .Where(File.Exists))
+                    {
+                        File.Copy(asset.Path, cachePath, true);
+                        ReplacedBundles.Add(cachePath);
 
-                bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
+                        bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
+                    }
+                }
+
                 bar.TickBar();
             }
         }
 
         if (startAfterReplace)
             _game.AskIfRestart();
-    }
-
-    private void ReplaceCacheFiles(InternalAssetInfo asset, IEnumerable<string> paths)
-    {
-        lock (_lock)
-        {
-            foreach (var cachePath in paths.Where(cachePath => !ReplacedBundles.Contains(cachePath)).Where(File.Exists))
-            {
-                File.Copy(asset.Path, cachePath, true);
-                ReplacedBundles.Add(cachePath);
-            }
-        }
     }
 }

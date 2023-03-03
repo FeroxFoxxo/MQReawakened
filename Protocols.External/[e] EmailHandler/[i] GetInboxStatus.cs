@@ -13,7 +13,7 @@ public class GetInboxStatus : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var mail = GetInboxMail(player.GetCurrentCharacter().Emails);
+        var mail = GetInboxMail(player.Character.Emails);
         SendXt("ei", mail);
     }
 

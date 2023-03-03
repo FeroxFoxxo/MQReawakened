@@ -52,7 +52,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         }
 
         var player = netState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         if (Description.Status is > NPCController.NPCStatus.Dialog and < NPCController.NPCStatus.Unknown)
         {

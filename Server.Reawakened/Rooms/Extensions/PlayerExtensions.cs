@@ -2,21 +2,23 @@
 using Server.Base.Accounts.Models;
 using Server.Base.Network;
 using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Rooms;
+using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Services;
 using WorldGraphDefines;
 
-namespace Server.Reawakened.Players.Extensions;
+namespace Server.Reawakened.Rooms.Extensions;
 
-public static class RoomExtensions
+public static class PlayerExtensions
 {
     public static void JoinRoom(this Player player, NetState state, Room room, out JoinReason reason)
     {
-        player.CurrentRoom?.RemoveClient(player);
-        player.CurrentRoom = room;
-        player.CurrentRoom.AddClient(state, out reason);
+        player.Room?.RemoveClient(player);
+        player.Room = room;
+        player.Room.AddClient(state, out reason);
     }
 
     public static void QuickJoinRoom(this Player player, int id, NetState state, WorldHandler worldHandler)
@@ -38,7 +40,7 @@ public static class RoomExtensions
     }
 
     public static int GetLevelId(this Player player) =>
-        player.GetCurrentCharacter()?.LevelData.LevelId ?? -1;
+        player.Character?.LevelData.LevelId ?? -1;
 
     public static void SendStartPlay(this Player player, CharacterModel character, NetState state, LevelInfo levelInfo)
     {
@@ -55,7 +57,7 @@ public static class RoomExtensions
         room.SendSyncEvent(collectedEvent);
     }
 
-    // Player Id is unused
+    // PlayerList Id is unused
     public static void SendUserEnterData(this NetState state, Player player, Account account) =>
         state.SendXml("uER",
             $"<u i='{player.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.UserId}'>" +
@@ -71,7 +73,7 @@ public static class RoomExtensions
     public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type,
         LevelInfo levelInfo)
     {
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         var info = type switch
         {
@@ -82,5 +84,11 @@ public static class RoomExtensions
         };
 
         state.SendXt("ci", player.UserId, info, player.GameObjectId, levelInfo.Name);
+    }
+
+    public static void SendLevelUp(this Player player, LevelUpDataModel levelUpData)
+    {
+        foreach (var client in player.Room.Clients.Values)
+            client.SendXt("ce", levelUpData, player.UserId);
     }
 }

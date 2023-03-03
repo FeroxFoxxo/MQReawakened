@@ -10,12 +10,13 @@ namespace Server.Reawakened.Players;
 
 public class Player : INetStateData
 {
-    public int CurrentCharacter { get; set; }
-    public Room CurrentRoom { get; set; }
+    public CharacterModel Character { get; set; }
+    public Room Room { get; set; }
+    public int GameObjectId { get; set; }
+
     public UserInfo UserInfo { get; set; }
 
     public int UserId => UserInfo.UserId;
-    public int GameObjectId { get; set; }
 
     public bool OnGround { get; set; }
     public int Direction { get; set; }
@@ -39,17 +40,17 @@ public class Player : INetStateData
     public void RemovedState(NetState state, NetStateHandler handler,
         Microsoft.Extensions.Logging.ILogger logger)
     {
-        if (CurrentRoom == null)
+        if (Room == null)
             return;
 
-        if (!CurrentRoom.LevelInfo.IsValid())
+        if (!Room.LevelInfo.IsValid())
             return;
 
-        var roomName = CurrentRoom.LevelInfo.Name;
+        var roomName = Room.LevelInfo.Name;
 
         if (!string.IsNullOrEmpty(roomName))
             logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
 
-        CurrentRoom.DumpPlayerToLobby(UserId);
+        Room.DumpPlayerToLobby(UserId);
     }
 }

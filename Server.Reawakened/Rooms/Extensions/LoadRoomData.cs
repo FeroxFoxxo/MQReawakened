@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
 using Server.Reawakened.Configs;
@@ -68,9 +69,12 @@ public static class LoadRoomData
         return planes;
     }
 
-    public static Dictionary<int, List<BaseSyncedEntity>> LoadEntities(this Room room, ReflectionUtils reflectionUtils,
-        FileLogger fileLogger, IServiceProvider services, out Dictionary<int, List<string>> unknownEntities)
+    public static Dictionary<int, List<BaseSyncedEntity>> LoadEntities(this Room room, IServiceProvider services,
+        out Dictionary<int, List<string>> unknownEntities)
     {
+        var reflectionUtils = services.GetRequiredService<ReflectionUtils>();
+        var fileLogger = services.GetRequiredService<FileLogger>();
+
         var entities = new Dictionary<int, List<BaseSyncedEntity>>();
         unknownEntities = new Dictionary<int, List<string>>();
 

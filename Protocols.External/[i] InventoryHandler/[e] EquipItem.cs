@@ -15,7 +15,7 @@ public class EquipItem : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         var newEquipment = new EquipmentModel(message[5]);
 

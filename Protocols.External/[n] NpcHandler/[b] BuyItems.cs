@@ -14,7 +14,7 @@ public class BuyItems : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         //var vendorId = int.Parse(message[5]);
         //var vendorGoId = int.Parse(message[7]);

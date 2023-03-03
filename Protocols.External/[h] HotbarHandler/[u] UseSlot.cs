@@ -5,6 +5,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 
@@ -21,7 +22,7 @@ public class UseSlot : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         var hotbarSlotId = int.Parse(message[5]);
         var targetUserId = int.Parse(message[6]);
@@ -80,7 +81,7 @@ public class UseSlot : ExternalProtocol
         foreach (var planeName in planes)
         {
             foreach (var obj in
-                     player.CurrentRoom.Planes[planeName].GameObjects.Values
+                     player.Room.Planes[planeName].GameObjects.Values
                          .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3f)
                     )
             {
@@ -88,11 +89,11 @@ public class UseSlot : ExternalProtocol
                 {
                     case "PF_GLB_SwitchWall02":
                         var triggerEvent = new Trigger_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                            player.CurrentRoom.Time, true, player.GameObjectId.ToString(), true);
+                            player.Room.Time, true, player.GameObjectId.ToString(), true);
 
-                        player.CurrentRoom.SendSyncEvent(triggerEvent);
+                        player.Room.SendSyncEvent(triggerEvent);
 
-                        foreach (var syncedEntity in player.CurrentRoom.Entities[obj.ObjectInfo.ObjectId]
+                        foreach (var syncedEntity in player.Room.Entities[obj.ObjectInfo.ObjectId]
                                      .Where(syncedEntity =>
                                          typeof(AbstractTriggerCoop<>).IsAssignableTo(syncedEntity.GetType())
                                      )
@@ -105,10 +106,10 @@ public class UseSlot : ExternalProtocol
                         return;
                     case "PF_CRS_BARREL01":
                         var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                            player.CurrentRoom.Time,
+                            player.Room.Time,
                             0, 0, 0, 0, "now", false, false);
 
-                        player.CurrentRoom.SendSyncEvent(aiEvent);
+                        player.Room.SendSyncEvent(aiEvent);
 
                         return;
                     default:

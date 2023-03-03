@@ -3,7 +3,6 @@ using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Entities;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -21,17 +20,17 @@ public class RoomUpdate : ExternalProtocol
     {
         var player = NetState.Get<Player>();
 
-        var gameObjectStore = GetGameObjectStore(player.CurrentRoom.Entities);
+        var gameObjectStore = GetGameObjectStore(player.Room.Entities);
 
         SendXt("lv", 0, gameObjectStore);
 
-        foreach (var entity in player.CurrentRoom.Entities.Values.SelectMany(x => x))
+        foreach (var entity in player.Room.Entities.Values.SelectMany(x => x))
             entity.SendDelayedData(NetState);
 
-        player.CurrentRoom.SendCharacterInfo(player, NetState);
+        player.Room.SendCharacterInfo(player, NetState);
 
-        foreach (var npc in player.CurrentRoom.GetEntities<NpcControllerEntity>())
-            npc.Value.SendNpcInfo(player.GetCurrentCharacter(), NetState);
+        foreach (var npc in player.Room.GetEntities<NpcControllerEntity>())
+            npc.Value.SendNpcInfo(player.Character, NetState);
 
         if (!player.FirstLogin)
             return;

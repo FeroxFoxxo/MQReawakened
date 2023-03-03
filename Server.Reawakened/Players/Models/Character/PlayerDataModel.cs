@@ -2,7 +2,7 @@
 
 namespace Server.Reawakened.Players.Models.Character;
 
-public class FriendDataModel
+public class PlayerDataModel
 {
     public string CharacterName { get; set; }
     public int CharacterId { get; set; }
@@ -12,6 +12,12 @@ public class FriendDataModel
     public bool IsBlocked { get; set; }
     public bool IsMuted { get; set; }
     public int InteractionStatus { get; set; }
+
+    public PlayerDataModel(int characterId)
+    {
+        CharacterId = characterId;
+        throw new NotImplementedException();
+    }
 
     public override string ToString()
     {

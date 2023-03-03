@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities;
@@ -32,7 +32,7 @@ public class HazardControllerEntity : SyncedEntity<HazardController>
             return;
 
         var player = netState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
 

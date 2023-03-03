@@ -25,7 +25,7 @@ public class State : ExternalProtocol
     {
         var player = NetState.Get<Player>();
 
-        if (player.CurrentRoom.Entities == null)
+        if (player.Room.Entities == null)
             return;
 
         var syncEvent = SyncEventManager.DecodeEvent(message[5].Split('&'));
@@ -56,12 +56,12 @@ public class State : ExternalProtocol
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
                     var collisionTarget = int.Parse(notifyCollisionEvent.CollisionTarget);
 
-                    if (player.CurrentRoom.Entities.TryGetValue(collisionTarget, out var entities))
+                    if (player.Room.Entities.TryGetValue(collisionTarget, out var entities))
                         foreach (var entity in entities)
                             entity.NotifyCollision(notifyCollisionEvent, NetState);
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
-                            collisionTarget, player.CurrentRoom.GetUnknownEntityTypes(collisionTarget));
+                            collisionTarget, player.Room.GetUnknownEntityTypes(collisionTarget));
                     break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
@@ -88,9 +88,9 @@ public class State : ExternalProtocol
                     break;
             }
 
-            player.CurrentRoom.SendSyncEvent(syncEvent, player);
+            player.Room.SendSyncEvent(syncEvent, player);
         }
-        else if (player.CurrentRoom.Entities.TryGetValue(entityId, out var entities))
+        else if (player.Room.Entities.TryGetValue(entityId, out var entities))
         {
             foreach (var entity in entities)
                 entity.RunSyncedEvent(syncEvent, NetState);
@@ -100,8 +100,8 @@ public class State : ExternalProtocol
             switch (syncEvent.Type)
             {
                 default:
-                    TraceSyncEventError(entityId, syncEvent, player.CurrentRoom.LevelInfo,
-                        player.CurrentRoom.GetUnknownEntityTypes(entityId));
+                    TraceSyncEventError(entityId, syncEvent, player.Room.LevelInfo,
+                        player.Room.GetUnknownEntityTypes(entityId));
                     break;
             }
         }

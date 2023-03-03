@@ -5,7 +5,6 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
 
 namespace Protocols.External._a__ChatHandler;
 
@@ -32,8 +31,8 @@ public class FreeChat : ExternalProtocol
         else if (channelType == CannedChatChannel.Speak)
         {
             var player = NetState.Get<Player>();
-            var character = player.GetCurrentCharacter();
-            player.CurrentRoom.Chat(channelType, character.Data.CharacterName, chatMessage);
+            var character = player.Character;
+            player.Room.Chat(channelType, character.Data.CharacterName, chatMessage);
         }
         else
         {

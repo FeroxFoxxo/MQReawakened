@@ -3,6 +3,7 @@ using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Enums;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using System.Text;
 

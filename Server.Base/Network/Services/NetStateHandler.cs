@@ -4,6 +4,7 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
 using Server.Base.Network.Enums;
+using Server.Base.Network.Models;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 
@@ -11,7 +12,7 @@ namespace Server.Base.Network.Services;
 
 public class NetStateHandler : IService
 {
-    public delegate string RunProtocol(NetState state, string protocol);
+    public delegate ProtocolResponse RunProtocol(NetState state, string protocol);
 
     private readonly FileLogger _fileLogger;
     private readonly EventSink _sink;

@@ -14,7 +14,7 @@ public class SetSlot : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         var hotbarSlotId = int.Parse(message[5]);
         var itemId = int.Parse(message[6]);

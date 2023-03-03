@@ -18,7 +18,7 @@ public class GoToEvent : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         var destinationIds = message[5].Split('|');
 

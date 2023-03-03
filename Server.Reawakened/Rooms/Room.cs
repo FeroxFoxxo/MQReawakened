@@ -2,16 +2,12 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
-using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities;
 using Server.Reawakened.Network.Extensions;
-using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -24,13 +20,14 @@ namespace Server.Reawakened.Rooms;
 
 public class Room : Timer
 {
+    private readonly int _roomId;
     private readonly ServerRConfig _config;
+    private readonly Level _level;
     private readonly HashSet<int> _gameObjectIds;
     private readonly WorldHandler _worldHandler;
 
     public readonly Dictionary<int, NetState> Clients;
     public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
-    public readonly LevelInfo LevelInfo;
     public readonly ILogger<Room> Logger;
 
     public readonly Dictionary<string, PlaneModel> Planes;
@@ -38,27 +35,31 @@ public class Room : Timer
 
     public SpawnPointEntity DefaultSpawn { get; set; }
 
+    public LevelInfo LevelInfo => _level.LevelInfo;
+
     public long TimeOffset { get; set; }
     public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
 
-    public Room(LevelInfo levelInfo, ServerRConfig config,
-        WorldHandler worldHandler, ReflectionUtils reflection, TimerThread timerThread,
-        IServiceProvider services, ILogger<Room> logger, FileLogger fileLogger) :
+    public Room(
+        int roomId, Level level, ServerRConfig config, TimerThread timerThread,
+        IServiceProvider services, ILogger<Room> logger, WorldHandler worldHandler
+    ) :
         base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
+        _roomId = roomId;
         _config = config;
-        _worldHandler = worldHandler;
         Logger = logger;
-        LevelInfo = levelInfo;
+        _worldHandler = worldHandler;
+        _level = level;
 
         Clients = new Dictionary<int, NetState>();
         _gameObjectIds = new HashSet<int>();
 
-        if (levelInfo.Type == LevelType.Unknown)
+        if (LevelInfo.Type == LevelType.Unknown)
             return;
 
         Planes = LevelInfo.LoadPlanes(_config);
-        Entities = this.LoadEntities(reflection, fileLogger, services, out UnknownEntities);
+        Entities = this.LoadEntities(services, out UnknownEntities);
 
         foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects.Values)
@@ -76,7 +77,7 @@ public class Room : Timer
 
         if (DefaultSpawn == null)
             Logger.LogError("Could not find default spawn for level: {RoomId} ({RoomName})",
-                levelInfo.LevelId, levelInfo.Name);
+                LevelInfo.LevelId, LevelInfo.Name);
 
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
         Start();
@@ -142,10 +143,10 @@ public class Room : Timer
         }
     }
 
-    public void SendCharacterInfo(Player newPlayer, NetState newClient)
+    public void SendCharacterInfo(Player player, NetState newClient)
     {
         // WHERE TO SPAWN
-        var character = newPlayer.GetCurrentCharacter();
+        var character = player.Character;
 
         BaseSyncedEntity spawnLocation = null;
 
@@ -190,13 +191,13 @@ public class Room : Timer
         {
             var currentPlayer = currentClient.Get<Player>();
 
-            var areDifferentClients = currentPlayer.UserId != newPlayer.UserId;
+            var areDifferentClients = currentPlayer.UserId != player.UserId;
 
             newClient.SendCharacterInfoData(currentPlayer,
                 areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals, LevelInfo);
 
             if (areDifferentClients)
-                currentClient.SendCharacterInfoData(newPlayer, CharacterInfoType.Lite, LevelInfo);
+                currentClient.SendCharacterInfoData(player, CharacterInfoType.Lite, LevelInfo);
         }
     }
 
@@ -230,25 +231,10 @@ public class Room : Timer
             return;
         }
 
-        _worldHandler.RemoveRoom(this);
+        _level.Rooms.Remove(_roomId);
         Stop();
     }
 
-    public void SendSyncEvent(SyncEvent syncEvent, Player sentPlayer = null)
-    {
-        foreach (
-            var client in
-            from client in Clients.Values
-            let receivedPlayer = client.Get<Player>()
-            where sentPlayer == null || receivedPlayer.UserId != sentPlayer.UserId
-            select client
-        )
-            client.SendSyncEventToPlayer(syncEvent);
-    }
-
-    public void SendLevelUp(Player player, LevelUpDataModel levelUpData)
-    {
-        foreach (var client in Clients.Values)
-            client.SendXt("ce", levelUpData, player.UserId);
-    }
+    public string GetRoomName() =>
+        $"{LevelInfo.LevelId}#{_roomId}";
 }

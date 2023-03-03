@@ -10,7 +10,7 @@ public static class NpcExtensions
 {
     public static void AddQuest(this Player player, int questId, bool setActive, NetState state, QuestCatalog catalog)
     {
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
         var quest = catalog.GetQuestData(questId);
 
         if (quest == null || character == null)

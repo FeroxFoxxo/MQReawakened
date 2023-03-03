@@ -40,7 +40,7 @@ public class DescriptionHandler : ThriftHandler
 
         var player = netState.Get<Player>();
 
-        var collectedIdols = player.GetCurrentCharacter().CollectedIdols;
+        var collectedIdols = player.Character.CollectedIdols;
 
         var result = new getPortalInfo_result
         {

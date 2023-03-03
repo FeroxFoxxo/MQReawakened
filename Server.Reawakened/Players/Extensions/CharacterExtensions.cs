@@ -6,6 +6,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Protocol;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using WorldGraphDefines;
 
@@ -25,17 +26,14 @@ public static class CharacterExtensions
         return characterData.Data.Allegiance == tribe;
     }
 
-    public static CharacterModel GetCurrentCharacter(this Player player) =>
-        player.UserInfo.Characters.TryGetValue(player.CurrentCharacter, out var value) ? value : null;
-
     public static CharacterModel GetCharacterFromName(this Player player, string characterName)
         => player.UserInfo.Characters.Values
             .FirstOrDefault(c => c.Data.CharacterName == characterName);
 
     public static void SetCharacterSelected(this Player player, int characterId)
     {
-        player.CurrentCharacter = characterId;
-        player.UserInfo.LastCharacterSelected = player.GetCurrentCharacter().Data.CharacterName;
+        player.Character = player.UserInfo.Characters[characterId];
+        player.UserInfo.LastCharacterSelected = player.Character.Data.CharacterName;
     }
 
     public static void AddCharacter(this Player player, CharacterModel character) =>
@@ -64,18 +62,16 @@ public static class CharacterExtensions
 
     public static void LevelUp(this Player player, int level, Microsoft.Extensions.Logging.ILogger logger)
     {
-        var character = player.GetCurrentCharacter();
-
         var levelUpData = new LevelUpDataModel
         {
             Level = level
         };
 
-        SetLevelXp(character, level);
+        SetLevelXp(player.Character, level);
 
-        player.CurrentRoom.SendLevelUp(player, levelUpData);
+        player.SendLevelUp(levelUpData);
 
-        logger.LogTrace("{Name} leveled up to {Level}", character.Data.CharacterName, level);
+        logger.LogTrace("{Name} leveled up to {Level}", player.Character.Data.CharacterName, level);
     }
 
     private static int GetHealthForLevel(int level) => (level - 1) * 270 + 81;
@@ -85,9 +81,8 @@ public static class CharacterExtensions
     public static void DiscoverTribe(this NetState state, TribeType tribe)
     {
         var player = state.Get<Player>();
-        var character = player.GetCurrentCharacter();
 
-        if (HasAddedDiscoveredTribe(character, tribe))
+        if (HasAddedDiscoveredTribe(player.Character, tribe))
             state.SendXt("cB", (int)tribe);
     }
 
@@ -110,14 +105,14 @@ public static class CharacterExtensions
 
     public static void AddBananas(this Player player, NetState state, int collectedBananas)
     {
-        var charData = player.GetCurrentCharacter().Data;
+        var charData = player.Character.Data;
         charData.Cash += collectedBananas;
         player.SendCashUpdate(state);
     }
 
     public static void SendCashUpdate(this Player player, NetState state)
     {
-        var charData = player.GetCurrentCharacter().Data;
+        var charData = player.Character.Data;
         state.SendXt("ca", charData.Cash, charData.NCash);
     }
 

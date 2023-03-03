@@ -11,7 +11,7 @@ public class RemoveItem : ExternalProtocol
     public override void Run(string[] message)
     {
         var player = NetState.Get<Player>();
-        var character = player.GetCurrentCharacter();
+        var character = player.Character;
 
         var itemId = int.Parse(message[5]);
         var removeCount = int.Parse(message[5]);
