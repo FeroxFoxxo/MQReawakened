@@ -121,7 +121,5 @@ public class WorldHandler : IService
         return room;
     }
 
-    public void RemoveRoom(Room room) => _rooms[room.LevelInfo.LevelId].Remov
-r
-m);
+    public void RemoveRoom(Room room) => _rooms[room.LevelInfo.LevelId].Remove(room);
 }

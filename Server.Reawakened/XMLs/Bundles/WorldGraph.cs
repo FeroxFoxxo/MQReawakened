@@ -41,9 +41,8 @@ public class WorldGraph : WorldGraphXML, IBundledXml
         return !worldGraphNodes.TryGetValue(levelId, out var value)
             ? 0
             : (from destNode in value.Where(destNode => destNode.PortalID == portalId)
-               where destNode.ToLevelID != 0
-               select destNode.ToLevelID
+                where destNode.ToLevelID != 0
+                select destNode.ToLevelID
             ).FirstOrDefault();
     }
-
-
+}

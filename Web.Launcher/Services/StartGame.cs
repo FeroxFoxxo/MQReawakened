@@ -20,7 +20,7 @@ using Web.Launcher.Models;
 using Web.Launcher.Models.Current;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-rvices;
+namespace Web.Launcher.Services;
 
 public class StartGame : IService
 {

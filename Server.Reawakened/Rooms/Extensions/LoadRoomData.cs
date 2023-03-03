@@ -189,12 +189,10 @@ public static class LoadRoomData
     {
         var entityInfo = new Dictionary<string, IEnumerable<string>>();
 
-        if (room.UnknownEntities.TryGetValu value))
+        if (room.UnknownEntities.TryGetValue(id, out var value))
             entityInfo.Add("entities", value);
 
-     ponents = r
-m
-lanes.Values
+        var components = room.Planes.Values
             .Where(p => p.GameObjects.ContainsKey(id))
             .Select(p => p.GameObjects[id])
             .SelectMany(g => g.ObjectInfo.Components.Keys)

@@ -168,9 +168,7 @@ public class AnalyticsController : Controller
     private void SendLog(CommonProperties properties, string message) =>
         _fileLogger.WriteGenericLog<AnalyticsController>(
             "analytics",
-            $"{prope
-i
-.Timestamp:g} @ Session {properties.SessionId}",
+            $"{properties.Timestamp:g} @ Session {properties.SessionId}",
             message, LoggerType.Debug
         );
 }
