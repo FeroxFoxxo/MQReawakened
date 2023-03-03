@@ -2,7 +2,7 @@
 
 namespace Server.Web.Models;
 
-public class WebRConfig : IRwConfig
+public class WebRConfig : IRConfig
 {
     public List<string> IgnorePaths { get; }
 

@@ -2,7 +2,7 @@
 
 namespace Server.Web.Models;
 
-public class WebRwConfig : IRConfig
+public class WebRwConfig : IRwConfig
 {
     public bool ShouldConcat { get; }
 
