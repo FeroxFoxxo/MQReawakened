@@ -21,7 +21,7 @@ public class CharacterLightModel
     public bool ForceTribeSelection { get; set; }
     public HashSet<int> DiscoveredStats { get; set; }
 
-    public CharacterLightModel() => InitializeLists();
+    public CharacterLightModel() => InitializeLiteLists();
 
     public CharacterLightModel(string serverData)
     {
@@ -30,10 +30,10 @@ public class CharacterLightModel
         Gender = int.Parse(array[0]);
         Customization = new CharacterCustomDataModel(array[1]);
 
-        InitializeLists();
+        InitializeLiteLists();
     }
 
-    private void InitializeLists()
+    public void InitializeLiteLists()
     {
         Equipment = new EquipmentModel();
         DiscoveredStats = new HashSet<int>();

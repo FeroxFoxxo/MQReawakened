@@ -98,48 +98,43 @@ public class Room : Timer
 
         if (reason == JoinReason.Accepted)
         {
+            var newPlayer = newClient.Get<Player>();
+
+            var gameObjectId = 1;
+
+            while (_gameObjectIds.Contains(gameObjectId))
+                gameObjectId++;
+
+            _gameObjectIds.Add(gameObjectId);
+
+            newPlayer.GameObjectId = gameObjectId;
+
             Clients.Add(newClient.Get<Player>().GameObjectId, newClient);
 
-            newClient.SendXml("joinOK", "<pid id='0' /><uLs />");
+            newClient.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
 
             if (LevelInfo.LevelId == 0)
                 return;
 
-            JoinRoom(newClient);
+            // USER ENTER
+            var newAccount = newClient.Get<Account>();
+
+            foreach (var currentClient in Clients.Values)
+            {
+                var currentPlayer = currentClient.Get<Player>();
+                var currentAccount = currentClient.Get<Account>();
+
+                var areDifferentClients = currentPlayer.UserId != newPlayer.UserId;
+
+                newClient.SendUserEnterData(currentPlayer, currentAccount);
+
+                if (areDifferentClients)
+                    currentClient.SendUserEnterData(newPlayer, newAccount);
+            }
         }
         else
         {
             newClient.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
-        }
-    }
-
-    public void JoinRoom(NetState newClient)
-    {
-        var newPlayer = newClient.Get<Player>();
-
-        var gameObjectId = 1;
-
-        while (_gameObjectIds.Contains(gameObjectId))
-            gameObjectId++;
-
-        _gameObjectIds.Add(gameObjectId);
-
-        newPlayer.GameObjectId = gameObjectId;
-
-        // USER ENTER
-        var newAccount = newClient.Get<Account>();
-
-        foreach (var currentClient in Clients.Values)
-        {
-            var currentPlayer = currentClient.Get<Player>();
-            var currentAccount = currentClient.Get<Account>();
-
-            var areDifferentClients = currentPlayer.UserId != newPlayer.UserId;
-
-            newClient.SendUserEnterData(currentPlayer, currentAccount);
-
-            if (areDifferentClients)
-                currentClient.SendUserEnterData(newPlayer, newAccount);
         }
     }
 

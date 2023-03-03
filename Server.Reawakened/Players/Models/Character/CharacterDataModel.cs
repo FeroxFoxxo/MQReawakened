@@ -48,7 +48,7 @@ public class CharacterDataModel : CharacterLightModel
 
     private int ChatLevel => _player?.UserInfo.ChatLevel ?? 0;
 
-    public CharacterDataModel() => InitializeLists();
+    public CharacterDataModel() => InitializeDetailedLists();
 
     public CharacterDataModel(string serverData, int id, ServerRConfig config) : base(serverData)
     {
@@ -60,7 +60,7 @@ public class CharacterDataModel : CharacterLightModel
         CharacterId = id;
         Customization.CharacterId = id;
 
-        InitializeLists();
+        InitializeDetailedLists();
 
         if (CharacterId > config.MaxCharacterCount || CharacterId < 0)
             throw new InvalidDataException();
@@ -69,7 +69,7 @@ public class CharacterDataModel : CharacterLightModel
     public void SetPlayerData(Player player) =>
         _player = player;
 
-    private void InitializeLists()
+    private void InitializeDetailedLists()
     {
         QuestLog = new List<QuestStatusModel>();
         CompletedQuests = new List<int>();
@@ -78,6 +78,7 @@ public class CharacterDataModel : CharacterLightModel
         DiscoveredStats = new HashSet<int>();
         Friends = new List<int>();
         Blocked = new List<int>();
+        InitializeLiteLists();
     }
 
     public override string ToString()

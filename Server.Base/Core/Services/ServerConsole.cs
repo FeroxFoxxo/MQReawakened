@@ -56,8 +56,8 @@ public class ServerConsole : IService
 
         AddCommand(
             "shutdown",
-            "Performs a forced save then shuts down the server.",
-            NetworkType.Server,
+            "Performs a forced save then shuts down the app.",
+            NetworkType.Server | NetworkType.Client,
             _ => _handler.KillServer(false)
         );
 
