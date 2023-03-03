@@ -51,6 +51,6 @@ public class Player : INetStateData
         if (!string.IsNullOrEmpty(roomName))
             logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
 
-        Room.DumpPlayerToLobby(UserId);
+        Room.DumpPlayerToLobby(GameObjectId);
     }
 }

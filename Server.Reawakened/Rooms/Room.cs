@@ -98,7 +98,7 @@ public class Room : Timer
 
         if (reason == JoinReason.Accepted)
         {
-            Clients.Add(newClient.Get<Player>().UserId, newClient);
+            Clients.Add(newClient.Get<Player>().GameObjectId, newClient);
 
             newClient.SendXml("joinOK", "<pid id='0' /><uLs />");
 
@@ -203,13 +203,13 @@ public class Room : Timer
 
     public void DumpPlayersToLobby()
     {
-        foreach (var playerId in Clients.Keys)
-            DumpPlayerToLobby(playerId);
+        foreach (var clientId in Clients.Keys)
+            DumpPlayerToLobby(clientId);
     }
 
-    public void DumpPlayerToLobby(int playerId)
+    public void DumpPlayerToLobby(int clientId)
     {
-        var client = Clients[playerId];
+        var client = Clients[clientId];
         var player = client.Get<Player>();
         player.JoinRoom(client, _worldHandler.GetRoomFromLevelId(-1), out _);
         RemoveClient(player);
@@ -217,7 +217,7 @@ public class Room : Timer
 
     public void RemoveClient(Player player)
     {
-        Clients.Remove(player.UserId);
+        Clients.Remove(player.GameObjectId);
         _gameObjectIds.Remove(player.GameObjectId);
 
         if (LevelInfo.LevelId <= 0)
