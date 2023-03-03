@@ -54,8 +54,6 @@ public class CharacterDataModel : CharacterLightModel
     {
         Inventory = new InventoryModel();
         Hotbar = new HotbarModel();
-        Friends = new List<int>();
-        Blocked = new List<int>();
         Resistances = new CharacterResistancesModel();
         RecipeList = new RecipeListModel();
 
@@ -78,6 +76,8 @@ public class CharacterDataModel : CharacterLightModel
         TribesDiscovered = new Dictionary<TribeType, bool>();
         TribesProgression = new Dictionary<TribeType, TribeDataModel>();
         DiscoveredStats = new HashSet<int>();
+        Friends = new List<int>();
+        Blocked = new List<int>();
     }
 
     public override string ToString()
