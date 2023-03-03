@@ -281,9 +281,9 @@ public class NetState : IDisposable
                             continue;
 
                         if (protocolResponse.IsUnhandled)
-                            AddUnhandledPacket(packet);
+                            AddUnhandledPacket(protocolResponse.ProtocolId);
                         else
-                            RemoveUnhandledPacket(packet);
+                            RemoveUnhandledPacket(protocolResponse.ProtocolId);
 
                         _logger.LogTrace("Client: {ClientAddress}", this);
 
