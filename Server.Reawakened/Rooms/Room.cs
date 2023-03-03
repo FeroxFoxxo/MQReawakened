@@ -110,7 +110,6 @@ public class Room : Timer
         {
             newClient.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
         }
-
     }
 
     public void JoinRoom(NetState newClient)
@@ -125,7 +124,7 @@ public class Room : Timer
         _gameObjectIds.Add(gameObjectId);
 
         newPlayer.GameObjectId = gameObjectId;
-        
+
         // USER ENTER
         var newAccount = newClient.Get<Account>();
 

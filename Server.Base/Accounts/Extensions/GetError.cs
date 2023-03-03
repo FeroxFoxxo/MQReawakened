@@ -11,7 +11,7 @@ public static class GetError
             AlrReason.BadComm => "Access from this account has been denied",
             AlrReason.BadPass => "You have entered an invalid password",
             AlrReason.Blocked => "Your account has been banned",
-            AlrReason.InUse   => "We have reached our thresh-hold for users",
-            _                 => "You have reached an error that should not have happened"
+            AlrReason.InUse => "We have reached our thresh-hold for users",
+            _ => "You have reached an error that should not have happened"
         };
 }

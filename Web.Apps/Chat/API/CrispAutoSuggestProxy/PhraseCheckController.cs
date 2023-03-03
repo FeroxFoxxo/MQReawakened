@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Web.Apps.Chat.Services;
 
-namespace Web.Apps.Chat.API.CrispAutoSuggestProxy;
+spAutoSuggestProxy;
 
 [Route("/Chat/CrispAutoSuggestProxy/PhraseCheck")]
 public class PhraseCheckController : Controller

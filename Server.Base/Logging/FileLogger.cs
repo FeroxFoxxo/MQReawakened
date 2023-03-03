@@ -7,11 +7,11 @@ namespace Server.Base.Logging;
 
 public class FileLogger
 {
-    private readonly Dictionary<string, ConsoleFileLogger> _fileLoggers;
-    private readonly ILoggerFactory _loggerFactory;
     private readonly InternalRConfig _config;
+    private readonly Dictionary<string, ConsoleFileLogger> _fileLoggers;
     private readonly ILogger<FileLogger> _fLogger;
     private readonly object _lock;
+    private readonly ILoggerFactory _loggerFactory;
 
     public FileLogger(ILoggerFactory loggerFactory, InternalRConfig config, ILogger<FileLogger> fLogger)
     {
@@ -21,7 +21,7 @@ public class FileLogger
         _fileLoggers = new Dictionary<string, ConsoleFileLogger>();
         _lock = new object();
     }
-    
+
     public void WriteGenericLog<T>(string logFileName, string title, string message, LoggerType type)
     {
         var builder = new StringBuilder()

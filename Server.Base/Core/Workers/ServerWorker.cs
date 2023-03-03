@@ -57,12 +57,12 @@ public class ServerWorker : IHostedService
         _sink.ServerStarted += _ => _serverThread.Start();
 
         Thread.CurrentThread.Name = "Main Thread";
-        
+
         var baseDirectory = InternalDirectory.GetBaseDirectory();
 
         if (baseDirectory.Length > 0)
             Directory.SetCurrentDirectory(baseDirectory);
-        
+
         try
         {
             Console.SetOut(MultiConsoleOut);

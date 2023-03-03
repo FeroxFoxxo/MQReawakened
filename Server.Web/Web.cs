@@ -70,23 +70,23 @@ public class Web : WebModule
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 options.RoutePrefix = string.Empty;
             });
-            
+
             app.UseHsts();
         }
-        
+
         app.UseStaticFiles();
-        
+
         app.UseIpRateLimiting();
 
         app
             .UseMiddleware<EnableRequestBodyBufferingMiddleware>()
             .UseMiddleware<RequestLoggerMiddleware>();
-        
+
         app.UseRouting();
 
         app.UseAuthentication();
         app.UseAuthorization();
-        
+
         app.MapRazorPages();
         app.MapControllers();
     }

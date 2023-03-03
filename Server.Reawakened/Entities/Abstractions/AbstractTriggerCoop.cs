@@ -86,7 +86,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
 
     public ILogger<TriggerCoopController> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
-    
+
     public override void InitializeEntity()
     {
         IsEnabled = IsEnable;
@@ -143,8 +143,13 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             Triggers.Add(trigger, triggerType);
     }
 
-    public override void SendDelayedData(NetState netState) =>
-        netState.SentEntityTriggered(Id, true, IsActive);
+    public override void SendDelayedData(NetState netState)
+    {
+        var trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, false,
+            "now", IsActive);
+
+        netState.SendSyncEventToPlayer(trigger);
+    }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
@@ -240,7 +245,8 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             sb2.AppendLine($"State: {trigger.Value}")
                 .Append($"Entities: {Room.GetUnknownEntityTypes(trigger.Key)}");
 
-            FileLogger.WriteGenericLog<TriggerCoopController>("trigger-fails", $"Trigger {Id}", sb2.ToString(), LoggerType.Error);
+            FileLogger.WriteGenericLog<TriggerCoopController>("trigger-fails", $"Trigger {Id}", sb2.ToString(),
+                LoggerType.Error);
         }
     }
 

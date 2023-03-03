@@ -44,10 +44,10 @@ public class NetStateHandler : IService
 
     public NetState FindUser(int userId) =>
         (from state in Instances
-            let account = state.Get<Account>()
-            where account != null
-            where account.UserId == userId
-            select state
+         let account = state.Get<Account>()
+         where account != null
+         where account.UserId == userId
+         select state
         ).FirstOrDefault();
 
     public void ProcessDisposedQueue()

@@ -13,17 +13,18 @@ namespace Server.Web.Middleware;
 
 public class RequestLoggerMiddleware
 {
-    private readonly RequestDelegate _next;
     private readonly HttpClient _client;
+    private readonly RequestDelegate _next;
 
     public RequestLoggerMiddleware(RequestDelegate next)
     {
-        _client = new HttpClient(new HttpClientHandler()
+        _client = new HttpClient(new HttpClientHandler
         {
             AllowAutoRedirect = false
         });
         _next = next;
     }
+
     public async Task Invoke(HttpContext context, ILogger<RequestLoggerMiddleware> logger, WebRConfig webRConfig,
         WebRwConfig webRwConfig, InternalRwConfig config, FileLogger fileLogger)
     {
@@ -52,7 +53,7 @@ public class RequestLoggerMiddleware
                 postData = $"{string.Join('\n', split.Take(1))}\n" +
                            "More data found, but was concatenated. To view the full log, enable WebConfig.ShouldConcat.";
         }
-        
+
         var ip = GetIp(context, logger);
 
         var sb = new StringBuilder();
@@ -80,7 +81,8 @@ public class RequestLoggerMiddleware
                 var url = new Uri(baseUrl, context.Request.Path);
                 logger.LogTrace("[PROXIED TO {Address}]", url);
                 var request = context.CreateProxyHttpRequest(url);
-                var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, context.RequestAborted);
+                var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead,
+                    context.RequestAborted);
                 await context.CopyProxyHttpResponse(response);
             }
             else
@@ -94,7 +96,7 @@ public class RequestLoggerMiddleware
                 StatusCodes.Status404NotFound => LoggerType.Warning,
                 _ => LoggerType.Trace
             };
-            
+
             if (postValue)
             {
                 var post = $"Post: {postData}";
@@ -120,15 +122,16 @@ public class RequestLoggerMiddleware
         }
     }
 
-    public static void LogRequest(FileLogger fileLogger, int statusCode, string method, StringBuilder info, string ip, LoggerType loggerType)
+    public static void LogRequest(FileLogger fileLogger, int statusCode, string method, StringBuilder info, string ip,
+        LoggerType loggerType)
     {
         var sb = new StringBuilder();
 
         sb.AppendLine($"Address: {ip}")
             .AppendLine(method);
-        
+
         sb.Append(info);
-        
+
         fileLogger.WriteGenericLog<Controller>("http-requests", $"Status {statusCode}", sb.ToString(), loggerType);
     }
 

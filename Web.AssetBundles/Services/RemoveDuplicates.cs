@@ -13,11 +13,11 @@ public class RemoveDuplicates : IService
 {
     private readonly BuildAssetList _buildAssetList;
     private readonly ServerConsole _console;
+    private readonly LauncherRwConfig _launcherWConfig;
     private readonly ILogger<RemoveDuplicates> _logger;
     private readonly AssetBundleRConfig _rConfig;
     private readonly AssetBundleRwConfig _rwConfig;
     private readonly EventSink _sink;
-    private readonly LauncherRwConfig _launcherWConfig;
 
     public RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
         ServerConsole console, LauncherRwConfig launcherWConfig, BuildAssetList buildAssetList,
@@ -46,7 +46,7 @@ public class RemoveDuplicates : IService
             "removeXmlDuplicates",
             "Creates a directory that does not include duplicated XML files (required for servers).",
             NetworkType.Server | NetworkType.Client,
-            _ => RemoveDuplicateFiles(new []{ AssetInfo.TypeAsset.Level, AssetInfo.TypeAsset.XML})
+            _ => RemoveDuplicateFiles(new[] { AssetInfo.TypeAsset.Level, AssetInfo.TypeAsset.XML })
         );
     }
 
@@ -114,7 +114,7 @@ public class RemoveDuplicates : IService
             allAssets.Length - replacedCount, replacedCount, allAssets.Length);
 
         _logger.LogDebug("Writing assets");
-        
+
         _logger.LogDebug("Emptying duplicated directory folder...");
         InternalDirectory.Empty(_rConfig.RemovedDuplicateDirectory);
         _logger.LogDebug("Emptied folder");

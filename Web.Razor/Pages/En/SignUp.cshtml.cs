@@ -73,12 +73,12 @@ public class SignUpModel : PageModel
         _accountHandler = accountHandler;
         _userInfoHandler = userInfoHandler;
     }
-    
+
     public IActionResult OnPost()
     {
         if (!ModelState.IsValid)
             return Page();
-        
+
         if (!Date.HasValue)
             return Page();
 
@@ -87,7 +87,7 @@ public class SignUpModel : PageModel
 
         if (_accountHandler.Data.Any(a => a.Value.Email == Email))
             return Unauthorized();
-        
+
         var ip = Request.HttpContext.Connection.RemoteIpAddress;
 
         var account = _accountHandler.Create(ip, Username, Password, Email);

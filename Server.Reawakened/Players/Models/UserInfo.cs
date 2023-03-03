@@ -40,7 +40,7 @@ public class UserInfo : PersistantData
 
         LastCharacterSelected = string.Empty;
         AuthToken = kGen.GetRandomKey<UserInfo>(userId.ToString());
-        
+
         Member = config.DefaultMemberStatus;
         TrackingShortId = config.DefaultTrackingShortId;
         ChatLevel = config.DefaultChatLevel;

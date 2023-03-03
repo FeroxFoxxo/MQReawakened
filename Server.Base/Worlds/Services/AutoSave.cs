@@ -14,11 +14,11 @@ public class AutoSave : IService
     private readonly ArchivedSaves _archives;
 
     private readonly string[] _backups;
+    private readonly InternalRConfig _config;
     private readonly TimeSpan _delayAutoSave;
     private readonly TimeSpan _delayWarning;
 
     private readonly ServerHandler _handler;
-    private readonly InternalRConfig _config;
     private readonly ILogger<AutoSave> _logger;
     private readonly EventSink _sink;
     private readonly TimerThread _timerThread;
@@ -78,7 +78,7 @@ public class AutoSave : IService
             return false;
 
         InternalDirectory.OverwriteDirectory(_config.TempBackupDirectory);
-        
+
         var existing = Directory.GetDirectories(_config.AutomaticBackupDirectory);
 
         var anySuccess = existing.Length == 0;

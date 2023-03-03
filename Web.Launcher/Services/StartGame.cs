@@ -15,13 +15,12 @@ using Server.Reawakened.Players.Events;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Globalization;
-using System.Text.Json;
 using System.Xml.Linq;
 using Web.Launcher.Models;
 using Web.Launcher.Models.Current;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Web.Launcher.Services;
+rvices;
 
 public class StartGame : IService
 {
@@ -156,7 +155,7 @@ public class StartGame : IService
     {
         if (!ShouldRun())
             return;
-        
+
         if (!_lWConfig.StartLauncherOnCommand)
             if (_logger.Ask("The launcher is not set to restart on a related command being run, " +
                             "would you like to enable this?", true))

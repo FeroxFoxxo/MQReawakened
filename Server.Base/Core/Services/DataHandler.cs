@@ -29,7 +29,7 @@ public abstract class DataHandler<T> : IService where T : PersistantData
         Sink.WorldSave += Save;
         Sink.CreateData += () => CreateInternal($"new {typeof(T).Name.ToLower()}");
     }
-    
+
     public string GetFileName() =>
         Path.Combine(Config.SaveDirectory, $"{typeof(T).Name.ToLower()}.json");
 

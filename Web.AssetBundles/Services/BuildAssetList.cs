@@ -71,12 +71,12 @@ public class BuildAssetList : IService
                 GenerateDefaultAssetList(true);
             }
         );
-        
+
         _rwConfig.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", _rwConfig.CacheInfoFile, _logger);
 
         if (!string.IsNullOrEmpty(_rwConfig.WebPlayerInfoFile))
             _rwConfig.WebPlayerInfoFile = _rwConfig.GetWebPlayerInfoFile(_rConfig, _logger);
-        
+
         if (_rwConfig.FlushCacheOnStart)
             InternalDirectory.Empty(_rConfig.BundleSaveDirectory);
 
@@ -102,8 +102,7 @@ public class BuildAssetList : IService
 
         _logger.LogInformation("Loaded {Count} assets to memory.", InternalAssets.Count);
 
-        foreach (var asset in InternalAssets.Values.Where(x => x.Type == AssetInfo.TypeAsset.Unknown))
-            _logger.LogError("Could not find type for asset '{Name}' in '{File}'.", asset.Name, asset.Path);
+        foreach (var asset in InternalAssets.Values.Where(x => x.Type == AssetInfo.TypeAsAssetInfo.TypeAsset        _logger.LogError("Could not find type for asset '{Name}' in '{File}'.", asset.Name, asset.Path);
 
         var vgmtAssets = InternalAssets.Where(x =>
                 _rConfig.VirtualGoods.Any(a => string.Equals(a, x.Key) || x.Key.StartsWith($"{a}Dict_")))
@@ -219,10 +218,8 @@ public class BuildAssetList : IService
             Path = assetFile.fullName,
             CacheTime = time,
             Version = 0,
-            Type = AssetInfo.TypeAsset.Unknown,
-            BundleSize = Convert.ToInt32(new FileInfo(assetFile.fullName).Length / 1024),
-            Locale = RFC1766Locales.LanguageCodes.en_us,
-            UnityVersion = assetFile.unityVersion
+            Type = AssetInfo.TypeAsAssetInfo.TypeAsset       BundleSize = Convert.ToInt32(new FileInfo(assetFile.fullName).Length / 1024),
+            Locale = RFC1766Locales.LRFC1766Locales.LanguageCodes     UnityVersion = assetFile.unityVersion
         };
 
         var gameObj = assetFile.ObjectsDic.Values.ToArray().GetGameObject(asset.Name)?.m_Name;
@@ -236,45 +233,37 @@ public class BuildAssetList : IService
             if (asset.Name.StartsWith("LV"))
                 if (!asset.Name.Contains("mesh") && !asset.Name.Contains("plane"))
                 {
-                    asset.Type = AssetInfo.TypeAsset.Level;
-                    bar.SetMessage(
+                    asset.Type = AssetInfo.TypeAsAssetInfo.TypeAsset             bar.SetMessage(
                         $"{_rConfig.Message} - found possible level '{asset.Name}' in {assetFile.fileName.Split('/').Last()}");
                 }
 
-            if (asset.Type == AssetInfo.TypeAsset.Unknown)
-                asset.Type = AssetInfo.TypeAsset.Prefab;
-        }
+            if (asset.Type == AssetInfo.TypeAsAssetInfo.TypeAsset           asset.Type = AssetInfo.TypeAsAssetInfo.TypeAsset  }
         else if (!string.IsNullOrEmpty(musicObj))
         {
             asset.Name = musicObj;
-            asset.Type = AssetInfo.TypeAsset.Audio;
-        }
+            asset.Type = AssetInfo.TypeAsAssetInfo.TypeAsset }
         else if (!string.IsNullOrEmpty(textObj))
         {
             asset.Name = textObj;
 
             if (asset.Name.StartsWith("NavMesh"))
             {
-                asset.Type = AssetInfo.TypeAsset.NavMesh;
-            }
+                asset.Type = AssetInfo.TypeAsAssetInfo.TypeAsset       }
             else
             {
                 bar.SetMessage(
                     $"{_rConfig.Message} - found possible XML '{asset.Name}' in {assetFile.fileName.Split('/').Last()}");
 
-                if (Enum.TryParse<RFC1766Locales.LanguageCodes>(
-                        asset.Name.Split('_').Last().Replace('-', '_'),
+                if (Enum.TryParse<RFC1766Locales.LRFC1766Locales.LanguageCodes            asset.Name.Split('_').Last().Replace('-', '_'),
                         true,
                         out var type)
                    )
                     asset.Locale = type;
 
-                asset.Type = AssetInfo.TypeAsset.XML;
-            }
+                asset.Type = AssetInfo.TypeAsAssetInfo.TypeAsset   }
         }
 
-        if (asset.Type == AssetInfo.TypeAsset.Unknown)
-            bar.SetMessage($"{_rConfig.Message} - WARNING: could not find type of asset {asset.Name}");
+        if (asset.Type == AssetInfo.TypeAsAssetInfo.TypeAsset       bar.SetMessage($"{_rConfig.Message} - WARNING: could not find type of asset {asset.Name}");
 
         return asset;
     }
@@ -286,8 +275,7 @@ public class BuildAssetList : IService
 
         var xmlElements = document.CreateElement("xml_version");
 
-        foreach (var asset in assets.Where(x => x.Type == AssetInfo.TypeAsset.XML))
-            xmlElements.AppendChild(asset.ToAssetXml("item", document));
+        foreach (var asset in assets.Where(x => x.Type == AssetInfo.TypeAsAssetInfo.TypeAsset    xmlElements.AppendChild(asset.ToAssetXml("item", document));
 
         root.AppendChild(xmlElements);
 

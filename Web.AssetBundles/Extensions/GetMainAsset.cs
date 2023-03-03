@@ -12,7 +12,7 @@ public static class GetMainAsset
         var dump = assetBundle.Dump();
         var lines = dump.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
         var tree = GetTree(lines);
-        
+
         var baseBundle = tree.FirstOrDefault(a => a.Name == "AssetBundle Base");
 
         if (baseBundle == null)

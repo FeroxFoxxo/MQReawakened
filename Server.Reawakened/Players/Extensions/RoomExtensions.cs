@@ -47,17 +47,6 @@ public static class RoomExtensions
         state.SendCharacterInfoData(player, CharacterInfoType.Detailed, levelInfo);
     }
 
-    public static void SentEntityTriggered(this NetState netState, int id, bool success, bool active)
-    {
-        var player = netState.Get<Player>();
-        var room = player.CurrentRoom;
-
-        var collectedEvent =
-            new Trigger_SyncEvent(id.ToString(), room.Time, success, player.GameObjectId.ToString(), active);
-
-        netState.SendSyncEventToPlayer(collectedEvent);
-    }
-
     public static void SentEntityTriggered(this Room room, int id, Player player, bool success, bool active)
     {
         var collectedEvent =

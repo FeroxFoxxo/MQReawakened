@@ -162,7 +162,7 @@ public class AccountHandler : DataHandler<Account>
     {
         if (username.Trim().Length <= 0 || password.Trim().Length <= 0 || email.Trim().Length <= 0)
             throw new InvalidOperationException();
-        
+
         var isSafe = !(username.StartsWith(" ") || username.EndsWith(" ") || username.EndsWith("."));
 
         for (var i = 0; isSafe && i < username.Length; ++i)

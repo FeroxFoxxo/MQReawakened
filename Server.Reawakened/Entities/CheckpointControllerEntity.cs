@@ -16,7 +16,7 @@ public class CheckpointControllerEntity : AbstractTriggerCoop<CheckpointControll
     public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
     {
         base.RunSyncedEvent(syncEvent, netState);
-        
+
         if (Room.DefaultSpawn.Index == SpawnPoint)
         {
             Logger.LogTrace("Skipped current checkpoint: {SpawnPoint}", SpawnPoint);
@@ -39,7 +39,8 @@ public class CheckpointControllerEntity : AbstractTriggerCoop<CheckpointControll
             sb.AppendLine($"SpawnPoint Index: {SpawnPoint}")
                 .Append($"Possibilities: {string.Join(", ", spawns.Select(s => $"{s.Index} (ID: {s.Id})"))}");
 
-            FileLogger.WriteGenericLog<CheckpointController>("failed-checkpoints", "Checkpoint Spawn Failed", sb.ToString(), LoggerType.Warning);
+            FileLogger.WriteGenericLog<CheckpointController>("failed-checkpoints", "Checkpoint Spawn Failed",
+                sb.ToString(), LoggerType.Warning);
         }
 
         //var checkpoints = Room.RoomEntities.GetEntities<CheckpointControllerEntity>().Values;

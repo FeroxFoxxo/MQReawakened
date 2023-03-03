@@ -12,12 +12,12 @@ namespace Web.AssetBundles.Services;
 
 public class ClearWebCaches : IService
 {
-    private readonly AssetBundleRwConfig _rwConfig;
     private readonly ServerConsole _console;
     private readonly StartGame _game;
     private readonly ILogger<ClearWebCaches> _logger;
-    private readonly ReplaceCaches _replaceCaches;
     private readonly AssetBundleRConfig _rConfig;
+    private readonly ReplaceCaches _replaceCaches;
+    private readonly AssetBundleRwConfig _rwConfig;
     private readonly EventSink _sink;
 
     public ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleRConfig rConfig,
@@ -70,14 +70,14 @@ public class ClearWebCaches : IService
             return;
 
         InternalDirectory.Empty(_rConfig.BundleSaveDirectory);
-        
+
         var shouldDelete = _logger.Ask(
-                "You have 'FLUSH CACHE ON START' enabled, which may delete cached files from the original game, as they use the same directory. " +
-                "Please ensure, if this is your first time running this project, that there are not files already in this directory. " +
-                "These would otherwise be valuable.\n" +
-                $"Please note: The WEB PLAYER cache is found in your {_rConfig.DefaultWebPlayerCacheLocation} folder. " +
-                "Please make an __info file in here if it does not exist already.", false
-            );
+            "You have 'FLUSH CACHE ON START' enabled, which may delete cached files from the original game, as they use the same directory. " +
+            "Please ensure, if this is your first time running this project, that there are not files already in this directory. " +
+            "These would otherwise be valuable.\n" +
+            $"Please note: The WEB PLAYER cache is found in your {_rConfig.DefaultWebPlayerCacheLocation} folder. " +
+            "Please make an __info file in here if it does not exist already.", false
+        );
 
         if (!shouldDelete)
             return;

@@ -14,12 +14,12 @@ namespace Server.Base.Core.Services;
 
 public class CrashGuard : IService
 {
+    private readonly InternalRConfig _config;
     private readonly NetStateHandler _handler;
     private readonly ILogger<CrashGuard> _logger;
     private readonly Module[] _modules;
     private readonly EventSink _sink;
     private readonly World _world;
-    private readonly InternalRConfig _config;
 
     public CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink, World world,
         IServiceProvider services, InternalRConfig config)
@@ -111,7 +111,7 @@ public class CrashGuard : IService
         {
             var timeStamp = GetTime.GetTimeStamp();
             var fileName = $"Crash {timeStamp}.log";
-            
+
             var filePath = Path.Combine(_config.CrashDirectory, fileName);
 
             using (var streamWriter = new StreamWriter(filePath))

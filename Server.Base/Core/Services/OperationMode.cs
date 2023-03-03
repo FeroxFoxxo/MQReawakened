@@ -10,12 +10,13 @@ namespace Server.Base.Core.Services;
 
 public class OperationMode : IService
 {
-    private readonly EventSink _eventSink;
-    private readonly ServerConsole _console;
     private readonly InternalRwConfig _config;
+    private readonly ServerConsole _console;
+    private readonly EventSink _eventSink;
     private readonly ILogger<OperationMode> _logger;
 
-    public OperationMode(EventSink eventSink, ServerConsole console, InternalRwConfig config, ILogger<OperationMode> logger)
+    public OperationMode(EventSink eventSink, ServerConsole console, InternalRwConfig config,
+        ILogger<OperationMode> logger)
     {
         _eventSink = eventSink;
         _console = console;
@@ -29,7 +30,7 @@ public class OperationMode : IService
     {
         _console.AddCommand("changeOperationalMode", "Changes the mode the game is set to (client/server/both)",
             NetworkType.Unknown | NetworkType.Server | NetworkType.Client, _ => AskForChange());
-        
+
         if (_config.NetworkType == NetworkType.Unknown)
             AskForChange();
     }
@@ -44,7 +45,9 @@ public class OperationMode : IService
             return;
         }
 
-        if (_logger.Ask("Are you setting this app as a client to connect to a server, rather than being the server itself?", true))
+        if (_logger.Ask(
+                "Are you setting this app as a client to connect to a server, rather than being the server itself?",
+                true))
         {
             _config.NetworkType = NetworkType.Client;
             SetServerAddress("What is the address of the server that you are trying to connect to?");
@@ -53,8 +56,9 @@ public class OperationMode : IService
         }
 
         _config.NetworkType = NetworkType.Server;
-        
-        if (_logger.Ask("Would you like to manually set your server address, rather than choosing your external IP?", true))
+
+        if (_logger.Ask("Would you like to manually set your server address, rather than choosing your external IP?",
+                true))
         {
             SetServerAddress("What is the address of the server that you are trying to host?");
         }
@@ -65,6 +69,7 @@ public class OperationMode : IService
             var externalIpString = externalIpTask.Result ?? IPAddress.Loopback;
             _config.ServerAddress = externalIpString.ToString();
         }
+
         _logger.LogInformation("Set IP Address to: {Address}", _config.ServerAddress);
         _eventSink.InvokeChangedOperationalMode();
     }
@@ -95,6 +100,7 @@ public class OperationMode : IService
                 _logger.LogError("Server address cannot be a url, just a domain or ip address.");
                 continue;
             }
+
             _logger.LogError("Server address cannot be empty!");
         }
 

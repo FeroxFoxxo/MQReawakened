@@ -12,7 +12,7 @@ public class InternalRConfig : IRConfig
     public string SaveDirectory { get; set; }
     public string CrashDirectory { get; set; }
     public string LogDirectory { get; set; }
-    
+
     public int MaxAccountsPerIp { get; }
     public char[] ForbiddenChars { get; }
     public AccessLevel LockDownLevel { get; }

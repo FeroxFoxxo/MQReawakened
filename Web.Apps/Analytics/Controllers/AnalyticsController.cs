@@ -18,11 +18,12 @@ public class AnalyticsController : Controller
 {
     private readonly AssetBundleRConfig _aConfig;
     private readonly LauncherRwConfig _config;
+    private readonly FileLogger _fileLogger;
     private readonly ILogger<AnalyticsController> _logger;
     private readonly ReplaceCaches _replaceCaches;
-    private readonly FileLogger _fileLogger;
 
-    public AnalyticsController(ILogger<AnalyticsController> logger, LauncherRwConfig config, ReplaceCaches replaceCaches,
+    public AnalyticsController(ILogger<AnalyticsController> logger, LauncherRwConfig config,
+        ReplaceCaches replaceCaches,
         AssetBundleRConfig aConfig, FileLogger fileLogger)
     {
         _logger = logger;
@@ -112,37 +113,37 @@ public class AnalyticsController : Controller
                 _logger.LogWarning("Unknown analytics error");
                 break;
             case "ErrorsType":
-            {
-                var errorInfo = labels[1].Split('-');
-                var errorType = errorInfo[0];
-
-                switch (errorType)
                 {
-                    case "Fatal":
-                        var errorId = int.Parse(errorInfo[1]);
-                        _logger.LogError("Client ran into fatal error: {ErrorId}", errorId);
+                    var errorInfo = labels[1].Split('-');
+                    var errorType = errorInfo[0];
 
-                        if (errorId is 2306 or 2302 or 2305)
-                        {
-                            _logger.LogError("Error likely due to caching system. Replacing!");
-                            _replaceCaches.ReplaceWebPlayerCache(true, true);
-                        }
+                    switch (errorType)
+                    {
+                        case "Fatal":
+                            var errorId = int.Parse(errorInfo[1]);
+                            _logger.LogError("Client ran into fatal error: {ErrorId}", errorId);
 
-                        break;
-                    default:
-                        _logger.LogWarning("Unknown error type: {ErrorType}", errorType);
-                        break;
+                            if (errorId is 2306 or 2302 or 2305)
+                            {
+                                _logger.LogError("Error likely due to caching system. Replacing!");
+                                _replaceCaches.ReplaceWebPlayerCache(true, true);
+                            }
+
+                            break;
+                        default:
+                            _logger.LogWarning("Unknown error type: {ErrorType}", errorType);
+                            break;
+                    }
+
+                    break;
                 }
-
-                break;
-            }
             case "Omniture":
-            {
-                if (n == "applicationStart")
-                    if (_aConfig.UseCacheReplacementScheme)
-                        _replaceCaches.ReplaceWebPlayerCache(true, true);
-                break;
-            }
+                {
+                    if (n == "applicationStart")
+                        if (_aConfig.UseCacheReplacementScheme)
+                            _replaceCaches.ReplaceWebPlayerCache(true, true);
+                    break;
+                }
         }
     }
 
@@ -167,7 +168,9 @@ public class AnalyticsController : Controller
     private void SendLog(CommonProperties properties, string message) =>
         _fileLogger.WriteGenericLog<AnalyticsController>(
             "analytics",
-            $"{properties.Timestamp:g} @ Session {properties.SessionId}",
+            $"{prope
+i
+.Timestamp:g} @ Session {properties.SessionId}",
             message, LoggerType.Debug
         );
 }

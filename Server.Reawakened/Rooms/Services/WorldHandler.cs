@@ -15,6 +15,7 @@ namespace Server.Reawakened.Rooms.Services;
 public class WorldHandler : IService
 {
     private readonly ServerRConfig _config;
+    private readonly FileLogger _fileLogger;
 
     private readonly ILogger<WorldHandler> _handlerLogger;
     private readonly Dictionary<int, LevelInfo> _levelInfos;
@@ -26,7 +27,6 @@ public class WorldHandler : IService
     private readonly EventSink _sink;
     private readonly TimerThread _timerThread;
     private readonly WorldGraph _worldGraph;
-    private readonly FileLogger _fileLogger;
 
     public WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph,
         ReflectionUtils reflection, TimerThread timerThread, IServiceProvider services,
@@ -53,8 +53,8 @@ public class WorldHandler : IService
         InternalDirectory.OverwriteDirectory(_config.LevelDataSaveDirectory);
 
         foreach (var roomList in _rooms.Where(room => room.Key != -1))
-        foreach (var room in roomList.Value)
-            room.DumpPlayersToLobby();
+            foreach (var room in roomList.Value)
+                room.DumpPlayersToLobby();
 
         _rooms.Clear();
         _levelInfos.Clear();
@@ -121,5 +121,7 @@ public class WorldHandler : IService
         return room;
     }
 
-    public void RemoveRoom(Room room) => _rooms[room.LevelInfo.LevelId].Remove(room);
+    public void RemoveRoom(Room room) => _rooms[room.LevelInfo.LevelId].Remov
+r
+m);
 }

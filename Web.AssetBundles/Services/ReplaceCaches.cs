@@ -15,12 +15,12 @@ public class ReplaceCaches : IService
 {
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly BuildAssetList _buildAssetList;
-    private readonly AssetBundleRwConfig _rwConfig;
     private readonly ServerConsole _console;
     private readonly StartGame _game;
     private readonly object _lock;
     private readonly ILogger<ReplaceCaches> _logger;
     private readonly AssetBundleRConfig _rConfig;
+    private readonly AssetBundleRwConfig _rwConfig;
     private readonly EventSink _sink;
 
     public readonly List<string> CurrentlyLoadedAssets;
@@ -28,7 +28,8 @@ public class ReplaceCaches : IService
 
     public ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList,
         AssetBundleRConfig rConfig,
-        ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime, AssetBundleRwConfig rwConfig)
+        ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime,
+        AssetBundleRwConfig rwConfig)
     {
         _console = console;
         _sink = sink;
@@ -93,7 +94,7 @@ public class ReplaceCaches : IService
             cacheModel.TotalAssetDictionaryFiles, cacheModel.TotalFoundCaches, cacheModel.TotalCachedAssetFiles,
             cacheModel.TotalUnknownCaches
         );
-        
+
         using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", _logger, _rwConfig))
         {
             foreach (var cache in cacheModel.FoundCaches)
