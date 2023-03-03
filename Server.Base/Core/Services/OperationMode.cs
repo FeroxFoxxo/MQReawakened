@@ -29,13 +29,19 @@ public class OperationMode : IService
     private void CheckOperationalMode()
     {
         _console.AddCommand("changeOperationalMode", "Changes the mode the game is set to (client/server/both)",
-            NetworkType.Unknown | NetworkType.Server | NetworkType.Client, _ => AskForChange());
+            NetworkType.Unknown | NetworkType.Server | NetworkType.Client, _ => ChangeNetworkType());
 
         if (_config.NetworkType == NetworkType.Unknown)
-            AskForChange();
+            ChangeNetworkType();
 
         _logger.LogInformation("Playing as: {Mode} connected to {Address}", _config.NetworkType,
             _config.GetHostAddress());
+    }
+
+    private void ChangeNetworkType()
+    {
+        AskForChange();
+        _eventSink.InvokeChangedOperationalMode();
     }
 
     private void AskForChange()
@@ -44,7 +50,6 @@ public class OperationMode : IService
         {
             _config.NetworkType = NetworkType.Client | NetworkType.Server;
             _config.ServerAddress = "localhost";
-            _eventSink.InvokeChangedOperationalMode();
             return;
         }
 
@@ -54,7 +59,6 @@ public class OperationMode : IService
         {
             _config.NetworkType = NetworkType.Client;
             SetServerAddress("What is the address of the server that you are trying to connect to?");
-            _eventSink.InvokeChangedOperationalMode();
             return;
         }
 
@@ -74,7 +78,6 @@ public class OperationMode : IService
         }
 
         _logger.LogInformation("Set IP Address to: {Address}", _config.ServerAddress);
-        _eventSink.InvokeChangedOperationalMode();
     }
 
     public static async Task<IPAddress> GetExternalIpAddress()
@@ -106,7 +109,5 @@ public class OperationMode : IService
 
             _logger.LogError("Server address cannot be empty!");
         }
-
-        _eventSink.InvokeChangedOperationalMode();
     }
 }

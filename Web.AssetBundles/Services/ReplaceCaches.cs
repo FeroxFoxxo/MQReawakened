@@ -63,7 +63,7 @@ public class ReplaceCaches : IService
     public void Load() =>
         _console.AddCommand(
             "replaceCaches",
-            "Replaces all generated Web PlayerList cache files with their real counterparts.",
+            "Replaces all generated Web Player cache files with their real counterparts.",
             NetworkType.Client,
             _ => ReplaceWebPlayerCache(false, true)
         );

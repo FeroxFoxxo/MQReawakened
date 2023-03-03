@@ -28,7 +28,7 @@ public class CharacterDataModel : CharacterLightModel
     public List<int> Friends { get; set; }
     public List<int> Blocked { get; set; }
 
-    public PlayerListModel PlayerList => new(Friends.Select(f => new PlayerDataModel(f)).ToList());
+    public PlayerListModel FriendList => new(Friends.Select(f => new PlayerDataModel(f)).ToList());
     public PlayerListModel BlockList => new(Blocked.Select(b => new PlayerDataModel(b)).ToList());
 
     public int Cash { get; set; }
@@ -87,7 +87,7 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(GetQuestStatusList());
         sb.Append(GetCompletedQuestList());
         sb.Append(Hotbar);
-        sb.Append(PlayerList);
+        sb.Append(FriendList);
         sb.Append(BlockList);
         sb.Append(Equipment);
         sb.Append(PetItemId);

@@ -39,7 +39,7 @@ public class ClearWebCaches : IService
     {
         _console.AddCommand(
             "clearWebCache",
-            "Clears the Web PlayerList cache manually.",
+            "Clears the Web Player cache manually.",
             NetworkType.Client,
             _ =>
             {

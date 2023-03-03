@@ -3,7 +3,7 @@
 [Flags]
 public enum NetworkType
 {
-    Unknown = 0,
-    Client = 1,
-    Server = 2,
+    Unknown = 1,
+    Client = 2,
+    Server = 4
 }

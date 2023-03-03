@@ -35,7 +35,7 @@ public class RoomInstanceInfoModel
 
         CountGroup = 0;
 
-        CountFriends = character.Data.PlayerList.PlayerList
+        CountFriends = character.Data.FriendList.PlayerList
             .Where(f => players.Any(p => p.UserId == f.CharacterId))
             .Count();
 

@@ -57,7 +57,7 @@ public static class PlayerExtensions
         room.SendSyncEvent(collectedEvent);
     }
 
-    // PlayerList Id is unused
+    // Player Id is unused
     public static void SendUserEnterData(this NetState state, Player player, Account account) =>
         state.SendXml("uER",
             $"<u i='{player.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.UserId}'>" +

@@ -9,7 +9,7 @@ public static class GetInfoFile
     public static string GetWebPlayerInfoFile(this AssetBundleRwConfig rwConfig, AssetBundleRConfig rConfig,
         Microsoft.Extensions.Logging.ILogger logger)
     {
-        rwConfig.WebPlayerInfoFile = TryGetInfoFile($"Web PlayerList '{rConfig.DefaultWebPlayerCacheLocation}'",
+        rwConfig.WebPlayerInfoFile = TryGetInfoFile($"Web Player '{rConfig.DefaultWebPlayerCacheLocation}'",
             rwConfig.WebPlayerInfoFile, logger);
 
         if (rwConfig.WebPlayerInfoFile == rwConfig.CacheInfoFile)

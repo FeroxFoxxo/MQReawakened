@@ -110,19 +110,28 @@ public class ServerConsole : IService
             {
                 value.CommandMethod(inputs);
                 _logger.LogInformation("Successfully ran command '{Name}'", name);
-                return;
             }
         }
 
         DisplayHelp();
     }
 
-    private void DisplayHelp()
+    private static IEnumerable<NetworkType> GetFlags(NetworkType networkType) =>
+        Enum.GetValues(typeof(NetworkType))
+            .Cast<NetworkType>()
+            .Where(v => networkType.HasFlag(v))
+            .ToArray();
+
+    public void DisplayHelp()
     {
         _logger.LogInformation("Commands:");
 
         var commands = _commands.Values
-            .Where(x => x.NetworkType.HasFlag(_rwConfig.NetworkType))
+            .Where(x => GetFlags(x.NetworkType)
+                .Any(y => GetFlags(_rwConfig.NetworkType)
+                    .Any(z => z == y)
+                )
+            )
             .Where(x => !x.StrictCheck || _rwConfig.StrictNetworkCheck())
             .OrderBy(x => x.Name)
             .ToArray();
