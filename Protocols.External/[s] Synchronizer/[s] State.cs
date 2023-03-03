@@ -91,7 +91,7 @@ public class State : ExternalProtocol
                     break;
             }
 
-            room.SendSyncEvent(syncEvent);
+            room.SendSyncEvent(syncEvent, originalPlayer);
         }
         else if (room.Entities.TryGetValue(entityId, out var entity))
         {
