@@ -140,10 +140,10 @@ public class Room : Timer
 
                 var areDifferentClients = currentPlayer.UserId != newPlayer.UserId;
 
-                newPlayer.SendUserEnterData(currentPlayer, currentAccount);
+                newPlayer.SendUserEnterDataTo(currentPlayer, currentAccount);
 
                 if (areDifferentClients)
-                    currentPlayer.SendUserEnterData(newPlayer, newAccount);
+                    currentPlayer.SendUserEnterDataTo(newPlayer, newAccount);
             }
         }
         else
@@ -200,11 +200,11 @@ public class Room : Timer
         {
             var areDifferentClients = currentPlayer.UserId != player.UserId;
 
-            player.SendCharacterInfoData(currentPlayer,
+            player.SendCharacterInfoDataTo(currentPlayer,
                 areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals, LevelInfo);
 
             if (areDifferentClients)
-                currentPlayer.SendCharacterInfoData(player, CharacterInfoType.Lite, LevelInfo);
+                currentPlayer.SendCharacterInfoDataTo(player, CharacterInfoType.Lite, LevelInfo);
         }
     }
 
@@ -232,7 +232,7 @@ public class Room : Timer
         if (Players.Count != 0)
         {
             foreach (var currentPlayer in Players.Values)
-                currentPlayer.SendUserGoneData(player);
+                player.SendUserGoneDataTo(currentPlayer);
 
             return;
         }

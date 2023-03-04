@@ -34,7 +34,7 @@ public static class PlayerExtensions
         character.Data.SetPlayerData(player);
         player.SetCharacterSelected(character.Data.CharacterId);
         player.PlayerHandler.AddPlayer(player);
-        player.SendCharacterInfoData(player, CharacterInfoType.Detailed, levelInfo);
+        player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
 
         foreach (var friend in player.PlayerHandler.PlayerList
                      .Where(p =>
@@ -54,19 +54,19 @@ public static class PlayerExtensions
     }
 
     // Player Id is unused
-    public static void SendUserEnterData(this Player send, Player receive, Account account) =>
+    public static void SendUserEnterDataTo(this Player send, Player receive, Account account) =>
         receive.NetState.SendXml("uER",
             $"<u i='{send.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{send.UserId}'>" +
             $"<n>{account.Username}</n>" +
             "</u>"
         );
 
-    public static void SendUserGoneData(this Player send, Player receive) =>
+    public static void SendUserGoneDataTo(this Player send, Player receive) =>
         receive.NetState.SendXml("userGone",
             $"<user id='{send.UserId}'></user>"
         );
 
-    public static void SendCharacterInfoData(this Player send, Player receive, CharacterInfoType type,
+    public static void SendCharacterInfoDataTo(this Player send, Player receive, CharacterInfoType type,
         LevelInfo levelInfo)
     {
         var character = send.Character;
