@@ -46,38 +46,41 @@ public class OperationMode : IService
 
     private void AskForChange()
     {
-        if (_logger.Ask("Would you like to use single-player mode?", true))
-        {
-            _config.NetworkType = NetworkType.Client | NetworkType.Server;
-            _config.ServerAddress = "localhost";
-            return;
-        }
-
         if (_logger.Ask(
-                "Are you setting this app as a client to connect to a server, rather than being the server itself?",
+                "Are you wanting to play the game, rather than host one?",
                 true))
         {
-            _config.NetworkType = NetworkType.Client;
-            SetServerAddress("What is the address of the server that you are trying to connect to?");
-            return;
-        }
-
-        _config.NetworkType = NetworkType.Server;
-
-        if (_logger.Ask("Would you like to manually set your server address, rather than choosing your external IP?",
-                true))
-        {
-            SetServerAddress("What is the address of the server that you are trying to host?");
+            if (_logger.Ask("Would you like to connect to a server, rather than be put into single-player mode?", true))
+            {
+                _config.NetworkType = NetworkType.Client;
+                SetServerAddress("What is the address of the server that you are trying to connect to?");
+            }
+            else
+            {
+                _config.NetworkType = NetworkType.Client | NetworkType.Server;
+                _config.ServerAddress = "localhost";
+            }
         }
         else
         {
-            var externalIpTask = GetExternalIpAddress();
-            GetExternalIpAddress().Wait();
-            var externalIpString = externalIpTask.Result ?? IPAddress.Loopback;
-            _config.ServerAddress = externalIpString.ToString();
-        }
+            _config.NetworkType = NetworkType.Server;
 
-        _logger.LogInformation("Set IP Address to: {Address}", _config.ServerAddress);
+            if (_logger.Ask(
+                    "Would you like to manually set your server address, rather than choosing your external IP?",
+                    true))
+            {
+                SetServerAddress("What is the address of the server that you are trying to host?");
+            }
+            else
+            {
+                var externalIpTask = GetExternalIpAddress();
+                GetExternalIpAddress().Wait();
+                var externalIpString = externalIpTask.Result ?? IPAddress.Loopback;
+                _config.ServerAddress = externalIpString.ToString();
+            }
+
+            _logger.LogInformation("Set IP Address to: {Address}", _config.ServerAddress);
+        }
     }
 
     public static async Task<IPAddress> GetExternalIpAddress()
