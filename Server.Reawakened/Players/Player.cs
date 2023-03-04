@@ -57,7 +57,6 @@ public class Player : INetStateData
             PlayerHandler.RemovePlayer(this);
             foreach (var player in PlayerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
                 player.SendXt("fz", Character.Data.CharacterName);
-            Character.Data.MutedList.Clear();
         }
 
         if (Room == null)
