@@ -3,6 +3,7 @@ using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
 using Server.Base.Accounts.Services;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Services;
 using System.Xml;
 
@@ -14,6 +15,7 @@ public class Login : SystemProtocol
 
     public AccountHandler AccountHandler { get; set; }
     public UserInfoHandler UserInfoHandler { get; set; }
+    public PlayerHandler PlayerHandler { get; set; }
 
     public override void Run(XmlDocument xmlDoc)
     {
@@ -24,13 +26,19 @@ public class Login : SystemProtocol
 
         if (reason == AlrReason.Accepted)
         {
-            UserInfoHandler.InitializeUser(NetState);
-            SendXml("logOK",
-                $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />");
+            var account = NetState.Get<Account>();
+
+            if (!PlayerHandler.PlayerList.Any(p => p.UserId == account.UserId))
+            {
+                UserInfoHandler.InitializeUser(NetState);
+                SendXml("logOK",
+                    $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />");
+                return;
+            }
+
+            reason = AlrReason.InUse;
         }
-        else
-        {
-            SendXml("logKO", $"<login e='{reason.GetErrorValue()}' />");
-        }
+
+        SendXml("logKO", $"<login e='{reason.GetErrorValue()}' />");
     }
 }

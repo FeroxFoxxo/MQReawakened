@@ -122,7 +122,7 @@ public class Room : Timer
 
             newPlayer.GameObjectId = gameObjectId;
 
-            Players.Add(newPlayer.GameObjectId, newPlayer);
+            Players.Add(gameObjectId, newPlayer);
 
             GroupMemberRoomChanged(newPlayer);
 
@@ -210,13 +210,12 @@ public class Room : Timer
 
     public void DumpPlayersToLobby()
     {
-        foreach (var playerId in Players.Keys)
-            DumpPlayerToLobby(playerId);
+        foreach (var player in Players.Values)
+            DumpPlayerToLobby(player);
     }
 
-    public void DumpPlayerToLobby(int playerId)
+    public void DumpPlayerToLobby(Player player)
     {
-        var player = Players[playerId];
         var room = _worldHandler.GetRoomFromLevelId(-1, player);
         player.JoinRoom(room, out _);
         RemovePlayer(player);

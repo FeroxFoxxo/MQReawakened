@@ -9,6 +9,7 @@ public class InternalRConfig : IRConfig
     public string CrashBackupDirectory { get; set; }
     public string AutomaticBackupDirectory { get; set; }
     public string TempBackupDirectory { get; set; }
+    public string ArchivedBackupDirectory { get; set; }
     public string SaveDirectory { get; set; }
     public string CrashDirectory { get; set; }
     public string LogDirectory { get; set; }
@@ -36,6 +37,7 @@ public class InternalRConfig : IRConfig
         CrashBackupDirectory = InternalDirectory.GetDirectory("Backups/Crashed");
         AutomaticBackupDirectory = InternalDirectory.GetDirectory("Backups/Automatic");
         TempBackupDirectory = InternalDirectory.GetDirectory("Backups/Temp");
+        ArchivedBackupDirectory = InternalDirectory.GetDirectory("Backups/Archived");
         SaveDirectory = InternalDirectory.GetDirectory("Saves");
         LogDirectory = InternalDirectory.GetDirectory("Logs");
         CrashDirectory = InternalDirectory.GetDirectory("Logs/Crashes");

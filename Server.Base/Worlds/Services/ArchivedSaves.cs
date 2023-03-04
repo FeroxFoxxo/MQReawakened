@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
-using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Timers.Enums;
@@ -14,14 +13,13 @@ namespace Server.Base.Worlds.Services;
 
 public class ArchivedSaves : IService
 {
-    private readonly string _defaultDestination;
-
     private readonly EventSink _eventSink;
     private readonly ILogger<ArchivedSaves> _logger;
 
     private readonly Action<string> _pack;
     private readonly Action<DateTime> _prune;
     private readonly ServerHandler _serverHandler;
+    private readonly InternalRConfig _config;
 
     private readonly AutoResetEvent _sync;
     private readonly object _taskRoot;
@@ -35,8 +33,8 @@ public class ArchivedSaves : IService
         _logger = logger;
         _eventSink = eventSink;
         _serverHandler = serverHandler;
+        _config = config;
 
-        _defaultDestination = InternalDirectory.GetDirectory("Backups/Archived");
         ExpireAge = TimeSpan.Zero;
         Merge = MergeType.Minutes;
         _sync = new AutoResetEvent(true);
@@ -83,16 +81,13 @@ public class ArchivedSaves : IService
 
     private void InternalPrune(DateTime threshold)
     {
-        if (!Directory.Exists(_defaultDestination))
-            return;
-
         _logger.LogDebug("Pruning started...");
 
         var stopwatch = Stopwatch.StartNew();
 
         try
         {
-            DirectoryInfo root = new(_defaultDestination);
+            DirectoryInfo root = new(_config.ArchivedBackupDirectory);
 
             foreach (var archive in root.GetFiles("*.zip", SearchOption.AllDirectories))
             {
@@ -139,7 +134,7 @@ public class ArchivedSaves : IService
             };
 
             var fileName = $"Saves ({date}).zip";
-            var destinationName = Path.Combine(_defaultDestination, fileName);
+            var destinationName = Path.Combine(_config.ArchivedBackupDirectory, fileName);
 
             try
             {

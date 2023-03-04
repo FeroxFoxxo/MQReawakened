@@ -16,7 +16,7 @@ public class CharacterLightModel
     public int MaxLife { get; set; }
     public int CurrentLife { get; set; }
     public int GlobalLevel { get; set; }
-    public int InteractionStatus { get; set; }
+    public CharacterLightData.InteractionStatus InteractionStatus { get; set; }
     public TribeType Allegiance { get; set; }
     public bool ForceTribeSelection { get; set; }
     public HashSet<int> DiscoveredStats { get; set; }
@@ -66,7 +66,7 @@ public class CharacterLightModel
         sb.Append(MaxLife);
         sb.Append(CurrentLife);
         sb.Append(GlobalLevel);
-        sb.Append(InteractionStatus);
+        sb.Append((int)InteractionStatus);
         sb.Append((int)Allegiance);
         sb.Append(ForceTribeSelection ? 1 : 0);
 

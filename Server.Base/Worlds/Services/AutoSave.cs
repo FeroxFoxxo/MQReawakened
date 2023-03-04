@@ -13,7 +13,6 @@ public class AutoSave : IService
 {
     private readonly ArchivedSaves _archives;
 
-    private readonly string[] _backups;
     private readonly InternalRConfig _config;
     private readonly TimeSpan _delayAutoSave;
     private readonly TimeSpan _delayWarning;
@@ -37,7 +36,6 @@ public class AutoSave : IService
 
         _delayAutoSave = TimeSpan.FromMinutes(config.SaveAutomaticallyMinutes);
         _delayWarning = TimeSpan.FromMinutes(config.SaveWarningMinutes);
-        _backups = config.Backups;
     }
 
     public void Initialize() => _sink.ServerStarted += _ => RunAutoSaveTimer();
@@ -74,7 +72,7 @@ public class AutoSave : IService
 
     private bool Backup()
     {
-        if (_backups.Length == 0)
+        if (_config.Backups.Length == 0)
             return false;
 
         InternalDirectory.OverwriteDirectory(_config.TempBackupDirectory);
@@ -83,9 +81,9 @@ public class AutoSave : IService
 
         var anySuccess = existing.Length == 0;
 
-        for (var i = 0; i < _backups.Length; ++i)
+        for (var i = 0; i < _config.Backups.Length; ++i)
         {
-            var directoryInfo = Match(existing, _backups[i]);
+            var directoryInfo = Match(existing, _config.Backups[i]);
 
             if (directoryInfo == null)
                 continue;
@@ -94,7 +92,7 @@ public class AutoSave : IService
             {
                 try
                 {
-                    directoryInfo.MoveTo(Path.Combine(_config.AutomaticBackupDirectory, _backups[i - 1]));
+                    directoryInfo.MoveTo(Path.Combine(_config.AutomaticBackupDirectory, _config.Backups[i - 1]));
 
                     anySuccess = true;
                 }
@@ -135,7 +133,7 @@ public class AutoSave : IService
         var saves = InternalDirectory.GetDirectory("Saves");
 
         if (Directory.Exists(saves))
-            Directory.Move(saves, Path.Combine(_config.AutomaticBackupDirectory, _backups[^1]));
+            Directory.Move(saves, Path.Combine(_config.AutomaticBackupDirectory, _config.Backups[^1]));
 
         return anySuccess;
     }
