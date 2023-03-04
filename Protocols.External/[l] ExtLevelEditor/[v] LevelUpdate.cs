@@ -2,7 +2,6 @@
 using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Entities;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -18,25 +17,23 @@ public class RoomUpdate : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-
-        var gameObjectStore = GetGameObjectStore(player.Room.Entities);
+        var gameObjectStore = GetGameObjectStore(Player.Room.Entities);
 
         SendXt("lv", 0, gameObjectStore);
 
-        foreach (var entity in player.Room.Entities.Values.SelectMany(x => x))
-            entity.SendDelayedData(NetState);
+        foreach (var entity in Player.Room.Entities.Values.SelectMany(x => x))
+            entity.SendDelayedData(Player);
 
-        player.Room.SendCharacterInfo(player, NetState);
+        Player.Room.SendCharacterInfo(Player);
 
-        foreach (var npc in player.Room.GetEntities<NpcControllerEntity>())
-            npc.Value.SendNpcInfo(player.Character, NetState);
+        foreach (var npc in Player.Room.GetEntities<NpcControllerEntity>())
+            npc.Value.SendNpcInfo(Player.Character, NetState);
 
-        if (!player.FirstLogin)
+        if (!Player.FirstLogin)
             return;
 
-        ChatCommands.DisplayHelp(NetState);
-        player.FirstLogin = false;
+        ChatCommands.DisplayHelp(Player);
+        Player.FirstLogin = false;
     }
 
     private string GetGameObjectStore(Dictionary<int, List<BaseSyncedEntity>> entities)
@@ -68,7 +65,7 @@ public class RoomUpdate : ExternalProtocol
 
         sb.Append(entity.Name);
 
-        foreach (var setting in entity.GetInitData(NetState))
+        foreach (var setting in entity.GetInitData(Player))
             sb.Append(setting);
 
         return sb.ToString();

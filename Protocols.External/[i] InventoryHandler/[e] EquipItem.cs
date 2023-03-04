@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
@@ -14,8 +13,7 @@ public class EquipItem : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-        var character = player.Character;
+        var character = Player.Character;
 
         var newEquipment = new EquipmentModel(message[5]);
 
@@ -30,6 +28,6 @@ public class EquipItem : ExternalProtocol
         character.Data.Equipment = newEquipment;
 
         SendXt("iq", character.Data.Equipment);
-        character.SendUpdatedInventory(NetState, true);
+        Player.SendUpdatedInventory(true);
     }
 }

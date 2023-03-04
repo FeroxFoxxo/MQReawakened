@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
@@ -16,8 +15,7 @@ public class SetActiveQuest : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-        var character = player.Character;
+        var character = Player.Character;
 
         if (character == null)
             return;
@@ -33,6 +31,6 @@ public class SetActiveQuest : ExternalProtocol
         if (character.TryGetQuest(activeQuest, out var quest))
             quest.QuestStatus = QuestStatus.QuestState.IN_PROCESSING;
 
-        player.AddQuest(activeQuest, true, NetState, QuestCatalog);
+        Player.AddQuest(activeQuest, true, QuestCatalog);
     }
 }

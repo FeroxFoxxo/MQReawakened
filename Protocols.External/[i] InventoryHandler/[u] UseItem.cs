@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
@@ -18,8 +17,7 @@ public class UseItem : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-        var character = player.Character;
+        var character = Player.Character;
 
         var itemId = Convert.ToInt32(message[5]);
 
@@ -46,7 +44,7 @@ public class UseItem : ExternalProtocol
                     character.AddItem(packItem, pair.Value);
                 }
 
-                character.SendUpdatedInventory(NetState, false);
+                Player.SendUpdatedInventory(false);
                 break;
             default:
                 Logger.LogWarning("Could not find use for item {ItemId}, type {ItemType}.",

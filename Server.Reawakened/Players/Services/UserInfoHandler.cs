@@ -7,6 +7,7 @@ using Server.Base.Network;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Enums;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using System.Globalization;
 using System.Net;
@@ -17,23 +18,26 @@ public class UserInfoHandler : DataHandler<UserInfo>
 {
     private readonly ServerRConfig _config;
     private readonly RandomKeyGenerator _randomKeyGenerator;
+    private readonly PlayerHandler _playerHandler;
 
     public UserInfoHandler(EventSink sink, ILogger<UserInfo> logger,
-        RandomKeyGenerator randomKeyGenerator, ServerRConfig config, InternalRConfig internalConfig) :
+        RandomKeyGenerator randomKeyGenerator, ServerRConfig config, InternalRConfig internalConfig,
+        PlayerHandler playerHandler) :
         base(sink, logger, internalConfig)
     {
         _randomKeyGenerator = randomKeyGenerator;
         _config = config;
+        _playerHandler = playerHandler;
     }
 
     public void InitializeUser(NetState state)
     {
-        var userId = state.Get<Account>()?.UserId ?? throw new ArgumentNullException(nameof(Account));
+        var userId = state.Get<Account>()?.UserId ?? throw new NullReferenceException("Account not found!");
 
         if (!Data.ContainsKey(userId))
             throw new NullReferenceException();
 
-        state.Set(new Player(Data[userId]));
+        state.Set(new Player(Data[userId], state, _playerHandler));
     }
 
     public override UserInfo CreateDefault()

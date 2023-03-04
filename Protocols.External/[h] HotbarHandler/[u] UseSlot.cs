@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Abstractions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Extensions;
@@ -21,8 +20,7 @@ public class UseSlot : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-        var character = player.Character;
+        var character = Player.Character;
 
         var hotbarSlotId = int.Parse(message[5]);
         var targetUserId = int.Parse(message[6]);
@@ -66,7 +64,7 @@ public class UseSlot : ExternalProtocol
             character.Data.Inventory.Items[item.ItemId].Count = -1;
         }
 
-        character.SendUpdatedInventory(NetState, false);
+        Player.SendUpdatedInventory(false);
 
         if (character.Data.Inventory.Items[item.ItemId].Count < 0)
             character.Data.Inventory.Items.Remove(item.ItemId);
@@ -74,14 +72,12 @@ public class UseSlot : ExternalProtocol
 
     private void HandleMeleeWeapon(Vector3Model position)
     {
-        var player = NetState.Get<Player>();
-
         var planes = new[] { "Plane1", "Plane0" };
 
         foreach (var planeName in planes)
         {
             foreach (var obj in
-                     player.Room.Planes[planeName].GameObjects.Values
+                     Player.Room.Planes[planeName].GameObjects.Values
                          .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3f)
                     )
             {
@@ -89,27 +85,27 @@ public class UseSlot : ExternalProtocol
                 {
                     case "PF_GLB_SwitchWall02":
                         var triggerEvent = new Trigger_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                            player.Room.Time, true, player.GameObjectId.ToString(), true);
+                            Player.Room.Time, true, Player.GameObjectId.ToString(), true);
 
-                        player.Room.SendSyncEvent(triggerEvent);
+                        Player.Room.SendSyncEvent(triggerEvent);
 
-                        foreach (var syncedEntity in player.Room.Entities[obj.ObjectInfo.ObjectId]
+                        foreach (var syncedEntity in Player.Room.Entities[obj.ObjectInfo.ObjectId]
                                      .Where(syncedEntity =>
                                          typeof(AbstractTriggerCoop<>).IsAssignableTo(syncedEntity.GetType())
                                      )
                                 )
                         {
-                            syncedEntity.RunSyncedEvent(triggerEvent, NetState);
+                            syncedEntity.RunSyncedEvent(triggerEvent, Player);
                             break;
                         }
 
                         return;
                     case "PF_CRS_BARREL01":
                         var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                            player.Room.Time,
+                            Player.Room.Time,
                             0, 0, 0, 0, "now", false, false);
 
-                        player.Room.SendSyncEvent(aiEvent);
+                        Player.Room.SendSyncEvent(aiEvent);
 
                         return;
                     default:

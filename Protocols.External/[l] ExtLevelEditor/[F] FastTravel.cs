@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
@@ -17,8 +16,7 @@ public class FastTravel : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-        var character = player.Character;
+        var character = Player.Character;
 
         var regionId = int.Parse(message[5]);
         var levelId = int.Parse(message[6]);
@@ -26,6 +24,6 @@ public class FastTravel : ExternalProtocol
 
         character.SetLevel(newLevelId, Logger);
 
-        player.SendLevelChange(NetState, WorldHandler, WorldGraph);
+        Player.SendLevelChange(WorldHandler, WorldGraph);
     }
 }

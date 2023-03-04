@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
@@ -13,8 +12,7 @@ public class BuyItems : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-        var character = player.Character;
+        var character = Player.Character;
 
         //var vendorId = int.Parse(message[5]);
         //var vendorGoId = int.Parse(message[7]);
@@ -29,6 +27,6 @@ public class BuyItems : ExternalProtocol
             character.AddItem(ItemCatalog.GetItemFromId(itemId), amount);
         }
 
-        character.SendUpdatedInventory(NetState, false);
+        Player.SendUpdatedInventory(false);
     }
 }

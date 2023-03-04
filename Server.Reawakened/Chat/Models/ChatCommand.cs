@@ -1,10 +1,10 @@
-﻿using Server.Base.Network;
+﻿using Server.Reawakened.Players;
 
 namespace Server.Reawakened.Chat.Models;
 
 public class ChatCommand
 {
-    public delegate bool ChatCommandCallback(NetState netState, string[] args);
+    public delegate bool ChatCommandCallback(Player player, string[] args);
 
     public string Name { get; set; }
     public string Arguments { get; set; }

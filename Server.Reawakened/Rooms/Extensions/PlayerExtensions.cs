@@ -1,6 +1,5 @@
 ﻿using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
-using Server.Base.Network;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -14,20 +13,21 @@ namespace Server.Reawakened.Rooms.Extensions;
 
 public static class PlayerExtensions
 {
-    public static void JoinRoom(this Player player, NetState state, Room room, out JoinReason reason)
+    public static void JoinRoom(this Player player, Room room, out JoinReason reason)
     {
-        player.Room?.RemoveClient(player);
+        player.Room?.RemovePlayer(player);
         player.Room = room;
-        player.Room.AddClient(state, out reason);
+        player.Room.AddClient(player, out reason);
     }
 
-    public static void QuickJoinRoom(this Player player, int id, NetState state, WorldHandler worldHandler)
+    public static void QuickJoinRoom(this Player player, int id, WorldHandler worldHandler)
     {
         Room newRoom = null;
 
         try
         {
-            newRoom = worldHandler.GetRoomFromLevelId(id, state);
+            player.Character.LevelData.LevelId = id;
+            newRoom = worldHandler.GetRoomFromLevelId(player);
         }
         catch (NullReferenceException)
         {
@@ -36,17 +36,17 @@ public static class PlayerExtensions
         if (newRoom == null)
             return;
 
-        player.JoinRoom(state, newRoom, out _);
+        player.JoinRoom(newRoom, out _);
     }
 
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelData.LevelId ?? -1;
 
-    public static void SendStartPlay(this Player player, CharacterModel character, NetState state, LevelInfo levelInfo)
+    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
     {
         character.Data.SetPlayerData(player);
         player.SetCharacterSelected(character.Data.CharacterId);
-        state.SendCharacterInfoData(player, CharacterInfoType.Detailed, levelInfo);
+        player.SendCharacterInfoData(player, CharacterInfoType.Detailed, levelInfo);
     }
 
     public static void SentEntityTriggered(this Room room, int id, Player player, bool success, bool active)
@@ -58,22 +58,22 @@ public static class PlayerExtensions
     }
 
     // Player Id is unused
-    public static void SendUserEnterData(this NetState state, Player player, Account account) =>
-        state.SendXml("uER",
-            $"<u i='{player.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{player.UserId}'>" +
+    public static void SendUserEnterData(this Player send, Player receive, Account account) =>
+        receive.NetState.SendXml("uER",
+            $"<u i='{send.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{send.UserId}'>" +
             $"<n>{account.Username}</n>" +
             "</u>"
         );
 
-    public static void SendUserGoneData(this NetState state, Player player) =>
-        state.SendXml("userGone",
-            $"<user id='{player.UserId}'></user>"
+    public static void SendUserGoneData(this Player send, Player receive) =>
+        receive.NetState.SendXml("userGone",
+            $"<user id='{send.UserId}'></user>"
         );
 
-    public static void SendCharacterInfoData(this NetState state, Player player, CharacterInfoType type,
+    public static void SendCharacterInfoData(this Player send, Player receive, CharacterInfoType type,
         LevelInfo levelInfo)
     {
-        var character = player.Character;
+        var character = send.Character;
 
         var info = type switch
         {
@@ -83,12 +83,12 @@ public static class PlayerExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 
-        state.SendXt("ci", player.UserId, info, player.GameObjectId, levelInfo.Name);
+        receive.SendXt("ci", send.UserId, info, send.GameObjectId, levelInfo.Name);
     }
 
     public static void SendLevelUp(this Player player, LevelUpDataModel levelUpData)
     {
-        foreach (var client in player.Room.Clients.Values)
-            client.SendXt("ce", levelUpData, player.UserId);
+        foreach (var currentPlayer in player.Room.Players.Values)
+            currentPlayer.SendXt("ce", levelUpData, player.UserId);
     }
 }

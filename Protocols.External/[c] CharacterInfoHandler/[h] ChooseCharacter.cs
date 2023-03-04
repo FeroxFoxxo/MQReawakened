@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
@@ -18,14 +17,12 @@ public class ChooseCharacter : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-
         var name = message[5];
-        var character = player.GetCharacterFromName(name);
+        var character = Player.GetCharacterFromName(name);
 
         if (character == null)
         {
-            Logger.LogError("Character of {CharacterName} for user {User} was null.", name, player.UserId);
+            Logger.LogError("Character of {CharacterName} for user {User} was null.", name, Player.UserId);
             return;
         }
 
@@ -34,6 +31,6 @@ public class ChooseCharacter : ExternalProtocol
 
         var levelInfo = WorldHandler.GetLevelInfo(character.LevelData.LevelId);
 
-        player.SendStartPlay(character, NetState, levelInfo);
+        Player.SendStartPlay(character, levelInfo);
     }
 }

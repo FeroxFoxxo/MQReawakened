@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Server.Base.Network;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -47,6 +46,10 @@ public static class CharacterInventoryExtensions
         return sb.ToString();
     }
 
-    public static void SendUpdatedInventory(this CharacterModel character, NetState state, bool fromEquippedUpdate) =>
-        state.SendXt("ip", character.Data.Inventory.GetItemListString(), fromEquippedUpdate);
+    public static void SendUpdatedInventory(this Player player, bool fromEquippedUpdate) =>
+        player.SendXt(
+            "ip",
+            player.Character.Data.Inventory.GetItemListString(),
+            fromEquippedUpdate
+        );
 }

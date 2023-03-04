@@ -1,4 +1,4 @@
-﻿using Server.Base.Network;
+﻿using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 
@@ -34,7 +34,7 @@ public abstract class AbstractMovingObject<T> : SyncedEntity<T>, IMoveable where
         };
     }
 
-    public override object[] GetInitData(NetState netState) => new object[]
+    public override object[] GetInitData(Player player) => new object[]
     {
         Room.Time,
         Movement.GetBehaviorRatio(Room.Time),

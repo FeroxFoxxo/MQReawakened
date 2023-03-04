@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Groups;
 
 namespace Protocols.External._p__GroupHandler;
@@ -9,17 +9,17 @@ public class InvitePlayer : ExternalProtocol
 {
     public override string ProtocolName => "pi";
 
+    public PlayerHandler PlayerHandler { get; set; }
+
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-
-        player.Group ??= new GroupModel(NetState);
+        Player.Group ??= new GroupModel(Player);
 
         var characterName = message[5];
 
-        var invitedCharacter = player.Room.Clients.Values
-            .First(c => c.Get<Player>().Character.Data.CharacterName == characterName);
+        var invitedCharacter = PlayerHandler.PlayerList
+            .First(p => p.Character.Data.CharacterName == characterName);
 
-        invitedCharacter.SendXt("pi", player.Group.LeaderCharacterName);
+        invitedCharacter.SendXt("pi", Player.Group.LeaderCharacterName);
     }
 }

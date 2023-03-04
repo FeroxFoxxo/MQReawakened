@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Base.Network;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -24,14 +23,13 @@ public class HazardControllerEntity : SyncedEntity<HazardController>
 
     public ILogger<HazardControllerEntity> Logger { get; set; }
 
-    public override object[] GetInitData(NetState netState) => new object[] { 0 };
+    public override object[] GetInitData(Player player) => new object[] { 0 };
 
-    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, NetState netState)
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
         if (HurtEffect == "NoEffect")
             return;
 
-        var player = netState.Get<Player>();
         var character = player.Character;
 
         Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);

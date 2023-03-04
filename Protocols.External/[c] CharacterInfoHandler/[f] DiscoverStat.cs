@@ -1,6 +1,5 @@
 ﻿using Server.Base.Logging;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 
 namespace Protocols.External._c__CharacterInfoHandler;
 
@@ -12,8 +11,7 @@ public class DiscoverStat : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-        var character = player.Character;
+        var character = Player.Character;
 
         var stat = int.Parse(message[5]);
 

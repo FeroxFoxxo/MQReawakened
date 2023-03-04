@@ -2,8 +2,6 @@
 using Server.Base.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
@@ -23,8 +21,7 @@ public class State : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var originalPlayer = NetState.Get<Player>();
-        var room = originalPlayer.Room;
+        var room = Player.Room;
 
         if (room.Entities == null)
             return;
@@ -36,10 +33,8 @@ public class State : ExternalProtocol
 
         var entityId = int.Parse(syncEvent.TargetID);
 
-        if (room.Clients.TryGetValue(entityId, out var client))
+        if (room.Players.TryGetValue(entityId, out var newPlayer))
         {
-            var player = client.Get<Player>();
-
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.ChargeAttack:
@@ -50,7 +45,7 @@ public class State : ExternalProtocol
                         chargeAttackEvent.SpeedY,
                         chargeAttackEvent.ItemId, chargeAttackEvent.ZoneId);
 
-                    NetState.SendSyncEventToPlayer(startEvent);
+                    room.SendSyncEvent(startEvent);
 
                     Logger.LogWarning("Collision system not yet written and implemented for {Type}.",
                         chargeAttackEvent.Type);
@@ -61,7 +56,7 @@ public class State : ExternalProtocol
 
                     if (room.Entities.TryGetValue(collisionTarget, out var entities))
                         foreach (var entity in entities)
-                            entity.NotifyCollision(notifyCollisionEvent, NetState);
+                            entity.NotifyCollision(notifyCollisionEvent, newPlayer);
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
                             collisionTarget, room.GetUnknownEntityTypes(collisionTarget));
@@ -69,34 +64,34 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
 
-                    player.Position = new Vector3Model
+                    newPlayer.Position = new Vector3Model
                     {
                         X = physicsBasicEvent.PositionX,
                         Y = physicsBasicEvent.PositionY,
                         Z = physicsBasicEvent.PositionZ
                     };
 
-                    player.Velocity = new Vector3Model
+                    newPlayer.Velocity = new Vector3Model
                     {
                         X = physicsBasicEvent.VelocityX,
                         Y = physicsBasicEvent.VelocityY,
                         Z = physicsBasicEvent.VelocityZ
                     };
 
-                    player.OnGround = physicsBasicEvent.OnGround;
+                    newPlayer.OnGround = physicsBasicEvent.OnGround;
                     break;
                 case SyncEvent.EventType.Direction:
                     var directionEvent = new Direction_SyncEvent(syncEvent);
-                    player.Direction = directionEvent.Direction;
+                    newPlayer.Direction = directionEvent.Direction;
                     break;
             }
 
-            room.SendSyncEvent(syncEvent, originalPlayer);
+            room.SendSyncEvent(syncEvent, Player);
         }
         else if (room.Entities.TryGetValue(entityId, out var entity))
         {
             foreach (var entityComponent in entity)
-                entityComponent.RunSyncedEvent(syncEvent, NetState);
+                entityComponent.RunSyncedEvent(syncEvent, Player);
         }
         else
         {

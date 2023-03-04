@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Server.Base.Network;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
@@ -8,7 +7,7 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class NpcExtensions
 {
-    public static void AddQuest(this Player player, int questId, bool setActive, NetState state, QuestCatalog catalog)
+    public static void AddQuest(this Player player, int questId, bool setActive, QuestCatalog catalog)
     {
         var character = player.Character;
         var quest = catalog.GetQuestData(questId);
@@ -34,6 +33,6 @@ public static class NpcExtensions
         if (setActive)
             character.Data.ActiveQuestId = questId;
 
-        state.SendXt("na", questModel, setActive);
+        player.SendXt("na", questModel, setActive);
     }
 }

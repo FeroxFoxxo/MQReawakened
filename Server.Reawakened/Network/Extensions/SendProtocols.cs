@@ -5,6 +5,15 @@ namespace Server.Reawakened.Network.Extensions;
 
 public static class SendProtocols
 {
+    public static void SendXml(this Player player, string actionType, string message) =>
+        player.NetState.SendXml(actionType, message);
+
+    public static void SendXt(this Player player, string actionType, params object[] messages) =>
+        player.NetState.SendXt(actionType, messages);
+
+    public static void SendXt(this Player player, string actionType, params string[] messages) =>
+        player.NetState.SendXt(actionType, messages);
+
     public static void SendXml(this NetState state, string actionType, string message) =>
         state.Send(
             $"<msg t=\"sys\"><body action='{actionType}' r='{state.GetLevelId()}'>{message}</body></msg>", actionType

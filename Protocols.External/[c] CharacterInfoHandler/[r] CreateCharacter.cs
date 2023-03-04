@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -28,10 +27,8 @@ public class CreateCharacter : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-
         var lowestCharacterAvailable = Enumerable.Range(1, ServerConfig.MaxCharacterCount)
-            .Except(player.UserInfo.Characters.Keys).Min();
+            .Except(Player.UserInfo.Characters.Keys).Min();
 
         var firstName = message[5];
         var middleName = message[6];
@@ -47,7 +44,7 @@ public class CreateCharacter : ExternalProtocol
             var suggestion = NameGenSyllables.GetRandomName(gender, UserInfoHandler);
             SendXt("cr", 0, suggestion[0], suggestion[1], suggestion[2]);
         }
-        else if (player.UserInfo.Characters.Count > ServerConfig.MaxCharacterCount)
+        else if (Player.UserInfo.Characters.Count > ServerConfig.MaxCharacterCount)
         {
             SendXt("cr", 1);
         }
@@ -55,7 +52,7 @@ public class CreateCharacter : ExternalProtocol
         {
             characterData.Allegiance = tribe;
             characterData.CharacterName = string.Join(string.Empty, names);
-            characterData.UserUuid = player.UserId;
+            characterData.UserUuid = Player.UserId;
 
             characterData.Registered = true;
 
@@ -72,11 +69,11 @@ public class CreateCharacter : ExternalProtocol
 
             model.SetLevelXp(1);
 
-            player.AddCharacter(model);
+            Player.AddCharacter(model);
 
             var levelInfo = WorldHandler.GetLevelInfo(model.LevelData.LevelId);
 
-            player.SendStartPlay(model, NetState, levelInfo);
+            Player.SendStartPlay(model, levelInfo);
         }
     }
 }

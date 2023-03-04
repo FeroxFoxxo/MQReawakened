@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
-using Server.Base.Network;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Enums;
@@ -143,21 +142,20 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             Triggers.Add(trigger, triggerType);
     }
 
-    public override void SendDelayedData(NetState netState)
+    public override void SendDelayedData(Player player)
     {
         var trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, false,
             "now", IsActive);
 
-        netState.SendSyncEventToPlayer(trigger);
+        player.SendSyncEventToPlayer(trigger);
     }
 
-    public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
+    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
         if (!IsEnabled || !TriggerOnPressed || syncEvent.Type != SyncEvent.EventType.Trigger)
             return;
 
         var tEvent = new Trigger_SyncEvent(syncEvent);
-        var player = netState.Get<Player>();
 
         var hasUpdated = false;
 

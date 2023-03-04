@@ -8,12 +8,11 @@ public static class RoomExtensions
     public static void SendSyncEvent(this Room room, SyncEvent syncEvent, Player sentPlayer = null)
     {
         foreach (
-            var client in
-            from client in room.Clients.Values
-            let receivedPlayer = client.Get<Player>()
-            where sentPlayer == null || receivedPlayer.UserId != sentPlayer.UserId
-            select client
+            var player in
+            from player in room.Players.Values
+            where sentPlayer == null || player.UserId != sentPlayer.UserId
+            select player
         )
-            client.SendSyncEventToPlayer(syncEvent);
+            player.SendSyncEventToPlayer(syncEvent);
     }
 }

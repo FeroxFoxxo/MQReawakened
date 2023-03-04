@@ -16,7 +16,7 @@ public class Logout : SystemProtocol
     {
         var player = NetState.Get<Player>();
 
-        player?.QuickJoinRoom(-1, NetState, WorldHandler);
+        player?.QuickJoinRoom(-1, WorldHandler);
 
         SendXml("logout", string.Empty);
     }

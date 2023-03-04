@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Network;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -21,12 +20,11 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
     public WorldHandler WorldHandler { get; set; }
     public ILogger<PortalControllerEntity> Logger { get; set; }
 
-    public override object[] GetInitData(NetState netState) =>
+    public override object[] GetInitData(Player player) =>
         new object[] { string.Empty };
 
-    public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
+    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        var player = netState.Get<Player>();
         var character = player.Character;
 
         var portal = new Portal_SyncEvent(syncEvent);
@@ -74,7 +72,7 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
                 character.LevelData.PortalId
             );
 
-            player.SendLevelChange(netState, WorldHandler, WorldGraph);
+            player.SendLevelChange(WorldHandler, WorldGraph);
         }
         else
         {

@@ -7,6 +7,5 @@ public class LeaveGroup : ExternalProtocol
 {
     public override string ProtocolName => "pl";
 
-    public override void Run(string[] message) =>
-        NetState.RemoveFromGroup();
+    public override void Run(string[] message) => Player.RemoveFromGroup();
 }

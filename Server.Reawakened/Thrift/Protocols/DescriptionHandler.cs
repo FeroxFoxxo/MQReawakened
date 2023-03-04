@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Thrift.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Thrift.Protocol;

@@ -3,6 +3,7 @@ using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Rooms;
@@ -12,6 +13,9 @@ namespace Server.Reawakened.Players;
 
 public class Player : INetStateData
 {
+    private readonly PlayerHandler _playerHandler;
+
+    public NetState NetState { get; }
     public UserInfo UserInfo { get; }
 
     public int UserId => UserInfo.UserId;
@@ -30,8 +34,10 @@ public class Player : INetStateData
     public Vector3Model Velocity { get; set; }
     public bool Invincible { get; set; }
 
-    public Player(UserInfo userInfo)
+    public Player(UserInfo userInfo, NetState state, PlayerHandler playerHandler)
     {
+        _playerHandler = playerHandler;
+        NetState = state;
         UserInfo = userInfo;
 
         Position = new Vector3Model();
@@ -39,12 +45,15 @@ public class Player : INetStateData
 
         Invincible = false;
         FirstLogin = true;
+
+        playerHandler.AddPlayer(this);
     }
 
     public void RemovedState(NetState state, NetStateHandler handler,
         Microsoft.Extensions.Logging.ILogger logger)
     {
-        state.RemoveFromGroup();
+        _playerHandler.RemovePlayer(this);
+        this.RemoveFromGroup();
 
         if (Room == null)
             return;

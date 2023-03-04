@@ -29,13 +29,10 @@ public class RoomInstanceInfoModel
         LevelName = room.LevelInfo.Name;
         RoomName = room.GetRoomName();
 
-        var players = room.Clients
-            .Select(c => c.Value.Get<Player>())
-            .ToArray();
+        var players = room.Players.Values.ToArray();
 
         CountGroup = player.Group != null
             ? player.Group.GroupMembers
-                .Select(g => g.Get<Player>())
                 .Where(g => players.Any(p => p.UserId == g.UserId))
                 .Count()
             : 0;

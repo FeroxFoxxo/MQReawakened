@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.System;
 
@@ -11,12 +10,10 @@ public class SystemMailList : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-
         var requestId = int.Parse(message[5]);
-        var mail = GetSystemMail(player.UserInfo.Mail);
+        var mail = GetSystemMail(Player.UserInfo.Mail);
 
-        SendXt("qs", requestId, player.UserInfo.Mail.Count, mail);
+        SendXt("qs", requestId, Player.UserInfo.Mail.Count, mail);
     }
 
     public static string GetSystemMail(Dictionary<int, SystemMailModel> mailList)

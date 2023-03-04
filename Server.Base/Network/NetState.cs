@@ -117,6 +117,8 @@ public class NetState : IDisposable
         _onSendCallback = null;
         Throttler = null;
 
+        _data.Clear();
+
         Running = false;
 
         lock (_handler.Disposed)

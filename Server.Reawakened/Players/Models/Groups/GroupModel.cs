@@ -1,21 +1,19 @@
-﻿using Server.Base.Network;
-using Server.Reawakened.Players.Helpers;
+﻿using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Groups;
 
 public class GroupModel
 {
     public string LeaderCharacterName { get; set; }
-    public List<NetState> GroupMembers { get; set; }
+    public List<Player> GroupMembers { get; set; }
 
-    public GroupModel(NetState netState)
+    public GroupModel(Player player)
     {
-        GroupMembers = new List<NetState>();
+        GroupMembers = new List<Player>();
 
-        var player = netState.Get<Player>();
         LeaderCharacterName = player.Character.Data.CharacterName;
 
-        GroupMembers.Add(netState);
+        GroupMembers.Add(player);
     }
 
     public override string ToString()
@@ -23,7 +21,7 @@ public class GroupModel
         var sb = new SeparatedStringBuilder('#');
         sb.Append(LeaderCharacterName);
 
-        foreach (var player in GroupMembers.Select(member => member.Get<Player>()))
+        foreach (var player in GroupMembers)
         {
             sb.Append(player.Character.Data.CharacterName);
             sb.Append(player.Room.LevelInfo.LevelId);

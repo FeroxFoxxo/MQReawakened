@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
+using Server.Reawakened.Players.Helpers;
 
 namespace Protocols.External._p__GroupHandler;
 
@@ -8,31 +8,30 @@ public class JoinGroup : ExternalProtocol
 {
     public override string ProtocolName => "pj";
 
+    public PlayerHandler PlayerHandler { get; set; }
+
     public override void Run(string[] message)
     {
-        var player = NetState.Get<Player>();
-        var joinerName = player.Character.Data.CharacterName;
+        var joinerName = Player.Character.Data.CharacterName;
 
         var leaderName = message[5];
         var accepted = message[6] == "1";
         var status = int.Parse(message[7]);
 
-        var leaderCharacter = player.Room.Clients.Values
-            .First(c => c.Get<Player>().Character.Data.CharacterName == leaderName);
+        var leaderPlayer = PlayerHandler.PlayerList
+            .First(p => p.Character.Data.CharacterName == leaderName);
 
         if (accepted)
         {
-            var leaderPlayer = leaderCharacter.Get<Player>();
+            leaderPlayer.Group.GroupMembers.Add(Player);
+            Player.Group = leaderPlayer.Group;
 
-            leaderPlayer.Group.GroupMembers.Add(NetState);
-            player.Group = leaderPlayer.Group;
-
-            foreach (var member in player.Group.GroupMembers)
-                member.SendXt("pj", player.Group, joinerName);
+            foreach (var member in Player.Group.GroupMembers)
+                member.SendXt("pj", Player.Group, joinerName);
         }
         else
         {
-            leaderCharacter.SendXt("px", joinerName, status);
+            leaderPlayer.SendXt("px", joinerName, status);
         }
     }
 }

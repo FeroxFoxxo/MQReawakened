@@ -1,5 +1,5 @@
 ﻿using Server.Base.Logging;
-using Server.Base.Network;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Planes;
 using System.Text;
 
@@ -22,9 +22,9 @@ public abstract class BaseSyncedEntity
     {
     }
 
-    public virtual object[] GetInitData(NetState netState) => Array.Empty<object>();
+    public virtual object[] GetInitData(Player player) => Array.Empty<object>();
 
-    public virtual void SendDelayedData(NetState netState)
+    public virtual void SendDelayedData(Player player)
     {
     }
 
@@ -32,11 +32,11 @@ public abstract class BaseSyncedEntity
     {
     }
 
-    public virtual void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, NetState netState) =>
+    public virtual void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) =>
         SendEntityMethodUnknown("unran-collisions", "Failed Collision", "NotifyCollision",
             $"Collision Event: {notifyCollisionEvent.EncodeData()}");
 
-    public virtual void RunSyncedEvent(SyncEvent syncEvent, NetState netState) =>
+    public virtual void RunSyncedEvent(SyncEvent syncEvent, Player player) =>
         SendEntityMethodUnknown("unran-synced-events", "Failed Sync Event", "RunSyncedEvent",
             $"Sync Data: {syncEvent.EncodeData()}");
 

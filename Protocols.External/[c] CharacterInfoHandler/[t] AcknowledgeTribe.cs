@@ -11,6 +11,6 @@ public class AcknowledgeTribe : ExternalProtocol
     public override void Run(string[] message)
     {
         var tribe = (TribeType)int.Parse(message[5]);
-        NetState.DiscoverTribe(tribe);
+        Player.DiscoverTribe(tribe);
     }
 }

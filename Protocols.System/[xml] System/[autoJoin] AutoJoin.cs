@@ -21,7 +21,7 @@ public class AutoJoin : SystemProtocol
         var account = NetState.Get<Account>();
         var player = NetState.Get<Player>();
 
-        player.QuickJoinRoom(0, NetState, WorldHandler);
+        player.QuickJoinRoom(0, WorldHandler);
 
         SendXt("cx", GetPropertyList(GetPropertiesOfUser(player.UserInfo, account)));
         SendXt("cl", GetCharacterList(player.UserInfo));

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
-using Server.Base.Network;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
@@ -71,7 +71,7 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
 
     public override void InitializeEntity() => Trigger(ActiveByDefault);
 
-    public override object[] GetInitData(NetState netState) => new object[] { Activated ? 1 : 0 };
+    public override object[] GetInitData(Player player) => new object[] { Activated ? 1 : 0 };
 
     public void Trigger(bool activated)
     {

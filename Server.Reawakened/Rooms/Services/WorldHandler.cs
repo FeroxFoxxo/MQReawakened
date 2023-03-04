@@ -3,10 +3,10 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
-using Server.Base.Network;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
 
@@ -85,8 +85,10 @@ public class WorldHandler : IService
             0, 0, LevelType.Unknown, TribeType._Invalid);
     }
 
-    public Room GetRoomFromLevelId(int levelId, NetState state)
+    public Room GetRoomFromLevelId(Player player)
     {
+        var levelId = player.GetLevelId();
+
         if (!_levels.ContainsKey(levelId))
             _levels.Add(levelId, new Level(GetLevelInfo(levelId)));
 
@@ -96,12 +98,10 @@ public class WorldHandler : IService
         {
             if (level.LevelInfo.IsATrailLevel())
             {
-                var player = state.Get<Player>();
-
                 if (player.Group != null)
                 {
                     var trailRoom = level.Rooms.Values.FirstOrDefault(r =>
-                        r.Clients.Any(c => player.Group.GroupMembers.Contains(c.Value))
+                        r.Players.Any(c => player.Group.GroupMembers.Contains(c.Value))
                     );
 
                     if (trailRoom != null)

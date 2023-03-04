@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
-using Server.Base.Network;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities;
@@ -26,7 +25,7 @@ public class Room : Timer
     private readonly HashSet<int> _gameObjectIds;
     private readonly WorldHandler _worldHandler;
 
-    public readonly Dictionary<int, NetState> Clients;
+    public readonly Dictionary<int, Player> Players;
     public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
     public readonly ILogger<Room> Logger;
 
@@ -52,7 +51,7 @@ public class Room : Timer
         _worldHandler = worldHandler;
         _level = level;
 
-        Clients = new Dictionary<int, NetState>();
+        Players = new Dictionary<int, Player>();
         _gameObjectIds = new HashSet<int>();
 
         if (LevelInfo.Type == LevelType.Unknown)
@@ -91,23 +90,29 @@ public class Room : Timer
 
     public void GroupMemberRoomChanged(Player player)
     {
-        if (player.Group == null) return;
+        if (player.Group == null)
+            return;
 
-        foreach (var member in player.Group.GroupMembers)
-            member.SendXt("pm", player.Character.Data.CharacterName, LevelInfo.Name, GetRoomName());
+        foreach (var groupMember in player.Group.GroupMembers)
+        {
+            groupMember.SendXt(
+                "pm",
+                player.Character.Data.CharacterName,
+                LevelInfo.Name,
+                GetRoomName()
+            );
+        }
     }
 
-    public void AddClient(NetState newClient, out JoinReason reason)
+    public void AddClient(Player newPlayer, out JoinReason reason)
     {
-        reason = Clients.Count > _config.PlayerCap ? JoinReason.Full : JoinReason.Accepted;
+        reason = Players.Count > _config.PlayerCap ? JoinReason.Full : JoinReason.Accepted;
 
         if (LevelInfo.LevelId == -1)
             return;
 
         if (reason == JoinReason.Accepted)
         {
-            var newPlayer = newClient.Get<Player>();
-
             var gameObjectId = 1;
 
             while (_gameObjectIds.Contains(gameObjectId))
@@ -117,38 +122,37 @@ public class Room : Timer
 
             newPlayer.GameObjectId = gameObjectId;
 
-            Clients.Add(newClient.Get<Player>().GameObjectId, newClient);
+            Players.Add(newPlayer.GameObjectId, newPlayer);
 
             GroupMemberRoomChanged(newPlayer);
 
-            newClient.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
+            newPlayer.NetState.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
 
             if (LevelInfo.LevelId == 0)
                 return;
 
             // USER ENTER
-            var newAccount = newClient.Get<Account>();
+            var newAccount = newPlayer.NetState.Get<Account>();
 
-            foreach (var currentClient in Clients.Values)
+            foreach (var currentPlayer in Players.Values)
             {
-                var currentPlayer = currentClient.Get<Player>();
-                var currentAccount = currentClient.Get<Account>();
+                var currentAccount = currentPlayer.NetState.Get<Account>();
 
                 var areDifferentClients = currentPlayer.UserId != newPlayer.UserId;
 
-                newClient.SendUserEnterData(currentPlayer, currentAccount);
+                newPlayer.SendUserEnterData(currentPlayer, currentAccount);
 
                 if (areDifferentClients)
-                    currentClient.SendUserEnterData(newPlayer, newAccount);
+                    currentPlayer.SendUserEnterData(newPlayer, newAccount);
             }
         }
         else
         {
-            newClient.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
+            newPlayer.NetState.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
         }
     }
 
-    public void SendCharacterInfo(Player player, NetState newClient)
+    public void SendCharacterInfo(Player player)
     {
         // WHERE TO SPAWN
         var character = player.Character;
@@ -192,46 +196,45 @@ public class Room : Timer
 
         // CHARACTER DATA
 
-        foreach (var currentClient in Clients.Values)
+        foreach (var currentPlayer in Players.Values)
         {
-            var currentPlayer = currentClient.Get<Player>();
-
             var areDifferentClients = currentPlayer.UserId != player.UserId;
 
-            newClient.SendCharacterInfoData(currentPlayer,
+            player.SendCharacterInfoData(currentPlayer,
                 areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals, LevelInfo);
 
             if (areDifferentClients)
-                currentClient.SendCharacterInfoData(player, CharacterInfoType.Lite, LevelInfo);
+                currentPlayer.SendCharacterInfoData(player, CharacterInfoType.Lite, LevelInfo);
         }
     }
 
     public void DumpPlayersToLobby()
     {
-        foreach (var clientId in Clients.Keys)
-            DumpPlayerToLobby(clientId);
+        foreach (var playerId in Players.Keys)
+            DumpPlayerToLobby(playerId);
     }
 
-    public void DumpPlayerToLobby(int clientId)
+    public void DumpPlayerToLobby(int playerId)
     {
-        var client = Clients[clientId];
-        var player = client.Get<Player>();
-        player.JoinRoom(client, _worldHandler.GetRoomFromLevelId(-1, client), out _);
-        RemoveClient(player);
+        var player = Players[playerId];
+        player.Character.LevelData.LevelId = -1;
+        var room = _worldHandler.GetRoomFromLevelId(player);
+        player.JoinRoom(room, out _);
+        RemovePlayer(player);
     }
 
-    public void RemoveClient(Player player)
+    public void RemovePlayer(Player player)
     {
-        Clients.Remove(player.GameObjectId);
+        Players.Remove(player.GameObjectId);
         _gameObjectIds.Remove(player.GameObjectId);
 
         if (LevelInfo.LevelId <= 0)
             return;
 
-        if (Clients.Count != 0)
+        if (Players.Count != 0)
         {
-            foreach (var client in Clients.Values)
-                client.SendUserGoneData(player);
+            foreach (var currentPlayer in Players.Values)
+                currentPlayer.SendUserGoneData(player);
 
             return;
         }

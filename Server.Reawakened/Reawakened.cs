@@ -32,6 +32,7 @@ public class Reawakened : Module
         services
             .AddSingleton<ReflectionUtils>()
             .AddSingleton<SmartFoxClient>()
+            .AddSingleton<PlayerHandler>()
             .AddSingleton<NameGenSyllables>();
     }
 

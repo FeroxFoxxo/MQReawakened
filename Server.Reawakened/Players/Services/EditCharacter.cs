@@ -145,10 +145,10 @@ public class EditCharacter : IService
 
         var tribe = levelInfo.Tribe;
 
-        if (_handler.IsPlayerOnline(user.UserId, out var netState, out var player))
+        if (_handler.IsPlayerOnline(user.UserId, out var player))
         {
-            netState.DiscoverTribe(tribe);
-            player.SendLevelChange(netState, _worldHandler, _worldGraph);
+            player.DiscoverTribe(tribe);
+            player.SendLevelChange(_worldHandler, _worldGraph);
         }
         else
         {
@@ -178,7 +178,7 @@ public class EditCharacter : IService
             return;
         }
 
-        if (_handler.IsPlayerOnline(user.UserId, out _, out var player))
+        if (_handler.IsPlayerOnline(user.UserId, out var player))
             player.LevelUp(levelId, _logger);
         else
             character.SetLevelXp(levelId);
@@ -222,8 +222,8 @@ public class EditCharacter : IService
                 DelayUseExpiry = DateTime.MinValue
             });
 
-            if (_handler.IsPlayerOnline(user.UserId, out var netState, out _))
-                character.SendUpdatedInventory(netState, false);
+            if (_handler.IsPlayerOnline(user.UserId, out var player))
+                player.SendUpdatedInventory(false);
         }
         else
         {

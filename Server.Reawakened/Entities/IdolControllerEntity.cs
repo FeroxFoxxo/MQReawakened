@@ -1,5 +1,4 @@
-﻿using Server.Base.Network;
-using Server.Reawakened.Players;
+﻿using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
@@ -9,9 +8,8 @@ public class IdolControllerEntity : SyncedEntity<IdolController>
 {
     public int Index => EntityData.Index;
 
-    public override object[] GetInitData(NetState netState)
+    public override object[] GetInitData(Player player)
     {
-        var player = netState.Get<Player>();
         var character = player.Character;
         var levelId = Room.LevelInfo.LevelId;
 
@@ -21,9 +19,8 @@ public class IdolControllerEntity : SyncedEntity<IdolController>
         return character.CollectedIdols[levelId].Contains(Index) ? new object[] { 0 } : Array.Empty<object>();
     }
 
-    public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
+    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        var player = netState.Get<Player>();
         var character = player.Character;
         var levelId = Room.LevelInfo.LevelId;
 

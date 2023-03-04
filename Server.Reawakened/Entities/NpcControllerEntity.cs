@@ -40,10 +40,10 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         NpcName = MiscText.GetLocalizationTextById(Description.NameTextId);
     }
 
-    public override object[] GetInitData(NetState netState) =>
+    public override object[] GetInitData(Player player) =>
         Description == null ? Array.Empty<object>() : new object[] { Description.NameTextId.ToString() };
 
-    public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
+    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
         if (Description == null)
         {
@@ -51,7 +51,6 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             return;
         }
 
-        var player = netState.Get<Player>();
         var character = player.Character;
 
         if (Description.Status is > NPCController.NPCStatus.Dialog and < NPCController.NPCStatus.Unknown)
@@ -59,7 +58,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             _vendorOpen = !_vendorOpen;
             if (_vendorOpen)
             {
-                netState.SendXt("nv", Id, Description.NameTextId, 0, 0, 0, Description.VendorId, "", "1021|2813",
+                player.SendXt("nv", Id, Description.NameTextId, 0, 0, 0, Description.VendorId, "", "1021|2813",
                     "1021|2812");
                 return;
             }
@@ -71,13 +70,13 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
         if (status == NPCController.NPCStatus.QuestAvailable)
         {
-            netState.SendXt("nl", $"{model}&", Id, NpcName ?? "", "1516|3843");
+            player.SendXt("nl", $"{model}&", Id, NpcName ?? "", "1516|3843");
             character.Data.QuestLog.Add(model);
-            netState.SendXt("nt", Id, (int)NPCController.NPCStatus.QuestInProgress, 0);
+            player.SendXt("nt", Id, (int)NPCController.NPCStatus.QuestInProgress, 0);
         }
         else if (status != NPCController.NPCStatus.Unknown)
         {
-            netState.SendXt("nt", Id, (int)status, 0);
+            player.SendXt("nt", Id, (int)status, 0);
         }
     }
 

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
-using Server.Base.Network;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
@@ -49,27 +48,27 @@ public class ChatCommands : IService
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
 
-    public void RunCommand(NetState netState, string[] args)
+    public void RunCommand(Player player, string[] args)
     {
         var name = args.FirstOrDefault();
 
         if (name != null && _commands.TryGetValue(name, out var value))
         {
-            if (!value.CommandMethod(netState, args))
-                Log($"Usage: {_config.ChatCommandStart}{value.Name} {value.Arguments}", netState);
+            if (!value.CommandMethod(player, args))
+                Log($"Usage: {_config.ChatCommandStart}{value.Name} {value.Arguments}", player);
         }
         else
         {
-            DisplayHelp(netState);
+            DisplayHelp(player);
         }
     }
 
-    private static void Log(string logMessage, NetState netState) =>
-        netState.Chat(CannedChatChannel.Tell, "Console", logMessage);
+    private static void Log(string logMessage, Player player) =>
+        player.Chat(CannedChatChannel.Tell, "Console", logMessage);
 
-    public void DisplayHelp(NetState netState)
+    public void DisplayHelp(Player player)
     {
-        Log("Chat Commands:", netState);
+        Log("Chat Commands:", player);
 
         foreach (var command in _commands.Values)
         {
@@ -79,16 +78,15 @@ public class ChatCommands : IService
             Log(
                 $"  {_config.ChatCommandStart}{command.Name.PadRight(padding)}" +
                 $"{(command.Arguments.Length > 0 ? $" - {command.Arguments}" : "")}",
-                netState
+                player
             );
         }
     }
 
     public void AddCommand(ChatCommand command) => _commands.Add(command.Name, command);
 
-    private bool ChangeLevel(NetState netState, string[] args)
+    private bool ChangeLevel(Player player, string[] args)
     {
-        var player = netState.Get<Player>();
         var character = player.Character;
 
         if (args.Length != 2)
@@ -102,23 +100,21 @@ public class ChatCommands : IService
 
         var tribe = levelInfo.Tribe;
 
-        netState.DiscoverTribe(tribe);
-        player.SendLevelChange(netState, _worldHandler, _worldGraph);
+        player.DiscoverTribe(tribe);
+        player.SendLevelChange(_worldHandler, _worldGraph);
 
         Log(
             $"Successfully set character {character.Data.CharacterId}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
-            netState
+            player
         );
 
-        Log($"{character.Data.CharacterName} changed to level {levelId}", netState);
+        Log($"{character.Data.CharacterName} changed to level {levelId}", player);
 
         return true;
     }
 
-    private bool LevelUp(NetState netState, string[] args)
+    private bool LevelUp(Player player, string[] args)
     {
-        var player = netState.Get<Player>();
-
         if (args.Length != 2)
             return false;
 
@@ -128,9 +124,8 @@ public class ChatCommands : IService
         return true;
     }
 
-    private bool AddItem(NetState netState, string[] args)
+    private bool AddItem(Player player, string[] args)
     {
-        var player = netState.Get<Player>();
         var character = player.Character;
 
         if (args.Length is < 2 or > 3)
@@ -151,14 +146,15 @@ public class ChatCommands : IService
 
         if (item == null)
         {
-            Log($"Can't find item with id {itemId}", netState);
+            Log($"Can't find item with id {itemId}", player);
             return false;
         }
 
         character.AddItem(item, amount);
-        character.SendUpdatedInventory(netState, false);
 
-        Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", netState);
+        player.SendUpdatedInventory(false);
+
+        Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", player);
 
         return true;
     }

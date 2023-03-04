@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
-using Server.Base.Network;
 using Server.Reawakened.Entities.Abstractions;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using System.Text;
 
@@ -13,9 +13,9 @@ public class CheckpointControllerEntity : AbstractTriggerCoop<CheckpointControll
 
     public new ILogger<CheckpointControllerEntity> Logger { get; set; }
 
-    public override void RunSyncedEvent(SyncEvent syncEvent, NetState netState)
+    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        base.RunSyncedEvent(syncEvent, netState);
+        base.RunSyncedEvent(syncEvent, player);
 
         if (Room.DefaultSpawn.Index == SpawnPoint)
         {

@@ -1,11 +1,15 @@
 ﻿using Server.Base.Network;
 using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Players;
 
 namespace Server.Reawakened.Network.Protocols;
 
 public abstract class BaseProtocol
 {
     public NetState NetState;
+
+    private Player _player;
+    public Player Player => _player ??= NetState.Get<Player>();
 
     public abstract string ProtocolName { get; }
 

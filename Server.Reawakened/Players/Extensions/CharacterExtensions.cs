@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Base.Network;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -78,12 +77,10 @@ public static class CharacterExtensions
 
     private static int GetReputationForLevel(int level) => (Convert.ToInt32(Math.Pow(level, 2)) - (level - 1)) * 500;
 
-    public static void DiscoverTribe(this NetState state, TribeType tribe)
+    public static void DiscoverTribe(this Player player, TribeType tribe)
     {
-        var player = state.Get<Player>();
-
         if (HasAddedDiscoveredTribe(player.Character, tribe))
-            state.SendXt("cB", (int)tribe);
+            player.SendXt("cB", (int)tribe);
     }
 
     public static bool HasAddedDiscoveredTribe(this CharacterModel characterData, TribeType tribe)
@@ -103,21 +100,20 @@ public static class CharacterExtensions
         return true;
     }
 
-    public static void AddBananas(this Player player, NetState state, int collectedBananas)
+    public static void AddBananas(this Player player, int collectedBananas)
     {
         var charData = player.Character.Data;
         charData.Cash += collectedBananas;
-        player.SendCashUpdate(state);
+        player.SendCashUpdate();
     }
 
-    public static void SendCashUpdate(this Player player, NetState state)
+    public static void SendCashUpdate(this Player player)
     {
         var charData = player.Character.Data;
-        state.SendXt("ca", charData.Cash, charData.NCash);
+        player.SendXt("ca", charData.Cash, charData.NCash);
     }
 
-    public static void SendLevelChange(this Player player, NetState netState, WorldHandler worldHandler,
-        WorldGraphXML worldGraph)
+    public static void SendLevelChange(this Player player, WorldHandler worldHandler, WorldGraphXML worldGraph)
     {
         var error = string.Empty;
         var levelName = string.Empty;
@@ -134,7 +130,7 @@ public static class CharacterExtensions
             error = e.Message;
         }
 
-        netState.SendXt("lw", error, levelName, surroundingLevels);
+        player.SendXt("lw", error, levelName, surroundingLevels);
     }
 
     private static string GetSurroundingLevels(LevelInfo levelInfo, WorldGraphXML worldGraph)
@@ -190,22 +186,19 @@ public static class CharacterExtensions
             character.Data.ActiveQuestId = quest.Id;
     }
 
-    public static void RemoveFromGroup(this NetState state)
+    public static void RemoveFromGroup(this Player player)
     {
-        var player = state.Get<Player>();
-
         if (player.Group == null)
             return;
 
-        player.Group.GroupMembers.Remove(state);
+        player.Group.GroupMembers.Remove(player);
 
         if (player.Group.GroupMembers.Count > 0)
         {
             if (player.Group.LeaderCharacterName == player.Character.Data.CharacterName)
             {
                 var newLeader = player.Group.GroupMembers.First();
-                var newLeaderPlayer = newLeader.Get<Player>();
-                player.Group.LeaderCharacterName = newLeaderPlayer.Character.Data.CharacterName;
+                player.Group.LeaderCharacterName = newLeader.Character.Data.CharacterName;
 
                 foreach (var member in player.Group.GroupMembers)
                     member.SendXt("pp", player.Group.LeaderCharacterName);
