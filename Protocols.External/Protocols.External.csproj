@@ -11,7 +11,6 @@
         <Folder Include="[C] CashShopHandler\" />
         <Folder Include="[f] FriendsHandler\" />
         <Folder Include="[m] GameCommandHandler\" />
-        <Folder Include="[p] GroupHandler\" />
         <Folder Include="[u] GuildHandler\" />
         <Folder Include="[H] HousingHandler\" />
         <Folder Include="[x] ItemHandler\" />

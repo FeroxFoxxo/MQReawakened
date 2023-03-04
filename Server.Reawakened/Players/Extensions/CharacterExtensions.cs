@@ -201,14 +201,14 @@ public static class CharacterExtensions
 
         if (player.Group.GroupMembers.Count > 0)
         {
-            if (player.Group.LeaderCharacter == player.Character.Data.CharacterName)
+            if (player.Group.LeaderCharacterName == player.Character.Data.CharacterName)
             {
                 var newLeader = player.Group.GroupMembers.First();
                 var newLeaderPlayer = newLeader.Get<Player>();
-                player.Group.LeaderCharacter = newLeaderPlayer.Character.Data.CharacterName;
+                player.Group.LeaderCharacterName = newLeaderPlayer.Character.Data.CharacterName;
 
                 foreach (var member in player.Group.GroupMembers)
-                    member.SendXt("pp", player.Group.LeaderCharacter);
+                    member.SendXt("pp", player.Group.LeaderCharacterName);
             }
 
             foreach (var member in player.Group.GroupMembers)

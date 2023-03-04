@@ -33,10 +33,12 @@ public class RoomInstanceInfoModel
             .Select(c => c.Value.Get<Player>())
             .ToArray();
 
-        CountGroup = player.Group.GroupMembers
-            .Select(g => g.Get<Player>())
-            .Where(g => players.Any(p => p.UserId == g.UserId))
-            .Count();
+        CountGroup = player.Group != null
+            ? player.Group.GroupMembers
+                .Select(g => g.Get<Player>())
+                .Where(g => players.Any(p => p.UserId == g.UserId))
+                .Count()
+            : 0;
 
         CountFriends = character.Data.GetFriends().PlayerList
             .Where(f => players.Any(p => p.UserId == f.CharacterId))

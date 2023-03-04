@@ -20,6 +20,6 @@ public class InvitePlayer : ExternalProtocol
         var invitedCharacter = player.Room.Clients.Values
             .First(c => c.Get<Player>().Character.Data.CharacterName == characterName);
 
-        invitedCharacter.SendXt("pi", player.Group.LeaderCharacter);
+        invitedCharacter.SendXt("pi", player.Group.LeaderCharacterName);
     }
 }
