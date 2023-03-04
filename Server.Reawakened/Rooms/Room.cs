@@ -217,8 +217,7 @@ public class Room : Timer
     public void DumpPlayerToLobby(int playerId)
     {
         var player = Players[playerId];
-        player.Character.LevelData.LevelId = -1;
-        var room = _worldHandler.GetRoomFromLevelId(player);
+        var room = _worldHandler.GetRoomFromLevelId(-1, player);
         player.JoinRoom(room, out _);
         RemovePlayer(player);
     }

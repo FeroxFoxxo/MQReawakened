@@ -22,21 +22,8 @@ public static class PlayerExtensions
 
     public static void QuickJoinRoom(this Player player, int id, WorldHandler worldHandler)
     {
-        Room newRoom = null;
-
-        try
-        {
-            player.Character.LevelData.LevelId = id;
-            newRoom = worldHandler.GetRoomFromLevelId(player);
-        }
-        catch (NullReferenceException)
-        {
-        }
-
-        if (newRoom == null)
-            return;
-
-        player.JoinRoom(newRoom, out _);
+        var room = worldHandler.GetRoomFromLevelId(id, player);
+        player.JoinRoom(room, out _);
     }
 
     public static int GetLevelId(this Player player) =>

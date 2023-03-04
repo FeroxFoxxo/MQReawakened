@@ -13,7 +13,7 @@ public class StartPlayRoom : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var room = WorldHandler.GetRoomFromLevelId(Player);
+        var room = WorldHandler.GetRoomFromLevelId(Player.GetLevelId(), Player);
 
         Player.JoinRoom(room, out var reason);
 

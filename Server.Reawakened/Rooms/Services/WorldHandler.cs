@@ -6,7 +6,6 @@ using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
 
@@ -85,10 +84,8 @@ public class WorldHandler : IService
             0, 0, LevelType.Unknown, TribeType._Invalid);
     }
 
-    public Room GetRoomFromLevelId(Player player)
+    public Room GetRoomFromLevelId(int levelId, Player player)
     {
-        var levelId = player.GetLevelId();
-
         if (!_levels.ContainsKey(levelId))
             _levels.Add(levelId, new Level(GetLevelInfo(levelId)));
 

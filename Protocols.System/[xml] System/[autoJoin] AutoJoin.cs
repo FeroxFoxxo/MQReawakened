@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Server.Base.Accounts.Models;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Extensions;
@@ -19,12 +18,11 @@ public class AutoJoin : SystemProtocol
     public override void Run(XmlDocument xmlDoc)
     {
         var account = NetState.Get<Account>();
-        var player = NetState.Get<Player>();
 
-        player.QuickJoinRoom(0, WorldHandler);
+        Player.QuickJoinRoom(0, WorldHandler);
 
-        SendXt("cx", GetPropertyList(GetPropertiesOfUser(player.UserInfo, account)));
-        SendXt("cl", GetCharacterList(player.UserInfo));
+        SendXt("cx", GetPropertyList(GetPropertiesOfUser(Player.UserInfo, account)));
+        SendXt("cl", GetCharacterList(Player.UserInfo));
     }
 
     private static Dictionary<CharacterInfoHandler.ExternalProperties, object> GetPropertiesOfUser(UserInfo userInfo,
