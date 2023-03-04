@@ -190,6 +190,34 @@ public static class CharacterExtensions
             character.Data.ActiveQuestId = quest.Id;
     }
 
+    public static void RemoveFromGroup(this NetState state)
+    {
+        var player = state.Get<Player>();
+
+        if (player.Group == null)
+            return;
+
+        player.Group.GroupMembers.Remove(state);
+
+        if (player.Group.GroupMembers.Count > 0)
+        {
+            if (player.Group.LeaderCharacter == player.Character.Data.CharacterName)
+            {
+                var newLeader = player.Group.GroupMembers.First();
+                var newLeaderPlayer = newLeader.Get<Player>();
+                player.Group.LeaderCharacter = newLeaderPlayer.Character.Data.CharacterName;
+
+                foreach (var member in player.Group.GroupMembers)
+                    member.SendXt("pp", player.Group.LeaderCharacter);
+            }
+
+            foreach (var member in player.Group.GroupMembers)
+                member.SendXt("pl", player.Character.Data.CharacterName);
+        }
+
+        player.Group = null;
+    }
+
     public static bool HasQuest(this CharacterModel character, int questId) =>
         character.Data.QuestLog.Count != 0 && character.Data.QuestLog.Any(quest => quest.Id == questId);
 
