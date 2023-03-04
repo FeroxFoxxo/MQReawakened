@@ -33,7 +33,7 @@ public abstract class BaseSyncedEntity
     }
 
     public virtual void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, NetState netState) =>
-        SendEntityMethodUnknown("unran-collision", "Failed Collision", "NotifyCollision",
+        SendEntityMethodUnknown("unran-collisions", "Failed Collision", "NotifyCollision",
             $"Collision Event: {notifyCollisionEvent.EncodeData()}");
 
     public virtual void RunSyncedEvent(SyncEvent syncEvent, NetState netState) =>

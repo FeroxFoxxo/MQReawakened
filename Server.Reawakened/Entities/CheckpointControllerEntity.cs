@@ -39,7 +39,7 @@ public class CheckpointControllerEntity : AbstractTriggerCoop<CheckpointControll
             sb.AppendLine($"SpawnPoint Index: {SpawnPoint}")
                 .Append($"Possibilities: {string.Join(", ", spawns.Select(s => $"{s.Index} (ID: {s.Id})"))}");
 
-            FileLogger.WriteGenericLog<CheckpointController>("failed-checkpoints", "Checkpoint Spawn Failed",
+            FileLogger.WriteGenericLog<CheckpointController>("checkpoints-errors", "Checkpoint Spawn Failed",
                 sb.ToString(), LoggerType.Warning);
         }
 
