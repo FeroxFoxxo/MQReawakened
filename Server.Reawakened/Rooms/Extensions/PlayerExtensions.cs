@@ -33,7 +33,16 @@ public static class PlayerExtensions
     {
         character.Data.SetPlayerData(player);
         player.SetCharacterSelected(character.Data.CharacterId);
+        player.PlayerHandler.AddPlayer(player);
         player.SendCharacterInfoData(player, CharacterInfoType.Detailed, levelInfo);
+
+        foreach (var friend in player.PlayerHandler.PlayerList
+                     .Where(p =>
+                         player.Character.Data.FriendList
+                             .Any(x => x.Key == p.UserId && x.Value == p.Character.Data.CharacterId)
+                     )
+                )
+            friend.SendXt("fy", player.Character.Data.CharacterName);
     }
 
     public static void SentEntityTriggered(this Room room, int id, Player player, bool success, bool active)

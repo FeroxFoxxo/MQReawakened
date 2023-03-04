@@ -26,13 +26,15 @@ public class CharacterDataModel : CharacterLightModel
         ?? new Dictionary<int, int>();
 
     private PlayerListModel FriendModels =>
-        new(Friends.Select(f => new PlayerDataModel(f)).ToList());
+        new(FriendList.Select(f => new PlayerDataModel(f.Key, f.Value, _player)).ToList());
 
     private PlayerListModel BlockModels =>
-        new(Blocked.Select(b => new PlayerDataModel(b)).ToList());
+        new(BlockedList.Select(b => new PlayerDataModel(b.Key, b.Value, _player)).ToList());
 
-    public List<int> Friends { get; set; }
-    public List<int> Blocked { get; set; }
+    // USER ID + CHARACTER NAME
+    public Dictionary<int, int> FriendList { get; set; }
+    public Dictionary<int, int> BlockedList { get; set; }
+    public Dictionary<int, int> MutedList { get; set; }
 
     public int Cash { get; set; }
     public int NCash { get; set; }
@@ -76,8 +78,9 @@ public class CharacterDataModel : CharacterLightModel
         TribesDiscovered = new Dictionary<TribeType, bool>();
         TribesProgression = new Dictionary<TribeType, TribeDataModel>();
         DiscoveredStats = new HashSet<int>();
-        Friends = new List<int>();
-        Blocked = new List<int>();
+        FriendList = new Dictionary<int, int>();
+        BlockedList = new Dictionary<int, int>();
+        MutedList = new Dictionary<int, int>();
         InitializeLiteLists();
     }
 

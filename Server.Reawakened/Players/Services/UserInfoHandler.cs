@@ -28,6 +28,8 @@ public class UserInfoHandler : DataHandler<UserInfo>
         _randomKeyGenerator = randomKeyGenerator;
         _config = config;
         _playerHandler = playerHandler;
+
+        _playerHandler.UserInfoHandler = this;
     }
 
     public void InitializeUser(NetState state)

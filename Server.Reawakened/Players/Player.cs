@@ -2,6 +2,7 @@
 using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -13,8 +14,7 @@ namespace Server.Reawakened.Players;
 
 public class Player : INetStateData
 {
-    private readonly PlayerHandler _playerHandler;
-
+    public PlayerHandler PlayerHandler { get; }
     public NetState NetState { get; }
     public UserInfo UserInfo { get; }
 
@@ -36,7 +36,7 @@ public class Player : INetStateData
 
     public Player(UserInfo userInfo, NetState state, PlayerHandler playerHandler)
     {
-        _playerHandler = playerHandler;
+        PlayerHandler = playerHandler;
         NetState = state;
         UserInfo = userInfo;
 
@@ -45,15 +45,20 @@ public class Player : INetStateData
 
         Invincible = false;
         FirstLogin = true;
-
-        playerHandler.AddPlayer(this);
     }
 
     public void RemovedState(NetState state, NetStateHandler handler,
         Microsoft.Extensions.Logging.ILogger logger)
     {
-        _playerHandler.RemovePlayer(this);
         this.RemoveFromGroup();
+
+        if (Character != null)
+        {
+            PlayerHandler.RemovePlayer(this);
+            foreach (var player in PlayerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
+                player.SendXt("fz", Character.Data.CharacterName);
+            Character.Data.MutedList.Clear();
+        }
 
         if (Room == null)
             return;

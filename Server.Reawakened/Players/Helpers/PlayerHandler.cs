@@ -1,7 +1,10 @@
-﻿namespace Server.Reawakened.Players.Helpers;
+﻿using Server.Reawakened.Players.Services;
+
+namespace Server.Reawakened.Players.Helpers;
 
 public class PlayerHandler
 {
+    public UserInfoHandler UserInfoHandler;
     public List<Player> PlayerList { get; }
     private readonly object _lock;
 

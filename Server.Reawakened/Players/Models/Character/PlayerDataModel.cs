@@ -13,10 +13,26 @@ public class PlayerDataModel
     public bool IsMuted { get; set; }
     public int InteractionStatus { get; set; }
 
-    public PlayerDataModel(int characterId)
+    public PlayerDataModel(int userId, int characterId, Player currentPlayer)
     {
+        var user = currentPlayer.PlayerHandler.UserInfoHandler.Data[userId];
+        var character = user.Characters[characterId];
+        var player = currentPlayer.PlayerHandler.PlayerList
+            .Where(p => p.UserId == userId)
+            .FirstOrDefault(p => p.Character.Data.CharacterId == characterId);
+
+        CharacterName = character.Data.CharacterName;
         CharacterId = characterId;
-        throw new NotImplementedException();
+
+        IsOnline = player != null;
+
+        Level = character.LevelData.LevelId;
+        Location = player != null ? player.Room.GetRoomName() : string.Empty;
+
+        IsBlocked = currentPlayer.Character.Data.BlockedList.Any(x => x.Key == userId && x.Value == userId);
+        IsMuted = currentPlayer.Character.Data.MutedList.Any(x => x.Key == userId && x.Value == userId);
+
+        InteractionStatus = (int)character.Data.InteractionStatus;
     }
 
     public override string ToString()
