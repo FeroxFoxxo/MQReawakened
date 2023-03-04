@@ -48,9 +48,13 @@ public class OperationMode : IService
     {
         if (_logger.Ask(
                 "Are you wanting to play the game, rather than host one?",
-                true))
+                true
+            ))
         {
-            if (_logger.Ask("Would you like to connect to a server, rather than be put into single-player mode?", true))
+            if (_logger.Ask(
+                    "Would you like to connect to an online server, rather than be put into single-player mode?",
+                    true
+                ))
             {
                 _config.NetworkType = NetworkType.Client;
                 SetServerAddress("What is the address of the server that you are trying to connect to?");
@@ -66,17 +70,18 @@ public class OperationMode : IService
             _config.NetworkType = NetworkType.Server;
 
             if (_logger.Ask(
-                    "Would you like to manually set your server address, rather than choosing your external IP?",
-                    true))
-            {
-                SetServerAddress("What is the address of the server that you are trying to host?");
-            }
-            else
+                    "Would you like to automatically detect your external IP, rather than set it manually?",
+                    true
+                ))
             {
                 var externalIpTask = GetExternalIpAddress();
                 GetExternalIpAddress().Wait();
                 var externalIpString = externalIpTask.Result ?? IPAddress.Loopback;
                 _config.ServerAddress = externalIpString.ToString();
+            }
+            else
+            {
+                SetServerAddress("What is the address of the server that you are trying to host?");
             }
 
             _logger.LogInformation("Set IP Address to: {Address}", _config.ServerAddress);
