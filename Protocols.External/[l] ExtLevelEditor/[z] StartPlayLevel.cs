@@ -16,7 +16,7 @@ public class StartPlayRoom : ExternalProtocol
     {
         var player = NetState.Get<Player>();
 
-        var room = WorldHandler.GetRoomFromLevelId(player.GetLevelId());
+        var room = WorldHandler.GetRoomFromLevelId(player.GetLevelId(), NetState);
 
         player.JoinRoom(NetState, room, out var reason);
 

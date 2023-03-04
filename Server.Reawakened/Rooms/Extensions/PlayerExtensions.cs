@@ -27,7 +27,7 @@ public static class PlayerExtensions
 
         try
         {
-            newRoom = worldHandler.GetRoomFromLevelId(id);
+            newRoom = worldHandler.GetRoomFromLevelId(id, state);
         }
         catch (NullReferenceException)
         {

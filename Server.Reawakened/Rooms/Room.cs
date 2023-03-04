@@ -89,6 +89,14 @@ public class Room : Timer
             entity.Update();
     }
 
+    public void GroupMemberRoomChanged(Player player)
+    {
+        if (player.Group == null) return;
+
+        foreach (var member in player.Group.GroupMembers)
+            member.SendXt("pm", player.Character.Data.CharacterName, LevelInfo.Name, GetRoomName());
+    }
+
     public void AddClient(NetState newClient, out JoinReason reason)
     {
         reason = Clients.Count > _config.PlayerCap ? JoinReason.Full : JoinReason.Accepted;
@@ -110,6 +118,8 @@ public class Room : Timer
             newPlayer.GameObjectId = gameObjectId;
 
             Clients.Add(newClient.Get<Player>().GameObjectId, newClient);
+
+            GroupMemberRoomChanged(newPlayer);
 
             newClient.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
 
@@ -206,7 +216,7 @@ public class Room : Timer
     {
         var client = Clients[clientId];
         var player = client.Get<Player>();
-        player.JoinRoom(client, _worldHandler.GetRoomFromLevelId(-1), out _);
+        player.JoinRoom(client, _worldHandler.GetRoomFromLevelId(-1, client), out _);
         RemoveClient(player);
     }
 
@@ -231,5 +241,5 @@ public class Room : Timer
     }
 
     public string GetRoomName() =>
-        $"{LevelInfo.LevelId}#{_roomId}";
+        $"{LevelInfo.LevelId}_{_roomId}";
 }

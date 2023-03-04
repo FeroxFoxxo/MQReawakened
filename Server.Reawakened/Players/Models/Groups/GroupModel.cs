@@ -23,9 +23,8 @@ public class GroupModel
         var sb = new SeparatedStringBuilder('#');
         sb.Append(LeaderCharacterName);
 
-        foreach (var member in GroupMembers)
+        foreach (var player in GroupMembers.Select(member => member.Get<Player>()))
         {
-            var player = member.Get<Player>();
             sb.Append(player.Character.Data.CharacterName);
             sb.Append(player.Room.LevelInfo.LevelId);
             sb.Append(player.Room.LevelInfo.Name);

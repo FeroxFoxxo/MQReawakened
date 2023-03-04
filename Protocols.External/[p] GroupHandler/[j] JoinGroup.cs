@@ -22,10 +22,13 @@ public class JoinGroup : ExternalProtocol
 
         if (accepted)
         {
-            var group = leaderCharacter.Get<Player>().Group;
-            group.GroupMembers.Add(NetState);
-            foreach (var member in group.GroupMembers)
-                member.SendXt("pj", group, joinerName);
+            var leaderPlayer = leaderCharacter.Get<Player>();
+
+            leaderPlayer.Group.GroupMembers.Add(NetState);
+            player.Group = leaderPlayer.Group;
+
+            foreach (var member in player.Group.GroupMembers)
+                member.SendXt("pj", player.Group, joinerName);
         }
         else
         {
