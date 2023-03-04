@@ -7,5 +7,6 @@ public enum AlrReason
     Blocked,
     BadPass,
     Accepted,
-    BadComm
+    BadComm,
+    PlayerLoggedIn
 }

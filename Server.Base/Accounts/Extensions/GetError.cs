@@ -12,6 +12,7 @@ public static class GetError
             AlrReason.BadPass => "You have entered an invalid password",
             AlrReason.Blocked => "Your account has been banned",
             AlrReason.InUse => "We have reached our thresh-hold for users",
+            AlrReason.PlayerLoggedIn => "You are currently logged into the server",
             _ => "You have reached an error that should not have happened"
         };
 }

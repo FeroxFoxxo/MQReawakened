@@ -36,7 +36,7 @@ public class Login : SystemProtocol
                 return;
             }
 
-            reason = AlrReason.InUse;
+            reason = AlrReason.PlayerLoggedIn;
         }
 
         SendXml("logKO", $"<login e='{reason.GetErrorValue()}' />");

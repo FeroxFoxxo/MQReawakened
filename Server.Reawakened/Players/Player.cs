@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Models;
+using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Network.Extensions;
@@ -48,7 +49,9 @@ public class Player : INetStateData
     }
 
     public void RemovedState(NetState state, NetStateHandler handler,
-        Microsoft.Extensions.Logging.ILogger logger)
+        Microsoft.Extensions.Logging.ILogger logger) => Remove(logger);
+
+    public void Remove(Microsoft.Extensions.Logging.ILogger logger)
     {
         this.RemoveFromGroup();
 
@@ -71,5 +74,7 @@ public class Player : INetStateData
             logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
 
         Room.DumpPlayerToLobby(this);
+
+        Character = null;
     }
 }
