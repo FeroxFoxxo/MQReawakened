@@ -83,12 +83,16 @@ public class SignUpModel : PageModel
             return Page();
 
         if (_accountHandler.Data.Any(a => a.Value.Username == Username))
-            return Unauthorized();
+            return Forbid();
 
         if (_accountHandler.Data.Any(a => a.Value.Email == Email))
-            return Unauthorized();
+            return Forbid();
 
         var ip = Request.HttpContext.Connection.RemoteIpAddress;
+
+        if (ip == null || string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password) ||
+            string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Region))
+            return BadRequest();
 
         var account = _accountHandler.Create(ip, Username, Password, Email);
 

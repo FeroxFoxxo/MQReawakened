@@ -36,7 +36,16 @@ public class FileLogger
         var message = builder.ToString();
         fileName = $"{fileName}.log";
 
-        var logger = _loggerFactory.CreateLogger<T>();
+        ILogger logger;
+
+        try
+        {
+            logger = _loggerFactory.CreateLogger<T>();
+        }
+        catch (ObjectDisposedException)
+        {
+            logger = _fLogger;
+        }
 
         try
         {
@@ -56,16 +65,16 @@ public class FileLogger
         switch (type)
         {
             case LoggerType.Error:
-                _fLogger.LogError("{Information}", message);
+                logger.LogError("{Information}", message);
                 break;
             case LoggerType.Warning:
-                _fLogger.LogWarning("{Information}", message);
+                logger.LogWarning("{Information}", message);
                 break;
             case LoggerType.Debug:
-                _fLogger.LogDebug("{Information}", message);
+                logger.LogDebug("{Information}", message);
                 break;
             case LoggerType.Trace:
-                _fLogger.LogTrace("{Information}", message);
+                logger.LogTrace("{Information}", message);
                 break;
         }
     }
