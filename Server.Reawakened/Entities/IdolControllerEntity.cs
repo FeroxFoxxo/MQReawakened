@@ -1,5 +1,5 @@
 ﻿using Server.Reawakened.Players;
-using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities;
@@ -28,6 +28,10 @@ public class IdolControllerEntity : SyncedEntity<IdolController>
             return;
 
         character.CollectedIdols[levelId].Add(Index);
-        Room.SentEntityTriggered(Id, player, true, true);
+
+        var collectedEvent =
+            new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true);
+
+        player.SendSyncEventToPlayer(collectedEvent);
     }
 }
