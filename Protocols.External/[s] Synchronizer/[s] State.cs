@@ -21,6 +21,14 @@ public class State : ExternalProtocol
 
     public override void Run(string[] message)
     {
+        if (message.Length != 6)
+        {
+            FileLogger.WriteGenericLog<SyncEvent>("sync-errors", "Unknown Protocol", string.Join('\n', message),
+                LoggerType.Warning);
+
+            return;
+        }
+
         var room = Player.Room;
 
         if (room.Entities == null)
