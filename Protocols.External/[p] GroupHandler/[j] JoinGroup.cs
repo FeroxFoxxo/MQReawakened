@@ -19,7 +19,10 @@ public class JoinGroup : ExternalProtocol
         var status = int.Parse(message[7]);
 
         var leaderPlayer = PlayerHandler.PlayerList
-            .First(p => p.Character.Data.CharacterName == leaderName);
+            .FirstOrDefault(p => p.Character.Data.CharacterName == leaderName);
+
+        if (leaderPlayer == null)
+            return;
 
         if (accepted)
         {
