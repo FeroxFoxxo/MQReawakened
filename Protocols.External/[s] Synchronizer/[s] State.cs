@@ -21,7 +21,7 @@ public class State : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        if (message.Length != 6)
+        if (message.Length != 7)
         {
             FileLogger.WriteGenericLog<SyncEvent>("sync-errors", "Unknown Protocol", string.Join('\n', message),
                 LoggerType.Warning);
@@ -34,7 +34,8 @@ public class State : ExternalProtocol
         if (room.Entities == null)
             return;
 
-        var syncEvent = SyncEventManager.DecodeEvent(message[5].Split('&'));
+        var syncedData = message[5].Split('&');
+        var syncEvent = SyncEventManager.DecodeEvent(syncedData);
 
         if (ServerConfig.LogSyncState)
             Logger.LogDebug("Found state: {State}", syncEvent.Type);
