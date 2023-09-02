@@ -19,4 +19,8 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="[xml] System\" />
+    </ItemGroup>
+
 </Project>
