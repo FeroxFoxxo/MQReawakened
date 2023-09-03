@@ -8,8 +8,19 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterInventoryExtensions
 {
+
+
+
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>
         characterData.Data.Inventory.Items.TryGetValue(itemId, out outItem);
+
+    public static bool TryGetKit(this CharacterModel characterData, int itemId1, int itemId2, int itemId3, int itemId4,
+        int itemId5, int itemId6, int itemId7, int itemId8, int itemId9, int itemId10, out ItemModel outItem) =>
+           characterData.Data.Inventory.Items.TryGetValue(itemId1, out outItem) && characterData.Data.Inventory.Items.TryGetValue(itemId2, out outItem)
+        && characterData.Data.Inventory.Items.TryGetValue(itemId3, out outItem) && characterData.Data.Inventory.Items.TryGetValue(itemId4, out outItem)
+        && characterData.Data.Inventory.Items.TryGetValue(itemId5, out outItem) && characterData.Data.Inventory.Items.TryGetValue(itemId6, out outItem)
+        && characterData.Data.Inventory.Items.TryGetValue(itemId7, out outItem) && characterData.Data.Inventory.Items.TryGetValue(itemId8, out outItem)
+        && characterData.Data.Inventory.Items.TryGetValue(itemId9, out outItem) && characterData.Data.Inventory.Items.TryGetValue(itemId10, out outItem);
 
     public static void RemoveItem(this CharacterModel characterData, int itemId, int count)
     {
@@ -36,7 +47,25 @@ public static class CharacterInventoryExtensions
             });
     }
 
-    public static string GetItemListString(this InventoryModel inventory)
+   public static void AddKit(this CharacterModel characterData, List<ItemDescription> items, int count)
+    {
+        foreach (var item in items)
+        {
+            if (characterData.Data.Inventory.Items.TryGetValue(item.ItemId, out var gottenKit))         
+                gottenKit.Count += count;
+            
+            else         
+                characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel
+                {
+                    ItemId = item.ItemId,
+                    Count = count,
+                    BindingCount = item.BindingCount,
+                    DelayUseExpiry = DateTime.MinValue
+                });          
+        }
+    }
+
+        public static string GetItemListString(this InventoryModel inventory)
     {
         var sb = new SeparatedStringBuilder('|');
 
@@ -51,5 +80,6 @@ public static class CharacterInventoryExtensions
             "ip",
             player.Character.Data.Inventory.GetItemListString(),
             fromEquippedUpdate
-        );
+        );    
+
 }
