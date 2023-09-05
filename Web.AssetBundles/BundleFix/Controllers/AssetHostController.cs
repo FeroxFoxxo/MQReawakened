@@ -23,31 +23,23 @@ public class AssetHostController : Controller
 {
     private readonly BuildAssetList _buildAssetList;
     private readonly BuildXmlFiles _buildXmlList;
-    private readonly InternalRwConfig _internalRwConfig;
-    private readonly LauncherRwConfig _launcherRwConfig;
     private readonly AssetBundleRConfig _config;
     private readonly ILogger<AssetHostController> _logger;
     private readonly ReplaceCaches _replaceCaches;
 
     public AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
-        AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches,
-        InternalRwConfig internalRwConfig, LauncherRwConfig launcherRwConfig)
+        AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches)
     {
         _buildAssetList = buildAssetList;
         _logger = logger;
         _config = config;
         _buildXmlList = buildXmlList;
         _replaceCaches = replaceCaches;
-        _internalRwConfig = internalRwConfig;
-        _launcherRwConfig = launcherRwConfig;
     }
 
     [HttpGet]
     public IActionResult GetAsset([FromRoute] string folder, [FromRoute] string file)
     {
-        if (_internalRwConfig.NetworkType == NetworkType.Server)
-            return NoContent();
-
         if (_config.KillOnBundleRetry && !file.EndsWith(".xml"))
         {
             var uriPath = $"{folder}/{file}";
@@ -122,12 +114,9 @@ public class AssetHostController : Controller
             var writer = new EndianWriter(stream, EndianType.BigEndian);
 
             var unityVersion = new UnityVersion(asset.UnityVersion);
+
             var fileName = Path.GetFileName(asset.Path);
-
-            var path = _config.UseCacheReplacementScheme ? _config.TestCache2014
-                : asset.Path;
-
-            var data = new FixedAssetFile(path);
+            var data = new FixedAssetFile(asset.Path);
 
             var metadata = new BundleMetadata(fileName, data.FileSize);
             metadata.FixMetadata((uint)metadata.GetEndianSize());

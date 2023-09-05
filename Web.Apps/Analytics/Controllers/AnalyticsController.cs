@@ -137,13 +137,6 @@ public class AnalyticsController : Controller
 
                     break;
                 }
-            case "Omniture":
-                {
-                    if (n == "applicationStart")
-                        if (_aConfig.UseCacheReplacementScheme)
-                            _replaceCaches.ReplaceWebPlayerCache(true, true);
-                    break;
-                }
         }
     }
 
