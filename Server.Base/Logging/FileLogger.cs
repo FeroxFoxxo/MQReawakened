@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Core.Models;
+using Server.Base.Core.Configs;
 using Server.Base.Logging.Internal;
 using System.Text;
 

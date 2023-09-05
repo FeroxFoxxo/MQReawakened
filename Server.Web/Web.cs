@@ -74,6 +74,7 @@ public class Web : WebModule
             app.UseHsts();
         }
 
+        app.UseDefaultFiles();
         app.UseStaticFiles();
 
         app.UseIpRateLimiting();

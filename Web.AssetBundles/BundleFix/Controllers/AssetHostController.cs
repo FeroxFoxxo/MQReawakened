@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Extensions;
-using Server.Base.Core.Models;
 using Server.Base.Network.Enums;
 using Web.AssetBundles.BundleFix.Data;
 using Web.AssetBundles.BundleFix.Header;
@@ -13,6 +13,7 @@ using Web.AssetBundles.BundleFix.Metadata;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Models;
 using Web.AssetBundles.Services;
+using Web.Launcher.Models;
 using FileIO = System.IO.File;
 
 namespace Web.AssetBundles.BundleFix.Controllers;
@@ -23,12 +24,14 @@ public class AssetHostController : Controller
     private readonly BuildAssetList _buildAssetList;
     private readonly BuildXmlFiles _buildXmlList;
     private readonly InternalRwConfig _internalRwConfig;
+    private readonly LauncherRwConfig _launcherRwConfig;
     private readonly AssetBundleRConfig _config;
     private readonly ILogger<AssetHostController> _logger;
     private readonly ReplaceCaches _replaceCaches;
 
     public AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
-        AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches, InternalRwConfig internalRwConfig)
+        AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches,
+        InternalRwConfig internalRwConfig, LauncherRwConfig launcherRwConfig)
     {
         _buildAssetList = buildAssetList;
         _logger = logger;
@@ -36,6 +39,7 @@ public class AssetHostController : Controller
         _buildXmlList = buildXmlList;
         _replaceCaches = replaceCaches;
         _internalRwConfig = internalRwConfig;
+        _launcherRwConfig = launcherRwConfig;
     }
 
     [HttpGet]
@@ -93,7 +97,7 @@ public class AssetHostController : Controller
     private string WriteFixedBundle(InternalAssetInfo asset)
     {
         var assetName = asset.Name.Trim();
-
+        
         var baseDirectory =
             _config.DebugInfo
                 ? Path.Join(_config.BundleSaveDirectory, assetName)
@@ -107,9 +111,12 @@ public class AssetHostController : Controller
 
         if (!FileIO.Exists(bundlePath) || _config.AlwaysRecreateBundle)
         {
-            _logger.LogInformation("Creating Bundle {Name} [{Type}]", assetName,
-                _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST");
-
+            _logger.LogInformation(
+                "Creating Bundle {Name} from {Time} [{Type}]",
+                assetName,
+                DateTime.UnixEpoch.AddSeconds(asset.CacheTime).ToShortDateString(),
+                _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST"
+            );
 
             using var stream = new MemoryStream();
             var writer = new EndianWriter(stream, EndianType.BigEndian);
@@ -117,12 +124,16 @@ public class AssetHostController : Controller
             var unityVersion = new UnityVersion(asset.UnityVersion);
             var fileName = Path.GetFileName(asset.Path);
 
-            var data = new FixedAssetFile(_config.UseCacheReplacementScheme ? _config.LocalAssetCache : asset.Path);
-            var metadata = new BundleMetadata(fileName, data.FileSize);
-            var header = new RawBundleHeader(data.FileSize, metadata.MetadataSize, unityVersion);
+            var path = _config.UseCacheReplacementScheme ? _config.TestCache2014
+                : asset.Path;
 
-            header.FixHeader((uint)header.GetEndianSize());
+            var data = new FixedAssetFile(path);
+
+            var metadata = new BundleMetadata(fileName, data.FileSize);
             metadata.FixMetadata((uint)metadata.GetEndianSize());
+
+            var header = new RawBundleHeader(data.FileSize, metadata.MetadataSize, unityVersion);
+            header.FixHeader((uint)header.GetEndianSize());
 
             header.Write(writer);
             metadata.Write(writer);

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Models;
-using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Network.Extensions;

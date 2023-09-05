@@ -25,7 +25,7 @@ public class LauncherRConfig : IRConfig
 
     public bool OverwriteGameConfig { get; }
     public string TimeFilter { get; }
-    public string OldClientLastUpdate { get; }
+    public string MajorClientUpdate { get; }
 
     public bool Fullscreen { get; }
     public bool OnGameClosePopup { get; }
@@ -52,7 +52,7 @@ public class LauncherRConfig : IRConfig
         CacheExpiration = 0;
 
         TimeFilter = "yyyy-MM-dd_HH-mm-ss";
-        OldClientLastUpdate = "2013-11-01_12-00-00";
+        MajorClientUpdate = "2013-11-01_12-00-00";
 
         Fullscreen = false;
         OnGameClosePopup = false;

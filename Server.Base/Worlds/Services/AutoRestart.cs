@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
-using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
