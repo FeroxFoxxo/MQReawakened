@@ -46,7 +46,7 @@ public class AssetBundleRConfig : IRConfig
         LocalAssetsDirectory = InternalDirectory.GetDirectory("Assets/LocalAssets");
         
         AlwaysRecreateBundle = true;
-        DebugInfo = true;
+        DebugInfo = false;
         ShouldLogAssets = false;
         KillOnBundleRetry = true;
 
