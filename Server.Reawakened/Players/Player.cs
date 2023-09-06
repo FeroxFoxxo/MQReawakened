@@ -54,9 +54,10 @@ public class Player : INetStateData
     {
         this.RemoveFromGroup();
 
+        PlayerHandler.RemovePlayer(this);
+
         if (Character != null)
         {
-            PlayerHandler.RemovePlayer(this);
             foreach (var player in PlayerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
                 player.SendXt("fz", Character.Data.CharacterName);
         }

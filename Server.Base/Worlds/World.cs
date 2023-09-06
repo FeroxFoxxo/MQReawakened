@@ -73,21 +73,6 @@ public class World
 
     public void Save(bool message, bool permitBackgroundWrite)
     {
-        if (Saving)
-            return;
-
-        _handler.Pause();
-
-        WaitForWriteCompletion();
-
-        Saving = true;
-
-        _diskWriteHandle.Reset();
-
-        _logger.LogInformation("Saving...");
-
-        var stopWatch = Stopwatch.StartNew();
-
         try
         {
             _sink.InvokeWorldSave(new WorldSaveEventArgs(message));
@@ -96,17 +81,6 @@ public class World
         {
             _logger.LogCritical(ex, "FATAL: Exception in world save");
         }
-
-        stopWatch.Stop();
-
-        Saving = false;
-
-        if (!permitBackgroundWrite)
-            NotifyDiskWriteComplete();
-
-        _logger.LogInformation("Save finished in {SECONDS} seconds.", stopWatch.Elapsed.TotalSeconds);
-
-        _handler.Resume();
     }
 
     public void Broadcast(string message)

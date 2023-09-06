@@ -6,7 +6,7 @@ public class PlayerHandler
 {
     public UserInfoHandler UserInfoHandler;
     public List<Player> PlayerList { get; }
-    private readonly object _lock;
+    public readonly object _lock;
 
     public PlayerHandler()
     {

@@ -45,10 +45,10 @@ public class AssetBundleRConfig : IRConfig
         RemovedDuplicateDirectory = InternalDirectory.GetDirectory("Assets/RemovedDuplicates");
         LocalAssetsDirectory = InternalDirectory.GetDirectory("Assets/LocalAssets");
         
-        AlwaysRecreateBundle = true;
+        AlwaysRecreateBundle = false;
         DebugInfo = false;
         ShouldLogAssets = false;
-        KillOnBundleRetry = true;
+        KillOnBundleRetry = false;
 
         SaveBundleExtension = "bundleGen";
         StoredAssetDict = "StoredAssets.xml";

@@ -1,8 +1,11 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Enums;
+using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
+using Server.Base.Worlds;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
@@ -22,9 +25,10 @@ public class ChatCommands : IService
     private readonly ILogger<ServerConsole> _logger;
     private readonly WorldGraph _worldGraph;
     private readonly WorldHandler _worldHandler;
+    private readonly World _world;
 
     public ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
-        WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime)
+        WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime, World world)
     {
         _itemCatalog = itemCatalog;
         _config = config;
@@ -32,6 +36,7 @@ public class ChatCommands : IService
         _worldHandler = worldHandler;
         _worldGraph = worldGraph;
         _appLifetime = appLifetime;
+        _world = world;
         _commands = new Dictionary<string, ChatCommand>();
     }
 
@@ -44,6 +49,7 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
+        AddCommand(new ChatCommand("save", "", SaveLevel));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
@@ -121,6 +127,12 @@ public class ChatCommands : IService
         var newLevel = Convert.ToInt32(args[1]);
         player.LevelUp(newLevel, _logger);
 
+        return true;
+    }
+
+    private bool SaveLevel(Player player, string[] args)
+    {
+        _world.Save(false, true);
         return true;
     }
 

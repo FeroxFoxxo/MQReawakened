@@ -7,6 +7,7 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Services;
+using System.Security.Principal;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Extensions;
@@ -54,21 +55,31 @@ public static class PlayerExtensions
     }
 
     // Player Id is unused
-    public static void SendUserEnterDataTo(this Player send, Player receive, Account account) =>
+    public static void SendUserEnterDataTo(this Player send, Player receive, Account account)
+    {
+        if (send == null || receive == null || account == null) return;
+
         receive.NetState.SendXml("uER",
             $"<u i='{send.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{send.UserId}'>" +
             $"<n>{account.Username}</n>" +
             "</u>"
         );
+    }
 
-    public static void SendUserGoneDataTo(this Player send, Player receive) =>
+    public static void SendUserGoneDataTo(this Player send, Player receive)
+    {
+        if (send == null || receive == null) return;
+
         receive.NetState.SendXml("userGone",
             $"<user id='{send.UserId}'></user>"
         );
+    }
 
     public static void SendCharacterInfoDataTo(this Player send, Player receive, CharacterInfoType type,
         LevelInfo levelInfo)
     {
+        if (send == null || receive == null) return;
+
         var character = send.Character;
 
         var info = type switch
