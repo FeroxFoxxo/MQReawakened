@@ -1,8 +1,8 @@
 ﻿using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Models;
 using Server.Base.Accounts.Services;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Extensions;
-using Server.Base.Core.Models;
 using Server.Base.Network;
 using System.Net;
 

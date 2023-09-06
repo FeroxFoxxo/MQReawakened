@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Models;
-using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Base.Network.Services;
 using Server.Reawakened.Network.Extensions;
@@ -55,9 +54,10 @@ public class Player : INetStateData
     {
         this.RemoveFromGroup();
 
+        PlayerHandler.RemovePlayer(this);
+
         if (Character != null)
         {
-            PlayerHandler.RemovePlayer(this);
             foreach (var player in PlayerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
                 player.SendXt("fz", Character.Data.CharacterName);
         }

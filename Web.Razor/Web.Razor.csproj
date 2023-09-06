@@ -8,6 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <None Include="wwwroot\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
         <ProjectReference Include="..\Server.Reawakened\Server.Reawakened.csproj" />
         <ProjectReference Include="..\Server.Web\Server.Web.csproj" />

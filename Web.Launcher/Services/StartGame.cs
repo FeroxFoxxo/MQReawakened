@@ -2,10 +2,10 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
-using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Network.Enums;
@@ -130,15 +130,13 @@ public class StartGame : IService
 
         var lastUpdate = DateTime.ParseExact(CurrentVersion.game.lastUpdate, _lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
-        var lastOldClientUpdate = DateTime.ParseExact(_lConfig.OldClientLastUpdate, _lConfig.TimeFilter,
+        var majorClientUpdate = DateTime.ParseExact(_lConfig.MajorClientUpdate, _lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
 
-        _lWConfig.Is2014Client = lastUpdate > lastOldClientUpdate;
-
-        if (!_lWConfig.Is2014Client)
-            _directory = new DirectoryInfo(_directory).Parent?.FullName;
-
+        _lWConfig.Is2014Client = lastUpdate > majorClientUpdate;
+        
         _lWConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
+        _lWConfig.MajorClientUpdate = majorClientUpdate.ToUnixTimestamp();
 
         if (string.IsNullOrEmpty(_lWConfig.AnalyticsApiKey))
         {
@@ -269,7 +267,7 @@ public class StartGame : IService
         { $"{header}.unity.url.crisp.host", $"{_lConfig.ServerBaseUrl1}/Chat/" },
         { "asset.log", _lConfig.LogAssets ? "true" : "false" },
         { "asset.disableversioning", _lConfig.DisableVersions ? "true" : "false" },
-        { "asset.jboss", $"{_lConfig.ServerBaseUrl1}/Apps/" },
+        { "asset.jboss", $"{_lConfig.ServerBaseUrl1}/Apps{(_lWConfig.Is2014Client ? "/" : string.Empty)}" },
         { "asset.bundle", $"{_lConfig.ServerBaseUrl1}/Client/Bundles" },
         { "asset.audio", $"{_lConfig.ServerBaseUrl1}/Client/Audio" },
         { "logout.url", $"{_lConfig.ServerBaseUrl1}/Logout" },

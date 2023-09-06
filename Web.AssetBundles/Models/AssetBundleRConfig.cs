@@ -34,9 +34,6 @@ public class AssetBundleRConfig : IRConfig
     public string[] AssetModifiers { get; }
     public Dictionary<string, string> AssetRenames { get; }
 
-    public bool UseCacheReplacementScheme { get; }
-
-    public string LocalAssetCache { get; }
     public bool KillOnBundleRetry { get; }
 
     public AssetBundleRConfig()
@@ -47,14 +44,11 @@ public class AssetBundleRConfig : IRConfig
         BundleSaveDirectory = InternalDirectory.GetDirectory("Assets/Bundles");
         RemovedDuplicateDirectory = InternalDirectory.GetDirectory("Assets/RemovedDuplicates");
         LocalAssetsDirectory = InternalDirectory.GetDirectory("Assets/LocalAssets");
-        LocalAssetCache = Path.Combine(InternalDirectory.GetBaseDirectory(), "Assets/TestAssetCache.cache");
-
-        UseCacheReplacementScheme = true;
-
-        AlwaysRecreateBundle = true;
-        DebugInfo = true;
+        
+        AlwaysRecreateBundle = false;
+        DebugInfo = false;
         ShouldLogAssets = false;
-        KillOnBundleRetry = true;
+        KillOnBundleRetry = false;
 
         SaveBundleExtension = "bundleGen";
         StoredAssetDict = "StoredAssets.xml";

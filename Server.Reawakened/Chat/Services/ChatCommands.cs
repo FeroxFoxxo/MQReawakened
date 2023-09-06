@@ -1,8 +1,11 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Enums;
+using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
+using Server.Base.Worlds;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
@@ -22,9 +25,10 @@ public class ChatCommands : IService
     private readonly ILogger<ServerConsole> _logger;
     private readonly WorldGraph _worldGraph;
     private readonly WorldHandler _worldHandler;
+    private readonly World _world;
 
     public ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
-        WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime)
+        WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime, World world)
     {
         _itemCatalog = itemCatalog;
         _config = config;
@@ -32,6 +36,7 @@ public class ChatCommands : IService
         _worldHandler = worldHandler;
         _worldGraph = worldGraph;
         _appLifetime = appLifetime;
+        _world = world;
         _commands = new Dictionary<string, ChatCommand>();
     }
 
@@ -50,6 +55,7 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
         AddCommand(new ChatCommand("changeName", "[name] [name2] [name3]", ChangeName));
         AddCommand(new ChatCommand("badgePoints", "[amount]", BadgePoints));
+        AddCommand(new ChatCommand("save", "", SaveLevel));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
@@ -108,26 +114,26 @@ public class ChatCommands : IService
                 amount = 1;
         }
 
-        var glider = _itemCatalog.GetItemFromId(394); // Glider.
-        var grapplingHook = _itemCatalog.GetItemFromId(395); // Grappling Hook.
-        var healingStaff = _itemCatalog.GetItemFromId(396); // Healing Staff.
-        var woodenSlingshot = _itemCatalog.GetItemFromId(397); // Wooden Slingshot.
-        var kernelBlaster = _itemCatalog.GetItemFromId(453); // Kernel Blaster.
-        var woodenSword = _itemCatalog.GetItemFromId(2978); // Training Cadet Wooden Sword.
-        var oakHelmet = _itemCatalog.GetItemFromId(2883); // Oak Plank Helmet.
-        var oakArmor = _itemCatalog.GetItemFromId(2886); // Oak Plank Armor.
-        var oakPants = _itemCatalog.GetItemFromId(2880); // Oak Plank Pants.
-        var burglarMask = _itemCatalog.GetItemFromId(1232); // Cat Burglar Mask.
-        var superMonkey = _itemCatalog.GetItemFromId(3152); // Super Monkey Costume Pack.
-        var boomBomb = _itemCatalog.GetItemFromId(3053); // Boom Bomb Construction Kit.
-        var warriorCostume = _itemCatalog.GetItemFromId(3023); // LadyBug Warrior Costume Pack.
-        var boomBug = _itemCatalog.GetItemFromId(3022); // Boom Bug Costume Pack.
-        var acePilot = _itemCatalog.GetItemFromId(2972); // Ace Pilot Uniform Pack.
-        var crimsonDragon = _itemCatalog.GetItemFromId(2973); // Crimson Dragon Pack.
-        var bananaBox = _itemCatalog.GetItemFromId(2923); // Banana Box.
-        var invisibleBomb = _itemCatalog.GetItemFromId(585); // Invisibility Bomb.
-        var redApple = _itemCatalog.GetItemFromId(1568); // Shiny Red Apple.
-        var healingPotion = _itemCatalog.GetItemFromId(1704); // Healing Potion.
+        var glider = _itemCatalog.GetItemFromId(394);
+        var grapplingHook = _itemCatalog.GetItemFromId(395);
+        var healingStaff = _itemCatalog.GetItemFromId(396);
+        var woodenSlingshot = _itemCatalog.GetItemFromId(397);
+        var kernelBlaster = _itemCatalog.GetItemFromId(453);
+        var woodenSword = _itemCatalog.GetItemFromId(2978);
+        var oakHelmet = _itemCatalog.GetItemFromId(2883);
+        var oakArmor = _itemCatalog.GetItemFromId(2886);
+        var oakPants = _itemCatalog.GetItemFromId(2880);
+        var burglarMask = _itemCatalog.GetItemFromId(1232);
+        var superMonkey = _itemCatalog.GetItemFromId(3152);
+        var boomBomb = _itemCatalog.GetItemFromId(3053);
+        var warriorCostume = _itemCatalog.GetItemFromId(3023);
+        var boomBug = _itemCatalog.GetItemFromId(3022);
+        var acePilot = _itemCatalog.GetItemFromId(2972);
+        var crimsonDragon = _itemCatalog.GetItemFromId(2973);
+        var bananaBox = _itemCatalog.GetItemFromId(2923);
+        var invisibleBomb = _itemCatalog.GetItemFromId(585);
+        var redApple = _itemCatalog.GetItemFromId(1568);
+        var healingPotion = _itemCatalog.GetItemFromId(1704);
 
         var items = new List<ItemDescription>
         {
@@ -239,13 +245,11 @@ public class ChatCommands : IService
             return false;
         }
 
-        var name = args[1].ToLower(); // Convert to lowercase
-        var name2 = args[2].ToLower(); // Convert to lowercase
+        var name = args[1].ToLower();
+        var name2 = args[2].ToLower();
 
-        // Convert to lowercase, handle the case when args[3] is missing
         var name3 = args.Length > 3 ? args[3].ToLower() : "";
 
-        // Ensure the first letter of name and name2 are uppercase
         if (name.Length > 0)
             name = char.ToUpper(name[0]) + name[1..];
 
@@ -296,6 +300,12 @@ public class ChatCommands : IService
         var newLevel = Convert.ToInt32(args[1]);
         player.LevelUp(newLevel, _logger);
 
+        return true;
+    }
+
+    private bool SaveLevel(Player player, string[] args)
+    {
+        _world.Save(false, true);
         return true;
     }
 

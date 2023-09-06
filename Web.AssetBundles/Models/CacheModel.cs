@@ -37,7 +37,8 @@ public class CacheModel
             }
             else
             {
-                UnknownCaches.Add(cache.Key, cache.Value);
+                if (!UnknownCaches.ContainsKey(cache.Key))
+                    UnknownCaches.Add(cache.Key, cache.Value);
             }
         }
 

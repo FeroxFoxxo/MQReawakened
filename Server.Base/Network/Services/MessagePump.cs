@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Events.Arguments;
-using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Network.Helpers;

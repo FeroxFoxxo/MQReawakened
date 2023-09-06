@@ -2,7 +2,7 @@
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 
-namespace Server.Base.Core.Models;
+namespace Server.Base.Core.Configs;
 
 public class InternalRConfig : IRConfig
 {
