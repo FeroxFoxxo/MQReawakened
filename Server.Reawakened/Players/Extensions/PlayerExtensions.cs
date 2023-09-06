@@ -43,10 +43,30 @@ public static class PlayerExtensions
         player.SendCashUpdate();
     }
 
+     public static void AddMCash(this Player player, int collectedMCash)
+    {
+        var charData = player.Character.Data;
+        charData.NCash += collectedMCash;
+        player.SendCashUpdate();
+    }
+
+    public static void AddPoints(this Player player, int abilityPoints)
+    {
+        var charData = player.Character.Data;
+        charData.BadgePoints += abilityPoints;
+        player.SendPointsUpdate();
+    }
+
     public static void SendCashUpdate(this Player player)
     {
         var charData = player.Character.Data;
         player.SendXt("ca", charData.Cash, charData.NCash);
+    }
+
+     public static void SendPointsUpdate(this Player player)
+    {
+        var charData = player.Character.Data;
+        player.SendXt("ca", charData.BadgePoints);
     }
 
     public static void SendLevelChange(this Player player, WorldHandler worldHandler, WorldGraphXML worldGraph)

@@ -49,6 +49,12 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
+        AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
+        AddCommand(new ChatCommand("bananas", "[bananaAmount]", Cash));
+        AddCommand(new ChatCommand("cash", "[cashAmount]", MCash));
+        AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
+        AddCommand(new ChatCommand("changeName", "[name] [name2] [name3]", ChangeName));
+        AddCommand(new ChatCommand("badgePoints", "[amount]", BadgePoints));
         AddCommand(new ChatCommand("save", "", SaveLevel));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
@@ -90,6 +96,173 @@ public class ChatCommands : IService
     }
 
     public void AddCommand(ChatCommand command) => _commands.Add(command.Name, command);
+
+    public bool ItemKit(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        if (args.Length is < 1 or > 2)
+            return false;
+
+        var amount = 1;
+
+        if (args.Length == 2)
+        {
+            amount = Convert.ToInt32(args[1]);
+
+            if (amount <= 0)
+                amount = 1;
+        }
+
+        var glider = _itemCatalog.GetItemFromId(394);
+        var grapplingHook = _itemCatalog.GetItemFromId(395);
+        var healingStaff = _itemCatalog.GetItemFromId(396);
+        var woodenSlingshot = _itemCatalog.GetItemFromId(397);
+        var kernelBlaster = _itemCatalog.GetItemFromId(453);
+        var woodenSword = _itemCatalog.GetItemFromId(2978);
+        var oakHelmet = _itemCatalog.GetItemFromId(2883);
+        var oakArmor = _itemCatalog.GetItemFromId(2886);
+        var oakPants = _itemCatalog.GetItemFromId(2880);
+        var burglarMask = _itemCatalog.GetItemFromId(1232);
+        var superMonkey = _itemCatalog.GetItemFromId(3152);
+        var boomBomb = _itemCatalog.GetItemFromId(3053);
+        var warriorCostume = _itemCatalog.GetItemFromId(3023);
+        var boomBug = _itemCatalog.GetItemFromId(3022);
+        var acePilot = _itemCatalog.GetItemFromId(2972);
+        var crimsonDragon = _itemCatalog.GetItemFromId(2973);
+        var bananaBox = _itemCatalog.GetItemFromId(2923);
+        var invisibleBomb = _itemCatalog.GetItemFromId(585);
+        var redApple = _itemCatalog.GetItemFromId(1568);
+        var healingPotion = _itemCatalog.GetItemFromId(1704);
+
+        var items = new List<ItemDescription>
+        {
+            glider,
+            grapplingHook,
+            healingStaff,
+            woodenSlingshot,
+            kernelBlaster,
+            woodenSword,
+            oakHelmet,
+            oakArmor,
+            oakPants,
+            burglarMask,
+            superMonkey,
+            boomBomb,
+            warriorCostume,
+            boomBug,
+            acePilot,
+            crimsonDragon,
+            bananaBox,
+            invisibleBomb,
+            redApple,
+            healingPotion
+        };
+
+        const int totalCount = 98;
+
+        for (var i = 0; i < totalCount; i++)
+        {
+            items.Add(healingStaff);
+            items.Add(invisibleBomb);
+            items.Add(redApple);
+            items.Add(healingPotion);
+        }
+
+        character.AddKit(items, amount);
+
+        player.SendUpdatedInventory(false);
+
+        Log(
+            amount > 1
+                ? $"{character.Data.CharacterName} received {amount} item kits!"
+                : $"{character.Data.CharacterName} received {amount} item kit!", player
+        );
+
+        return true;
+    }
+
+    public static bool Cash(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        var cashAmount = Convert.ToInt32(args[1]);
+
+        player.AddBananas(cashAmount);
+
+        Log($"{character.Data.CharacterName} received {cashAmount} bananas!", player);
+
+        return true;
+    }
+
+    public static bool MCash(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        var cashAmount = Convert.ToInt32(args[1]);
+
+        player.AddMCash(cashAmount);
+
+        Log($"{character.Data.CharacterName} received {cashAmount} Monkey Cash!", player);
+
+        return true;
+    }
+
+    public static bool BadgePoints(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        var amount = Convert.ToInt32(args[1]);
+
+        player.AddPoints(amount);
+
+        Log($"{character.Data.CharacterName} received {amount} badge points!", player);
+
+        return true;
+    }
+
+    public static bool CashKit(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        const int cashKitAmount = 100000;
+
+        player.AddBananas(cashKitAmount);
+        player.AddMCash(cashKitAmount);
+
+        Log($"{character.Data.CharacterName} received {cashKitAmount} Bananas & Monkey Cash!", player);
+
+        return true;
+    }
+
+    public static bool ChangeName(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        if (args.Length < 3)
+        {
+            Log("Error: Invalid Input!", player);
+            return false;
+        }
+
+        var name = args[1].ToLower();
+        var name2 = args[2].ToLower();
+
+        var name3 = args.Length > 3 ? args[3].ToLower() : "";
+
+        if (name.Length > 0)
+            name = char.ToUpper(name[0]) + name[1..];
+
+        if (name2.Length > 0)
+            name2 = char.ToUpper(name2[0]) + name2[1..];
+
+        character.Data.CharacterName = name + " " + name2 + name3;
+
+        Log($"You have changed your monkey's name to {character.Data.CharacterName}!", player);
+        Log("This change will apply only once you've logged out.", player);
+
+        return true;
+    }
 
     private bool ChangeLevel(Player player, string[] args)
     {
