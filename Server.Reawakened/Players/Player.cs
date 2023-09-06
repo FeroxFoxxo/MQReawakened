@@ -57,10 +57,8 @@ public class Player : INetStateData
         PlayerHandler.RemovePlayer(this);
 
         if (Character != null)
-        {
             foreach (var player in PlayerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
                 player.SendXt("fz", Character.Data.CharacterName);
-        }
 
         if (Room == null)
             return;
@@ -68,12 +66,12 @@ public class Player : INetStateData
         if (!Room.LevelInfo.IsValid())
             return;
 
+        Room.DumpPlayerToLobby(this);
+
         var roomName = Room.LevelInfo.Name;
 
         if (!string.IsNullOrEmpty(roomName))
             logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
-
-        Room.DumpPlayerToLobby(this);
 
         Character = null;
     }
