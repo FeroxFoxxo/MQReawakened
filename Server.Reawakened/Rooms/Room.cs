@@ -152,6 +152,26 @@ public class Room : Timer
         }
     }
 
+    public void RemoveClient(Player player)
+    {
+        Players.Remove(player.GameObjectId);
+        _gameObjectIds.Remove(player.GameObjectId);
+
+        if (LevelInfo.LevelId <= 0)
+            return;
+
+        if (Players.Count != 0)
+        {
+            foreach (var currentPlayer in Players.Values)
+                player.SendUserGoneDataTo(currentPlayer);
+
+            return;
+        }
+
+        _level.Rooms.Remove(_roomId);
+        Stop();
+    }
+
     public void SendCharacterInfo(Player player)
     {
         // WHERE TO SPAWN
@@ -218,29 +238,9 @@ public class Room : Timer
     {
         var room = _worldHandler.GetRoomFromLevelId(-1, player);
         player.JoinRoom(room, out _);
-        RemovePlayer(player);
+        RemoveClient(player);
     }
-
-    public void RemovePlayer(Player player)
-    {
-        Players.Remove(player.GameObjectId);
-        _gameObjectIds.Remove(player.GameObjectId);
-
-        if (LevelInfo.LevelId <= 0)
-            return;
-
-        if (Players.Count != 0)
-        {
-            foreach (var currentPlayer in Players.Values)
-                player.SendUserGoneDataTo(currentPlayer);
-
-            return;
-        }
-
-        _level.Rooms.Remove(_roomId);
-        Stop();
-    }
-
+    
     public string GetRoomName() =>
         $"{LevelInfo.LevelId}_{_roomId}";
 }

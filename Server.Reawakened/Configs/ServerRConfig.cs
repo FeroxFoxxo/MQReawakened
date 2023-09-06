@@ -45,7 +45,7 @@ public class ServerRConfig : IRConfig
         RoomTickRate = 32;
 
         RandomKeyLength = 24;
-        PlayerCap = 20;
+        PlayerCap = 200;
         ReservedNameCount = 4;
         MaxCharacterCount = 3;
 

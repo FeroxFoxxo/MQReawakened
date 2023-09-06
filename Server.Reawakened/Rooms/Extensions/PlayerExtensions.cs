@@ -7,7 +7,6 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Services;
-using System.Security.Principal;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Extensions;
@@ -16,7 +15,7 @@ public static class PlayerExtensions
 {
     public static void JoinRoom(this Player player, Room room, out JoinReason reason)
     {
-        player.Room?.RemovePlayer(player);
+        player.Room?.RemoveClient(player);
         player.Room = room;
         player.Room.AddClient(player, out reason);
     }
