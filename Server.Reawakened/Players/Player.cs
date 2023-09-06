@@ -15,7 +15,6 @@ namespace Server.Reawakened.Players;
 
 public class Player : INetStateData
 {
-
     public PlayerHandler PlayerHandler { get; }
     public NetState NetState { get; }
     public UserInfo UserInfo { get; }
