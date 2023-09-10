@@ -1,10 +1,10 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
 using Server.Base.Worlds;
+using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
@@ -24,10 +24,10 @@ public class ChatCommands : IService
     private readonly ILogger<ServerConsole> _logger;
     private readonly WorldGraph _worldGraph;
     private readonly WorldHandler _worldHandler;
-    private readonly World _world;
+    private readonly AutoSave _saves;
 
     public ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
-        WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime, World world)
+        WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves)
     {
         _itemCatalog = itemCatalog;
         _config = config;
@@ -35,7 +35,7 @@ public class ChatCommands : IService
         _worldHandler = worldHandler;
         _worldGraph = worldGraph;
         _appLifetime = appLifetime;
-        _world = world;
+        _saves = saves;
         _commands = new Dictionary<string, ChatCommand>();
     }
 
@@ -113,14 +113,14 @@ public class ChatCommands : IService
                 amount = 1;
         }
 
-        var items = new List<ItemDescription>();
-
-        foreach (var itemId in _config.SingleItemKit)
-            items.Add(_itemCatalog.GetItemFromId(itemId));
+        var items = _config.SingleItemKit
+            .Select(itemId => _itemCatalog.GetItemFromId(itemId))
+            .ToList();
 
         foreach (var itemId in _config.StackedItemKit)
         {
             var stackedItem = _itemCatalog.GetItemFromId(itemId);
+
             for (var i = 0; i < _config.AmountToStack; i++)
                 items.Add(stackedItem);
         }
@@ -255,7 +255,7 @@ public class ChatCommands : IService
 
     private bool SaveLevel(Player player, string[] args)
     {
-        _world.Save(false, true);
+        _saves.Save();
         return true;
     }
 
