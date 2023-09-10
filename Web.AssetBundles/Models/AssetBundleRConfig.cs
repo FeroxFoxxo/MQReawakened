@@ -35,6 +35,7 @@ public class AssetBundleRConfig : IRConfig
     public Dictionary<string, string> AssetRenames { get; }
 
     public bool KillOnBundleRetry { get; }
+    public bool LogAssetLoadInfo { get; }
 
     public AssetBundleRConfig()
     {
@@ -95,5 +96,7 @@ public class AssetBundleRConfig : IRConfig
         {
             "vendor_catalogs"
         };
+
+        LogAssetLoadInfo = false;
     }
 }

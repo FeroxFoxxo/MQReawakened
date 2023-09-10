@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
+using Server.Base.Core.Extensions;
 using Server.Base.Worlds.EventArguments;
 using System.Diagnostics;
 
@@ -9,16 +11,18 @@ public class World
 {
     private readonly ILogger<World> _logger;
     private readonly EventSink _sink;
+    private readonly InternalRConfig _config;
 
     public bool Saving { get; private set; }
     public bool Loaded { get; private set; }
     public bool Loading { get; private set; }
     public bool Crashed { get; private set; }
 
-    public World(ILogger<World> logger, EventSink sink)
+    public World(ILogger<World> logger, EventSink sink, InternalRConfig config)
     {
         _logger = logger;
         _sink = sink;
+        _config = config;
 
         Saving = false;
         Loaded = false;
@@ -58,6 +62,8 @@ public class World
 
     public void Save(bool message, bool _)
     {
+        InternalDirectory.CreateDirectory(_config.SaveDirectory);
+
         try
         {
             _sink.InvokeWorldSave(new WorldSaveEventArgs(message));

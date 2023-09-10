@@ -78,7 +78,8 @@ public class AssetHostController : Controller
                     $"Could not find: {name}. Did you mean:\n{string.Join('\n', _buildXmlList.XmlFiles.Keys)}")
             : WriteFixedBundle(asset);
 
-        _logger.LogDebug("Getting asset {Name} from {File} ({Folder})", asset.Name, path, folder);
+        if (_config.LogAssetLoadInfo)
+            _logger.LogDebug("Getting asset {Name} from {File} ({Folder})", asset.Name, path, folder);
 
         return new FileContentResult(FileIO.ReadAllBytes(path), "application/octet-stream");
     }
@@ -100,12 +101,13 @@ public class AssetHostController : Controller
 
         if (!FileIO.Exists(bundlePath) || _config.AlwaysRecreateBundle)
         {
-            _logger.LogInformation(
-                "Creating Bundle {Name} from {Time} [{Type}]",
-                assetName,
-                DateTime.UnixEpoch.AddSeconds(asset.CacheTime).ToShortDateString(),
-                _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST"
-            );
+            if (_config.LogAssetLoadInfo)
+                _logger.LogInformation(
+                    "Creating Bundle {Name} from {Time} [{Type}]",
+                    assetName,
+                    DateTime.UnixEpoch.AddSeconds(asset.CacheTime).ToShortDateString(),
+                    _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST"
+                );
 
             using var stream = new MemoryStream();
             var writer = new EndianWriter(stream, EndianType.BigEndian);
