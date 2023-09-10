@@ -8,6 +8,7 @@ using Server.Base.Network.Enums;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Base.Worlds;
+using Server.Base.Worlds.Services;
 using static Server.Base.Core.Models.ConsoleCommand;
 
 namespace Server.Base.Core.Services;
@@ -22,10 +23,10 @@ public class ServerConsole : IService
     private readonly ServerHandler _handler;
     private readonly ILogger<ServerConsole> _logger;
     private readonly TimerThread _timerThread;
-    private readonly World _world;
+    private readonly AutoSave _saves;
 
     public ServerConsole(TimerThread timerThread, ServerHandler handler, ILogger<ServerConsole> logger,
-        IHostApplicationLifetime appLifetime, InternalRConfig rConfig, InternalRwConfig rwConfig, World world)
+        IHostApplicationLifetime appLifetime, InternalRConfig rConfig, InternalRwConfig rwConfig, AutoSave saves)
     {
         _timerThread = timerThread;
         _handler = handler;
@@ -33,7 +34,7 @@ public class ServerConsole : IService
         _appLifetime = appLifetime;
         _rConfig = rConfig;
         _rwConfig = rwConfig;
-        _world = world;
+        _saves = saves;
 
         _commands = new Dictionary<string, ConsoleCommand>();
 
@@ -69,7 +70,7 @@ public class ServerConsole : IService
             "save",
             "Forces a save.",
             NetworkType.Server,
-            _ => _world.Save(true, false)
+            _ => _saves.Save()
         );
 
         AddCommand(
