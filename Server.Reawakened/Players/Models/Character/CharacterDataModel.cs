@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Helpers;
+using System.Globalization;
 
 namespace Server.Reawakened.Players.Models.Character;
 
@@ -108,6 +109,8 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(BuildIdolCountString());
         sb.Append(BuildStatsDiscoveredString());
 
+        _ = new CharacterData(sb.ToString());
+
         return sb.ToString();
     }
 
@@ -145,7 +148,7 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(string.Empty);
         sb.Append(CurrentLife);
         sb.Append(GlobalLevel);
-        sb.Append(InteractionStatus);
+        sb.Append((int)InteractionStatus);
         sb.Append(Reputation);
         sb.Append(ReputationForCurrentLevel);
         sb.Append(ReputationForNextLevel);
