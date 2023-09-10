@@ -31,22 +31,17 @@ public class Login : SystemProtocol
         {
             var account = NetState.Get<Account>();
 
-            List<Player> loggedIn;
+            if (!PlayerHandler.PlayerList.Any(p => p.UserId == account.UserId))
+            {
+                UserInfoHandler.InitializeUser(NetState);
+                SendXml(
+                    "logOK",
+                    $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />"
+                );
+                return;
+            }
 
-            lock (PlayerHandler.Lock)
-                loggedIn = PlayerHandler.PlayerList.Where(p => p.UserId == account.UserId).ToList();
-
-            foreach(var player in loggedIn)
-                player.Remove(Logger);
-
-            UserInfoHandler.InitializeUser(NetState);
-
-            SendXml(
-                "logOK",
-                $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />"
-            );
-
-            return;
+            reason = AlrReason.PlayerLoggedIn;
         }
 
         SendXml("logKO", $"<login e='{reason.GetErrorValue()}' />");

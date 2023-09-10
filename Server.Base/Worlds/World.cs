@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Events;
-using Server.Base.Network.Services;
 using Server.Base.Worlds.EventArguments;
 using System.Diagnostics;
 
@@ -8,9 +7,6 @@ namespace Server.Base.Worlds;
 
 public class World
 {
-    private readonly ManualResetEvent _diskWriteHandle;
-
-    private readonly NetStateHandler _handler;
     private readonly ILogger<World> _logger;
     private readonly EventSink _sink;
 
@@ -19,18 +15,15 @@ public class World
     public bool Loading { get; private set; }
     public bool Crashed { get; private set; }
 
-    public World(ILogger<World> logger, EventSink sink, NetStateHandler handler)
+    public World(ILogger<World> logger, EventSink sink)
     {
         _logger = logger;
         _sink = sink;
-        _handler = handler;
 
         Saving = false;
         Loaded = false;
         Loading = false;
         Crashed = false;
-
-        _diskWriteHandle = new ManualResetEvent(true);
     }
 
     public void Load()
@@ -63,15 +56,7 @@ public class World
         _logger.LogInformation("Finished loading in {SECONDS} seconds.", stopWatch.Elapsed.TotalSeconds);
     }
 
-    public void WaitForWriteCompletion() => _diskWriteHandle.WaitOne();
-
-    public void NotifyDiskWriteComplete()
-    {
-        if (_diskWriteHandle.Set())
-            _logger.LogDebug("Closing save files.");
-    }
-
-    public void Save(bool message, bool permitBackgroundWrite)
+    public void Save(bool message, bool _)
     {
         try
         {

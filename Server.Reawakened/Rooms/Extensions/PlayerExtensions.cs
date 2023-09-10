@@ -53,32 +53,19 @@ public static class PlayerExtensions
         room.SendSyncEvent(collectedEvent);
     }
 
-    // Player Id is unused
-    public static void SendUserEnterDataTo(this Player send, Player receive, Account account)
-    {
-        if (send == null || receive == null || account == null) return;
-
-        receive.NetState.SendXml("uER",
+    public static void SendUserEnterDataTo(this Player send, Player receive, Account account) => receive.NetState.SendXml("uER",
             $"<u i='{send.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{send.UserId}'>" +
             $"<n>{account.Username}</n>" +
             "</u>"
         );
-    }
 
-    public static void SendUserGoneDataTo(this Player send, Player receive)
-    {
-        if (send == null || receive == null) return;
-
-        receive.NetState.SendXml("userGone",
+    public static void SendUserGoneDataTo(this Player send, Player receive) => receive.NetState.SendXml("userGone",
             $"<user id='{send.UserId}'></user>"
         );
-    }
 
     public static void SendCharacterInfoDataTo(this Player send, Player receive, CharacterInfoType type,
         LevelInfo levelInfo)
     {
-        if (send == null || receive == null) return;
-
         var character = send.Character;
 
         var info = type switch
