@@ -42,7 +42,7 @@ public class World
     public void NotifyDiskWriteComplete()
     {
         if (_diskWriteHandle.Set())
-            Console.WriteLine("Closing Save Files. ");
+            _logger.LogInformation("Closing Save Files. ");
     }
 
     public void WaitForWriteCompletion() => _diskWriteHandle.WaitOne();
