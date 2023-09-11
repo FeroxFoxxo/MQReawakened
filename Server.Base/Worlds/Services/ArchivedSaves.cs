@@ -16,8 +16,6 @@ public class ArchivedSaves : IService
     private readonly EventSink _eventSink;
     private readonly ILogger<ArchivedSaves> _logger;
 
-    private readonly Action<string> _pack;
-    private readonly Action<DateTime> _prune;
     private readonly ServerHandler _serverHandler;
     private readonly InternalRConfig _config;
 
@@ -36,9 +34,6 @@ public class ArchivedSaves : IService
         _sync = new AutoResetEvent(true);
         _tasks = new List<IAsyncResult>(config.BackupCapacity);
         _taskRoot = ((ICollection)_tasks).SyncRoot;
-
-        _pack = InternalPack;
-        _prune = InternalPrune;
     }
 
     public void Initialize()
@@ -162,65 +157,13 @@ public class ArchivedSaves : IService
         _logger.LogInformation("Packing done in {Seconds} seconds.", stopwatch.Elapsed.TotalSeconds);
     }
 
-    private void BeginPrune(DateTime threshold)
-    {
-        if (_serverHandler.HasCrashed || _serverHandler.IsClosing)
-        {
-            _prune.Invoke(threshold);
-            return;
-        }
-
-        _sync.Reset();
-
-        var asyncResult = _prune.BeginInvoke(threshold, EndPrune, threshold);
-
-        lock (_taskRoot)
-            _tasks.Add(asyncResult);
-    }
-
-    private void EndPrune(IAsyncResult asyncResult)
-    {
-        _prune.EndInvoke(asyncResult);
-
-        lock (_taskRoot)
-            _tasks.Remove(asyncResult);
-
-        _sync.Set();
-    }
-
-    private void BeginPack(string source)
-    {
-        if (_serverHandler.HasCrashed || _serverHandler.IsClosing)
-        {
-            _pack.Invoke(source);
-            return;
-        }
-
-        _sync.Reset();
-
-        var asyncResult = _pack.BeginInvoke(source, EndPack, source);
-
-        lock (_taskRoot)
-            _tasks.Add(asyncResult);
-    }
-
-    private void EndPack(IAsyncResult asyncResult)
-    {
-        _pack.EndInvoke(asyncResult);
-
-        lock (_taskRoot)
-            _tasks.Remove(asyncResult);
-
-        _sync.Set();
-    }
-
     public bool Process(string source)
     {
         if (_config.ExpireAge > TimeSpan.Zero)
-            BeginPrune(DateTime.UtcNow - _config.ExpireAge);
+            InternalPrune(DateTime.UtcNow - _config.ExpireAge);
 
         if (!string.IsNullOrWhiteSpace(source))
-            BeginPack(source);
+            InternalPack(source);
 
         return true;
     }

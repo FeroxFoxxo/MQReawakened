@@ -66,8 +66,10 @@ public class ChatCommands : IService
 
         if (name != null && _commands.TryGetValue(name, out var value))
         {
-            if (!value.CommandMethod(player, args))
-                Log($"Usage: {_config.ChatCommandStart}{value.Name} {value.Arguments}", player);
+            Log(
+                !value.CommandMethod(player, args)
+                    ? $"Usage: {_config.ChatCommandStart}{value.Name} {value.Arguments}"
+                    : "Successfully run command!", player);
         }
         else
         {

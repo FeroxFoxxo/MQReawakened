@@ -126,6 +126,9 @@ public class AutoSave : IService
 
                 try
                 {
+                    if (Directory.Exists(_config.TempBackupDirectory))
+                        Directory.Delete(_config.TempBackupDirectory);
+
                     dir.MoveTo(_config.TempBackupDirectory);
 
                     delete = !_saves.Process(_config.TempBackupDirectory);
