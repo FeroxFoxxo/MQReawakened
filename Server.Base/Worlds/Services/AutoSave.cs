@@ -44,10 +44,10 @@ public class AutoSave : IService
         timer.Stop();
     }
 
-    public void Save() => Save(false);
-
-    public void Save(bool permitBackgroundWrite)
+    public void Save()
     {
+        _world.WaitForWriteCompletion();
+
         try
         {
             if (!Backup())
@@ -58,7 +58,7 @@ public class AutoSave : IService
             _logger.LogError(e, "Automatic backup failed");
         }
 
-        _world.Save(true, permitBackgroundWrite);
+        _world.Save(true);
     }
 
     private void Tick()

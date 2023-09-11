@@ -12,6 +12,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
+using System.Text.RegularExpressions;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -195,18 +196,22 @@ public class ChatCommands : IService
             return false;
         }
 
-        var name = args[1].ToLower();
-        var name2 = args[2].ToLower();
+        var names = args.Select(name =>
+            Regex.Replace(name.ToLower(), "[^A-Za-z0-9]+", "")
+        ).ToList();
 
-        var name3 = args.Length > 3 ? args[3].ToLower() : string.Empty;
+        var firstName = names[1];
+        var secondName = names[2];
 
-        if (name.Length > 0)
-            name = char.ToUpper(name[0]) + name[1..];
+        var thirdName = names.Count > 3 ? names[3] : string.Empty;
 
-        if (name2.Length > 0)
-            name2 = char.ToUpper(name2[0]) + name2[1..];
+        if (firstName.Length > 0)
+            firstName = char.ToUpper(firstName[0]) + firstName[1..];
 
-        character.Data.CharacterName = $"{name} {name2}{name3}";
+        if (secondName.Length > 0)
+            secondName = char.ToUpper(secondName[0]) + secondName[1..];
+
+        character.Data.CharacterName = $"{firstName} {secondName}{thirdName}";
 
         Log($"You have changed your monkey's name to {character.Data.CharacterName}!", player);
         Log("This change will apply only once you've logged out.", player);
