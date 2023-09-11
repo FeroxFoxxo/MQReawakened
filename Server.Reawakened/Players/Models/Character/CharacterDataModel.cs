@@ -109,8 +109,6 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(BuildIdolCountString());
         sb.Append(BuildStatsDiscoveredString());
 
-        _ = new CharacterData(sb.ToString());
-
         return sb.ToString();
     }
 

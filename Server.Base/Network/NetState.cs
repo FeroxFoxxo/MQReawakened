@@ -269,8 +269,8 @@ public class NetState : IDisposable
 
                     lock (_handler.Disposed)
                     {
-                        if (_handler.Protocols.ContainsKey(protocolType))
-                            protocol = _handler.Protocols[protocolType];
+                        if (_handler.Protocols.TryGetValue(protocolType, out var handlerProtocol))
+                            protocol = handlerProtocol;
                     }
 
                     if (protocol != null)

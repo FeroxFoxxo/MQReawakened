@@ -19,15 +19,13 @@ public class CrashGuard : IService
     private readonly ILogger<CrashGuard> _logger;
     private readonly Module[] _modules;
     private readonly EventSink _sink;
-    private readonly World _world;
 
-    public CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink, World world,
+    public CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink,
         IServiceProvider services, InternalRConfig config)
     {
         _handler = handler;
         _logger = logger;
         _sink = sink;
-        _world = world;
         _config = config;
 
         _modules = services.GetServices<Module>().ToArray();
