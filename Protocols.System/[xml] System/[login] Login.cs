@@ -29,16 +29,22 @@ public class Login : SystemProtocol
 
         if (reason == AlrReason.Accepted)
         {
-            var account = NetState.Get<Account>();
-
-            if (!PlayerHandler.PlayerList.Any(p => p.UserId == account.UserId))
+            lock (PlayerHandler.Lock)
             {
-                UserInfoHandler.InitializeUser(NetState);
-                SendXml(
-                    "logOK",
-                    $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />"
-                );
-                return;
+                var account = NetState.Get<Account>();
+
+                foreach (var player in PlayerHandler.PlayerList.Where(p => p.UserId == account.UserId))
+                    player.Remove(Logger);
+
+                if (!PlayerHandler.PlayerList.Any(p => p.UserId == account.UserId))
+                {
+                    UserInfoHandler.InitializeUser(NetState);
+                    SendXml(
+                        "logOK",
+                        $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />"
+                    );
+                    return;
+                }
             }
 
             reason = AlrReason.PlayerLoggedIn;

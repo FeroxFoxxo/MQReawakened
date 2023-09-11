@@ -52,7 +52,8 @@ public class Player : INetStateData
 
     public void Remove(Microsoft.Extensions.Logging.ILogger logger)
     {
-        PlayerHandler.RemovePlayer(this);
+        lock(PlayerHandler.Lock)
+            PlayerHandler.RemovePlayer(this);
 
         this.RemoveFromGroup();
 
