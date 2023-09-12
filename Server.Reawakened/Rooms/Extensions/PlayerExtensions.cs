@@ -3,6 +3,7 @@ using Server.Base.Accounts.Models;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
@@ -83,5 +84,11 @@ public static class PlayerExtensions
     {
         foreach (var currentPlayer in player.Room.Players.Values)
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
+    }
+
+    public static void DumpToLobby(this Player player)
+    {
+        var room = player.PlayerHandler.WorldHandler.GetRoomFromLevelId(-1, player);
+        player.JoinRoom(room, out _);
     }
 }

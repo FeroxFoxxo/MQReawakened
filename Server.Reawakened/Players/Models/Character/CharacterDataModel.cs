@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Helpers;
-using System.Globalization;
 
 namespace Server.Reawakened.Players.Models.Character;
 
@@ -200,7 +199,7 @@ public class CharacterDataModel : CharacterLightModel
         return sb.ToString();
     }
 
-    private IEnumerable<string> BuildTribeDataString() =>
+    private string[] BuildTribeDataString() =>
         TribesProgression.Values.Select(tribeType => tribeType.ToString()).ToArray();
 
     public string BuildPortalData()

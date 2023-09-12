@@ -9,6 +9,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Players;
@@ -63,22 +64,24 @@ public class Player : INetStateData
         this.RemoveFromGroup();
 
         if (Character != null)
+        {
             foreach (var player in PlayerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
                 player.SendXt("fz", Character.Data.CharacterName);
 
-        if (Room == null)
-            return;
+            Character = null;
+        }
 
-        if (!Room.LevelInfo.IsValid())
-            return;
+        if (Room != null)
+        {
+            if (!Room.LevelInfo.IsValid())
+                return;
 
-        var roomName = Room.LevelInfo.Name;
+            var roomName = Room.LevelInfo.Name;
 
-        if (!string.IsNullOrEmpty(roomName))
-            logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
+            if (!string.IsNullOrEmpty(roomName))
+                logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
+        }
 
-        Room.DumpPlayerToLobby(this);
-
-        Character = null;
+        this.DumpToLobby();
     }
 }
