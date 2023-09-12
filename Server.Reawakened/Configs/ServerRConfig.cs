@@ -41,6 +41,8 @@ public class ServerRConfig : IRConfig
     public int AmountToStack { get; }
     public int CashKitAmount { get; }
 
+    public double KickAfterTime { get; }
+
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -111,5 +113,7 @@ public class ServerRConfig : IRConfig
 
         AmountToStack = 98;
         CashKitAmount = 100000;
+
+        KickAfterTime = TimeSpan.FromMinutes(5).TotalMilliseconds;
     }
 }

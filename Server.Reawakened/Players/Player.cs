@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
@@ -34,6 +35,8 @@ public class Player : INetStateData
     public Vector3Model Velocity { get; set; }
     public bool Invincible { get; set; }
 
+    public long CurrentPing { get; set; }
+
     public Player(UserInfo userInfo, NetState state, PlayerHandler playerHandler)
     {
         PlayerHandler = playerHandler;
@@ -45,6 +48,8 @@ public class Player : INetStateData
 
         Invincible = false;
         FirstLogin = true;
+
+        CurrentPing = GetTime.GetCurrentUnixMilliseconds();
     }
 
     public void RemovedState(NetState state, NetStateHandler handler,

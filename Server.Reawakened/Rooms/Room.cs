@@ -42,8 +42,7 @@ public class Room : Timer
     public Room(
         int roomId, Level level, ServerRConfig config, TimerThread timerThread,
         IServiceProvider services, ILogger<Room> logger, WorldHandler worldHandler
-    ) :
-        base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
+    ) : base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
         _roomId = roomId;
         _config = config;
@@ -86,6 +85,11 @@ public class Room : Timer
     {
         foreach (var entity in Entities.Values.SelectMany(entityList => entityList))
             entity.Update();
+
+        foreach (var player in Players.Values.Where(
+                     player => GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime
+                 ))
+            player.Remove(Logger);
     }
 
     public void GroupMemberRoomChanged(Player player)
@@ -238,7 +242,6 @@ public class Room : Timer
     {
         var room = _worldHandler.GetRoomFromLevelId(-1, player);
         player.JoinRoom(room, out _);
-        RemoveClient(player);
     }
     
     public string GetRoomName() =>
