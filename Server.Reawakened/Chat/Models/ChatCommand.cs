@@ -16,4 +16,7 @@ public class ChatCommand
         Name = name.ToLower();
         Arguments = arguments;
     }
+
+
+
 }

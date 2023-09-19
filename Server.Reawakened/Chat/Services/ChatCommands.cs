@@ -38,6 +38,8 @@ public class ChatCommands : IService
         _appLifetime = appLifetime;
         _world = world;
         _commands = new Dictionary<string, ChatCommand>();
+
+
     }
 
     public void Initialize() => _appLifetime.ApplicationStarted.Register(RunChatListener);
@@ -46,22 +48,28 @@ public class ChatCommands : IService
     {
         _logger.LogDebug("Setting up chat commands");
 
-        AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
-        AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
-        AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
-        AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
-        AddCommand(new ChatCommand("bananas", "[bananaAmount]", Cash));
-        AddCommand(new ChatCommand("cash", "[cashAmount]", MCash));
-        AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
-        AddCommand(new ChatCommand("changeName", "[name] [name2] [name3]", ChangeName));
-        AddCommand(new ChatCommand("badgePoints", "[amount]", BadgePoints));
-        AddCommand(new ChatCommand("save", "", SaveLevel));
+        AddCommand(new ChatCommand("commands", "", OpenCommandsList));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
 
     public void RunCommand(Player player, string[] args)
     {
+        if (args.Length > 0)
+        {
+            var commandName = args[0];
+
+            if (commandName != null && commandName.Equals(".commands", StringComparison.OrdinalIgnoreCase))
+            {
+                OpenCommandsList(player, args);
+                return;
+            }
+            else
+            {
+                OpenCommandsList(player, args);
+            }
+        }
+
         var name = args.FirstOrDefault();
 
         if (name != null && _commands.TryGetValue(name, out var value))
@@ -69,33 +77,134 @@ public class ChatCommands : IService
             if (!value.CommandMethod(player, args))
                 Log($"Usage: {_config.ChatCommandStart}{value.Name} {value.Arguments}", player);
         }
-        else
-        {
-            DisplayHelp(player);
-        }
+
     }
 
     private static void Log(string logMessage, Player player) =>
-        player.Chat(CannedChatChannel.Tell, "Console", logMessage);
+    player.Chat(CannedChatChannel.Tell, "Console", logMessage);
 
     public void DisplayHelp(Player player)
     {
-        Log("Chat Commands:", player);
-
+        Log("Open Commands;", player);
         foreach (var command in _commands.Values)
         {
             var padding = _config.ChatCommandPadding - command.Name.Length;
             if (padding < 0) padding = 0;
 
             Log(
-                $"  {_config.ChatCommandStart}{command.Name.PadRight(padding)}" +
+                $"{_config.ChatCommandStart}{command.Name.PadRight(padding)}" +
                 $"{(command.Arguments.Length > 0 ? $" - {command.Arguments}" : "")}",
                 player
             );
         }
     }
 
-    public void AddCommand(ChatCommand command) => _commands.Add(command.Name, command);
+    public void AddCommand(ChatCommand command)
+    {
+        if (!_commands.ContainsKey(command.Name))
+        {
+            _commands.Add(command.Name, command);
+        }
+        else
+        {
+            Console.WriteLine($"Warning: Command; '{command.Name}' already exists and was not added.");
+        }
+    }
+
+    public bool OpenCommandsList(Player player, string[] args)
+    {
+        Log("Command List:", player);
+        AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
+        AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
+        AddCommand(new ChatCommand("levelUp", "[levelNum]", LevelUp));
+        AddCommand(new ChatCommand("itemKit", "", ItemKit));
+        AddCommand(new ChatCommand("cashKit", "[amount]", CashKit));
+        AddCommand(new ChatCommand("map", "", DiscoverMap));
+        AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
+        AddCommand(new ChatCommand("badgePoints", "[amount]", BadgePoints));
+        AddCommand(new ChatCommand("save", "", SaveLevel));
+
+        foreach (var command in _commands.Values)
+        {
+            Log($"{_config.ChatCommandStart}{command.Name} {command.Arguments}", player);
+        }
+
+        return true;
+    }
+
+    private bool ChangeLevel(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        if (args.Length != 2)
+            return false;
+
+        var levelId = Convert.ToInt32(args[1]);
+
+        character.SetLevel(levelId, _logger);
+
+        var levelInfo = _worldGraph.GetInfoLevel(levelId);
+
+        var tribe = levelInfo.Tribe;
+
+        player.DiscoverTribe(tribe);
+        player.SendLevelChange(_worldHandler, _worldGraph);
+
+        Log(
+            $"Successfully set character {character.Data.CharacterId}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
+            player
+        );
+
+        Log($"{character.Data.CharacterName} changed to level {levelId}", player);
+
+        return true;
+    }
+
+    private bool AddItem(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        if (args.Length is < 2 or > 3)
+            return false;
+
+        var itemId = Convert.ToInt32(args[1]);
+        var amount = 1;
+
+        if (args.Length == 3)
+        {
+            amount = Convert.ToInt32(args[2]);
+
+            if (amount <= 0)
+                amount = 1;
+        }
+
+        var item = _itemCatalog.GetItemFromId(itemId);
+
+        if (item == null)
+        {
+            Log($"Can't find item with id {itemId}", player);
+            return false;
+        }
+
+        character.AddItem(item, amount);
+
+        player.SendUpdatedInventory(false);
+
+        Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", player);
+
+        return true;
+    }
+
+    private bool LevelUp(Player player, string[] args)
+    {
+        if (args.Length != 2)
+            return false;
+
+        var newLevel = Convert.ToInt32(args[1]);
+        player.LevelUp(newLevel, _logger);
+
+        return true;
+    }
 
     public bool ItemKit(Player player, string[] args)
     {
@@ -182,28 +291,56 @@ public class ChatCommands : IService
         return true;
     }
 
-    public static bool Cash(Player player, string[] args)
+    public static bool CashKit(Player player, string[] args)
     {
         var character = player.Character;
 
-        var cashAmount = Convert.ToInt32(args[1]);
+        const int cashKitAmount = 100000;
 
-        player.AddBananas(cashAmount);
+        player.AddBananas(cashKitAmount);
+        player.AddMCash(cashKitAmount);
 
-        Log($"{character.Data.CharacterName} received {cashAmount} bananas!", player);
+        Log($"{character.Data.CharacterName} received {cashKitAmount} Bananas & Monkey Cash!", player);
 
         return true;
     }
 
-    public static bool MCash(Player player, string[] args)
+    public bool DiscoverMap(Player player, string[] args)
     {
         var character = player.Character;
 
-        var cashAmount = Convert.ToInt32(args[1]);
+        player.DiscoverAllTribes();
 
-        player.AddMCash(cashAmount);
+        Log($"{character.Data.CharacterName} discovered all tribes!", player);
 
-        Log($"{character.Data.CharacterName} received {cashAmount} Monkey Cash!", player);
+        return true;
+    }
+
+    public static bool ChangeName(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        if (args.Length < 3)
+        {
+            Log("Error: Invalid Input!", player);
+            return false;
+        }
+
+        var first = args[1].ToLower();
+        var middle = args[2].ToLower();
+
+        var last = args.Length > 3 ? args[3].ToLower() : "";
+
+        if (first.Length > 0)
+            first = char.ToUpper(first[0]) + first[1..];
+
+        if (middle.Length > 0)
+            middle = char.ToUpper(middle[0]) + middle[1..];
+
+        character.Data.CharacterName = first + " " + middle + last;
+
+        Log($"You have changed your monkey's name to {character.Data.CharacterName}!", player);
+        Log("This change will apply only once you've logged out.", player);
 
         return true;
     }
@@ -221,126 +358,9 @@ public class ChatCommands : IService
         return true;
     }
 
-    public static bool CashKit(Player player, string[] args)
-    {
-        var character = player.Character;
-
-        const int cashKitAmount = 100000;
-
-        player.AddBananas(cashKitAmount);
-        player.AddMCash(cashKitAmount);
-
-        Log($"{character.Data.CharacterName} received {cashKitAmount} Bananas & Monkey Cash!", player);
-
-        return true;
-    }
-
-    public static bool ChangeName(Player player, string[] args)
-    {
-        var character = player.Character;
-
-        if (args.Length < 3)
-        {
-            Log("Error: Invalid Input!", player);
-            return false;
-        }
-
-        var name = args[1].ToLower();
-        var name2 = args[2].ToLower();
-
-        var name3 = args.Length > 3 ? args[3].ToLower() : "";
-
-        if (name.Length > 0)
-            name = char.ToUpper(name[0]) + name[1..];
-
-        if (name2.Length > 0)
-            name2 = char.ToUpper(name2[0]) + name2[1..];
-
-        character.Data.CharacterName = name + " " + name2 + name3;
-
-        Log($"You have changed your monkey's name to {character.Data.CharacterName}!", player);
-        Log("This change will apply only once you've logged out.", player);
-
-        return true;
-    }
-
-    private bool ChangeLevel(Player player, string[] args)
-    {
-        var character = player.Character;
-
-        if (args.Length != 2)
-            return false;
-
-        var levelId = Convert.ToInt32(args[1]);
-
-        character.SetLevel(levelId, _logger);
-
-        var levelInfo = _worldGraph.GetInfoLevel(levelId);
-
-        var tribe = levelInfo.Tribe;
-
-        player.DiscoverTribe(tribe);
-        player.SendLevelChange(_worldHandler, _worldGraph);
-
-        Log(
-            $"Successfully set character {character.Data.CharacterId}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
-            player
-        );
-
-        Log($"{character.Data.CharacterName} changed to level {levelId}", player);
-
-        return true;
-    }
-
-    private bool LevelUp(Player player, string[] args)
-    {
-        if (args.Length != 2)
-            return false;
-
-        var newLevel = Convert.ToInt32(args[1]);
-        player.LevelUp(newLevel, _logger);
-
-        return true;
-    }
-
     private bool SaveLevel(Player player, string[] args)
     {
         _world.Save(false, true);
-        return true;
-    }
-
-    private bool AddItem(Player player, string[] args)
-    {
-        var character = player.Character;
-
-        if (args.Length is < 2 or > 3)
-            return false;
-
-        var itemId = Convert.ToInt32(args[1]);
-        var amount = 1;
-
-        if (args.Length == 3)
-        {
-            amount = Convert.ToInt32(args[2]);
-
-            if (amount <= 0)
-                amount = 1;
-        }
-
-        var item = _itemCatalog.GetItemFromId(itemId);
-
-        if (item == null)
-        {
-            Log($"Can't find item with id {itemId}", player);
-            return false;
-        }
-
-        character.AddItem(item, amount);
-
-        player.SendUpdatedInventory(false);
-
-        Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", player);
-
         return true;
     }
 }

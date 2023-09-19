@@ -3,8 +3,10 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -43,7 +45,7 @@ public static class PlayerExtensions
         player.SendCashUpdate();
     }
 
-     public static void AddMCash(this Player player, int collectedMCash)
+    public static void AddMCash(this Player player, int collectedMCash)
     {
         var charData = player.Character.Data;
         charData.NCash += collectedMCash;
@@ -63,7 +65,7 @@ public static class PlayerExtensions
         player.SendXt("ca", charData.Cash, charData.NCash);
     }
 
-     public static void SendPointsUpdate(this Player player)
+    public static void SendPointsUpdate(this Player player)
     {
         var charData = player.Character.Data;
         player.SendXt("ca", charData.BadgePoints);
@@ -140,5 +142,13 @@ public static class PlayerExtensions
     {
         if (player.Character.HasAddedDiscoveredTribe(tribe))
             player.SendXt("cB", (int)tribe);
+    }
+
+    public static void DiscoverAllTribes(this Player player)
+    {
+        foreach (TribeType tribe in Enum.GetValues(typeof(TribeType)))
+        {
+            DiscoverTribe(player, tribe);
+        }
     }
 }
