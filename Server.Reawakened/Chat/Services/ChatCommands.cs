@@ -38,8 +38,6 @@ public class ChatCommands : IService
         _appLifetime = appLifetime;
         _world = world;
         _commands = new Dictionary<string, ChatCommand>();
-
-
     }
 
     public void Initialize() => _appLifetime.ApplicationStarted.Register(RunChatListener);
@@ -297,8 +295,10 @@ public class ChatCommands : IService
 
         const int cashKitAmount = 100000;
 
-        player.AddBananas(cashKitAmount);
-        player.AddMCash(cashKitAmount);
+        var amount = Convert.ToInt32(args[1]);
+
+        player.AddBananas(cashKitAmount * amount);
+        player.AddMCash(cashKitAmount * amount);
 
         Log($"{character.Data.CharacterName} received {cashKitAmount} Bananas & Monkey Cash!", player);
 
