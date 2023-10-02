@@ -6,7 +6,6 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -148,7 +147,50 @@ public static class PlayerExtensions
     {
         foreach (TribeType tribe in Enum.GetValues(typeof(TribeType)))
         {
-            DiscoverTribe(player, tribe);
+            player.DiscoverTribe(tribe);
         }
     }
+
+    public static void AddSlots(this Player player, bool pet)
+    {
+        var hotbarButtons = player.Character.Data.Hotbar.HotbarButtons;
+
+        if (pet == true)
+        {
+            for (var i = 0; i < 5; i++)
+            {
+                if (!hotbarButtons.ContainsKey(i))
+                {
+                    ItemModel itemModel = new ItemModel()
+                    {
+                        ItemId = 340,
+                        Count = 1,
+                        BindingCount = 1, 
+                        DelayUseExpiry = DateTime.MinValue
+                    };
+                    hotbarButtons[i] = itemModel;
+                }
+            }
+        }
+
+        if (pet == false)
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                if (!hotbarButtons.ContainsKey(i))
+                {
+                    ItemModel itemModel = new ItemModel()
+                    {
+                        ItemId = 340,
+                        Count = 1,
+                        BindingCount = 1, 
+                        DelayUseExpiry = DateTime.MinValue
+                    };
+                    hotbarButtons[i] = itemModel;
+                }
+            }
+        }
+
+    }
+
 }

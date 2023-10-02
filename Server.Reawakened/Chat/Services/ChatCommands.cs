@@ -44,28 +44,22 @@ public class ChatCommands : IService
     {
         _logger.LogDebug("Setting up chat commands");
 
-        AddCommand(new ChatCommand("commands", "", OpenCommandsList));
+        AddCommand(new ChatCommand("changeName", "[name] [name2] [name3]", ChangeName));
+        AddCommand(new ChatCommand("hotbar", "[petSlot (1 = true)]", AddHotbar));
+        AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
+        AddCommand(new ChatCommand("badgePoints", "[amount]", BadgePoints));
+        AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
+        AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
+        AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
+        AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
+        AddCommand(new ChatCommand("map", "", DiscoverMap));
+        AddCommand(new ChatCommand("save", "", SaveLevel));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
 
     public void RunCommand(Player player, string[] args)
     {
-        if (args.Length > 0)
-        {
-            var commandName = args[0];
-
-            if (commandName != null && commandName.Equals(".commands", StringComparison.OrdinalIgnoreCase))
-            {
-                OpenCommandsList(player, args);
-                return;
-            }
-            else
-            {
-                OpenCommandsList(player, args);
-            }
-        }
-
         var name = args.FirstOrDefault();
 
         if (name != null && _commands.TryGetValue(name, out var value))
@@ -73,147 +67,97 @@ public class ChatCommands : IService
             if (!value.CommandMethod(player, args))
                 Log($"Usage: {_config.ChatCommandStart}{value.Name} {value.Arguments}", player);
         }
-
+        else
+        {
+            DisplayHelp(player);
+        }
     }
 
     private static void Log(string logMessage, Player player) =>
-    player.Chat(CannedChatChannel.Tell, "Console", logMessage);
+        player.Chat(CannedChatChannel.Tell, "Console", logMessage);
 
     public void DisplayHelp(Player player)
     {
-        Log("Open Commands;", player);
+        Log("Chat Commands:", player);
+
         foreach (var command in _commands.Values)
         {
             var padding = _config.ChatCommandPadding - command.Name.Length;
             if (padding < 0) padding = 0;
 
             Log(
-                $"{_config.ChatCommandStart}{command.Name.PadRight(padding)}" +
+                $"  {_config.ChatCommandStart}{command.Name.PadRight(padding)}" +
                 $"{(command.Arguments.Length > 0 ? $" - {command.Arguments}" : "")}",
                 player
             );
         }
     }
 
-    public void AddCommand(ChatCommand command)
-    {
-        if (!_commands.ContainsKey(command.Name))
-        {
-            _commands.Add(command.Name, command);
-        }
-        else
-        {
-            Console.WriteLine($"Warning: Command; '{command.Name}' already exists and was not added.");
-        }
-    }
+    public void AddCommand(ChatCommand command) => _commands.Add(command.Name, command);
 
-    public bool OpenCommandsList(Player player, string[] args)
-    {
-        Log("Command List:", player);
-        AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
-        AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
-        AddCommand(new ChatCommand("levelUp", "[levelNum]", LevelUp));
-        AddCommand(new ChatCommand("itemKit", "", ItemKit));
-        AddCommand(new ChatCommand("cashKit", "[amount]", CashKit));
-        AddCommand(new ChatCommand("map", "", DiscoverMap));
-        AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
-        AddCommand(new ChatCommand("badgePoints", "[amount]", BadgePoints));
-        AddCommand(new ChatCommand("save", "", SaveLevel));
-
-        foreach (var command in _commands.Values)
-        {
-            Log($"{_config.ChatCommandStart}{command.Name} {command.Arguments}", player);
-        }
-
-        return true;
-    }
-
-    private bool ChangeLevel(Player player, string[] args)
+    private bool DiscoverMap(Player player, string[] args)
     {
         var character = player.Character;
 
-        if (args.Length != 2)
-            return false;
+        player.DiscoverAllTribes();
 
-        var levelId = Convert.ToInt32(args[1]);
-
-        character.SetLevel(levelId, _logger);
-
-        var levelInfo = _worldGraph.GetInfoLevel(levelId);
-
-        var tribe = levelInfo.Tribe;
-
-        player.DiscoverTribe(tribe);
-        player.SendLevelChange(_worldHandler, _worldGraph);
-
-        Log(
-            $"Successfully set character {character.Data.CharacterId}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
-            player
-        );
-
-        Log($"{character.Data.CharacterName} changed to level {levelId}", player);
+        Log($"{character.Data.CharacterName} has discovered all tribes! (view map)", player);
 
         return true;
     }
 
-    private bool AddItem(Player player, string[] args)
+    private bool AddHotbar(Player player, string[] args)
+    {
+        var pet = false;
+
+        var petSlot = 0;
+
+        if (args.Length == 2)
+        {
+            if (!int.TryParse(args[1], out var petSlotValue))
+                Log("Invalid input, defaulting to 0 (false)", player);
+
+            if (petSlotValue < 0 || petSlotValue > 1)
+                Log("Input out of range, defaulting to 0 (false)", player);
+
+            else
+                petSlot = petSlotValue;
+
+            if (petSlot == 0)
+            {
+                pet = false;
+                Log("Adding slots (no pet slot)", player);
+            }
+            else if (petSlot == 1)
+            {
+                pet = true;
+                Log("Adding slots (pet slot)", player);
+            }
+        }
+
+        player.AddSlots(pet);
+
+        Log("Hotbar has been setup! (slots apply once logged out)", player);
+
+        return true;
+    }
+
+
+    private bool ItemKit(Player player, string[] args)
     {
         var character = player.Character;
 
-        if (args.Length is < 2 or > 3)
-            return false;
-
-        var itemId = Convert.ToInt32(args[1]);
-        var amount = 1;
-
-        if (args.Length == 3)
-        {
-            amount = Convert.ToInt32(args[2]);
-
-            if (amount <= 0)
-                amount = 1;
-        }
-
-        var item = _itemCatalog.GetItemFromId(itemId);
-
-        if (item == null)
-        {
-            Log($"Can't find item with id {itemId}", player);
-            return false;
-        }
-
-        character.AddItem(item, amount);
-
-        player.SendUpdatedInventory(false);
-
-        Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", player);
-
-        return true;
-    }
-
-    private bool LevelUp(Player player, string[] args)
-    {
-        if (args.Length != 2)
-            return false;
-
-        var newLevel = Convert.ToInt32(args[1]);
-        player.LevelUp(newLevel, _logger);
-
-        return true;
-    }
-
-    public bool ItemKit(Player player, string[] args)
-    {
-        var character = player.Character;
-
-        if (args.Length is < 1 or > 2)
-            return false;
+        if (args.Length > 2)
+            Log($"Invalid input, defaulting to 1", player);
 
         var amount = 1;
 
         if (args.Length == 2)
         {
-            amount = Convert.ToInt32(args[1]);
+            if (!int.TryParse(args[1], out var kitAmount))
+                Log($"Invalid input, defaulting to 1", player);
+
+            amount = kitAmount;
 
             if (amount <= 0)
                 amount = 1;
@@ -287,29 +231,72 @@ public class ChatCommands : IService
         return true;
     }
 
-    public static bool CashKit(Player player, string[] args)
+
+    public static bool Cash(Player player, string[] args)
     {
         var character = player.Character;
 
-        const int cashKitAmount = 100000;
+        var cashAmount = Convert.ToInt32(args[1]);
 
-        var amount = Convert.ToInt32(args[1]);
+        player.AddBananas(cashAmount);
 
-        player.AddBananas(cashKitAmount * amount);
-        player.AddMCash(cashKitAmount * amount);
-
-        Log($"{character.Data.CharacterName} received {cashKitAmount} Bananas & Monkey Cash!", player);
+        Log($"{character.Data.CharacterName} received {cashAmount} bananas!", player);
 
         return true;
     }
 
-    public bool DiscoverMap(Player player, string[] args)
+    public static bool MCash(Player player, string[] args)
     {
         var character = player.Character;
 
-        player.DiscoverAllTribes();
+        var cashAmount = Convert.ToInt32(args[1]);
 
-        Log($"{character.Data.CharacterName} discovered all tribes!", player);
+        player.AddMCash(cashAmount);
+
+        Log($"{character.Data.CharacterName} received {cashAmount} Monkey Cash!", player);
+
+        return true;
+    }
+
+    private static bool BadgePoints(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        int amount;
+
+        if (args.Length < 2)
+        {
+            Log($"Invalid, enter number of badge points", player);
+            return false;
+        }
+        if (!int.TryParse(args[1], out var pointsAmount) || args.Length < 2)
+            Log($"Invalid input, defaulting to 1", player);
+
+        amount = pointsAmount;
+
+        if (amount <= 0)
+            amount = 1;
+
+        player.AddPoints(amount);
+
+        Log(
+            amount > 1
+                ? $"{character.Data.CharacterName} received {amount} badge points!"
+                : $"{character.Data.CharacterName} received {amount} badge point! (get grinding noob)", player
+           );
+
+        return true;
+    }
+
+
+    public static bool CashKit(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        const int cashKitAmount = 69420;
+
+        player.AddBananas(cashKitAmount);
+        player.AddMCash(cashKitAmount);
 
         return true;
     }
@@ -320,7 +307,7 @@ public class ChatCommands : IService
 
         if (args.Length < 3)
         {
-            Log("Error: Invalid Input!", player);
+            Log("Error: Invalid input!", player);
             return false;
         }
 
@@ -343,22 +330,100 @@ public class ChatCommands : IService
         return true;
     }
 
-    public static bool BadgePoints(Player player, string[] args)
+    private bool ChangeLevel(Player player, string[] args)
     {
         var character = player.Character;
 
-        var amount = Convert.ToInt32(args[1]);
+        int levelId;
+        if (args.Length != 2 || !int.TryParse(args[1], out var level))
+        {
+            Log($"Invalid input, enter level ID", player);
+            return false;
+        }
 
-        player.AddPoints(amount);
+        levelId = level;
 
-        Log($"{character.Data.CharacterName} received {amount} badge points!", player);
+        character.SetLevel(levelId, _logger);
+
+        var levelInfo = _worldGraph.GetInfoLevel(levelId);
+
+        var tribe = levelInfo.Tribe;
+
+        player.DiscoverTribe(tribe);
+        player.SendLevelChange(_worldHandler, _worldGraph);
+
+        Log(
+            $"Successfully set character {character.Data.CharacterId}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
+            player
+        );
+
+        Log($"{character.Data.CharacterName} changed to level {levelId}", player);
+
+        return true;
+
+    }
+
+    private bool LevelUp(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        if (args.Length != 2 || !int.TryParse(args[1], out var level))
+        {
+            Log("Invalid input, defaulting to max level...", player);
+            level = 65;
+        }
+
+        var newLevel = level;
+
+        player.LevelUp(newLevel, _logger);
+
+        Log($"{character.Data.CharacterName} has leveled up to level {newLevel}!", player);
 
         return true;
     }
 
+
     private bool SaveLevel(Player player, string[] args)
     {
         _world.Save(false, true);
+        return true;
+    }
+
+    private bool AddItem(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        if (args.Length is < 2 or > 3 || !int.TryParse(args[1], out var itemId))
+        {
+            Log("Invalid input, enter item ID", player);
+            return false;
+        }
+
+        var amount = 1;
+
+        if (args.Length == 3)
+        {
+            if (!int.TryParse(args[2], out amount))
+                Log("Invalid amount, defaulting to 1", player);
+
+            if (amount <= 0)
+                amount = 1;
+        }
+
+        var item = _itemCatalog.GetItemFromId(itemId);
+
+        if (item == null)
+        {
+            Log($"Can't find item with id {itemId}", player);
+            return false;
+        }
+
+        character.AddItem(item, amount);
+
+        player.SendUpdatedInventory(false);
+
+        Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", player);
+
         return true;
     }
 }
