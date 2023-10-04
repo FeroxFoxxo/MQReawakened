@@ -40,6 +40,8 @@ public class InternalRConfig : IRConfig
     public TimeSpan ExpireAge { get; }
     public MergeType Merge { get; }
 
+    public double DisconnectionTimeout { get; }
+
     public InternalRConfig()
     {
         CrashBackupDirectory = InternalDirectory.GetDirectory("Backups/Crashed");
@@ -82,5 +84,7 @@ public class InternalRConfig : IRConfig
 
         ExpireAge = TimeSpan.FromDays(30);
         Merge = MergeType.Minutes;
+
+        DisconnectionTimeout = 900000000;
     }
 }
