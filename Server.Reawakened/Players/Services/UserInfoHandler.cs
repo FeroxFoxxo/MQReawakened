@@ -78,7 +78,9 @@ public class UserInfoHandler : DataHandler<UserInfo>
             ip, id, gender, dob, region, signUpExperience);
 
         var user = new UserInfo(id, gender, dob, region, signUpExperience, _randomKeyGenerator, _config);
+
         Data.Add(Data.Count, user);
+
         return user;
     }
 }

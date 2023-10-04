@@ -161,7 +161,11 @@ public class AccountHandler : DataHandler<Account>
     public Account Create(IPAddress ipAddress, string username, string password, string email)
     {
         if (username.Trim().Length <= 0 || password.Trim().Length <= 0 || email.Trim().Length <= 0)
+        {
+            Logger.LogInformation("Login: {Address}: User post data for '{Username}' is invalid in length!",
+                ipAddress, username);
             throw new InvalidOperationException();
+        }
 
         var isSafe = !(username.StartsWith(" ") || username.EndsWith(" ") || username.EndsWith("."));
 
@@ -175,7 +179,11 @@ public class AccountHandler : DataHandler<Account>
             isSafe = password[i] is >= (char)0x20 and < (char)0x7F;
 
         if (!isSafe)
+        {
+            Logger.LogInformation("Login: {Address}: User password for '{Username}' is unsafe! Returning...",
+                ipAddress, username);
             return null;
+        }
 
         if (!CanCreate(ipAddress))
         {
