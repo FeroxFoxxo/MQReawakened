@@ -2,12 +2,11 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Extensions;
-using Server.Base.Core.Models;
 using Server.Base.Network.Services;
-using Server.Base.Worlds;
 using System.Diagnostics;
 
 namespace Server.Base.Core.Services;
@@ -19,15 +18,13 @@ public class CrashGuard : IService
     private readonly ILogger<CrashGuard> _logger;
     private readonly Module[] _modules;
     private readonly EventSink _sink;
-    private readonly World _world;
 
-    public CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink, World world,
+    public CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink,
         IServiceProvider services, InternalRConfig config)
     {
         _handler = handler;
         _logger = logger;
         _sink = sink;
-        _world = world;
         _config = config;
 
         _modules = services.GetServices<Module>().ToArray();
@@ -38,8 +35,6 @@ public class CrashGuard : IService
     public void OnCrash(CrashedEventArgs e)
     {
         GenerateCrashReport(e);
-
-        _world.WaitForWriteCompletion();
 
         Backup();
 
@@ -156,7 +151,6 @@ public class CrashGuard : IService
                     streamWriter.WriteLine("- Failed");
                 }
             }
-
 
             _logger.LogInformation("Logged error!");
         }

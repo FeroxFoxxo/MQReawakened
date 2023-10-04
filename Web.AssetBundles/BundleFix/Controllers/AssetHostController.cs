@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Server.Base.Core.Extensions;
-using Server.Base.Core.Models;
-using Server.Base.Network.Enums;
 using Web.AssetBundles.BundleFix.Data;
 using Web.AssetBundles.BundleFix.Header;
 using Web.AssetBundles.BundleFix.Header.Models;
@@ -22,28 +20,23 @@ public class AssetHostController : Controller
 {
     private readonly BuildAssetList _buildAssetList;
     private readonly BuildXmlFiles _buildXmlList;
-    private readonly InternalRwConfig _internalRwConfig;
     private readonly AssetBundleRConfig _config;
     private readonly ILogger<AssetHostController> _logger;
     private readonly ReplaceCaches _replaceCaches;
 
     public AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
-        AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches, InternalRwConfig internalRwConfig)
+        AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches)
     {
         _buildAssetList = buildAssetList;
         _logger = logger;
         _config = config;
         _buildXmlList = buildXmlList;
         _replaceCaches = replaceCaches;
-        _internalRwConfig = internalRwConfig;
     }
 
     [HttpGet]
     public IActionResult GetAsset([FromRoute] string folder, [FromRoute] string file)
     {
-        if (_internalRwConfig.NetworkType == NetworkType.Server)
-            return NoContent();
-
         if (_config.KillOnBundleRetry && !file.EndsWith(".xml"))
         {
             var uriPath = $"{folder}/{file}";
@@ -85,7 +78,8 @@ public class AssetHostController : Controller
                     $"Could not find: {name}. Did you mean:\n{string.Join('\n', _buildXmlList.XmlFiles.Keys)}")
             : WriteFixedBundle(asset);
 
-        _logger.LogDebug("Getting asset {Name} from {File} ({Folder})", asset.Name, path, folder);
+        if (_config.LogAssetLoadInfo)
+            _logger.LogDebug("Getting asset {Name} from {File} ({Folder})", asset.Name, path, folder);
 
         return new FileContentResult(FileIO.ReadAllBytes(path), "application/octet-stream");
     }
@@ -93,7 +87,7 @@ public class AssetHostController : Controller
     private string WriteFixedBundle(InternalAssetInfo asset)
     {
         var assetName = asset.Name.Trim();
-
+        
         var baseDirectory =
             _config.DebugInfo
                 ? Path.Join(_config.BundleSaveDirectory, assetName)
@@ -107,22 +101,27 @@ public class AssetHostController : Controller
 
         if (!FileIO.Exists(bundlePath) || _config.AlwaysRecreateBundle)
         {
-            _logger.LogInformation("Creating Bundle {Name} [{Type}]", assetName,
-                _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST");
-
+            if (_config.LogAssetLoadInfo)
+                _logger.LogInformation(
+                    "Creating Bundle {Name} from {Time} [{Type}]",
+                    assetName,
+                    DateTime.UnixEpoch.AddSeconds(asset.CacheTime).ToShortDateString(),
+                    _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST"
+                );
 
             using var stream = new MemoryStream();
             var writer = new EndianWriter(stream, EndianType.BigEndian);
 
             var unityVersion = new UnityVersion(asset.UnityVersion);
+
             var fileName = Path.GetFileName(asset.Path);
+            var data = new FixedAssetFile(asset.Path);
 
-            var data = new FixedAssetFile(_config.UseCacheReplacementScheme ? _config.LocalAssetCache : asset.Path);
             var metadata = new BundleMetadata(fileName, data.FileSize);
-            var header = new RawBundleHeader(data.FileSize, metadata.MetadataSize, unityVersion);
-
-            header.FixHeader((uint)header.GetEndianSize());
             metadata.FixMetadata((uint)metadata.GetEndianSize());
+
+            var header = new RawBundleHeader(data.FileSize, metadata.MetadataSize, unityVersion);
+            header.FixHeader((uint)header.GetEndianSize());
 
             header.Write(writer);
             metadata.Write(writer);

@@ -1,7 +1,7 @@
 ﻿using Server.Base.Core.Abstractions;
 using Server.Base.Network.Enums;
 
-namespace Server.Base.Core.Models;
+namespace Server.Base.Core.Configs;
 
 public class InternalRwConfig : IRwConfig
 {

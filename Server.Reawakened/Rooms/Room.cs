@@ -23,7 +23,6 @@ public class Room : Timer
     private readonly ServerRConfig _config;
     private readonly Level _level;
     private readonly HashSet<int> _gameObjectIds;
-    private readonly WorldHandler _worldHandler;
 
     public readonly Dictionary<int, Player> Players;
     public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
@@ -41,14 +40,12 @@ public class Room : Timer
 
     public Room(
         int roomId, Level level, ServerRConfig config, TimerThread timerThread,
-        IServiceProvider services, ILogger<Room> logger, WorldHandler worldHandler
-    ) :
-        base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
+        IServiceProvider services, ILogger<Room> logger
+    ) : base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
         _roomId = roomId;
         _config = config;
         Logger = logger;
-        _worldHandler = worldHandler;
         _level = level;
 
         Players = new Dictionary<int, Player>();
@@ -86,6 +83,11 @@ public class Room : Timer
     {
         foreach (var entity in Entities.Values.SelectMany(entityList => entityList))
             entity.Update();
+
+        foreach (var player in Players.Values.Where(
+                     player => GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime
+                 ))
+            player.Remove(Logger);
     }
 
     public void GroupMemberRoomChanged(Player player)
@@ -152,6 +154,26 @@ public class Room : Timer
         }
     }
 
+    public void RemoveClient(Player player)
+    {
+        Players.Remove(player.GameObjectId);
+        _gameObjectIds.Remove(player.GameObjectId);
+
+        if (LevelInfo.LevelId <= 0)
+            return;
+
+        if (Players.Count != 0)
+        {
+            foreach (var currentPlayer in Players.Values)
+                player.SendUserGoneDataTo(currentPlayer);
+
+            return;
+        }
+
+        _level.Rooms.Remove(_roomId);
+        Stop();
+    }
+
     public void SendCharacterInfo(Player player)
     {
         // WHERE TO SPAWN
@@ -211,36 +233,9 @@ public class Room : Timer
     public void DumpPlayersToLobby()
     {
         foreach (var player in Players.Values)
-            DumpPlayerToLobby(player);
+            player.DumpToLobby();
     }
-
-    public void DumpPlayerToLobby(Player player)
-    {
-        var room = _worldHandler.GetRoomFromLevelId(-1, player);
-        player.JoinRoom(room, out _);
-        RemovePlayer(player);
-    }
-
-    public void RemovePlayer(Player player)
-    {
-        Players.Remove(player.GameObjectId);
-        _gameObjectIds.Remove(player.GameObjectId);
-
-        if (LevelInfo.LevelId <= 0)
-            return;
-
-        if (Players.Count != 0)
-        {
-            foreach (var currentPlayer in Players.Values)
-                player.SendUserGoneDataTo(currentPlayer);
-
-            return;
-        }
-
-        _level.Rooms.Remove(_roomId);
-        Stop();
-    }
-
+    
     public string GetRoomName() =>
         $"{LevelInfo.LevelId}_{_roomId}";
 }

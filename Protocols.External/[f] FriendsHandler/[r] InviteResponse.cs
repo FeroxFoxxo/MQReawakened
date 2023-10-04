@@ -17,7 +17,10 @@ public class InviteResponse : ExternalProtocol
         var status = int.Parse(message[7]);
 
         var friender = PlayerHandler.PlayerList
-            .First(p => p.Character.Data.CharacterName == frienderName);
+            .FirstOrDefault(p => p.Character.Data.CharacterName == frienderName);
+
+        if (friender == null)
+            return;
 
         if (accepted)
         {

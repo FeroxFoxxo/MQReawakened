@@ -39,18 +39,33 @@ public static class AssetBuilderExtensions
             }
             else
             {
-                var oldAssetTime = filteredAssets[newAsset.Name].CacheTime - config.LastClientUpdate;
-                var newAssetTime = newAsset.CacheTime - config.LastClientUpdate;
+                var oldAssetTime = filteredAssets[newAsset.Name].CacheTime - config.MajorClientUpdate;
+                var newAssetTime = newAsset.CacheTime - config.MajorClientUpdate;
 
-                if (config.Is2014Client)
+                if (!config.Is2014Client)
                 {
-                    if (newAssetTime > oldAssetTime)
-                        filteredAssets[newAsset.Name] = newAsset;
+                    oldAssetTime *= -1;
+                    newAssetTime *= -1;
                 }
-                else
+
+                if (newAssetTime >= 0)
                 {
-                    if (newAssetTime < oldAssetTime)
+                    if (oldAssetTime >= 0)
+                    {
+                        var oldAdjusted = Math.Abs(filteredAssets[newAsset.Name].CacheTime - config.LastClientUpdate);
+                        var newAdjusted = Math.Abs(newAsset.CacheTime - config.LastClientUpdate);
+
+                        if (newAdjusted < oldAdjusted)
+                            filteredAssets[newAsset.Name] = newAsset;
+                    }
+                    else
+                    {
                         filteredAssets[newAsset.Name] = newAsset;
+                    }
+                }
+                else if (oldAssetTime < 0 && newAssetTime > oldAssetTime)
+                {
+                    filteredAssets[newAsset.Name] = newAsset;
                 }
             }
         }

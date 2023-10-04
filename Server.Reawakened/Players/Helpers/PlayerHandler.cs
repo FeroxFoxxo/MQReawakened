@@ -1,28 +1,33 @@
 ﻿using Server.Reawakened.Players.Services;
+using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Players.Helpers;
 
 public class PlayerHandler
 {
     public UserInfoHandler UserInfoHandler;
-    public List<Player> PlayerList { get; }
-    private readonly object _lock;
 
-    public PlayerHandler()
+    public List<Player> PlayerList { get; }
+    public WorldHandler WorldHandler { get; }
+    public object Lock { get; }
+
+    public PlayerHandler(WorldHandler worldHandler)
     {
+        WorldHandler = worldHandler;
         PlayerList = new List<Player>();
-        _lock = new object();
+        Lock = new object();
     }
 
     public void AddPlayer(Player player)
     {
-        lock (_lock)
+        lock (Lock)
             PlayerList.Add(player);
     }
 
     public void RemovePlayer(Player player)
     {
-        lock (_lock)
+        lock (Lock)
             PlayerList.Remove(player);
     }
 }

@@ -3,6 +3,7 @@ using Server.Base.Accounts.Models;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
@@ -15,7 +16,7 @@ public static class PlayerExtensions
 {
     public static void JoinRoom(this Player player, Room room, out JoinReason reason)
     {
-        player.Room?.RemovePlayer(player);
+        player.Room?.RemoveClient(player);
         player.Room = room;
         player.Room.AddClient(player, out reason);
     }
@@ -53,16 +54,13 @@ public static class PlayerExtensions
         room.SendSyncEvent(collectedEvent);
     }
 
-    // Player Id is unused
-    public static void SendUserEnterDataTo(this Player send, Player receive, Account account) =>
-        receive.NetState.SendXml("uER",
+    public static void SendUserEnterDataTo(this Player send, Player receive, Account account) => receive.NetState.SendXml("uER",
             $"<u i='{send.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{send.UserId}'>" +
             $"<n>{account.Username}</n>" +
             "</u>"
         );
 
-    public static void SendUserGoneDataTo(this Player send, Player receive) =>
-        receive.NetState.SendXml("userGone",
+    public static void SendUserGoneDataTo(this Player send, Player receive) => receive.NetState.SendXml("userGone",
             $"<user id='{send.UserId}'></user>"
         );
 
@@ -86,5 +84,11 @@ public static class PlayerExtensions
     {
         foreach (var currentPlayer in player.Room.Players.Values)
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
+    }
+
+    public static void DumpToLobby(this Player player)
+    {
+        var room = player.PlayerHandler.WorldHandler.GetRoomFromLevelId(-1, player);
+        player.JoinRoom(room, out _);
     }
 }

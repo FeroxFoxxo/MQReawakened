@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
-using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Timers.Enums;
 using Server.Base.Worlds.EventArguments;
@@ -16,16 +16,12 @@ public class ArchivedSaves : IService
     private readonly EventSink _eventSink;
     private readonly ILogger<ArchivedSaves> _logger;
 
-    private readonly Action<string> _pack;
-    private readonly Action<DateTime> _prune;
     private readonly ServerHandler _serverHandler;
     private readonly InternalRConfig _config;
 
     private readonly AutoResetEvent _sync;
     private readonly object _taskRoot;
     private readonly List<IAsyncResult> _tasks;
-    public TimeSpan ExpireAge;
-    public MergeType Merge;
 
     public ArchivedSaves(ILogger<ArchivedSaves> logger, EventSink eventSink, ServerHandler serverHandler,
         InternalRConfig config)
@@ -35,14 +31,9 @@ public class ArchivedSaves : IService
         _serverHandler = serverHandler;
         _config = config;
 
-        ExpireAge = TimeSpan.Zero;
-        Merge = MergeType.Minutes;
         _sync = new AutoResetEvent(true);
         _tasks = new List<IAsyncResult>(config.BackupCapacity);
         _taskRoot = ((ICollection)_tasks).SyncRoot;
-
-        _pack = InternalPack;
-        _prune = InternalPrune;
     }
 
     public void Initialize()
@@ -125,7 +116,7 @@ public class ArchivedSaves : IService
             var amOrPm = now.Hour < 12 ? "AM" : "PM";
             var twelveHours = now.Hour > 12 ? now.Hour - 12 : now.Hour <= 0 ? 12 : now.Hour;
 
-            var date = Merge switch
+            var date = _config.Merge switch
             {
                 MergeType.Months => $"{now.Month}-{now.Year}",
                 MergeType.Days => $"{now.Day}-{now.Month}-{now.Year}",
@@ -166,65 +157,13 @@ public class ArchivedSaves : IService
         _logger.LogInformation("Packing done in {Seconds} seconds.", stopwatch.Elapsed.TotalSeconds);
     }
 
-    private void BeginPrune(DateTime threshold)
-    {
-        if (_serverHandler.HasCrashed || _serverHandler.IsClosing)
-        {
-            _prune.Invoke(threshold);
-            return;
-        }
-
-        _sync.Reset();
-
-        var asyncResult = _prune.BeginInvoke(threshold, EndPrune, threshold);
-
-        lock (_taskRoot)
-            _tasks.Add(asyncResult);
-    }
-
-    private void EndPrune(IAsyncResult asyncResult)
-    {
-        _prune.EndInvoke(asyncResult);
-
-        lock (_taskRoot)
-            _tasks.Remove(asyncResult);
-
-        _sync.Set();
-    }
-
-    private void BeginPack(string source)
-    {
-        if (_serverHandler.HasCrashed || _serverHandler.IsClosing)
-        {
-            _pack.Invoke(source);
-            return;
-        }
-
-        _sync.Reset();
-
-        var asyncResult = _pack.BeginInvoke(source, EndPack, source);
-
-        lock (_taskRoot)
-            _tasks.Add(asyncResult);
-    }
-
-    private void EndPack(IAsyncResult asyncResult)
-    {
-        _pack.EndInvoke(asyncResult);
-
-        lock (_taskRoot)
-            _tasks.Remove(asyncResult);
-
-        _sync.Set();
-    }
-
     public bool Process(string source)
     {
-        if (ExpireAge > TimeSpan.Zero)
-            BeginPrune(DateTime.UtcNow - ExpireAge);
+        if (_config.ExpireAge > TimeSpan.Zero)
+            InternalPrune(DateTime.UtcNow - _config.ExpireAge);
 
         if (!string.IsNullOrWhiteSpace(source))
-            BeginPack(source);
+            InternalPack(source);
 
         return true;
     }

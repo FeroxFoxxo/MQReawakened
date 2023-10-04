@@ -66,7 +66,7 @@ public class ClearWebCaches : IService
 
     public void RemoveWebCacheOnStart()
     {
-        if (!_rwConfig.FlushCacheOnStart || _rConfig.UseCacheReplacementScheme)
+        if (!_rwConfig.FlushCacheOnStart)
             return;
 
         InternalDirectory.Empty(_rConfig.BundleSaveDirectory);

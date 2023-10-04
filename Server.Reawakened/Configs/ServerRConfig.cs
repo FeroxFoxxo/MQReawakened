@@ -36,6 +36,13 @@ public class ServerRConfig : IRConfig
 
     public Dictionary<DebugHandler.DebugVariables, bool> DefaultDebugVariables { get; }
 
+    public int[] SingleItemKit { get; }
+    public int[] StackedItemKit { get; }
+    public int AmountToStack { get; }
+    public int CashKitAmount { get; }
+
+    public double KickAfterTime { get; }
+
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -45,7 +52,7 @@ public class ServerRConfig : IRConfig
         RoomTickRate = 32;
 
         RandomKeyLength = 24;
-        PlayerCap = 20;
+        PlayerCap = 200;
         ReservedNameCount = 4;
         MaxCharacterCount = 3;
 
@@ -75,5 +82,38 @@ public class ServerRConfig : IRConfig
             { DebugHandler.DebugVariables.Crisp, true },
             { DebugHandler.DebugVariables.Trade, true }
         };
+
+        SingleItemKit = new int[]
+        {
+            394, // glider
+            395, // grappling hook
+            397, // wooden slingshot
+            453, // kernel blaster
+            2978, // wooden sword
+            2883, // oak helmet
+            2886, // oak armor
+            2880, // oak pants
+            1232, // burglar mask
+            3152, // super monkey
+            3053, // boom bomb
+            3023, // warrior costume
+            3022, // boom bug
+            2972, // ace pilot
+            2973, // crimson dragon
+            2923, // banana box
+        };
+
+        StackedItemKit = new int[]
+        {
+            396, // healing staff
+            585, // invisible bomb
+            1568, // red apple
+            1704, // healing potion
+        };
+
+        AmountToStack = 98;
+        CashKitAmount = 100000;
+
+        KickAfterTime = TimeSpan.FromMinutes(5).TotalMilliseconds;
     }
 }

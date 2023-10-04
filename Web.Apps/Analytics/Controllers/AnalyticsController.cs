@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Server.Base.Logging;
 using System.Text;
 using Web.Apps.Analytics.Models;
-using Web.AssetBundles.Models;
+using Web.Apps.Configs;
 using Web.AssetBundles.Services;
 using Web.Launcher.Models;
 
@@ -16,15 +16,14 @@ namespace Web.Apps.Analytics.Controllers;
 [Route("/Analytics/{AnalyticsKey}")]
 public class AnalyticsController : Controller
 {
-    private readonly AssetBundleRConfig _aConfig;
+    private readonly AppRConfig _aConfig;
     private readonly LauncherRwConfig _config;
     private readonly FileLogger _fileLogger;
     private readonly ILogger<AnalyticsController> _logger;
     private readonly ReplaceCaches _replaceCaches;
 
     public AnalyticsController(ILogger<AnalyticsController> logger, LauncherRwConfig config,
-        ReplaceCaches replaceCaches,
-        AssetBundleRConfig aConfig, FileLogger fileLogger)
+        ReplaceCaches replaceCaches, AppRConfig aConfig, FileLogger fileLogger)
     {
         _logger = logger;
         _config = config;
@@ -137,13 +136,6 @@ public class AnalyticsController : Controller
 
                     break;
                 }
-            case "Omniture":
-                {
-                    if (n == "applicationStart")
-                        if (_aConfig.UseCacheReplacementScheme)
-                            _replaceCaches.ReplaceWebPlayerCache(true, true);
-                    break;
-                }
         }
     }
 
@@ -152,7 +144,7 @@ public class AnalyticsController : Controller
         var analyticsKey = Request.RouteValues["AnalyticsKey"] as string;
 
         if (_config.AnalyticsApiKey == analyticsKey)
-            return true;
+            return _aConfig.LogOmniture;
 
         _logger.LogError("Client {ClientIp} sent invalid API key: {ApiKey}", Request.Host, analyticsKey);
         return false;

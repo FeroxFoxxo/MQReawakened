@@ -36,6 +36,24 @@ public static class CharacterInventoryExtensions
             });
     }
 
+    public static void AddKit(this CharacterModel characterData, List<ItemDescription> items, int count)
+    {
+        foreach (var item in items)
+        {
+            if (characterData.Data.Inventory.Items.TryGetValue(item.ItemId, out var gottenKit))
+                gottenKit.Count += count;
+
+            else
+                characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel
+                {
+                    ItemId = item.ItemId,
+                    Count = count,
+                    BindingCount = item.BindingCount,
+                    DelayUseExpiry = DateTime.MinValue
+                });
+        }
+    }
+
     public static string GetItemListString(this InventoryModel inventory)
     {
         var sb = new SeparatedStringBuilder('|');
@@ -52,4 +70,5 @@ public static class CharacterInventoryExtensions
             player.Character.Data.Inventory.GetItemListString(),
             fromEquippedUpdate
         );
+
 }

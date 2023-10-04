@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
+using Server.Base.Core.Extensions;
 using Server.Base.Network.Services;
 using Server.Base.Worlds.EventArguments;
 using System.Diagnostics;
@@ -8,30 +10,40 @@ namespace Server.Base.Worlds;
 
 public class World
 {
-    private readonly ManualResetEvent _diskWriteHandle;
-
-    private readonly NetStateHandler _handler;
     private readonly ILogger<World> _logger;
     private readonly EventSink _sink;
+    private readonly InternalRConfig _config;
+    private readonly NetStateHandler _netStateHandler;
+
+    private readonly ManualResetEvent _diskWriteHandle;
 
     public bool Saving { get; private set; }
     public bool Loaded { get; private set; }
     public bool Loading { get; private set; }
     public bool Crashed { get; private set; }
 
-    public World(ILogger<World> logger, EventSink sink, NetStateHandler handler)
+    public World(ILogger<World> logger, EventSink sink, InternalRConfig config, NetStateHandler netStateHandler)
     {
         _logger = logger;
         _sink = sink;
-        _handler = handler;
+        _config = config;
+        _netStateHandler = netStateHandler;
+
+        _diskWriteHandle = new ManualResetEvent(true);
 
         Saving = false;
         Loaded = false;
         Loading = false;
         Crashed = false;
-
-        _diskWriteHandle = new ManualResetEvent(true);
     }
+
+    public void NotifyDiskWriteComplete()
+    {
+        if (_diskWriteHandle.Set())
+            _logger.LogInformation("Closing Save Files. ");
+    }
+
+    public void WaitForWriteCompletion() => _diskWriteHandle.WaitOne();
 
     public void Load()
     {
@@ -63,20 +75,12 @@ public class World
         _logger.LogInformation("Finished loading in {SECONDS} seconds.", stopWatch.Elapsed.TotalSeconds);
     }
 
-    public void WaitForWriteCompletion() => _diskWriteHandle.WaitOne();
-
-    public void NotifyDiskWriteComplete()
-    {
-        if (_diskWriteHandle.Set())
-            _logger.LogDebug("Closing save files.");
-    }
-
-    public void Save(bool message, bool permitBackgroundWrite)
+    public void Save(bool message)
     {
         if (Saving)
             return;
 
-        _handler.Pause();
+        _netStateHandler.Pause();
 
         WaitForWriteCompletion();
 
@@ -84,9 +88,12 @@ public class World
 
         _diskWriteHandle.Reset();
 
-        _logger.LogInformation("Saving...");
+        if (message)
+            Broadcast("The world is saving, please wait.");
 
-        var stopWatch = Stopwatch.StartNew();
+        var watch = Stopwatch.StartNew();
+
+        InternalDirectory.CreateDirectory(_config.SaveDirectory);
 
         try
         {
@@ -97,16 +104,20 @@ public class World
             _logger.LogCritical(ex, "FATAL: Exception in world save");
         }
 
-        stopWatch.Stop();
+        watch.Stop();
 
         Saving = false;
 
-        if (!permitBackgroundWrite)
-            NotifyDiskWriteComplete();
+        NotifyDiskWriteComplete();
 
-        _logger.LogInformation("Save finished in {SECONDS} seconds.", stopWatch.Elapsed.TotalSeconds);
+        _logger.LogInformation("Save finished in {Time:F2} seconds.", watch.Elapsed.TotalSeconds);
 
-        _handler.Resume();
+        if (message)
+        {
+            Broadcast($"World save done in {watch.Elapsed.TotalSeconds} seconds.");
+        }
+
+        _netStateHandler.Resume();
     }
 
     public void Broadcast(string message)

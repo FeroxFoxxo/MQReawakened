@@ -1,4 +1,4 @@
-﻿using Server.Base.Core.Models;
+﻿using Server.Base.Core.Configs;
 using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Levels;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
@@ -268,8 +269,8 @@ public class NetState : IDisposable
 
                     lock (_handler.Disposed)
                     {
-                        if (_handler.Protocols.ContainsKey(protocolType))
-                            protocol = _handler.Protocols[protocolType];
+                        if (_handler.Protocols.TryGetValue(protocolType, out var handlerProtocol))
+                            protocol = handlerProtocol;
                     }
 
                     if (protocol != null)

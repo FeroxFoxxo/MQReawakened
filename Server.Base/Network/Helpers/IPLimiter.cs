@@ -1,4 +1,4 @@
-﻿using Server.Base.Core.Models;
+﻿using Server.Base.Core.Configs;
 using Server.Base.Network.Services;
 using System.Net;
 

@@ -1,4 +1,5 @@
-﻿using Server.Base.Accounts.Enums;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
 using Server.Base.Accounts.Services;
@@ -16,6 +17,7 @@ public class Login : SystemProtocol
     public AccountHandler AccountHandler { get; set; }
     public UserInfoHandler UserInfoHandler { get; set; }
     public PlayerHandler PlayerHandler { get; set; }
+    public ILogger<Login> Logger { get; set; }
 
     public override void Run(XmlDocument xmlDoc)
     {
@@ -26,14 +28,22 @@ public class Login : SystemProtocol
 
         if (reason == AlrReason.Accepted)
         {
-            var account = NetState.Get<Account>();
-
-            if (!PlayerHandler.PlayerList.Any(p => p.UserId == account.UserId))
+            lock (PlayerHandler.Lock)
             {
-                UserInfoHandler.InitializeUser(NetState);
-                SendXml("logOK",
-                    $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />");
-                return;
+                var account = NetState.Get<Account>();
+
+                foreach (var player in PlayerHandler.PlayerList.Where(p => p.UserId == account.UserId))
+                    player.Remove(Logger);
+
+                if (!PlayerHandler.PlayerList.Any(p => p.UserId == account.UserId))
+                {
+                    UserInfoHandler.InitializeUser(NetState);
+                    SendXml(
+                        "logOK",
+                        $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />"
+                    );
+                    return;
+                }
             }
 
             reason = AlrReason.PlayerLoggedIn;

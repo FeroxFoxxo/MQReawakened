@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Models;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
-using Server.Base.Core.Models;
 using Server.Base.Core.Services;
 using Server.Base.Network;
 using Server.Reawakened.Configs;

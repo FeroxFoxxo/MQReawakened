@@ -11,6 +11,7 @@ using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
+using Web.Launcher.Models;
 
 namespace Protocols.External._c__CharacterInfoHandler;
 
@@ -24,6 +25,7 @@ public class CreateCharacter : ExternalProtocol
     public WorldGraph WorldGraph { get; set; }
     public WorldHandler WorldHandler { get; set; }
     public ILogger<CreateCharacter> Logger { get; set; }
+    public LauncherRwConfig LauncherRwConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -35,7 +37,10 @@ public class CreateCharacter : ExternalProtocol
         var lastName = message[7];
         var gender = (Gender)int.Parse(message[8]);
         var characterData = new CharacterDataModel(message[9], lowestCharacterAvailable, ServerConfig);
-        var tribe = (TribeType)int.Parse(message[10]);
+        var tribe = TribeType.Crossroads;
+
+        if (LauncherRwConfig.Is2014Client)
+            tribe = (TribeType)int.Parse(message[10]);
 
         var names = new[] { firstName, middleName, lastName };
 

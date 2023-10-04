@@ -145,7 +145,7 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(string.Empty);
         sb.Append(CurrentLife);
         sb.Append(GlobalLevel);
-        sb.Append(InteractionStatus);
+        sb.Append((int)InteractionStatus);
         sb.Append(Reputation);
         sb.Append(ReputationForCurrentLevel);
         sb.Append(ReputationForNextLevel);
@@ -199,7 +199,7 @@ public class CharacterDataModel : CharacterLightModel
         return sb.ToString();
     }
 
-    private IEnumerable<string> BuildTribeDataString() =>
+    private string[] BuildTribeDataString() =>
         TribesProgression.Values.Select(tribeType => tribeType.ToString()).ToArray();
 
     public string BuildPortalData()
