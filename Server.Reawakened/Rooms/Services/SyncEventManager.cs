@@ -2,7 +2,7 @@
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using System.Reflection;
-using System.Runtime.Serialization;
+using System.Runtime.CompilerServices;
 
 namespace Server.Reawakened.Rooms.Services;
 
@@ -21,7 +21,7 @@ public class SyncEventManager : IService
     public void CreateSyncHandlers()
     {
         _roomManager = (RoomManager)
-            FormatterServices.GetUninitializedObject(typeof(RoomManager));
+            RuntimeHelpers.GetUninitializedObject(typeof(RoomManager));
 
         _encodeSync = _roomManager.GetMethod("EncodeEvent");
         _decodeSync = _roomManager.GetMethod("DecodeEvent");

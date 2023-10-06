@@ -13,15 +13,18 @@ public class ChatMessage : IService
 {
     private readonly PlayerHandler _playerHandler;
     private readonly ServerConsole _serverConsole;
+    private readonly EventSink _eventSink;
 
     public ChatMessage(ServerConsole serverConsole,
-        PlayerHandler playerHandler)
+        PlayerHandler playerHandler, EventSink eventSink)
     {
         _serverConsole = serverConsole;
         _playerHandler = playerHandler;
+        _eventSink = eventSink;
     }
 
-    public void Initialize() =>
+    public void Initialize()
+    {
         _serverConsole.AddCommand(
             "sendChat",
             "Sends a chat message to all users in the server.",
@@ -29,15 +32,18 @@ public class ChatMessage : IService
             SendChat
         );
 
-    private void SendChat(string[] command)
+        _eventSink.WorldBroadcast += @event => SendConsoleMessage(@event.Message);
+    }
+
+    private void SendChat(string[] command) => SendConsoleMessage(string.Join(' ', command.Skip(1)));
+
+    public void SendConsoleMessage(string message)
     {
         lock (_playerHandler.Lock)
         {
             foreach (var player in _playerHandler.PlayerList)
             {
-                player.Chat(CannedChatChannel.Tell, "Console",
-                    string.Join(' ', command.Skip(1))
-                );
+                player.Chat(CannedChatChannel.Tell, "Console", message);
             }
         }
     }

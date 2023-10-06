@@ -27,7 +27,7 @@ public class PlayerDataModel
         IsOnline = player != null;
 
         Level = character.LevelData.LevelId;
-        Location = player != null ? player.Room.GetRoomName() : string.Empty;
+        Location = player != null ? player.Room.GetRoomName() : "UNKNOWN";
 
         IsBlocked = currentPlayer.Character.Data.BlockedList.Any(x => x.Key == userId && x.Value == userId);
         IsMuted = currentPlayer.Character.Data.MutedList.Any(x => x.Key == userId && x.Value == userId);

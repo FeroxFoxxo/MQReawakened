@@ -20,6 +20,7 @@ public class NetState : IDisposable
 {
     public delegate bool ThrottlePacketCallback(NetState state);
 
+    private readonly InternalRConfig _rConfig;
     private readonly InternalRwConfig _rwConfig;
     private readonly ConcurrentBag<string> _currentLogs;
 
@@ -60,6 +61,7 @@ public class NetState : IDisposable
         _fileLogger = fileLogger;
         _handler = handler;
         _rwConfig = rwConfig;
+        _rConfig = rConfig;
         _sink = sink;
 
         _nextCheckActivity = GetTicks.Ticks + 30000000;
@@ -244,7 +246,7 @@ public class NetState : IDisposable
 
             if (byteCount > 0)
             {
-                _nextCheckActivity = GetTicks.Ticks + 900000000;
+                _nextCheckActivity = GetTicks.Ticks + _rConfig.DisconnectionTimeout;
 
                 if (Throttler != null)
                     if (!Throttler(this))
@@ -269,8 +271,8 @@ public class NetState : IDisposable
 
                     lock (_handler.Disposed)
                     {
-                        if (_handler.Protocols.ContainsKey(protocolType))
-                            protocol = _handler.Protocols[protocolType];
+                        if (_handler.Protocols.TryGetValue(protocolType, out var handlerProtocol))
+                            protocol = handlerProtocol;
                     }
 
                     if (protocol != null)

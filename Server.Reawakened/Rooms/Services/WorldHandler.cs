@@ -116,7 +116,7 @@ public class WorldHandler : IService
         while (level.Rooms.ContainsKey(roomId))
             roomId++;
 
-        var room = new Room(roomId, level, _config, _timerThread, _services, _roomLogger, this);
+        var room = new Room(roomId, level, _config, _timerThread, _services, _roomLogger);
 
         level.Rooms.Add(roomId, room);
 

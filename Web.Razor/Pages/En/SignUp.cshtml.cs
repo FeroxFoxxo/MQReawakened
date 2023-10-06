@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Services;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Services;
@@ -67,11 +68,13 @@ public class SignUpModel : PageModel
 
     private readonly AccountHandler _accountHandler;
     private readonly UserInfoHandler _userInfoHandler;
+    private readonly ILogger<SignUpModel> _logger;
 
-    public SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfoHandler)
+    public SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfoHandler, ILogger<SignUpModel> logger)
     {
         _accountHandler = accountHandler;
         _userInfoHandler = userInfoHandler;
+        _logger = logger;
     }
 
     public IActionResult OnPost()
@@ -97,11 +100,20 @@ public class SignUpModel : PageModel
         var account = _accountHandler.Create(ip, Username, Password, Email);
 
         if (account == null)
+        {
+            _logger.LogError("Could not create account with name: {Username}", Username);
             return NotFound();
+        }
 
         var userInfo = _userInfoHandler.Create(ip, account.UserId, Gender, Date.Value, Region, "Website");
 
-        return userInfo == null ? NotFound() : RedirectToPage("Success");
+        if (account == null)
+        {
+            _logger.LogError("Could not create user info with name: {Username}", Username);
+            return NotFound();
+        }
+
+        return RedirectToPage("Success");
     }
 
 }

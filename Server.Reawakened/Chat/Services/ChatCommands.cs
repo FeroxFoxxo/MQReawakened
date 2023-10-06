@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
-using Server.Base.Worlds;
+using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
@@ -11,7 +11,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
-using WorldGraphDefines;
+using System.Text.RegularExpressions;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -24,10 +24,10 @@ public class ChatCommands : IService
     private readonly ILogger<ServerConsole> _logger;
     private readonly WorldGraph _worldGraph;
     private readonly WorldHandler _worldHandler;
-    private readonly World _world;
+    private readonly AutoSave _saves;
 
     public ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
-        WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime, World world)
+        WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves)
     {
         _itemCatalog = itemCatalog;
         _config = config;
@@ -35,7 +35,7 @@ public class ChatCommands : IService
         _worldHandler = worldHandler;
         _worldGraph = worldGraph;
         _appLifetime = appLifetime;
-        _world = world;
+        _saves = saves;
         _commands = new Dictionary<string, ChatCommand>();
     }
 
@@ -65,8 +65,10 @@ public class ChatCommands : IService
 
         if (name != null && _commands.TryGetValue(name, out var value))
         {
-            if (!value.CommandMethod(player, args))
-                Log($"Usage: {_config.ChatCommandStart}{value.Name} {value.Arguments}", player);
+            Log(
+                !value.CommandMethod(player, args)
+                    ? $"Usage: {_config.ChatCommandStart}{value.Name} {value.Arguments}"
+                    : "Successfully run command!", player);
         }
         else
         {
@@ -164,70 +166,23 @@ public class ChatCommands : IService
                 amount = 1;
         }
 
-        var glider = _itemCatalog.GetItemFromId(394);
-        var grapplingHook = _itemCatalog.GetItemFromId(395);
-        var healingStaff = _itemCatalog.GetItemFromId(396);
-        var woodenSlingshot = _itemCatalog.GetItemFromId(397);
-        var kernelBlaster = _itemCatalog.GetItemFromId(453);
-        var woodenSword = _itemCatalog.GetItemFromId(2978);
-        var oakHelmet = _itemCatalog.GetItemFromId(2883);
-        var oakArmor = _itemCatalog.GetItemFromId(2886);
-        var oakPants = _itemCatalog.GetItemFromId(2880);
-        var burglarMask = _itemCatalog.GetItemFromId(1232);
-        var superMonkey = _itemCatalog.GetItemFromId(3152);
-        var boomBomb = _itemCatalog.GetItemFromId(3053);
-        var warriorCostume = _itemCatalog.GetItemFromId(3023);
-        var boomBug = _itemCatalog.GetItemFromId(3022);
-        var acePilot = _itemCatalog.GetItemFromId(2972);
-        var crimsonDragon = _itemCatalog.GetItemFromId(2973);
-        var bananaBox = _itemCatalog.GetItemFromId(2923);
-        var invisibleBomb = _itemCatalog.GetItemFromId(585);
-        var redApple = _itemCatalog.GetItemFromId(1568);
-        var healingPotion = _itemCatalog.GetItemFromId(1704);
+        var items = _config.SingleItemKit
+            .Select(itemId => _itemCatalog.GetItemFromId(itemId))
+            .ToList();
 
-        var items = new List<ItemDescription>
+        foreach (var itemId in _config.StackedItemKit)
         {
-            glider,
-            grapplingHook,
-            healingStaff,
-            woodenSlingshot,
-            kernelBlaster,
-            woodenSword,
-            oakHelmet,
-            oakArmor,
-            oakPants,
-            burglarMask,
-            superMonkey,
-            boomBomb,
-            warriorCostume,
-            boomBug,
-            acePilot,
-            crimsonDragon,
-            bananaBox,
-            invisibleBomb,
-            redApple,
-            healingPotion
-        };
+            var stackedItem = _itemCatalog.GetItemFromId(itemId);
 
-        const int totalCount = 98;
-
-        for (var i = 0; i < totalCount; i++)
-        {
-            items.Add(healingStaff);
-            items.Add(invisibleBomb);
-            items.Add(redApple);
-            items.Add(healingPotion);
+            for (var i = 0; i < _config.AmountToStack; i++)
+                items.Add(stackedItem);
         }
 
         character.AddKit(items, amount);
 
         player.SendUpdatedInventory(false);
 
-        Log(
-            amount > 1
-                ? $"{character.Data.CharacterName} received {amount} item kits!"
-                : $"{character.Data.CharacterName} received {amount} item kit!", player
-        );
+        Log($"{character.Data.CharacterName} received {amount} item kit{(amount > 1 ? "s" : "")}!", player);
 
         return true;
     }
@@ -238,10 +193,9 @@ public class ChatCommands : IService
         var character = player.Character;
 
         var cashAmount = Convert.ToInt32(args[1]);
-
         player.AddBananas(cashAmount);
 
-        Log($"{character.Data.CharacterName} received {cashAmount} bananas!", player);
+        Log($"{character.Data.CharacterName} received {cashAmount} banana{(cashAmount > 1 ? "s" : "")}!", player);
 
         return true;
     }
@@ -254,7 +208,7 @@ public class ChatCommands : IService
 
         player.AddMCash(cashAmount);
 
-        Log($"{character.Data.CharacterName} received {cashAmount} Monkey Cash!", player);
+        Log($"{character.Data.CharacterName} received {cashAmount} monkey cash!", player);
 
         return true;
     }
@@ -299,6 +253,9 @@ public class ChatCommands : IService
         player.AddBananas(cashKitAmount);
         player.AddMCash(cashKitAmount);
 
+        Log($"{character.Data.CharacterName} received {_config.CashKitAmount} " +
+            $"banana{(_config.CashKitAmount > 1 ? "s" : "")} & monkey cash!", player);
+
         return true;
     }
 
@@ -312,18 +269,22 @@ public class ChatCommands : IService
             return false;
         }
 
-        var first = args[1].ToLower();
-        var middle = args[2].ToLower();
+        var names = args.Select(name =>
+            Regex.Replace(name.ToLower(), "[^A-Za-z0-9]+", "")
+        ).ToList();
 
-        var last = args.Length > 3 ? args[3].ToLower() : "";
+        var firstName = names[1];
+        var secondName = names[2];
 
-        if (first.Length > 0)
-            first = char.ToUpper(first[0]) + first[1..];
+        var thirdName = names.Count > 3 ? names[3] : string.Empty;
 
-        if (middle.Length > 0)
-            middle = char.ToUpper(middle[0]) + middle[1..];
+        if (firstName.Length > 0)
+            firstName = char.ToUpper(firstName[0]) + firstName[1..];
 
-        character.Data.CharacterName = first + " " + middle + last;
+        if (secondName.Length > 0)
+            secondName = char.ToUpper(secondName[0]) + secondName[1..];
+
+        character.Data.CharacterName = $"{firstName} {secondName}{thirdName}";
 
         Log($"You have changed your monkey's name to {character.Data.CharacterName}!", player);
         Log("This change will apply only once you've logged out.", player);
@@ -386,7 +347,7 @@ public class ChatCommands : IService
 
     private bool SaveLevel(Player player, string[] args)
     {
-        _world.Save(false, true);
+        _saves.Save();
         return true;
     }
 

@@ -121,7 +121,8 @@ public class ServerWorker : IHostedService
 
     public void OnClose()
     {
-        _world.Save(false, true);
+        _world.Save(false);
+        _world.Broadcast("Server is shutting down!");
 
         _services.SaveConfigs(_serverHandler.Modules);
 

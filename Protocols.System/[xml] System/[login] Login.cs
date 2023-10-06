@@ -4,7 +4,6 @@ using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
 using Server.Base.Accounts.Services;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Services;
 using System.Xml;
@@ -29,24 +28,25 @@ public class Login : SystemProtocol
 
         if (reason == AlrReason.Accepted)
         {
-            var account = NetState.Get<Account>();
-
-            List<Player> loggedIn;
-
             lock (PlayerHandler.Lock)
-                loggedIn = PlayerHandler.PlayerList.Where(p => p.UserId == account.UserId).ToList();
+            {
+                var account = NetState.Get<Account>();
 
-            foreach(var player in loggedIn)
-                player.Remove(Logger);
+                foreach (var player in PlayerHandler.PlayerList.Where(p => p.UserId == account.UserId))
+                    player.Remove(Logger);
 
-            UserInfoHandler.InitializeUser(NetState);
+                if (!PlayerHandler.PlayerList.Any(p => p.UserId == account.UserId))
+                {
+                    UserInfoHandler.InitializeUser(NetState);
+                    SendXml(
+                        "logOK",
+                        $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />"
+                    );
+                    return;
+                }
+            }
 
-            SendXml(
-                "logOK",
-                $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />"
-            );
-
-            return;
+            reason = AlrReason.PlayerLoggedIn;
         }
 
         SendXml("logKO", $"<login e='{reason.GetErrorValue()}' />");

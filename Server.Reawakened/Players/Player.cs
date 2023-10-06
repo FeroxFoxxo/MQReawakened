@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
@@ -8,6 +9,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Players;
@@ -34,6 +36,8 @@ public class Player : INetStateData
     public Vector3Model Velocity { get; set; }
     public bool Invincible { get; set; }
 
+    public long CurrentPing { get; set; }
+
     public Player(UserInfo userInfo, NetState state, PlayerHandler playerHandler)
     {
         PlayerHandler = playerHandler;
@@ -45,6 +49,8 @@ public class Player : INetStateData
 
         Invincible = false;
         FirstLogin = true;
+
+        CurrentPing = GetTime.GetCurrentUnixMilliseconds();
     }
 
     public void RemovedState(NetState state, NetStateHandler handler,
@@ -52,27 +58,29 @@ public class Player : INetStateData
 
     public void Remove(Microsoft.Extensions.Logging.ILogger logger)
     {
-        this.RemoveFromGroup();
+        lock(PlayerHandler.Lock)
+            PlayerHandler.RemovePlayer(this);
 
-        PlayerHandler.RemovePlayer(this);
+        this.RemoveFromGroup();
 
         if (Character != null)
             foreach (var player in PlayerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
                 player.SendXt("fz", Character.Data.CharacterName);
 
-        if (Room == null)
-            return;
+            Character = null;
+        }
 
-        if (!Room.LevelInfo.IsValid())
-            return;
+        if (Room != null)
+        {
+            if (!Room.LevelInfo.IsValid())
+                return;
 
-        Room.DumpPlayerToLobby(this);
+            var roomName = Room.LevelInfo.Name;
 
-        var roomName = Room.LevelInfo.Name;
+            if (!string.IsNullOrEmpty(roomName))
+                logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
+        }
 
-        if (!string.IsNullOrEmpty(roomName))
-            logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
-
-        Character = null;
+        this.DumpToLobby();
     }
 }

@@ -52,7 +52,7 @@ If you have anything you wish to report, please submit an issue through [the rep
 - <a href="https://github.com/Perfare/AssetStudio/">AssetStudio</a> - Tool for exploring the original assetbundles [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETSTUDIO)
 - <a href="https://github.com/ServUO/ServUO/">ServUO</a> - Server emulator used as a base, written in C# .NET [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Base/Licences/LICENSE_SERVUO)
 - <a href="https://github.com/apache/thrift/">Thrift</a> - Point-to-point RPC implementation [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Reawakened/Licences/LICENSE_THRIFT)
-- <a href="https://github.com/discord-net/Discord.Net/">AssetRipper.IO.Endian</a> - Reflective class initialization [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Reawakened/Licences/LICENSE_DNET)
+- <a href="https://github.com/discord-net/Discord.Net/">Discord.Net</a> - Reflective class initialization [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Reawakened/Licences/LICENSE_DNET)
 
 ### Commemorations
 

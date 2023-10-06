@@ -4,7 +4,7 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Web.Abstractions;
-using System.Runtime.Serialization;
+using System.Runtime.CompilerServices;
 using Web.AssetBundles.Events;
 
 namespace Web.AssetBundles;
@@ -26,7 +26,7 @@ public class AssetBundles : WebModule
         foreach (var xml in modules.GetServices<IBundledXml>())
         {
             Logger.LogTrace("   Loaded: {ServiceName}", xml.Name);
-            services.AddSingleton(xml, FormatterServices.GetUninitializedObject(xml));
+            services.AddSingleton(xml, RuntimeHelpers.GetUninitializedObject(xml));
         }
 
         Logger.LogInformation("Loaded bundles");

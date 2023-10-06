@@ -7,7 +7,7 @@ using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using System.Reflection;
-using System.Runtime.Serialization;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Xml;
 using WorldGraphDefines;
@@ -100,7 +100,7 @@ public static class LoadRoomData
 
                     if (syncedEntities.TryGetValue(mqType.FullName!, out var internalType))
                     {
-                        var dataObj = FormatterServices.GetUninitializedObject(mqType);
+                        var dataObj = RuntimeHelpers.GetUninitializedObject(mqType);
 
                         var fields = mqType.GetFields()
                             .Where(prop => prop.IsDefined(typeof(MQAttribute), false))
