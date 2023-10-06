@@ -140,7 +140,7 @@ public class ChatCommands : IService
 
         player.AddSlots(pet);
 
-        Log("Hotbar has been setup! (slots apply once logged out)", player);
+        Log("Hotbar has been setup! (equip a weapon or log out)", player);
 
         return true;
     }
