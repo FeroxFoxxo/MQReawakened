@@ -202,9 +202,13 @@ public class Room : Timer
 
         character.Data.SpawnPositionX = spawnLocation.Position.X + spawnLocation.Scale.X / 2;
         character.Data.SpawnPositionY = spawnLocation.Position.Y + spawnLocation.Scale.Y / 2;
-        character.Data.SpawnOnBackPlane = spawnLocation.Position.Z > 1;
 
-        Console.WriteLine(spawnLocation.Position.Z);
+        if (spawnLocation.ParentPlane == "Plane1")
+            character.Data.SpawnOnBackPlane = true;
+        else if (spawnLocation.ParentPlane == "Plane0")
+            character.Data.SpawnOnBackPlane = false;
+        else
+            Logger.LogWarning("Unknown plane for portal: {PortalPlane}", spawnLocation.ParentPlane);
 
         Logger.LogDebug(
             "Spawning {CharacterName} at object '{Object}' (portal '{Portal}' spawn '{SpawnPoint}') at '{NewRoom}'.",

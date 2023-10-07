@@ -10,8 +10,11 @@ public abstract class BaseSyncedEntity
     public StoredEntityModel StoredEntity { get; private set; }
 
     public Room Room => StoredEntity.Room;
+
     public int Id => StoredEntity.GameObject.ObjectInfo.ObjectId;
     public string PrefabName => StoredEntity.GameObject.ObjectInfo.PrefabName;
+    public string ParentPlane => StoredEntity.GameObject.ObjectInfo.ParentPlane;
+
     public Vector3Model Position => StoredEntity.GameObject.ObjectInfo.Position;
     public Vector3Model Rotation => StoredEntity.GameObject.ObjectInfo.Rotation;
     public Vector3Model Scale => StoredEntity.GameObject.ObjectInfo.Scale;

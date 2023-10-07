@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Planes;
 
-public class PlaneModel
+public class PlaneModel(string planeName)
 {
-    public Dictionary<int, GameObjectModel> GameObjects { get; set; }
-
-    public PlaneModel() => GameObjects = new Dictionary<int, GameObjectModel>();
+    public Dictionary<int, GameObjectModel> GameObjects { get; set; } = new Dictionary<int, GameObjectModel>();
+    public string PlaneName { get; } = planeName;
 
     public void LoadColliderXml(XmlNode colliderNode)
     {
@@ -54,7 +53,8 @@ public class PlaneModel
                 X = Convert.ToSingle(attributes.GetNamedItem("sx")!.Value),
                 Y = Convert.ToSingle(attributes.GetNamedItem("sy")!.Value),
                 Z = Convert.ToSingle(attributes.GetNamedItem("sz")!.Value)
-            }
+            },
+            ParentPlane = PlaneName
         };
 
         foreach (XmlNode componentNode in gameObjectNode.ChildNodes)

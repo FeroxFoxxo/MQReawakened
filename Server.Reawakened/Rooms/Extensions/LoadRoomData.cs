@@ -34,7 +34,7 @@ public static class LoadRoomData
         planeNames[5] = "Unity";
         planeNames[6] = "TemplatePlane";
 
-        var planes = planeNames.ToDictionary(name => name, name => new PlaneModel());
+        var planes = planeNames.ToDictionary(name => name, name => new PlaneModel(name));
 
         foreach (XmlNode data in xmlDocument.FirstChild!.NextSibling!)
             foreach (XmlNode planeNode in data.ChildNodes)

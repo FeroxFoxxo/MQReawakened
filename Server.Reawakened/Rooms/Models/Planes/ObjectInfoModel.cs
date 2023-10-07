@@ -12,6 +12,8 @@ public class ObjectInfoModel
 
     public string PrefabName { get; set; }
 
+    public string ParentPlane { get; set; }
+
     public Dictionary<string, ComponentModel> Components { get; set; }
 
     public ObjectInfoModel() =>
