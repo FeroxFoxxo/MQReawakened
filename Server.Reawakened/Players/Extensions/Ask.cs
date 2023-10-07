@@ -54,12 +54,12 @@ public static class Ask
             return;
         }
 
-        if (!user.Characters.ContainsKey(intId))
+        if (!user.Characters.TryGetValue(intId, out var value))
         {
             logger.LogError("Character list does not contain ID {Id}", id);
             return;
         }
 
-        model = user.Characters[intId];
+        model = value;
     }
 }

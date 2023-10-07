@@ -25,8 +25,8 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
         this.SetField<QuestCatalogXML>("_questLines",
             new SortedDictionary<QuestLineDescription, List<QuestDescription>>(new QuestLineSorter()));
 
-        _quests = new Dictionary<int, QuestDescription>();
-        _questLines = new SortedDictionary<QuestLineDescription, List<QuestDescription>>();
+        _quests = [];
+        _questLines = [];
     }
 
     public void EditDescription(XmlDocument xml)

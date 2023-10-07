@@ -26,7 +26,7 @@ public class TimerThread : IService
         _pool = pool;
         _sink = sink;
         _handler = handler;
-        _changed = new Dictionary<Timer, TimerChangeEntry>();
+        _changed = [];
         _queue = new Queue<Timer>();
         _signal = new AutoResetEvent(false);
 

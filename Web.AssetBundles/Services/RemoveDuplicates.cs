@@ -9,28 +9,17 @@ using Web.Launcher.Models;
 
 namespace Web.AssetBundles.Services;
 
-public class RemoveDuplicates : IService
+public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
+    ServerConsole console, LauncherRwConfig launcherWConfig, BuildAssetList buildAssetList,
+    AssetBundleRConfig rConfig, AssetBundleRwConfig rwConfig) : IService
 {
-    private readonly BuildAssetList _buildAssetList;
-    private readonly ServerConsole _console;
-    private readonly LauncherRwConfig _launcherWConfig;
-    private readonly ILogger<RemoveDuplicates> _logger;
-    private readonly AssetBundleRConfig _rConfig;
-    private readonly AssetBundleRwConfig _rwConfig;
-    private readonly EventSink _sink;
-
-    public RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
-        ServerConsole console, LauncherRwConfig launcherWConfig, BuildAssetList buildAssetList,
-        AssetBundleRConfig rConfig, AssetBundleRwConfig rwConfig)
-    {
-        _logger = logger;
-        _sink = sink;
-        _console = console;
-        _launcherWConfig = launcherWConfig;
-        _buildAssetList = buildAssetList;
-        _rConfig = rConfig;
-        _rwConfig = rwConfig;
-    }
+    private readonly BuildAssetList _buildAssetList = buildAssetList;
+    private readonly ServerConsole _console = console;
+    private readonly LauncherRwConfig _launcherWConfig = launcherWConfig;
+    private readonly ILogger<RemoveDuplicates> _logger = logger;
+    private readonly AssetBundleRConfig _rConfig = rConfig;
+    private readonly AssetBundleRwConfig _rwConfig = rwConfig;
+    private readonly EventSink _sink = sink;
 
     public void Initialize() => _sink.WorldLoad += Load;
 

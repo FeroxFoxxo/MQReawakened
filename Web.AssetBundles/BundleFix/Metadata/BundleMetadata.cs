@@ -3,22 +3,13 @@ using Web.AssetBundles.BundleFix.Header.Models;
 
 namespace Web.AssetBundles.BundleFix.Metadata;
 
-public class BundleMetadata : IEndianReadableWritable
+public class BundleMetadata(string cacheName, uint fileSize) : IEndianReadableWritable
 {
-    public string CacheName;
-    public uint FileSize;
-    public uint MetadataSize;
-    public uint NumberOfScenes;
-    public byte Unknown;
-
-    public BundleMetadata(string cacheName, uint fileSize)
-    {
-        NumberOfScenes = 1;
-        CacheName = cacheName;
-        MetadataSize = 0;
-        FileSize = fileSize;
-        Unknown = 0;
-    }
+    public string CacheName = cacheName;
+    public uint FileSize = fileSize;
+    public uint MetadataSize = 0;
+    public uint NumberOfScenes = 1;
+    public byte Unknown = 0;
 
     public void Read(EndianReader writer)
     {

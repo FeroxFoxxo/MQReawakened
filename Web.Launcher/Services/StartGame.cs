@@ -22,43 +22,26 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Web.Launcher.Services;
 
-public class StartGame : IService
+public class StartGame(EventSink sink, LauncherRConfig lConfig, IHostApplicationLifetime appLifetime,
+    ILogger<StartGame> logger, ServerConsole console, World world, LauncherRwConfig lWConfig,
+    PlayerEventSink playerEventSink, RandomKeyGenerator generator, InternalRwConfig internalWConfig) : IService
 {
-    private readonly IHostApplicationLifetime _appLifetime;
-    private readonly ServerConsole _console;
-    private readonly RandomKeyGenerator _generator;
-    private readonly InternalRwConfig _internalWConfig;
-    private readonly ILogger<StartGame> _logger;
-    private readonly PlayerEventSink _playerEventSink;
-    private readonly LauncherRConfig _lConfig;
-    private readonly LauncherRwConfig _lWConfig;
-    private readonly EventSink _sink;
-    private readonly World _world;
+    private readonly IHostApplicationLifetime _appLifetime = appLifetime;
+    private readonly ServerConsole _console = console;
+    private readonly RandomKeyGenerator _generator = generator;
+    private readonly InternalRwConfig _internalWConfig = internalWConfig;
+    private readonly ILogger<StartGame> _logger = logger;
+    private readonly PlayerEventSink _playerEventSink = playerEventSink;
+    private readonly LauncherRConfig _lConfig = lConfig;
+    private readonly LauncherRwConfig _lWConfig = lWConfig;
+    private readonly EventSink _sink = sink;
+    private readonly World _world = world;
 
     private string _directory;
-    private bool _dirSet, _appStart;
+    private bool _dirSet = false, _appStart = false;
     private Process _game;
 
     public PackageInformation CurrentVersion { get; private set; }
-
-    public StartGame(EventSink sink, LauncherRConfig lConfig, IHostApplicationLifetime appLifetime,
-        ILogger<StartGame> logger, ServerConsole console, World world, LauncherRwConfig lWConfig,
-        PlayerEventSink playerEventSink, RandomKeyGenerator generator, InternalRwConfig internalWConfig)
-    {
-        _sink = sink;
-        _lConfig = lConfig;
-        _appLifetime = appLifetime;
-        _logger = logger;
-        _console = console;
-        _world = world;
-        _lWConfig = lWConfig;
-        _playerEventSink = playerEventSink;
-        _generator = generator;
-        _internalWConfig = internalWConfig;
-
-        _dirSet = false;
-        _appStart = false;
-    }
 
     public void Initialize()
     {

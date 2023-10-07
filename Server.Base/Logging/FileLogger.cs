@@ -5,22 +5,13 @@ using System.Text;
 
 namespace Server.Base.Logging;
 
-public class FileLogger
+public class FileLogger(ILoggerFactory loggerFactory, InternalRConfig config, ILogger<FileLogger> fLogger)
 {
-    private readonly InternalRConfig _config;
-    private readonly Dictionary<string, ConsoleFileLogger> _fileLoggers;
-    private readonly ILogger<FileLogger> _fLogger;
-    private readonly object _lock;
-    private readonly ILoggerFactory _loggerFactory;
-
-    public FileLogger(ILoggerFactory loggerFactory, InternalRConfig config, ILogger<FileLogger> fLogger)
-    {
-        _loggerFactory = loggerFactory;
-        _config = config;
-        _fLogger = fLogger;
-        _fileLoggers = new Dictionary<string, ConsoleFileLogger>();
-        _lock = new object();
-    }
+    private readonly InternalRConfig _config = config;
+    private readonly Dictionary<string, ConsoleFileLogger> _fileLoggers = new();
+    private readonly ILogger<FileLogger> _fLogger = fLogger;
+    private readonly object _lock = new();
+    private readonly ILoggerFactory _loggerFactory = loggerFactory;
 
     public void WriteGenericLog<T>(string logFileName, string title, string message, LoggerType type)
     {

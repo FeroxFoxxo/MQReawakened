@@ -4,18 +4,11 @@ using System.Net;
 
 namespace Server.Base.Network.Helpers;
 
-public class IpLimiter
+public class IpLimiter(InternalRConfig internalServerConfig, NetStateHandler handler)
 {
-    private readonly NetStateHandler _handler;
-    private readonly InternalRConfig _internalServerConfig;
-    private readonly Dictionary<IPAddress, IPAddress> _ipAddressTable;
-
-    public IpLimiter(InternalRConfig internalServerConfig, NetStateHandler handler)
-    {
-        _internalServerConfig = internalServerConfig;
-        _handler = handler;
-        _ipAddressTable = new Dictionary<IPAddress, IPAddress>();
-    }
+    private readonly NetStateHandler _handler = handler;
+    private readonly InternalRConfig _internalServerConfig = internalServerConfig;
+    private readonly Dictionary<IPAddress, IPAddress> _ipAddressTable = new();
 
     public IPAddress Intern(IPAddress ipAddress)
     {

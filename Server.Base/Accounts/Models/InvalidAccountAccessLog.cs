@@ -2,19 +2,13 @@
 
 namespace Server.Base.Accounts.Models;
 
-public class InvalidAccountAccessLog
+public class InvalidAccountAccessLog(IPAddress address)
 {
-    public IPAddress Address { get; set; }
+    public IPAddress Address { get; set; } = address;
 
     public int Counts { get; set; }
 
-    public DateTime LastAccessTime { get; set; }
+    public DateTime LastAccessTime { get; set; } = DateTime.UtcNow;
 
     public bool HasExpired => DateTime.UtcNow >= LastAccessTime + TimeSpan.FromHours(1.0);
-
-    public InvalidAccountAccessLog(IPAddress address)
-    {
-        Address = address;
-        LastAccessTime = DateTime.UtcNow;
-    }
 }

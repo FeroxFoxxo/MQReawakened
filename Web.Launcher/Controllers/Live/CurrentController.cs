@@ -4,11 +4,9 @@ using Web.Launcher.Services;
 namespace Web.Launcher.Controllers.Live;
 
 [Route("live/current.txt")]
-public class CurrentController : Controller
+public class CurrentController(StartGame game) : Controller
 {
-    private readonly StartGame _game;
-
-    public CurrentController(StartGame game) => _game = game;
+    private readonly StartGame _game = game;
 
     [HttpGet]
     public IActionResult GetCurrentData() => Ok(_game.CurrentVersion);

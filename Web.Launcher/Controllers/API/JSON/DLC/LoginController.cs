@@ -9,25 +9,15 @@ using Web.Launcher.Models;
 namespace Web.Launcher.Controllers.API.JSON.DLC;
 
 [Route("api/json/dlc/login")]
-public class LoginController : Controller
+public class LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler,
+    LauncherRConfig rConfig, PasswordHasher passwordHasher, LauncherRwConfig config, ILogger<LoginController> logger) : Controller
 {
-    private readonly AccountHandler _accHandler;
-    private readonly LauncherRwConfig _config;
-    private readonly PasswordHasher _passwordHasher;
-    private readonly LauncherRConfig _rConfig;
-    private readonly UserInfoHandler _userInfoHandler;
-    private readonly ILogger<LoginController> _logger;
-
-    public LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler,
-        LauncherRConfig rConfig, PasswordHasher passwordHasher, LauncherRwConfig config, ILogger<LoginController> logger)
-    {
-        _accHandler = accHandler;
-        _userInfoHandler = userInfoHandler;
-        _rConfig = rConfig;
-        _passwordHasher = passwordHasher;
-        _config = config;
-        _logger = logger;
-    }
+    private readonly AccountHandler _accHandler = accHandler;
+    private readonly LauncherRwConfig _config = config;
+    private readonly PasswordHasher _passwordHasher = passwordHasher;
+    private readonly LauncherRConfig _rConfig = rConfig;
+    private readonly UserInfoHandler _userInfoHandler = userInfoHandler;
+    private readonly ILogger<LoginController> _logger = logger;
 
     [HttpPost]
     public IActionResult HandleLogin([FromForm] string username, [FromForm] string password)

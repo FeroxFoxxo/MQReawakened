@@ -11,7 +11,7 @@ using System.Globalization;
 namespace Web.Razor.Pages.En;
 
 [BindProperties]
-public class SignUpModel : PageModel
+public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfoHandler, ILogger<SignUpModel> logger) : PageModel
 {
     [Display(Name = "User Name")]
     [StringLength(10, ErrorMessage = "The {0} cannot be over {1} characters long.")]
@@ -66,16 +66,9 @@ public class SignUpModel : PageModel
         })
         .ToList();
 
-    private readonly AccountHandler _accountHandler;
-    private readonly UserInfoHandler _userInfoHandler;
-    private readonly ILogger<SignUpModel> _logger;
-
-    public SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfoHandler, ILogger<SignUpModel> logger)
-    {
-        _accountHandler = accountHandler;
-        _userInfoHandler = userInfoHandler;
-        _logger = logger;
-    }
+    private readonly AccountHandler _accountHandler = accountHandler;
+    private readonly UserInfoHandler _userInfoHandler = userInfoHandler;
+    private readonly ILogger<SignUpModel> _logger = logger;
 
     public IActionResult OnPost()
     {

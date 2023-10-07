@@ -10,34 +10,21 @@ using Server.Base.Timers.Services;
 
 namespace Server.Base.Network.Services;
 
-public class NetStateHandler : IService
+public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
+    EventSink sink) : IService
 {
     public delegate ProtocolResponse RunProtocol(NetState state, string protocol);
 
-    private readonly FileLogger _fileLogger;
-    private readonly EventSink _sink;
-    private readonly TimerThread _thread;
+    private readonly FileLogger _fileLogger = fileLogger;
+    private readonly EventSink _sink = sink;
+    private readonly TimerThread _thread = thread;
 
-    public readonly Queue<NetState> Disposed;
-    public readonly List<NetState> Instances;
+    public readonly Queue<NetState> Disposed = new();
+    public readonly List<NetState> Instances = new();
 
-    public readonly Dictionary<char, RunProtocol> Protocols;
+    public readonly Dictionary<char, RunProtocol> Protocols = new();
 
-    public bool Paused;
-
-    public NetStateHandler(FileLogger fileLogger, TimerThread thread,
-        EventSink sink)
-    {
-        _fileLogger = fileLogger;
-        _thread = thread;
-        _sink = sink;
-
-        Instances = new List<NetState>();
-        Disposed = new Queue<NetState>();
-        Protocols = new Dictionary<char, RunProtocol>();
-
-        Paused = false;
-    }
+    public bool Paused = false;
 
     public void Initialize() =>
         _sink.ServerStarted += _ =>

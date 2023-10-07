@@ -8,21 +8,13 @@ using System.Net;
 
 namespace Server.Base.Core.Services;
 
-public class OperationMode : IService
+public class OperationMode(EventSink eventSink, ServerConsole console, InternalRwConfig config,
+    ILogger<OperationMode> logger) : IService
 {
-    private readonly InternalRwConfig _config;
-    private readonly ServerConsole _console;
-    private readonly EventSink _eventSink;
-    private readonly ILogger<OperationMode> _logger;
-
-    public OperationMode(EventSink eventSink, ServerConsole console, InternalRwConfig config,
-        ILogger<OperationMode> logger)
-    {
-        _eventSink = eventSink;
-        _console = console;
-        _config = config;
-        _logger = logger;
-    }
+    private readonly InternalRwConfig _config = config;
+    private readonly ServerConsole _console = console;
+    private readonly EventSink _eventSink = eventSink;
+    private readonly ILogger<OperationMode> _logger = logger;
 
     public void Initialize() => _eventSink.WorldLoad += CheckOperationalMode;
 

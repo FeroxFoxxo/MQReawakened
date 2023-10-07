@@ -4,16 +4,10 @@ using Server.Base.Core.Models;
 
 namespace Server.Base.Core.Services;
 
-public class TemporaryDataStorage : IService
+public class TemporaryDataStorage(EventSink sink) : IService
 {
-    private readonly Dictionary<string, List<PersistantData>> _data;
-    private readonly EventSink _sink;
-
-    public TemporaryDataStorage(EventSink sink)
-    {
-        _sink = sink;
-        _data = new Dictionary<string, List<PersistantData>>();
-    }
+    private readonly Dictionary<string, List<PersistantData>> _data = new();
+    private readonly EventSink _sink = sink;
 
     public void Initialize() => _sink.ServerStarted += _ => _data.Clear();
 

@@ -4,11 +4,9 @@ using Microsoft.Extensions.Logging;
 namespace Web.Launcher.Controllers.API.JSON.DLC;
 
 [Route("/api/json/dlc/fatalErrorLog")]
-public class FatalErrorLog : Controller
+public class FatalErrorLog(ILogger<FatalErrorLog> logger) : Controller
 {
-    private readonly ILogger<FatalErrorLog> _logger;
-
-    public FatalErrorLog(ILogger<FatalErrorLog> logger) => _logger = logger;
+    private readonly ILogger<FatalErrorLog> _logger = logger;
 
     [HttpGet]
     public IActionResult OutputFatalCrash([FromQuery] string username)

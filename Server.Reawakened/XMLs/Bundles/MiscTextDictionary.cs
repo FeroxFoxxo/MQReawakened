@@ -17,7 +17,7 @@ public class MiscTextDictionary : LocalizationHandler, IBundledXml
 
     public void InitializeVariables()
     {
-        LocalizationDict = new Dictionary<int, string>();
+        LocalizationDict = [];
 
         this.SetField<LocalizationHandler>("_localizationDict", new Dictionary<int, string>());
     }

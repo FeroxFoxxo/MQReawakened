@@ -91,9 +91,9 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
         IsEnabled = IsEnable;
         IsActive = false;
 
-        CurrentInteractors = new List<int>();
+        CurrentInteractors = [];
 
-        Triggers = new Dictionary<int, TriggerType>();
+        Triggers = [];
 
         AddToTriggers(new List<int>
         {
@@ -224,14 +224,12 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
 
         foreach (var trigger in Triggers)
         {
-            if (Room.Entities.ContainsKey(trigger.Key))
-                if (Room.Entities[trigger.Key].Count > 0)
+            if (Room.Entities.TryGetValue(trigger.Key, out var triggers))
+                if (triggers.Count > 0)
                 {
-                    var triggers = Room.Entities[trigger.Key];
-
                     var canTriggerEntities = triggers.OfType<ITriggerable>().ToArray();
 
-                    if (canTriggerEntities.Any())
+                    if (canTriggerEntities.Length != 0)
                         foreach (var triggerEntity in canTriggerEntities)
                             triggerEntity.TriggerStateChange(trigger.Value, Room, IsActive);
 

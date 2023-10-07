@@ -2,14 +2,8 @@
 
 namespace Server.Base.Core.Events.Arguments;
 
-public class SocketConnectEventArgs : EventArgs
+public class SocketConnectEventArgs(Socket s) : EventArgs
 {
-    public Socket Socket { get; }
-    public bool AllowConnection { get; set; }
-
-    public SocketConnectEventArgs(Socket s)
-    {
-        Socket = s;
-        AllowConnection = true;
-    }
+    public Socket Socket { get; } = s;
+    public bool AllowConnection { get; set; } = true;
 }

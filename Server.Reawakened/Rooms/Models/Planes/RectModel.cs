@@ -1,17 +1,9 @@
 ﻿namespace Server.Reawakened.Rooms.Models.Planes;
 
-public class RectModel
+public class RectModel(float left, float top, float width, float height)
 {
-    public float X { get; set; }
-    public float Y { get; set; }
-    public float Width { get; set; }
-    public float Height { get; set; }
-
-    public RectModel(float left, float top, float width, float height)
-    {
-        X = left;
-        Y = top;
-        Width = width;
-        Height = height;
-    }
+    public float X { get; set; } = left;
+    public float Y { get; set; } = top;
+    public float Width { get; set; } = width;
+    public float Height { get; set; } = height;
 }

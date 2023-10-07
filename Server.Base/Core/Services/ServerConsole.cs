@@ -35,7 +35,7 @@ public class ServerConsole : IService
         _rwConfig = rwConfig;
         _saves = saves;
 
-        _commands = new Dictionary<string, ConsoleCommand>();
+        _commands = [];
 
         _consoleThread = new Thread(ConsoleLoopThread)
         {
@@ -147,7 +147,7 @@ public class ServerConsole : IService
             .OrderBy(x => x.Name)
             .ToArray();
 
-        if (commands.Any())
+        if (commands.Length != 0)
             foreach (var command in commands)
             {
                 var padding = _rConfig.CommandPadding - command.Name.Length;

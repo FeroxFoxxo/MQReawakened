@@ -3,11 +3,7 @@ using Server.Web.Abstractions;
 
 namespace Web.Launcher;
 
-public class Launcher : WebModule
+public class Launcher(ILogger<Launcher> logger) : WebModule(logger)
 {
     public override string[] Contributors { get; } = ["Ferox"];
-
-    public Launcher(ILogger<Launcher> logger) : base(logger)
-    {
-    }
 }

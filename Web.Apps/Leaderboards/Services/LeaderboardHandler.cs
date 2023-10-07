@@ -3,12 +3,10 @@ using Server.Base.Core.Events;
 
 namespace Web.Apps.Leaderboards.Services;
 
-public class LeaderboardHandler : IService
+public class LeaderboardHandler(EventSink sink) : IService
 {
-    private readonly EventSink _sink;
+    private readonly EventSink _sink = sink;
     public LeaderBoardGameJson Games { get; private set; }
-
-    public LeaderboardHandler(EventSink sink) => _sink = sink;
 
     public void Initialize() => _sink.WorldLoad += LoadLeaderboard;
 

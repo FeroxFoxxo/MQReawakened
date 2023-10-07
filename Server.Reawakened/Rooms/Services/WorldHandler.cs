@@ -11,33 +11,20 @@ using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Services;
 
-public class WorldHandler : IService
+public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph,
+    TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> handlerLogger,
+    ILogger<Room> roomLogger) : IService
 {
-    private readonly ServerRConfig _config;
+    private readonly ServerRConfig _config = config;
 
-    private readonly ILogger<WorldHandler> _handlerLogger;
+    private readonly ILogger<WorldHandler> _handlerLogger = handlerLogger;
 
-    private readonly ILogger<Room> _roomLogger;
-    private readonly IServiceProvider _services;
-    private readonly EventSink _sink;
-    private readonly TimerThread _timerThread;
-    private readonly WorldGraph _worldGraph;
-    private readonly Dictionary<int, Level> _levels;
-
-    public WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph,
-        TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> handlerLogger,
-        ILogger<Room> roomLogger)
-    {
-        _sink = sink;
-        _config = config;
-        _worldGraph = worldGraph;
-        _timerThread = timerThread;
-        _services = services;
-        _handlerLogger = handlerLogger;
-        _roomLogger = roomLogger;
-
-        _levels = new Dictionary<int, Level>();
-    }
+    private readonly ILogger<Room> _roomLogger = roomLogger;
+    private readonly IServiceProvider _services = services;
+    private readonly EventSink _sink = sink;
+    private readonly TimerThread _timerThread = timerThread;
+    private readonly WorldGraph _worldGraph = worldGraph;
+    private readonly Dictionary<int, Level> _levels = new();
 
     public void Initialize() => _sink.WorldLoad += LoadRooms;
 

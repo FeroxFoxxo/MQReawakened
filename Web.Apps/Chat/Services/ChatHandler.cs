@@ -7,18 +7,12 @@ using Web.Apps.Chat.Models;
 
 namespace Web.Apps.Chat.Services;
 
-public class ChatHandler : IService
+public class ChatHandler(EventSink eventSink, ChatConfig chatConfig) : IService
 {
-    private readonly ChatConfig _chatConfig;
-    private readonly EventSink _eventSink;
+    private readonly ChatConfig _chatConfig = chatConfig;
+    private readonly EventSink _eventSink = eventSink;
 
     public byte[] EncryptedWordList { get; private set; }
-
-    public ChatHandler(EventSink eventSink, ChatConfig chatConfig)
-    {
-        _eventSink = eventSink;
-        _chatConfig = chatConfig;
-    }
 
     public void Initialize() => _eventSink.WorldLoad += GenerateChat;
 

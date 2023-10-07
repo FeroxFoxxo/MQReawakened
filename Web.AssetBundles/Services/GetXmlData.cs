@@ -9,28 +9,17 @@ using Server.Reawakened.XMLs.Bundles;
 
 namespace Web.AssetBundles.Services;
 
-public class GetXmlData : IService
+public class GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
+    ServerRConfig config, WorldGraph worldGraph, ItemCatalog itemCatalog,
+    BuildAssetList assets, BuildLevelFiles levels) : IService
 {
-    private readonly BuildAssetList _assets;
-    private readonly ServerRConfig _config;
-    private readonly ItemCatalog _itemCatalog;
-    private readonly BuildLevelFiles _levels;
-    private readonly ILogger<GetXmlData> _logger;
-    private readonly ServerConsole _serverConsole;
-    private readonly WorldGraph _worldGraph;
-
-    public GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
-        ServerRConfig config, WorldGraph worldGraph, ItemCatalog itemCatalog,
-        BuildAssetList assets, BuildLevelFiles levels)
-    {
-        _serverConsole = serverConsole;
-        _logger = logger;
-        _config = config;
-        _worldGraph = worldGraph;
-        _itemCatalog = itemCatalog;
-        _assets = assets;
-        _levels = levels;
-    }
+    private readonly BuildAssetList _assets = assets;
+    private readonly ServerRConfig _config = config;
+    private readonly ItemCatalog _itemCatalog = itemCatalog;
+    private readonly BuildLevelFiles _levels = levels;
+    private readonly ILogger<GetXmlData> _logger = logger;
+    private readonly ServerConsole _serverConsole = serverConsole;
+    private readonly WorldGraph _worldGraph = worldGraph;
 
     public void Initialize()
     {

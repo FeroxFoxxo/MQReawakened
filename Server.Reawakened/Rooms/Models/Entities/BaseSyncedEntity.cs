@@ -33,11 +33,11 @@ public abstract class BaseSyncedEntity
     }
 
     public virtual void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) =>
-        SendEntityMethodUnknown("unran-collisions", "Failed Collision", "NotifyCollision",
+        SendEntityMethodUnknown("unrun-collisions", "Failed Collision", "NotifyCollision",
             $"Collision Event: {notifyCollisionEvent.EncodeData()}");
 
     public virtual void RunSyncedEvent(SyncEvent syncEvent, Player player) =>
-        SendEntityMethodUnknown("unran-synced-events", "Failed Sync Event", "RunSyncedEvent",
+        SendEntityMethodUnknown("unrun-synced-events", "Failed Sync Event", "RunSyncedEvent",
             $"Sync Data: {syncEvent.EncodeData()}");
 
     public void SendEntityMethodUnknown(string file, string title, string method, string data = "")

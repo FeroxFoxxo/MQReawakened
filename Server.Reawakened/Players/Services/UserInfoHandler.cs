@@ -36,10 +36,10 @@ public class UserInfoHandler : DataHandler<UserInfo>
     {
         var userId = state.Get<Account>()?.UserId ?? throw new NullReferenceException("Account not found!");
 
-        if (!Data.ContainsKey(userId))
+        if (!Data.TryGetValue(userId, out var value))
             throw new NullReferenceException();
 
-        state.Set(new Player(Data[userId], state, _playerHandler));
+        state.Set(new Player(value, state, _playerHandler));
     }
 
     public override UserInfo CreateDefault()

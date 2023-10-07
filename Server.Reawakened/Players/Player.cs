@@ -14,44 +14,29 @@ using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Players;
 
-public class Player : INetStateData
+public class Player(UserInfo userInfo, NetState state, PlayerHandler playerHandler) : INetStateData
 {
-    public PlayerHandler PlayerHandler { get; }
-    public NetState NetState { get; }
-    public UserInfo UserInfo { get; }
+    public PlayerHandler PlayerHandler { get; } = playerHandler;
+    public NetState NetState { get; } = state;
+    public UserInfo UserInfo { get; } = userInfo;
 
     public int UserId => UserInfo.UserId;
 
     public GroupModel Group { get; set; }
 
     public CharacterModel Character { get; set; }
-    public bool FirstLogin { get; set; }
+    public bool FirstLogin { get; set; } = true;
 
     public Room Room { get; set; }
     public int GameObjectId { get; set; }
 
     public bool OnGround { get; set; }
     public int Direction { get; set; }
-    public Vector3Model Position { get; set; }
-    public Vector3Model Velocity { get; set; }
-    public bool Invincible { get; set; }
+    public Vector3Model Position { get; set; } = new Vector3Model();
+    public Vector3Model Velocity { get; set; } = new Vector3Model();
+    public bool Invincible { get; set; } = false;
 
-    public long CurrentPing { get; set; }
-
-    public Player(UserInfo userInfo, NetState state, PlayerHandler playerHandler)
-    {
-        PlayerHandler = playerHandler;
-        NetState = state;
-        UserInfo = userInfo;
-
-        Position = new Vector3Model();
-        Velocity = new Vector3Model();
-
-        Invincible = false;
-        FirstLogin = true;
-
-        CurrentPing = GetTime.GetCurrentUnixMilliseconds();
-    }
+    public long CurrentPing { get; set; } = GetTime.GetCurrentUnixMilliseconds();
 
     public void RemovedState(NetState state, NetStateHandler handler,
         Microsoft.Extensions.Logging.ILogger logger) => Remove(logger);

@@ -24,10 +24,9 @@ public class PlaneModel
                 y = Convert.ToSingle(vertex.GetNamedItem("y")!.Value)
             }).ToArray();
 
-        if (!GameObjects.ContainsKey(id))
+        if (!GameObjects.TryGetValue(id, out var value))
             return;
-
-        GameObjects[id].Rect = colliderList.GetSurroundingRect();
+        value.Rect = colliderList.GetSurroundingRect();
     }
 
     public void LoadGameObjectXml(XmlNode gameObjectNode)

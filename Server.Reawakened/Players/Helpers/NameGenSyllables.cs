@@ -4,16 +4,10 @@ using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Players.Helpers;
 
-public class NameGenSyllables
+public class NameGenSyllables(NameSyllables nameGen, Random random)
 {
-    private readonly NameSyllables _nameGen;
-    private readonly Random _random;
-
-    public NameGenSyllables(NameSyllables nameGen, Random random)
-    {
-        _nameGen = nameGen;
-        _random = random;
-    }
+    private readonly NameSyllables _nameGen = nameGen;
+    private readonly Random _random = random;
 
     private string GetRandomFromList(IReadOnlyList<string> names) =>
         names[_random.Next(names.Count)];

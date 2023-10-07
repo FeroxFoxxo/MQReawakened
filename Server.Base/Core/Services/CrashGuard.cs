@@ -11,24 +11,14 @@ using System.Diagnostics;
 
 namespace Server.Base.Core.Services;
 
-public class CrashGuard : IService
+public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink,
+    IServiceProvider services, InternalRConfig config) : IService
 {
-    private readonly InternalRConfig _config;
-    private readonly NetStateHandler _handler;
-    private readonly ILogger<CrashGuard> _logger;
-    private readonly Module[] _modules;
-    private readonly EventSink _sink;
-
-    public CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink,
-        IServiceProvider services, InternalRConfig config)
-    {
-        _handler = handler;
-        _logger = logger;
-        _sink = sink;
-        _config = config;
-
-        _modules = services.GetServices<Module>().ToArray();
-    }
+    private readonly InternalRConfig _config = config;
+    private readonly NetStateHandler _handler = handler;
+    private readonly ILogger<CrashGuard> _logger = logger;
+    private readonly Module[] _modules = services.GetServices<Module>().ToArray();
+    private readonly EventSink _sink = sink;
 
     public void Initialize() => _sink.Crashed += OnCrash;
 

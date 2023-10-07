@@ -37,9 +37,9 @@ public static class CharacterExtensions
 
     public static bool HasAddedDiscoveredTribe(this CharacterModel characterData, TribeType tribe)
     {
-        if (characterData.Data.TribesDiscovered.ContainsKey(tribe))
+        if (characterData.Data.TribesDiscovered.TryGetValue(tribe, out var value))
         {
-            if (characterData.Data.TribesDiscovered[tribe])
+            if (value)
                 return false;
 
             characterData.Data.TribesDiscovered[tribe] = true;

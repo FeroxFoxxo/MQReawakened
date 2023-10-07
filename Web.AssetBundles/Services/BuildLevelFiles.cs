@@ -9,25 +9,15 @@ using Web.AssetBundles.Models;
 
 namespace Web.AssetBundles.Services;
 
-public class BuildLevelFiles : IService
+public class BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> logger, ServerRConfig sConfig,
+    AssetBundleRwConfig aBConfig) : IService
 {
-    private readonly AssetBundleRwConfig _aBConfig;
-    private readonly AssetEventSink _eventSink;
-    private readonly ILogger<BuildXmlFiles> _logger;
-    private readonly ServerRConfig _sConfig;
+    private readonly AssetBundleRwConfig _aBConfig = aBConfig;
+    private readonly AssetEventSink _eventSink = eventSink;
+    private readonly ILogger<BuildXmlFiles> _logger = logger;
+    private readonly ServerRConfig _sConfig = sConfig;
 
-    public readonly Dictionary<string, string> LevelFiles;
-
-    public BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> logger, ServerRConfig sConfig,
-        AssetBundleRwConfig aBConfig)
-    {
-        _eventSink = eventSink;
-        _logger = logger;
-        _sConfig = sConfig;
-        _aBConfig = aBConfig;
-
-        LevelFiles = new Dictionary<string, string>();
-    }
+    public readonly Dictionary<string, string> LevelFiles = new();
 
     public void Initialize() => _eventSink.AssetBundlesLoaded += LoadLevelFiles;
 

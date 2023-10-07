@@ -11,39 +11,23 @@ using Web.Launcher.Services;
 
 namespace Web.AssetBundles.Services;
 
-public class ReplaceCaches : IService
+public class ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList,
+    AssetBundleRConfig rConfig,
+    ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime,
+    AssetBundleRwConfig rwConfig) : IService
 {
-    private readonly IHostApplicationLifetime _appLifetime;
-    private readonly BuildAssetList _buildAssetList;
-    private readonly ServerConsole _console;
-    private readonly StartGame _game;
-    private readonly object _lock;
-    private readonly ILogger<ReplaceCaches> _logger;
-    private readonly AssetBundleRConfig _rConfig;
-    private readonly AssetBundleRwConfig _rwConfig;
-    private readonly EventSink _sink;
+    private readonly IHostApplicationLifetime _appLifetime = appLifetime;
+    private readonly BuildAssetList _buildAssetList = buildAssetList;
+    private readonly ServerConsole _console = console;
+    private readonly StartGame _game = game;
+    private readonly object _lock = new();
+    private readonly ILogger<ReplaceCaches> _logger = logger;
+    private readonly AssetBundleRConfig _rConfig = rConfig;
+    private readonly AssetBundleRwConfig _rwConfig = rwConfig;
+    private readonly EventSink _sink = sink;
 
-    public readonly List<string> CurrentlyLoadedAssets;
-    public readonly List<string> ReplacedBundles;
-
-    public ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList,
-        AssetBundleRConfig rConfig,
-        ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime,
-        AssetBundleRwConfig rwConfig)
-    {
-        _console = console;
-        _sink = sink;
-        _buildAssetList = buildAssetList;
-        _logger = logger;
-        _game = game;
-        _appLifetime = appLifetime;
-        _rConfig = rConfig;
-        _rwConfig = rwConfig;
-
-        CurrentlyLoadedAssets = new List<string>();
-        ReplacedBundles = new List<string>();
-        _lock = new object();
-    }
+    public readonly List<string> CurrentlyLoadedAssets = new();
+    public readonly List<string> ReplacedBundles = new();
 
     public void Initialize()
     {

@@ -1,7 +1,6 @@
 ﻿namespace Server.Base.Worlds.EventArguments;
 
-public class WorldSaveEventArgs : EventArgs
+public class WorldSaveEventArgs(bool msg) : EventArgs
 {
-    public bool Message { get; }
-    public WorldSaveEventArgs(bool msg) => Message = msg;
+    public bool Message { get; } = msg;
 }

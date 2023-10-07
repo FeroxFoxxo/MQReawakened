@@ -8,33 +8,19 @@ using Server.Base.Timers.Services;
 
 namespace Server.Base.Worlds.Services;
 
-public class AutoSave : IService
+public class AutoSave(InternalRConfig config, ServerHandler handler, World world,
+    EventSink sink, TimerThread timerThread, ILogger<AutoSave> logger, ArchivedSaves saves) : IService
 {
-    private readonly TimeSpan _delayAutoSave;
-    private readonly TimeSpan _delayWarning;
+    private readonly TimeSpan _delayAutoSave = TimeSpan.FromMinutes(config.SaveAutomaticallyMinutes);
+    private readonly TimeSpan _delayWarning = TimeSpan.FromMinutes(config.SaveWarningMinutes);
 
-    private readonly ServerHandler _handler;
-    private readonly EventSink _sink;
-    private readonly TimerThread _timerThread;
-    private readonly World _world;
-    private readonly ILogger<AutoSave> _logger;
-    private readonly InternalRConfig _config;
-    private readonly ArchivedSaves _saves;
-
-    public AutoSave(InternalRConfig config, ServerHandler handler, World world,
-        EventSink sink, TimerThread timerThread, ILogger<AutoSave> logger, ArchivedSaves saves)
-    {
-        _handler = handler;
-        _world = world;
-        _sink = sink;
-        _timerThread = timerThread;
-        _logger = logger;
-        _saves = saves;
-        _config = config;
-
-        _delayAutoSave = TimeSpan.FromMinutes(config.SaveAutomaticallyMinutes);
-        _delayWarning = TimeSpan.FromMinutes(config.SaveWarningMinutes);
-    }
+    private readonly ServerHandler _handler = handler;
+    private readonly EventSink _sink = sink;
+    private readonly TimerThread _timerThread = timerThread;
+    private readonly World _world = world;
+    private readonly ILogger<AutoSave> _logger = logger;
+    private readonly InternalRConfig _config = config;
+    private readonly ArchivedSaves _saves = saves;
 
     public void Initialize() => _sink.ServerStarted += _ => RunAutoSaveTimer();
 

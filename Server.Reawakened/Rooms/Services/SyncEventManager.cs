@@ -6,15 +6,13 @@ using System.Runtime.CompilerServices;
 
 namespace Server.Reawakened.Rooms.Services;
 
-public class SyncEventManager : IService
+public class SyncEventManager(EventSink sink) : IService
 {
-    private readonly EventSink _sink;
+    private readonly EventSink _sink = sink;
     private MethodInfo _decodeSync;
     private MethodInfo _encodeSync;
 
     private RoomManager _roomManager;
-
-    public SyncEventManager(EventSink sink) => _sink = sink;
 
     public void Initialize() => _sink.WorldLoad += CreateSyncHandlers;
 

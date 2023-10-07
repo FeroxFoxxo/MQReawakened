@@ -5,17 +5,11 @@ using Server.Base.Network.Enums;
 
 namespace Server.Reawakened.Players.Services;
 
-public class CreateNewAccount : IService
+public class CreateNewAccount(ServerConsole serverConsole,
+    EventSink eventSink) : IService
 {
-    private readonly EventSink _eventSink;
-    private readonly ServerConsole _serverConsole;
-
-    public CreateNewAccount(ServerConsole serverConsole,
-        EventSink eventSink)
-    {
-        _serverConsole = serverConsole;
-        _eventSink = eventSink;
-    }
+    private readonly EventSink _eventSink = eventSink;
+    private readonly ServerConsole _serverConsole = serverConsole;
 
     public void Initialize() =>
         _serverConsole.AddCommand(

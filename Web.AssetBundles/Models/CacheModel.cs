@@ -15,8 +15,8 @@ public class CacheModel
 
     public CacheModel(BuildAssetList buildAssetList, AssetBundleRwConfig rwConfig)
     {
-        FoundCaches = new Dictionary<string, List<string>>();
-        UnknownCaches = new Dictionary<string, string>();
+        FoundCaches = [];
+        UnknownCaches = [];
 
         _assetDictionary = buildAssetList.InternalAssets.Values
             .Select(a => new KeyValuePair<string, InternalAssetInfo>(Path.GetFileName(a.Path), a))

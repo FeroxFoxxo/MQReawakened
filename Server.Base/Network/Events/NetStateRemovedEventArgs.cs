@@ -1,7 +1,6 @@
 ﻿namespace Server.Base.Network.Events;
 
-public class NetStateRemovedEventArgs
+public class NetStateRemovedEventArgs(NetState state)
 {
-    public NetState State { get; }
-    public NetStateRemovedEventArgs(NetState state) => State = state;
+    public NetState State { get; } = state;
 }

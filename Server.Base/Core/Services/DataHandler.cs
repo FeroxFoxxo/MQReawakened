@@ -21,7 +21,7 @@ public abstract class DataHandler<T> : IService where T : PersistantData
         Sink = sink;
         Logger = logger;
         Config = config;
-        Data = new Dictionary<int, T>();
+        Data = [];
     }
 
     public virtual void Initialize()

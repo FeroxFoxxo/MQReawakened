@@ -4,11 +4,9 @@ using Microsoft.Extensions.Logging;
 namespace Web.Launcher.Controllers.EN.DLC;
 
 [Route("/en/dlc/login")]
-public class LoginController : Controller
+public class LoginController(ILogger<LoginController> logger) : Controller
 {
-    private readonly ILogger<LoginController> _logger;
-
-    public LoginController(ILogger<LoginController> logger) => _logger = logger;
+    private readonly ILogger<LoginController> _logger = logger;
 
     [HttpGet]
     public IActionResult GetLoginForm()

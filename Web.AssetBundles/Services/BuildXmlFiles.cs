@@ -10,26 +10,15 @@ using Web.AssetBundles.Models;
 
 namespace Web.AssetBundles.Services;
 
-public class BuildXmlFiles : IService, IInjectModules
+public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, ILogger<BuildXmlFiles> logger, AssetBundleRConfig rConfig, AssetBundleRwConfig rwConfig) : IService, IInjectModules
 {
-    private readonly AssetBundleRConfig _rConfig;
-    private readonly AssetBundleRwConfig _rwConfig;
-    private readonly AssetEventSink _eventSink;
-    private readonly ILogger<BuildXmlFiles> _logger;
-    private readonly IServiceProvider _services;
+    private readonly AssetBundleRConfig _rConfig = rConfig;
+    private readonly AssetBundleRwConfig _rwConfig = rwConfig;
+    private readonly AssetEventSink _eventSink = eventSink;
+    private readonly ILogger<BuildXmlFiles> _logger = logger;
+    private readonly IServiceProvider _services = services;
 
-    public readonly Dictionary<string, string> XmlFiles;
-
-    public BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, ILogger<BuildXmlFiles> logger, AssetBundleRConfig rConfig, AssetBundleRwConfig rwConfig)
-    {
-        _eventSink = eventSink;
-        _services = services;
-        _logger = logger;
-        _rConfig = rConfig;
-        _rwConfig = rwConfig;
-
-        XmlFiles = new Dictionary<string, string>();
-    }
+    public readonly Dictionary<string, string> XmlFiles = new();
 
     public IEnumerable<Module> Modules { get; set; }
 

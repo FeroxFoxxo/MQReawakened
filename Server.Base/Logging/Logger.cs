@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Server.Base.Logging;
 
-public class Logger : ILogger
+public class Logger(string categoryName) : ILogger
 {
     private const LogLevel Level = LogLevel.Trace;
 
@@ -13,9 +13,7 @@ public class Logger : ILogger
     private static int _offset;
     private static bool _criticalErrored;
 
-    private readonly string _categoryName;
-
-    public Logger(string categoryName) => _categoryName = categoryName;
+    private readonly string _categoryName = categoryName;
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception ex,
         Func<TState, Exception, string> formatter)

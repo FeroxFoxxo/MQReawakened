@@ -8,34 +8,19 @@ using System.Diagnostics;
 
 namespace Server.Base.Worlds;
 
-public class World
+public class World(ILogger<World> logger, EventSink sink, InternalRConfig config, NetStateHandler netStateHandler)
 {
-    private readonly ILogger<World> _logger;
-    private readonly EventSink _sink;
-    private readonly InternalRConfig _config;
-    private readonly NetStateHandler _netStateHandler;
+    private readonly ILogger<World> _logger = logger;
+    private readonly EventSink _sink = sink;
+    private readonly InternalRConfig _config = config;
+    private readonly NetStateHandler _netStateHandler = netStateHandler;
 
-    private readonly ManualResetEvent _diskWriteHandle;
+    private readonly ManualResetEvent _diskWriteHandle = new(true);
 
-    public bool Saving { get; private set; }
-    public bool Loaded { get; private set; }
-    public bool Loading { get; private set; }
-    public bool Crashed { get; private set; }
-
-    public World(ILogger<World> logger, EventSink sink, InternalRConfig config, NetStateHandler netStateHandler)
-    {
-        _logger = logger;
-        _sink = sink;
-        _config = config;
-        _netStateHandler = netStateHandler;
-
-        _diskWriteHandle = new ManualResetEvent(true);
-
-        Saving = false;
-        Loaded = false;
-        Loading = false;
-        Crashed = false;
-    }
+    public bool Saving { get; private set; } = false;
+    public bool Loaded { get; private set; } = false;
+    public bool Loading { get; private set; } = false;
+    public bool Crashed { get; private set; } = false;
 
     public void NotifyDiskWriteComplete()
     {

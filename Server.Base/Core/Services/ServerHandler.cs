@@ -8,33 +8,19 @@ using System.Diagnostics;
 
 namespace Server.Base.Core.Services;
 
-public class ServerHandler : IService
+public class ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostApplicationLifetime appLifetime) : IService
 {
-    private readonly IHostApplicationLifetime _appLifetime;
-    private readonly ILogger<ServerHandler> _logger;
-    private readonly EventSink _sink;
+    private readonly IHostApplicationLifetime _appLifetime = appLifetime;
+    private readonly ILogger<ServerHandler> _logger = logger;
+    private readonly EventSink _sink = sink;
 
-    public readonly AutoResetEvent Signal;
+    public readonly AutoResetEvent Signal = new(true);
 
-    public bool HasCrashed;
-    public bool IsClosing;
+    public bool HasCrashed = false;
+    public bool IsClosing = false;
     public IEnumerable<Module> Modules;
-    public bool Restarting;
-    public bool Saving;
-
-    public ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostApplicationLifetime appLifetime)
-    {
-        _sink = sink;
-        _logger = logger;
-        _appLifetime = appLifetime;
-
-        IsClosing = false;
-        HasCrashed = false;
-        Restarting = false;
-        Saving = false;
-
-        Signal = new AutoResetEvent(true);
-    }
+    public bool Restarting = false;
+    public bool Saving = false;
 
     public void Initialize()
     {

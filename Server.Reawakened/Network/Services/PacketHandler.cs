@@ -15,39 +15,26 @@ using System.Xml;
 
 namespace Server.Reawakened.Network.Services;
 
-public class PacketHandler : IService
+public class PacketHandler(IServiceProvider services, ReflectionUtils reflectionUtils,
+    NetStateHandler handler, EventSink sink, ILogger<PacketHandler> logger, ServerRConfig serverConfig,
+    InternalRwConfig internalWConfig) : IService
 {
     public delegate void ExternalCallback(NetState state, string[] message, IServiceProvider serviceProvider);
 
     public delegate void SystemCallback(NetState state, XmlDocument document, IServiceProvider serviceProvider);
 
-    private readonly NetStateHandler _handler;
+    private readonly NetStateHandler _handler = handler;
 
-    private readonly InternalRwConfig _internalWConfig;
-    private readonly ILogger<PacketHandler> _logger;
+    private readonly InternalRwConfig _internalWConfig = internalWConfig;
+    private readonly ILogger<PacketHandler> _logger = logger;
 
-    private readonly Dictionary<string, SystemCallback> _protocolsSystem;
-    private readonly Dictionary<string, ExternalCallback> _protocolsXt;
+    private readonly Dictionary<string, SystemCallback> _protocolsSystem = new();
+    private readonly Dictionary<string, ExternalCallback> _protocolsXt = new();
 
-    private readonly ReflectionUtils _reflectionUtils;
-    private readonly ServerRConfig _serverConfig;
-    private readonly IServiceProvider _services;
-    private readonly EventSink _sink;
-
-    public PacketHandler(IServiceProvider services, ReflectionUtils reflectionUtils,
-        NetStateHandler handler, EventSink sink, ILogger<PacketHandler> logger, ServerRConfig serverConfig,
-        InternalRwConfig internalWConfig)
-    {
-        _services = services;
-        _reflectionUtils = reflectionUtils;
-        _handler = handler;
-        _sink = sink;
-        _logger = logger;
-        _serverConfig = serverConfig;
-        _internalWConfig = internalWConfig;
-        _protocolsXt = new Dictionary<string, ExternalCallback>();
-        _protocolsSystem = new Dictionary<string, SystemCallback>();
-    }
+    private readonly ReflectionUtils _reflectionUtils = reflectionUtils;
+    private readonly ServerRConfig _serverConfig = serverConfig;
+    private readonly IServiceProvider _services = services;
+    private readonly EventSink _sink = sink;
 
     public void Initialize()
     {
@@ -74,7 +61,7 @@ public class PacketHandler : IService
                 internalDebugs.Add(protocol);
         }
 
-        _internalWConfig.IgnoreProtocolType = internalDebugs.ToArray();
+        _internalWConfig.IgnoreProtocolType = [.. internalDebugs];
     }
 
     private void AddProtocols(ServerStartedEventArgs e)

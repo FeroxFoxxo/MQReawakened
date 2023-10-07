@@ -50,7 +50,7 @@ public class Account : PersistantData, INetStateData
 
         IpRestrictions = Array.Empty<string>();
         LoginIPs = Array.Empty<string>();
-        Tags = new List<AccountTag>();
+        Tags = [];
     }
 
     public void RemovedState(NetState state, NetStateHandler handler, ILogger logger) =>

@@ -1,13 +1,7 @@
 ﻿namespace Server.Base.Network.Models;
 
-public class ProtocolResponse
+public class ProtocolResponse(string packetId, bool isUnhandled)
 {
-    public string ProtocolId { get; }
-    public bool IsUnhandled { get; }
-
-    public ProtocolResponse(string packetId, bool isUnhandled)
-    {
-        ProtocolId = packetId;
-        IsUnhandled = isUnhandled;
-    }
+    public string ProtocolId { get; } = packetId;
+    public bool IsUnhandled { get; } = isUnhandled;
 }

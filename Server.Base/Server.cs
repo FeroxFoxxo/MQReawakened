@@ -14,13 +14,9 @@ using Server.Base.Worlds;
 
 namespace Server.Base;
 
-public class Server : Module
+public class Server(ILogger<Server> logger) : Module(logger)
 {
     public override string[] Contributors { get; } = ["Ferox", "ServUO"];
-
-    public Server(ILogger<Server> logger) : base(logger)
-    {
-    }
 
     public override void AddLogging(ILoggingBuilder loggingBuilder)
     {

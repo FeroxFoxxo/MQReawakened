@@ -3,12 +3,8 @@ using Server.Reawakened.Thrift.Abstractions;
 
 namespace Server.Reawakened.Thrift.Protocols;
 
-public class MessageHandler : ThriftHandler
+public class MessageHandler(ILogger<MessageHandler> logger) : ThriftHandler(logger)
 {
-    public MessageHandler(ILogger<MessageHandler> logger) : base(logger)
-    {
-    }
-
     public override void AddProcesses(Dictionary<string, ProcessFunction> processes)
     {
     }

@@ -14,7 +14,7 @@ public abstract class ThriftHandler
 
     protected ThriftHandler(Microsoft.Extensions.Logging.ILogger logger)
     {
-        ProcessMap = new Dictionary<string, ProcessFunction>();
+        ProcessMap = [];
         _logger = logger;
     }
 

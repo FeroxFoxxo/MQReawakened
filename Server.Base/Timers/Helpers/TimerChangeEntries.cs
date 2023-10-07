@@ -1,20 +1,12 @@
 ﻿namespace Server.Base.Timers.Helpers;
 
-public class TimerChangeEntry
+public class TimerChangeEntry(Timer timer, int newIndex, bool adding, TimerChangePool pool)
 {
-    private readonly TimerChangePool _pool;
-    public bool Adding;
+    private readonly TimerChangePool _pool = pool;
+    public bool Adding = adding;
 
-    public int Index;
-    public Timer Timer;
-
-    public TimerChangeEntry(Timer timer, int newIndex, bool adding, TimerChangePool pool)
-    {
-        Timer = timer;
-        Index = newIndex;
-        Adding = adding;
-        _pool = pool;
-    }
+    public int Index = newIndex;
+    public Timer Timer = timer;
 
     public void Free()
     {

@@ -3,11 +3,7 @@ using Server.Base.Core.Abstractions;
 
 namespace Protocols.System;
 
-public class SysProtocol : Module
+public class SysProtocol(ILogger<SysProtocol> logger) : Module(logger)
 {
     public override string[] Contributors { get; } = ["Ferox"];
-
-    public SysProtocol(ILogger<SysProtocol> logger) : base(logger)
-    {
-    }
 }

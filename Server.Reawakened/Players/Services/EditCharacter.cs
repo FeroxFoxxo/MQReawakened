@@ -16,38 +16,23 @@ using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Players.Services;
 
-public class EditCharacter : IService
+public class EditCharacter(ServerConsole console, EventSink sink,
+    ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
+    AccountHandler accountHandler, WorldGraph worldGraph,
+    ServerRConfig config, NetStateHandler handler, WorldHandler worldHandler,
+    ItemCatalog itemCatalog, PlayerEventSink playerEventSink) : IService
 {
-    private readonly AccountHandler _accountHandler;
-    private readonly ServerRConfig _config;
-    private readonly ServerConsole _console;
-    private readonly NetStateHandler _handler;
-    private readonly ItemCatalog _itemCatalog;
-    private readonly ILogger<EditCharacter> _logger;
-    private readonly PlayerEventSink _playerEventSink;
-    private readonly EventSink _sink;
-    private readonly UserInfoHandler _userInfoHandler;
-    private readonly WorldGraph _worldGraph;
-    private readonly WorldHandler _worldHandler;
-
-    public EditCharacter(ServerConsole console, EventSink sink,
-        ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
-        AccountHandler accountHandler, WorldGraph worldGraph,
-        ServerRConfig config, NetStateHandler handler, WorldHandler worldHandler,
-        ItemCatalog itemCatalog, PlayerEventSink playerEventSink)
-    {
-        _console = console;
-        _sink = sink;
-        _logger = logger;
-        _userInfoHandler = userInfoHandler;
-        _accountHandler = accountHandler;
-        _worldGraph = worldGraph;
-        _config = config;
-        _handler = handler;
-        _worldHandler = worldHandler;
-        _itemCatalog = itemCatalog;
-        _playerEventSink = playerEventSink;
-    }
+    private readonly AccountHandler _accountHandler = accountHandler;
+    private readonly ServerRConfig _config = config;
+    private readonly ServerConsole _console = console;
+    private readonly NetStateHandler _handler = handler;
+    private readonly ItemCatalog _itemCatalog = itemCatalog;
+    private readonly ILogger<EditCharacter> _logger = logger;
+    private readonly PlayerEventSink _playerEventSink = playerEventSink;
+    private readonly EventSink _sink = sink;
+    private readonly UserInfoHandler _userInfoHandler = userInfoHandler;
+    private readonly WorldGraph _worldGraph = worldGraph;
+    private readonly WorldHandler _worldHandler = worldHandler;
 
     public void Initialize() => _sink.WorldLoad += Load;
 

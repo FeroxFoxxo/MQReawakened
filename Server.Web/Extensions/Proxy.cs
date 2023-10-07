@@ -34,8 +34,7 @@ public static class Proxy
     }
     public static async Task CopyProxyHttpResponse(this HttpContext context, HttpResponseMessage responseMessage)
     {
-        if (responseMessage == null)
-            throw new ArgumentNullException(nameof(responseMessage));
+        ArgumentNullException.ThrowIfNull(responseMessage);
 
         var response = context.Response;
 

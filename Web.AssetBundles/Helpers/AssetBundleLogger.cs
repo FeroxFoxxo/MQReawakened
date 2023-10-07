@@ -3,11 +3,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Web.AssetBundles.Helpers;
 
-public class AssetBundleLogger : AssetStudio.ILogger
+public class AssetBundleLogger(Microsoft.Extensions.Logging.ILogger logger) : AssetStudio.ILogger
 {
-    private readonly Microsoft.Extensions.Logging.ILogger _logger;
-
-    public AssetBundleLogger(Microsoft.Extensions.Logging.ILogger logger) => _logger = logger;
+    private readonly Microsoft.Extensions.Logging.ILogger _logger = logger;
 
     public void Log(LoggerEvent loggerEvent, string message)
     {

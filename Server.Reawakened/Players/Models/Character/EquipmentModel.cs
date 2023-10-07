@@ -10,14 +10,14 @@ public class EquipmentModel
 
     public EquipmentModel()
     {
-        EquippedItems = new Dictionary<ItemSubCategory, int>();
-        EquippedBinding = new List<ItemSubCategory>();
+        EquippedItems = [];
+        EquippedBinding = [];
     }
 
     public EquipmentModel(string serverString)
     {
-        EquippedItems = new Dictionary<ItemSubCategory, int>();
-        EquippedBinding = new List<ItemSubCategory>();
+        EquippedItems = [];
+        EquippedBinding = [];
 
         var items = serverString.Split(':');
 

@@ -18,7 +18,7 @@ public class DefaultProgressBar : IDisposable
     {
         _logger = logger;
         _logProgressAfter = config.LogProgressBars;
-        _messages = new List<string>();
+        _messages = [];
 
         var bottomBarOptions = new ProgressBarOptions
         {

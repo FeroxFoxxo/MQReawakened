@@ -2,18 +2,11 @@
 
 namespace Server.Reawakened.Chat.Models;
 
-public class ChatCommand
+public class ChatCommand(string name, string arguments, ChatCommand.ChatCommandCallback commandMethod)
 {
     public delegate bool ChatCommandCallback(Player player, string[] args);
 
-    public string Name { get; set; }
-    public string Arguments { get; set; }
-    public ChatCommandCallback CommandMethod { get; set; }
-
-    public ChatCommand(string name, string arguments, ChatCommandCallback commandMethod)
-    {
-        CommandMethod = commandMethod;
-        Name = name.ToLower();
-        Arguments = arguments;
-    }
+    public string Name { get; set; } = name.ToLower();
+    public string Arguments { get; set; } = arguments;
+    public ChatCommandCallback CommandMethod { get; set; } = commandMethod;
 }

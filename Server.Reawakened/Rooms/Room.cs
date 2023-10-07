@@ -47,8 +47,8 @@ public class Room : Timer
         Logger = logger;
         _level = level;
 
-        Players = new Dictionary<int, Player>();
-        _gameObjectIds = new HashSet<int>();
+        Players = [];
+        _gameObjectIds = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
             return;

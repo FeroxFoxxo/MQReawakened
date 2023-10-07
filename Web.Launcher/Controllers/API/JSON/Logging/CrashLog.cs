@@ -6,18 +6,11 @@ using Web.Launcher.Models;
 namespace Web.Launcher.Controllers.API.JSON.Logging;
 
 [Route("/api/json/logging/crash_log")]
-public class CrashLog : Controller
+public class CrashLog(ILogger<CrashLog> logger, ServerHandler handler, LauncherRConfig config) : Controller
 {
-    private readonly LauncherRConfig _config;
-    private readonly ServerHandler _handler;
-    private readonly ILogger<CrashLog> _logger;
-
-    public CrashLog(ILogger<CrashLog> logger, ServerHandler handler, LauncherRConfig config)
-    {
-        _logger = logger;
-        _handler = handler;
-        _config = config;
-    }
+    private readonly LauncherRConfig _config = config;
+    private readonly ServerHandler _handler = handler;
+    private readonly ILogger<CrashLog> _logger = logger;
 
     [HttpPost]
     public IActionResult PrintCrashReport([FromForm] string log)

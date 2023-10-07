@@ -6,21 +6,12 @@ using Server.Reawakened.Configs;
 
 namespace Server.Reawakened.Network.Services;
 
-public class RandomKeyGenerator : IService
+public class RandomKeyGenerator(Random random, EventSink sink, ServerRConfig config) : IService
 {
-    private readonly ServerRConfig _config;
-    private readonly Dictionary<Type, Dictionary<string, string>> _keys;
-    private readonly Random _random;
-    private readonly EventSink _sink;
-
-    public RandomKeyGenerator(Random random, EventSink sink, ServerRConfig config)
-    {
-        _random = random;
-        _sink = sink;
-        _config = config;
-
-        _keys = new Dictionary<Type, Dictionary<string, string>>();
-    }
+    private readonly ServerRConfig _config = config;
+    private readonly Dictionary<Type, Dictionary<string, string>> _keys = new();
+    private readonly Random _random = random;
+    private readonly EventSink _sink = sink;
 
     public void Initialize()
     {

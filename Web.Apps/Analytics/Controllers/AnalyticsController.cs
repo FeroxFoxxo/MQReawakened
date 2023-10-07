@@ -14,23 +14,14 @@ using Web.Launcher.Models;
 namespace Web.Apps.Analytics.Controllers;
 
 [Route("/Analytics/{AnalyticsKey}")]
-public class AnalyticsController : Controller
+public class AnalyticsController(ILogger<AnalyticsController> logger, LauncherRwConfig config,
+    ReplaceCaches replaceCaches, AppRConfig aConfig, FileLogger fileLogger) : Controller
 {
-    private readonly AppRConfig _aConfig;
-    private readonly LauncherRwConfig _config;
-    private readonly FileLogger _fileLogger;
-    private readonly ILogger<AnalyticsController> _logger;
-    private readonly ReplaceCaches _replaceCaches;
-
-    public AnalyticsController(ILogger<AnalyticsController> logger, LauncherRwConfig config,
-        ReplaceCaches replaceCaches, AppRConfig aConfig, FileLogger fileLogger)
-    {
-        _logger = logger;
-        _config = config;
-        _replaceCaches = replaceCaches;
-        _aConfig = aConfig;
-        _fileLogger = fileLogger;
-    }
+    private readonly AppRConfig _aConfig = aConfig;
+    private readonly LauncherRwConfig _config = config;
+    private readonly FileLogger _fileLogger = fileLogger;
+    private readonly ILogger<AnalyticsController> _logger = logger;
+    private readonly ReplaceCaches _replaceCaches = replaceCaches;
 
     // b = Birthday
     // g = Gender

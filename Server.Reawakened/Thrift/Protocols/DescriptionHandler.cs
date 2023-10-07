@@ -9,17 +9,11 @@ using static A2m.Server.Protocol.DescriptionHandlerServer;
 
 namespace Server.Reawakened.Thrift.Protocols;
 
-public class DescriptionHandler : ThriftHandler
+public class DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph worldGraph,
+    MiscTextDictionary miscTextDictionary) : ThriftHandler(logger)
 {
-    private readonly MiscTextDictionary _miscTextDictionary;
-    private readonly WorldGraph _worldGraph;
-
-    public DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph worldGraph,
-        MiscTextDictionary miscTextDictionary) : base(logger)
-    {
-        _worldGraph = worldGraph;
-        _miscTextDictionary = miscTextDictionary;
-    }
+    private readonly MiscTextDictionary _miscTextDictionary = miscTextDictionary;
+    private readonly WorldGraph _worldGraph = worldGraph;
 
     public override void AddProcesses(Dictionary<string, ProcessFunction> processes) =>
         processes.Add("getPortalInfo", GetPortalInfo);

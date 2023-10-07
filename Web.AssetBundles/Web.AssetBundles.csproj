@@ -39,7 +39,7 @@
       <None Update="Licences\LICENSE_ASSETRIPPER">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Assets\LocalAssets\NPCCatalog.xml">
+      <None Update="Assets\LocalAssets\InternalVendorCatalog.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Assets\LocalAssets\PetAbilities.xml">

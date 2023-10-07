@@ -9,13 +9,9 @@ using SmartFoxClientAPI;
 
 namespace Server.Reawakened;
 
-public class Reawakened : Module
+public class Reawakened(ILogger<Reawakened> logger) : Module(logger)
 {
     public override string[] Contributors { get; } = ["Ferox"];
-
-    public Reawakened(ILogger<Reawakened> logger) : base(logger)
-    {
-    }
 
     public override void AddServices(IServiceCollection services, Module[] modules)
     {

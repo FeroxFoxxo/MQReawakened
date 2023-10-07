@@ -5,16 +5,10 @@ using Server.Base.Network;
 
 namespace Server.Base.Accounts.Helpers;
 
-public class AccountAttackLimiter
+public class AccountAttackLimiter(FileLogger fileLogger)
 {
-    private readonly List<InvalidAccountAccessLog> _invalidAccessors;
-    private readonly FileLogger _fileLogger;
-
-    public AccountAttackLimiter(FileLogger fileLogger)
-    {
-        _fileLogger = fileLogger;
-        _invalidAccessors = new List<InvalidAccountAccessLog>();
-    }
+    private readonly List<InvalidAccountAccessLog> _invalidAccessors = new();
+    private readonly FileLogger _fileLogger = fileLogger;
 
     public InvalidAccountAccessLog FindAccessLog(NetState netState)
     {

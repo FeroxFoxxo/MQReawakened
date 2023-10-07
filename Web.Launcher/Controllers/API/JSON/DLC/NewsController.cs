@@ -4,11 +4,9 @@ using Web.Launcher.Models;
 namespace Web.Launcher.Controllers.API.JSON.DLC;
 
 [Route("api/json/dlc/news")]
-public class NewsController : Controller
+public class NewsController(LauncherRConfig config) : Controller
 {
-    private readonly LauncherRConfig _config;
-
-    public NewsController(LauncherRConfig config) => _config = config;
+    private readonly LauncherRConfig _config = config;
 
     [HttpGet]
     public IActionResult GetNews() => Ok(_config.News);

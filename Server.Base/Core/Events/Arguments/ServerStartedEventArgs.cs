@@ -2,8 +2,7 @@
 
 namespace Server.Base.Core.Events.Arguments;
 
-public class ServerStartedEventArgs : EventArgs
+public class ServerStartedEventArgs(IEnumerable<Module> modules) : EventArgs
 {
-    public IEnumerable<Module> Modules { get; }
-    public ServerStartedEventArgs(IEnumerable<Module> modules) => Modules = modules;
+    public IEnumerable<Module> Modules { get; } = modules;
 }

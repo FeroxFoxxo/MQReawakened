@@ -8,19 +8,12 @@ using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Services;
 
-public class ChatMessage : IService
+public class ChatMessage(ServerConsole serverConsole,
+    PlayerHandler playerHandler, EventSink eventSink) : IService
 {
-    private readonly PlayerHandler _playerHandler;
-    private readonly ServerConsole _serverConsole;
-    private readonly EventSink _eventSink;
-
-    public ChatMessage(ServerConsole serverConsole,
-        PlayerHandler playerHandler, EventSink eventSink)
-    {
-        _serverConsole = serverConsole;
-        _playerHandler = playerHandler;
-        _eventSink = eventSink;
-    }
+    private readonly PlayerHandler _playerHandler = playerHandler;
+    private readonly ServerConsole _serverConsole = serverConsole;
+    private readonly EventSink _eventSink = eventSink;
 
     public void Initialize()
     {

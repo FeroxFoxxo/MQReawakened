@@ -9,7 +9,7 @@ public class GroupModel
 
     public GroupModel(Player player)
     {
-        GroupMembers = new List<Player>();
+        GroupMembers = [];
 
         LeaderCharacterName = player.Character.Data.CharacterName;
 

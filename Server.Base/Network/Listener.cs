@@ -222,7 +222,7 @@ public class Listener : IDisposable
             if (_accepted.Count == 0)
                 return _emptySockets;
 
-            socketArray = _accepted.ToArray();
+            socketArray = [.. _accepted];
             _accepted.Clear();
         }
 

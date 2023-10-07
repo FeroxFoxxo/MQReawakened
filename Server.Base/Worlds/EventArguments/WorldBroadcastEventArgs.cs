@@ -1,7 +1,6 @@
 ﻿namespace Server.Base.Worlds.EventArguments;
 
-public class WorldBroadcastEventArgs
+public class WorldBroadcastEventArgs(string msg)
 {
-    public string Message { get; }
-    public WorldBroadcastEventArgs(string msg) => Message = msg;
+    public string Message { get; } = msg;
 }

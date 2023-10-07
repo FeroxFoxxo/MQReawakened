@@ -11,14 +11,14 @@ public class CharacterCustomDataModel
 
     public CharacterCustomDataModel()
     {
-        Properties = new Dictionary<CustomDataProperties, int>();
-        Colors = new Dictionary<CustomDataProperties, ColorModel>();
+        Properties = [];
+        Colors = [];
     }
 
     public CharacterCustomDataModel(string serverString)
     {
-        Properties = new Dictionary<CustomDataProperties, int>();
-        Colors = new Dictionary<CustomDataProperties, ColorModel>();
+        Properties = [];
+        Colors = [];
 
         var properties = serverString.Split(':');
 

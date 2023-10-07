@@ -3,20 +3,13 @@ using Server.Reawakened.Rooms.Services;
 
 namespace Server.Reawakened.Players.Helpers;
 
-public class PlayerHandler
+public class PlayerHandler(WorldHandler worldHandler)
 {
     public UserInfoHandler UserInfoHandler;
 
-    public List<Player> PlayerList { get; }
-    public WorldHandler WorldHandler { get; }
-    public object Lock { get; }
-
-    public PlayerHandler(WorldHandler worldHandler)
-    {
-        WorldHandler = worldHandler;
-        PlayerList = new List<Player>();
-        Lock = new object();
-    }
+    public List<Player> PlayerList { get; } = new List<Player>();
+    public WorldHandler WorldHandler { get; } = worldHandler;
+    public object Lock { get; } = new object();
 
     public void AddPlayer(Player player)
     {

@@ -3,11 +3,7 @@ using Server.Web.Abstractions;
 
 namespace Web.Apps;
 
-public class Apps : WebModule
+public class Apps(ILogger<Apps> logger) : WebModule(logger)
 {
     public override string[] Contributors { get; } = ["Ferox"];
-
-    public Apps(ILogger<Apps> logger) : base(logger)
-    {
-    }
 }

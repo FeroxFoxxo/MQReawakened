@@ -2,12 +2,9 @@
 
 namespace Server.Reawakened.Players.Models.Character;
 
-public class PlayerListModel
+public class PlayerListModel(List<PlayerDataModel> playerList)
 {
-    public List<PlayerDataModel> PlayerList { get; set; }
-
-    public PlayerListModel(List<PlayerDataModel> playerList) =>
-        PlayerList = playerList;
+    public List<PlayerDataModel> PlayerList { get; set; } = playerList;
 
     public override string ToString()
     {

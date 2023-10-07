@@ -2,14 +2,11 @@
 
 namespace Web.AssetBundles.BundleFix.Data;
 
-public class FixedAssetFile : IEndianWritable
+public class FixedAssetFile(string path) : IEndianWritable
 {
-    private readonly byte[] _bundleInfo;
+    private readonly byte[] _bundleInfo = File.ReadAllBytes(path);
 
     public uint FileSize => (uint)_bundleInfo.Length;
-
-    public FixedAssetFile(string path) =>
-        _bundleInfo = File.ReadAllBytes(path);
 
     public void Write(EndianWriter writer) => writer.Write(_bundleInfo);
 }

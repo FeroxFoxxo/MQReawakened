@@ -36,7 +36,7 @@ public class CharacterLightModel
     public void InitializeLiteLists()
     {
         Equipment = new EquipmentModel();
-        DiscoveredStats = new HashSet<int>();
+        DiscoveredStats = [];
     }
 
     public override string ToString() => GetLightCharacterData();

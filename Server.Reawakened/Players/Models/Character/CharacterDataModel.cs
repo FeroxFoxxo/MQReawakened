@@ -73,14 +73,14 @@ public class CharacterDataModel : CharacterLightModel
 
     private void InitializeDetailedLists()
     {
-        QuestLog = new List<QuestStatusModel>();
-        CompletedQuests = new List<int>();
-        TribesDiscovered = new Dictionary<TribeType, bool>();
-        TribesProgression = new Dictionary<TribeType, TribeDataModel>();
-        DiscoveredStats = new HashSet<int>();
-        FriendList = new Dictionary<int, int>();
-        BlockedList = new Dictionary<int, int>();
-        MutedList = new Dictionary<int, int>();
+        QuestLog = [];
+        CompletedQuests = [];
+        TribesDiscovered = [];
+        TribesProgression = [];
+        DiscoveredStats = [];
+        FriendList = [];
+        BlockedList = [];
+        MutedList = [];
         InitializeLiteLists();
     }
 

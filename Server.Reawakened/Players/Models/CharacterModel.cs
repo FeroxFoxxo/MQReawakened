@@ -12,8 +12,8 @@ public class CharacterModel
 
     public CharacterModel()
     {
-        CollectedIdols = new Dictionary<int, List<int>>();
-        Emails = new List<EmailHeaderModel>();
+        CollectedIdols = [];
+        Emails = [];
         Data = new CharacterDataModel();
         LevelData = new LevelData();
     }

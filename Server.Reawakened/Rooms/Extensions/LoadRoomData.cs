@@ -16,6 +16,8 @@ namespace Server.Reawakened.Rooms.Extensions;
 
 public static class LoadRoomData
 {
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
+
     public static Dictionary<string, PlaneModel> LoadPlanes(this LevelInfo levelInfo, ServerRConfig config)
     {
         var levelInfoPath = Path.Join(config.LevelSaveDirectory, $"{levelInfo.Name}.xml");
@@ -63,8 +65,7 @@ public static class LoadRoomData
                 }
             }
 
-        File.WriteAllText(levelDataPath,
-            JsonSerializer.Serialize(planes, new JsonSerializerOptions { WriteIndented = true }));
+        File.WriteAllText(levelDataPath, JsonSerializer.Serialize(planes, _jsonSerializerOptions));
 
         return planes;
     }
@@ -76,7 +77,7 @@ public static class LoadRoomData
         var fileLogger = services.GetRequiredService<FileLogger>();
 
         var entities = new Dictionary<int, List<BaseSyncedEntity>>();
-        unknownEntities = new Dictionary<int, List<string>>();
+        unknownEntities = [];
 
         if (room.Planes == null)
             return entities;
@@ -119,7 +120,7 @@ public static class LoadRoomData
                             else if (field.FieldType == typeof(int))
                                 field.SetValue(dataObj, int.Parse(componentValue.Value));
                             else if (field.FieldType == typeof(bool))
-                                field.SetValue(dataObj, componentValue.Value.ToLower() == "true");
+                                field.SetValue(dataObj, componentValue.Value.Equals("true", StringComparison.CurrentCultureIgnoreCase));
                             else if (field.FieldType == typeof(float))
                                 field.SetValue(dataObj, float.Parse(componentValue.Value));
                             else if (field.FieldType.IsEnum)
@@ -204,7 +205,7 @@ public static class LoadRoomData
             .Where(c => !entityInfo.Values.SelectMany(s => s).Contains(c))
             .ToArray();
 
-        if (components.Any())
+        if (components.Length != 0)
             entityInfo.Add("components", components);
 
         entityInfo.Add("game object", new[] { id.ToString() });

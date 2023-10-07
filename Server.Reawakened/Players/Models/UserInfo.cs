@@ -25,8 +25,8 @@ public class UserInfo : PersistantData
 
     public UserInfo()
     {
-        Characters = new Dictionary<int, CharacterModel>();
-        Mail = new Dictionary<int, SystemMailModel>();
+        Characters = [];
+        Mail = [];
     }
 
     public UserInfo(int userId, Gender gender, DateTime dateOfBirth, string region,
@@ -45,7 +45,7 @@ public class UserInfo : PersistantData
         TrackingShortId = config.DefaultTrackingShortId;
         ChatLevel = config.DefaultChatLevel;
 
-        Characters = new Dictionary<int, CharacterModel>();
-        Mail = new Dictionary<int, SystemMailModel>();
+        Characters = [];
+        Mail = [];
     }
 }

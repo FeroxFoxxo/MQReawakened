@@ -16,23 +16,14 @@ using FileIO = System.IO.File;
 namespace Web.AssetBundles.BundleFix.Controllers;
 
 [Route("/Client/{folder}/{file}")]
-public class AssetHostController : Controller
+public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
+    AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches) : Controller
 {
-    private readonly BuildAssetList _buildAssetList;
-    private readonly BuildXmlFiles _buildXmlList;
-    private readonly AssetBundleRConfig _config;
-    private readonly ILogger<AssetHostController> _logger;
-    private readonly ReplaceCaches _replaceCaches;
-
-    public AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
-        AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches)
-    {
-        _buildAssetList = buildAssetList;
-        _logger = logger;
-        _config = config;
-        _buildXmlList = buildXmlList;
-        _replaceCaches = replaceCaches;
-    }
+    private readonly BuildAssetList _buildAssetList = buildAssetList;
+    private readonly BuildXmlFiles _buildXmlList = buildXmlList;
+    private readonly AssetBundleRConfig _config = config;
+    private readonly ILogger<AssetHostController> _logger = logger;
+    private readonly ReplaceCaches _replaceCaches = replaceCaches;
 
     [HttpGet]
     public IActionResult GetAsset([FromRoute] string folder, [FromRoute] string file)
@@ -66,14 +57,12 @@ public class AssetHostController : Controller
 
         var name = file.Split('.')[0];
 
-        if (!_buildAssetList.InternalAssets.ContainsKey(name))
+        if (!_buildAssetList.InternalAssets.TryGetValue(name, out var asset))
             return NotFound();
 
-        var asset = _buildAssetList.InternalAssets[name];
-
         var path = file.EndsWith(".xml")
-            ? _buildXmlList.XmlFiles.TryGetValue(name, out var value)
-                ? value
+            ? _buildXmlList.XmlFiles.TryGetValue(name, out var xmlFile)
+                ? xmlFile
                 : throw new FileNotFoundException(
                     $"Could not find: {name}. Did you mean:\n{string.Join('\n', _buildXmlList.XmlFiles.Keys)}")
             : WriteFixedBundle(asset);

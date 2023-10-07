@@ -16,39 +16,25 @@ using Web.Launcher.Models;
 
 namespace Web.AssetBundles.Services;
 
-public class BuildAssetList : IService
+public class BuildAssetList(ILogger<BuildAssetList> logger, AssetBundleRConfig rConfig,
+    EventSink sink, AssetEventSink assetSink, ServerConsole console, LauncherRwConfig launcherWConfig,
+    AssetBundleRwConfig rwConfig) : IService
 {
-    private readonly AssetEventSink _assetSink;
-    private readonly AssetBundleRwConfig _rwConfig;
-    private readonly ServerConsole _console;
-    private readonly ILogger<BuildAssetList> _logger;
-    private readonly AssetBundleRConfig _rConfig;
-    private readonly EventSink _sink;
-    private readonly LauncherRwConfig _launcherWConfig;
+    private readonly AssetEventSink _assetSink = assetSink;
+    private readonly AssetBundleRwConfig _rwConfig = rwConfig;
+    private readonly ServerConsole _console = console;
+    private readonly ILogger<BuildAssetList> _logger = logger;
+    private readonly AssetBundleRConfig _rConfig = rConfig;
+    private readonly EventSink _sink = sink;
+    private readonly LauncherRwConfig _launcherWConfig = launcherWConfig;
 
-    public readonly Dictionary<string, string> AssetDict;
+    public readonly Dictionary<string, string> AssetDict = new();
 
-    public readonly Dictionary<string, string> PublishConfigs;
+    public readonly Dictionary<string, string> PublishConfigs = new();
 
     public string AssetDictLocation;
 
     public Dictionary<string, InternalAssetInfo> InternalAssets;
-
-    public BuildAssetList(ILogger<BuildAssetList> logger, AssetBundleRConfig rConfig,
-        EventSink sink, AssetEventSink assetSink, ServerConsole console, LauncherRwConfig launcherWConfig,
-        AssetBundleRwConfig rwConfig)
-    {
-        _logger = logger;
-        _rConfig = rConfig;
-        _sink = sink;
-        _assetSink = assetSink;
-        _console = console;
-        _launcherWConfig = launcherWConfig;
-        _rwConfig = rwConfig;
-
-        PublishConfigs = new Dictionary<string, string>();
-        AssetDict = new Dictionary<string, string>();
-    }
 
     public void Initialize() => _sink.WorldLoad += Load;
 

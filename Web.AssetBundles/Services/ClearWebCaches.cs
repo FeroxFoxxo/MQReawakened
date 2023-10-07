@@ -10,28 +10,17 @@ using Web.Launcher.Services;
 
 namespace Web.AssetBundles.Services;
 
-public class ClearWebCaches : IService
+public class ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleRConfig rConfig,
+    ServerConsole console, EventSink sink, StartGame game,
+    AssetBundleRwConfig rwConfig, ReplaceCaches replaceCaches) : IService
 {
-    private readonly ServerConsole _console;
-    private readonly StartGame _game;
-    private readonly ILogger<ClearWebCaches> _logger;
-    private readonly AssetBundleRConfig _rConfig;
-    private readonly ReplaceCaches _replaceCaches;
-    private readonly AssetBundleRwConfig _rwConfig;
-    private readonly EventSink _sink;
-
-    public ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleRConfig rConfig,
-        ServerConsole console, EventSink sink, StartGame game,
-        AssetBundleRwConfig rwConfig, ReplaceCaches replaceCaches)
-    {
-        _logger = logger;
-        _rConfig = rConfig;
-        _console = console;
-        _sink = sink;
-        _game = game;
-        _rwConfig = rwConfig;
-        _replaceCaches = replaceCaches;
-    }
+    private readonly ServerConsole _console = console;
+    private readonly StartGame _game = game;
+    private readonly ILogger<ClearWebCaches> _logger = logger;
+    private readonly AssetBundleRConfig _rConfig = rConfig;
+    private readonly ReplaceCaches _replaceCaches = replaceCaches;
+    private readonly AssetBundleRwConfig _rwConfig = rwConfig;
+    private readonly EventSink _sink = sink;
 
     public void Initialize() => _sink.WorldLoad += Load;
 

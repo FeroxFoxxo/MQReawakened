@@ -55,7 +55,7 @@ public class NetState : IDisposable
         Socket = socket;
         AsyncLock = new object();
         Buffer = new byte[rConfig.BufferSize];
-        _currentLogs = new ConcurrentBag<string>();
+        _currentLogs = [];
 
         _logger = logger;
         _fileLogger = fileLogger;
@@ -67,7 +67,7 @@ public class NetState : IDisposable
         _nextCheckActivity = GetTicks.Ticks + 30000000;
 
         _handler.Instances.Add(this);
-        _data = new Dictionary<Type, INetStateData>();
+        _data = [];
 
         try
         {
@@ -387,7 +387,7 @@ public class NetState : IDisposable
 
         var packets = _rwConfig.UnhandledPackets.ToList();
         packets.Add(packetId);
-        _rwConfig.UnhandledPackets = packets.ToArray();
+        _rwConfig.UnhandledPackets = [.. packets];
     }
 
     public void RemoveUnhandledPacket(string packetId)
@@ -397,6 +397,6 @@ public class NetState : IDisposable
 
         var packets = _rwConfig.UnhandledPackets.ToList();
         packets.Remove(packetId);
-        _rwConfig.UnhandledPackets = packets.ToArray();
+        _rwConfig.UnhandledPackets = [.. packets];
     }
 }

@@ -9,13 +9,9 @@ using Web.AssetBundles.Events;
 
 namespace Web.AssetBundles;
 
-public class AssetBundles : WebModule
+public class AssetBundles(ILogger<AssetBundles> logger) : WebModule(logger)
 {
     public override string[] Contributors { get; } = ["Ferox", "Prefare"];
-
-    public AssetBundles(ILogger<AssetBundles> logger) : base(logger)
-    {
-    }
 
     public override void AddServices(IServiceCollection services, Module[] modules)
     {

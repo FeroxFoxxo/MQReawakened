@@ -7,12 +7,10 @@ using Server.Base.Core.Events;
 
 namespace Web.Apps.Achievements.Services;
 
-public class AchievementHandler : IService
+public class AchievementHandler(EventSink sink) : IService
 {
-    private readonly EventSink _sink;
+    private readonly EventSink _sink = sink;
     public AchievementStaticJson.AchievementDefinition Definitions { get; private set; }
-
-    public AchievementHandler(EventSink sink) => _sink = sink;
 
     public void Initialize() => _sink.WorldLoad += LoadAchievements;
 

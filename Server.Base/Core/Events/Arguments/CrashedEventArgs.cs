@@ -1,8 +1,7 @@
 ﻿namespace Server.Base.Core.Events.Arguments;
 
-public class CrashedEventArgs : EventArgs
+public class CrashedEventArgs(Exception ex) : EventArgs
 {
-    public Exception Exception { get; }
+    public Exception Exception { get; } = ex;
     public bool Close { get; set; }
-    public CrashedEventArgs(Exception ex) => Exception = ex;
 }

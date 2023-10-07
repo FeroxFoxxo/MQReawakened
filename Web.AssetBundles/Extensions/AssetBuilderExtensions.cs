@@ -33,13 +33,13 @@ public static class AssetBuilderExtensions
 
         foreach (var newAsset in assets)
         {
-            if (!filteredAssets.ContainsKey(newAsset.Name))
+            if (!filteredAssets.TryGetValue(newAsset.Name, out var value))
             {
                 filteredAssets.Add(newAsset.Name, newAsset);
             }
             else
             {
-                var oldAssetTime = filteredAssets[newAsset.Name].CacheTime - config.MajorClientUpdate;
+                var oldAssetTime = value.CacheTime - config.MajorClientUpdate;
                 var newAssetTime = newAsset.CacheTime - config.MajorClientUpdate;
 
                 if (!config.Is2014Client)
@@ -52,7 +52,7 @@ public static class AssetBuilderExtensions
                 {
                     if (oldAssetTime >= 0)
                     {
-                        var oldAdjusted = Math.Abs(filteredAssets[newAsset.Name].CacheTime - config.LastClientUpdate);
+                        var oldAdjusted = Math.Abs(value.CacheTime - config.LastClientUpdate);
                         var newAdjusted = Math.Abs(newAsset.CacheTime - config.LastClientUpdate);
 
                         if (newAdjusted < oldAdjusted)

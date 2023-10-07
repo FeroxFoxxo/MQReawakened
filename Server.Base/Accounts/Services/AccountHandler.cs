@@ -13,32 +13,19 @@ using System.Net;
 
 namespace Server.Base.Accounts.Services;
 
-public class AccountHandler : DataHandler<Account>
+public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRConfig internalServerConfig,
+    PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter,
+    FileLogger fileLogger, InternalRConfig config, TemporaryDataStorage temporaryDataStorage) : DataHandler<Account>(sink, logger, config)
 {
-    private readonly AccountAttackLimiter _attackLimiter;
-    private readonly InternalRConfig _config;
-    private readonly PasswordHasher _hasher;
-    private readonly InternalRConfig _internalServerConfig;
-    private readonly IpLimiter _ipLimiter;
-    private readonly FileLogger _fileLogger;
-    private readonly TemporaryDataStorage _temporaryDataStorage;
+    private readonly AccountAttackLimiter _attackLimiter = attackLimiter;
+    private readonly InternalRConfig _config = config;
+    private readonly PasswordHasher _hasher = hasher;
+    private readonly InternalRConfig _internalServerConfig = internalServerConfig;
+    private readonly IpLimiter _ipLimiter = ipLimiter;
+    private readonly FileLogger _fileLogger = fileLogger;
+    private readonly TemporaryDataStorage _temporaryDataStorage = temporaryDataStorage;
 
-    public Dictionary<IPAddress, int> IpTable;
-
-    public AccountHandler(EventSink sink, ILogger<Account> logger, InternalRConfig internalServerConfig,
-        PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter,
-        FileLogger fileLogger, InternalRConfig config, TemporaryDataStorage temporaryDataStorage) :
-        base(sink, logger, config)
-    {
-        _internalServerConfig = internalServerConfig;
-        _hasher = hasher;
-        _attackLimiter = attackLimiter;
-        _ipLimiter = ipLimiter;
-        _fileLogger = fileLogger;
-        _config = config;
-        _temporaryDataStorage = temporaryDataStorage;
-        IpTable = new Dictionary<IPAddress, int>();
-    }
+    public Dictionary<IPAddress, int> IpTable = new();
 
     public override void OnAfterLoad() => CreateIpTables();
 
@@ -137,14 +124,14 @@ public class AccountHandler : DataHandler<Account>
 
     public void CreateIpTables()
     {
-        IpTable = new Dictionary<IPAddress, int>();
+        IpTable = [];
 
         foreach (var account in Data.Values.Where(account => account.LoginIPs.Length > 0))
         {
             if (IPAddress.TryParse(account.LoginIPs[0], out var ipAddress))
             {
-                if (IpTable.ContainsKey(ipAddress))
-                    IpTable[ipAddress]++;
+                if (IpTable.TryGetValue(ipAddress, out var value))
+                    IpTable[ipAddress] = ++value;
                 else
                     IpTable[ipAddress] = 1;
             }
