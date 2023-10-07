@@ -30,7 +30,7 @@ public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
     }
 
     public override object[] GetInitData(Player player) =>
-        Collected ? new object[] { 0 } : Array.Empty<object>();
+        Collected ? [0] : Array.Empty<object>();
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {

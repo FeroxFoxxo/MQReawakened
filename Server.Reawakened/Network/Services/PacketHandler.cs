@@ -130,7 +130,7 @@ public class PacketHandler : IService
         }
         else
         {
-            netState.TracePacketError(actionType, packet, netState);
+            netState.TracePacketError(actionType, packet);
             unhandled = true;
         }
 
@@ -150,7 +150,7 @@ public class PacketHandler : IService
         }
         else
         {
-            netState.TracePacketError(actionType, packet, netState);
+            netState.TracePacketError(actionType, packet);
             unhandled = true;
         }
 

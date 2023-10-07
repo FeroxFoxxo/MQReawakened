@@ -46,7 +46,7 @@ public class RemoveDuplicates : IService
             "removeXmlDuplicates",
             "Creates a directory that does not include duplicated XML files (required for servers).",
             NetworkType.Server | NetworkType.Client,
-            _ => RemoveDuplicateFiles(new[] { AssetInfo.TypeAsset.Level, AssetInfo.TypeAsset.XML })
+            _ => RemoveDuplicateFiles([AssetInfo.TypeAsset.Level, AssetInfo.TypeAsset.XML])
         );
     }
 

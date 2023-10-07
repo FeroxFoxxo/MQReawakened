@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Server.Base.Accounts.Models;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -14,6 +15,7 @@ public class AutoJoin : SystemProtocol
     public override string ProtocolName => "autoJoin";
 
     public WorldHandler WorldHandler { get; set; }
+    public ServerRConfig ServerRConfig { get;set;}
 
     public override void Run(XmlDocument xmlDoc)
     {
@@ -25,8 +27,7 @@ public class AutoJoin : SystemProtocol
         SendXt("cl", GetCharacterList(Player.UserInfo));
     }
 
-    private static Dictionary<CharacterInfoHandler.ExternalProperties, object> GetPropertiesOfUser(UserInfo userInfo,
-        Account account) =>
+    private Dictionary<CharacterInfoHandler.ExternalProperties, object> GetPropertiesOfUser(UserInfo userInfo, Account account) =>
         new()
         {
             { CharacterInfoHandler.ExternalProperties.Chat_Level, userInfo.ChatLevel },
@@ -38,10 +39,10 @@ public class AutoJoin : SystemProtocol
             },
             { CharacterInfoHandler.ExternalProperties.Birthdate, userInfo.DateOfBirth },
             { CharacterInfoHandler.ExternalProperties.AccountAge, account.Created },
-            { CharacterInfoHandler.ExternalProperties.Silent, 0 },
+            { CharacterInfoHandler.ExternalProperties.Silent, userInfo.ChatLevel == 0 },
             { CharacterInfoHandler.ExternalProperties.Uuid, userInfo.UserId },
-            { CharacterInfoHandler.ExternalProperties.AccessRights, 2 },
-            { CharacterInfoHandler.ExternalProperties.ClearCache, 0 },
+            { CharacterInfoHandler.ExternalProperties.AccessRights, ServerRConfig.AccessRights },
+            { CharacterInfoHandler.ExternalProperties.ClearCache, ServerRConfig.ClearCache ? 1 : 0 },
             {
                 CharacterInfoHandler.ExternalProperties.Now, DateTimeOffset.Now.ToUnixTimeSeconds()
             },

@@ -11,7 +11,7 @@ namespace Server.Reawakened;
 
 public class Reawakened : Module
 {
-    public override string[] Contributors { get; } = { "Ferox" };
+    public override string[] Contributors { get; } = ["Ferox"];
 
     public Reawakened(ILogger<Reawakened> logger) : base(logger)
     {

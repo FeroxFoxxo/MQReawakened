@@ -34,6 +34,8 @@ public class ServerRConfig : IRConfig
 
     public int LogOnLagCount { get; }
 
+    public bool ClearCache { get; }
+
     public Dictionary<DebugHandler.DebugVariables, bool> DefaultDebugVariables { get; }
 
     public int[] SingleItemKit { get; }
@@ -42,6 +44,9 @@ public class ServerRConfig : IRConfig
     public int CashKitAmount { get; }
 
     public double KickAfterTime { get; }
+
+    public bool LogAllSyncEvents { get; }
+    public int AccessRights { get; set; }
 
     public ServerRConfig()
     {
@@ -64,7 +69,7 @@ public class ServerRConfig : IRConfig
         DefaultQuest = 802;
 
         LogSyncState = false;
-        DefaultProtocolTypeIgnore = new[] { "ss", "Pp", "ku", "kr" };
+        DefaultProtocolTypeIgnore = ["ss", "Pp", "ku", "kr"];
 
         ChatCommandStart = '.';
         ChatCommandPadding = 8;
@@ -83,8 +88,8 @@ public class ServerRConfig : IRConfig
             { DebugHandler.DebugVariables.Trade, true }
         };
 
-        SingleItemKit = new int[]
-        {
+        SingleItemKit =
+        [
             394, // glider
             395, // grappling hook
             397, // wooden slingshot
@@ -101,19 +106,24 @@ public class ServerRConfig : IRConfig
             2972, // ace pilot
             2973, // crimson dragon
             2923, // banana box
-        };
+        ];
 
-        StackedItemKit = new int[]
-        {
+        StackedItemKit =
+        [
             396, // healing staff
             585, // invisible bomb
             1568, // red apple
             1704, // healing potion
-        };
+        ];
 
         AmountToStack = 98;
         CashKitAmount = 100000;
 
         KickAfterTime = TimeSpan.FromMinutes(5).TotalMilliseconds;
+
+        LogAllSyncEvents = true;
+        ClearCache = true;
+
+        AccessRights = (int) UserAccessRight.NoDictionaryChat;
     }
 }

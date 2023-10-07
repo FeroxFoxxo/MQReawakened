@@ -35,7 +35,7 @@ public record RawBundleHeader : BundleHeader
     {
         // Scene Info
         var sceneLength = fileLength + metadataSize;
-        Scenes = new BundleScene[] { new() { CompressedSize = sceneLength, DecompressedSize = sceneLength } };
+        Scenes = [new() { CompressedSize = sceneLength, DecompressedSize = sceneLength }];
         NumberOfScenesToDownloadBeforeStreaming = Scenes.Length;
 
         UncompressedBlocksInfoSize = metadataSize;

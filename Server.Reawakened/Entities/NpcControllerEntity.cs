@@ -41,7 +41,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
     }
 
     public override object[] GetInitData(Player player) =>
-        Description == null ? Array.Empty<object>() : new object[] { Description.NameTextId.ToString() };
+        Description == null ? Array.Empty<object>() : [Description.NameTextId.ToString()];
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {

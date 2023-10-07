@@ -56,7 +56,7 @@ public class AssetBundleRConfig : IRConfig
 
         Message = "Loading Asset Bundles";
         DefaultWebPlayerCacheLocation = "AppData/LocalLow/Unity/WebPlayer/Cache";
-        AssetModifiers = new[] { "_nomesh" };
+        AssetModifiers = ["_nomesh"];
 
         AssetRenames = new Dictionary<string, string>
         {
@@ -82,20 +82,20 @@ public class AssetBundleRConfig : IRConfig
             { PublishConfigVgmtKey, "assetDictionary.VGMT.xml" }
         };
 
-        VirtualGoods = new[]
-        {
+        VirtualGoods =
+        [
             "ItemCatalog",
             "PetAbilities",
             "UserGiftMessage",
             "vendor_catalogs",
             "IconBank_VGMT",
             "IconBank_Pets"
-        };
+        ];
 
-        ForceLocalAsset = new[]
-        {
+        ForceLocalAsset =
+        [
             "vendor_catalogs"
-        };
+        ];
 
         LogAssetLoadInfo = false;
     }

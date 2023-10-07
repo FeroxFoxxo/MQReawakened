@@ -53,15 +53,15 @@ public class InternalRConfig : IRConfig
         CrashDirectory = InternalDirectory.GetDirectory("Logs/Crashes");
 
         MaxAccountsPerIp = 1;
-        ForbiddenChars = new[]
-        {
+        ForbiddenChars =
+        [
             '<', '>', ':', '"', '/', '\\', '|', '?', '*', ' ', '%'
-        };
+        ];
         LockDownLevel = AccessLevel.Player;
         MaxAddresses = 10;
         SocketBlock = true;
         BreakCount = 20000;
-        Delays = new double[] { 0, 10, 25, 50, 250, 1000, 5000, 60000 };
+        Delays = [0, 10, 25, 50, 250, 1000, 5000, 60000];
         GlobalUpdateRange = 18;
         BufferSize = 4096;
 
@@ -75,12 +75,12 @@ public class InternalRConfig : IRConfig
         CommandPadding = 8;
 
         BackupCapacity = 64;
-        Backups = new[]
-        {
+        Backups =
+        [
             "Third Backup",
             "Second Backup",
             "Most Recent"
-        };
+        ];
 
         ExpireAge = TimeSpan.FromDays(30);
         Merge = MergeType.Minutes;

@@ -248,11 +248,14 @@ public class NetState : IDisposable
             {
                 _nextCheckActivity = GetTicks.Ticks + _rConfig.DisconnectionTimeout;
 
-                if (Throttler != null)
-                    if (!Throttler(this))
-                        return;
-                    else
-                        Throttler = null;
+                lock (AsyncLock)
+                {
+                    if (Throttler != null)
+                        if (!Throttler(this))
+                            return;
+                        else
+                            Throttler = null;
+                }
 
                 var buffered = new byte[byteCount];
 
@@ -299,7 +302,7 @@ public class NetState : IDisposable
                     }
                     else
                     {
-                        TracePacketError(protocolType.ToString(), packet, this);
+                        TracePacketError(protocolType.ToString(), packet);
                     }
 
                     _currentLogs.Clear();
@@ -323,6 +326,9 @@ public class NetState : IDisposable
             }
             else
             {
+
+                lock (_handler.Disposed)
+                    TraceBufferError(byteCount);
                 Dispose();
             }
         }
@@ -350,7 +356,17 @@ public class NetState : IDisposable
         }
     }
 
-    public void TracePacketError(string packetId, string packet, NetState state)
+    public void TraceBufferError(int byteCount)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"Unhandled buffered content of size '{byteCount}'");
+
+        _fileLogger.WriteGenericLog<MessagePump>("network-errors", $"Client {this}",
+            sb.ToString(), LoggerType.Warning);
+    }
+
+    public void TracePacketError(string packetId, string packet)
     {
         if (packet.Length <= 0)
             return;
@@ -360,7 +376,7 @@ public class NetState : IDisposable
         sb.AppendLine($"Unhandled packet '{packetId}'");
         sb.Append(packet);
 
-        _fileLogger.WriteGenericLog<MessagePump>("network-errors", $"Client {state}",
+        _fileLogger.WriteGenericLog<MessagePump>("network-errors", $"Client {this}",
             sb.ToString(), LoggerType.Warning);
     }
 

@@ -5,7 +5,7 @@ namespace Protocols.System;
 
 public class SysProtocol : Module
 {
-    public override string[] Contributors { get; } = { "Ferox" };
+    public override string[] Contributors { get; } = ["Ferox"];
 
     public SysProtocol(ILogger<SysProtocol> logger) : base(logger)
     {

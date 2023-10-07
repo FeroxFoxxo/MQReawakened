@@ -11,7 +11,7 @@ namespace Web.AssetBundles;
 
 public class AssetBundles : WebModule
 {
-    public override string[] Contributors { get; } = { "Ferox", "Prefare" };
+    public override string[] Contributors { get; } = ["Ferox", "Prefare"];
 
     public AssetBundles(ILogger<AssetBundles> logger) : base(logger)
     {

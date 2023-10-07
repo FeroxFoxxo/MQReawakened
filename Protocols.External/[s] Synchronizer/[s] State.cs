@@ -2,6 +2,7 @@
 using Server.Base.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
@@ -112,6 +113,39 @@ public class State : ExternalProtocol
                     break;
             }
         }
+
+        if (entityId != Player.GameObjectId)
+            if (ServerConfig.LogAllSyncEvents)
+                LogEvent(syncEvent, entityId, room);
+    }
+
+    public void LogEvent(SyncEvent syncEvent, int entityId, Room room)
+    {
+        var uniqueType = "Unknown";
+        
+        if(room.Players.TryGetValue(entityId, out var newPlayer))
+        {
+            uniqueType = newPlayer.Character != null ?
+                $"Player {newPlayer.Character.Data.CharacterName}" :
+                "Unknown Player";
+
+        }
+
+        var entities = new List<string>();
+
+        if (room.Entities.TryGetValue(entityId, out var entity))
+            foreach (var entityComponent in entity)
+                entities.Add($"K:{entityComponent.Name}");
+
+        if (room.UnknownEntities.TryGetValue(entityId, out var unknownEntities))
+            foreach (var entityComponent in unknownEntities)
+                entities.Add($"U:{entityComponent}");
+
+        if (entities.Count > 0)
+            uniqueType = $"Entity {string.Join('/', entities)}";
+
+        if (Player.Character != null)
+                Logger.LogDebug("Event {Type} triggered for {Type} ({Id}) by {Player}", syncEvent.Type, uniqueType, entityId, Player.Character.Data.CharacterName);
     }
 
     public void TraceSyncEventError(int entityId, SyncEvent syncEvent, LevelInfo levelInfo, string entityInfo)

@@ -157,14 +157,15 @@ public static class LoadRoomData
 
                         entities[entity.Key].Add(instancedEntity);
                     }
-                    else if (!invalidProcessable.Contains(mqType.Name))
+                    else
                     {
                         if (!unknownEntities.ContainsKey(entity.Key))
                             unknownEntities.Add(entity.Key, new List<string>());
 
                         unknownEntities[entity.Key].Add(mqType.Name);
 
-                        invalidProcessable.Add(mqType.Name);
+                        if (!invalidProcessable.Contains(mqType.Name))
+                            invalidProcessable.Add(mqType.Name);
                     }
                 }
 

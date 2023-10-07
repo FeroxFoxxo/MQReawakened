@@ -38,10 +38,10 @@ public class MessagePump : IService
         _sink = sink;
         _serverHandler = serverHandler;
 
-        _ipEndPoints = new IPEndPoint[]
-        {
+        _ipEndPoints =
+        [
             new(IPAddress.Any, rwConfig.Port)
-        };
+        ];
 
         Listeners = new Listener[_ipEndPoints.Length];
     }

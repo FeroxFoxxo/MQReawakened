@@ -16,7 +16,7 @@ namespace Server.Base;
 
 public class Server : Module
 {
-    public override string[] Contributors { get; } = { "Ferox", "ServUO" };
+    public override string[] Contributors { get; } = ["Ferox", "ServUO"];
 
     public Server(ILogger<Server> logger) : base(logger)
     {

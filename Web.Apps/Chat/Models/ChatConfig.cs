@@ -12,10 +12,10 @@ public class ChatConfig : IRConfig
     {
         CrispKey = "654472ea5fbeadc4da5f5de312ffae7e";
         TerminationCharacter = "\r\n";
-        Words = new[]
-        {
+        Words =
+        [
             "Example",
             "Test"
-        };
+        ];
     }
 }

@@ -17,7 +17,7 @@ namespace Server.Web;
 
 public class Web : WebModule
 {
-    public override string[] Contributors { get; } = { "Ferox" };
+    public override string[] Contributors { get; } = ["Ferox"];
 
     public Web(ILogger<Web> logger) : base(logger)
     {
