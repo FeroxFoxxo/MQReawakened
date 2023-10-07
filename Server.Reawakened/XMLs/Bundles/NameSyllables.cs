@@ -13,7 +13,7 @@ public class NameSyllables : NamegenSyllablesXML, IBundledXml
     public void InitializeVariables() =>
         this.SetField<NamegenSyllablesXML>("_nameSyllables", new Dictionary<int, List<string>>());
 
-    public void EditDescription(XmlDocument xml)
+    public void EditDescription(XmlDocument xml, IServiceProvider services)
     {
     }
 

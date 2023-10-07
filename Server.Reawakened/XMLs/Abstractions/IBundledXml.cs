@@ -8,7 +8,7 @@ public interface IBundledXml
 
     public void InitializeVariables();
 
-    public void EditDescription(XmlDocument xml);
+    public void EditDescription(XmlDocument xml, IServiceProvider services);
 
     public void ReadDescription(string xml);
 

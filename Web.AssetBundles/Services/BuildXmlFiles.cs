@@ -28,6 +28,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, 
         var assets = assetLoadEvent.InternalAssets
             .Select(x => x.Value)
             .Where(x => x.Type is AssetInfo.TypeAsset.XML)
+            .OrderBy(x => x.Name)
             .ToArray();
 
         InternalDirectory.OverwriteDirectory(rConfig.XmlSaveDirectory);
@@ -68,7 +69,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, 
                     var xml = new XmlDocument();
                     xml.LoadXml(text);
 
-                    bundle.EditDescription(xml);
+                    bundle.EditDescription(xml, services);
 
                     text = xml.WriteToString();
 

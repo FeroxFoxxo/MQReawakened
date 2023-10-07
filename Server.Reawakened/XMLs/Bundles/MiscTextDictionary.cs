@@ -22,7 +22,7 @@ public class MiscTextDictionary : LocalizationHandler, IBundledXml
         this.SetField<LocalizationHandler>("_localizationDict", new Dictionary<int, string>());
     }
 
-    public void EditDescription(XmlDocument xml)
+    public void EditDescription(XmlDocument xml, IServiceProvider services)
     {
     }
 

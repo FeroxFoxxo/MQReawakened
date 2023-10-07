@@ -58,7 +58,7 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
             }
             else
             {
-                Logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LevelData, newLevelId);
+                Logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LevelData.LevelId, newLevelId);
                 character.SetLevel(newLevelId, portalId,
                     portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID), Logger);
             }
@@ -76,7 +76,7 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
         }
         else
         {
-            throw new InvalidDataException($"Portal '{portalId}' is null for world {character.LevelData}!");
+            throw new InvalidDataException($"Portal '{portalId}' is null for world {character.LevelData.LevelId}!");
         }
     }
 }

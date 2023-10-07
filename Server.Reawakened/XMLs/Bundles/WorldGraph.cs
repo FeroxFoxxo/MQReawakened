@@ -23,7 +23,7 @@ public class WorldGraph : WorldGraphXML, IBundledXml
             int.Parse(this.GetField<WorldGraphXML>("CLOCK_TOWER_SQUARE_LEVEL_ID").ToString() ?? string.Empty);
     }
 
-    public void EditDescription(XmlDocument xml)
+    public void EditDescription(XmlDocument xml, IServiceProvider services)
     {
     }
 

@@ -16,7 +16,7 @@ public class LootsInfo : LootsInfoXML, IBundledXml
         this.SetField<LootsInfoXML>("_lootsInfoXMLDict", new Dictionary<int, LootsInfoInfo>());
     }
 
-    public void EditDescription(XmlDocument xml)
+    public void EditDescription(XmlDocument xml, IServiceProvider services)
     {
     }
 

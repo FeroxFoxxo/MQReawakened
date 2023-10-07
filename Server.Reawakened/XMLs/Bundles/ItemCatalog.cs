@@ -31,7 +31,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
     public void ReadLocalization(string xml) => ReadLocalizationXml(xml);
 
-    public void EditDescription(XmlDocument xml)
+    public void EditDescription(XmlDocument xml, IServiceProvider services)
     {
     }
 

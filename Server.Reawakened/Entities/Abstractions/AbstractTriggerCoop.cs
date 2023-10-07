@@ -139,9 +139,9 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
     public void AddToTriggers(List<int> triggers, TriggerType triggerType)
     {
         foreach (var trigger in triggers.Where(trigger => trigger > 0))
-            Triggers.Add(trigger, triggerType);
+            Triggers.TryAdd(trigger, triggerType);
     }
-
+    
     public override void SendDelayedData(Player player)
     {
         var trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, false,

@@ -29,7 +29,7 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
         _questLines = [];
     }
 
-    public void EditDescription(XmlDocument xml)
+    public void EditDescription(XmlDocument xml, IServiceProvider services)
     {
     }
 

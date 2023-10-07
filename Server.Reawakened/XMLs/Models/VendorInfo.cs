@@ -6,7 +6,7 @@ namespace Server.Reawakened.XMLs.Models;
 public class VendorInfo(int gameObjectId, int nameId, int descriptionId,
     int numberOfIdolsToAccessBackStore, int idolLevelId,
     int vendorId, int catalogId, NPCController.NPCStatus vendorType,
-    Conversation greetingConversation, Conversation leavingConversation)
+    Conversation greetingConversation, Conversation leavingConversation, int[] items)
 {
     public readonly int GameObjectId = gameObjectId;
     public readonly int NameId = nameId;
@@ -15,12 +15,14 @@ public class VendorInfo(int gameObjectId, int nameId, int descriptionId,
     public readonly int NumberOfIdolsToAccessBackStore = numberOfIdolsToAccessBackStore;
     public readonly int IdolLevelId = idolLevelId;
 
-    public readonly int VendorId = vendorId;
-    public readonly int CatalogId = catalogId;
+    public int VendorId = vendorId;
+    public int CatalogId = catalogId;
     public readonly NPCController.NPCStatus VendorType = vendorType;
 
     public readonly Conversation GreetingConversation = greetingConversation;
     public readonly Conversation LeavingConversation = leavingConversation;
+
+    public readonly int[] Items = items;
 
     public string ToString(Player player)
     {

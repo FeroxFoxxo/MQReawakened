@@ -12,7 +12,7 @@ public class InternalVendorCatalog : IBundledXml
     public void InitializeVariables() =>
         VendorCatalog = new Dictionary<int, VendorInfo>();
 
-    public void EditDescription(XmlDocument xml)
+    public void EditDescription(XmlDocument xml, IServiceProvider services)
     {
     }
 
@@ -42,7 +42,10 @@ public class InternalVendorCatalog : IBundledXml
                 var greetingConversationId = -1;
                 var leavingConversationId = -1;
 
+                var items = new List<int>();
+
                 if (childNode2.Name == "vendor")
+                {
                     foreach (XmlAttribute item in childNode2.Attributes!)
                     {
                         switch (item.Name)
@@ -71,7 +74,7 @@ public class InternalVendorCatalog : IBundledXml
                                 catalogId = int.Parse(item.Value);
                                 continue;
                             case "vendorType":
-                                vendorType = (NPCController.NPCStatus) int.Parse(item.Value);
+                                vendorType = (NPCController.NPCStatus)int.Parse(item.Value);
                                 continue;
 
                             case "dialogId":
@@ -85,6 +88,22 @@ public class InternalVendorCatalog : IBundledXml
                                 continue;
                         }
                     }
+                    foreach (XmlNode item in childNode2.ChildNodes)
+                    {
+                        if (!(item.Name == "item"))
+                        {
+                            continue;
+                        }
+                        foreach (XmlAttribute id in item.Attributes)
+                        {
+                            if (id.Name == "id")
+                            {
+                                items.Add(BundledXML.ParseInt(id.Value));
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 if (VendorCatalog.ContainsKey(objectId))
                     continue;
@@ -96,7 +115,7 @@ public class InternalVendorCatalog : IBundledXml
                     objectId, nameId, descriptionId,
                     numberOfIdolsToAccessBackStore, idolLevelId,
                     vendorId, catalogId, vendorType,
-                    greetingConversation, leavingConversation
+                    greetingConversation, leavingConversation, items.ToArray()
                 );
 
                 VendorCatalog.Add(objectId, vendor);

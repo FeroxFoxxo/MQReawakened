@@ -204,6 +204,8 @@ public class Room : Timer
         character.Data.SpawnPositionY = spawnLocation.Position.Y + spawnLocation.Scale.Y / 2;
         character.Data.SpawnOnBackPlane = spawnLocation.Position.Z > 1;
 
+        Console.WriteLine(spawnLocation.Position.Z);
+
         Logger.LogDebug(
             "Spawning {CharacterName} at object '{Object}' (portal '{Portal}' spawn '{SpawnPoint}') at '{NewRoom}'.",
             character.Data.CharacterName,
