@@ -46,14 +46,14 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
     [Required(ErrorMessage = "Please Enter Region")]
     public string Region { get; set; }
 
-    public List<SelectListItem> Genders => Enum.GetValues<Gender>()
+    public static List<SelectListItem> Genders => Enum.GetValues<Gender>()
         .Select(v => new SelectListItem
         {
             Text = v.ToString(),
             Value = ((int)v).ToString()
         }).ToList();
 
-    public List<SelectListItem> Regions => CultureInfo
+    public static List<SelectListItem> Regions => CultureInfo
         .GetCultures(CultureTypes.SpecificCultures)
         .Select(ci => new RegionInfo(ci.ToString()))
         .DistinctBy(ci => ci.TwoLetterISORegionName)
@@ -66,10 +66,6 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
         })
         .ToList();
 
-    private readonly AccountHandler _accountHandler = accountHandler;
-    private readonly UserInfoHandler _userInfoHandler = userInfoHandler;
-    private readonly ILogger<SignUpModel> _logger = logger;
-
     public IActionResult OnPost()
     {
         if (!ModelState.IsValid)
@@ -78,10 +74,10 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
         if (!Date.HasValue)
             return Page();
 
-        if (_accountHandler.Data.Any(a => a.Value.Username == Username))
+        if (accountHandler.Data.Any(a => a.Value.Username == Username))
             return Forbid();
 
-        if (_accountHandler.Data.Any(a => a.Value.Email == Email))
+        if (accountHandler.Data.Any(a => a.Value.Email == Email))
             return Forbid();
 
         var ip = Request.HttpContext.Connection.RemoteIpAddress;
@@ -90,19 +86,19 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
             string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Region))
             return BadRequest();
 
-        var account = _accountHandler.Create(ip, Username, Password, Email);
+        var account = accountHandler.Create(ip, Username, Password, Email);
 
         if (account == null)
         {
-            _logger.LogError("Could not create account with name: {Username}", Username);
+            logger.LogError("Could not create account with name: {Username}", Username);
             return NotFound();
         }
 
-        var userInfo = _userInfoHandler.Create(ip, account.UserId, Gender, Date.Value, Region, "Website");
+        var userInfo = userInfoHandler.Create(ip, account.UserId, Gender, Date.Value, Region, "Website");
 
         if (account == null)
         {
-            _logger.LogError("Could not create user info with name: {Username}", Username);
+            logger.LogError("Could not create user info with name: {Username}", Username);
             return NotFound();
         }
 

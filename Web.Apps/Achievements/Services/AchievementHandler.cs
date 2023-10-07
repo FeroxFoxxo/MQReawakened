@@ -9,10 +9,9 @@ namespace Web.Apps.Achievements.Services;
 
 public class AchievementHandler(EventSink sink) : IService
 {
-    private readonly EventSink _sink = sink;
     public AchievementStaticJson.AchievementDefinition Definitions { get; private set; }
 
-    public void Initialize() => _sink.WorldLoad += LoadAchievements;
+    public void Initialize() => sink.WorldLoad += LoadAchievements;
 
     private void LoadAchievements() =>
         Definitions = new AchievementStaticJson.AchievementDefinition

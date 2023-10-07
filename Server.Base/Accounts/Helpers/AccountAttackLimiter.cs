@@ -8,7 +8,6 @@ namespace Server.Base.Accounts.Helpers;
 public class AccountAttackLimiter(FileLogger fileLogger)
 {
     private readonly List<InvalidAccountAccessLog> _invalidAccessors = new();
-    private readonly FileLogger _fileLogger = fileLogger;
 
     public InvalidAccountAccessLog FindAccessLog(NetState netState)
     {
@@ -34,10 +33,7 @@ public class AccountAttackLimiter(FileLogger fileLogger)
     {
         var accessLog = FindAccessLog(ns);
 
-        if (accessLog == null)
-            return true;
-
-        return DateTime.UtcNow >= accessLog.LastAccessTime + accessLog.ComputeThrottle();
+        return accessLog == null || DateTime.UtcNow >= accessLog.LastAccessTime + accessLog.ComputeThrottle();
     }
 
     public void RegisterInvalidAccess(NetState netState)
@@ -62,5 +58,5 @@ public class AccountAttackLimiter(FileLogger fileLogger)
     }
 
     public void ThrottledError(NetState netState, InvalidAccountAccessLog accessLog) =>
-        _fileLogger.WriteGenericLog<AccountAttackLimiter>("throttle", netState.ToString(), accessLog.Counts.ToString(), LoggerType.Debug);
+        fileLogger.WriteGenericLog<AccountAttackLimiter>("throttle", netState.ToString(), accessLog.Counts.ToString(), LoggerType.Debug);
 }

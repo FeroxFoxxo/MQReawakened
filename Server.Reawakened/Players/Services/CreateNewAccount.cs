@@ -8,11 +8,8 @@ namespace Server.Reawakened.Players.Services;
 public class CreateNewAccount(ServerConsole serverConsole,
     EventSink eventSink) : IService
 {
-    private readonly EventSink _eventSink = eventSink;
-    private readonly ServerConsole _serverConsole = serverConsole;
-
     public void Initialize() =>
-        _serverConsole.AddCommand(
+        serverConsole.AddCommand(
             "createAccount",
             "Adds a new account to the server.",
             NetworkType.Server,
@@ -20,5 +17,5 @@ public class CreateNewAccount(ServerConsole serverConsole,
         );
 
     private void AddAccount(string[] command) =>
-        _eventSink.InvokeCreateData();
+        eventSink.InvokeCreateData();
 }

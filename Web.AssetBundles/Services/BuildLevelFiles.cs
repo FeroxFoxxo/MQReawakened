@@ -12,18 +12,13 @@ namespace Web.AssetBundles.Services;
 public class BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> logger, ServerRConfig sConfig,
     AssetBundleRwConfig aBConfig) : IService
 {
-    private readonly AssetBundleRwConfig _aBConfig = aBConfig;
-    private readonly AssetEventSink _eventSink = eventSink;
-    private readonly ILogger<BuildXmlFiles> _logger = logger;
-    private readonly ServerRConfig _sConfig = sConfig;
-
     public readonly Dictionary<string, string> LevelFiles = new();
 
-    public void Initialize() => _eventSink.AssetBundlesLoaded += LoadLevelFiles;
+    public void Initialize() => eventSink.AssetBundlesLoaded += LoadLevelFiles;
 
     private void LoadLevelFiles(AssetBundleLoadEventArgs assetLoadEvent)
     {
-        _logger.LogDebug("Reading level files from bundles");
+        logger.LogDebug("Reading level files from bundles");
 
         LevelFiles.Clear();
 
@@ -32,9 +27,9 @@ public class BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> lo
             .Where(x => x.Type is AssetInfo.TypeAsset.Level)
             .ToArray();
 
-        InternalDirectory.OverwriteDirectory(_sConfig.LevelSaveDirectory);
+        InternalDirectory.OverwriteDirectory(sConfig.LevelSaveDirectory);
 
-        using var bar = new DefaultProgressBar(assets.Length, "Loading Level Files", _logger, _aBConfig);
+        using var bar = new DefaultProgressBar(assets.Length, "Loading Level Files", logger, aBConfig);
 
         foreach (var asset in assets)
         {
@@ -46,7 +41,7 @@ public class BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> lo
                 continue;
             }
 
-            var path = Path.Join(_sConfig.LevelSaveDirectory, $"{asset.Name}.xml");
+            var path = Path.Join(sConfig.LevelSaveDirectory, $"{asset.Name}.xml");
 
             bar.SetMessage($"Writing file to {path}");
 

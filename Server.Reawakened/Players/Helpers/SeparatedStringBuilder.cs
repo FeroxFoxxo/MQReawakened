@@ -2,10 +2,9 @@
 
 public class SeparatedStringBuilder(char separator)
 {
-    private readonly char _separator = separator;
     private readonly List<string> _text = new();
 
     public void Append(object text) => _text.Add(text.ToString());
 
-    public override string ToString() => string.Join(_separator, _text);
+    public override string ToString() => string.Join(separator, _text);
 }

@@ -15,10 +15,6 @@ public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
 {
     public delegate ProtocolResponse RunProtocol(NetState state, string protocol);
 
-    private readonly FileLogger _fileLogger = fileLogger;
-    private readonly EventSink _sink = sink;
-    private readonly TimerThread _thread = thread;
-
     public readonly Queue<NetState> Disposed = new();
     public readonly List<NetState> Instances = new();
 
@@ -27,8 +23,8 @@ public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
     public bool Paused = false;
 
     public void Initialize() =>
-        _sink.ServerStarted += _ =>
-            _thread.DelayCall(CheckAllAlive, TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(1.5), 0);
+        sink.ServerStarted += _ =>
+            thread.DelayCall(CheckAllAlive, TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(1.5), 0);
 
     public NetState FindUser(int userId) =>
         (from state in Instances
@@ -115,5 +111,5 @@ public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
     }
 
     public void TraceNetworkError(Exception ex, NetState state) =>
-        _fileLogger.WriteGenericLog<NetState>("network-errors", $"Client {state}", ex.ToString(), LoggerType.Error);
+        fileLogger.WriteGenericLog<NetState>("network-errors", $"Client {state}", ex.ToString(), LoggerType.Error);
 }

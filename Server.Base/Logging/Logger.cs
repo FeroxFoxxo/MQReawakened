@@ -13,8 +13,6 @@ public class Logger(string categoryName) : ILogger
     private static int _offset;
     private static bool _criticalErrored;
 
-    private readonly string _categoryName = categoryName;
-
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception ex,
         Func<TState, Exception, string> formatter)
     {
@@ -65,7 +63,7 @@ public class Logger(string categoryName) : ILogger
 
     private void WriteLine(ConsoleColor color, string message, string shortLogLevel, int eventId)
     {
-        var prefix = $"[{shortLogLevel}] {_categoryName.Split('.').Last()}[{eventId}]";
+        var prefix = $"[{shortLogLevel}] {categoryName.Split('.').Last()}[{eventId}]";
 
         if (_offset < prefix.Length) _offset = prefix.Length;
         var length = _offset - prefix.Length;

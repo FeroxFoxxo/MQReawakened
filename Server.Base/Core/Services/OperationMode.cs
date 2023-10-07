@@ -11,57 +11,52 @@ namespace Server.Base.Core.Services;
 public class OperationMode(EventSink eventSink, ServerConsole console, InternalRwConfig config,
     ILogger<OperationMode> logger) : IService
 {
-    private readonly InternalRwConfig _config = config;
-    private readonly ServerConsole _console = console;
-    private readonly EventSink _eventSink = eventSink;
-    private readonly ILogger<OperationMode> _logger = logger;
-
-    public void Initialize() => _eventSink.WorldLoad += CheckOperationalMode;
+    public void Initialize() => eventSink.WorldLoad += CheckOperationalMode;
 
     private void CheckOperationalMode()
     {
-        _console.AddCommand("changeOperationalMode", "Changes the mode the game is set to (client/server/both)",
+        console.AddCommand("changeOperationalMode", "Changes the mode the game is set to (client/server/both)",
             NetworkType.Unknown | NetworkType.Server | NetworkType.Client, _ => ChangeNetworkType());
 
-        if (_config.NetworkType == NetworkType.Unknown)
+        if (config.NetworkType == NetworkType.Unknown)
             ChangeNetworkType();
 
-        _logger.LogInformation("Playing as: {Mode} connected to {Address}", _config.NetworkType,
-            _config.GetHostAddress());
+        logger.LogInformation("Playing as: {Mode} connected to {Address}", config.NetworkType,
+            config.GetHostAddress());
     }
 
     private void ChangeNetworkType()
     {
         AskForChange();
-        _eventSink.InvokeChangedOperationalMode();
+        eventSink.InvokeChangedOperationalMode();
     }
 
     private void AskForChange()
     {
-        if (_logger.Ask(
+        if (logger.Ask(
                 "Are you wanting to play the game, rather than host one?",
                 true
             ))
         {
-            if (_logger.Ask(
+            if (logger.Ask(
                     "Would you like to connect to an online server, rather than be put into single-player mode?",
                     true
                 ))
             {
-                _config.NetworkType = NetworkType.Client;
+                config.NetworkType = NetworkType.Client;
                 SetServerAddress("What is the address of the server that you are trying to connect to?");
             }
             else
             {
-                _config.NetworkType = NetworkType.Client | NetworkType.Server;
-                _config.ServerAddress = "localhost";
+                config.NetworkType = NetworkType.Client | NetworkType.Server;
+                config.ServerAddress = "localhost";
             }
         }
         else
         {
-            _config.NetworkType = NetworkType.Server;
+            config.NetworkType = NetworkType.Server;
 
-            if (_logger.Ask(
+            if (logger.Ask(
                     "Would you like to automatically detect your external IP, rather than set it manually?",
                     true
                 ))
@@ -69,14 +64,14 @@ public class OperationMode(EventSink eventSink, ServerConsole console, InternalR
                 var externalIpTask = GetExternalIpAddress();
                 GetExternalIpAddress().Wait();
                 var externalIpString = externalIpTask.Result ?? IPAddress.Loopback;
-                _config.ServerAddress = externalIpString.ToString();
+                config.ServerAddress = externalIpString.ToString();
             }
             else
             {
                 SetServerAddress("What is the address of the server that you are trying to host?");
             }
 
-            _logger.LogInformation("Set IP Address to: {Address}", _config.ServerAddress);
+            logger.LogInformation("Set IP Address to: {Address}", config.ServerAddress);
         }
     }
 
@@ -92,22 +87,22 @@ public class OperationMode(EventSink eventSink, ServerConsole console, InternalR
     {
         while (true)
         {
-            _logger.LogInformation("{Question}", question);
+            logger.LogInformation("{Question}", question);
 
             var serverAddress = Console.ReadLine();
 
-            _config.ServerAddress = serverAddress;
+            config.ServerAddress = serverAddress;
 
-            if (!string.IsNullOrEmpty(_config.ServerAddress))
+            if (!string.IsNullOrEmpty(config.ServerAddress))
             {
                 if (!serverAddress!.Contains("http"))
                     break;
 
-                _logger.LogError("Server address cannot be a url, just a domain or ip address.");
+                logger.LogError("Server address cannot be a url, just a domain or ip address.");
                 continue;
             }
 
-            _logger.LogError("Server address cannot be empty!");
+            logger.LogError("Server address cannot be empty!");
         }
     }
 }

@@ -15,22 +15,13 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
     TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> handlerLogger,
     ILogger<Room> roomLogger) : IService
 {
-    private readonly ServerRConfig _config = config;
-
-    private readonly ILogger<WorldHandler> _handlerLogger = handlerLogger;
-
-    private readonly ILogger<Room> _roomLogger = roomLogger;
-    private readonly IServiceProvider _services = services;
-    private readonly EventSink _sink = sink;
-    private readonly TimerThread _timerThread = timerThread;
-    private readonly WorldGraph _worldGraph = worldGraph;
     private readonly Dictionary<int, Level> _levels = new();
 
-    public void Initialize() => _sink.WorldLoad += LoadRooms;
+    public void Initialize() => sink.WorldLoad += LoadRooms;
 
     private void LoadRooms()
     {
-        InternalDirectory.OverwriteDirectory(_config.LevelDataSaveDirectory);
+        InternalDirectory.OverwriteDirectory(config.LevelDataSaveDirectory);
 
         foreach (var room in _levels
                      .Where(level => level.Key > 0)
@@ -45,7 +36,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         if (levelId is not -1 and not 0)
             try
             {
-                var levelInfo = _worldGraph!.GetInfoLevel(levelId);
+                var levelInfo = worldGraph!.GetInfoLevel(levelId);
 
                 return string.IsNullOrEmpty(levelInfo.Name)
                     ? throw new MissingFieldException($"Room '{levelId}' does not have a valid name!")
@@ -54,10 +45,10 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             catch (NullReferenceException)
             {
                 if (_levels.Count == 0)
-                    _handlerLogger.LogCritical(
+                    handlerLogger.LogCritical(
                         "Could not find any rooms! Are you sure you have your cache set up correctly?");
                 else
-                    _handlerLogger.LogError("Could not find the required room! Are you sure your caches contain this?");
+                    handlerLogger.LogError("Could not find the required room! Are you sure your caches contain this?");
             }
 
         var name = levelId switch
@@ -103,7 +94,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         while (level.Rooms.ContainsKey(roomId))
             roomId++;
 
-        var room = new Room(roomId, level, _config, _timerThread, _services, _roomLogger);
+        var room = new Room(roomId, level, config, timerThread, services, roomLogger);
 
         level.Rooms.Add(roomId, room);
 

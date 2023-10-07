@@ -11,26 +11,18 @@ namespace Web.AssetBundles.Services;
 
 public class GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
     ServerRConfig config, WorldGraph worldGraph, ItemCatalog itemCatalog,
-    BuildAssetList assets, BuildLevelFiles levels) : IService
+    BuildAssetList assets, BuildLevelFiles levelFiles) : IService
 {
-    private readonly BuildAssetList _assets = assets;
-    private readonly ServerRConfig _config = config;
-    private readonly ItemCatalog _itemCatalog = itemCatalog;
-    private readonly BuildLevelFiles _levels = levels;
-    private readonly ILogger<GetXmlData> _logger = logger;
-    private readonly ServerConsole _serverConsole = serverConsole;
-    private readonly WorldGraph _worldGraph = worldGraph;
-
     public void Initialize()
     {
-        _serverConsole.AddCommand(
+        serverConsole.AddCommand(
             "listLevels",
             "Lists out all the levels in the world graph.",
             NetworkType.Server | NetworkType.Client,
             PrintLevels
         );
 
-        _serverConsole.AddCommand(
+        serverConsole.AddCommand(
             "listItems",
             "Lists out all the items in the catalog.",
             NetworkType.Server | NetworkType.Client,
@@ -41,14 +33,14 @@ public class GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
     private void PrintItems(string[] command)
     {
         var itemInformation = new Dictionary<int, string>();
-        var items = (Dictionary<int, ItemDescription>)_itemCatalog.GetField<ItemHandler>("_itemDescriptionCache");
+        var items = (Dictionary<int, ItemDescription>) itemCatalog.GetField<ItemHandler>("_itemDescriptionCache");
 
-        var shouldSimplify = _logger.Ask(
+        var shouldSimplify = logger.Ask(
             "Would you like to have a simplified item description?",
             true
         );
 
-        var shouldFilter = _logger.Ask(
+        var shouldFilter = logger.Ask(
             "Would you like the items filtered to only the ones that you have cached?",
             true
         );
@@ -56,7 +48,7 @@ public class GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
         foreach (var item in items)
         {
             if (shouldFilter)
-                if (!_assets.InternalAssets.ContainsKey(item.Value.PrefabName))
+                if (!assets.InternalAssets.ContainsKey(item.Value.PrefabName))
                     continue;
 
             var filteredText =
@@ -71,14 +63,14 @@ public class GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
     {
         var levelInformation = new Dictionary<int, string>();
 
-        var shouldFilter = _logger.Ask(
+        var shouldFilter = logger.Ask(
             "Would you like the levels filtered to only the ones that you have available to visit?",
             true
         );
 
-        var levels = (Dictionary<string, int>)_worldGraph.GetField<WorldGraphXML>("_levelNameToID");
+        var levels = (Dictionary<string, int>) worldGraph.GetField<WorldGraphXML>("_levelNameToID");
 
-        var lowercasedLevels = _levels.LevelFiles.Keys.Select(x => x.ToLower()).ToArray();
+        var lowercasedLevels = levelFiles.LevelFiles.Keys.Select(x => x.ToLower()).ToArray();
 
         foreach (var levelInfo in levels)
         {
@@ -86,7 +78,7 @@ public class GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
                 if (!lowercasedLevels.Contains(levelInfo.Key))
                     continue;
 
-            var name = _worldGraph.GetInfoLevel(levelInfo.Value).InGameName;
+            var name = worldGraph.GetInfoLevel(levelInfo.Value).InGameName;
 
             levelInformation.Add(levelInfo.Value, $"{name} ({levelInfo.Key})");
         }
@@ -101,21 +93,21 @@ public class GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
             .Select(info => $"[{info.Key}] {info.Value}")
             .ToArray();
 
-        var shouldPrint = _logger.Ask(
+        var shouldPrint = logger.Ask(
             $"Would you like to print out the {fileName} in the console, in addition to it being saved to a file?",
             true
         );
 
         if (shouldPrint)
         {
-            _logger.LogInformation("{FileName}:", fileName);
+            logger.LogInformation("{FileName}:", fileName);
 
             foreach (var info in formattedInfo)
-                _logger.LogInformation("{Information}", info);
+                logger.LogInformation("{Information}", info);
         }
 
-        var path = Path.Combine(_config.DataDirectory, $"{fileName}.txt");
+        var path = Path.Combine(config.DataDirectory, $"{fileName}.txt");
         File.WriteAllText(path, string.Join('\n', formattedInfo));
-        _logger.LogDebug("{Count}/{Total} {Name} saved in: '{Path}'", formattedInfo.Length, total, fileName, path);
+        logger.LogDebug("{Count}/{Total} {Name} saved in: '{Path}'", formattedInfo.Length, total, fileName, path);
     }
 }

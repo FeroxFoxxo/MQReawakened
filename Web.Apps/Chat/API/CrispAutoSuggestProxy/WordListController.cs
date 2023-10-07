@@ -6,8 +6,6 @@ namespace Web.Apps.Chat.API.CrispAutoSuggestProxy;
 [Route("/Chat/CrispAutoSuggestProxy/WordList")]
 public class WordListController(ChatHandler chatHandler) : Controller
 {
-    private readonly ChatHandler _chatHandler = chatHandler;
-
     [HttpGet]
-    public IActionResult GetWordsList() => File(_chatHandler.EncryptedWordList, "application/octet-stream");
+    public IActionResult GetWordsList() => File(chatHandler.EncryptedWordList, "application/octet-stream");
 }

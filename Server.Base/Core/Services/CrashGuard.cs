@@ -14,13 +14,9 @@ namespace Server.Base.Core.Services;
 public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink,
     IServiceProvider services, InternalRConfig config) : IService
 {
-    private readonly InternalRConfig _config = config;
-    private readonly NetStateHandler _handler = handler;
-    private readonly ILogger<CrashGuard> _logger = logger;
     private readonly Module[] _modules = services.GetServices<Module>().ToArray();
-    private readonly EventSink _sink = sink;
 
-    public void Initialize() => _sink.Crashed += OnCrash;
+    public void Initialize() => sink.Crashed += OnCrash;
 
     public void OnCrash(CrashedEventArgs e)
     {
@@ -33,40 +29,40 @@ public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, Eve
 
     private void Restart(CrashedEventArgs e)
     {
-        _logger.LogDebug("Restarting...");
+        logger.LogDebug("Restarting...");
 
         try
         {
             Process.Start(GetExePath.Path());
-            _logger.LogInformation("Successfully restarted!");
+            logger.LogInformation("Successfully restarted!");
 
             e.Close = true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to restart server");
+            logger.LogError(ex, "Failed to restart server");
         }
     }
 
     private void Backup()
     {
-        _logger.LogDebug("Backing up...");
+        logger.LogDebug("Backing up...");
 
         try
         {
             var timeStamp = GetTime.GetTimeStamp();
 
-            var backup = Path.Combine(_config.CrashBackupDirectory, timeStamp);
+            var backup = Path.Combine(config.CrashBackupDirectory, timeStamp);
 
             InternalDirectory.CreateDirectory(backup);
 
-            CopyFiles(_config.SaveDirectory, _config.CrashBackupDirectory);
+            CopyFiles(config.SaveDirectory, config.CrashBackupDirectory);
 
-            _logger.LogInformation("Backed up!");
+            logger.LogInformation("Backed up!");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unable to back up server.");
+            logger.LogError(ex, "Unable to back up server.");
         }
     }
 
@@ -84,20 +80,20 @@ public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, Eve
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unable to copy file.");
+            logger.LogError(ex, "Unable to copy file.");
         }
     }
 
     private void GenerateCrashReport(CrashedEventArgs crashedEventArgs)
     {
-        _logger.LogDebug("Generating report...");
+        logger.LogDebug("Generating report...");
 
         try
         {
             var timeStamp = GetTime.GetTimeStamp();
             var fileName = $"Crash {timeStamp}.log";
 
-            var filePath = Path.Combine(_config.CrashDirectory, fileName);
+            var filePath = Path.Combine(config.CrashDirectory, fileName);
 
             using (var streamWriter = new StreamWriter(filePath))
             {
@@ -120,7 +116,7 @@ public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, Eve
 
                 try
                 {
-                    var netStates = _handler.Instances;
+                    var netStates = handler.Instances;
 
                     streamWriter.WriteLine("- Count: {0}", netStates.Count);
 
@@ -142,11 +138,11 @@ public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, Eve
                 }
             }
 
-            _logger.LogInformation("Logged error!");
+            logger.LogInformation("Logged error!");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unable to log error.");
+            logger.LogError(ex, "Unable to log error.");
         }
     }
 }

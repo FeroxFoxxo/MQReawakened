@@ -20,48 +20,37 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
     InternalRwConfig internalWConfig) : IService
 {
     public delegate void ExternalCallback(NetState state, string[] message, IServiceProvider serviceProvider);
-
     public delegate void SystemCallback(NetState state, XmlDocument document, IServiceProvider serviceProvider);
-
-    private readonly NetStateHandler _handler = handler;
-
-    private readonly InternalRwConfig _internalWConfig = internalWConfig;
-    private readonly ILogger<PacketHandler> _logger = logger;
 
     private readonly Dictionary<string, SystemCallback> _protocolsSystem = new();
     private readonly Dictionary<string, ExternalCallback> _protocolsXt = new();
 
-    private readonly ReflectionUtils _reflectionUtils = reflectionUtils;
-    private readonly ServerRConfig _serverConfig = serverConfig;
-    private readonly IServiceProvider _services = services;
-    private readonly EventSink _sink = sink;
-
     public void Initialize()
     {
-        _sink.ServerStarted += AddProtocols;
-        _sink.WorldLoad += AskProtocolIgnore;
+        sink.ServerStarted += AddProtocols;
+        sink.WorldLoad += AskProtocolIgnore;
     }
 
     private void AskProtocolIgnore()
     {
-        if (_internalWConfig.IgnoreProtocolType.Length >= _serverConfig.DefaultProtocolTypeIgnore.Length)
+        if (internalWConfig.IgnoreProtocolType.Length >= serverConfig.DefaultProtocolTypeIgnore.Length)
             return;
 
-        if (!_logger.Ask(
-                $"It's recommended to add the protocols '{string.Join(", ", _serverConfig.DefaultProtocolTypeIgnore)}' " +
+        if (!logger.Ask(
+                $"It's recommended to add the protocols '{string.Join(", ", serverConfig.DefaultProtocolTypeIgnore)}' " +
                 "to the server ignore config, as to reduce spam. Please press 'y' to enable this. " +
                 "You are able to add to this later in the related config file.", true))
             return;
 
-        var internalDebugs = _internalWConfig.IgnoreProtocolType.ToList();
+        var internalDebugs = internalWConfig.IgnoreProtocolType.ToList();
 
-        foreach (var protocol in _serverConfig.DefaultProtocolTypeIgnore)
+        foreach (var protocol in serverConfig.DefaultProtocolTypeIgnore)
         {
             if (!internalDebugs.Contains(protocol))
                 internalDebugs.Add(protocol);
         }
 
-        _internalWConfig.IgnoreProtocolType = [.. internalDebugs];
+        internalWConfig.IgnoreProtocolType = [.. internalDebugs];
     }
 
     private void AddProtocols(ServerStartedEventArgs e)
@@ -72,7 +61,7 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
             if (type.IsSubclassOf(typeof(SystemProtocol)))
             {
                 var createInstance =
-                    _reflectionUtils.CreateBuilder<SystemProtocol>(type.GetTypeInfo());
+                    reflectionUtils.CreateBuilder<SystemProtocol>(type.GetTypeInfo());
 
                 void Callback(NetState state, XmlDocument document, IServiceProvider services)
                 {
@@ -82,12 +71,12 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
                     instance.Run(document);
                 }
 
-                _protocolsSystem.Add(createInstance(_services).ProtocolName, Callback);
+                _protocolsSystem.Add(createInstance(services).ProtocolName, Callback);
             }
             else if (type.IsSubclassOf(typeof(ExternalProtocol)))
             {
                 var createInstance =
-                    _reflectionUtils.CreateBuilder<ExternalProtocol>(type.GetTypeInfo());
+                    reflectionUtils.CreateBuilder<ExternalProtocol>(type.GetTypeInfo());
 
                 void Callback(NetState state, string[] msg, IServiceProvider services)
                 {
@@ -97,12 +86,12 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
                     instance.Run(msg);
                 }
 
-                _protocolsXt.Add(createInstance(_services).ProtocolName, Callback);
+                _protocolsXt.Add(createInstance(services).ProtocolName, Callback);
             }
         }
 
-        _handler.Protocols.Add('%', SendXt);
-        _handler.Protocols.Add('<', SendSys);
+        handler.Protocols.Add('%', SendXt);
+        handler.Protocols.Add('<', SendSys);
     }
 
     public ProtocolResponse SendXt(NetState netState, string packet)
@@ -113,7 +102,7 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
 
         if (_protocolsXt.TryGetValue(actionType, out var value))
         {
-            value(netState, splitPacket, _services);
+            value(netState, splitPacket, services);
         }
         else
         {
@@ -133,7 +122,7 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
 
         if (actionType != null && _protocolsSystem.TryGetValue(actionType, out var value))
         {
-            value(netState, xmlDocument, _services);
+            value(netState, xmlDocument, services);
         }
         else
         {

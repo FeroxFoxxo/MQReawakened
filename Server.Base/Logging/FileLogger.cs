@@ -7,11 +7,8 @@ namespace Server.Base.Logging;
 
 public class FileLogger(ILoggerFactory loggerFactory, InternalRConfig config, ILogger<FileLogger> fLogger)
 {
-    private readonly InternalRConfig _config = config;
     private readonly Dictionary<string, ConsoleFileLogger> _fileLoggers = new();
-    private readonly ILogger<FileLogger> _fLogger = fLogger;
     private readonly object _lock = new();
-    private readonly ILoggerFactory _loggerFactory = loggerFactory;
 
     public void WriteGenericLog<T>(string logFileName, string title, string message, LoggerType type)
     {
@@ -31,11 +28,11 @@ public class FileLogger(ILoggerFactory loggerFactory, InternalRConfig config, IL
 
         try
         {
-            logger = _loggerFactory.CreateLogger<T>();
+            logger = loggerFactory.CreateLogger<T>();
         }
         catch (ObjectDisposedException)
         {
-            logger = _fLogger;
+            logger = fLogger;
         }
 
         try
@@ -43,7 +40,7 @@ public class FileLogger(ILoggerFactory loggerFactory, InternalRConfig config, IL
             lock (_lock)
             {
                 if (!_fileLoggers.ContainsKey(fileName))
-                    _fileLoggers.Add(fileName, new ConsoleFileLogger(fileName, _config));
+                    _fileLoggers.Add(fileName, new ConsoleFileLogger(fileName, config));
 
                 _fileLoggers[fileName].WriteLine($"# {DateTime.UtcNow} @ " + message);
             }

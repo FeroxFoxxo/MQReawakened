@@ -8,13 +8,12 @@ namespace Server.Reawakened.Rooms.Services;
 
 public class SyncEventManager(EventSink sink) : IService
 {
-    private readonly EventSink _sink = sink;
     private MethodInfo _decodeSync;
     private MethodInfo _encodeSync;
 
     private RoomManager _roomManager;
 
-    public void Initialize() => _sink.WorldLoad += CreateSyncHandlers;
+    public void Initialize() => sink.WorldLoad += CreateSyncHandlers;
 
     public void CreateSyncHandlers()
     {

@@ -12,40 +12,31 @@ using Web.Launcher.Services;
 namespace Web.AssetBundles.Services;
 
 public class ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList,
-    AssetBundleRConfig rConfig,
-    ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime,
+    AssetBundleRConfig rConfig, ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime,
     AssetBundleRwConfig rwConfig) : IService
 {
-    private readonly IHostApplicationLifetime _appLifetime = appLifetime;
-    private readonly BuildAssetList _buildAssetList = buildAssetList;
-    private readonly ServerConsole _console = console;
-    private readonly StartGame _game = game;
     private readonly object _lock = new();
-    private readonly ILogger<ReplaceCaches> _logger = logger;
-    private readonly AssetBundleRConfig _rConfig = rConfig;
-    private readonly AssetBundleRwConfig _rwConfig = rwConfig;
-    private readonly EventSink _sink = sink;
 
     public readonly List<string> CurrentlyLoadedAssets = new();
     public readonly List<string> ReplacedBundles = new();
 
     public void Initialize()
     {
-        _sink.WorldLoad += Load;
+        sink.WorldLoad += Load;
 
-        _appLifetime.ApplicationStarted.Register(EnsureCacheReplaced);
+        appLifetime.ApplicationStarted.Register(EnsureCacheReplaced);
     }
 
     private void EnsureCacheReplaced()
     {
-        if (string.IsNullOrEmpty(_rwConfig.WebPlayerInfoFile))
+        if (string.IsNullOrEmpty(rwConfig.WebPlayerInfoFile))
             return;
 
         ReplaceWebPlayerCache(false, false);
     }
 
     public void Load() =>
-        _console.AddCommand(
+        console.AddCommand(
             "replaceCaches",
             "Replaces all generated Web Player cache files with their real counterparts.",
             NetworkType.Client,
@@ -59,27 +50,27 @@ public class ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList
 
         CurrentlyLoadedAssets.Clear();
 
-        _rwConfig.GetWebPlayerInfoFile(_rConfig, _logger);
+        rwConfig.GetWebPlayerInfoFile(rConfig, logger);
 
-        if (string.IsNullOrEmpty(_rwConfig.WebPlayerInfoFile))
+        if (string.IsNullOrEmpty(rwConfig.WebPlayerInfoFile))
             return;
 
         lock (_lock)
         {
-            if (_rwConfig.FlushCacheOnStart)
-                if (_logger.Ask("Flushing the cache on start is enabled, would you like to disable this?", true))
-                    _rwConfig.FlushCacheOnStart = false;
+            if (rwConfig.FlushCacheOnStart)
+                if (logger.Ask("Flushing the cache on start is enabled, would you like to disable this?", true))
+                    rwConfig.FlushCacheOnStart = false;
         }
 
-        var cacheModel = new CacheModel(_buildAssetList, _rwConfig);
+        var cacheModel = new CacheModel(buildAssetList, rwConfig);
 
-        _logger.LogInformation(
+        logger.LogInformation(
             "Loaded {NumAssetDict} assets with {Caches} caches ({TotalFiles} total files, {Unknown} unidentified).",
             cacheModel.TotalAssetDictionaryFiles, cacheModel.TotalFoundCaches, cacheModel.TotalCachedAssetFiles,
             cacheModel.TotalUnknownCaches
         );
 
-        using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", _logger, _rwConfig))
+        using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", logger, rwConfig))
         {
             foreach (var cache in cacheModel.FoundCaches)
             {
@@ -102,6 +93,6 @@ public class ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList
         }
 
         if (startAfterReplace)
-            _game.AskIfRestart();
+            game.AskIfRestart();
     }
 }

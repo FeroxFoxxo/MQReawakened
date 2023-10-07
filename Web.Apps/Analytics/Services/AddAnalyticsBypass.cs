@@ -5,7 +5,5 @@ namespace Web.Apps.Analytics.Services;
 
 public class AddAnalyticsBypass(WebRConfig config) : IService
 {
-    private readonly WebRConfig _config = config;
-
-    public void Initialize() => _config.IgnorePaths.Add("/Analytics/");
+    public void Initialize() => config.IgnorePaths.Add("/Analytics/");
 }

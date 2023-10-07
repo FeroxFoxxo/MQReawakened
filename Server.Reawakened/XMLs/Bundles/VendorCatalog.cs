@@ -27,23 +27,23 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
     {
         var items = xml.SelectNodes("/vendor_catalogs/superpacks/superpack/item");
 
-        if (items == null)
-            return;
-
-        foreach (XmlNode aNode in items)
+        if (items != null)
         {
-            if (aNode.Attributes == null)
-                continue;
+            foreach (XmlNode aNode in items)
+            {
+                if (aNode.Attributes == null)
+                    continue;
 
-            var idAttribute = aNode.Attributes["quantity"];
+                var idAttribute = aNode.Attributes["quantity"];
 
-            if (idAttribute != null)
-                continue;
+                if (idAttribute != null)
+                    continue;
 
-            var quantity = xml.CreateAttribute("quantity");
-            quantity.Value = "1";
+                var quantity = xml.CreateAttribute("quantity");
+                quantity.Value = "1";
 
-            aNode.Attributes.Append(quantity);
+                aNode.Attributes.Append(quantity);
+            }
         }
     }
 

@@ -16,11 +16,11 @@ namespace Server.Reawakened.Players;
 
 public class Player(UserInfo userInfo, NetState state, PlayerHandler playerHandler) : INetStateData
 {
-    public PlayerHandler PlayerHandler { get; } = playerHandler;
-    public NetState NetState { get; } = state;
-    public UserInfo UserInfo { get; } = userInfo;
+    public NetState NetState => state;
+    public UserInfo UserInfo => userInfo;
+    public PlayerHandler PlayerHandler => playerHandler;
 
-    public int UserId => UserInfo.UserId;
+    public int UserId => userInfo.UserId;
 
     public GroupModel Group { get; set; }
 
@@ -43,14 +43,14 @@ public class Player(UserInfo userInfo, NetState state, PlayerHandler playerHandl
 
     public void Remove(Microsoft.Extensions.Logging.ILogger logger)
     {
-        lock(PlayerHandler.Lock)
-            PlayerHandler.RemovePlayer(this);
+        lock(playerHandler.Lock)
+            playerHandler.RemovePlayer(this);
 
         this.RemoveFromGroup();
 
         if (Character != null)
         {
-            foreach (var player in PlayerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
+            foreach (var player in playerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
                 player.SendXt("fz", Character.Data.CharacterName);
 
             Character = null;

@@ -14,25 +14,19 @@ public class ShardController(AccountHandler accHandler, UserInfoHandler userInfo
     TemporaryDataStorage temporaryDataStorage,
     RandomKeyGenerator keyGenerator, InternalRwConfig config) : Controller
 {
-    private readonly AccountHandler _accHandler = accHandler;
-    private readonly InternalRwConfig _config = config;
-    private readonly RandomKeyGenerator _keyGenerator = keyGenerator;
-    private readonly TemporaryDataStorage _temporaryDataStorage = temporaryDataStorage;
-    private readonly UserInfoHandler _userInfoHandler = userInfoHandler;
-
     [HttpPost]
     public IActionResult GetShardInfo([FromForm] string username, [FromForm] string authToken, [FromForm] int uuid)
     {
-        if (!_accHandler.Data.TryGetValue(uuid, out var account) || !_userInfoHandler.Data.TryGetValue(uuid, out var user))
+        if (!accHandler.Data.TryGetValue(uuid, out var account) || !userInfoHandler.Data.TryGetValue(uuid, out var user))
             return Unauthorized();
 
         if (account.Username != username || user.AuthToken != authToken)
             return Unauthorized();
 
-        var sId = _keyGenerator.GetRandomKey<TemporaryDataStorage>(uuid.ToString());
+        var sId = keyGenerator.GetRandomKey<TemporaryDataStorage>(uuid.ToString());
 
-        _temporaryDataStorage.AddData(sId, user);
-        _temporaryDataStorage.AddData(sId, account);
+        temporaryDataStorage.AddData(sId, user);
+        temporaryDataStorage.AddData(sId, account);
 
         var json = new JObject
         {
@@ -41,7 +35,7 @@ public class ShardController(AccountHandler accHandler, UserInfoHandler userInfo
                 "sharder", new JObject
                 {
                     { "unity.login.sid", sId },
-                    { "unity.login.host", _config.GetHostName() }
+                    { "unity.login.host", config.GetHostName() }
                 }
             }
         };

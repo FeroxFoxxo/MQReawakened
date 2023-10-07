@@ -19,56 +19,50 @@ namespace Web.AssetBundles.BundleFix.Controllers;
 public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
     AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches) : Controller
 {
-    private readonly BuildAssetList _buildAssetList = buildAssetList;
-    private readonly BuildXmlFiles _buildXmlList = buildXmlList;
-    private readonly AssetBundleRConfig _config = config;
-    private readonly ILogger<AssetHostController> _logger = logger;
-    private readonly ReplaceCaches _replaceCaches = replaceCaches;
-
     [HttpGet]
     public IActionResult GetAsset([FromRoute] string folder, [FromRoute] string file)
     {
-        if (_config.KillOnBundleRetry && !file.EndsWith(".xml"))
+        if (config.KillOnBundleRetry && !file.EndsWith(".xml"))
         {
             var uriPath = $"{folder}/{file}";
 
             // Don't log to console.
-            if (_replaceCaches.CurrentlyLoadedAssets.Contains(uriPath))
+            if (replaceCaches.CurrentlyLoadedAssets.Contains(uriPath))
                 return new StatusCodeResult(StatusCodes.Status418ImATeapot);
 
-            _replaceCaches.CurrentlyLoadedAssets.Add(uriPath);
+            replaceCaches.CurrentlyLoadedAssets.Add(uriPath);
         }
 
-        var publishConfig = _config.PublishConfigs.FirstOrDefault(a => string.Equals(a.Value, file));
+        var publishConfig = config.PublishConfigs.FirstOrDefault(a => string.Equals(a.Value, file));
 
         if (!publishConfig.IsDefault())
         {
-            _logger.LogDebug("Getting Publish Configuration {Type} ({Folder})", publishConfig.Key, folder);
-            return Ok(_buildAssetList.PublishConfigs[publishConfig.Key]);
+            logger.LogDebug("Getting Publish Configuration {Type} ({Folder})", publishConfig.Key, folder);
+            return Ok(buildAssetList.PublishConfigs[publishConfig.Key]);
         }
 
-        var assetDict = _config.AssetDictConfigs.FirstOrDefault(a => string.Equals(a.Value, file));
+        var assetDict = config.AssetDictConfigs.FirstOrDefault(a => string.Equals(a.Value, file));
 
         if (!assetDict.IsDefault())
         {
-            _logger.LogDebug("Getting Asset Dictionary {Type} ({Folder})", assetDict.Key, folder);
-            return Ok(_buildAssetList.AssetDict[assetDict.Key]);
+            logger.LogDebug("Getting Asset Dictionary {Type} ({Folder})", assetDict.Key, folder);
+            return Ok(buildAssetList.AssetDict[assetDict.Key]);
         }
 
         var name = file.Split('.')[0];
 
-        if (!_buildAssetList.InternalAssets.TryGetValue(name, out var asset))
+        if (!buildAssetList.InternalAssets.TryGetValue(name, out var asset))
             return NotFound();
 
         var path = file.EndsWith(".xml")
-            ? _buildXmlList.XmlFiles.TryGetValue(name, out var xmlFile)
+            ? buildXmlList.XmlFiles.TryGetValue(name, out var xmlFile)
                 ? xmlFile
                 : throw new FileNotFoundException(
-                    $"Could not find: {name}. Did you mean:\n{string.Join('\n', _buildXmlList.XmlFiles.Keys)}")
+                    $"Could not find: {name}. Did you mean:\n{string.Join('\n', buildXmlList.XmlFiles.Keys)}")
             : WriteFixedBundle(asset);
 
-        if (_config.LogAssetLoadInfo)
-            _logger.LogDebug("Getting asset {Name} from {File} ({Folder})", asset.Name, path, folder);
+        if (config.LogAssetLoadInfo)
+            logger.LogDebug("Getting asset {Name} from {File} ({Folder})", asset.Name, path, folder);
 
         return new FileContentResult(FileIO.ReadAllBytes(path), "application/octet-stream");
     }
@@ -78,24 +72,24 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
         var assetName = asset.Name.Trim();
         
         var baseDirectory =
-            _config.DebugInfo
-                ? Path.Join(_config.BundleSaveDirectory, assetName)
-                : _config.BundleSaveDirectory;
+            config.DebugInfo
+                ? Path.Join(config.BundleSaveDirectory, assetName)
+                : config.BundleSaveDirectory;
 
         InternalDirectory.CreateDirectory(baseDirectory);
 
         var basePath = Path.Join(baseDirectory, assetName);
 
-        var bundlePath = $"{basePath}.{_config.SaveBundleExtension}";
+        var bundlePath = $"{basePath}.{config.SaveBundleExtension}";
 
-        if (!FileIO.Exists(bundlePath) || _config.AlwaysRecreateBundle)
+        if (!FileIO.Exists(bundlePath) || config.AlwaysRecreateBundle)
         {
-            if (_config.LogAssetLoadInfo)
-                _logger.LogInformation(
+            if (config.LogAssetLoadInfo)
+                logger.LogInformation(
                     "Creating Bundle {Name} from {Time} [{Type}]",
                     assetName,
                     DateTime.UnixEpoch.AddSeconds(asset.CacheTime).ToShortDateString(),
-                    _config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST"
+                    config.AlwaysRecreateBundle ? "FORCED" : "NOT EXIST"
                 );
 
             using var stream = new MemoryStream();
@@ -119,7 +113,7 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
             // WRITE
             FileIO.WriteAllBytes(bundlePath, stream.ToArray());
 
-            if (_config.DebugInfo)
+            if (config.DebugInfo)
             {
                 FileIO.WriteAllText($"{basePath}.headerVars", JsonConvert.SerializeObject(header, Formatting.Indented));
                 FileIO.WriteAllBytes($"{basePath}.header", header.GetEndian());

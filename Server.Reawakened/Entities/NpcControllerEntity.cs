@@ -8,7 +8,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.Models;
+using Server.Reawakened.XMLs.Bundles.Models;
 using static NPCController;
 
 namespace Server.Reawakened.Entities;

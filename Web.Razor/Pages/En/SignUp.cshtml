@@ -43,7 +43,7 @@
                 
                 <div class="form_field">
                     <label asp-for="Gender"></label>
-                    <select asp-for="Gender" asp-items="Model.Genders" class="border" placeholder="Gender">
+                    <select asp-for="Gender" asp-items="Pages.En.SignUpModel.Genders" class="border" placeholder="Gender">
                         <option disabled selected>SELECT</option>
                     </select>
                     <span asp-validation-for="Gender" class="text-danger"></span>
@@ -57,7 +57,7 @@
                 
                 <div class="form_field">
                     <label asp-for="Region"></label>
-                    <select asp-for="Region" asp-items="Model.Regions" class="border" placeholder="Region">
+                    <select asp-for="Region" asp-items="Pages.En.SignUpModel.Regions" class="border" placeholder="Region">
                         <option disabled selected>SELECT</option>
                     </select>
                     <span asp-validation-for="Region" class="text-danger"></span>

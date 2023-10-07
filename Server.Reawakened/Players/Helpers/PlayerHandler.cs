@@ -5,10 +5,10 @@ namespace Server.Reawakened.Players.Helpers;
 
 public class PlayerHandler(WorldHandler worldHandler)
 {
+    public WorldHandler WorldHandler => worldHandler;
     public UserInfoHandler UserInfoHandler;
 
     public List<Player> PlayerList { get; } = new List<Player>();
-    public WorldHandler WorldHandler { get; } = worldHandler;
     public object Lock { get; } = new object();
 
     public void AddPlayer(Player player)

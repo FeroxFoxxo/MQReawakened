@@ -17,12 +17,6 @@ namespace Web.Apps.Analytics.Controllers;
 public class AnalyticsController(ILogger<AnalyticsController> logger, LauncherRwConfig config,
     ReplaceCaches replaceCaches, AppRConfig aConfig, FileLogger fileLogger) : Controller
 {
-    private readonly AppRConfig _aConfig = aConfig;
-    private readonly LauncherRwConfig _config = config;
-    private readonly FileLogger _fileLogger = fileLogger;
-    private readonly ILogger<AnalyticsController> _logger = logger;
-    private readonly ReplaceCaches _replaceCaches = replaceCaches;
-
     // b = Birthday
     // g = Gender
     // f = Source
@@ -100,7 +94,7 @@ public class AnalyticsController(ILogger<AnalyticsController> logger, LauncherRw
         switch (labels[0])
         {
             case "ErrorsType" when labels.Count < 2:
-                _logger.LogWarning("Unknown analytics error");
+                logger.LogWarning("Unknown analytics error");
                 break;
             case "ErrorsType":
                 {
@@ -111,17 +105,17 @@ public class AnalyticsController(ILogger<AnalyticsController> logger, LauncherRw
                     {
                         case "Fatal":
                             var errorId = int.Parse(errorInfo[1]);
-                            _logger.LogError("Client ran into fatal error: {ErrorId}", errorId);
+                            logger.LogError("Client ran into fatal error: {ErrorId}", errorId);
 
                             if (errorId is 2306 or 2302 or 2305)
                             {
-                                _logger.LogError("Error likely due to caching system. Replacing!");
-                                _replaceCaches.ReplaceWebPlayerCache(true, true);
+                                logger.LogError("Error likely due to caching system. Replacing!");
+                                replaceCaches.ReplaceWebPlayerCache(true, true);
                             }
 
                             break;
                         default:
-                            _logger.LogWarning("Unknown error type: {ErrorType}", errorType);
+                            logger.LogWarning("Unknown error type: {ErrorType}", errorType);
                             break;
                     }
 
@@ -134,10 +128,10 @@ public class AnalyticsController(ILogger<AnalyticsController> logger, LauncherRw
     {
         var analyticsKey = Request.RouteValues["AnalyticsKey"] as string;
 
-        if (_config.AnalyticsApiKey == analyticsKey)
-            return _aConfig.LogOmniture;
+        if (config.AnalyticsApiKey == analyticsKey)
+            return aConfig.LogOmniture;
 
-        _logger.LogError("Client {ClientIp} sent invalid API key: {ApiKey}", Request.Host, analyticsKey);
+        logger.LogError("Client {ClientIp} sent invalid API key: {ApiKey}", Request.Host, analyticsKey);
         return false;
     }
 
@@ -149,7 +143,7 @@ public class AnalyticsController(ILogger<AnalyticsController> logger, LauncherRw
     }
 
     private void SendLog(CommonProperties properties, string message) =>
-        _fileLogger.WriteGenericLog<AnalyticsController>(
+        fileLogger.WriteGenericLog<AnalyticsController>(
             "analytics",
             $"{properties.Timestamp:g} @ Session {properties.SessionId}",
             message, LoggerType.Debug

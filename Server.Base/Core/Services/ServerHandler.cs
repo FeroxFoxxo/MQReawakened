@@ -10,10 +10,6 @@ namespace Server.Base.Core.Services;
 
 public class ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostApplicationLifetime appLifetime) : IService
 {
-    private readonly IHostApplicationLifetime _appLifetime = appLifetime;
-    private readonly ILogger<ServerHandler> _logger = logger;
-    private readonly EventSink _sink = sink;
-
     public readonly AutoResetEvent Signal = new(true);
 
     public bool HasCrashed = false;
@@ -25,7 +21,7 @@ public class ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostA
     public void Initialize()
     {
         AppDomain.CurrentDomain.UnhandledException += UnhandledException;
-        _appLifetime.ApplicationStopped.Register(HandleClosed);
+        appLifetime.ApplicationStopped.Register(HandleClosed);
     }
 
     public void SetModules(IEnumerable<Module> modules) => Modules = modules;
@@ -33,9 +29,9 @@ public class ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostA
     public void UnhandledException(object sender, UnhandledExceptionEventArgs ex)
     {
         if (ex.IsTerminating)
-            _logger.LogError("Unhandled Error: {ERROR}", ex.ExceptionObject);
+            logger.LogError("Unhandled Error: {ERROR}", ex.ExceptionObject);
         else
-            _logger.LogWarning("Unhandled Warning: {WARNING}", ex.ExceptionObject);
+            logger.LogWarning("Unhandled Warning: {WARNING}", ex.ExceptionObject);
 
         if (!ex.IsTerminating) return;
 
@@ -47,17 +43,17 @@ public class ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostA
 
         try
         {
-            _sink.InvokeCrashed(arguments);
+            sink.InvokeCrashed(arguments);
             doClose = arguments.Close;
         }
         catch (Exception crashedException)
         {
-            _logger.LogError(crashedException, "Unable to invoke crashed arguments");
+            logger.LogError(crashedException, "Unable to invoke crashed arguments");
         }
 
         if (!doClose)
         {
-            _logger.LogCritical("This exception is fatal, press return to exit.");
+            logger.LogCritical("This exception is fatal, press return to exit.");
             Console.ReadLine();
         }
 
@@ -81,14 +77,14 @@ public class ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostA
 
         IsClosing = true;
 
-        _logger.LogError("Exiting server, please wait!");
+        logger.LogError("Exiting server, please wait!");
 
-        _sink.InvokeInternalShutdown();
+        sink.InvokeInternalShutdown();
 
         if (!HasCrashed)
-            _sink.InvokeShutdown();
+            sink.InvokeShutdown();
 
-        _logger.LogCritical("Successfully quit server.");
+        logger.LogCritical("Successfully quit server.");
     }
 
     public void Set() => Signal.Set();

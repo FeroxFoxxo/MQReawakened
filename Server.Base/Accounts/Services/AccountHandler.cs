@@ -17,14 +17,6 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
     PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter,
     FileLogger fileLogger, InternalRConfig config, TemporaryDataStorage temporaryDataStorage) : DataHandler<Account>(sink, logger, config)
 {
-    private readonly AccountAttackLimiter _attackLimiter = attackLimiter;
-    private readonly InternalRConfig _config = config;
-    private readonly PasswordHasher _hasher = hasher;
-    private readonly InternalRConfig _internalServerConfig = internalServerConfig;
-    private readonly IpLimiter _ipLimiter = ipLimiter;
-    private readonly FileLogger _fileLogger = fileLogger;
-    private readonly TemporaryDataStorage _temporaryDataStorage = temporaryDataStorage;
-
     public Dictionary<IPAddress, int> IpTable = new();
 
     public override void OnAfterLoad() => CreateIpTables();
@@ -41,7 +33,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
         var email = Console.ReadLine();
 
         if (username != null)
-            return new Account(username, password, email, Data.Count, _hasher)
+            return new Account(username, password, email, Data.Count, hasher)
             {
                 AccessLevel = AccessLevel.Owner
             };
@@ -54,7 +46,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
     {
         var rejectReason = AlrReason.Invalid;
 
-        if (!_internalServerConfig.SocketBlock && !_ipLimiter.Verify(netState.Address))
+        if (!internalServerConfig.SocketBlock && !ipLimiter.Verify(netState.Address))
         {
             IpLimitedError(netState);
             rejectReason = AlrReason.InUse;
@@ -65,7 +57,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
 
             if (username == ".")
             {
-                account = _temporaryDataStorage.GetData<Account>(password);
+                account = temporaryDataStorage.GetData<Account>(password);
                 if (account == null)
                     rejectReason = AlrReason.BadComm;
                 else
@@ -76,15 +68,15 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
                 account = Data.Values.FirstOrDefault(a => a.Username == username);
 
                 if (account != null)
-                    if (!_hasher.CheckPassword(account, password))
+                    if (!hasher.CheckPassword(account, password))
                         rejectReason = AlrReason.BadPass;
             }
 
             if (account != null)
             {
-                if (!account.HasAccess(netState, this, _config))
+                if (!account.HasAccess(netState, this, Config))
                 {
-                    rejectReason = _internalServerConfig.LockDownLevel > AccessLevel.Vip
+                    rejectReason = internalServerConfig.LockDownLevel > AccessLevel.Vip
                         ? AlrReason.BadComm
                         : AlrReason.BadPass;
                 }
@@ -97,7 +89,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
                     netState.Set(account);
                     rejectReason = AlrReason.Accepted;
 
-                    account.LogAccess(netState, this, _config);
+                    account.LogAccess(netState, this, Config);
                 }
             }
         }
@@ -113,11 +105,11 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
             _ => throw new ArgumentOutOfRangeException(rejectReason.ToString())
         };
 
-        _fileLogger.WriteGenericLog<AccountHandler>("login", $"Login: {netState}", $"{errorReason} for '{username}'",
+        fileLogger.WriteGenericLog<AccountHandler>("login", $"Login: {netState}", $"{errorReason} for '{username}'",
             rejectReason == AlrReason.Accepted ? LoggerType.Debug : LoggerType.Error);
 
         if (rejectReason is not AlrReason.Accepted and not AlrReason.InUse)
-            _attackLimiter.RegisterInvalidAccess(netState);
+            attackLimiter.RegisterInvalidAccess(netState);
 
         return rejectReason;
     }
@@ -130,10 +122,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
         {
             if (IPAddress.TryParse(account.LoginIPs[0], out var ipAddress))
             {
-                if (IpTable.TryGetValue(ipAddress, out var value))
-                    IpTable[ipAddress] = ++value;
-                else
-                    IpTable[ipAddress] = 1;
+                IpTable[ipAddress] = IpTable.TryGetValue(ipAddress, out var value) ? ++value : 1;
             }
             else
             {
@@ -154,12 +143,12 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
             throw new InvalidOperationException();
         }
 
-        var isSafe = !(username.StartsWith(" ") || username.EndsWith(" ") || username.EndsWith("."));
+        var isSafe = !(username.StartsWith(' ') || username.EndsWith(' ') || username.EndsWith('.'));
 
         for (var i = 0; isSafe && i < username.Length; ++i)
         {
             isSafe = username[i] >= 0x20 && username[i] < 0x7F &&
-                     _internalServerConfig.ForbiddenChars.All(t => username[i] != t);
+                     internalServerConfig.ForbiddenChars.All(t => username[i] != t);
         }
 
         for (var i = 0; isSafe && i < password.Length; ++i)
@@ -176,19 +165,19 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
         {
             Logger.LogWarning(
                 "Login: {Address}: Account '{Username}' not created, ip already has {Accounts} account{Plural}.",
-                ipAddress, username, _internalServerConfig.MaxAccountsPerIp,
-                _internalServerConfig.MaxAccountsPerIp == 1 ? string.Empty : "s");
+                ipAddress, username, internalServerConfig.MaxAccountsPerIp,
+                internalServerConfig.MaxAccountsPerIp == 1 ? string.Empty : "s");
             return null;
         }
 
         Logger.LogInformation("Login: {Address}: Creating new account '{Username}'",
             ipAddress, username);
 
-        var account = new Account(username, password, email, Data.Count, _hasher);
+        var account = new Account(username, password, email, Data.Count, hasher);
         Data.Add(Data.Count, account);
         return account;
     }
 
     public void IpLimitedError(NetState netState) =>
-        _fileLogger.WriteGenericLog<IpLimiter>("ipLimits", netState.ToString(), "Past IP limit threshold", LoggerType.Debug);
+        fileLogger.WriteGenericLog<IpLimiter>("ipLimits", netState.ToString(), "Past IP limit threshold", LoggerType.Debug);
 }

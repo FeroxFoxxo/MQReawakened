@@ -14,42 +14,34 @@ public class AutoSave(InternalRConfig config, ServerHandler handler, World world
     private readonly TimeSpan _delayAutoSave = TimeSpan.FromMinutes(config.SaveAutomaticallyMinutes);
     private readonly TimeSpan _delayWarning = TimeSpan.FromMinutes(config.SaveWarningMinutes);
 
-    private readonly ServerHandler _handler = handler;
-    private readonly EventSink _sink = sink;
-    private readonly TimerThread _timerThread = timerThread;
-    private readonly World _world = world;
-    private readonly ILogger<AutoSave> _logger = logger;
-    private readonly InternalRConfig _config = config;
-    private readonly ArchivedSaves _saves = saves;
-
-    public void Initialize() => _sink.ServerStarted += _ => RunAutoSaveTimer();
+    public void Initialize() => sink.ServerStarted += _ => RunAutoSaveTimer();
 
     private void RunAutoSaveTimer()
     {
-        var timer = _timerThread.DelayCall(Tick, _delayAutoSave - _delayWarning, _delayAutoSave, 0);
+        var timer = timerThread.DelayCall(Tick, _delayAutoSave - _delayWarning, _delayAutoSave, 0);
         timer.Stop();
     }
 
     public void Save()
     {
-        _world.WaitForWriteCompletion();
+        world.WaitForWriteCompletion();
 
         try
         {
             if (!Backup())
-                _logger.LogError("Automatic backup failed");
+                logger.LogError("Automatic backup failed");
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Automatic backup failed");
+            logger.LogError(e, "Automatic backup failed");
         }
 
-        _world.Save(true);
+        world.Save(true);
     }
 
     private void Tick()
     {
-        if (_handler.Restarting)
+        if (handler.Restarting)
             return;
 
         if (_delayWarning == TimeSpan.Zero)
@@ -65,33 +57,33 @@ public class AutoSave(InternalRConfig config, ServerHandler handler, World world
             switch (minutes)
             {
                 case > 0 when seconds > 0:
-                    _world.Broadcast(
+                    world.Broadcast(
                         $"The world will save in {minutes} minute{(minutes != 1 ? "s" : string.Empty)} and {seconds} second{(seconds != 1 ? "s" : string.Empty)}.");
                     break;
                 case > 0:
-                    _world.Broadcast($"The world will save in {minutes} minute{(minutes != 1 ? "s" : string.Empty)}.");
+                    world.Broadcast($"The world will save in {minutes} minute{(minutes != 1 ? "s" : string.Empty)}.");
                     break;
                 default:
-                    _world.Broadcast($"The world will save in {seconds} second{(seconds != 1 ? "s" : string.Empty)}.");
+                    world.Broadcast($"The world will save in {seconds} second{(seconds != 1 ? "s" : string.Empty)}.");
                     break;
             }
 
-            _timerThread.DelayCall(Save, _delayWarning, TimeSpan.Zero, 1);
+            timerThread.DelayCall(Save, _delayWarning, TimeSpan.Zero, 1);
         }
     }
 
     private bool Backup()
     {
-        if (_config.Backups.Length == 0)
+        if (config.Backups.Length == 0)
             return false;
 
-        var existing = Directory.GetDirectories(_config.AutomaticBackupDirectory);
+        var existing = Directory.GetDirectories(config.AutomaticBackupDirectory);
 
         var anySuccess = existing.Length == 0;
 
-        for (var i = 0; i < _config.Backups.Length; ++i)
+        for (var i = 0; i < config.Backups.Length; ++i)
         {
-            var dir = Match(existing, _config.Backups[i]);
+            var dir = Match(existing, config.Backups[i]);
 
             if (dir == null)
                 continue;
@@ -100,11 +92,11 @@ public class AutoSave(InternalRConfig config, ServerHandler handler, World world
             {
                 try
                 {
-                    dir.MoveTo(Path.Combine(_config.AutomaticBackupDirectory, _config.Backups[i - 1]));
+                    dir.MoveTo(Path.Combine(config.AutomaticBackupDirectory, config.Backups[i - 1]));
 
                     anySuccess = true;
                 }
-                catch (Exception e) { _logger.LogError(e, "Error backing up {BackupId} backup", i); }
+                catch (Exception e) { logger.LogError(e, "Error backing up {BackupId} backup", i); }
             }
             else
             {
@@ -112,25 +104,25 @@ public class AutoSave(InternalRConfig config, ServerHandler handler, World world
 
                 try
                 {
-                    if (Directory.Exists(_config.TempBackupDirectory))
-                        Directory.Delete(_config.TempBackupDirectory);
+                    if (Directory.Exists(config.TempBackupDirectory))
+                        Directory.Delete(config.TempBackupDirectory);
 
-                    dir.MoveTo(_config.TempBackupDirectory);
+                    dir.MoveTo(config.TempBackupDirectory);
 
-                    delete = !_saves.Process(_config.TempBackupDirectory);
+                    delete = !saves.Process(config.TempBackupDirectory);
                 }
-                catch (Exception e) { _logger.LogError(e, "Error backing up {BackupId} backup", i); }
+                catch (Exception e) { logger.LogError(e, "Error backing up {BackupId} backup", i); }
 
                 if (!delete)
                     continue;
 
                 try { dir.Delete(true); }
-                catch (Exception e) { _logger.LogError(e, "Error backing up {BackupId} backup", i); }
+                catch (Exception e) { logger.LogError(e, "Error backing up {BackupId} backup", i); }
             }
         }
 
-        if (Directory.Exists(_config.SaveDirectory))
-            Directory.Move(_config.SaveDirectory, Path.Combine(_config.AutomaticBackupDirectory, _config.Backups[^1]));
+        if (Directory.Exists(config.SaveDirectory))
+            Directory.Move(config.SaveDirectory, Path.Combine(config.AutomaticBackupDirectory, config.Backups[^1]));
 
         return anySuccess;
     }

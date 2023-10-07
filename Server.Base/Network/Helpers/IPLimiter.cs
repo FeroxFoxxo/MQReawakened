@@ -6,8 +6,6 @@ namespace Server.Base.Network.Helpers;
 
 public class IpLimiter(InternalRConfig internalServerConfig, NetStateHandler handler)
 {
-    private readonly NetStateHandler _handler = handler;
-    private readonly InternalRConfig _internalServerConfig = internalServerConfig;
     private readonly Dictionary<IPAddress, IPAddress> _ipAddressTable = new();
 
     public IPAddress Intern(IPAddress ipAddress)
@@ -23,7 +21,7 @@ public class IpLimiter(InternalRConfig internalServerConfig, NetStateHandler han
 
     public bool Verify(IPAddress ourAddress)
     {
-        var netStates = _handler.Instances;
+        var netStates = handler.Instances;
 
         var count = 0;
 
@@ -31,7 +29,7 @@ public class IpLimiter(InternalRConfig internalServerConfig, NetStateHandler han
         {
             ++count;
 
-            if (count >= _internalServerConfig.MaxAddresses)
+            if (count >= internalServerConfig.MaxAddresses)
                 return false;
         }
 

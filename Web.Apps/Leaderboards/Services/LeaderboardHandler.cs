@@ -5,10 +5,9 @@ namespace Web.Apps.Leaderboards.Services;
 
 public class LeaderboardHandler(EventSink sink) : IService
 {
-    private readonly EventSink _sink = sink;
     public LeaderBoardGameJson Games { get; private set; }
 
-    public void Initialize() => _sink.WorldLoad += LoadLeaderboard;
+    public void Initialize() => sink.WorldLoad += LoadLeaderboard;
 
     private void LoadLeaderboard() =>
         Games = new LeaderBoardGameJson

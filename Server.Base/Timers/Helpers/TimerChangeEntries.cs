@@ -2,20 +2,18 @@
 
 public class TimerChangeEntry(Timer timer, int newIndex, bool adding, TimerChangePool pool)
 {
-    private readonly TimerChangePool _pool = pool;
     public bool Adding = adding;
-
-    public int Index = newIndex;
     public Timer Timer = timer;
+    public int Index = newIndex;
 
     public void Free()
     {
         Timer = null;
 
-        lock (_pool.InstancePool)
+        lock (pool.InstancePool)
         {
-            if (_pool.InstancePool.Count < 512)
-                _pool.InstancePool.Enqueue(this);
+            if (pool.InstancePool.Count < 512)
+                pool.InstancePool.Enqueue(this);
         }
     }
 }

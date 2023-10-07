@@ -6,7 +6,5 @@ public class LoggerProvider : ILoggerProvider
 {
     public ILogger CreateLogger(string categoryName) => new Logger(categoryName);
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() => GC.SuppressFinalize(this);
 }

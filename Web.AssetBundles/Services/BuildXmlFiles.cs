@@ -10,23 +10,18 @@ using Web.AssetBundles.Models;
 
 namespace Web.AssetBundles.Services;
 
-public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, ILogger<BuildXmlFiles> logger, AssetBundleRConfig rConfig, AssetBundleRwConfig rwConfig) : IService, IInjectModules
+public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, ILogger<BuildXmlFiles> logger,
+    AssetBundleRConfig rConfig, AssetBundleRwConfig rwConfig) : IService, IInjectModules
 {
-    private readonly AssetBundleRConfig _rConfig = rConfig;
-    private readonly AssetBundleRwConfig _rwConfig = rwConfig;
-    private readonly AssetEventSink _eventSink = eventSink;
-    private readonly ILogger<BuildXmlFiles> _logger = logger;
-    private readonly IServiceProvider _services = services;
-
     public readonly Dictionary<string, string> XmlFiles = new();
 
     public IEnumerable<Module> Modules { get; set; }
 
-    public void Initialize() => _eventSink.AssetBundlesLoaded += LoadXmlFiles;
+    public void Initialize() => eventSink.AssetBundlesLoaded += LoadXmlFiles;
 
     private void LoadXmlFiles(AssetBundleLoadEventArgs assetLoadEvent)
     {
-        _logger.LogDebug("Reading XML files from bundles");
+        logger.LogDebug("Reading XML files from bundles");
 
         XmlFiles.Clear();
 
@@ -35,15 +30,15 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, 
             .Where(x => x.Type is AssetInfo.TypeAsset.XML)
             .ToArray();
 
-        InternalDirectory.OverwriteDirectory(_rConfig.XmlSaveDirectory);
+        InternalDirectory.OverwriteDirectory(rConfig.XmlSaveDirectory);
 
-        var bundles = _services.GetRequiredServices<IBundledXml>(Modules)
+        var bundles = services.GetRequiredServices<IBundledXml>(Modules)
             .ToDictionary(x => x.BundleName, x => x);
 
         foreach (var bundle in bundles)
             bundle.Value.InitializeVariables();
 
-        using (var bar = new DefaultProgressBar(assets.Length, "Loading XML Files", _logger, _rwConfig))
+        using (var bar = new DefaultProgressBar(assets.Length, "Loading XML Files", logger, rwConfig))
         {
             foreach (var asset in assets)
             {
@@ -84,7 +79,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, 
                     bundles.Remove(asset.Name);
                 }
 
-                var path = Path.Join(_rConfig.XmlSaveDirectory, $"{asset.Name}.xml");
+                var path = Path.Join(rConfig.XmlSaveDirectory, $"{asset.Name}.xml");
 
                 bar.SetMessage($"Writing file to {path}");
 
@@ -101,23 +96,23 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, 
 
         if (bundles.Keys.Any(b => assets.FirstOrDefault(a => a.Name == b && a.Type == AssetInfo.TypeAsset.XML) != null))
         {
-            _logger.LogCritical(
+            logger.LogCritical(
                 "Your asset bundle cache seems to have moved! Please run 'changeCacheDir' and select the correct directory."
             );
 
             return;
         }
 
-        _logger.LogCritical(
+        logger.LogCritical(
             "Could not find XML bundle for {Bundles}, returning...",
             string.Join(", ", bundles.Keys)
         );
 
-        _logger.LogCritical("Possible XML files:");
+        logger.LogCritical("Possible XML files:");
 
         foreach (var foundAsset in assets.Where(x => x.Type == AssetInfo.TypeAsset.XML))
-            _logger.LogError("    {BundleName}", foundAsset.Name);
+            logger.LogError("    {BundleName}", foundAsset.Name);
 
-        _logger.LogInformation("Read XML files");
+        logger.LogInformation("Read XML files");
     }
 }

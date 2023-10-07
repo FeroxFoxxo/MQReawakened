@@ -12,9 +12,6 @@ namespace Server.Reawakened.Thrift.Protocols;
 public class DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph worldGraph,
     MiscTextDictionary miscTextDictionary) : ThriftHandler(logger)
 {
-    private readonly MiscTextDictionary _miscTextDictionary = miscTextDictionary;
-    private readonly WorldGraph _worldGraph = worldGraph;
-
     public override void AddProcesses(Dictionary<string, ProcessFunction> processes) =>
         processes.Add("getPortalInfo", GetPortalInfo);
 
@@ -27,9 +24,9 @@ public class DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph w
 
         var portalId = int.Parse(args.GoId);
 
-        var newLevelId = _worldGraph.GetDestinationFromPortal(args.LevelId, portalId);
-        var newLevelName = _worldGraph.GetInfoLevel(newLevelId).InGameName;
-        var newLevelNameId = _miscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Value == newLevelName);
+        var newLevelId = worldGraph.GetDestinationFromPortal(args.LevelId, portalId);
+        var newLevelName = worldGraph.GetInfoLevel(newLevelId).InGameName;
+        var newLevelNameId = miscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Value == newLevelName);
 
         var player = netState.Get<Player>();
 

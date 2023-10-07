@@ -3,9 +3,7 @@ using Server.Web.Models;
 
 namespace Web.AssetBundles.Services;
 
-public class AddAssetBypass(WebRConfig config) : IService
+public class AddAssetBypass(WebRConfig _config) : IService
 {
-    private readonly WebRConfig _config = config;
-
     public void Initialize() => _config.IgnorePaths.Add("/Client/");
 }

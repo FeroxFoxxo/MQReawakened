@@ -9,20 +9,17 @@ namespace Web.Apps.Chat.Services;
 
 public class ChatHandler(EventSink eventSink, ChatConfig chatConfig) : IService
 {
-    private readonly ChatConfig _chatConfig = chatConfig;
-    private readonly EventSink _eventSink = eventSink;
-
     public byte[] EncryptedWordList { get; private set; }
 
-    public void Initialize() => _eventSink.WorldLoad += GenerateChat;
+    public void Initialize() => eventSink.WorldLoad += GenerateChat;
 
     private void GenerateChat() => EncryptedWordList =
-        Encrypt(string.Join(string.Empty, _chatConfig.Words.Select(x => $"{x}{_chatConfig.TerminationCharacter}")));
+        Encrypt(string.Join(string.Empty, chatConfig.Words.Select(x => $"{x}{chatConfig.TerminationCharacter}")));
 
     public byte[] Encrypt(string data)
     {
         var dataArray = Encoding.UTF8.GetBytes(data);
-        var keyArray = _chatConfig.CrispKey.StringToByteArray();
+        var keyArray = chatConfig.CrispKey.StringToByteArray();
 
         using var aes = Aes.Create();
 

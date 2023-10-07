@@ -12,31 +12,24 @@ namespace Web.Launcher.Controllers.API.JSON.DLC;
 public class LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler,
     LauncherRConfig rConfig, PasswordHasher passwordHasher, LauncherRwConfig config, ILogger<LoginController> logger) : Controller
 {
-    private readonly AccountHandler _accHandler = accHandler;
-    private readonly LauncherRwConfig _config = config;
-    private readonly PasswordHasher _passwordHasher = passwordHasher;
-    private readonly LauncherRConfig _rConfig = rConfig;
-    private readonly UserInfoHandler _userInfoHandler = userInfoHandler;
-    private readonly ILogger<LoginController> _logger = logger;
-
     [HttpPost]
     public IActionResult HandleLogin([FromForm] string username, [FromForm] string password)
     {
-        var hashedPw = _passwordHasher.GetPassword(username, password);
+        var hashedPw = passwordHasher.GetPassword(username, password);
 
-        var account = _accHandler.Data.Values.FirstOrDefault(x => x.Username == username);
+        var account = accHandler.Data.Values.FirstOrDefault(x => x.Username == username);
 
         if (account == null)
         {
-            _logger.LogError("Could not find account for {Username}", username);
+            logger.LogError("Could not find account for {Username}", username);
             return BadRequest();
         }
 
-        var userInfo = _userInfoHandler.Data.Values.FirstOrDefault(x => x.UserId == account.UserId);
+        var userInfo = userInfoHandler.Data.Values.FirstOrDefault(x => x.UserId == account.UserId);
 
         if (userInfo == null)
         {
-            _logger.LogError("Could not find user info for {Username} (ID: {Id})", username, account.UserId);
+            logger.LogError("Could not find user info for {Username} (ID: {Id})", username, account.UserId);
             return BadRequest();
         }
 
@@ -64,13 +57,13 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
         resp.user = user;
 
         dynamic analytics = new ExpandoObject();
-        analytics.id = _rConfig.AnalyticsId.ToString();
+        analytics.id = rConfig.AnalyticsId.ToString();
         analytics.trackingShortId = userInfo.TrackingShortId;
-        analytics.enabled = _rConfig.AnalyticsEnabled;
+        analytics.enabled = rConfig.AnalyticsEnabled;
         analytics.firstTimeLogin = account.Created == account.LastLogin ? "true" : "false";
         analytics.firstLoginToday = (DateTime.UtcNow - account.LastLogin).TotalDays >= 1;
-        analytics.baseUrl = $"{_rConfig.ServerBaseUrl1}/Analytics";
-        analytics.apiKey = _config.AnalyticsApiKey;
+        analytics.baseUrl = $"{rConfig.ServerBaseUrl1}/Analytics";
+        analytics.apiKey = config.AnalyticsApiKey;
         resp.analytics = analytics;
 
         dynamic additional = new ExpandoObject();

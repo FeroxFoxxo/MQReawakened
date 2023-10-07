@@ -8,15 +8,12 @@ namespace Server.Reawakened.Network.Services;
 
 public class RandomKeyGenerator(Random random, EventSink sink, ServerRConfig config) : IService
 {
-    private readonly ServerRConfig _config = config;
     private readonly Dictionary<Type, Dictionary<string, string>> _keys = new();
-    private readonly Random _random = random;
-    private readonly EventSink _sink = sink;
 
     public void Initialize()
     {
-        _sink.NetStateAdded += AddedNetState;
-        _sink.NetStateRemoved += RemovedNetState;
+        sink.NetStateAdded += AddedNetState;
+        sink.NetStateRemoved += RemovedNetState;
     }
 
     private Dictionary<string, string> CheckIfExists<T>()
@@ -42,7 +39,7 @@ public class RandomKeyGenerator(Random random, EventSink sink, ServerRConfig con
         var rKeys = CheckIfExists<NetState>();
 
         if (!rKeys.ContainsKey(id))
-            rKeys.Add(id, GetRandomKey(_config.RandomKeyLength));
+            rKeys.Add(id, GetRandomKey(config.RandomKeyLength));
     }
 
     public string GetRandomKey<T>(string id)
@@ -54,7 +51,7 @@ public class RandomKeyGenerator(Random random, EventSink sink, ServerRConfig con
 
         while (true)
         {
-            var rKey = GetRandomKey(_config.RandomKeyLength);
+            var rKey = GetRandomKey(config.RandomKeyLength);
 
             if (rKeys.ContainsValue(rKey))
                 continue;
@@ -67,6 +64,6 @@ public class RandomKeyGenerator(Random random, EventSink sink, ServerRConfig con
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[_random.Next(s.Length)]).ToArray());
+            .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 }
