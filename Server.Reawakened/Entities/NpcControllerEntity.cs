@@ -73,17 +73,19 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         {
             var tEvent = new Trigger_SyncEvent(syncEvent);
 
-            switch (NpcType)
+            if (tEvent.Activate)
             {
-                case NpcType.Vendor:
-                    if (tEvent.Activate)
+                switch (NpcType)
+                {
+                    case NpcType.Vendor:
                         player.SendXt("nv", VendorInfo.ToString(player));
-                    break;
-                case NpcType.Quest:
-                    break;
-                default:
-                    Logger.LogWarning("Unknown NPC {Name} ({Id})", PrefabName, Id);
-                    break;
+                        break;
+                    case NpcType.Quest:
+                        break;
+                    default:
+                        Logger.LogWarning("Unknown NPC {Name} ({Id})", PrefabName, Id);
+                        break;
+                }
             }
         }
         else
