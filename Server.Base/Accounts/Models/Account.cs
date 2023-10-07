@@ -48,8 +48,8 @@ public class Account : PersistantData, INetStateData
         Created = DateTime.UtcNow;
         LastLogin = DateTime.UtcNow;
 
-        IpRestrictions = Array.Empty<string>();
-        LoginIPs = Array.Empty<string>();
+        IpRestrictions = [];
+        LoginIPs = [];
         Tags = [];
     }
 

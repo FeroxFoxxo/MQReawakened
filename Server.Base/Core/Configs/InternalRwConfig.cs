@@ -13,8 +13,8 @@ public class InternalRwConfig : IRwConfig
 
     public InternalRwConfig()
     {
-        IgnoreProtocolType = Array.Empty<string>();
-        UnhandledPackets = Array.Empty<string>();
+        IgnoreProtocolType = [];
+        UnhandledPackets = [];
         NetworkType = NetworkType.Unknown;
         ServerAddress = string.Empty;
         Port = 9339;

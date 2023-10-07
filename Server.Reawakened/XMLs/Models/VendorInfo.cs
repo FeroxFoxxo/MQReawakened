@@ -40,6 +40,8 @@ public class VendorInfo(int gameObjectId, int nameId, int descriptionId,
         sb.Append(VendorId);
         sb.Append(CatalogId);
 
+        sb.Append(string.Empty);
+
         sb.Append(GreetingConversation);
         sb.Append(LeavingConversation);
 

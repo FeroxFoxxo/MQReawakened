@@ -32,7 +32,7 @@ public class Listener : IDisposable
         _handler = handler;
         _sink = sink;
         _accepted = new Queue<Socket>();
-        _emptySockets = Array.Empty<Socket>();
+        _emptySockets = [];
         _acceptedSyncRoot = ((ICollection)_accepted).SyncRoot;
 
         _listener = Bind(ipEp);

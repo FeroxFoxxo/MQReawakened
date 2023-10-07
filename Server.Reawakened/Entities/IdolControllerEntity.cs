@@ -16,7 +16,7 @@ public class IdolControllerEntity : SyncedEntity<IdolController>
         if (!character.CollectedIdols.ContainsKey(levelId))
             character.CollectedIdols.Add(levelId, new List<int>());
 
-        return character.CollectedIdols[levelId].Contains(Index) ? [0] : Array.Empty<object>();
+        return character.CollectedIdols[levelId].Contains(Index) ? [0] : [];
     }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)

@@ -65,21 +65,30 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         NpcName = MiscText.GetLocalizationTextById(NameId);
     }
 
-    public override object[] GetInitData(Player player) =>
-        VendorInfo == null ? Array.Empty<object>() : [NameId.ToString()];
+    public override object[] GetInitData(Player player) => NameId <= 0 ? [] : [NameId.ToString()];
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        switch (NpcType)
+        if (syncEvent.Type == SyncEvent.EventType.Trigger)
         {
-            case NpcType.Vendor:
-                player.SendXt("nv", VendorInfo.ToString(player));
-                break;
-            case NpcType.Quest:
-                break;
-            default:
-                Logger.LogWarning("Unknown NPC {Name} ({Id})", PrefabName, Id);
-                break;
+            var tEvent = new Trigger_SyncEvent(syncEvent);
+
+            switch (NpcType)
+            {
+                case NpcType.Vendor:
+                    if (tEvent.Activate)
+                        player.SendXt("nv", VendorInfo.ToString(player));
+                    break;
+                case NpcType.Quest:
+                    break;
+                default:
+                    Logger.LogWarning("Unknown NPC {Name} ({Id})", PrefabName, Id);
+                    break;
+            }
+        }
+        else
+        {
+            Logger.LogWarning("Unknown Sync Event {Type} for NPC {Name} ({Id})", syncEvent.Type, PrefabName, Id);
         }
     }
 
@@ -95,7 +104,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                 descriptionId = VendorInfo.DescriptionId;
                 break;
             case NpcType.Quest:
-                npcStatus = NPCStatus.QuestInProgress;
+                npcStatus = NPCStatus.QuestUnavailable;
                 break;
             default:
                 break;
