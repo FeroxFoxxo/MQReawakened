@@ -224,6 +224,20 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             return false;
         }
 
+        if (!QuestCatalog.QuestLineCatalogs.TryGetValue(quest.QuestLineId, out var questLine))
+        {
+            Logger.LogTrace("[{QuestName} ({QuestId})] [INVALID QUESTLINE] Quest with line {QuestLineId} could not be found",
+                quest.Name, quest.Id, quest.QuestLineId);
+            return false;
+        }
+
+        if (!questLine.ShowInJournal)
+        {
+            Logger.LogTrace("[{QuestName} ({QuestId})] [SKIPPED QUESTLINE] Quest with line {QuestLineId} was skipped as is not set to show in journal",
+                quest.Name, quest.Id, quest.QuestLineId);
+            return false;
+        }
+
         foreach (var requiredQuest in quest.PreviousQuests)
         {
             if (!character.Data.CompletedQuests.Contains(requiredQuest.Key))
