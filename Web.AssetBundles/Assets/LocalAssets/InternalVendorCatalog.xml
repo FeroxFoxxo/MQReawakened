@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <vendorCatalog>
+    <!-- Mogri -->
+    <vendor objectId="98648" nameId="166249430" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="10" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
+    </vendor>
     <!-- Altak -->
     <vendor objectId="615" nameId="6518" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="9" dialogId="773" greetingConversationId="6945" leavingConversationId="6944">
         <item id="3070" />

@@ -4,6 +4,75 @@
     <npc objectId="13161359" nameId="955551996" descriptionId="0">
         <dialog dialogId="1564" conversationId="3963" minimumReputation="1" />
     </npc>
+    <!-- Luna -->
+    <npc objectId="213205" nameId="21743849" descriptionId="0">
+        <dialog dialogId="1540" conversationId="3911" minimumReputation="1" />
+    </npc>
+    <!-- Felix -->
+    <npc objectId="213182" nameId="14623002" descriptionId="0">
+        <dialog dialogId="1541" conversationId="3912" minimumReputation="1" />
+    </npc>
+    <!-- Loch -->
+    <npc objectId="250" nameId="3569" descriptionId="0">
+        <dialog dialogId="1009" conversationId="2761" minimumReputation="1" />
+    </npc>
+    <!-- Kian -->
+    <npc objectId="213227" nameId="1250928104" descriptionId="0">
+        <dialog dialogId="1542" conversationId="3913" minimumReputation="1" />
+    </npc>
+    <!-- The Twins -->
+    <npc objectId="96881" nameId="11288" descriptionId="0">
+        <dialog dialogId="1054" conversationId="2910" minimumReputation="1" />
+    </npc>
+    <!-- Wijit -->
+    <npc objectId="153" nameId="6049" descriptionId="0">
+        <dialog dialogId="841" conversationId="2351" minimumReputation="1" />
+        <dialog dialogId="661" conversationId="1911" minimumReputation="5" />
+        <dialog dialogId="662" conversationId="1912" minimumReputation="10" />
+    </npc>
+    <!-- Jeet -->
+    <npc objectId="145" nameId="5518" descriptionId="0">
+        <dialog dialogId="839" conversationId="2349" minimumReputation="1" />
+        <dialog dialogId="654" conversationId="1904" minimumReputation="5" />
+        <dialog dialogId="655" conversationId="1905" minimumReputation="10" />
+    </npc>
+    <!-- Argus -->
+    <npc objectId="102097" nameId="467754513" descriptionId="0">
+        <dialog dialogId="1340" conversationId="3280" minimumReputation="1" /> <!-- Apparently should be 5? -->
+    </npc>
+    <!-- Bumbee -->
+    <npc objectId="684" nameId="217" descriptionId="0">
+        <dialog dialogId="837" conversationId="2347" minimumReputation="1" />
+        <dialog dialogId="648" conversationId="1898" minimumReputation="5" />
+        <dialog dialogId="649" conversationId="1899" minimumReputation="1" />
+    </npc>
+    <!-- Kama -->
+    <npc objectId="193" nameId="1289" descriptionId="0">
+        <dialog dialogId="840" conversationId="2350" minimumReputation="1" />
+        <dialog dialogId="657" conversationId="1907" minimumReputation="5" />
+        <dialog dialogId="658" conversationId="1908" minimumReputation="10" />
+        <dialog dialogId="659" conversationId="1909" minimumReputation="15" />
+    </npc>
+    <!-- Flit -->
+    <npc objectId="788" nameId="6050" descriptionId="0">
+        <dialog dialogId="1416" conversationId="3582" minimumReputation="1" />
+        <dialog dialogId="651" conversationId="1901" minimumReputation="15" />
+        <dialog dialogId="652" conversationId="1902" minimumReputation="40" />
+    </npc>
+    <!-- Memee -->
+    <npc objectId="128" nameId="2334" descriptionId="0">
+        <dialog dialogId="842" conversationId="2352" minimumReputation="1" />
+        <dialog dialogId="664" conversationId="1914" minimumReputation="5" />
+        <dialog dialogId="666" conversationId="1916" minimumReputation="15" />
+        <dialog dialogId="667" conversationId="1917" minimumReputation="20" />
+    </npc>
+    <!-- Hardtack -->
+    <npc objectId="741" nameId="991" descriptionId="0">
+        <dialog dialogId="835" conversationId="2345" minimumReputation="1" />
+        <dialog dialogId="643" conversationId="1893" minimumReputation="5" />
+        <dialog dialogId="644" conversationId="1894" minimumReputation="10" />
+        <dialog dialogId="645" conversationId="1895" minimumReputation="15" />
+    </npc>
     <!-- Mysterious Warrior Guard 1 -->
     <npc objectId="98585" nameId="1862232126" descriptionId="0">
         <dialog dialogId="1528" conversationId="3879" minimumReputation="1" />

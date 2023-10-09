@@ -122,17 +122,21 @@ public class State : ExternalProtocol
     public void LogEvent(SyncEvent syncEvent, int entityId, Room room)
     {
         var uniqueType = "Unknown";
-        var prefabName = "Unknown";
+        var uniqueIdentifier = entityId.ToString();
+        var additionalInfo = string.Empty;
 
         if(room.Players.TryGetValue(entityId, out var newPlayer))
         {
-            uniqueType = newPlayer.Character != null ?
-                $"Player {newPlayer.Character.Data.CharacterName}" :
-                "Unknown Player";
+            uniqueType = "Player";
 
+            uniqueIdentifier = newPlayer.Character != null ?
+                $"{newPlayer.Character.Data.CharacterName} ({newPlayer.Character.Data.CharacterId})" :
+                "Unknown";
         }
 
         var entities = new List<string>();
+
+        var prefabName = string.Empty;
 
         if (room.Entities.TryGetValue(entityId, out var entity))
         {
@@ -150,10 +154,18 @@ public class State : ExternalProtocol
                 entities.Add($"U:{entityComponent}");
 
         if (entities.Count > 0)
-            uniqueType = $"Entity [{prefabName}] {string.Join('/', entities)}";
+        {
+            uniqueType = "Entity";
+
+            if (!string.IsNullOrEmpty(prefabName))
+                uniqueIdentifier = $"{prefabName} ({entityId})";
+
+            additionalInfo = string.Join('/', entities);
+        }
 
         if (Player.Character != null)
-                Logger.LogDebug("SyncEvent '{Type}' run for {Type} ({Id}) by {Player}", syncEvent.Type, uniqueType, entityId, Player.Character.Data.CharacterName);
+                Logger.LogDebug("SyncEvent '{Type}' run for {Type} [{Id}] by {Player} {AdditionalInfo}",
+                    syncEvent.Type, uniqueType, uniqueIdentifier, Player.Character.Data.CharacterName, additionalInfo);
     }
 
     public void TraceSyncEventError(int entityId, SyncEvent syncEvent, LevelInfo levelInfo, string entityInfo)
