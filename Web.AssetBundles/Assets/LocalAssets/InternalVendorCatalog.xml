@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <vendorCatalog>
+    <!-- Altak -->
     <vendor objectId="615" nameId="6518" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="9" dialogId="773" greetingConversationId="6945" leavingConversationId="6944">
         <item id="3070" />
         <item id="404" />
@@ -15,6 +16,7 @@
         <item id="1003" />
         <item id="1007" />
     </vendor>
+    <!-- Dillon -->
     <vendor objectId="822" nameId="10203" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="9" dialogId="1018" greetingConversationId="2795" leavingConversationId="2794">
         <item id="3070" />
         <item id="2909" />
@@ -32,6 +34,7 @@
         <item id="914" />
         <item id="2721" />
     </vendor>
+    <!-- Koz -->
     <vendor objectId="2513" nameId="6517" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="9" dialogId="790" greetingConversationId="2214" leavingConversationId="2213">
         <item id="1568" />
         <item id="2909" />
@@ -47,6 +50,7 @@
         <item id="1287" />
         <item id="817" />
     </vendor>
+    <!-- Etok -->
     <vendor objectId="945" nameId="8052" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="9" dialogId="795" greetingConversationId="2244" leavingConversationId="2243">
         <item id="3070" />
         <item id="2909" />
@@ -64,6 +68,7 @@
         <item id="1830" />
         <item id="1222" />
     </vendor>
+    <!-- Zolin -->
     <vendor objectId="31529" nameId="10106" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="9" dialogId="1021" greetingConversationId="2813" leavingConversationId="2812">
         <item id="1568" />
         <item id="404" />
@@ -75,6 +80,7 @@
         <item id="3025" />
         <item id="3000" />
     </vendor>
+    <!-- Rhea -->
     <vendor objectId="575" nameId="5765" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="1316" greetingConversationId="3071" leavingConversationId="3326">
         <item id="601" />
         <item id="634" />
@@ -101,6 +107,7 @@
         <item id="1096" />
         <item id="742" />
     </vendor>
+    <!-- Zeeta -->
     <vendor objectId="578" nameId="5767" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="13" dialogId="794" greetingConversationId="2238" leavingConversationId="2237">
         <item id="1353" />
         <item id="1352" />
@@ -126,6 +133,7 @@
         <item id="1075" />
         <item id="1077" />
     </vendor>
+    <!-- Mikith -->
     <vendor objectId="576" nameId="5764" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="793" greetingConversationId="2232" leavingConversationId="2231">
         <item id="651" />
         <item id="629" />
@@ -150,6 +158,7 @@
         <item id="1224" />
         <item id="637" />
     </vendor>
+    <!-- Razoo -->
     <vendor objectId="577" nameId="5763" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="4" dialogId="1331" greetingConversationId="3337" leavingConversationId="3336">
         <item id="2274" />
         <item id="2276" />
@@ -160,6 +169,7 @@
         <item id="419" />
         <item id="1577" />
     </vendor>
+    <!-- Koopu -->
     <vendor objectId="574" nameId="5766" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="6" dialogId="1108" greetingConversationId="3342" leavingConversationId="3079">
         <item id="1568" />
         <item id="1573" />
@@ -177,6 +187,7 @@
         <item id="1616" />
         <item id="1624" />
     </vendor>
+    <!-- Yod -->
     <vendor objectId="579" nameId="6500" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="4" dialogId="1331" greetingConversationId="3337" leavingConversationId="3336">
         <item id="2274" />
         <item id="2276" />
@@ -187,6 +198,7 @@
         <item id="419" />
         <item id="1577" />
     </vendor>
+    <!-- Bumbeef -->
     <vendor objectId="551" nameId="5770" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="4" dialogId="1307" greetingConversationId="3312" leavingConversationId="3311">
         <item id="2274" />
         <item id="2276" />
@@ -197,6 +209,7 @@
         <item id="419" />
         <item id="1577" />
     </vendor>
+    <!-- Scatterfoot -->
     <vendor objectId="554" nameId="5771" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="13" dialogId="1301" greetingConversationId="3301" leavingConversationId="3300">
         <item id="699" />
         <item id="1259" />
@@ -222,6 +235,7 @@
         <item id="1478" />
         <item id="1479" />
     </vendor>
+    <!-- Clunk -->
     <vendor objectId="557" nameId="5773" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="1303" greetingConversationId="3389" leavingConversationId="3388">
         <item id="1461" />
         <item id="1464" />
@@ -247,6 +261,7 @@
         <item id="1170" />
         <item id="1439" />
     </vendor>
+    <!-- Jolly -->
     <vendor objectId="558" nameId="5774" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="789" greetingConversationId="2208" leavingConversationId="2207">
         <item id="936" />
         <item id="755" />
@@ -274,6 +289,7 @@
         <item id="828" />
         <item id="826" />
     </vendor>
+    <!-- Xaken -->
     <vendor objectId="243" nameId="5747" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="1017" greetingConversationId="2789" leavingConversationId="2788">
         <item id="910" />
         <item id="1001" />
@@ -307,6 +323,7 @@
         <item id="1464" />
         <item id="1212" />
     </vendor>
+    <!-- Dyzoc -->
     <vendor objectId="242" nameId="5746" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="6" dialogId="1080" greetingConversationId="2984" leavingConversationId="2983">
         <item id="1568" />
         <item id="1611" />
@@ -318,6 +335,7 @@
         <item id="1619" />
         <item id="1624" />
     </vendor>
+    <!-- Adiror -->
     <vendor objectId="248" nameId="5748" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="11" dialogId="1016" greetingConversationId="2783" leavingConversationId="2782">
         <item id="1568" />
         <item id="1611" />
@@ -329,6 +347,7 @@
         <item id="1616" />
         <item id="1623" />
     </vendor>
+    <!-- Omura -->
     <vendor objectId="1089" nameId="5755" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="4" dialogId="1259" greetingConversationId="3352" leavingConversationId="3351">
         <item id="2274" />
         <item id="2276" />
@@ -339,6 +358,7 @@
         <item id="419" />
         <item id="1577" />
     </vendor>
+    <!-- Dimsum -->
     <vendor objectId="1092" nameId="6507" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="6" dialogId="1210" greetingConversationId="3415" leavingConversationId="3414">
         <item id="1568" />
         <item id="1611" />
@@ -350,6 +370,7 @@
         <item id="1619" />
         <item id="1624" />
     </vendor>
+    <!-- Maoka -->
     <vendor objectId="1087" nameId="5754" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="11" dialogId="1210" greetingConversationId="3415" leavingConversationId="3414">
         <item id="1568" />
         <item id="1620" />
@@ -361,6 +382,7 @@
         <item id="1616" />
         <item id="1623" />
     </vendor>
+    <!-- Akami -->
     <vendor objectId="1048" nameId="4102" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="1261" greetingConversationId="3409" leavingConversationId="3408">
         <item id="935" />
         <item id="1896" />
@@ -386,6 +408,7 @@
         <item id="904" />
         <item id="905" />
     </vendor>
+    <!-- Nao -->
     <vendor objectId="1093" nameId="5757" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="1260" greetingConversationId="3404" leavingConversationId="3403">
         <item id="1512" />
         <item id="1547" />

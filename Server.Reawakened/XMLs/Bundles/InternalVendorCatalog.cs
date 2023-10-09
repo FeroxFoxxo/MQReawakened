@@ -27,25 +27,25 @@ public class InternalVendorCatalog : IBundledXml
 
             foreach (XmlNode childNode2 in childNode.ChildNodes)
             {
-                var objectId = -1;
-                var nameId = -1;
-                var descriptionId = -1;
-
-                var numberOfIdolsToAccessBackStore = -1;
-                var idolLevelId = -1;
-
-                var vendorId = -1;
-                var catalogId = -1;
-                var vendorType = NPCController.NPCStatus.Unknown;
-
-                var dialogId = -1;
-                var greetingConversationId = -1;
-                var leavingConversationId = -1;
-
-                var items = new List<int>();
-
                 if (childNode2.Name == "vendor")
                 {
+                    var objectId = -1;
+                    var nameId = -1;
+                    var descriptionId = -1;
+
+                    var numberOfIdolsToAccessBackStore = -1;
+                    var idolLevelId = -1;
+
+                    var vendorId = -1;
+                    var catalogId = -1;
+                    var vendorType = NPCController.NPCStatus.Unknown;
+
+                    var dialogId = -1;
+                    var greetingConversationId = -1;
+                    var leavingConversationId = -1;
+
+                    var items = new List<int>();
+
                     foreach (XmlAttribute item in childNode2.Attributes!)
                     {
                         switch (item.Name)
@@ -103,22 +103,22 @@ public class InternalVendorCatalog : IBundledXml
                             }
                         }
                     }
+
+                    if (VendorCatalog.ContainsKey(objectId))
+                        continue;
+
+                    var greetingConversation = new Conversation(dialogId, greetingConversationId);
+                    var leavingConversation = new Conversation(dialogId, leavingConversationId);
+
+                    var vendor = new VendorInfo(
+                        objectId, nameId, descriptionId,
+                        numberOfIdolsToAccessBackStore, idolLevelId,
+                        vendorId, catalogId, vendorType,
+                        greetingConversation, leavingConversation, items.ToArray()
+                    );
+
+                    VendorCatalog.Add(objectId, vendor);
                 }
-
-                if (VendorCatalog.ContainsKey(objectId))
-                    continue;
-
-                var greetingConversation = new Conversation(dialogId, greetingConversationId);
-                var leavingConversation = new Conversation(dialogId, leavingConversationId);
-
-                var vendor = new VendorInfo(
-                    objectId, nameId, descriptionId,
-                    numberOfIdolsToAccessBackStore, idolLevelId,
-                    vendorId, catalogId, vendorType,
-                    greetingConversation, leavingConversation, items.ToArray()
-                );
-
-                VendorCatalog.Add(objectId, vendor);
             }
         }
     }

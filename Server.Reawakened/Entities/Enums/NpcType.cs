@@ -4,5 +4,6 @@ public enum NpcType
 {
     Unknown,
     Vendor,
-    Quest
+    Quest,
+    Dialog
 }

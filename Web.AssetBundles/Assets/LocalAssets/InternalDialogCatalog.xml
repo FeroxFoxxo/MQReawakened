@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<dialogCatalog>
+    <!-- Luca -->
+    <npc objectId="13161359" nameId="955551996" descriptionId="0">
+        <dialog dialogId="1564" conversationId="3963" minimumReputation="1" />
+    </npc>
+    <!-- Mysterious Warrior Guard 1 -->
+    <npc objectId="98585" nameId="1862232126" descriptionId="0">
+        <dialog dialogId="1528" conversationId="3879" minimumReputation="1" />
+    </npc>
+    <!-- Mysterious Warrior Guard 2 -->
+    <npc objectId="213102" nameId="1862232126" descriptionId="0">
+        <dialog dialogId="1529" conversationId="3880" minimumReputation="1" />
+    </npc>
+</dialogCatalog>

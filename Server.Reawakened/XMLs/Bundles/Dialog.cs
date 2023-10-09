@@ -13,6 +13,7 @@ public class Dialog : DialogXML, ILocalizationXml
 
     public Dictionary<string, List<ConversationModel>> QuestDialog;
     public Dictionary<string, List<ConversationModel>> GenericDialog;
+    public Dictionary<string, List<ConversationModel>> VendorDialog;
 
     private Dictionary<int, List<Conversation>> _dialogDict;
     private Dictionary<int, string> _dialogNames;
@@ -30,6 +31,7 @@ public class Dialog : DialogXML, ILocalizationXml
 
         QuestDialog = [];
         GenericDialog = [];
+        VendorDialog = [];
     }
 
     public void EditLocalization(XmlDocument xml)
@@ -91,6 +93,8 @@ public class Dialog : DialogXML, ILocalizationXml
                     QuestDialog.TryAdd(_dialogNames[dialog.Key], dialogModel);
                 else if (conversation.DialogType == "Generic")
                     GenericDialog.TryAdd(_dialogNames[dialog.Key], dialogModel);
+                else if (conversation.DialogType == "Vendor")
+                    VendorDialog.TryAdd(_dialogNames[dialog.Key], dialogModel);
             }
         }
     }

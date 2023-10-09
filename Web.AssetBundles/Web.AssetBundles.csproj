@@ -33,6 +33,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="Assets\LocalAssets\InternalDialogCatalog.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Licences\LICENSE_ASSETSTUDIO">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

@@ -13,7 +13,6 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Models;
 using static A2m.Server.QuestStatus;
-using static LeaderBoardTopScoresJson;
 using static NPCController;
 
 namespace Server.Reawakened.Entities;
@@ -25,13 +24,16 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
     public bool ShouldDisableNpcInteraction => EntityData.ShouldDisableNPCInteraction;
 
     public ILogger<NpcControllerEntity> Logger { get; set; }
-    public QuestCatalog QuestCatalog { get; set; }
-    public InternalVendorCatalog VendorCatalog { get; set; }
     public MiscTextDictionary MiscText { get; set; }
     public ServerRConfig RConfig { get; set; }
     public Dialog Dialog { get; set; }
 
+    public QuestCatalog QuestCatalog { get; set; }
+    public InternalVendorCatalog VendorCatalog { get; set; }
+    public InternalDialogCatalog DialogCatalog { get; set; }
+
     public VendorInfo VendorInfo;
+    public DialogInfo DialogInfo;
 
     public QuestDescription[] ValidatorQuests;
     public QuestDescription[] GiverQuests;
@@ -71,6 +73,14 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                       .First();
         }
 
+        DialogInfo = DialogCatalog.GetDialogById(Id);
+
+        if (DialogInfo != null && NpcType == NpcType.Unknown)
+        {
+            NpcType = NpcType.Dialog;
+            NameId = DialogInfo.NameId;
+        }
+
         if (NameId < 0)
         {
             Logger.LogWarning("No information found for NPC {Name} ({Id})", PrefabName, Id);
@@ -101,18 +111,19 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                             case NPCStatus.QuestAvailable:
                                 StartNewQuest(player);
                                 SendNpcInfo(player.Character, player.NetState);
-                                Logger.LogDebug("[INTERACTION] [AVALIABLE QUEST] {Name} ({Id})", Name, Id);
+                                Logger.LogDebug("[AVALIABLE QUEST] [{Name} ({Id})]", Name, Id);
                                 break;
                             case NPCStatus.QuestInProgress:
                                 SendQuestProgress(player.Character, player.NetState);
-                                Logger.LogDebug("[INTERACTION] [IN PROGRESS QUEST] Interaction from {Name} ({Id})", Name, Id);
+                                Logger.LogDebug("[IN PROGRESS QUEST] [{Name} ({Id})]", Name, Id);
                                 break;
                             case NPCStatus.QuestCompleted:
                                 ValidateQuest(player.Character, player.NetState);
-                                Logger.LogDebug("[INTERACTION] [COMPLETED QUEST] Interaction from {Name} ({Id})", Name, Id);
+                                Logger.LogDebug("[COMPLETED QUEST] [{Name} ({Id})]", Name, Id);
                                 break;
                             case NPCStatus.QuestUnavailable:
-                                Logger.LogDebug("[INTERACTION] [DIALOG] Interaction from {Name} ({Id}) [UNIMPLEMENTED]", Name, Id);
+                                SendDialog(player.Character, player.NetState);
+                                Logger.LogDebug("[DIALOG QUEST] [{Name} ({Id})]", Name, Id);
                                 break;
                             default:
                                 break;
@@ -120,15 +131,23 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
                         SendNpcInfo(player.Character, player.NetState);
                         break;
+                    case NpcType.Dialog:
+                        SendDialog(player.Character, player.NetState);
+                        Logger.LogDebug("[DIALOG] [{Name} ({Id})]", Name, Id);
+                        break;
                     default:
-                        Logger.LogWarning("[INTERACTION] [UNKNOWN NPC] Interaction from {Name} ({Id})", PrefabName, Id);
+                        Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", Name, Id);
                         break;
                 }
+            }
+            else
+            {
+                Logger.LogDebug("[INACTIVE NPC TRIGGERED] [{Name} ({Id})]", Name, Id);
             }
         }
         else
         {
-            Logger.LogWarning("[INTERACTION] [UNKNOWN EVENT] Interaction of {Type} from {Name} ({Id})", syncEvent.Type, PrefabName, Id);
+            Logger.LogDebug("[UNKNOWN NPC EVENT] [{Type}] [{Name} ({Id})]", syncEvent.Type.ToString().ToUpperInvariant(), Name, Id);
         }
     }
 
@@ -146,11 +165,34 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             case NpcType.Quest:
                 npcStatus = GetQuestStatus(character);
                 break;
+            case NpcType.Dialog:
+                npcStatus = NPCStatus.Dialog;
+                descriptionId = DialogInfo.DescriptionId;
+                break;
             default:
                 break;
         }
 
         netState.SendXt("nt", Id, (int)npcStatus, descriptionId);
+    }
+
+    public void SendDialog(CharacterModel character, NetState netState)
+    {
+        if (DialogInfo == null)
+        {
+            Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog catalog found for NPC", NpcName, Id);
+            return;
+        }
+
+        var dialog = DialogInfo.Dialog.Where(d => d.Key <= character.Data.GlobalLevel).OrderBy(d => d.Key).Select(d => d.Value).FirstOrDefault();
+
+        if (dialog == null)
+        {
+            Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog found for user of level {Level}", NpcName, Id, character.Data.GlobalLevel);
+            return;
+        }
+
+        netState.SendXt("nd", Id, NameId, dialog);
     }
 
     public NPCStatus GetQuestStatus(CharacterModel character)
