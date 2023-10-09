@@ -7,6 +7,7 @@ namespace Server.Reawakened.XMLs.Bundles;
 public class LootsInfo : LootsInfoXML, IBundledXml
 {
     public string BundleName => "LootsInfo";
+    public bool Priority => false;
 
     public void InitializeVariables()
     {

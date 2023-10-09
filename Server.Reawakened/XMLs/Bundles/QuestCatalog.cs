@@ -8,10 +8,11 @@ namespace Server.Reawakened.XMLs.Bundles;
 
 public class QuestCatalog : QuestCatalogXML, IBundledXml
 {
+    public string BundleName => "QuestCatalog";
+    public bool Priority => false;
+
     public Dictionary<int, QuestDescription> QuestCatalogs;
     public Dictionary<int, QuestLineDescription> QuestLineCatalogs;
-
-    public string BundleName => "QuestCatalog";
 
     public void InitializeVariables()
     {

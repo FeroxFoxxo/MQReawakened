@@ -10,6 +10,7 @@ public class Dialog : DialogXML, ILocalizationXml
 {
     public string BundleName => "Dialog";
     public string LocalizationName => "DialogDict_en-US";
+    public bool Priority => false;
 
     public Dictionary<string, List<ConversationModel>> QuestDialog;
     public Dictionary<string, List<ConversationModel>> GenericDialog;

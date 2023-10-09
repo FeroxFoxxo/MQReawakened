@@ -25,12 +25,6 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, 
 
         XmlFiles.Clear();
 
-        var assets = assetLoadEvent.InternalAssets
-            .Select(x => x.Value)
-            .Where(x => x.Type is AssetInfo.TypeAsset.XML)
-            .OrderBy(x => x.Name)
-            .ToArray();
-
         InternalDirectory.OverwriteDirectory(rConfig.XmlSaveDirectory);
 
         var bundles = services.GetRequiredServices<IBundledXml>(Modules)
@@ -38,6 +32,13 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, 
 
         foreach (var bundle in bundles)
             bundle.Value.InitializeVariables();
+
+        var assets = assetLoadEvent.InternalAssets
+            .Select(x => x.Value)
+            .Where(x => x.Type is AssetInfo.TypeAsset.XML)
+            .OrderBy(x => x.Name)
+            .OrderBy(x => !(bundles.TryGetValue(x.Name, out var bundle) && bundle.Priority))
+            .ToArray();
 
         using (var bar = new DefaultProgressBar(assets.Length, "Loading XML Files", logger, rwConfig))
         {

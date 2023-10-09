@@ -6,8 +6,10 @@ namespace Server.Reawakened.XMLs.Bundles;
 
 public class InternalDialogCatalog : IBundledXml
 {
-    public Dictionary<int, DialogInfo> NpcDialogs;
     public string BundleName => "InternalDialogCatalog";
+    public bool Priority => false;
+
+    public Dictionary<int, DialogInfo> NpcDialogs;
 
     public void InitializeVariables() =>
         NpcDialogs = new Dictionary<int, DialogInfo>();

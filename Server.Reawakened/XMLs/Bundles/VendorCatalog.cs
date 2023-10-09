@@ -8,6 +8,7 @@ namespace Server.Reawakened.XMLs.Bundles;
 public class VendorCatalog : VendorCatalogsXML, IBundledXml
 {
     public string BundleName => "vendor_catalogs";
+    public bool Priority => false;
 
     public void InitializeVariables()
     {

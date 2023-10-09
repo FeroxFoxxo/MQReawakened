@@ -6,8 +6,10 @@ namespace Server.Reawakened.XMLs.Bundles;
 
 public class InternalVendorCatalog : IBundledXml
 {
-    public Dictionary<int, VendorInfo> VendorCatalog;
     public string BundleName => "InternalVendorCatalog";
+    public bool Priority => true;
+
+    public Dictionary<int, VendorInfo> VendorCatalog;
 
     public void InitializeVariables() =>
         VendorCatalog = new Dictionary<int, VendorInfo>();
