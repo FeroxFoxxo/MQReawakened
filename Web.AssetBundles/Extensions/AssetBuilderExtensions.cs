@@ -1,4 +1,5 @@
-﻿using Web.AssetBundles.Models;
+﻿using Server.Reawakened.Configs;
+using Web.AssetBundles.Models;
 using Web.Launcher.Models;
 
 namespace Web.AssetBundles.Extensions;
@@ -27,7 +28,7 @@ public static class AssetBuilderExtensions
         assets.GroupBy(x => x.Type)
             .SelectMany(g => g.OrderBy(x => x.Name).ToArray());
 
-    public static Dictionary<string, InternalAssetInfo> GetClosestBundles(this IEnumerable<InternalAssetInfo> assets, LauncherRwConfig config)
+    public static Dictionary<string, InternalAssetInfo> GetClosestBundles(this IEnumerable<InternalAssetInfo> assets, LauncherRwConfig config, ServerRConfig sConfig)
     {
         var filteredAssets = new Dictionary<string, InternalAssetInfo>();
 
@@ -42,7 +43,7 @@ public static class AssetBuilderExtensions
                 var oldAssetTime = value.CacheTime - config.MajorClientUpdate;
                 var newAssetTime = newAsset.CacheTime - config.MajorClientUpdate;
 
-                if (!config.Is2014Client)
+                if (!sConfig.Is2014Client)
                 {
                     oldAssetTime *= -1;
                     newAssetTime *= -1;

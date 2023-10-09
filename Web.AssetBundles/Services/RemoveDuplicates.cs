@@ -4,13 +4,13 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
+using Server.Reawakened.Configs;
 using Web.AssetBundles.Models;
-using Web.Launcher.Models;
 
 namespace Web.AssetBundles.Services;
 
 public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
-    ServerConsole console, LauncherRwConfig launcherWConfig, BuildAssetList buildAssetList,
+    ServerConsole console, ServerRConfig config, BuildAssetList buildAssetList,
     AssetBundleRConfig rConfig, AssetBundleRwConfig rwConfig) : IService
 {
     public void Initialize() => sink.WorldLoad += Load;
@@ -72,8 +72,8 @@ public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
                     if (!AreFileContentsEqual(containedAsset.Path, asset.Path))
                         continue;
 
-                    if (containedAsset.CacheTime > asset.CacheTime && launcherWConfig.Is2014Client ||
-                        containedAsset.CacheTime < asset.CacheTime && !launcherWConfig.Is2014Client)
+                    if (containedAsset.CacheTime > asset.CacheTime && config.Is2014Client ||
+                        containedAsset.CacheTime < asset.CacheTime && !config.Is2014Client)
 
                         assetList[assetName].Remove(containedAsset);
                     else

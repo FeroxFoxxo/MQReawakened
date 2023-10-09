@@ -1,38 +1,38 @@
-﻿using A2m.Server;
-using Server.Reawakened.Network.Extensions;
+﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Bundles;
+using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
 
 public static class NpcExtensions
 {
-    public static void AddQuest(this Player player, int questId, bool setActive, QuestCatalog catalog)
+    public static void AddQuest(this Player player, QuestDescription quest, bool setActiveQuest)
     {
         var character = player.Character;
-        var quest = catalog.GetQuestData(questId);
 
         if (quest == null || character == null)
             throw new InvalidDataException();
 
-        var questModel = character.Data.QuestLog.FirstOrDefault(x => x.Id == questId) ??
-                         new QuestStatusModel
-                         {
-                             QuestStatus = QuestStatus.QuestState.IN_PROCESSING,
-                             Id = questId,
-                             Objectives = quest.Objectives.ToDictionary(
-                                 x => x.Key,
-                                 x => new ObjectiveModel
-                                 {
-                                     Completed = false,
-                                     CountLeft = x.Value.TotalCount
-                                 }
-                             )
-                         };
+        var questModel = character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
-        if (setActive)
-            character.Data.ActiveQuestId = questId;
+        if (questModel == null)
+        {
+            questModel = new QuestStatusModel()
+            {
+                Id = quest.Id,
+                QuestStatus = QuestState.NOT_START,
+                Objectives = quest.Objectives.ToDictionary(q => q.Key, q => new ObjectiveModel()
+                {
+                    Completed = false,
+                    CountLeft = q.Value.TotalCount
+                })
+            };
+            character.Data.QuestLog.Add(questModel);
+        }
 
-        player.SendXt("na", questModel, setActive);
+        if (setActiveQuest)
+            character.Data.ActiveQuestId = quest.Id;
+
+        player.SendXt("na", questModel, setActiveQuest ? 1 : 0);
     }
 }

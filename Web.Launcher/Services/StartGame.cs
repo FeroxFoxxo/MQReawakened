@@ -10,6 +10,7 @@ using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Network.Enums;
 using Server.Base.Worlds;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Events;
 using System.Diagnostics;
@@ -22,9 +23,9 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Web.Launcher.Services;
 
-public class StartGame(EventSink sink, LauncherRConfig lConfig, IHostApplicationLifetime appLifetime,
-    ILogger<StartGame> logger, ServerConsole _console, World world, LauncherRwConfig lWConfig,
-    PlayerEventSink playerEventSink, RandomKeyGenerator generator, InternalRwConfig internalWConfig) : IService
+public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole _console,
+    World world, PlayerEventSink playerEventSink, RandomKeyGenerator generator,
+    LauncherRConfig lConfig, LauncherRwConfig lWConfig, InternalRwConfig ilWConfig, ServerRConfig sConfig) : IService
 {
     private string _directory;
     private bool _dirSet = false, _appStart = false;
@@ -105,7 +106,7 @@ public class StartGame(EventSink sink, LauncherRConfig lConfig, IHostApplication
         var majorClientUpdate = DateTime.ParseExact(lConfig.MajorClientUpdate, lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
 
-        lWConfig.Is2014Client = lastUpdate > majorClientUpdate;
+        sConfig.Is2014Client = lastUpdate > majorClientUpdate;
         
         lWConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
         lWConfig.MajorClientUpdate = majorClientUpdate.ToUnixTimestamp();
@@ -137,7 +138,7 @@ public class StartGame(EventSink sink, LauncherRConfig lConfig, IHostApplication
 
     public bool ShouldRun()
     {
-        if (internalWConfig.NetworkType.HasFlag(NetworkType.Client))
+        if (ilWConfig.NetworkType.HasFlag(NetworkType.Client))
             return true;
 
         logger.LogWarning("NOT RUNNING GAME: SERVER IS HEADLESS");
@@ -175,10 +176,10 @@ public class StartGame(EventSink sink, LauncherRConfig lConfig, IHostApplication
             return;
 
         dynamic settings = JsonConvert.DeserializeObject<ExpandoObject>(File.ReadAllText(lWConfig.GameSettingsFile))!;
-        settings.launcher.baseUrl = internalWConfig.GetHostAddress();
+        settings.launcher.baseUrl = ilWConfig.GetHostAddress();
         settings.launcher.fullscreen = lConfig.Fullscreen ? "true" : "false";
         settings.launcher.onGameClosePopup = lConfig.OnGameClosePopup ? "true" : "false";
-        settings.patcher.baseUrl = internalWConfig.GetHostAddress();
+        settings.patcher.baseUrl = ilWConfig.GetHostAddress();
         File.WriteAllText(lWConfig.GameSettingsFile, JsonConvert.SerializeObject(settings));
     }
 
@@ -239,7 +240,7 @@ public class StartGame(EventSink sink, LauncherRConfig lConfig, IHostApplication
         { $"{header}.unity.url.crisp.host", $"{lConfig.ServerBaseUrl1}/Chat/" },
         { "asset.log", lConfig.LogAssets ? "true" : "false" },
         { "asset.disableversioning", lConfig.DisableVersions ? "true" : "false" },
-        { "asset.jboss", $"{lConfig.ServerBaseUrl1}/Apps{(lWConfig.Is2014Client ? "/" : string.Empty)}" },
+        { "asset.jboss", $"{lConfig.ServerBaseUrl1}/Apps{(sConfig.Is2014Client ? "/" : string.Empty)}" },
         { "asset.bundle", $"{lConfig.ServerBaseUrl1}/Client/Bundles" },
         { "asset.audio", $"{lConfig.ServerBaseUrl1}/Client/Audio" },
         { "logout.url", $"{lConfig.ServerBaseUrl1}/Logout" },

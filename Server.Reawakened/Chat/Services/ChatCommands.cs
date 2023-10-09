@@ -36,7 +36,7 @@ public class ChatCommands : IService
         _worldGraph = worldGraph;
         _appLifetime = appLifetime;
         _saves = saves;
-        _commands = new Dictionary<string, ChatCommand>();
+        _commands = [];
     }
 
     public void Initialize() => _appLifetime.ApplicationStarted.Register(RunChatListener);

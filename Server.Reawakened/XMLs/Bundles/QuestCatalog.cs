@@ -8,8 +8,9 @@ namespace Server.Reawakened.XMLs.Bundles;
 
 public class QuestCatalog : QuestCatalogXML, IBundledXml
 {
-    private SortedDictionary<QuestLineDescription, List<QuestDescription>> _questLines;
-    private Dictionary<int, QuestDescription> _quests;
+    public Dictionary<int, QuestDescription> QuestCatalogs;
+    public Dictionary<int, QuestLineDescription> QuestLineCatalogs;
+
     public string BundleName => "QuestCatalog";
 
     public void InitializeVariables()
@@ -25,8 +26,8 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
         this.SetField<QuestCatalogXML>("_questLines",
             new SortedDictionary<QuestLineDescription, List<QuestDescription>>(new QuestLineSorter()));
 
-        _quests = [];
-        _questLines = [];
+        QuestCatalogs = [];
+        QuestLineCatalogs = [];
     }
 
     public void EditDescription(XmlDocument xml, IServiceProvider services)
@@ -37,15 +38,17 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
 
     public void FinalizeBundle()
     {
-        _quests = this.GetField<QuestCatalogXML>("_questCatalog") as Dictionary<int, QuestDescription>;
-        _questLines =
-            this.GetField<QuestCatalogXML>("_questLines") as
-                SortedDictionary<QuestLineDescription, List<QuestDescription>>;
+        GameFlow.QuestCatalog = this;
+        QuestCatalogs = this.GetField<QuestCatalogXML>("_questCatalog") as Dictionary<int, QuestDescription>;
+        QuestLineCatalogs = this.GetField<QuestCatalogXML>("_questLineCatalog") as Dictionary<int, QuestLineDescription>;
     }
 
-    public QuestDescription[] GetQuestsBy(int npcId) =>
-        _quests.Values.Where(q => q.QuestGiverGoId == npcId).ToArray();
+    public QuestDescription[] GetQuestGiverById(int npcId) =>
+        QuestCatalogs.Values.Where(q => q.QuestGiverGoId == npcId).ToArray();
+
+    public QuestDescription[] GetQuestValidatorById(int npcId) =>
+        QuestCatalogs.Values.Where(q => q.ValidatorGoId == npcId).ToArray();
 
     public List<QuestDescription> GetQuestLineQuests(QuestLineDescription questLine) =>
-        _questLines.TryGetValue(questLine, out var v) ? v : null;
+        QuestLines.TryGetValue(questLine, out var v) ? v : null;
 }

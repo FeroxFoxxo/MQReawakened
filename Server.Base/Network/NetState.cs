@@ -326,9 +326,6 @@ public class NetState : IDisposable
             }
             else
             {
-
-                lock (_handler.Disposed)
-                    TraceBufferError(byteCount);
                 Dispose();
             }
         }

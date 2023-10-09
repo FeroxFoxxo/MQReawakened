@@ -46,7 +46,12 @@ public class ServerRConfig : IRConfig
     public double KickAfterTime { get; }
 
     public bool LogAllSyncEvents { get; }
-    public int AccessRights { get; set; }
+    public int AccessRights { get; }
+
+    public int Tutorial2014 { get; }
+    public Dictionary<TribeType, int> TutorialTribe2014 { get; }
+
+    public bool Is2014Client { get; set; }
 
     public ServerRConfig()
     {
@@ -125,5 +130,17 @@ public class ServerRConfig : IRConfig
         ClearCache = true;
 
         AccessRights = (int) UserAccessRight.NoDictionaryChat;
+
+        Tutorial2014 = 803;
+
+        TutorialTribe2014 = new Dictionary<TribeType, int>
+        {
+            { TribeType.Shadow, 966 }, // NINJA
+            { TribeType.Outlaw, 967 }, // PIRATE
+            { TribeType.Wild,   968 }, // ICE
+            { TribeType.Bone,   969 }, // OOTU
+        };
+
+        Is2014Client = false;
     }
 }

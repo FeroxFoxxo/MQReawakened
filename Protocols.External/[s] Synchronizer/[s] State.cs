@@ -122,7 +122,8 @@ public class State : ExternalProtocol
     public void LogEvent(SyncEvent syncEvent, int entityId, Room room)
     {
         var uniqueType = "Unknown";
-        
+        var prefabName = "Unknown";
+
         if(room.Players.TryGetValue(entityId, out var newPlayer))
         {
             uniqueType = newPlayer.Character != null ?
@@ -134,18 +135,25 @@ public class State : ExternalProtocol
         var entities = new List<string>();
 
         if (room.Entities.TryGetValue(entityId, out var entity))
+        {
             foreach (var entityComponent in entity)
+            {
                 entities.Add($"K:{entityComponent.Name}");
 
+                if (!string.IsNullOrEmpty(entityComponent.PrefabName))
+                    prefabName = entityComponent.PrefabName;
+            }
+        }
+        
         if (room.UnknownEntities.TryGetValue(entityId, out var unknownEntities))
             foreach (var entityComponent in unknownEntities)
                 entities.Add($"U:{entityComponent}");
 
         if (entities.Count > 0)
-            uniqueType = $"Entity {string.Join('/', entities)}";
+            uniqueType = $"Entity [{prefabName}] {string.Join('/', entities)}";
 
         if (Player.Character != null)
-                Logger.LogDebug("Event {Type} triggered for {Type} ({Id}) by {Player}", syncEvent.Type, uniqueType, entityId, Player.Character.Data.CharacterName);
+                Logger.LogDebug("SyncEvent '{Type}' run for {Type} ({Id}) by {Player}", syncEvent.Type, uniqueType, entityId, Player.Character.Data.CharacterName);
     }
 
     public void TraceSyncEventError(int entityId, SyncEvent syncEvent, LevelInfo levelInfo, string entityInfo)

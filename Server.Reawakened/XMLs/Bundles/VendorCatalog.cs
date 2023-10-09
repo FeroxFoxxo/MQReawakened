@@ -2,7 +2,6 @@
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
@@ -110,7 +109,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
         }
     }
 
-    private int FindSmallest(List<int> intArray, int lastSmallest)
+    private static int FindSmallest(List<int> intArray, int lastSmallest)
     {
         var sortedSet = intArray.Where(x => x > lastSmallest).Distinct().OrderBy(x => x).ToArray();
         if (sortedSet.Length == 0) return lastSmallest + 1;

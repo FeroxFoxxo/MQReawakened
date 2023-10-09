@@ -5,6 +5,7 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
+using Server.Reawakened.Configs;
 using System.Xml;
 using Web.AssetBundles.Assets.LocalAssets;
 using Web.AssetBundles.Events;
@@ -16,9 +17,8 @@ using Web.Launcher.Models;
 
 namespace Web.AssetBundles.Services;
 
-public class BuildAssetList(ILogger<BuildAssetList> logger, AssetBundleRConfig rConfig,
-    EventSink sink, AssetEventSink assetSink, ServerConsole console, LauncherRwConfig launcherWConfig,
-    AssetBundleRwConfig rwConfig) : IService
+public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, AssetEventSink assetSink, ServerConsole console,
+    LauncherRwConfig lWConfig, AssetBundleRwConfig rwConfig, AssetBundleRConfig rConfig, ServerRConfig sRConfig) : IService
 {
     public readonly Dictionary<string, string> AssetDict = new();
 
@@ -73,7 +73,7 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, AssetBundleRConfig r
             ? GetAssetsFromCache(Path.GetDirectoryName(rwConfig.CacheInfoFile))
             : GetAssetsFromDictionary(File.ReadAllText(AssetDictLocation));
 
-        InternalAssets = assets.GetClosestBundles(launcherWConfig);
+        InternalAssets = assets.GetClosestBundles(lWConfig, sRConfig);
 
         InternalAssets.AddModifiedAssets(rConfig);
         InternalAssets.AddLocalXmlFiles(logger, rConfig);
