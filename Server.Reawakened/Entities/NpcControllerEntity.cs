@@ -110,7 +110,6 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                         {
                             case NPCStatus.QuestAvailable:
                                 StartNewQuest(player);
-                                SendNpcInfo(player.Character, player.NetState);
                                 Logger.LogDebug("[AVALIABLE QUEST] [{Name} ({Id})]", Name, Id);
                                 break;
                             case NPCStatus.QuestInProgress:
@@ -128,8 +127,6 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                             default:
                                 break;
                         }
-
-                        SendNpcInfo(player.Character, player.NetState);
                         break;
                     case NpcType.Dialog:
                         SendDialog(player.Character, player.NetState);
@@ -342,6 +339,9 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
                     quest.QuestStatus = QuestState.IN_PROCESSING;
                 }
+
+                player.UpdateNpcsInLevel(givenQuest);
+
                 return;
             }
         }

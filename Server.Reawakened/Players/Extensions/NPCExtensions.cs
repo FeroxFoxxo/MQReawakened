@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Network.Extensions;
+﻿using Server.Reawakened.Entities;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using static A2m.Server.QuestStatus;
 
@@ -34,5 +35,14 @@ public static class NpcExtensions
             character.Data.ActiveQuestId = quest.Id;
 
         player.SendXt("na", questModel, setActiveQuest ? 1 : 0);
+    }
+
+    public static void UpdateNpcsInLevel(this Player player, QuestDescription quest)
+    {
+        if (player.Room != null && player.Character != null)
+            foreach (var entity in player.Room.Entities.SelectMany(e => e.Value)
+                .Where(e => e.Id == quest.QuestGiverGoId || e.Id == quest.ValidatorGoId)
+                .Where(e => e is NpcControllerEntity).Select(e => e as NpcControllerEntity))
+                entity.SendNpcInfo(player.Character, player.NetState);
     }
 }
