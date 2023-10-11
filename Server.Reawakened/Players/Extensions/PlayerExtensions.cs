@@ -43,10 +43,24 @@ public static class PlayerExtensions
         player.SendCashUpdate();
     }
 
-     public static void AddMCash(this Player player, int collectedMCash)
+    public static void RemoveBananas(this Player player, int collectedBananas)
     {
         var charData = player.Character.Data;
-        charData.NCash += collectedMCash;
+        charData.Cash -= collectedBananas;
+        player.SendCashUpdate();
+    }
+
+     public static void AddNCash(this Player player, int collectedNCash)
+    {
+        var charData = player.Character.Data;
+        charData.NCash += collectedNCash;
+        player.SendCashUpdate();
+    }
+
+    public static void RemoveNCash(this Player player, int collectedNCash)
+    {
+        var charData = player.Character.Data;
+        charData.NCash -= collectedNCash;
         player.SendCashUpdate();
     }
 

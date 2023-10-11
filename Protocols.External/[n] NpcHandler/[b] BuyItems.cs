@@ -24,7 +24,20 @@ public class BuyItems : ExternalProtocol
             var args = item.Split(":");
             var itemId = int.Parse(args[0]);
             var amount = int.Parse(args[1]);
-            character.AddItem(ItemCatalog.GetItemFromId(itemId), amount);
+
+            var itemInfo = ItemCatalog.GetItemFromId(itemId);
+
+            character.AddItem(itemInfo, amount);
+
+            if (itemInfo.Currency == A2m.Server.CurrencyType.Banana)
+            {
+                Player.RemoveBananas(itemInfo.RegularPrice * amount);
+            }
+            else if (itemInfo.Currency == A2m.Server.CurrencyType.NickCash)
+            {
+                Player.RemoveNCash(itemInfo.RegularPrice * amount);
+            }
+            
         }
 
         Player.SendUpdatedInventory(false);

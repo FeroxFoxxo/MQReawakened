@@ -50,7 +50,7 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
         AddCommand(new ChatCommand("bananas", "[bananaAmount]", Cash));
-        AddCommand(new ChatCommand("cash", "[cashAmount]", MCash));
+        AddCommand(new ChatCommand("cash", "[cashAmount]", NCash));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
         AddCommand(new ChatCommand("changeName", "[name] [name2] [name3]", ChangeName));
         AddCommand(new ChatCommand("badgePoints", "[amount]", BadgePoints));
@@ -148,13 +148,13 @@ public class ChatCommands : IService
         return true;
     }
 
-    public static bool MCash(Player player, string[] args)
+    public static bool NCash(Player player, string[] args)
     {
         var character = player.Character;
 
         var cashAmount = Convert.ToInt32(args[1]);
 
-        player.AddMCash(cashAmount);
+        player.AddNCash(cashAmount);
 
         Log($"{character.Data.CharacterName} received {cashAmount} monkey cash!", player);
 
@@ -179,7 +179,7 @@ public class ChatCommands : IService
         var character = player.Character;
 
         player.AddBananas(_config.CashKitAmount);
-        player.AddMCash(_config.CashKitAmount);
+        player.AddNCash(_config.CashKitAmount);
 
         Log($"{character.Data.CharacterName} received {_config.CashKitAmount} " +
             $"banana{(_config.CashKitAmount > 1 ? "s" : "")} & monkey cash!", player);
