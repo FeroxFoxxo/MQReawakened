@@ -179,7 +179,7 @@ public static class PlayerExtensions
             {
                 if (!hotbarButtons.ContainsKey(i))
                 {
-                    ItemModel itemModel = new ItemModel()
+                    var itemModel = new ItemModel()
                     {
                         ItemId = 340,
                         Count = 1,

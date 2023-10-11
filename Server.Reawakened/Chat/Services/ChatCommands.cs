@@ -244,7 +244,7 @@ public class ChatCommands : IService
     }
 
 
-    public static bool CashKit(Player player, string[] args)
+    public bool CashKit(Player player, string[] args)
     {
         var character = player.Character;
 
