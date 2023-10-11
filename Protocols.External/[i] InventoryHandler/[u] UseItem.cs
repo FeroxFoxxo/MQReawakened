@@ -4,7 +4,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
-namespace Protocols.External._i__InventoryHandler;
+namespace Protocols.External._iInventoryHandler;
 
 public class UseItem : ExternalProtocol
 {
@@ -31,9 +31,57 @@ public class UseItem : ExternalProtocol
 
         switch (item.SubCategoryId)
         {
-            case ItemSubCategory.SuperPack:
-                character.RemoveItem(item.ItemId, 1);
 
+            case ItemSubCategory.Bomb:
+
+                character.RemoveItem(item, 1);
+                Player.SendUpdatedInventory(false);
+
+                break;
+
+            case ItemSubCategory.Alchemy:
+
+                var itemDescription = ItemCatalog.GetItemFromId(item.ItemId);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(itemDescription);
+                Console.ForegroundColor = ConsoleColor.Magenta;
+
+                character.RemoveItem(item, 1);
+                Player.SendUpdatedInventory(false);
+
+                break;
+
+            case ItemSubCategory.Grenade:
+
+                character.RemoveItem(item, 1);
+                Player.SendUpdatedInventory(false);
+
+                break;
+
+            case ItemSubCategory.Potion:
+
+                character.RemoveItem(item, 1);
+                Player.SendUpdatedInventory(false);
+
+                break;
+            case ItemSubCategory.Usable:
+
+                character.RemoveItem(item, 1);
+                Player.SendUpdatedInventory(false);
+
+                break;
+
+            case ItemSubCategory.BananaBox:
+
+                character.RemoveItem(item, 1);
+                Player.SendUpdatedInventory(false);
+
+                break;
+
+            case ItemSubCategory.SuperPack:
+
+                character.RemoveItem(item, 1);
                 foreach (var pair in VendorCatalog.GetSuperPacksItemQuantityMap(itemId))
                 {
                     var packItem = ItemCatalog.GetItemFromId(pair.Key);
@@ -43,8 +91,8 @@ public class UseItem : ExternalProtocol
 
                     character.AddItem(packItem, pair.Value);
                 }
-
                 Player.SendUpdatedInventory(false);
+
                 break;
             default:
                 Logger.LogWarning("Could not find use for item {ItemId}, type {ItemType}.",
@@ -52,4 +100,5 @@ public class UseItem : ExternalProtocol
                 break;
         }
     }
+
 }

@@ -22,7 +22,7 @@ public class EquipItem : ExternalProtocol
             if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquipped))
                 character.AddItem(ItemCatalog.GetItemFromId(previouslyEquipped), 1);
 
-            character.RemoveItem(item.Value, 1);
+            character.RemoveItem(ItemCatalog.GetItemFromId(item.Value), 1);
         }
 
         character.Data.Equipment = newEquipment;

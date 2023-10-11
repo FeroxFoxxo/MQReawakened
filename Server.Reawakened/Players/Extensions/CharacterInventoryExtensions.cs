@@ -11,15 +11,16 @@ public static class CharacterInventoryExtensions
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>
         characterData.Data.Inventory.Items.TryGetValue(itemId, out outItem);
 
-    public static void RemoveItem(this CharacterModel characterData, int itemId, int count)
+    public static void RemoveItem(this CharacterModel characterData, ItemDescription item, int count)
     {
-        if (!characterData.TryGetItem(itemId, out var gottenItem))
+        if (!characterData.TryGetItem(item.ItemId, out var gottenItem))
             return;
 
-        gottenItem.Count -= count;
+        characterData.Data.Inventory.Items[gottenItem.ItemId].Count -= count;
 
-        if (gottenItem.Count <= 0)
-            characterData.Data.Inventory.Items.Remove(itemId);
+        //Not currently working, breaks method. Fix later.
+        //if (characterData.Data.Inventory.Items[gottenItem.ItemId].Count <= 0)
+        //characterData.Data.Inventory.Items.Remove(gottenItem.ItemId);
     }
 
     public static void AddItem(this CharacterModel characterData, ItemDescription item, int count)
