@@ -45,15 +45,15 @@ public class ChatCommands : IService
     {
         _logger.LogDebug("Setting up chat commands");
 
-        AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
+        AddCommand(new ChatCommand("changeName", "[name] [name2] [name3]", ChangeName));
+        AddCommand(new ChatCommand("hotbar", "[petSlot (1 = true)]", AddHotbar));
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
+        AddCommand(new ChatCommand("badgePoints", "[amount]", BadgePoints));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
-        AddCommand(new ChatCommand("bananas", "[bananaAmount]", Cash));
-        AddCommand(new ChatCommand("cash", "[cashAmount]", MCash));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
-        AddCommand(new ChatCommand("changeName", "[name] [name2] [name3]", ChangeName));
-        AddCommand(new ChatCommand("badgePoints", "[amount]", BadgePoints));
+        AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
+        AddCommand(new ChatCommand("map", "", DiscoverMap));
         AddCommand(new ChatCommand("save", "", SaveLevel));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
@@ -98,18 +98,69 @@ public class ChatCommands : IService
 
     public void AddCommand(ChatCommand command) => _commands.Add(command.Name, command);
 
-    public bool ItemKit(Player player, string[] args)
+    private bool DiscoverMap(Player player, string[] args)
     {
         var character = player.Character;
 
-        if (args.Length is < 1 or > 2)
-            return false;
+        player.DiscoverAllTribes();
+
+        Log($"{character.Data.CharacterName} has discovered all tribes! (view map)", player);
+
+        return true;
+    }
+
+    private bool AddHotbar(Player player, string[] args)
+    {
+        var pet = false;
+
+        var petSlot = 0;
+
+        if (args.Length == 2)
+        {
+            if (!int.TryParse(args[1], out var petSlotValue))
+                Log("Invalid input, defaulting to 0 (false)", player);
+
+            if (petSlotValue < 0 || petSlotValue > 1)
+                Log("Input out of range, defaulting to 0 (false)", player);
+
+            else
+                petSlot = petSlotValue;
+
+            if (petSlot == 0)
+            {
+                pet = false;
+                Log("Adding slots (no pet slot)", player);
+            }
+            else if (petSlot == 1)
+            {
+                pet = true;
+                Log("Adding slots (pet slot)", player);
+            }
+        }
+
+        player.AddSlots(pet);
+
+        Log("Hotbar has been setup! (equip a weapon or log out)", player);
+
+        return true;
+    }
+
+
+    private bool ItemKit(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        if (args.Length > 2)
+            Log($"Invalid input, defaulting to 1", player);
 
         var amount = 1;
 
         if (args.Length == 2)
         {
-            amount = Convert.ToInt32(args[1]);
+            if (!int.TryParse(args[1], out var kitAmount))
+                Log($"Invalid input, defaulting to 1", player);
+
+            amount = kitAmount;
 
             if (amount <= 0)
                 amount = 1;
@@ -136,6 +187,7 @@ public class ChatCommands : IService
         return true;
     }
 
+
     public static bool Cash(Player player, string[] args)
     {
         var character = player.Character;
@@ -161,25 +213,45 @@ public class ChatCommands : IService
         return true;
     }
 
-    public static bool BadgePoints(Player player, string[] args)
+    private static bool BadgePoints(Player player, string[] args)
     {
         var character = player.Character;
 
-        var amount = Convert.ToInt32(args[1]);
+        int amount;
+
+        if (args.Length < 2)
+        {
+            Log($"Invalid, enter number of badge points", player);
+            return false;
+        }
+        if (!int.TryParse(args[1], out var pointsAmount) || args.Length < 2)
+            Log($"Invalid input, defaulting to 1", player);
+
+        amount = pointsAmount;
+
+        if (amount <= 0)
+            amount = 1;
 
         player.AddPoints(amount);
 
-        Log($"{character.Data.CharacterName} received {amount} badge point{(amount > 1 ? "s" : "")}!", player);
+        Log(
+            amount > 1
+                ? $"{character.Data.CharacterName} received {amount} badge points!"
+                : $"{character.Data.CharacterName} received {amount} badge point! (get grinding noob)", player
+           );
 
         return true;
     }
 
-    public bool CashKit(Player player, string[] args)
+
+    public static bool CashKit(Player player, string[] args)
     {
         var character = player.Character;
 
-        player.AddBananas(_config.CashKitAmount);
-        player.AddMCash(_config.CashKitAmount);
+        const int cashKitAmount = 69420;
+
+        player.AddBananas(cashKitAmount);
+        player.AddMCash(cashKitAmount);
 
         Log($"{character.Data.CharacterName} received {_config.CashKitAmount} " +
             $"banana{(_config.CashKitAmount > 1 ? "s" : "")} & monkey cash!", player);
@@ -193,7 +265,7 @@ public class ChatCommands : IService
 
         if (args.Length < 3)
         {
-            Log("Error: Invalid Input!", player);
+            Log("Error: Invalid input!", player);
             return false;
         }
 
@@ -224,10 +296,14 @@ public class ChatCommands : IService
     {
         var character = player.Character;
 
-        if (args.Length != 2)
+        int levelId;
+        if (args.Length != 2 || !int.TryParse(args[1], out var level))
+        {
+            Log($"Invalid input, enter level ID", player);
             return false;
+        }
 
-        var levelId = Convert.ToInt32(args[1]);
+        levelId = level;
 
         character.SetLevel(levelId, _logger);
 
@@ -246,18 +322,28 @@ public class ChatCommands : IService
         Log($"{character.Data.CharacterName} changed to level {levelId}", player);
 
         return true;
+
     }
 
     private bool LevelUp(Player player, string[] args)
     {
-        if (args.Length != 2)
-            return false;
+        var character = player.Character;
 
-        var newLevel = Convert.ToInt32(args[1]);
+        if (args.Length != 2 || !int.TryParse(args[1], out var level))
+        {
+            Log("Invalid input, defaulting to max level...", player);
+            level = 65;
+        }
+
+        var newLevel = level;
+
         player.LevelUp(newLevel, _logger);
+
+        Log($"{character.Data.CharacterName} has leveled up to level {newLevel}!", player);
 
         return true;
     }
+
 
     private bool SaveLevel(Player player, string[] args)
     {
@@ -269,15 +355,18 @@ public class ChatCommands : IService
     {
         var character = player.Character;
 
-        if (args.Length is < 2 or > 3)
+        if (args.Length is < 2 or > 3 || !int.TryParse(args[1], out var itemId))
+        {
+            Log("Invalid input, enter item ID", player);
             return false;
+        }
 
-        var itemId = Convert.ToInt32(args[1]);
         var amount = 1;
 
         if (args.Length == 3)
         {
-            amount = Convert.ToInt32(args[2]);
+            if (!int.TryParse(args[2], out amount))
+                Log("Invalid amount, defaulting to 1", player);
 
             if (amount <= 0)
                 amount = 1;
