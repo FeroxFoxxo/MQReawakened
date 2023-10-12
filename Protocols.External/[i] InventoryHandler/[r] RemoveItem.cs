@@ -15,11 +15,14 @@ public class RemoveItem : ExternalProtocol
         var character = Player.Character;
 
         var itemId = int.Parse(message[5]);
-        var removeCount = int.Parse(message[5]);
+        var removeCount = int.Parse(message[6]);
 
         var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
         character.RemoveItem(itemDescription, removeCount);
+
+        foreach (var messages in message)
+        Console.WriteLine(messages);
 
         Player.SendUpdatedInventory(false);
     }
