@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
@@ -77,7 +78,7 @@ public static class PlayerExtensions
         player.SendXt("ca", charData.Cash, charData.NCash);
     }
 
-     public static void SendPointsUpdate(this Player player)
+    public static void SendPointsUpdate(this Player player)
     {
         var charData = player.Character.Data;
         player.SendXt("ca", charData.BadgePoints);
@@ -155,4 +156,55 @@ public static class PlayerExtensions
         if (player.Character.HasAddedDiscoveredTribe(tribe))
             player.SendXt("cB", (int)tribe);
     }
+
+    public static void DiscoverAllTribes(this Player player)
+    {
+        foreach (TribeType tribe in Enum.GetValues(typeof(TribeType)))
+        {
+            player.DiscoverTribe(tribe);
+        }
+    }
+
+    public static void AddSlots(this Player player, bool pet)
+    {
+        var hotbarButtons = player.Character.Data.Hotbar.HotbarButtons;
+
+        if (pet == true)
+        {
+            for (var i = 0; i < 5; i++)
+            {
+                if (!hotbarButtons.ContainsKey(i))
+                {
+                    ItemModel itemModel = new ItemModel()
+                    {
+                        ItemId = 340,
+                        Count = 1,
+                        BindingCount = 0, 
+                        DelayUseExpiry = DateTime.MinValue
+                    };
+                    hotbarButtons[i] = itemModel;
+                }
+            }
+        }
+
+        if (pet == false)
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                if (!hotbarButtons.ContainsKey(i))
+                {
+                    var itemModel = new ItemModel()
+                    {
+                        ItemId = 340,
+                        Count = 1,
+                        BindingCount = 1, 
+                        DelayUseExpiry = DateTime.MinValue
+                    };
+                    hotbarButtons[i] = itemModel;
+                }
+            }
+        }
+
+    }
+
 }
