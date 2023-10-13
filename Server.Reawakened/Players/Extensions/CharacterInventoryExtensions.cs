@@ -17,10 +17,6 @@ public static class CharacterInventoryExtensions
             return;
 
         characterData.Data.Inventory.Items[gottenItem.ItemId].Count -= count;
-
-        //Not currently working, breaks method. Fix later.
-        //if (characterData.Data.Inventory.Items[gottenItem.ItemId].Count <= 0)
-        //characterData.Data.Inventory.Items.Remove(gottenItem.ItemId);
     }
 
     public static void AddItem(this CharacterModel characterData, ItemDescription item, int count)
@@ -65,11 +61,16 @@ public static class CharacterInventoryExtensions
         return sb.ToString();
     }
 
-    public static void SendUpdatedInventory(this Player player, bool fromEquippedUpdate) =>
+    public static void SendUpdatedInventory(this Player player, bool fromEquippedUpdate)
+    {
         player.SendXt(
             "ip",
             player.Character.Data.Inventory.GetItemListString(),
             fromEquippedUpdate
         );
 
+        foreach(var item in player.Character.Data.Inventory.Items)
+            if (item.Value.Count <= 0)
+                player.Character.Data.Inventory.Items.Remove(item.Key);
+    }
 }

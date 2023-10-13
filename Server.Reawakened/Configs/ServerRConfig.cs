@@ -17,6 +17,8 @@ public class ServerRConfig : IRConfig
     public int ReservedNameCount { get; }
     public int MaxCharacterCount { get; }
 
+    public int MaxLevel { get; }
+
     public int DefaultQuest { get; }
 
     public bool LogSyncState { get; }
@@ -142,5 +144,7 @@ public class ServerRConfig : IRConfig
         };
 
         Is2014Client = false;
+
+        MaxLevel = 65;
     }
 }

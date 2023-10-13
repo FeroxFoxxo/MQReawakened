@@ -4,7 +4,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
-namespace Protocols.External._iInventoryHandler;
+namespace Protocols.External._i__InventoryHandler;
 
 public class UseItem : ExternalProtocol
 {
@@ -29,59 +29,12 @@ public class UseItem : ExternalProtocol
             return;
         }
 
+        character.RemoveItem(item, 1);
+
         switch (item.SubCategoryId)
         {
-
-            case ItemSubCategory.Bomb:
-
-                character.RemoveItem(item, 1);
-                Player.SendUpdatedInventory(false);
-
-                break;
-
-            case ItemSubCategory.Alchemy:
-
-                var itemDescription = ItemCatalog.GetItemFromId(item.ItemId);
-
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(itemDescription);
-                Console.ForegroundColor = ConsoleColor.Magenta;
-
-                character.RemoveItem(item, 1);
-                Player.SendUpdatedInventory(false);
-
-                break;
-
-            case ItemSubCategory.Grenade:
-
-                character.RemoveItem(item, 1);
-                Player.SendUpdatedInventory(false);
-
-                break;
-
-            case ItemSubCategory.Potion:
-
-                character.RemoveItem(item, 1);
-                Player.SendUpdatedInventory(false);
-
-                break;
-            case ItemSubCategory.Usable:
-
-                character.RemoveItem(item, 1);
-                Player.SendUpdatedInventory(false);
-
-                break;
-
-            case ItemSubCategory.BananaBox:
-
-                character.RemoveItem(item, 1);
-                Player.SendUpdatedInventory(false);
-
-                break;
-
             case ItemSubCategory.SuperPack:
 
-                character.RemoveItem(item, 1);
                 foreach (var pair in VendorCatalog.GetSuperPacksItemQuantityMap(itemId))
                 {
                     var packItem = ItemCatalog.GetItemFromId(pair.Key);
@@ -91,7 +44,6 @@ public class UseItem : ExternalProtocol
 
                     character.AddItem(packItem, pair.Value);
                 }
-                Player.SendUpdatedInventory(false);
 
                 break;
             default:
@@ -99,6 +51,8 @@ public class UseItem : ExternalProtocol
                     itemId, item.SubCategoryId);
                 break;
         }
+
+        Player.SendUpdatedInventory(false);
     }
 
 }

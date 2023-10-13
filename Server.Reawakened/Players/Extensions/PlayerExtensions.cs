@@ -160,51 +160,26 @@ public static class PlayerExtensions
     public static void DiscoverAllTribes(this Player player)
     {
         foreach (TribeType tribe in Enum.GetValues(typeof(TribeType)))
-        {
             player.DiscoverTribe(tribe);
-        }
     }
 
-    public static void AddSlots(this Player player, bool pet)
+    public static void AddSlots(this Player player, bool hasPet)
     {
         var hotbarButtons = player.Character.Data.Hotbar.HotbarButtons;
 
-        if (pet == true)
+        for (var i = 0; i < (hasPet ? 5 : 4); i++)
         {
-            for (var i = 0; i < 5; i++)
+            if (!hotbarButtons.ContainsKey(i))
             {
-                if (!hotbarButtons.ContainsKey(i))
+                var itemModel = new ItemModel()
                 {
-                    ItemModel itemModel = new ItemModel()
-                    {
-                        ItemId = 340,
-                        Count = 1,
-                        BindingCount = 0, 
-                        DelayUseExpiry = DateTime.MinValue
-                    };
-                    hotbarButtons[i] = itemModel;
-                }
+                    ItemId = 340,
+                    Count = 1,
+                    BindingCount = 0,
+                    DelayUseExpiry = DateTime.MinValue
+                };
+                hotbarButtons[i] = itemModel;
             }
         }
-
-        if (pet == false)
-        {
-            for (var i = 0; i < 4; i++)
-            {
-                if (!hotbarButtons.ContainsKey(i))
-                {
-                    var itemModel = new ItemModel()
-                    {
-                        ItemId = 340,
-                        Count = 1,
-                        BindingCount = 1, 
-                        DelayUseExpiry = DateTime.MinValue
-                    };
-                    hotbarButtons[i] = itemModel;
-                }
-            }
-        }
-
     }
-
 }

@@ -16,9 +16,11 @@ public class SellItems : ExternalProtocol
         var character = Player.Character;
 
         var items = message[6].Split('|');
+
         foreach (var item in items)
         {
-            if (string.IsNullOrEmpty(item)) continue;
+            if (string.IsNullOrEmpty(item))
+                continue;
 
             var args = item.Split(":");
             var itemId = int.Parse(args[0]);
