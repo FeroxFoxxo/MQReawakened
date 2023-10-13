@@ -21,9 +21,6 @@ public class RemoveItem : ExternalProtocol
 
         character.RemoveItem(itemDescription, removeCount);
 
-        foreach (var messages in message)
-        Console.WriteLine(messages);
-
         Player.SendUpdatedInventory(false);
     }
 }
