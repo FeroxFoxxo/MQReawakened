@@ -161,7 +161,7 @@ public static class PlayerExtensions
                 {
                     ItemId = 340,
                     Count = 1,
-                    BindingCount = 0,
+                    BindingCount = 1,
                     DelayUseExpiry = DateTime.MinValue
                 };
                 hotbarButtons[i] = itemModel;
