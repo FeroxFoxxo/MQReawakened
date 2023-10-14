@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 using UnityEngine;
 
@@ -9,7 +10,10 @@ namespace Server.Reawakened.XMLs.Bundles;
 public class QuestCatalog : QuestCatalogXML, IBundledXml
 {
     public string BundleName => "QuestCatalog";
-    public bool Priority => false;
+    public BundlePriority Priority => BundlePriority.Low;
+
+    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public IServiceProvider Services { get; set; }
 
     public Dictionary<int, QuestDescription> QuestCatalogs;
     public Dictionary<int, QuestLineDescription> QuestLineCatalogs;
@@ -31,7 +35,7 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
         QuestLineCatalogs = [];
     }
 
-    public void EditDescription(XmlDocument xml, IServiceProvider services)
+    public void EditDescription(XmlDocument xml)
     {
     }
 

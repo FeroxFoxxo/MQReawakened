@@ -1,5 +1,6 @@
 ﻿using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 using WorldGraphDefines;
 
@@ -8,7 +9,10 @@ namespace Server.Reawakened.XMLs.Bundles;
 public class WorldGraph : WorldGraphXML, IBundledXml
 {
     public string BundleName => "world_graph";
-    public bool Priority => false;
+    public BundlePriority Priority => BundlePriority.Low;
+
+    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public IServiceProvider Services { get; set; }
 
     public int DefaultLevel;
 
@@ -25,7 +29,7 @@ public class WorldGraph : WorldGraphXML, IBundledXml
             int.Parse(this.GetField<WorldGraphXML>("CLOCK_TOWER_SQUARE_LEVEL_ID").ToString() ?? string.Empty);
     }
 
-    public void EditDescription(XmlDocument xml, IServiceProvider services)
+    public void EditDescription(XmlDocument xml)
     {
     }
 

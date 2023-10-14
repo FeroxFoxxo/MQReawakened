@@ -1,5 +1,4 @@
-﻿using A2m.Server;
-using FollowCamDefines;
+﻿using FollowCamDefines;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Network;

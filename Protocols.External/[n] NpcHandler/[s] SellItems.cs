@@ -1,7 +1,5 @@
-﻿using A2m.Server;
-using Server.Reawakened.Network.Protocols;
+﻿using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._n__NpcHandler;

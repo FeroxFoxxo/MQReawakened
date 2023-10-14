@@ -7,39 +7,29 @@ namespace Web.AssetBundles.Extensions;
 
 public static class GetData
 {
-    public static string GetXmlData(this InternalAssetInfo asset, DefaultProgressBar bar)
+    public static string GetXmlData(this InternalAssetInfo asset)
     {
-        try
-        {
-            var file = File.ReadAllText(asset.Path);
+        var file = File.ReadAllText(asset.Path);
 
-            if (file.FirstOrDefault() == '<')
-                try
-                {
-                    new XmlDocument().LoadXml(file);
-                    return file;
-                }
-                catch (XmlException)
-                {
-                }
+        if (file.FirstOrDefault() == '<')
+            try
+            {
+                new XmlDocument().LoadXml(file);
+                return file;
+            }
+            catch (XmlException)
+            {
+            }
 
-            var manager = new AssetsManager();
+        var manager = new AssetsManager();
 
-            manager.LoadFiles(asset.Path);
+        manager.LoadFiles(asset.Path);
 
-            var textAsset = manager.assetsFileList.First().ObjectsDic.Values.ToArray().GetText(asset.Name);
+        var textAsset = manager.assetsFileList.First().ObjectsDic.Values.ToArray().GetText(asset.Name);
 
-            var text = Encoding.UTF8.GetString(textAsset.m_Script);
-            var length = text.Split('\n').Length;
+        var text = Encoding.UTF8.GetString(textAsset.m_Script);
+        var length = text.Split('\n').Length;
 
-            bar.SetMessage($"Read XML {asset.Name} for {length} lines.");
-
-            return text;
-        }
-        catch (Exception e)
-        {
-            bar.SetMessage($"{asset.Name} could not load! Exception: {e}. Skipping...");
-            return string.Empty;
-        }
+        return text;
     }
 }

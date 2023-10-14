@@ -31,66 +31,61 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, 
             .ToDictionary(x => x.BundleName, x => x);
 
         foreach (var bundle in bundles)
+        {
+            bundle.Value.Logger = logger;
+            bundle.Value.Services = services;
             bundle.Value.InitializeVariables();
+        }
 
         var assets = assetLoadEvent.InternalAssets
             .Select(x => x.Value)
             .Where(x => x.Type is AssetInfo.TypeAsset.XML)
             .OrderBy(x => x.Name)
-            .OrderBy(x => !(bundles.TryGetValue(x.Name, out var bundle) && bundle.Priority))
+            .OrderByDescending(x => bundles.TryGetValue(x.Name, out var bundle) ? (int)bundle.Priority : 0)
             .ToArray();
 
-        using (var bar = new DefaultProgressBar(assets.Length, "Loading XML Files", logger, rwConfig))
+        foreach (var asset in assets)
         {
-            foreach (var asset in assets)
+            var text = asset.GetXmlData();
+
+            if (string.IsNullOrEmpty(text))
+                continue;
+
+            if (bundles.TryGetValue(asset.Name, out var bundle))
             {
-                var text = asset.GetXmlData(bar);
+                logger.LogTrace("Loading bundle: {BundleName}", asset.Name);
 
-                if (string.IsNullOrEmpty(text))
+                if (bundle is ILocalizationXml localizedXmlBundle)
                 {
-                    bar.SetMessage($"XML for {asset.Name} is empty! Skipping...");
-                    continue;
+                    var localizedAsset = assets.FirstOrDefault(x =>
+                        string.Equals(x.Name, localizedXmlBundle.LocalizationName,
+                            StringComparison.OrdinalIgnoreCase
+                        )
+                    );
+
+                    var localizedXml = localizedAsset.GetXmlData();
+
+                    localizedXmlBundle.ReadLocalization(localizedXml);
                 }
 
-                if (bundles.TryGetValue(asset.Name, out var bundle))
-                {
-                    if (bundle is ILocalizationXml localizedXmlBundle)
-                    {
-                        var localizedAsset = assets.FirstOrDefault(x =>
-                            string.Equals(x.Name, localizedXmlBundle.LocalizationName,
-                                StringComparison.OrdinalIgnoreCase
-                            )
-                        );
+                var xml = new XmlDocument();
+                xml.LoadXml(text);
 
-                        var localizedXml = localizedAsset.GetXmlData(bar);
+                bundle.EditDescription(xml);
 
-                        localizedXmlBundle.ReadLocalization(localizedXml);
-                    }
+                text = xml.WriteToString();
 
-                    var xml = new XmlDocument();
-                    xml.LoadXml(text);
+                bundle.ReadDescription(text);
+                bundle.FinalizeBundle();
 
-                    bundle.EditDescription(xml, services);
-
-                    text = xml.WriteToString();
-
-                    bundle.ReadDescription(text);
-                    bundle.FinalizeBundle();
-
-                    bar.SetMessage($"Loaded {asset.Name} From Disk");
-                    bundles.Remove(asset.Name);
-                }
-
-                var path = Path.Join(rConfig.XmlSaveDirectory, $"{asset.Name}.xml");
-
-                bar.SetMessage($"Writing file to {path}");
-
-                File.WriteAllText(path, text);
-
-                XmlFiles.Add(asset.Name, path);
-
-                bar.TickBar();
+                bundles.Remove(asset.Name);
             }
+
+            var path = Path.Join(rConfig.XmlSaveDirectory, $"{asset.Name}.xml");
+
+            File.WriteAllText(path, text);
+
+            XmlFiles.Add(asset.Name, path);
         }
 
         if (bundles.Count <= 0)

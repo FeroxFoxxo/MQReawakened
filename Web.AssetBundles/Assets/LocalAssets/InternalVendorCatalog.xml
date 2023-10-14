@@ -1,440 +1,416 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<vendorCatalog>
-    <!-- Mogri -->
-    <vendor objectId="98648" nameId="166249430" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="10" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
-    </vendor>
-    <!-- Altak -->
-    <vendor objectId="615" nameId="6518" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="9" dialogId="773" greetingConversationId="6945" leavingConversationId="6944">
-        <item id="3070" />
-        <item id="404" />
-        <item id="2909" />
-        <item id="1568" />
-        <item id="433" />
-        <item id="3024" />
-        <item id="1736" />
-        <item id="1754" />
-        <item id="5334" />
-        <item id="3076" />
-        <item id="405" />
-        <item id="1003" />
-        <item id="1007" />
-    </vendor>
-    <!-- Dillon -->
-    <vendor objectId="822" nameId="10203" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="9" dialogId="1018" greetingConversationId="2795" leavingConversationId="2794">
-        <item id="3070" />
-        <item id="2909" />
-        <item id="1562" />
-        <item id="1139" />
-        <item id="913" />
-        <item id="1286" />
-        <item id="1284" />
-        <item id="1621" />
-        <item id="2719" />
-        <item id="406" />
-        <item id="3074" />
-        <item id="1013" />
-        <item id="447" />
-        <item id="914" />
-        <item id="2721" />
-    </vendor>
-    <!-- Koz -->
-    <vendor objectId="2513" nameId="6517" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="9" dialogId="790" greetingConversationId="2214" leavingConversationId="2213">
-        <item id="1568" />
-        <item id="2909" />
-        <item id="3070" />
-        <item id="2721" />
-        <item id="827" />
-        <item id="828" />
-        <item id="1623" />
-        <item id="3054" />
-        <item id="405" />
-        <item id="2718" />
-        <item id="846" />
-        <item id="1287" />
-        <item id="817" />
-    </vendor>
-    <!-- Etok -->
-    <vendor objectId="945" nameId="8052" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="9" dialogId="795" greetingConversationId="2244" leavingConversationId="2243">
-        <item id="3070" />
-        <item id="2909" />
-        <item id="598" />
-        <item id="1667" />
-        <item id="1815" />
-        <item id="662" />
-        <item id="1652" />
-        <item id="1664" />
-        <item id="1025" />
-        <item id="1662" />
-        <item id="637" />
-        <item id="1618" />
-        <item id="418" />
-        <item id="1830" />
-        <item id="1222" />
-    </vendor>
-    <!-- Zolin -->
-    <vendor objectId="31529" nameId="10106" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="9" dialogId="1021" greetingConversationId="2813" leavingConversationId="2812">
-        <item id="1568" />
-        <item id="404" />
-        <item id="3054" />
-        <item id="3008" />
-        <item id="2999" />
-        <item id="3001" />
-        <item id="2998" />
-        <item id="3025" />
-        <item id="3000" />
-    </vendor>
-    <!-- Rhea -->
-    <vendor objectId="575" nameId="5765" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="1316" greetingConversationId="3071" leavingConversationId="3326">
-        <item id="601" />
-        <item id="634" />
-        <item id="1083" />
-        <item id="1084" />
-        <item id="1085" />
-        <item id="1080" />
-        <item id="1081" />
-        <item id="1082" />
-        <item id="1212" />
-        <item id="1213" />
-        <item id="1211" />
-        <item id="1362" />
-        <item id="1363" />
-        <item id="1364" />
-        <item id="657" />
-        <item id="670" />
-        <item id="671" />
-        <item id="672" />
-        <item id="664" />
-        <item id="1112" />
-        <item id="1114" />
-        <item id="1095" />
-        <item id="1096" />
-        <item id="742" />
-    </vendor>
-    <!-- Zeeta -->
-    <vendor objectId="578" nameId="5767" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="13" dialogId="794" greetingConversationId="2238" leavingConversationId="2237">
-        <item id="1353" />
-        <item id="1352" />
-        <item id="445" />
-        <item id="1238" />
-        <item id="1239" />
-        <item id="1760" />
-        <item id="699" />
-        <item id="948" />
-        <item id="2718" />
-        <item id="1736" />
-        <item id="1253" />
-        <item id="2721" />
-        <item id="1259" />
-        <item id="957" />
-        <item id="961" />
-        <item id="2719" />
-        <item id="983" />
-        <item id="1192" />
-        <item id="1391" />
-        <item id="436" />
-        <item id="437" />
-        <item id="1075" />
-        <item id="1077" />
-    </vendor>
-    <!-- Mikith -->
-    <vendor objectId="576" nameId="5764" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="793" greetingConversationId="2232" leavingConversationId="2231">
-        <item id="651" />
-        <item id="629" />
-        <item id="1205" />
-        <item id="642" />
-        <item id="430" />
-        <item id="431" />
-        <item id="432" />
-        <item id="1104" />
-        <item id="662" />
-        <item id="665" />
-        <item id="661" />
-        <item id="1026" />
-        <item id="1027" />
-        <item id="1028" />
-        <item id="1036" />
-        <item id="1037" />
-        <item id="633" />
-        <item id="632" />
-        <item id="631" />
-        <item id="1143" />
-        <item id="1224" />
-        <item id="637" />
-    </vendor>
-    <!-- Razoo -->
-    <vendor objectId="577" nameId="5763" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="4" dialogId="1331" greetingConversationId="3337" leavingConversationId="3336">
-        <item id="2274" />
-        <item id="2276" />
-        <item id="404" />
-        <item id="405" />
-        <item id="406" />
-        <item id="418" />
-        <item id="419" />
-        <item id="1577" />
-    </vendor>
-    <!-- Koopu -->
-    <vendor objectId="574" nameId="5766" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="6" dialogId="1108" greetingConversationId="3342" leavingConversationId="3079">
-        <item id="1568" />
-        <item id="1573" />
-        <item id="1617" />
-        <item id="1611" />
-        <item id="1615" />
-        <item id="1621" />
-        <item id="1613" />
-        <item id="1620" />
-        <item id="1614" />
-        <item id="1618" />
-        <item id="1622" />
-        <item id="1619" />
-        <item id="1625" />
-        <item id="1616" />
-        <item id="1624" />
-    </vendor>
-    <!-- Yod -->
-    <vendor objectId="579" nameId="6500" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="4" dialogId="1331" greetingConversationId="3337" leavingConversationId="3336">
-        <item id="2274" />
-        <item id="2276" />
-        <item id="404" />
-        <item id="405" />
-        <item id="406" />
-        <item id="418" />
-        <item id="419" />
-        <item id="1577" />
-    </vendor>
-    <!-- Bumbeef -->
-    <vendor objectId="551" nameId="5770" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="4" dialogId="1307" greetingConversationId="3312" leavingConversationId="3311">
-        <item id="2274" />
-        <item id="2276" />
-        <item id="404" />
-        <item id="405" />
-        <item id="406" />
-        <item id="418" />
-        <item id="419" />
-        <item id="1577" />
-    </vendor>
-    <!-- Scatterfoot -->
-    <vendor objectId="554" nameId="5771" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="13" dialogId="1301" greetingConversationId="3301" leavingConversationId="3300">
-        <item id="699" />
-        <item id="1259" />
-        <item id="950" />
-        <item id="948" />
-        <item id="902" />
-        <item id="2718" />
-        <item id="2719" />
-        <item id="898" />
-        <item id="2721" />
-        <item id="1443" />
-        <item id="1445" />
-        <item id="1451" />
-        <item id="1455" />
-        <item id="1393" />
-        <item id="957" />
-        <item id="961" />
-        <item id="1433" />
-        <item id="1434" />
-        <item id="1435" />
-        <item id="1432" />
-        <item id="846" />
-        <item id="1478" />
-        <item id="1479" />
-    </vendor>
-    <!-- Clunk -->
-    <vendor objectId="557" nameId="5773" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="1303" greetingConversationId="3389" leavingConversationId="3388">
-        <item id="1461" />
-        <item id="1464" />
-        <item id="1277" />
-        <item id="1280" />
-        <item id="1450" />
-        <item id="825" />
-        <item id="1424" />
-        <item id="824" />
-        <item id="1429" />
-        <item id="1425" />
-        <item id="1430" />
-        <item id="1431" />
-        <item id="1428" />
-        <item id="1422" />
-        <item id="1272" />
-        <item id="1276" />
-        <item id="1270" />
-        <item id="636" />
-        <item id="1268" />
-        <item id="1176" />
-        <item id="1436" />
-        <item id="1170" />
-        <item id="1439" />
-    </vendor>
-    <!-- Jolly -->
-    <vendor objectId="558" nameId="5774" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="789" greetingConversationId="2208" leavingConversationId="2207">
-        <item id="936" />
-        <item id="755" />
-        <item id="757" />
-        <item id="806" />
-        <item id="805" />
-        <item id="804" />
-        <item id="836" />
-        <item id="818" />
-        <item id="821" />
-        <item id="1271" />
-        <item id="690" />
-        <item id="688" />
-        <item id="1204" />
-        <item id="991" />
-        <item id="989" />
-        <item id="914" />
-        <item id="628" />
-        <item id="629" />
-        <item id="429" />
-        <item id="428" />
-        <item id="901" />
-        <item id="899" />
-        <item id="827" />
-        <item id="828" />
-        <item id="826" />
-    </vendor>
-    <!-- Xaken -->
-    <vendor objectId="243" nameId="5747" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="1017" greetingConversationId="2789" leavingConversationId="2788">
-        <item id="910" />
-        <item id="1001" />
-        <item id="1753" />
-        <item id="1016" />
-        <item id="2880" />
-        <item id="1203" />
-        <item id="997" />
-        <item id="1199" />
-        <item id="914" />
-        <item id="1395" />
-        <item id="1011" />
-        <item id="442" />
-        <item id="10019" />
-        <item id="2997" />
-        <item id="2996" />
-        <item id="827" />
-        <item id="967" />
-        <item id="621" />
-        <item id="10000" />
-        <item id="603" />
-        <item id="3002" />
-        <item id="10001" />
-        <item id="1366" />
-        <item id="10002" />
-        <item id="629" />
-        <item id="630" />
-        <item id="988" />
-        <item id="10003" />
-        <item id="1461" />
-        <item id="1464" />
-        <item id="1212" />
-    </vendor>
-    <!-- Dyzoc -->
-    <vendor objectId="242" nameId="5746" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="6" dialogId="1080" greetingConversationId="2984" leavingConversationId="2983">
-        <item id="1568" />
-        <item id="1611" />
-        <item id="1615" />
-        <item id="1621" />
-        <item id="1620" />
-        <item id="1614" />
-        <item id="1622" />
-        <item id="1619" />
-        <item id="1624" />
-    </vendor>
-    <!-- Adiror -->
-    <vendor objectId="248" nameId="5748" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="11" dialogId="1016" greetingConversationId="2783" leavingConversationId="2782">
-        <item id="1568" />
-        <item id="1611" />
-        <item id="1573" />
-        <item id="1617" />
-        <item id="1613" />
-        <item id="1618" />
-        <item id="1625" />
-        <item id="1616" />
-        <item id="1623" />
-    </vendor>
-    <!-- Omura -->
-    <vendor objectId="1089" nameId="5755" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="4" dialogId="1259" greetingConversationId="3352" leavingConversationId="3351">
-        <item id="2274" />
-        <item id="2276" />
-        <item id="404" />
-        <item id="405" />
-        <item id="406" />
-        <item id="418" />
-        <item id="419" />
-        <item id="1577" />
-    </vendor>
-    <!-- Dimsum -->
-    <vendor objectId="1092" nameId="6507" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="6" dialogId="1210" greetingConversationId="3415" leavingConversationId="3414">
-        <item id="1568" />
-        <item id="1611" />
-        <item id="1615" />
-        <item id="1621" />
-        <item id="1620" />
-        <item id="1614" />
-        <item id="1622" />
-        <item id="1619" />
-        <item id="1624" />
-    </vendor>
-    <!-- Maoka -->
-    <vendor objectId="1087" nameId="5754" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="11" dialogId="1210" greetingConversationId="3415" leavingConversationId="3414">
-        <item id="1568" />
-        <item id="1620" />
-        <item id="1573" />
-        <item id="1617" />
-        <item id="1613" />
-        <item id="1618" />
-        <item id="1625" />
-        <item id="1616" />
-        <item id="1623" />
-    </vendor>
-    <!-- Akami -->
-    <vendor objectId="1048" nameId="4102" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="1261" greetingConversationId="3409" leavingConversationId="3408">
-        <item id="935" />
-        <item id="1896" />
-        <item id="1902" />
-        <item id="1635" />
-        <item id="1548" />
-        <item id="1545" />
-        <item id="10130" />
-        <item id="450" />
-        <item id="10132" />
-        <item id="10131" />
-        <item id="1643" />
-        <item id="1028" />
-        <item id="1519" />
-        <item id="1026" />
-        <item id="1206" />
-        <item id="1898" />
-        <item id="1367" />
-        <item id="1368" />
-        <item id="1005" />
-        <item id="629" />
-        <item id="630" />
-        <item id="904" />
-        <item id="905" />
-    </vendor>
-    <!-- Nao -->
-    <vendor objectId="1093" nameId="5757" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="2" dialogId="1260" greetingConversationId="3404" leavingConversationId="3403">
-        <item id="1512" />
-        <item id="1547" />
-        <item id="1550" />
-        <item id="1553" />
-        <item id="1511" />
-        <item id="1556" />
-        <item id="1537" />
-        <item id="1541" />
-        <item id="1539" />
-        <item id="1493" />
-        <item id="1521" />
-        <item id="1520" />
-        <item id="1776" />
-        <item id="1008" />
-        <item id="1006" />
-        <item id="1211" />
-        <item id="1212" />
-        <item id="1213" />
-        <item id="1363" />
-        <item id="635" />
-        <item id="1221" />
-        <item id="1222" />
-        <item id="1220" />
-    </vendor>
-</vendorCatalog>
+<VendorCatalog>
+    <Vendor objectId="98648" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
+    </Vendor>
+    <Vendor objectId="615" name="Altak" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="773" greetingConversationId="6945" leavingConversationId="6944">
+        <Item id="3070" />
+        <Item id="404" />
+        <Item id="2909" />
+        <Item id="1568" />
+        <Item id="433" />
+        <Item id="3024" />
+        <Item id="1736" />
+        <Item id="1754" />
+        <Item id="5334" />
+        <Item id="3076" />
+        <Item id="405" />
+        <Item id="1003" />
+        <Item id="1007" />
+    </Vendor>
+    <Vendor objectId="822" name="Dillon" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1018" greetingConversationId="2795" leavingConversationId="2794">
+        <Item id="3070" />
+        <Item id="2909" />
+        <Item id="1562" />
+        <Item id="1139" />
+        <Item id="913" />
+        <Item id="1286" />
+        <Item id="1284" />
+        <Item id="1621" />
+        <Item id="2719" />
+        <Item id="406" />
+        <Item id="3074" />
+        <Item id="1013" />
+        <Item id="447" />
+        <Item id="914" />
+        <Item id="2721" />
+    </Vendor>
+    <Vendor objectId="2513" name="Koz" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="790" greetingConversationId="2214" leavingConversationId="2213">
+        <Item id="1568" />
+        <Item id="2909" />
+        <Item id="3070" />
+        <Item id="2721" />
+        <Item id="827" />
+        <Item id="828" />
+        <Item id="1623" />
+        <Item id="3054" />
+        <Item id="405" />
+        <Item id="2718" />
+        <Item id="846" />
+        <Item id="1287" />
+        <Item id="817" />
+    </Vendor>
+    <Vendor objectId="945" name="Etok" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="795" greetingConversationId="2244" leavingConversationId="2243">
+        <Item id="3070" />
+        <Item id="2909" />
+        <Item id="598" />
+        <Item id="1667" />
+        <Item id="1815" />
+        <Item id="662" />
+        <Item id="1652" />
+        <Item id="1664" />
+        <Item id="1025" />
+        <Item id="1662" />
+        <Item id="637" />
+        <Item id="1618" />
+        <Item id="418" />
+        <Item id="1830" />
+        <Item id="1222" />
+    </Vendor>
+    <Vendor objectId="31529" name="Zolin" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1021" greetingConversationId="2813" leavingConversationId="2812">
+        <Item id="1568" />
+        <Item id="404" />
+        <Item id="3054" />
+        <Item id="3008" />
+        <Item id="2999" />
+        <Item id="3001" />
+        <Item id="2998" />
+        <Item id="3025" />
+        <Item id="3000" />
+    </Vendor>
+    <Vendor objectId="575" name="Rhea" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1316" greetingConversationId="3071" leavingConversationId="3326">
+        <Item id="601" />
+        <Item id="634" />
+        <Item id="1083" />
+        <Item id="1084" />
+        <Item id="1085" />
+        <Item id="1080" />
+        <Item id="1081" />
+        <Item id="1082" />
+        <Item id="1212" />
+        <Item id="1213" />
+        <Item id="1211" />
+        <Item id="1362" />
+        <Item id="1363" />
+        <Item id="1364" />
+        <Item id="657" />
+        <Item id="670" />
+        <Item id="671" />
+        <Item id="672" />
+        <Item id="664" />
+        <Item id="1112" />
+        <Item id="1114" />
+        <Item id="1095" />
+        <Item id="1096" />
+        <Item id="742" />
+    </Vendor>
+    <Vendor objectId="578" name="Zeeta" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Accessories" dialogId="794" greetingConversationId="2238" leavingConversationId="2237">
+        <Item id="1353" />
+        <Item id="1352" />
+        <Item id="445" />
+        <Item id="1238" />
+        <Item id="1239" />
+        <Item id="1760" />
+        <Item id="699" />
+        <Item id="948" />
+        <Item id="2718" />
+        <Item id="1736" />
+        <Item id="1253" />
+        <Item id="2721" />
+        <Item id="1259" />
+        <Item id="957" />
+        <Item id="961" />
+        <Item id="2719" />
+        <Item id="983" />
+        <Item id="1192" />
+        <Item id="1391" />
+        <Item id="436" />
+        <Item id="437" />
+        <Item id="1075" />
+        <Item id="1077" />
+    </Vendor>
+    <Vendor objectId="576" name="Mikith" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="793" greetingConversationId="2232" leavingConversationId="2231">
+        <Item id="651" />
+        <Item id="629" />
+        <Item id="1205" />
+        <Item id="642" />
+        <Item id="430" />
+        <Item id="431" />
+        <Item id="432" />
+        <Item id="1104" />
+        <Item id="662" />
+        <Item id="665" />
+        <Item id="661" />
+        <Item id="1026" />
+        <Item id="1027" />
+        <Item id="1028" />
+        <Item id="1036" />
+        <Item id="1037" />
+        <Item id="633" />
+        <Item id="632" />
+        <Item id="631" />
+        <Item id="1143" />
+        <Item id="1224" />
+        <Item id="637" />
+    </Vendor>
+    <Vendor objectId="577" name="Razoo" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Potions" dialogId="1331" greetingConversationId="3337" leavingConversationId="3336">
+        <Item id="2274" />
+        <Item id="2276" />
+        <Item id="404" />
+        <Item id="405" />
+        <Item id="406" />
+        <Item id="418" />
+        <Item id="419" />
+        <Item id="1577" />
+    </Vendor>
+    <Vendor objectId="574" name="Koopu" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="1108" greetingConversationId="3342" leavingConversationId="3079">
+        <Item id="1568" />
+        <Item id="1573" />
+        <Item id="1617" />
+        <Item id="1611" />
+        <Item id="1615" />
+        <Item id="1621" />
+        <Item id="1613" />
+        <Item id="1620" />
+        <Item id="1614" />
+        <Item id="1618" />
+        <Item id="1622" />
+        <Item id="1619" />
+        <Item id="1625" />
+        <Item id="1616" />
+        <Item id="1624" />
+    </Vendor>
+    <Vendor objectId="579" name="Yod" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Potions" dialogId="1331" greetingConversationId="3337" leavingConversationId="3336">
+        <Item id="2274" />
+        <Item id="2276" />
+        <Item id="404" />
+        <Item id="405" />
+        <Item id="406" />
+        <Item id="418" />
+        <Item id="419" />
+        <Item id="1577" />
+    </Vendor>
+    <Vendor objectId="551" name="Bumbeef" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Potions" dialogId="1307" greetingConversationId="3312" leavingConversationId="3311">
+        <Item id="2274" />
+        <Item id="2276" />
+        <Item id="404" />
+        <Item id="405" />
+        <Item id="406" />
+        <Item id="418" />
+        <Item id="419" />
+        <Item id="1577" />
+    </Vendor>
+    <Vendor objectId="554" name="Scatterfoot" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Accessories" dialogId="1301" greetingConversationId="3301" leavingConversationId="3300">
+        <Item id="699" />
+        <Item id="1259" />
+        <Item id="950" />
+        <Item id="948" />
+        <Item id="902" />
+        <Item id="2718" />
+        <Item id="2719" />
+        <Item id="898" />
+        <Item id="2721" />
+        <Item id="1443" />
+        <Item id="1445" />
+        <Item id="1451" />
+        <Item id="1455" />
+        <Item id="1393" />
+        <Item id="957" />
+        <Item id="961" />
+        <Item id="1433" />
+        <Item id="1434" />
+        <Item id="1435" />
+        <Item id="1432" />
+        <Item id="846" />
+        <Item id="1478" />
+        <Item id="1479" />
+    </Vendor>
+    <Vendor objectId="557" name="Clunk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1303" greetingConversationId="3389" leavingConversationId="3388">
+        <Item id="1461" />
+        <Item id="1464" />
+        <Item id="1277" />
+        <Item id="1280" />
+        <Item id="1450" />
+        <Item id="825" />
+        <Item id="1424" />
+        <Item id="824" />
+        <Item id="1429" />
+        <Item id="1425" />
+        <Item id="1430" />
+        <Item id="1431" />
+        <Item id="1428" />
+        <Item id="1422" />
+        <Item id="1272" />
+        <Item id="1276" />
+        <Item id="1270" />
+        <Item id="636" />
+        <Item id="1268" />
+        <Item id="1176" />
+        <Item id="1436" />
+        <Item id="1170" />
+        <Item id="1439" />
+    </Vendor>
+    <Vendor objectId="558" name="Jolly" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="789" greetingConversationId="2208" leavingConversationId="2207">
+        <Item id="936" />
+        <Item id="755" />
+        <Item id="757" />
+        <Item id="806" />
+        <Item id="805" />
+        <Item id="804" />
+        <Item id="836" />
+        <Item id="818" />
+        <Item id="821" />
+        <Item id="1271" />
+        <Item id="690" />
+        <Item id="688" />
+        <Item id="1204" />
+        <Item id="991" />
+        <Item id="989" />
+        <Item id="914" />
+        <Item id="628" />
+        <Item id="629" />
+        <Item id="429" />
+        <Item id="428" />
+        <Item id="901" />
+        <Item id="899" />
+        <Item id="827" />
+        <Item id="828" />
+        <Item id="826" />
+    </Vendor>
+    <Vendor objectId="243" name="Xaken" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1017" greetingConversationId="2789" leavingConversationId="2788">
+        <Item id="910" />
+        <Item id="1001" />
+        <Item id="1753" />
+        <Item id="1016" />
+        <Item id="2880" />
+        <Item id="1203" />
+        <Item id="997" />
+        <Item id="1199" />
+        <Item id="914" />
+        <Item id="1395" />
+        <Item id="1011" />
+        <Item id="442" />
+        <Item id="10019" />
+        <Item id="2997" />
+        <Item id="2996" />
+        <Item id="827" />
+        <Item id="967" />
+        <Item id="621" />
+        <Item id="10000" />
+        <Item id="603" />
+        <Item id="3002" />
+        <Item id="10001" />
+        <Item id="1366" />
+        <Item id="10002" />
+        <Item id="629" />
+        <Item id="630" />
+        <Item id="988" />
+        <Item id="10003" />
+        <Item id="1461" />
+        <Item id="1464" />
+        <Item id="1212" />
+    </Vendor>
+    <Vendor objectId="242" name="Dyzoc" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="1080" greetingConversationId="2984" leavingConversationId="2983">
+        <Item id="1568" />
+        <Item id="1611" />
+        <Item id="1615" />
+        <Item id="1621" />
+        <Item id="1620" />
+        <Item id="1614" />
+        <Item id="1622" />
+        <Item id="1619" />
+        <Item id="1624" />
+    </Vendor>
+    <Vendor objectId="248" name="Adiror" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Chef" dialogId="1016" greetingConversationId="2783" leavingConversationId="2782">
+        <Item id="1568" />
+        <Item id="1611" />
+        <Item id="1573" />
+        <Item id="1617" />
+        <Item id="1613" />
+        <Item id="1618" />
+        <Item id="1625" />
+        <Item id="1616" />
+        <Item id="1623" />
+    </Vendor>
+    <Vendor objectId="1089" name="Omura" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Potions" dialogId="1259" greetingConversationId="3352" leavingConversationId="3351">
+        <Item id="2274" />
+        <Item id="2276" />
+        <Item id="404" />
+        <Item id="405" />
+        <Item id="406" />
+        <Item id="418" />
+        <Item id="419" />
+        <Item id="1577" />
+    </Vendor>
+    <Vendor objectId="1092" name="Dimsum" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="1210" greetingConversationId="3415" leavingConversationId="3414">
+        <Item id="1568" />
+        <Item id="1611" />
+        <Item id="1615" />
+        <Item id="1621" />
+        <Item id="1620" />
+        <Item id="1614" />
+        <Item id="1622" />
+        <Item id="1619" />
+        <Item id="1624" />
+    </Vendor>
+    <Vendor objectId="1087" name="Maoka" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Chef" dialogId="1210" greetingConversationId="3415" leavingConversationId="3414">
+        <Item id="1568" />
+        <Item id="1620" />
+        <Item id="1573" />
+        <Item id="1617" />
+        <Item id="1613" />
+        <Item id="1618" />
+        <Item id="1625" />
+        <Item id="1616" />
+        <Item id="1623" />
+    </Vendor>
+    <Vendor objectId="1048" name="Akami" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1261" greetingConversationId="3409" leavingConversationId="3408">
+        <Item id="935" />
+        <Item id="1896" />
+        <Item id="1902" />
+        <Item id="1635" />
+        <Item id="1548" />
+        <Item id="1545" />
+        <Item id="10130" />
+        <Item id="450" />
+        <Item id="10132" />
+        <Item id="10131" />
+        <Item id="1643" />
+        <Item id="1028" />
+        <Item id="1519" />
+        <Item id="1026" />
+        <Item id="1206" />
+        <Item id="1898" />
+        <Item id="1367" />
+        <Item id="1368" />
+        <Item id="1005" />
+        <Item id="629" />
+        <Item id="630" />
+        <Item id="904" />
+        <Item id="905" />
+    </Vendor>
+    <Vendor objectId="1093" name="Nao" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1260" greetingConversationId="3404" leavingConversationId="3403">
+        <Item id="1512" />
+        <Item id="1547" />
+        <Item id="1550" />
+        <Item id="1553" />
+        <Item id="1511" />
+        <Item id="1556" />
+        <Item id="1537" />
+        <Item id="1541" />
+        <Item id="1539" />
+        <Item id="1493" />
+        <Item id="1521" />
+        <Item id="1520" />
+        <Item id="1776" />
+        <Item id="1008" />
+        <Item id="1006" />
+        <Item id="1211" />
+        <Item id="1212" />
+        <Item id="1213" />
+        <Item id="1363" />
+        <Item id="635" />
+        <Item id="1221" />
+        <Item id="1222" />
+        <Item id="1220" />
+    </Vendor>
+</VendorCatalog>

@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<Catalog>
+	<ItemCategory name="Collectible">
+		<ItemSubCategory name="Nut" />
+		<ItemSubCategory name="Wood" />
+		<ItemSubCategory name="Herbs and flowers" />
+		<ItemSubCategory name="Mineral" />
+		<ItemSubCategory name="Liquid" />
+		<ItemSubCategory name="Potion" />
+		<ItemSubCategory name="Usable" />
+		<ItemSubCategory name="Ability" />
+		<ItemSubCategory name="BMoney" />
+		<ItemSubCategory name="CMoney" />
+		<ItemSubCategory name="Orb" />
+		<ItemSubCategory name="Invisible" />
+		<ItemSubCategory name="Fabrics" />
+		<ItemSubCategory name="Core Ingredients" />
+		<ItemSubCategory name="Defensive" />
+		<ItemSubCategory name="Offensive" />
+		<ItemSubCategory name="Monster" />
+		<ItemSubCategory name="Elixir" />
+		<ItemSubCategory name="Bomb" />
+		<ItemSubCategory name="Lootable" />
+		<ItemSubCategory name="SuperPack" />
+		<ItemSubCategory name="Trail Pass" />
+		<ItemSubCategory name="Banana Box" />
+		<ItemSubCategory name="Monthly Collectible" />
+		<ItemSubCategory name="None" />
+	</ItemCategory>
+	<ItemCategory name="Quest">
+		<ItemSubCategory name="Interactive" />
+		<ItemSubCategory name="Collectible" />
+		<ItemSubCategory name="None" />
+	</ItemCategory>
+	<ItemCategory name="Wearable">
+		<ItemSubCategory name="Slot Head" />
+		<ItemSubCategory name="Slot Hair" />
+		<ItemSubCategory name="Slot Body" />
+		<ItemSubCategory name="Slot Legs" />
+		<ItemSubCategory name="Slot Ears" />
+		<ItemSubCategory name="Slot Upper Face" />
+		<ItemSubCategory name="Slot Lower Face" />
+		<ItemSubCategory name="Slot Wrist" />
+		<ItemSubCategory name="Slot Backpack" />
+		<ItemSubCategory name="Slot Tail" />
+		<ItemSubCategory name="None" />
+	</ItemCategory>
+	<ItemCategory name="Recipe">
+		<ItemSubCategory name="Tailoring" />
+		<ItemSubCategory name="Alchemy" />
+		<ItemSubCategory name="None" />
+	</ItemCategory>
+	<ItemCategory name="Enemy">
+		<ItemSubCategory name="None" />
+	</ItemCategory>
+    <ItemCategory name="Chest">
+        <ItemSubCategory name="None" />
+    </ItemCategory>
+	<ItemCategory name="Information">
+		<ItemSubCategory name="None" />
+	</ItemCategory>
+	<ItemCategory name="Ability">
+		<ItemSubCategory name="Defensive" />
+		<ItemSubCategory name="Offensive" />
+		<ItemSubCategory name="Passive Ability" />
+		<ItemSubCategory name="None" />
+	</ItemCategory>
+	<ItemCategory name="Gift">
+		<ItemSubCategory name="Banana Box" />
+		<ItemSubCategory name="Package" />
+		<ItemSubCategory name="None" />
+	</ItemCategory>
+</Catalog>

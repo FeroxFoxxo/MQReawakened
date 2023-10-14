@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
@@ -9,7 +10,10 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 {
     public string BundleName => "ItemCatalog";
     public string LocalizationName => "ItemCatalogDict_en-US";
-    public bool Priority => false;
+    public BundlePriority Priority => BundlePriority.Low;
+
+    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public IServiceProvider Services { get; set; }
 
     public ItemCatalog() : base(null)
     {
@@ -32,7 +36,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
     public void ReadLocalization(string xml) => ReadLocalizationXml(xml);
 
-    public void EditDescription(XmlDocument xml, IServiceProvider services)
+    public void EditDescription(XmlDocument xml)
     {
     }
 

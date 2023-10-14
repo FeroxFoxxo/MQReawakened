@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 using ConversationModel = Server.Reawakened.XMLs.Models.Conversation;
 
@@ -10,7 +11,10 @@ public class Dialog : DialogXML, ILocalizationXml
 {
     public string BundleName => "Dialog";
     public string LocalizationName => "DialogDict_en-US";
-    public bool Priority => false;
+    public BundlePriority Priority => BundlePriority.Low;
+
+    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public IServiceProvider Services { get; set; }
 
     public Dictionary<string, List<ConversationModel>> QuestDialog;
     public Dictionary<string, List<ConversationModel>> GenericDialog;
@@ -41,7 +45,7 @@ public class Dialog : DialogXML, ILocalizationXml
 
     public void ReadLocalization(string xml) => ReadLocalizationXml(xml);
 
-    public void EditDescription(XmlDocument xml, IServiceProvider services)
+    public void EditDescription(XmlDocument xml)
     {
     }
 

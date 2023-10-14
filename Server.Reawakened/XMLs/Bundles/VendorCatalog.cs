@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
@@ -8,7 +9,10 @@ namespace Server.Reawakened.XMLs.Bundles;
 public class VendorCatalog : VendorCatalogsXML, IBundledXml
 {
     public string BundleName => "vendor_catalogs";
-    public bool Priority => false;
+    public BundlePriority Priority => BundlePriority.Low;
+
+    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public IServiceProvider Services { get; set; }
 
     public void InitializeVariables()
     {
@@ -25,7 +29,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
         this.SetField<VendorCatalogsXML>("_loots", new Dictionary<int, List<LootData>>());
     }
 
-    public void EditDescription(XmlDocument xml, IServiceProvider services)
+    public void EditDescription(XmlDocument xml)
     {
         var items = xml.SelectNodes("/vendor_catalogs/superpacks/superpack/item");
         var vendors = xml.SelectNodes("/vendor_catalogs/vendor");
@@ -51,8 +55,8 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
 
         if (vendors != null)
         {
-            var internalCatalog = services.GetRequiredService<InternalVendorCatalog>();
-            var miscTextDict = services.GetRequiredService<MiscTextDictionary>();
+            var internalCatalog = Services.GetRequiredService<InternalVendorCatalog>();
+            var miscTextDict = Services.GetRequiredService<MiscTextDictionary>();
             var preExistingCategories = new List<int>();
 
             foreach (XmlNode aNode in vendors)

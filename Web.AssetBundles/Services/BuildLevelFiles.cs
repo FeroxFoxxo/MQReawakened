@@ -33,7 +33,7 @@ public class BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> lo
 
         foreach (var asset in assets)
         {
-            var text = asset.GetXmlData(bar);
+            var text = asset.GetXmlData();
 
             if (string.IsNullOrEmpty(text))
             {

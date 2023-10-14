@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
@@ -12,7 +11,7 @@ using Web.Launcher.Services;
 namespace Web.AssetBundles.Services;
 
 public class ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList,
-    AssetBundleRConfig rConfig, ILogger<ReplaceCaches> logger, StartGame game, IHostApplicationLifetime appLifetime,
+    AssetBundleRConfig rConfig, ILogger<ReplaceCaches> logger, StartGame game,
     AssetBundleRwConfig rwConfig) : IService
 {
     private readonly object _lock = new();
@@ -20,20 +19,7 @@ public class ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList
     public readonly List<string> CurrentlyLoadedAssets = new();
     public readonly List<string> ReplacedBundles = new();
 
-    public void Initialize()
-    {
-        sink.WorldLoad += Load;
-
-        appLifetime.ApplicationStarted.Register(EnsureCacheReplaced);
-    }
-
-    private void EnsureCacheReplaced()
-    {
-        if (string.IsNullOrEmpty(rwConfig.WebPlayerInfoFile))
-            return;
-
-        ReplaceWebPlayerCache(false, false);
-    }
+    public void Initialize() => sink.WorldLoad += Load;
 
     public void Load() =>
         console.AddCommand(
