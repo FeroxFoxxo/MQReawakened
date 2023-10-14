@@ -173,7 +173,7 @@ public class ChatCommands : IService
 
         return true;
     }
-
+    
     private static bool BadgePoints(Player player, string[] args)
     {
         var character = player.Character;
@@ -209,7 +209,7 @@ public class ChatCommands : IService
         var character = player.Character;
 
         player.AddBananas(_config.CashKitAmount);
-        player.AddMCash(_config.CashKitAmount);
+        player.AddNCash(_config.CashKitAmount);
 
         Log($"{character.Data.CharacterName} received {_config.CashKitAmount} " +
             $"banana{(_config.CashKitAmount > 1 ? "s" : "")} & monkey cash!", player);
