@@ -10,7 +10,7 @@ namespace Server.Reawakened.XMLs.Bundles;
 public class VendorCatalog : VendorCatalogsXML, IBundledXml
 {
     public string BundleName => "vendor_catalogs";
-    public BundlePriority Priority => BundlePriority.Low;
+    public BundlePriority Priority => BundlePriority.Lowest;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }

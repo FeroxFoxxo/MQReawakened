@@ -2,7 +2,9 @@
 
 public enum BundlePriority
 {
+    Lowest,
     Low,
     Medium,
-    High
+    High,
+    Highest
 }

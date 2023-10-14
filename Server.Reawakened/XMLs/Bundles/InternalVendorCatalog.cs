@@ -11,7 +11,7 @@ namespace Server.Reawakened.XMLs.Bundles;
 public class InternalVendorCatalog : IBundledXml
 {
     public string BundleName => "InternalVendorCatalog";
-    public BundlePriority Priority => BundlePriority.Medium;
+    public BundlePriority Priority => BundlePriority.Low;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
@@ -27,6 +27,7 @@ public class InternalVendorCatalog : IBundledXml
     public void ReadDescription(string xml)
     {
         var miscDict = Services.GetRequiredService<MiscTextDictionary>();
+        var itemCat = Services.GetRequiredService<ItemCatalog>();
 
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
@@ -105,9 +106,9 @@ public class InternalVendorCatalog : IBundledXml
 
                     foreach (XmlAttribute id in item.Attributes)
                     {
-                        if (id.Name == "id")
+                        if (id.Name == "name")
                         {
-                            items.Add(BundledXML.ParseInt(id.Value));
+                            items.Add(itemCat.ItemNameDict[id.Value]);
                             break;
                         }
                     }

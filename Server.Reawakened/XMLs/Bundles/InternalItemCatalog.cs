@@ -9,7 +9,7 @@ namespace Server.Reawakened.XMLs.Bundles;
 public class InternalItemCatalog : IBundledXml
 {
     public string BundleName => "InternalItemCatalog";
-    public BundlePriority Priority => BundlePriority.Medium;
+    public BundlePriority Priority => BundlePriority.High;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }

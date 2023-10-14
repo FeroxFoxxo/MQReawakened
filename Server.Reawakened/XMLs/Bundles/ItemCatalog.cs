@@ -1,13 +1,10 @@
 ﻿using A2m.Server;
-using LootDefines;
 using Microsoft.Extensions.DependencyInjection;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
-using System.Globalization;
 using System.Xml;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
@@ -15,16 +12,18 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 {
     public string BundleName => "ItemCatalog";
     public string LocalizationName => "ItemCatalogDict_en-US";
-    public BundlePriority Priority => BundlePriority.Low;
+    public BundlePriority Priority => BundlePriority.Medium;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     private int _smallestItemDictId;
     private List<int> _itemDictCount;
-    private Dictionary<string, int> _newItemDict;
     private Dictionary<ItemCategory, XmlNode> _itemCategories;
     private Dictionary<ItemCategory, Dictionary<ItemSubCategory, XmlNode>> _itemSubCategories;
+
+    public Dictionary<int, ItemDescription> Items;
+    public Dictionary<string, int> ItemNameDict;
 
     public ItemCatalog() : base(null)
     {
@@ -40,15 +39,17 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         this.SetField<ItemHandler>("_itemDescriptionCache", new Dictionary<int, ItemDescription>());
         this.SetField<ItemHandler>("_pendingRequests", new Dictionary<int, ItemDescriptionRequest>());
 
-        _newItemDict = [];
+        ItemNameDict = [];
         _itemDictCount = [];
         _itemCategories = [];
         _itemSubCategories = [];
+
+        Items = [];
     }
 
     public void EditLocalization(XmlDocument xml)
     {
-        _newItemDict.Clear();
+        ItemNameDict.Clear();
         _itemDictCount.Clear();
 
         var dicts = xml.SelectNodes("/ItemCatalogDict/text");
@@ -70,7 +71,10 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                 if (idAttribute == null)
                     continue;
 
-                _itemDictCount.Add(int.Parse(idAttribute.InnerText));
+                var local = int.Parse(idAttribute.InnerText);
+
+                _itemDictCount.Add(local);
+                ItemNameDict.TryAdd(aNode.InnerText, local);
             }
 
             _smallestItemDictId = 0;
@@ -81,8 +85,8 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
                 foreach (var item in internalCatalog.Items)
                 {
-                    _newItemDict.Add(item.ItemName, AddDictIfNotExists(xml, itemCatalogNode, item.ItemName, localization));
-                    _newItemDict.Add(item.DescriptionText, AddDictIfNotExists(xml, itemCatalogNode, item.DescriptionText, localization));
+                    ItemNameDict.Add(item.ItemName, AddDictIfNotExists(xml, itemCatalogNode, item.ItemName, localization));
+                    ItemNameDict.Add(item.DescriptionText, AddDictIfNotExists(xml, itemCatalogNode, item.DescriptionText, localization));
                 }
             }
         }
@@ -214,8 +218,8 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                 smallestItemId = itemId;
 
                 itemElement.SetAttribute("id", itemId.ToString());
-                itemElement.SetAttribute("ingamename", _newItemDict[item.ItemName].ToString());
-                itemElement.SetAttribute("ingamedescription", _newItemDict[item.DescriptionText].ToString());
+                itemElement.SetAttribute("ingamename", ItemNameDict[item.ItemName].ToString());
+                itemElement.SetAttribute("ingamedescription", ItemNameDict[item.DescriptionText].ToString());
                 itemElement.SetAttribute("prefab", item.PrefabName.ToString());
                 itemElement.SetAttribute("special_display_prefab", item.SpecialDisplayPrefab.ToString());
 
@@ -256,7 +260,6 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
     public void ReadDescription(string xml) =>
         ReadDescriptionXml(xml);
 
-    public void FinalizeBundle()
-    {
-    }
+    public void FinalizeBundle() =>
+        Items = (Dictionary<int, ItemDescription>) this.GetField<ItemHandler>("_itemDescriptionCache");
 }

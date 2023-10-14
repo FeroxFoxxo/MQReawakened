@@ -9,7 +9,7 @@ namespace Server.Reawakened.XMLs.Bundles;
 public class MiscTextDictionary : LocalizationHandler, IBundledXml
 {
     public string BundleName => "MiscTextDict_en-US";
-    public BundlePriority Priority => BundlePriority.High;
+    public BundlePriority Priority => BundlePriority.Highest;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
