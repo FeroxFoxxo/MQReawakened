@@ -72,7 +72,7 @@
 	</ItemCategory>
 	<ItemCategory name="Pet">
         <ItemSubCategory name="Pets">
-            <Item itemName="Enzo" descriptionText="Oh my god he's here!" prefabName="EnzoPrefab" specialDisplayPrefab="" tribe="Crossroads" actionType="Pet" rarity="Common" currency="Banana" memberOnly="false" regularPrice="0" sellPrice="0" sellCount="0" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" storeType="Front Store" discountedFrom="None" discountedTo="None" discountPrice="-1" stockPriority="0" releaseDate="None" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" />
+            <Item itemName="Enzo" descriptionText="Oh my god he's here!" prefabName="PF_PET_Rig02_Enzo01" specialDisplayPrefab="" tribe="Crossroads" actionType="Pet" rarity="Common" currency="Banana" memberOnly="false" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
         </ItemSubCategory>
 		<ItemSubCategory name="None" />
 	</ItemCategory>

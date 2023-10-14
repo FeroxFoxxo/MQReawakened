@@ -70,9 +70,14 @@ public class InternalItemCatalog : IBundledXml
                         var currency = CurrencyType.Unknown;
                         var memberOnly = false;
 
+                        var storeType = StoreType.Invalid;
+                        var stockPriority = 0;
                         var regularPrice = 0;
+                        var discountPrice = 0;
                         var sellPrice = 0;
                         var sellCount = 0;
+                        var discountedFrom = new DateTime(0L);
+                        var discountedTo = new DateTime(0L);
 
                         var cooldownTime = 0f;
                         var delayUseDuration = 0;
@@ -85,17 +90,11 @@ public class InternalItemCatalog : IBundledXml
 
                         var uniqueInInventory = false;
 
-                        var storeType = StoreType.Invalid;
-                        var discountedFrom = new DateTime(0L);
-                        var discountedTo = new DateTime(0L);
-                        var discountPrice = 0;
-                        var stockPriority = 0;
-                        var releaseDate = DateTime.UnixEpoch;
-
                         var lootId = -1;
                         var recipeParentItemId = -1;
 
                         var productionStatus = ProductionStatus.Unknown;
+                        var releaseDate = DateTime.UnixEpoch;
 
                         foreach (XmlAttribute itemAttributes in item.Attributes)
                         {
@@ -176,9 +175,6 @@ public class InternalItemCatalog : IBundledXml
                                 case "stockPriority":
                                     stockPriority = int.Parse(itemAttributes.Value);
                                     break;
-                                case "releaseDate":
-                                    releaseDate = releaseDate.GetDateValue(itemAttributes.Value, Logger);
-                                    break;
 
                                 case "lootId":
                                     lootId = int.Parse(itemAttributes.Value);
@@ -189,6 +185,9 @@ public class InternalItemCatalog : IBundledXml
 
                                 case "productionStatus":
                                     productionStatus = productionStatus.GetEnumValue(itemAttributes.Value, Logger);
+                                    break;
+                                case "releaseDate":
+                                    releaseDate = releaseDate.GetDateValue(itemAttributes.Value, Logger);
                                     break;
                             }
                         }
