@@ -252,6 +252,24 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                 itemElement.SetAttribute("production_status", Enum.GetName(item.ProductionStatus));
                 itemElement.SetAttribute("release_date", item.ReleaseDate == DateTime.UnixEpoch ? "None" : item.ReleaseDate.ToString());
 
+                if (item.ItemEffects.Count > 0)
+                {
+                    var itemEffectsElement = xml.CreateElement("ItemEffects");
+
+                    foreach (var effect in item.ItemEffects)
+                    {
+                        var effectElement = xml.CreateElement("Effect");
+
+                        effectElement.SetAttribute("type", Enum.GetName(effect.Type));
+                        effectElement.SetAttribute("value", effect.Value.ToString());
+                        effectElement.SetAttribute("duration", effect.Duration.ToString());
+
+                        itemEffectsElement.AppendChild(effectElement);
+                    }
+
+                    itemElement.AppendChild(itemEffectsElement);
+                }
+
                 itemSubCategory.AppendChild(itemElement);
             }
         }

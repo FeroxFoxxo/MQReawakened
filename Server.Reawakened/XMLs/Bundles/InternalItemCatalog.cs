@@ -192,9 +192,9 @@ public class InternalItemCatalog : IBundledXml
                             }
                         }
 
-                        foreach (XmlNode itemEffect in catalogs.ChildNodes)
+                        foreach (XmlNode itemEffect in item.ChildNodes)
                         {
-                            if (!(itemEffect.Name == "ItemEffects")) continue;
+                            if (itemEffect.Name != "ItemEffects") continue;
 
                             foreach (XmlNode effect in itemEffect.ChildNodes)
                             {
