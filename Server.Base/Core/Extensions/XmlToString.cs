@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace Web.AssetBundles.Extensions;
+namespace Server.Base.Core.Extensions;
 
 public static class XmlToString
 {

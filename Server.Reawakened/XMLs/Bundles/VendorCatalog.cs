@@ -2,6 +2,7 @@
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
@@ -74,12 +75,9 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
 
             var lastSmallest = 0;
 
-            foreach (XmlNode childNode in xml.ChildNodes)
+            foreach (XmlNode vendorCatalogNode in xml.ChildNodes)
             {
-                if (!(childNode.Name == "vendor_catalogs"))
-                {
-                    continue;
-                }
+                if (!(vendorCatalogNode.Name == "vendor_catalogs")) continue;
 
                 foreach (var vendor in internalCatalog.VendorCatalog.Values)
                 {
@@ -87,7 +85,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
                         return;
 
                     var name = miscTextDict.GetLocalizationTextById(vendor.NameId);
-                    var catalogId = FindSmallest(preExistingCategories, lastSmallest);
+                    var catalogId = preExistingCategories.FindSmallest(lastSmallest);
                     var vendorId = catalogId;
 
                     lastSmallest = catalogId;
@@ -108,23 +106,10 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
                         vendorElement.AppendChild(itemElement);
                     }
 
-                    childNode.AppendChild(vendorElement);
+                    vendorCatalogNode.AppendChild(vendorElement);
                 }
             }
         }
-    }
-
-    private static int FindSmallest(List<int> intArray, int lastSmallest)
-    {
-        var sortedSet = intArray.Where(x => x > lastSmallest).Distinct().OrderBy(x => x).ToArray();
-        if (sortedSet.Length == 0) return lastSmallest + 1;
-        var smallestMissing = lastSmallest + 1;
-        for (var i = 0; i < sortedSet.Length; i++)
-        {
-            if (smallestMissing < sortedSet[i]) break;
-            smallestMissing = sortedSet[i] + 1;
-        }
-        return smallestMissing;
     }
 
     public void ReadDescription(string xml) => ReadDescriptionXml(xml);

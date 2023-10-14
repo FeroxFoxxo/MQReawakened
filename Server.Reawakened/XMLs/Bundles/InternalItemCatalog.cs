@@ -42,8 +42,8 @@ public class InternalItemCatalog : IBundledXml
                 var itemCategory = ItemCategory.Unknown;
 
                 foreach (XmlAttribute categoryAttributes in category.Attributes)
-                    if (categoryAttributes.Name == "id")
-                        itemCategory = (ItemCategory) int.Parse(categoryAttributes.Value);
+                    if (categoryAttributes.Name == "name")
+                        itemCategory = itemCategory.GetEnumValue(categoryAttributes.Value, Logger);
 
                 foreach (XmlNode subCategories in category.ChildNodes)
                 {
@@ -52,7 +52,7 @@ public class InternalItemCatalog : IBundledXml
                     var subCategory = ItemSubCategory.Unknown;
 
                     foreach (XmlAttribute subCategoryAttributes in subCategories.Attributes)
-                        if (subCategoryAttributes.Name == "id")
+                        if (subCategoryAttributes.Name == "name")
                             subCategory = subCategory.GetEnumValue(subCategoryAttributes.Value, Logger);
 
                     foreach (XmlNode item in subCategories.ChildNodes)

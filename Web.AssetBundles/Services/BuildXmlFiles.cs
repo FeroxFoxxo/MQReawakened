@@ -2,6 +2,7 @@
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
+using System.IO;
 using System.Xml;
 using Web.AssetBundles.Events;
 using Web.AssetBundles.Events.Arguments;
@@ -44,6 +45,8 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, 
             .OrderByDescending(x => bundles.TryGetValue(x.Name, out var bundle) ? (int)bundle.Priority : 0)
             .ToArray();
 
+        var localisedXmls = new List<string>();
+
         foreach (var asset in assets)
         {
             var text = asset.GetXmlData();
@@ -65,7 +68,25 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, 
 
                     var localizedXml = localizedAsset.GetXmlData();
 
+                    var localXml = new XmlDocument();
+                    localXml.LoadXml(localizedXml);
+
+                    localizedXmlBundle.EditLocalization(localXml);
+
+                    localizedXml = localXml.WriteToString();
+
                     localizedXmlBundle.ReadLocalization(localizedXml);
+
+                    var locPath = Path.Join(rConfig.XmlSaveDirectory, $"{localizedAsset.Name}.xml");
+
+                    File.WriteAllText(locPath, localizedXml);
+
+                    if (!localisedXmls.Contains(localizedAsset.Name))
+                        localisedXmls.Add(localizedAsset.Name);
+
+                    bundles.Remove(localizedAsset.Name);
+
+                    XmlFiles.Add(localizedAsset.Name, locPath);
                 }
 
                 var xml = new XmlDocument();
@@ -81,11 +102,14 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, 
                 bundles.Remove(asset.Name);
             }
 
-            var path = Path.Join(rConfig.XmlSaveDirectory, $"{asset.Name}.xml");
+            if (!localisedXmls.Contains(asset.Name))
+            {
+                var path = Path.Join(rConfig.XmlSaveDirectory, $"{asset.Name}.xml");
 
-            File.WriteAllText(path, text);
+                File.WriteAllText(path, text);
 
-            XmlFiles.Add(asset.Name, path);
+                XmlFiles.Add(asset.Name, path);
+            }
         }
 
         if (bundles.Count <= 0)
