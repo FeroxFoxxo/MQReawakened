@@ -151,6 +151,7 @@ public static class PlayerExtensions
 
             if (hasObjectiveComplete && !quest.Objectives.Any(o => !o.Value.Completed))
             {
+                quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
                 player.SendXt("nq", quest.Id);
                 player.UpdateNpcsInLevel(quest, quests);
             }
