@@ -16,8 +16,7 @@ public class ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleRConfig r
 {
     public void Initialize() => sink.WorldLoad += Load;
 
-    public void Load()
-    {
+    public void Load() =>
         console.AddCommand(
             "clearWebCache",
             "Clears the Web Player cache manually.",
@@ -28,9 +27,6 @@ public class ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleRConfig r
                 game.AskIfRestart();
             }
         );
-
-        RemoveWebCacheOnStart();
-    }
 
     public bool EmptyWebCacheDirectory()
     {
@@ -43,28 +39,5 @@ public class ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleRConfig r
 
         InternalDirectory.Empty(Path.GetDirectoryName(rwConfig.WebPlayerInfoFile));
         return true;
-    }
-
-    public void RemoveWebCacheOnStart()
-    {
-        if (!rwConfig.FlushCacheOnStart)
-            return;
-
-        InternalDirectory.Empty(rConfig.BundleSaveDirectory);
-
-        var shouldDelete = logger.Ask(
-            "You have 'FLUSH CACHE ON START' enabled, which may delete cached files from the original game, as they use the same directory. " +
-            "Please ensure, if this is your first time running this project, that there are not files already in this directory. " +
-            "These would otherwise be valuable.\n" +
-            $"Please note: The WEB PLAYER cache is found in your {rConfig.DefaultWebPlayerCacheLocation} folder. " +
-            "Please make an __info file in here if it does not exist already.", false
-        );
-
-        if (!shouldDelete)
-            return;
-
-        var hasDeleted = !EmptyWebCacheDirectory();
-
-        logger.LogError("Empty web caches has been run. Deleted: {HasDeleted}", hasDeleted);
     }
 }
