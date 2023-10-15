@@ -316,7 +316,12 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             if (matchingQuest.QuestStatus != QuestState.TO_BE_VALIDATED)
                 continue;
 
-            player.NetState.SendXt("nl", matchingQuest, Id, NameId, Dialog.QuestDialog[$"{quest.Name}validator"][1]);
+            var questName = quest.Name;
+
+            if (quest.ValidatorGoId != quest.QuestGiverGoId)
+                questName += "validator";
+
+            player.NetState.SendXt("nl", matchingQuest, Id, NameId, Dialog.QuestDialog[questName][1]);
 
             var completedQuest = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
