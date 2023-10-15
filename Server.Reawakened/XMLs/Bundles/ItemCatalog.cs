@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
@@ -17,13 +18,11 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    private int _smallestItemDictId;
-    private List<int> _itemDictCount;
+    private Dictionary<string, int> _itemNameDict;
     private Dictionary<ItemCategory, XmlNode> _itemCategories;
     private Dictionary<ItemCategory, Dictionary<ItemSubCategory, XmlNode>> _itemSubCategories;
 
     public Dictionary<int, ItemDescription> Items;
-    public Dictionary<string, int> ItemNameDict;
 
     public ItemCatalog() : base(null)
     {
@@ -39,8 +38,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         this.SetField<ItemHandler>("_itemDescriptionCache", new Dictionary<int, ItemDescription>());
         this.SetField<ItemHandler>("_pendingRequests", new Dictionary<int, ItemDescriptionRequest>());
 
-        ItemNameDict = [];
-        _itemDictCount = [];
+        _itemNameDict = [];
         _itemCategories = [];
         _itemSubCategories = [];
 
@@ -49,8 +47,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
     public void EditLocalization(XmlDocument xml)
     {
-        ItemNameDict.Clear();
-        _itemDictCount.Clear();
+        _itemNameDict.Clear();
 
         var dicts = xml.SelectNodes("/ItemCatalogDict/text");
 
@@ -73,43 +70,40 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
                 var local = int.Parse(idAttribute.InnerText);
 
-                _itemDictCount.Add(local);
-                ItemNameDict.TryAdd(aNode.InnerText, local);
+                _itemNameDict.TryAdd(aNode.InnerText, local);
             }
-
-            _smallestItemDictId = 0;
 
             foreach (XmlNode itemCatalogNode in xml.ChildNodes)
             {
                 if (!(itemCatalogNode.Name == "ItemCatalogDict")) continue;
 
-                foreach (var item in internalCatalog.Items)
+                foreach (var item in internalCatalog.Descriptions)
                 {
-                    ItemNameDict.Add(item.ItemName, AddDictIfNotExists(xml, itemCatalogNode, item.ItemName, localization));
-                    ItemNameDict.Add(item.DescriptionText, AddDictIfNotExists(xml, itemCatalogNode, item.DescriptionText, localization));
+                    var tryGetDict = _itemNameDict.FirstOrDefault(x => x.Value == item.Key);
+
+                    if (!string.IsNullOrEmpty(tryGetDict.Key))
+                    {
+                        Logger.LogError("Item description with id {ItemId} already exists in dictionary!", item.Key);
+                        continue;
+                    }
+
+                    _itemNameDict.Add(item.Value, AddDictIfNotExists(xml, itemCatalogNode, item.Key, item.Value, localization));
                 }
             }
         }
-
-        _itemDictCount.Clear();
     }
 
-    private int AddDictIfNotExists(XmlDocument xml, XmlNode node, string text, Dictionary<int, string> dictList)
+    private int AddDictIfNotExists(XmlDocument xml, XmlNode node, int nameId, string text, Dictionary<int, string> dictList)
     {
         var tryGetDict = dictList.FirstOrDefault(x => x.Value == text);
 
         if (!string.IsNullOrEmpty(tryGetDict.Value))
             return tryGetDict.Key;
 
-        var nameId = _itemDictCount.FindSmallest(_smallestItemDictId);
-
         var vendorElement = xml.CreateElement("text");
 
         vendorElement.SetAttribute("id", nameId.ToString());
         vendorElement.InnerText = text;
-
-        _smallestItemDictId = nameId;
-        _itemDictCount.Add(nameId);
 
         node.AppendChild(vendorElement);
 
@@ -177,7 +171,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
             foreach (var item in internalCatalog.Items)
             {
-                if (!_itemCategories.ContainsKey(item.CategoryId))
+                if (!_itemCategories.TryGetValue(item.CategoryId, out var categoryNode))
                 {
                     var category = xml.CreateElement("ItemCategory");
 
@@ -185,13 +179,14 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                     category.SetAttribute("name", Enum.GetName(item.CategoryId));
 
                     var node = catalogs.AppendChild(category);
-                    _itemCategories.Add(item.CategoryId, node);
+                    categoryNode = node;
+                    _itemCategories.Add(item.CategoryId, categoryNode);
                     _itemSubCategories.TryAdd(item.CategoryId, new Dictionary<ItemSubCategory, XmlNode>());
                 }
 
-                var itemCategory = _itemCategories[item.CategoryId];
+                var itemCategory = categoryNode;
 
-                if (!_itemSubCategories[item.CategoryId].ContainsKey(item.SubCategoryId))
+                if (!_itemSubCategories[item.CategoryId].TryGetValue(item.SubCategoryId, out var value))
                 {
                     var subCategory = xml.CreateElement("ItemSubcategory");
 
@@ -199,10 +194,11 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                     subCategory.SetAttribute("name", Enum.GetName(item.SubCategoryId));
 
                     var node = itemCategory.AppendChild(subCategory);
-                    _itemSubCategories[item.CategoryId].Add(item.SubCategoryId, node);
+                    value = node;
+                    _itemSubCategories[item.CategoryId].Add(item.SubCategoryId, value);
                 }
 
-                var itemSubCategory = _itemSubCategories[item.CategoryId][item.SubCategoryId];
+                var itemSubCategory = value;
 
                 var itemElement = xml.CreateElement("Item");
 
@@ -213,13 +209,18 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                 else if (item.Store == StoreType.BackStore)
                     storeType = "Back Store";
 
-                var itemId = itemIds.FindSmallest(smallestItemId);
-                itemIds.Add(smallestItemId);
-                smallestItemId = itemId;
+                var itemId = item.ItemId;
+
+                if (itemId == -1)
+                {
+                    itemIds.FindSmallest(smallestItemId);
+                    itemIds.Add(smallestItemId);
+                    smallestItemId = itemId;
+                }
 
                 itemElement.SetAttribute("id", itemId.ToString());
-                itemElement.SetAttribute("ingamename", ItemNameDict[item.ItemName].ToString());
-                itemElement.SetAttribute("ingamedescription", ItemNameDict[item.DescriptionText].ToString());
+                itemElement.SetAttribute("ingamename", _itemNameDict[item.ItemName].ToString());
+                itemElement.SetAttribute("ingamedescription", _itemNameDict[item.DescriptionText].ToString());
                 itemElement.SetAttribute("prefab", item.PrefabName.ToString());
                 itemElement.SetAttribute("special_display_prefab", item.SpecialDisplayPrefab.ToString());
 

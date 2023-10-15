@@ -106,9 +106,17 @@ public class InternalVendorCatalog : IBundledXml
 
                     foreach (XmlAttribute id in item.Attributes)
                     {
-                        if (id.Name == "name")
+                        if (id.Name == "prefabName")
                         {
-                            items.Add(itemCat.ItemNameDict[id.Value]);
+                            var itemD = itemCat.GetItemFromPrefabName(id.Value);
+
+                            if (itemD == null)
+                            {
+                                Logger.LogError("Unknown item with prefab name: {Val}", id.Value);
+                                continue;
+                            }
+
+                            items.Add(itemD.ItemId);
                             break;
                         }
                     }

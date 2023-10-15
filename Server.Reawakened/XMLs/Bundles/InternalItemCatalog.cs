@@ -1,4 +1,6 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
@@ -15,12 +17,17 @@ public class InternalItemCatalog : IBundledXml
     public IServiceProvider Services { get; set; }
 
     public List<ItemDescription> Items;
+    public Dictionary<int, string> Descriptions;
 
     public InternalItemCatalog()
     {
     }
 
-    public void InitializeVariables() => Items = new List<ItemDescription>();
+    public void InitializeVariables()
+    {
+        Items = [];
+        Descriptions = [];
+    }
 
     public void EditDescription(XmlDocument xml)
     {
@@ -28,6 +35,8 @@ public class InternalItemCatalog : IBundledXml
 
     public void ReadDescription(string xml)
     {
+        var miscDict = Services.GetRequiredService<MiscTextDictionary>();
+
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
@@ -59,8 +68,9 @@ public class InternalItemCatalog : IBundledXml
                     {
                         if (!(item.Name == "Item")) continue;
 
+                        var itemId = -1;
                         var itemName = string.Empty;
-                        var descriptionText = string.Empty;
+                        var descriptionId = 0;
                         var prefabName = string.Empty;
                         var specialDisplayPrefab = string.Empty;
 
@@ -100,11 +110,15 @@ public class InternalItemCatalog : IBundledXml
                         {
                             switch (itemAttributes.Name)
                             {
+                                case "itemId":
+                                    itemId = int.Parse(itemAttributes.Value);
+                                    break;
+
                                 case "itemName":
                                     itemName = itemAttributes.Value;
                                     break;
-                                case "descriptionText":
-                                    descriptionText = itemAttributes.Value;
+                                case "descriptionId":
+                                    descriptionId = int.Parse(itemAttributes.Value);
                                     break;
                                 case "prefabName":
                                     prefabName = itemAttributes.Value;
@@ -223,11 +237,29 @@ public class InternalItemCatalog : IBundledXml
                             }
                         }
 
+                        if(!miscDict.LocalizationDict.TryGetValue(descriptionId, out var description))
+                        {
+                            Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
+                            continue;
+                        }
+
+                        Descriptions.Add(descriptionId, description);
+
+                        var nameId = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == itemName);
+
+                        if (string.IsNullOrEmpty(nameId.Value))
+                        {
+                            Logger.LogError("Could not find name for item {ItemName} in misc dictionary", itemName);
+                            continue;
+                        }
+
+                        Descriptions.Add(nameId.Key, nameId.Value);
+
                         if (!string.IsNullOrEmpty(prefabName))
-                            Items.Add(new ItemDescription(0,
+                            Items.Add(new ItemDescription(itemId,
                                 tribe, itemCategory, subCategory, actionType,
                                 (int)rarity, currency, regularPrice, sellPrice, sellCount,
-                                specialDisplayPrefab, itemName, descriptionText, prefabName,
+                                specialDisplayPrefab, itemName, description, prefabName,
                                 cooldownTime, binding, level, levelRequirement, itemEffects, uniqueInInventory,
                                 storeType, discountedFrom, discountedTo, discountPrice, stockPriority, lootId,
                                 productionStatus, recipeParentItemId, releaseDate, memberOnly, delayUseDuration

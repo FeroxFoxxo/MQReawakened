@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <VendorCatalog>
     <Vendor objectId="98648" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
-        <Item name="Enzo" />
+        <Item prefabName="PF_PET_Rig02_Enzo01" />
     </Vendor>
 </VendorCatalog>
