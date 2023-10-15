@@ -57,6 +57,9 @@ public class CreateCharacter : ExternalProtocol
             characterData.CharacterName = string.Join(string.Empty, names);
             characterData.UserUuid = Player.UserId;
 
+            if (ServerConfig.Is2014Client)
+                characterData.CompletedQuests.Add(ServerConfig.TutorialTribe2014[tribe]);
+
             characterData.Registered = true;
 
             var model = new CharacterModel
@@ -69,14 +72,13 @@ public class CreateCharacter : ExternalProtocol
                     SpawnPointId = 0
                 }
             };
-
             model.SetLevelXp(1);
 
             Player.AddCharacter(model);
 
             var levelInfo = WorldHandler.GetLevelInfo(model.LevelData.LevelId);
 
-            Player.SendStartPlay(model, levelInfo, ServerConfig);
+            Player.SendStartPlay(model, levelInfo);
         }
     }
 }

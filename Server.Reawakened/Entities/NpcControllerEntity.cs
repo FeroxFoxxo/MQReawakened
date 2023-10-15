@@ -1,4 +1,5 @@
-﻿using FollowCamDefines;
+﻿using A2m.Server;
+using FollowCamDefines;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Network;
@@ -280,24 +281,27 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             return false;
         }
 
-        if (!questLine.ShowInJournal)
+        if (questLine.QuestType == QuestType.Daily || !questLine.ShowInJournal || QuestCatalog.GetQuestLineTotalQuestCount(questLine) == 0)
         {
-            Logger.LogTrace("[{QuestName} ({QuestId})] [SKIPPED QUESTLINE] Quest with line {QuestLineId} was skipped as is not set to show in journal",
+            Logger.LogTrace("[{QuestName} ({QuestId})] [SKIPPED QUESTLINE] Quest with line {QuestLineId} was skipped as it does not meet valid preconditions",
                 quest.Name, quest.Id, quest.QuestLineId);
             return false;
         }
 
-        foreach (var requiredQuest in quest.PreviousQuests)
+        if (character.Data.GlobalLevel < quest.LevelRequired)
         {
-            if (!character.Data.CompletedQuests.Contains(requiredQuest.Key))
-            {
-                Logger.LogTrace("[{QuestName} ({QuestId})] [INCOMPLETE REQUIRED QUEST] {ReqQuestId} is required",
-                    quest.Name, quest.Id, requiredQuest.Key);
-                return false;
-            }
+            Logger.LogTrace("[{QuestName} ({QuestId})] [SKIPPED QUEST] Level {Current} is less than required {Required}",
+                quest.Name, quest.Id, character.Data.GlobalLevel, quest.LevelRequired);
+            return false;
         }
 
-        return true;
+        foreach (var requiredQuest in QuestCatalog.GetListOfPreviousQuests(quest))
+            if (character.Data.CompletedQuests.Contains(requiredQuest.Id))
+                return true;
+
+        Logger.LogTrace("[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUEST]", quest.Name, quest.Id);
+
+        return false;
     }
 
     public void ValidateQuest(Player player)

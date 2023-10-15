@@ -1,6 +1,5 @@
 ﻿using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -30,20 +29,8 @@ public static class PlayerExtensions
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelData.LevelId ?? -1;
 
-    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo, ServerRConfig config)
+    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
     {
-        var questsToAdd = new List<int>();
-
-        if (config.Is2014Client)
-        {
-            questsToAdd.Add(config.Tutorial2014);
-            questsToAdd.Add(config.TutorialTribe2014[character.Data.Allegiance]);
-        }
-
-        foreach (var quest in questsToAdd)
-            if (!character.Data.CompletedQuests.Contains(quest))
-                character.Data.CompletedQuests.Add(quest);
-
         character.Data.SetPlayerData(player);
         player.SetCharacterSelected(character.Data.CharacterId);
         player.PlayerHandler.AddPlayer(player);

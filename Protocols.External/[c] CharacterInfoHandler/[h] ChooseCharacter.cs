@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
@@ -15,7 +14,6 @@ public class ChooseCharacter : ExternalProtocol
     public WorldHandler WorldHandler { get; set; }
     public ILogger<ChooseCharacter> Logger { get; set; }
     public WorldGraph WorldGraph { get; set; }
-    public ServerRConfig ServerConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -33,6 +31,6 @@ public class ChooseCharacter : ExternalProtocol
 
         var levelInfo = WorldHandler.GetLevelInfo(character.LevelData.LevelId);
 
-        Player.SendStartPlay(character, levelInfo, ServerConfig);
+        Player.SendStartPlay(character, levelInfo);
     }
 }
