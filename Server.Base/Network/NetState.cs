@@ -88,48 +88,6 @@ public class NetState : IDisposable
         _sink.InvokeNetStateAdded(new NetStateAddedEventArgs(this));
     }
 
-    public virtual void Dispose()
-    {
-        if (Socket == null || _disposing)
-            return;
-
-        _disposing = true;
-
-        try
-        {
-            Socket.Shutdown(SocketShutdown.Both);
-        }
-        catch (SocketException ex)
-        {
-            _handler.TraceNetworkError(ex, this);
-        }
-
-        try
-        {
-            Socket.Close();
-        }
-        catch (SocketException ex)
-        {
-            _handler.TraceNetworkError(ex, this);
-        }
-
-        _sink.InvokeNetStateRemoved(new NetStateRemovedEventArgs(this));
-
-        Socket = null;
-        _onReceiveCallback = null;
-        _onSendCallback = null;
-        Throttler = null;
-
-        _data.Clear();
-
-        Running = false;
-
-        lock (_handler.Disposed)
-            _handler.Disposed.Enqueue(this);
-
-        GC.SuppressFinalize(this);
-    }
-
     private void WriteServer(string text) =>
         _logger.LogTrace("Outbound: {Written}", text);
 
@@ -208,7 +166,8 @@ public class NetState : IDisposable
         if (buffer.Length <= 0)
             return;
 
-        Socket.BeginSend(buffer, 0, length, SocketFlags.None, _onSendCallback, Socket);
+        if (Socket != null && _onSendCallback != null)
+            Socket.BeginSend(buffer, 0, length, SocketFlags.None, _onSendCallback, Socket);
     }
 
     private void OnSend(IAsyncResult asyncResult)
@@ -395,5 +354,47 @@ public class NetState : IDisposable
         var packets = _rwConfig.UnhandledPackets.ToList();
         packets.Remove(packetId);
         _rwConfig.UnhandledPackets = [.. packets];
+    }
+
+    public virtual void Dispose()
+    {
+        if (Socket == null || _disposing)
+            return;
+
+        _disposing = true;
+
+        try
+        {
+            Socket.Shutdown(SocketShutdown.Both);
+        }
+        catch (SocketException ex)
+        {
+            _handler.TraceNetworkError(ex, this);
+        }
+
+        try
+        {
+            Socket.Close();
+        }
+        catch (SocketException ex)
+        {
+            _handler.TraceNetworkError(ex, this);
+        }
+
+        _sink.InvokeNetStateRemoved(new NetStateRemovedEventArgs(this));
+
+        Socket = null;
+        _onReceiveCallback = null;
+        _onSendCallback = null;
+        Throttler = null;
+
+        _data.Clear();
+
+        Running = false;
+
+        lock (_handler.Disposed)
+            _handler.Disposed.Enqueue(this);
+
+        GC.SuppressFinalize(this);
     }
 }

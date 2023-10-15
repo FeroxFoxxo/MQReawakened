@@ -1,5 +1,7 @@
-﻿using Server.Reawakened.Network.Protocols;
+﻿using A2m.Server;
+using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._n__NpcHandler;
@@ -9,13 +11,14 @@ public class BuyItems : ExternalProtocol
     public override string ProtocolName => "nb";
 
     public ItemCatalog ItemCatalog { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
 
     public override void Run(string[] message)
     {
         var character = Player.Character;
 
         //var vendorId = int.Parse(message[5]);
-        //var vendorGoId = int.Parse(message[7]);
+        var vendorGoId = int.Parse(message[7]);
         var items = message[6].Split('|');
         foreach (var item in items)
         {
@@ -29,11 +32,12 @@ public class BuyItems : ExternalProtocol
 
             character.AddItem(itemDescription, amount);
 
-            if (itemDescription.Currency == A2m.Server.CurrencyType.Banana)
+            if (itemDescription.Currency == CurrencyType.Banana)
                 Player.RemoveBananas(itemDescription.RegularPrice * amount);
-            else if (itemDescription.Currency == A2m.Server.CurrencyType.NickCash)
+            else if (itemDescription.Currency == CurrencyType.NickCash)
                 Player.RemoveNCash(itemDescription.RegularPrice * amount);
-            
+
+            Player.CheckObjective(QuestCatalog, ObjectiveEnum.Buyitem, vendorGoId, itemId, amount);
         }
 
         Player.SendUpdatedInventory(false);

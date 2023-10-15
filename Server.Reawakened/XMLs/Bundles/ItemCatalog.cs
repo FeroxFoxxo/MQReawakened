@@ -213,8 +213,8 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
                 if (itemId == -1)
                 {
-                    itemIds.FindSmallest(smallestItemId);
-                    itemIds.Add(smallestItemId);
+                    itemId = itemIds.FindSmallest(smallestItemId);
+                    itemIds.Add(itemId);
                     smallestItemId = itemId;
                 }
 

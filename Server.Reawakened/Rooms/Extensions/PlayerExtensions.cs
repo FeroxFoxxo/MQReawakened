@@ -1,4 +1,5 @@
-﻿using Server.Base.Accounts.Extensions;
+﻿using A2m.Server;
+using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
@@ -8,7 +9,9 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
+using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Rooms.Extensions;
 
@@ -102,5 +105,56 @@ public static class PlayerExtensions
     {
         var room = player.PlayerHandler.WorldHandler.GetRoomFromLevelId(-1, player);
         player.JoinRoom(room, out _);
+    }
+
+    public static void CheckObjective(this Player player, QuestCatalog quests,
+        ObjectiveEnum type, int gameObjectId, int itemId, int count)
+    {
+        var character = player.Character.Data;
+
+        foreach (var quest in character.QuestLog)
+        {
+            var hasObjectiveComplete = false;
+
+            foreach (var objectiveKVP in quest.Objectives)
+            {
+                var objective = objectiveKVP.Value;
+
+                if (objective.ObjectiveType != type ||
+                    objective.GameObjectId != gameObjectId ||
+                    objective.ItemId != itemId ||
+                    objective.Order > quest.CurrentOrder ||
+                    objective.LevelId != player.Character.LevelData.LevelId ||
+                    objective.Completed || 
+                    count <= 0)
+                    continue;
+
+                objective.CountLeft -= count;
+
+                if (objective.CountLeft <= 0)
+                {
+                    objective.CountLeft = 0;
+                    objective.Completed = true;
+                    hasObjectiveComplete = true;
+
+                    player.SendXt("no", quest.Id, objectiveKVP.Key);
+
+                    var leftObjectives = quest.Objectives.Where(x => x.Value.Completed != true);
+
+                    if (leftObjectives.Any())
+                        quest.CurrentOrder = leftObjectives.Min(x => x.Value.Order);
+                }
+                else
+                {
+                    player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
+                }
+            }
+
+            if (hasObjectiveComplete && !quest.Objectives.Any(o => !o.Value.Completed))
+            {
+                player.SendXt("nq", quest.Id);
+                player.UpdateNpcsInLevel(quest, quests);
+            }
+        }
     }
 }

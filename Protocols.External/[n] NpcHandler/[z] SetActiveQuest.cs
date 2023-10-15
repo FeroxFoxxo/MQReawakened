@@ -23,7 +23,7 @@ public class SetActiveQuest : ExternalProtocol
 
         var activeQuest = int.Parse(message[5]);
 
-        if (activeQuest == -1)
+        if (activeQuest is -1)
             activeQuest = Config.DefaultQuest;
 
         if (character.Data.ActiveQuestId == activeQuest || character.Data.CompletedQuests.Contains(activeQuest))

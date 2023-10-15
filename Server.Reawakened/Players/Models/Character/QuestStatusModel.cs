@@ -8,6 +8,7 @@ public class QuestStatusModel
     public int Id { get; set; }
     public QuestStatus.QuestState QuestStatus { get; set; }
     public Dictionary<int, ObjectiveModel> Objectives { get; set; }
+    public int CurrentOrder { get; set; }
 
     public QuestStatusModel() =>
         Objectives = new Dictionary<int, ObjectiveModel>();
