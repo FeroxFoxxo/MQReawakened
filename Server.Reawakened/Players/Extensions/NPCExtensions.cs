@@ -1,5 +1,4 @@
-﻿using A2m.Server;
-using Server.Base.Core.Extensions;
+﻿using Server.Base.Core.Extensions;
 using Server.Reawakened.Entities;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
@@ -15,7 +14,7 @@ public static class NpcExtensions
         var character = player.Character;
 
         if (quest == null || character == null)
-            throw new InvalidDataException();
+            return;
 
         var questModel = character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
@@ -55,7 +54,7 @@ public static class NpcExtensions
 
     public static void UpdateNpcsInLevel(this Player player, QuestDescription quest)
     {
-        if (player.Room != null && player.Character != null)
+        if (player.Room != null && player.Character != null && quest != null)
             if (player.Room.Entities != null)
                 foreach (var entity in player.Room.Entities.SelectMany(e => e.Value)
                     .Where(e => e.Id == quest.QuestGiverGoId || e.Id == quest.ValidatorGoId)

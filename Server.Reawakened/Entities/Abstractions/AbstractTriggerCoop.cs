@@ -84,6 +84,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
     public float ActivationTimeAfterFirstInteraction => EntityData.ActivationTimeAfterFirstInteraction;
 
     public ILogger<TriggerCoopController> Logger { get; set; }
+
     public FileLogger FileLogger { get; set; }
 
     public override void InitializeEntity()
@@ -186,7 +187,15 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             IsActive && StayTriggeredOnUnpressed && !StayTriggeredOnReceiverActivated
         )
             if (CheckTriggered())
+            {
                 Room.SentEntityTriggered(Id, player, true, IsActive);
+                Triggered(player, true, IsActive);
+            }
+    }
+
+    public virtual void Triggered(Player player, bool isSuccess, bool isActive)
+    {
+
     }
 
     private bool CheckTriggered()
