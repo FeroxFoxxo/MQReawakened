@@ -13,9 +13,10 @@ using System.Net;
 
 namespace Server.Base.Accounts.Services;
 
-public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRConfig internalServerConfig,
+public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRConfig rConfig,
     PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter,
-    FileLogger fileLogger, InternalRConfig config, TemporaryDataStorage temporaryDataStorage) : DataHandler<Account>(sink, logger, config)
+    FileLogger fileLogger, InternalRwConfig rwConfig, TemporaryDataStorage temporaryDataStorage) :
+    DataHandler<Account>(sink, logger, rConfig, rwConfig)
 {
     public Dictionary<IPAddress, int> IpTable = new();
 
@@ -46,7 +47,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
     {
         var rejectReason = AlrReason.Invalid;
 
-        if (!internalServerConfig.SocketBlock && !ipLimiter.Verify(netState.Address))
+        if (!RConfig.SocketBlock && !ipLimiter.Verify(netState.Address))
         {
             IpLimitedError(netState);
             rejectReason = AlrReason.InUse;
@@ -74,9 +75,9 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
 
             if (account != null)
             {
-                if (!account.HasAccess(netState, this, Config))
+                if (!account.HasAccess(netState, this, RConfig))
                 {
-                    rejectReason = internalServerConfig.LockDownLevel > AccessLevel.Vip
+                    rejectReason = RConfig.LockDownLevel > AccessLevel.Vip
                         ? AlrReason.BadComm
                         : AlrReason.BadPass;
                 }
@@ -89,7 +90,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
                     netState.Set(account);
                     rejectReason = AlrReason.Accepted;
 
-                    account.LogAccess(netState, this, Config);
+                    account.LogAccess(netState, this, RConfig);
                 }
             }
         }
@@ -148,7 +149,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
         for (var i = 0; isSafe && i < username.Length; ++i)
         {
             isSafe = username[i] >= 0x20 && username[i] < 0x7F &&
-                     internalServerConfig.ForbiddenChars.All(t => username[i] != t);
+                     RConfig.ForbiddenChars.All(t => username[i] != t);
         }
 
         for (var i = 0; isSafe && i < password.Length; ++i)
@@ -165,8 +166,8 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
         {
             Logger.LogWarning(
                 "Login: {Address}: Account '{Username}' not created, ip already has {Accounts} account{Plural}.",
-                ipAddress, username, internalServerConfig.MaxAccountsPerIp,
-                internalServerConfig.MaxAccountsPerIp == 1 ? string.Empty : "s");
+                ipAddress, username, RConfig.MaxAccountsPerIp,
+                RConfig.MaxAccountsPerIp == 1 ? string.Empty : "s");
             return null;
         }
 

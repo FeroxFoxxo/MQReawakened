@@ -21,9 +21,9 @@ public class UserInfoHandler : DataHandler<UserInfo>
     private readonly PlayerHandler _playerHandler;
 
     public UserInfoHandler(EventSink sink, ILogger<UserInfo> logger,
-        RandomKeyGenerator randomKeyGenerator, ServerRConfig config, InternalRConfig internalConfig,
-        PlayerHandler playerHandler) :
-        base(sink, logger, internalConfig)
+        RandomKeyGenerator randomKeyGenerator, ServerRConfig config, InternalRConfig rConfig,
+        InternalRwConfig rwConfig, PlayerHandler playerHandler) :
+        base(sink, logger, rConfig, rwConfig)
     {
         _randomKeyGenerator = randomKeyGenerator;
         _config = config;

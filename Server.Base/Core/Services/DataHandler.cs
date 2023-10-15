@@ -12,15 +12,17 @@ public abstract class DataHandler<T> : IService where T : PersistantData
 {
     public readonly ILogger<T> Logger;
     public readonly EventSink Sink;
-    public readonly InternalRConfig Config;
+    public readonly InternalRConfig RConfig;
+    public readonly InternalRwConfig RwConfig;
 
     public Dictionary<int, T> Data;
 
-    protected DataHandler(EventSink sink, ILogger<T> logger, InternalRConfig config)
+    protected DataHandler(EventSink sink, ILogger<T> logger, InternalRConfig rConfig, InternalRwConfig rwConfig)
     {
         Sink = sink;
         Logger = logger;
-        Config = config;
+        RConfig = rConfig;
+        RwConfig = rwConfig;
         Data = [];
     }
 
@@ -32,7 +34,7 @@ public abstract class DataHandler<T> : IService where T : PersistantData
     }
 
     public string GetFileName() =>
-        Path.Combine(Config.SaveDirectory, $"{typeof(T).Name.ToLower()}.json");
+        Path.Combine(RConfig.SaveDirectory, $"{typeof(T).Name.ToLower()}.json");
 
     public void Load()
     {
@@ -103,7 +105,9 @@ public abstract class DataHandler<T> : IService where T : PersistantData
 
         using StreamWriter streamWriter = new(filePath, false);
 
-        streamWriter.Write(JsonConvert.SerializeObject(Data, Formatting.Indented));
+        streamWriter.Write(
+            JsonConvert.SerializeObject(Data, RwConfig.IndentSaves ? Formatting.Indented : Formatting.None)
+        );
 
         streamWriter.Close();
     }

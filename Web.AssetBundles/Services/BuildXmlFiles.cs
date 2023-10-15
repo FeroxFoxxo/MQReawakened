@@ -10,8 +10,8 @@ using Web.AssetBundles.Models;
 
 namespace Web.AssetBundles.Services;
 
-public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services, ILogger<BuildXmlFiles> logger,
-    AssetBundleRConfig rConfig, AssetBundleRwConfig rwConfig) : IService, IInjectModules
+public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
+    ILogger<BuildXmlFiles> logger, AssetBundleRConfig rConfig) : IService, IInjectModules
 {
     public readonly Dictionary<string, string> XmlFiles = new();
 
