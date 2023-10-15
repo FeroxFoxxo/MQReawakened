@@ -9,41 +9,41 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class NpcExtensions
 {
-    public static void AddQuest(this Player player, QuestDescription quest, bool setActiveQuest)
+    public static void AddQuest(this Player player, QuestDescription quest, int questId, bool setActiveQuest)
     {
         var character = player.Character;
 
-        if (quest == null || character == null)
-            return;
-
-        var questModel = character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
-
-        if (questModel == null)
+        if (quest != null && character != null)
         {
-            questModel = new QuestStatusModel()
+            var questModel = character.Data.QuestLog.FirstOrDefault(x => x.Id == questId);
+
+            if (questModel == null)
             {
-                Id = quest.Id,
-                QuestStatus = QuestState.NOT_START,
-                CurrentOrder = quest.Objectives.Values.Count > 0 ? quest.Objectives.Values.Min(x => x.Order) : 1,
-                Objectives = quest.Objectives.ToDictionary(q => q.Key, q => new ObjectiveModel()
+                questModel = new QuestStatusModel()
                 {
-                    Completed = false,
-                    CountLeft = q.Value.TotalCount,
-                    GameObjectId = q.Value.GoId,
-                    GameObjectLevelId = q.Value.GoLevelId,
-                    ItemId = (int) q.Value.GetField("_itemId"),
-                    LevelId = q.Value.LevelId,
-                    ObjectiveType = q.Value.Type,
-                    Order = q.Value.Order
-                })
-            };
-            character.Data.QuestLog.Add(questModel);
+                    Id = questId,
+                    QuestStatus = QuestState.NOT_START,
+                    CurrentOrder = quest.Objectives.Values.Count > 0 ? quest.Objectives.Values.Min(x => x.Order) : 1,
+                    Objectives = quest.Objectives.ToDictionary(q => q.Key, q => new ObjectiveModel()
+                    {
+                        Completed = false,
+                        CountLeft = q.Value.TotalCount,
+                        GameObjectId = q.Value.GoId,
+                        GameObjectLevelId = q.Value.GoLevelId,
+                        ItemId = (int)q.Value.GetField("_itemId"),
+                        LevelId = q.Value.LevelId,
+                        ObjectiveType = q.Value.Type,
+                        Order = q.Value.Order
+                    })
+                };
+                character.Data.QuestLog.Add(questModel);
+            }
+
+            player.SendXt("na", questModel, setActiveQuest ? 1 : 0);
         }
 
         if (setActiveQuest)
-            character.Data.ActiveQuestId = quest.Id;
-
-        player.SendXt("na", questModel, setActiveQuest ? 1 : 0);
+            character.Data.ActiveQuestId = questId;
     }
 
     public static void UpdateNpcsInLevel(this Player player, QuestStatusModel status, QuestCatalog quests)
@@ -52,13 +52,29 @@ public static class NpcExtensions
         UpdateNpcsInLevel(player, quest);
     }
 
+    public static void UpdateNpcsInLevel(this Player player)
+    {
+        foreach (var entity in GetNpcs(player))
+            entity.SendNpcInfo(player.Character, player.NetState);
+    }
+
     public static void UpdateNpcsInLevel(this Player player, QuestDescription quest)
     {
-        if (player.Room != null && player.Character != null && quest != null)
+        if (quest != null)
+            foreach (var entity in GetNpcs(player).Where(e => e.Id == quest.QuestGiverGoId || e.Id == quest.ValidatorGoId))
+                entity.SendNpcInfo(player.Character, player.NetState);
+    }
+
+    public static List<NpcControllerEntity> GetNpcs(Player player)
+    {
+        if (player.Room != null && player.Character != null)
             if (player.Room.Entities != null)
-                foreach (var entity in player.Room.Entities.SelectMany(e => e.Value)
-                    .Where(e => e.Id == quest.QuestGiverGoId || e.Id == quest.ValidatorGoId)
-                    .Where(e => e is NpcControllerEntity).Select(e => e as NpcControllerEntity))
-                    entity.SendNpcInfo(player.Character, player.NetState);
+                return player.Room.Entities
+                    .SelectMany(e => e.Value)
+                    .Where(e => e is NpcControllerEntity)
+                    .Select(e => e as NpcControllerEntity)
+                    .ToList();
+
+        return new List<NpcControllerEntity>();
     }
 }

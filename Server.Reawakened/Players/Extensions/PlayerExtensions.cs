@@ -7,6 +7,7 @@ using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -35,6 +36,24 @@ public static class PlayerExtensions
         }
 
         player.Group = null;
+    }
+
+    public static void AddReputation(this Player player, int reputation)
+    {
+        var charData = player.Character.Data;
+
+        reputation += charData.Reputation;
+
+        while (reputation > charData.ReputationForNextLevel)
+        {
+            reputation -= charData.ReputationForNextLevel;
+            player.Character.SetLevelXp(charData.GlobalLevel + 1, reputation);
+            player.SendLevelUp();
+        }
+
+        charData.Reputation = reputation;
+
+        player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
     }
 
     public static void AddBananas(this Player player, int collectedBananas)
@@ -139,14 +158,8 @@ public static class PlayerExtensions
 
     public static void LevelUp(this Player player, int level, Microsoft.Extensions.Logging.ILogger logger)
     {
-        var levelUpData = new LevelUpDataModel
-        {
-            Level = level
-        };
-
         player.Character.SetLevelXp(level);
-
-        player.SendLevelUp(levelUpData);
+        player.SendLevelUp();
 
         logger.LogTrace("{Name} leveled up to {Level}", player.Character.Data.CharacterName, level);
     }
@@ -179,6 +192,56 @@ public static class PlayerExtensions
                     DelayUseExpiry = DateTime.MinValue
                 };
                 hotbarButtons[i] = itemModel;
+            }
+        }
+    }
+
+    public static void CheckObjective(this Player player, QuestCatalog quests,
+        ObjectiveEnum type, int gameObjectId, int itemId, int count)
+    {
+        var character = player.Character.Data;
+
+        foreach (var quest in character.QuestLog)
+        {
+            foreach (var objectiveKVP in quest.Objectives)
+            {
+                var objective = objectiveKVP.Value;
+                var hasObjComplete = false;
+
+                if (objective.ObjectiveType != type ||
+                    objective.GameObjectId != gameObjectId ||
+                    objective.ItemId != itemId ||
+                    objective.Order > quest.CurrentOrder ||
+                    objective.LevelId != player.Character.LevelData.LevelId ||
+                    objective.Completed ||
+                    count <= 0)
+                    continue;
+
+                objective.CountLeft -= count;
+
+                player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
+
+                if (objective.CountLeft <= 0)
+                {
+                    objective.CountLeft = 0;
+                    objective.Completed = true;
+
+                    var leftObjectives = quest.Objectives.Where(x => x.Value.Completed != true);
+
+                    if (leftObjectives.Any())
+                        quest.CurrentOrder = leftObjectives.Min(x => x.Value.Order);
+
+                    player.SendXt("no", quest.Id, objectiveKVP.Key);
+                    hasObjComplete = true;
+                }
+
+                if (!quest.Objectives.Any(o => !o.Value.Completed) && hasObjComplete)
+                {
+                    player.SendXt("nQ", quest.Id);
+                    quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
+                    player.UpdateNpcsInLevel(quest, quests);
+                    return;
+                }
             }
         }
     }

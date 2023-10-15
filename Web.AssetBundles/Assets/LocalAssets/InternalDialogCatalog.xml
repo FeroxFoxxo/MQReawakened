@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <DialogCatalog>
+    <NPC objectId="937" name="Captain Tyran" descriptionId="0">
+        <Dialog dialogId="985" conversationId="2717" minimumReputation="1" />
+    </NPC>
     <NPC objectId="13161359" name="Luca" descriptionId="0">
         <Dialog dialogId="1564" conversationId="3963" minimumReputation="1" />
     </NPC>

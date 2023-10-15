@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._n__NpcHandler;
@@ -20,6 +19,7 @@ public class BuyItems : ExternalProtocol
         //var vendorId = int.Parse(message[5]);
         var vendorGoId = int.Parse(message[7]);
         var items = message[6].Split('|');
+
         foreach (var item in items)
         {
             if (string.IsNullOrEmpty(item)) continue;

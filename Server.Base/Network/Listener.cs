@@ -140,7 +140,8 @@ public class Listener : IDisposable
         }
         catch (SocketException ex)
         {
-            TraceListenerError(ex, _listener);
+            if (ex.ErrorCode != 995)
+                TraceListenerError(ex, _listener);
         }
         catch (ObjectDisposedException)
         {

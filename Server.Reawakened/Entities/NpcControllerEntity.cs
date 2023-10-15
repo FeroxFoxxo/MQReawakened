@@ -112,15 +112,15 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                                 Logger.LogDebug("[AVALIABLE QUEST] [{Name} ({Id})]", Name, Id);
                                 break;
                             case NPCStatus.QuestInProgress:
-                                SendQuestProgress(player.Character, player.NetState);
+                                SendQuestProgress(player);
                                 Logger.LogDebug("[IN PROGRESS QUEST] [{Name} ({Id})]", Name, Id);
                                 break;
                             case NPCStatus.QuestCompleted:
-                                ValidateQuest(player.Character, player.NetState);
+                                ValidateQuest(player);
                                 Logger.LogDebug("[COMPLETED QUEST] [{Name} ({Id})]", Name, Id);
                                 break;
                             case NPCStatus.QuestUnavailable:
-                                SendDialog(player.Character, player.NetState);
+                                SendDialog(player);
                                 Logger.LogDebug("[DIALOG QUEST] [{Name} ({Id})]", Name, Id);
                                 break;
                             default:
@@ -128,7 +128,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                         }
                         break;
                     case NpcType.Dialog:
-                        SendDialog(player.Character, player.NetState);
+                        SendDialog(player);
                         Logger.LogDebug("[DIALOG] [{Name} ({Id})]", Name, Id);
                         break;
                     default:
@@ -172,35 +172,41 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         netState.SendXt("nt", Id, (int)npcStatus, descriptionId);
     }
 
-    public void SendDialog(CharacterModel character, NetState netState)
+    public void SendDialog(Player player)
     {
         if (DialogInfo == null)
         {
-            Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog catalog found for NPC", NpcName, Id);
+            Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog catalog found for NPC",
+                NpcName, Id);
             return;
         }
 
-        var dialog = DialogInfo.Dialog.Where(d => d.Key <= character.Data.GlobalLevel).OrderBy(d => d.Key).Select(d => d.Value).FirstOrDefault();
+        var dialog = DialogInfo.Dialog
+            .Where(d => d.Key <= player.Character.Data.GlobalLevel)
+            .OrderBy(d => d.Key)
+            .Select(d => d.Value)
+            .FirstOrDefault();
 
         if (dialog == null)
         {
-            Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog found for user of level {Level}", NpcName, Id, character.Data.GlobalLevel);
+            Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog found for user of level {Level}",
+                NpcName, Id, player.Character.Data.GlobalLevel);
             return;
         }
 
-        netState.SendXt("nd", Id, NameId, dialog);
+        player.NetState.SendXt("nd", Id, NameId, dialog);
     }
 
     public NPCStatus GetQuestStatus(CharacterModel character)
     {
-        var validatorCount = 0;
+        var giverCount = 0;
         var questStatus = NPCStatus.QuestAvailable;
 
-        foreach (var validatorQuest in ValidatorQuests)
-            if (character.Data.CompletedQuests.Contains(validatorQuest.Id))
-                validatorCount++;
+        foreach (var giverQuest in GiverQuests)
+            if (character.Data.CompletedQuests.Contains(giverQuest.Id))
+                giverCount++;
 
-        if (validatorCount >= ValidatorQuests.Length)
+        if (giverCount >= GiverQuests.Length)
         {
             questStatus = NPCStatus.Dialog;
             Logger.LogTrace("[DIALOG] [{NpcName} ({Id})] All quests have been completed", NpcName, Id);
@@ -236,11 +242,16 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                         questState.Id, NpcName, Id);
                     break;
                 }
-                else
+            }
+
+            if (GiverQuests.Any(v => v.QuestLineId == catalogedQuest.QuestLineId && v.Id == questState.Id))
+            {
+                if (questState.QuestStatus == QuestState.IN_PROCESSING)
                 {
                     questStatus = NPCStatus.QuestInProgress;
-                    Logger.LogTrace("[{QuestId}] [IN PROGRESS QUEST] Quest from {NpcName} ({Id}) has been started",
+                    Logger.LogTrace("[{QuestId}] [QUEST IN PROGRESS] Quest from {NpcName} ({Id}) is in progress",
                         questState.Id, NpcName, Id);
+                    break;
                 }
             }
         }
@@ -289,34 +300,44 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         return true;
     }
 
-    public void ValidateQuest(CharacterModel character, NetState netState)
+    public void ValidateQuest(Player player)
     {
         foreach (var quest in ValidatorQuests)
         {
-            var matchingQuest = character.Data.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
+            var matchingQuest = player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
 
-            if (matchingQuest == null || character.Data.CompletedQuests.Contains(quest.Id))
+            if (matchingQuest == null || player.Character.Data.CompletedQuests.Contains(quest.Id))
                 continue;
 
             if (matchingQuest.QuestStatus != QuestState.TO_BE_VALIDATED)
                 continue;
 
-            netState.SendXt("nl", matchingQuest, Id, NameId, Dialog.QuestDialog[quest.Name][2]);
+            player.NetState.SendXt("nl", matchingQuest, Id, NameId, Dialog.QuestDialog[$"{quest.Name}validator"][1]);
+
+            var completedQuest = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
+
+            if (completedQuest != null)
+            {
+                player.Character.Data.QuestLog.Remove(completedQuest);
+                player.NetState.SendXt("nq", completedQuest.Id);
+                player.Character.Data.CompletedQuests.Add(completedQuest.Id);
+                player.UpdateNpcsInLevel();
+            }
 
             break;
         }
     }
 
-    private void SendQuestProgress(CharacterModel character, NetState netState)
+    private void SendQuestProgress(Player player)
     {
         foreach (var quest in GiverQuests)
         {
-            var matchingQuest = character.Data.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
+            var matchingQuest = player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
 
-            if (matchingQuest == null || character.Data.CompletedQuests.Contains(quest.Id))
+            if (matchingQuest == null || player.Character.Data.CompletedQuests.Contains(quest.Id))
                 continue;
 
-            netState.SendXt("nl", matchingQuest, Id, NameId, Dialog.QuestDialog[quest.Name][1]);
+            player.NetState.SendXt("nl", matchingQuest, Id, NameId, Dialog.QuestDialog[quest.Name][2]);
 
             break;
         }
@@ -328,7 +349,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         {
             if (CanStartQuest(player.Character, givenQuest))
             {
-                player.AddQuest(givenQuest, true);
+                player.AddQuest(givenQuest, givenQuest.Id, true);
 
                 Logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", givenQuest.Name, givenQuest.Id, NpcName);
 

@@ -31,7 +31,7 @@ public class SetActiveQuest : ExternalProtocol
 
         var questData = QuestCatalog.GetQuestData(activeQuest);
 
-        Player.AddQuest(questData, true);
+        Player.AddQuest(questData, activeQuest, true);
 
         if (character.TryGetQuest(activeQuest, out var quest))
             quest.QuestStatus = QuestStatus.QuestState.IN_PROCESSING;

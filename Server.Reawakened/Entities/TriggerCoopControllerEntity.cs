@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Entities.Abstractions;
 using Server.Reawakened.Players;
-using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Entities;
