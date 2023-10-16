@@ -54,18 +54,16 @@ public static class CharacterExtensions
 
     public static void SetLevel(this CharacterModel character, int levelId,
         Microsoft.Extensions.Logging.ILogger logger) =>
-        character.SetLevel(levelId, 0, 0, logger);
+        character.SetLevel(levelId, 0, logger);
 
-    public static void SetLevel(this CharacterModel character, int levelId, int portalId, int spawnId,
+    public static void SetLevel(this CharacterModel character, int levelId, int spawnId,
         Microsoft.Extensions.Logging.ILogger logger)
     {
         character.LevelData.LevelId = levelId;
-        character.LevelData.PortalId = portalId;
         character.LevelData.SpawnPointId = spawnId;
 
-        logger.LogDebug("Set spawn of '{CharacterName}' to portal {PortalId} spawn {SpawnId}",
-            character.Data.CharacterName,
-            portalId, spawnId);
+        logger.LogDebug("Set spawn of '{CharacterName}' to spawn {SpawnId}",
+            character.Data.CharacterName, spawnId);
     }
 
     public static void AddQuest(this CharacterModel character, QuestDescription quest, bool setActive)

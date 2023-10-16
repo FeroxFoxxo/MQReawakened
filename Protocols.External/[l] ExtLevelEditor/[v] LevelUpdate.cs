@@ -40,9 +40,10 @@ public class RoomUpdate : ExternalProtocol
     {
         var sb = new SeparatedStringBuilder('&');
 
-        foreach (var gameObject in entities.Select(GetGameObject)
+        foreach (var gameObject in entities.Where(e => e.Value != null).Select(GetGameObject)
                      .Where(gameObject => gameObject.Split('~').Length > 1))
-            sb.Append(gameObject);
+            if (!string.IsNullOrEmpty(gameObject))
+                sb.Append(gameObject);
 
         return sb.ToString();
     }
@@ -53,8 +54,10 @@ public class RoomUpdate : ExternalProtocol
 
         sb.Append(entities.Key);
 
-        foreach (var entity in entities.Value)
-            sb.Append(GetComponent(entity));
+        if (entities.Value != null)
+            foreach (var entity in entities.Value)
+                if (entity != null)
+                    sb.Append(GetComponent(entity));
 
         return sb.ToString();
     }
@@ -66,7 +69,8 @@ public class RoomUpdate : ExternalProtocol
         sb.Append(entity.Name);
 
         foreach (var setting in entity.GetInitData(Player))
-            sb.Append(setting);
+            if (setting != null)
+                sb.Append(setting);
 
         return sb.ToString();
     }

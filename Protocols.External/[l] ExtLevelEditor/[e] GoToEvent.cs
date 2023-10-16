@@ -23,7 +23,7 @@ public class GoToEvent : ExternalProtocol
         var levelId = int.Parse(destinationIds[0]);
         var spawnId = int.Parse(destinationIds[1]);
 
-        character.SetLevel(levelId, 0, spawnId, Logger);
+        character.SetLevel(levelId, spawnId, Logger);
 
         Player.SendLevelChange(WorldHandler, WorldGraph);
     }

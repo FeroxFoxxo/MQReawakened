@@ -40,28 +40,46 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
         if (portalId == 0)
             portalId = Id;
 
-        var newLevelId = WorldGraph.GetLevelFromPortal(character.LevelData.LevelId, portalId);
-        var node = WorldGraph.GetDestNodeFromPortal(character.LevelData.LevelId, portalId);
+        var roomId = player.Room.LevelInfo.LevelId;
+
+        var newLevelId = WorldGraph.GetLevelFromPortal(roomId, portalId);
+
+        if (newLevelId <= 0)
+        {
+            Logger.LogError("Could not find level for portal {PortalId} in room {RoomId}", portalId, roomId);
+            return;
+        }
+
+        var node = WorldGraph.GetDestNodeFromPortal(roomId, portalId);
+
+        int spawnId;
 
         if (node != null)
         {
+            spawnId = node.ToSpawnID;
             Logger.LogDebug("Node Found: Portal ID '{Portal}', Spawn ID '{Spawn}'.", node.PortalID, node.ToSpawnID);
-            character.SetLevel(newLevelId, node.PortalID, node.ToSpawnID, Logger);
         }
         else
         {
-            Logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LevelData.LevelId, newLevelId);
-            character.SetLevel(newLevelId, portalId,
-                portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID), Logger);
+            spawnId = portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID);
+
+            Logger.LogError("Could not find node for '{Old}' -> '{New}' for portal {PortalId}.", roomId, newLevelId, portalId);
         }
+
+        if (roomId == newLevelId && character.LevelData.SpawnPointId == spawnId)
+        {
+            Logger.LogError("Attempt made to teleport to the same portal! Skipping...");
+            return;
+        }
+
+        character.SetLevel(newLevelId, spawnId, Logger);
 
         var levelInfo = WorldGraph.GetInfoLevel(newLevelId);
 
         Logger.LogInformation(
             "Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
-            "using portals {PortalId} -> {NewPortalId}", character.Data.CharacterName,
-            character.Data.CharacterId, levelInfo.InGameName, levelInfo.LevelId, portalId,
-            character.LevelData.PortalId
+            "using portal {PortalId}", character.Data.CharacterName,
+            character.Data.CharacterId, levelInfo.InGameName, levelInfo.LevelId, portalId
         );
 
         player.SendLevelChange(WorldHandler, WorldGraph);

@@ -68,7 +68,6 @@ public class CreateCharacter : ExternalProtocol
                 LevelData = new LevelData
                 {
                     LevelId = WorldGraph.DefaultLevel,
-                    PortalId = 0,
                     SpawnPointId = 0
                 }
             };

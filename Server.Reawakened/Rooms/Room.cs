@@ -191,20 +191,18 @@ public class Room : Timer
                 spawnLocation = portal;
 
             if (spawnLocation == null)
+            {
                 if (spawnPoints.TryGetValue(spawnId, out var spawnPoint))
+                {
                     spawnLocation = spawnPoint;
-        }
-
-        if (spawnLocation == null)
-            if (character.LevelData.PortalId != 0)
-                if (portals.TryGetValue(spawnId, out var portal))
-                    spawnLocation = portal;
-
-        if (spawnLocation == null)
-        {
-            var spawnPoint = spawnPoints.Values.FirstOrDefault(s => s.Index == character.LevelData.SpawnPointId);
-            if (spawnPoint != null)
-                spawnLocation = spawnPoint;
+                }
+                else
+                {
+                    var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index == character.LevelData.SpawnPointId);
+                    if (indexSpawn != null)
+                        spawnLocation = indexSpawn;
+                }
+            }
         }
 
         spawnLocation ??= DefaultSpawn;
@@ -220,10 +218,9 @@ public class Room : Timer
             Logger.LogWarning("Unknown plane for portal: {PortalPlane}", spawnLocation.ParentPlane);
 
         Logger.LogDebug(
-            "Spawning {CharacterName} at object '{Object}' (portal '{Portal}' spawn '{SpawnPoint}') at '{NewRoom}'.",
+            "Spawning {CharacterName} at object '{Object}' (spawn '{SpawnPoint}') at '{NewRoom}'.",
             character.Data.CharacterName,
             spawnLocation.Id != 0 ? spawnLocation.Id : "DEFAULT",
-            character.LevelData.PortalId != 0 ? character.LevelData.PortalId : "DEFAULT",
             character.LevelData.SpawnPointId != 0 ? character.LevelData.SpawnPointId : "DEFAULT",
             character.LevelData.LevelId
         );

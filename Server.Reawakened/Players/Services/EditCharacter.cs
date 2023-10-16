@@ -112,7 +112,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
             return;
         }
 
-        character.SetLevel(levelId, 0, 0, logger);
+        character.SetLevel(levelId, 0, logger);
 
         var levelInfo = worldGraph.GetInfoLevel(levelId);
 
