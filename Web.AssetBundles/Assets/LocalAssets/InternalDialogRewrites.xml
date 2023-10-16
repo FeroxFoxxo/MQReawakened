@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DialogRewrites>
+    <Dialog oldDialogName="CRS_Hoop01" newDialogName="CTS_Hoop01" />
+</DialogRewrites>

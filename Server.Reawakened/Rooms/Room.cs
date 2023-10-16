@@ -183,13 +183,22 @@ public class Room : Timer
         var spawnPoints = this.GetEntities<SpawnPointEntity>();
         var portals = this.GetEntities<PortalControllerEntity>();
 
-        if (character.LevelData.PortalId != 0)
-            if (portals.TryGetValue(character.LevelData.PortalId, out var portal))
+        var spawnId = character.LevelData.SpawnPointId;
+
+        if (spawnId != 0)
+        {
+            if (portals.TryGetValue(spawnId, out var portal))
                 spawnLocation = portal;
 
+            if (spawnLocation == null)
+                if (spawnPoints.TryGetValue(spawnId, out var spawnPoint))
+                    spawnLocation = spawnPoint;
+        }
+
         if (spawnLocation == null)
-            if (spawnPoints.TryGetValue(character.LevelData.SpawnPointId, out var spawnPoint))
-                spawnLocation = spawnPoint;
+            if (character.LevelData.PortalId != 0)
+                if (portals.TryGetValue(spawnId, out var portal))
+                    spawnLocation = portal;
 
         if (spawnLocation == null)
         {

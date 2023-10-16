@@ -15,6 +15,7 @@ public class WorldGraph : WorldGraphXML, IBundledXml
     public IServiceProvider Services { get; set; }
 
     public int DefaultLevel;
+    public Dictionary<int, List<DestNode>> WorldGraphNodes;
 
     public void InitializeVariables()
     {
@@ -27,6 +28,7 @@ public class WorldGraph : WorldGraphXML, IBundledXml
 
         DefaultLevel =
             int.Parse(this.GetField<WorldGraphXML>("CLOCK_TOWER_SQUARE_LEVEL_ID").ToString() ?? string.Empty);
+        WorldGraphNodes = [];
     }
 
     public void EditDescription(XmlDocument xml)
@@ -36,19 +38,18 @@ public class WorldGraph : WorldGraphXML, IBundledXml
     public void ReadDescription(string xml) =>
         ReadDescriptionXml(xml);
 
-    public void FinalizeBundle()
-    {
-    }
+    public void FinalizeBundle() =>
+        WorldGraphNodes = (Dictionary<int, List<DestNode>>)this.GetField<WorldGraphXML>("_worldGraphNodes");
 
-    public int GetDestinationFromPortal(int levelId, int portalId)
-    {
-        var worldGraphNodes = (Dictionary<int, List<DestNode>>)this.GetField<WorldGraphXML>("_worldGraphNodes");
+    public DestNode GetDestNodeFromPortal(int levelId, int portalId) =>
+        !WorldGraphNodes.TryGetValue(levelId, out var value)
+            ? null
+            : value.Where(destNode => destNode.PortalID == portalId && destNode.ToLevelID != 0)
+        .FirstOrDefault();
 
-        return !worldGraphNodes.TryGetValue(levelId, out var value)
-            ? 0
-            : (from destNode in value.Where(destNode => destNode.PortalID == portalId)
-                where destNode.ToLevelID != 0
-                select destNode.ToLevelID
-            ).FirstOrDefault();
+    public int GetLevelFromPortal(int levelId, int portalId)
+    {
+        var node = GetDestNodeFromPortal(levelId, portalId);
+        return node == null ? 0 : node.ToLevelID;
     }
 }

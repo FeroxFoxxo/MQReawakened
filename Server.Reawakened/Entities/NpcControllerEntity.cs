@@ -9,6 +9,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Models;
@@ -31,6 +32,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
     public QuestCatalog QuestCatalog { get; set; }
     public InternalVendorCatalog VendorCatalog { get; set; }
     public InternalDialogCatalog DialogCatalog { get; set; }
+    public InternalDialogRewrites DialogRewrites { get; set; }
 
     public VendorInfo VendorInfo;
     public DialogInfo DialogInfo;
@@ -321,7 +323,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             if (quest.ValidatorGoId != quest.QuestGiverGoId)
                 questName += "validator";
 
-            player.NetState.SendXt("nl", matchingQuest, Id, NameId, Dialog.QuestDialog[questName][1]);
+            SendNpcDialog(player, matchingQuest, questName, 1);
 
             var completedQuest = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
@@ -346,7 +348,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             if (matchingQuest == null || player.Character.Data.CompletedQuests.Contains(quest.Id))
                 continue;
 
-            player.NetState.SendXt("nl", matchingQuest, Id, NameId, Dialog.QuestDialog[quest.Name][2]);
+            SendNpcDialog(player, matchingQuest, quest.Name, 2);
 
             break;
         }
@@ -364,8 +366,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
                 if (player.Character.TryGetQuest(givenQuest.Id, out var quest))
                 {
-                    player.NetState.SendXt("nl", quest, Id, NameId, Dialog.QuestDialog[givenQuest.Name][0]);
-
+                    SendNpcDialog(player, quest, givenQuest.Name, 0);
                     quest.QuestStatus = QuestState.IN_PROCESSING;
                 }
 
@@ -374,5 +375,25 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                 return;
             }
         }
+    }
+
+    public void SendNpcDialog(Player player, QuestStatusModel quest, string questName, int dialogNumber)
+    {
+        if (DialogRewrites.Rewrites.TryGetValue(questName, out var rewrittenName))
+            questName = rewrittenName;
+
+        if (!Dialog.QuestDialog.TryGetValue(questName, out var questDialog))
+        {
+            Logger.LogError("[{QuestName}] [UNKNOWN QUEST]", questName);
+            return;
+        }
+
+        if (questDialog.Count < dialogNumber)
+        {
+            Logger.LogError("[{QuestName}] [UNKNOWN DIALOG ID {DialogId}]", questName, dialogNumber);
+            return;
+        }
+
+        player.NetState.SendXt("nl", quest, Id, NameId, questDialog[dialogNumber]);
     }
 }

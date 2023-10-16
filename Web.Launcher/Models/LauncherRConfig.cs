@@ -52,7 +52,9 @@ public class LauncherRConfig : IRConfig
         CacheExpiration = 0;
 
         TimeFilter = "yyyy-MM-dd_HH-mm-ss";
-        MajorClientUpdate = "2013-11-01_12-00-00";
+        
+        // Likely occured between Nov 20 - Nov 24
+        MajorClientUpdate = "2013-11-22_12-00-00";
 
         Fullscreen = false;
         OnGameClosePopup = false;

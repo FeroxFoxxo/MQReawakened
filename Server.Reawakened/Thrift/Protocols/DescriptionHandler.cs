@@ -24,7 +24,7 @@ public class DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph w
 
         var portalId = int.Parse(args.GoId);
 
-        var newLevelId = worldGraph.GetDestinationFromPortal(args.LevelId, portalId);
+        var newLevelId = worldGraph.GetLevelFromPortal(args.LevelId, portalId);
         var newLevelName = worldGraph.GetInfoLevel(newLevelId).InGameName;
         var newLevelNameId = miscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Value == newLevelName);
 

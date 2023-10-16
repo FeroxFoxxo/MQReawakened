@@ -31,7 +31,7 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
 
         if (portal.IsAllowedEntry == false)
             return;
-
+        
         if (portal.EventDataList[0] is not int)
             throw new InvalidDataException($"Portal with id '{portal.EventDataList[0]}' could not be cast to int.");
 
@@ -40,43 +40,30 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
         if (portalId == 0)
             portalId = Id;
 
-        var newLevelId = WorldGraph.GetDestinationLevelID(character.LevelData.LevelId, portalId);
+        var newLevelId = WorldGraph.GetLevelFromPortal(character.LevelData.LevelId, portalId);
+        var node = WorldGraph.GetDestNodeFromPortal(character.LevelData.LevelId, portalId);
 
-        if (newLevelId > 0)
+        if (node != null)
         {
-            DestNode node = null;
-
-            var nodes = WorldGraph.GetLevelWorldGraphNodes(newLevelId);
-
-            if (nodes != null)
-                node = nodes.FirstOrDefault(a => a.ToLevelID == character.LevelData.LevelId);
-
-            if (node != null)
-            {
-                Logger.LogDebug("Node Found: Portal ID '{Portal}', Spawn ID '{Spawn}'.", node.PortalID, node.ToSpawnID);
-                character.SetLevel(newLevelId, node.PortalID, node.ToSpawnID, Logger);
-            }
-            else
-            {
-                Logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LevelData.LevelId, newLevelId);
-                character.SetLevel(newLevelId, portalId,
-                    portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID), Logger);
-            }
-
-            var levelInfo = WorldGraph.GetInfoLevel(newLevelId);
-
-            Logger.LogInformation(
-                "Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
-                "using portals {PortalId} -> {NewPortalId}", character.Data.CharacterName,
-                character.Data.CharacterId, levelInfo.InGameName, levelInfo.LevelId, portalId,
-                character.LevelData.PortalId
-            );
-
-            player.SendLevelChange(WorldHandler, WorldGraph);
+            Logger.LogDebug("Node Found: Portal ID '{Portal}', Spawn ID '{Spawn}'.", node.PortalID, node.ToSpawnID);
+            character.SetLevel(newLevelId, node.PortalID, node.ToSpawnID, Logger);
         }
         else
         {
-            throw new InvalidDataException($"Portal '{portalId}' is null for world {character.LevelData.LevelId}!");
+            Logger.LogError("Could not find node for '{Old}' -> '{New}'.", character.LevelData.LevelId, newLevelId);
+            character.SetLevel(newLevelId, portalId,
+                portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID), Logger);
         }
+
+        var levelInfo = WorldGraph.GetInfoLevel(newLevelId);
+
+        Logger.LogInformation(
+            "Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
+            "using portals {PortalId} -> {NewPortalId}", character.Data.CharacterName,
+            character.Data.CharacterId, levelInfo.InGameName, levelInfo.LevelId, portalId,
+            character.LevelData.PortalId
+        );
+
+        player.SendLevelChange(WorldHandler, WorldGraph);
     }
 }
