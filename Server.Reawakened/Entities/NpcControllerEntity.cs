@@ -102,6 +102,8 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
             if (tEvent.Activate)
             {
+                player.CheckObjective(QuestCatalog, ObjectiveEnum.Talkto, Id, RConfig.QuestItemId, 1);
+
                 switch (NpcType)
                 {
                     case NpcType.Vendor:
@@ -232,28 +234,50 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             }
         }
 
-        foreach (var questState in character.Data.QuestLog)
+        foreach (var quest in character.Data.QuestLog)
         {
-            var catalogedQuest = QuestCatalog.GetQuestData(questState.Id);
+            var catalogedQuest = QuestCatalog.GetQuestData(quest.Id);
 
-            if (ValidatorQuests.Any(v => v.QuestLineId == catalogedQuest.QuestLineId && v.Id == questState.Id))
+            if (ValidatorQuests.Any(v => v.QuestLineId == catalogedQuest.QuestLineId && v.Id == quest.Id))
             {
-                if (questState.QuestStatus == QuestState.TO_BE_VALIDATED)
+                if (quest.QuestStatus == QuestState.TO_BE_VALIDATED)
                 {
                     questStatus = NPCStatus.QuestCompleted;
                     Logger.LogTrace("[{QuestId}] [COMPLETED QUEST] Quest from {NpcName} ({Id}) has been validated",
-                        questState.Id, NpcName, Id);
+                        quest.Id, NpcName, Id);
                     break;
+                }
+                if (quest.QuestStatus == QuestState.IN_PROCESSING)
+                {
+                    var canSendQuestComplete = true;
+
+                    foreach (var objective in quest.Objectives.Values)
+                    {
+                        if (objective.Completed)
+                            continue;
+
+                        if (objective.CountLeft > 1 ||
+                            objective.ObjectiveType != ObjectiveEnum.Talkto ||
+                            objective.GameObjectLevelId != Room.LevelInfo.LevelId ||
+                            objective.GameObjectId != Id
+                        )
+                        {
+                            canSendQuestComplete = false;
+                            break;
+                        }
+                    }
+
+                    questStatus = canSendQuestComplete ? NPCStatus.QuestCompleted : NPCStatus.QuestInProgress;
                 }
             }
 
-            if (GiverQuests.Any(v => v.QuestLineId == catalogedQuest.QuestLineId && v.Id == questState.Id))
+            if (GiverQuests.Any(v => v.QuestLineId == catalogedQuest.QuestLineId && v.Id == quest.Id))
             {
-                if (questState.QuestStatus == QuestState.IN_PROCESSING)
+                if (quest.QuestStatus == QuestState.IN_PROCESSING)
                 {
                     questStatus = NPCStatus.QuestInProgress;
                     Logger.LogTrace("[{QuestId}] [QUEST IN PROGRESS] Quest from {NpcName} ({Id}) is in progress",
-                        questState.Id, NpcName, Id);
+                        quest.Id, NpcName, Id);
                     break;
                 }
             }
@@ -318,12 +342,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             if (matchingQuest.QuestStatus != QuestState.TO_BE_VALIDATED)
                 continue;
 
-            var questName = quest.Name;
-
-            if (quest.ValidatorGoId != quest.QuestGiverGoId)
-                questName += "validator";
-
-            SendNpcDialog(player, matchingQuest, questName, 1);
+            SendNpcDialog(player, matchingQuest, quest, 1);
 
             var completedQuest = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
@@ -348,7 +367,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             if (matchingQuest == null || player.Character.Data.CompletedQuests.Contains(quest.Id))
                 continue;
 
-            SendNpcDialog(player, matchingQuest, quest.Name, 2);
+            SendNpcDialog(player, matchingQuest, quest, 2);
 
             break;
         }
@@ -366,7 +385,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
                 if (player.Character.TryGetQuest(givenQuest.Id, out var quest))
                 {
-                    SendNpcDialog(player, quest, givenQuest.Name, 0);
+                    SendNpcDialog(player, quest, givenQuest, 0);
                     quest.QuestStatus = QuestState.IN_PROCESSING;
                 }
 
@@ -377,8 +396,13 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         }
     }
 
-    public void SendNpcDialog(Player player, QuestStatusModel quest, string questName, int dialogNumber)
+    public void SendNpcDialog(Player player, QuestStatusModel questStatus, QuestDescription quest, int dialogNumber)
     {
+        var questName = quest.Name;
+
+        if (quest.ValidatorGoId != quest.QuestGiverGoId && quest.ValidatorGoId == Id)
+            questName += "validator";
+
         if (DialogRewrites.Rewrites.TryGetValue(questName, out var rewrittenName))
             questName = rewrittenName;
 
@@ -394,6 +418,6 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             return;
         }
 
-        player.NetState.SendXt("nl", quest, Id, NameId, questDialog[dialogNumber]);
+        player.NetState.SendXt("nl", questStatus, Id, NameId, questDialog[dialogNumber]);
     }
 }

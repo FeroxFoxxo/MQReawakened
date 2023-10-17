@@ -238,10 +238,10 @@ public static class PlayerExtensions
                 {
                     player.SendXt("nQ", quest.Id);
                     quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
-                    player.UpdateNpcsInLevel(quest, quests);
-                    return;
                 }
             }
+
+            player.UpdateNpcsInLevel(quest, quests);
         }
     }
 }

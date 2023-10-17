@@ -42,6 +42,9 @@
       <None Update="Assets\LocalAssets\InternalItemCatalog.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Assets\LocalAssets\InternalQuestItem.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Licences\LICENSE_ASSETSTUDIO">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
