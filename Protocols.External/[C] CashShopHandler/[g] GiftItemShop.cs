@@ -34,15 +34,13 @@ public class GiftItemShop : ExternalProtocol
         var itemId = int.Parse(message[8]);
         var cardId = int.Parse(message[9]);
         var boxId = int.Parse(message[10]);
-        var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
         var boxDescription = ItemCatalog.GetItemFromId(boxId);
-        var boxPrice = boxDescription.RegularPrice;
-        Player.AddBananas(-boxPrice);
-
+        Player.RemoveBananas(boxDescription.RegularPrice);
+        var itemDescription = ItemCatalog.GetItemFromId(itemId);
+        Player.RemoveNCash(itemDescription.RegularPrice);
         var otherPlayer = PlayerHandler.PlayerList
             .FirstOrDefault(p => p.Character.Data.CharacterName == otherPlayerName);
-
         otherPlayer.Character.AddItem(itemDescription, 1);
 
         otherPlayer.SendUpdatedInventory(false);

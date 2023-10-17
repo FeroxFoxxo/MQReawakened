@@ -31,12 +31,13 @@ public class BuyItems : ExternalProtocol
             var args = item.Split(":");
             var itemId = int.Parse(args[0]);
             var amount = int.Parse(args[1]);
+
+            var itemDescription = ItemCatalog.GetItemFromId(itemId);
+            Player.RemoveNCash(itemDescription.RegularPrice * amount);
+
             character.AddItem(ItemCatalog.GetItemFromId(itemId), amount);
-            var itemInfo = ItemCatalog.GetItemFromId(itemId);
-            Player.AddNCash(-itemInfo.RegularPrice * amount);
         }
         Player.SendCashUpdate();
         Player.SendUpdatedInventory(false);
-
     }
 }

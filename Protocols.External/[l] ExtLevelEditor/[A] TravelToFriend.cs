@@ -34,7 +34,6 @@ public class TravelToFriend : ExternalProtocol
             .FirstOrDefault(p => p.Character.Data.CharacterName == playerName);
 
         var levelId = otherPlayer.Character.LevelData.LevelId;
-        var portalId = otherPlayer.Character.LevelData.PortalId;
         var spawnId = otherPlayer.Character.LevelData.SpawnPointId;
 
         character.SetLevel(levelId, spawnId, Logger);

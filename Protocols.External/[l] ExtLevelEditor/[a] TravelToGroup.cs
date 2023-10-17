@@ -36,9 +36,6 @@ public class TravelToGroup : ExternalProtocol
 
         var levelId = leader.Character.LevelData.LevelId;
 
-        foreach (var item in message)
-            Console.WriteLine(item);
-
         character.SetLevel(levelId, Logger);
 
         Player.SendLevelChange(WorldHandler, WorldGraph);
