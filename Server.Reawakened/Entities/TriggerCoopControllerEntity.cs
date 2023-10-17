@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -10,13 +11,12 @@ public class TriggerCoopControllerEntity : AbstractTriggerCoop<TriggerCoopContro
 {
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
+    public ServerRConfig ServerConfig { get; set; }
 
     public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
         if (isActive)
-        {
             if (PrefabName == "GoToTrigger")
-                player.CheckObjective(QuestCatalog, ObjectiveEnum.Goto, Id, 315035194, 1);
-        }
+                player.CheckObjective(QuestCatalog, ObjectiveEnum.Goto, Id, ServerConfig.QuestItemId, 1);
     }
 }

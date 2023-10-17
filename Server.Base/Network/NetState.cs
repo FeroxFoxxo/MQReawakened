@@ -146,7 +146,9 @@ public class NetState : IDisposable
     public void BeginReceive()
     {
         AsyncState |= AsyncStates.Pending;
-        Socket.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, _onReceiveCallback, Socket);
+
+        if (Socket != null && _onReceiveCallback != null)
+            Socket.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, _onReceiveCallback, Socket);
     }
 
     public void Send(string packet, string protocolType)

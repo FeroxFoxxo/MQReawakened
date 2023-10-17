@@ -23,7 +23,7 @@ public class CannedChat : ExternalProtocol
     {
         var channelType = (CannedChatChannel)Convert.ToInt32(message[5]);
         var chatPhraseId = Convert.ToInt32(message[6]);
-        var recipientName = message[7];
+        _ = message[7]; // recipientName
 
         var character = Player.Character;
         var chatPhrase = CannedChatDict.GetDialogById(chatPhraseId);

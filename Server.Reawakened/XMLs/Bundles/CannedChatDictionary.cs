@@ -36,9 +36,7 @@ public class CannedChatDictionary : CannedChatXML, ILocalizationXml
         foreach (XmlNode phraseRoot in xmlDoc.ChildNodes)
         {
             if (!(phraseRoot.Name == "CannedChatDict"))
-            {
                 continue;
-            }
 
             foreach (XmlNode phrase in phraseRoot.ChildNodes)
             {
@@ -49,6 +47,7 @@ public class CannedChatDictionary : CannedChatXML, ILocalizationXml
                     if (attribute.Name == "id")
                         id = int.Parse(attribute.Value);
                 }
+
                 var text = phrase.InnerText;
 
                 CannedChatDict.Add(id, text);
@@ -68,13 +67,4 @@ public class CannedChatDictionary : CannedChatXML, ILocalizationXml
 
     public string GetDialogById(int id) =>
         CannedChatDict.TryGetValue(id, out var text) ? text : null;
-
-    public void PrintDictionary()
-    {
-        Console.WriteLine($"CannedChatPhrases Dictionary: (size: {CannedChatDict.Count})");
-        foreach (KeyValuePair<int, string> kvp in CannedChatDict)
-        {
-            Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-        }
-    }
 }
