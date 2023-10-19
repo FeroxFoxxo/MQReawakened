@@ -22,7 +22,6 @@ public class ServerWorker : IHostedService
     private readonly MessagePump _pump;
     private readonly ServerHandler _serverHandler;
     private readonly Thread _serverThread;
-    private readonly IServiceProvider _services;
     private readonly EventSink _sink;
     private readonly TimerThread _timerThread;
     private readonly World _world;
@@ -31,7 +30,7 @@ public class ServerWorker : IHostedService
 
     public ServerWorker(NetStateHandler handler, ILogger<ServerWorker> logger,
         ServerHandler serverHandler, MessagePump pump, TimerThread timerThread, World world,
-        EventSink sink, IServiceProvider services, InternalRConfig config)
+        EventSink sink, InternalRConfig config)
     {
         _handler = handler;
         _logger = logger;
@@ -40,7 +39,6 @@ public class ServerWorker : IHostedService
         _timerThread = timerThread;
         _world = world;
         _sink = sink;
-        _services = services;
 
         var fileHandler = new ConsoleFileLogger("console.log", config);
         MultiConsoleOut = new MultiTextWriter(Console.Out, fileHandler);
@@ -123,8 +121,6 @@ public class ServerWorker : IHostedService
     {
         _world.Save(false);
         _world.Broadcast("Server is shutting down!");
-
-        _services.SaveConfigs(_serverHandler.Modules);
 
         try
         {

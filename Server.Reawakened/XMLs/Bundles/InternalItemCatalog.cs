@@ -73,13 +73,11 @@ public class InternalItemCatalog : IBundledXml
                         var descriptionId = 0;
                         var prefabName = string.Empty;
                         var specialDisplayPrefab = string.Empty;
-
                         var tribe = TribeType.Unknown;
-                        var actionType = ItemActionType.None;
                         var rarity = ItemRarity.Unknown;
-                        var currency = CurrencyType.Unknown;
                         var memberOnly = false;
 
+                        var currency = CurrencyType.Unknown;
                         var storeType = StoreType.Invalid;
                         var stockPriority = 0;
                         var regularPrice = 0;
@@ -89,6 +87,7 @@ public class InternalItemCatalog : IBundledXml
                         var discountedFrom = new DateTime(0L);
                         var discountedTo = new DateTime(0L);
 
+                        var actionType = ItemActionType.None;
                         var cooldownTime = 0f;
                         var delayUseDuration = 0;
                         var binding = ItemBinding.Unknown;
@@ -126,23 +125,19 @@ public class InternalItemCatalog : IBundledXml
                                 case "specialDisplayPrefab":
                                     specialDisplayPrefab = itemAttributes.Value;
                                     break;
-
                                 case "tribe":
                                     tribe = tribe.GetEnumValue(itemAttributes.Value, Logger);
                                     break;
-                                case "actionType":
-                                    actionType = actionType.GetEnumValue(itemAttributes.Value, Logger);
-                                    break;
                                 case "rarity":
                                     rarity = rarity.GetEnumValue(itemAttributes.Value, Logger);
-                                    break;
-                                case "currency":
-                                    currency = currency.GetEnumValue(itemAttributes.Value, Logger);
                                     break;
                                 case "memberOnly":
                                     memberOnly = memberOnly.GetBoolValue(itemAttributes.Value, Logger);
                                     break;
 
+                                case "currency":
+                                    currency = currency.GetEnumValue(itemAttributes.Value, Logger);
+                                    break;
                                 case "regularPrice":
                                     regularPrice = int.Parse(itemAttributes.Value);
                                     break;
@@ -153,6 +148,9 @@ public class InternalItemCatalog : IBundledXml
                                     sellCount = int.Parse(itemAttributes.Value);
                                     break;
 
+                                case "actionType":
+                                    actionType = actionType.GetEnumValue(itemAttributes.Value, Logger);
+                                    break;
                                 case "cooldownTime":
                                     cooldownTime = float.Parse(itemAttributes.Value);
                                     break;

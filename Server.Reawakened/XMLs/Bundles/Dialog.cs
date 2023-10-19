@@ -20,7 +20,8 @@ public class Dialog : DialogXML, ILocalizationXml
     public Dictionary<string, List<ConversationModel>> GenericDialog;
     public Dictionary<string, List<ConversationModel>> VendorDialog;
 
-    private Dictionary<int, List<Conversation>> _dialogDict;
+    public Dictionary<int, List<Conversation>> DialogDict;
+
     private Dictionary<int, string> _dialogNames;
 
     public void InitializeVariables()
@@ -31,9 +32,9 @@ public class Dialog : DialogXML, ILocalizationXml
         this.SetField<DialogXML>("_localizationDict", new Dictionary<int, string>());
         this.SetField<DialogXML>("_dialogDict", new Dictionary<int, List<Conversation>>());
 
-        _dialogDict = [];
         _dialogNames = [];
 
+        DialogDict = [];
         QuestDialog = [];
         GenericDialog = [];
         VendorDialog = [];
@@ -86,9 +87,9 @@ public class Dialog : DialogXML, ILocalizationXml
     {
         GameFlow.DialogXML = this;
 
-        _dialogDict = this.GetField<DialogXML>("_dialogDict") as Dictionary<int, List<Conversation>>;
+        DialogDict = this.GetField<DialogXML>("_dialogDict") as Dictionary<int, List<Conversation>>;
 
-        foreach(var dialog in _dialogDict)
+        foreach(var dialog in DialogDict)
         {
             foreach(var conversation in dialog.Value)
             {

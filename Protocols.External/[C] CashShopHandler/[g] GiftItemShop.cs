@@ -1,20 +1,9 @@
-﻿using A2m.Server;
-using A2m.Server.Messages;
-using Server.Reawakened.Network.Extensions;
+﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Players.Models;
-using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.Players.Models.System;
 using Server.Reawakened.XMLs.Bundles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Thrift.Protocol;
 
 namespace Protocols.External._C__CashShopHandler;
 public class GiftItemShop : ExternalProtocol

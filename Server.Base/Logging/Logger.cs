@@ -7,6 +7,7 @@ namespace Server.Base.Logging;
 public class Logger(string categoryName) : ILogger
 {
     private const LogLevel Level = LogLevel.Trace;
+    public const string DateFormat = "[hh:mm:ss] ";
 
     private static readonly Stack<ConsoleColor> ConsoleColors = new();
 
@@ -63,7 +64,7 @@ public class Logger(string categoryName) : ILogger
 
     private void WriteLine(ConsoleColor color, string message, string shortLogLevel, int eventId)
     {
-        var prefix = $"[{shortLogLevel}] {categoryName.Split('.').Last()}[{eventId}]";
+        var prefix = $"{DateTime.UtcNow.ToString(DateFormat)}[{shortLogLevel}] {categoryName.Split('.').Last()}[{eventId}]";
 
         if (_offset < prefix.Length) _offset = prefix.Length;
         var length = _offset - prefix.Length;

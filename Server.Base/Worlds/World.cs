@@ -2,13 +2,15 @@
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
+using Server.Base.Core.Services;
 using Server.Base.Network.Services;
 using Server.Base.Worlds.EventArguments;
 using System.Diagnostics;
 
 namespace Server.Base.Worlds;
 
-public class World(ILogger<World> logger, EventSink sink, InternalRConfig config, NetStateHandler netStateHandler)
+public class World(ILogger<World> logger, IServiceProvider services, ServerHandler serverHandler,
+    EventSink sink, InternalRConfig config, NetStateHandler netStateHandler)
 {
     private readonly ManualResetEvent _diskWriteHandle = new(true);
 
@@ -78,6 +80,8 @@ public class World(ILogger<World> logger, EventSink sink, InternalRConfig config
         try
         {
             sink.InvokeWorldSave(new WorldSaveEventArgs(message));
+
+            services.SaveConfigs(serverHandler.Modules, logger);
         }
         catch (Exception ex)
         {
