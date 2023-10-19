@@ -67,7 +67,7 @@ public class CreateCharacter : ExternalProtocol
                 Data = characterData,
                 LevelData = new LevelData
                 {
-                    LevelId = WorldGraph.DefaultLevel,
+                    LevelId = ServerConfig.Is2014Client ? WorldGraph.DefaultLevel : WorldGraph.NewbZone,
                     SpawnPointId = 0
                 }
             };

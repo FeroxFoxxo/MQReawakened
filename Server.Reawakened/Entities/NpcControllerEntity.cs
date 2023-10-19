@@ -360,7 +360,9 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
     private void SendQuestProgress(Player player)
     {
-        foreach (var quest in GiverQuests)
+        var quests = GiverQuests.Concat(ValidatorQuests);
+
+        foreach (var quest in quests)
         {
             var matchingQuest = player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
 
@@ -417,6 +419,25 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             Logger.LogError("[{QuestName}] [UNKNOWN DIALOG ID {DialogId}]", questName, dialogNumber);
             return;
         }
+
+        var dialog = questDialog[dialogNumber];
+
+        if (!Dialog.DialogDict.TryGetValue(dialog.DialogId, out var dialogXml))
+        {
+            Logger.LogError("[{QuestName}] [UNKNOWN XML DIALOG ID {DialogId}]", questName, dialog.DialogId);
+            return;
+        }
+
+        var conversation = dialogXml.FirstOrDefault(x => x.ConversationId == dialog.ConversationId);
+
+        if (conversation == null)
+        {
+            Logger.LogError("[{QuestName}] [UNKNOWN XML CONVERSATION ID {DialogId}]", questName, dialog.ConversationId);
+            return;
+        }
+
+        if (!conversation.Lines.Any(x => x.TextId > 0))
+             SendDialog(player);
 
         player.NetState.SendXt("nl", questStatus, Id, NameId, questDialog[dialogNumber]);
     }

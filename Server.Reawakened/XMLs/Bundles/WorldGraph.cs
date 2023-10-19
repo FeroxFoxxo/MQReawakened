@@ -15,6 +15,7 @@ public class WorldGraph : WorldGraphXML, IBundledXml
     public IServiceProvider Services { get; set; }
 
     public int DefaultLevel;
+    public int NewbZone;
     public Dictionary<int, List<DestNode>> WorldGraphNodes;
 
     public void InitializeVariables()
@@ -28,6 +29,7 @@ public class WorldGraph : WorldGraphXML, IBundledXml
 
         DefaultLevel =
             int.Parse(this.GetField<WorldGraphXML>("CLOCK_TOWER_SQUARE_LEVEL_ID").ToString() ?? string.Empty);
+        NewbZone = 452;
         WorldGraphNodes = [];
     }
 
