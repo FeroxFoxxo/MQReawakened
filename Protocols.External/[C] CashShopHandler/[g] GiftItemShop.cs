@@ -1,4 +1,6 @@
-﻿using Server.Reawakened.Network.Extensions;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -11,29 +13,33 @@ public class GiftItemShop : ExternalProtocol
     public override string ProtocolName => "Cg";
 
     public ItemCatalog ItemCatalog { get; set; }
-
     public PlayerHandler PlayerHandler { get; set; }
+    public ILogger<GiftItemShop> Logger { get; set; }
 
     public override void Run(string[] message)
     {
         var character = Player.Character;
 
-        var otherPlayerName = message[6];
-        var messageId = int.Parse(message[7]);
+        var cashShop = (Cashshop)int.Parse(message[5]);
+
+        if (cashShop != Cashshop.CashShop)
+        {
+            Logger.LogWarning("Unknown cashshop of type {Type}!", cashShop);
+            return;
+        }
+
+        var friendName = message[6];
+        var messageDesc = message[7];
         var itemId = int.Parse(message[8]);
-        var cardId = int.Parse(message[9]);
-        var boxId = int.Parse(message[10]);
+        var backgroundId = int.Parse(message[9]);
+        var packageId = int.Parse(message[10]);
 
-        var boxDescription = ItemCatalog.GetItemFromId(boxId);
-        Player.RemoveBananas(boxDescription.RegularPrice);
-        var itemDescription = ItemCatalog.GetItemFromId(itemId);
-        Player.RemoveNCash(itemDescription.RegularPrice);
-        var otherPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == otherPlayerName);
-        otherPlayer.Character.AddItem(itemDescription, 1);
+        var package = ItemCatalog.GetItemFromId(packageId);
+        Player.RemoveBananas(package.RegularPrice);
 
-        otherPlayer.SendUpdatedInventory(false);
+        var item = ItemCatalog.GetItemFromId(itemId);
+        Player.RemoveNCash(item.RegularPrice);
 
-        otherPlayer?.SendXt("Cg", 1, otherPlayerName, messageId, itemId, cardId, boxId);
+        Logger.LogError("Gifting is not implemented yet!");
     }
 }

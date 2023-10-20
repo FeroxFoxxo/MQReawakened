@@ -33,5 +33,7 @@ public class TravelToFriend : ExternalProtocol
         character.SetLevel(levelId, spawnId, Logger);
 
         Player.SendLevelChange(WorldHandler, WorldGraph);
+
+        Logger.LogError("Travelling to friends are not implemented yet!");
     }
 }

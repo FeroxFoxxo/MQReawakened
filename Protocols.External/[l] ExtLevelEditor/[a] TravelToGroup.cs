@@ -33,5 +33,7 @@ public class TravelToGroup : ExternalProtocol
         character.SetLevel(levelId, Logger);
 
         Player.SendLevelChange(WorldHandler, WorldGraph);
+
+        Logger.LogError("Travelling to group leaders are not implemented yet!");
     }
 }
