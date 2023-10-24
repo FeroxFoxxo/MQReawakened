@@ -135,7 +135,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                         itemCategory = (ItemCategory)int.Parse(categoryAttributes.Value);
 
                 _itemCategories.TryAdd(itemCategory, category);
-                _itemSubCategories.TryAdd(itemCategory, new Dictionary<ItemSubCategory, XmlNode>());
+                _itemSubCategories.TryAdd(itemCategory, []);
 
                 foreach (XmlNode subCategories in category.ChildNodes)
                 {
@@ -181,7 +181,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                     var node = catalogs.AppendChild(category);
                     categoryNode = node;
                     _itemCategories.Add(item.CategoryId, categoryNode);
-                    _itemSubCategories.TryAdd(item.CategoryId, new Dictionary<ItemSubCategory, XmlNode>());
+                    _itemSubCategories.TryAdd(item.CategoryId, []);
                 }
 
                 var itemCategory = categoryNode;

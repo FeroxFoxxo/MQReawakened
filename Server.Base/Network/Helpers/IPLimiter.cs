@@ -6,7 +6,7 @@ namespace Server.Base.Network.Helpers;
 
 public class IpLimiter(InternalRConfig internalServerConfig, NetStateHandler handler)
 {
-    private readonly Dictionary<IPAddress, IPAddress> _ipAddressTable = new();
+    private readonly Dictionary<IPAddress, IPAddress> _ipAddressTable = [];
 
     public IPAddress Intern(IPAddress ipAddress)
     {

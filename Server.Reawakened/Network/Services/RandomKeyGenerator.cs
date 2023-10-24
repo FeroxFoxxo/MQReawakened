@@ -8,7 +8,7 @@ namespace Server.Reawakened.Network.Services;
 
 public class RandomKeyGenerator(Random random, EventSink sink, ServerRConfig config) : IService
 {
-    private readonly Dictionary<Type, Dictionary<string, string>> _keys = new();
+    private readonly Dictionary<Type, Dictionary<string, string>> _keys = [];
 
     public void Initialize()
     {
@@ -19,7 +19,7 @@ public class RandomKeyGenerator(Random random, EventSink sink, ServerRConfig con
     private Dictionary<string, string> CheckIfExists<T>()
     {
         if (!_keys.ContainsKey(typeof(T)))
-            _keys.Add(typeof(T), new Dictionary<string, string>());
+            _keys.Add(typeof(T), []);
         return _keys[typeof(T)];
     }
 

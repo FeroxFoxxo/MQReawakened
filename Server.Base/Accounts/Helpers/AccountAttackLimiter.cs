@@ -7,7 +7,7 @@ namespace Server.Base.Accounts.Helpers;
 
 public class AccountAttackLimiter(FileLogger fileLogger)
 {
-    private readonly List<InvalidAccountAccessLog> _invalidAccessors = new();
+    private readonly List<InvalidAccountAccessLog> _invalidAccessors = [];
 
     public InvalidAccountAccessLog FindAccessLog(NetState netState)
     {

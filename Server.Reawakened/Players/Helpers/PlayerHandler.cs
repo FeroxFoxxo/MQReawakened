@@ -8,7 +8,7 @@ public class PlayerHandler(WorldHandler worldHandler)
     public WorldHandler WorldHandler => worldHandler;
     public UserInfoHandler UserInfoHandler;
 
-    public List<Player> PlayerList { get; } = new List<Player>();
+    public List<Player> PlayerList { get; } = [];
     public object Lock { get; } = new object();
 
     public void AddPlayer(Player player)

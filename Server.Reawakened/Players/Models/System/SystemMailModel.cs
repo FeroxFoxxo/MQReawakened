@@ -8,7 +8,7 @@ public class SystemMailModel
     public int BodyTextId { get; set; }
     public Dictionary<int, int> ItemIds { get; set; }
 
-    public SystemMailModel() => ItemIds = new Dictionary<int, int>();
+    public SystemMailModel() => ItemIds = [];
 
     public override string ToString()
     {

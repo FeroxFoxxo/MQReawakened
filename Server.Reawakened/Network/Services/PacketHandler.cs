@@ -22,8 +22,8 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
     public delegate void ExternalCallback(NetState state, string[] message, IServiceProvider serviceProvider);
     public delegate void SystemCallback(NetState state, XmlDocument document, IServiceProvider serviceProvider);
 
-    private readonly Dictionary<string, SystemCallback> _protocolsSystem = new();
-    private readonly Dictionary<string, ExternalCallback> _protocolsXt = new();
+    private readonly Dictionary<string, SystemCallback> _protocolsSystem = [];
+    private readonly Dictionary<string, ExternalCallback> _protocolsXt = [];
 
     public void Initialize()
     {

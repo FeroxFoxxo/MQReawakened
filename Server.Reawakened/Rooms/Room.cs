@@ -32,6 +32,9 @@ public class Room : Timer
 
     public SpawnPointEntity DefaultSpawn { get; set; }
 
+    public SpawnPointEntity CheckpointSpawn { get; set; }
+    public int CheckpointId { get; set; }
+
     public LevelInfo LevelInfo => _level.LevelInfo;
 
     public long TimeOffset { get; set; }
@@ -46,6 +49,9 @@ public class Room : Timer
         _config = config;
         Logger = logger;
         _level = level;
+
+        CheckpointSpawn = null;
+        CheckpointId = 0;
 
         Players = [];
         _gameObjectIds = [];

@@ -154,14 +154,14 @@ public static class LoadRoomData
                             methods.First().Invoke(instancedEntity, new[] { dataObj, storedData });
 
                         if (!entities.ContainsKey(entity.Key))
-                            entities.Add(entity.Key, new List<BaseSyncedEntity>());
+                            entities.Add(entity.Key, []);
 
                         entities[entity.Key].Add(instancedEntity);
                     }
                     else
                     {
                         if (!unknownEntities.ContainsKey(entity.Key))
-                            unknownEntities.Add(entity.Key, new List<string>());
+                            unknownEntities.Add(entity.Key, []);
 
                         unknownEntities[entity.Key].Add(mqType.Name);
 
@@ -188,7 +188,7 @@ public static class LoadRoomData
         room.Logger.LogError("Could not find entity with type {TypeName}. Returning empty. " +
                              "Possible types: {Types}", type.Name, string.Join(", ", room.Entities.Keys));
 
-        return new Dictionary<int, T>();
+        return [];
     }
 
     public static string GetUnknownEntityTypes(this Room room, int id)

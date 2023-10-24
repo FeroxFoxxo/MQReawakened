@@ -15,7 +15,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
     TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> handlerLogger,
     ILogger<Room> roomLogger) : IService
 {
-    private readonly Dictionary<int, Level> _levels = new();
+    private readonly Dictionary<int, Level> _levels = [];
 
     public void Initialize() => sink.WorldLoad += LoadRooms;
 

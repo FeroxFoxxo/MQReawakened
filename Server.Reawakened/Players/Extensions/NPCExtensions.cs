@@ -75,6 +75,6 @@ public static class NpcExtensions
                     .Select(e => e as NpcControllerEntity)
                     .ToList();
 
-        return new List<NpcControllerEntity>();
+        return [];
     }
 }

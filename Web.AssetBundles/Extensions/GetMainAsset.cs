@@ -79,7 +79,7 @@ public static class GetMainAsset
         {
             if (!treeTxt.StartsWith('\t'))
             {
-                pair = new KeyValuePair<string, List<string>>(treeTxt, new List<string>());
+                pair = new KeyValuePair<string, List<string>>(treeTxt, []);
                 if (pair.Key != default)
                     info.Add(pair);
             }

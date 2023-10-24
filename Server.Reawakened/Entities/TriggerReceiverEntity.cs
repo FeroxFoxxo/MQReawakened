@@ -34,15 +34,6 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
             TriggerType.Disable => false,
             _ => Enabled
         };
-        var sb = new StringBuilder();
-
-        sb.AppendLine($"Entity: {Id}")
-            .AppendLine($"Enabled: {Enabled}")
-            .AppendLine($"Activations: {_activations}/{NbActivationsNeeded}")
-            .AppendLine($"Deactivations: {_deactivations}/{NbDeactivationsNeeded}")
-            .Append($"Trigger: {triggerType}");
-
-        FileLogger.WriteGenericLog<TriggerReceiver>("triggered-receivers", "Receiver Triggered", sb.ToString(), LoggerType.Trace);
 
         if (!Enabled)
             return;
@@ -62,6 +53,16 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
                     _deactivations--;
                 break;
         }
+
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"Entity: {Id}")
+            .AppendLine($"Enabled: {Enabled}")
+            .AppendLine($"Activations: {_activations}/{NbActivationsNeeded}")
+            .AppendLine($"Deactivations: {_deactivations}/{NbDeactivationsNeeded}")
+            .Append($"Trigger: {triggerType}");
+
+        FileLogger.WriteGenericLog<TriggerReceiver>("triggered-receivers", "Receiver Triggered", sb.ToString(), LoggerType.Trace);
 
         if (_activations >= NbActivationsNeeded)
             Trigger(true);

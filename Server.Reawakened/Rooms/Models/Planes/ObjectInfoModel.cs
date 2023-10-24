@@ -17,5 +17,5 @@ public class ObjectInfoModel
     public Dictionary<string, ComponentModel> Components { get; set; }
 
     public ObjectInfoModel() =>
-        Components = new Dictionary<string, ComponentModel>();
+        Components = [];
 }

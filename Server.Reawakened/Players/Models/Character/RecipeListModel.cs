@@ -7,7 +7,7 @@ public class RecipeListModel
     public List<RecipeModel> RecipeList { get; set; }
 
     public RecipeListModel() =>
-        RecipeList = new List<RecipeModel>();
+        RecipeList = [];
 
     public override string ToString()
     {

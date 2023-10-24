@@ -16,8 +16,8 @@ public class ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList
 {
     private readonly object _lock = new();
 
-    public readonly List<string> CurrentlyLoadedAssets = new();
-    public readonly List<string> ReplacedBundles = new();
+    public readonly List<string> CurrentlyLoadedAssets = [];
+    public readonly List<string> ReplacedBundles = [];
 
     public void Initialize() => sink.WorldLoad += Load;
 

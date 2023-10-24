@@ -31,7 +31,7 @@ public class CacheModel
             if (_assetDictionary.ContainsKey(cache.Key!))
             {
                 if (!FoundCaches.ContainsKey(cache.Key))
-                    FoundCaches.Add(cache.Key, new List<string>());
+                    FoundCaches.Add(cache.Key, []);
 
                 FoundCaches[cache.Key].Add(cache.Value);
             }

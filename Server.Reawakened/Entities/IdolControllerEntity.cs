@@ -14,7 +14,7 @@ public class IdolControllerEntity : SyncedEntity<IdolController>
         var levelId = Room.LevelInfo.LevelId;
 
         if (!character.CollectedIdols.ContainsKey(levelId))
-            character.CollectedIdols.Add(levelId, new List<int>());
+            character.CollectedIdols.Add(levelId, []);
 
         return character.CollectedIdols[levelId].Contains(Index) ? [0] : [];
     }

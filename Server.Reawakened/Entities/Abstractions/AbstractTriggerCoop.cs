@@ -12,8 +12,8 @@ namespace Server.Reawakened.Entities.Abstractions;
 public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : TriggerCoopController
 {
     public List<int> CurrentInteractors;
-    public bool IsActive = true;
 
+    public bool IsActive = true;
     public bool IsEnabled = true;
 
     public Dictionary<int, TriggerType> Triggers;
@@ -96,8 +96,8 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
 
         Triggers = [];
 
-        AddToTriggers(new List<int>
-        {
+        AddToTriggers(
+        [
             TargetLevelEditorId,
             Target02LevelEditorId,
             Target03LevelEditorId,
@@ -106,35 +106,35 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             Target06LevelEditorId,
             Target07LevelEditorId,
             Target08LevelEditorId
-        }, TriggerType.Activate);
+        ], TriggerType.Activate);
 
-        AddToTriggers(new List<int>
-        {
+        AddToTriggers(
+        [
             TargetToDeactivateLevelEditorId,
             Target02ToDeactivateLevelEditorId,
             Target03ToDeactivateLevelEditorId,
             Target04ToDeactivateLevelEditorId
-        }, TriggerType.Deactivate);
+        ], TriggerType.Deactivate);
 
-        AddToTriggers(new List<int>
-        {
+        AddToTriggers(
+        [
             Target01ToEnableLevelEditorId,
             Target02ToEnableLevelEditorId,
             Target03ToEnableLevelEditorId,
             Target04ToEnableLevelEditorId,
             Target05ToEnableLevelEditorId
-        }, TriggerType.Enable);
+        ], TriggerType.Enable);
 
-        AddToTriggers(new List<int>
-        {
+        AddToTriggers(
+        [
             Target01ToDisableLevelEditorId,
             Target02ToDisableLevelEditorId,
             Target03ToDisableLevelEditorId,
             Target04ToDisableLevelEditorId,
             Target05ToDisableLevelEditorId
-        }, TriggerType.Disable);
+        ], TriggerType.Disable);
 
-        CheckTriggered();
+        RunTrigger(null);
     }
 
     public void AddToTriggers(List<int> triggers, TriggerType triggerType)
@@ -180,17 +180,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
         if (!hasUpdated)
             return;
 
-        // ReSharper disable once InvertIf
-        if (
-            (!IsActive || !StayTriggeredOnUnpressed) && !StayTriggeredOnReceiverActivated ||
-            StayTriggeredOnReceiverActivated && !TriggerReceiverActivated() ||
-            IsActive && StayTriggeredOnUnpressed && !StayTriggeredOnReceiverActivated
-        )
-            if (CheckTriggered())
-            {
-                Room.SentEntityTriggered(Id, player, true, IsActive);
-                Triggered(player, true, IsActive);
-            }
+        RunTrigger(player);
     }
 
     public virtual void Triggered(Player player, bool isSuccess, bool isActive)
@@ -198,25 +188,31 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
 
     }
 
-    private bool CheckTriggered()
+    public void RunTrigger (Player player)
     {
-        switch (IsActive)
+        if (!IsActive)
         {
-            case false when CurrentInteractors.Count >= NbInteractionsNeeded:
-                Trigger(true);
+            if (CurrentInteractors.Count >= NbInteractionsNeeded)
+            {
+                Trigger(player, true);
 
                 if (DisabledAfterActivation)
                     IsEnabled = false;
-                return true;
-            case true when !StayTriggeredOnReceiverActivated || !TriggerReceiverActivated():
-                Trigger(false);
-                return true;
+            }
         }
+        else
+        {
+            var triggerRecieverActivated = TriggerReceiverActivated();
 
-        return false;
+            if (
+                !(StayTriggeredOnReceiverActivated && triggerRecieverActivated) &&
+                !StayTriggeredOnUnpressed
+            )
+                Trigger(player, false);
+        }
     }
 
-    private void Trigger(bool active)
+    public void Trigger(Player player, bool active)
     {
         IsActive = active;
 
@@ -253,15 +249,24 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             FileLogger.WriteGenericLog<TriggerCoopController>("triggered-errors", $"Trigger {Id}", sb2.ToString(),
                 LoggerType.Error);
         }
+
+        if (player != null)
+        {
+            Room.SentEntityTriggered(Id, player, true, IsActive);
+            Triggered(player, true, IsActive);
+        }
     }
 
     private bool TriggerReceiverActivated()
     {
         var receivers = Room.GetEntities<TriggerReceiverEntity>();
 
-        return Triggers
+        var triggers = Triggers
             .Where(r => r.Value == TriggerType.Activate)
-            .Where(trigger => receivers.ContainsKey(trigger.Key))
-            .Select(trigger => receivers[trigger.Key]).All(receiver => receiver.Activated);
+            .Where(trigger => receivers.ContainsKey(trigger.Key));
+
+        return triggers.Any() &&
+            triggers.Select(trigger => receivers[trigger.Key])
+            .All(receiver => receiver.Activated);
     }
 }

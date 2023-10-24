@@ -6,7 +6,7 @@ public class InventoryModel
 {
     public Dictionary<int, ItemModel> Items { get; set; }
 
-    public InventoryModel() => Items = new Dictionary<int, ItemModel>();
+    public InventoryModel() => Items = [];
 
     public override string ToString()
     {

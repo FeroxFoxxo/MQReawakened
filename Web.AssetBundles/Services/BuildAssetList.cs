@@ -20,9 +20,9 @@ namespace Web.AssetBundles.Services;
 public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, AssetEventSink assetSink, ServerConsole console,
     LauncherRwConfig lWConfig, AssetBundleRwConfig rwConfig, AssetBundleRConfig rConfig, ServerRConfig sRConfig) : IService
 {
-    public readonly Dictionary<string, string> AssetDict = new();
+    public readonly Dictionary<string, string> AssetDict = [];
 
-    public readonly Dictionary<string, string> PublishConfigs = new();
+    public readonly Dictionary<string, string> PublishConfigs = [];
 
     public string AssetDictLocation;
 

@@ -13,13 +13,16 @@ public class CheckpointControllerEntity : AbstractTriggerCoop<CheckpointControll
 
     public new ILogger<CheckpointControllerEntity> Logger { get; set; }
 
-    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
+    public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
-        base.RunSyncedEvent(syncEvent, player);
+        if (!isActive)
+            return;
 
-        if (Room.DefaultSpawn.Index == SpawnPoint)
+        Logger.LogInformation("Checkpoint 1: {SpawnPoint}", SpawnPoint);
+
+        if (Room.CheckpointId == Id)
         {
-            Logger.LogTrace("Skipped current checkpoint: {SpawnPoint}", SpawnPoint);
+            Logger.LogTrace("Skipped checkpoint: {SpawnPoint}", SpawnPoint);
             return;
         }
 
@@ -30,7 +33,7 @@ public class CheckpointControllerEntity : AbstractTriggerCoop<CheckpointControll
 
         if (spawnPoint != null)
         {
-            Room.DefaultSpawn = spawnPoint;
+            Room.CheckpointSpawn = spawnPoint;
         }
         else
         {
@@ -43,10 +46,11 @@ public class CheckpointControllerEntity : AbstractTriggerCoop<CheckpointControll
                 sb.ToString(), LoggerType.Warning);
         }
 
-        //var checkpoints = Room.RoomEntities.GetEntities<CheckpointControllerEntity>().Values;
-        //var possibleLastCheckpoint = checkpoints.FirstOrDefault(c => c.SpawnPoint == character.SpawnPoint);
-        //possibleLastCheckpoint?.TriggerCheckpoint(false, netState, player);
+        var checkpoints = Room.GetEntities<CheckpointControllerEntity>().Values;
+        var possibleLastCheckpoint = checkpoints.FirstOrDefault(c => c.Id == Room.CheckpointId);
 
-        //TriggerCheckpoint(true, netState, player);
+        possibleLastCheckpoint?.Trigger(player, false);
+
+        Room.CheckpointId = Id;
     }
 }

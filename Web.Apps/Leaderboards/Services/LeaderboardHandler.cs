@@ -13,6 +13,6 @@ public class LeaderboardHandler(EventSink sink) : IService
         Games = new LeaderBoardGameJson
         {
             status = true,
-            games = new List<LeaderBoardGameJson.Game>()
+            games = []
         };
 }

@@ -43,7 +43,7 @@ public class DescriptionHandler(ILogger<DescriptionHandler> logger, WorldGraph w
                 IsMemberOnly = false,
                 IsPremium = false,
                 DestinationLevelNameId = newLevelNameId.Key,
-                Conditions = new List<PortalCondition>()
+                Conditions = []
             }
         };
 

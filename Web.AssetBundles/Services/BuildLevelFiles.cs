@@ -12,7 +12,7 @@ namespace Web.AssetBundles.Services;
 public class BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> logger, ServerRConfig sConfig,
     AssetBundleRwConfig aBConfig) : IService
 {
-    public readonly Dictionary<string, string> LevelFiles = new();
+    public readonly Dictionary<string, string> LevelFiles = [];
 
     public void Initialize() => eventSink.AssetBundlesLoaded += LoadLevelFiles;
 

@@ -6,7 +6,7 @@ namespace Server.Reawakened.Rooms.Models.Planes;
 
 public class PlaneModel(string planeName)
 {
-    public Dictionary<int, GameObjectModel> GameObjects { get; set; } = new Dictionary<int, GameObjectModel>();
+    public Dictionary<int, GameObjectModel> GameObjects { get; set; } = [];
     public string PlaneName { get; } = planeName;
 
     public void LoadColliderXml(XmlNode colliderNode)

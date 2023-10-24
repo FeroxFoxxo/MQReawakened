@@ -16,9 +16,9 @@ public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
     public delegate ProtocolResponse RunProtocol(NetState state, string protocol);
 
     public readonly Queue<NetState> Disposed = new();
-    public readonly List<NetState> Instances = new();
+    public readonly List<NetState> Instances = [];
 
-    public readonly Dictionary<char, RunProtocol> Protocols = new();
+    public readonly Dictionary<char, RunProtocol> Protocols = [];
 
     public bool Paused = false;
 

@@ -11,7 +11,7 @@ public class QuestStatusModel
     public int CurrentOrder { get; set; }
 
     public QuestStatusModel() =>
-        Objectives = new Dictionary<int, ObjectiveModel>();
+        Objectives = [];
 
     public override string ToString()
     {
