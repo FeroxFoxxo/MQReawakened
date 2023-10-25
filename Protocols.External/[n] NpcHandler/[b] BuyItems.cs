@@ -18,43 +18,40 @@ public class BuyItems : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        foreach (string item in message[6].Split('|'))
-        {
+        foreach (var item in message[6].Split('|'))
             if (!string.IsNullOrEmpty(item))
-            {
                 AddItemToPlayer(item.Split(":"), int.Parse(message[7]));
-            }
-        }
+
         Player.SendUpdatedInventory(false);
     }
 
     private void AddItemToPlayer(string[] args, int vendorGoId)
     {
-        int itemId = int.Parse(args[0]);
-        int amountOfItems = int.Parse(args[1]);
-        ItemDescription itemDetails = ItemCatalog.GetItemFromId(itemId);
+        var itemId = int.Parse(args[0]);
+        var amountOfItems = int.Parse(args[1]);
+        var itemDetails = ItemCatalog.GetItemFromId(itemId);
+
         if (HandlePlayerCurrency(itemDetails.Currency, itemDetails.RegularPrice * amountOfItems))
-        {
             Player.Character.AddItem(itemDetails, amountOfItems);
-        }
+
         Player.CheckObjective(QuestCatalog, ObjectiveEnum.Buyitem, vendorGoId, itemId, amountOfItems);
     }
 
     private bool HandlePlayerCurrency(CurrencyType currencyType, int totalCost)
     {
-        if (currencyType == CurrencyType.Banana)
+        switch (currencyType)
         {
-            Player.RemoveBananas(totalCost);
+            case CurrencyType.Banana:
+                Player.RemoveBananas(totalCost);
+                break;
+            case CurrencyType.NickCash:
+                Player.RemoveNCash(totalCost);
+                break;
+            default:
+                Logger.LogError("Currency type invalid! ({CurrencyType})", currencyType);
+                return false;
         }
-        else if (currencyType == CurrencyType.NickCash)
-        {
-            Player.RemoveNCash(totalCost);
-        }
-        else
-        {
-            Logger.LogError($"Currency type invalid! ({currencyType})");
-            return false;
-        }
+
         return true;
     }
 }
