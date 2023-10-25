@@ -1,4 +1,5 @@
-﻿using A2m.Server;
+using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
@@ -10,36 +11,50 @@ public class BuyItems : ExternalProtocol
     public override string ProtocolName => "nb";
 
     public ItemCatalog ItemCatalog { get; set; }
+
     public QuestCatalog QuestCatalog { get; set; }
+
+    public ILogger<BuyItems> Logger { get; set; }
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
-        //var vendorId = int.Parse(message[5]);
-        var vendorGoId = int.Parse(message[7]);
-        var items = message[6].Split('|');
-
-        foreach (var item in items)
+        foreach (string item in message[6].Split('|'))
         {
-            if (string.IsNullOrEmpty(item)) continue;
-
-            var args = item.Split(":");
-            var itemId = int.Parse(args[0]);
-            var amount = int.Parse(args[1]);
-
-            var itemDescription = ItemCatalog.GetItemFromId(itemId);
-
-            character.AddItem(itemDescription, amount);
-
-            if (itemDescription.Currency == CurrencyType.Banana)
-                Player.RemoveBananas(itemDescription.RegularPrice * amount);
-            else if (itemDescription.Currency == CurrencyType.NickCash)
-                Player.RemoveNCash(itemDescription.RegularPrice * amount);
-
-            Player.CheckObjective(QuestCatalog, ObjectiveEnum.Buyitem, vendorGoId, itemId, amount);
+            if (!string.IsNullOrEmpty(item))
+            {
+                AddItemToPlayer(item.Split(":"), int.Parse(message[7]));
+            }
         }
-
         Player.SendUpdatedInventory(false);
+    }
+
+    private void AddItemToPlayer(string[] args, int vendorGoId)
+    {
+        int itemId = int.Parse(args[0]);
+        int amountOfItems = int.Parse(args[1]);
+        ItemDescription itemDetails = ItemCatalog.GetItemFromId(itemId);
+        if (HandlePlayerCurrency(itemDetails.Currency, itemDetails.RegularPrice * amountOfItems))
+        {
+            Player.Character.AddItem(itemDetails, amountOfItems);
+        }
+        Player.CheckObjective(QuestCatalog, ObjectiveEnum.Buyitem, vendorGoId, itemId, amountOfItems);
+    }
+
+    private bool HandlePlayerCurrency(CurrencyType currencyType, int totalCost)
+    {
+        if (currencyType == CurrencyType.Banana)
+        {
+            Player.RemoveBananas(totalCost);
+        }
+        else if (currencyType == CurrencyType.NickCash)
+        {
+            Player.RemoveNCash(totalCost);
+        }
+        else
+        {
+            Logger.LogError($"Currency type invalid! ({currencyType})");
+            return false;
+        }
+        return true;
     }
 }
