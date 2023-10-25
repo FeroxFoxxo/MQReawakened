@@ -43,15 +43,13 @@ public class BuyItems : ExternalProtocol
         {
             case CurrencyType.Banana:
                 Player.RemoveBananas(totalCost);
-                break;
+                return true;
             case CurrencyType.NickCash:
                 Player.RemoveNCash(totalCost);
-                break;
+                return true;
             default:
                 Logger.LogError("Currency type invalid! ({CurrencyType})", currencyType);
                 return false;
         }
-
-        return true;
     }
 }
