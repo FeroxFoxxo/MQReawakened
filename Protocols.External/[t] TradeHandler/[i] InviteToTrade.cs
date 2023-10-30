@@ -30,9 +30,6 @@ public class InviteToTrade : ExternalProtocol
         Player.Character.Data.AcceptedTrade = false;
         invitedPlayer.Character.Data.AcceptedTrade = false;
 
-        Console.WriteLine("TraderId 1 name: " + Player.Character.Data.CharacterName);
-        Console.WriteLine("TraderId 2 name: " + invitedPlayer.Character.Data.CharacterName);
-
         invitedPlayer?.SendXt("ti",
         Player.Character.Data.CharacterName);
     }
