@@ -2,83 +2,96 @@
 <!-- Note, if you don't put in an item id, a random one will be generated! -->
 <!-- Item names and descriptions have to be in the MiscTextDictionary to work. -->
 <Catalog>
-	<ItemCategory name="Collectible">
-		<ItemSubCategory name="Nut" />
-		<ItemSubCategory name="Wood" />
-		<ItemSubCategory name="Herbs and flowers" />
-		<ItemSubCategory name="Mineral" />
-		<ItemSubCategory name="Liquid" />
-		<ItemSubCategory name="Potion" />
-		<ItemSubCategory name="Usable" />
-		<ItemSubCategory name="Ability" />
-		<ItemSubCategory name="BMoney" />
-		<ItemSubCategory name="CMoney" />
-		<ItemSubCategory name="Orb" />
-		<ItemSubCategory name="Invisible" />
-		<ItemSubCategory name="Fabrics" />
-		<ItemSubCategory name="Core Ingredients" />
-		<ItemSubCategory name="Defensive" />
-		<ItemSubCategory name="Offensive" />
-		<ItemSubCategory name="Monster" />
-		<ItemSubCategory name="Elixir" />
-		<ItemSubCategory name="Bomb" />
-		<ItemSubCategory name="Lootable" />
-		<ItemSubCategory name="SuperPack" />
-		<ItemSubCategory name="Trail Pass" />
-		<ItemSubCategory name="Banana Box" />
-		<ItemSubCategory name="Monthly Collectible" />
-		<ItemSubCategory name="None" />
-	</ItemCategory>
-	<ItemCategory name="Quest">
-		<ItemSubCategory name="Interactive" />
-		<ItemSubCategory name="Collectible" />
-		<ItemSubCategory name="None" />
-	</ItemCategory>
-	<ItemCategory name="Wearable">
-		<ItemSubCategory name="Slot Head" />
-		<ItemSubCategory name="Slot Hair" />
-		<ItemSubCategory name="Slot Body" />
-		<ItemSubCategory name="Slot Legs" />
-		<ItemSubCategory name="Slot Ears" />
-		<ItemSubCategory name="Slot Upper Face" />
-		<ItemSubCategory name="Slot Lower Face" />
-		<ItemSubCategory name="Slot Wrist" />
-		<ItemSubCategory name="Slot Backpack" />
-		<ItemSubCategory name="Slot Tail" />
-		<ItemSubCategory name="None" />
-	</ItemCategory>
-	<ItemCategory name="Recipe">
-		<ItemSubCategory name="Tailoring" />
-		<ItemSubCategory name="Alchemy" />
-		<ItemSubCategory name="None" />
-	</ItemCategory>
-	<ItemCategory name="Enemy">
-		<ItemSubCategory name="None" />
-	</ItemCategory>
+    <ItemCategory name="Collectible">
+        <ItemSubCategory name="Nut" />
+        <ItemSubCategory name="Wood" />
+        <ItemSubCategory name="Herbs and flowers" />
+        <ItemSubCategory name="Mineral" />
+        <ItemSubCategory name="Liquid" />
+        <ItemSubCategory name="Potion" />
+        <ItemSubCategory name="Usable" />
+        <ItemSubCategory name="Ability" />
+        <ItemSubCategory name="BMoney" />
+        <ItemSubCategory name="CMoney" />
+        <ItemSubCategory name="Orb" />
+        <ItemSubCategory name="Invisible" />
+        <ItemSubCategory name="Fabrics" />
+        <ItemSubCategory name="Core Ingredients" />
+        <ItemSubCategory name="Defensive" />
+        <ItemSubCategory name="Offensive" />
+        <ItemSubCategory name="Monster" />
+        <ItemSubCategory name="Elixir" />
+        <ItemSubCategory name="Bomb" />
+        <ItemSubCategory name="Lootable" />
+        <ItemSubCategory name="SuperPack" />
+        <ItemSubCategory name="Trail Pass" />
+        <ItemSubCategory name="Banana Box" />
+        <ItemSubCategory name="Monthly Collectible" />
+        <ItemSubCategory name="None" />
+    </ItemCategory>
+    <ItemCategory name="Quest">
+        <ItemSubCategory name="Interactive" />
+        <ItemSubCategory name="Collectible" />
+        <ItemSubCategory name="None" />
+    </ItemCategory>
+    <ItemCategory name="Wearable">
+        <ItemSubCategory name="Slot Head">
+            <Item itemId="1" itemName="Pale Skeleton Head" descriptionId="1000700" prefabName="Add_EVT_Squelette01_FH01" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1000" discountPrice="-1" sellPrice="350" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+            <Item itemId="2" itemName="Pink Skeleton Head" descriptionId="1000719" prefabName="Add_EVT_Squelette01_FH02" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1000" discountPrice="-1" sellPrice="350" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+            <Item itemId="3" itemName="Green Skeleton Head" descriptionId="1000720" prefabName="Add_EVT_Squelette01_FH03" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1000" discountPrice="-1" sellPrice="350" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+        </ItemSubCategory>
+        <ItemSubCategory name="Slot Hair" />
+        <ItemSubCategory name="Slot Body">
+            <Item itemId="4" itemName="Pink Skeleton Shirt" descriptionId="1000721" prefabName="Add_EVT_Squelette01_TS02" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1000" discountPrice="-1" sellPrice="350" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+            <Item itemId="5" itemName="Green Skeleton Shirt" descriptionId="1000702" prefabName="Add_EVT_Squelette01_TS03" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1000" discountPrice="-1" sellPrice="350" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+        </ItemSubCategory>
+        <ItemSubCategory name="Slot Legs">
+            <Item itemId="6" itemName="Pale Skeleton Pants" descriptionId="1000723" prefabName="Add_EVT_Squelette01_LS01" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1000" discountPrice="-1" sellPrice="350" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+            <Item itemId="7" itemName="Pink Skeleton Pants" descriptionId="1000724" prefabName="Add_EVT_Squelette01_LS02" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1000" discountPrice="-1" sellPrice="350" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+            <Item itemId="8" itemName="Green Skeleton Pants" descriptionId="2012668313" prefabName="Add_EVT_Squelette01_LS03" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1000" discountPrice="-1" sellPrice="350" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+        </ItemSubCategory>
+        <ItemSubCategory name="Slot Ears" />
+        <ItemSubCategory name="Slot Upper Face" />
+        <ItemSubCategory name="Slot Lower Face" />
+        <ItemSubCategory name="Slot Wrist" />
+        <ItemSubCategory name="Slot Backpack" />
+        <ItemSubCategory name="Slot Tail" />
+        <ItemSubCategory name="None" />
+    </ItemCategory>
+    <ItemCategory name="Recipe">
+        <ItemSubCategory name="Tailoring" />
+        <ItemSubCategory name="Alchemy" />
+        <ItemSubCategory name="None" />
+    </ItemCategory>
+    <ItemCategory name="Enemy">
+        <ItemSubCategory name="None" />
+    </ItemCategory>
     <ItemCategory name="Chest">
         <ItemSubCategory name="None" />
     </ItemCategory>
-	<ItemCategory name="Information">
-		<ItemSubCategory name="None" />
-	</ItemCategory>
-	<ItemCategory name="Ability">
-		<ItemSubCategory name="Defensive" />
-		<ItemSubCategory name="Offensive" />
-		<ItemSubCategory name="Passive Ability" />
-		<ItemSubCategory name="None" />
-	</ItemCategory>
-	<ItemCategory name="Gift">
-		<ItemSubCategory name="Banana Box" />
-		<ItemSubCategory name="Package" />
-		<ItemSubCategory name="None" />
-	</ItemCategory>
-	<ItemCategory name="Pet">
+    <ItemCategory name="Information">
+        <ItemSubCategory name="None" />
+    </ItemCategory>
+    <ItemCategory name="Ability">
+        <ItemSubCategory name="Defensive" />
+        <ItemSubCategory name="Offensive" />
+        <ItemSubCategory name="Passive Ability">
+            <Item itemId="393" itemName="Snowboard" descriptionId="2139612518" prefabName="ABIL_SnowBoard02" specialDisplayPrefab="" tribe="Wild" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Ability" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+        </ItemSubCategory>
+        <ItemSubCategory name="None" />
+    </ItemCategory>
+    <ItemCategory name="Gift">
+        <ItemSubCategory name="Banana Box" />
+        <ItemSubCategory name="Package" />
+        <ItemSubCategory name="None" />
+    </ItemCategory>
+    <ItemCategory name="Pet">
         <ItemSubCategory name="Pets">
             <!-- Consult PetBattlePets to find item ID -->
             <Item itemId="2061554059" itemName="Enzo" descriptionId="971254512" prefabName="PF_PET_Rig02_Enzo01" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Pet" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
         </ItemSubCategory>
-		<ItemSubCategory name="None" />
-	</ItemCategory>
+        <ItemSubCategory name="None" />
+    </ItemCategory>
     <ItemCategory name="PetBattlePoints">
         <ItemSubCategory name="None" />
     </ItemCategory>
