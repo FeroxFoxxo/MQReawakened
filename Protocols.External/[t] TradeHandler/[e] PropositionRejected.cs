@@ -23,7 +23,16 @@ public class PropositionRejected : ExternalProtocol
         originPlayer.Character.ItemsInTrade.Clear();
         otherPlayer.Character.ItemsInTrade.Clear();
 
-        otherPlayer.SendXt("te", originPlayer.Character.Data.CharacterName);
-        originPlayer.SendXt("te", otherPlayer.Character.Data.CharacterName);
+        if (traderId == 1)
+        {
+            originPlayer.Character.ItemsInTrade.Clear();
+            otherPlayer.SendXt("te", originPlayer.Character.Data.CharacterName);
+        }
+
+        if (traderId == 2)
+        {
+            otherPlayer.Character.ItemsInTrade.Clear();
+            originPlayer.SendXt("te", otherPlayer.Character.Data.CharacterName);
+        }
     }
 }
