@@ -93,7 +93,8 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         }
     }
 
-    private int AddDictIfNotExists(XmlDocument xml, XmlNode node, int nameId, string text, Dictionary<int, string> dictList)
+    private static int AddDictIfNotExists(XmlDocument xml, XmlNode node, int nameId,
+        string text, Dictionary<int, string> dictList)
     {
         var tryGetDict = dictList.FirstOrDefault(x => x.Value == text);
 

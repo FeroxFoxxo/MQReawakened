@@ -18,6 +18,6 @@ public class InvitePlayer : ExternalProtocol
         var characterName = message[5];
         var invitedCharacter = PlayerHandler.GetPlayerByName(characterName);
 
-        invitedCharacter?.SendXt("pi", Player.Group.LeaderCharacterName);
+        invitedCharacter?.SendXt("pi", Player.Group.GetLeaderName());
     }
 }

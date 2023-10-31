@@ -1,5 +1,4 @@
 ﻿using Server.Base.Accounts.Extensions;
-using Server.Base.Accounts.Models;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;

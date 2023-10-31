@@ -12,7 +12,6 @@ using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Network.Protocols;
 using System.Reflection;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace Server.Reawakened.Network.Services;
 

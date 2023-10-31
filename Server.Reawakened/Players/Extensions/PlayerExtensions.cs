@@ -4,7 +4,6 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.Players.Models.Temporary;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
@@ -15,27 +14,35 @@ public static class PlayerExtensions
 {
     public static void RemoveFromGroup(this Player player)
     {
-        if (player.Group == null)
+        var group = player.Group;
+
+        if (group == null)
             return;
 
-        player.Group.GroupMembers.Remove(player);
+        player.Group = null;
 
-        if (player.Group.GroupMembers.Count > 0)
+        foreach (var member in group.GetMembers())
+            member.SendXt("pl", player.CharacterName);
+
+        group.RemovePlayer(player);
+
+        var members = group.GetMembers();
+
+        if (members.Count > 0)
         {
-            if (player.Group.LeaderCharacterName == player.CharacterName)
+            if (group.GetLeaderName() == player.CharacterName)
             {
-                var newLeader = player.Group.GroupMembers.First();
-                player.Group.LeaderCharacterName = newLeader.CharacterName;
+                var newLeader = members.First();
 
-                foreach (var member in player.Group.GroupMembers)
-                    member.SendXt("pp", player.Group.LeaderCharacterName);
+                group.SetLeaderName(newLeader.CharacterName);
+
+                foreach (var member in members)
+                    member.SendXt("pp", newLeader.CharacterName);
             }
 
-            foreach (var member in player.Group.GroupMembers)
-                member.SendXt("pl", player.CharacterName);
+            if (members.Count == 1)
+                members.First().RemoveFromGroup();
         }
-
-        player.Group = null;
     }
 
     public static void AddReputation(this Player player, int reputation)

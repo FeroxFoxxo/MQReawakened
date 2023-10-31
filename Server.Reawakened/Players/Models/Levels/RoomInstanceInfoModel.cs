@@ -32,7 +32,7 @@ public class RoomInstanceInfoModel
         var players = room.Players.Values.ToArray();
 
         CountGroup = player.Group != null
-            ? player.Group.GroupMembers
+            ? player.Group.GetMembers()
                 .Where(g => players.Any(p => p.UserId == g.UserId))
                 .Count()
             : 0;

@@ -20,16 +20,15 @@ public class JoinGroup : ExternalProtocol
         var accepted = message[6] == "1";
         var status = int.Parse(message[7]);
 
-
         if (leaderPlayer == null)
             return;
 
         if (accepted)
         {
-            leaderPlayer.Group.GroupMembers.Add(Player);
+            leaderPlayer.Group.AddPlayer(Player);
             Player.Group = leaderPlayer.Group;
 
-            foreach (var member in Player.Group.GroupMembers)
+            foreach (var member in Player.Group.GetMembers())
                 member.SendXt("pj", Player.Group, joinerName);
         }
         else

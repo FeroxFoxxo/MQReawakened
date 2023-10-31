@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
@@ -100,7 +99,7 @@ public class Room : Timer
         if (player.Group == null)
             return;
 
-        foreach (var groupMember in player.Group.GroupMembers)
+        foreach (var groupMember in player.Group.GetMembers())
         {
             groupMember.SendXt(
                 "pm",
