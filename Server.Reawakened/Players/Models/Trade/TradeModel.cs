@@ -4,10 +4,12 @@ namespace Server.Reawakened.Players.Models.Temporary;
 
 public class TradeModel(Player tradingPlayer)
 {
-    public Player TradingPlayer = tradingPlayer;
+    public Player TradingPlayer => tradingPlayer;
 
-    public Dictionary<int, int> ItemsInTrade = [];
-    public int BananasInTrade;
+    public Dictionary<int, int> ItemsInTrade { get; set; } = [];
+    public int BananasInTrade { get; set; } = 0;
+    public bool FinalisedTrade { get; set; } = false;
+    public bool AcceptedTrade { get; set; } = false;
 
     public static Dictionary<int, int> ReverseProposeItems(string itemData)
     {
@@ -22,5 +24,12 @@ public class TradeModel(Player tradingPlayer)
         }
 
         return items;
+    }
+
+    public void ResetTrade()
+    {
+        ItemsInTrade.Clear();
+        BananasInTrade = 0;
+        FinalisedTrade = false;
     }
 }

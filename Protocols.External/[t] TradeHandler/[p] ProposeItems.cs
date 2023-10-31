@@ -13,17 +13,18 @@ public class ProposeItems : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var itemsProposed = message[5];
-        var bananas = int.Parse(message[6]);
-
         var tradeModel = Player.TempData.TradeModel;
 
         if (tradeModel == null)
             return;
 
+        var itemsProposed = message[5];
+        var bananas = int.Parse(message[6]);
+
         tradeModel.ItemsInTrade = TradeModel.ReverseProposeItems(itemsProposed);
         tradeModel.BananasInTrade = bananas;
-        
+        tradeModel.FinalisedTrade = true;
+
         tradeModel.TradingPlayer?.SendXt("tp", itemsProposed, bananas);
     }
 }

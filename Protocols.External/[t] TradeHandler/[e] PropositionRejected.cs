@@ -13,8 +13,24 @@ public class PropositionRejected : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var tradingPlayer = Player.TempData.TradeModel?.TradingPlayer;
+        var playerTradeModel = Player.TempData.TradeModel;
 
-        tradingPlayer?.SendXt("te", Player.CharacterName);
+        if (playerTradeModel == null)
+            return;
+
+        var tradingPlayer = playerTradeModel.TradingPlayer;
+
+        if (tradingPlayer == null)
+            return;
+
+        var tradeeTradeModel = tradingPlayer.TempData.TradeModel;
+
+        if (tradeeTradeModel == null)
+            return;
+
+        playerTradeModel.ResetTrade();
+        tradeeTradeModel.ResetTrade();
+
+        tradingPlayer.SendXt("te", Player.CharacterName);
     }
 }

@@ -1,6 +1,9 @@
-﻿using Server.Reawakened.Network.Extensions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Temporary;
+using Server.Reawakened.Players.Models.Trade;
 
 namespace Protocols.External._t__TradeHandler;
 
@@ -12,8 +15,17 @@ public class InviteToTrade : ExternalProtocol
 
     public override void Run(string[] message)
     {
+        if (Player.TempData.TradeModel != null)
+            return;
+
         var traderName = message[5];
         var invitedPlayer = PlayerHandler.GetPlayerByName(traderName);
+
+        if (invitedPlayer == null)
+            return;
+
+        Player.TempData.TradeModel = new TradeModel(invitedPlayer);
+        invitedPlayer.TempData.TradeModel = new TradeModel(Player);
 
         invitedPlayer?.SendXt("ti", Player.CharacterName);
     }

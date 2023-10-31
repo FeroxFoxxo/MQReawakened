@@ -1,6 +1,7 @@
 ﻿using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._i__InventoryHandler;
@@ -27,7 +28,7 @@ public class EquipItem : ExternalProtocol
 
         character.Data.Equipment = newEquipment;
 
-        SendXt("iq", character.Data.Equipment);
+        Player.UpdateEquipment();
         Player.SendUpdatedInventory(true);
     }
 }

@@ -4,6 +4,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Models.Temporary;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
@@ -74,6 +75,22 @@ public static class PlayerExtensions
 
         tradingPlayer.Character.Data.Cash += tradeModel.BananasInTrade;
         origin.Character.Data.Cash -= tradeModel.BananasInTrade;
+    }
+
+    public static void RemoveTrade(this Player player)
+    {
+        if (player == null)
+            return;
+
+        if (player.TempData.TradeModel == null)
+            return;
+
+        var tradee = player.TempData.TradeModel.TradingPlayer;
+
+        player.TempData.TradeModel = null;
+
+        if (tradee != null)
+            tradee.TempData.TradeModel = null;
     }
 
     public static void AddBananas(this Player player, int collectedBananas)
@@ -264,5 +281,15 @@ public static class PlayerExtensions
 
             player.UpdateNpcsInLevel(quest, quests);
         }
+    }
+
+    public static void UpdateEquipment(this Player sentPlayer)
+    {
+        foreach (
+            var player in
+            from player in sentPlayer.Room.Players.Values
+            select player
+        )
+            player.SendXt("iq", sentPlayer.UserId, sentPlayer.Character.Data.Equipment);
     }
 }

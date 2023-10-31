@@ -12,9 +12,18 @@ public class PropositionCanceled : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var traderName = message[5];
-        var tradedPlayer = PlayerHandler.GetPlayerByName(traderName);
+        var tradeModel = Player.TempData.TradeModel;
 
-        tradedPlayer?.SendXt("to", Player.CharacterName);
+        if (tradeModel == null)
+            return;
+
+        var tradingPlayer = tradeModel.TradingPlayer;
+
+        if (tradingPlayer == null)
+            return;
+
+        tradeModel.ResetTrade();
+
+        tradingPlayer?.SendXt("to", Player.CharacterName);
     }
 }

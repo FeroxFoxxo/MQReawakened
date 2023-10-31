@@ -1,7 +1,7 @@
-﻿using Server.Reawakened.Network.Extensions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Players.Models.Temporary;
 
 namespace Protocols.External._t__TradeHandler;
 
@@ -13,14 +13,27 @@ public class AcceptTrade : ExternalProtocol
 
     public override void Run(string[] message)
     {
+        var traderModel = Player.TempData.TradeModel;
+
+        if (traderModel == null)
+            return;
+
         var traderName = message[5];
         var tradedPlayer = PlayerHandler.GetPlayerByName(traderName);
 
         if (tradedPlayer == null)
             return;
 
-        Player.TempData.TradeModel = new TradeModel(tradedPlayer);
-        tradedPlayer.TempData.TradeModel = new TradeModel(Player);
+        if (tradedPlayer != traderModel.TradingPlayer)
+            return;
+
+        var tradeeModel = tradedPlayer.TempData.TradeModel;
+
+        if (tradeeModel == null)
+            return;
+
+        tradeeModel.AcceptedTrade = true;
+        traderModel.AcceptedTrade = true;
 
         Player.SendXt("ta",
             tradedPlayer.CharacterName,

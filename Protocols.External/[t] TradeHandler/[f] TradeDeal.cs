@@ -17,26 +17,37 @@ public class TradeDeal : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var tradingPlayer = Player.TempData.TradeModel?.TradingPlayer;
+        var tradeModel = Player.TempData.TradeModel;
+
+        if (tradeModel == null)
+            return;
+
+        var tradingPlayer = tradeModel.TradingPlayer;
 
         if (tradingPlayer == null)
             return;
 
-        tradingPlayer.TradeWithPlayer(ItemCatalog);
-        Player.TradeWithPlayer(ItemCatalog);
+        if (!tradeModel.FinalisedTrade)
+        {
+            tradeModel.FinalisedTrade = true;
+            Player.SendXt("tf", tradingPlayer.CharacterName);
+        }
 
-        tradingPlayer.SendXt("tt", string.Empty);
-        Player.SendXt("tt", string.Empty);
+        if (tradingPlayer.TempData.TradeModel.FinalisedTrade)
+        {
+            tradingPlayer.TradeWithPlayer(ItemCatalog);
+            Player.TradeWithPlayer(ItemCatalog);
 
-        tradingPlayer.SendCashUpdate();
-        tradingPlayer.SendUpdatedInventory(false);
+            tradingPlayer.SendCashUpdate();
+            tradingPlayer.SendUpdatedInventory(false);
 
-        Player.SendCashUpdate();
-        Player.SendUpdatedInventory(false);
+            Player.SendCashUpdate();
+            Player.SendUpdatedInventory(false);
 
-        Player.TempData.TradeModel = null;
-        tradingPlayer.TempData.TradeModel = null;
+            tradingPlayer.SendXt("tt", string.Empty);
+            Player.SendXt("tt", string.Empty);
 
-        Player.SendXt("tf", tradingPlayer.CharacterName);
+            Player.RemoveTrade();
+        }
     }
 }
