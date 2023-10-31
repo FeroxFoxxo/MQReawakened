@@ -34,7 +34,7 @@ public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
          where account != null
          where account.UserId == userId
          select state
-        ).FirstOrDefault();
+    ).FirstOrDefault();
 
     public void ProcessDisposedQueue()
     {

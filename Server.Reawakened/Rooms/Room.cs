@@ -111,7 +111,7 @@ public class Room : Timer
         }
     }
 
-    public void AddClient(Player newPlayer, out JoinReason reason)
+    public void AddClient(Player currentPlayer, out JoinReason reason)
     {
         reason = Players.Count > _config.PlayerCap ? JoinReason.Full : JoinReason.Accepted;
 
@@ -127,35 +127,30 @@ public class Room : Timer
 
             _gameObjectIds.Add(gameObjectId);
 
-            newPlayer.GameObjectId = gameObjectId;
+            currentPlayer.GameObjectId = gameObjectId;
 
-            Players.Add(gameObjectId, newPlayer);
+            Players.Add(gameObjectId, currentPlayer);
 
-            GroupMemberRoomChanged(newPlayer);
+            GroupMemberRoomChanged(currentPlayer);
 
-            newPlayer.NetState.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
+            currentPlayer.NetState.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
 
             if (LevelInfo.LevelId == 0)
                 return;
 
             // USER ENTER
-            var newAccount = newPlayer.NetState.Get<Account>();
 
-            foreach (var currentPlayer in Players.Values)
+            foreach (var roomCharacter in Players.Values)
             {
-                var currentAccount = currentPlayer.NetState.Get<Account>();
+                currentPlayer.SendUserEnterDataTo(roomCharacter);
 
-                var areDifferentClients = currentPlayer.UserId != newPlayer.UserId;
-
-                newPlayer.SendUserEnterDataTo(currentPlayer, currentAccount);
-
-                if (areDifferentClients)
-                    currentPlayer.SendUserEnterDataTo(newPlayer, newAccount);
+                if (roomCharacter != currentPlayer)
+                    roomCharacter.SendUserEnterDataTo(currentPlayer);
             }
         }
         else
         {
-            newPlayer.NetState.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
+            currentPlayer.NetState.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
         }
     }
 

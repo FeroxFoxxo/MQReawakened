@@ -86,10 +86,10 @@ public class NetState : IDisposable
     }
 
     private void WriteServer(string text) =>
-        _logger.LogTrace("Outbound {Client} -> {Text}", this, text);
+        _logger.LogTrace("Outbound {Client}: {Text}", this, text);
 
     private void WriteClient(string text) =>
-        _logger.LogTrace("Inbound  {Client} <- {Text}", this, text);
+        _logger.LogTrace("Inbound  {Client}: {Text}", this, text);
 
     public void CheckAlive(double curTicks)
     {

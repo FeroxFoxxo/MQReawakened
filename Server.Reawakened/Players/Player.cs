@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Network;
@@ -14,8 +15,9 @@ using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Players;
 
-public class Player(UserInfo userInfo, NetState state, PlayerHandler playerHandler) : INetStateData
+public class Player(Account account, UserInfo userInfo, NetState state, PlayerHandler playerHandler) : INetStateData
 {
+    public Account Account => account;
     public NetState NetState => state;
     public UserInfo UserInfo => userInfo;
     public PlayerHandler PlayerHandler => playerHandler;

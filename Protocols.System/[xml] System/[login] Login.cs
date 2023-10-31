@@ -40,7 +40,7 @@ public class Login : SystemProtocol
                     UserInfoHandler.InitializeUser(NetState);
                     SendXml(
                         "logOK",
-                        $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />"
+                        $"<login id='{account.UserId}' mod='{account.IsModerator()}' n='{username}' />"
                     );
                     return;
                 }

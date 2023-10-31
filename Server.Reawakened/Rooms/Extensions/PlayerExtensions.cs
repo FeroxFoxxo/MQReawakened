@@ -37,13 +37,15 @@ public static class PlayerExtensions
         room.SendSyncEvent(collectedEvent);
     }
 
-    public static void SendUserEnterDataTo(this Player send, Player receive, Account account) => receive.NetState.SendXml("uER",
-            $"<u i='{send.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{send.UserId}'>" +
-            $"<n>{account.Username}</n>" +
+    public static void SendUserEnterDataTo(this Player send, Player receive) =>
+        receive.NetState.SendXml("uER",
+            $"<u i='{send.UserId}' m='{send.Account.IsModerator()}' s='{send.Account.IsSpectator()}' p='{send.Account.UserId}'>" +
+            $"<n>{send.Account.Username}</n>" +
             "</u>"
         );
 
-    public static void SendUserGoneDataTo(this Player send, Player receive) => receive.NetState.SendXml("userGone",
+    public static void SendUserGoneDataTo(this Player send, Player receive) =>
+        receive.NetState.SendXml("userGone",
             $"<user id='{send.UserId}'></user>"
         );
 
