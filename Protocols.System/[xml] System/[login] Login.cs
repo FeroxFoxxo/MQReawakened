@@ -32,10 +32,10 @@ public class Login : SystemProtocol
             {
                 var account = NetState.Get<Account>();
 
-                foreach (var player in PlayerHandler.PlayerList.Where(p => p.UserId == account.UserId))
+                foreach (var player in PlayerHandler.GetPlayersByUserId(account.UserId))
                     player.Remove(Logger);
 
-                if (!PlayerHandler.PlayerList.Any(p => p.UserId == account.UserId))
+                if (!PlayerHandler.AnyPlayersByUserId(account.UserId))
                 {
                     UserInfoHandler.InitializeUser(NetState);
                     SendXml(

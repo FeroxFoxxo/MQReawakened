@@ -12,12 +12,11 @@ public class InviteResponse : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var frienderName = message[5];
         var accepted = message[6] == "1";
         var status = int.Parse(message[7]);
 
-        var friender = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.CharacterName == frienderName);
+        var frienderName = message[5];
+        var friender = PlayerHandler.GetPlayerByName(frienderName);
 
         if (friender == null)
             return;

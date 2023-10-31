@@ -16,8 +16,8 @@ public class DeclineTrade : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var tradedPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.CharacterName == message[5]);
+        var traderName = message[5];
+        var tradedPlayer = PlayerHandler.GetPlayerByName(traderName);
 
         var status = (DeclineType) int.Parse(message[6]);
 

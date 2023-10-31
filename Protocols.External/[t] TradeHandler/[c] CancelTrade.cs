@@ -19,7 +19,7 @@ public class CancelTrade : ExternalProtocol
 
         Player.TempData.TradeModel = null;
 
-        if (tradingPlayer == null)
+        if (tradingPlayer != null)
             tradingPlayer.TempData.TradeModel = null;
     }
 }

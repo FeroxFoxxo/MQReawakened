@@ -12,8 +12,8 @@ public class InviteToTrade : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var invitedPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.CharacterName == message[5]);
+        var traderName = message[5];
+        var invitedPlayer = PlayerHandler.GetPlayerByName(traderName);
 
         invitedPlayer?.SendXt("ti", Player.CharacterName);
     }

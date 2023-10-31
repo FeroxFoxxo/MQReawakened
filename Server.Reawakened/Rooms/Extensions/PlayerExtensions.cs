@@ -29,22 +29,6 @@ public static class PlayerExtensions
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelData.LevelId ?? -1;
 
-    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
-    {
-        character.Data.SetPlayerData(player);
-        player.SetCharacterSelected(character.Data.CharacterId);
-        player.PlayerHandler.AddPlayer(player);
-        player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
-
-        foreach (var friend in player.PlayerHandler.PlayerList
-                     .Where(p =>
-                         player.Character.Data.FriendList
-                             .Any(x => x.Key == p.UserId && x.Value == p.Character.Data.CharacterId)
-                     )
-                )
-            friend.SendXt("fy", player.CharacterName);
-    }
-
     public static void SentEntityTriggered(this Room room, int id, Player player, bool success, bool active)
     {
         var collectedEvent =
@@ -88,6 +72,22 @@ public static class PlayerExtensions
 
         foreach (var currentPlayer in player.Room.Players.Values)
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
+    }
+
+    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
+    {
+        character.Data.SetPlayerData(player);
+        player.SetCharacterSelected(character.Data.CharacterId);
+        player.PlayerHandler.AddPlayer(player);
+        player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
+
+        foreach (var friend in player.PlayerHandler.GetPlayersByFriend(player.UserId)
+                     .Where(p =>
+                         player.Character.Data.FriendList
+                             .Any(x => x.Key == p.UserId && x.Value == p.Character.Data.CharacterId)
+                     )
+                )
+            friend.SendXt("fy", player.CharacterName);
     }
 
     public static void DumpToLobby(this Player player)

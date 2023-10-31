@@ -35,7 +35,7 @@ public class CreateCharacter : ExternalProtocol
         var lastName = message[7];
         var gender = (Gender)int.Parse(message[8]);
         var characterData = new CharacterDataModel(message[9], lowestCharacterAvailable, ServerConfig);
-        var tribe = TribeType.Crossroads;
+        var tribe = TribeType.Ook;
 
         if (ServerConfig.Is2014Client)
             tribe = (TribeType)int.Parse(message[10]);

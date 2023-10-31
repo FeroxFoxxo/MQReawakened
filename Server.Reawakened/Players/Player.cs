@@ -53,8 +53,11 @@ public class Player(UserInfo userInfo, NetState state, PlayerHandler playerHandl
 
         if (Character != null)
         {
-            foreach (var player in playerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
-                player.SendXt("fz", Character.Data.CharacterName);
+            lock (playerHandler.Lock)
+            {
+                foreach (var player in playerHandler.GetPlayersByFriend(UserId))
+                    player.SendXt("fz", Character.Data.CharacterName);
+            }
 
             if (TempData.TradeModel != null)
             {

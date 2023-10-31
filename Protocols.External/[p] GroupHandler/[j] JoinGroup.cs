@@ -15,11 +15,11 @@ public class JoinGroup : ExternalProtocol
         var joinerName = Player.CharacterName;
 
         var leaderName = message[5];
+        var leaderPlayer = PlayerHandler.GetPlayerByName(leaderName);
+
         var accepted = message[6] == "1";
         var status = int.Parse(message[7]);
 
-        var leaderPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.CharacterName == leaderName);
 
         if (leaderPlayer == null)
             return;

@@ -12,8 +12,8 @@ public class PropositionCanceled : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var tradedPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.CharacterName == message[5]);
+        var traderName = message[5];
+        var tradedPlayer = PlayerHandler.GetPlayerByName(traderName);
 
         tradedPlayer?.SendXt("to", Player.CharacterName);
     }

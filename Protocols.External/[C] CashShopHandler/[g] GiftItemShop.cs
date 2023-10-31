@@ -7,6 +7,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._C__CashShopHandler;
+
 public class GiftItemShop : ExternalProtocol
 {
     public override string ProtocolName => "Cg";
@@ -17,8 +18,6 @@ public class GiftItemShop : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
         var cashShop = (Cashshop)int.Parse(message[5]);
 
         if (cashShop != Cashshop.CashShop)
@@ -27,10 +26,10 @@ public class GiftItemShop : ExternalProtocol
             return;
         }
 
-        var friendName = message[6];
-        var messageDesc = message[7];
+        var _ = message[6]; // friendName
+        var _1 = message[7]; // messageDesc
         var itemId = int.Parse(message[8]);
-        var backgroundId = int.Parse(message[9]);
+        var _2 = int.Parse(message[9]); // backgroundId
         var packageId = int.Parse(message[10]);
 
         var package = ItemCatalog.GetItemFromId(packageId);

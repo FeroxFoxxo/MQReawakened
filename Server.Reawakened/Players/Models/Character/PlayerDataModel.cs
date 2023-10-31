@@ -17,8 +17,7 @@ public class PlayerDataModel
     {
         var user = currentPlayer.PlayerHandler.UserInfoHandler.Data[userId];
         var character = user.Characters[characterId];
-        var player = currentPlayer.PlayerHandler.PlayerList
-            .Where(p => p.UserId == userId)
+        var player = currentPlayer.PlayerHandler.GetPlayersByUserId(userId)
             .FirstOrDefault(p => p.Character.Data.CharacterId == characterId);
 
         CharacterName = character.Data.CharacterName;

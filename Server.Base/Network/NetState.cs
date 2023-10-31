@@ -64,7 +64,7 @@ public class NetState : IDisposable
         _rConfig = rConfig;
         _sink = sink;
 
-        _nextCheckActivity = GetTicks.Ticks + 30000000;
+        _nextCheckActivity = GetTicks.Ticks + _rConfig.DisconnectionTimeout;
 
         _handler.Instances.Add(this);
         _data = [];
@@ -186,7 +186,7 @@ public class NetState : IDisposable
                 return;
             }
 
-            _nextCheckActivity = GetTicks.Ticks + 90000000;
+            _nextCheckActivity = GetTicks.Ticks + _rConfig.DisconnectionTimeout;
         }
         catch (Exception)
         {
