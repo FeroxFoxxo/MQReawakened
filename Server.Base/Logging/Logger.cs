@@ -11,7 +11,6 @@ public class Logger(string categoryName) : ILogger
 
     private static readonly Stack<ConsoleColor> ConsoleColors = new();
 
-    private static int _offset;
     private static bool _criticalErrored;
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception ex,
@@ -66,17 +65,12 @@ public class Logger(string categoryName) : ILogger
     {
         var prefix = $"{DateTime.UtcNow.ToString(DateFormat)}[{shortLogLevel}] {categoryName.Split('.').Last()}[{eventId}]";
 
-        if (_offset < prefix.Length) _offset = prefix.Length;
-        var length = _offset - prefix.Length;
-        if (length < 0) length = 0;
-        var offsetSpaced = string.Concat(Enumerable.Repeat(" ", length));
-
         lock (((ICollection)ConsoleColors).SyncRoot)
         {
             PushColor(color);
 
             foreach (var msg in message.Split('\n'))
-                Console.WriteLine($"{prefix}:{offsetSpaced} {msg}");
+                Console.WriteLine($"{prefix}: {msg}");
 
             PopColor();
         }

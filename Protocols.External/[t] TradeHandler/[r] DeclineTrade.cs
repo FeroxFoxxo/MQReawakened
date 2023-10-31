@@ -23,8 +23,8 @@ public class DeclineTrade : ExternalProtocol
 
         if (status == DeclineType.InviteeRejection)
             tradedPlayer?.SendXt("tc", Player.CharacterName);
-        else if (status is DeclineType.PlayerDnD or DeclineType.PlayerBusy)
-            tradedPlayer?.SendXt("tr", Player.CharacterName, status);
+        else if (status is DeclineType.PlayerBusy or DeclineType.PlayerDnD or DeclineType.InviteeRejection)
+            tradedPlayer?.SendXt("tr", Player.CharacterName, (int) status);
         else
             Logger.LogError("Unknown decline type: {DeclineType}", status);
     }

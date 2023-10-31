@@ -68,8 +68,11 @@ public class CharacterDataModel : CharacterLightModel
             throw new InvalidDataException();
     }
 
-    public void SetPlayerData(Player player) =>
+    public void SetPlayerData(Player player)
+    {
         _player = player;
+        _player.NetState.Identifier = CharacterName;
+    }
 
     private void InitializeDetailedLists()
     {

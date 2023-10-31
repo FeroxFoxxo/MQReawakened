@@ -8,7 +8,6 @@ using Server.Base.Network.Enums;
 using Server.Base.Network.Events;
 using Server.Base.Network.Helpers;
 using Server.Base.Network.Services;
-using System.Collections.Concurrent;
 using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
@@ -22,7 +21,6 @@ public class NetState : IDisposable
 
     private readonly InternalRConfig _rConfig;
     private readonly InternalRwConfig _rwConfig;
-    private readonly ConcurrentBag<string> _currentLogs;
 
     private readonly Dictionary<Type, INetStateData> _data;
 
@@ -31,7 +29,7 @@ public class NetState : IDisposable
     private readonly FileLogger _fileLogger;
     private readonly EventSink _sink;
 
-    private readonly string _toString;
+    public string Identifier;
     public readonly IPAddress Address;
     public readonly object AsyncLock;
     public readonly byte[] Buffer;
@@ -55,7 +53,6 @@ public class NetState : IDisposable
         Socket = socket;
         AsyncLock = new object();
         Buffer = new byte[rConfig.BufferSize];
-        _currentLogs = [];
 
         _logger = logger;
         _fileLogger = fileLogger;
@@ -72,13 +69,13 @@ public class NetState : IDisposable
         try
         {
             Address = limiter.Intern(((IPEndPoint)Socket.RemoteEndPoint)?.Address);
-            _toString = Address.ToString();
+            Identifier = Address.ToString();
         }
         catch (Exception ex)
         {
             _handler.TraceNetworkError(ex, this);
             Address = IPAddress.None;
-            _toString = "(error)";
+            Identifier = "(error)";
         }
 
         ConnectedOn = DateTime.UtcNow;
@@ -89,10 +86,10 @@ public class NetState : IDisposable
     }
 
     private void WriteServer(string text) =>
-        _logger.LogTrace("Outbound: {Written}", text);
+        _logger.LogTrace("OUT {Client} -> {Text}", this, text);
 
     private void WriteClient(string text) =>
-        _logger.LogTrace("Inbound:  {Written}", text);
+        _logger.LogTrace("IN  {Client} <- {Text}", this, text);
 
     public void CheckAlive(double curTicks)
     {
@@ -158,7 +155,7 @@ public class NetState : IDisposable
 
         if (!string.IsNullOrEmpty(protocolType))
             if (!_rwConfig.IgnoreProtocolType.Contains(protocolType))
-                _currentLogs.Add(packet);
+                WriteServer(packet);
 
         packet += "\0";
 
@@ -230,43 +227,50 @@ public class NetState : IDisposable
                     if (string.IsNullOrEmpty(packet))
                         continue;
 
-                    NetStateHandler.RunProtocol protocol = null;
+                    NetStateHandler.GetProtocol getProtocolData = null;
                     var protocolType = packet[0];
 
                     lock (_handler.Disposed)
                     {
-                        if (_handler.Protocols.TryGetValue(protocolType, out var handlerProtocol))
-                            protocol = handlerProtocol;
+                        if (_handler.ProtocolLookup.TryGetValue(protocolType, out var handlerProtocol))
+                            getProtocolData = handlerProtocol;
                     }
 
-                    if (protocol != null)
+                    if (getProtocolData != null)
                     {
-                        var protocolResponse = protocol(this, packet);
+                        var protocolData = getProtocolData(packet);
 
-                        if (string.IsNullOrEmpty(protocolResponse.ProtocolId))
+                        if (string.IsNullOrEmpty(protocolData.ProtocolId))
                             continue;
 
-                        if (_rwConfig.IgnoreProtocolType.Contains(protocolResponse.ProtocolId) && _currentLogs.IsEmpty)
-                            continue;
+                        if (protocolData.IsUnhandled)
+                        {
+                            AddUnhandledPacket(protocolData.ProtocolId);
 
-                        if (protocolResponse.IsUnhandled)
-                            AddUnhandledPacket(protocolResponse.ProtocolId);
+                            TracePacketError(protocolData.ProtocolId, packet);
+                        }
                         else
-                            RemoveUnhandledPacket(protocolResponse.ProtocolId);
+                        {
+                            RemoveUnhandledPacket(protocolData.ProtocolId);
 
-                        _logger.LogTrace("Client: {ClientAddress}", this);
+                            if (!_rwConfig.IgnoreProtocolType.Contains(protocolData.ProtocolId))
+                                WriteClient(packet);
 
-                        WriteClient(packet);
+                            NetStateHandler.SendProtocol sendProtocolData = null;
 
-                        foreach (var log in _currentLogs.Reverse())
-                            WriteServer(log);
+                            lock (_handler.Disposed)
+                            {
+                                if (_handler.ProtocolSend.TryGetValue(protocolType, out var handlerProtocol))
+                                    sendProtocolData = handlerProtocol;
+                            }
+
+                            sendProtocolData?.Invoke(this, protocolData.ProtocolId, protocolData.PacketData);
+                        }
                     }
                     else
                     {
                         TracePacketError(protocolType.ToString(), packet);
                     }
-
-                    _currentLogs.Clear();
                 }
 
                 lock (AsyncLock)
@@ -299,7 +303,7 @@ public class NetState : IDisposable
         }
     }
 
-    public override string ToString() => _toString;
+    public override string ToString() => Identifier;
 
     public T Get<T>() where T : class => !_data.ContainsKey(typeof(T)) ? null : _data[typeof(T)] as T;
 
