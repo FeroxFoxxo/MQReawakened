@@ -55,7 +55,9 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
 
             if (bundles.TryGetValue(asset.Name, out var bundle))
             {
-                logger.LogTrace("Loading bundle: {BundleName}", asset.Name);
+                var time = DateTimeOffset.FromUnixTimeSeconds(asset.CacheTime);
+
+                logger.LogTrace("Loading XML: {BundleName} ({DateTime})", asset.Name, time.Date.ToShortDateString());
 
                 if (bundle is ILocalizationXml localizedXmlBundle)
                 {

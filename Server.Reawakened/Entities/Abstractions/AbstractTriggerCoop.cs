@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using System.Text;
+using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.Abstractions;
 
@@ -17,6 +18,8 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
     public bool IsEnabled = true;
 
     public Dictionary<int, TriggerType> Triggers;
+    public List<ActivationType> Activations;
+
     public bool DisabledAfterActivation => EntityData.DisabledAfterActivation;
 
     public int NbInteractionsNeeded => EntityData.NbInteractionsNeeded;
@@ -79,7 +82,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
     public string QuestInProgressRequired => EntityData.QuestInProgressRequired;
 
     public float TriggerRepeatDelay => EntityData.TriggerRepeatDelay;
-    public TriggerCoopController.InteractionType InteractType => EntityData.InteractType;
+    public InteractionType InteractType => EntityData.InteractType;
 
     public float ActivationTimeAfterFirstInteraction => EntityData.ActivationTimeAfterFirstInteraction;
 
@@ -95,6 +98,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
         CurrentInteractors = [];
 
         Triggers = [];
+        Activations = [];
 
         AddToTriggers(
         [
@@ -134,6 +138,16 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             Target05ToDisableLevelEditorId
         ], TriggerType.Disable);
 
+        if (TriggerOnPressed) Activations.Add(ActivationType.Pressed);
+        if (TriggerOnFireDamage) Activations.Add(ActivationType.FireDamage);
+        if (TriggerOnEarthDamage) Activations.Add(ActivationType.EarthDamage);
+        if (TriggerOnAirDamage) Activations.Add(ActivationType.AirDamage);
+        if (TriggerOnIceDamage) Activations.Add(ActivationType.IceDamage);
+        if (TriggerOnLightningDamage) Activations.Add(ActivationType.LightningDamage);
+        if (TriggerOnNormalDamage) Activations.Add(ActivationType.NormalDamage);
+        if (TriggerOnGrapplingHook) Activations.Add(ActivationType.NormalDamage);
+        if (!string.IsNullOrEmpty(TriggeredByItemInInventory)) Activations.Add(ActivationType.ItemInInventory);
+
         RunTrigger(null);
     }
 
@@ -153,34 +167,33 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        if (!IsEnabled || !TriggerOnPressed || syncEvent.Type != SyncEvent.EventType.Trigger)
+        if (!IsEnabled || syncEvent.Type != SyncEvent.EventType.Trigger)
+            return;
+
+        if (!TriggerOnPressed)
             return;
 
         var tEvent = new Trigger_SyncEvent(syncEvent);
 
-        var hasUpdated = false;
+        LogTriggerEvent(tEvent);
 
-        if (tEvent.Activate)
+        var updated = false;
+
+        if (tEvent.Activate && !CurrentInteractors.Contains(player.GameObjectId))
         {
-            if (!CurrentInteractors.Contains(player.GameObjectId))
-            {
-                CurrentInteractors.Add(player.GameObjectId);
-                hasUpdated = true;
-            }
+            CurrentInteractors.Add(player.GameObjectId);
+            updated = true;
         }
-        else
+        else if (!tEvent.Activate && CurrentInteractors.Contains(player.GameObjectId))
         {
-            if (CurrentInteractors.Contains(player.GameObjectId))
-            {
-                CurrentInteractors.Remove(player.GameObjectId);
-                hasUpdated = true;
-            }
+            CurrentInteractors.Remove(player.GameObjectId);
+            updated = true;
         }
 
-        if (!hasUpdated)
-            return;
+        if (updated)
+            RunTrigger(player);
 
-        RunTrigger(player);
+        LogTrigger();
     }
 
     public virtual void Triggered(Player player, bool isSuccess, bool isActive)
@@ -192,40 +205,117 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
     {
         if (!IsActive)
         {
-            if (CurrentInteractors.Count >= NbInteractionsNeeded)
-            {
-                Trigger(player, true);
+            if (CurrentInteractors.Count < NbInteractionsNeeded ||
+                NbInteractionsMatchesNbPlayers && CurrentInteractors.Count < Room.Players.Count)
+                return;
 
-                if (DisabledAfterActivation)
-                    IsEnabled = false;
-            }
+            Trigger(player, true);
+
+            if (DisabledAfterActivation)
+                IsEnabled = false;
         }
         else
         {
             var triggerRecieverActivated = TriggerReceiverActivated();
 
-            if (
-                !(StayTriggeredOnReceiverActivated && triggerRecieverActivated) &&
-                !StayTriggeredOnUnpressed
-            )
-                Trigger(player, false);
+            if (StayTriggeredOnReceiverActivated && triggerRecieverActivated)
+                return;
+
+            if (StayTriggeredOnUnpressed)
+                return;
+
+            Trigger(player, false);
         }
+    }
+
+    public void LogTriggerEvent(Trigger_SyncEvent tEvent)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"Success: {tEvent.Success}");
+        sb.AppendLine($"Triggered By: {tEvent.TriggeredByID}");
+        sb.AppendLine($"Activate: {tEvent.Activate}");
+
+        FileLogger.WriteGenericLog<TriggerCoopController>("triggered-coop", $"[Trigger Event]", sb.ToString(), LoggerType.Trace);
+    }
+
+    public void LogTrigger()
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"Active: {IsActive}");
+        sb.AppendLine($"Enabled: {IsEnabled}");
+
+        if (DisabledAfterActivation)
+            sb.AppendLine($"Disabled After Activation : {DisabledAfterActivation}");
+
+        if (NbInteractionsNeeded > 0)
+            sb.AppendLine($"Interactions: {CurrentInteractors.Count}/{NbInteractionsNeeded}");
+
+        if (NbInteractionsMatchesNbPlayers)
+            sb.AppendLine($"Number Of Interactions Matches Players: {NbInteractionsMatchesNbPlayers}");
+
+        if (Triggers.Count > 0)
+            sb.AppendLine($"Triggers: {string.Join(", ",
+                Triggers.Select(e => $"{e.Key} -> {Enum.GetName(e.Value)}")
+            )}");
+
+        if (ActiveDuration > 0)
+            sb.AppendLine($"Activate Duration: {ActiveDuration}");
+
+        if (Activations.Count > 0)
+            sb.AppendLine($"Activation Types: {string.Join(", ",
+                Activations.Select(e => Enum.GetName(e))
+            )}");
+
+        if (!string.IsNullOrEmpty(TriggeredByItemInInventory))
+            sb.AppendLine($"Triggered By Item In Inventory: {TriggeredByItemInInventory}");
+
+        if (StayTriggeredOnUnpressed)
+            sb.AppendLine($"Stay Triggered On Unpressed : {StayTriggeredOnUnpressed}");
+
+        if (StayTriggeredOnReceiverActivated)
+            sb.AppendLine($"Stay Triggered Receiver Activated : {StayTriggeredOnReceiverActivated}");
+
+        if (Flip)
+            sb.AppendLine($"Flip : {Flip}");
+
+        if (!string.IsNullOrEmpty(ActiveMessage))
+            sb.AppendLine($"Active Message : {ActiveMessage}");
+
+        if (SendActiveMessageToObjectId > 0)
+            sb.AppendLine($"Send Active Message To Object Id : {SendActiveMessageToObjectId}");
+
+        if (!string.IsNullOrEmpty(DeactiveMessage))
+            sb.AppendLine($"Deactive Message : {DeactiveMessage}");
+
+        if (!string.IsNullOrEmpty(TimerSound) && TimerSound != "PF_FX_Timer")
+            sb.AppendLine($"Timer Sound : {TimerSound}");
+
+        if (!string.IsNullOrEmpty(TimerEndSound) && TimerEndSound != "PF_FX_Timer_End")
+            sb.AppendLine($"Timer End Sound : {TimerEndSound}");
+
+        if (!string.IsNullOrEmpty(QuestCompletedRequired))
+            sb.AppendLine($"Quest Completed Required : {QuestCompletedRequired}");
+
+        if (!string.IsNullOrEmpty(QuestInProgressRequired))
+            sb.AppendLine($"Quest In Progress Required : {QuestInProgressRequired}");
+
+        if (TriggerRepeatDelay > 0)
+            sb.AppendLine($"Repeat Delay: {TriggerRepeatDelay}");
+
+        if (InteractType != InteractionType.None)
+            sb.Append($"Interaction Type: {InteractType}");
+
+        if (ActivationTimeAfterFirstInteraction > 0)
+            sb.AppendLine($"Activation Time After First Interaction: {ActivationTimeAfterFirstInteraction}");
+
+        FileLogger.WriteGenericLog<TriggerCoopController>("triggered-coop", $"[Trigger {Id}]", sb.ToString(), LoggerType.Trace);
     }
 
     public void Trigger(Player player, bool active)
     {
         IsActive = active;
-
-        var sb = new StringBuilder();
-
-        sb.AppendLine($"Active: {IsActive}")
-            .AppendLine($"Affect Count: {Triggers.Count}")
-            .AppendLine($"Duration: {ActiveDuration}")
-            .AppendLine($"Repeat Delay: {TriggerRepeatDelay}")
-            .AppendLine($"After First Interaction: {ActivationTimeAfterFirstInteraction}")
-            .Append($"Interaction Type: {InteractType}");
-
-        FileLogger.WriteGenericLog<TriggerCoopController>("triggered-coop", $"Trigger {Id}", sb.ToString(), LoggerType.Trace);
 
         foreach (var trigger in Triggers)
         {
@@ -241,13 +331,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
                     continue;
                 }
 
-            var sb2 = new StringBuilder();
-
-            sb2.AppendLine($"State: {trigger.Value}")
-                .Append($"Entities: {Room.GetUnknownEntityTypes(trigger.Key)}");
-
-            FileLogger.WriteGenericLog<TriggerCoopController>("triggered-errors", $"Trigger {Id}", sb2.ToString(),
-                LoggerType.Error);
+            LogTriggerErrors(trigger.Key, trigger.Value);
         }
 
         if (player != null)
@@ -255,6 +339,17 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             Room.SentEntityTriggered(Id, player, true, IsActive);
             Triggered(player, true, IsActive);
         }
+    }
+
+    public void LogTriggerErrors(int triggerId, TriggerType type)
+    {
+        var sb2 = new StringBuilder();
+
+        sb2.AppendLine($"State: {type}")
+            .AppendLine($"Entities: {Room.GetUnknownEntityTypes(triggerId)}");
+
+        FileLogger.WriteGenericLog<TriggerCoopController>("triggered-errors", $"Trigger {Id}", sb2.ToString(),
+            LoggerType.Error);
     }
 
     private bool TriggerReceiverActivated()

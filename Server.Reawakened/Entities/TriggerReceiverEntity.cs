@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
-using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using System;
 using System.Text;
 
 namespace Server.Reawakened.Entities;
@@ -54,31 +55,63 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
                 break;
         }
 
-        var sb = new StringBuilder();
-
-        sb.AppendLine($"Entity: {Id}")
-            .AppendLine($"Enabled: {Enabled}")
-            .AppendLine($"Activations: {_activations}/{NbActivationsNeeded}")
-            .AppendLine($"Deactivations: {_deactivations}/{NbDeactivationsNeeded}")
-            .Append($"Trigger: {triggerType}");
-
-        FileLogger.WriteGenericLog<TriggerReceiver>("triggered-receivers", "Receiver Triggered", sb.ToString(), LoggerType.Trace);
-
         if (_activations >= NbActivationsNeeded)
             Trigger(true);
         else if (_deactivations >= NbDeactivationsNeeded)
             Trigger(false);
+
+        LogTriggerReciever(triggerType, triggered);
+    }
+
+    public void LogTriggerReciever(TriggerType triggerType, bool triggered)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"Entity: {Id}")
+            .AppendLine($"Enabled: {Enabled}");
+
+        if (NbActivationsNeeded > 0)
+            sb.AppendLine($"Activations: {_activations}/{NbActivationsNeeded}");
+
+        if (NbDeactivationsNeeded > 0)
+            sb.AppendLine($"Deactivations: {_deactivations}/{NbDeactivationsNeeded}");
+
+        if (DisabledUntilTriggered)
+            sb.AppendLine($"Disable Until Trigger: {DisabledUntilTriggered}");
+
+        if (DelayBeforeTrigger > 0)
+            sb.AppendLine($"Delay Before Trigger: {DelayBeforeTrigger}");
+
+        sb.AppendLine($"Collision Type: {Enum.GetName(CollisionType)}")
+            .AppendLine($"Trigger: {triggerType}");
+
+        FileLogger.WriteGenericLog<TriggerReceiver>(
+            "triggered-receivers",
+            $"[Receiver {(triggered ? "Activation" : "Deactivation")} Trigger]",
+            sb.ToString(),
+            LoggerType.Trace
+        );
     }
 
     public override void InitializeEntity() => Trigger(ActiveByDefault);
 
     public override object[] GetInitData(Player player) => new object[] { Activated ? 1 : 0 };
 
+    public void LogTriggerRecieved()
+    {
+        var sb2 = new StringBuilder();
+
+        sb2.AppendLine($"Triggered: {Activated}");
+
+        FileLogger.WriteGenericLog<TriggerReceiver>("reciever-triggered", $"[Reciever {Id}]", sb2.ToString(),
+            LoggerType.Trace);
+    }
+
     public void Trigger(bool activated)
     {
         Activated = activated;
 
-        Logger.LogTrace("Triggering entity '{Id}' to {Bool}.", Id, Activated);
+        LogTriggerRecieved();
 
         var entities = Room.Entities[Id];
 
