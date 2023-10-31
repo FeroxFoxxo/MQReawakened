@@ -5,7 +5,6 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using System;
 using System.Text;
 
 namespace Server.Reawakened.Entities;

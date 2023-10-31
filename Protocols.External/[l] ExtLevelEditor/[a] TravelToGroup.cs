@@ -26,7 +26,7 @@ public class TravelToGroup : ExternalProtocol
         var leaderName = Player.Group.LeaderCharacterName;
         
         var leader = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == leaderName);
+            .FirstOrDefault(p => p.CharacterName == leaderName);
 
         var levelId = leader.Character.LevelData.LevelId;
 

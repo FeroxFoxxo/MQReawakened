@@ -14,7 +14,7 @@ public class AcceptTrade : ExternalProtocol
     public override void Run(string[] message)
     {
         var tradedPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == message[5]);
+            .FirstOrDefault(p => p.CharacterName == message[5]);
 
         if (tradedPlayer == null)
             return;
@@ -23,12 +23,12 @@ public class AcceptTrade : ExternalProtocol
         tradedPlayer.TempData.TradeModel = new TradeModel(Player);
 
         Player.SendXt("ta",
-            tradedPlayer.Character.Data.CharacterName,
+            tradedPlayer.CharacterName,
             tradedPlayer.Character.Data.GetLightCharacterData()
         );
 
         tradedPlayer.SendXt("ta",
-            Player.Character.Data.CharacterName,
+            Player.CharacterName,
             Player.Character.Data.GetLightCharacterData()
         );
     }

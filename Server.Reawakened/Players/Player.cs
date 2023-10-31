@@ -23,6 +23,7 @@ public class Player(UserInfo userInfo, NetState state, PlayerHandler playerHandl
     public TemporaryDataModel TempData { get; set; } = new TemporaryDataModel();
 
     public int UserId => userInfo.UserId;
+    public string CharacterName => Character.Data.CharacterName;
 
     public GroupModel Group { get; set; }
 

@@ -6,7 +6,6 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
-using System.Linq;
 using System.Text;
 using WorldGraphDefines;
 
@@ -131,7 +130,7 @@ public class State : ExternalProtocol
             uniqueType = "Player";
 
             uniqueIdentifier = newPlayer.Character != null ?
-                $"{newPlayer.Character.Data.CharacterName} ({newPlayer.Character.Data.CharacterId})" :
+                $"{newPlayer.CharacterName} ({newPlayer.Character.Data.CharacterId})" :
                 "Unknown";
         }
 
@@ -168,7 +167,7 @@ public class State : ExternalProtocol
 
         if (Player.Character != null)
                 Logger.LogDebug("SyncEvent '{Type}' run for {Type} [{Id}] by {Player} {AdditionalInfo} with attributes {Attrib}",
-                    syncEvent.Type, uniqueType, uniqueIdentifier, Player.Character.Data.CharacterName, additionalInfo, attributes);
+                    syncEvent.Type, uniqueType, uniqueIdentifier, Player.CharacterName, additionalInfo, attributes);
     }
 
     public void TraceSyncEventError(int entityId, SyncEvent syncEvent, LevelInfo levelInfo, string entityInfo)

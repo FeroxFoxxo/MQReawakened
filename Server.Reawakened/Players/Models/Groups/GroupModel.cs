@@ -11,7 +11,7 @@ public class GroupModel
     {
         GroupMembers = [];
 
-        LeaderCharacterName = player.Character.Data.CharacterName;
+        LeaderCharacterName = player.CharacterName;
 
         GroupMembers.Add(player);
     }
@@ -23,7 +23,7 @@ public class GroupModel
 
         foreach (var player in GroupMembers)
         {
-            sb.Append(player.Character.Data.CharacterName);
+            sb.Append(player.CharacterName);
             sb.Append(player.Room.LevelInfo.LevelId);
             sb.Append(player.Room.LevelInfo.Name);
             sb.Append(player.Room.GetRoomName());

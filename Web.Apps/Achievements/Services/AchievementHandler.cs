@@ -1,7 +1,4 @@
-﻿using Achievement.Categories;
-using Achievement.CharacterTitles;
-using Achievement.StaticData;
-using Achievement.Types;
+﻿using Achievement.Types;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 

@@ -18,7 +18,7 @@ public class InvitePlayer : ExternalProtocol
         var characterName = message[5];
 
         var invitedCharacter = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == characterName);
+            .FirstOrDefault(p => p.CharacterName == characterName);
 
         invitedCharacter?.SendXt("pi", Player.Group.LeaderCharacterName);
     }

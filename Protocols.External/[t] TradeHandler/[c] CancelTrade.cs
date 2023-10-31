@@ -15,7 +15,7 @@ public class CancelTrade : ExternalProtocol
     {
         var tradingPlayer = Player.TempData.TradeModel?.TradingPlayer;
 
-        tradingPlayer?.SendXt("tc", Player.Character.Data.CharacterName);
+        tradingPlayer?.SendXt("tc", Player.CharacterName);
 
         Player.TempData.TradeModel = null;
 

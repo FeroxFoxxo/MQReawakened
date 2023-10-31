@@ -13,8 +13,8 @@ public class InviteToTrade : ExternalProtocol
     public override void Run(string[] message)
     {
         var invitedPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == message[5]);
+            .FirstOrDefault(p => p.CharacterName == message[5]);
 
-        invitedPlayer?.SendXt("ti", Player.Character.Data.CharacterName);
+        invitedPlayer?.SendXt("ti", Player.CharacterName);
     }
 }

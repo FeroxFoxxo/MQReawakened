@@ -34,6 +34,6 @@ public class TradeDeal : ExternalProtocol
         Player.SendCashUpdate();
         Player.SendUpdatedInventory(false);
 
-        Player.SendXt("tf", tradingPlayer.Character.Data.CharacterName);
+        Player.SendXt("tf", tradingPlayer.CharacterName);
     }
 }

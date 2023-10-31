@@ -25,7 +25,7 @@ public class TravelToFriend : ExternalProtocol
         var playerName = message[5];    
 
         var otherPlayer = PlayerHandler.PlayerList
-            .Find(p => p.Character.Data.CharacterName == playerName);
+            .Find(p => p.CharacterName == playerName);
 
         var levelId = otherPlayer.Character.LevelData.LevelId;
         var spawnId = otherPlayer.Character.LevelData.SpawnPointId;

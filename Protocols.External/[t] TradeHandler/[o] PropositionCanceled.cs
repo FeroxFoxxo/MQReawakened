@@ -13,8 +13,8 @@ public class PropositionCanceled : ExternalProtocol
     public override void Run(string[] message)
     {
         var tradedPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == message[5]);
+            .FirstOrDefault(p => p.CharacterName == message[5]);
 
-        tradedPlayer?.SendXt("to", Player.Character.Data.CharacterName);
+        tradedPlayer?.SendXt("to", Player.CharacterName);
     }
 }

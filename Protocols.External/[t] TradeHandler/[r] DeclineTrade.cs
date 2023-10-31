@@ -17,14 +17,14 @@ public class DeclineTrade : ExternalProtocol
     public override void Run(string[] message)
     {
         var tradedPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == message[5]);
+            .FirstOrDefault(p => p.CharacterName == message[5]);
 
         var status = (DeclineType) int.Parse(message[6]);
 
         if (status == DeclineType.InviteeRejection)
-            tradedPlayer?.SendXt("tc", Player.Character.Data.CharacterName);
+            tradedPlayer?.SendXt("tc", Player.CharacterName);
         else if (status is DeclineType.PlayerDnD or DeclineType.PlayerBusy)
-            tradedPlayer?.SendXt("tr", Player.Character.Data.CharacterName, status);
+            tradedPlayer?.SendXt("tr", Player.CharacterName, status);
         else
             Logger.LogError("Unknown decline type: {DeclineType}", status);
     }

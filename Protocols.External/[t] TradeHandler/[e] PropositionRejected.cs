@@ -15,6 +15,6 @@ public class PropositionRejected : ExternalProtocol
     {
         var tradingPlayer = Player.TempData.TradeModel?.TradingPlayer;
 
-        tradingPlayer?.SendXt("te", Player.Character.Data.CharacterName);
+        tradingPlayer?.SendXt("te", Player.CharacterName);
     }
 }

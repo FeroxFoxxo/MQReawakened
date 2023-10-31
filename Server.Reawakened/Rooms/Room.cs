@@ -104,7 +104,7 @@ public class Room : Timer
         {
             groupMember.SendXt(
                 "pm",
-                player.Character.Data.CharacterName,
+                player.CharacterName,
                 LevelInfo.Name,
                 GetRoomName()
             );

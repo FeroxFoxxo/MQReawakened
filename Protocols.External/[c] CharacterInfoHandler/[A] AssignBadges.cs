@@ -1,17 +1,8 @@
 ﻿using A2m.Server;
-using Newtonsoft.Json.Linq;
-using Server.Base;
-using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Character;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 
 namespace Protocols.External._c__CharacterInfoHandler
 {

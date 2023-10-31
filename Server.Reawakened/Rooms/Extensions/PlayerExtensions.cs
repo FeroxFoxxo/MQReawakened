@@ -42,7 +42,7 @@ public static class PlayerExtensions
                              .Any(x => x.Key == p.UserId && x.Value == p.Character.Data.CharacterId)
                      )
                 )
-            friend.SendXt("fy", player.Character.Data.CharacterName);
+            friend.SendXt("fy", player.CharacterName);
     }
 
     public static void SentEntityTriggered(this Room room, int id, Player player, bool success, bool active)

@@ -12,14 +12,14 @@ public class JoinGroup : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var joinerName = Player.Character.Data.CharacterName;
+        var joinerName = Player.CharacterName;
 
         var leaderName = message[5];
         var accepted = message[6] == "1";
         var status = int.Parse(message[7]);
 
         var leaderPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == leaderName);
+            .FirstOrDefault(p => p.CharacterName == leaderName);
 
         if (leaderPlayer == null)
             return;

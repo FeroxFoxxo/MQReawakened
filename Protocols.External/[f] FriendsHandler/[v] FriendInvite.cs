@@ -15,10 +15,10 @@ public class FriendInvite : ExternalProtocol
         var characterName = message[5];
 
         var invitedCharacter = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == characterName);
+            .FirstOrDefault(p => p.CharacterName == characterName);
 
         invitedCharacter?.SendXt("fv",
-            Player.Character.Data.CharacterName,
+            Player.CharacterName,
             Player.Room.LevelInfo.InGameName
         );
     }

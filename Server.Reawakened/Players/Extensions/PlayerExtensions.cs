@@ -21,17 +21,17 @@ public static class PlayerExtensions
 
         if (player.Group.GroupMembers.Count > 0)
         {
-            if (player.Group.LeaderCharacterName == player.Character.Data.CharacterName)
+            if (player.Group.LeaderCharacterName == player.CharacterName)
             {
                 var newLeader = player.Group.GroupMembers.First();
-                player.Group.LeaderCharacterName = newLeader.Character.Data.CharacterName;
+                player.Group.LeaderCharacterName = newLeader.CharacterName;
 
                 foreach (var member in player.Group.GroupMembers)
                     member.SendXt("pp", player.Group.LeaderCharacterName);
             }
 
             foreach (var member in player.Group.GroupMembers)
-                member.SendXt("pl", player.Character.Data.CharacterName);
+                member.SendXt("pl", player.CharacterName);
         }
 
         player.Group = null;
@@ -161,7 +161,7 @@ public static class PlayerExtensions
     public static void SetCharacterSelected(this Player player, int characterId)
     {
         player.Character = player.UserInfo.Characters[characterId];
-        player.UserInfo.LastCharacterSelected = player.Character.Data.CharacterName;
+        player.UserInfo.LastCharacterSelected = player.CharacterName;
     }
 
     public static void AddCharacter(this Player player, CharacterModel character) =>
@@ -181,7 +181,7 @@ public static class PlayerExtensions
         player.Character.SetLevelXp(level);
         player.SendLevelUp();
 
-        logger.LogTrace("{Name} leveled up to {Level}", player.Character.Data.CharacterName, level);
+        logger.LogTrace("{Name} leveled up to {Level}", player.CharacterName, level);
     }
 
     public static void DiscoverTribe(this Player player, TribeType tribe)
