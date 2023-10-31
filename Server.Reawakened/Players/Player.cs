@@ -20,6 +20,8 @@ public class Player(UserInfo userInfo, NetState state, PlayerHandler playerHandl
     public UserInfo UserInfo => userInfo;
     public PlayerHandler PlayerHandler => playerHandler;
 
+    public TemporaryDataModel TempData { get; set; } = new TemporaryDataModel();
+
     public int UserId => userInfo.UserId;
 
     public GroupModel Group { get; set; }
@@ -52,6 +54,13 @@ public class Player(UserInfo userInfo, NetState state, PlayerHandler playerHandl
         {
             foreach (var player in playerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
                 player.SendXt("fz", Character.Data.CharacterName);
+
+            if (TempData.TradeModel != null)
+            {
+                var tradingPlayer = TempData.TradeModel.TradingPlayer;
+                tradingPlayer.TempData.TradeModel = null;
+                tradingPlayer.SendXt("tc", Character.Data.CharacterName);
+            }
 
             Character = null;
         }

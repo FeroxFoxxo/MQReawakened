@@ -1,8 +1,10 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Temporary;
 
 namespace Protocols.External._t__TradeHandler;
+
 public class AcceptTrade : ExternalProtocol
 {
     public override string ProtocolName => "ta";
@@ -11,25 +13,24 @@ public class AcceptTrade : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var otherPlayer = message[5];
+        var tradedPlayer = PlayerHandler.PlayerList
+            .FirstOrDefault(p => p.Character.Data.CharacterName == message[5]);
 
-        var invitedPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == otherPlayer);
+        if (tradedPlayer == null)
+            return;
 
-        Player.Character.ItemsInTrade = [];
-        invitedPlayer.Character.ItemsInTrade = [];
+        Player.TempData.TradeModel = new TradeModel(tradedPlayer);
+        tradedPlayer.TempData.TradeModel = new TradeModel(Player);
 
-        Player.Character.Data.AcceptedTrade = true;
-        invitedPlayer.Character.Data.AcceptedTrade = true;
+        Player.SendXt("ta",
+            tradedPlayer.Character.Data.CharacterName,
+            tradedPlayer.Character.Data.GetLightCharacterData()
+        );
 
-        Player.Character.Data.TradeDeal = false;
-        invitedPlayer.Character.Data.TradeDeal = false;
-
-        var otherCharData = invitedPlayer.Character.Data.GetLightCharacterData();
-        var originCharData = Player.Character.Data.GetLightCharacterData();
-
-        Player?.SendXt("ta", invitedPlayer.Character.Data.CharacterName, otherCharData);
-        invitedPlayer?.SendXt("ta", Player.Character.Data.CharacterName, originCharData);
+        tradedPlayer.SendXt("ta",
+            Player.Character.Data.CharacterName,
+            Player.Character.Data.GetLightCharacterData()
+        );
     }
 }
 

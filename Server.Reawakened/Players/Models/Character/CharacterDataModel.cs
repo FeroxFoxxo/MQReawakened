@@ -47,11 +47,6 @@ public class CharacterDataModel : CharacterLightModel
     public bool SpawnOnBackPlane { get; set; }
     public int BadgePoints { get; set; }
     public int AbilityPower { get; set; }
-    public int TraderId;
-    public bool AcceptedTrade;
-    public bool StoppedTrade;
-    public bool TradeDeal;
-    public int BananasInTrade;
 
     private int ChatLevel => _player?.UserInfo.ChatLevel ?? 0;
 

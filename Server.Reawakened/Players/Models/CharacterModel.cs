@@ -8,7 +8,6 @@ public class CharacterModel
     public CharacterDataModel Data { get; set; }
     public LevelData LevelData { get; set; }
     public Dictionary<int, List<int>> CollectedIdols { get; set; }
-    public Dictionary<int, int> ItemsInTrade { get; set; } 
     public List<EmailHeaderModel> Emails { get; set; }
 
     public CharacterModel()

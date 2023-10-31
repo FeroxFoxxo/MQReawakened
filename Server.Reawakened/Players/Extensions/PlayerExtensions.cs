@@ -55,6 +55,27 @@ public static class PlayerExtensions
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
     }
 
+    public static void TradeWithPlayer(this Player origin, ItemCatalog catalog)
+    {
+        var tradeModel = origin.TempData.TradeModel;
+
+        if (tradeModel == null)
+            return;
+
+        var tradingPlayer = tradeModel.TradingPlayer;
+
+        foreach (var item in tradeModel.ItemsInTrade)
+        {
+            var itemDesc = catalog.GetItemFromId(item.Key);
+
+            tradeModel.TradingPlayer.Character.AddItem(itemDesc, item.Value);
+            origin.Character.RemoveItem(itemDesc, item.Value);
+        }
+
+        tradingPlayer.Character.Data.Cash += tradeModel.BananasInTrade;
+        origin.Character.Data.Cash -= tradeModel.BananasInTrade;
+    }
+
     public static void AddBananas(this Player player, int collectedBananas)
     {
         var charData = player.Character.Data;

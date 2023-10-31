@@ -3,6 +3,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
 
 namespace Protocols.External._t__TradeHandler;
+
 public class PropositionCanceled : ExternalProtocol
 {
     public override string ProtocolName => "to";
@@ -11,25 +12,9 @@ public class PropositionCanceled : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var traderId = Player.Character.Data.TraderId;
+        var tradedPlayer = PlayerHandler.PlayerList
+            .FirstOrDefault(p => p.Character.Data.CharacterName == message[5]);
 
-        var originPlayer = PlayerHandler.PlayerList.Find(p => p.Character.Data.TraderId == 1);
-        var otherPlayer = PlayerHandler.PlayerList.Find(p => p.Character.Data.TraderId == 2);
-
-
-        originPlayer.Character.Data.TradeDeal = false;
-        otherPlayer.Character.Data.TradeDeal = false;
-
-        if (traderId == 1)
-        {
-            originPlayer.Character.ItemsInTrade.Clear();
-            otherPlayer.SendXt("to", originPlayer.Character.Data.CharacterName);
-        }
-
-        if (traderId == 2)
-        {
-            otherPlayer.Character.ItemsInTrade.Clear();
-            originPlayer.SendXt("to", otherPlayer.Character.Data.CharacterName);
-        }
+        tradedPlayer?.SendXt("to", Player.Character.Data.CharacterName);
     }
 }

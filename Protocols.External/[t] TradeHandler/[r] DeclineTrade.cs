@@ -1,44 +1,32 @@
-﻿using Server.Reawakened.Network.Extensions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Players.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static LeaderBoardTopScoresJson;
+using Server.Reawakened.Players.Models.Trade;
 
 namespace Protocols.External._t__TradeHandler;
+
 public class DeclineTrade : ExternalProtocol
 {
     public override string ProtocolName => "tr";
+
+    public ILogger<DeclineType> Logger { get; set; }
 
     public PlayerHandler PlayerHandler { get; set; }
 
     public override void Run(string[] message)
     {
-        var traderId = Player.Character.Data.TraderId;
+        var tradedPlayer = PlayerHandler.PlayerList
+            .FirstOrDefault(p => p.Character.Data.CharacterName == message[5]);
 
-        var originPlayer = PlayerHandler.PlayerList.Find(p => p.Character.Data.TraderId == 1);
-        var otherPlayer = PlayerHandler.PlayerList.Find(p => p.Character.Data.TraderId == 2);
+        var status = (DeclineType) int.Parse(message[6]);
 
-        var status = int.Parse(message[6]);
-
-        if (!originPlayer.Character.Data.AcceptedTrade && !otherPlayer.Character.Data.AcceptedTrade)
-        {
-            if (traderId == 1 && !otherPlayer.Character.Data.StoppedTrade)
-            {
-                originPlayer.Character.Data.StoppedTrade = true;
-                otherPlayer.SendXt("tc", originPlayer.Character.Data.CharacterName);
-            }
-
-            if (traderId == 2 && !originPlayer.Character.Data.StoppedTrade)
-            {
-                otherPlayer.Character.Data.StoppedTrade = true;
-                originPlayer.SendXt("tr", otherPlayer.Character.Data.CharacterName, status);
-            }
-        }
+        if (status == DeclineType.InviteeRejection)
+            tradedPlayer?.SendXt("tc", Player.Character.Data.CharacterName);
+        else if (status is DeclineType.PlayerDnD or DeclineType.PlayerBusy)
+            tradedPlayer?.SendXt("tr", Player.Character.Data.CharacterName, status);
+        else
+            Logger.LogError("Unknown decline type: {DeclineType}", status);
     }
 }
 
