@@ -74,25 +74,25 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
 
-                    newPlayer.Position = new Vector3Model
+                    newPlayer.TempData.Position = new Vector3Model
                     {
                         X = physicsBasicEvent.PositionX,
                         Y = physicsBasicEvent.PositionY,
                         Z = physicsBasicEvent.PositionZ
                     };
 
-                    newPlayer.Velocity = new Vector3Model
+                    newPlayer.TempData.Velocity = new Vector3Model
                     {
                         X = physicsBasicEvent.VelocityX,
                         Y = physicsBasicEvent.VelocityY,
                         Z = physicsBasicEvent.VelocityZ
                     };
 
-                    newPlayer.OnGround = physicsBasicEvent.OnGround;
+                    newPlayer.TempData.OnGround = physicsBasicEvent.OnGround;
                     break;
                 case SyncEvent.EventType.Direction:
                     var directionEvent = new Direction_SyncEvent(syncEvent);
-                    newPlayer.Direction = directionEvent.Direction;
+                    newPlayer.TempData.Direction = directionEvent.Direction;
                     break;
             }
 

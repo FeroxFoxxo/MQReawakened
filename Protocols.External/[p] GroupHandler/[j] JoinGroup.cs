@@ -25,11 +25,11 @@ public class JoinGroup : ExternalProtocol
 
         if (accepted)
         {
-            leaderPlayer.Group.AddPlayer(Player);
-            Player.Group = leaderPlayer.Group;
+            leaderPlayer.TempData.Group.AddPlayer(Player);
+            Player.TempData.Group = leaderPlayer.TempData.Group;
 
-            foreach (var member in Player.Group.GetMembers())
-                member.SendXt("pj", Player.Group, joinerName);
+            foreach (var member in Player.TempData.Group.GetMembers())
+                member.SendXt("pj", Player.TempData.Group, joinerName);
         }
         else
         {

@@ -26,6 +26,16 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
     public ILogger<TriggerReceiverEntity> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
 
+    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
+    {
+        if (syncEvent.Type != SyncEvent.EventType.TriggerReceiver)
+            return;
+
+        var tEvent = new TriggerReceiver_SyncEvent(syncEvent);
+
+        Trigger(tEvent.Activate);
+    }
+
     public void TriggerStateChange(TriggerType triggerType, Room room, bool triggered)
     {
         Enabled = triggerType switch

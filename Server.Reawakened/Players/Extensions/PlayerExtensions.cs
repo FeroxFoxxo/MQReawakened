@@ -14,12 +14,12 @@ public static class PlayerExtensions
 {
     public static void RemoveFromGroup(this Player player)
     {
-        var group = player.Group;
+        var group = player.TempData.Group;
 
         if (group == null)
             return;
 
-        player.Group = null;
+        player.TempData.Group = null;
 
         foreach (var member in group.GetMembers())
             member.SendXt("pl", player.CharacterName);

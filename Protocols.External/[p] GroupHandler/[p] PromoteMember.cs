@@ -14,9 +14,9 @@ public class PromoteMember : ExternalProtocol
     {
         var newLeader = message[5];
 
-        Player.Group.SetLeaderName(newLeader);
+        Player.TempData.Group.SetLeaderName(newLeader);
 
-        foreach (var player in Player.Group.GetMembers())
+        foreach (var player in Player.TempData.Group.GetMembers())
             player.SendXt("pp", newLeader);
     }
 }

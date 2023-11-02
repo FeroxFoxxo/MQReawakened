@@ -11,7 +11,7 @@ public class PlaneModel(string planeName)
 
     public void LoadColliderXml(XmlNode colliderNode)
     {
-        var id = int.Parse(colliderNode.Attributes!.GetNamedItem("id")!.Value!);
+        var id = colliderNode.Attributes!.GetIntValue("id");
 
         var colliderList = (from XmlNode collider in colliderNode.ChildNodes
             where collider.Name == "vertex"
@@ -19,8 +19,8 @@ public class PlaneModel(string planeName)
             into vertex
             select new Vector2
             {
-                x = Convert.ToSingle(vertex.GetNamedItem("x")!.Value),
-                y = Convert.ToSingle(vertex.GetNamedItem("y")!.Value)
+                x = vertex.GetSingleValue("x"),
+                y = vertex.GetSingleValue("y")
             }).ToArray();
 
         if (!GameObjects.TryGetValue(id, out var value))
@@ -32,27 +32,30 @@ public class PlaneModel(string planeName)
     {
         var attributes = gameObjectNode.Attributes!;
 
+        if (attributes == null)
+            return;
+
         var objectInfo = new ObjectInfoModel
         {
-            PrefabName = attributes.GetNamedItem("name")!.Value,
-            ObjectId = Convert.ToInt32(attributes.GetNamedItem("id")!.Value),
+            PrefabName = attributes.GetValue("name"),
+            ObjectId = attributes.GetIntValue("id"),
             Position = new Vector3Model
             {
-                X = Convert.ToSingle(attributes.GetNamedItem("x")!.Value),
-                Y = Convert.ToSingle(attributes.GetNamedItem("y")!.Value),
-                Z = Convert.ToSingle(attributes.GetNamedItem("z")!.Value)
+                X = attributes.GetSingleValue("x"),
+                Y = attributes.GetSingleValue("y"),
+                Z = attributes.GetSingleValue("z")
             },
             Rotation = new Vector3Model
             {
-                X = Convert.ToSingle(attributes.GetNamedItem("rx")!.Value),
-                Y = Convert.ToSingle(attributes.GetNamedItem("ry")!.Value),
-                Z = Convert.ToSingle(attributes.GetNamedItem("rz")!.Value)
+                X = attributes.GetSingleValue("rx"),
+                Y = attributes.GetSingleValue("ry"),
+                Z = attributes.GetSingleValue("rz")
             },
             Scale = new Vector3Model
             {
-                X = Convert.ToSingle(attributes.GetNamedItem("sx")!.Value),
-                Y = Convert.ToSingle(attributes.GetNamedItem("sy")!.Value),
-                Z = Convert.ToSingle(attributes.GetNamedItem("sz")!.Value)
+                X = attributes.GetSingleValue("sx"),
+                Y = attributes.GetSingleValue("sy"),
+                Z = attributes.GetSingleValue("sz")
             },
             ParentPlane = PlaneName
         };
@@ -62,13 +65,13 @@ public class PlaneModel(string planeName)
             if (componentNode.Name != "component")
                 continue;
 
-            var componentName = componentNode.Attributes!.GetNamedItem("name")!.Value!;
+            var componentName = componentNode.Attributes!.GetValue("name");
 
             var component = new ComponentModel();
 
             foreach (XmlNode componentAttribute in componentNode.ChildNodes)
             {
-                var componentAttributeName = componentAttribute.Attributes!.GetNamedItem("name")!.Value!;
+                var componentAttributeName = componentAttribute.Attributes!.GetValue("name");
                 component.ComponentAttributes.Add(componentAttributeName, componentAttribute.InnerText);
             }
 

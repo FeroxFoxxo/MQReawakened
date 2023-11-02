@@ -9,6 +9,7 @@ using System.Linq;
 using Web.Apps;
 using Web.AssetBundles;
 using Web.Launcher;
+using Web.Razor;
 
 namespace Init;
 
@@ -26,10 +27,11 @@ public static class ImportModules
             typeof(Launcher),
             typeof(Apps),
             typeof(AssetBundles),
-            typeof(Web.Razor.Razor)
+            typeof(Razor)
         };
 
         var services = new ServiceCollection();
+
         services.AddLogging(l =>
         {
             l.AddProvider(new LoggerProvider());

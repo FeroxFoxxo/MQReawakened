@@ -42,7 +42,7 @@ public static class LoadRoomData
                 if (planeNode.Name != "Plane")
                     continue;
 
-                var planeName = planeNode.Attributes!.GetNamedItem("name")!.Value!;
+                var planeName = planeNode.Attributes!.GetValue("name");
                 var plane = planes[planeName];
 
                 foreach (XmlNode gameObject in planeNode.ChildNodes)

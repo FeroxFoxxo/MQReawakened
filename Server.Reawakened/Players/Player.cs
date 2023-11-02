@@ -8,10 +8,8 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Players;
 
@@ -23,24 +21,14 @@ public class Player(Account account, UserInfo userInfo, NetState state, PlayerHa
     public PlayerHandler PlayerHandler => playerHandler;
 
     public TemporaryDataModel TempData { get; set; } = new TemporaryDataModel();
+    public CharacterModel Character { get; set; }
+    public Room Room { get; set; }
 
     public int UserId => userInfo.UserId;
     public string CharacterName => Character.Data.CharacterName;
+    public int GameObjectId => TempData.GameObjectId;
 
-    public GroupModel Group { get; set; }
-
-    public CharacterModel Character { get; set; }
     public bool FirstLogin { get; set; } = true;
-
-    public Room Room { get; set; }
-    public int GameObjectId { get; set; }
-
-    public bool OnGround { get; set; }
-    public int Direction { get; set; }
-    public Vector3Model Position { get; set; } = new Vector3Model();
-    public Vector3Model Velocity { get; set; } = new Vector3Model();
-    public bool Invincible { get; set; } = false;
-
     public long CurrentPing { get; set; } = GetTime.GetCurrentUnixMilliseconds();
 
     public void RemovedState(NetState state, NetStateHandler handler,

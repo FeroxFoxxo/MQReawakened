@@ -41,7 +41,7 @@ public abstract class BaseSyncedEntity
 
     public virtual void RunSyncedEvent(SyncEvent syncEvent, Player player) =>
         SendEntityMethodUnknown("unrun-synced-events", "Failed Sync Event", "RunSyncedEvent",
-            $"Sync Data: {syncEvent.EncodeData()}");
+            $"Sync Data: {syncEvent.EncodeData()}\nType:{syncEvent.Type.ToString()}");
 
     public void SendEntityMethodUnknown(string file, string title, string method, string data = "")
     {

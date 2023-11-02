@@ -21,7 +21,7 @@ public class AssignBadges : ExternalProtocol
             tribeData.Add(new TribeDataModel(tribe));
         }
 
-        var autoAssign = Player.Character.Data.TribesProgression.Count <= 0;
+        var autoAssign = Player.Character.Data.TribesProgression.Count % 5 == 0;
 
         Player.Character.Data.TribesProgression = tribeData.ToDictionary(x => x.TribeType, x => x);
 

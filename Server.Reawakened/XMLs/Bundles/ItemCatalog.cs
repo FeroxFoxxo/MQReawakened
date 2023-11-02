@@ -87,6 +87,12 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                         continue;
                     }
 
+                    if (_itemNameDict.ContainsKey(item.Value))
+                    {
+                        Logger.LogError("Item already exists: {Name}", item.Value);
+                        continue;
+                    }
+
                     _itemNameDict.Add(item.Value, AddDictIfNotExists(xml, itemCatalogNode, item.Key, item.Value, localization));
                 }
             }

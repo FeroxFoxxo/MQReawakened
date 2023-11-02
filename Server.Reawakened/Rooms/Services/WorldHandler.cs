@@ -73,9 +73,9 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         {
             if (level.LevelInfo.IsATrailLevel())
             {
-                if (player.Group != null)
+                if (player.TempData.Group != null)
                 {
-                    var playerMembers = player.Group.GetMembers();
+                    var playerMembers = player.TempData.Group.GetMembers();
 
                     var trailRoom = level.Rooms.Values.FirstOrDefault(r =>
                         r.Players.Any(c => playerMembers.Contains(c.Value))

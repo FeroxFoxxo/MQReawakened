@@ -96,10 +96,10 @@ public class Room : Timer
 
     public void GroupMemberRoomChanged(Player player)
     {
-        if (player.Group == null)
+        if (player.TempData.Group == null)
             return;
 
-        foreach (var groupMember in player.Group.GetMembers())
+        foreach (var groupMember in player.TempData.Group.GetMembers())
         {
             groupMember.SendXt(
                 "pm",
@@ -126,7 +126,7 @@ public class Room : Timer
 
             _gameObjectIds.Add(gameObjectId);
 
-            currentPlayer.GameObjectId = gameObjectId;
+            currentPlayer.TempData.GameObjectId = gameObjectId;
 
             Players.Add(gameObjectId, currentPlayer);
 

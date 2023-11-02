@@ -23,7 +23,7 @@ public class TravelToGroup : ExternalProtocol
     {
         var character = Player.Character;
 
-        var leaderName = Player.Group.GetLeaderName();
+        var leaderName = Player.TempData.Group.GetLeaderName();
         var leader = PlayerHandler.GetPlayerByName(leaderName);
 
         var levelId = leader.Character.LevelData.LevelId;

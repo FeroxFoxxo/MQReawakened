@@ -13,11 +13,11 @@ public class InvitePlayer : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        Player.Group ??= new GroupModel(Player);
+        Player.TempData.Group ??= new GroupModel(Player);
 
         var characterName = message[5];
         var invitedCharacter = PlayerHandler.GetPlayerByName(characterName);
 
-        invitedCharacter?.SendXt("pi", Player.Group.GetLeaderName());
+        invitedCharacter?.SendXt("pi", Player.TempData.Group.GetLeaderName());
     }
 }
