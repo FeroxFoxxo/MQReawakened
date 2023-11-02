@@ -48,7 +48,7 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
         AddCommand(new ChatCommand("unlockHotbar", "[petSlot 1 (true) / 0 (false)]", AddHotbar));
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
-        AddCommand(new ChatCommand("badgePoints", "[amount]", BadgePoints));
+        AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
@@ -176,31 +176,7 @@ public class ChatCommands : IService
     
     private static bool BadgePoints(Player player, string[] args)
     {
-        var character = player.Character;
-
-        int amount;
-
-        if (args.Length < 2)
-        {
-            Log($"Please enter number of badge points", player);
-            return false;
-        }
-        if (!int.TryParse(args[1], out var pointsAmount) || args.Length < 2)
-            Log($"Invalid amount of badge points, defaulting to 1", player);
-
-        amount = pointsAmount;
-
-        if (amount <= 0)
-            amount = 1;
-
-        player.AddPoints(amount);
-
-        Log(
-            amount > 1
-                ? $"{character.Data.CharacterName} received {amount} badge points!"
-                : $"{character.Data.CharacterName} received {amount} badge point! (get grinding noob)", player
-           );
-
+        player.AddPoints();
         return true;
     }
 

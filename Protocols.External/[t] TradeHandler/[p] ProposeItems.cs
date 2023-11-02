@@ -1,6 +1,5 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Temporary;
 
 namespace Protocols.External._t__TradeHandler;
@@ -8,8 +7,6 @@ namespace Protocols.External._t__TradeHandler;
 public class ProposeItems : ExternalProtocol
 {
     public override string ProtocolName => "tp";
-
-    public PlayerHandler PlayerHandler { get; set; }
 
     public override void Run(string[] message)
     {
@@ -23,7 +20,6 @@ public class ProposeItems : ExternalProtocol
 
         tradeModel.ItemsInTrade = TradeModel.ReverseProposeItems(itemsProposed);
         tradeModel.BananasInTrade = bananas;
-        tradeModel.FinalisedTrade = true;
 
         tradeModel.TradingPlayer?.SendXt("tp", itemsProposed, bananas);
     }

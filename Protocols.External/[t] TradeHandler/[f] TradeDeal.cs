@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Network.Extensions;
+﻿using Server.Base.Core.Extensions;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -11,33 +12,39 @@ public class TradeDeal : ExternalProtocol
 {
     public override string ProtocolName => "tf";
 
-    public PlayerHandler PlayerHandler { get; set; }
-
     public ItemCatalog ItemCatalog { get; set; }
 
     public override void Run(string[] message)
     {
-        var tradeModel = Player.TempData.TradeModel;
-
-        if (tradeModel == null)
+        var originTradeModel = Player.TempData.TradeModel;
+        if (originTradeModel == null)
             return;
 
-        var tradingPlayer = tradeModel.TradingPlayer;
-
+        var tradingPlayer = originTradeModel.TradingPlayer;
         if (tradingPlayer == null)
             return;
 
-        if (!tradeModel.FinalisedTrade)
+        var otherTradeModel = tradingPlayer.TempData.TradeModel;
+        if (otherTradeModel == null)
+            return;
+
+        if (originTradeModel.FinalisedTrade)
         {
-            tradeModel.FinalisedTrade = true;
+            otherTradeModel.FinalisedTrade = true;
             Player.SendXt("tf", tradingPlayer.CharacterName);
         }
 
-        if (tradingPlayer.TempData.TradeModel.FinalisedTrade)
+        else if (!originTradeModel.FinalisedTrade)
+        {
+            originTradeModel.FinalisedTrade = true;
+            tradingPlayer.SendXt("tf", Player.CharacterName);
+        }
+
+        if (originTradeModel.FinalisedTrade && otherTradeModel.FinalisedTrade)
         {
             tradingPlayer.TradeWithPlayer(ItemCatalog);
             Player.TradeWithPlayer(ItemCatalog);
-
+                
             tradingPlayer.SendCashUpdate();
             tradingPlayer.SendUpdatedInventory(false);
 

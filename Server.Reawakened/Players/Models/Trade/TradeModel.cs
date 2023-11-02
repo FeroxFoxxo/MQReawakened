@@ -6,6 +6,8 @@ public class TradeModel(Player tradingPlayer)
 {
     public Player TradingPlayer => tradingPlayer;
 
+    public Player InvitedPlayer { get; set; }
+
     public Dictionary<int, int> ItemsInTrade { get; set; } = [];
     public int BananasInTrade { get; set; } = 0;
     public bool FinalisedTrade { get; set; } = false;

@@ -25,6 +25,8 @@ public class InviteToTrade : ExternalProtocol
         Player.TempData.TradeModel = new TradeModel(invitedPlayer);
         invitedPlayer.TempData.TradeModel = new TradeModel(Player);
 
+        Player.TempData.TradeModel.InvitedPlayer = invitedPlayer;
+
         invitedPlayer?.SendXt("ti", Player.CharacterName);
     }
 }
