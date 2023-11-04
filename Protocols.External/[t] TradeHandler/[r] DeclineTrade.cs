@@ -31,7 +31,7 @@ public class DeclineTrade : ExternalProtocol
         if (tradedPlayer != tradeModel.TradingPlayer)
             return;
 
-        var status = (DeclineType) int.Parse(message[6]);
+        var status = (DeclineType)int.Parse(message[6]);
 
         switch (status)
         {
@@ -39,7 +39,11 @@ public class DeclineTrade : ExternalProtocol
                 if (tradeModel.AcceptedTrade)
                     return;
 
-                tradedPlayer?.SendXt("tc", Player.CharacterName);
+                if (tradeModel.InvitedPlayer == tradedPlayer)
+                    tradedPlayer?.SendXt("tc", Player.CharacterName);
+
+                else
+                    tradedPlayer?.SendXt("tr", Player.CharacterName, (int)status);
                 break;
             case DeclineType.PlayerBusy or DeclineType.PlayerDnD:
                 tradedPlayer?.SendXt("tr", Player.CharacterName, (int)status);

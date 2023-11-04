@@ -97,33 +97,37 @@ public class ServerRConfig : IRConfig
 
         SingleItemKit =
         [
-            394, // glider
-            395, // grappling hook
-            397, // wooden slingshot
-            453, // kernel blaster
+            394,  // glider
+            395,  // grappling hook
+            393,  // snowboard
+            397,  // wooden slingshot
+            423,  // golden slingshot
+            453,  // kernel blaster
+            1009, // snake staff
+            584,  // scrying orb
             2978, // wooden sword
-            2883, // oak helmet
-            2886, // oak armor
-            2880, // oak pants
-            1232, // burglar mask
-            3152, // super monkey
-            3053, // boom bomb
-            3023, // warrior costume
-            3022, // boom bug
-            2972, // ace pilot
-            2973, // crimson dragon
+            2883, // oak plank helmet
+            2886, // oak plank armor
+            2880, // oak plank pants
+            1232, // black cat burglar mask
+            3152, // super monkey pack
+            3053, // boom bomb construction kit
+            3023, // ladybug warrior costume pack
+            3022, // boom bug pack
+            2972, // ace pilot pack
+            2973, // crimson dragon pack
             2923, // banana box
         ];
 
         StackedItemKit =
         [
-            396, // healing staff
-            585, // invisible bomb
+            396,  // healing staff
+            585,  // invisible bomb
             1568, // red apple
-            1704, // healing potion
+            405,  // healing potion
         ];
 
-        AmountToStack = 98;
+        AmountToStack = 99;
         CashKitAmount = 100000;
 
         KickAfterTime = TimeSpan.FromMinutes(5).TotalMilliseconds;

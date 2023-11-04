@@ -4,6 +4,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
@@ -92,12 +93,12 @@ public static class PlayerExtensions
         if (player.TempData.TradeModel == null)
             return;
 
-        var tradee = player.TempData.TradeModel.TradingPlayer;
+        var trade = player.TempData.TradeModel.TradingPlayer;
 
         player.TempData.TradeModel = null;
 
-        if (tradee != null)
-            tradee.TempData.TradeModel = null;
+        if (trade != null)
+            trade.TempData.TradeModel = null;
     }
 
     public static void AddBananas(this Player player, int collectedBananas)
@@ -128,23 +129,20 @@ public static class PlayerExtensions
         player.SendCashUpdate();
     }
 
-    public static void AddPoints(this Player player, int abilityPoints)
+    public static void AddPoints(this Player player)
     {
         var charData = player.Character.Data;
-        charData.BadgePoints += abilityPoints;
-        player.SendPointsUpdate();
+
+        charData.BadgePoints = 0;
+        charData.BadgePoints += 100;
+
+        player.SendLevelUp();
     }
 
     public static void SendCashUpdate(this Player player)
     {
         var charData = player.Character.Data;
         player.SendXt("ca", charData.Cash, charData.NCash);
-    }
-
-    public static void SendPointsUpdate(this Player player)
-    {
-        var charData = player.Character.Data;
-        player.SendXt("ca", charData.BadgePoints);
     }
 
     public static void SendLevelChange(this Player player, WorldHandler worldHandler, WorldGraphXML worldGraph)
