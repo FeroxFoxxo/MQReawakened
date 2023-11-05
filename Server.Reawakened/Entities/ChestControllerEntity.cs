@@ -8,6 +8,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using System.ComponentModel.Design;
+using System.Collections;
 
 namespace Server.Reawakened.Entities;
 
@@ -21,6 +22,8 @@ public class ChestControllerEntity : AbstractBaseChest<ChestController>
 
     public ILogger<ChestControllerEntity> Logger { get; set; }
 
+    public InternalLootCatalog LootCatalog { get; set; }
+
     public override object[] GetInitData(Player player) => new object[] { Collected ? 0 : 1 };
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
@@ -30,32 +33,19 @@ public class ChestControllerEntity : AbstractBaseChest<ChestController>
 
         Collected = true;
 
-        //var bananas = Random.Next(50, 101);
-        //player.AddBananas(bananas);
-
-        //string[] dummyItemsList = ["1009", "1870", "1872", "1874", "1876", "1878", "1830", "404", "1232"];
-
-        var chestRewards = new Dictionary<string, object>
-        {
-            {"chestID", "default"},
-            {"rewardType", "Item"},
-            {"reward", new string[][] {
-                ["1009", "1", "0"], ["1870", "1", "0"], ["1872", "1", "0"],
-                ["1874", "1", "0"], ["1876", "1", "0"], ["1878", "1", "0"],
-                ["1830", "1", "0"], ["404", "1", "0"], ["1232", "1", "0"] } 
-            }
-        };
+        var chestRewards = LootCatalog.GetLootById(Id);
 
         var rewardType = chestRewards["rewardType"];
 
         switch (rewardType)
         {
-            case "Banana":
+            case "Banana": //Banana reward not properly functioning yet
                 {
-                    var bananasReward = (string[])chestRewards["reward"];
-
-                    var minBananas = int.Parse(bananasReward[0]);
-                    var maxBananas = int.Parse(bananasReward[1]);
+                    object[] reward = chestRewards["reward"];
+                    string[] bananasReward = Array.ConvertAll(reward, x => x.ToString());
+                    
+                    var minBananas = Convert.ToInt32(bananasReward[0]);
+                    var maxBananas = Convert.ToInt32(bananasReward[1]);
                     var bananas = Random.Next(minBananas, maxBananas);
 
                     player.AddBananas(bananas);
@@ -65,20 +55,25 @@ public class ChestControllerEntity : AbstractBaseChest<ChestController>
 
             case "Item":
                 {
-                    var items = (string[][])chestRewards["reward"];
+                    object[] reward = chestRewards["reward"];
 
-                    string[][] gottenItems = [items[Random.Next(items.Length)]];
+                    int[][] items = Array.ConvertAll(reward, childArr =>
+                        {
+                            return Array.ConvertAll<int, int> ( (int[])childArr, number => Convert.ToInt32(number));
+                        });
+
+                    var gottenItems = new int[][] { items[Random.Next(items.Length)] };
                     var itemsLooted = "";
                     var lootableItems = "";
 
                     foreach (var item in gottenItems)
                     {
                         var itemId = item[0];
-                        var count = int.Parse(item[1]);
+                        var count = item[1];
                         var bindingCount = item[2];
 
                         itemsLooted += $"{itemId}{{{count}{{{bindingCount}{{{DateTime.Now}|";
-                        player.Character.AddItem(ItemCatalog.GetItemFromId(int.Parse(itemId)), count);
+                        player.Character.AddItem(ItemCatalog.GetItemFromId(itemId), count);
                     }
 
                     foreach (var item in items)
@@ -88,13 +83,15 @@ public class ChestControllerEntity : AbstractBaseChest<ChestController>
 
                     player.SendXt("iW", itemsLooted, lootableItems, Id.ToString(), 0);
                     player.SendUpdatedInventory(false);
+                    
 
                     break;
                 }
         }
 
         var trig = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true)
-        { //need to redo trigger for ChestController
+        { 
+            //need to redo trigger for ChestController
             /*
             EventDataList =
             {
