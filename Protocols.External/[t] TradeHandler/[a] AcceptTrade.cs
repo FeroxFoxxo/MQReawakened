@@ -12,9 +12,9 @@ public class AcceptTrade : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var traderModel = Player.TempData.TradeModel;
+        var originTradeModel = Player.TempData.TradeModel;
 
-        if (traderModel == null)
+        if (originTradeModel == null)
             return;
 
         var traderName = message[5];
@@ -23,16 +23,16 @@ public class AcceptTrade : ExternalProtocol
         if (tradedPlayer == null)
             return;
 
-        if (tradedPlayer != traderModel.TradingPlayer)
+        if (tradedPlayer != originTradeModel.TradingPlayer)
             return;
 
-        var tradeeModel = tradedPlayer.TempData.TradeModel;
+        var otherTradeModel = tradedPlayer.TempData.TradeModel;
 
-        if (tradeeModel == null)
+        if (otherTradeModel == null)
             return;
 
-        tradeeModel.AcceptedTrade = true;
-        traderModel.AcceptedTrade = true;
+        otherTradeModel.AcceptedTrade = true;
+        originTradeModel.AcceptedTrade = true;
 
         Player.SendXt("ta",
             tradedPlayer.CharacterName,

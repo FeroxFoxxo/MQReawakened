@@ -1,15 +1,12 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Helpers;
 
 namespace Protocols.External._t__TradeHandler;
 
 public class PropositionRejected : ExternalProtocol
 {
     public override string ProtocolName => "te";
-
-    public PlayerHandler PlayerHandler { get; set; }
 
     public override void Run(string[] message)
     {
@@ -23,14 +20,13 @@ public class PropositionRejected : ExternalProtocol
         if (tradingPlayer == null)
             return;
 
-        var tradeeTradeModel = tradingPlayer.TempData.TradeModel;
+        var otherTradeModel = tradingPlayer.TempData.TradeModel;
 
-        if (tradeeTradeModel == null)
+        if (otherTradeModel == null)
             return;
 
-        playerTradeModel.ResetTrade();
-        tradeeTradeModel.ResetTrade();
+        otherTradeModel.ResetTrade();
 
-        tradingPlayer.SendXt("te", Player.CharacterName);
+        tradingPlayer?.SendXt("te", Player.CharacterName);
     }
 }
