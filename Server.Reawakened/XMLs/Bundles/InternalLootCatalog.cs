@@ -1,12 +1,5 @@
-﻿using A2m.Server;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Server.Reawakened.XMLs.Abstractions;
+﻿using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Extensions;
-using Server.Reawakened.XMLs.Models;
-using System.Collections;
-using System.Linq;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
@@ -15,7 +8,6 @@ public class InternalLootCatalog : IBundledXml
 {
     public string BundleName => "InternalLootCatalog";
     public BundlePriority Priority => BundlePriority.Low;
-
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
@@ -97,7 +89,7 @@ public class InternalLootCatalog : IBundledXml
                 lootInfoEntry["rewardType"] = rewardType;
                 lootInfoEntry["reward"] = reward.ToArray();
 
-                LootCatalog[int.Parse(objectId)] = lootInfoEntry;
+                LootCatalog.Add(int.Parse(objectId), lootInfoEntry);
             }
         }
     }
@@ -106,6 +98,6 @@ public class InternalLootCatalog : IBundledXml
     {
     }
 
-    public Dictionary<string, dynamic> GetLootById(int objectId) 
-        => LootCatalog.ContainsKey(objectId) ? LootCatalog[objectId] : LootCatalog[0];
+    public Dictionary<string, object> GetLootById(int objectId)
+        => LootCatalog.TryGetValue(objectId, out var lootInfo) ? lootInfo : LootCatalog[0];
 }
