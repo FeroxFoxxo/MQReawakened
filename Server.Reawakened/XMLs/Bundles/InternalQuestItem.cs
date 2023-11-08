@@ -1,5 +1,7 @@
-﻿using Server.Reawakened.XMLs.Abstractions;
+﻿using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Extensions;
 using Server.Reawakened.XMLs.Models;
 using System.Xml;
 
@@ -13,14 +15,14 @@ internal class InternalQuestItem : IBundledXml
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<int, List<ItemModel>> Quests;
+    public Dictionary<int, List<ItemModel>> QuestItems;
 
     public InternalQuestItem()
     {
     }
 
     public void InitializeVariables() =>
-        Quests = [];
+        QuestItems = [];
 
     public void EditDescription(XmlDocument xml)
     {
@@ -51,32 +53,9 @@ internal class InternalQuestItem : IBundledXml
                     }
                 }
 
-                var itemList = new List<ItemModel>();
+                var itemList = quest.GetXmlItems();
 
-                foreach (XmlNode items in quest.ChildNodes)
-                {
-                    if (items.Name != "Item") continue;
-
-                    var itemId = -1;
-                    var count = -1;
-
-                    foreach (XmlAttribute itemtAttributes in items.Attributes)
-                    {
-                        switch (itemtAttributes.Name)
-                        {
-                            case "itemId":
-                                itemId = int.Parse(itemtAttributes.Value);
-                                break;
-                            case "count":
-                                count = int.Parse(itemtAttributes.Value);
-                                break;
-                        }
-                    }
-                    itemList.Add(new ItemModel(itemId, count));
-                }
-
-                if (!Quests.ContainsKey(questId))
-                    Quests.Add(questId, itemList);
+                QuestItems.TryAdd(questId, itemList);
             }
         }
     }

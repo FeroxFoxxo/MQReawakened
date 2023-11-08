@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LootCatalog>
-    <LootInfo objectId="0" rewardType="Banana" rewardMin="10" rewardMax="100"/>
-    <LootInfo objectId="97238" rewardType="Item">
+    <LootInfo objectId="0" bananaMin="10" bananaMax="100"/>
+    <LootInfo objectId="97238">
         <Item itemId="1009" count="1" bindingCount="0"/>
         <Item itemId="1870" count="1" bindingCount="0"/>
         <Item itemId="1872" count="1" bindingCount="0"/>
