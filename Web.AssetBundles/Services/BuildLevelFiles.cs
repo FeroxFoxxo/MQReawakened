@@ -31,13 +31,11 @@ public class BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> lo
         {
             var time = DateTimeOffset.FromUnixTimeSeconds(asset.CacheTime);
 
-            logger.LogTrace("Loading level: {BundleName} ({DateTime})", asset.Name, time.Date.ToShortDateString());
-
             var text = asset.GetXmlData();
 
             if (string.IsNullOrEmpty(text))
             {
-                logger.LogTrace($"XML for {asset.Name} is empty! Skipping...");
+                logger.LogTrace("XML for {assetName} is empty! Skipping...", asset.Name);
                 continue;
             }
 

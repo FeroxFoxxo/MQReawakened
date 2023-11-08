@@ -8,6 +8,7 @@ using Server.Reawakened;
 using System.Linq;
 using Web.Apps;
 using Web.AssetBundles;
+using Web.Icons;
 using Web.Launcher;
 using Web.Razor;
 
@@ -27,7 +28,8 @@ public static class ImportModules
             typeof(Launcher),
             typeof(Apps),
             typeof(AssetBundles),
-            typeof(Razor)
+            typeof(Razor),
+            typeof(Icons)
         };
 
         var services = new ServiceCollection();
