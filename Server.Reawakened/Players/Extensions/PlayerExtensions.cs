@@ -13,6 +13,16 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerExtensions
 {
+    public static void TeleportPlayer(this Player player, int x, int y, int z)
+    {
+        var isBackPlane = z == 1;
+
+        var coordinates = new PhysicTeleport_SyncEvent(player.Character.Data.CharacterId.ToString(),
+            player.Room.Time, player.TempData.Position.X + x, player.TempData.Position.Y + y, isBackPlane);
+
+        player.SendSyncEventToPlayer(coordinates);
+    }
+
     public static void RemoveFromGroup(this Player player)
     {
         var group = player.TempData.Group;
@@ -115,7 +125,7 @@ public static class PlayerExtensions
         player.SendCashUpdate();
     }
 
-     public static void AddNCash(this Player player, int collectedNCash)
+    public static void AddNCash(this Player player, int collectedNCash)
     {
         var charData = player.Character.Data;
         charData.NCash += collectedNCash;

@@ -1,8 +1,11 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities;
 using Server.Reawakened.Entities.Abstractions;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.LootHandlers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -17,6 +20,8 @@ public class UseSlot : ExternalProtocol
     public ILogger<UseSlot> Logger { get; set; }
 
     public ItemCatalog ItemCatalog { get; set; }
+
+    public InternalLootCatalog InternalLootCatalog { get; set; }
 
     public override void Run(string[] message)
     {
@@ -39,6 +44,7 @@ public class UseSlot : ExternalProtocol
         {
             case ItemActionType.Drink:
             case ItemActionType.Eat:
+                Player.Character.RemoveItem(usedItem, 1);
                 HandleConsumable(character, usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
@@ -72,6 +78,9 @@ public class UseSlot : ExternalProtocol
 
     private void HandleMeleeWeapon(Vector3Model position)
     {
+        AiHealth_SyncEvent aiEvent = null;
+        Trigger_SyncEvent triggerEvent = null;
+
         var planes = new[] { "Plane1", "Plane0" };
 
         foreach (var planeName in planes)
@@ -81,13 +90,23 @@ public class UseSlot : ExternalProtocol
                          .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3f)
                     )
             {
+
                 switch (obj.ObjectInfo.PrefabName)
                 {
                     case "PF_GLB_SwitchWall02":
-                        var triggerEvent = new Trigger_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                            Player.Room.Time, true, Player.GameObjectId.ToString(), true);
+                        triggerEvent = new Trigger_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
+                            Player.Room.Time, true, Player.CharacterName, true);
 
                         Player.Room.SendSyncEvent(triggerEvent);
+
+                        //Temporary way to open closed gates associated to the PF_GLB_SwitchWall02 game object.
+                        var genericGate = Player.Room.Planes[planeName].GameObjects.Values
+                            .FirstOrDefault(obj => obj.ObjectInfo.PrefabName == "PF_GLB_DoorGeneric01");
+
+                        var triggerGate = new TriggerReceiver_SyncEvent(genericGate.ObjectInfo.ObjectId.ToString(),
+                            Player.Room.Time, Player.CharacterName, true, 1);
+
+                        Player.Room.SendSyncEvent(triggerGate);
 
                         foreach (var syncedEntity in Player.Room.Entities[obj.ObjectInfo.ObjectId]
                                      .Where(syncedEntity =>
@@ -101,15 +120,47 @@ public class UseSlot : ExternalProtocol
 
                         return;
                     case "PF_CRS_BARREL01":
-                        var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                            Player.Room.Time,
-                            0, 0, 0, 0, "now", false, false);
+                        aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
+                            Player.Room.Time, 0, 100, 0, 0, "now", false, false);
+
+                        Logger.LogInformation("Object name: {args1} Object Id: {args2}",
+                            obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
 
                         Player.Room.SendSyncEvent(aiEvent);
 
+                        Player.GrantLoot(obj.ObjectInfo.ObjectId,
+                            InternalLootCatalog, ItemCatalog, Logger);
+
                         return;
+                    case "PF_Spite_Crawler_Rock":
+                        aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
+                            Player.Room.Time, 0, 100, 0, 0, "now", false, true);
+
+                        Logger.LogInformation("Object name: {args1} Object Id: {args2}",
+                            obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
+
+                        Player.Room.SendSyncEvent(aiEvent);
+                        break;
+                    case "PF_Spite_Bathog_Rock":
+                        aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
+                            Player.Room.Time, 0, 100, 0, 0, "now", false, true);
+
+                        Logger.LogInformation("Object name: {args1} Object Id: {args2}",
+                            obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
+
+                        Player.Room.SendSyncEvent(aiEvent);
+                        break;
+                    case "PF_UniversalSpawnerNewb01":
+                        aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
+                            Player.Room.Time, 0, 100, 0, 0, "now", false, true);
+
+                        Logger.LogInformation("Object name: {args1} Object Id: {args2}",
+                            obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
+
+                        Player.Room.SendSyncEvent(aiEvent);
+                        break;
                     default:
-                        Logger.LogDebug("Hit Object: {name}, ObjectId: {id}",
+                        Logger.LogInformation("Hit Object: {name}, ObjectId: {id}",
                             obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
                         break;
                 }
