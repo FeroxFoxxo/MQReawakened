@@ -3,7 +3,7 @@ using Server.Base.Core.Extensions;
 using Web.AssetBundles.Models;
 using Web.AssetBundles.Services;
 
-namespace Web.AssetBundles.Assets.LocalAssets;
+namespace Web.AssetBundles.Extensions;
 
 public static class AssetDictionaryExtensions
 {

@@ -7,7 +7,6 @@ using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
 using Server.Reawakened.Configs;
 using System.Xml;
-using Web.AssetBundles.Assets.LocalAssets;
 using Web.AssetBundles.Events;
 using Web.AssetBundles.Events.Arguments;
 using Web.AssetBundles.Extensions;
