@@ -31,33 +31,41 @@ public class InternalLootCatalog : IBundledXml
         {
             if (lootCatalog.Name != "LootCatalog") continue;
 
-            foreach (XmlNode lootInfo in lootCatalog.ChildNodes)
+            foreach (XmlNode lootLevel in lootCatalog.ChildNodes)
             {
-                if (lootInfo.Name != "LootInfo") continue;
+                if (lootLevel.Name != "Level") continue;
 
-                var objectId = -1;
-                var bananaMin = -1;
-                var bananaMax = -1;
-
-                foreach (XmlAttribute lootAttributes in lootInfo.Attributes)
+                foreach (XmlNode lootInfo in lootLevel.ChildNodes)
                 {
-                    switch (lootAttributes.Name)
+                    if (lootInfo.Name != "LootInfo") continue;
+    
+                    var objectId = -1;
+                    var bananaMin = -1;
+                    var bananaMax = -1;
+  
+                    foreach (XmlAttribute lootAttributes in lootInfo.Attributes)
                     {
-                        case "objectId":
-                            objectId = int.Parse(lootAttributes.Value);
-                            continue;
-                        case "bananaMin":
-                            bananaMin = int.Parse(lootAttributes.Value);
-                            continue;
-                        case "bananaMax":
-                            bananaMax = int.Parse(lootAttributes.Value);
-                            continue;
+                        switch (lootAttributes.Name)
+                        {
+                            case "objectId":
+                                objectId = lootAttributes.Value;
+                                continue;
+                            case "rewardType":
+                                rewardType = lootAttributes.Value;
+                                continue;
+                            case "rewardMin":
+                                reward.Add(lootAttributes.Value);
+                                continue;
+                            case "rewardMax":
+                                reward.Add(lootAttributes.Value);
+                                continue;
+                        }
                     }
+                    
+                    var itemList = lootInfo.GetXmlItems();
+    
+                    LootCatalog.TryAdd(objectId, new LootModel(objectId, bananaMin, bananaMax, itemList));
                 }
-
-                var itemList = lootInfo.GetXmlItems();
-
-                LootCatalog.TryAdd(objectId, new LootModel(objectId, bananaMin, bananaMax, itemList));
             }
         }
     }

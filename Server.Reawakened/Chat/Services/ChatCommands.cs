@@ -55,6 +55,7 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
         AddCommand(new ChatCommand("save", "", SaveLevel));
+        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
@@ -97,6 +98,32 @@ public class ChatCommands : IService
     }
 
     public void AddCommand(ChatCommand command) => _commands.Add(command.Name, command);
+
+    private bool Teleport(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        if (character == null) return false;
+
+        if (!int.TryParse(args[1], out var xPos)
+            || !int.TryParse(args[2], out var yPos)
+            || !int.TryParse(args[3], out var zPos))
+        {
+            Log("Please enter a valid coordinate value.", player);
+            return false;
+        }
+
+        var z = zPos;
+        if (zPos is < 0 or > 1)
+        {
+            Log("Invalid value for Z, defaulting to 0", player);
+            z = 0;
+        }
+
+        player.TeleportPlayer(xPos, yPos, z);
+
+        return true;
+    }
 
     private bool DiscoverTribes(Player player, string[] args)
     {
@@ -173,7 +200,7 @@ public class ChatCommands : IService
 
         return true;
     }
-    
+
     private static bool BadgePoints(Player player, string[] args)
     {
         player.AddPoints();
