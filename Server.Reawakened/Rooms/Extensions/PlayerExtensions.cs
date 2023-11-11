@@ -32,6 +32,8 @@ public static class PlayerExtensions
     public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
     {
         character.Data.SetPlayerData(player);
+        character.Data.CurrentLife = character.Data.MaxLife;
+
         player.SetCharacterSelected(character.Data.CharacterId);
         player.PlayerHandler.AddPlayer(player);
         player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
