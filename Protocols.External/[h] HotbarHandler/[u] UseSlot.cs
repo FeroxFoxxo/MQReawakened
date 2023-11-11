@@ -7,9 +7,14 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.LootHandlers;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
+using WorldGraphDefines;
+using static LeaderBoardTopScoresJson;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -43,8 +48,9 @@ public class UseSlot : ExternalProtocol
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drink:
+                HandleConsumable(character, usedItem, hotbarSlotId);
+                break;
             case ItemActionType.Eat:
-                Player.Character.RemoveItem(usedItem, 1);
                 HandleConsumable(character, usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
@@ -59,21 +65,26 @@ public class UseSlot : ExternalProtocol
 
     private void HandleConsumable(CharacterModel character, ItemDescription item, int hotbarSlotId)
     {
-        character.Data.Inventory.Items[item.ItemId].Count--;
-
-        if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
+        switch (item.ItemId)
         {
-            character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
+            case 584:
+                var scryingOrb = new StatusEffect_SyncEvent(Player.Character.Data.CharacterId.ToString(),
+                    Player.Room.Time, (int)ItemEffectType.Detect, 1, 15, true,
+                    Player.Character.Data.CharacterId.ToString(), true);
 
-            SendXt("hu", character.Data.Hotbar);
+                Player.SendSyncEventToPlayer(scryingOrb);
+                break;
 
-            character.Data.Inventory.Items[item.ItemId].Count = -1;
+            case 585:
+                var invisibilityBomb = new StatusEffect_SyncEvent(Player.Character.Data.CharacterId.ToString(),
+                    Player.Room.Time, (int)ItemEffectType.Invisibility, 1, 15, true,
+                    Player.Character.Data.CharacterId.ToString(), true);
+
+                Player.SendSyncEventToPlayer(invisibilityBomb);
+
+                RemoveFromHotbar(character, item, hotbarSlotId);
+                break;
         }
-
-        Player.SendUpdatedInventory(false);
-
-        if (character.Data.Inventory.Items[item.ItemId].Count < 0)
-            character.Data.Inventory.Items.Remove(item.ItemId);
     }
 
     private void HandleMeleeWeapon(Vector3Model position)
@@ -90,12 +101,12 @@ public class UseSlot : ExternalProtocol
                          .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3f)
                     )
             {
-
+                Console.WriteLine(obj.ObjectInfo.PrefabName);
                 switch (obj.ObjectInfo.PrefabName)
                 {
                     case "PF_GLB_SwitchWall02":
                         triggerEvent = new Trigger_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                            Player.Room.Time, true, Player.CharacterName, true);
+                            Player.Room.Time, true, Player.GameObjectId.ToString(), true);
 
                         Player.Room.SendSyncEvent(triggerEvent);
 
@@ -104,7 +115,7 @@ public class UseSlot : ExternalProtocol
                             .FirstOrDefault(obj => obj.ObjectInfo.PrefabName == "PF_GLB_DoorGeneric01");
 
                         var triggerGate = new TriggerReceiver_SyncEvent(genericGate.ObjectInfo.ObjectId.ToString(),
-                            Player.Room.Time, Player.CharacterName, true, 1);
+                            Player.Room.Time, Player.GameObjectId.ToString(), true, 1);
 
                         Player.Room.SendSyncEvent(triggerGate);
 
@@ -128,9 +139,8 @@ public class UseSlot : ExternalProtocol
 
                         Player.Room.SendSyncEvent(aiEvent);
 
-                        Player.GrantLoot(obj.ObjectInfo.ObjectId,
-                            InternalLootCatalog, ItemCatalog, Logger);
-
+                        Player.Character.AddItem(ItemCatalog.GetItemFromId(1568), 1);
+                        Player.SendUpdatedInventory(false);
                         return;
                     case "PF_Spite_Crawler_Rock":
                         aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
@@ -140,6 +150,9 @@ public class UseSlot : ExternalProtocol
                             obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
 
                         Player.Room.SendSyncEvent(aiEvent);
+
+                        Player.Character.AddItem(ItemCatalog.GetItemFromId(404), 1);
+                        Player.SendUpdatedInventory(false);
                         break;
                     case "PF_Spite_Bathog_Rock":
                         aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
@@ -166,5 +179,21 @@ public class UseSlot : ExternalProtocol
                 }
             }
         }
+    }
+
+    private void RemoveFromHotbar(CharacterModel character, ItemDescription item, int hotbarSlotId)
+    {
+        character.Data.Inventory.Items[item.ItemId].Count--;
+
+        if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
+        {
+            character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
+
+            SendXt("hu", character.Data.Hotbar);
+
+            character.Data.Inventory.Items[item.ItemId].Count = -1;
+        }
+
+        Player.SendUpdatedInventory(false);
     }
 }
