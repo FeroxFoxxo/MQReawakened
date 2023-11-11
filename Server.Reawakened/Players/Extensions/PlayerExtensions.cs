@@ -1,14 +1,10 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.Abstractions;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 
@@ -16,16 +12,6 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerExtensions
 {
-    public static void TeleportPlayer(this Player player, int x, int y, int z)
-    {
-        var isBackPlane = z == 1;
-
-        var coordinates = new PhysicTeleport_SyncEvent(player.Character.Data.CharacterId.ToString(),
-            player.Room.Time, player.TempData.Position.X + x, player.TempData.Position.Y + y, isBackPlane);
-
-        player.SendSyncEventToPlayer(coordinates);
-    }
-
     public static void RemoveFromGroup(this Player player)
     {
         var group = player.TempData.Group;
@@ -128,7 +114,7 @@ public static class PlayerExtensions
         player.SendCashUpdate();
     }
 
-    public static void AddNCash(this Player player, int collectedNCash)
+     public static void AddNCash(this Player player, int collectedNCash)
     {
         var charData = player.Character.Data;
         charData.NCash += collectedNCash;

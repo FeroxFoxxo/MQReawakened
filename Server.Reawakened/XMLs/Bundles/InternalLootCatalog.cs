@@ -48,16 +48,13 @@ public class InternalLootCatalog : IBundledXml
                         switch (lootAttributes.Name)
                         {
                             case "objectId":
-                                objectId = lootAttributes.Value;
+                                objectId = int.Parse(lootAttributes.Value);
                                 continue;
-                            case "rewardType":
-                                rewardType = lootAttributes.Value;
+                            case "bananaMin":
+                                bananaMin = int.Parse(lootAttributes.Value);
                                 continue;
-                            case "rewardMin":
-                                reward.Add(lootAttributes.Value);
-                                continue;
-                            case "rewardMax":
-                                reward.Add(lootAttributes.Value);
+                            case "bananaMax":
+                                bananaMax = int.Parse(lootAttributes.Value);
                                 continue;
                         }
                     }
