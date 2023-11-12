@@ -1,117 +1,61 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Models;
 
 namespace Server.Reawakened.Players.LootHandlers;
 
 public static class PlayerLootHandler
 {
-    private static Dictionary<string, dynamic> GetLootInfo(int gameObjectId, InternalLootCatalog lootCatalog) 
-        => lootCatalog.GetLootById(gameObjectId);
-
-    private static Dictionary<string, dynamic> ParseLootByType(Dictionary<string, dynamic> lootInfo)
+    public static void GrantLoot(this Player player, int gameObjectId, InternalLootCatalog lootCatalog,
+        ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
-        var rewardType = lootInfo["rewardType"];
-        object[] reward = lootInfo["reward"];
+        var loot = lootCatalog.GetLootById(gameObjectId);
 
-        var convertedLootInfo = new Dictionary<string, dynamic>(); //lootInfo.ToDictionary(entry => entry.Key,
-                                               //entry => entry.Value);
-        foreach (KeyValuePair<string, dynamic> pair in lootInfo)
-        {
-            convertedLootInfo[pair.Key] = pair.Value;
-        }
+        if (loot.ObjectId <= 0)
+            logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);
 
-        switch (rewardType)
-        {
-            case "Banana":
-                {
-                    string[] bananasReward = Array.ConvertAll(reward, x => x.ToString());
-                    convertedLootInfo["reward"] = bananasReward;
+        if (loot.BananaMax >= 0 && loot.BananaMin >= 0)
+            GrantLootBananas(player, loot);
 
-                    break;
-                }
-            case "Item":
-                {
-                    int[][] items = Array.ConvertAll(reward, childArr =>
-                    {
-                        return Array.ConvertAll<int, int>((int[])childArr, number => Convert.ToInt32(number));
-                    });
-                    convertedLootInfo["reward"] = items;
-
-                    break;
-                }
-        }
-
-        return convertedLootInfo;
+        if (loot.Items.Count > 0)
+            GrantLootItems(player, loot, itemCatalog);
     }
 
-    private static void GrantLootBananas(Player player, Dictionary<string, dynamic> lootInfo)
-    { //Banana reward not properly functioning yet
-        Random random = new Random();
+    private static void GrantLootBananas(Player player, LootModel lootModel)
+    {
+        //Banana reward not properly functioning yet
+        var random = new Random();
 
-        var bananasReward = lootInfo["reward"];
-
-        int minBananas = Convert.ToInt32(bananasReward[0]);
-        int maxBananas = Convert.ToInt32(bananasReward[1]);
-        var bananasGot = random.Next(minBananas, maxBananas);
+        var bananasGot = random.Next(lootModel.BananaMin, lootModel.BananaMax + 1);
 
         player.AddBananas(bananasGot);
     }
 
-    private static void SendLootWheel(Player player, string itemsLooted, string lootableItems, int gameObjectId) 
-        => player.SendXt("iW", itemsLooted, lootableItems, gameObjectId, 0);
-
-    private static void GrantLootItems(Player player, Dictionary<string, dynamic> lootInfo, int gameObjectId, ItemCatalog itemCatalog)
+    private static void GrantLootItems(Player player, LootModel lootModel, ItemCatalog itemCatalog)
     {
-        Random random = new Random();
+        var random = new Random();
 
-        var items = lootInfo["reward"];
-
-        var gottenItems = new int[][] { items[random.Next(items.Length)] };
-        var itemsLooted = "";
-        var lootableItems = "";
+        var gottenItems = new ItemModel[] { lootModel.Items[random.Next(lootModel.Items.Count)] };
+        var itemsLooted = new SeparatedStringBuilder('|');
+        var lootableItems = new SeparatedStringBuilder('|');
 
         foreach (var item in gottenItems)
         {
-            var itemId = item[0];
-            var count = item[1];
-            var bindingCount = item[2];
-
-            itemsLooted += $"{itemId}{{{count}{{{bindingCount}{{{DateTime.Now}|";
-            player.Character.AddItem(itemCatalog.GetItemFromId(itemId), count);
+            itemsLooted.Append(item.ToString());
+            player.Character.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count);
         }
 
-        foreach (var item in items)
-        {
-            lootableItems += $"{item[0]}|";
-        }
+        foreach (var item in lootModel.Items)
+            lootableItems.Append(item.ItemId);
 
-        SendLootWheel(player, itemsLooted, lootableItems, gameObjectId);
+        SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), lootModel.ObjectId);
         player.SendUpdatedInventory(false);
     }
 
-    public static void GrantLoot(this Player player, int gameObjectId, InternalLootCatalog lootCatalog, ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
-    {
-        var baseLootInfo = GetLootInfo(gameObjectId, lootCatalog);
-        var lootInfo = ParseLootByType(baseLootInfo);
-
-        if (baseLootInfo["objectId"] == "0")
-        {
-            logger.LogError("Loot table not yet implemented for chest with ID '{chestId}'.", gameObjectId);
-        }
-
-        switch (lootInfo["rewardType"]) {
-            case "Banana":
-                {
-                    GrantLootBananas(player, lootInfo);
-                    break;
-                }
-            case "Item":
-                {
-                    GrantLootItems(player, lootInfo, gameObjectId, itemCatalog); 
-                    break;
-                }
-        }
-    }
+    private static void SendLootWheel(Player player, string itemsLooted, string lootableItems, int gameObjectId)
+        => player.SendXt("iW", itemsLooted, lootableItems, gameObjectId, 0);
 }

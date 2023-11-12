@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LootCatalog>
     <Level name="Default">
-        <LootInfo objectId="0" rewardType="Banana" rewardMin="50" rewardMax="100"/>
+        <LootInfo objectId="0" bananaMin="50" bananaMax="100"/>
     </Level>
     <Level name="The Floating Isles">
-        <LootInfo objectId="97238" rewardType="Item">
+        <LootInfo objectId="97238">
             <Item itemId="220" count="1" bindingCount="0"/>
             <Item itemId="405" count="1" bindingCount="0"/>
             <Item itemId="442" count="1" bindingCount="0"/>
@@ -13,7 +13,7 @@
             <Item itemId="583" count="1" bindingCount="0"/>
             <Item itemId="597" count="1" bindingCount="0"/>
         </LootInfo>
-        <LootInfo objectId="4807" rewardType="Item">
+        <LootInfo objectId="4807">
             <Item itemId="3133" count="1" bindingCount="0"/>
             <Item itemId="1164" count="1" bindingCount="0"/>
             <Item itemId="2928" count="1" bindingCount="0"/>
@@ -24,12 +24,12 @@
         </LootInfo>
     </Level>
     <Level name="Forgotten Temple">
-        <LootInfo objectId="30938" rewardType="Item">
+        <LootInfo objectId="30938">
             <Item itemId="2886" count="1" bindingCount="0"/>
         </LootInfo>
     </Level>
     <Level name="The Volcano Lair">
-        <LootInfo objectId="7431" rewardType="Item">
+        <LootInfo objectId="7431">
             <Item itemId="404" count="1" bindingCount="0"/>
             <Item itemId="1611" count="1" bindingCount="0"/>
             <Item itemId="1568" count="1" bindingCount="0"/>
@@ -40,7 +40,7 @@
             <Item itemId="3017" count="1" bindingCount="0"/>
             <Item itemId="3018" count="1" bindingCount="0"/>
         </LootInfo>
-        <LootInfo objectId="7429" rewardType="Item">
+        <LootInfo objectId="7429">
             <Item itemId="404" count="1" bindingCount="0"/>
             <Item itemId="1611" count="1" bindingCount="0"/>
             <Item itemId="1568" count="1" bindingCount="0"/>
@@ -51,7 +51,7 @@
             <Item itemId="3017" count="1" bindingCount="0"/>
             <Item itemId="3018" count="1" bindingCount="0"/>
         </LootInfo>
-        <LootInfo objectId="7432" rewardType="Item">
+        <LootInfo objectId="7432">
             <Item itemId="404" count="1" bindingCount="0"/>
             <Item itemId="1611" count="1" bindingCount="0"/>
             <Item itemId="1568" count="1" bindingCount="0"/>
@@ -62,7 +62,7 @@
             <Item itemId="3017" count="1" bindingCount="0"/>
             <Item itemId="3018" count="1" bindingCount="0"/>
         </LootInfo>
-        <LootInfo objectId="7434" rewardType="Item">
+        <LootInfo objectId="7434">
             <Item itemId="404" count="1" bindingCount="0"/>
             <Item itemId="1611" count="1" bindingCount="0"/>
             <Item itemId="1568" count="1" bindingCount="0"/>
@@ -73,7 +73,7 @@
             <Item itemId="3017" count="1" bindingCount="0"/>
             <Item itemId="3018" count="1" bindingCount="0"/>
         </LootInfo>
-        <LootInfo objectId="7177" rewardType="Item">
+        <LootInfo objectId="7177">
             <Item itemId="404" count="1" bindingCount="0"/>
         </LootInfo>
     </Level>

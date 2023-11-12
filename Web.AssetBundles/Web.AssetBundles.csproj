@@ -27,6 +27,24 @@
         <Reference Include="Assembly-CSharp">
             <HintPath>..\Server.Reawakened\Dependencies\Assembly-CSharp.dll</HintPath>
         </Reference>
+        <Reference Include="AssetStudio.PInvoke">
+          <HintPath>Dependencies\AssetStudio\AssetStudio.PInvoke.dll</HintPath>
+        </Reference>
+        <Reference Include="AssetStudioFBXWrapper">
+          <HintPath>Dependencies\AssetStudio\AssetStudioFBXWrapper.dll</HintPath>
+        </Reference>
+        <Reference Include="AssetStudioUtility">
+          <HintPath>Dependencies\AssetStudio\AssetStudioUtility.dll</HintPath>
+        </Reference>
+        <Reference Include="Mono.Cecil">
+          <HintPath>Dependencies\AssetStudio\Mono.Cecil.dll</HintPath>
+        </Reference>
+        <Reference Include="SixLabors.ImageSharp">
+          <HintPath>Dependencies\AssetStudio\SixLabors.ImageSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Texture2DDecoderWrapper">
+          <HintPath>Dependencies\AssetStudio\Texture2DDecoderWrapper.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine">
           <HintPath>..\Server.Reawakened\Dependencies\UnityEngine.dll</HintPath>
         </Reference>

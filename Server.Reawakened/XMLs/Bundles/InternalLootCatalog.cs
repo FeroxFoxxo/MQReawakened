@@ -1,5 +1,7 @@
 ﻿using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Extensions;
+using Server.Reawakened.XMLs.Models;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
@@ -8,10 +10,11 @@ public class InternalLootCatalog : IBundledXml
 {
     public string BundleName => "InternalLootCatalog";
     public BundlePriority Priority => BundlePriority.Low;
+
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<int, Dictionary<string, dynamic>> LootCatalog;
+    public Dictionary<int, LootModel> LootCatalog;
 
     public void InitializeVariables() => LootCatalog = [];
 
@@ -35,13 +38,11 @@ public class InternalLootCatalog : IBundledXml
                 foreach (XmlNode lootInfo in lootLevel.ChildNodes)
                 {
                     if (lootInfo.Name != "LootInfo") continue;
-
-                    var lootInfoEntry = new Dictionary<string, dynamic>();
-
-                    var objectId = "";
-                    var rewardType = "";
-                    List<dynamic> reward = [];
-
+    
+                    var objectId = -1;
+                    var bananaMin = -1;
+                    var bananaMax = -1;
+  
                     foreach (XmlAttribute lootAttributes in lootInfo.Attributes)
                     {
                         switch (lootAttributes.Name)
@@ -60,39 +61,10 @@ public class InternalLootCatalog : IBundledXml
                                 continue;
                         }
                     }
-
-                    foreach (XmlNode item in lootInfo.ChildNodes)
-                    {
-                        if (!(item.Name == "Item")) continue;
-
-                        var itemId = -1;
-                        var count = -1;
-                        var bindingCount = -1;
-
-                        foreach (XmlAttribute itemAttribute in item.Attributes)
-                        {
-                            switch (itemAttribute.Name)
-                            {
-                                case "itemId":
-                                    itemId = int.Parse(itemAttribute.Value);
-                                    continue;
-                                case "count":
-                                    count = int.Parse(itemAttribute.Value);
-                                    continue;
-                                case "bindingCount":
-                                    bindingCount = int.Parse(itemAttribute.Value);
-                                    continue;
-                            }
-                        }
-
-                        reward.Add(new int[] { itemId, count, bindingCount });
-                    }
-
-                    lootInfoEntry["objectId"] = objectId;
-                    lootInfoEntry["rewardType"] = rewardType;
-                    lootInfoEntry["reward"] = reward.ToArray();
-
-                    LootCatalog.Add(int.Parse(objectId), lootInfoEntry);
+                    
+                    var itemList = lootInfo.GetXmlItems();
+    
+                    LootCatalog.TryAdd(objectId, new LootModel(objectId, bananaMin, bananaMax, itemList));
                 }
             }
         }
@@ -102,6 +74,6 @@ public class InternalLootCatalog : IBundledXml
     {
     }
 
-    public Dictionary<string, object> GetLootById(int objectId)
-        => LootCatalog.TryGetValue(objectId, out var lootInfo) ? lootInfo : LootCatalog[0];
+    public LootModel GetLootById(int objectId) =>
+        LootCatalog.TryGetValue(objectId, out var lootInfo) ? lootInfo : LootCatalog[0];
 }
