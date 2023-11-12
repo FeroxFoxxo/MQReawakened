@@ -12,6 +12,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Reference Include="A2mCore">
+        <HintPath>..\Server.Reawakened\Dependencies\A2mCore.dll</HintPath>
+      </Reference>
       <Reference Include="AssetStudio">
         <HintPath>..\Web.AssetBundles\Dependencies\AssetStudio\AssetStudio.dll</HintPath>
       </Reference>

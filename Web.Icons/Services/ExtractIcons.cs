@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
+using Server.Reawakened.XMLs.Bundles;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using Web.AssetBundles.Events;
 using Web.AssetBundles.Events.Arguments;
@@ -13,8 +13,8 @@ using Web.Icons.Configs;
 
 namespace Web.Icons.Services;
 
-public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConfig rwConfig,
-    AssetBundleRwConfig aRwConfig, ILogger<ExtractIcons> logger, IServiceProvider services, ServerHandler serverHandler) : IService
+public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBundleRwConfig aRwConfig,
+    ILogger<ExtractIcons> logger, IServiceProvider services, ServerHandler serverHandler, ItemCatalog itemCatalog) : IService
 {
     public void Initialize() => sink.AssetBundlesLoaded += ExtractAllIcons;
 
@@ -52,15 +52,29 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
         if (count > 0)
         {
             Directory.CreateDirectory(rConfig.IconDirectory).Empty();
+            Directory.CreateDirectory(rConfig.UnknownItemsDirectory).Empty();
 
             foreach (var asset in assets)
                 ExtractIconsFrom(asset, bundleEvent);
-        }
 
-        services.SaveConfigs(serverHandler.Modules, logger);
+            services.SaveConfigs(serverHandler.Modules, logger);
+
+            var icons = Directory.GetFiles(rConfig.IconDirectory);
+
+            foreach (var icon in icons)
+            {
+                var name = Path.GetFileNameWithoutExtension(icon);
+                var nameWExten = Path.GetFileName(icon);
+
+                if (itemCatalog.Items.Any(x => x.Value.PrefabName == name))
+                    continue;
+
+                File.Copy(icon, Path.Combine(rConfig.UnknownItemsDirectory, nameWExten));
+            }
+        }
     }
 
-    public bool ExtractIconsFrom(InternalAssetInfo asset, AssetBundleLoadEventArgs bundleEvent)
+    public void ExtractIconsFrom(InternalAssetInfo asset, AssetBundleLoadEventArgs bundleEvent)
     {
         var manager = new AssetsManager();
         var assemblyLoader = new AssemblyLoader();
@@ -127,6 +141,18 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
                 continue;
             }
 
+            var shouldBreak = false;
+
+            foreach (var invalidStart in rConfig.IgnoreStarting)
+                if (name.StartsWith(invalidStart))
+                {
+                    shouldBreak = true;
+                    continue;
+                }
+
+            if (shouldBreak)
+                continue;
+
             if (!bundleEvent.InternalAssets.ContainsKey(name))
                 continue;
 
@@ -139,7 +165,5 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
 
             File.WriteAllBytes(path, stream.ToArray());
         }
-
-        return true;
     }
 }
