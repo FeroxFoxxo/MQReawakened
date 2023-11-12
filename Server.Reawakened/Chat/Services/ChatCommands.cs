@@ -258,6 +258,7 @@ public class ChatCommands : IService
         var character = player.Character;
 
         int levelId;
+
         if (args.Length != 2 || !int.TryParse(args[1], out var level))
         {
             Log($"Please specify a valid level ID.", player);
@@ -266,9 +267,15 @@ public class ChatCommands : IService
 
         levelId = level;
 
-        character.SetLevel(levelId, _logger);
-
         var levelInfo = _worldGraph.GetInfoLevel(levelId);
+
+        if (string.IsNullOrEmpty(levelInfo.Name))
+        {
+            Log($"Please specify a valid level.", player);
+            return false;
+        }
+
+        character.SetLevel(levelId, _logger);
 
         var tribe = levelInfo.Tribe;
 
