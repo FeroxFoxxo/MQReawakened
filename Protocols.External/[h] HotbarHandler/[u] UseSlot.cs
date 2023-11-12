@@ -88,7 +88,8 @@ public class UseSlot : ExternalProtocol
                          .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3f)
                     )
             {
-                Console.WriteLine(obj.ObjectInfo.PrefabName);
+                Logger.LogInformation("Looping through close game object {PrefabName}", obj.ObjectInfo.PrefabName);
+
                 switch (obj.ObjectInfo.PrefabName)
                 {
                     case "PF_GLB_SwitchWall02":
