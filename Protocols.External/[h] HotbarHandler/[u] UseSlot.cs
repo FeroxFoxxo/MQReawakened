@@ -58,26 +58,20 @@ public class UseSlot : ExternalProtocol
 
     private void HandleConsumable(CharacterModel character, ItemDescription item, int hotbarSlotId)
     {
-        switch (item.ItemId)
+        foreach (var effect in item.ItemEffects)
         {
-            case 584:
-                var scryingOrb = new StatusEffect_SyncEvent(Player.Character.Data.CharacterId.ToString(),
-                    Player.Room.Time, (int)ItemEffectType.Detect, 1, 15, true,
-                    Player.Character.Data.CharacterId.ToString(), true);
+            if (effect.Type is ItemEffectType.Invalid or ItemEffectType.Unknown)
+                continue;
 
-                Player.SendSyncEventToPlayer(scryingOrb);
-                break;
+            var statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time, 
+                effect.TypeId, effect.Value, effect.Duration,
+                true, Player.GameObjectId.ToString(), true);
 
-            case 585:
-                var invisibilityBomb = new StatusEffect_SyncEvent(Player.Character.Data.CharacterId.ToString(),
-                    Player.Room.Time, (int)ItemEffectType.Invisibility, 1, 15, true,
-                    Player.Character.Data.CharacterId.ToString(), true);
-
-                Player.SendSyncEventToPlayer(invisibilityBomb);
-
-                RemoveFromHotbar(character, item, hotbarSlotId);
-                break;
+            Player.SendSyncEventToPlayer(statusEffect);
         }
+
+        if (!item.UniqueInInventory)
+            RemoveFromHotbar(character, item, hotbarSlotId);
     }
 
     private void HandleMeleeWeapon(Vector3Model position)
