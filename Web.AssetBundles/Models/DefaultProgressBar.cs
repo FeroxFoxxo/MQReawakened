@@ -46,17 +46,13 @@ public class DefaultProgressBar : IDisposable
 
         if (_logProgressAfter)
         {
-            Console.WriteLine();
-
-            _logger.LogTrace("-- Log of progress bar --");
+            _logger.LogTrace("\n-- Log of progress bar --");
 
             foreach (var message in _messages)
                 _logger.LogTrace("{Message}", message);
 
-            _logger.LogTrace("-------------------------");
+            _logger.LogTrace("-------------------------\n");
         }
-
-        Console.WriteLine();
 
         GC.SuppressFinalize(this);
     }
