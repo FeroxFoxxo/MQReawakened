@@ -1,6 +1,8 @@
-﻿namespace Server.Reawakened.Entities.Components;
+﻿using Server.Reawakened.Entities.AbstractComponents;
 
-public class C_LinearPlatform : AC_MovingObjectController<LinearPlatform>
+namespace Server.Reawakened.Entities.Components;
+
+public class LinearPlatformComp : MovingObjectControllerComp<LinearPlatform>
 {
     public float WaitTime => ComponentData.WaitTime;
     public float DistanceX => ComponentData.DistanceX;

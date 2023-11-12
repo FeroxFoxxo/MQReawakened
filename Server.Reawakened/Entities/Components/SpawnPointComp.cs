@@ -2,7 +2,7 @@
 
 namespace Server.Reawakened.Entities.Components;
 
-public class C_SpawnPoint : Component<SpawnPoint>
+public class SpawnPointComp : Component<SpawnPoint>
 {
     public int Index => ComponentData.Index;
 }

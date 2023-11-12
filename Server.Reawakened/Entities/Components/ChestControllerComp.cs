@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.LootHandlers;
 using Server.Reawakened.Rooms.Extensions;
@@ -6,13 +7,13 @@ using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class C_ChestController : AC_BaseChestController<ChestController>
+public class ChestControllerComp : BaseChestControllerComp<ChestController>
 {
     public bool Collected;
 
     public ItemCatalog ItemCatalog { get; set; }
 
-    public ILogger<C_ChestController> Logger { get; set; }
+    public ILogger<ChestControllerComp> Logger { get; set; }
 
     public InternalLootCatalog LootCatalog { get; set; }
 

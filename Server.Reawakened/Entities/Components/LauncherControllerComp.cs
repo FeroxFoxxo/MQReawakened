@@ -4,7 +4,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class C_LauncherController : Component<LauncherController>
+public class LauncherControllerComp : Component<LauncherController>
 {
     public float RotationSpeed => ComponentData.RotationSpeed;
     public float MaxLaunchVelocity => ComponentData.MaxLaunchVelocity;

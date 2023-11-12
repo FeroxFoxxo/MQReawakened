@@ -6,12 +6,12 @@ using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class C_GenericCollectible : Component<GenericCollectible>
+public class GenericCollectibleComp : Component<GenericCollectible>
 {
     public bool Collected;
 
     public int Value;
-    public ILogger<C_GenericCollectible> Logger { get; set; }
+    public ILogger<GenericCollectibleComp> Logger { get; set; }
 
     public override void InitializeComponent()
     {

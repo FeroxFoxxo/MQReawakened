@@ -2,9 +2,9 @@
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 
-namespace Server.Reawakened.Entities.Components;
+namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class AC_MovingObjectController<T> : Component<T>, IMoveable where T : MovingObjectController
+public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable where T : MovingObjectController
 {
     public IMovement Movement;
     public float InitialProgressRatio => ComponentData.InitialProgressRatio;

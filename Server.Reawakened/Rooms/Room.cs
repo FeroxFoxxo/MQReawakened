@@ -29,9 +29,9 @@ public class Room : Timer
     public readonly Dictionary<string, PlaneModel> Planes;
     public readonly Dictionary<int, List<string>> UnknownEntities;
 
-    public C_SpawnPoint DefaultSpawn { get; set; }
+    public SpawnPointComp DefaultSpawn { get; set; }
 
-    public C_SpawnPoint CheckpointSpawn { get; set; }
+    public SpawnPointComp CheckpointSpawn { get; set; }
     public int CheckpointId { get; set; }
 
     public LevelInfo LevelInfo => _level.LevelInfo;
@@ -71,7 +71,7 @@ public class Room : Timer
         foreach (var component in Entities.Values.SelectMany(x => x))
             component.InitializeComponent();
 
-        var spawnPoints = this.GetComponentsOfType<C_SpawnPoint>();
+        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
 
         DefaultSpawn = spawnPoints.Values.MinBy(p => p.Index);
 
@@ -180,8 +180,8 @@ public class Room : Timer
 
         BaseComponent spawnLocation = null;
 
-        var spawnPoints = this.GetComponentsOfType<C_SpawnPoint>();
-        var portals = this.GetComponentsOfType<C_PortalController>();
+        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
+        var portals = this.GetComponentsOfType<PortalControllerComp>();
 
         var spawnId = character.LevelData.SpawnPointId;
 

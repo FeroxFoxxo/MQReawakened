@@ -18,13 +18,13 @@ using static NPCController;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class C_NpcController : Component<NPCController>
+public class NPCControllerComp : Component<NPCController>
 {
     public FollowCamModes CameraMode => ComponentData.CameraMode;
     public FollowCamPriority CameraPriority => ComponentData.CameraPriority;
     public bool ShouldDisableNpcInteraction => ComponentData.ShouldDisableNPCInteraction;
 
-    public ILogger<C_NpcController> Logger { get; set; }
+    public ILogger<NPCControllerComp> Logger { get; set; }
     public MiscTextDictionary MiscText { get; set; }
     public ServerRConfig RConfig { get; set; }
     public Dialog Dialog { get; set; }

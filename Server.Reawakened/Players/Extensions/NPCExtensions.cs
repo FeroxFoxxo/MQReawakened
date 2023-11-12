@@ -65,14 +65,14 @@ public static class NpcExtensions
                 npc.SendNpcInfo(player.Character, player.NetState);
     }
 
-    public static List<C_NpcController> GetNpcs(Player player)
+    public static List<NPCControllerComp> GetNpcs(Player player)
     {
         if (player.Room != null && player.Character != null)
             if (player.Room.Entities != null)
                 return player.Room.Entities
                     .SelectMany(e => e.Value)
-                    .Where(e => e is C_NpcController)
-                    .Select(e => e as C_NpcController)
+                    .Where(e => e is NPCControllerComp)
+                    .Select(e => e as NPCControllerComp)
                     .ToList();
 
         return [];

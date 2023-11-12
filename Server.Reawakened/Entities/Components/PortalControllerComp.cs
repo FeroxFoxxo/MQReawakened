@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class C_PortalController : Component<PortalController>
+public class PortalControllerComp : Component<PortalController>
 {
     public string OverrideCondition => ComponentData.OverrideCondition;
     public bool LaunchMinigame => ComponentData.LaunchMinigame;
@@ -18,7 +18,7 @@ public class C_PortalController : Component<PortalController>
 
     public WorldGraph WorldGraph { get; set; }
     public WorldHandler WorldHandler { get; set; }
-    public ILogger<C_PortalController> Logger { get; set; }
+    public ILogger<PortalControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) =>
         new object[] { string.Empty };

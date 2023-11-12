@@ -1,6 +1,8 @@
-﻿namespace Server.Reawakened.Entities.Components;
+﻿using Server.Reawakened.Entities.AbstractComponents;
 
-public class C_StomperController : AC_MovingObjectController<StomperController>
+namespace Server.Reawakened.Entities.Components;
+
+public class StomperControllerComp : MovingObjectControllerComp<StomperController>
 {
     public float WaitTimeUp => ComponentData.WaitTimeUp;
     public float WaitTimeDown => ComponentData.WaitTimeDown;

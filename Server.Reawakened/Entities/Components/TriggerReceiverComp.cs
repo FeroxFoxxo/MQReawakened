@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class C_TriggerReceiver : Component<TriggerReceiver>, ITriggerable
+public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
 {
     private int _activations;
     private int _deactivations;
@@ -23,7 +23,7 @@ public class C_TriggerReceiver : Component<TriggerReceiver>, ITriggerable
     public bool ActiveByDefault => ComponentData.ActiveByDefault;
     public TriggerReceiver.ReceiverCollisionType CollisionType => ComponentData.CollisionType;
 
-    public ILogger<C_TriggerReceiver> Logger { get; set; }
+    public ILogger<TriggerReceiverComp> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)

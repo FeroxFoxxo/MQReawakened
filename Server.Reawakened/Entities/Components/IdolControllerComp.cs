@@ -4,7 +4,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class C_IdolController : Component<IdolController>
+public class IdolControllerComp : Component<IdolController>
 {
     public int Index => ComponentData.Index;
 

@@ -5,7 +5,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class BouncerControllerModel : Component<BouncerController>
+public class BouncerControllerComp : Component<BouncerController>
 {
     public float BounceVerticalVelocity => ComponentData.BounceVerticalVelocity;
     public float BounceHorizontalVelocity => ComponentData.BounceHorizontalVelocity;

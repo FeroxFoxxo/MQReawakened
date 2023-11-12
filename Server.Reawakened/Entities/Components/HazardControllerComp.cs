@@ -6,7 +6,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class C_HazardController : Component<HazardController>
+public class HazardControllerComp : Component<HazardController>
 {
     public string HurtEffect => ComponentData.HurtEffect;
     public float HurtLength => ComponentData.HurtLenght;
@@ -21,7 +21,7 @@ public class C_HazardController : Component<HazardController>
     public float HealthRatioDamage => ComponentData.HealthRatioDamage;
     public int HurtSelfOnDamage => ComponentData.HurtSelfOnDamage;
 
-    public ILogger<C_HazardController> Logger { get; set; }
+    public ILogger<HazardControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) => new object[] { 0 };
 

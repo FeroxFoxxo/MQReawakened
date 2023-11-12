@@ -1,8 +1,8 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Components;
+namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class AC_BaseChestController<T> : Component<T> where T : BaseChestController
+public abstract class BaseChestControllerComp<T> : Component<T> where T : BaseChestController
 {
     public bool IsLoyaltyChest => ComponentData.IsLoyaltyChest;
     public bool IsLootByPlayerLevel => ComponentData.IsLootByPlayerLevel;

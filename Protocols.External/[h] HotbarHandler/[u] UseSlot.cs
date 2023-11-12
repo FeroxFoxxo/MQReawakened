@@ -92,7 +92,7 @@ public class UseSlot : ExternalProtocol
 
             if (Player.Room.Entities.TryGetValue(obj.ObjectInfo.ObjectId, out var entityComponents))
                 foreach (var component in entityComponents)
-                    if (component is C_TriggerCoopController triggerCoopEntity)
+                    if (component is TriggerCoopControllerComp triggerCoopEntity)
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
 
             switch (obj.ObjectInfo.PrefabName)

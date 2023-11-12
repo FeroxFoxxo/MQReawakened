@@ -1,16 +1,17 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using System.Text;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class C_CheckpointController : AC_TriggerCoopController<CheckpointController>
+public class CheckpointControllerComp : TriggerCoopControllerComp<CheckpointController>
 {
     public int SpawnPoint => ComponentData.SpawnpointID;
 
-    public new ILogger<C_CheckpointController> Logger { get; set; }
+    public new ILogger<CheckpointControllerComp> Logger { get; set; }
 
     public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
@@ -25,7 +26,7 @@ public class C_CheckpointController : AC_TriggerCoopController<CheckpointControl
             return;
         }
 
-        var spawns = Room.GetComponentsOfType<C_SpawnPoint>()
+        var spawns = Room.GetComponentsOfType<SpawnPointComp>()
             .Values.OrderBy(s => s.Index).ToArray();
 
         var spawnPoint = spawns.FirstOrDefault(s => s.Index == SpawnPoint);
@@ -43,7 +44,7 @@ public class C_CheckpointController : AC_TriggerCoopController<CheckpointControl
                 sb.ToString(), LoggerType.Warning);
         }
 
-        var checkpoints = Room.GetComponentsOfType<C_CheckpointController>().Values;
+        var checkpoints = Room.GetComponentsOfType<CheckpointControllerComp>().Values;
         var possibleLastCheckpoint = checkpoints.FirstOrDefault(c => c.Id == Room.CheckpointId);
 
         possibleLastCheckpoint?.Trigger(player, false);

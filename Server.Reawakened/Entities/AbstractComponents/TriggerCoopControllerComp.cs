@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -8,9 +9,9 @@ using Server.Reawakened.Rooms.Models.Entities;
 using System.Text;
 using static TriggerCoopController;
 
-namespace Server.Reawakened.Entities.Components;
+namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class AC_TriggerCoopController<T> : Component<T> where T : TriggerCoopController
+public abstract class TriggerCoopControllerComp<T> : Component<T> where T : TriggerCoopController
 {
     public List<int> CurrentPhysicalInteractors;
     public int CurrentInteractions;
@@ -366,7 +367,7 @@ public abstract class AC_TriggerCoopController<T> : Component<T> where T : Trigg
 
     private bool TriggerReceiverActivated()
     {
-        var receivers = Room.GetComponentsOfType<C_TriggerReceiver>();
+        var receivers = Room.GetComponentsOfType<TriggerReceiverComp>();
 
         var triggers = Triggers
             .Where(r => r.Value == TriggerType.Activate)
