@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Enums;
@@ -23,15 +23,15 @@ public class Room : Timer
     private readonly HashSet<int> _gameObjectIds;
 
     public readonly Dictionary<int, Player> Players;
-    public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
+    public readonly Dictionary<int, List<BaseComponent>> Entities;
     public readonly ILogger<Room> Logger;
 
     public readonly Dictionary<string, PlaneModel> Planes;
     public readonly Dictionary<int, List<string>> UnknownEntities;
 
-    public SpawnPointEntity DefaultSpawn { get; set; }
+    public SpawnPointComp DefaultSpawn { get; set; }
 
-    public SpawnPointEntity CheckpointSpawn { get; set; }
+    public SpawnPointComp CheckpointSpawn { get; set; }
     public int CheckpointId { get; set; }
 
     public LevelInfo LevelInfo => _level.LevelInfo;
@@ -68,10 +68,10 @@ public class Room : Timer
                 )
             _gameObjectIds.Add(gameObjectId);
 
-        foreach (var entity in Entities.Values.SelectMany(x => x))
-            entity.InitializeEntity();
+        foreach (var component in Entities.Values.SelectMany(x => x))
+            component.InitializeComponent();
 
-        var spawnPoints = this.GetEntities<SpawnPointEntity>();
+        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
 
         DefaultSpawn = spawnPoints.Values.MinBy(p => p.Index);
 
@@ -85,8 +85,8 @@ public class Room : Timer
 
     public override void OnTick()
     {
-        foreach (var entity in Entities.Values.SelectMany(entityList => entityList))
-            entity.Update();
+        foreach (var entityComponent in Entities.Values.SelectMany(entityList => entityList))
+            entityComponent.Update();
 
         foreach (var player in Players.Values.Where(
                      player => GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime
@@ -178,10 +178,10 @@ public class Room : Timer
         // WHERE TO SPAWN
         var character = player.Character;
 
-        BaseSyncedEntity spawnLocation = null;
+        BaseComponent spawnLocation = null;
 
-        var spawnPoints = this.GetEntities<SpawnPointEntity>();
-        var portals = this.GetEntities<PortalControllerEntity>();
+        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
+        var portals = this.GetComponentsOfType<PortalControllerComp>();
 
         var spawnId = character.LevelData.SpawnPointId;
 

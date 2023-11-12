@@ -1,8 +1,8 @@
 ﻿using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.XMLs.Models;
+namespace Server.Reawakened.XMLs.Models.Npcs;
 
-public class Conversation(int dialogId, int conversationId)
+public class ConversationInfo(int dialogId, int conversationId)
 {
     public readonly int DialogId = dialogId;
     public readonly int ConversationId = conversationId;

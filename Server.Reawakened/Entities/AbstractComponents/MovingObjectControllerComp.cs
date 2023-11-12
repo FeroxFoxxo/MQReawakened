@@ -2,16 +2,16 @@
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 
-namespace Server.Reawakened.Entities.Abstractions;
+namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class AbstractMovingObject<T> : SyncedEntity<T>, IMoveable where T : MovingObjectController
+public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable where T : MovingObjectController
 {
     public IMovement Movement;
-    public float InitialProgressRatio => EntityData.InitialProgressRatio;
+    public float InitialProgressRatio => ComponentData.InitialProgressRatio;
 
     public IMovement GetMovement() => Movement;
 
-    public override void InitializeEntity()
+    public override void InitializeComponent()
     {
         if (!Room.Entities[Id].OfType<ITriggerable>().Any())
             return;
@@ -26,7 +26,7 @@ public abstract class AbstractMovingObject<T> : SyncedEntity<T>, IMoveable where
 
         var position = Movement.GetPositionBasedOnTime(Room.Time);
 
-        StoredEntity.GameObject.ObjectInfo.Position = new Vector3Model
+        Entity.GameObject.ObjectInfo.Position = new Vector3Model
         {
             X = position.x,
             Y = position.y,

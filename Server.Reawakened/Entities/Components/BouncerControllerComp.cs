@@ -3,13 +3,13 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities;
+namespace Server.Reawakened.Entities.Components;
 
-public class BouncerControllerModel : SyncedEntity<BouncerController>
+public class BouncerControllerComp : Component<BouncerController>
 {
-    public float BounceVerticalVelocity => EntityData.BounceVerticalVelocity;
-    public float BounceHorizontalVelocity => EntityData.BounceHorizontalVelocity;
-    public float BounceHorizontalInputVelocity => EntityData.BounceHorizontalInputVelocity;
+    public float BounceVerticalVelocity => ComponentData.BounceVerticalVelocity;
+    public float BounceHorizontalVelocity => ComponentData.BounceHorizontalVelocity;
+    public float BounceHorizontalInputVelocity => ComponentData.BounceHorizontalInputVelocity;
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {

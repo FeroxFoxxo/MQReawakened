@@ -2,13 +2,13 @@
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities;
+namespace Server.Reawakened.Entities.Components;
 
-public class LauncherControllerEntity : SyncedEntity<LauncherController>
+public class LauncherControllerComp : Component<LauncherController>
 {
-    public float RotationSpeed => EntityData.RotationSpeed;
-    public float MaxLaunchVelocity => EntityData.MaxLaunchVelocity;
-    public float MinLaunchVelocity => EntityData.MinLaunchVelocity;
+    public float RotationSpeed => ComponentData.RotationSpeed;
+    public float MaxLaunchVelocity => ComponentData.MaxLaunchVelocity;
+    public float MinLaunchVelocity => ComponentData.MinLaunchVelocity;
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {

@@ -26,7 +26,7 @@ public class GiftItemShop : ExternalProtocol
             return;
         }
 
-        var _ = message[6]; // friendName
+        var friendName = message[6];
         var _1 = message[7]; // messageDesc
         var itemId = int.Parse(message[8]);
         var _2 = int.Parse(message[9]); // backgroundId
@@ -37,6 +37,11 @@ public class GiftItemShop : ExternalProtocol
 
         var item = ItemCatalog.GetItemFromId(itemId);
         Player.RemoveNCash(item.RegularPrice);
+
+        var friend = PlayerHandler.GetPlayerByName(friendName);
+
+        friend.Character.AddItem(item, 1);
+        friend.SendUpdatedInventory(false);
 
         Logger.LogError("Gifting is not implemented yet!");
     }

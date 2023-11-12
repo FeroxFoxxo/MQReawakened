@@ -165,8 +165,10 @@ public class NetState : IDisposable
         if (buffer.Length <= 0)
             return;
 
-        if (Socket != null && _onSendCallback != null)
-            Socket.BeginSend(buffer, 0, length, SocketFlags.None, _onSendCallback, Socket);
+        if (Socket == null || _onSendCallback == null || _disposing)
+            return;
+
+        Socket.BeginSend(buffer, 0, length, SocketFlags.None, _onSendCallback, Socket);
     }
 
     private void OnSend(IAsyncResult asyncResult)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -8,11 +9,13 @@ using Server.Reawakened.Rooms.Models.Entities;
 using System.Text;
 using static TriggerCoopController;
 
-namespace Server.Reawakened.Entities.Abstractions;
+namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : TriggerCoopController
+public abstract class TriggerCoopControllerComp<T> : Component<T> where T : TriggerCoopController
 {
-    public List<int> CurrentInteractors;
+    public List<int> CurrentPhysicalInteractors;
+    public int CurrentInteractions;
+    public int Interactions => CurrentInteractions + CurrentPhysicalInteractors.Count;
 
     public bool IsActive = true;
     public bool IsEnabled = true;
@@ -20,82 +23,82 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
     public Dictionary<int, TriggerType> Triggers;
     public List<ActivationType> Activations;
 
-    public bool DisabledAfterActivation => EntityData.DisabledAfterActivation;
+    public bool DisabledAfterActivation => ComponentData.DisabledAfterActivation;
 
-    public int NbInteractionsNeeded => EntityData.NbInteractionsNeeded;
-    public bool NbInteractionsMatchesNbPlayers => EntityData.NbInteractionsMatchesNbPlayers;
+    public int NbInteractionsNeeded => ComponentData.NbInteractionsNeeded;
+    public bool NbInteractionsMatchesNbPlayers => ComponentData.NbInteractionsMatchesNbPlayers;
 
-    public int TargetLevelEditorId => EntityData.TargetLevelEditorID;
-    public int Target02LevelEditorId => EntityData.Target02LevelEditorID;
-    public int Target03LevelEditorId => EntityData.Target03LevelEditorID;
-    public int Target04LevelEditorId => EntityData.Target04LevelEditorID;
-    public int Target05LevelEditorId => EntityData.Target05LevelEditorID;
-    public int Target06LevelEditorId => EntityData.Target06LevelEditorID;
-    public int Target07LevelEditorId => EntityData.Target07LevelEditorID;
-    public int Target08LevelEditorId => EntityData.Target08LevelEditorID;
+    public int TargetLevelEditorId => ComponentData.TargetLevelEditorID;
+    public int Target02LevelEditorId => ComponentData.Target02LevelEditorID;
+    public int Target03LevelEditorId => ComponentData.Target03LevelEditorID;
+    public int Target04LevelEditorId => ComponentData.Target04LevelEditorID;
+    public int Target05LevelEditorId => ComponentData.Target05LevelEditorID;
+    public int Target06LevelEditorId => ComponentData.Target06LevelEditorID;
+    public int Target07LevelEditorId => ComponentData.Target07LevelEditorID;
+    public int Target08LevelEditorId => ComponentData.Target08LevelEditorID;
 
-    public int TargetToDeactivateLevelEditorId => EntityData.TargetToDeactivateLevelEditorID;
-    public int Target02ToDeactivateLevelEditorId => EntityData.Target02ToDeactivateLevelEditorID;
-    public int Target03ToDeactivateLevelEditorId => EntityData.Target03ToDeactivateLevelEditorID;
-    public int Target04ToDeactivateLevelEditorId => EntityData.Target04ToDeactivateLevelEditorID;
+    public int TargetToDeactivateLevelEditorId => ComponentData.TargetToDeactivateLevelEditorID;
+    public int Target02ToDeactivateLevelEditorId => ComponentData.Target02ToDeactivateLevelEditorID;
+    public int Target03ToDeactivateLevelEditorId => ComponentData.Target03ToDeactivateLevelEditorID;
+    public int Target04ToDeactivateLevelEditorId => ComponentData.Target04ToDeactivateLevelEditorID;
 
-    public bool IsEnable => EntityData.isEnable;
+    public bool IsEnable => ComponentData.isEnable;
 
-    public int Target01ToEnableLevelEditorId => EntityData.Target01ToEnableLevelEditorID;
-    public int Target02ToEnableLevelEditorId => EntityData.Target02ToEnableLevelEditorID;
-    public int Target03ToEnableLevelEditorId => EntityData.Target03ToEnableLevelEditorID;
-    public int Target04ToEnableLevelEditorId => EntityData.Target04ToEnableLevelEditorID;
-    public int Target05ToEnableLevelEditorId => EntityData.Target05ToEnableLevelEditorID;
+    public int Target01ToEnableLevelEditorId => ComponentData.Target01ToEnableLevelEditorID;
+    public int Target02ToEnableLevelEditorId => ComponentData.Target02ToEnableLevelEditorID;
+    public int Target03ToEnableLevelEditorId => ComponentData.Target03ToEnableLevelEditorID;
+    public int Target04ToEnableLevelEditorId => ComponentData.Target04ToEnableLevelEditorID;
+    public int Target05ToEnableLevelEditorId => ComponentData.Target05ToEnableLevelEditorID;
 
-    public int Target01ToDisableLevelEditorId => EntityData.Target01ToDisableLevelEditorID;
-    public int Target02ToDisableLevelEditorId => EntityData.Target02ToDisableLevelEditorID;
-    public int Target03ToDisableLevelEditorId => EntityData.Target03ToDisableLevelEditorID;
-    public int Target04ToDisableLevelEditorId => EntityData.Target04ToDisableLevelEditorID;
-    public int Target05ToDisableLevelEditorId => EntityData.Target05ToDisableLevelEditorID;
+    public int Target01ToDisableLevelEditorId => ComponentData.Target01ToDisableLevelEditorID;
+    public int Target02ToDisableLevelEditorId => ComponentData.Target02ToDisableLevelEditorID;
+    public int Target03ToDisableLevelEditorId => ComponentData.Target03ToDisableLevelEditorID;
+    public int Target04ToDisableLevelEditorId => ComponentData.Target04ToDisableLevelEditorID;
+    public int Target05ToDisableLevelEditorId => ComponentData.Target05ToDisableLevelEditorID;
 
-    public float ActiveDuration => EntityData.ActiveDuration;
+    public float ActiveDuration => ComponentData.ActiveDuration;
 
-    public bool TriggerOnPressed => EntityData.TriggerOnPressed;
-    public bool TriggerOnFireDamage => EntityData.TriggerOnFireDamage;
-    public bool TriggerOnEarthDamage => EntityData.TriggerOnEarthDamage;
-    public bool TriggerOnAirDamage => EntityData.TriggerOnAirDamage;
-    public bool TriggerOnIceDamage => EntityData.TriggerOnIceDamage;
-    public bool TriggerOnLightningDamage => EntityData.TriggerOnLightningDamage;
-    public bool TriggerOnNormalDamage => EntityData.TriggerOnNormalDamage;
+    public bool TriggerOnPressed => ComponentData.TriggerOnPressed;
+    public bool TriggerOnFireDamage => ComponentData.TriggerOnFireDamage;
+    public bool TriggerOnEarthDamage => ComponentData.TriggerOnEarthDamage;
+    public bool TriggerOnAirDamage => ComponentData.TriggerOnAirDamage;
+    public bool TriggerOnIceDamage => ComponentData.TriggerOnIceDamage;
+    public bool TriggerOnLightningDamage => ComponentData.TriggerOnLightningDamage;
+    public bool TriggerOnNormalDamage => ComponentData.TriggerOnNormalDamage;
 
-    public bool StayTriggeredOnUnpressed => EntityData.StayTriggeredOnUnpressed;
-    public bool StayTriggeredOnReceiverActivated => EntityData.StayTriggeredOnReceiverActivated;
+    public bool StayTriggeredOnUnpressed => ComponentData.StayTriggeredOnUnpressed;
+    public bool StayTriggeredOnReceiverActivated => ComponentData.StayTriggeredOnReceiverActivated;
 
-    public string TriggeredByItemInInventory => EntityData.TriggeredByItemInInventory;
-    public bool TriggerOnGrapplingHook => EntityData.TriggerOnGrapplingHook;
+    public string TriggeredByItemInInventory => ComponentData.TriggeredByItemInInventory;
+    public bool TriggerOnGrapplingHook => ComponentData.TriggerOnGrapplingHook;
 
-    public bool Flip => EntityData.Flip;
+    public bool Flip => ComponentData.Flip;
 
-    public string ActiveMessage => EntityData.ActiveMessage;
-    public int SendActiveMessageToObjectId => EntityData.SendActiveMessageToObjectID;
-    public string DeactiveMessage => EntityData.DeactiveMessage;
+    public string ActiveMessage => ComponentData.ActiveMessage;
+    public int SendActiveMessageToObjectId => ComponentData.SendActiveMessageToObjectID;
+    public string DeactiveMessage => ComponentData.DeactiveMessage;
 
-    public string TimerSound => EntityData.TimerSound;
-    public string TimerEndSound => EntityData.TimerEndSound;
+    public string TimerSound => ComponentData.TimerSound;
+    public string TimerEndSound => ComponentData.TimerEndSound;
 
-    public string QuestCompletedRequired => EntityData.QuestCompletedRequired;
-    public string QuestInProgressRequired => EntityData.QuestInProgressRequired;
+    public string QuestCompletedRequired => ComponentData.QuestCompletedRequired;
+    public string QuestInProgressRequired => ComponentData.QuestInProgressRequired;
 
-    public float TriggerRepeatDelay => EntityData.TriggerRepeatDelay;
-    public InteractionType InteractType => EntityData.InteractType;
+    public float TriggerRepeatDelay => ComponentData.TriggerRepeatDelay;
+    public InteractionType InteractType => ComponentData.InteractType;
 
-    public float ActivationTimeAfterFirstInteraction => EntityData.ActivationTimeAfterFirstInteraction;
+    public float ActivationTimeAfterFirstInteraction => ComponentData.ActivationTimeAfterFirstInteraction;
 
     public ILogger<TriggerCoopController> Logger { get; set; }
 
     public FileLogger FileLogger { get; set; }
 
-    public override void InitializeEntity()
+    public override void InitializeComponent()
     {
         IsEnabled = IsEnable;
         IsActive = false;
 
-        CurrentInteractors = [];
+        CurrentPhysicalInteractors = [];
 
         Triggers = [];
         Activations = [];
@@ -156,7 +159,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
         foreach (var trigger in triggers.Where(trigger => trigger > 0))
             Triggers.TryAdd(trigger, triggerType);
     }
-    
+
     public override void SendDelayedData(Player player)
     {
         var trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, false,
@@ -179,14 +182,14 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
 
         var updated = false;
 
-        if (tEvent.Activate && !CurrentInteractors.Contains(player.GameObjectId))
+        if (tEvent.Activate && !CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
-            CurrentInteractors.Add(player.GameObjectId);
+            CurrentPhysicalInteractors.Add(player.GameObjectId);
             updated = true;
         }
-        else if (!tEvent.Activate && CurrentInteractors.Contains(player.GameObjectId))
+        else if (!tEvent.Activate && CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
-            CurrentInteractors.Remove(player.GameObjectId);
+            CurrentPhysicalInteractors.Remove(player.GameObjectId);
             updated = true;
         }
 
@@ -201,12 +204,22 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
 
     }
 
-    public void RunTrigger (Player player)
+    public void TriggerInteraction(ActivationType type, Player player)
+    {
+        if (!Activations.Contains(type))
+            return;
+
+        CurrentInteractions++;
+
+        RunTrigger(player);
+    }
+
+    private void RunTrigger(Player player)
     {
         if (!IsActive)
         {
-            if (CurrentInteractors.Count < NbInteractionsNeeded ||
-                NbInteractionsMatchesNbPlayers && CurrentInteractors.Count < Room.Players.Count)
+            if (Interactions < NbInteractionsNeeded ||
+                NbInteractionsMatchesNbPlayers && Interactions < Room.Players.Count)
                 return;
 
             Trigger(player, true);
@@ -250,7 +263,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             sb.AppendLine($"Disabled After Activation : {DisabledAfterActivation}");
 
         if (NbInteractionsNeeded > 0)
-            sb.AppendLine($"Interactions: {CurrentInteractors.Count}/{NbInteractionsNeeded}");
+            sb.AppendLine($"Interactions: {Interactions}/{NbInteractionsNeeded}");
 
         if (NbInteractionsMatchesNbPlayers)
             sb.AppendLine($"Number Of Interactions Matches Players: {NbInteractionsMatchesNbPlayers}");
@@ -322,11 +335,11 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
             if (Room.Entities.TryGetValue(trigger.Key, out var triggers))
                 if (triggers.Count > 0)
                 {
-                    var canTriggerEntities = triggers.OfType<ITriggerable>().ToArray();
+                    var triggerableEntities = triggers.OfType<ITriggerable>().ToArray();
 
-                    if (canTriggerEntities.Length != 0)
-                        foreach (var triggerEntity in canTriggerEntities)
-                            triggerEntity.TriggerStateChange(trigger.Value, Room, IsActive);
+                    if (triggerableEntities.Length != 0)
+                        foreach (var triggeredEntity in triggerableEntities)
+                            triggeredEntity.TriggerStateChange(trigger.Value, Room, IsActive);
 
                     continue;
                 }
@@ -346,7 +359,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
         var sb2 = new StringBuilder();
 
         sb2.AppendLine($"State: {type}")
-            .AppendLine($"Entities: {Room.GetUnknownEntityTypes(triggerId)}");
+            .AppendLine($"Components: {Room.GetUnknownComponentTypes(triggerId)}");
 
         FileLogger.WriteGenericLog<TriggerCoopController>("triggered-errors", $"Trigger {Id}", sb2.ToString(),
             LoggerType.Error);
@@ -354,7 +367,7 @@ public abstract class AbstractTriggerCoop<T> : SyncedEntity<T> where T : Trigger
 
     private bool TriggerReceiverActivated()
     {
-        var receivers = Room.GetEntities<TriggerReceiverEntity>();
+        var receivers = Room.GetComponentsOfType<TriggerReceiverComp>();
 
         var triggers = Triggers
             .Where(r => r.Value == TriggerType.Activate)

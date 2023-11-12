@@ -1,5 +1,4 @@
-﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
@@ -33,30 +32,28 @@ public class GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
     private void PrintItems(string[] command)
     {
         var itemInformation = new Dictionary<int, string>();
-        var items = (Dictionary<int, ItemDescription>) itemCatalog.GetField<ItemHandler>("_itemDescriptionCache");
 
         var shouldSimplify = logger.Ask(
             "Would you like to have a simplified item description?",
             true
         );
 
-        var shouldFilter = logger.Ask(
-            "Would you like the items filtered to only the ones that you have cached?",
+        var shouldFilter = !logger.Ask(
+            "Would you like the items to also include prefabs not cached? (i.e. unfiltered)",
             true
         );
 
-        foreach (var item in items)
+        foreach (var item in itemCatalog.Items)
         {
             if (shouldFilter)
                 if (!assets.InternalAssets.ContainsKey(item.Value.PrefabName))
                     continue;
 
-            var filteredText =
-                shouldSimplify ? string.Empty : $" -{string.Join(',', item.ToString().Split(',').Skip(2))}";
+            var filteredText = shouldSimplify ? string.Empty : $" -{string.Join(',', item.ToString().Split(',').Skip(2))}";
             itemInformation.Add(item.Key, $"{item.Value.ItemName} ({item.Value.PrefabName}){filteredText}");
         }
 
-        PrintOrFile("Items", itemInformation, items.Count);
+        PrintOrFile("Items", itemInformation, itemCatalog.Items.Count);
     }
 
     private void PrintLevels(string[] command)

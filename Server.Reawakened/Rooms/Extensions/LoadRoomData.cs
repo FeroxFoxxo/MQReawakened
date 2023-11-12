@@ -70,13 +70,13 @@ public static class LoadRoomData
         return planes;
     }
 
-    public static Dictionary<int, List<BaseSyncedEntity>> LoadEntities(this Room room, IServiceProvider services,
+    public static Dictionary<int, List<BaseComponent>> LoadEntities(this Room room, IServiceProvider services,
         out Dictionary<int, List<string>> unknownEntities)
     {
         var reflectionUtils = services.GetRequiredService<ReflectionUtils>();
         var fileLogger = services.GetRequiredService<FileLogger>();
 
-        var entities = new Dictionary<int, List<BaseSyncedEntity>>();
+        var entities = new Dictionary<int, List<BaseComponent>>();
         unknownEntities = [];
 
         if (room.Planes == null)
@@ -84,7 +84,7 @@ public static class LoadRoomData
 
         var invalidProcessable = new List<string>();
 
-        var syncedEntities = typeof(BaseSyncedEntity).Assembly.GetServices<BaseSyncedEntity>()
+        var entityComponents = typeof(BaseComponent).Assembly.GetServices<BaseComponent>()
             .Where(t => t.BaseType != null)
             .Where(t => t.BaseType.GenericTypeArguments.Length > 0)
             .ToDictionary(t => t.BaseType.GenericTypeArguments.First().FullName, t => t);
@@ -99,7 +99,7 @@ public static class LoadRoomData
                     if (!processable.TryGetValue(component.Key, out var mqType))
                         continue;
 
-                    if (syncedEntities.TryGetValue(mqType.FullName!, out var internalType))
+                    if (entityComponents.TryGetValue(mqType.FullName!, out var internalType))
                     {
                         var dataObj = RuntimeHelpers.GetUninitializedObject(mqType);
 
@@ -130,9 +130,9 @@ public static class LoadRoomData
                                     field.FieldType);
                         }
 
-                        var storedData = new StoredEntityModel(entity.Value, room, fileLogger);
+                        var entityData = new Entity(entity.Value, room, fileLogger);
 
-                        var instancedEntity = reflectionUtils.CreateBuilder<BaseSyncedEntity>(internalType.GetTypeInfo())
+                        var instancedComponent = reflectionUtils.CreateBuilder<BaseComponent>(internalType.GetTypeInfo())
                             .Invoke(services);
 
                         var methods = internalType.GetMethods().Where(m =>
@@ -140,10 +140,10 @@ public static class LoadRoomData
                             var parameters = m.GetParameters();
 
                             return
-                                m.Name == "SetEntityData" &&
+                                m.Name == "SetComponentData" &&
                                 parameters.Length == 2 &&
                                 parameters[0].ParameterType == dataObj.GetType() &&
-                                parameters[1].ParameterType == storedData.GetType();
+                                parameters[1].ParameterType == entityData.GetType();
                         }).ToArray();
 
                         if (methods.Length != 1)
@@ -151,12 +151,12 @@ public static class LoadRoomData
                                 "Found invalid {Count} amount of initialization methods for {EntityId} ({EntityType})",
                                 methods.Length, entity.Key, internalType.Name);
                         else
-                            methods.First().Invoke(instancedEntity, new[] { dataObj, storedData });
+                            methods.First().Invoke(instancedComponent, new[] { dataObj, entityData });
 
                         if (!entities.ContainsKey(entity.Key))
                             entities.Add(entity.Key, []);
 
-                        entities[entity.Key].Add(instancedEntity);
+                        entities[entity.Key].Add(instancedComponent);
                     }
                     else
                     {
@@ -176,22 +176,22 @@ public static class LoadRoomData
         return entities;
     }
 
-    public static Dictionary<int, T> GetEntities<T>(this Room room) where T : class
+    public static Dictionary<int, T> GetComponentsOfType<T>(this Room room) where T : class
     {
         var type = typeof(T);
 
-        var entities = room.Entities.Values.SelectMany(t => t).Where(t => t is T).ToArray();
+        var components = room.Entities.Values.SelectMany(t => t).Where(t => t is T).ToArray();
 
-        if (entities.Length > 0)
-            return entities.ToDictionary(x => x.Id, x => x as T);
+        if (components.Length > 0)
+            return components.ToDictionary(x => x.Id, x => x as T);
 
-        room.Logger.LogError("Could not find entity with type {TypeName}. Returning empty. " +
+        room.Logger.LogError("Could not find components with type {TypeName}. Returning empty. " +
                              "Possible types: {Types}", type.Name, string.Join(", ", room.Entities.Keys));
 
         return [];
     }
 
-    public static string GetUnknownEntityTypes(this Room room, int id)
+    public static string GetUnknownComponentTypes(this Room room, int id)
     {
         var entityInfo = new Dictionary<string, IEnumerable<string>>();
 

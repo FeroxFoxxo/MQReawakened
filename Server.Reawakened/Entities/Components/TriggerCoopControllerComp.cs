@@ -1,13 +1,13 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Abstractions;
+using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
-namespace Server.Reawakened.Entities;
+namespace Server.Reawakened.Entities.Components;
 
-public class TriggerCoopControllerEntity : AbstractTriggerCoop<TriggerCoopController>
+public class TriggerCoopControllerComp : TriggerCoopControllerComp<TriggerCoopController>
 {
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }

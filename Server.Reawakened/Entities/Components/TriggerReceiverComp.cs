@@ -7,23 +7,23 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using System.Text;
 
-namespace Server.Reawakened.Entities;
+namespace Server.Reawakened.Entities.Components;
 
-public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
+public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
 {
     private int _activations;
     private int _deactivations;
 
     public bool Activated = true;
     public bool Enabled = true;
-    public int NbActivationsNeeded => EntityData.NbActivationsNeeded;
-    public int NbDeactivationsNeeded => EntityData.NbDeactivationsNeeded;
-    public bool DisabledUntilTriggered => EntityData.DisabledUntilTriggered;
-    public float DelayBeforeTrigger => EntityData.DelayBeforeTrigger;
-    public bool ActiveByDefault => EntityData.ActiveByDefault;
-    public TriggerReceiver.ReceiverCollisionType CollisionType => EntityData.CollisionType;
+    public int NbActivationsNeeded => ComponentData.NbActivationsNeeded;
+    public int NbDeactivationsNeeded => ComponentData.NbDeactivationsNeeded;
+    public bool DisabledUntilTriggered => ComponentData.DisabledUntilTriggered;
+    public float DelayBeforeTrigger => ComponentData.DelayBeforeTrigger;
+    public bool ActiveByDefault => ComponentData.ActiveByDefault;
+    public TriggerReceiver.ReceiverCollisionType CollisionType => ComponentData.CollisionType;
 
-    public ILogger<TriggerReceiverEntity> Logger { get; set; }
+    public ILogger<TriggerReceiverComp> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
@@ -102,7 +102,7 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
         );
     }
 
-    public override void InitializeEntity() => Trigger(ActiveByDefault);
+    public override void InitializeComponent() => Trigger(ActiveByDefault);
 
     public override object[] GetInitData(Player player) => new object[] { Activated ? 1 : 0 };
 
@@ -122,21 +122,14 @@ public class TriggerReceiverEntity : SyncedEntity<TriggerReceiver>, ITriggerable
 
         LogTriggerRecieved();
 
-        var entities = Room.Entities[Id];
+        var entityComponents = Room.Entities[Id];
 
-        foreach (var entity in entities)
-        {
-            if (activated)
-            {
-                if (entity is IMoveable moveable)
+        foreach (var component in entityComponents)
+            if (component is IMoveable moveable)
+                if (activated)
                     moveable.GetMovement().Activate(Room.Time);
-            }
-            else
-            {
-                if (entity is IMoveable moveable)
+                else
                     moveable.GetMovement().Deactivate(Room.Time);
-            }
-        }
 
         SendTriggerState(activated);
     }

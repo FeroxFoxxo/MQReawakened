@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Models;
+using Server.Reawakened.XMLs.Models.Npcs;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
@@ -42,7 +42,7 @@ public class InternalDialogCatalog : IBundledXml
                 var name = string.Empty;
                 var descriptionId = -1;
 
-                var dialog = new Dictionary<int, Conversation>();
+                var dialog = new Dictionary<int, ConversationInfo>();
 
                 foreach (XmlAttribute npcInfo in npcs.Attributes!)
                 {
@@ -84,7 +84,7 @@ public class InternalDialogCatalog : IBundledXml
                         }
                     }
 
-                    dialog.TryAdd(minimumReputation, new Conversation(dialogId, conversationId));
+                    dialog.TryAdd(minimumReputation, new ConversationInfo(dialogId, conversationId));
                 }
 
                 var nameModel = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == name);

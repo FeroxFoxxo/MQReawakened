@@ -1,19 +1,19 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.Abstractions;
+using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.LootHandlers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
-namespace Server.Reawakened.Entities;
+namespace Server.Reawakened.Entities.Components;
 
-public class ChestControllerEntity : AbstractBaseChest<ChestController>
+public class ChestControllerComp : BaseChestControllerComp<ChestController>
 {
     public bool Collected;
 
     public ItemCatalog ItemCatalog { get; set; }
 
-    public ILogger<ChestControllerEntity> Logger { get; set; }
+    public ILogger<ChestControllerComp> Logger { get; set; }
 
     public InternalLootCatalog LootCatalog { get; set; }
 
@@ -29,7 +29,7 @@ public class ChestControllerEntity : AbstractBaseChest<ChestController>
         player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
 
         var trig = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true)
-        { 
+        {
             //need to redo trigger for ChestController
             /*
             EventDataList =

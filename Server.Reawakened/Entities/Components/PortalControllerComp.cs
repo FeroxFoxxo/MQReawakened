@@ -5,20 +5,20 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 
-namespace Server.Reawakened.Entities;
+namespace Server.Reawakened.Entities.Components;
 
-public class PortalControllerEntity : SyncedEntity<PortalController>
+public class PortalControllerComp : Component<PortalController>
 {
-    public string OverrideCondition => EntityData.OverrideCondition;
-    public bool LaunchMinigame => EntityData.LaunchMinigame;
-    public string TimedEventId => EntityData.timedEventId;
-    public string TimedEventPortalObjectName => EntityData.TimedEventPortalObjectName;
-    public string TimedEventPortalOnAnim => EntityData.TimedEventPortalOnAnim;
-    public string TimedEventPortalOffAnim => EntityData.TimedEventPortalOffAnim;
+    public string OverrideCondition => ComponentData.OverrideCondition;
+    public bool LaunchMinigame => ComponentData.LaunchMinigame;
+    public string TimedEventId => ComponentData.timedEventId;
+    public string TimedEventPortalObjectName => ComponentData.TimedEventPortalObjectName;
+    public string TimedEventPortalOnAnim => ComponentData.TimedEventPortalOnAnim;
+    public string TimedEventPortalOffAnim => ComponentData.TimedEventPortalOffAnim;
 
     public WorldGraph WorldGraph { get; set; }
     public WorldHandler WorldHandler { get; set; }
-    public ILogger<PortalControllerEntity> Logger { get; set; }
+    public ILogger<PortalControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) =>
         new object[] { string.Empty };
@@ -31,7 +31,7 @@ public class PortalControllerEntity : SyncedEntity<PortalController>
 
         if (portal.IsAllowedEntry == false)
             return;
-        
+
         if (portal.EventDataList[0] is not int)
             throw new InvalidDataException($"Portal with id '{portal.EventDataList[0]}' could not be cast to int.");
 

@@ -4,16 +4,16 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities;
+namespace Server.Reawakened.Entities.Components;
 
-public class GenericCollectibleModel : SyncedEntity<GenericCollectible>
+public class GenericCollectibleComp : Component<GenericCollectible>
 {
     public bool Collected;
 
     public int Value;
-    public ILogger<GenericCollectibleModel> Logger { get; set; }
+    public ILogger<GenericCollectibleComp> Logger { get; set; }
 
-    public override void InitializeEntity()
+    public override void InitializeComponent()
     {
         switch (PrefabName)
         {
