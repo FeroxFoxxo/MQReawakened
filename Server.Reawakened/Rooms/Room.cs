@@ -1,10 +1,9 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Enums;
@@ -24,13 +23,16 @@ public class Room : Timer
     private readonly HashSet<int> _gameObjectIds;
 
     public readonly Dictionary<int, Player> Players;
-    public readonly Dictionary<int, List<BaseSyncedEntity>> Entities;
+    public readonly Dictionary<int, List<BaseComponent>> Entities;
     public readonly ILogger<Room> Logger;
 
     public readonly Dictionary<string, PlaneModel> Planes;
     public readonly Dictionary<int, List<string>> UnknownEntities;
 
-    public SpawnPointEntity DefaultSpawn { get; set; }
+    public SpawnPointComp DefaultSpawn { get; set; }
+
+    public SpawnPointComp CheckpointSpawn { get; set; }
+    public int CheckpointId { get; set; }
 
     public LevelInfo LevelInfo => _level.LevelInfo;
 
@@ -46,6 +48,9 @@ public class Room : Timer
         _config = config;
         Logger = logger;
         _level = level;
+
+        CheckpointSpawn = null;
+        CheckpointId = 0;
 
         Players = [];
         _gameObjectIds = [];
@@ -63,10 +68,10 @@ public class Room : Timer
                 )
             _gameObjectIds.Add(gameObjectId);
 
-        foreach (var entity in Entities.Values.SelectMany(x => x))
-            entity.InitializeEntity();
+        foreach (var component in Entities.Values.SelectMany(x => x))
+            component.InitializeComponent();
 
-        var spawnPoints = this.GetEntities<SpawnPointEntity>();
+        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
 
         DefaultSpawn = spawnPoints.Values.MinBy(p => p.Index);
 
@@ -80,8 +85,8 @@ public class Room : Timer
 
     public override void OnTick()
     {
-        foreach (var entity in Entities.Values.SelectMany(entityList => entityList))
-            entity.Update();
+        foreach (var entityComponent in Entities.Values.SelectMany(entityList => entityList))
+            entityComponent.Update();
 
         foreach (var player in Players.Values.Where(
                      player => GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime
@@ -91,21 +96,21 @@ public class Room : Timer
 
     public void GroupMemberRoomChanged(Player player)
     {
-        if (player.Group == null)
+        if (player.TempData.Group == null)
             return;
 
-        foreach (var groupMember in player.Group.GroupMembers)
+        foreach (var groupMember in player.TempData.Group.GetMembers())
         {
             groupMember.SendXt(
                 "pm",
-                player.Character.Data.CharacterName,
+                player.CharacterName,
                 LevelInfo.Name,
                 GetRoomName()
             );
         }
     }
 
-    public void AddClient(Player newPlayer, out JoinReason reason)
+    public void AddClient(Player currentPlayer, out JoinReason reason)
     {
         reason = Players.Count > _config.PlayerCap ? JoinReason.Full : JoinReason.Accepted;
 
@@ -121,35 +126,30 @@ public class Room : Timer
 
             _gameObjectIds.Add(gameObjectId);
 
-            newPlayer.GameObjectId = gameObjectId;
+            currentPlayer.TempData.GameObjectId = gameObjectId;
 
-            Players.Add(gameObjectId, newPlayer);
+            Players.Add(gameObjectId, currentPlayer);
 
-            GroupMemberRoomChanged(newPlayer);
+            GroupMemberRoomChanged(currentPlayer);
 
-            newPlayer.NetState.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
+            currentPlayer.NetState.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
 
             if (LevelInfo.LevelId == 0)
                 return;
 
             // USER ENTER
-            var newAccount = newPlayer.NetState.Get<Account>();
 
-            foreach (var currentPlayer in Players.Values)
+            foreach (var roomCharacter in Players.Values)
             {
-                var currentAccount = currentPlayer.NetState.Get<Account>();
+                currentPlayer.SendUserEnterDataTo(roomCharacter);
 
-                var areDifferentClients = currentPlayer.UserId != newPlayer.UserId;
-
-                newPlayer.SendUserEnterDataTo(currentPlayer, currentAccount);
-
-                if (areDifferentClients)
-                    currentPlayer.SendUserEnterDataTo(newPlayer, newAccount);
+                if (roomCharacter != currentPlayer)
+                    roomCharacter.SendUserEnterDataTo(currentPlayer);
             }
         }
         else
         {
-            newPlayer.NetState.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
+            currentPlayer.NetState.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
         }
     }
 
@@ -178,10 +178,10 @@ public class Room : Timer
         // WHERE TO SPAWN
         var character = player.Character;
 
-        BaseSyncedEntity spawnLocation = null;
+        BaseComponent spawnLocation = null;
 
-        var spawnPoints = this.GetEntities<SpawnPointEntity>();
-        var portals = this.GetEntities<PortalControllerEntity>();
+        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
+        var portals = this.GetComponentsOfType<PortalControllerComp>();
 
         var spawnId = character.LevelData.SpawnPointId;
 

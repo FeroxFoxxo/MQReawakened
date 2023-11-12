@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Rooms.Enums;
+﻿using Server.Reawakened.Entities.Enums;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
 

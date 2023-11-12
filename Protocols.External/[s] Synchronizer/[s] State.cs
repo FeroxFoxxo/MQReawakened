@@ -64,44 +64,44 @@ public class State : ExternalProtocol
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
                     var collisionTarget = int.Parse(notifyCollisionEvent.CollisionTarget);
 
-                    if (room.Entities.TryGetValue(collisionTarget, out var entities))
-                        foreach (var entity in entities)
-                            entity.NotifyCollision(notifyCollisionEvent, newPlayer);
+                    if (room.Entities.TryGetValue(collisionTarget, out var entityComponents))
+                        foreach (var component in entityComponents)
+                            component.NotifyCollision(notifyCollisionEvent, newPlayer);
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
-                            collisionTarget, room.GetUnknownEntityTypes(collisionTarget));
+                            collisionTarget, room.GetUnknownComponentTypes(collisionTarget));
                     break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
 
-                    newPlayer.Position = new Vector3Model
+                    newPlayer.TempData.Position = new Vector3Model
                     {
                         X = physicsBasicEvent.PositionX,
                         Y = physicsBasicEvent.PositionY,
                         Z = physicsBasicEvent.PositionZ
                     };
 
-                    newPlayer.Velocity = new Vector3Model
+                    newPlayer.TempData.Velocity = new Vector3Model
                     {
                         X = physicsBasicEvent.VelocityX,
                         Y = physicsBasicEvent.VelocityY,
                         Z = physicsBasicEvent.VelocityZ
                     };
 
-                    newPlayer.OnGround = physicsBasicEvent.OnGround;
+                    newPlayer.TempData.OnGround = physicsBasicEvent.OnGround;
                     break;
                 case SyncEvent.EventType.Direction:
                     var directionEvent = new Direction_SyncEvent(syncEvent);
-                    newPlayer.Direction = directionEvent.Direction;
+                    newPlayer.TempData.Direction = directionEvent.Direction;
                     break;
             }
 
             room.SendSyncEvent(syncEvent, Player);
         }
-        else if (room.Entities.TryGetValue(entityId, out var entity))
+        else if (room.Entities.TryGetValue(entityId, out var entityComponents))
         {
-            foreach (var entityComponent in entity)
-                entityComponent.RunSyncedEvent(syncEvent, Player);
+            foreach (var component in entityComponents)
+                component.RunSyncedEvent(syncEvent, Player);
         }
         else
         {
@@ -109,7 +109,7 @@ public class State : ExternalProtocol
             {
                 default:
                     TraceSyncEventError(entityId, syncEvent, room.LevelInfo,
-                        room.GetUnknownEntityTypes(entityId));
+                        room.GetUnknownComponentTypes(entityId));
                     break;
             }
         }
@@ -130,42 +130,44 @@ public class State : ExternalProtocol
             uniqueType = "Player";
 
             uniqueIdentifier = newPlayer.Character != null ?
-                $"{newPlayer.Character.Data.CharacterName} ({newPlayer.Character.Data.CharacterId})" :
+                $"{newPlayer.CharacterName} ({newPlayer.Character.Data.CharacterId})" :
                 "Unknown";
         }
 
-        var entities = new List<string>();
+        var entityComponentList = new List<string>();
 
         var prefabName = string.Empty;
 
-        if (room.Entities.TryGetValue(entityId, out var entity))
+        if (room.Entities.TryGetValue(entityId, out var entityComponents))
         {
-            foreach (var entityComponent in entity)
+            foreach (var component in entityComponents)
             {
-                entities.Add($"K:{entityComponent.Name}");
+                entityComponentList.Add($"K:{component.Name}");
 
-                if (!string.IsNullOrEmpty(entityComponent.PrefabName))
-                    prefabName = entityComponent.PrefabName;
+                if (!string.IsNullOrEmpty(component.PrefabName))
+                    prefabName = component.PrefabName;
             }
         }
         
-        if (room.UnknownEntities.TryGetValue(entityId, out var unknownEntities))
-            foreach (var entityComponent in unknownEntities)
-                entities.Add($"U:{entityComponent}");
+        if (room.UnknownEntities.TryGetValue(entityId, out var unknownEntityComponents))
+            foreach (var component in unknownEntityComponents)
+                entityComponentList.Add($"U:{component}");
 
-        if (entities.Count > 0)
+        if (entityComponentList.Count > 0)
         {
             uniqueType = "Entity";
 
             if (!string.IsNullOrEmpty(prefabName))
                 uniqueIdentifier = $"{prefabName} ({entityId})";
 
-            additionalInfo = string.Join('/', entities);
+            additionalInfo = string.Join('/', entityComponentList);
         }
 
+        var attributes = string.Join(", ", syncEvent.EventDataList);
+
         if (Player.Character != null)
-                Logger.LogDebug("SyncEvent '{Type}' run for {Type} [{Id}] by {Player} {AdditionalInfo}",
-                    syncEvent.Type, uniqueType, uniqueIdentifier, Player.Character.Data.CharacterName, additionalInfo);
+                Logger.LogDebug("SyncEvent '{Type}' run for {Type} [{Id}] by {Player} {AdditionalInfo} with attributes {Attrib}",
+                    syncEvent.Type, uniqueType, uniqueIdentifier, Player.CharacterName, additionalInfo, attributes);
     }
 
     public void TraceSyncEventError(int entityId, SyncEvent syncEvent, LevelInfo levelInfo, string entityInfo)

@@ -23,7 +23,7 @@ public class CharacterDataModel : CharacterLightModel
     private Dictionary<int, int> IdolCount =>
         _player?.Character.CollectedIdols
             .ToDictionary(x => x.Key, x => x.Value.Count)
-        ?? new Dictionary<int, int>();
+        ?? [];
 
     private PlayerListModel FriendModels =>
         new(FriendList.Select(f => new PlayerDataModel(f.Key, f.Value, _player)).ToList());
@@ -68,8 +68,11 @@ public class CharacterDataModel : CharacterLightModel
             throw new InvalidDataException();
     }
 
-    public void SetPlayerData(Player player) =>
+    public void SetPlayerData(Player player)
+    {
         _player = player;
+        _player.NetState.Identifier = CharacterName;
+    }
 
     private void InitializeDetailedLists()
     {

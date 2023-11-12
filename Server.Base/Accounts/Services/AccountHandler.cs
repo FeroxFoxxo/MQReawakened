@@ -18,7 +18,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
     FileLogger fileLogger, InternalRwConfig rwConfig, TemporaryDataStorage temporaryDataStorage) :
     DataHandler<Account>(sink, logger, rConfig, rwConfig)
 {
-    public Dictionary<IPAddress, int> IpTable = new();
+    public Dictionary<IPAddress, int> IpTable = [];
 
     public override void OnAfterLoad() => CreateIpTables();
 

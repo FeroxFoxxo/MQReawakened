@@ -17,7 +17,6 @@
         <Folder Include="[j] LootHandler\" />
         <Folder Include="[M] MinigameHandler\" />
         <Folder Include="[w] WarningMessageHandler\" />
-        <Folder Include="[t] TradeHandler\" />
         <Folder Include="[r] RoomHandler\" />
         <Folder Include="[o] ReportMessageHandler\" />
         <Folder Include="[Z] PetHandler\" />

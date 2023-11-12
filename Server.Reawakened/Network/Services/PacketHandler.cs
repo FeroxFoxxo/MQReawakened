@@ -22,8 +22,8 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
     public delegate void ExternalCallback(NetState state, string[] message, IServiceProvider serviceProvider);
     public delegate void SystemCallback(NetState state, XmlDocument document, IServiceProvider serviceProvider);
 
-    private readonly Dictionary<string, SystemCallback> _protocolsSystem = new();
-    private readonly Dictionary<string, ExternalCallback> _protocolsXt = new();
+    private readonly Dictionary<string, SystemCallback> _protocolsSystem = [];
+    private readonly Dictionary<string, ExternalCallback> _protocolsExternal = [];
 
     public void Initialize()
     {
@@ -86,50 +86,39 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
                     instance.Run(msg);
                 }
 
-                _protocolsXt.Add(createInstance(services).ProtocolName, Callback);
+                _protocolsExternal.Add(createInstance(services).ProtocolName, Callback);
             }
         }
 
-        handler.Protocols.Add('%', SendXt);
-        handler.Protocols.Add('<', SendSys);
+        handler.ProtocolLookup.Add('%', GetXt);
+        handler.ProtocolLookup.Add('<', GetSys);
+
+        handler.ProtocolSend.Add('%', SendXt);
+        handler.ProtocolSend.Add('<', SendSys);
     }
 
-    public ProtocolResponse SendXt(NetState netState, string packet)
+    public ProtocolResponse GetXt(string packet)
     {
         var splitPacket = packet.Split('%');
         var actionType = splitPacket[3];
-        var unhandled = false;
+        var unhandled = !_protocolsExternal.ContainsKey(actionType);
 
-        if (_protocolsXt.TryGetValue(actionType, out var value))
-        {
-            value(netState, splitPacket, services);
-        }
-        else
-        {
-            netState.TracePacketError(actionType, packet);
-            unhandled = true;
-        }
-
-        return new ProtocolResponse(actionType, unhandled);
+        return new ProtocolResponse(actionType, unhandled, splitPacket);
     }
 
-    public ProtocolResponse SendSys(NetState netState, string packet)
+    public ProtocolResponse GetSys(string packet)
     {
         XmlDocument xmlDocument = new();
         xmlDocument.LoadXml(packet);
         var actionType = xmlDocument.SelectSingleNode("/msg/body/@action")?.Value;
-        var unhandled = false;
+        var unhandled = !_protocolsSystem.ContainsKey(actionType);
 
-        if (actionType != null && _protocolsSystem.TryGetValue(actionType, out var value))
-        {
-            value(netState, xmlDocument, services);
-        }
-        else
-        {
-            netState.TracePacketError(actionType, packet);
-            unhandled = true;
-        }
-
-        return new ProtocolResponse(actionType, unhandled);
+        return new ProtocolResponse(actionType, unhandled, xmlDocument);
     }
+
+    public void SendXt(NetState netState, string actionType, object packetStr) =>
+        _protocolsExternal[actionType](netState, (string[])packetStr, services);
+
+    public void SendSys(NetState netState, string actionType, object packetXml) =>
+        _protocolsSystem[actionType](netState, (XmlDocument) packetXml, services);
 }

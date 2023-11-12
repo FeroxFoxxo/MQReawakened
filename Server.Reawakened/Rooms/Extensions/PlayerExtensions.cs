@@ -1,5 +1,4 @@
 ﻿using Server.Base.Accounts.Extensions;
-using Server.Base.Accounts.Models;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -29,24 +28,6 @@ public static class PlayerExtensions
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelData.LevelId ?? -1;
 
-    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
-    {
-        character.Data.SetPlayerData(player);
-        character.Data.CurrentLife = character.Data.MaxLife;
-
-        player.SetCharacterSelected(character.Data.CharacterId);
-        player.PlayerHandler.AddPlayer(player);
-        player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
-
-        foreach (var friend in player.PlayerHandler.PlayerList
-                     .Where(p =>
-                         player.Character.Data.FriendList
-                             .Any(x => x.Key == p.UserId && x.Value == p.Character.Data.CharacterId)
-                     )
-                )
-            friend.SendXt("fy", player.Character.Data.CharacterName);
-    }
-
     public static void SentEntityTriggered(this Room room, int id, Player player, bool success, bool active)
     {
         var collectedEvent =
@@ -55,13 +36,15 @@ public static class PlayerExtensions
         room.SendSyncEvent(collectedEvent);
     }
 
-    public static void SendUserEnterDataTo(this Player send, Player receive, Account account) => receive.NetState.SendXml("uER",
-            $"<u i='{send.UserId}' m='{account.IsModerator()}' s='{account.IsSpectator()}' p='{send.UserId}'>" +
-            $"<n>{account.Username}</n>" +
+    public static void SendUserEnterDataTo(this Player send, Player receive) =>
+        receive.NetState.SendXml("uER",
+            $"<u i='{send.UserId}' m='{send.Account.IsModerator()}' s='{send.Account.IsSpectator()}' p='{send.Account.UserId}'>" +
+            $"<n>{send.Account.Username}</n>" +
             "</u>"
         );
 
-    public static void SendUserGoneDataTo(this Player send, Player receive) => receive.NetState.SendXml("userGone",
+    public static void SendUserGoneDataTo(this Player send, Player receive) =>
+        receive.NetState.SendXml("userGone",
             $"<user id='{send.UserId}'></user>"
         );
 
@@ -85,11 +68,28 @@ public static class PlayerExtensions
     {
         var levelUpData = new LevelUpDataModel
         {
-            Level = player.Character.Data.GlobalLevel
+            Level = player.Character.Data.GlobalLevel,
+            IncPowerJewel = player.Character.Data.BadgePoints
         };
 
         foreach (var currentPlayer in player.Room.Players.Values)
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
+    }
+
+    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
+    {
+        character.Data.SetPlayerData(player);
+        player.SetCharacterSelected(character.Data.CharacterId);
+        player.PlayerHandler.AddPlayer(player);
+        player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
+
+        foreach (var friend in player.PlayerHandler.GetPlayersByFriend(player.UserId)
+                     .Where(p =>
+                         player.Character.Data.FriendList
+                             .Any(x => x.Key == p.UserId && x.Value == p.Character.Data.CharacterId)
+                     )
+                )
+            friend.SendXt("fy", player.CharacterName);
     }
 
     public static void DumpToLobby(this Player player)

@@ -48,13 +48,14 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
         AddCommand(new ChatCommand("unlockHotbar", "[petSlot 1 (true) / 0 (false)]", AddHotbar));
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
-        AddCommand(new ChatCommand("badgePoints", "[amount]", BadgePoints));
+        AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
         AddCommand(new ChatCommand("save", "", SaveLevel));
+        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
@@ -97,6 +98,32 @@ public class ChatCommands : IService
     }
 
     public void AddCommand(ChatCommand command) => _commands.Add(command.Name, command);
+
+    private bool Teleport(Player player, string[] args)
+    {
+        var character = player.Character;
+
+        if (character == null) return false;
+
+        if (!int.TryParse(args[1], out var xPos)
+            || !int.TryParse(args[2], out var yPos)
+            || !int.TryParse(args[3], out var zPos))
+        {
+            Log("Please enter a valid coordinate value.", player);
+            return false;
+        }
+
+        var z = zPos;
+        if (zPos is < 0 or > 1)
+        {
+            Log("Invalid value for Z, defaulting to 0", player);
+            z = 0;
+        }
+
+        player.TeleportPlayer(xPos, yPos, z);
+
+        return true;
+    }
 
     private bool DiscoverTribes(Player player, string[] args)
     {
@@ -173,34 +200,10 @@ public class ChatCommands : IService
 
         return true;
     }
-    
+
     private static bool BadgePoints(Player player, string[] args)
     {
-        var character = player.Character;
-
-        int amount;
-
-        if (args.Length < 2)
-        {
-            Log($"Please enter number of badge points", player);
-            return false;
-        }
-        if (!int.TryParse(args[1], out var pointsAmount) || args.Length < 2)
-            Log($"Invalid amount of badge points, defaulting to 1", player);
-
-        amount = pointsAmount;
-
-        if (amount <= 0)
-            amount = 1;
-
-        player.AddPoints(amount);
-
-        Log(
-            amount > 1
-                ? $"{character.Data.CharacterName} received {amount} badge points!"
-                : $"{character.Data.CharacterName} received {amount} badge point! (get grinding noob)", player
-           );
-
+        player.AddPoints();
         return true;
     }
 

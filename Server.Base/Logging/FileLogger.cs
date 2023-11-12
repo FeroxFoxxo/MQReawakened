@@ -7,7 +7,7 @@ namespace Server.Base.Logging;
 
 public class FileLogger(ILoggerFactory loggerFactory, InternalRConfig config, ILogger<FileLogger> fLogger)
 {
-    private readonly Dictionary<string, ConsoleFileLogger> _fileLoggers = new();
+    private readonly Dictionary<string, ConsoleFileLogger> _fileLoggers = [];
     private readonly object _lock = new();
 
     public void WriteGenericLog<T>(string logFileName, string title, string message, LoggerType type)

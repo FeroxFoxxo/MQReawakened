@@ -9,7 +9,7 @@ public class RecipeModel
     public List<IngredientModel> Ingredients { get; set; }
 
     public RecipeModel() =>
-        Ingredients = new List<IngredientModel>();
+        Ingredients = [];
 
     public override string ToString()
     {

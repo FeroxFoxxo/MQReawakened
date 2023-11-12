@@ -14,9 +14,28 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Pages\Creator\**" />
+      <Content Remove="Pages\Creator\**" />
+      <EmbeddedResource Remove="Pages\Creator\**" />
+      <None Remove="Pages\Creator\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Pages\CreateItem.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
         <ProjectReference Include="..\Server.Reawakened\Server.Reawakened.csproj" />
         <ProjectReference Include="..\Server.Web\Server.Web.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Pages\CreateItem.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\CreateItem.cshtml" />
     </ItemGroup>
 
 </Project>

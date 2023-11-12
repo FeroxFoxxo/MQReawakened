@@ -32,15 +32,15 @@ public class Login : SystemProtocol
             {
                 var account = NetState.Get<Account>();
 
-                foreach (var player in PlayerHandler.PlayerList.Where(p => p.UserId == account.UserId))
+                foreach (var player in PlayerHandler.GetPlayersByUserId(account.UserId))
                     player.Remove(Logger);
 
-                if (!PlayerHandler.PlayerList.Any(p => p.UserId == account.UserId))
+                if (!PlayerHandler.AnyPlayersByUserId(account.UserId))
                 {
                     UserInfoHandler.InitializeUser(NetState);
                     SendXml(
                         "logOK",
-                        $"<login id='{NetState.Get<Account>().UserId}' mod='{NetState.Get<Account>().IsModerator()}' n='{username}' />"
+                        $"<login id='{account.UserId}' mod='{account.IsModerator()}' n='{username}' />"
                     );
                     return;
                 }

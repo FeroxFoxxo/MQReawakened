@@ -15,8 +15,7 @@ public class DiscoverStat : ExternalProtocol
 
         var stat = int.Parse(message[5]);
 
-        if (!character.Data.DiscoveredStats.Contains(stat))
-            character.Data.DiscoveredStats.Add(stat);
+        character.Data.DiscoveredStats.Add(stat);
 
         if (stat is >= 0 and < 12 and not 6)
             return;

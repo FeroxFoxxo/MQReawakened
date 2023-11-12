@@ -125,7 +125,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
         }
         else
         {
-            character.HasAddedDiscoveredTribe(tribe);
+            character?.HasAddedDiscoveredTribe(tribe);
             playerEventSink.InvokePlayerRefresh();
         }
 

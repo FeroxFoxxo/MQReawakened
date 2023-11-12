@@ -12,12 +12,11 @@ public class InviteResponse : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var frienderName = message[5];
         var accepted = message[6] == "1";
         var status = int.Parse(message[7]);
 
-        var friender = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == frienderName);
+        var frienderName = message[5];
+        var friender = PlayerHandler.GetPlayerByName(frienderName);
 
         if (friender == null)
             return;
@@ -28,8 +27,8 @@ public class InviteResponse : ExternalProtocol
             Player.Character.Data.FriendList.Add(friender.UserId, Player.Character.Data.CharacterId);
 
             friender.SendXt("fr",
-                friender.Character.Data.CharacterName,
-                Player.Character.Data.CharacterName,
+                friender.CharacterName,
+                Player.CharacterName,
                 friender.Character.Data.GetFriends()
             );
 
@@ -42,7 +41,7 @@ public class InviteResponse : ExternalProtocol
         }
         else
         {
-            friender.SendXt("fc", Player.Character.Data.CharacterName, status);
+            friender.SendXt("fc", Player.CharacterName, status);
         }
     }
 }

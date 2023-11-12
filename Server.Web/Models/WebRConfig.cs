@@ -7,5 +7,5 @@ public class WebRConfig : IRConfig
     public List<string> IgnorePaths { get; }
 
     public WebRConfig() =>
-        IgnorePaths = new List<string>();
+        IgnorePaths = [];
 }

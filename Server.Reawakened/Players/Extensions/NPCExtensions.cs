@@ -1,5 +1,5 @@
 ﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.Entities;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
@@ -54,27 +54,27 @@ public static class NpcExtensions
 
     public static void UpdateNpcsInLevel(this Player player)
     {
-        foreach (var entity in GetNpcs(player))
-            entity.SendNpcInfo(player.Character, player.NetState);
+        foreach (var npc in GetNpcs(player))
+            npc.SendNpcInfo(player.Character, player.NetState);
     }
 
     public static void UpdateNpcsInLevel(this Player player, QuestDescription quest)
     {
         if (quest != null)
-            foreach (var entity in GetNpcs(player).Where(e => e.Id == quest.QuestGiverGoId || e.Id == quest.ValidatorGoId))
-                entity.SendNpcInfo(player.Character, player.NetState);
+            foreach (var npc in GetNpcs(player).Where(e => e.Id == quest.QuestGiverGoId || e.Id == quest.ValidatorGoId))
+                npc.SendNpcInfo(player.Character, player.NetState);
     }
 
-    public static List<NpcControllerEntity> GetNpcs(Player player)
+    public static List<NPCControllerComp> GetNpcs(Player player)
     {
         if (player.Room != null && player.Character != null)
             if (player.Room.Entities != null)
                 return player.Room.Entities
                     .SelectMany(e => e.Value)
-                    .Where(e => e is NpcControllerEntity)
-                    .Select(e => e as NpcControllerEntity)
+                    .Where(e => e is NPCControllerComp)
+                    .Select(e => e as NPCControllerComp)
                     .ToList();
 
-        return new List<NpcControllerEntity>();
+        return [];
     }
 }

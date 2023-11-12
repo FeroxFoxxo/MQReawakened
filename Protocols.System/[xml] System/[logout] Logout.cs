@@ -12,7 +12,7 @@ public class Logout : SystemProtocol
 
     public override void Run(XmlDocument xmlDoc)
     {
-        Player.Remove(Logger);
+        Player?.Remove(Logger);
         SendXml("logout", string.Empty);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Models;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Network;
@@ -7,35 +8,27 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Players;
 
-public class Player(UserInfo userInfo, NetState state, PlayerHandler playerHandler) : INetStateData
+public class Player(Account account, UserInfo userInfo, NetState state, PlayerHandler playerHandler) : INetStateData
 {
+    public Account Account => account;
     public NetState NetState => state;
     public UserInfo UserInfo => userInfo;
     public PlayerHandler PlayerHandler => playerHandler;
 
-    public int UserId => userInfo.UserId;
-
-    public GroupModel Group { get; set; }
-
+    public TemporaryDataModel TempData { get; set; } = new TemporaryDataModel();
     public CharacterModel Character { get; set; }
-    public bool FirstLogin { get; set; } = true;
-
     public Room Room { get; set; }
-    public int GameObjectId { get; set; }
 
-    public bool OnGround { get; set; }
-    public int Direction { get; set; }
-    public Vector3Model Position { get; set; } = new Vector3Model();
-    public Vector3Model Velocity { get; set; } = new Vector3Model();
-    public bool Invincible { get; set; } = false;
+    public int UserId => userInfo.UserId;
+    public string CharacterName => Character.Data.CharacterName;
+    public int GameObjectId => TempData.GameObjectId;
 
+    public bool FirstLogin { get; set; } = true;
     public long CurrentPing { get; set; } = GetTime.GetCurrentUnixMilliseconds();
 
     public void RemovedState(NetState state, NetStateHandler handler,
@@ -50,8 +43,18 @@ public class Player(UserInfo userInfo, NetState state, PlayerHandler playerHandl
 
         if (Character != null)
         {
-            foreach (var player in playerHandler.PlayerList.Where(p => Character.Data.FriendList.ContainsKey(p.UserId)))
-                player.SendXt("fz", Character.Data.CharacterName);
+            lock (playerHandler.Lock)
+            {
+                foreach (var player in playerHandler.GetPlayersByFriend(UserId))
+                    player.SendXt("fz", Character.Data.CharacterName);
+            }
+
+            if (TempData.TradeModel != null)
+            {
+                var tradingPlayer = TempData.TradeModel.TradingPlayer;
+                tradingPlayer.TempData.TradeModel = null;
+                tradingPlayer.SendXt("tc", Character.Data.CharacterName);
+            }
 
             Character = null;
         }

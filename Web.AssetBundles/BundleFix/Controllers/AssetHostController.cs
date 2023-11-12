@@ -111,7 +111,14 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
             data.Write(writer);
 
             // WRITE
-            FileIO.WriteAllBytes(bundlePath, stream.ToArray());
+            try
+            {
+                FileIO.WriteAllBytes(bundlePath, stream.ToArray());
+            }
+            catch (IOException)
+            {
+
+            }
 
             if (config.DebugInfo)
             {

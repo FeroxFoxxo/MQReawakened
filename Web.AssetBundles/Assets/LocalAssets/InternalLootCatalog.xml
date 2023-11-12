@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LootCatalog>
+    <Level name="Default">
+        <LootInfo objectId="0">
+            <Bananas bananaMin="50" bananaMax="100"/>
+        </LootInfo>
+    </Level>
+    <Level name="The Floating Isles">
+        <LootInfo objectId="97238">
+            <Items rewardAmount="1">
+                <Item itemId="220" count="1" bindingCount="0"/>
+                <Item itemId="405" count="1" bindingCount="0"/>
+                <Item itemId="442" count="1" bindingCount="0"/>
+                <Item itemId="474" count="1" bindingCount="0"/>
+                <Item itemId="478" count="1" bindingCount="0"/>
+                <Item itemId="583" count="1" bindingCount="0"/>
+                <Item itemId="597" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4807">
+            <Items rewardAmount="1">
+                <Item itemId="3133" count="1" bindingCount="0"/>
+                <Item itemId="1164" count="1" bindingCount="0"/>
+                <Item itemId="2928" count="1" bindingCount="0"/>
+                <Item itemId="750" count="1" bindingCount="0"/>
+                <Item itemId="3048" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0"/>
+                <Item itemId="404" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Forgotten Temple">
+        <LootInfo objectId="30938">
+            <Items rewardAmount="1">
+                <Item itemId="2886" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="The Volcano Lair">
+        <LootInfo objectId="7431">
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+                <Item itemId="1611" count="1" bindingCount="0"/>
+                <Item itemId="1568" count="1" bindingCount="0"/>
+                <Item itemId="2517" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="546" count="1" bindingCount="0"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7429">
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+                <Item itemId="1611" count="1" bindingCount="0"/>
+                <Item itemId="1568" count="1" bindingCount="0"/>
+                <Item itemId="2517" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="546" count="1" bindingCount="0"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7432">
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+                <Item itemId="1611" count="1" bindingCount="0"/>
+                <Item itemId="1568" count="1" bindingCount="0"/>
+                <Item itemId="2517" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="546" count="1" bindingCount="0"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7434">
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+                <Item itemId="1611" count="1" bindingCount="0"/>
+                <Item itemId="1568" count="1" bindingCount="0"/>
+                <Item itemId="2517" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="546" count="1" bindingCount="0"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7177">
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
+</LootCatalog>

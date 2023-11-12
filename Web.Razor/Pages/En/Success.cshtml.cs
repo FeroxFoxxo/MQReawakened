@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Web.Razor.Pages.En
+namespace Web.Razor.Pages.En;
+
+public class SuccessModel : PageModel
 {
-    public class SuccessModel : PageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
-        }
     }
 }

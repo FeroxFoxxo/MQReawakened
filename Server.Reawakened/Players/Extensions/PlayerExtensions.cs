@@ -12,29 +12,47 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerExtensions
 {
+    public static void TeleportPlayer(this Player player, int x, int y, int z)
+    {
+        var isBackPlane = z == 1;
+
+        var coordinates = new PhysicTeleport_SyncEvent(player.Character.Data.CharacterId.ToString(),
+            player.Room.Time, player.TempData.Position.X + x, player.TempData.Position.Y + y, isBackPlane);
+
+        player.SendSyncEventToPlayer(coordinates);
+    }
+
     public static void RemoveFromGroup(this Player player)
     {
-        if (player.Group == null)
+        var group = player.TempData.Group;
+
+        if (group == null)
             return;
 
-        player.Group.GroupMembers.Remove(player);
+        player.TempData.Group = null;
 
-        if (player.Group.GroupMembers.Count > 0)
+        foreach (var member in group.GetMembers())
+            member.SendXt("pl", player.CharacterName);
+
+        group.RemovePlayer(player);
+
+        var members = group.GetMembers();
+
+        if (members.Count > 0)
         {
-            if (player.Group.LeaderCharacterName == player.Character.Data.CharacterName)
+            if (group.GetLeaderName() == player.CharacterName)
             {
-                var newLeader = player.Group.GroupMembers.First();
-                player.Group.LeaderCharacterName = newLeader.Character.Data.CharacterName;
+                var newLeader = members.First();
 
-                foreach (var member in player.Group.GroupMembers)
-                    member.SendXt("pp", player.Group.LeaderCharacterName);
+                group.SetLeaderName(newLeader.CharacterName);
+
+                foreach (var member in members)
+                    member.SendXt("pp", newLeader.CharacterName);
             }
 
-            foreach (var member in player.Group.GroupMembers)
-                member.SendXt("pl", player.Character.Data.CharacterName);
+            if (members.Count == 1)
+                members.First().RemoveFromGroup();
         }
-
-        player.Group = null;
     }
 
     public static void AddReputation(this Player player, int reputation)
@@ -53,6 +71,43 @@ public static class PlayerExtensions
         charData.Reputation = reputation;
 
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
+    }
+
+    public static void TradeWithPlayer(this Player origin, ItemCatalog catalog)
+    {
+        var tradeModel = origin.TempData.TradeModel;
+
+        if (tradeModel == null)
+            return;
+
+        var tradingPlayer = tradeModel.TradingPlayer;
+
+        foreach (var item in tradeModel.ItemsInTrade)
+        {
+            var itemDesc = catalog.GetItemFromId(item.Key);
+
+            tradeModel.TradingPlayer.Character.AddItem(itemDesc, item.Value);
+            origin.Character.RemoveItem(itemDesc, item.Value);
+        }
+
+        tradingPlayer.Character.Data.Cash += tradeModel.BananasInTrade;
+        origin.Character.Data.Cash -= tradeModel.BananasInTrade;
+    }
+
+    public static void RemoveTrade(this Player player)
+    {
+        if (player == null)
+            return;
+
+        if (player.TempData.TradeModel == null)
+            return;
+
+        var trade = player.TempData.TradeModel.TradingPlayer;
+
+        player.TempData.TradeModel = null;
+
+        if (trade != null)
+            trade.TempData.TradeModel = null;
     }
 
     public static void AddBananas(this Player player, int collectedBananas)
@@ -83,23 +138,20 @@ public static class PlayerExtensions
         player.SendCashUpdate();
     }
 
-    public static void AddPoints(this Player player, int abilityPoints)
+    public static void AddPoints(this Player player)
     {
         var charData = player.Character.Data;
-        charData.BadgePoints += abilityPoints;
-        player.SendPointsUpdate();
+
+        charData.BadgePoints = 0;
+        charData.BadgePoints += 100;
+
+        player.SendLevelUp();
     }
 
     public static void SendCashUpdate(this Player player)
     {
         var charData = player.Character.Data;
         player.SendXt("ca", charData.Cash, charData.NCash);
-    }
-
-    public static void SendPointsUpdate(this Player player)
-    {
-        var charData = player.Character.Data;
-        player.SendXt("ca", charData.BadgePoints);
     }
 
     public static void SendLevelChange(this Player player, WorldHandler worldHandler, WorldGraphXML worldGraph)
@@ -140,7 +192,7 @@ public static class PlayerExtensions
     public static void SetCharacterSelected(this Player player, int characterId)
     {
         player.Character = player.UserInfo.Characters[characterId];
-        player.UserInfo.LastCharacterSelected = player.Character.Data.CharacterName;
+        player.UserInfo.LastCharacterSelected = player.CharacterName;
     }
 
     public static void AddCharacter(this Player player, CharacterModel character) =>
@@ -160,7 +212,7 @@ public static class PlayerExtensions
         player.Character.SetLevelXp(level);
         player.SendLevelUp();
 
-        logger.LogTrace("{Name} leveled up to {Level}", player.Character.Data.CharacterName, level);
+        logger.LogTrace("{Name} leveled up to {Level}", player.CharacterName, level);
     }
 
     public static void DiscoverTribe(this Player player, TribeType tribe)
@@ -243,5 +295,15 @@ public static class PlayerExtensions
 
             player.UpdateNpcsInLevel(quest, quests);
         }
+    }
+
+    public static void UpdateEquipment(this Player sentPlayer)
+    {
+        foreach (
+            var player in
+            from player in sentPlayer.Room.Players.Values
+            select player
+        )
+            player.SendXt("iq", sentPlayer.UserId, sentPlayer.Character.Data.Equipment);
     }
 }

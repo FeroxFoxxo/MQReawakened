@@ -34,12 +34,14 @@ public class UserInfoHandler : DataHandler<UserInfo>
 
     public void InitializeUser(NetState state)
     {
-        var userId = state.Get<Account>()?.UserId ?? throw new NullReferenceException("Account not found!");
+        var account = state.Get<Account>();
+
+        var userId = account?.UserId ?? throw new NullReferenceException("Account not found!");
 
         if (!Data.TryGetValue(userId, out var value))
             throw new NullReferenceException();
 
-        state.Set(new Player(value, state, _playerHandler));
+        state.Set(new Player(account, value, state, _playerHandler));
     }
 
     public override UserInfo CreateDefault()

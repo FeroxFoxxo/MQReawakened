@@ -13,12 +13,14 @@ namespace Server.Base.Network.Services;
 public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
     EventSink sink) : IService
 {
-    public delegate ProtocolResponse RunProtocol(NetState state, string protocol);
+    public delegate ProtocolResponse GetProtocol(string protocol);
+    public delegate void SendProtocol(NetState netState, string actionType, object protocol);
 
     public readonly Queue<NetState> Disposed = new();
-    public readonly List<NetState> Instances = new();
+    public readonly List<NetState> Instances = [];
 
-    public readonly Dictionary<char, RunProtocol> Protocols = new();
+    public readonly Dictionary<char, GetProtocol> ProtocolLookup = [];
+    public readonly Dictionary<char, SendProtocol> ProtocolSend = [];
 
     public bool Paused = false;
 
@@ -32,7 +34,7 @@ public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
          where account != null
          where account.UserId == userId
          select state
-        ).FirstOrDefault();
+    ).FirstOrDefault();
 
     public void ProcessDisposedQueue()
     {

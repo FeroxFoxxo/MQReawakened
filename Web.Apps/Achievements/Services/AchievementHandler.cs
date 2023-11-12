@@ -1,7 +1,4 @@
-﻿using Achievement.Categories;
-using Achievement.CharacterTitles;
-using Achievement.StaticData;
-using Achievement.Types;
+﻿using Achievement.Types;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 
@@ -17,14 +14,14 @@ public class AchievementHandler(EventSink sink) : IService
         Definitions = new AchievementStaticJson.AchievementDefinition
         {
             status = true,
-            achievements = new List<AchievementStaticData>(),
-            categories = new List<AchievementCategoryType>(),
-            characterTitles = new List<AchievementCharacterTitlesType>(),
+            achievements = [],
+            categories = [],
+            characterTitles = [],
             types = new AchievementType
             {
-                conditions = new List<AchievementConditionType>(),
-                rewards = new List<AchievementRewardType>(),
-                timeWindows = new List<AchievementTimeWindowType>()
+                conditions = [],
+                rewards = [],
+                timeWindows = []
             }
         };
 }

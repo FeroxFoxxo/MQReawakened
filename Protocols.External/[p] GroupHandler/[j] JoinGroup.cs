@@ -12,25 +12,24 @@ public class JoinGroup : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var joinerName = Player.Character.Data.CharacterName;
+        var joinerName = Player.CharacterName;
 
         var leaderName = message[5];
+        var leaderPlayer = PlayerHandler.GetPlayerByName(leaderName);
+
         var accepted = message[6] == "1";
         var status = int.Parse(message[7]);
-
-        var leaderPlayer = PlayerHandler.PlayerList
-            .FirstOrDefault(p => p.Character.Data.CharacterName == leaderName);
 
         if (leaderPlayer == null)
             return;
 
         if (accepted)
         {
-            leaderPlayer.Group.GroupMembers.Add(Player);
-            Player.Group = leaderPlayer.Group;
+            leaderPlayer.TempData.Group.AddPlayer(Player);
+            Player.TempData.Group = leaderPlayer.TempData.Group;
 
-            foreach (var member in Player.Group.GroupMembers)
-                member.SendXt("pj", Player.Group, joinerName);
+            foreach (var member in Player.TempData.Group.GetMembers())
+                member.SendXt("pj", Player.TempData.Group, joinerName);
         }
         else
         {

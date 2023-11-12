@@ -13,7 +13,7 @@ namespace Web.AssetBundles.Services;
 public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
     ILogger<BuildXmlFiles> logger, AssetBundleRConfig rConfig) : IService, IInjectModules
 {
-    public readonly Dictionary<string, string> XmlFiles = new();
+    public readonly Dictionary<string, string> XmlFiles = [];
 
     public IEnumerable<Module> Modules { get; set; }
 
@@ -55,7 +55,9 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
 
             if (bundles.TryGetValue(asset.Name, out var bundle))
             {
-                logger.LogTrace("Loading bundle: {BundleName}", asset.Name);
+                var time = DateTimeOffset.FromUnixTimeSeconds(asset.CacheTime);
+
+                logger.LogTrace("Loading XML: {BundleName} ({DateTime})", asset.Name, time.Date.ToShortDateString());
 
                 if (bundle is ILocalizationXml localizedXmlBundle)
                 {

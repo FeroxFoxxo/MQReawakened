@@ -55,7 +55,7 @@ public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
                 var assetName = asset.Name.Trim().ToLower();
 
                 if (!assetList.ContainsKey(assetName))
-                    assetList.Add(assetName, new List<InternalAssetInfo>());
+                    assetList.Add(assetName, []);
 
                 var hasFoundExisting = false;
 

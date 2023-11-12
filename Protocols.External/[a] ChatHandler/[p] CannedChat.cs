@@ -4,9 +4,7 @@ using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Services;
 using Server.Reawakened.XMLs.Bundles;
-using static LeaderBoardTopScoresJson;
 
 namespace Protocols.External._a__ChatHandler;
 

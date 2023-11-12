@@ -15,7 +15,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
     TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> handlerLogger,
     ILogger<Room> roomLogger) : IService
 {
-    private readonly Dictionary<int, Level> _levels = new();
+    private readonly Dictionary<int, Level> _levels = [];
 
     public void Initialize() => sink.WorldLoad += LoadRooms;
 
@@ -73,10 +73,12 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         {
             if (level.LevelInfo.IsATrailLevel())
             {
-                if (player.Group != null)
+                if (player.TempData.Group != null)
                 {
+                    var playerMembers = player.TempData.Group.GetMembers();
+
                     var trailRoom = level.Rooms.Values.FirstOrDefault(r =>
-                        r.Players.Any(c => player.Group.GroupMembers.Contains(c.Value))
+                        r.Players.Any(c => playerMembers.Contains(c.Value))
                     );
 
                     if (trailRoom != null)

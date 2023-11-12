@@ -6,7 +6,7 @@ namespace Server.Base.Core.Services;
 
 public class TemporaryDataStorage(EventSink sink) : IService
 {
-    private readonly Dictionary<string, List<PersistantData>> _data = new();
+    private readonly Dictionary<string, List<PersistantData>> _data = [];
 
     public void Initialize() => sink.ServerStarted += _ => _data.Clear();
 
@@ -26,6 +26,6 @@ public class TemporaryDataStorage(EventSink sink) : IService
     public void EnsureDataExists(string id)
     {
         if (!_data.ContainsKey(id))
-            _data.Add(id, new List<PersistantData>());
+            _data.Add(id, []);
     }
 }

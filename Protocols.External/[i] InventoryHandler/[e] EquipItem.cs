@@ -27,7 +27,7 @@ public class EquipItem : ExternalProtocol
 
         character.Data.Equipment = newEquipment;
 
-        SendXt("iq", character.Data.Equipment);
+        Player.UpdateEquipment();
         Player.SendUpdatedInventory(true);
     }
 }

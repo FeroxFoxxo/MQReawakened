@@ -29,7 +29,7 @@ public class ChatMessage(ServerConsole serverConsole,
     {
         lock (playerHandler.Lock)
         {
-            foreach (var player in playerHandler.PlayerList)
+            foreach (var player in playerHandler.GetAllPlayers())
             {
                 player.Chat(CannedChatChannel.Tell, "Console", message);
             }

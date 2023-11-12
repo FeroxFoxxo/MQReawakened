@@ -83,7 +83,13 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
                     if (!string.IsNullOrEmpty(tryGetDict.Key))
                     {
-                        Logger.LogError("Item description with id {ItemId} already exists in dictionary!", item.Key);
+                        Logger.LogError("Item already exists: {Name} (desc key: {ItemId})", tryGetDict.Key, item.Key);
+                        continue;
+                    }
+
+                    if (_itemNameDict.ContainsKey(item.Value))
+                    {
+                        Logger.LogTrace("Item description already exists: {Name}", item.Value);
                         continue;
                     }
 
@@ -93,7 +99,8 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         }
     }
 
-    private int AddDictIfNotExists(XmlDocument xml, XmlNode node, int nameId, string text, Dictionary<int, string> dictList)
+    private static int AddDictIfNotExists(XmlDocument xml, XmlNode node, int nameId,
+        string text, Dictionary<int, string> dictList)
     {
         var tryGetDict = dictList.FirstOrDefault(x => x.Value == text);
 
@@ -135,7 +142,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                         itemCategory = (ItemCategory)int.Parse(categoryAttributes.Value);
 
                 _itemCategories.TryAdd(itemCategory, category);
-                _itemSubCategories.TryAdd(itemCategory, new Dictionary<ItemSubCategory, XmlNode>());
+                _itemSubCategories.TryAdd(itemCategory, []);
 
                 foreach (XmlNode subCategories in category.ChildNodes)
                 {
@@ -181,7 +188,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                     var node = catalogs.AppendChild(category);
                     categoryNode = node;
                     _itemCategories.Add(item.CategoryId, categoryNode);
-                    _itemSubCategories.TryAdd(item.CategoryId, new Dictionary<ItemSubCategory, XmlNode>());
+                    _itemSubCategories.TryAdd(item.CategoryId, []);
                 }
 
                 var itemCategory = categoryNode;

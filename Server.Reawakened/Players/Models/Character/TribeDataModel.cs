@@ -16,9 +16,9 @@ public class TribeDataModel
     public TribeDataModel(string serverData)
     {
         var inputValues = serverData.Split('|');
-        TribeType = (TribeType)int.Parse(inputValues[0]);
+        TribeType = Enum.Parse<TribeType>(inputValues[0]);
         BadgePoints = int.Parse(inputValues[1]);
-        Unlocked = inputValues[2] == "1";
+        Unlocked = int.Parse(inputValues[2]) == 1;
     }
 
     public override string ToString()

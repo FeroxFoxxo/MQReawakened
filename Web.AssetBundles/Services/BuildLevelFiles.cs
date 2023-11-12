@@ -5,14 +5,12 @@ using Server.Reawakened.Configs;
 using Web.AssetBundles.Events;
 using Web.AssetBundles.Events.Arguments;
 using Web.AssetBundles.Extensions;
-using Web.AssetBundles.Models;
 
 namespace Web.AssetBundles.Services;
 
-public class BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> logger, ServerRConfig sConfig,
-    AssetBundleRwConfig aBConfig) : IService
+public class BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> logger, ServerRConfig sConfig) : IService
 {
-    public readonly Dictionary<string, string> LevelFiles = new();
+    public readonly Dictionary<string, string> LevelFiles = [];
 
     public void Initialize() => eventSink.AssetBundlesLoaded += LoadLevelFiles;
 
@@ -29,27 +27,23 @@ public class BuildLevelFiles(AssetEventSink eventSink, ILogger<BuildXmlFiles> lo
 
         InternalDirectory.OverwriteDirectory(sConfig.LevelSaveDirectory);
 
-        using var bar = new DefaultProgressBar(assets.Length, "Loading Level Files", logger, aBConfig);
-
         foreach (var asset in assets)
         {
+            var time = DateTimeOffset.FromUnixTimeSeconds(asset.CacheTime);
+
             var text = asset.GetXmlData();
 
             if (string.IsNullOrEmpty(text))
             {
-                bar.SetMessage($"XML for {asset.Name} is empty! Skipping...");
+                logger.LogTrace("XML for {assetName} is empty! Skipping...", asset.Name);
                 continue;
             }
 
             var path = Path.Join(sConfig.LevelSaveDirectory, $"{asset.Name}.xml");
 
-            bar.SetMessage($"Writing file to {path}");
-
             File.WriteAllText(path, text);
 
             LevelFiles.Add(asset.Name, path);
-
-            bar.TickBar();
         }
     }
 }
