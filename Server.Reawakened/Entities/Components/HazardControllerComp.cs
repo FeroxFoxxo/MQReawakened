@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
@@ -27,8 +28,10 @@ public class HazardControllerComp : Component<HazardController>
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
+        /* seems redundant with the other return statement below? not sure though
         if (HurtEffect == "NoEffect")
             return;
+        */
 
         var character = player.Character;
 
@@ -36,6 +39,9 @@ public class HazardControllerComp : Component<HazardController>
 
         if (effectType == default)
         {
+            if (notifyCollisionEvent.Colliding && notifyCollisionEvent.Message == "HitDamageZone") //probably won't work for until some collisions failing is fixed
+                player.ApplyDamageByObject(Room, int.Parse(notifyCollisionEvent.CollisionTarget));
+
             Logger.LogWarning("No hazard type found for {Type}. Returning...", HurtEffect);
             return;
         }
@@ -50,6 +56,9 @@ public class HazardControllerComp : Component<HazardController>
 
         switch (effectType)
         {
+            case ItemEffectType.FireDamage:
+                player.ApplyDamageByPercent(Room, .10);
+                break;
             default:
                 SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
                     $"Effect Type: {effectType}");
