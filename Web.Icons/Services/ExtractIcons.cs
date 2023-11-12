@@ -153,9 +153,6 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
             if (shouldBreak)
                 continue;
 
-            if (!bundleEvent.InternalAssets.ContainsKey(name))
-                continue;
-
             var path = Path.Join(rConfig.IconDirectory, $"{name}.png");
 
             using var stream = texture.ConvertToStream(ImageFormat.Png, true);
