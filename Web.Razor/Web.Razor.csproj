@@ -14,6 +14,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Pages\Creator\**" />
+      <Content Remove="Pages\Creator\**" />
+      <EmbeddedResource Remove="Pages\Creator\**" />
+      <None Remove="Pages\Creator\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Content Remove="Pages\CreateItem.cshtml" />
     </ItemGroup>
 
@@ -29,10 +36,6 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\CreateItem.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="Pages\Creator\CreateItem.cshtml" />
     </ItemGroup>
 
 </Project>

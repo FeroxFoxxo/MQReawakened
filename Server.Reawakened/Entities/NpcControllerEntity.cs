@@ -12,7 +12,7 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.Models;
+using Server.Reawakened.XMLs.Models.Npcs;
 using static A2m.Server.QuestStatus;
 using static NPCController;
 

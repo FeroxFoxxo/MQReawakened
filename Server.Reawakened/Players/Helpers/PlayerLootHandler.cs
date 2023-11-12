@@ -4,7 +4,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.Models;
+using Server.Reawakened.XMLs.Models.LootRewards;
 
 namespace Server.Reawakened.Players.LootHandlers;
 
@@ -18,30 +18,48 @@ public static class PlayerLootHandler
         if (loot.ObjectId <= 0)
             logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);
 
-        if (loot.BananaMax >= 0 && loot.BananaMin >= 0)
-            GrantLootBananas(player, loot);
+        if (loot.BananaRewards.Count > 0)
+            loot.BananaRewards.GrantLootBananas(player);
 
-        if (loot.Items.Count > 0)
-            GrantLootItems(player, loot, itemCatalog);
+        if (loot.ItemRewards.Count > 0)
+            loot.ItemRewards.GrantLootItems(gameObjectId, player, itemCatalog);
     }
 
-    private static void GrantLootBananas(Player player, LootModel lootModel)
-    {
-        //Banana reward not properly functioning yet
-        var random = new Random();
-
-        var bananasGot = random.Next(lootModel.BananaMin, lootModel.BananaMax + 1);
-
-        player.AddBananas(bananasGot);
-    }
-
-    private static void GrantLootItems(Player player, LootModel lootModel, ItemCatalog itemCatalog)
+    private static void GrantLootBananas(this List<BananaReward> bananas, Player player)
     {
         var random = new Random();
 
-        var gottenItems = new ItemModel[] { lootModel.Items[random.Next(lootModel.Items.Count)] };
+        var totalBananas = 0;
+
+        foreach (var banana in bananas)
+            totalBananas += random.Next(banana.BananaMin, banana.BananaMax + 1);
+
+        player.AddBananas(totalBananas);
+    }
+
+    private static void GrantLootItems(this List<ItemReward> items, int objectId, Player player, ItemCatalog itemCatalog)
+    {
+        var random = new Random();
+
         var itemsLooted = new SeparatedStringBuilder('|');
         var lootableItems = new SeparatedStringBuilder('|');
+
+        var gottenItems = new List<ItemModel>();
+
+        foreach (var itemReward in items)
+        {
+            foreach (var item in itemReward.Items)
+                lootableItems.Append(item.ItemId);
+
+            var count = itemReward.RewardAmount;
+
+            while (count > 0)
+            {
+                var chosenItem = itemReward.Items[random.Next(itemReward.Items.Count)];
+                gottenItems.Add(chosenItem);
+                count--;
+            }
+        }
 
         foreach (var item in gottenItems)
         {
@@ -49,10 +67,7 @@ public static class PlayerLootHandler
             player.Character.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count);
         }
 
-        foreach (var item in lootModel.Items)
-            lootableItems.Append(item.ItemId);
-
-        SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), lootModel.ObjectId);
+        SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
         player.SendUpdatedInventory(false);
     }
 

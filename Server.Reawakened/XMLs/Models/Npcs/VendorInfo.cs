@@ -1,12 +1,12 @@
 ﻿using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.XMLs.Models;
+namespace Server.Reawakened.XMLs.Models.Npcs;
 
 public class VendorInfo(int gameObjectId, int nameId, int descriptionId,
     int numberOfIdolsToAccessBackStore, int idolLevelId,
     int vendorId, int catalogId, NPCController.NPCStatus vendorType,
-    Conversation greetingConversation, Conversation leavingConversation, int[] items)
+    ConversationInfo greetingConversation, ConversationInfo leavingConversation, int[] items)
 {
     public int GameObjectId { get; } = gameObjectId;
     public int NameId { get; set; } = nameId;
@@ -20,8 +20,8 @@ public class VendorInfo(int gameObjectId, int nameId, int descriptionId,
 
     public NPCController.NPCStatus VendorType { get; } = vendorType;
 
-    public Conversation GreetingConversation { get; } = greetingConversation;
-    public Conversation LeavingConversation { get; } = leavingConversation;
+    public ConversationInfo GreetingConversation { get; } = greetingConversation;
+    public ConversationInfo LeavingConversation { get; } = leavingConversation;
 
     public int[] Items { get; } = items;
 

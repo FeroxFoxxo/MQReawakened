@@ -3,7 +3,7 @@ using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using System.Xml;
-using ConversationModel = Server.Reawakened.XMLs.Models.Conversation;
+using ConversationModel = Server.Reawakened.XMLs.Models.Npcs.ConversationInfo;
 
 namespace Server.Reawakened.XMLs.Bundles;
 

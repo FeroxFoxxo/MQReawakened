@@ -4,6 +4,7 @@ using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using Server.Reawakened.XMLs.Models;
+using Server.Reawakened.XMLs.Models.Npcs;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
@@ -129,8 +130,8 @@ public class InternalVendorCatalog : IBundledXml
                     if (VendorCatalog.ContainsKey(objectId))
                         continue;
 
-                    var greetingConversation = new Conversation(dialogId, greetingConversationId);
-                    var leavingConversation = new Conversation(dialogId, leavingConversationId);
+                    var greetingConversation = new ConversationInfo(dialogId, greetingConversationId);
+                    var leavingConversation = new ConversationInfo(dialogId, leavingConversationId);
 
                     VendorCatalog.Add(objectId, new VendorInfo(
                         objectId, nameModel.Key, descriptionId,
