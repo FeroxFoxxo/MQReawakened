@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
@@ -56,7 +57,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
 
         if (vendors != null)
         {
-            var internalCatalog = Services.GetRequiredService<InternalVendorCatalog>();
+            var internalCatalog = Services.GetRequiredService<VendorCatalogInt>();
             var miscTextDict = Services.GetRequiredService<MiscTextDictionary>();
             var preExistingCategories = new List<int>();
 

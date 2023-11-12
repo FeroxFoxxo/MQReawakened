@@ -4,24 +4,24 @@ using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.BundlesInternal;
 
-internal class InternalQuestItem : IBundledXml
+public class QuestItemInt : IBundledXml
 {
-    public string BundleName => "InternalQuestItem";
+    public string BundleName => "QuestItemInt";
     public BundlePriority Priority => BundlePriority.High;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<int, List<ItemModel>> QuestItems;
+    public Dictionary<int, List<ItemModel>> QuestItemList;
 
-    public InternalQuestItem()
+    public QuestItemInt()
     {
     }
 
     public void InitializeVariables() =>
-        QuestItems = [];
+        QuestItemList = [];
 
     public void EditDescription(XmlDocument xml)
     {
@@ -43,18 +43,16 @@ internal class InternalQuestItem : IBundledXml
                 var questId = -1;
 
                 foreach (XmlAttribute itemAttributes in quest.Attributes)
-                {
                     switch (itemAttributes.Name)
                     {
                         case "questId":
                             questId = int.Parse(itemAttributes.Value);
                             break;
                     }
-                }
 
                 var itemList = quest.GetXmlItems();
 
-                QuestItems.TryAdd(questId, itemList);
+                QuestItemList.TryAdd(questId, itemList);
             }
         }
     }

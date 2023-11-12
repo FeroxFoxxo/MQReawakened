@@ -7,6 +7,7 @@ using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -247,9 +248,12 @@ public static class PlayerExtensions
         }
     }
 
-    public static void CheckObjective(this Player player, QuestCatalog quests,
-        ObjectiveEnum type, int gameObjectId, int itemId, int count)
+    public static void CheckObjective(this Player player, QuestCatalog quests, ObjectiveCatalogInt objCatalog,
+        ObjectiveEnum type, int gameObjectId, string prefabName, int count)
     {
+        if (!objCatalog.ObjectivePrefabs.TryGetValue(prefabName, out var itemId))
+            return;
+
         var character = player.Character.Data;
 
         foreach (var quest in character.QuestLog)
@@ -259,8 +263,11 @@ public static class PlayerExtensions
                 var objective = objectiveKVP.Value;
                 var hasObjComplete = false;
 
+                if (objective.GameObjectId > 0)
+                    if (objective.GameObjectId != gameObjectId)
+                        continue;
+
                 if (objective.ObjectiveType != type ||
-                    objective.GameObjectId != gameObjectId ||
                     objective.ItemId != itemId ||
                     objective.Order > quest.CurrentOrder ||
                     objective.LevelId != player.Character.LevelData.LevelId ||

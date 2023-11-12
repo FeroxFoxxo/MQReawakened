@@ -5,11 +5,11 @@ using Server.Reawakened.XMLs.Extensions;
 using Server.Reawakened.XMLs.Models.LootRewards;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalLootCatalog : IBundledXml
+public class LootCatalogInt : IBundledXml
 {
-    public string BundleName => "InternalLootCatalog";
+    public string BundleName => "LootCatalogInt";
     public BundlePriority Priority => BundlePriority.Low;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
@@ -39,23 +39,20 @@ public class InternalLootCatalog : IBundledXml
                 foreach (XmlNode lootInfo in lootLevel.ChildNodes)
                 {
                     if (lootInfo.Name != "LootInfo") continue;
-    
+
                     var objectId = -1;
                     var bananaRewards = new List<BananaReward>();
                     var itemRewards = new List<ItemReward>();
 
                     foreach (XmlAttribute lootAttributes in lootInfo.Attributes)
-                    {
                         switch (lootAttributes.Name)
                         {
                             case "objectId":
                                 objectId = int.Parse(lootAttributes.Value);
                                 continue;
                         }
-                    }
 
                     foreach (XmlNode reward in lootInfo.ChildNodes)
-                    {
                         switch (reward.Name)
                         {
                             case "Bananas":
@@ -63,7 +60,6 @@ public class InternalLootCatalog : IBundledXml
                                 var bananaMax = -1;
 
                                 foreach (XmlAttribute lootAttributes in reward.Attributes)
-                                {
                                     switch (lootAttributes.Name)
                                     {
                                         case "bananaMin":
@@ -73,21 +69,18 @@ public class InternalLootCatalog : IBundledXml
                                             bananaMax = int.Parse(lootAttributes.Value);
                                             continue;
                                     }
-                                }
                                 bananaRewards.Add(new BananaReward(bananaMin, bananaMax));
                                 break;
                             case "Items":
                                 var rewardAmount = 1;
 
                                 foreach (XmlAttribute lootAttributes in reward.Attributes)
-                                {
                                     switch (lootAttributes.Name)
                                     {
                                         case "rewardAmount":
                                             bananaMin = int.Parse(lootAttributes.Value);
                                             continue;
                                     }
-                                }
 
                                 var itemList = reward.GetXmlItems();
 
@@ -97,8 +90,7 @@ public class InternalLootCatalog : IBundledXml
                                 Logger.LogWarning("Unknown reward type {RewardType} for object {Id}", lootInfo.Name, objectId);
                                 break;
                         }
-                    }
-    
+
                     LootCatalog.TryAdd(objectId, new LootModel(objectId, bananaRewards, itemRewards));
                 }
             }

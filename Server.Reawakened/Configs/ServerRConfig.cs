@@ -53,7 +53,6 @@ public class ServerRConfig : IRConfig
     public Dictionary<TribeType, int> TutorialTribe2014 { get; }
 
     public bool Is2014Client { get; set; }
-    public int QuestItemId { get; set; }
 
     public ServerRConfig()
     {
@@ -148,6 +147,5 @@ public class ServerRConfig : IRConfig
         Is2014Client = false;
 
         MaxLevel = 65;
-        QuestItemId = 315035194;
     }
 }

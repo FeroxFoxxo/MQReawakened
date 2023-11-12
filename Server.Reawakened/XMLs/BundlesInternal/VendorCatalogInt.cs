@@ -1,16 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using Server.Reawakened.XMLs.Models.Npcs;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalVendorCatalog : IBundledXml
+public class VendorCatalogInt : IBundledXml
 {
-    public string BundleName => "InternalVendorCatalog";
+    public string BundleName => "VendorCatalogInt";
     public BundlePriority Priority => BundlePriority.Low;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
@@ -58,7 +59,6 @@ public class InternalVendorCatalog : IBundledXml
                 var items = new List<int>();
 
                 foreach (XmlAttribute vendorAttributes in vendor.Attributes!)
-                {
                     switch (vendorAttributes.Name)
                     {
                         case "objectId":
@@ -98,14 +98,12 @@ public class InternalVendorCatalog : IBundledXml
                             leavingConversationId = int.Parse(vendorAttributes.Value);
                             continue;
                     }
-                }
 
                 foreach (XmlNode item in vendor.ChildNodes)
                 {
                     if (!(item.Name == "Item")) continue;
 
                     foreach (XmlAttribute id in item.Attributes)
-                    {
                         if (id.Name == "prefabName")
                         {
                             var itemD = itemCat.GetItemFromPrefabName(id.Value);
@@ -119,7 +117,6 @@ public class InternalVendorCatalog : IBundledXml
                             items.Add(itemD.ItemId);
                             break;
                         }
-                    }
                 }
 
                 var nameModel = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == name);
@@ -140,9 +137,7 @@ public class InternalVendorCatalog : IBundledXml
                     ));
                 }
                 else
-                {
                     Logger.LogError("Cannot find text id for character with name: {Name}", name);
-                }
             }
         }
     }

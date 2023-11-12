@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
@@ -53,7 +54,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
         if (dicts != null)
         {
-            var internalCatalog = Services.GetRequiredService<InternalItemCatalog>();
+            var internalCatalog = Services.GetRequiredService<ItemCatalogInt>();
 
             ReadLocalizationXml(xml.WriteToString());
             var localization = this.GetField<ItemHandler>("_localizationDict") as Dictionary<int, string>;
@@ -173,7 +174,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                 }
             }
 
-            var internalCatalog = Services.GetRequiredService<InternalItemCatalog>();
+            var internalCatalog = Services.GetRequiredService<ItemCatalogInt>();
             var smallestItemId = 0;
 
             foreach (var item in internalCatalog.Items)

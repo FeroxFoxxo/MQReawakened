@@ -51,19 +51,22 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Assets\LocalAssets\InternalDialogCatalog.xml">
+      <None Update="Assets\LocalAssets\DialogCatalogInt.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Assets\LocalAssets\InternalDialogRewrites.xml">
+      <None Update="Assets\LocalAssets\DialogRewriteInt.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Assets\LocalAssets\InternalItemCatalog.xml">
+      <None Update="Assets\LocalAssets\ItemCatalogInt.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Assets\LocalAssets\InternalQuestItem.xml">
+      <None Update="Assets\LocalAssets\ObjectiveCatalogInt.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Assets\LocalAssets\InternalLootCatalog.xml">
+      <None Update="Assets\LocalAssets\QuestItemInt.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\LootCatalogInt.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Licences\LICENSE_ASSETSTUDIO">
@@ -72,7 +75,7 @@
       <None Update="Licences\LICENSE_ASSETRIPPER">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Assets\LocalAssets\InternalVendorCatalog.xml">
+      <None Update="Assets\LocalAssets\VendorCatalogInt.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Assets\LocalAssets\PetAbilities.xml">

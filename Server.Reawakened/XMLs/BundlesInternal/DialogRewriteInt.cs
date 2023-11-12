@@ -2,11 +2,11 @@
 using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalDialogRewrites : IBundledXml
+public class DialogRewriteInt : IBundledXml
 {
-    public string BundleName => "InternalDialogRewrites";
+    public string BundleName => "DialogRewriteInt";
     public BundlePriority Priority => BundlePriority.Medium;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
@@ -37,7 +37,6 @@ public class InternalDialogRewrites : IBundledXml
                 var newDialogName = string.Empty;
 
                 foreach (XmlAttribute attributes in dialogXml.Attributes!)
-                {
                     switch (attributes.Name)
                     {
                         case "oldDialogName":
@@ -47,7 +46,6 @@ public class InternalDialogRewrites : IBundledXml
                             newDialogName = attributes.Value;
                             continue;
                     }
-                }
 
                 if (Rewrites.ContainsKey(oldDialogName))
                     continue;

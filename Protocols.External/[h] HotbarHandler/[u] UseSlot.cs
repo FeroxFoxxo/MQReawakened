@@ -9,6 +9,7 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -19,8 +20,10 @@ public class UseSlot : ExternalProtocol
     public ILogger<UseSlot> Logger { get; set; }
 
     public ItemCatalog ItemCatalog { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
+    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
 
-    public InternalLootCatalog InternalLootCatalog { get; set; }
+    public LootCatalogInt InternalLootCatalog { get; set; }
 
     public override void Run(string[] message)
     {
@@ -44,8 +47,6 @@ public class UseSlot : ExternalProtocol
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drink:
-                HandleConsumable(character, usedItem, hotbarSlotId);
-                break;
             case ItemActionType.Eat:
                 HandleConsumable(character, usedItem, hotbarSlotId);
                 break;
@@ -100,22 +101,25 @@ public class UseSlot : ExternalProtocol
                     continue;
             }
 
-            Logger.LogInformation("Found close game object {PrefabName}", obj.ObjectInfo.PrefabName);
+            var objectId = obj.ObjectInfo.ObjectId;
+            var prefabName = obj.ObjectInfo.PrefabName;
 
-            if (Player.Room.Entities.TryGetValue(obj.ObjectInfo.ObjectId, out var entityComponents))
+            Logger.LogInformation("Found close game object {PrefabName}", prefabName);
+
+            if (Player.Room.Entities.TryGetValue(objectId, out var entityComponents))
                 foreach (var component in entityComponents)
                     if (component is TriggerCoopControllerComp triggerCoopEntity)
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
 
-            switch (obj.ObjectInfo.PrefabName)
+            switch (prefabName)
             {
                 case "PF_CRS_BarrelNewbZone01":
                 case "PF_CRS_BARREL01":
-                    aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
+                    aiEvent = new AiHealth_SyncEvent(objectId.ToString(),
                         Player.Room.Time, 0, 100, 0, 0, "now", false, false);
 
                     Logger.LogInformation("Object name: {args1} Object Id: {args2}",
-                        obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
+                        prefabName, objectId);
 
                     Player.Room.SendSyncEvent(aiEvent);
 
@@ -126,11 +130,12 @@ public class UseSlot : ExternalProtocol
                 case "PF_Spite_Bathog_Rock":
                 case "PF_Spite_Spiderling_Boss01":
                 case "PF_UniversalSpawnerNewb01":
-                    aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
+                    Player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.Scoremultiple, objectId, prefabName, 1);
+
+                    aiEvent = new AiHealth_SyncEvent(objectId.ToString(),
                         Player.Room.Time, 0, 100, 0, 0, "now", false, true);
 
-                    Logger.LogInformation("Object name: {args1} Object Id: {args2}",
-                        obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
+                    Logger.LogInformation("Object name: {args1} Object Id: {args2}", prefabName, objectId);
 
                     Player.Room.SendSyncEvent(aiEvent);
 
@@ -138,8 +143,7 @@ public class UseSlot : ExternalProtocol
                     Player.SendUpdatedInventory(false);
                     break;
                 default:
-                    Logger.LogInformation("Hit Object: {name}, ObjectId: {id}",
-                        obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
+                    Logger.LogInformation("Hit Object: {name}, ObjectId: {id}", prefabName, objectId);
                     break;
             }
         }

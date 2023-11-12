@@ -2,15 +2,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalItemCatalog : IBundledXml
+public class ItemCatalogInt : IBundledXml
 {
-    public string BundleName => "InternalItemCatalog";
+    public string BundleName => "ItemCatalogInt";
     public BundlePriority Priority => BundlePriority.High;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
@@ -19,7 +20,7 @@ public class InternalItemCatalog : IBundledXml
     public List<ItemDescription> Items;
     public Dictionary<int, string> Descriptions;
 
-    public InternalItemCatalog()
+    public ItemCatalogInt()
     {
     }
 
@@ -106,7 +107,6 @@ public class InternalItemCatalog : IBundledXml
                         var releaseDate = DateTime.UnixEpoch;
 
                         foreach (XmlAttribute itemAttributes in item.Attributes)
-                        {
                             switch (itemAttributes.Name)
                             {
                                 case "itemId":
@@ -202,7 +202,6 @@ public class InternalItemCatalog : IBundledXml
                                     releaseDate = releaseDate.GetDateValue(itemAttributes.Value, Logger);
                                     break;
                             }
-                        }
 
                         foreach (XmlNode itemEffect in item.ChildNodes)
                         {
@@ -217,7 +216,6 @@ public class InternalItemCatalog : IBundledXml
                                 var duration = -1;
 
                                 foreach (XmlAttribute effectAttributes in effect.Attributes)
-                                {
                                     switch (effectAttributes.Name)
                                     {
                                         case "type":
@@ -230,18 +228,17 @@ public class InternalItemCatalog : IBundledXml
                                             duration = int.Parse(effectAttributes.Value);
                                             break;
                                     }
-                                }
                                 itemEffects.Add(new ItemEffect(type, value, duration));
                             }
                         }
 
-                        if(!miscDict.LocalizationDict.TryGetValue(descriptionId, out var description))
+                        if (!miscDict.LocalizationDict.TryGetValue(descriptionId, out var description))
                         {
                             Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
                             continue;
                         }
 
-                        Descriptions.Add(descriptionId, description);
+                        Descriptions.TryAdd(descriptionId, description);
 
                         var nameId = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == itemName);
 

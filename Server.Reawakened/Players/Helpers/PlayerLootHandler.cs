@@ -4,17 +4,17 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Models.LootRewards;
 
 namespace Server.Reawakened.Players.LootHandlers;
 
 public static class PlayerLootHandler
 {
-    public static void GrantLoot(this Player player, int gameObjectId, InternalLootCatalog lootCatalog,
+    public static void GrantLoot(this Player player, int gameObjectId, LootCatalogInt lootCatalog,
         ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
         var loot = lootCatalog.GetLootById(gameObjectId);
-
         if (loot.ObjectId <= 0)
             logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);
 

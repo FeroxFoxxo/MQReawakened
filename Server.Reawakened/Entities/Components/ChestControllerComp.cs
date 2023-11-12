@@ -4,6 +4,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.LootHandlers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -15,7 +16,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
     public ILogger<ChestControllerComp> Logger { get; set; }
 
-    public InternalLootCatalog LootCatalog { get; set; }
+    public LootCatalogInt LootCatalog { get; set; }
 
     public override object[] GetInitData(Player player) => new object[] { Collected ? 0 : 1 };
 

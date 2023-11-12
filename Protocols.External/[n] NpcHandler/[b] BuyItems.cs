@@ -2,6 +2,7 @@
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -11,6 +12,7 @@ public class BuyItems : ExternalProtocol
 
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
+    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
 
     public override void Run(string[] message)
     {
@@ -37,7 +39,7 @@ public class BuyItems : ExternalProtocol
             else if (itemDescription.Currency == CurrencyType.NickCash)
                 Player.RemoveNCash(itemDescription.RegularPrice * amount);
 
-            Player.CheckObjective(QuestCatalog, ObjectiveEnum.Buyitem, vendorGoId, itemId, amount);
+            Player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.Buyitem, vendorGoId, itemDescription.PrefabName, amount);
         }
 
         Player.SendUpdatedInventory(false);

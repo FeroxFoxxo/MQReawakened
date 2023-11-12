@@ -12,6 +12,7 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Models.Npcs;
 using static A2m.Server.QuestStatus;
 using static NPCController;
@@ -28,11 +29,13 @@ public class NPCControllerComp : Component<NPCController>
     public MiscTextDictionary MiscText { get; set; }
     public ServerRConfig RConfig { get; set; }
     public Dialog Dialog { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     public QuestCatalog QuestCatalog { get; set; }
-    public InternalVendorCatalog VendorCatalog { get; set; }
-    public InternalDialogCatalog DialogCatalog { get; set; }
-    public InternalDialogRewrites DialogRewrites { get; set; }
+    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
+    public VendorCatalogInt VendorCatalog { get; set; }
+    public DialogCatalogInt DialogCatalog { get; set; }
+    public DialogRewriteInt DialogRewrites { get; set; }
 
     public VendorInfo VendorInfo;
     public DialogInfo DialogInfo;
@@ -102,7 +105,7 @@ public class NPCControllerComp : Component<NPCController>
 
             if (tEvent.Activate)
             {
-                player.CheckObjective(QuestCatalog, ObjectiveEnum.Talkto, Id, RConfig.QuestItemId, 1);
+                player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.Talkto, Id, "GoToTrigger", 1);
 
                 switch (NpcType)
                 {

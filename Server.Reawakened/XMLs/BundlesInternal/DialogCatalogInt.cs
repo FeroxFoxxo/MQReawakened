@@ -1,15 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Models.Npcs;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalDialogCatalog : IBundledXml
+public class DialogCatalogInt : IBundledXml
 {
-    public string BundleName => "InternalDialogCatalog";
+    public string BundleName => "DialogCatalogInt";
     public BundlePriority Priority => BundlePriority.Medium;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
@@ -45,7 +46,6 @@ public class InternalDialogCatalog : IBundledXml
                 var dialog = new Dictionary<int, ConversationInfo>();
 
                 foreach (XmlAttribute npcInfo in npcs.Attributes!)
-                {
                     switch (npcInfo.Name)
                     {
                         case "objectId":
@@ -58,7 +58,6 @@ public class InternalDialogCatalog : IBundledXml
                             descriptionId = int.Parse(npcInfo.Value);
                             continue;
                     }
-                }
 
                 foreach (XmlNode npcChild in npcs.ChildNodes)
                 {
@@ -69,7 +68,6 @@ public class InternalDialogCatalog : IBundledXml
                     var minimumReputation = -1;
 
                     foreach (XmlAttribute id in npcChild.Attributes!)
-                    {
                         switch (id.Name)
                         {
                             case "dialogId":
@@ -82,7 +80,6 @@ public class InternalDialogCatalog : IBundledXml
                                 minimumReputation = int.Parse(id.Value);
                                 continue;
                         }
-                    }
 
                     dialog.TryAdd(minimumReputation, new ConversationInfo(dialogId, conversationId));
                 }
@@ -94,12 +91,10 @@ public class InternalDialogCatalog : IBundledXml
                     if (NpcDialogs.ContainsKey(objectId))
                         continue;
 
-                     NpcDialogs.Add(objectId, new DialogInfo(objectId, nameModel.Key, descriptionId, dialog));
+                    NpcDialogs.Add(objectId, new DialogInfo(objectId, nameModel.Key, descriptionId, dialog));
                 }
                 else
-                {
                     Logger.LogError("Cannot find text id for character with name: {Name}", name);
-                }
             }
         }
     }
