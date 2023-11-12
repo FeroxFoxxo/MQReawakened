@@ -36,6 +36,8 @@ public class UseSlot : ExternalProtocol
             Z = Convert.ToSingle(message[9])
         };
 
+        var direction = Player.TempData.Direction;
+
         var slotItem = character.Data.Hotbar.HotbarButtons[hotbarSlotId];
         var usedItem = ItemCatalog.GetItemFromId(slotItem.ItemId);
 
@@ -48,7 +50,7 @@ public class UseSlot : ExternalProtocol
                 HandleConsumable(character, usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
-                HandleMeleeWeapon(position);
+                HandleMeleeWeapon(position, direction);
                 break;
             default:
                 Logger.LogError("Could not find how to handle item action type {ItemAction} for user {UserId}",
@@ -75,11 +77,9 @@ public class UseSlot : ExternalProtocol
             RemoveFromHotbar(character, item, hotbarSlotId);
     }
 
-    private void HandleMeleeWeapon(Vector3Model position)
+    private void HandleMeleeWeapon(Vector3Model position, int direction)
     {
         AiHealth_SyncEvent aiEvent = null;
-
-        Console.WriteLine(position);
 
         var planeName = position.Z > 10 ? "Plane1" : "Plane0";
         position.Z = 0;
@@ -89,6 +89,17 @@ public class UseSlot : ExternalProtocol
                      .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3f)
                 )
         {
+            if (direction > 0)
+            {
+                if (obj.ObjectInfo.Position.X < position.X)
+                    continue;
+            }
+            else
+            {
+                if (obj.ObjectInfo.Position.X > position.X)
+                    continue;
+            }
+
             Logger.LogInformation("Found close game object {PrefabName}", obj.ObjectInfo.PrefabName);
 
             if (Player.Room.Entities.TryGetValue(obj.ObjectInfo.ObjectId, out var entityComponents))
@@ -112,6 +123,9 @@ public class UseSlot : ExternalProtocol
                     Player.SendUpdatedInventory(false);
                     break;
                 case "PF_Spite_Crawler_Rock":
+                case "PF_Spite_Bathog_Rock":
+                case "PF_Spite_Spiderling_Boss01":
+                case "PF_UniversalSpawnerNewb01":
                     aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
                         Player.Room.Time, 0, 100, 0, 0, "now", false, true);
 
@@ -122,24 +136,6 @@ public class UseSlot : ExternalProtocol
 
                     Player.Character.AddItem(ItemCatalog.GetItemFromId(404), 1);
                     Player.SendUpdatedInventory(false);
-                    break;
-                case "PF_Spite_Bathog_Rock":
-                    aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                        Player.Room.Time, 0, 100, 0, 0, "now", false, true);
-
-                    Logger.LogInformation("Object name: {args1} Object Id: {args2}",
-                        obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
-
-                    Player.Room.SendSyncEvent(aiEvent);
-                    break;
-                case "PF_UniversalSpawnerNewb01":
-                    aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                        Player.Room.Time, 0, 100, 0, 0, "now", false, true);
-
-                    Logger.LogInformation("Object name: {args1} Object Id: {args2}",
-                        obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
-
-                    Player.Room.SendSyncEvent(aiEvent);
                     break;
                 default:
                     Logger.LogInformation("Hit Object: {name}, ObjectId: {id}",
