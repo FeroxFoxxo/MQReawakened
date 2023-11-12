@@ -53,13 +53,13 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
             Directory.CreateDirectory(rConfig.IconDirectory).Empty();
 
             foreach (var asset in assets)
-                ExtractIconsFrom(asset, bundleEvent);
+                ExtractIconsFrom(asset);
         }
 
         services.SaveConfigs(serverHandler.Modules, logger);
     }
 
-    public bool ExtractIconsFrom(InternalAssetInfo asset, AssetBundleLoadEventArgs bundleEvent)
+    public bool ExtractIconsFrom(InternalAssetInfo asset)
     {
         var manager = new AssetsManager();
         var assemblyLoader = new AssemblyLoader();

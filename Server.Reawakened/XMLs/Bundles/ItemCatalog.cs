@@ -89,7 +89,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
                     if (_itemNameDict.ContainsKey(item.Value))
                     {
-                        Logger.LogError("Item already exists: {Name}", item.Value);
+                        Logger.LogTrace("Item description already exists: {Name}", item.Value);
                         continue;
                     }
 
