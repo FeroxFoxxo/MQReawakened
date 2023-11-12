@@ -2,11 +2,11 @@
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities;
+namespace Server.Reawakened.Entities.Components;
 
-public class IdolControllerEntity : SyncedEntity<IdolController>
+public class C_IdolController : Component<IdolController>
 {
-    public int Index => EntityData.Index;
+    public int Index => ComponentData.Index;
 
     public override object[] GetInitData(Player player)
     {

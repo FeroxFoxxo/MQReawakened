@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Chat.Services;
-using Server.Reawakened.Entities;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
@@ -21,12 +21,12 @@ public class RoomUpdate : ExternalProtocol
 
         SendXt("lv", 0, gameObjectStore);
 
-        foreach (var entity in Player.Room.Entities.Values.SelectMany(x => x))
-            entity.SendDelayedData(Player);
+        foreach (var entityComponent in Player.Room.Entities.Values.SelectMany(x => x))
+            entityComponent.SendDelayedData(Player);
 
         Player.Room.SendCharacterInfo(Player);
 
-        foreach (var npc in Player.Room.GetEntities<NpcControllerEntity>())
+        foreach (var npc in Player.Room.GetComponentsOfType<C_NpcController>())
             npc.Value.SendNpcInfo(Player.Character, NetState);
 
         if (!Player.FirstLogin)
@@ -36,11 +36,11 @@ public class RoomUpdate : ExternalProtocol
         Player.FirstLogin = false;
     }
 
-    private string GetGameObjectStore(Dictionary<int, List<BaseSyncedEntity>> entities)
+    private string GetGameObjectStore(Dictionary<int, List<BaseComponent>> entities)
     {
         var sb = new SeparatedStringBuilder('&');
 
-        foreach (var gameObject in entities.Where(e => e.Value != null).Select(GetGameObject)
+        foreach (var gameObject in entities.Where(e => e.Value != null).Select(GetEntity)
                      .Where(gameObject => gameObject.Split('~').Length > 1))
             if (!string.IsNullOrEmpty(gameObject))
                 sb.Append(gameObject);
@@ -48,27 +48,30 @@ public class RoomUpdate : ExternalProtocol
         return sb.ToString();
     }
 
-    private string GetGameObject(KeyValuePair<int, List<BaseSyncedEntity>> entities)
+    private string GetEntity(KeyValuePair<int, List<BaseComponent>> entity)
     {
+        var entityId = entity.Key;
+        var entityComponents = entity.Value;
+        
         var sb = new SeparatedStringBuilder('|');
 
-        sb.Append(entities.Key);
+        sb.Append(entityId);
 
-        if (entities.Value != null)
-            foreach (var entity in entities.Value)
-                if (entity != null)
-                    sb.Append(GetComponent(entity));
+        if (entityComponents != null)
+            foreach (var component in entityComponents)
+                if (component != null)
+                    sb.Append(GetComponent(component));
 
         return sb.ToString();
     }
 
-    private string GetComponent(BaseSyncedEntity entity)
+    private string GetComponent(BaseComponent component)
     {
         var sb = new SeparatedStringBuilder('~');
 
-        sb.Append(entity.Name);
+        sb.Append(component.Name);
 
-        foreach (var setting in entity.GetInitData(Player))
+        foreach (var setting in component.GetInitData(Player))
             if (setting != null)
                 sb.Append(setting);
 

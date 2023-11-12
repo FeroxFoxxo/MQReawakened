@@ -16,15 +16,15 @@ using Server.Reawakened.XMLs.Models.Npcs;
 using static A2m.Server.QuestStatus;
 using static NPCController;
 
-namespace Server.Reawakened.Entities;
+namespace Server.Reawakened.Entities.Components;
 
-public class NpcControllerEntity : SyncedEntity<NPCController>
+public class C_NpcController : Component<NPCController>
 {
-    public FollowCamModes CameraMode => EntityData.CameraMode;
-    public FollowCamPriority CameraPriority => EntityData.CameraPriority;
-    public bool ShouldDisableNpcInteraction => EntityData.ShouldDisableNPCInteraction;
+    public FollowCamModes CameraMode => ComponentData.CameraMode;
+    public FollowCamPriority CameraPriority => ComponentData.CameraPriority;
+    public bool ShouldDisableNpcInteraction => ComponentData.ShouldDisableNPCInteraction;
 
-    public ILogger<NpcControllerEntity> Logger { get; set; }
+    public ILogger<C_NpcController> Logger { get; set; }
     public MiscTextDictionary MiscText { get; set; }
     public ServerRConfig RConfig { get; set; }
     public Dialog Dialog { get; set; }
@@ -45,7 +45,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
     public NpcType NpcType;
 
-    public override void InitializeEntity()
+    public override void InitializeComponent()
     {
         NameId = -1;
         NpcType = NpcType.Unknown;
@@ -142,14 +142,10 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                 }
             }
             else
-            {
                 Logger.LogDebug("[INACTIVE NPC TRIGGERED] [{Name} ({Id})]", Name, Id);
-            }
         }
         else
-        {
             Logger.LogDebug("[UNKNOWN NPC EVENT] [{Type}] [{Name} ({Id})]", syncEvent.Type.ToString().ToUpperInvariant(), Name, Id);
-        }
     }
 
     public void SendNpcInfo(CharacterModel character, NetState netState)
@@ -218,7 +214,6 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         }
 
         foreach (var givenQuest in GiverQuests)
-        {
             if (CanStartQuest(character, givenQuest))
             {
                 questStatus = NPCStatus.QuestAvailable;
@@ -232,7 +227,6 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                 Logger.LogTrace("[{Quest} ({QuestId})] [UNAVAILABLE QUEST] Cannot start quest from {NpcName} ({Id})",
                     givenQuest.Name, givenQuest.Id, NpcName, Id);
             }
-        }
 
         foreach (var quest in character.Data.QuestLog)
         {
@@ -272,7 +266,6 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
             }
 
             if (GiverQuests.Any(v => v.QuestLineId == catalogedQuest.QuestLineId && v.Id == quest.Id))
-            {
                 if (quest.QuestStatus == QuestState.IN_PROCESSING)
                 {
                     questStatus = NPCStatus.QuestInProgress;
@@ -280,7 +273,6 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
                         quest.Id, NpcName, Id);
                     break;
                 }
-            }
         }
 
         return questStatus;
@@ -378,7 +370,6 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
     public void StartNewQuest(Player player)
     {
         foreach (var givenQuest in GiverQuests)
-        {
             if (CanStartQuest(player.Character, givenQuest))
             {
                 player.AddQuest(givenQuest, givenQuest.Id, true);
@@ -395,7 +386,6 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
 
                 return;
             }
-        }
     }
 
     public void SendNpcDialog(Player player, QuestStatusModel questStatus, QuestDescription quest, int dialogNumber)
@@ -437,7 +427,7 @@ public class NpcControllerEntity : SyncedEntity<NPCController>
         }
 
         if (!conversation.Lines.Any(x => x.TextId > 0))
-             SendDialog(player);
+            SendDialog(player);
 
         player.NetState.SendXt("nl", questStatus, Id, NameId, questDialog[dialogNumber]);
     }
