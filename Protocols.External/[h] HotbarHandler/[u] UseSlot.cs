@@ -79,7 +79,9 @@ public class UseSlot : ExternalProtocol
     {
         AiHealth_SyncEvent aiEvent = null;
 
-        var planeName = position.Z < 0 ? "Plane0" : "Plane1";
+        Console.WriteLine(position);
+
+        var planeName = position.Z > 10 ? "Plane1" : "Plane0";
         position.Z = 0;
 
         foreach (var obj in
@@ -96,6 +98,7 @@ public class UseSlot : ExternalProtocol
 
             switch (obj.ObjectInfo.PrefabName)
             {
+                case "PF_CRS_BarrelNewbZone01":
                 case "PF_CRS_BARREL01":
                     aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
                         Player.Room.Time, 0, 100, 0, 0, "now", false, false);
@@ -107,7 +110,7 @@ public class UseSlot : ExternalProtocol
 
                     Player.Character.AddItem(ItemCatalog.GetItemFromId(1568), 1);
                     Player.SendUpdatedInventory(false);
-                    return;
+                    break;
                 case "PF_Spite_Crawler_Rock":
                     aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
                         Player.Room.Time, 0, 100, 0, 0, "now", false, true);
