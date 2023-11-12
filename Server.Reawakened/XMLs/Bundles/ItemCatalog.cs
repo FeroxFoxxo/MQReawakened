@@ -6,6 +6,7 @@ using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
+using System.Reflection;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
@@ -126,7 +127,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         _itemCategories.Clear();
         _itemSubCategories.Clear();
 
-        var itemIds = new List<int>();
+        var items = new Dictionary<int, string>();
 
         foreach (XmlNode catalogs in xml.ChildNodes)
         {
@@ -161,15 +162,23 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                     {
                         if (!(item.Name == "Item")) continue;
 
+                        var id = -1;
+                        var name = string.Empty;
+
                         foreach (XmlAttribute itemAttributes in item.Attributes)
                         {
                             switch (itemAttributes.Name)
                             {
                                 case "id":
-                                    itemIds.Add(int.Parse(itemAttributes.Value));
+                                    id = int.Parse(itemAttributes.Value);
+                                    break;
+                                case "name":
+                                    name = itemAttributes.Value;
                                     break;
                             }
                         }
+
+                        items.Add(id, name);
                     }
                 }
             }
@@ -183,7 +192,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                 {
                     var category = xml.CreateElement("ItemCategory");
 
-                    category.SetAttribute("id", ((int) item.CategoryId).ToString());
+                    category.SetAttribute("id", ((int)item.CategoryId).ToString());
                     category.SetAttribute("name", Enum.GetName(item.CategoryId));
 
                     var node = catalogs.AppendChild(category);
@@ -194,19 +203,19 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
                 var itemCategory = categoryNode;
 
-                if (!_itemSubCategories[item.CategoryId].TryGetValue(item.SubCategoryId, out var value))
+                if (!_itemSubCategories[item.CategoryId].TryGetValue(item.SubCategoryId, out var name))
                 {
                     var subCategory = xml.CreateElement("ItemSubcategory");
 
-                    subCategory.SetAttribute("id", ((int) item.SubCategoryId).ToString());
+                    subCategory.SetAttribute("id", ((int)item.SubCategoryId).ToString());
                     subCategory.SetAttribute("name", Enum.GetName(item.SubCategoryId));
 
                     var node = itemCategory.AppendChild(subCategory);
-                    value = node;
-                    _itemSubCategories[item.CategoryId].Add(item.SubCategoryId, value);
+                    name = node;
+                    _itemSubCategories[item.CategoryId].Add(item.SubCategoryId, name);
                 }
 
-                var itemSubCategory = value;
+                var itemSubCategory = name;
 
                 var itemElement = xml.CreateElement("Item");
 
@@ -219,10 +228,16 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
                 var itemId = item.ItemId;
 
+                if (items.TryGetValue(itemId, out var itemName))
+                {
+                    Logger.LogError("An item with id '{Id}' already exists! (Conflicts {Name} and {Name2})", itemId, item.ItemName, itemName);
+                    continue;
+                }
+
                 if (itemId == -1)
                 {
-                    itemId = itemIds.FindSmallest(smallestItemId);
-                    itemIds.Add(itemId);
+                    itemId = items.Keys.ToList().FindSmallest(smallestItemId);
+                    items.Add(itemId, item.ItemName);
                     smallestItemId = itemId;
                 }
 
@@ -287,6 +302,14 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
     public void ReadDescription(string xml) =>
         ReadDescriptionXml(xml);
 
-    public void FinalizeBundle() =>
-        Items = (Dictionary<int, ItemDescription>) this.GetField<ItemHandler>("_itemDescriptionCache");
+    public void FinalizeBundle()
+    {
+        var field = typeof(GameGlobals).GetField("_itemHandler",
+                    BindingFlags.Static |
+                    BindingFlags.NonPublic);
+
+        field.SetValue(null, this);
+
+        Items = (Dictionary<int, ItemDescription>)this.GetField<ItemHandler>("_itemDescriptionCache");
+    }
 }

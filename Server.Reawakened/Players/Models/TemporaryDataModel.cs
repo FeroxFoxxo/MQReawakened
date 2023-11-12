@@ -1,5 +1,5 @@
 ﻿using Server.Reawakened.Players.Models.Groups;
-using Server.Reawakened.Players.Models.Temporary;
+using Server.Reawakened.Players.Models.Trade;
 using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Players.Models;

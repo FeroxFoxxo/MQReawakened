@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Models.LootRewards;
 
-namespace Server.Reawakened.Players.LootHandlers;
+namespace Server.Reawakened.Players.Helpers;
 
 public static class PlayerLootHandler
 {

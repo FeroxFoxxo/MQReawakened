@@ -44,6 +44,7 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
     public void FinalizeBundle()
     {
         GameFlow.QuestCatalog = this;
+
         QuestCatalogs = this.GetField<QuestCatalogXML>("_questCatalog") as Dictionary<int, QuestDescription>;
         QuestLineCatalogs = this.GetField<QuestCatalogXML>("_questLineCatalog") as Dictionary<int, QuestLineDescription>;
     }

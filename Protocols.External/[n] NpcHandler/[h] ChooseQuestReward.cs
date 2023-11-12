@@ -29,5 +29,10 @@ public class ChooseQuestReward : ExternalProtocol
 
         Player.AddBananas(quest.BananaReward);
         Player.AddReputation(quest.ReputationReward);
+
+        foreach (var item in quest.RewardItems)
+            Player.Character.AddItem(item.Key, item.Value);
+
+        Player.SendUpdatedInventory(false);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Models.Temporary;
+using Server.Reawakened.Players.Models.Trade;
 
 namespace Protocols.External._t__TradeHandler;
 
