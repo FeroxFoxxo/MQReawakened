@@ -1,10 +1,13 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -13,11 +16,38 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerExtensions
 {
+    public static void OpenDoors(this Player player)
+    {
+        string[] planes = { "Plane0", "Plane1" };
+
+        var doors = new List<GameObjectModel>();
+        foreach (var plane in planes)
+        {
+            foreach (var doorObject in player.Room.Planes[plane].GameObjects.Values)
+            {
+                if (doorObject == null)
+                    break;
+
+                if (doorObject.ObjectInfo.PrefabName.Contains("Gate") || doorObject.ObjectInfo.PrefabName.Contains("Door"))
+                    doors.Add(doorObject);
+            }
+
+            foreach (var door in doors)
+            {
+                var doorTrigger = new TriggerReceiver_SyncEvent(door.ObjectInfo.ObjectId.ToString(), player.Room.Time,
+                    player.GameObjectId.ToString(), true, player.Room.Time);
+
+                player.Room.SendSyncEvent(doorTrigger);
+            }
+        }
+    }
+
+
     public static void TeleportPlayer(this Player player, int x, int y, int z)
     {
         var isBackPlane = z == 1;
 
-        var coordinates = new PhysicTeleport_SyncEvent(player.Character.Data.CharacterId.ToString(),
+        var coordinates = new PhysicTeleport_SyncEvent(player.GameObjectId.ToString(),
             player.Room.Time, player.TempData.Position.X + x, player.TempData.Position.Y + y, isBackPlane);
 
         player.SendSyncEventToPlayer(coordinates);
@@ -125,7 +155,7 @@ public static class PlayerExtensions
         player.SendCashUpdate();
     }
 
-     public static void AddNCash(this Player player, int collectedNCash)
+    public static void AddNCash(this Player player, int collectedNCash)
     {
         var charData = player.Character.Data;
         charData.NCash += collectedNCash;

@@ -9,6 +9,7 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.RegularExpressions;
@@ -54,6 +55,7 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
+        AddCommand(new ChatCommand("openDoors", "", Doors));
         AddCommand(new ChatCommand("save", "", SaveLevel));
         AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
 
@@ -99,12 +101,15 @@ public class ChatCommands : IService
 
     public void AddCommand(ChatCommand command) => _commands.Add(command.Name, command);
 
+    private bool Doors(Player player, string[] args)
+    {
+        player.OpenDoors();
+
+        return true;
+    }
+
     private bool Teleport(Player player, string[] args)
     {
-        var character = player.Character;
-
-        if (character == null) return false;
-
         if (!int.TryParse(args[1], out var xPos)
             || !int.TryParse(args[2], out var yPos)
             || !int.TryParse(args[3], out var zPos))

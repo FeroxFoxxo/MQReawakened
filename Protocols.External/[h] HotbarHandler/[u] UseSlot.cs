@@ -10,6 +10,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using UnityEngine;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -22,9 +23,6 @@ public class UseSlot : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
-
-    public LootCatalogInt InternalLootCatalog { get; set; }
-
     public override void Run(string[] message)
     {
         var character = Player.Character;
@@ -67,9 +65,8 @@ public class UseSlot : ExternalProtocol
             if (effect.Type is ItemEffectType.Invalid or ItemEffectType.Unknown)
                 continue;
 
-            var statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time, 
-                effect.TypeId, effect.Value, effect.Duration,
-                true, Player.GameObjectId.ToString(), true);
+            var statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
 
             Player.SendSyncEventToPlayer(statusEffect);
         }
@@ -82,12 +79,14 @@ public class UseSlot : ExternalProtocol
     {
         AiHealth_SyncEvent aiEvent = null;
 
+        var monsters = new List<GameObjectModel>();
+
         var planeName = position.Z > 10 ? "Plane1" : "Plane0";
         position.Z = 0;
 
         foreach (var obj in
                  Player.Room.Planes[planeName].GameObjects.Values
-                     .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3f)
+                     .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3.4f)
                 )
         {
             if (direction > 0)
@@ -113,40 +112,92 @@ public class UseSlot : ExternalProtocol
 
             switch (prefabName)
             {
+                case "PF_R01_Barrel01":
+                    DestroyObject(obj);
+                    break;
+                case "PF_SHD_Barrel01":
+                    DestroyObject(obj);
+                    break;
                 case "PF_CRS_BarrelNewbZone01":
+                    DestroyObject(obj);
+                    break;
                 case "PF_CRS_BARREL01":
-                    aiEvent = new AiHealth_SyncEvent(objectId.ToString(),
-                        Player.Room.Time, 0, 100, 0, 0, "now", false, false);
-
-                    Logger.LogInformation("Object name: {args1} Object Id: {args2}",
-                        prefabName, objectId);
-
-                    Player.Room.SendSyncEvent(aiEvent);
-
-                    Player.Character.AddItem(ItemCatalog.GetItemFromId(1568), 1);
-                    Player.SendUpdatedInventory(false);
+                    DestroyObject(obj);
                     break;
-                case "PF_Spite_Crawler_Rock":
-                case "PF_Spite_Bathog_Rock":
-                case "PF_Spite_Spiderling_Boss01":
-                case "PF_UniversalSpawnerNewb01":
-                    Player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.Scoremultiple, objectId, prefabName, 1);
-
-                    aiEvent = new AiHealth_SyncEvent(objectId.ToString(),
-                        Player.Room.Time, 0, 100, 0, 0, "now", false, true);
-
-                    Logger.LogInformation("Object name: {args1} Object Id: {args2}", prefabName, objectId);
-
-                    Player.Room.SendSyncEvent(aiEvent);
-
-                    Player.Character.AddItem(ItemCatalog.GetItemFromId(404), 1);
-                    Player.SendUpdatedInventory(false);
+                case "PF_OUT_BARREL03":
+                    DestroyObject(obj);
                     break;
-                default:
-                    Logger.LogInformation("Hit Object: {name}, ObjectId: {id}", prefabName, objectId);
+                case "PF_WLD_Breakable01":
+                    DestroyObject(obj);
+                    break;
+                case "PF_BON_BreakableUrn01":
+                    DestroyObject(obj);
+                    break;
+                case "PF_EVT_HallwnPumpkinFloatBRK":
+                    DestroyObject(obj);
+                    break;
+                case "PF_EVT_XmasBrkIceCubeLoot01":
+                    DestroyObject(obj);
+                    break;
+                case "PF_EVT_XmasBrkIceCubeLoot02":
+                    DestroyObject(obj);
+                    break;
+                case "PF_EVT_XmasBrkIceCube02":
+                    DestroyObject(obj);
                     break;
             }
+
+            if (prefabName.Contains("Spite") ||
+                prefabName.Contains("Critter") ||
+                prefabName.Contains("Spawner"))
+                monsters.Add(obj);
+
+            foreach (var monster in monsters)
+            {
+                Player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.Scoremultiple, objectId, prefabName, 1);
+
+                aiEvent = new AiHealth_SyncEvent(objectId.ToString(),
+                    Player.Room.Time, 0, 100, 0, 0, "now", false, true);
+
+                Logger.LogInformation("Object name: {args1} Object Id: {args2}", prefabName, objectId);
+
+                Player.Room.SendSyncEvent(aiEvent);
+
+                Player.SendUpdatedInventory(false);
+            }
         }
+    }
+
+    private void DestroyObject(GameObjectModel obj)
+    {
+        var random = new System.Random();
+        var randomItem = random.Next(1, 4);
+        var itemReward = 0;
+        switch (randomItem)
+        {
+            case 1:
+                itemReward = 404;
+                break;
+            case 2:
+                itemReward = 1568;
+                break;
+            case 3:
+                itemReward = 510;
+                break;
+        }
+
+        var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
+                        Player.Room.Time, 0, 100, 0, 0, "now", false, false);
+
+        Logger.LogInformation("Object name: {args1} Object Id: {args2}",
+            obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
+
+        Player.Room.SendSyncEvent(aiEvent);
+
+        if (obj.ObjectInfo.PrefabName != "PF_EVT_XmasBrkIceCube02")
+            Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
+
+        Player.SendUpdatedInventory(false);
     }
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item, int hotbarSlotId)
