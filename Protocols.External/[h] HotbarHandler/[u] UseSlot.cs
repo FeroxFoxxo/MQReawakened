@@ -113,35 +113,15 @@ public class UseSlot : ExternalProtocol
             switch (prefabName)
             {
                 case "PF_R01_Barrel01":
-                    DestroyObject(obj);
-                    break;
                 case "PF_SHD_Barrel01":
-                    DestroyObject(obj);
-                    break;
                 case "PF_CRS_BarrelNewbZone01":
-                    DestroyObject(obj);
-                    break;
                 case "PF_CRS_BARREL01":
-                    DestroyObject(obj);
-                    break;
                 case "PF_OUT_BARREL03":
-                    DestroyObject(obj);
-                    break;
                 case "PF_WLD_Breakable01":
-                    DestroyObject(obj);
-                    break;
                 case "PF_BON_BreakableUrn01":
-                    DestroyObject(obj);
-                    break;
                 case "PF_EVT_HallwnPumpkinFloatBRK":
-                    DestroyObject(obj);
-                    break;
                 case "PF_EVT_XmasBrkIceCubeLoot01":
-                    DestroyObject(obj);
-                    break;
                 case "PF_EVT_XmasBrkIceCubeLoot02":
-                    DestroyObject(obj);
-                    break;
                 case "PF_EVT_XmasBrkIceCube02":
                     DestroyObject(obj);
                     break;
