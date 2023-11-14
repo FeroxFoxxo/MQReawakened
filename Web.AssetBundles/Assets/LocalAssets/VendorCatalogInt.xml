@@ -3,6 +3,33 @@
     <Vendor objectId="98648" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
         <Item prefabName="PF_PET_Rig02_Enzo01" />
     </Vendor>
+    <Vendor objectId="1167" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
+    </Vendor>
+    <Vendor objectId="615" name="Altak" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1018" greetingConversationId="2795" leavingConversationId="2794">
+        <Item prefabName="Col_POT_ExperiencePotion02" />
+        <Item prefabName="COL_POT_Rejuvenation02" />
+        <Item prefabName="COL_POT_Healing01" />
+        <Item prefabName="Add_COM_Explorator01_UF01" />
+        <Item prefabName="COL_FOOD_Apple01" />
+        <Item prefabName="Add_COM_AnimalWood01_S01" />
+        <Item prefabName="WPN_1H_SwordGKnight02" />
+        <Item prefabName="Add_OUT_WaterBandit01_E03" />
+        <Item prefabName="Add_COM_Cocohelm01_S02" />
+        <Item prefabName="COL_FOOD_IceCream01" />
+        <Item prefabName="COL_POT_Healing02" />
+        <Item prefabName="Add_COM_SpaceSuit01_LS01" />
+        <Item prefabName="Add_COM_SpaceSuit01_TS01" />
+    </Vendor>
+    <Vendor objectId="822" name="Dillon" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1180" greetingConversationId="3173" leavingConversationId="3372">
+        <Item prefabName="Add_COM_Viking01_S01" />
+        <Item prefabName="Add_COM_AviatorPunk01_S01" />
+        <Item prefabName="Add_COM_AviatorPunk01_TS01" />
+        <Item prefabName="COL_FOOD_Nuts01" />
+        <Item prefabName="COL_POT_Rejuvenation01" />
+        <Item prefabName="COL_FOOD_Candy01" />
+        <Item prefabName="Add_COM_AnimalWood01_S02" />
+        <Item prefabName="COL_POT_Healing02" />
+    </Vendor>
     <Vendor objectId="3008" name="Jacko" descriptionId="1" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="10460" greetingConversationId="2651" leavingConversationId="3027">
         <Item prefabName="Add_EVT_PumpkinHead01_FH01" />
         <Item prefabName="Add_EVT_PumpkinHead01_FH02" />
