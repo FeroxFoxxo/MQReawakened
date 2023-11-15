@@ -6,9 +6,13 @@ using Server.Base.Core.Services;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.RegularExpressions;
@@ -49,13 +53,14 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("unlockHotbar", "[petSlot 1 (true) / 0 (false)]", AddHotbar));
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
+        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
+        AddCommand(new ChatCommand("openDoors", "", Doors));
         AddCommand(new ChatCommand("save", "", SaveLevel));
-        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
@@ -99,12 +104,28 @@ public class ChatCommands : IService
 
     public void AddCommand(ChatCommand command) => _commands.Add(command.Name, command);
 
+    private bool Doors(Player player, string[] args)
+    {
+        foreach (var entity in player.Room.Entities)
+        {
+            foreach (var component in entity.Value)
+            {
+                if (component is TriggerReceiverComp triggerEntity)
+                {
+                    if (component.PrefabName == "PF_GLB_DoorArena01")
+                        break;
+
+                    else
+                        triggerEntity.Trigger(true);
+                }
+            }
+        }
+
+        return true;
+    }
+
     private bool Teleport(Player player, string[] args)
     {
-        var character = player.Character;
-
-        if (character == null) return false;
-
         if (!int.TryParse(args[1], out var xPos)
             || !int.TryParse(args[2], out var yPos)
             || !int.TryParse(args[3], out var zPos))

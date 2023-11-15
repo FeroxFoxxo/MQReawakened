@@ -116,6 +116,8 @@ public class ServerRConfig : IRConfig
             2972, // ace pilot pack
             2973, // crimson dragon pack
             2923, // banana box
+            3024, // steel sword
+            2878 // cadet training sword
         ];
 
         StackedItemKit =
