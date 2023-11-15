@@ -2,11 +2,14 @@
 
 namespace Server.Reawakened.Players.Models.Character;
 
-public class RecipeModel()
+public class RecipeModel
 {
     public int RecipeId { get; set; }
     public int ItemId { get; set; }
     public List<IngredientModel> Ingredients { get; set; }
+
+    public RecipeModel() =>
+        Ingredients = [];
 
     public override string ToString()
     {

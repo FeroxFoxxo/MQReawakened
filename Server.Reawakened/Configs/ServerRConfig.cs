@@ -54,6 +54,8 @@ public class ServerRConfig : IRConfig
 
     public bool Is2014Client { get; set; }
 
+    public string[] IgnoredDoors { get; set; }
+
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -149,5 +151,9 @@ public class ServerRConfig : IRConfig
         Is2014Client = false;
 
         MaxLevel = 65;
+
+        IgnoredDoors = [
+            "PF_GLB_DoorArena01"
+        ];
     }
 }

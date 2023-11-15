@@ -1,8 +1,9 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 
@@ -16,16 +17,14 @@ public class UseItem : ExternalProtocol
 
     public VendorCatalog VendorCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
-    public RecipeCatalogInt RecipeCatalogInt { get; set; }
+    public RecipeCatalogInt RecipeCatalog { get; set; }
+
     public override void Run(string[] message)
     {
         var character = Player.Character;
 
         var itemId = int.Parse(message[5]);
-
         var item = ItemCatalog.GetItemFromId(itemId);
-
-        int recipeParentId;
 
         if (item == null)
         {
@@ -37,13 +36,14 @@ public class UseItem : ExternalProtocol
 
         switch (item.SubCategoryId)
         {
-            case ItemSubCategory.Alchemy:
-                recipeParentId = item.RecipeParentItemID;
-                Player.GrantRecipe(itemId, recipeParentId, RecipeCatalogInt, Logger);
-                break;
             case ItemSubCategory.Tailoring:
-                recipeParentId = item.RecipeParentItemID;
-                Player.GrantRecipe(itemId, recipeParentId, RecipeCatalogInt, Logger);
+            case ItemSubCategory.Alchemy:
+                var recipe = RecipeCatalog.GetRecipeById(itemId);
+
+                Player.Character.Data.RecipeList.RecipeList.Add(recipe);
+
+                Player.SendXt("cz", recipe);
+
                 break;
             case ItemSubCategory.SuperPack:
 

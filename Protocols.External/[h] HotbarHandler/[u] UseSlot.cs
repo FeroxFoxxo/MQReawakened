@@ -1,34 +1,30 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Protocols.External._i__InventoryHandler;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using UnityEngine;
 
 namespace Protocols.External._h__HotbarHandler;
 
 public class UseSlot : ExternalProtocol
 {
     public override string ProtocolName => "hu";
+
     public ILogger<UseSlot> Logger { get; set; }
+
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-        var player = Player;
-
         var hotbarSlotId = int.Parse(message[5]);
         var targetUserId = int.Parse(message[6]);
 
@@ -39,23 +35,22 @@ public class UseSlot : ExternalProtocol
             Z = Convert.ToSingle(message[9])
         };
 
-        Console.WriteLine("X: " + position.X);
-        Console.WriteLine("Y: " + position.Y);
-        Console.WriteLine("Z: " + position.Z);
+        Logger.LogDebug("Player used hotbar slot {hotbarId} on {userId} at coordinates {position}",
+            hotbarSlotId, targetUserId, position);
 
         var direction = Player.TempData.Direction;
 
-        var slotItem = character.Data.Hotbar.HotbarButtons[hotbarSlotId];
+        var slotItem = Player.Character.Data.Hotbar.HotbarButtons[hotbarSlotId];
         var usedItem = ItemCatalog.GetItemFromId(slotItem.ItemId);
 
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Throw:
-                HandleRangedWeapon(position, player, direction, usedItem);
+                HandleRangedWeapon(position, direction, usedItem);
                 break;
             case ItemActionType.Drink:
             case ItemActionType.Eat:
-                HandleConsumable(character, usedItem, hotbarSlotId);
+                HandleConsumable(usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
                 HandleMeleeWeapon(position, direction);
@@ -67,7 +62,7 @@ public class UseSlot : ExternalProtocol
         }
     }
 
-    private void HandleConsumable(CharacterModel character, ItemDescription item, int hotbarSlotId)
+    private void HandleConsumable(ItemDescription item, int hotbarSlotId)
     {
         foreach (var effect in item.ItemEffects)
         {
@@ -81,31 +76,24 @@ public class UseSlot : ExternalProtocol
         }
 
         if (!item.UniqueInInventory)
-            RemoveFromHotbar(character, item, hotbarSlotId);
+            RemoveFromHotbar(Player.Character, item, hotbarSlotId);
     }
 
-    private void HandleRangedWeapon(Vector3Model position, Player player, int playerDirection, ItemDescription usedItem)
+    private void HandleRangedWeapon(Vector3Model position, int direction, ItemDescription usedItem)
     {
-        var bulletDirection = 0;
+        var isLeft = direction > 0;
 
-        if (playerDirection == 1)
-        {
-            position.X -= 3;
-            bulletDirection = 7;
-        }
+        position.X += isLeft ? -3 : 3;
+        position.Y += 1;
 
-        else if (playerDirection == -1)
-        {
-            position.X += 3;
-            bulletDirection = -7;
-        }
+        var bulletDirection = isLeft ? 7 : -7;
 
         var prefabName = usedItem.PrefabName;
 
-        var projectile = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            position.X, position.Y + 1, position.Z, bulletDirection, 0, 0, 0, prefabName);
+        var projectile = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            position.X, position.Y, position.Z, bulletDirection, 0, 0, 0, prefabName);
 
-        player.Room.SendSyncEvent(projectile);
+        Player.Room.SendSyncEvent(projectile);
     }
 
     private void HandleMeleeWeapon(Vector3Model position, int direction)
@@ -122,7 +110,9 @@ public class UseSlot : ExternalProtocol
                      .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3.4f)
                 )
         {
-            if (direction > 0)
+            var isLeft = direction > 0;
+
+            if (isLeft)
             {
                 if (obj.ObjectInfo.Position.X < position.X)
                     continue;
@@ -168,15 +158,15 @@ public class UseSlot : ExternalProtocol
                     if (component is HazardControllerComp triggerCoopEntity ||
                         component.PrefabName.Contains("Spawner")) //Temp until BreakableEventControllerComp is added.              
                         Player.Room.SendSyncEvent(aiEvent);
-
         }
     }
 
     private void DestroyObject(GameObjectModel obj)
     {
-        var random = new System.Random();
+        var random = new Random();
         var randomItem = random.Next(1, 4);
         var itemReward = 0;
+
         switch (randomItem)
         {
             case 1:
@@ -198,7 +188,7 @@ public class UseSlot : ExternalProtocol
 
         Player.Room.SendSyncEvent(aiEvent);
 
-        if (obj.ObjectInfo.PrefabName != "PF_EVT_XmasBrkIceCube02" && obj.ObjectInfo.PrefabName != "PF_EVT_HallwnPumpkinFloatBRK")
+        if (obj.ObjectInfo.PrefabName is not "PF_EVT_XmasBrkIceCube02" and not "PF_EVT_HallwnPumpkinFloatBRK")
             Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
 
         switch (randomItem)

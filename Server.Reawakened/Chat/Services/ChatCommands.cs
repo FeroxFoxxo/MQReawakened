@@ -6,48 +6,26 @@ using Server.Base.Core.Services;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.RegularExpressions;
 
 namespace Server.Reawakened.Chat.Services;
 
-public class ChatCommands : IService
+public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
+    WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves) : IService
 {
-    private readonly IHostApplicationLifetime _appLifetime;
-    private readonly Dictionary<string, ChatCommand> _commands;
-    private readonly ServerRConfig _config;
-    private readonly ItemCatalog _itemCatalog;
-    private readonly ILogger<ServerConsole> _logger;
-    private readonly WorldGraph _worldGraph;
-    private readonly WorldHandler _worldHandler;
-    private readonly AutoSave _saves;
+    private readonly Dictionary<string, ChatCommand> commands = [];
 
-    public ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
-        WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves)
-    {
-        _itemCatalog = itemCatalog;
-        _config = config;
-        _logger = logger;
-        _worldHandler = worldHandler;
-        _worldGraph = worldGraph;
-        _appLifetime = appLifetime;
-        _saves = saves;
-        _commands = [];
-    }
-
-    public void Initialize() => _appLifetime.ApplicationStarted.Register(RunChatListener);
+    public void Initialize() => appLifetime.ApplicationStarted.Register(RunChatListener);
 
     public void RunChatListener()
     {
-        _logger.LogDebug("Setting up chat commands");
+        logger.LogDebug("Setting up chat commands");
 
         AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
         AddCommand(new ChatCommand("unlockHotbar", "[petSlot 1 (true) / 0 (false)]", AddHotbar));
@@ -59,21 +37,21 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
-        AddCommand(new ChatCommand("openDoors", "", Doors));
+        AddCommand(new ChatCommand("openDoors", "", OpenDoors));
         AddCommand(new ChatCommand("save", "", SaveLevel));
 
-        _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
+        logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
 
     public void RunCommand(Player player, string[] args)
     {
         var name = args.FirstOrDefault();
 
-        if (name != null && _commands.TryGetValue(name, out var value))
+        if (name != null && commands.TryGetValue(name, out var value))
         {
             Log(
                 !value.CommandMethod(player, args)
-                    ? $"Usage: {_config.ChatCommandStart}{value.Name} {value.Arguments}"
+                    ? $"Usage: {config.ChatCommandStart}{value.Name} {value.Arguments}"
                     : "Successfully run command!", player);
         }
         else
@@ -89,35 +67,31 @@ public class ChatCommands : IService
     {
         Log("Chat Commands:", player);
 
-        foreach (var command in _commands.Values)
+        foreach (var command in commands.Values)
         {
-            var padding = _config.ChatCommandPadding - command.Name.Length;
+            var padding = config.ChatCommandPadding - command.Name.Length;
             if (padding < 0) padding = 0;
 
             Log(
-                $"  {_config.ChatCommandStart}{command.Name.PadRight(padding)}" +
+                $"  {config.ChatCommandStart}{command.Name.PadRight(padding)}" +
                 $"{(command.Arguments.Length > 0 ? $" - {command.Arguments}" : "")}",
                 player
             );
         }
     }
 
-    public void AddCommand(ChatCommand command) => _commands.Add(command.Name, command);
+    public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
-    private bool Doors(Player player, string[] args)
+    private bool OpenDoors(Player player, string[] args)
     {
-        foreach (var entity in player.Room.Entities)
+        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
         {
-            foreach (var component in entity.Value)
+            if (entityComponent is TriggerReceiverComp triggerEntity)
             {
-                if (component is TriggerReceiverComp triggerEntity)
-                {
-                    if (component.PrefabName == "PF_GLB_DoorArena01")
-                        break;
+                if (config.IgnoredDoors.Contains(entityComponent.PrefabName))
+                    continue;
 
-                    else
-                        triggerEntity.Trigger(true);
-                }
+                triggerEntity.Trigger(true);
             }
         }
 
@@ -135,6 +109,7 @@ public class ChatCommands : IService
         }
 
         var z = zPos;
+
         if (zPos is < 0 or > 1)
         {
             Log("Invalid value for Z, defaulting to 0", player);
@@ -201,15 +176,15 @@ public class ChatCommands : IService
                 amount = 1;
         }
 
-        var items = _config.SingleItemKit
-            .Select(itemId => _itemCatalog.GetItemFromId(itemId))
+        var items = config.SingleItemKit
+            .Select(itemCatalog.GetItemFromId)
             .ToList();
 
-        foreach (var itemId in _config.StackedItemKit)
+        foreach (var itemId in config.StackedItemKit)
         {
-            var stackedItem = _itemCatalog.GetItemFromId(itemId);
+            var stackedItem = itemCatalog.GetItemFromId(itemId);
 
-            for (var i = 0; i < _config.AmountToStack; i++)
+            for (var i = 0; i < config.AmountToStack; i++)
                 items.Add(stackedItem);
         }
 
@@ -232,11 +207,11 @@ public class ChatCommands : IService
     {
         var character = player.Character;
 
-        player.AddBananas(_config.CashKitAmount);
-        player.AddNCash(_config.CashKitAmount);
+        player.AddBananas(config.CashKitAmount);
+        player.AddNCash(config.CashKitAmount);
 
-        Log($"{character.Data.CharacterName} received {_config.CashKitAmount} " +
-            $"banana{(_config.CashKitAmount > 1 ? "s" : "")} & monkey cash!", player);
+        Log($"{character.Data.CharacterName} received {config.CashKitAmount} " +
+            $"banana{(config.CashKitAmount > 1 ? "s" : "")} & monkey cash!", player);
 
         return true;
     }
@@ -252,7 +227,7 @@ public class ChatCommands : IService
         }
 
         var names = args.Select(name =>
-            Regex.Replace(name.ToLower(), "[^A-Za-z0-9]+", "")
+            AlphanumericRegex().Replace(name.ToLower(), "")
         ).ToList();
 
         var firstName = names[1];
@@ -288,7 +263,7 @@ public class ChatCommands : IService
 
         levelId = level;
 
-        var levelInfo = _worldGraph.GetInfoLevel(levelId);
+        var levelInfo = worldGraph.GetInfoLevel(levelId);
 
         if (string.IsNullOrEmpty(levelInfo.Name))
         {
@@ -296,12 +271,12 @@ public class ChatCommands : IService
             return false;
         }
 
-        character.SetLevel(levelId, _logger);
+        character.SetLevel(levelId, logger);
 
         var tribe = levelInfo.Tribe;
 
         player.DiscoverTribe(tribe);
-        player.SendLevelChange(_worldHandler, _worldGraph);
+        player.SendLevelChange(worldHandler, worldGraph);
 
         Log(
             $"Successfully set character {character.Data.CharacterId}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
@@ -320,12 +295,12 @@ public class ChatCommands : IService
         if (args.Length != 2 || !int.TryParse(args[1], out var level))
         {
             Log("Invalid level provided, defaulting to max level...", player);
-            level = _config.MaxLevel;
+            level = config.MaxLevel;
         }
 
         var newLevel = level;
 
-        player.LevelUp(newLevel, _logger);
+        player.LevelUp(newLevel, logger);
 
         Log($"{character.Data.CharacterName} has leveled up to level {newLevel}!", player);
 
@@ -334,7 +309,7 @@ public class ChatCommands : IService
 
     private bool SaveLevel(Player player, string[] args)
     {
-        _saves.Save();
+        saves.Save();
         return true;
     }
 
@@ -359,7 +334,7 @@ public class ChatCommands : IService
                 amount = 1;
         }
 
-        var item = _itemCatalog.GetItemFromId(itemId);
+        var item = itemCatalog.GetItemFromId(itemId);
 
         if (item == null)
         {
@@ -375,4 +350,7 @@ public class ChatCommands : IService
 
         return true;
     }
+
+    [GeneratedRegex("[^A-Za-z0-9]+")]
+    private static partial Regex AlphanumericRegex();
 }

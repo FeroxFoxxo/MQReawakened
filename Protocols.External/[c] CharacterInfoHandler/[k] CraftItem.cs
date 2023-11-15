@@ -1,33 +1,50 @@
-﻿using Server.Reawakened.Network.Protocols;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
+using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Protocols.External._c__CharacterInfoHandler;
+
 public class CraftItem : ExternalProtocol
 {
     public override string ProtocolName => "ck";
 
     public ItemCatalog ItemCatalog { get; set; }
+    public RecipeCatalogInt RecipeCatalog { get; set; }
+    public ServerRConfig ServerRConfig { get;set; }
+    public ILogger<CraftItem> Logger { get; set; }
 
     public override void Run(string[] message)
     {
         var recipeId = int.Parse(message[5]);
-        var amount = message[6] == "1";
 
-        var recipeDescription = ItemCatalog.GetItemFromId(recipeId);
-        var recipeParentDescription = ItemCatalog.GetItemFromId(recipeDescription.RecipeParentItemID);
+        if (!RecipeCatalog.RecipeCatalog.TryGetValue(recipeId, out var recipe))
+        {
+            Logger.LogError("Recipe with id {RecipeId} does not exist!", recipeId);
+            return;
+        }
 
-        Player.Character.AddItem(recipeParentDescription, 1);
+        var amount = ServerRConfig.Is2014Client
+            ? int.Parse(message[6])
+            : message[6].Equals("true", StringComparison.CurrentCultureIgnoreCase) // should craft all
+                ? recipe.Ingredients.Min(ing => Player.Character.TryGetItem(ing.ItemId, out var pItem) ? 0 : pItem.Count / ing.Count)
+                : 1;
 
-        foreach (var recipe in Player.Character.Data.RecipeList.RecipeList)
-            if (recipe.RecipeId == recipeId)
-                foreach (var ingredient in recipe.Ingredients)
-                    Player.Character.RemoveItem(ItemCatalog.GetItemFromId(ingredient.ItemId), ingredient.Count);
+        if (!ItemCatalog.Items.TryGetValue(recipe.ItemId, out var item))
+        {
+            Logger.LogError("Could not find recipe item with id: {ItemId}", recipe.ItemId);
+            return;
+        }
+
+        Player.Character.AddItem(item, amount);
+
+        foreach (var ingredient in recipe.Ingredients)
+        {
+            var ingredientItem = ItemCatalog.GetItemFromId(ingredient.ItemId);
+            Player.Character.RemoveItem(ingredientItem, ingredient.Count * amount);
+        }
 
         Player.SendUpdatedInventory(false);
 

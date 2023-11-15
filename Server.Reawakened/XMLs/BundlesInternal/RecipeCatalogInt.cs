@@ -1,12 +1,9 @@
-﻿using A2m.Server;
-using Achievement.PackagedData;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Extensions;
-using System.Collections.Generic;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
@@ -14,16 +11,12 @@ namespace Server.Reawakened.XMLs.BundlesInternal;
 public class RecipeCatalogInt : IBundledXml
 {
     public string BundleName => "RecipeCatalogInt";
-
     public BundlePriority Priority => BundlePriority.Low;
 
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
-
     public IServiceProvider Services { get; set; }
 
-    public ItemCatalog ItemCatalog { get; set; }
-
-    public Dictionary<int, List<IngredientModel>> RecipeCatalog;
+    public Dictionary<int, RecipeModel> RecipeCatalog;
 
     public void InitializeVariables() => RecipeCatalog = [];
 
@@ -33,6 +26,8 @@ public class RecipeCatalogInt : IBundledXml
 
     public void ReadDescription(string xml)
     {
+        var itemCatalog = Services.GetRequiredService<ItemCatalog>();
+
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
@@ -44,14 +39,11 @@ public class RecipeCatalogInt : IBundledXml
             {
                 if (recipeType.Name != "RecipeType") continue;
 
-                var recipeId = -1;
-
                 foreach (XmlNode recipeInfo in recipeType.ChildNodes)
                 {
                     if (recipeInfo.Name != "RecipeInfo") continue;
 
-                    var ingredientItem = -1;
-                    var ingredientAmount = -1;
+                    var recipeId = -1;
                     var ingredients = new List<IngredientModel>();
 
                     foreach (XmlAttribute recipeAttribute in recipeInfo.Attributes)
@@ -69,6 +61,9 @@ public class RecipeCatalogInt : IBundledXml
                         switch (ingredient.Name)
                         {
                             case "Item":
+                                var ingredientItem = -1;
+                                var ingredientAmount = -1;
+
                                 foreach (XmlAttribute item in ingredient.Attributes)
                                 {
                                     switch (item.Name)
@@ -81,18 +76,41 @@ public class RecipeCatalogInt : IBundledXml
                                             break;
                                     }
                                 }
+
                                 var ingredientModel = new IngredientModel()
                                 {
                                     ItemId = ingredientItem,
                                     Count = ingredientAmount
                                 };
+
                                 ingredients.Add(ingredientModel);
 
-                                RecipeCatalog.TryAdd(recipeId, ingredients);
                                 break;
                         }
                     }
 
+                    if (!itemCatalog.Items.TryGetValue(recipeId, out var recipeItem))
+                    {
+                        Logger.LogError("Could not find recipe with id: {RecipeId}", recipeId);
+                        continue;
+                    }
+
+                    var itemId = recipeItem.RecipeParentItemID;
+
+                    if (itemId <= 0)
+                    {
+                        Logger.LogError("Could not find parent item {Parent} for recipe id: {RecipeId}", itemId, recipeId);
+                        continue;
+                    }
+
+                    var recipeModel = new RecipeModel()
+                    {
+                        RecipeId = recipeId,
+                        ItemId = itemId,
+                        Ingredients = ingredients
+                    };
+
+                    RecipeCatalog.TryAdd(recipeId, recipeModel);
                 }
             }
         }
@@ -102,6 +120,6 @@ public class RecipeCatalogInt : IBundledXml
     {
     }
 
-    public List<IngredientModel> GetRecipeById(int recipeId) =>
+    public RecipeModel GetRecipeById(int recipeId) =>
         RecipeCatalog.TryGetValue(recipeId, out var recipeInfo) ? recipeInfo : RecipeCatalog[0];
 }
