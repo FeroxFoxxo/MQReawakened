@@ -32,7 +32,7 @@
         <Item prefabName="Add_EVT_Zombie01_LS01" />
     </Vendor>
     <Vendor objectId="7524" name="Aodh" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="891" greetingConversationId="2467" leavingConversationId="2466">
-        <Item prefabName="COL_ING_C_PureWater01" />
+        <Item prefabName="COL_ING_C_PureWater01" /> 
         <Item prefabName="COL_ING_C_MountainWater01" />
         <Item prefabName="COL_ING_G_GloomCap01" />
         <Item prefabName="COL_ING_C_GlacialWater01" />

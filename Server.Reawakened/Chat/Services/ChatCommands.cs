@@ -6,10 +6,13 @@ using Server.Base.Core.Services;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.RegularExpressions;
@@ -50,6 +53,7 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("unlockHotbar", "[petSlot 1 (true) / 0 (false)]", AddHotbar));
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
+        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
@@ -57,7 +61,6 @@ public class ChatCommands : IService
         AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
         AddCommand(new ChatCommand("openDoors", "", Doors));
         AddCommand(new ChatCommand("save", "", SaveLevel));
-        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
 
         _logger.LogInformation("See chat commands by running {ChatCharStart}help", _config.ChatCommandStart);
     }
@@ -103,7 +106,20 @@ public class ChatCommands : IService
 
     private bool Doors(Player player, string[] args)
     {
-        player.OpenDoors();
+        foreach (var entity in player.Room.Entities)
+        {
+            foreach (var component in entity.Value)
+            {
+                if (component is TriggerReceiverComp triggerEntity)
+                {
+                    if (component.PrefabName == "PF_GLB_DoorArena01")
+                        break;
+
+                    else
+                        triggerEntity.Trigger(true);
+                }
+            }
+        }
 
         return true;
     }

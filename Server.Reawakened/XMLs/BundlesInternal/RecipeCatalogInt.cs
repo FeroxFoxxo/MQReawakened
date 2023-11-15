@@ -6,7 +6,6 @@ using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
-using Server.Reawakened.XMLs.Models.RecipeRewards;
 using System.Collections.Generic;
 using System.Xml;
 
@@ -15,11 +14,19 @@ namespace Server.Reawakened.XMLs.BundlesInternal;
 public class RecipeCatalogInt : IBundledXml
 {
     public string BundleName => "RecipeCatalogInt";
+
     public BundlePriority Priority => BundlePriority.Low;
+
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+
     public IServiceProvider Services { get; set; }
-    public Dictionary<int, RecipeRewardModel> RecipeCatalog;
+
+    public ItemCatalog ItemCatalog { get; set; }
+
+    public Dictionary<int, List<IngredientModel>> RecipeCatalog;
+
     public void InitializeVariables() => RecipeCatalog = [];
+
     public void EditDescription(XmlDocument xml)
     {
     }
@@ -37,55 +44,55 @@ public class RecipeCatalogInt : IBundledXml
             {
                 if (recipeType.Name != "RecipeType") continue;
 
+                var recipeId = -1;
+
                 foreach (XmlNode recipeInfo in recipeType.ChildNodes)
                 {
                     if (recipeInfo.Name != "RecipeInfo") continue;
 
-                    var recipeId = -1;
-                    var parentRecipeId = -1;
-                    var recipeRewards = new List<RecipeReward>();
-                    var recipes = new List<RecipeModel>();
-                    var num = 0;
+                    var ingredientItem = -1;
+                    var ingredientAmount = -1;
+                    var ingredients = new List<IngredientModel>();
 
-                    foreach (XmlAttribute recipeAttributes in recipeInfo.Attributes)
+                    foreach (XmlAttribute recipeAttribute in recipeInfo.Attributes)
                     {
-                        switch (recipeAttributes.Name)
+                        switch (recipeAttribute.Name)
                         {
                             case "recipeId":
-                                if (recipeId == 0)
-                                {
-                                    Logger.LogWarning("RecipeId has an invalid id of {Id}, and does not exist within the RecipeCatalogInternal XML!", recipeId);
-                                    continue;
-                                }
-                                else
-                                    recipeId = int.Parse(recipeAttributes.Value);
-                                break;
-                            case "parentRecipeId":
-                                if (parentRecipeId == 0)
-                                    continue;
-                                else
-                                    parentRecipeId = int.Parse(recipeAttributes.Value);
+                                recipeId = int.Parse(recipeAttribute.Value);
                                 break;
                         }
                     }
 
                     foreach (XmlNode ingredient in recipeInfo.ChildNodes)
                     {
-                        num++;
                         switch (ingredient.Name)
                         {
                             case "Item":
-                                recipes = recipeInfo.GetXmlRecipe(recipeId, parentRecipeId);
-                                break;
-                            default:
-                                Logger.LogWarning("Unknown recipe type for recipeId {Id}", recipeId);
+                                foreach (XmlAttribute item in ingredient.Attributes)
+                                {
+                                    switch (item.Name)
+                                    {
+                                        case "itemId":
+                                            ingredientItem = int.Parse(item.Value);
+                                            break;
+                                        case "count":
+                                            ingredientAmount = int.Parse(item.Value);
+                                            break;
+                                    }
+                                }
+                                var ingredientModel = new IngredientModel()
+                                {
+                                    ItemId = ingredientItem,
+                                    Count = ingredientAmount
+                                };
+                                ingredients.Add(ingredientModel);
+
+                                RecipeCatalog.TryAdd(recipeId, ingredients);
                                 break;
                         }
                     }
-                    var ingredientAmount = num;
-                    recipeRewards.Add(new RecipeReward(recipes, ingredientAmount));
 
-                    RecipeCatalog.TryAdd(recipeId, new RecipeRewardModel(recipeId, recipeRewards));
                 }
             }
         }
@@ -95,6 +102,6 @@ public class RecipeCatalogInt : IBundledXml
     {
     }
 
-    public RecipeRewardModel GetRecipeById(int objectId) =>
-        RecipeCatalog.TryGetValue(objectId, out var lootInfo) ? lootInfo : RecipeCatalog[0];
+    public List<IngredientModel> GetRecipeById(int recipeId) =>
+        RecipeCatalog.TryGetValue(recipeId, out var recipeInfo) ? recipeInfo : RecipeCatalog[0];
 }

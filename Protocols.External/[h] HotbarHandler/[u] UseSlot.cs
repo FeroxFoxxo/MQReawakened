@@ -1,11 +1,13 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Protocols.External._i__InventoryHandler;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
@@ -17,25 +19,29 @@ namespace Protocols.External._h__HotbarHandler;
 public class UseSlot : ExternalProtocol
 {
     public override string ProtocolName => "hu";
-
     public ILogger<UseSlot> Logger { get; set; }
-
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
+
     public override void Run(string[] message)
     {
         var character = Player.Character;
+        var player = Player;
 
         var hotbarSlotId = int.Parse(message[5]);
         var targetUserId = int.Parse(message[6]);
 
-        var position = new Vector3Model
+        var position = new Vector3Model()
         {
             X = Convert.ToSingle(message[7]),
             Y = Convert.ToSingle(message[8]),
             Z = Convert.ToSingle(message[9])
         };
+
+        Console.WriteLine("X: " + position.X);
+        Console.WriteLine("Y: " + position.Y);
+        Console.WriteLine("Z: " + position.Z);
 
         var direction = Player.TempData.Direction;
 
@@ -44,6 +50,9 @@ public class UseSlot : ExternalProtocol
 
         switch (usedItem.ItemActionType)
         {
+            case ItemActionType.Throw:
+                HandleRangedWeapon(position, player, direction, usedItem);
+                break;
             case ItemActionType.Drink:
             case ItemActionType.Eat:
                 HandleConsumable(character, usedItem, hotbarSlotId);
@@ -75,6 +84,30 @@ public class UseSlot : ExternalProtocol
             RemoveFromHotbar(character, item, hotbarSlotId);
     }
 
+    private void HandleRangedWeapon(Vector3Model position, Player player, int playerDirection, ItemDescription usedItem)
+    {
+        var bulletDirection = 0;
+
+        if (playerDirection == 1)
+        {
+            position.X -= 3;
+            bulletDirection = 7;
+        }
+
+        else if (playerDirection == -1)
+        {
+            position.X += 3;
+            bulletDirection = -7;
+        }
+
+        var prefabName = usedItem.PrefabName;
+
+        var projectile = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+            position.X, position.Y + 1, position.Z, bulletDirection, 0, 0, 0, prefabName);
+
+        player.Room.SendSyncEvent(projectile);
+    }
+
     private void HandleMeleeWeapon(Vector3Model position, int direction)
     {
         AiHealth_SyncEvent aiEvent = null;
@@ -103,7 +136,7 @@ public class UseSlot : ExternalProtocol
             var objectId = obj.ObjectInfo.ObjectId;
             var prefabName = obj.ObjectInfo.PrefabName;
 
-            Logger.LogInformation("Found close game object {PrefabName}", prefabName);
+            Logger.LogInformation("Found close game object {PrefabName} with Id {ObjectId}", prefabName, objectId);
 
             if (Player.Room.Entities.TryGetValue(objectId, out var entityComponents))
                 foreach (var component in entityComponents)
@@ -127,24 +160,15 @@ public class UseSlot : ExternalProtocol
                     break;
             }
 
-            if (prefabName.Contains("Spite") ||
-                prefabName.Contains("Critter") ||
-                prefabName.Contains("Spawner"))
-                monsters.Add(obj);
+            aiEvent = new AiHealth_SyncEvent(objectId.ToString(),
+                Player.Room.Time, 0, 100, 0, 0, "now", false, true);
 
-            foreach (var monster in monsters)
-            {
-                Player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.Scoremultiple, objectId, prefabName, 1);
+            foreach (var entinty in Player.Room.Entities.Values)
+                foreach (var component in entinty)
+                    if (component is HazardControllerComp triggerCoopEntity ||
+                        component.PrefabName.Contains("Spawner")) //Temp until BreakableEventControllerComp is added.              
+                        Player.Room.SendSyncEvent(aiEvent);
 
-                aiEvent = new AiHealth_SyncEvent(objectId.ToString(),
-                    Player.Room.Time, 0, 100, 0, 0, "now", false, true);
-
-                Logger.LogInformation("Object name: {args1} Object Id: {args2}", prefabName, objectId);
-
-                Player.Room.SendSyncEvent(aiEvent);
-
-                Player.SendUpdatedInventory(false);
-            }
         }
     }
 
@@ -174,7 +198,23 @@ public class UseSlot : ExternalProtocol
 
         Player.Room.SendSyncEvent(aiEvent);
 
-        if (obj.ObjectInfo.PrefabName != "PF_EVT_XmasBrkIceCube02")
+        if (obj.ObjectInfo.PrefabName != "PF_EVT_XmasBrkIceCube02" && obj.ObjectInfo.PrefabName != "PF_EVT_HallwnPumpkinFloatBRK")
+            Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
+
+        switch (randomItem)
+        {
+            case 1:
+                itemReward = 1613;
+                break;
+            case 2:
+                itemReward = 1618;
+                break;
+            case 3:
+                itemReward = 1616;
+                break;
+        }
+
+        if (obj.ObjectInfo.PrefabName == "PF_EVT_HallwnPumpkinFloatBRK")
             Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
 
         Player.SendUpdatedInventory(false);

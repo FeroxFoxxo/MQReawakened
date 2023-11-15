@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.XMLs.Models.RecipeRewards;
 
 namespace Server.Reawakened.Players.Models.Character;
 

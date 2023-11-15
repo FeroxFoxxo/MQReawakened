@@ -16,33 +16,6 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerExtensions
 {
-    public static void OpenDoors(this Player player)
-    {
-        string[] planes = { "Plane0", "Plane1" };
-
-        var doors = new List<GameObjectModel>();
-        foreach (var plane in planes)
-        {
-            foreach (var doorObject in player.Room.Planes[plane].GameObjects.Values)
-            {
-                if (doorObject == null)
-                    break;
-
-                if (doorObject.ObjectInfo.PrefabName.Contains("Gate") || doorObject.ObjectInfo.PrefabName.Contains("Door"))
-                    doors.Add(doorObject);
-            }
-
-            foreach (var door in doors)
-            {
-                var doorTrigger = new TriggerReceiver_SyncEvent(door.ObjectInfo.ObjectId.ToString(), player.Room.Time,
-                    player.GameObjectId.ToString(), true, player.Room.Time);
-
-                player.Room.SendSyncEvent(doorTrigger);
-            }
-        }
-    }
-
-
     public static void TeleportPlayer(this Player player, int x, int y, int z)
     {
         var isBackPlane = z == 1;
