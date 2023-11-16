@@ -48,7 +48,6 @@
         <Item prefabName="Add_COM_KidBoy01_LS01" />
         <Item prefabName="Add_COM_Lara01_LS02" />
         <Item prefabName="Add_COM_AviatorPunk01_TS01" />
-        <!--temporary break delete this later-->
         <Item prefabName="Add_COM_Wings02_BP03" />
         <Item prefabName="Add_COM_Lara01_LS01" />
         <Item prefabName="Add_COM_Knight01_S01" />
@@ -58,7 +57,6 @@
         <Item prefabName="Add_OUT_CaptainGirl01_S01" />
         <Item prefabName="Add_COM_Sheep01_S01" />
         <Item prefabName="Add_COM_Centurion01_TS01" />
-        <!--temporary break delete this later-->
         <Item prefabName="Add_COM_VespidWings01_BP01" />
         <Item prefabName="Add_COM_Tiger01_S01" />
         <Item prefabName="Add_COM_Egg01_S01" />
@@ -68,10 +66,12 @@
         <Item prefabName="Add_COM_Army01_S01" />
         <Item prefabName="Add_COM_Army01_LS01" />
         <Item prefabName="Add_COM_Emo01_S01" />
-        <!--temporary break delete this later-->
         <Item prefabName="Add_BON_ChampWarrior01_S01" />
         <Item prefabName="Add_OUT_PirateChef01_LS02" />
         <Item prefabName="Add_OUT_PirateChef01_TS02" />
         <Item prefabName="Add_COM_Lion01_S02" />
+    </Vendor>
+    <Vendor objectId="343" name="Brokk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1020" greetingConversationId="2807" leavingConversationId="2806">
+        <Item prefabName="WPN_MEL_GreatAxe01" />
     </Vendor>
 </VendorCatalog>
