@@ -1,8 +1,11 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Protocols.External._i__InventoryHandler;
 
@@ -14,13 +17,13 @@ public class UseItem : ExternalProtocol
 
     public VendorCatalog VendorCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+    public RecipeCatalogInt RecipeCatalog { get; set; }
 
     public override void Run(string[] message)
     {
         var character = Player.Character;
 
-        var itemId = Convert.ToInt32(message[5]);
-
+        var itemId = int.Parse(message[5]);
         var item = ItemCatalog.GetItemFromId(itemId);
 
         if (item == null)
@@ -33,6 +36,15 @@ public class UseItem : ExternalProtocol
 
         switch (item.SubCategoryId)
         {
+            case ItemSubCategory.Tailoring:
+            case ItemSubCategory.Alchemy:
+                var recipe = RecipeCatalog.GetRecipeById(itemId);
+
+                Player.Character.Data.RecipeList.RecipeList.Add(recipe);
+
+                Player.SendXt("cz", recipe);
+
+                break;
             case ItemSubCategory.SuperPack:
 
                 foreach (var pair in VendorCatalog.GetSuperPacksItemQuantityMap(itemId))

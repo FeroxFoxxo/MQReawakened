@@ -54,6 +54,8 @@ public class ServerRConfig : IRConfig
 
     public bool Is2014Client { get; set; }
 
+    public string[] IgnoredDoors { get; set; }
+
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -116,6 +118,8 @@ public class ServerRConfig : IRConfig
             2972, // ace pilot pack
             2973, // crimson dragon pack
             2923, // banana box
+            3024, // steel sword
+            2878 // cadet training sword
         ];
 
         StackedItemKit =
@@ -147,5 +151,9 @@ public class ServerRConfig : IRConfig
         Is2014Client = false;
 
         MaxLevel = 65;
+
+        IgnoredDoors = [
+            "PF_GLB_DoorArena01"
+        ];
     }
 }
