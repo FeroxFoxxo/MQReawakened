@@ -1,4 +1,6 @@
 ﻿using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Players;
+using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -35,5 +37,8 @@ public class LinearPlatformComp : MovingObjectControllerComp<LinearPlatform>
         base.Update();
         var movement = (Platform_Linear_Movement)Movement;
         movement.UpdateState(Room.Time);
+
+        if (!ComponentData.TriggeredBySwitch)
+            movement.Activate(Room.Time);
     }
 }
