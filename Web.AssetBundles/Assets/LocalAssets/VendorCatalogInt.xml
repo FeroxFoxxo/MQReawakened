@@ -68,4 +68,57 @@
         <Item prefabName="COL_ING_C_GlacialWater01" />
         <Item prefabName="COL_ING_C_CocoShell01" />
     </Vendor>
+    <Vendor objectId="243" name="Xaken" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1017" greetingConversationId="2789" leavingConversationId="2788">
+        <Item prefabName="Add_COM_Ace01_TS01" />
+        <Item prefabName="Add_COM_KidBoy01_TS01" />
+        <Item prefabName="Add_COM_Cocohelm01_S01" />
+        <Item prefabName="Add_COM_Lara01_TS01" />
+        <Item prefabName="Add_COM_Armor01_LS01" />
+        <Item prefabName="Add_COM_Lara01_S02" />
+        <Item prefabName="Add_COM_KidBoy01_LS01" />
+        <Item prefabName="Add_COM_Lara01_LS02" />
+        <Item prefabName="Add_COM_AviatorPunk01_TS01" />
+        <Item prefabName="Add_COM_Wings02_BP03" />
+        <Item prefabName="Add_COM_Lara01_LS01" />
+        <Item prefabName="Add_COM_Knight01_S01" />
+        <Item prefabName="Add_COM_Falcon01_S01" />
+        <Item prefabName="Add_COM_Bee01_S01" />
+        <Item prefabName="Add_COM_Bee01_BP01" />
+        <Item prefabName="Add_OUT_CaptainGirl01_S01" />
+        <Item prefabName="Add_COM_Sheep01_S01" />
+        <Item prefabName="Add_COM_Centurion01_TS01" />
+        <Item prefabName="Add_COM_VespidWings01_BP01" />
+        <Item prefabName="Add_COM_Tiger01_S01" />
+        <Item prefabName="Add_COM_Egg01_S01" />
+        <Item prefabName="Add_BON_Mantis01_S01" />
+        <Item prefabName="Add_COM_Panda01_LS01" />
+        <Item prefabName="Add_COM_Gargoyle01_BP01 " />
+        <Item prefabName="Add_COM_Army01_S01" />
+        <Item prefabName="Add_COM_Army01_LS01" />
+        <Item prefabName="Add_COM_Emo01_S01" />
+        <Item prefabName="Add_BON_ChampWarrior01_S01" />
+        <Item prefabName="Add_OUT_PirateChef01_LS02" />
+        <Item prefabName="Add_OUT_PirateChef01_TS02" />
+        <Item prefabName="Add_COM_Lion01_S02" />
+    </Vendor>
+    <Vendor objectId="343" name="Brokk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1020" greetingConversationId="2807" leavingConversationId="2806">
+        <Item prefabName="WPN_PRJ_ChimFooAmulet01" />
+        <Item prefabName="ABIL_SlingShot02" />
+        <Item prefabName="WPN_SPC_DoomGrenade01" />
+        <Item prefabName="WPN_PRJ_VoodooDoll01" />
+        <Item prefabName="WPN_SPC_IceRaiderPopper01" />
+        <Item prefabName="WPN_PRJ_SpearGun01" />
+        <Item prefabName="WPN_SPC_DragonBomb01" />
+        <Item prefabName="WPN_SPC_WaterBalloon01" />
+        <Item prefabName="WPN_PRJ_Spitball01" />
+        <Item prefabName="WPN_MEL_CrimsonSword01" />
+        <Item prefabName="COL_BOMB_FireBomb02A" />
+        <Item prefabName="WPN_PRJ_Thunderbow01" />
+        <Item prefabName="WPN_MEL_IceRaiderHammer01" />
+        <Item prefabName="WPN_SPC_PoisonGrenade01" />
+        <Item prefabName="WPN_MEL_GreatAxe01" />
+        <Item prefabName="WPN_PRJ_FistOfTerra01" />
+        <Item prefabName="ABIL_PoisonBomb03" />
+        <Item prefabName="ABIL_Grenade03b" />
+    </Vendor>
 </VendorCatalog>
