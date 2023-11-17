@@ -72,6 +72,23 @@
         <Item prefabName="Add_COM_Lion01_S02" />
     </Vendor>
     <Vendor objectId="343" name="Brokk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1020" greetingConversationId="2807" leavingConversationId="2806">
+        <Item prefabName="WPN_PRJ_ChimFooAmulet01" />
+        <Item prefabName="ABIL_SlingShot02" />
+        <Item prefabName="WPN_SPC_DoomGrenade01" />
+        <Item prefabName="WPN_PRJ_VoodooDoll01" />
+        <Item prefabName="WPN_SPC_IceRaiderPopper01" />
+        <Item prefabName="WPN_PRJ_SpearGun01" />
+        <Item prefabName="WPN_SPC_DragonBomb01" />
+        <Item prefabName="WPN_SPC_WaterBalloon01" />
+        <Item prefabName="WPN_PRJ_Spitball01" />
+        <Item prefabName="WPN_MEL_CrimsonSword01" />
+        <Item prefabName="COL_BOMB_FireBomb02A" />
+        <Item prefabName="WPN_PRJ_Thunderbow01" />
+        <Item prefabName="WPN_MEL_IceRaiderHammer01" />
+        <Item prefabName="WPN_SPC_PoisonGrenade01" />
         <Item prefabName="WPN_MEL_GreatAxe01" />
+        <Item prefabName="WPN_PRJ_FistOfTerra01" />
+        <Item prefabName="ABIL_PoisonBomb03" />
+        <Item prefabName="ABIL_Grenade03b" />
     </Vendor>
 </VendorCatalog>
