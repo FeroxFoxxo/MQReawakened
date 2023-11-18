@@ -62,7 +62,7 @@
         <Item prefabName="PF_PET_Rig01_Skull01" />
     </Vendor>
     <Vendor objectId="7524" name="Aodh" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="891" greetingConversationId="2467" leavingConversationId="2466">
-        <Item prefabName="COL_ING_C_PureWater01" /> 
+        <Item prefabName="COL_ING_C_PureWater01" />
         <Item prefabName="COL_ING_C_MountainWater01" />
         <Item prefabName="COL_ING_G_GloomCap01" />
         <Item prefabName="COL_ING_C_GlacialWater01" />
@@ -120,5 +120,53 @@
         <Item prefabName="WPN_PRJ_FistOfTerra01" />
         <Item prefabName="ABIL_PoisonBomb03" />
         <Item prefabName="ABIL_Grenade03b" />
+    </Vendor>
+    <Vendor objectId="244" name="Jitter" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="765" greetingConversationId="2069" leavingConversationId="2068">
+        <Item prefabName="COL_BUFF_Bandage01" />
+        <Item prefabName="Col_POT_ExperiencePotion01" />
+        <Item prefabName="Col_POT_ExperiencePotion02" />
+        <Item prefabName="COL_BUFF_GlyphProtection01" />
+        <Item prefabName="COL_POT_Healing01" />
+        <Item prefabName="COL_PACK_NC_Rejuvenation01" />
+        <Item prefabName="COL_BUFF_RubberBand01" />
+        <Item prefabName="COL_POT_Healing02" />
+    </Vendor>
+    <Vendor objectId="248" name="Adiror" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="1080" greetingConversationId="2984" leavingConversationId="2983">
+        <Item prefabName="COL_PACK_NC_BananaShake01" />
+        <Item prefabName="COL_FOOD_Cookie01" />
+        <Item prefabName="COL_FOOD_Apple01" />
+        <Item prefabName="COL_FOOD_BananaBits01" />
+        <Item prefabName="COL_FOOD_IceCream01" />
+        <Item prefabName="COL_FOOD_Coconut01" />
+        <Item prefabName="COL_FOOD_Pie01" />
+        <Item prefabName="COL_FOOD_Nuts01" />
+        <Item prefabName="COL_FOOD_Candy01" />
+        <Item prefabName="COL_FOOD_LollyPop01" />
+        <Item prefabName="COL_FOOD_Sundae01" />
+        <Item prefabName="COL_FOOD_Cookie02" />
+    </Vendor>
+    <Vendor objectId="245" name="Irini" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Accessories" dialogId="1076" greetingConversationId="2966" leavingConversationId="2965">
+        <Item prefabName="Add_COM_Friendship01_W02" />
+        <Item prefabName="Add_COM_OakEarring01_E01" />
+        <Item prefabName="Add_COM_RibbonTail01_T04" />
+        <Item prefabName="Add_OUT_JewelTailRing_T05" />
+        <Item prefabName="Add_COM_Shard01_T01" />
+    </Vendor>
+    <Vendor objectId="249" name="Hopper" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Decorations" dialogId="1078" greetingConversationId="2972" leavingConversationId="2971">
+        <Item prefabName="Add_COM_Burglar01_UF01" />
+        <Item prefabName="Add_COM_Moustache01_UF01" />
+        <Item prefabName="Add_COM_Explorator01_LF01" />
+        <Item prefabName="Add_COM_DiveMask01_UF01" />
+        <Item prefabName="Add_COM_AviatorPunk01_S01" />
+        <Item prefabName="Add_COM_SuperMonkey01_S01" />
+    </Vendor>
+    <Vendor objectId="242" name="Dyzoc" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="1016" greetingConversationId="2783" leavingConversationId="2782">
+        <Item prefabName="COL_FOOD_Candy01" />
+        <Item prefabName="COL_FOOD_Melon01" />
+        <Item prefabName="COL_FOOD_Orange01" />
+        <Item prefabName="COL_PACK_NC_LollyPop01" />
+        <Item prefabName="COL_FOOD_Mango01" />
+        <Item prefabName="COL_FOOD_Pinapple01" />
+        <Item prefabName="COL_PACK_NC_Cookie01" />
     </Vendor>
 </VendorCatalog>
