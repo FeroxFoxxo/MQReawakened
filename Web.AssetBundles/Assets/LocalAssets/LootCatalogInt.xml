@@ -104,4 +104,18 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Tempest Chasm">
+        <LootInfo objectId="3286869">
+            <Items rewardAmount="1">
+                <Item itemId="8000" count="1" bindingCount="0" />
+                <Item itemId="3726" count="1" bindingCount="0" />
+                <Item itemId="4215" count="1" bindingCount="0" />
+                <Item itemId="4716" count="1" bindingCount="0" />
+                <Item itemId="3723" count="1" bindingCount="0" />
+                <Item itemId="4212" count="1" bindingCount="0" />
+                <Item itemId="6708" count="1" bindingCount="0" />
+                <Item itemId="9708" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
+    </Level>
 </LootCatalog>
