@@ -83,13 +83,4 @@
     <NPC objectId="939" name="Hovering Markets Guard" descriptionId="0">
         <Dialog dialogId="1312" conversationId="3182" minimumReputation="1" />
     </NPC>
-    <NPC objectId="3286428" name="Brinn" descriptionId="0">
-        <Dialog dialogId="1403" conversationId="3569" minimumReputation="1" />
-    </NPC>
-    <NPC objectId="16767" name="Torin" descriptionId="0">
-        <Dialog dialogId="1407" conversationId="3573" minimumReputation="1" />
-    </NPC>
-    <NPC objectId="16766" name="Lini" descriptionId="0">
-        <Dialog dialogId="1404" conversationId="3570" minimumReputation="1" />
-    </NPC>
 </DialogCatalog>
