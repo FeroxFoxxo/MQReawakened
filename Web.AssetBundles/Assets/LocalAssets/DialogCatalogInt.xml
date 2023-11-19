@@ -68,4 +68,19 @@
     <NPC objectId="213102" name="Mysterious Warrior Guard" descriptionId="0">
         <Dialog dialogId="1529" conversationId="3880" minimumReputation="1" />
     </NPC>
+    <NPC objectId="856" name="The Underbelly Guard" descriptionId="0">
+        <Dialog dialogId="1311" conversationId="3037" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="342" name="The Underbelly Guard" descriptionId="0">
+        <Dialog dialogId="1310" conversationId="3036" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="940" name="The Underbelly Guard" descriptionId="0">
+        <Dialog dialogId="995" conversationId="2743" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="855" name="Hovering Markets Guard" descriptionId="0">
+        <Dialog dialogId="994" conversationId="2742" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="939" name="Hovering Markets Guard" descriptionId="0">
+        <Dialog dialogId="1312" conversationId="3182" minimumReputation="1" />
+    </NPC>
 </DialogCatalog>

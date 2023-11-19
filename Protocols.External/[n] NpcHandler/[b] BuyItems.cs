@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
@@ -13,14 +14,16 @@ public class BuyItems : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
+    public ServerRConfig ServerConfig { get; set; } 
 
     public override void Run(string[] message)
     {
         var character = Player.Character;
 
-        //var vendorId = int.Parse(message[5]);
-        var vendorGoId = int.Parse(message[7]);
         var items = message[6].Split('|');
+
+        // On 2014, vendorGoId[5] is the vendor id (unused)
+        var vendorGoId = int.Parse(message[ServerConfig.Is2014Client ? 7 : 5]);
 
         foreach (var item in items)
         {
