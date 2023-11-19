@@ -164,9 +164,67 @@
         <Item prefabName="COL_FOOD_Candy01" />
         <Item prefabName="COL_FOOD_Melon01" />
         <Item prefabName="COL_FOOD_Orange01" />
-        <Item prefabName="COL_PACK_NC_LollyPop01" />
+        <Item prefabName="COL_FOOD_LollyPop01" />
         <Item prefabName="COL_FOOD_Mango01" />
         <Item prefabName="COL_FOOD_Pinapple01" />
-        <Item prefabName="COL_PACK_NC_Cookie01" />
+        <Item prefabName="COL_FOOD_Cookie01" />
+    </Vendor>
+    <Vendor objectId="16911" name="Jarl" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1417" greetingConversationId="3586" leavingConversationId="3585">
+        <Item prefabName="Add_COM_Viking01_S10" />
+        <Item prefabName="Add_COM_Viking01_LS10" />
+        <Item prefabName="Add_COM_Viking01_TS10" />
+        <Item prefabName="Add_COM_Sasquash01_S01" />
+        <Item prefabName="Add_COM_Sasquash01_LS01" />
+        <Item prefabName="Add_COM_Sasquash01_TS01" />
+        <Item prefabName="Add_SHD_Snake01_S04" />
+        <Item prefabName="Add_SHD_Snake01_LS04" />
+        <Item prefabName="Add_SHD_Snake01_TS04" />
+        <Item prefabName="Add_COM_Goat01_LS02" />
+    </Vendor>
+    <Vendor objectId="16910" name="Erlin" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Decorations" dialogId="1419" greetingConversationId="3598" leavingConversationId="3597">
+        <Item prefabName="Add_COM_Goat01_S03" />
+        <Item prefabName="Add_WLD_Raider01_LF01" />
+        <Item prefabName="Add_COM_Viking01_LF02" />
+        <Item prefabName="Add_COM_Viking01_LF03" />
+        <Item prefabName="Add_WLD_Ancient01_LF01" />
+        <Item prefabName="Add_OUT_Bluebeard01_LF01" />
+    </Vendor>
+    <Vendor objectId="16909" name="Gauti" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Accessories" dialogId="1418" greetingConversationId="3592" leavingConversationId="3591">
+        <Item prefabName="Add_WLD_IceRaider01_T01" />
+        <Item prefabName="Add_COM_Burglar01_T03" />
+        <Item prefabName="Add_COM_Goat01_W03" />
+        <Item prefabName="Add_COM_GemBracelet01_W04" />
+        <Item prefabName="Add_COM_GemTailRing01_T04" />
+    </Vendor>
+    <Vendor objectId="16907" name="Ursa" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1421" greetingConversationId="3610" leavingConversationId="3609">
+        <Item prefabName="Col_POT_BananaPotion01" />
+        <Item prefabName="Col_POT_ExperiencePotion01" />
+        <Item prefabName="COL_ING_C_PureWater01" />
+        <Item prefabName="Col_POT_ExperiencePotion02" />
+        <Item prefabName="COL_POT_Healing01" />
+        <Item prefabName="COL_POT_Rejuvenation01" />
+        <Item prefabName="COL_RECIP_POT_FireResist01" />
+        <Item prefabName="COL_PACK_NC_Rejuvenation03" />
+        <Item prefabName="COL_POT_Healing04" />
+        <Item prefabName="COL_PACK_NC_Rejuvenation04" />
+        <Item prefabName="COL_RECIP_POT_FireResist02" />
+        <Item prefabName="COL_POT_Healing05" />
+        <Item prefabName="COL_PACK_NC_Rejuvenation05" />
+        <Item prefabName="COL_RECIP_POT_FireResist03" />
+    </Vendor>
+    <Vendor objectId="16908" name="Bolvirk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="1422" greetingConversationId="3616" leavingConversationId="3615">
+        <Item prefabName="COL_PACK_NC_BananaShake01" />
+        <Item prefabName="COL_FOOD_Cookie01" />
+        <Item prefabName="COL_FOOD_IceCream01" />
+        <Item prefabName="COL_FOOD_Pie01" />
+        <Item prefabName="COL_FOOD_Candy01" />
+        <Item prefabName="COL_FOOD_LollyPop01" />
+        <Item prefabName="COL_FOOD_Sundae01" />
+        <Item prefabName="COL_FOOD_Cookie02" />
+    </Vendor>
+    <Vendor objectId="16906" name="Anora" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1420" greetingConversationId="3604" leavingConversationId="3603">
+        <Item prefabName="WPN_SPC_DoomGrenade01" />
+        <Item prefabName="WPN_MEL_IceRaiderHammer01" />
+        <Item prefabName="WPN_PRJ_IceBow01" />
     </Vendor>
 </VendorCatalog>
