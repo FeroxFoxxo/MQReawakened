@@ -92,4 +92,52 @@
     <NPC objectId="16766" name="Lini" descriptionId="0">
         <Dialog dialogId="1404" conversationId="3570" minimumReputation="1" />
     </NPC>
+    <NPC objectId="16768" name="Sigthor" descriptionId="0">
+        <Dialog dialogId="1412" conversationId="3578" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="3286583" name="Holm" descriptionId="0">
+        <Dialog dialogId="1406" conversationId="3572" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="3287835" name="Var" descriptionId="0">
+        <Dialog dialogId="1411" conversationId="3577" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="3287782" name="Vargon" descriptionId="0">
+        <Dialog dialogId="1405" conversationId="3571" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="3287784" name="Runa" descriptionId="0">
+        <Dialog dialogId="1410" conversationId="3576" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="3287783" name="Spike" descriptionId="0">
+        <Dialog dialogId="1402" conversationId="3568" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="3287781" name="Gudric" descriptionId="0">
+        <Dialog dialogId="1401" conversationId="3567" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="6574001" name="Dingy" descriptionId="0">
+        <Dialog dialogId="1415" conversationId="3581" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="3287630" name="Rolf" descriptionId="0">
+        <Dialog dialogId="1400" conversationId="3566" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="13160347" name="Siv" descriptionId="0">
+        <Dialog dialogId="1408" conversationId="3574" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="3287003" name="Warvun" descriptionId="0">
+        <Dialog dialogId="1409" conversationId="3575" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="3289680" name="Dingy" descriptionId="0">
+        <Dialog dialogId="1428" conversationId="3624" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="26292758" name="Dolvin" descriptionId="0">
+        <Dialog dialogId="1578" conversationId="4012" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="26292757" name="Solvin" descriptionId="0">
+        <Dialog dialogId="1579" conversationId="4013" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="1028" name="Armond" descriptionId="0">
+        <Dialog dialogId="1413" conversationId="3579" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="3286758" name="Oswik" descriptionId="0">
+        <Dialog dialogId="1414" conversationId="3580" minimumReputation="1" />
+    </NPC>
 </DialogCatalog>
