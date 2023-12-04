@@ -167,4 +167,69 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Icewind Caverns">
+        <LootInfo objectId="3287776">
+            <Items rewardAmount="1">
+                <Item itemId="611" count="1" bindingCount="0" />
+                <Item itemId="612" count="1" bindingCount="0" />
+                <Item itemId="613" count="1" bindingCount="0" />
+                <Item itemId="1797" count="1" bindingCount="0" />
+                <Item itemId="405" count="1" bindingCount="0" />
+                <Item itemId="8001" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3287774">
+            <Items rewardAmount="1"> 
+                <Item itemId="611" count="1" bindingCount="0" />
+                <Item itemId="612" count="1" bindingCount="0" />
+                <Item itemId="613" count="1" bindingCount="0" />
+                <Item itemId="1797" count="1" bindingCount="0" />
+                <Item itemId="405" count="1" bindingCount="0" />
+                <Item itemId="8001" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3287775">
+            <Items rewardAmount="1">
+                <Item itemId="611" count="1" bindingCount="0" />
+                <Item itemId="612" count="1" bindingCount="0" />
+                <Item itemId="613" count="1" bindingCount="0" />
+                <Item itemId="1797" count="1" bindingCount="0" />
+                <Item itemId="405" count="1" bindingCount="0" />
+                <Item itemId="8001" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3287768">
+            <Items rewardAmount="1">
+                <Item itemId="8000" count="1" bindingCount="0" />
+                <Item itemId="9709" count="1" bindingCount="0" />
+                <Item itemId="3111" count="1" bindingCount="0" />
+                <Item itemId="6712" count="1" bindingCount="0" />
+                <Item itemId="4719" count="1" bindingCount="0" />
+                <Item itemId="4217" count="1" bindingCount="0" />
+                <Item itemId="8001" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3287769">
+            <Items rewardAmount="1">
+                <Item itemId="8000" count="1" bindingCount="0" />
+                <Item itemId="9709" count="1" bindingCount="0" />
+                <Item itemId="3111" count="1" bindingCount="0" />
+                <Item itemId="6712" count="1" bindingCount="0" />
+                <Item itemId="4719" count="1" bindingCount="0" />
+                <Item itemId="4217" count="1" bindingCount="0" />
+                <Item itemId="8001" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3287133">
+            <Items rewardAmount="1">
+                <Item itemId="8000" count="1" bindingCount="0" />
+                <Item itemId="9212" count="1" bindingCount="0" />
+                <Item itemId="3111" count="1" bindingCount="0" />
+                <Item itemId="6712" count="1" bindingCount="0" />
+                <Item itemId="4214" count="1" bindingCount="0" />
+                <Item itemId="3725" count="1" bindingCount="0" />
+                <Item itemId="4715" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
+    </Level>
 </LootCatalog>
