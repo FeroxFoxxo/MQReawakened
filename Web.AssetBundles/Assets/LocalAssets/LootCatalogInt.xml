@@ -117,5 +117,54 @@
                 <Item itemId="9708" count="1" bindingCount="0" />
             </Items>
         </LootInfo>
+        <LootInfo objectId="3289044">
+            <Items rewardAmount="1">
+                <Item itemId="8000" count="1" bindingCount="0" />
+                <Item itemId="9212" count="1" bindingCount="0" />
+                <Item itemId="3111" count="1" bindingCount="0" />
+                <Item itemId="6712" count="1" bindingCount="0" />
+                <Item itemId="4214" count="1" bindingCount="0" />
+                <Item itemId="3725" count="1" bindingCount="0" />
+                <Item itemId="4715" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3286868">
+            <Items rewardAmount="1">
+                <Item itemId="8000" count="1" bindingCount="0" />
+                <Item itemId="9709" count="1" bindingCount="0" />
+                <Item itemId="3111" count="1" bindingCount="0" />
+                <Item itemId="6712" count="1" bindingCount="0" />
+                <Item itemId="4719" count="1" bindingCount="0" />
+                <Item itemId="4217" count="1" bindingCount="0" />
+                <Item itemId="8001" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3286474">
+            <Items rewardAmount="1">
+                <Item itemId="8000" count="1" bindingCount="0" />
+                <Item itemId="9709" count="1" bindingCount="0" />
+                <Item itemId="3111" count="1" bindingCount="0" />
+                <Item itemId="6712" count="1" bindingCount="0" />
+                <Item itemId="4719" count="1" bindingCount="0" />
+                <Item itemId="4217" count="1" bindingCount="0" />
+                <Item itemId="8001" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3286864">
+            <Items rewardAmount="1">
+                <Item itemId="405" count="1" bindingCount="0" />
+                <Item itemId="1797" count="1" bindingCount="0" />
+                <Item itemId="612" count="1" bindingCount="0" />
+                <Item itemId="8001" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3286476">
+            <Items rewardAmount="1">
+                <Item itemId="405" count="1" bindingCount="0" />
+                <Item itemId="1797" count="1" bindingCount="0" />
+                <Item itemId="612" count="1" bindingCount="0" />
+                <Item itemId="8001" count="1" bindingCount="0" />
+            </Items>
+        </LootInfo>
     </Level>
 </LootCatalog>

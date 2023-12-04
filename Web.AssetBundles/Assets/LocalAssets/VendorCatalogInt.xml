@@ -223,8 +223,11 @@
         <Item prefabName="COL_FOOD_Cookie02" />
     </Vendor>
     <Vendor objectId="16906" name="Anora" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1420" greetingConversationId="3604" leavingConversationId="3603">
+        <Item prefabName="WPN_SPC_BeastBomb01" />
         <Item prefabName="WPN_SPC_DoomGrenade01" />
+        <Item prefabName="WPN_SPC_IceRaiderPopper01" />
         <Item prefabName="WPN_MEL_IceRaiderHammer01" />
+        <Item prefabName="WPN_PRJ_FistOfIce01" />
         <Item prefabName="WPN_PRJ_IceBow01" />
     </Vendor>
 </VendorCatalog>
