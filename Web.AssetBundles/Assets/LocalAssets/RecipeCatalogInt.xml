@@ -14,7 +14,7 @@
             <Item itemId="3052" count="1"/>
         </RecipeInfo>
     </RecipeType>
-    <RecipeType name="Tailoring">      
+    <RecipeType name="Tailoring">
         <RecipeInfo recipeId="2664">
             <Item itemId="545" count="2"/>
             <Item itemId="524" count="6"/>
@@ -24,6 +24,10 @@
             <Item itemId="2388" count="2"/>
             <Item itemId="1587" count="3"/>
             <Item itemId="3097" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="3035">
+            <Item itemId="510" count="4"/>
+            <Item itemId="511" count="3"/>
         </RecipeInfo>
     </RecipeType>
 </RecipeCatalog>
