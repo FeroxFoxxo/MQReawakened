@@ -14,7 +14,7 @@ public class ObjectiveCatalogInt : IBundledXml
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<string, int> ObjectivePrefabs;
+    public Dictionary<string, string> ObjectivePrefabs;
 
     public ObjectiveCatalogInt()
     {
@@ -41,7 +41,7 @@ public class ObjectiveCatalogInt : IBundledXml
                 if (!(quest.Name == "Objective")) continue;
 
                 var prefabName = string.Empty;
-                var itemId = -1;
+                var itemId = "";
 
                 foreach (XmlAttribute itemAttributes in quest.Attributes)
                     switch (itemAttributes.Name)
@@ -50,7 +50,7 @@ public class ObjectiveCatalogInt : IBundledXml
                             prefabName = itemAttributes.Value;
                             break;
                         case "itemId":
-                            itemId = int.Parse(itemAttributes.Value);
+                            itemId = itemAttributes.Value;
                             break;
                     }
                 
@@ -61,7 +61,7 @@ public class ObjectiveCatalogInt : IBundledXml
         var itemCatalog = Services.GetRequiredService<ItemCatalog>();
 
         foreach (var item in itemCatalog.Items.Values)
-            ObjectivePrefabs.TryAdd(item.PrefabName, item.ItemId);
+            ObjectivePrefabs.TryAdd(item.PrefabName, item.ItemId.ToString());
     }
 
     public void FinalizeBundle()
