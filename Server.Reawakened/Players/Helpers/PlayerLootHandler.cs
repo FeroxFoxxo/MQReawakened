@@ -21,7 +21,7 @@ public static class PlayerLootHandler
             loot.BananaRewards.GrantLootBananas(player);
 
         if (loot.ItemRewards.Count > 0)
-            loot.ItemRewards.GrantLootItems(gameObjectId, player, itemCatalog);
+            loot.ItemRewards.GrantLootItems(gameObjectId, player, itemCatalog, loot.DoWheel, loot.WeightRange);
     }
 
     private static void GrantLootBananas(this List<BananaReward> bananas, Player player)
@@ -36,7 +36,7 @@ public static class PlayerLootHandler
         player.AddBananas(totalBananas);
     }
 
-    private static void GrantLootItems(this List<ItemReward> items, int objectId, Player player, ItemCatalog itemCatalog)
+    private static void GrantLootItems(this List<ItemReward> items, int objectId, Player player, ItemCatalog itemCatalog, bool doWheel, int weightRange)
     {
         var random = new Random();
 
@@ -54,7 +54,20 @@ public static class PlayerLootHandler
 
             while (count > 0)
             {
-                var chosenItem = itemReward.Items[random.Next(itemReward.Items.Count)];
+                
+                var randomWeight = random.NextInt64(1, weightRange);
+                var selector = 0;
+                Console.WriteLine(randomWeight);
+                foreach (var item in itemReward.Items)
+                {
+                    randomWeight -= item.Weight;
+                    if (randomWeight <= 0)
+                        break;
+                    else
+                        selector++;
+                }
+                Console.WriteLine(selector);
+                var chosenItem = itemReward.Items[selector];
                 gottenItems.Add(chosenItem);
                 count--;
             }
@@ -66,10 +79,12 @@ public static class PlayerLootHandler
             player.Character.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count);
         }
 
-        SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
-        player.SendUpdatedInventory(false);
+        if (doWheel)
+            SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
+    player.SendUpdatedInventory(false);
     }
 
     private static void SendLootWheel(Player player, string itemsLooted, string lootableItems, int gameObjectId)
         => player.SendXt("iW", itemsLooted, lootableItems, gameObjectId, 0);
+
 }
