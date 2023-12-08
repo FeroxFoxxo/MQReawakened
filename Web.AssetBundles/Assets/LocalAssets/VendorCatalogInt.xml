@@ -2,7 +2,7 @@
 <VendorCatalog>
     <Vendor objectId="98648" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
         <Item prefabName="PF_PET_Rig02_Enzo01" />
-        <Item prefabName="PF_PET_Rig01_Pheonix01d" />
+        <Item prefabName="PF_PET_Rig01_Pheonix01" />
         <Item prefabName="PF_PET_Rig02_Tiger01" />
         <Item prefabName="PF_PET_Rig01_Dragon01" />
         <Item prefabName="PF_PET_Rig02_Panda01" />
