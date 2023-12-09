@@ -57,7 +57,6 @@ public static class PlayerLootHandler
                 
                 var randomWeight = random.NextInt64(1, weightRange);
                 var selector = 0;
-                Console.WriteLine(randomWeight);
                 foreach (var item in itemReward.Items)
                 {
                     randomWeight -= item.Weight;
@@ -66,7 +65,6 @@ public static class PlayerLootHandler
                     else
                         selector++;
                 }
-                Console.WriteLine(selector);
                 var chosenItem = itemReward.Items[selector];
                 gottenItems.Add(chosenItem);
                 count--;

@@ -227,4 +227,19 @@
         <Item prefabName="WPN_MEL_IceRaiderHammer01" />
         <Item prefabName="WPN_PRJ_IceBow01" />
     </Vendor>
+    <Vendor objectId="166" name="Yarn" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Tailor" dialogId="1081" greetingConversationId="2990" leavingConversationId="2989">
+        <Item prefabName="COL_PACK_NC_Tailoring01" />
+        <Item prefabName="COL_PACK_NC_Tailoring02" />
+        <Item prefabName="COL_PACK_NC_Tailoring03" />
+        <Item prefabName="COL_PACK_NC_Monster01" />
+        <Item prefabName="COL_PACK_NC_Monster02" />
+        <Item prefabName="COL_PACK_NC_Monster03" />
+        <Item prefabName="COL_ING_C_WeakThread01" />
+        <Item prefabName="COL_ING_C_MediumThread01" />
+        <Item prefabName="COL_ING_C_StrongThread01" />
+        <Item prefabName="COL_RECIP_BON_Ritualist01_S01" />
+        <Item prefabName="COL_RECIP_BON_TailRing01_T03" />
+        <Item prefabName="COL_RECIP_COM_DragonFish01_FH02" />
+        <Item prefabName="COL_RECIP_COM_Indonesian01_LS02" />
+    </Vendor>
 </VendorCatalog>
