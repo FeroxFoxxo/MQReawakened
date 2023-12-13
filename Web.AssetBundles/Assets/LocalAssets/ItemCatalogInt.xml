@@ -8,8 +8,18 @@
         <ItemSubCategory name="Herbs and flowers" />
         <ItemSubCategory name="Mineral" />
         <ItemSubCategory name="Liquid" />
-        <ItemSubCategory name="Potion" />
-        <ItemSubCategory name="Usable" />
+        <ItemSubCategory name="Potion">
+            <Item itemId="10200" itemName="Hot Cocoa" descriptionId="1000764" prefabName="COL_FOOD_Hot Cocoa01" specialDisplayPrefab="" tribe="Crossroads" rarity="Uncommon" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1200" discountPrice="-1" sellPrice="5" sellCount="1200" discountedFrom="None" discountedTo="None" actionType="Drink" cooldownTime="3" delayUseDuration="0" binding="On Equip" level="15" levelRequirement="15" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+                <ItemEffects>
+                    <Effect duration="8" type="Regeneration" value="3300" />
+                </ItemEffects>
+        </ItemSubCategory>
+        <ItemSubCategory name="Usable">
+            <Item itemId="10700" itemName="Holiday Fruitcake" descriptionId="1507002677" prefabName="COL_FOOD_HolidayFruitcake01" specialDisplayPrefab="" tribe="Crossroads" rarity="Uncommon" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="80" discountPrice="-1" sellPrice="5" sellCount="80" discountedFrom="None" discountedTo="None" actionType="Eat" cooldownTime="3" delayUseDuration="0" binding="On Equip" level="5" levelRequirement="5" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+                <ItemEffects>
+                    <Effect duration="12" type="Regeneration" value="1000" />
+                </ItemEffects>
+        </ItemSubCategory>
         <ItemSubCategory name="Ability" />
         <ItemSubCategory name="BMoney" />
         <ItemSubCategory name="CMoney" />

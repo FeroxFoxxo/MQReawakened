@@ -81,6 +81,18 @@
         <Item prefabName="Add_EVT_Zombie01_LS01" />
         <Item prefabName="PF_PET_Rig01_Skull01" />
     </Vendor>
+    <Vendor objectId="32790" name="Starshine" descriptionId="1" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1022" greetingConversationId="2819" leavingConversationId="2818">
+        <Item prefabName="Add_EVT_Winter01_T01" />
+        <Item prefabName="Add_EVT_Holiday01_BP01" />
+        <Item prefabName="Add_EVT_Wings01_BP01" />
+        <Item prefabName="Add_EVT_Santa01_LF01" />
+        <Item prefabName="Add_EVT_Santa01_W01" />
+        <Item prefabName="Add_EVT_Santa01_S01" />
+        <Item prefabName="Add_EVT_Santa01_TS01" />
+        <Item prefabName="Add_EVT_Santa01_LS01" />
+        <Item prefabName="COL_FOOD_Hot Cocoa01" />
+        <Item prefabName="COL_FOOD_HolidayFruitcake01" />
+    </Vendor>
     <Vendor objectId="7524" name="Aodh" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="891" greetingConversationId="2467" leavingConversationId="2466">
         <Item prefabName="COL_ING_C_PureWater01" />
         <Item prefabName="COL_ING_C_MountainWater01" />
