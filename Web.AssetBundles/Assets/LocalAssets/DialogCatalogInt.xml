@@ -136,4 +136,7 @@
     <NPC objectId="32289" name="Upatree" descriptionId="0">
         <Dialog dialogId="1277" conversationId="3264" minimumReputation="1" />
     </NPC>
+    <NPC objectId="26292512" name="Laurence" descriptionId="0">
+        <Dialog dialogId="1561" conversationId="3956" minimumReputation="1" />
+    </NPC>
 </DialogCatalog>
