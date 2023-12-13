@@ -21,6 +21,17 @@
     <NPC objectId="96881" name="The Twins" descriptionId="0">
         <Dialog dialogId="1054" conversationId="2910" minimumReputation="1" />
     </NPC>
+    <NPC objectId="97236" name="Derix" descriptionId="0">
+        <Dialog dialogId="1348" conversationId="3298" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="681" name="Terod" descriptionId="0">
+        <Dialog dialogId="817" conversationId="2291" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="905" name="Mondy" descriptionId="0">
+        <Dialog dialogId="884" conversationId="2451" minimumReputation="1" />
+        <Dialog dialogId="884" conversationId="2452" minimumReputation="5" />
+        <Dialog dialogId="884" conversationId="2453" minimumReputation="10" />
+    </NPC>
     <NPC objectId="153" name="Wijit" descriptionId="0">
         <Dialog dialogId="841" conversationId="2351" minimumReputation="1" />
         <Dialog dialogId="661" conversationId="1911" minimumReputation="5" />
