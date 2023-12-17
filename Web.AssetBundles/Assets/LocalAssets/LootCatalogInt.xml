@@ -264,7 +264,7 @@
             <Items rewardAmount="1">
                 <Item itemId="9701" count="1" bindingCount="0" />
                 <Item itemId="8000" count="1" bindingCount="0" />
-                <Item itemId="8209" count="1" bindingCount="0" />
+                <Item itemId="7709" count="1" bindingCount="0" />
                 <Item itemId="5200" count="1" bindingCount="0" />
                 <Item itemId="8001" count="1" bindingCount="0" />
                 <Item itemId="1679" count="1" bindingCount="0" />
@@ -273,14 +273,14 @@
                 <Item itemId="4218" count="1" bindingCount="0" />
                 <Item itemId="4720" count="1" bindingCount="0" />
                 <Item itemId="6711" count="1" bindingCount="0" />
-                <Item itemId="8213" count="1" bindingCount="0" />
+                <Item itemId="7713" count="1" bindingCount="0" />
             </Items>
         </LootInfo>
         <LootInfo objectId="3286868">  <!--Blue Arena Chest 2-->
             <Items rewardAmount="1">
                 <Item itemId="9701" count="1" bindingCount="0" />
                 <Item itemId="8000" count="1" bindingCount="0" />
-                <Item itemId="8209" count="1" bindingCount="0" />
+                <Item itemId="7709" count="1" bindingCount="0" />
                 <Item itemId="5200" count="1" bindingCount="0" />
                 <Item itemId="8001" count="1" bindingCount="0" />
                 <Item itemId="1679" count="1" bindingCount="0" />
@@ -289,7 +289,7 @@
                 <Item itemId="4218" count="1" bindingCount="0" />
                 <Item itemId="4720" count="1" bindingCount="0" />
                 <Item itemId="6711" count="1" bindingCount="0" />
-                <Item itemId="8213" count="1" bindingCount="0" />
+                <Item itemId="7713" count="1" bindingCount="0" />
             </Items>
         </LootInfo>
         <LootInfo objectId="3286869">  <!--Purple Arena Chest-->
@@ -297,7 +297,7 @@
                 <Item itemId="8000" count="1" bindingCount="0" />
                 <Item itemId="5200" count="1" bindingCount="0" />
                 <Item itemId="9207" count="1" bindingCount="0" />
-                <Item itemId="8209" count="1" bindingCount="0" />
+                <Item itemId="7709" count="1" bindingCount="0" />
                 <Item itemId="4217" count="1" bindingCount="0" />
                 <Item itemId="4719" count="1" bindingCount="0" />
             </Items>
