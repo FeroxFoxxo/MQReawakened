@@ -2,12 +2,32 @@
 <VendorCatalog>
     <Vendor objectId="98648" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
         <Item prefabName="PF_PET_Rig02_Enzo01" />
-        <Item prefabName="PF_PET_Rig01_Pheonix01d" />
+        <Item prefabName="PF_PET_Rig01_Pheonix01" />
+        <Item prefabName="PF_PET_Rig02_Tiger01" />
+        <Item prefabName="PF_PET_Rig01_Dragon01" />
+        <Item prefabName="PF_PET_Rig02_Panda01" />
+        <Item prefabName="PF_PET_Rig03_Squid01" />
+        <Item prefabName="PF_PET_Rig03_Shark01" />
+        <Item prefabName="PF_PET_Rig02_Fox01" />
+        <Item prefabName="PF_PET_Rig01_Toad01" />
+        <Item prefabName="PF_PET_Rig01_Owl01" />
+        <Item prefabName="PF_PET_Rig02_Bear01" />
+        <Item prefabName="PF_PET_Rig02_Tiger02" />
     </Vendor>
     <Vendor objectId="1167" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
-        <Item prefabName="PF_PET_Rig01_Pheonix01d" />
+        <Item prefabName="PF_PET_Rig01_Pheonix01" />
+        <Item prefabName="PF_PET_Rig02_Tiger01" />
+        <Item prefabName="PF_PET_Rig01_Dragon01" />
+        <Item prefabName="PF_PET_Rig02_Panda01" />
+        <Item prefabName="PF_PET_Rig03_Squid01" />
+        <Item prefabName="PF_PET_Rig03_Shark01" />
+        <Item prefabName="PF_PET_Rig02_Fox01" />
+        <Item prefabName="PF_PET_Rig01_Toad01" />
+        <Item prefabName="PF_PET_Rig01_Owl01" />
+        <Item prefabName="PF_PET_Rig02_Bear01" />
+        <Item prefabName="PF_PET_Rig02_Tiger02" />
     </Vendor>
-    <Vendor objectId="615" name="Altak" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1018" greetingConversationId="2795" leavingConversationId="2794">
+    <Vendor objectId="615" name="Altak" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1180" greetingConversationId="3173" leavingConversationId="3372">
         <Item prefabName="Col_POT_ExperiencePotion02" />
         <Item prefabName="COL_POT_Rejuvenation02" />
         <Item prefabName="COL_POT_Healing01" />
@@ -22,7 +42,7 @@
         <Item prefabName="Add_COM_SpaceSuit01_LS01" />
         <Item prefabName="Add_COM_SpaceSuit01_TS01" />
     </Vendor>
-    <Vendor objectId="822" name="Dillon" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1180" greetingConversationId="3173" leavingConversationId="3372">
+    <Vendor objectId="822" name="Dillon" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1018" greetingConversationId="2795" leavingConversationId="2794">
         <Item prefabName="Add_COM_Viking01_S01" />
         <Item prefabName="Add_COM_AviatorPunk01_S01" />
         <Item prefabName="Add_COM_AviatorPunk01_TS01" />
@@ -60,6 +80,18 @@
         <Item prefabName="Add_EVT_Zombie01_TS01" />
         <Item prefabName="Add_EVT_Zombie01_LS01" />
         <Item prefabName="PF_PET_Rig01_Skull01" />
+    </Vendor>
+    <Vendor objectId="32790" name="Starshine" descriptionId="1" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1022" greetingConversationId="2819" leavingConversationId="2818">
+        <Item prefabName="Add_EVT_Winter01_T01" />
+        <Item prefabName="Add_EVT_Holiday01_BP01" />
+        <Item prefabName="Add_EVT_Wings01_BP01" />
+        <Item prefabName="Add_EVT_Santa01_LF01" />
+        <Item prefabName="Add_EVT_Santa01_W01" />
+        <Item prefabName="Add_EVT_Santa01_S01" />
+        <Item prefabName="Add_EVT_Santa01_TS01" />
+        <Item prefabName="Add_EVT_Santa01_LS01" />
+        <Item prefabName="COL_FOOD_Hot Cocoa01" />
+        <Item prefabName="COL_FOOD_HolidayFruitcake01" />
     </Vendor>
     <Vendor objectId="7524" name="Aodh" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="891" greetingConversationId="2467" leavingConversationId="2466">
         <Item prefabName="COL_ING_C_PureWater01" />
