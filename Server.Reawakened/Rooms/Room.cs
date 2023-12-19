@@ -1,9 +1,11 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Enums;
@@ -20,10 +22,11 @@ public class Room : Timer
     private readonly int _roomId;
     private readonly ServerRConfig _config;
     private readonly Level _level;
-    private readonly HashSet<int> _gameObjectIds;
+    public readonly HashSet<int> GameObjectIds;
 
     public readonly Dictionary<int, Player> Players;
     public readonly Dictionary<int, List<BaseComponent>> Entities;
+    public readonly Dictionary<int, ProjectileEntity> Projectiles;
     public readonly ILogger<Room> Logger;
 
     public readonly Dictionary<string, PlaneModel> Planes;
@@ -33,11 +36,10 @@ public class Room : Timer
 
     public SpawnPointComp CheckpointSpawn { get; set; }
     public int CheckpointId { get; set; }
-
     public LevelInfo LevelInfo => _level.LevelInfo;
-
     public long TimeOffset { get; set; }
-    public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
+    public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
+    public int ProjectileCount;
 
     public Room(
         int roomId, Level level, ServerRConfig config, TimerThread timerThread,
@@ -53,20 +55,21 @@ public class Room : Timer
         CheckpointId = 0;
 
         Players = [];
-        _gameObjectIds = [];
+        GameObjectIds = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
             return;
 
         Planes = LevelInfo.LoadPlanes(_config);
         Entities = this.LoadEntities(services, out UnknownEntities);
+        Projectiles = new Dictionary<int, ProjectileEntity>();
 
         foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects.Values)
                      .SelectMany(x => x)
                      .Select(x => x.ObjectInfo.ObjectId)
                 )
-            _gameObjectIds.Add(gameObjectId);
+            GameObjectIds.Add(gameObjectId);
 
         foreach (var component in Entities.Values.SelectMany(x => x))
             component.InitializeComponent();
@@ -80,13 +83,19 @@ public class Room : Timer
                 LevelInfo.LevelId, LevelInfo.Name);
 
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
+        ProjectileCount = 0;
         Start();
     }
 
     public override void OnTick()
     {
-        foreach (var entityComponent in Entities.Values.SelectMany(entityList => entityList))
+        var entitiesCopy = Entities.Values.SelectMany(s => s).ToList();
+        var projectilesCopy = Projectiles.Values.ToList();
+        foreach (var entityComponent in entitiesCopy)
             entityComponent.Update();
+
+        foreach (var projectileComponent in projectilesCopy)
+            projectileComponent.Update();
 
         foreach (var player in Players.Values.Where(
                      player => GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime
@@ -121,10 +130,10 @@ public class Room : Timer
         {
             var gameObjectId = 1;
 
-            while (_gameObjectIds.Contains(gameObjectId))
+            while (GameObjectIds.Contains(gameObjectId))
                 gameObjectId++;
 
-            _gameObjectIds.Add(gameObjectId);
+            GameObjectIds.Add(gameObjectId);
 
             currentPlayer.TempData.GameObjectId = gameObjectId;
 
@@ -156,7 +165,7 @@ public class Room : Timer
     public void RemoveClient(Player player)
     {
         Players.Remove(player.GameObjectId);
-        _gameObjectIds.Remove(player.GameObjectId);
+        GameObjectIds.Remove(player.GameObjectId);
 
         if (LevelInfo.LevelId <= 0)
             return;

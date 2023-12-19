@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Xml;
+using UnityEngine;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Extensions;
@@ -92,6 +93,8 @@ public static class LoadRoomData
         var processable = typeof(DataComponentAccessor).Assembly.GetServices<DataComponentAccessor>()
             .ToDictionary(x => x.Name, x => x);
 
+        string translateComponent;
+        string[] translatedArray;
         foreach (var plane in room.Planes)
             foreach (var entity in plane.Value.GameObjects)
                 foreach (var component in entity.Value.ObjectInfo.Components)
@@ -102,7 +105,7 @@ public static class LoadRoomData
                     if (entityComponents.TryGetValue(mqType.FullName!, out var internalType))
                     {
                         var dataObj = RuntimeHelpers.GetUninitializedObject(mqType);
-
+                        
                         var fields = mqType.GetFields()
                             .Where(prop => prop.IsDefined(typeof(MQAttribute), false))
                             .ToArray();
@@ -125,9 +128,18 @@ public static class LoadRoomData
                                 field.SetValue(dataObj, float.Parse(componentValue.Value));
                             else if (field.FieldType.IsEnum)
                                 field.SetValue(dataObj, Enum.Parse(field.FieldType, componentValue.Value));
+                            else if (field.FieldType == typeof(Vector3))
+                            {
+                                translateComponent = componentValue.Value.Replace("(", "").Replace(")", "");
+                                translatedArray = translateComponent.Split(",");
+                                field.SetValue(dataObj, new Vector3(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2])));
+                            }
                             else
+                            {
                                 room.Logger.LogError("It is unknown how to convert a string to a {FieldType}.",
                                     field.FieldType);
+                                Console.WriteLine(componentValue.Value);
+                            }
                         }
 
                         var entityData = new Entity(entity.Value, room, fileLogger);

@@ -47,7 +47,7 @@ public class HazardControllerComp : Component<HazardController>
         }
 
         var statusEffect = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), Room.Time, (int)effectType,
-            0, Convert.ToInt32(HurtLength), true, Entity.GameObject.ObjectInfo.PrefabName, false);
+            0, 1, true, Entity.GameObject.ObjectInfo.ObjectId.ToString(), false);
 
         Room.SendSyncEvent(statusEffect);
 
@@ -56,12 +56,12 @@ public class HazardControllerComp : Component<HazardController>
 
         switch (effectType)
         {
-            case ItemEffectType.FireDamage:
-                player.ApplyDamageByPercent(Room, .10);
+            case ItemEffectType.Unknown:
+                SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
+                $"Effect Type: {effectType}");
                 break;
             default:
-                SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
-                    $"Effect Type: {effectType}");
+                player.ApplyDamageByPercent(Room, .10);
                 break;
         }
     }

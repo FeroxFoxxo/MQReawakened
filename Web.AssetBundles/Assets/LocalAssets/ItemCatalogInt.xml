@@ -181,7 +181,11 @@
         </ItemSubCategory>
         <ItemSubCategory name="Passive Ability">
             <Item itemId="393" itemName="Snowboard" descriptionId="2139612518" prefabName="ABIL_SnowBoard02" specialDisplayPrefab="" tribe="Wild" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Ability" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
-            <Item itemId="398" itemName="Mystic Charm" descriptionId="1000850" prefabName="ABIL_MysticCharm01" specialDisplayPrefab="" tribe="Bone" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Drink" cooldownTime="0" delayUseDuration="0" binding="On Pick" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+            <Item itemId="398" itemName="Mystic Charm" descriptionId="1000850" prefabName="ABIL_MysticCharm01" specialDisplayPrefab="" tribe="Bone" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Drink" cooldownTime="0" delayUseDuration="0" binding="On Pick" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+                <ItemEffects>
+                    <Effect duration="5" type="Charm" value="1"/>
+                </ItemEffects>
+            </Item>
         </ItemSubCategory>
         <ItemSubCategory name="None" />
     </ItemCategory>

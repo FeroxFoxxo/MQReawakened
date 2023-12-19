@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
@@ -43,8 +45,15 @@ public class State : ExternalProtocol
 
         var entityId = int.Parse(syncEvent.TargetID);
 
+        //This part exists because RequestRespawn seemingly just... sends the wrong id?
+        if (syncEvent.Type.Equals(SyncEvent.EventType.RequestRespawn))
+        {
+            entityId = Player.GameObjectId;
+        }
+
         if (room.Players.TryGetValue(entityId, out var newPlayer))
         {
+            
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.ChargeAttack:
@@ -93,6 +102,50 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.Direction:
                     var directionEvent = new Direction_SyncEvent(syncEvent);
                     newPlayer.TempData.Direction = directionEvent.Direction;
+                    break;
+                case SyncEvent.EventType.RequestRespawn:
+                    var respawnEvent = new RequestRespawn_SyncEvent(entityId.ToString(), syncEvent.TriggerTime);
+                    room.SendSyncEvent(respawnEvent);
+                    break;
+                case SyncEvent.EventType.PhysicStatus:
+                    foreach (var entity in room.Entities)
+                    {
+                        foreach (var comp in entity.Value)
+                        {
+                            if (comp is HazardControllerComp hazard)
+                            {
+                                Enum.TryParse(hazard.HurtEffect, true, out ItemEffectType effectType);
+
+                                if (effectType == ItemEffectType.SlowStatusEffect)
+                                {
+                                    var distanceXThreshold = 4.0f;
+                                    var distanceYThreshold = 1f;
+                                    var distanceX = Math.Abs(Player.TempData.Position.X - comp.Entity.GameObject.ObjectInfo.Position.X + -4.0f);
+                                    var distanceY = Math.Abs(Player.TempData.Position.Y - comp.Entity.GameObject.ObjectInfo.Position.Y + 4);
+
+                                    if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold)
+                                    {
+                                        var slowStatusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                                            (int)ItemEffectType.SlowStatusEffect, 1, 1, true, comp.PrefabName, false);
+
+                                        Player.Room.SendSyncEvent(slowStatusEffect);
+                                    }
+                                }
+                            }
+                            if (comp is CollapsingPlatformComp platform)
+                            {
+                                var distanceXThreshold = 1.0f;
+                                var distanceYThreshold = 1f;
+                                var distanceX = Math.Abs(Player.TempData.Position.X - comp.Entity.GameObject.ObjectInfo.Position.X);
+                                var distanceY = Math.Abs(Player.TempData.Position.Y - comp.Entity.GameObject.ObjectInfo.Position.Y + -1.0f);
+
+                                if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold && !platform.IsBroken)
+                                {
+                                    platform.Collapse(false);
+                                }
+                            }
+                        }
+                    }
                     break;
             }
 

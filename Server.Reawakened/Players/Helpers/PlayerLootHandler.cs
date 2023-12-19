@@ -74,7 +74,8 @@ public static class PlayerLootHandler
         foreach (var item in gottenItems)
         {
             itemsLooted.Append(item.ToString());
-            player.Character.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count);
+            if (item.ItemId > 0)
+                player.Character.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count);
         }
 
         if (doWheel)
