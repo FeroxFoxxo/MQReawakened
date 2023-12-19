@@ -11,16 +11,18 @@ using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.RegularExpressions;
+using static Analytics;
 using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Chat.Services;
 
 public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
-    WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves) : IService
+    WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
 
@@ -35,11 +37,13 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
         AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
+        AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
-        AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
+        AddCommand(new ChatCommand("completeQuest", "[questId]", CompleteQuest));
+        AddCommand(new ChatCommand("startquest", "[questId]", StartQuest));
         AddCommand(new ChatCommand("openDoors", "", OpenDoors));
         AddCommand(new ChatCommand("godmode", "", GodMode));
         AddCommand(new ChatCommand("save", "", SaveLevel));
@@ -86,6 +90,51 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
+    private bool StartQuest(Player player, string[] args)
+    {
+        if (args.Length != 1)
+        {
+            Log("Please provite a valid quest ID.", player);
+            return false;
+        }
+
+        var questId = int.Parse(args[0]);
+        player.Character.Data.ActiveQuestId = questId;
+
+        var questData = questCatalog.GetQuestData(questId);
+        player.AddQuest(questData, questId, true);
+
+        player.UpdateNpcsInLevel();
+
+        Log($"Initiating quest with ID ({questId})", player);
+
+        return true;
+    }
+
+    private bool CompleteQuest(Player player, string[] args)
+    {
+        if (player.Character.Data.ActiveQuestId == 0)
+        {
+            Log($"Must start a quest to turn in a quest.", player);
+            return false;
+        }
+
+        var questId = player.Character.Data.ActiveQuestId;
+
+        foreach (var quest in player.Character.Data.QuestLog)
+        {
+            if (quest.Id == questId)
+            {
+                player.SendXt("nQ", questId);
+                quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
+            }
+        }
+
+        player.UpdateNpcsInLevel();
+
+        return true;
+    }
+
     private bool GodMode(Player player, string[] args)
     {
         var items = config.SingleItemKit
@@ -102,18 +151,20 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         player.Character.AddKit(items, 1);
         player.SendUpdatedInventory(false);
-        player.AddBananas(100000);
-        player.AddNCash(100000);
+        player.AddSlots(true);
+
+        player.AddBananas(config.CashKitAmount);
+        player.AddNCash(config.CashKitAmount);
+        player.SendCashUpdate();
+
         player.AddPoints();
         player.LevelUp(65, logger);
         player.DiscoverAllTribes();
-        player.SendCashUpdate();
-        player.AddSlots(true);
+
         player.Character.Data.CurrentLife = player.Character.Data.MaxLife;
-        var health = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, player.Character.Data.MaxLife, player.Character.Data.MaxLife, "now");
-        var t = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, (int)ItemEffectType.Healing, 100000, 1, true, player.GameObjectId.ToString(), true);
-        player.Room.SendSyncEvent(health);
-        player.Room.SendSyncEvent(t);
+        var maxHealth = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, player.Character.Data.MaxLife, player.Character.Data.MaxLife, "now");
+        player.Room.SendSyncEvent(maxHealth);
+
         return true;
     }
 
@@ -135,24 +186,27 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool Teleport(Player player, string[] args)
     {
-        if (!int.TryParse(args[1], out var xPos)
-            || !int.TryParse(args[2], out var yPos)
-            || !int.TryParse(args[3], out var zPos))
+        if (args.Length is < 3 or > 4)
         {
-            Log("Please enter a valid coordinate value.", player);
+            Log("Invalid amount of values. Please provide X and Y coordinates.", player);
             return false;
         }
 
-        var z = zPos;
-
-        if (zPos is < 0 or > 1)
+        if (!int.TryParse(args[1], out var xPos) || !int.TryParse(args[2], out var yPos))
         {
-            Log("Invalid value for Z, defaulting to 0", player);
-            z = 0;
+            Log("Please provide valid values for X and Y coordinates.", player);
+            return false;
+        }
+
+        var z = args.Length == 4 && int.TryParse(args[3], out var zPos) ? zPos : player.TempData.Position.Z == 0 ? 0 : 1;
+
+        if (z is < 0 or > 1)
+        {
+            Log("Invalid value for Z, defaulting value to current plane.", player);
+            z = player.TempData.Position.Z == 0 ? 0 : 1;
         }
 
         player.TeleportPlayer(xPos, yPos, z);
-
         return true;
     }
 

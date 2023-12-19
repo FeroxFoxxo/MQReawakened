@@ -4,6 +4,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 
@@ -36,6 +37,19 @@ public class UseItem : ExternalProtocol
 
         switch (item.SubCategoryId)
         {
+            case ItemSubCategory.Potion:
+                foreach (var effect in item.ItemEffects)
+                {
+                    var statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                        (int)effect.Type, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
+
+                    Player.Room.SendSyncEvent(statusEffect);
+                }
+
+                Player.HealOnce(item);
+                break;
+            case ItemSubCategory.PassiveAbility:
+                break;
             case ItemSubCategory.Tailoring:
             case ItemSubCategory.Alchemy:
                 var recipe = RecipeCatalog.GetRecipeById(itemId);
@@ -43,7 +57,6 @@ public class UseItem : ExternalProtocol
                 Player.Character.Data.RecipeList.RecipeList.Add(recipe);
 
                 Player.SendXt("cz", recipe);
-
                 break;
             case ItemSubCategory.SuperPack:
 

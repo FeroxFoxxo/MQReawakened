@@ -1,13 +1,10 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -16,6 +13,42 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerExtensions
 {
+    public static void HealOnce(this Player player, ItemDescription usedItem)
+    {
+        if (player.Character.Data.CurrentLife == player.Character.Data.MaxLife)
+            return;
+
+        if (usedItem.SubCategoryId is ItemSubCategory.Invalid or
+            ItemSubCategory.Unknown or ItemSubCategory.Unknown_4 or ItemSubCategory.Unknown_5) return;
+
+        var healthUntilMaxed = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
+        var healValue = usedItem.ItemEffects.First().Value;
+
+        switch (usedItem.SubCategoryId)
+        {
+            case ItemSubCategory.Potion:
+                if (healthUntilMaxed < healValue)
+                    healValue = healthUntilMaxed;
+
+                var potion = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+                    player.Character.Data.CurrentLife += Convert.ToInt32(healValue), player.Character.Data.MaxLife, "now");
+
+                player.Room.SendSyncEvent(potion);
+                break;
+            case ItemSubCategory.Defensive:
+                var staffValue = player.Character.Data.MaxLife / 3.3;
+
+                if (healthUntilMaxed < staffValue)
+                    staffValue = healthUntilMaxed;
+
+                var healingStaff = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+                    player.Character.Data.CurrentLife += Convert.ToInt32(staffValue), player.Character.Data.MaxLife, "now");
+
+                player.Room.SendSyncEvent(healingStaff);
+                break;
+        }        
+    }
+
     public static void TeleportPlayer(this Player player, int x, int y, int z)
     {
         var isBackPlane = z == 1;
@@ -270,8 +303,11 @@ public static class PlayerExtensions
                     if (objective.GameObjectId != gameObjectId)
                         continue;
 
+                if (objective.ItemId == 0)
+                    itemId = "0";
+
                 if (objective.ObjectiveType != type ||
-                    objective.ItemId != itemId ||
+                    objective.ItemId.ToString() != itemId ||
                     objective.Order > quest.CurrentOrder ||
                     objective.LevelId != player.Character.LevelData.LevelId ||
                     objective.Completed ||
@@ -305,7 +341,7 @@ public static class PlayerExtensions
 
             player.UpdateNpcsInLevel(quest, quests);
         }
-    }
+    }   
 
     public static void UpdateEquipment(this Player sentPlayer)
     {
