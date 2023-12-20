@@ -121,7 +121,6 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         player.Room.SendSyncEvent(t);
         return true;
     }
-
     private bool OpenDoors(Player player, string[] args)
     {
         foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))

@@ -328,6 +328,347 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="The Deep Swamps">
+        <LootInfo objectId="17427" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="405" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17775" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="405" count="1" bindingCount="0"/>
+                <Item itemId="1562" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17428" doLootWheel="false">
+            <Items rewardAmount="2">
+                <Item itemId="405" count="1" bindingCount="0"/>
+                <Item itemId="220" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="5129" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="1704" count="1" bindingCount="0"/>
+                <Item itemId="1809" count="1" bindingCount="0"/>
+                <Item itemId="1840" count="1" bindingCount="0"/>
+                <Item itemId="1184" count="1" bindingCount="0"/>
+                <Item itemId="1838" count="1" bindingCount="0"/>
+                <Item itemId="1810" count="1" bindingCount="0"/>
+                <Item itemId="1230" count="1" bindingCount="0"/>
+                <Item itemId="1256" count="1" bindingCount="0"/>
+                <Item itemId="2801" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17739" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="430" count="1" bindingCount="0"/>
+                <Item itemId="432" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0"/>
+                <Item itemId="1010" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17774" doLootWheel="false">
+            <Items rewardAmount="2">
+                <Item itemId="405" count="1" bindingCount="0"/>
+                <Item itemId="220" count="1" bindingCount="0"/>
+                <Item itemId="1562" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17776" doLootWheel="true">
+            <Items rewardAmount="2">
+                <Item itemId="1672" count="1" bindingCount="0"/>
+                <Item itemId="598" count="1" bindingCount="0"/>
+                <Item itemId="1185" count="1" bindingCount="0"/>
+                <Item itemId="1793" count="1" bindingCount="0"/>
+                <Item itemId="1798" count="1" bindingCount="0"/>
+                <Item itemId="1807" count="1" bindingCount="0"/>
+                <Item itemId="2037" count="1" bindingCount="0"/>
+                <Item itemId="2041" count="1" bindingCount="0"/>
+                <Item itemId="2801" count="1" bindingCount="0"/>
+                <Item itemId="600" count="1" bindingCount="0"/>
+                <Item itemId="1000" count="1" bindingCount="0"/>
+                <Item itemId="1002" count="1" bindingCount="0"/>
+                <Item itemId="1256" count="1" bindingCount="0"/>
+                <Item itemId="1259" count="1" bindingCount="0"/>
+                <Item itemId="1264" count="1" bindingCount="0"/>
+                <Item itemId="1810" count="1" bindingCount="0"/>
+                <Item itemId="1840" count="1" bindingCount="0"/>
+                <Item itemId="2881" count="1" bindingCount="0"/>
+                <Item itemId="2884" count="1" bindingCount="0"/>
+                <Item itemId="2887" count="1" bindingCount="0"/>
+                <Item itemId="676" count="1" bindingCount="0"/>
+                <Item itemId="1809" count="1" bindingCount="0"/>
+                <Item itemId="1838" count="1" bindingCount="0"/>
+                <Item itemId="2029" count="1" bindingCount="0"/>
+                <Item itemId="3246" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="8280" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="2801" count="1" bindingCount="0"/>
+                <Item itemId="430" count="1" bindingCount="0"/>
+                <Item itemId="600" count="1" bindingCount="0"/>
+                <Item itemId="1000" count="1" bindingCount="0"/>
+                <Item itemId="1002" count="1" bindingCount="0"/>
+                <Item itemId="1256" count="1" bindingCount="0"/>
+                <Item itemId="1259" count="1" bindingCount="0"/>
+                <Item itemId="1264" count="1" bindingCount="0"/>
+                <Item itemId="1810" count="1" bindingCount="0"/>
+                <Item itemId="1840" count="1" bindingCount="0"/>
+                <Item itemId="2881" count="1" bindingCount="0"/>
+                <Item itemId="2884" count="1" bindingCount="0"/>
+                <Item itemId="2887" count="1" bindingCount="0"/>
+                <Item itemId="676" count="1" bindingCount="0"/>
+                <Item itemId="1809" count="1" bindingCount="0"/>
+                <Item itemId="1838" count="1" bindingCount="0"/>
+                <Item itemId="2029" count="1" bindingCount="0"/>
+                <Item itemId="3246" count="1" bindingCount="0"/>
+                <Item itemId="586" count="1" bindingCount="0"/>
+                <Item itemId="588" count="1" bindingCount="0"/>
+                <Item itemId="752" count="1" bindingCount="0"/>
+                <Item itemId="1165" count="1" bindingCount="0"/>
+                <Item itemId="1181" count="1" bindingCount="0"/>
+                <Item itemId="1184" count="1" bindingCount="0"/>
+                <Item itemId="1230" count="1" bindingCount="0"/>
+                <Item itemId="1704" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17623" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="0" count="1" bindingCount="0" weight="20"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+                <Item itemId="109" count="1" bindingCount="0"/>
+                <Item itemId="110" count="1" bindingCount="0"/>
+                <Item itemId="544" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="560" count="1" bindingCount="0"/>
+                <Item itemId="532" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="556" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0" weight="2"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17627" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="0" count="1" bindingCount="0" weight="20"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+                <Item itemId="109" count="1" bindingCount="0"/>
+                <Item itemId="110" count="1" bindingCount="0"/>
+                <Item itemId="544" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="560" count="1" bindingCount="0"/>
+                <Item itemId="532" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="556" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0" weight="2"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17509" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="0" count="1" bindingCount="0" weight="20"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+                <Item itemId="109" count="1" bindingCount="0"/>
+                <Item itemId="110" count="1" bindingCount="0"/>
+                <Item itemId="544" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="560" count="1" bindingCount="0"/>
+                <Item itemId="532" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="556" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0" weight="2"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17632" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="0" count="1" bindingCount="0" weight="20"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+                <Item itemId="109" count="1" bindingCount="0"/>
+                <Item itemId="110" count="1" bindingCount="0"/>
+                <Item itemId="544" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="560" count="1" bindingCount="0"/>
+                <Item itemId="532" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="556" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0" weight="2"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17641" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="0" count="1" bindingCount="0" weight="20"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+                <Item itemId="109" count="1" bindingCount="0"/>
+                <Item itemId="110" count="1" bindingCount="0"/>
+                <Item itemId="544" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="560" count="1" bindingCount="0"/>
+                <Item itemId="532" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="556" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0" weight="2"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17517" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="0" count="1" bindingCount="0" weight="20"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+                <Item itemId="109" count="1" bindingCount="0"/>
+                <Item itemId="110" count="1" bindingCount="0"/>
+                <Item itemId="544" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="560" count="1" bindingCount="0"/>
+                <Item itemId="532" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="556" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0" weight="2"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17656" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="0" count="1" bindingCount="0" weight="20"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+                <Item itemId="109" count="1" bindingCount="0"/>
+                <Item itemId="110" count="1" bindingCount="0"/>
+                <Item itemId="544" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="560" count="1" bindingCount="0"/>
+                <Item itemId="532" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="556" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0" weight="2"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17660" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="0" count="1" bindingCount="0" weight="20"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+                <Item itemId="109" count="1" bindingCount="0"/>
+                <Item itemId="110" count="1" bindingCount="0"/>
+                <Item itemId="544" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="560" count="1" bindingCount="0"/>
+                <Item itemId="532" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="556" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0" weight="2"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17652" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="0" count="1" bindingCount="0" weight="20"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+                <Item itemId="109" count="1" bindingCount="0"/>
+                <Item itemId="110" count="1" bindingCount="0"/>
+                <Item itemId="544" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="560" count="1" bindingCount="0"/>
+                <Item itemId="532" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="556" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0" weight="2"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17645" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="0" count="1" bindingCount="0" weight="20"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+                <Item itemId="109" count="1" bindingCount="0"/>
+                <Item itemId="110" count="1" bindingCount="0"/>
+                <Item itemId="544" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="560" count="1" bindingCount="0"/>
+                <Item itemId="532" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="556" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0" weight="2"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="17648" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="0" count="1" bindingCount="0" weight="20"/>
+                <Item itemId="3017" count="1" bindingCount="0"/>
+                <Item itemId="3018" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+                <Item itemId="109" count="1" bindingCount="0"/>
+                <Item itemId="110" count="1" bindingCount="0"/>
+                <Item itemId="544" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+                <Item itemId="545" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0" weight="2"/>
+                <Item itemId="560" count="1" bindingCount="0"/>
+                <Item itemId="532" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="556" count="1" bindingCount="0"/>
+                <Item itemId="1621" count="1" bindingCount="0" weight="2"/>
+            </Items>
+        </LootInfo>
+    </Level>
     <Level name="Moss Temple">
         <LootInfo objectId="6808" doLootWheel="false">
             <Items rewardAmount="2">
