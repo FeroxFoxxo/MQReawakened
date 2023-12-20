@@ -25,5 +25,35 @@
             <Item itemId="1587" count="3"/>
             <Item itemId="3097" count="6"/>
         </RecipeInfo>
+        <RecipeInfo recipeId="2627">  <!--Dread Plate Helmet-->
+            <Item itemId="1589" count="12"/>
+            <Item itemId="9700" count="8"/>
+            <Item itemId="9719" count="15"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2638">  <!--Dread Plate Armor-->
+            <Item itemId="9719" count="8"/>  
+            <Item itemId="9700" count="4"/>
+            <Item itemId="1589" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2619">  <!--Dread Plate Leg Armor-->
+            <Item itemId="1589" count="8"/>
+            <Item itemId="9719" count="4"/>
+            <Item itemId="9700" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2643">  <!--Dread Plate Bracers-->
+            <Item itemId="1589" count="6"/>
+            <Item itemId="9700" count="4"/>
+            <Item itemId="9719" count="8"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2613">  <!--Dread Plate Shield-->
+            <Item itemId="9719" count="12"/>
+            <Item itemId="1589" count="12"/>
+            <Item itemId="9700" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2632">  <!--Dread Plate Tailguard-->
+            <Item itemId="9719" count="8"/>
+            <Item itemId="1589" count="6"/>
+            <Item itemId="9700" count="4"/>
+        </RecipeInfo>
     </RecipeType>
 </RecipeCatalog>
