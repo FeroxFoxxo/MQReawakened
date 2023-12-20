@@ -7,7 +7,7 @@ using ConversationModel = Server.Reawakened.XMLs.Models.Npcs.ConversationInfo;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class Dialog : DialogXML, ILocalizationXml
+public class DialogDictionary : DialogXML, ILocalizationXml
 {
     public string BundleName => "Dialog";
     public string LocalizationName => "DialogDict_en-US";
