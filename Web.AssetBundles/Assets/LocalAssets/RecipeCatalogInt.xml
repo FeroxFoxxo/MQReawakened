@@ -55,5 +55,35 @@
             <Item itemId="1589" count="6"/>
             <Item itemId="9700" count="4"/>
         </RecipeInfo>
+        <RecipeInfo recipeId="2629">  <!--Boom Plate Helmet-->
+            <Item itemId="160" count="12"/>
+            <Item itemId="9701" count="8"/>
+            <Item itemId="108" count="15"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2641">  <!--Boom Plate Armor-->
+            <Item itemId="108" count="8"/>
+            <Item itemId="9701" count="4"/>
+            <Item itemId="160" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2623">  <!--Boom Plate Leg Armor-->
+            <Item itemId="160" count="8"/>
+            <Item itemId="108" count="4"/>
+            <Item itemId="9701" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2646">  <!--Boom Plate Bracers-->
+            <Item itemId="160" count="6"/>
+            <Item itemId="9701" count="4"/>
+            <Item itemId="108" count="8"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2617">  <!--Boom Plate Shield-->
+            <Item itemId="108" count="12"/>
+            <Item itemId="160" count="12"/>
+            <Item itemId="9701" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2635">  <!--Boom Plate Tailguard-->
+            <Item itemId="108" count="8"/>
+            <Item itemId="160" count="6"/>
+            <Item itemId="9701" count="4"/>
+        </RecipeInfo>
     </RecipeType>
 </RecipeCatalog>
