@@ -17,8 +17,8 @@ public class InterObjStatusComp : Component<InterObjStatus>
     public override void InitializeComponent()
     {
         //Fix spawn position for duplicate position args when spawners are added
-        
         base.InitializeComponent();
+        Disposed = false;
     }
     public void SendDamageEvent(Player player)
     {
@@ -28,6 +28,7 @@ public class InterObjStatusComp : Component<InterObjStatus>
         // Link to damage + health of object later
         var damageEvent = new AiHealth_SyncEvent(Id.ToString(), player.Room.Time, ComponentData.Health, 5, 0, 0, player.CharacterName, false, true);
         player.Room.SendSyncEvent(damageEvent);
+        player.Room.Dispose(Id);
 
         //player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
         //player.SendUpdatedInventory(false);

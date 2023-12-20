@@ -24,7 +24,6 @@ public class EnemyControllerComp : Component<EnemyController>
     public ILogger<EnemyControllerComp> Logger { get; set; }
     public override void InitializeComponent()
     {
-        Console.WriteLine(PrefabName);
         base.InitializeComponent();
     }
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)

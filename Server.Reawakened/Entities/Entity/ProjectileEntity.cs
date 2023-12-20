@@ -1,13 +1,12 @@
 ﻿using A2m.Server;
-using agsXMPP;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity;
 public class ProjectileEntity : Component<ProjectileController>
@@ -31,7 +30,6 @@ public class ProjectileEntity : Component<ProjectileController>
         ProjectileID = id;
         Position = new Vector3Model();
         Position.X = posX; Position.Y = posY; Position.Z = posZ;
-
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
         CurrentPosition = new UnityEngine.Vector2(posX, posY);
@@ -68,22 +66,30 @@ public class ProjectileEntity : Component<ProjectileController>
 
             var objectId = obj.ObjectInfo.ObjectId;
 
-            if (Player.Room.Entities.TryGetValue(objectId, out var entityComponents) && Player.Room.Time >= StartTime+0.2)
+            if (Player.Room.Entities.TryGetValue(objectId, out var entityComponents) && Player.Room.Time >= StartTime + 0.1)
                 foreach (var component in entityComponents)
-                    if (component is BreakableEventControllerComp breakableObjEntity)
+                    if (component is TriggerCoopControllerComp wallSwitch && component.PrefabName.Contains("SwitchWall"))
                     {
-                        breakableObjEntity.Destroy(Player);
-                        ProjectileHit("-1");
-                        //ProjectileHit(obj.ObjectInfo.ObjectId.ToString());
+                        wallSwitch.TriggerInteraction(ActivationType.NormalDamage, Player);
+                        ProjectileHit(obj.ObjectInfo.ObjectId.ToString());
                     }
-
+                    else if (component is BreakableEventControllerComp breakableObjEntity)
+                    {
+                        if (!component.Disposed)
+                        {
+                            breakableObjEntity.Destroy(Player);
+                            ProjectileHit(obj.ObjectInfo.ObjectId.ToString());
+                        }
+                    }
                     else if (component is InterObjStatusComp enemyEntity && component.Id > 0)
                     {
-                        enemyEntity.SendDamageEvent(Player);
-                        ProjectileHit("-1");
-                        //ProjectileHit(obj.ObjectInfo.ObjectId.ToString());
+                        if (!component.Disposed)
+                        {
+                            enemyEntity.SendDamageEvent(Player);
+                            ProjectileHit(obj.ObjectInfo.ObjectId.ToString());
+                        }
                     }
-        }
+    }
 
         if (LifeTime <= Player.Room.Time)
             ProjectileHit("-1");
@@ -92,7 +98,12 @@ public class ProjectileEntity : Component<ProjectileController>
     public void ProjectileHit(string hitGoID)
     {
         //Logger.LogInformation("Projectile with ID {args1} destroyed at position ({args2}, {args3}, {args4})", ProjectileID, Position.X, Position.Y, Position.Z);
-        var hit = new ProjectileHit_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time, ProjectileID, hitGoID, false);
+        var hit = new ProjectileHit_SyncEvent(new SyncEvent(Player.GameObjectId.ToString(), SyncEvent.EventType.ProjectileHit, Player.Room.Time));
+        hit.EventDataList.Add(ProjectileID);
+        hit.EventDataList.Add(hitGoID);
+        hit.EventDataList.Add(0);
+        hit.EventDataList.Add(Position.X);
+        hit.EventDataList.Add(Position.Y);
         Player.Room.SendSyncEvent(hit);
         Player.Room.Projectiles.Remove(ProjectileID);
     }

@@ -61,6 +61,7 @@ public class Room : Timer
             return;
 
         Planes = LevelInfo.LoadPlanes(_config);
+        this.LoadColliders();
         Entities = this.LoadEntities(services, out UnknownEntities);
         Projectiles = new Dictionary<int, ProjectileEntity>();
 
@@ -92,7 +93,10 @@ public class Room : Timer
         var entitiesCopy = Entities.Values.SelectMany(s => s).ToList();
         var projectilesCopy = Projectiles.Values.ToList();
         foreach (var entityComponent in entitiesCopy)
-            entityComponent.Update();
+        {
+            if (!entityComponent.Disposed)
+                entityComponent.Update();
+        }
 
         foreach (var projectileComponent in projectilesCopy)
             projectileComponent.Update();
@@ -255,7 +259,18 @@ public class Room : Timer
         foreach (var player in Players.Values)
             player.DumpToLobby();
     }
-    
-    public string GetRoomName() =>
+
+    public void Dispose(int id)
+    {
+        var roomEntities = Entities.Values.SelectMany(s => s).ToList();
+        foreach (var component in roomEntities)
+            if (component.Id == id)
+            {
+                component.Disposed = true;
+                Console.WriteLine("Disposed component " + component + " from GameObject " + component.PrefabName + " with Id " + component.Id);
+            }
+    }
+
+        public string GetRoomName() =>
         $"{LevelInfo.LevelId}_{_roomId}";
 }

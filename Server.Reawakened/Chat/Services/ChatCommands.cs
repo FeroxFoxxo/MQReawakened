@@ -151,7 +151,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         {
             if (entityComponent is MysticCharmTargetComp vineEntity)
             {
-                vineEntity.Charm(10);
+                vineEntity.Charm(player);
             }
         }
 

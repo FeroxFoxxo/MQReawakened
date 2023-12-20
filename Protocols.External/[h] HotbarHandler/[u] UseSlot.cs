@@ -82,7 +82,7 @@ public class UseSlot : ExternalProtocol
 
     private void HandleRangedWeapon(Vector3Model position, int direction, ItemDescription usedItem)
     {
-        Random rand = new Random();
+        var rand = new Random();
         var prjId = Math.Abs(rand.Next());
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next());

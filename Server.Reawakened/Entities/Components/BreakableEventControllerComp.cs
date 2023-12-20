@@ -28,5 +28,6 @@ public class BreakableEventControllerComp : Component<BreakableEventController>
 
         player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
         player.SendUpdatedInventory(false);
+        player.Room.Dispose(Id);
     }
 }

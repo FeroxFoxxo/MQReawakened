@@ -196,6 +196,12 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
         if (updated)
             RunTrigger(player);
 
+        if (Interactions < NbInteractionsNeeded && !IsActive)
+        {
+            var tUpdate = new TriggerUpdate_SyncEvent(new SyncEvent(Id.ToString(), SyncEvent.EventType.TriggerUpdate, Room.Time));
+            tUpdate.EventDataList.Add(Interactions);
+            Room.SendSyncEvent(tUpdate);
+        }
         LogTrigger();
     }
 

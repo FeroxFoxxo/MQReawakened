@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using UnityEngine;
@@ -16,30 +17,19 @@ public class MysticCharmTargetComp : Component<MysticCharmTarget>
     public override void InitializeComponent()
     {
         base.InitializeComponent();
-        Uncharm();
     }
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        Charm(10);
+        Charm(player);
         base.RunSyncedEvent(syncEvent, player);
     }
-    public void Charm(int time)
+    public void Charm(Player player)
     {
         IsOpened = true;
         var syncEvent = new SyncEvent(Id.ToString(), SyncEvent.EventType.Charm, Room.Time);
         syncEvent.EventDataList.Add(1);
         syncEvent.EventDataList.Add(398);
         var charmEvent = new Charm_SyncEvent(syncEvent);
-        Room.SendSyncEvent(charmEvent);
-        _timer = (int)(time + CollisionRemovalDelay)*60;
-    }
-    public void Uncharm()
-    {
-        IsOpened = false;
-        var syncEvent = new SyncEvent(Id.ToString(), SyncEvent.EventType.Charm, Room.Time);
-        syncEvent.EventDataList.Add(0);
-        syncEvent.EventDataList.Add(398);
-        var charmEvent = new Charm_SyncEvent(syncEvent);
-        Room.SendSyncEvent(charmEvent);
+        player.SendSyncEventToPlayer(charmEvent);
     }
 }
