@@ -7,6 +7,7 @@ using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
 using Server.Base.Network.Services;
+using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Events;
 using Server.Reawakened.Players.Extensions;
@@ -20,7 +21,8 @@ public class EditCharacter(ServerConsole console, EventSink sink,
     ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
     AccountHandler accountHandler, WorldGraph worldGraph,
     ServerRConfig config, NetStateHandler handler, WorldHandler worldHandler,
-    ItemCatalog itemCatalog, PlayerEventSink playerEventSink) : IService
+    ItemCatalog itemCatalog, PlayerEventSink playerEventSink,
+    ChatCommands chatCommands) : IService
 {
     public void Initialize() => sink.WorldLoad += Load;
 
@@ -53,6 +55,33 @@ public class EditCharacter(ServerConsole console, EventSink sink,
             NetworkType.Server,
             _ => GiveItem()
         );
+
+        console.AddCommand(
+            "runCommand",
+            "Runs a command for a given player.",
+            NetworkType.Server,
+            _ => RunPlayerCommand()
+        );
+    }
+
+    private void RunPlayerCommand()
+    {
+        Ask.GetCharacter(logger, accountHandler, userInfoHandler, out var character, out var user);
+
+        if (character == null || user == null)
+            return;
+
+        if (!handler.IsPlayerOnline(user.UserId, out var player))
+        {
+            logger.LogError("Player must be online to use this command!");
+            return;        
+        }
+
+        logger.LogInformation("Enter command and arguments:");
+
+        var command = Console.ReadLine()?.Trim();
+
+        chatCommands.RunCommand(player, command.Split(' '));
     }
 
     private void ChangeCharacterName()

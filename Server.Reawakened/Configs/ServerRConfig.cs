@@ -51,10 +51,11 @@ public class ServerRConfig : IRConfig
     public int AccessRights { get; }
 
     public Dictionary<TribeType, int> TutorialTribe2014 { get; }
-
     public bool Is2014Client { get; set; }
 
     public string[] IgnoredDoors { get; set; }
+
+    public int MaximumEntitiesToReturnLog { get; set; }
 
     public ServerRConfig()
     {
@@ -155,5 +156,7 @@ public class ServerRConfig : IRConfig
         IgnoredDoors = [
             "PF_GLB_DoorArena01"
         ];
+
+        MaximumEntitiesToReturnLog = 10;
     }
 }
