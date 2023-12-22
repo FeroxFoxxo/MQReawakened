@@ -24,7 +24,7 @@ public class HazardControllerComp : Component<HazardController>
 
     public ILogger<HazardControllerComp> Logger { get; set; }
 
-    public override object[] GetInitData(Player player) => new object[] { 0 };
+    public override object[] GetInitData(Player player) => [0];
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {

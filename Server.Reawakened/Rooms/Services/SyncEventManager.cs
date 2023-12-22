@@ -25,8 +25,8 @@ public class SyncEventManager(EventSink sink) : IService
     }
 
     public string EncodeEvent(SyncEvent syncEvent) =>
-        (string)_encodeSync.Invoke(_roomManager, new object[] { syncEvent });
+        (string)_encodeSync.Invoke(_roomManager, [syncEvent]);
 
     public SyncEvent DecodeEvent(string[] fields) =>
-        (SyncEvent)_decodeSync.Invoke(_roomManager, new object[] { fields });
+        (SyncEvent)_decodeSync.Invoke(_roomManager, [fields]);
 }
