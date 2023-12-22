@@ -28,10 +28,8 @@ public class HazardControllerComp : Component<HazardController>
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
-        /* seems redundant with the other return statement below? not sure though
         if (HurtEffect == "NoEffect")
             return;
-        */
 
         var character = player.Character;
 
