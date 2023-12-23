@@ -230,4 +230,18 @@
         <Item prefabName="WPN_PRJ_FistOfIce01" />
         <Item prefabName="WPN_PRJ_IceBow01" />
     </Vendor>
+    <Vendor objectId="5151" name="Chinzee" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1350" greetingConversationId="3420" leavingConversationId="3419">
+        <Item prefabName="COL_FOOD_Orange01" />
+        <Item prefabName="Add_COM_Panda01_S01" />
+        <Item prefabName="Add_COM_Panda01_TS01" />
+        <Item prefabName="Add_COM_Panda01_LS01" />
+        <Item prefabName="COL_POT_Healing04" />
+        <Item prefabName="WPN_PRJ_Thunderbow01" />
+        <Item prefabName="Add_COM_Warrior01_W01" />
+        <Item prefabName="Add_SHD_Snake01_TS02" />
+        <Item prefabName="Add_COM_Warrior01_T01" />
+        <Item prefabName="Add_SHD_Snake01_S02" />
+        <Item prefabName="WPN_PRJ_AirFist01" />
+        <Item prefabName="Add_SHD_Snake01_LS02" />
+    </Vendor>
 </VendorCatalog>

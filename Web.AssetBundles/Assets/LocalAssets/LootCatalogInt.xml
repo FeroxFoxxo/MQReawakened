@@ -302,4 +302,98 @@
                 <Item itemId="4719" count="1" bindingCount="0" />
             </Items>
         </LootInfo>
-    </Level></LootCatalog>
+    </Level>
+    <Level name="Stone Gardens">
+        <LootInfo objectId="5028" doLootWheel="true">
+            <Items rewardAmount="1"> <!--Blue Chest 1-->
+                <Item itemId="9700" count="1" bindingCount="0"/>
+                <Item itemId="8710" count="1" bindingCount="0"/>
+                <Item itemId="1900" count="1" bindingCount="0"/>
+                <Item itemId="2728" count="1" bindingCount="0"/>
+                <Item itemId="3125" count="1" bindingCount="0"/>
+                <Item itemId="9722" count="1" bindingCount="0"/>
+                <Item itemId="2632" count="1" bindingCount="0"/>
+                <Item itemId="2638" count="1" bindingCount="0"/>
+                <Item itemId="2619" count="1" bindingCount="0"/>
+                <Item itemId="10200" count="1" bindingCount="0"/>
+                <Item itemId="10201" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="285" doLootWheel="true">
+            <Items rewardAmount="1"> <!--Glider Blue Chest-->
+                <Item itemId="9700" count="1" bindingCount="0"/>
+                <Item itemId="3123" count="1" bindingCount="0"/>
+                <Item itemId="3129" count="1" bindingCount="0"/>
+                <Item itemId="8710" count="1" bindingCount="0"/>
+                <Item itemId="686" count="1" bindingCount="0"/>
+                <Item itemId="684" count="1" bindingCount="0"/>
+                <Item itemId="9722" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="239" doLootWheel="true">
+            <Items rewardAmount="1"> <!--Vine Blue Chest-->
+                <Item itemId="9700" count="1" bindingCount="0"/>
+                <Item itemId="3123" count="1" bindingCount="0"/>
+                <Item itemId="3129" count="1" bindingCount="0"/>
+                <Item itemId="8710" count="1" bindingCount="0"/>
+                <Item itemId="686" count="1" bindingCount="0"/>
+                <Item itemId="684" count="1" bindingCount="0"/>
+                <Item itemId="9722" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="5042" doLootWheel="true">
+            <Items rewardAmount="1"> <!--Puzlle Purple 1-->
+                <Item itemId="9700" count="1" bindingCount="0"/>
+                <Item itemId="3123" count="1" bindingCount="0"/>
+                <Item itemId="3129" count="1" bindingCount="0"/>
+                <Item itemId="2632" count="1" bindingCount="0"/>
+                <Item itemId="2638" count="1" bindingCount="0"/>
+                <Item itemId="2619" count="1" bindingCount="0"/>
+                <Item itemId="9216" count="1" bindingCount="0"/>
+                <Item itemId="1512" count="1" bindingCount="0"/>
+                <Item itemId="9217" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
+        <LootInfo objectId="5030" doLootWheel="true">
+            <Items rewardAmount="1"> <!--Puzzle Purple 2-->
+                <Item itemId="9700" count="1" bindingCount="0"/>
+                <Item itemId="3123" count="1" bindingCount="0"/>
+                <Item itemId="3129" count="1" bindingCount="0"/>
+                <Item itemId="2632" count="1" bindingCount="0"/>
+                <Item itemId="2638" count="1" bindingCount="0"/>
+                <Item itemId="2619" count="1" bindingCount="0"/>
+                <Item itemId="9216" count="1" bindingCount="0"/>
+                <Item itemId="1512" count="1" bindingCount="0"/>
+                <Item itemId="9217" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="5029" doLootWheel="true">
+            <Items rewardAmount="1"> <!--Blackflame Purple-->
+                <Item itemId="9700" count="1" bindingCount="0"/>
+                <Item itemId="3123" count="1" bindingCount="0"/>
+                <Item itemId="3129" count="1" bindingCount="0"/>
+                <Item itemId="2632" count="1" bindingCount="0"/>
+                <Item itemId="2638" count="1" bindingCount="0"/>
+                <Item itemId="2619" count="1" bindingCount="0"/>
+                <Item itemId="9216" count="1" bindingCount="0"/>
+                <Item itemId="1512" count="1" bindingCount="0"/>
+                <Item itemId="9217" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3411" doLootWheel="true">
+            <Items rewardAmount="1"> <!--Arena Purple Chest-->
+                <Item itemId="9700" count="1" bindingCount="0"/>
+                <Item itemId="8710" count="1" bindingCount="0"/>
+                <Item itemId="1900" count="1" bindingCount="0"/>
+                <Item itemId="2728" count="1" bindingCount="0"/>
+                <Item itemId="3125" count="1" bindingCount="0"/>
+                <Item itemId="9722" count="1" bindingCount="0"/>
+                <Item itemId="2632" count="1" bindingCount="0"/>
+                <Item itemId="2638" count="1" bindingCount="0"/>
+                <Item itemId="2619" count="1" bindingCount="0"/>
+                <Item itemId="10200" count="1" bindingCount="0"/>
+                <Item itemId="10201" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+</LootCatalog>

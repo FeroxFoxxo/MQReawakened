@@ -140,4 +140,40 @@
     <NPC objectId="3286758" name="Oswik" descriptionId="0">
         <Dialog dialogId="1414" conversationId="3580" minimumReputation="1" />
     </NPC>
+    <NPC objectId="1237" name="Sabre" descriptionId="0">
+        <Dialog dialogId="1059" conversationId="2923" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="605" name="Mysterious Warrior" descriptionId="0">
+        <Dialog dialogId="622" conversationId="1867" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="4873" name="Kiki" descriptionId="0">
+        <Dialog dialogId="1347" conversationId="3297" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="629" name="Miko" descriptionId="0">
+        <Dialog dialogId="451" conversationId="1379" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="597" name="Chim Foo Guard" descriptionId="0">
+        <Dialog dialogId="1110" conversationId="3174" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="598" name="Chim Foo Guard" descriptionId="0">
+        <Dialog dialogId="1111" conversationId="3175" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="647" name="Chim Foo Guard" descriptionId="0">
+        <Dialog dialogId="1112" conversationId="3176" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="648" name="Chim Foo Guard" descriptionId="0">
+        <Dialog dialogId="1113" conversationId="3177" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="1098" name="Chim Foo Guard" descriptionId="0">
+        <Dialog dialogId="1114" conversationId="3178" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="1099" name="Chim Foo Guard" descriptionId="0">
+        <Dialog dialogId="1115" conversationId="3179" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="1141" name="Chim Foo Guard" descriptionId="0">
+        <Dialog dialogId="1116" conversationId="3180" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="1142" name="Chim Foo Guard" descriptionId="0">
+        <Dialog dialogId="1117" conversationId="3181" minimumReputation="1" />
+    </NPC>
 </DialogCatalog>
