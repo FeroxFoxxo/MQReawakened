@@ -200,6 +200,20 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Swamp of Misery">
+        <LootInfo objectId="953" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="430" count="1" bindingCount="0"/>
+                <Item itemId="432" count="1" bindingCount="0"/>
+                <Item itemId="485" count="1" bindingCount="0"/>
+                <Item itemId="490" count="1" bindingCount="0"/>
+                <Item itemId="523" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0"/>
+                <Item itemId="1010" count="1" bindingCount="0"/>
+                <Item itemId="2509" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
     <Level name="Mushroom Hollow">
         <LootInfo objectId="11249" doLootWheel="false">
             <Items rewardAmount="1">

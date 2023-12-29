@@ -2,8 +2,11 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
+using Server.Base.Network;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Helpers;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using System.Reflection;
@@ -70,14 +73,6 @@ public static class LoadRoomData
 
         return planes;
     }
-    public static void LoadColliders(this Room room)
-    {
-        foreach (var plane in room.Planes)
-            foreach (var collider in plane.Value.GameObjects.Values)
-                if (collider.ObjectInfo.PrefabName.Contains("TC_plane"))
-                    Console.WriteLine("Found TC colliders for room with name " + collider.ObjectInfo.PrefabName);
-    }
-
         public static Dictionary<int, List<BaseComponent>> LoadEntities(this Room room, IServiceProvider services,
         out Dictionary<int, List<string>> unknownEntities)
     {
@@ -145,7 +140,6 @@ public static class LoadRoomData
                             {
                                 room.Logger.LogError("It is unknown how to convert a string to a {FieldType}.",
                                     field.FieldType);
-                                Console.WriteLine(componentValue.Value);
                             }
                         }
 
@@ -232,5 +226,18 @@ public static class LoadRoomData
         return $"Unknown {string.Join(", ",
             entityInfo.Select(a => $"{a.Key}: {string.Join(", ", a.Value)}")
         )}";
+    }
+    public static Dictionary<int, BaseCollider> LoadColliders(this Room room)
+    {
+        var colliders = new Dictionary<int, BaseCollider>();
+        // Use Later
+        //foreach (var plane in room.Planes)
+        //{
+        //    foreach (var gameObject in plane.Value.GameObjects.Values)
+        //    {
+        //        var id = gameObject.ObjectInfo.ObjectId;
+        //    }
+        //}
+        return colliders;
     }
 }

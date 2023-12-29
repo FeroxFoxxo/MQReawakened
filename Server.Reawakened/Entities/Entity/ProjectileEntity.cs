@@ -15,8 +15,8 @@ public class ProjectileEntity : Component<ProjectileController>
     public float Speed, LifeTime, StartTime;
     public Player Player;
     public int ProjectileID = 0;
-    public UnityEngine.Vector2 CurrentPosition;
     private readonly string _plane;
+    public BaseCollider PrjCollider;
     public ILogger<ProjectileEntity> Logger { get; set; }
 
     public ProjectileEntity(Player player, int id, float posX, float posY, float posZ, int direction, float lifeTime, ItemDescription item)
@@ -32,8 +32,9 @@ public class ProjectileEntity : Component<ProjectileController>
         Position.X = posX; Position.Y = posY; Position.Z = posZ;
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
-        CurrentPosition = new UnityEngine.Vector2(posX, posY);
         _plane = Position.Z > 10 ? "Plane1" : "Plane0";
+        //Magic Numbers 0.8f,, add to config
+        PrjCollider = new BaseCollider(id, Position, 0.5f, 0.5f, _plane, player.Room, true);
 
         var prj = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), StartTime, posX, posY, posZ, Speed, 0, LifeTime, ProjectileID, item.PrefabName);
         player.Room.SendSyncEvent(prj);
@@ -43,53 +44,16 @@ public class ProjectileEntity : Component<ProjectileController>
     public override void Update()
     {
         base.Update();
+        // The magic number here is the default game tickrate. This will be changed in a future commit
         Position.X += Speed * 0.015625f;
-
-        //This is extremely bad code, but this will be updated properly as soon as the ProjectileHit_SyncEvent crash is fixed.
-        foreach (var obj in
-                 Player.Room.Planes[_plane].GameObjects.Values
-                     .Where(obj => Vector3Model.Distance(Position, obj.ObjectInfo.Position) <= 1.5f)
-                )
+        PrjCollider.Position.x = Position.X;
+ 
+        var Collisions = PrjCollider.IsColliding();
+        if (Collisions.Length > 0)
+            foreach (var collision in Collisions)
         {
-            var isLeft = Speed > 0;
-
-            if (isLeft)
-            {
-                if (obj.ObjectInfo.Position.X < Position.X)
-                    continue;
-            }
-            else
-            {
-                if (obj.ObjectInfo.Position.X > Position.X)
-                    continue;
-            }
-
-            var objectId = obj.ObjectInfo.ObjectId;
-
-            if (Player.Room.Entities.TryGetValue(objectId, out var entityComponents) && Player.Room.Time >= StartTime + 0.1)
-                foreach (var component in entityComponents)
-                    if (component is TriggerCoopControllerComp wallSwitch && component.PrefabName.Contains("SwitchWall"))
-                    {
-                        wallSwitch.TriggerInteraction(ActivationType.NormalDamage, Player);
-                        ProjectileHit(obj.ObjectInfo.ObjectId.ToString());
-                    }
-                    else if (component is BreakableEventControllerComp breakableObjEntity)
-                    {
-                        if (!component.Disposed)
-                        {
-                            breakableObjEntity.Destroy(Player);
-                            ProjectileHit(obj.ObjectInfo.ObjectId.ToString());
-                        }
-                    }
-                    else if (component is InterObjStatusComp enemyEntity && component.Id > 0)
-                    {
-                        if (!component.Disposed)
-                        {
-                            enemyEntity.SendDamageEvent(Player);
-                            ProjectileHit(obj.ObjectInfo.ObjectId.ToString());
-                        }
-                    }
-    }
+            ProjectileHit(collision.ToString());
+        }
 
         if (LifeTime <= Player.Room.Time)
             ProjectileHit("-1");

@@ -13,7 +13,7 @@ public class RequestGoText : ExternalProtocol
     {
         var gameObjectId = message[5];
 
-        //  %dg is not used anywhere else but portals, so the two text id fields are considered irrelevant.
-        SendXt("dg", gameObjectId, 1 ,1, 392);
+        //  %dg is not used anywhere else but portals, so the all id fields are unnecessary.
+        SendXt("dg", gameObjectId, 1 ,1, 1);
     }
 }

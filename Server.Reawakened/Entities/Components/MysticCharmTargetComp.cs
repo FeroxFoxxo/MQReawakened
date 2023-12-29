@@ -13,22 +13,21 @@ public class MysticCharmTargetComp : Component<MysticCharmTarget>
     public float CollisionRemovalDelay => ComponentData.CollisionRemovalDelay;
 
     public bool IsOpened = false;
-    private int _timer;
-    public override void InitializeComponent()
-    {
-        base.InitializeComponent();
-    }
+
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        Charm(player);
+        if (!IsOpened)
+            Charm(player);
         base.RunSyncedEvent(syncEvent, player);
     }
     public void Charm(Player player)
     {
         IsOpened = true;
+
         var syncEvent = new SyncEvent(Id.ToString(), SyncEvent.EventType.Charm, Room.Time);
         syncEvent.EventDataList.Add(1);
         syncEvent.EventDataList.Add(398);
+
         var charmEvent = new Charm_SyncEvent(syncEvent);
         player.SendSyncEventToPlayer(charmEvent);
     }

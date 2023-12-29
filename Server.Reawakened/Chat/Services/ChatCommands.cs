@@ -156,18 +156,6 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         return true;
     }
-    private bool ForceSpawners(Player player, string[] args)
-    {
-        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
-        {
-            if (entityComponent is BaseSpawnerControllerComp spawner)
-            {
-                spawner.Spawn();
-            }
-        }
-
-        return true;
-    }
 
     private bool Teleport(Player player, string[] args)
     {

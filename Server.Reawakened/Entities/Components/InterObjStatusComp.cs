@@ -18,6 +18,7 @@ public class InterObjStatusComp : Component<InterObjStatus>
     {
         //Fix spawn position for duplicate position args when spawners are added
         base.InitializeComponent();
+        Room.Colliders.Add(Id, new BaseCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
         Disposed = false;
     }
     public void SendDamageEvent(Player player)

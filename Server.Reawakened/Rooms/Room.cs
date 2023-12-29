@@ -27,6 +27,7 @@ public class Room : Timer
     public readonly Dictionary<int, Player> Players;
     public readonly Dictionary<int, List<BaseComponent>> Entities;
     public readonly Dictionary<int, ProjectileEntity> Projectiles;
+    public readonly Dictionary<int, BaseCollider> Colliders;
     public readonly ILogger<Room> Logger;
 
     public readonly Dictionary<string, PlaneModel> Planes;
@@ -61,9 +62,9 @@ public class Room : Timer
             return;
 
         Planes = LevelInfo.LoadPlanes(_config);
-        this.LoadColliders();
         Entities = this.LoadEntities(services, out UnknownEntities);
         Projectiles = new Dictionary<int, ProjectileEntity>();
+        Colliders = this.LoadColliders();
 
         foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects.Values)
@@ -84,7 +85,6 @@ public class Room : Timer
                 LevelInfo.LevelId, LevelInfo.Name);
 
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
-        ProjectileCount = 0;
         Start();
     }
 
@@ -267,7 +267,7 @@ public class Room : Timer
             if (component.Id == id)
             {
                 component.Disposed = true;
-                Console.WriteLine("Disposed component " + component + " from GameObject " + component.PrefabName + " with Id " + component.Id);
+                Logger.LogInformation("Disposed component {component} from GameObject {prefabname} with Id {id}", component, component.PrefabName, component.Id);
             }
     }
 

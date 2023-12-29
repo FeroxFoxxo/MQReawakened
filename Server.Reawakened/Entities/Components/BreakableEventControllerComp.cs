@@ -6,6 +6,8 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using System.Drawing;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -14,6 +16,12 @@ public class BreakableEventControllerComp : Component<BreakableEventController>
     public ItemCatalog ItemCatalog { get; set; }
     public LootCatalogInt LootCatalog { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
+
+    public override void InitializeComponent()
+    {
+        base.InitializeComponent();
+        Room.Colliders.Add(Id, new BaseCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+    }
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
     }
