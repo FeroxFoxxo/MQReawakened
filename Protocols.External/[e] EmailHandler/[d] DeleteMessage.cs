@@ -23,7 +23,7 @@ public class DeleteMessage : ExternalProtocol
 
         if (messageId >= 0 && messageId <= Player.Character.EmailMessages.Count)
         {
-            var item = ItemCatalog.GetItemFromId(Player.Character.EmailMessages[messageId].Item.ItemId);
+            var item = ItemCatalog.GetItemFromId(Player.Character.EmailMessages[messageId].Item.ItemId); 
 
             Task.Delay(3300); //Adds item after open gift animation.
             Player.Character.AddItem(item, item.ItemNumber);

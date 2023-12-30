@@ -79,8 +79,6 @@ public class GiftItemShop : ExternalProtocol
 
         var mail = friend.Character.Emails;
         friend.SendXt("ei", mail.ToString());
-
-        Player.SendXt("es", friend.CharacterName, 1);
     }
 }
 

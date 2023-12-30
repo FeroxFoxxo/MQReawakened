@@ -161,46 +161,6 @@ public class UseSlot : ExternalProtocol
         }
     }
 
-    private async Task HandleDrop(ItemDescription usedItem, Vector3Model position, int direction) //Needs XML system and revamp.
-    {
-        var isLeft = direction > 0;
-
-        var dropDirection = isLeft ? 1 : -1;
-
-        var platform = new GameObjectModel();
-
-        var planeName = position.Z > 10 ? "Plane1" : "Plane0";
-        position.Z = 0;
-
-        await Task.Delay(1000); //Wait for drop animation to finish.
-
-        var dropItem = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            Player.TempData.Position.X + dropDirection, Player.TempData.Position.Y, Player.TempData.Position.Z,
-            0, 0, 3, 0, usedItem.PrefabName);
-
-        Player.Room.SendSyncEvent(dropItem);
-
-        foreach (var effect in usedItem.ItemEffects)
-            Console.WriteLine("ItemTypeId: " + effect.TypeId.ToString());
-
-        foreach (var entity in Player.Room.Entities)
-        {
-            foreach (var component in entity.Value
-                .Where(comp => Vector3Model.Distance(position, comp.Position) <= 3f))
-            {
-                var prefabName = component.PrefabName;
-                var objectId = component.Id;
-
-                if (component is HazardControllerComp || component is BreakableEventControllerComp breakableObj)
-                {
-                    await Task.Delay(2550); //Wait for bomb explosion.
-                    DestroyObject(component.Entity.GameObject);
-                    Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", prefabName, objectId);
-                }
-            }
-        }
-    }
-
     private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
     {
         StatusEffect_SyncEvent statusEffect = null;
@@ -241,7 +201,7 @@ public class UseSlot : ExternalProtocol
         var projectile = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
             position.X, position.Y, position.Z, bulletDirection, 0, 4f, 0, prefabName);
 
-        Player.Room.SendSyncEvent(projectileSyncEvent);
+        Player.Room.SendSyncEvent(projectile);
     }
 
     private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
@@ -307,7 +267,7 @@ public class UseSlot : ExternalProtocol
                 foreach (var component in entinty)
                     if (component is HazardControllerComp triggerCoopEntity ||
                         component.PrefabName.Contains("Spawner")) //Temp until BreakableEventControllerComp is added.              
-                        Player.Room.SendSyncEvent(aiEvent);
+                        DestroyObject(component.Entity.GameObject);
 
             Logger.LogInformation("Found close game object {PrefabName} with Id {ObjectId}", prefabName, objectId);
         }
@@ -337,9 +297,6 @@ public class UseSlot : ExternalProtocol
                 itemReward = 510;
                 break;
         }
-
-        var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                        Player.Room.Time, 0, 100, 0, 0, "now", false, false);
 
 
         Player.Room.SendSyncEvent(aiEvent);

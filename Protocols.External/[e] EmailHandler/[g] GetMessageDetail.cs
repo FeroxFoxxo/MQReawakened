@@ -26,7 +26,7 @@ public class GetMessageDetail : ExternalProtocol
 
             Player.SendXt("eg", messageId, mail.ToString());
         }
-
+         
         else
             Logger.LogError("Invalid messageId: {messageId}", messageId);
     }
