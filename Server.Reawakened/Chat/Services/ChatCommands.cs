@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RaceDefines;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
 using Server.Base.Worlds.Services;
@@ -10,9 +11,14 @@ using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Models.LootRewards;
 using System.Text.RegularExpressions;
+using static Analytics;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -38,6 +44,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
         AddCommand(new ChatCommand("openDoors", "", OpenDoors));
+        AddCommand(new ChatCommand("godmode", "", Godmode));
         AddCommand(new ChatCommand("save", "", SaveLevel));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
@@ -81,6 +88,35 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
     }
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
+
+    private bool Godmode(Player player, string[] args)
+    {
+        var items = config.SingleItemKit
+           .Select(itemCatalog.GetItemFromId)
+           .ToList();
+
+        foreach (var itemId in config.StackedItemKit)
+        {
+            var stackedItem = itemCatalog.GetItemFromId(itemId);
+
+            for (var i = 0; i < config.AmountToStack; i++)
+                items.Add(stackedItem);
+        }
+
+        player.Character.AddKit(items, 1);
+        player.SendUpdatedInventory(false);
+        player.AddSlots(true);
+
+        player.AddBananas(config.CashKitAmount);
+        player.AddNCash(config.CashKitAmount);
+        player.SendCashUpdate();
+
+        player.LevelUp(65, logger);
+        player.AddPoints();
+        player.DiscoverAllTribes();
+
+        return true;
+    }
 
     private bool OpenDoors(Player player, string[] args)
     {

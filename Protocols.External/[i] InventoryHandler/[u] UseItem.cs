@@ -4,6 +4,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 
@@ -34,8 +35,33 @@ public class UseItem : ExternalProtocol
 
         character.RemoveItem(item, 1);
 
+        Console.WriteLine("subCat: " + item.SubCategoryId);
         switch (item.SubCategoryId)
         {
+            case ItemSubCategory.Potion:
+                StatusEffect_SyncEvent statusEffect = null;
+
+                foreach (var effect in item.ItemEffects)
+                {
+                    if (effect.Type is ItemEffectType.Invalid or ItemEffectType.Unknown)
+                        return;
+
+                    if (effect.Type is ItemEffectType.Healing)
+                        Player.HealCharacter(item);
+
+                    statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                        effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
+                }
+                Player.SendSyncEventToPlayer(statusEffect);
+
+                var removeFromHotbar = true;
+
+                if (item.ItemId == 396) //Prevents Healing Staff from removing itself.
+                    removeFromHotbar = false;
+
+                if (!item.UniqueInInventory && removeFromHotbar)
+                    RemoveFromHotbar(Player.Character, item);
+                break;
             case ItemSubCategory.Tailoring:
             case ItemSubCategory.Alchemy:
                 var recipe = RecipeCatalog.GetRecipeById(itemId);
@@ -46,7 +72,6 @@ public class UseItem : ExternalProtocol
 
                 break;
             case ItemSubCategory.SuperPack:
-
                 foreach (var pair in VendorCatalog.GetSuperPacksItemQuantityMap(itemId))
                 {
                     var packItem = ItemCatalog.GetItemFromId(pair.Key);
@@ -56,7 +81,6 @@ public class UseItem : ExternalProtocol
 
                     character.AddItem(packItem, pair.Value);
                 }
-
                 break;
             default:
                 Logger.LogWarning("Could not find use for item {ItemId}, type {ItemType}.",
@@ -67,4 +91,18 @@ public class UseItem : ExternalProtocol
         Player.SendUpdatedInventory(false);
     }
 
+    private void RemoveFromHotbar(CharacterModel character, ItemDescription item)
+    {
+        character.Data.Inventory.Items[item.ItemId].Count--;
+
+        if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
+        {
+            if (character.Data.Inventory.Items[item.ItemId] != null)
+                character.Data.Inventory.Items.Remove(item.ItemId);
+
+            character.Data.Inventory.Items[item.ItemId].Count = -1;
+        }
+
+        Player.SendUpdatedInventory(false);
+    }
 }

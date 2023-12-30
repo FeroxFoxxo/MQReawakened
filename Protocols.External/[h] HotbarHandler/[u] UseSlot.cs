@@ -45,6 +45,9 @@ public class UseSlot : ExternalProtocol
 
         switch (usedItem.ItemActionType)
         {
+            case ItemActionType.Drop:
+                HandleDrop(usedItem, position, direction);
+                break;
             case ItemActionType.Throw:
                 HandleRangedWeapon(position, direction, usedItem);
                 break;
@@ -62,21 +65,69 @@ public class UseSlot : ExternalProtocol
         }
     }
 
-    private void HandleConsumable(ItemDescription item, int hotbarSlotId)
+    private async Task HandleDrop(ItemDescription usedItem, Vector3Model position, int direction) //Needs XML system and revamp.
     {
-        foreach (var effect in item.ItemEffects)
+        var isLeft = direction > 0;
+
+        var dropDirection = isLeft ? 1 : -1;
+
+        var platform = new GameObjectModel();
+
+        var planeName = position.Z > 10 ? "Plane1" : "Plane0";
+        position.Z = 0;
+
+        await Task.Delay(1000); //Wait for drop animation to finish.
+
+        var dropItem = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            Player.TempData.Position.X + dropDirection, Player.TempData.Position.Y, Player.TempData.Position.Z,
+            0, 0, 3, 0, usedItem.PrefabName);
+
+        Player.Room.SendSyncEvent(dropItem);
+
+        foreach (var effect in usedItem.ItemEffects)
+            Console.WriteLine("ItemTypeId: " + effect.TypeId.ToString());
+
+        foreach (var entity in Player.Room.Entities)
+        {
+            foreach (var component in entity.Value
+                .Where(comp => Vector3Model.Distance(position, comp.Position) <= 3f))
+            {
+                var prefabName = component.PrefabName;
+                var objectId = component.Id;
+
+                if (component is HazardControllerComp || component is BreakableEventControllerComp breakableObj)
+                {
+                    await Task.Delay(2550); //Wait for bomb explosion.
+                    DestroyObject(component.Entity.GameObject);
+                    Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", prefabName, objectId);
+                }
+            }
+        }
+    }
+
+    private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
+    {
+        StatusEffect_SyncEvent statusEffect = null;
+        foreach (var effect in usedItem.ItemEffects)
         {
             if (effect.Type is ItemEffectType.Invalid or ItemEffectType.Unknown)
-                continue;
+                return;
 
-            var statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            if (effect.Type is ItemEffectType.Healing)         
+                Player.HealCharacter(usedItem);
+            
+            statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                 effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
-
-            Player.SendSyncEventToPlayer(statusEffect);
         }
+        Player.SendSyncEventToPlayer(statusEffect);
 
-        if (!item.UniqueInInventory)
-            RemoveFromHotbar(Player.Character, item, hotbarSlotId);
+        var removeFromHotbar = true;
+
+        if (usedItem.ItemId == 396) //Prevents Healing Staff from removing itself.
+            removeFromHotbar = false;
+
+        if (!usedItem.UniqueInInventory && removeFromHotbar)
+            RemoveFromHotbar(Player.Character, usedItem, hotbarSlotId);
     }
 
     private void HandleRangedWeapon(Vector3Model position, int direction, ItemDescription usedItem)
@@ -91,7 +142,7 @@ public class UseSlot : ExternalProtocol
         var prefabName = usedItem.PrefabName;
 
         var projectile = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            position.X, position.Y, position.Z, bulletDirection, 0, 0, 0, prefabName);
+            position.X, position.Y, position.Z, bulletDirection, 0, 4f, 0, prefabName);
 
         Player.Room.SendSyncEvent(projectile);
     }
@@ -126,8 +177,6 @@ public class UseSlot : ExternalProtocol
             var objectId = obj.ObjectInfo.ObjectId;
             var prefabName = obj.ObjectInfo.PrefabName;
 
-            Logger.LogInformation("Found close game object {PrefabName} with Id {ObjectId}", prefabName, objectId);
-
             if (Player.Room.Entities.TryGetValue(objectId, out var entityComponents))
                 foreach (var component in entityComponents)
                     if (component is TriggerCoopControllerComp triggerCoopEntity)
@@ -158,6 +207,8 @@ public class UseSlot : ExternalProtocol
                     if (component is HazardControllerComp triggerCoopEntity ||
                         component.PrefabName.Contains("Spawner")) //Temp until BreakableEventControllerComp is added.              
                         Player.Room.SendSyncEvent(aiEvent);
+
+            Logger.LogInformation("Found close game object {PrefabName} with Id {ObjectId}", prefabName, objectId);
         }
     }
 
@@ -167,6 +218,7 @@ public class UseSlot : ExternalProtocol
         var randomItem = random.Next(1, 4);
         var itemReward = 0;
 
+        //Temp mini loot system.
         switch (randomItem)
         {
             case 1:
@@ -183,8 +235,6 @@ public class UseSlot : ExternalProtocol
         var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
                         Player.Room.Time, 0, 100, 0, 0, "now", false, false);
 
-        Logger.LogInformation("Object name: {args1} Object Id: {args2}",
-            obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
 
         Player.Room.SendSyncEvent(aiEvent);
 
@@ -208,6 +258,9 @@ public class UseSlot : ExternalProtocol
             Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
 
         Player.SendUpdatedInventory(false);
+
+        Logger.LogInformation("Object name: {args1} Object Id: {args2}",
+            obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
     }
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item, int hotbarSlotId)
