@@ -4,7 +4,6 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 
@@ -35,7 +34,6 @@ public class UseItem : ExternalProtocol
 
         character.RemoveItem(item, 1);
 
-        Console.WriteLine("subCat: " + item.SubCategoryId);
         switch (item.SubCategoryId)
         {
             case ItemSubCategory.Potion:
@@ -69,7 +67,6 @@ public class UseItem : ExternalProtocol
                 Player.Character.Data.RecipeList.RecipeList.Add(recipe);
 
                 Player.SendXt("cz", recipe);
-
                 break;
             case ItemSubCategory.SuperPack:
                 foreach (var pair in VendorCatalog.GetSuperPacksItemQuantityMap(itemId))

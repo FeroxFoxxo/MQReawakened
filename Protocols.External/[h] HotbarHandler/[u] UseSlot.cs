@@ -1,15 +1,22 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Protocols.External._i__InventoryHandler;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using System;
+using UnityEngine;
+using static UIBase;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -18,7 +25,6 @@ public class UseSlot : ExternalProtocol
     public override string ProtocolName => "hu";
 
     public ILogger<UseSlot> Logger { get; set; }
-
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
@@ -49,19 +55,109 @@ public class UseSlot : ExternalProtocol
                 HandleDrop(usedItem, position, direction);
                 break;
             case ItemActionType.Throw:
-                HandleRangedWeapon(position, direction, usedItem);
+                HandleRangedWeapon(usedItem, position, direction);
                 break;
             case ItemActionType.Drink:
+                HandleDrink(usedItem);
+                break;
             case ItemActionType.Eat:
                 HandleConsumable(usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
-                HandleMeleeWeapon(position, direction);
+                HandleMeleeWeapon(usedItem, position, direction);
                 break;
             default:
                 Logger.LogError("Could not find how to handle item action type {ItemAction} for user {UserId}",
                     usedItem.ItemActionType, targetUserId);
                 break;
+        }
+    }
+
+    private void HandlePet(ItemDescription usedItem)
+    {
+        Player.SendXt("ZE", Player.UserId, usedItem.ItemId, 1);
+        Player.Character.Data.PetItemId = usedItem.ItemId;
+    }
+
+    private void HandleRelic(ItemDescription usedItem)
+    {
+        StatusEffect_SyncEvent itemEffect = null;
+
+        foreach (var effect in usedItem.ItemEffects)
+            itemEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                    (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
+
+        Player.SendSyncEventToPlayer(itemEffect);
+    }
+
+    private void HandleDrink(ItemDescription usedItem)
+    {
+        StatusEffect_SyncEvent itemEffect = null;
+
+        foreach (var effect in usedItem.ItemEffects)
+            itemEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                    (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
+
+        Player.SendSyncEventToPlayer(itemEffect);
+
+        foreach (var effect in usedItem.ItemEffects)
+            if (effect.TypeId == 5) //Healing type: Once.
+                Player.HealOnce(usedItem);
+
+        Logger.LogInformation("Used healing item {ItemName} of effect typeID: {TypeID}", usedItem.ItemName, usedItem.ItemEffects.FirstOrDefault().TypeId);
+    }
+
+    private async Task HandleDrop(ItemDescription usedItem, Vector3Model position, int direction) //Needs XML system and revamp.
+    {
+        var isLeft = direction > 0;
+
+        var dropDirection = isLeft ? 1 : -1;
+
+        var platform = new GameObjectModel();
+
+        var planeName = position.Z > 10 ? "Plane1" : "Plane0";
+        position.Z = 0;
+
+        await Task.Delay(1000); //Wait for drop animation to finish.
+
+        var dropItem = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            Player.TempData.Position.X + dropDirection, Player.TempData.Position.Y, Player.TempData.Position.Z,
+            0, 0, 3, 0, usedItem.PrefabName);
+
+        Player.Room.SendSyncEvent(dropItem);
+
+        foreach (var obj in Player.Room.Planes[planeName].GameObjects.Values
+        .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 4f))
+        {
+            var prefabName = obj.ObjectInfo.PrefabName;
+            var objectId = obj.ObjectInfo.ObjectId;
+
+            if (obj.ObjectInfo.PrefabName.Contains("Spawner") ||
+                obj.ObjectInfo.PrefabName.Contains("PF_CRS_BARREL01")) //Temp until BreakableEventControllerComp is added.              
+            {
+                await Task.Delay(2650); //Wait for bomb explosion.
+                DestroyObject(obj);
+            }
+
+            Logger.LogInformation("Found close game object {PrefabName} with Id {ObjectId}", prefabName, objectId);
+        }
+
+        foreach (var entity in Player.Room.Entities)
+        {
+            foreach (var component in entity.Value
+                .Where(comp => Vector3Model.Distance(position, comp.Position) <= 5.4f))
+            {
+                var prefabName = component.PrefabName;
+                var objectId = component.Id;
+
+                if (component is HazardControllerComp hazard)
+                {
+                    await Task.Delay(2650); //Wait for bomb explosion.
+                    Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", prefabName, objectId);
+                    DestroyObject(hazard.Entity.GameObject);
+                }
+
+            }
         }
     }
 
@@ -130,7 +226,8 @@ public class UseSlot : ExternalProtocol
             RemoveFromHotbar(Player.Character, usedItem, hotbarSlotId);
     }
 
-    private void HandleRangedWeapon(Vector3Model position, int direction, ItemDescription usedItem)
+
+    private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
         var isLeft = direction > 0;
 
@@ -144,17 +241,23 @@ public class UseSlot : ExternalProtocol
         var projectile = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
             position.X, position.Y, position.Z, bulletDirection, 0, 4f, 0, prefabName);
 
-        Player.Room.SendSyncEvent(projectile);
+        Player.Room.SendSyncEvent(projectileSyncEvent);
     }
 
-    private void HandleMeleeWeapon(Vector3Model position, int direction)
+    private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        AiHealth_SyncEvent aiEvent = null;
-
         var monsters = new List<GameObjectModel>();
 
         var planeName = position.Z > 10 ? "Plane1" : "Plane0";
         position.Z = 0;
+
+        var meleeWeapon = ItemCatalog.GetItemFromId(usedItem.ItemId);
+        var weaponPrefabName = meleeWeapon.PrefabName;
+
+        var meleeSyncEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            position.X, position.Y, position.Z, 0, 0, 100, 0, weaponPrefabName);
+
+        Player.Room.SendSyncEvent(meleeSyncEvent);
 
         foreach (var obj in
                  Player.Room.Planes[planeName].GameObjects.Values
@@ -182,6 +285,7 @@ public class UseSlot : ExternalProtocol
                     if (component is TriggerCoopControllerComp triggerCoopEntity)
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
 
+            //Temp until BreakableEventControllerComp is added.     
             switch (prefabName)
             {
                 case "PF_R01_Barrel01":
@@ -199,9 +303,6 @@ public class UseSlot : ExternalProtocol
                     break;
             }
 
-            aiEvent = new AiHealth_SyncEvent(objectId.ToString(),
-                Player.Room.Time, 0, 100, 0, 0, "now", false, true);
-
             foreach (var entinty in Player.Room.Entities.Values)
                 foreach (var component in entinty)
                     if (component is HazardControllerComp triggerCoopEntity ||
@@ -214,7 +315,12 @@ public class UseSlot : ExternalProtocol
 
     private void DestroyObject(GameObjectModel obj)
     {
-        var random = new Random();
+        var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(), Player.Room.Time,
+            0, 100, 0, 0, "now", false, false);
+        Player.Room.SendSyncEvent(aiEvent);
+
+        //Temp gained items for event levels. Needs XML system & revamp.
+        var random = new System.Random();
         var randomItem = random.Next(1, 4);
         var itemReward = 0;
 
@@ -253,8 +359,7 @@ public class UseSlot : ExternalProtocol
                 itemReward = 1616;
                 break;
         }
-
-        if (obj.ObjectInfo.PrefabName == "PF_EVT_HallwnPumpkinFloatBRK")
+        if (obj.ObjectInfo.PrefabName is "PF_EVT_HallwnPumpkinFloatBRK" || obj.ObjectInfo.PrefabName.Contains("PF_EVT_XmasBrkIceCubeLoot"))
             Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
 
         Player.SendUpdatedInventory(false);
