@@ -34,12 +34,12 @@ public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable wh
         };
     }
 
-    public override object[] GetInitData(Player player) => new object[]
-    {
+    public override object[] GetInitData(Player player) =>
+    [
         Room.Time,
         Movement.GetBehaviorRatio(Room.Time),
         Movement.Activated ? 1 : 0
-    };
+    ];
 
     public void Activate() => Movement?.Activate(Room.Time);
 

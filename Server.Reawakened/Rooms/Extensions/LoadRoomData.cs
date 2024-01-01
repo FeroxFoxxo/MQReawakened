@@ -151,7 +151,7 @@ public static class LoadRoomData
                                 "Found invalid {Count} amount of initialization methods for {EntityId} ({EntityType})",
                                 methods.Length, entity.Key, internalType.Name);
                         else
-                            methods.First().Invoke(instancedComponent, new[] { dataObj, entityData });
+                            methods.First().Invoke(instancedComponent, [dataObj, entityData]);
 
                         if (!entities.ContainsKey(entity.Key))
                             entities.Add(entity.Key, []);

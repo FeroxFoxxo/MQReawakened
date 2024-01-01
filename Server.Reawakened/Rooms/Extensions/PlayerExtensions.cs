@@ -5,7 +5,9 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
+using UnityEngine;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Extensions;
@@ -96,5 +98,11 @@ public static class PlayerExtensions
     {
         var room = player.PlayerHandler.WorldHandler.GetRoomFromLevelId(-1, player);
         player.JoinRoom(room, out _);
+    }
+
+    public static List<GameObjectModel> GetPlaneEntities(this Player player)
+    {
+        var planeName = player.TempData.Position.Z > 10 ? "Plane1" : "Plane0";
+        return [.. player.Room.Planes[planeName].GameObjects.Values];
     }
 }
