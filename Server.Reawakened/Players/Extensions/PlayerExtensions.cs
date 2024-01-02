@@ -271,7 +271,7 @@ public static class PlayerExtensions
                         continue;
 
                 if (objective.ObjectiveType != type ||
-                    objective.ItemId != itemId ||
+                    objective.ItemId.ToString() != itemId ||
                     objective.Order > quest.CurrentOrder ||
                     objective.LevelId != player.Character.LevelData.LevelId ||
                     objective.Completed ||

@@ -60,6 +60,9 @@
       <None Update="Assets\LocalAssets\ItemCatalogInt.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Assets\LocalAssets\EnemyCatalogInt.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Assets\LocalAssets\ObjectiveCatalogInt.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

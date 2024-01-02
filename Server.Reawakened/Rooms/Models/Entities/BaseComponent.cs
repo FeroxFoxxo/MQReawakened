@@ -2,6 +2,7 @@
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Planes;
 using System.Text;
+using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
 
@@ -14,12 +15,13 @@ public abstract class BaseComponent
     public int Id => Entity.GameObject.ObjectInfo.ObjectId;
     public string PrefabName => Entity.GameObject.ObjectInfo.PrefabName;
     public string ParentPlane => Entity.GameObject.ObjectInfo.ParentPlane;
-
+    public RectModel Rectangle => Entity.GameObject.ObjectInfo.Rectangle;
     public Vector3Model Position => Entity.GameObject.ObjectInfo.Position;
     public Vector3Model Rotation => Entity.GameObject.ObjectInfo.Rotation;
     public Vector3Model Scale => Entity.GameObject.ObjectInfo.Scale;
 
     public abstract string Name { get; }
+    public bool Disposed = false;
 
     public virtual void InitializeComponent()
     {

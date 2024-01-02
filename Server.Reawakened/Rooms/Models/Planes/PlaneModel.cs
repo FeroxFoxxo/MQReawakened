@@ -25,7 +25,7 @@ public class PlaneModel(string planeName)
 
         if (!GameObjects.TryGetValue(id, out var value))
             return;
-        value.Rect = colliderList.GetSurroundingRect();
+        value.ObjectInfo.Rectangle = colliderList.GetSurroundingRect();
     }
 
     public void LoadGameObjectXml(XmlNode gameObjectNode)
@@ -57,7 +57,9 @@ public class PlaneModel(string planeName)
                 Y = attributes.GetSingleValue("sy"),
                 Z = attributes.GetSingleValue("sz")
             },
-            ParentPlane = PlaneName
+            ParentPlane = PlaneName,
+            Rectangle = new RectModel(-1000.0f, -1000.0f, 0f, 0f)
+
         };
 
         foreach (XmlNode componentNode in gameObjectNode.ChildNodes)

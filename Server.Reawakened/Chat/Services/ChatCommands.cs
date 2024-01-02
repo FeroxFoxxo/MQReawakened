@@ -8,6 +8,7 @@ using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -46,6 +47,10 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("openDoors", "", OpenDoors));
         AddCommand(new ChatCommand("godmode", "", Godmode));
         AddCommand(new ChatCommand("save", "", SaveLevel));
+        AddCommand(new ChatCommand("openVines", "", OpenVines));
+        AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
+        //AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
+        //AddCommand(new ChatCommand("getRoomEntityList", "", GetRoomEntityList));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -117,7 +122,6 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         return true;
     }
-
     private bool OpenDoors(Player player, string[] args)
     {
         foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
@@ -128,6 +132,26 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
                     continue;
 
                 triggerEntity.Trigger(true);
+            }
+        }
+
+        return true;
+    }
+
+    private bool GetRoomEntityList(Player player, string[] args)
+    {
+        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+            Console.WriteLine(entityComponent);
+        return true;
+    }
+
+    private bool OpenVines(Player player, string[] args)
+    {
+        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+        {
+            if (entityComponent is MysticCharmTargetComp vineEntity)
+            {
+                vineEntity.Charm(player);
             }
         }
 
@@ -384,6 +408,12 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", player);
 
+        return true;
+    }
+
+    private bool GetPlayerId(Player player, string[] args)
+    {
+        Log($"{player.CharacterName} has id of {player.GameObjectId}", player);
         return true;
     }
 

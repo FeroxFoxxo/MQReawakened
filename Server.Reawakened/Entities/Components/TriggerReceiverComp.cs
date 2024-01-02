@@ -26,6 +26,12 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
     public ILogger<TriggerReceiverComp> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
 
+    public override void InitializeComponent()
+    {
+        base.InitializeComponent();
+        Trigger(ActiveByDefault);
+    }
+
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
         if (syncEvent.Type != SyncEvent.EventType.TriggerReceiver)
@@ -101,8 +107,6 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
             LoggerType.Trace
         );
     }
-
-    public override void InitializeComponent() => Trigger(ActiveByDefault);
 
     public override object[] GetInitData(Player player) => new object[] { Activated ? 1 : 0 };
 
