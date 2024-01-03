@@ -126,22 +126,6 @@ public class UseSlot : ExternalProtocol
 
         Player.Room.SendSyncEvent(dropItem);
 
-        foreach (var obj in Player.Room.Planes[planeName].GameObjects.Values
-        .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 4f))
-        {
-            var prefabName = obj.ObjectInfo.PrefabName;
-            var objectId = obj.ObjectInfo.ObjectId;
-
-            if (obj.ObjectInfo.PrefabName.Contains("Spawner") ||
-                obj.ObjectInfo.PrefabName.Contains("PF_CRS_BARREL01")) //Temp until BreakableEventControllerComp is added.              
-            {
-                await Task.Delay(2650); //Wait for bomb explosion.
-                DestroyObject(obj);
-            }
-
-            Logger.LogInformation("Found close game object {PrefabName} with Id {ObjectId}", prefabName, objectId);
-        }
-
         foreach (var entity in Player.Room.Entities)
         {
             foreach (var component in entity.Value
@@ -150,11 +134,11 @@ public class UseSlot : ExternalProtocol
                 var prefabName = component.PrefabName;
                 var objectId = component.Id;
 
-                if (component is HazardControllerComp hazard)
+                if (component is HazardControllerComp or BreakableEventControllerComp)
                 {
                     await Task.Delay(2650); //Wait for bomb explosion.
                     Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", prefabName, objectId);
-                    DestroyObject(hazard.Entity.GameObject);
+                    DestroyObject(component.Entity.GameObject);
                 }
 
             }
@@ -169,9 +153,9 @@ public class UseSlot : ExternalProtocol
             if (effect.Type is ItemEffectType.Invalid or ItemEffectType.Unknown)
                 return;
 
-            if (effect.Type is ItemEffectType.Healing)         
+            if (effect.Type is ItemEffectType.Healing)
                 Player.HealCharacter(usedItem);
-            
+
             statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                 effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
         }
@@ -265,8 +249,7 @@ public class UseSlot : ExternalProtocol
 
             foreach (var entinty in Player.Room.Entities.Values)
                 foreach (var component in entinty)
-                    if (component is HazardControllerComp triggerCoopEntity ||
-                        component.PrefabName.Contains("Spawner")) //Temp until BreakableEventControllerComp is added.              
+                    if (component is HazardControllerComp or BreakableEventControllerComp)
                         DestroyObject(component.Entity.GameObject);
 
             Logger.LogInformation("Found close game object {PrefabName} with Id {ObjectId}", prefabName, objectId);
