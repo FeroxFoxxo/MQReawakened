@@ -21,8 +21,6 @@ public class ArenaModel
     public int FourthPlayerId { get; set; }
     public Dictionary<string, float> BestTimeForLevel { get; set; } = [];
 
-    public ItemCatalog ItemCatalog { get; set; }
-
     public void SetCharacterIds(Player player, IEnumerable<Player> players)
     {
         var playersInGroup = players.ToArray();
