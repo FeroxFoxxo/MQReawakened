@@ -66,7 +66,6 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
         }
     }
 
-
     public void StartMinigame(Player player)
     {
         var startRace = new Trigger_SyncEvent(ArenaObjectId, Room.Time, true, player.GameObjectId.ToString(), Room.LevelInfo.LevelId, true, true);

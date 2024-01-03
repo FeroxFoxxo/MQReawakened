@@ -36,12 +36,9 @@ public class ArenaModel
         var itemsGotten = new List<ItemModel>();
 
         foreach (var reward in LootCatalog.LootCatalog[arenaId].ItemRewards)
-        {
             foreach (var item in reward.Items)
-            {
                 itemsGotten.Add(item);
-            }
-        }
+
         var randomItemReward = itemsGotten[random.Next(itemsGotten.Count)].ItemId;
 
         var itemsLooted = FormatItemString(randomItemReward, 1);

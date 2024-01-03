@@ -17,5 +17,5 @@ public class FinishCutscene : ExternalProtocol
         Player.SendXt("Mc", arenaObjectId, Player.Room.Time, 5f,
         Player.TempData.ArenaModel.FirstPlayerId, Player.TempData.ArenaModel.SecondPlayerId,
             Player.TempData.ArenaModel.ThirdPlayerId, Player.TempData.ArenaModel.FourthPlayerId);
-    }
+    } 
 }

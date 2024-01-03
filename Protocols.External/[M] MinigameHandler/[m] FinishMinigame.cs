@@ -24,7 +24,7 @@ public class FinishedMinigame : ExternalProtocol
     public ILogger<FinishedMinigame> Logger { get; set; }
 
     public override void Run(string[] message)
-    {
+    { 
         var minigameId = int.Parse(message[5]);
         var finishedRaceTime = float.Parse(message[6]);
 

@@ -18,6 +18,6 @@ public class BestResultForLevel : ExternalProtocol
         var levelName = message[5];
 
         if (Player.TempData.ArenaModel.BestTimeForLevel.ContainsKey(levelName))
-            Player.SendXt("MB", Player.TempData.ArenaModel.BestTimeForLevel[levelName]);
+            Player.SendXt("MB", Player.TempData.ArenaModel.BestTimeForLevel[levelName]); 
     }
 }

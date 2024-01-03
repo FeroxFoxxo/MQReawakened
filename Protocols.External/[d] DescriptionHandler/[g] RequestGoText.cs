@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 
 namespace Protocols.External._d__DescriptionHandler;
@@ -13,6 +14,7 @@ public class RequestGoText : ExternalProtocol
     {
         var gameObjectId = message[5];
 
+        Player.SendXt("dg", gameObjectId, 0, 0, 0, 0, 0);
         Logger.LogError("Unknown text id for game object: {GOId}", gameObjectId);
     }
 }
