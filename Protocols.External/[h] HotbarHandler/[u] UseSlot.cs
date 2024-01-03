@@ -229,24 +229,6 @@ public class UseSlot : ExternalProtocol
                     if (component is TriggerCoopControllerComp triggerCoopEntity)
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
 
-            //Temp until BreakableEventControllerComp is added.     
-            switch (prefabName)
-            {
-                case "PF_R01_Barrel01":
-                case "PF_SHD_Barrel01":
-                case "PF_CRS_BarrelNewbZone01":
-                case "PF_CRS_BARREL01":
-                case "PF_OUT_BARREL03":
-                case "PF_WLD_Breakable01":
-                case "PF_BON_BreakableUrn01":
-                case "PF_EVT_HallwnPumpkinFloatBRK":
-                case "PF_EVT_XmasBrkIceCubeLoot01":
-                case "PF_EVT_XmasBrkIceCubeLoot02":
-                case "PF_EVT_XmasBrkIceCube02":
-                    DestroyObject(obj);
-                    break;
-            }
-
             foreach (var entinty in Player.Room.Entities.Values)
                 foreach (var component in entinty)
                     if (component is HazardControllerComp or BreakableEventControllerComp)
