@@ -19,7 +19,7 @@ public class FinishedMinigame : ExternalProtocol
 
     public LootCatalogInt LootCatalog { get; set; }
 
-    public ItemCatalog ItemCatalog { get; set; }
+    public PlayerHandler PlayerHandler { get; set; }
 
     public ILogger<FinishedMinigame> Logger { get; set; }
 
@@ -48,13 +48,13 @@ public class FinishedMinigame : ExternalProtocol
         Player.TempData.ArenaModel.StartArena = false;
         Player.TempData.ArenaModel.HasStarted = false;
 
-        if (Player.TempData.Group != null)
-        {
-            var groupMember = Player.TempData.Group.GetMembers();
+        var playersInRoom = PlayerHandler.GetAllPlayers();
 
-            if (groupMember.All(p => !p.TempData.ArenaModel.HasStarted))
-                foreach (var member in groupMember)
-                    FinishMinigame(minigameId, groupMember.Count);
+        if (playersInRoom.Count > 1)
+        {
+            if (playersInRoom.All(p => !p.TempData.ArenaModel.HasStarted))
+                foreach (var player in playersInRoom)
+                    FinishMinigame(minigameId, playersInRoom.Count);
         }
 
         else
@@ -71,15 +71,14 @@ public class FinishedMinigame : ExternalProtocol
         var rdmBananaReward = new Random().Next(7, 11 * Player.Character.Data.GlobalLevel);
         var xpReward = Player.Character.Data.ReputationForNextLevel / 11;
 
-        //var lootableItems = Player.GrantLootableItems(LootCatalog, minigameId);
-        //var lootedItems = Player.GrantItemsLooted(LootCatalog, minigameId);
+        var lootedItems = Player.TempData.ArenaModel.GrantLootedItems(LootCatalog, minigameId);
+        var lootableItems = Player.TempData.ArenaModel.GrantLootableItems(LootCatalog, minigameId);
 
         dataList.Add(membersInGroup.ToString());
         dataList.Add(rdmBananaReward.ToString());
         dataList.Add(xpReward.ToString());
-        //dataList.Add(lootedItems.ToString());
-        //dataList.Add(lootableItems.ToString());
-
+        dataList.Add(lootedItems.ToString());
+        dataList.Add(lootableItems.ToString());
         SendXt("Mp", minigameId, SplitRewardData(dataList));
 
         Player.SendCashUpdate();

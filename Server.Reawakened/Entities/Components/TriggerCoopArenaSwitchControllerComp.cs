@@ -28,6 +28,7 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
+        Console.WriteLine("ID: " + ArenaObjectId);
         if (player.TempData.ArenaModel.HasStarted)
         {
             Logger.LogInformation("Arena has already started, stopping syncEvent.");
@@ -44,7 +45,6 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
 
         player.TempData.ArenaModel.StartArena = arenaActivation > 0;
 
-        Console.WriteLine("PIR: " + playersInRoom);
         if (playersInRoom.Count > 1)
         {
             if (playersInRoom.All(p => p.TempData.ArenaModel.StartArena))
