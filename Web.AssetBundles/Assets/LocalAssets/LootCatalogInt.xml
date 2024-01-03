@@ -1007,4 +1007,72 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Monkey Run">
+        <LootInfo objectId="102017" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="3706" count="1" bindingCount="0"/>
+                <Item itemId="3200" count="1" bindingCount="0"/>
+                <Item itemId="3713" count="1" bindingCount="0"/>
+                <Item itemId="3119" count="1" bindingCount="0"/>
+                <Item itemId="2515" count="1" bindingCount="0"/>
+                <Item itemId="3131" count="1" bindingCount="0"/>
+                <Item itemId="830" count="1" bindingCount="0"/>
+                <Item itemId="1020" count="1" bindingCount="0"/>
+                <Item itemId="999" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Midnight Monkey Run">
+        <LootInfo objectId="2466201" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="2801" count="1" bindingCount="0"/>
+                <Item itemId="430" count="1" bindingCount="0"/>
+                <Item itemId="600" count="1" bindingCount="0"/>
+                <Item itemId="1000" count="1" bindingCount="0"/>
+                <Item itemId="1002" count="1" bindingCount="0"/>
+                <Item itemId="1256" count="1" bindingCount="0"/>
+                <Item itemId="1259" count="1" bindingCount="0"/>
+                <Item itemId="1264" count="1" bindingCount="0"/>
+                <Item itemId="1810" count="1" bindingCount="0"/>
+                <Item itemId="1840" count="1" bindingCount="0"/>
+                <Item itemId="2881" count="1" bindingCount="0"/>
+                <Item itemId="2884" count="1" bindingCount="0"/>
+                <Item itemId="2887" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Torch Mania">
+        <LootInfo objectId="1583" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="676" count="1" bindingCount="0"/>
+                <Item itemId="1809" count="1" bindingCount="0"/>
+                <Item itemId="1838" count="1" bindingCount="0"/>
+                <Item itemId="2029" count="1" bindingCount="0"/>
+                <Item itemId="3246" count="1" bindingCount="0"/>
+                <Item itemId="586" count="1" bindingCount="0"/>
+                <Item itemId="588" count="1" bindingCount="0"/>
+                <Item itemId="752" count="1" bindingCount="0"/>
+                <Item itemId="1165" count="1" bindingCount="0"/>
+                <Item itemId="1181" count="1" bindingCount="0"/>
+                <Item itemId="1184" count="1" bindingCount="0"/>
+                <Item itemId="1230" count="1" bindingCount="0"/>
+                <Item itemId="1704" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Torch Frenzy">
+        <LootInfo objectId="182530" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="1005" count="1" bindingCount="0"/>
+                <Item itemId="658" count="1" bindingCount="0"/>
+                <Item itemId="644" count="1" bindingCount="0"/>
+                <Item itemId="2276" count="1" bindingCount="0"/>
+                <Item itemId="1553" count="1" bindingCount="0"/>
+                <Item itemId="1550" count="1" bindingCount="0"/>
+                <Item itemId="1526" count="1" bindingCount="0"/>
+                <Item itemId="1150" count="1" bindingCount="0"/>
+                <Item itemId="2874" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
 </LootCatalog>
