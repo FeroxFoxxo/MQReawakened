@@ -21,8 +21,6 @@ public class FinishedMinigame : ExternalProtocol
 
     public ItemCatalog ItemCatalog { get; set; }
 
-    public MinigameCatalogInt MinigameCatalog { get; set; }
-
     public ILogger<FinishedMinigame> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -40,12 +38,12 @@ public class FinishedMinigame : ExternalProtocol
             Player.TempData.ArenaModel.BestTimeForLevel.Add(Player.Room.LevelInfo.Name, finishedRaceTime);
         }
 
-        if (finishedRaceTime < Player.TempData.ArenaModel.BestTimeForLevel[Player.Room.LevelInfo.Name])
-        {
-            //Store best time in dictionary for timed minigame.
-            Player.TempData.ArenaModel.BestTimeForLevel[Player.Room.LevelInfo.Name] = finishedRaceTime;
-            Player.SendXt("Ms", Player.Room.LevelInfo.InGameName);
-        }
+        if (Player.TempData.ArenaModel.BestTimeForLevel.ContainsKey(Player.Room.LevelInfo.Name))
+            if (finishedRaceTime < Player.TempData.ArenaModel.BestTimeForLevel[Player.Room.LevelInfo.Name])
+            {
+                Player.TempData.ArenaModel.BestTimeForLevel[Player.Room.LevelInfo.Name] = finishedRaceTime;
+                Player.SendXt("Ms", Player.Room.LevelInfo.InGameName);
+            }
 
         Player.TempData.ArenaModel.StartArena = false;
         Player.TempData.ArenaModel.HasStarted = false;
@@ -70,17 +68,17 @@ public class FinishedMinigame : ExternalProtocol
 
         var dataList = new List<string>();
 
-        var rdmBananaReward = new Random().Next(7, 12 * Player.Character.Data.GlobalLevel);
+        var rdmBananaReward = new Random().Next(7, 11 * Player.Character.Data.GlobalLevel);
         var xpReward = Player.Character.Data.ReputationForNextLevel / 11;
 
-        var lootableItems = Player.GrantLootableItems(LootCatalog, minigameId);
-        var lootedItems = Player.GrantItemsLooted(LootCatalog, minigameId);
+        //var lootableItems = Player.GrantLootableItems(LootCatalog, minigameId);
+        //var lootedItems = Player.GrantItemsLooted(LootCatalog, minigameId);
 
         dataList.Add(membersInGroup.ToString());
         dataList.Add(rdmBananaReward.ToString());
         dataList.Add(xpReward.ToString());
-        dataList.Add(lootedItems.ToString());
-        dataList.Add(lootableItems.ToString());
+        //dataList.Add(lootedItems.ToString());
+        //dataList.Add(lootableItems.ToString());
 
         SendXt("Mp", minigameId, SplitRewardData(dataList));
 

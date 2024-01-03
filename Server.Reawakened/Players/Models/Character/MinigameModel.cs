@@ -10,11 +10,12 @@ namespace Server.Reawakened.Players.Models.Character;
 public class ArenaModel
 {
     public bool StartArena { get; set; }
+    public bool HasStarted { get; set; }    
     public int FirstPlayerId { get; set; }
     public int SecondPlayerId { get; set; }
     public int ThirdPlayerId { get; set; }
     public int FourthPlayerId { get; set; }
-    public Dictionary<string, float> BestTimeForLevel { get; set; }
+    public Dictionary<string, float> BestTimeForLevel { get; set; } = [];
 
     public void SetCharacterIds(Player player, IEnumerable<Player> players)
     {

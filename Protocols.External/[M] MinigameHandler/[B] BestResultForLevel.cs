@@ -15,11 +15,9 @@ public class BestResultForLevel : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        foreach (var msg in message)
-            Console.WriteLine(msg);
-
         var levelName = message[5];
 
-            Player.SendXt("MB", Player.Room.Time);
+        if (Player.TempData.ArenaModel.BestTimeForLevel.ContainsKey(levelName))
+            Player.SendXt("MB", Player.TempData.ArenaModel.BestTimeForLevel[levelName]);
     }
 }
