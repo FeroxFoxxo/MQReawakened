@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RaceDefines;
+using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
 using Server.Base.Worlds.Services;
@@ -20,6 +21,7 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Models.LootRewards;
 using System.Text.RegularExpressions;
 using static Analytics;
+using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -49,6 +51,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("save", "", SaveLevel));
         AddCommand(new ChatCommand("openVines", "", OpenVines));
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
+        AddCommand(new ChatCommand("getAllItems", "[categoryValue]", GetAllItems));
         //AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
         //AddCommand(new ChatCommand("getRoomEntityList", "", GetRoomEntityList));
 
@@ -93,6 +96,40 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
     }
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
+
+    public bool GetAllItems(Player player, string[] args)
+    {
+        if (args.Length > 1)
+        {
+            if (!int.TryParse(args[1], out var categoryValue))
+                return false;
+
+            if (categoryValue is < 0 or > 12)
+            {
+                Log($"Please enter a category value between 0-12!", player);
+                return false;
+            }
+            var chosenCategory = itemCatalog.GetItemsDescription((ItemFilterCategory)categoryValue);
+
+            foreach (var item in chosenCategory)
+                player.Character.AddItem(item, 1);
+        }
+
+        else
+        {
+            var categoryList = new List<List<ItemDescription>>();
+            for (var i = 0; i < 12; i++)
+                categoryList.Add(itemCatalog.GetItemsDescription((ItemFilterCategory)i));
+
+            foreach (var category in categoryList)
+                foreach (var item in category)
+                    player.Character.AddItem(item, 1);
+        }
+
+        player.SendUpdatedInventory(false);
+
+        return true;
+    }
 
     private bool Godmode(Player player, string[] args)
     {
@@ -160,23 +197,14 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool Teleport(Player player, string[] args)
     {
-        if (!int.TryParse(args[1], out var xPos)
-            || !int.TryParse(args[2], out var yPos)
-            || !int.TryParse(args[3], out var zPos))
+        if (args.Length < 3 || !int.TryParse(args[1], out var xPos) || !int.TryParse(args[2], out var yPos))
         {
-            Log("Please enter a valid coordinate value.", player);
+            Log("Please enter valid coordinates.", player);
             return false;
         }
 
-        var z = zPos;
-
-        if (zPos is < 0 or > 1)
-        {
-            Log("Invalid value for Z, defaulting to 0", player);
-            z = 0;
-        }
-
-        player.TeleportPlayer(xPos, yPos, z);
+        var zPos = args.Length > 3 && int.TryParse(args[3], out var z) ? z : 0;
+        player.TeleportPlayer(xPos, yPos, zPos);
 
         return true;
     }
