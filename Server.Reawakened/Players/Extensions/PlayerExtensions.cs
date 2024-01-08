@@ -251,6 +251,9 @@ public static class PlayerExtensions
         if (!objCatalog.ObjectivePrefabs.TryGetValue(prefabName, out var itemIds))
             return;
 
+        if (itemIds == null)
+            return;
+
         var character = player.Character.Data;
 
         foreach (var quest in character.QuestLog)
