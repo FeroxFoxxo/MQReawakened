@@ -10,7 +10,7 @@ public static class Ask
     public static void GetCharacter(Microsoft.Extensions.Logging.ILogger logger, AccountHandler accountHandler,
         UserInfoHandler userInfoHandler, CharacterHandler characterHandler, out CharacterModel model, out UserInfo user)
     {
-        logger.LogInformation("Please enter the username of whom you wish to edit:");
+        logger.LogInformation("Please enter the username of whom you wish to find:");
 
         var userName = Console.ReadLine()?.Trim();
 
@@ -38,7 +38,7 @@ public static class Ask
             return;
         }
 
-        logger.LogInformation("Please select the ID for the character you want to change the name for:");
+        logger.LogInformation("Please select the ID for the character you want to run this command for:");
 
         foreach (var possibleCharacter in user.CharacterIds)
         {

@@ -4,5 +4,5 @@ namespace Server.Reawakened.Rooms.Models.Entities;
 
 public interface ITriggerable
 {
-    public void TriggerStateChange(TriggerType triggerType, Room room, bool triggered);
+    public void TriggerStateChange(TriggerType triggerType, bool triggered);
 }

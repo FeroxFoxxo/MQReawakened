@@ -345,7 +345,7 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
 
                     if (triggerableEntities.Length != 0)
                         foreach (var triggeredEntity in triggerableEntities)
-                            triggeredEntity.TriggerStateChange(trigger.Value, Room, IsActive);
+                            triggeredEntity.TriggerStateChange(trigger.Value, IsActive);
 
                     continue;
                 }
