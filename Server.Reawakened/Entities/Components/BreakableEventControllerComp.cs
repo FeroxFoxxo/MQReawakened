@@ -20,7 +20,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>
         base.InitializeComponent();
         Room.Colliders.Add(Id, new BaseCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
     }
-    
+
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
     }

@@ -4,6 +4,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._e__EmailHandler;
+
 public class DeleteMessage : ExternalProtocol
 {
     public override string ProtocolName => "ed";
@@ -16,9 +17,10 @@ public class DeleteMessage : ExternalProtocol
 
         if (messageId >= 0 && messageId <= Player.Character.EmailMessages.Count)
         {
-            var item = ItemCatalog.GetItemFromId(Player.Character.EmailMessages[messageId].Item.ItemId); 
+            var item = ItemCatalog.GetItemFromId(Player.Character.EmailMessages[messageId].Item.ItemId);
 
             Task.Delay(3300); //Adds item after open gift animation.
+
             Player.Character.AddItem(item, item.ItemNumber);
             Player.SendUpdatedInventory(false);
 

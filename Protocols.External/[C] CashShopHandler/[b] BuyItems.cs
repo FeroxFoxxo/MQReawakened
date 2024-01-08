@@ -18,7 +18,7 @@ public class BuyItems : ExternalProtocol
     {
         var character = Player.Character;
 
-        var cashShop = (Cashshop) int.Parse(message[5]);
+        var cashShop = (Cashshop)int.Parse(message[5]);
 
         if (cashShop != Cashshop.CashShop)
         {

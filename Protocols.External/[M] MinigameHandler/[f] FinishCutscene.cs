@@ -3,6 +3,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 
 namespace Protocols.External._M__MinigameHandler;
+
 public class FinishCutscene : ExternalProtocol
 {
     public override string ProtocolName => "Mf";
@@ -12,7 +13,8 @@ public class FinishCutscene : ExternalProtocol
         var arenaObjectId = message[5];
 
         Player.SendXt("Mc", arenaObjectId, Player.Room.Time, 5f,
+
         Player.TempData.ArenaModel.FirstPlayerId, Player.TempData.ArenaModel.SecondPlayerId,
             Player.TempData.ArenaModel.ThirdPlayerId, Player.TempData.ArenaModel.FourthPlayerId);
-    } 
+    }
 }

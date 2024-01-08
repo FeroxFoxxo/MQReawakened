@@ -10,7 +10,7 @@ namespace Server.Reawakened.Entities.Components;
 public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSwitchController>
 {
     public string ArenaObjectId => ComponentData.ArenaObjectID;
-    public DatabaseContainer DatabaseContainer { get; set; } 
+    public DatabaseContainer DatabaseContainer { get; set; }
     public ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) => base.GetInitData(player);
@@ -20,7 +20,7 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
         if (player.TempData.ArenaModel.HasStarted)
         {
             Logger.LogInformation("Arena has already started, stopping syncEvent.");
-            player.TempData.ArenaModel.StartArena = true;
+            player.TempData.ArenaModel.ShouldStartArena = true;
             return;
         }
 
@@ -31,11 +31,11 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
 
         //Method to determine if arena trigger event is minigame. if minigame, proceed with code below.
 
-        player.TempData.ArenaModel.StartArena = arenaActivation > 0;
+        player.TempData.ArenaModel.ShouldStartArena = arenaActivation > 0;
 
         if (playersInRoom.Count > 1)
         {
-            if (playersInRoom.All(p => p.TempData.ArenaModel.StartArena))
+            if (playersInRoom.All(p => p.TempData.ArenaModel.ShouldStartArena))
             {
                 foreach (var member in playersInRoom)
                 {
@@ -47,7 +47,7 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
         }
         else
         {
-            if (player.TempData.ArenaModel.StartArena)
+            if (player.TempData.ArenaModel.ShouldStartArena)
             {
                 StartMinigame(player);
                 Players.Models.Character.ArenaModel.SetCharacterIds(player, new List<Player> { player });

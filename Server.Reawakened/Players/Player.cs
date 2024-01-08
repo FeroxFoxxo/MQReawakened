@@ -26,7 +26,7 @@ public class Player(Account account, UserInfo userInfo, NetState state, Database
 
     public int UserId => userInfo.Id;
     public int CharacterId => Character != null ? Character.Id : -1;
-    public string CharacterName => Character != null ? Character.Data.CharacterName: string.Empty;
+    public string CharacterName => Character != null ? Character.Data.CharacterName : string.Empty;
     public int GameObjectId => TempData.GameObjectId;
 
     public bool FirstLogin { get; set; } = true;
@@ -37,7 +37,7 @@ public class Player(Account account, UserInfo userInfo, NetState state, Database
 
     public void Remove(Microsoft.Extensions.Logging.ILogger logger)
     {
-        lock(databaseContainer.Lock)
+        lock (databaseContainer.Lock)
             databaseContainer.RemovePlayer(this);
 
         this.RemoveFromGroup();

@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Enums;
@@ -23,6 +24,7 @@ public class UseSlot : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -47,7 +49,7 @@ public class UseSlot : ExternalProtocol
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drop:
-                HandleDrop(usedItem, position, direction);
+                _ = HandleDrop(usedItem, position, direction);
                 break;
             case ItemActionType.Throw:
                 HandleRangedWeapon(usedItem, position, direction);
@@ -61,13 +63,18 @@ public class UseSlot : ExternalProtocol
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
                 break;
+            case ItemActionType.Pet:
+                HandlePet(usedItem);
+                break;
+            case ItemActionType.Relic:
+                HandleRelic(usedItem);
+                break;
             default:
                 Logger.LogError("Could not find how to handle item action type {ItemAction} for user {UserId}",
                     usedItem.ItemActionType, targetUserId);
                 break;
         }
     }
-
     private void HandlePet(ItemDescription usedItem)
     {
         Player.SendXt("ZE", Player.UserId, usedItem.ItemId, 1);
@@ -84,7 +91,7 @@ public class UseSlot : ExternalProtocol
 
         Player.SendSyncEventToPlayer(itemEffect);
     }
-
+    
     private void HandleDrink(ItemDescription usedItem)
     {
         StatusEffect_SyncEvent itemEffect = null;
@@ -96,8 +103,8 @@ public class UseSlot : ExternalProtocol
         Player.SendSyncEventToPlayer(itemEffect);
 
         foreach (var effect in usedItem.ItemEffects)
-            if (effect.TypeId == 5) //Healing type: Once.
-                Player.HealOnce(usedItem);
+            if (effect.TypeId == (int) ItemEffectType.Healing)
+                Player.HealOnce(usedItem, ServerRConfig);
 
         Logger.LogInformation("Used healing item {ItemName} of effect typeID: {TypeID}", usedItem.ItemName, usedItem.ItemEffects.FirstOrDefault().TypeId);
     }
@@ -153,8 +160,8 @@ public class UseSlot : ExternalProtocol
                 return;
 
             if (effect.Type is ItemEffectType.Healing)
-                Player.HealCharacter(usedItem);
-                
+                Player.HealCharacter(usedItem, ServerRConfig);
+
             statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                 effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
         }
@@ -162,7 +169,7 @@ public class UseSlot : ExternalProtocol
 
         var removeFromHotbar = true;
 
-        if (usedItem.ItemId == 396) //Prevents Healing Staff from removing itself.
+        if (usedItem.ItemId == ServerRConfig.HealingStaff) //Prevents Healing Staff from removing itself.
             removeFromHotbar = false;
 
         if (!usedItem.UniqueInInventory && removeFromHotbar)
@@ -179,7 +186,7 @@ public class UseSlot : ExternalProtocol
             prjId = Math.Abs(rand.Next());
 
         var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem);
-        
+
         Player.Room.Projectiles.Add(prjId, prj);
     }
 

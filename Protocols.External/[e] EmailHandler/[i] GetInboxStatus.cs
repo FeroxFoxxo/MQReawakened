@@ -20,7 +20,7 @@ public class GetInboxStatus : ExternalProtocol
 
         foreach (var email in emails)
             sb.Append(email);
-         
+
         return sb.ToString();
     }
 }

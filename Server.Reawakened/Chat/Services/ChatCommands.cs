@@ -441,12 +441,13 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     [GeneratedRegex("[^A-Za-z0-9]+")]
     private static partial Regex AlphanumericRegex();
-    
+
     private bool ClosestEntity(Player player, string[] args)
     {
         var plane = player.GetPlaneEntities();
 
-        var closestGameObjects = plane.Select(gameObject => {
+        var closestGameObjects = plane.Select(gameObject =>
+        {
             var x = gameObject.ObjectInfo.Position.X - player.TempData.Position.X;
             var y = gameObject.ObjectInfo.Position.Y - player.TempData.Position.Y;
 
@@ -464,8 +465,8 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         Log("Closest Game Objects:", player);
 
         var count = 0;
-        
-        foreach(var item in closestGameObjects)
+
+        foreach (var item in closestGameObjects)
         {
             if (count > config.MaximumEntitiesToReturnLog)
                 break;

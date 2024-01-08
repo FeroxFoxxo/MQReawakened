@@ -4,7 +4,7 @@ using Server.Reawakened.XMLs.BundlesInternal;
 namespace Server.Reawakened.Players.Models.Character;
 public class ArenaModel
 {
-    public bool StartArena { get; set; }
+    public bool ShouldStartArena { get; set; }
     public bool HasStarted { get; set; }
     public int FirstPlayerId { get; set; }
     public int SecondPlayerId { get; set; }
@@ -41,9 +41,9 @@ public class ArenaModel
     {
         var lootableItems = new SeparatedStringBuilder('|');
 
-        if (LootCatalog.LootCatalog.ContainsKey(arenaId))
+        if (LootCatalog.LootCatalog.TryGetValue(arenaId, out var value))
         {
-            foreach (var reward in LootCatalog.LootCatalog[arenaId].ItemRewards)
+            foreach (var reward in value.ItemRewards)
                 foreach (var itemReward in reward.Items)
                     lootableItems.Append(itemReward.ItemId);
         }

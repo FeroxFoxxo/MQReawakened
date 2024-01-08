@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -19,6 +20,7 @@ public class UseItem : ExternalProtocol
     public VendorCatalog VendorCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public RecipeCatalogInt RecipeCatalog { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -46,7 +48,7 @@ public class UseItem : ExternalProtocol
                         return;
 
                     if (effect.Type is ItemEffectType.Healing)
-                        Player.HealCharacter(item);
+                        Player.HealCharacter(item, ServerRConfig);
 
                     statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                         effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
@@ -55,7 +57,7 @@ public class UseItem : ExternalProtocol
 
                 var removeFromHotbar = true;
 
-                if (item.ItemId == 396) //Prevents Healing Staff from removing itself.
+                if (item.ItemId == ServerRConfig.HealingStaff) //Prevents Healing Staff from removing itself.
                     removeFromHotbar = false;
 
                 if (!item.UniqueInInventory && removeFromHotbar)

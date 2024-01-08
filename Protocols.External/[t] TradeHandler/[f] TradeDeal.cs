@@ -42,7 +42,7 @@ public class TradeDeal : ExternalProtocol
         {
             tradingPlayer.TradeWithPlayer(ItemCatalog);
             Player.TradeWithPlayer(ItemCatalog);
-                
+
             tradingPlayer.SendCashUpdate();
             tradingPlayer.SendUpdatedInventory(false);
 

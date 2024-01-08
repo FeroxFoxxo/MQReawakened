@@ -52,7 +52,7 @@ public class RoomUpdate : ExternalProtocol
     {
         var entityId = entity.Key;
         var entityComponents = entity.Value;
-        
+
         var sb = new SeparatedStringBuilder('|');
 
         sb.Append(entityId);

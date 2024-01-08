@@ -17,10 +17,10 @@ public class MysticCharmTargetComp : Component<MysticCharmTarget>
     {
         if (!IsOpened)
             Charm(player);
-            
+
         base.RunSyncedEvent(syncEvent, player);
     }
-    
+
     public void Charm(Player player)
     {
         IsOpened = true;

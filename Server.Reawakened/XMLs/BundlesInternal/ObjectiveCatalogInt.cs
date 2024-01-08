@@ -41,7 +41,7 @@ public class ObjectiveCatalogInt : IBundledXml
                 if (!(quest.Name == "Objective")) continue;
 
                 var prefabName = string.Empty;
-                var itemId = string.Empty;
+                var itemId = "";
 
                 foreach (XmlAttribute itemAttributes in quest.Attributes)
                     switch (itemAttributes.Name)
@@ -53,7 +53,7 @@ public class ObjectiveCatalogInt : IBundledXml
                             itemId = itemAttributes.Value;
                             break;
                     }
-                
+
                 ObjectivePrefabs.TryAdd(prefabName, itemId);
             }
         }

@@ -42,9 +42,7 @@ public class GiftItemShop : ExternalProtocol
         var item = ItemCatalog.GetItemFromId(itemId);
         Player.RemoveNCash(item.RegularPrice);
 
-        var mailId = 0;
-        foreach (var mailItem in friend.Character.Emails)
-            mailId++;
+        var mailId = friend.Character.Emails.Max(x => x.MessageId) + 1;
 
         var emailHeader = new EmailHeaderModel()
         {
@@ -60,8 +58,11 @@ public class GiftItemShop : ExternalProtocol
 
         friend.SendXt("en", emailHeader.ToString());
 
-        var attachments = new Dictionary<ItemDescription, int> { { item, 1 } }; //I don't think you can gift more than 1 item at a time,
-                                                                                //so I'm not entirely sure how attachments is supposed to be used.                                                                        
+        //I don't think you can gift more than 1 item at a time,
+        //so I'm not entirely sure how attachments is supposed to be used. 
+
+        var attachments = new Dictionary<ItemDescription, int> { { item, 1 } };
+
         var emailMessage = new EmailMessageModel()
         {
             EmailHeaderModel = emailHeader,
@@ -71,12 +72,10 @@ public class GiftItemShop : ExternalProtocol
             Item = item,
             Attachments = attachments
         };
+
         friend.Character.EmailMessages.Add(emailMessage);
 
         var mail = friend.Character.Emails;
         friend.SendXt("ei", mail.ToString());
     }
 }
-
-
-

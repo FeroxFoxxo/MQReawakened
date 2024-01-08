@@ -16,7 +16,8 @@ public class GroupModel
         _groupMembers.Add(player);
     }
 
-    public void SetLeaderName(string newLeader) {
+    public void SetLeaderName(string newLeader)
+    {
         lock (Lock)
         {
             if (_groupMembers.Any(c => c.CharacterName == newLeader))
@@ -26,7 +27,7 @@ public class GroupModel
 
     public string GetLeaderName()
     {
-        lock(Lock)
+        lock (Lock)
             return _leaderCharacterName;
     }
 

@@ -8,11 +8,11 @@ public static class GetXmlValue
     {
         attribute = attribute.Replace(" ", string.Empty);
 
-        if (attribute.Equals("invalid", StringComparison.CurrentCultureIgnoreCase) || 
+        if (attribute.Equals("invalid", StringComparison.CurrentCultureIgnoreCase) ||
             attribute.Equals("none", StringComparison.CurrentCultureIgnoreCase))
             return value;
         else if (Enum.TryParse(typeof(T), attribute, ignoreCase: true, out var enumValue))
-            return (T) enumValue;
+            return (T)enumValue;
 
         logger.LogError("Unknown enum type: {Name} for {Type}", attribute, typeof(T).Name);
 
@@ -36,7 +36,7 @@ public static class GetXmlValue
         if (attribute.Equals("none", StringComparison.CurrentCultureIgnoreCase))
             return value;
 
-        if(DateTime.TryParse(attribute, out var date))
+        if (DateTime.TryParse(attribute, out var date))
             return DateTime.SpecifyKind(date, DateTimeKind.Utc);
 
         logger.LogError("Unknown date time: {Type}", attribute);

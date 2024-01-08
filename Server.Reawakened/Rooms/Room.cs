@@ -63,7 +63,7 @@ public class Room : Timer
         Planes = LevelInfo.LoadPlanes(_config);
         Entities = this.LoadEntities(services, out UnknownEntities);
         Projectiles = [];
-        
+
         Colliders = this.LoadColliders();
 
         foreach (var gameObjectId in Planes.Values
@@ -271,6 +271,6 @@ public class Room : Timer
             }
     }
 
-        public string GetRoomName() =>
-        $"{LevelInfo.LevelId}_{_roomId}";
+    public string GetRoomName() =>
+    $"{LevelInfo.LevelId}_{_roomId}";
 }

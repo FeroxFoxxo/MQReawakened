@@ -383,7 +383,7 @@ public class NPCControllerComp : Component<NPCController>
 
                 Logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", givenQuest.Name, givenQuest.Id, NpcName);
 
-                var rewardIds = (Dictionary<int, int>) givenQuest.GetField("_rewardItemsIds");
+                var rewardIds = (Dictionary<int, int>)givenQuest.GetField("_rewardItemsIds");
                 var unknownRewards = rewardIds.Where(x => !ItemCatalog.Items.ContainsKey(x.Key));
 
                 if (unknownRewards.Any())

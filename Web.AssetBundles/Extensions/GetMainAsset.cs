@@ -25,7 +25,8 @@ public static class GetMainAsset
         var containerList = container as List<KeyValuePair<object, object>>;
 
         var foundAsset = containerList.FirstOrDefault(
-            x => {
+            x =>
+            {
                 var name = x.Key as string;
                 var dict = x.Value as OrderedDictionary;
                 var asset = GetAsset(dict);
@@ -47,16 +48,16 @@ public static class GetMainAsset
     private static Asset GetAsset(OrderedDictionary dictionary)
     {
         var preload = dictionary["preloadSize"];
-        var preloadSize = (int) preload;
+        var preloadSize = (int)preload;
 
         var asset = dictionary["asset"];
         var assetDictionary = asset as OrderedDictionary;
 
         var file = assetDictionary["m_FileID"];
-        var fileId = (int) file;
+        var fileId = (int)file;
 
         var path = assetDictionary["m_PathID"];
-        var pathId = (int) path;
+        var pathId = (int)path;
 
         return new Asset(preloadSize, fileId, pathId);
     }

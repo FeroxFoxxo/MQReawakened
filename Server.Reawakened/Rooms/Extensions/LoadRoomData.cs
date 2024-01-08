@@ -70,8 +70,8 @@ public static class LoadRoomData
 
         return planes;
     }
-        public static Dictionary<int, List<BaseComponent>> LoadEntities(this Room room, IServiceProvider services,
-        out Dictionary<int, List<string>> unknownEntities)
+    public static Dictionary<int, List<BaseComponent>> LoadEntities(this Room room, IServiceProvider services,
+    out Dictionary<int, List<string>> unknownEntities)
     {
         var reflectionUtils = services.GetRequiredService<ReflectionUtils>();
         var fileLogger = services.GetRequiredService<FileLogger>();
@@ -104,7 +104,7 @@ public static class LoadRoomData
                     if (entityComponents.TryGetValue(mqType.FullName!, out var internalType))
                     {
                         var dataObj = RuntimeHelpers.GetUninitializedObject(mqType);
-                        
+
                         var fields = mqType.GetFields()
                             .Where(prop => prop.IsDefined(typeof(MQAttribute), false))
                             .ToArray();

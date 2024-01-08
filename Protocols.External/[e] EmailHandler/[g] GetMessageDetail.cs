@@ -3,6 +3,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 
 namespace Protocols.External._e__EmailHandler;
+
 public class GetMessageDetail : ExternalProtocol
 {
     public override string ProtocolName => "eg";
@@ -19,7 +20,7 @@ public class GetMessageDetail : ExternalProtocol
 
             Player.SendXt("eg", messageId, mail.ToString());
         }
-         
+
         else
             Logger.LogError("Invalid messageId: {messageId}", messageId);
     }

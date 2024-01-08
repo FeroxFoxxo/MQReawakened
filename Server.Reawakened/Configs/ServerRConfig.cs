@@ -16,6 +16,7 @@ public class ServerRConfig : IRConfig
     public int PlayerCap { get; }
     public int ReservedNameCount { get; }
     public int MaxCharacterCount { get; }
+    public int HealingStaff { get; }
 
     public int MaxLevel { get; }
 
@@ -140,7 +141,7 @@ public class ServerRConfig : IRConfig
         LogAllSyncEvents = true;
         ClearCache = true;
 
-        AccessRights = (int) UserAccessRight.NoDictionaryChat;
+        AccessRights = (int)UserAccessRight.NoDictionaryChat;
 
         TutorialTribe2014 = new Dictionary<TribeType, int>
         {
@@ -160,5 +161,7 @@ public class ServerRConfig : IRConfig
         ];
 
         MaximumEntitiesToReturnLog = 10;
+
+        HealingStaff = 396;
     }
 }

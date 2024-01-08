@@ -20,6 +20,7 @@ public class EmailMessageModel
         sb.Append(BackgroundId);
         sb.Append(PackageId);
         sb.Append(Item.ItemId);
+
         foreach (var kvp in Attachments)
         {
             sb.Append(kvp.Key.ItemId);
