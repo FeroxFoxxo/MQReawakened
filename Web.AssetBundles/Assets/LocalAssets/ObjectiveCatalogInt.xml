@@ -1,11 +1,23 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ObjectiveCatalogs>
+    <Objective prefabName="Col_SHD_NewbZone04" itemId="None"/>
     <Objective prefabName="GoToTrigger" itemId="None"/>
-    <Objective prefabName="GoToTrigger" itemId="315035194"/>
     <Objective prefabName="PF_GLB_InvisibleTrigger01" itemId="None"/>
+    <Objective prefabName="Col_SHD_Lantern02" itemId="None"/>
+    <Objective prefabName="Col_BON_Lavender01" itemId="1768"/>
+    <Objective prefabName="Col_BON_Lavender01" itemId="808"/>
+    <Objective prefabName="Col_SHD_WoodWish01" itemId="3370"/>
+    <Objective prefabName="Col_BON_Pot01" itemId="29376"/>
+    <Objective prefabName="Col_BON_Pot01" itemId="808"/>
+    <Objective prefabName="PF_Spite_Dragon_Invis" itemId="None"/>
+    <Objective prefabName="Col_SHD_Ink02" itemId="3364"/>
+    <Objective prefabName="GoToTrigger" itemId="315035194"/>
     <Objective prefabName="COL_CRS_BananaIdol" itemId="372"/>
     <Objective prefabName="Col_KNI_SharpenStone01" itemId="3077"/>
     <Objective prefabName="Col_KNI_SharpenStone01" itemId="2878"/>
-    <Objective prefabName="Col_SHD_Lantern02" itemId="None"/>
     <Objective prefabName="PF_Spite_Spiderling_Boss01" itemId="1555909043"/>
+    <Objective prefabName="PF_Spite_Dragon_Invis" itemId="None"/>
+    <Objective prefabName="PF_Spite_Orchid_Rock" itemId="1303"/>
+    <Objective prefabName="PF_Spite_Orchid_Rock" itemId="1357"/>
+    <Objective prefabName="Col_SHD_TribeBox01" itemId="3350"/>
 </ObjectiveCatalogs>

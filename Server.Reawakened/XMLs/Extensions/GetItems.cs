@@ -48,7 +48,7 @@ public static class GetItems
                 BindingCount = bindingCount,
                 DelayUseExpiry = delayUseExpiry,
                 Weight = weight
-            }) ;
+            });
         }
 
         return itemList;

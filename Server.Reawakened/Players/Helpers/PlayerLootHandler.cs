@@ -54,7 +54,7 @@ public static class PlayerLootHandler
 
             while (count > 0)
             {
-                
+
                 var randomWeight = random.NextInt64(1, weightRange);
                 var selector = 0;
                 foreach (var item in itemReward.Items)
@@ -80,7 +80,7 @@ public static class PlayerLootHandler
 
         if (doWheel)
             SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
-    player.SendUpdatedInventory(false);
+        player.SendUpdatedInventory(false);
     }
 
     private static void SendLootWheel(Player player, string itemsLooted, string lootableItems, int gameObjectId)

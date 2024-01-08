@@ -74,7 +74,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
         if (!handler.IsPlayerOnline(user.Id, out var player))
         {
             logger.LogError("Player must be online to use this command!");
-            return;        
+            return;
         }
 
         logger.LogInformation("Enter command and arguments:");

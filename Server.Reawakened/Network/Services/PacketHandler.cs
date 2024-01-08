@@ -120,5 +120,5 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
         _protocolsExternal[actionType](netState, (string[])packetStr, services);
 
     public void SendSys(NetState netState, string actionType, object packetXml) =>
-        _protocolsSystem[actionType](netState, (XmlDocument) packetXml, services);
+        _protocolsSystem[actionType](netState, (XmlDocument)packetXml, services);
 }

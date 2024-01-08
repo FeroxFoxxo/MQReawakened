@@ -14,14 +14,14 @@ public class PlaneModel(string planeName)
         var id = colliderNode.Attributes!.GetIntValue("id");
 
         var colliderList = (from XmlNode collider in colliderNode.ChildNodes
-            where collider.Name == "vertex"
-            select collider.Attributes!
+                            where collider.Name == "vertex"
+                            select collider.Attributes!
             into vertex
-            select new Vector2
-            {
-                x = vertex.GetSingleValue("x"),
-                y = vertex.GetSingleValue("y")
-            }).ToArray();
+                            select new Vector2
+                            {
+                                x = vertex.GetSingleValue("x"),
+                                y = vertex.GetSingleValue("y")
+                            }).ToArray();
 
         if (!GameObjects.TryGetValue(id, out var value))
             return;

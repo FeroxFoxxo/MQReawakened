@@ -1,4 +1,4 @@
-﻿﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;

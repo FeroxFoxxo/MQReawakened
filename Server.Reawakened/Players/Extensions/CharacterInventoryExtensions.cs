@@ -69,7 +69,7 @@ public static class CharacterInventoryExtensions
             fromEquippedUpdate
         );
 
-        foreach(var item in player.Character.Data.Inventory.Items)
+        foreach (var item in player.Character.Data.Inventory.Items)
             if (item.Value.Count <= 0)
                 player.Character.Data.Inventory.Items.Remove(item.Key);
     }

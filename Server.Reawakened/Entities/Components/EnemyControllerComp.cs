@@ -18,6 +18,7 @@ public class EnemyControllerComp : Component<EnemyController>
     public Color EnemyDisplayNameColor => ComponentData.EnemyDisplayNameColor;
     public EnemyScalingType EnemyScalingType => ComponentData.EnemyScalingType;
     public ILogger<EnemyControllerComp> Logger { get; set; }
+
     public override void InitializeComponent() => base.InitializeComponent();
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => base.RunSyncedEvent(syncEvent, player);
 

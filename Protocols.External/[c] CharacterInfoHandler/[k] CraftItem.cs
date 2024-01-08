@@ -13,7 +13,7 @@ public class CraftItem : ExternalProtocol
 
     public ItemCatalog ItemCatalog { get; set; }
     public RecipeCatalogInt RecipeCatalog { get; set; }
-    public ServerRConfig ServerRConfig { get;set; }
+    public ServerRConfig ServerRConfig { get; set; }
     public ILogger<CraftItem> Logger { get; set; }
 
     public override void Run(string[] message)

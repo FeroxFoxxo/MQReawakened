@@ -51,6 +51,7 @@ public class State : ExternalProtocol
 
         if (room.Players.TryGetValue(entityId, out var newPlayer))
         {
+
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.ChargeAttack:
@@ -181,7 +182,7 @@ public class State : ExternalProtocol
         var uniqueIdentifier = entityId.ToString();
         var additionalInfo = string.Empty;
 
-        if(room.Players.TryGetValue(entityId, out var newPlayer))
+        if (room.Players.TryGetValue(entityId, out var newPlayer))
         {
             uniqueType = "Player";
 
@@ -204,7 +205,7 @@ public class State : ExternalProtocol
                     prefabName = component.PrefabName;
             }
         }
-        
+
         if (room.UnknownEntities.TryGetValue(entityId, out var unknownEntityComponents))
             foreach (var component in unknownEntityComponents)
                 entityComponentList.Add($"U:{component}");
@@ -222,8 +223,8 @@ public class State : ExternalProtocol
         var attributes = string.Join(", ", syncEvent.EventDataList);
 
         if (Player.Character != null)
-                Logger.LogDebug("SyncEvent '{Type}' run for {Type} [{Id}] by {Player} {AdditionalInfo} with attributes {Attrib}",
-                    syncEvent.Type, uniqueType, uniqueIdentifier, Player.CharacterName, additionalInfo, attributes);
+            Logger.LogDebug("SyncEvent '{Type}' run for {Type} [{Id}] by {Player} {AdditionalInfo} with attributes {Attrib}",
+                syncEvent.Type, uniqueType, uniqueIdentifier, Player.CharacterName, additionalInfo, attributes);
     }
 
     public void TraceSyncEventError(int entityId, SyncEvent syncEvent, LevelInfo levelInfo, string entityInfo)

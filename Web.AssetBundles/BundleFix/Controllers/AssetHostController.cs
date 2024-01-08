@@ -70,7 +70,7 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
     private string WriteFixedBundle(InternalAssetInfo asset)
     {
         var assetName = asset.Name.Trim();
-        
+
         var baseDirectory =
             config.DebugInfo
                 ? Path.Join(config.BundleSaveDirectory, assetName)

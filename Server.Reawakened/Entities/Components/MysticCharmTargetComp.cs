@@ -17,6 +17,7 @@ public class MysticCharmTargetComp : Component<MysticCharmTarget>
     {
         if (!IsOpened)
             Charm(player);
+
         base.RunSyncedEvent(syncEvent, player);
     }
 

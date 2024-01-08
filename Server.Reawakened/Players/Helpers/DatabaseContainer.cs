@@ -34,7 +34,7 @@ public class DatabaseContainer(WorldHandler worldHandler, CharacterHandler chara
 
     public IEnumerable<Player> GetPlayersByFriend(int friendId)
     {
-        lock(Lock)
+        lock (Lock)
             return _playerList.ToList().Where(p => p.Character.Data.Friends.Contains(friendId));
     }
 

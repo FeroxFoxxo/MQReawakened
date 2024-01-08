@@ -53,7 +53,7 @@ public class ObjectiveCatalogInt : IBundledXml
                             itemId = itemAttributes.Value;
                             break;
                     }
-                
+
                 ObjectivePrefabs.TryAdd(prefabName, itemId);
             }
         }

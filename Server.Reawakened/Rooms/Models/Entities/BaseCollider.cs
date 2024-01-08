@@ -2,16 +2,17 @@
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
+
 public class BaseCollider
 {
+    public int Id;
+
     public Room Room;
     public Vector3 Position;
-    public int Id;
     public string Plane;
+
     public bool IsAttackBox;
     public RectModel ColliderBox;
-
-    int[] Collisions;
 
     public BaseCollider(int id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, bool isAttackBox)
     {
@@ -20,9 +21,10 @@ public class BaseCollider
         Position = new Vector3(position.X, position.Y, position.Z);
         Plane = plane;
         IsAttackBox = isAttackBox;
-        ColliderBox = new RectModel(position.X-(position.X*0.5f), position.Y - (position.Y * 0.5f), sizeX, sizeY);
+        ColliderBox = new RectModel(position.X - position.X * 0.5f, position.Y - position.Y * 0.5f, sizeX, sizeY);
         Room = room;
     }
+
     public BaseCollider(int id, Vector3Model position, float sizeX, float sizeY, string plane, Room room)
     {
         // Builder for objects
@@ -34,18 +36,14 @@ public class BaseCollider
         Room = room;
     }
 
-    public void Update()
-    {
-    }
+    public virtual void Update() { }
 
-    public void OnCollision(BaseCollider collider, SyncEvent syncEvent)
-    {
-    }
+    public virtual void OnCollision(BaseCollider collider, SyncEvent syncEvent) { }
 
     public int[] IsColliding()
     {
         var roomList = Room.Colliders.Values.ToList();
-        List<int> collidedWith = [];
+        var collidedWith = new List<int>();
 
         foreach (var collider in roomList)
         {
@@ -53,16 +51,11 @@ public class BaseCollider
                 collidedWith.Add(collider.Id);
         }
 
-        return collidedWith.ToArray();
+        return [.. collidedWith];
     }
 
-    public bool CheckCollision(BaseCollider collided)
-    {
-        if (Position.x < collided.ColliderBox.X + collided.ColliderBox.Width && collided.ColliderBox.X < Position.x + ColliderBox.Width &&
-            Position.y < collided.ColliderBox.Y + collided.ColliderBox.Height && collided.ColliderBox.Y < Position.y + ColliderBox.Height && 
-            Plane == collided.Plane)
-            return true;
-        else
-            return false;
-    }
+    public bool CheckCollision(BaseCollider collided) =>
+        Position.x < collided.ColliderBox.X + collided.ColliderBox.Width && collided.ColliderBox.X < Position.x + ColliderBox.Width &&
+        Position.y < collided.ColliderBox.Y + collided.ColliderBox.Height && collided.ColliderBox.Y < Position.y + ColliderBox.Height &&
+        Plane == collided.Plane;
 }

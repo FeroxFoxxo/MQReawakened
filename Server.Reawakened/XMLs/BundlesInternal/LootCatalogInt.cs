@@ -88,7 +88,7 @@ public class LootCatalogInt : IBundledXml
                                     }
 
                                 var itemList = reward.GetXmlItems();
-                                foreach(var item in itemList)
+                                foreach (var item in itemList)
                                 {
                                     weightRange += item.Weight;
                                 }

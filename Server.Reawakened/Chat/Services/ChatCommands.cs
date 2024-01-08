@@ -43,6 +43,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
         AddCommand(new ChatCommand("openDoors", "", OpenDoors));
+        AddCommand(new ChatCommand("getAllItems", "[categoryValue]", GetAllItems));
         AddCommand(new ChatCommand("godmode", "", GodMode));
         AddCommand(new ChatCommand("save", "", SaveLevel));
         AddCommand(new ChatCommand("openVines", "", OpenVines));
@@ -91,6 +92,40 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
     }
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
+
+    public bool GetAllItems(Player player, string[] args)
+    {
+        if (args.Length > 1)
+        {
+            if (!int.TryParse(args[1], out var categoryValue))
+                return false;
+
+            if (categoryValue is < 0 or > 12)
+            {
+                Log($"Please enter a category value between 0-12!", player);
+                return false;
+            }
+            var chosenCategory = itemCatalog.GetItemsDescription((ItemFilterCategory)categoryValue);
+
+            foreach (var item in chosenCategory)
+                player.Character.AddItem(item, 1);
+        }
+
+        else
+        {
+            var categoryList = new List<List<ItemDescription>>();
+            for (var i = 0; i < 12; i++)
+                categoryList.Add(itemCatalog.GetItemsDescription((ItemFilterCategory)i));
+
+            foreach (var category in categoryList)
+                foreach (var item in category)
+                    player.Character.AddItem(item, 1);
+        }
+
+        player.SendUpdatedInventory(false);
+
+        return true;
+    }
 
     private bool GodMode(Player player, string[] args)
     {
@@ -145,13 +180,6 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         return true;
     }
 
-    private bool GetRoomEntityList(Player player, string[] args)
-    {
-        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
-            Console.WriteLine(entityComponent);
-        return true;
-    }
-
     private bool OpenVines(Player player, string[] args)
     {
         foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
@@ -163,23 +191,14 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool Teleport(Player player, string[] args)
     {
-        if (!int.TryParse(args[1], out var xPos)
-            || !int.TryParse(args[2], out var yPos)
-            || !int.TryParse(args[3], out var zPos))
+        if (args.Length < 3 || !int.TryParse(args[1], out var xPos) || !int.TryParse(args[2], out var yPos))
         {
-            Log("Please enter a valid coordinate value.", player);
+            Log("Please enter valid coordinates.", player);
             return false;
         }
 
-        var z = zPos;
-
-        if (zPos is < 0 or > 1)
-        {
-            Log("Invalid value for Z, defaulting to 0", player);
-            z = 0;
-        }
-
-        player.TeleportPlayer(xPos, yPos, z);
+        var zPos = args.Length > 3 && int.TryParse(args[3], out var z) ? z : 0;
+        player.TeleportPlayer(xPos, yPos, zPos);
 
         return true;
     }
@@ -422,20 +441,15 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     [GeneratedRegex("[^A-Za-z0-9]+")]
     private static partial Regex AlphanumericRegex();
-    
+
     private bool ClosestEntity(Player player, string[] args)
     {
         var plane = player.GetPlaneEntities();
 
-        var closestGameObjects = plane.Select(gameObject => {
+        var closestGameObjects = plane.Select(gameObject =>
+        {
             var x = gameObject.ObjectInfo.Position.X - player.TempData.Position.X;
             var y = gameObject.ObjectInfo.Position.Y - player.TempData.Position.Y;
-
-            if (gameObject.Rect != null)
-            {
-                x += gameObject.Rect.Width / 2;
-                y += gameObject.Rect.Height / 2;
-            }
 
             var distance = Math.Round(Math.Sqrt(Math.Pow(Math.Abs(x), 2) + Math.Pow(Math.Abs(y), 2)));
 
@@ -451,8 +465,8 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         Log("Closest Game Objects:", player);
 
         var count = 0;
-        
-        foreach(var item in closestGameObjects)
+
+        foreach (var item in closestGameObjects)
         {
             if (count > config.MaximumEntitiesToReturnLog)
                 break;

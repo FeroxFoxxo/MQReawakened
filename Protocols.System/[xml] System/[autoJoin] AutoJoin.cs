@@ -17,7 +17,7 @@ public class AutoJoin : SystemProtocol
 
     public WorldHandler WorldHandler { get; set; }
     public CharacterHandler CharacterHandler { get; set; }
-    public ServerRConfig ServerRConfig { get;set;}
+    public ServerRConfig ServerRConfig { get; set; }
 
     public override void Run(XmlDocument xmlDoc)
     {
