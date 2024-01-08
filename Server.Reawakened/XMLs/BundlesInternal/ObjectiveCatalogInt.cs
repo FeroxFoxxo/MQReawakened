@@ -41,7 +41,7 @@ public class ObjectiveCatalogInt : IBundledXml
                 if (!(quest.Name == "Objective")) continue;
 
                 var prefabName = string.Empty;
-                var itemId = "";
+                var itemId = string.Empty;
 
                 foreach (XmlAttribute itemAttributes in quest.Attributes)
                     switch (itemAttributes.Name)
