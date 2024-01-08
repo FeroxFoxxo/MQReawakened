@@ -41,14 +41,19 @@ public class LootCatalogInt : IBundledXml
                     if (lootInfo.Name != "LootInfo") continue;
 
                     var objectId = -1;
+                    var doWheel = true;
                     var bananaRewards = new List<BananaReward>();
                     var itemRewards = new List<ItemReward>();
+                    var weightRange = 1;
 
                     foreach (XmlAttribute lootAttributes in lootInfo.Attributes)
                         switch (lootAttributes.Name)
                         {
                             case "objectId":
                                 objectId = int.Parse(lootAttributes.Value);
+                                continue;
+                            case "doLootWheel":
+                                doWheel = bool.Parse(lootAttributes.Value);
                                 continue;
                         }
 
@@ -83,6 +88,10 @@ public class LootCatalogInt : IBundledXml
                                     }
 
                                 var itemList = reward.GetXmlItems();
+                                foreach(var item in itemList)
+                                {
+                                    weightRange += item.Weight;
+                                }
 
                                 itemRewards.Add(new ItemReward(itemList, rewardAmount));
                                 break;
@@ -91,7 +100,7 @@ public class LootCatalogInt : IBundledXml
                                 break;
                         }
 
-                    LootCatalog.TryAdd(objectId, new LootModel(objectId, bananaRewards, itemRewards));
+                    LootCatalog.TryAdd(objectId, new LootModel(objectId, bananaRewards, itemRewards, doWheel, weightRange));
                 }
             }
         }

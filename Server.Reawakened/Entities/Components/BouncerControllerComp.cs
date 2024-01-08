@@ -11,6 +11,8 @@ public class BouncerControllerComp : Component<BouncerController>
     public float BounceHorizontalVelocity => ComponentData.BounceHorizontalVelocity;
     public float BounceHorizontalInputVelocity => ComponentData.BounceHorizontalInputVelocity;
 
+    public override void InitializeComponent() => base.InitializeComponent();
+
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
         var bouncer = new Bouncer_SyncEvent(syncEvent);

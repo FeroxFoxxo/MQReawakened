@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -53,7 +54,7 @@ public class UseSlot : ExternalProtocol
                 HandleConsumable(usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
-                HandleMeleeWeapon(position, direction);
+                HandleMeleeWeapon(usedItem, position, direction);
                 break;
             default:
                 Logger.LogError("Could not find how to handle item action type {ItemAction} for user {UserId}",
@@ -70,7 +71,7 @@ public class UseSlot : ExternalProtocol
                 continue;
 
             var statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
+                effect.TypeId, effect.Value, effect.Duration, true, item.PrefabName, true);
 
             Player.SendSyncEventToPlayer(statusEffect);
         }
@@ -81,28 +82,26 @@ public class UseSlot : ExternalProtocol
 
     private void HandleRangedWeapon(Vector3Model position, int direction, ItemDescription usedItem)
     {
-        var isLeft = direction > 0;
+        var rand = new Random();
+        var prjId = Math.Abs(rand.Next());
 
-        position.X += isLeft ? -3 : 3;
-        position.Y += 1;
+        while (Player.Room.GameObjectIds.Contains(prjId))
+            prjId = Math.Abs(rand.Next());
 
-        var bulletDirection = isLeft ? 7 : -7;
-
-        var prefabName = usedItem.PrefabName;
-
-        var projectile = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            position.X, position.Y, position.Z, bulletDirection, 0, 0, 0, prefabName);
-
-        Player.Room.SendSyncEvent(projectile);
+        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem);
+        
+        Player.Room.Projectiles.Add(prjId, prj);
     }
 
-    private void HandleMeleeWeapon(Vector3Model position, int direction)
+    private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        AiHealth_SyncEvent aiEvent = null;
-
         var monsters = new List<GameObjectModel>();
 
         var planeName = position.Z > 10 ? "Plane1" : "Plane0";
+
+        var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time, position.X, position.Y, position.Z, direction, 1, 1, 0, usedItem.PrefabName);
+        Player.Room.SendSyncEvent(hitEvent);
+
         position.Z = 0;
 
         foreach (var obj in
@@ -133,81 +132,12 @@ public class UseSlot : ExternalProtocol
                     if (component is TriggerCoopControllerComp triggerCoopEntity)
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
 
-            switch (prefabName)
-            {
-                case "PF_R01_Barrel01":
-                case "PF_SHD_Barrel01":
-                case "PF_CRS_BarrelNewbZone01":
-                case "PF_CRS_BARREL01":
-                case "PF_OUT_BARREL03":
-                case "PF_WLD_Breakable01":
-                case "PF_BON_BreakableUrn01":
-                case "PF_EVT_HallwnPumpkinFloatBRK":
-                case "PF_EVT_XmasBrkIceCubeLoot01":
-                case "PF_EVT_XmasBrkIceCubeLoot02":
-                case "PF_EVT_XmasBrkIceCube02":
-                    DestroyObject(obj);
-                    break;
-            }
+                    else if (component is BreakableEventControllerComp breakableObjEntity)
+                        breakableObjEntity.Destroy(Player);
 
-            aiEvent = new AiHealth_SyncEvent(objectId.ToString(),
-                Player.Room.Time, 0, 100, 0, 0, "now", false, true);
-
-            foreach (var entinty in Player.Room.Entities.Values)
-                foreach (var component in entinty)
-                    if (component is HazardControllerComp triggerCoopEntity ||
-                        component.PrefabName.Contains("Spawner")) //Temp until BreakableEventControllerComp is added.              
-                        Player.Room.SendSyncEvent(aiEvent);
+                    else if (component is InterObjStatusComp enemyEntity)
+                        enemyEntity.SendDamageEvent(Player);
         }
-    }
-
-    private void DestroyObject(GameObjectModel obj)
-    {
-        var random = new Random();
-        var randomItem = random.Next(1, 4);
-        var itemReward = 0;
-
-        switch (randomItem)
-        {
-            case 1:
-                itemReward = 404;
-                break;
-            case 2:
-                itemReward = 1568;
-                break;
-            case 3:
-                itemReward = 510;
-                break;
-        }
-
-        var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                        Player.Room.Time, 0, 100, 0, 0, "now", false, false);
-
-        Logger.LogInformation("Object name: {args1} Object Id: {args2}",
-            obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
-
-        Player.Room.SendSyncEvent(aiEvent);
-
-        if (obj.ObjectInfo.PrefabName is not "PF_EVT_XmasBrkIceCube02" and not "PF_EVT_HallwnPumpkinFloatBRK")
-            Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
-
-        switch (randomItem)
-        {
-            case 1:
-                itemReward = 1613;
-                break;
-            case 2:
-                itemReward = 1618;
-                break;
-            case 3:
-                itemReward = 1616;
-                break;
-        }
-
-        if (obj.ObjectInfo.PrefabName == "PF_EVT_HallwnPumpkinFloatBRK")
-            Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
-
-        Player.SendUpdatedInventory(false);
     }
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item, int hotbarSlotId)

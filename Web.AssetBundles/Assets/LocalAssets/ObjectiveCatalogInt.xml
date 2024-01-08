@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ObjectiveCatalogs>
+    <Objective prefabName="GoToTrigger" itemId="None"/>
     <Objective prefabName="GoToTrigger" itemId="315035194"/>
+    <Objective prefabName="PF_GLB_InvisibleTrigger01" itemId="None"/>
+    <Objective prefabName="COL_CRS_BananaIdol" itemId="372"/>
+    <Objective prefabName="Col_KNI_SharpenStone01" itemId="3077"/>
+    <Objective prefabName="Col_KNI_SharpenStone01" itemId="2878"/>
+    <Objective prefabName="Col_SHD_Lantern02" itemId="None"/>
     <Objective prefabName="PF_Spite_Spiderling_Boss01" itemId="1555909043"/>
 </ObjectiveCatalogs>

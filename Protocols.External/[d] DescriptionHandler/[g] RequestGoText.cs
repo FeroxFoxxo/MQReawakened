@@ -13,6 +13,7 @@ public class RequestGoText : ExternalProtocol
     {
         var gameObjectId = message[5];
 
-        Logger.LogError("Unknown text id for game object: {GOId}", gameObjectId);
+        // %dg is not used anywhere else but portals, so the all id fields are unnecessary.
+        SendXt("dg", gameObjectId, 1 ,1, 1);
     }
 }

@@ -43,7 +43,10 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
         AddCommand(new ChatCommand("openDoors", "", OpenDoors));
+        AddCommand(new ChatCommand("godmode", "", GodMode));
         AddCommand(new ChatCommand("save", "", SaveLevel));
+        AddCommand(new ChatCommand("openVines", "", OpenVines));
+        AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
@@ -89,6 +92,43 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
+    private bool GodMode(Player player, string[] args)
+    {
+        var items = config.SingleItemKit
+            .Select(itemCatalog.GetItemFromId)
+            .ToList();
+
+        foreach (var itemId in config.StackedItemKit)
+        {
+            var stackedItem = itemCatalog.GetItemFromId(itemId);
+
+            for (var i = 0; i < config.AmountToStack; i++)
+                items.Add(stackedItem);
+        }
+
+        player.Character.AddKit(items, 1);
+        player.SendUpdatedInventory(false);
+        player.AddSlots(true);
+
+        player.AddBananas(config.CashKitAmount);
+        player.AddNCash(config.CashKitAmount);
+        player.SendCashUpdate();
+
+        player.LevelUp(config.MaxLevel, logger);
+        player.AddPoints();
+        player.DiscoverAllTribes();
+
+        player.Character.Data.CurrentLife = player.Character.Data.MaxLife;
+
+        var health = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, player.Character.Data.MaxLife, player.Character.Data.MaxLife, "now");
+        player.Room.SendSyncEvent(health);
+
+        var heal = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, (int)ItemEffectType.Healing, config.HealAmount, 1, true, player.GameObjectId.ToString(), true);
+        player.Room.SendSyncEvent(heal);
+
+        return true;
+    }
+
     private bool OpenDoors(Player player, string[] args)
     {
         foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
@@ -101,6 +141,22 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
                 triggerEntity.Trigger(true);
             }
         }
+
+        return true;
+    }
+
+    private bool GetRoomEntityList(Player player, string[] args)
+    {
+        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+            Console.WriteLine(entityComponent);
+        return true;
+    }
+
+    private bool OpenVines(Player player, string[] args)
+    {
+        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+            if (entityComponent is MysticCharmTargetComp vineEntity)
+                vineEntity.Charm(player);
 
         return true;
     }
@@ -358,6 +414,15 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         return true;
     }
 
+    private bool GetPlayerId(Player player, string[] args)
+    {
+        Log($"{player.CharacterName} has id of {player.GameObjectId}", player);
+        return true;
+    }
+
+    [GeneratedRegex("[^A-Za-z0-9]+")]
+    private static partial Regex AlphanumericRegex();
+    
     private bool ClosestEntity(Player player, string[] args)
     {
         var plane = player.GetPlaneEntities();
