@@ -28,7 +28,7 @@ public class AiStateSyncEvent()
         return sb.ToString();
     }
 
-    private string GetStates(GameObjectComponents states)
+    private static string GetStates(GameObjectComponents states)
     {
         var sb = new SeparatedStringBuilder('#');
 
@@ -38,7 +38,7 @@ public class AiStateSyncEvent()
         return sb.ToString();
     }
 
-    private string GetState(KeyValuePair<string, ComponentSettings> state)
+    private static string GetState(KeyValuePair<string, ComponentSettings> state)
     {
         var sb = new SeparatedStringBuilder('~');
 

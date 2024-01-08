@@ -6,7 +6,7 @@ namespace Server.Base.Timers;
 
 public class Timer
 {
-    public delegate void TimerCallback();
+    public delegate void TimerCallback(object _);
 
     private readonly TimerThread _timerThread;
 

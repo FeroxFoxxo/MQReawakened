@@ -76,7 +76,7 @@ public class ServerConsole : IService
             "crash",
             "Forces an exception to be thrown.",
             NetworkType.Server,
-            _ => _timerThread.DelayCall(() => throw new Exception("Forced Crash"))
+            _ => _timerThread.DelayCall((object _) => throw new Exception("Forced Crash"), null)
         );
 
         DisplayHelp();
