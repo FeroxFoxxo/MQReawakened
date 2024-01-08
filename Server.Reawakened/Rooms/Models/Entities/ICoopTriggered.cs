@@ -2,7 +2,7 @@
 
 namespace Server.Reawakened.Rooms.Models.Entities;
 
-public interface ITriggerable
+public interface ICoopTriggered
 {
     public void TriggerStateChange(TriggerType triggerType, bool triggered);
 }

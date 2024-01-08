@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
+public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 {
     private int _activations;
     private int _deactivations;
@@ -129,7 +129,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
         var entityComponents = Room.Entities[Id];
 
         foreach (var component in entityComponents)
-            if (component is ITriggerRecieveable recieveable)
+            if (component is IRecieverTriggered recieveable)
                 recieveable.RecievedTrigger(activated);
 
         SendTriggerState(activated);

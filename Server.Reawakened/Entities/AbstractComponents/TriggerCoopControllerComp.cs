@@ -341,7 +341,7 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
             if (Room.Entities.TryGetValue(trigger.Key, out var triggers))
                 if (triggers.Count > 0)
                 {
-                    var triggerableEntities = triggers.OfType<ITriggerable>().ToArray();
+                    var triggerableEntities = triggers.OfType<ICoopTriggered>().ToArray();
 
                     if (triggerableEntities.Length != 0)
                         foreach (var triggeredEntity in triggerableEntities)

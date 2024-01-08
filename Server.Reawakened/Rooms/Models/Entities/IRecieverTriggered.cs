@@ -1,6 +1,6 @@
 ﻿namespace Server.Reawakened.Rooms.Models.Entities;
 
-public interface ITriggerRecieveable
+public interface IRecieverTriggered
 {
     public void RecievedTrigger(bool triggered);
 }

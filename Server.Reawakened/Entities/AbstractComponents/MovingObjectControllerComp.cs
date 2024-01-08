@@ -5,7 +5,7 @@ using System;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable, ITriggerRecieveable where T : MovingObjectController
+public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable, IRecieverTriggered where T : MovingObjectController
 {
     public IMovement Movement;
     public float InitialProgressRatio => ComponentData.InitialProgressRatio;
@@ -14,7 +14,7 @@ public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable, I
 
     public override void InitializeComponent()
     {
-        if (!Room.Entities[Id].OfType<ITriggerable>().Any())
+        if (!Room.Entities[Id].OfType<ICoopTriggered>().Any())
             return;
 
         Movement?.Activate(Room.Time);
