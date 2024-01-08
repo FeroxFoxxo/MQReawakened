@@ -36,7 +36,7 @@ public static class NpcExtensions
                         Order = q.Value.Order
                     })
                 };
-                character.Data.QuestLog.Add(questModel);
+                  character.Data.QuestLog.Add(questModel);
             }
 
             player.SendXt("na", questModel, setActiveQuest ? 1 : 0);

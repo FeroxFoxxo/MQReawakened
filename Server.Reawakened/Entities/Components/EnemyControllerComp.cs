@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -17,6 +18,10 @@ public class EnemyControllerComp : Component<EnemyController>
     public Vector3 EnemyDisplayNamePosition => ComponentData.EnemyDisplayNamePosition;
     public Color EnemyDisplayNameColor => ComponentData.EnemyDisplayNameColor;
     public EnemyScalingType EnemyScalingType => ComponentData.EnemyScalingType;
+    public bool CanAutoScale => ComponentData.CanAutoScale;
+    public bool CanAutoScaleResistance => ComponentData.CanAutoScaleResistance;
+    public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
+
     public ILogger<EnemyControllerComp> Logger { get; set; }
 
     public override void InitializeComponent() => base.InitializeComponent();

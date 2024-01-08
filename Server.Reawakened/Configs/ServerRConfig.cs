@@ -160,7 +160,7 @@ public class ServerRConfig : IRConfig
             "PF_GLB_DoorArena01"
         ];
 
-        MaximumEntitiesToReturnLog = 10;
+        MaximumEntitiesToReturnLog = 15;
 
         HealingStaff = 396;
     }

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
+public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 {
     private int _activations;
     private int _deactivations;
@@ -42,7 +42,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
         Trigger(tEvent.Activate);
     }
 
-    public void TriggerStateChange(TriggerType triggerType, Room room, bool triggered)
+    public void TriggerStateChange(TriggerType triggerType, bool triggered)
     {
         Enabled = triggerType switch
         {
@@ -129,11 +129,8 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
         var entityComponents = Room.Entities[Id];
 
         foreach (var component in entityComponents)
-            if (component is IMoveable moveable)
-                if (activated)
-                    moveable.GetMovement().Activate(Room.Time);
-                else
-                    moveable.GetMovement().Deactivate(Room.Time);
+            if (component is IRecieverTriggered recieveable)
+                recieveable.RecievedTrigger(activated);
 
         SendTriggerState(activated);
     }

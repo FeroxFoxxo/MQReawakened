@@ -267,7 +267,9 @@ public class Room : Timer
             if (component.Id == id)
             {
                 component.Disposed = true;
-                Logger.LogInformation("Disposed component {component} from GameObject {prefabname} with Id {id}", component, component.PrefabName, component.Id);
+
+                Logger.LogInformation("Disposed component {component} from GameObject {prefabname} with Id {id}",
+                    component.GetType().Name, component.PrefabName, component.Id);
             }
     }
 

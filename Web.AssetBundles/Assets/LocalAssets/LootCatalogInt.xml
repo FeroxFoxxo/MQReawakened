@@ -3,6 +3,11 @@
     <Level name="Default">
         <LootInfo objectId="0" doLootWheel="false">
             <Bananas bananaMin="50" bananaMax="100"/>
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+                <Item itemId="1568" count="1" bindingCount="0"/>
+                <Item itemId="510" count="1" bindingCount="0"/>
+            </Items>
         </LootInfo>
     </Level>
     <Level name="The Floating Isles">

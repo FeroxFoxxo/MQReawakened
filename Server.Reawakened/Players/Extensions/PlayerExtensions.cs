@@ -248,7 +248,10 @@ public static class PlayerExtensions
     public static void CheckObjective(this Player player, QuestCatalog quests, ObjectiveCatalogInt objCatalog,
         ObjectiveEnum type, int gameObjectId, string prefabName, int count)
     {
-        if (!objCatalog.ObjectivePrefabs.TryGetValue(prefabName, out var itemId))
+        if (!objCatalog.ObjectivePrefabs.TryGetValue(prefabName, out var itemIds))
+            return;
+
+        if (itemIds == null)
             return;
 
         var character = player.Character.Data;
@@ -265,7 +268,7 @@ public static class PlayerExtensions
                         continue;
 
                 if (objective.ObjectiveType != type ||
-                    objective.ItemId.ToString() != itemId ||
+                    !itemIds.Select(x => int.TryParse(x, out var id) ? id : 0).Contains(objective.ItemId) ||
                     objective.Order > quest.CurrentOrder ||
                     objective.LevelId != player.Character.LevelData.LevelId ||
                     objective.Completed ||

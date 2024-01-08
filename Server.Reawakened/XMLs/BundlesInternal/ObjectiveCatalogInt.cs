@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
@@ -14,7 +15,7 @@ public class ObjectiveCatalogInt : IBundledXml
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<string, string> ObjectivePrefabs;
+    public Dictionary<string, List<string>> ObjectivePrefabs;
 
     public ObjectiveCatalogInt()
     {
@@ -53,15 +54,23 @@ public class ObjectiveCatalogInt : IBundledXml
                             itemId = itemAttributes.Value;
                             break;
                     }
-
-                ObjectivePrefabs.TryAdd(prefabName, itemId);
+                AddItem(prefabName, itemId);
             }
         }
 
         var itemCatalog = Services.GetRequiredService<ItemCatalog>();
 
         foreach (var item in itemCatalog.Items.Values)
-            ObjectivePrefabs.TryAdd(item.PrefabName, item.ItemId.ToString());
+            AddItem(item.PrefabName, item.ItemId.ToString());
+    }
+
+    public void AddItem(string prefabName, string itemId)
+    {
+        if (!ObjectivePrefabs.ContainsKey(prefabName))
+            ObjectivePrefabs.Add(prefabName, []);
+
+        if (!ObjectivePrefabs[prefabName].Contains(itemId))
+            ObjectivePrefabs[prefabName].Add(itemId);
     }
 
     public void FinalizeBundle()
