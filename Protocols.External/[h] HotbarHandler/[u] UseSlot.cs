@@ -146,7 +146,6 @@ public class UseSlot : ExternalProtocol
                     else if (component is InterObjStatusComp enemyEntity)
                         enemyEntity.SendDamageEvent(Player);
                 }
-
             }
         }
     }

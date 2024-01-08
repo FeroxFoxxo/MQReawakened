@@ -10,9 +10,9 @@ public static class PlayerHealExtensions
     {
         foreach (var effect in usedItem.ItemEffects)
         {
-            switch (effect.TypeId)
+            switch ((ItemEffectType) effect.TypeId)
             {
-                case 5:
+                case ItemEffectType.Healing:
                     HealOnce(player, usedItem, serverConfig);
                     break;
             }

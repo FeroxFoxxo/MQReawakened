@@ -4,6 +4,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Minigames;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.BundlesInternal;
 
@@ -65,8 +66,8 @@ public class FinishedMinigame : ExternalProtocol
         var rdmBananaReward = new Random().Next(7, 11 * Player.Character.Data.GlobalLevel);
         var xpReward = Player.Character.Data.ReputationForNextLevel / 11;
 
-        var lootedItems = Server.Reawakened.Players.Models.Character.ArenaModel.GrantLootedItems(LootCatalog, minigameId);
-        var lootableItems = Server.Reawakened.Players.Models.Character.ArenaModel.GrantLootableItems(LootCatalog, minigameId);
+        var lootedItems = ArenaModel.GrantLootedItems(LootCatalog, minigameId);
+        var lootableItems = ArenaModel.GrantLootableItems(LootCatalog, minigameId);
 
         var sb = new SeparatedStringBuilder('<');
 

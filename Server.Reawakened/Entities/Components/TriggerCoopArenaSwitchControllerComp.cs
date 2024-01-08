@@ -2,6 +2,7 @@
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Minigames;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
@@ -39,7 +40,7 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
             {
                 foreach (var member in playersInRoom)
                 {
-                    Players.Models.Character.ArenaModel.SetCharacterIds(member, playersInRoom);
+                    ArenaModel.SetCharacterIds(member, playersInRoom);
                     member.TempData.ArenaModel.HasStarted = true;
                     StartMinigame(member);
                 }
@@ -50,7 +51,7 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
             if (player.TempData.ArenaModel.ShouldStartArena)
             {
                 StartMinigame(player);
-                Players.Models.Character.ArenaModel.SetCharacterIds(player, new List<Player> { player });
+                ArenaModel.SetCharacterIds(player, new List<Player> { player });
             }
         }
     }

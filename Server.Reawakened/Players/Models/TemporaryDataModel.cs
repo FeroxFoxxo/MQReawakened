@@ -1,5 +1,5 @@
-﻿using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.Players.Models.Groups;
+﻿using Server.Reawakened.Players.Models.Groups;
+using Server.Reawakened.Players.Models.Minigames;
 using Server.Reawakened.Players.Models.Trade;
 using Server.Reawakened.Rooms.Models.Planes;
 
