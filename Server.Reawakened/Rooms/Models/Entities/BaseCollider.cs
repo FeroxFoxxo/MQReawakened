@@ -34,18 +34,18 @@ public class BaseCollider
         Room = room;
     }
 
-    public void Update()
+    public static void Update()
     {
     }
 
-    public void OnCollision(BaseCollider collider, SyncEvent syncEvent)
+    public static void OnCollision(BaseCollider collider, SyncEvent syncEvent)
     {
     }
 
     public int[] IsColliding()
     {
         var roomList = Room.Colliders.Values.ToList();
-        List<int> collidedWith = [];
+        List<int> collidedWith = new List<int>();
 
         foreach (var collider in roomList)
         {

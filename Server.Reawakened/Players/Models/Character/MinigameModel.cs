@@ -12,7 +12,7 @@ public class ArenaModel
     public int FourthPlayerId { get; set; }
     public Dictionary<string, float> BestTimeForLevel { get; set; } = [];
 
-    public void SetCharacterIds(Player player, IEnumerable<Player> players)
+    public static void SetCharacterIds(Player player, IEnumerable<Player> players)
     {
         var playersInGroup = players.ToArray();
         player.TempData.ArenaModel.FirstPlayerId = playersInGroup.Length > 0 ? playersInGroup[0].GameObjectId : 0;
@@ -21,7 +21,7 @@ public class ArenaModel
         player.TempData.ArenaModel.FourthPlayerId = playersInGroup.Length > 3 ? playersInGroup[3].GameObjectId : 0;
     }
 
-    public string GrantLootedItems(LootCatalogInt LootCatalog, int arenaId)
+    public static string GrantLootedItems(LootCatalogInt LootCatalog, int arenaId)
     {
         var random = new Random();
         var itemsGotten = new List<ItemModel>();
@@ -34,11 +34,10 @@ public class ArenaModel
 
         var itemsLooted = FormatItemString(randomItemReward, 1);
 
-        Console.WriteLine(itemsLooted.ToString());
         return itemsLooted.ToString();
     }
 
-    public string GrantLootableItems(LootCatalogInt LootCatalog, int arenaId)
+    public static string GrantLootableItems(LootCatalogInt LootCatalog, int arenaId)
     {
         var lootableItems = new SeparatedStringBuilder('|');
 
@@ -52,10 +51,8 @@ public class ArenaModel
         return lootableItems.ToString();
     }
 
-    public string FormatItemString(int itemId, int amount)
+    public static string FormatItemString(int itemId, int amount)
     {
-        Console.WriteLine("ItemId: " + itemId);
-
         var sb = new SeparatedStringBuilder('{');
 
         sb.Append(itemId);

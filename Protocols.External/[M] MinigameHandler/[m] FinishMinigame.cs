@@ -66,8 +66,8 @@ public class FinishedMinigame : ExternalProtocol
         var rdmBananaReward = new Random().Next(7, 11 * Player.Character.Data.GlobalLevel);
         var xpReward = Player.Character.Data.ReputationForNextLevel / 11;
 
-        var lootedItems = Player.TempData.ArenaModel.GrantLootedItems(LootCatalog, minigameId);
-        var lootableItems = Player.TempData.ArenaModel.GrantLootableItems(LootCatalog, minigameId);
+        var lootedItems = Server.Reawakened.Players.Models.Character.ArenaModel.GrantLootedItems(LootCatalog, minigameId);
+        var lootableItems = Server.Reawakened.Players.Models.Character.ArenaModel.GrantLootableItems(LootCatalog, minigameId);
 
         dataList.Add(membersInGroup.ToString());
         dataList.Add(rdmBananaReward.ToString());
@@ -79,7 +79,7 @@ public class FinishedMinigame : ExternalProtocol
         Player.SendCashUpdate();
     }
 
-    private string SplitRewardData(List<string> dataList)
+    private static string SplitRewardData(List<string> dataList)
     {
         var sb = new SeparatedStringBuilder('<');
 

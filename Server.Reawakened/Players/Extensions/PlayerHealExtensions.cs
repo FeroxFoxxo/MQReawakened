@@ -9,8 +9,6 @@ public static class PlayerHealExtensions
     {
         foreach (var effect in usedItem.ItemEffects)
         {
-            Console.WriteLine("Type: " + effect.Type + " " + effect.TypeId);
-
             switch (effect.TypeId)
             {
                 case 5:
