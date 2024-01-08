@@ -63,7 +63,8 @@ public class Room : Timer
 
         Planes = LevelInfo.LoadPlanes(_config);
         Entities = this.LoadEntities(services, out UnknownEntities);
-        Projectiles = new Dictionary<int, ProjectileEntity>();
+        Projectiles = [];
+        
         Colliders = this.LoadColliders();
 
         foreach (var gameObjectId in Planes.Values

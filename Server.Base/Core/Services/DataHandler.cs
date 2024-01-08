@@ -17,6 +17,8 @@ public abstract class DataHandler<T> : IService where T : PersistantData
 
     public Dictionary<int, T> Data;
 
+    public abstract bool HasDefault { get; }
+
     protected DataHandler(EventSink sink, ILogger<T> logger, InternalRConfig rConfig, InternalRwConfig rwConfig)
     {
         Sink = sink;
@@ -75,6 +77,9 @@ public abstract class DataHandler<T> : IService where T : PersistantData
 
     public void CreateInternal(string name)
     {
+        if (!HasDefault)
+            return;
+
         var type = typeof(T).Name.ToLower();
 
         Logger.LogDebug("This server does not have a(n) {Type}.", type);
@@ -88,7 +93,7 @@ public abstract class DataHandler<T> : IService where T : PersistantData
         }
         else
         {
-            Data.Add(Data.Count, t);
+            Add(t);
             Logger.LogDebug("Created {Name}.", type);
         }
     }
@@ -117,5 +122,15 @@ public abstract class DataHandler<T> : IService where T : PersistantData
         Data.TryGetValue(userId, out var type);
 
         return type;
+    }
+
+    public int CreateNewId() => Data.Count + 1;
+
+    public void Add(T entity)
+    {
+        var id = CreateNewId();
+        Data.Add(id, entity);
+        if (entity is PersistantData pd)
+            pd.Id = id;
     }
 }

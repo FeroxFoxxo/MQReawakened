@@ -44,6 +44,7 @@ public class ServerRConfig : IRConfig
     public int[] StackedItemKit { get; }
     public int AmountToStack { get; }
     public int CashKitAmount { get; }
+    public int HealAmount { get; }
 
     public double KickAfterTime { get; }
 
@@ -51,10 +52,11 @@ public class ServerRConfig : IRConfig
     public int AccessRights { get; }
 
     public Dictionary<TribeType, int> TutorialTribe2014 { get; }
-
     public bool Is2014Client { get; set; }
 
     public string[] IgnoredDoors { get; set; }
+
+    public int MaximumEntitiesToReturnLog { get; set; }
 
     public ServerRConfig()
     {
@@ -151,9 +153,12 @@ public class ServerRConfig : IRConfig
         Is2014Client = false;
 
         MaxLevel = 65;
+        HealAmount = 100000;
 
         IgnoredDoors = [
             "PF_GLB_DoorArena01"
         ];
+
+        MaximumEntitiesToReturnLog = 10;
     }
 }

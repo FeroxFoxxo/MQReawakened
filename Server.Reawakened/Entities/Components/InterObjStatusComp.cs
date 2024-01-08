@@ -14,6 +14,7 @@ public class InterObjStatusComp : Component<InterObjStatus>
     public float LifebarOffsetX => ComponentData.LifeBarOffsetX;
     public float LifebarOffsetY => ComponentData.LifeBarOffsetY;
     public ILogger<InterObjStatusComp> Logger { get; set; }
+    
     public override void InitializeComponent()
     {
         //Fix spawn position for duplicate position args when spawners are added
@@ -21,6 +22,7 @@ public class InterObjStatusComp : Component<InterObjStatus>
         Room.Colliders.Add(Id, new BaseCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
         Disposed = false;
     }
+    
     public void SendDamageEvent(Player player)
     {
 

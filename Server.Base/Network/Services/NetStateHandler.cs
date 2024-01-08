@@ -32,7 +32,7 @@ public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
         (from state in Instances
          let account = state.Get<Account>()
          where account != null
-         where account.UserId == userId
+         where account.Id == userId
          select state
     ).FirstOrDefault();
 

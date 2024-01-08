@@ -1,12 +1,19 @@
-﻿using Server.Reawakened.Players;
+﻿using A2m.Server;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Server.Reawakened.Entities.Components;
 
 public class IdolControllerComp : Component<IdolController>
 {
     public int Index => ComponentData.Index;
+
+    public QuestCatalog QuestCatalog { get; set; }
+
+    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
 
     public override object[] GetInitData(Player player)
     {
@@ -33,5 +40,7 @@ public class IdolControllerComp : Component<IdolController>
             new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true);
 
         player.SendSyncEventToPlayer(collectedEvent);
+
+        player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.IdolCollect, Id, "COL_CRS_BananaIdol", 1);
     }
 }

@@ -1,12 +1,9 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
-using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity;
 public class ProjectileEntity : Component<ProjectileController>
@@ -47,13 +44,11 @@ public class ProjectileEntity : Component<ProjectileController>
         // The magic number here is the default game tickrate. This will be changed in a future commit
         Position.X += Speed * 0.015625f;
         PrjCollider.Position.x = Position.X;
- 
+        
         var Collisions = PrjCollider.IsColliding();
         if (Collisions.Length > 0)
             foreach (var collision in Collisions)
-        {
-            ProjectileHit(collision.ToString());
-        }
+                ProjectileHit(collision.ToString());
 
         if (LifeTime <= Player.Room.Time)
             ProjectileHit("-1");

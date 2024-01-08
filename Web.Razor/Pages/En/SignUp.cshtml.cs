@@ -94,7 +94,7 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
             return NotFound();
         }
 
-        var userInfo = userInfoHandler.Create(ip, account.UserId, Gender, Date.Value, Region, "Website");
+        var userInfo = userInfoHandler.Create(ip, account.Id, Gender, Date.Value, Region, "Website");
 
         if (account == null)
         {

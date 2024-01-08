@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Protocols.External._i__InventoryHandler;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
@@ -155,7 +156,7 @@ public class UseSlot : ExternalProtocol
 
             if (effect.Type is ItemEffectType.Healing)
                 Player.HealCharacter(usedItem);
-
+                
             statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                 effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
         }
@@ -173,19 +174,15 @@ public class UseSlot : ExternalProtocol
 
     private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var isLeft = direction > 0;
+        var rand = new Random();
+        var prjId = Math.Abs(rand.Next());
 
-        position.X += isLeft ? -3 : 3;
-        position.Y += 1;
+        while (Player.Room.GameObjectIds.Contains(prjId))
+            prjId = Math.Abs(rand.Next());
 
-        var bulletDirection = isLeft ? 7 : -7;
-
-        var prefabName = usedItem.PrefabName;
-
-        var projectile = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            position.X, position.Y, position.Z, bulletDirection, 0, 4f, 0, prefabName);
-
-        Player.Room.SendSyncEvent(projectile);
+        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem);
+        
+        Player.Room.Projectiles.Add(prjId, prj);
     }
 
     private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
@@ -193,6 +190,10 @@ public class UseSlot : ExternalProtocol
         var monsters = new List<GameObjectModel>();
 
         var planeName = position.Z > 10 ? "Plane1" : "Plane0";
+
+        var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time, position.X, position.Y, position.Z, direction, 1, 1, 0, usedItem.PrefabName);
+        Player.Room.SendSyncEvent(hitEvent);
+
         position.Z = 0;
 
         var meleeWeapon = ItemCatalog.GetItemFromId(usedItem.ItemId);
@@ -228,66 +229,11 @@ public class UseSlot : ExternalProtocol
                 foreach (var component in entityComponents)
                     if (component is TriggerCoopControllerComp triggerCoopEntity)
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
-
-            foreach (var entinty in Player.Room.Entities.Values)
-                foreach (var component in entinty)
-                    if (component is HazardControllerComp or BreakableEventControllerComp)
-                        DestroyObject(component.Entity.GameObject);
-
-            Logger.LogInformation("Found close game object {PrefabName} with Id {ObjectId}", prefabName, objectId);
+                    else if (component is BreakableEventControllerComp breakableObjEntity)
+                        breakableObjEntity.Destroy(Player);
+                    else if (component is InterObjStatusComp enemyEntity)
+                        enemyEntity.SendDamageEvent(Player);
         }
-    }
-
-    private void DestroyObject(GameObjectModel obj)
-    {
-        var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(), Player.Room.Time,
-            0, 100, 0, 0, "now", false, false);
-        Player.Room.SendSyncEvent(aiEvent);
-
-        //Temp gained items for event levels. Needs XML system & revamp.
-        var random = new System.Random();
-        var randomItem = random.Next(1, 4);
-        var itemReward = 0;
-
-        //Temp mini loot system.
-        switch (randomItem)
-        {
-            case 1:
-                itemReward = 404;
-                break;
-            case 2:
-                itemReward = 1568;
-                break;
-            case 3:
-                itemReward = 510;
-                break;
-        }
-
-
-        Player.Room.SendSyncEvent(aiEvent);
-
-        if (obj.ObjectInfo.PrefabName is not "PF_EVT_XmasBrkIceCube02" and not "PF_EVT_HallwnPumpkinFloatBRK")
-            Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
-
-        switch (randomItem)
-        {
-            case 1:
-                itemReward = 1613;
-                break;
-            case 2:
-                itemReward = 1618;
-                break;
-            case 3:
-                itemReward = 1616;
-                break;
-        }
-        if (obj.ObjectInfo.PrefabName is "PF_EVT_HallwnPumpkinFloatBRK" || obj.ObjectInfo.PrefabName.Contains("PF_EVT_XmasBrkIceCubeLoot"))
-            Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
-
-        Player.SendUpdatedInventory(false);
-
-        Logger.LogInformation("Object name: {args1} Object Id: {args2}",
-            obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
     }
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item, int hotbarSlotId)

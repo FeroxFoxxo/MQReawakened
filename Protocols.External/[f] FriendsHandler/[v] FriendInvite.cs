@@ -8,12 +8,12 @@ public class FriendInvite : ExternalProtocol
 {
     public override string ProtocolName => "fv";
 
-    public PlayerHandler PlayerHandler { get; set; }
+    public DatabaseContainer DatabaseContainer { get; set; }
 
     public override void Run(string[] message)
     {
         var characterName = message[5];
-        var invitedCharacter = PlayerHandler.GetPlayerByName(characterName);
+        var invitedCharacter = DatabaseContainer.GetPlayerByName(characterName);
 
         invitedCharacter?.SendXt("fv",
             Player.CharacterName,

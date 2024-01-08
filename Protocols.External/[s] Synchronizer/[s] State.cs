@@ -47,9 +47,7 @@ public class State : ExternalProtocol
 
         //This part exists because RequestRespawn seemingly just... sends the wrong id?
         if (syncEvent.Type.Equals(SyncEvent.EventType.RequestRespawn))
-        {
             entityId = Player.GameObjectId;
-        }
 
         if (room.Players.TryGetValue(entityId, out var newPlayer))
         {
@@ -160,9 +158,7 @@ public class State : ExternalProtocol
         {
             foreach (var component in entityComponents)
                 if (!component.Disposed)
-                {
                     component.RunSyncedEvent(syncEvent, Player);
-                }
         }
         else
         {
@@ -191,7 +187,7 @@ public class State : ExternalProtocol
             uniqueType = "Player";
 
             uniqueIdentifier = newPlayer.Character != null ?
-                $"{newPlayer.CharacterName} ({newPlayer.Character.Data.CharacterId})" :
+                $"{newPlayer.CharacterName} ({newPlayer.CharacterId})" :
                 "Unknown";
         }
 

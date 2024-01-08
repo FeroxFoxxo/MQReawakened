@@ -27,7 +27,7 @@ public abstract class BaseComponent
     {
     }
 
-    public virtual object[] GetInitData(Player player) => Array.Empty<object>();
+    public virtual object[] GetInitData(Player player) => [];
 
     public virtual void SendDelayedData(Player player)
     {

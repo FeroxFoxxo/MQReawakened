@@ -18,7 +18,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
     public LootCatalogInt LootCatalog { get; set; }
 
-    public override object[] GetInitData(Player player) => new object[] { Collected ? 0 : 1 };
+    public override object[] GetInitData(Player player) => [Collected ? 0 : 1];
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
