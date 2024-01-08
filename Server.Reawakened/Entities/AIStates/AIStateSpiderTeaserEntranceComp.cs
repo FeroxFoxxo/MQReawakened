@@ -11,5 +11,5 @@ public class AIStateSpiderTeaserEntranceComp : Component<AIStateSpiderTeaserEntr
     public float MinimumLifeRatioAccepted => ComponentData.MinimumLifeRatioAccepted;
     public float LifeRatioAtHeal => ComponentData.LifeRatioAtHeal;
 
-    public override object[] GetInitData(Player player) => ["ST", DelayBeforeEntranceDuration];
+    //public override object[] GetInitData(Player player) => ["ST", DelayBeforeEntranceDuration];
 }
