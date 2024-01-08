@@ -4,11 +4,6 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Reawakened.Entities.Components;
 public class QuestCollectibleControllerComp : Component<QuestCollectibleController>
@@ -19,7 +14,7 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
     public QuestCatalog QuestCatalog { get; set; }
     public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
 
-    public override object[] GetInitData(Player player) => new object[] { Collected ? 0 : 1 };
+    public override object[] GetInitData(Player player) => [Collected ? 0 : 1];
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {

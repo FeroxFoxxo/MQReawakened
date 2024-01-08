@@ -7,11 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Entities\Components\AIEventControllerComp.cs" />
-      <Compile Remove="Entities\Components\BaseSpawnerControllerComp.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\Server.Base\Server.Base.csproj" />
     </ItemGroup>
 

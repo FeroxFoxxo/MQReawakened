@@ -45,7 +45,7 @@ public class BaseCollider
     public int[] IsColliding()
     {
         var roomList = Room.Colliders.Values.ToList();
-        List<int> collidedWith = new List<int>();
+        List<int> collidedWith = [];
 
         foreach (var collider in roomList)
         {

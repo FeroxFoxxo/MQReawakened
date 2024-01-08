@@ -1,6 +1,5 @@
 ﻿using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using UnityEngine;
 
@@ -20,6 +19,7 @@ public class MysticCharmTargetComp : Component<MysticCharmTarget>
             Charm(player);
         base.RunSyncedEvent(syncEvent, player);
     }
+
     public void Charm(Player player)
     {
         IsOpened = true;

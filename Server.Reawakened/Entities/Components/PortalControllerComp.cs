@@ -21,7 +21,7 @@ public class PortalControllerComp : Component<PortalController>
     public ILogger<PortalControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) =>
-        new object[] { string.Empty };
+        [string.Empty];
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {

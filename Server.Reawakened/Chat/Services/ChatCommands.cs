@@ -1,14 +1,12 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -16,7 +14,6 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.RegularExpressions;
-using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -46,8 +43,6 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("save", "", SaveLevel));
         AddCommand(new ChatCommand("openVines", "", OpenVines));
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
-        //AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
-        //AddCommand(new ChatCommand("getRoomEntityList", "", GetRoomEntityList));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -107,20 +102,27 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         player.Character.AddKit(items, 1);
         player.SendUpdatedInventory(false);
-        player.AddBananas(100000);
-        player.AddNCash(100000);
-        player.AddPoints();
-        player.LevelUp(65, logger);
-        player.DiscoverAllTribes();
-        player.SendCashUpdate();
         player.AddSlots(true);
+
+        player.AddBananas(config.CashKitAmount);
+        player.AddNCash(config.CashKitAmount);
+        player.SendCashUpdate();
+
+        player.LevelUp(config.MaxLevel, logger);
+        player.AddPoints();
+        player.DiscoverAllTribes();
+
         player.Character.Data.CurrentLife = player.Character.Data.MaxLife;
+
         var health = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, player.Character.Data.MaxLife, player.Character.Data.MaxLife, "now");
-        var t = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, (int)ItemEffectType.Healing, 100000, 1, true, player.GameObjectId.ToString(), true);
         player.Room.SendSyncEvent(health);
-        player.Room.SendSyncEvent(t);
+
+        var heal = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, (int)ItemEffectType.Healing, config.HealAmount, 1, true, player.GameObjectId.ToString(), true);
+        player.Room.SendSyncEvent(heal);
+
         return true;
     }
+
     private bool OpenDoors(Player player, string[] args)
     {
         foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
@@ -147,12 +149,8 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
     private bool OpenVines(Player player, string[] args)
     {
         foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
-        {
             if (entityComponent is MysticCharmTargetComp vineEntity)
-            {
                 vineEntity.Charm(player);
-            }
-        }
 
         return true;
     }

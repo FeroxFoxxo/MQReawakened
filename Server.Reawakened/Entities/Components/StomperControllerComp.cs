@@ -1,7 +1,5 @@
-﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.Entities.AbstractComponents;
-using Server.Reawakened.XMLs.Extensions;
-using UnityEngine;
+﻿using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Enums;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -13,13 +11,7 @@ public class StomperControllerComp : MovingObjectControllerComp<StomperControlle
     public float UpMoveTime => ComponentData.UpMoveTime;
     public float VerticalDistance => ComponentData.VerticalDistance;
     public bool Hazard => ComponentData.Hazard;
-    public enum StomperState
-    {
-        WaitUp,
-		GoingDown,
-		WaitDown,
-		GoingUp
-    }
+
     private float _firstStep;
     private float _secondStep;
     private float _thirdStep;

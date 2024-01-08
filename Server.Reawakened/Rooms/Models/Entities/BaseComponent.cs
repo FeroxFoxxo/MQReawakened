@@ -2,7 +2,6 @@
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Planes;
 using System.Text;
-using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
 
@@ -27,7 +26,7 @@ public abstract class BaseComponent
     {
     }
 
-    public virtual object[] GetInitData(Player player) => Array.Empty<object>();
+    public virtual object[] GetInitData(Player player) => [];
 
     public virtual void SendDelayedData(Player player)
     {

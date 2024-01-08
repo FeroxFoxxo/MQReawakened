@@ -44,6 +44,7 @@ public class ServerRConfig : IRConfig
     public int[] StackedItemKit { get; }
     public int AmountToStack { get; }
     public int CashKitAmount { get; }
+    public int HealAmount { get; }
 
     public double KickAfterTime { get; }
 
@@ -151,6 +152,7 @@ public class ServerRConfig : IRConfig
         Is2014Client = false;
 
         MaxLevel = 65;
+        HealAmount = 100000;
 
         IgnoredDoors = [
             "PF_GLB_DoorArena01"

@@ -2,11 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
-using Server.Base.Network;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Helpers;
-using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using System.Reflection;
@@ -164,7 +161,7 @@ public static class LoadRoomData
                                 "Found invalid {Count} amount of initialization methods for {EntityId} ({EntityType})",
                                 methods.Length, entity.Key, internalType.Name);
                         else
-                            methods.First().Invoke(instancedComponent, new[] { dataObj, entityData });
+                            methods.First().Invoke(instancedComponent, [dataObj, entityData]);
 
                         if (!entities.ContainsKey(entity.Key))
                             entities.Add(entity.Key, []);

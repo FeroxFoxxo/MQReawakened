@@ -47,13 +47,10 @@ public class State : ExternalProtocol
 
         //This part exists because RequestRespawn seemingly just... sends the wrong id?
         if (syncEvent.Type.Equals(SyncEvent.EventType.RequestRespawn))
-        {
             entityId = Player.GameObjectId;
-        }
 
         if (room.Players.TryGetValue(entityId, out var newPlayer))
         {
-            
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.ChargeAttack:
@@ -160,9 +157,7 @@ public class State : ExternalProtocol
         {
             foreach (var component in entityComponents)
                 if (!component.Disposed)
-                {
                     component.RunSyncedEvent(syncEvent, Player);
-                }
         }
         else
         {

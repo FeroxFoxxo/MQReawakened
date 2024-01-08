@@ -16,7 +16,8 @@ public class HarvestControllerComp : Component<HarvestController>
     public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
     public LootCatalogInt LootCatalog { get; set; }
     public ILogger<HarvestControllerComp> Logger { get; set; }
-    public override object[] GetInitData(Player player) => new object[] { Collected ? 0 : 1 };
+    public override object[] GetInitData(Player player) => [Collected ? 0 : 1];
+
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
         base.RunSyncedEvent(syncEvent, player);

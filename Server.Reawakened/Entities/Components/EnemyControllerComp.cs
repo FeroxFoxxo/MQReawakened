@@ -1,11 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components;
@@ -22,14 +18,8 @@ public class EnemyControllerComp : Component<EnemyController>
     public Color EnemyDisplayNameColor => ComponentData.EnemyDisplayNameColor;
     public EnemyScalingType EnemyScalingType => ComponentData.EnemyScalingType;
     public ILogger<EnemyControllerComp> Logger { get; set; }
-    public override void InitializeComponent()
-    {
-        base.InitializeComponent();
-    }
-    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
-    {
-        base.RunSyncedEvent(syncEvent, player);
-    }
+    public override void InitializeComponent() => base.InitializeComponent();
+    public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => base.RunSyncedEvent(syncEvent, player);
 
     public void SendDamageEvent(Player player)
     {
