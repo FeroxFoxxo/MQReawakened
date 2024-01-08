@@ -7,8 +7,9 @@ namespace Server.Reawakened.Entities.AbstractComponents;
 
 public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable, IRecieverTriggered where T : MovingObjectController
 {
-    public IMovement Movement;
     public float InitialProgressRatio => ComponentData.InitialProgressRatio;
+
+    public IMovement Movement;
 
     public IMovement GetMovement() => Movement;
 

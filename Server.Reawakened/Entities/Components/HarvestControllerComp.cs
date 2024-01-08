@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Server.Reawakened.Entities.Components;
-public class HarvestControllerComp : Component<HarvestController>
+public class HarvestControllerComp : BaseChestControllerComp<HarvestController>
 {
     public bool Collected;
     public ItemCatalog ItemCatalog { get; set; }
