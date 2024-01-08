@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Entities.AbstractComponents;
-using Server.Reawakened.Entities.Enums;
 
 namespace Server.Reawakened.Entities.Components;
 

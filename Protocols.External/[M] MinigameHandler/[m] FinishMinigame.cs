@@ -1,16 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
-using RaceDefines;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Models.LootRewards;
-using static Analytics;
 
 namespace Protocols.External._M__MinigameHandler;
 public class FinishedMinigame : ExternalProtocol

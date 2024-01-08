@@ -1,13 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Players.Models.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Protocols.External._e__EmailHandler;
 public class GetMessageDetail : ExternalProtocol

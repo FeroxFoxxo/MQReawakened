@@ -1,14 +1,5 @@
-﻿using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.XMLs.Bundles;
+﻿using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Models.LootRewards;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Reawakened.Players.Models.Character;
 public class ArenaModel

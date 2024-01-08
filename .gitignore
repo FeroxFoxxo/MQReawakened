@@ -363,4 +363,3 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /Server.Reawakened/Dependencies/*.dll
-/Server.Reawakened/Entities/Components/BaseSpawnerControllerComp.cs

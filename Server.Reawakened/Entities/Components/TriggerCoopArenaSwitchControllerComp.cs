@@ -1,21 +1,8 @@
-﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
-using Server.Base.Logging;
-using Server.Reawakened.Network.Extensions;
+﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.BundlesInternal;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Analytics;
 
 namespace Server.Reawakened.Entities.Components;
 public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSwitchController>

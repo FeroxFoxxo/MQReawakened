@@ -1,11 +1,5 @@
 ﻿using A2m.Server;
-using Server.Base.Core.Extensions;
 using Server.Reawakened.Players.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Reawakened.Players.Models.System;
 public class EmailMessageModel

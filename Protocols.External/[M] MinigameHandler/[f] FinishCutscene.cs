@@ -1,9 +1,6 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Rooms.Extensions;
-using static Analytics;
 
 namespace Protocols.External._M__MinigameHandler;
 public class FinishCutscene : ExternalProtocol
