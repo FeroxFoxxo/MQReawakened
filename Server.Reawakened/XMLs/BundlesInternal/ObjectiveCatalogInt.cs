@@ -14,7 +14,7 @@ public class ObjectiveCatalogInt : IBundledXml
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<string, List<string>> ObjectivePrefabs;
+    public Dictionary<string, List<int>> ObjectivePrefabs;
 
     public ObjectiveCatalogInt()
     {
@@ -63,10 +63,12 @@ public class ObjectiveCatalogInt : IBundledXml
             AddItem(item.PrefabName, item.ItemId.ToString());
     }
 
-    public void AddItem(string prefabName, string itemId)
+    public void AddItem(string prefabName, string item)
     {
         if (!ObjectivePrefabs.ContainsKey(prefabName))
             ObjectivePrefabs.Add(prefabName, []);
+
+        var itemId = int.TryParse(item, out var id) ? id : default;
 
         if (!ObjectivePrefabs[prefabName].Contains(itemId))
             ObjectivePrefabs[prefabName].Add(itemId);

@@ -31,6 +31,22 @@ public class AIStateSpiderTeaserEntranceComp : Component<AIStateSpiderTeaserEntr
             };
 
             Room.SendSyncEvent(syncEvent.GetSyncEvent(Id, Room));
+
+            Task.Delay(Convert.ToInt32(IntroDuration) * 1000);
+
+            var drop = Room.Entities[Id].First(x => x is AIStateSpiderDropComp) as AIStateSpiderDropComp;
+
+            var syncEvent2 = new AiStateSyncEvent()
+            {
+                InStates = {
+                    {"AIStateSpiderTeaserEntrance", new ComponentSettings() {"ST", DelayBeforeEntranceDuration.ToString()}}
+                },
+                GoToStates = {
+                    {"AIStateSpiderDrop", new ComponentSettings() {Position.X.ToString(), drop.FloorY.ToString(), Position.Z.ToString()}}
+                }
+            };
+
+            Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, Room));
         }
     }
 }

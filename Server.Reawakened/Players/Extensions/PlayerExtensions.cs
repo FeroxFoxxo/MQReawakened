@@ -268,7 +268,7 @@ public static class PlayerExtensions
                         continue;
 
                 if (objective.ObjectiveType != type ||
-                    !itemIds.Select(x => int.TryParse(x, out var id) ? id : 0).Contains(objective.ItemId) ||
+                    !itemIds.Contains(objective.ItemId) ||
                     objective.Order > quest.CurrentOrder ||
                     objective.LevelId != player.Character.LevelData.LevelId ||
                     objective.Completed ||
