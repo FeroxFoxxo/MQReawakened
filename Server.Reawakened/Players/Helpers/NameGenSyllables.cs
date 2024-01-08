@@ -9,12 +9,10 @@ public class NameGenSyllables(NameSyllables nameGen, Random random)
     private string GetRandomFromList(IReadOnlyList<string> names) =>
         names[random.Next(names.Count)];
 
-    public static bool IsNameReserved(string[] names, UserInfoHandler handler)
+    public static bool IsNameReserved(string[] names, CharacterHandler handler)
     {
         var name = $"{names[0]}{names[1]}{names[2]}";
-        return handler.Data.Select(a => a.Value.Characters)
-            .SelectMany(cl => cl)
-            .Any(c => c.Value.Data.CharacterName == name);
+        return handler.Data.Any(c => c.Value.Data.CharacterName == name);
     }
 
     public bool IsPossible(Gender gender, string[] names) =>
@@ -22,7 +20,7 @@ public class NameGenSyllables(NameSyllables nameGen, Random random)
         nameGen.Syllables[gender][1].Contains(names[1]) &&
         nameGen.Syllables[gender][2].Contains(names[2]);
 
-    public string[] GetRandomName(Gender gender, UserInfoHandler handler)
+    public string[] GetRandomName(Gender gender, CharacterHandler handler)
     {
         while (true)
         {

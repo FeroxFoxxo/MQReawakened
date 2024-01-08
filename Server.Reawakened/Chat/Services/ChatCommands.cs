@@ -11,6 +11,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.RegularExpressions;
@@ -22,6 +23,9 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
 
+    [GeneratedRegex("[^A-Za-z0-9]+")]
+    private static partial Regex MyRegex();
+
     public void Initialize() => appLifetime.ApplicationStarted.Register(RunChatListener);
 
     public void RunChatListener()
@@ -29,7 +33,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         logger.LogDebug("Setting up chat commands");
 
         AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
-        AddCommand(new ChatCommand("unlockHotbar", "[petSlot 1 (true) / 0 (false)]", AddHotbar));
+        AddCommand(new ChatCommand("unlockHotBar", "[petSlot 1 (true) / 0 (false)]", AddHotBar));
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
         AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
@@ -43,6 +47,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("save", "", SaveLevel));
         AddCommand(new ChatCommand("openVines", "", OpenVines));
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
+        AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -56,7 +61,8 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
             Log(
                 !value.CommandMethod(player, args)
                     ? $"Usage: {config.ChatCommandStart}{value.Name} {value.Arguments}"
-                    : "Successfully run command!", player);
+                    : "Successfully run command!", player
+            );
         }
         else
         {
@@ -189,7 +195,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         return true;
     }
 
-    private bool AddHotbar(Player player, string[] args)
+    private bool AddHotBar(Player player, string[] args)
     {
         var hasPet = false;
 
@@ -208,7 +214,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         player.AddSlots(hasPet);
 
-        Log("Hotbar has been setup! Equip an item or logout to see result.", player);
+        Log("HotBar has been setup! Equip an item or logout to see result.", player);
 
         return true;
     }
@@ -284,7 +290,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         }
 
         var names = args.Select(name =>
-            AlphanumericRegex().Replace(name.ToLower(), "")
+            MyRegex().Replace(name.ToLower(), "")
         ).ToList();
 
         var firstName = names[1];
@@ -336,7 +342,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         player.SendLevelChange(worldHandler, worldGraph);
 
         Log(
-            $"Successfully set character {character.Data.CharacterId}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
+            $"Successfully set character {character.Id}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
             player
         );
 
@@ -416,4 +422,49 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     [GeneratedRegex("[^A-Za-z0-9]+")]
     private static partial Regex AlphanumericRegex();
+    
+    private bool ClosestEntity(Player player, string[] args)
+    {
+        var plane = player.GetPlaneEntities();
+
+        var closestGameObjects = plane.Select(gameObject => {
+            var x = gameObject.ObjectInfo.Position.X - player.TempData.Position.X;
+            var y = gameObject.ObjectInfo.Position.Y - player.TempData.Position.Y;
+
+            if (gameObject.Rect != null)
+            {
+                x += gameObject.Rect.Width / 2;
+                y += gameObject.Rect.Height / 2;
+            }
+
+            var distance = Math.Round(Math.Sqrt(Math.Pow(Math.Abs(x), 2) + Math.Pow(Math.Abs(y), 2)));
+
+            return new Tuple<double, GameObjectModel>(distance, gameObject);
+        }).OrderBy(x => x.Item1);
+
+        if (!closestGameObjects.Any())
+        {
+            Log("No game objects found close to player!", player);
+            return false;
+        }
+
+        Log("Closest Game Objects:", player);
+
+        var count = 0;
+        
+        foreach(var item in closestGameObjects)
+        {
+            if (count > config.MaximumEntitiesToReturnLog)
+                break;
+
+            Log($"{item.Item1} units: " +
+                $"{item.Item2.ObjectInfo.PrefabName} " +
+                $"({item.Item2.ObjectInfo.ObjectId})",
+                player);
+
+            count++;
+        }
+
+        return true;
+    }
 }

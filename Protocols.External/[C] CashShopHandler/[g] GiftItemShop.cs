@@ -13,7 +13,7 @@ public class GiftItemShop : ExternalProtocol
     public override string ProtocolName => "Cg";
 
     public ItemCatalog ItemCatalog { get; set; }
-    public PlayerHandler PlayerHandler { get; set; }
+    public DatabaseContainer DatabaseContainer { get; set; }
     public ILogger<GiftItemShop> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -38,7 +38,7 @@ public class GiftItemShop : ExternalProtocol
         var item = ItemCatalog.GetItemFromId(itemId);
         Player.RemoveNCash(item.RegularPrice);
 
-        var friend = PlayerHandler.GetPlayerByName(friendName);
+        var friend = DatabaseContainer.GetPlayerByName(friendName);
 
         friend.Character.AddItem(item, 1);
         friend.SendUpdatedInventory(false);

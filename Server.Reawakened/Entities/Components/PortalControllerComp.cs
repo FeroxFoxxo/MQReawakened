@@ -79,7 +79,7 @@ public class PortalControllerComp : Component<PortalController>
         Logger.LogInformation(
             "Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
             "using portal {PortalId}", character.Data.CharacterName,
-            character.Data.CharacterId, levelInfo.InGameName, levelInfo.LevelId, portalId
+            character.Id, levelInfo.InGameName, levelInfo.LevelId, portalId
         );
 
         player.SendLevelChange(WorldHandler, WorldGraph);

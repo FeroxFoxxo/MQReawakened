@@ -108,6 +108,8 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
         );
     }
 
+    public override void InitializeComponent() => Trigger(ActiveByDefault);
+
     public override object[] GetInitData(Player player) => [Activated ? 1 : 0];
 
     public void LogTriggerRecieved()

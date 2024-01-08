@@ -15,7 +15,7 @@ public class TravelToGroup : ExternalProtocol
 
     public WorldHandler WorldHandler { get; set; }
 
-    public PlayerHandler PlayerHandler { get; set; }
+    public DatabaseContainer DatabaseContainer { get; set; }
 
     public ILogger<TravelToGroup> Logger { get; set; }
 
@@ -24,7 +24,7 @@ public class TravelToGroup : ExternalProtocol
         var character = Player.Character;
 
         var leaderName = Player.TempData.Group.GetLeaderName();
-        var leader = PlayerHandler.GetPlayerByName(leaderName);
+        var leader = DatabaseContainer.GetPlayerByName(leaderName);
 
         var levelId = leader.Character.LevelData.LevelId;
 

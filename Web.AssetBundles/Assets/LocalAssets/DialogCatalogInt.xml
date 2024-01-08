@@ -21,6 +21,17 @@
     <NPC objectId="96881" name="The Twins" descriptionId="0">
         <Dialog dialogId="1054" conversationId="2910" minimumReputation="1" />
     </NPC>
+    <NPC objectId="97236" name="Derix" descriptionId="0">
+        <Dialog dialogId="1348" conversationId="3298" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="681" name="Terod" descriptionId="0">
+        <Dialog dialogId="817" conversationId="2291" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="905" name="Mondy" descriptionId="0">
+        <Dialog dialogId="884" conversationId="2451" minimumReputation="1" />
+        <Dialog dialogId="884" conversationId="2452" minimumReputation="5" />
+        <Dialog dialogId="884" conversationId="2453" minimumReputation="10" />
+    </NPC>
     <NPC objectId="153" name="Wijit" descriptionId="0">
         <Dialog dialogId="841" conversationId="2351" minimumReputation="1" />
         <Dialog dialogId="661" conversationId="1911" minimumReputation="5" />
@@ -91,5 +102,41 @@
     </NPC>
     <NPC objectId="16766" name="Lini" descriptionId="0">
         <Dialog dialogId="1404" conversationId="3570" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="32290" name="Openslay" descriptionId="0">
+        <Dialog dialogId="1007" conversationId="2759" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="99359" name="Ornaman" descriptionId="0">
+        <Dialog dialogId="1282" conversationId="3263" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="32786" name="Evergreen" descriptionId="0">
+        <Dialog dialogId="1002" conversationId="2754" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="32292" name="Gingerbread" descriptionId="0">
+        <Dialog dialogId="1004" conversationId="2756" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="32291" name="Sugarplum" descriptionId="0">
+        <Dialog dialogId="1006" conversationId="2758" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="32789" name="Snowfall" descriptionId="0">
+        <Dialog dialogId="1003" conversationId="2755" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="32788" name="Moonbeam" descriptionId="0">
+        <Dialog dialogId="1281" conversationId="3267" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="99502" name="Frostbeard" descriptionId="0">
+        <Dialog dialogId="1001" conversationId="2753" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="32293" name="Tinsel" descriptionId="0">
+        <Dialog dialogId="1278" conversationId="3265" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="32294" name="Nutmeg" descriptionId="0">
+        <Dialog dialogId="1279" conversationId="3266" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="32289" name="Upatree" descriptionId="0">
+        <Dialog dialogId="1277" conversationId="3264" minimumReputation="1" />
+    </NPC>
+    <NPC objectId="26292512" name="Laurence" descriptionId="0">
+        <Dialog dialogId="1561" conversationId="3956" minimumReputation="1" />
     </NPC>
 </DialogCatalog>

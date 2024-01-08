@@ -16,32 +16,33 @@ namespace Server.Reawakened.Players.Services;
 
 public class UserInfoHandler : DataHandler<UserInfo>
 {
+    public override bool HasDefault => true;
+
     private readonly ServerRConfig _config;
     private readonly RandomKeyGenerator _randomKeyGenerator;
-    private readonly PlayerHandler _playerHandler;
+    private readonly DatabaseContainer _databaseContainer;
 
     public UserInfoHandler(EventSink sink, ILogger<UserInfo> logger,
         RandomKeyGenerator randomKeyGenerator, ServerRConfig config, InternalRConfig rConfig,
-        InternalRwConfig rwConfig, PlayerHandler playerHandler) :
+        InternalRwConfig rwConfig, DatabaseContainer databaseContainer) :
         base(sink, logger, rConfig, rwConfig)
     {
         _randomKeyGenerator = randomKeyGenerator;
         _config = config;
-        _playerHandler = playerHandler;
-
-        _playerHandler.UserInfoHandler = this;
+        _databaseContainer = databaseContainer;
+        _databaseContainer.UserInfoHandler = this;
     }
 
     public void InitializeUser(NetState state)
     {
         var account = state.Get<Account>();
 
-        var userId = account?.UserId ?? throw new NullReferenceException("Account not found!");
+        var userId = account?.Id ?? throw new NullReferenceException("Account not found!");
 
         if (!Data.TryGetValue(userId, out var value))
             throw new NullReferenceException();
 
-        state.Set(new Player(account, value, state, _playerHandler));
+        state.Set(new Player(account, value, state, _databaseContainer));
     }
 
     public override UserInfo CreateDefault()
@@ -71,7 +72,7 @@ public class UserInfoHandler : DataHandler<UserInfo>
             Logger.LogWarning("Incorrect input! Must be a date!");
         }
 
-        return new UserInfo(Data.Count, gender, dob, RegionInfo.CurrentRegion.Name, _config.DefaultSignUpExperience, _randomKeyGenerator, _config);
+        return new UserInfo(CreateNewId(), gender, dob, RegionInfo.CurrentRegion.Name, _config.DefaultSignUpExperience, _randomKeyGenerator, _config);
     }
 
     public UserInfo Create(IPAddress ip, int id, Gender gender, DateTime dob, string region, string signUpExperience)
@@ -81,7 +82,7 @@ public class UserInfoHandler : DataHandler<UserInfo>
 
         var user = new UserInfo(id, gender, dob, region, signUpExperience, _randomKeyGenerator, _config);
 
-        Data.Add(Data.Count, user);
+        Add(user);
 
         return user;
     }

@@ -25,11 +25,11 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
             return BadRequest();
         }
 
-        var userInfo = userInfoHandler.Data.Values.FirstOrDefault(x => x.UserId == account.UserId);
+        var userInfo = userInfoHandler.Data.Values.FirstOrDefault(x => x.Id == account.Id);
 
         if (userInfo == null)
         {
-            logger.LogError("Could not find user info for {Username} (ID: {Id})", username, account.UserId);
+            logger.LogError("Could not find user info for {Username} (ID: {Id})", username, account.Id);
             return BadRequest();
         }
 
@@ -43,7 +43,7 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
         user.premium = userInfo.Member;
 
         dynamic local = new ExpandoObject();
-        local.uuid = account.UserId.ToString();
+        local.uuid = account.Id.ToString();
         local.username = account.Username;
         local.createdTime = ((DateTimeOffset)account.Created).ToUnixTimeSeconds();
         user.local = local;
