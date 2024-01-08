@@ -12,7 +12,6 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using UnityEngine;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -134,7 +133,11 @@ public class UseSlot : ExternalProtocol
                 {
                     await Task.Delay(2650); //Wait for bomb explosion.
                     Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", prefabName, objectId);
-                    DestroyObject(component.Entity.GameObject);
+
+                    if (component is BreakableEventControllerComp breakableObjEntity)
+                        breakableObjEntity.Destroy(Player);
+                    else if (component is InterObjStatusComp enemyEntity)
+                        enemyEntity.SendDamageEvent(Player);
                 }
 
             }

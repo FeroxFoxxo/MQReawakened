@@ -191,26 +191,6 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool Teleport(Player player, string[] args)
     {
-        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
-            Console.WriteLine(entityComponent);
-        return true;
-    }
-
-    private bool OpenVines(Player player, string[] args)
-    {
-        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
-        {
-            if (entityComponent is MysticCharmTargetComp vineEntity)
-            {
-                vineEntity.Charm(player);
-            }
-        }
-
-        return true;
-    }
-
-    private bool Teleport(Player player, string[] args)
-    {
         if (args.Length < 3 || !int.TryParse(args[1], out var xPos) || !int.TryParse(args[2], out var yPos))
         {
             Log("Please enter valid coordinates.", player);
@@ -469,12 +449,6 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         var closestGameObjects = plane.Select(gameObject => {
             var x = gameObject.ObjectInfo.Position.X - player.TempData.Position.X;
             var y = gameObject.ObjectInfo.Position.Y - player.TempData.Position.Y;
-
-            if (gameObject.Rect != null)
-            {
-                x += gameObject.Rect.Width / 2;
-                y += gameObject.Rect.Height / 2;
-            }
 
             var distance = Math.Round(Math.Sqrt(Math.Pow(Math.Abs(x), 2) + Math.Pow(Math.Abs(y), 2)));
 

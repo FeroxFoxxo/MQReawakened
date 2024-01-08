@@ -22,11 +22,6 @@ public class StomperControllerComp : MovingObjectControllerComp<StomperControlle
     private float _thirdStep;
     private float _fullBehaviorTime;
 
-    private float _firstStep;
-    private float _secondStep;
-    private float _thirdStep;
-    private float _fullBehaviorTime;
-
     public override void InitializeComponent()
     {
         _firstStep = WaitTimeUp;

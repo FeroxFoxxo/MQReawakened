@@ -1,14 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
+
 public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSwitchController>
 {
     public string ArenaObjectId => ComponentData.ArenaObjectID;
-    public PlayerHandler PlayerHandler { get; set; } 
+    public DatabaseContainer DatabaseContainer { get; set; } 
     public ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) => base.GetInitData(player);
@@ -24,7 +26,7 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
 
         player.Room.SendSyncEvent(syncEvent);
 
-        var playersInRoom =  PlayerHandler.GetAllPlayers();
+        var playersInRoom = DatabaseContainer.GetAllPlayers();
         var arenaActivation = Convert.ToInt32(syncEvent.EventDataList[2]);
 
         //Method to determine if arena trigger event is minigame. if minigame, proceed with code below.
