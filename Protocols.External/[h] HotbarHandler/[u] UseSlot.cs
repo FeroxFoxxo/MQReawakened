@@ -115,7 +115,7 @@ public class UseSlot : ExternalProtocol
             }
     }
 
-    private void Transitioned(ItemDescription usedItem, Vector3Model position, int direction)
+    private void HandleDrop(ItemDescription usedItem, Vector3Model position, int direction)
     {
         var isLeft = direction > 0;
 
