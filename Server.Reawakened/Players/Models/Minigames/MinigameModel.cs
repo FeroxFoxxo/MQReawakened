@@ -17,10 +17,10 @@ public class ArenaModel
     {
         var playersInGroup = players.ToArray();
 
-        player.TempData.ArenaModel.FirstPlayerId = playersInGroup.Length > 0 ? playersInGroup[0].GameObjectId : 0;
-        player.TempData.ArenaModel.SecondPlayerId = playersInGroup.Length > 1 ? playersInGroup[1].GameObjectId : 0;
-        player.TempData.ArenaModel.ThirdPlayerId = playersInGroup.Length > 2 ? playersInGroup[2].GameObjectId : 0;
-        player.TempData.ArenaModel.FourthPlayerId = playersInGroup.Length > 3 ? playersInGroup[3].GameObjectId : 0;
+        player.TempData.ArenaModel.FirstPlayerId = playersInGroup.Length > 0 ? playersInGroup[0].CharacterId : 0;
+        player.TempData.ArenaModel.SecondPlayerId = playersInGroup.Length > 1 ? playersInGroup[1].CharacterId : 0;
+        player.TempData.ArenaModel.ThirdPlayerId = playersInGroup.Length > 2 ? playersInGroup[2].CharacterId : 0;
+        player.TempData.ArenaModel.FourthPlayerId = playersInGroup.Length > 3 ? playersInGroup[3].CharacterId : 0;
     }
 
     public static string GrantLootedItems(LootCatalogInt LootCatalog, int arenaId)
