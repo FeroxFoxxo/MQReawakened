@@ -11,7 +11,7 @@ public class ReserveCharacterName : ExternalProtocol
     public override string ProtocolName => "cS";
 
     public NameGenSyllables NameGenSyllables { get; set; }
-    public UserInfoHandler UserInfoHandler { get; set; }
+    public CharacterHandler CharacterHandler { get; set; }
     public ServerRConfig ServerConfig { get; set; }
 
     public override void Run(string[] message)
@@ -19,7 +19,7 @@ public class ReserveCharacterName : ExternalProtocol
         var gender = (Gender)int.Parse(message[5]);
         var name = new[] { message[6], message[7], message[8] };
 
-        if (NameGenSyllables.IsNameReserved(name, UserInfoHandler))
+        if (NameGenSyllables.IsNameReserved(name, CharacterHandler))
             SendXt("cT", 0, GetNames(gender));
         else if (!NameGenSyllables.IsPossible(gender, name))
             SendXt("cT", 1);
@@ -32,7 +32,7 @@ public class ReserveCharacterName : ExternalProtocol
         var sb = new SeparatedStringBuilder('%');
 
         for (var i = 0; i < ServerConfig.ReservedNameCount; i++)
-            sb.Append(NameGenSyllables.GetRandomName(gender, UserInfoHandler));
+            sb.Append(NameGenSyllables.GetRandomName(gender, CharacterHandler));
 
         return sb.ToString();
     }

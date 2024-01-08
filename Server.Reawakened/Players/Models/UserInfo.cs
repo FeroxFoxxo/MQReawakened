@@ -8,7 +8,7 @@ namespace Server.Reawakened.Players.Models;
 
 public class UserInfo : PersistantData
 {
-    public Dictionary<int, CharacterModel> Characters { get; set; }
+    public List<int> CharacterIds { get; set; }
     public Dictionary<int, SystemMailModel> Mail { get; set; }
 
     public string LastCharacterSelected { get; set; }
@@ -25,7 +25,7 @@ public class UserInfo : PersistantData
 
     public UserInfo()
     {
-        Characters = [];
+        CharacterIds = [];
         Mail = [];
     }
 
@@ -33,7 +33,6 @@ public class UserInfo : PersistantData
         string signUpExperience, RandomKeyGenerator kGen, ServerRConfig config)
     {
         Region = region;
-        UserId = userId;
         Gender = gender;
         DateOfBirth = dateOfBirth;
         SignUpExperience = signUpExperience;
@@ -45,7 +44,7 @@ public class UserInfo : PersistantData
         TrackingShortId = config.DefaultTrackingShortId;
         ChatLevel = config.DefaultChatLevel;
 
-        Characters = [];
+        CharacterIds = [];
         Mail = [];
     }
 }

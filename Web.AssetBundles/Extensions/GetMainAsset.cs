@@ -1,5 +1,4 @@
 ﻿using AssetStudio;
-using Newtonsoft.Json;
 using System.Collections.Specialized;
 using Web.AssetBundles.Models;
 

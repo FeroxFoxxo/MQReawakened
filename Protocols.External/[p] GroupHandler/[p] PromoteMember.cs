@@ -8,7 +8,7 @@ public class PromoteMember : ExternalProtocol
 {
     public override string ProtocolName => "pp";
 
-    public PlayerHandler PlayerHandler { get; set; }
+    public DatabaseContainer DatabaseContainer { get; set; }
 
     public override void Run(string[] message)
     {

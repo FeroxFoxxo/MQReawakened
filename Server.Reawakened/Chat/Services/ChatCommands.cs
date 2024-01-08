@@ -286,7 +286,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         player.SendLevelChange(worldHandler, worldGraph);
 
         Log(
-            $"Successfully set character {character.Data.CharacterId}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
+            $"Successfully set character {character.Id}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
             player
         );
 

@@ -130,7 +130,7 @@ public class State : ExternalProtocol
             uniqueType = "Player";
 
             uniqueIdentifier = newPlayer.Character != null ?
-                $"{newPlayer.CharacterName} ({newPlayer.Character.Data.CharacterId})" :
+                $"{newPlayer.CharacterName} ({newPlayer.CharacterId})" :
                 "Unknown";
         }
 

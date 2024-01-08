@@ -19,7 +19,7 @@ namespace Server.Reawakened.Players.Services;
 
 public class EditCharacter(ServerConsole console, EventSink sink,
     ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
-    AccountHandler accountHandler, WorldGraph worldGraph,
+    AccountHandler accountHandler, CharacterHandler characterHandler, WorldGraph worldGraph,
     ServerRConfig config, NetStateHandler handler, WorldHandler worldHandler,
     ItemCatalog itemCatalog, PlayerEventSink playerEventSink,
     ChatCommands chatCommands) : IService
@@ -66,12 +66,12 @@ public class EditCharacter(ServerConsole console, EventSink sink,
 
     private void RunPlayerCommand()
     {
-        Ask.GetCharacter(logger, accountHandler, userInfoHandler, out var character, out var user);
+        Ask.GetCharacter(logger, accountHandler, userInfoHandler, characterHandler, out var character, out var user);
 
         if (character == null || user == null)
             return;
 
-        if (!handler.IsPlayerOnline(user.UserId, out var player))
+        if (!handler.IsPlayerOnline(user.Id, out var player))
         {
             logger.LogError("Player must be online to use this command!");
             return;        
@@ -86,7 +86,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
 
     private void ChangeCharacterName()
     {
-        Ask.GetCharacter(logger, accountHandler, userInfoHandler, out var character, out var user);
+        Ask.GetCharacter(logger, accountHandler, userInfoHandler, characterHandler, out var character, out var user);
 
         if (character == null || user == null)
             return;
@@ -105,7 +105,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
         character.Data.CharacterName = name;
         user.LastCharacterSelected = name;
 
-        logger.LogInformation("Successfully set character {Id}'s name to {Name}!", character.Data.CharacterId, name);
+        logger.LogInformation("Successfully set character {Id}'s name to {Name}!", character.Id, name);
 
         logger.LogWarning("Please note this will only apply on next login.");
         playerEventSink.InvokePlayerRefresh();
@@ -113,7 +113,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
 
     private void ChangeCharacterLevel()
     {
-        Ask.GetCharacter(logger, accountHandler, userInfoHandler, out var character, out var user);
+        Ask.GetCharacter(logger, accountHandler, userInfoHandler, characterHandler, out var character, out var user);
 
         if (character == null || user == null)
             return;
@@ -147,7 +147,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
 
         var tribe = levelInfo.Tribe;
 
-        if (handler.IsPlayerOnline(user.UserId, out var player))
+        if (handler.IsPlayerOnline(user.Id, out var player))
         {
             player.DiscoverTribe(tribe);
             player.SendLevelChange(worldHandler, worldGraph);
@@ -160,12 +160,12 @@ public class EditCharacter(ServerConsole console, EventSink sink,
 
         logger.LogInformation(
             "Successfully set character {Id}'s level to {LevelId} '{InGameLevelName}' ({LevelName})!",
-            character.Data.CharacterId, levelId, levelInfo.InGameName, levelInfo.Name);
+            character.Id, levelId, levelInfo.InGameName, levelInfo.Name);
     }
 
     private void LevelUp()
     {
-        Ask.GetCharacter(logger, accountHandler, userInfoHandler, out var character, out var user);
+        Ask.GetCharacter(logger, accountHandler, userInfoHandler, characterHandler, out var character, out var user);
 
         if (character == null || user == null)
             return;
@@ -180,7 +180,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
             return;
         }
 
-        if (handler.IsPlayerOnline(user.UserId, out var player))
+        if (handler.IsPlayerOnline(user.Id, out var player))
             player.LevelUp(levelId, logger);
         else
             character.SetLevelXp(levelId);
@@ -188,7 +188,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
 
     private void GiveItem()
     {
-        Ask.GetCharacter(logger, accountHandler, userInfoHandler, out var character, out var user);
+        Ask.GetCharacter(logger, accountHandler, userInfoHandler, characterHandler, out var character, out var user);
 
         if (character == null || user == null)
             return;
@@ -224,7 +224,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
                 DelayUseExpiry = DateTime.MinValue
             });
 
-            if (handler.IsPlayerOnline(user.UserId, out var player))
+            if (handler.IsPlayerOnline(user.Id, out var player))
                 player.SendUpdatedInventory(false);
         }
         else
