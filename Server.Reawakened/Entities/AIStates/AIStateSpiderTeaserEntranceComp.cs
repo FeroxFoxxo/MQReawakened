@@ -24,23 +24,20 @@ public class AIStateSpiderTeaserEntranceComp : Component<AIStateSpiderTeaserEntr
     public void RecievedTrigger(bool triggered)
     {
         if (triggered)
-            TimerThread.DelayCall(RunEntrance, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
-    }
-
-    public void RunEntrance(object _)
-    {
-        var syncEvent = new AiStateSyncEvent()
         {
-            InStates = {
+            var syncEvent = new AiStateSyncEvent()
+            {
+                InStates = {
                 },
-            GoToStates = {
+                GoToStates = {
                     {"AIStateSpiderTeaserEntrance", new ComponentSettings() {"ST", "0"}}
                 }
-        };
+            };
 
-        Room.SendSyncEvent(syncEvent.GetSyncEvent(Id, Room));
+            Room.SendSyncEvent(syncEvent.GetSyncEvent(Id, Room));
 
-        TimerThread.DelayCall(RunDrop, null, TimeSpan.FromSeconds(16), TimeSpan.Zero, 1);
+            TimerThread.DelayCall(RunDrop, null, TimeSpan.FromSeconds(16 + 1), TimeSpan.Zero, 1);
+        }
     }
 
     public void RunDrop(object _)
@@ -58,7 +55,5 @@ public class AIStateSpiderTeaserEntranceComp : Component<AIStateSpiderTeaserEntr
         };
 
         Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, Room));
-
-        Console.WriteLine("TEST3");
     }
 }
