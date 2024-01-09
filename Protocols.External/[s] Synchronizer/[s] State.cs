@@ -74,10 +74,8 @@ public class State : ExternalProtocol
                     if (room.Entities.TryGetValue(collisionTarget, out var entityComponents))
                     {
                         foreach (var component in entityComponents)
-                            if (!component.Disposed)
-                            {
+                            if (!room.IsObjectKilled(component.Id))
                                 component.NotifyCollision(notifyCollisionEvent, newPlayer);
-                            }
                     }
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
@@ -157,7 +155,7 @@ public class State : ExternalProtocol
         else if (room.Entities.TryGetValue(entityId, out var entityComponents))
         {
             foreach (var component in entityComponents)
-                if (!component.Disposed)
+                if (!room.IsObjectKilled(component.Id))
                     component.RunSyncedEvent(syncEvent, Player);
         }
         else

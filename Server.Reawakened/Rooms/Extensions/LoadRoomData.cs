@@ -113,7 +113,7 @@ public static class LoadRoomData
                     {
                         var dataObj = RuntimeHelpers.GetUninitializedObject(mqType);
 
-                        var ctor = mqType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Array.Empty<Type>());
+                        var ctor = mqType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, []);
 
                         try
                         {
@@ -252,7 +252,7 @@ public static class LoadRoomData
             entityInfo.Select(a => $"{a.Key}: {string.Join(", ", a.Value)}")
         )}";
     }
-    public static Dictionary<int, BaseCollider> LoadColliders(this Room room)
+    public static Dictionary<int, BaseCollider> LoadColliders(this Room _)
     {
         var colliders = new Dictionary<int, BaseCollider>();
         // Use Later

@@ -44,5 +44,7 @@ public class MiscTextDictionary : LocalizationHandler, IBundledXml
         field.SetValue(null, this);
 
         LocalizationDict = (Dictionary<int, string>)this.GetField<LocalizationHandler>("_localizationDict");
+
+        LocalizationDict.TryAdd(0, string.Empty);
     }
 }

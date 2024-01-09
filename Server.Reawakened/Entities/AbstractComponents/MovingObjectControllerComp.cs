@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Players;
+﻿using Server.Reawakened.Entities.Interfaces;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 

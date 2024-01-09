@@ -26,7 +26,7 @@
     <Level name="Forgotten Temple">
         <LootInfo objectId="30938" doLootWheel="true">
             <Items rewardAmount="1">
-                <Item itemId="2886" count="1" bindingCount="0"/>
+                <Item itemId="4221" count="1" bindingCount="0"/>
             </Items>
         </LootInfo>
     </Level>
