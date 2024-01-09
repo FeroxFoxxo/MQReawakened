@@ -28,7 +28,6 @@ public static class GetData
         var textAsset = manager.assetsFileList.First().ObjectsDic.Values.ToArray().GetText(asset.Name);
 
         var text = Encoding.UTF8.GetString(textAsset.m_Script);
-        var length = text.Split('\n').Length;
 
         return text;
     }

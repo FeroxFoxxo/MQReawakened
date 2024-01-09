@@ -1,13 +1,11 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -189,25 +187,21 @@ public static class PlayerExtensions
         player.SendXt("lw", error, levelName, surroundingLevels);
     }
 
-    public static CharacterModel GetCharacterFromName(this Player player, string characterName)
-        => player.UserInfo.Characters.Values
-            .FirstOrDefault(c => c.Data.CharacterName == characterName);
-
-    public static void SetCharacterSelected(this Player player, int characterId)
+    public static void SetCharacterSelected(this Player player, int characterId, CharacterHandler characterHandler)
     {
-        player.Character = player.UserInfo.Characters[characterId];
+        player.Character = characterHandler.Get(characterId);
         player.UserInfo.LastCharacterSelected = player.CharacterName;
     }
 
     public static void AddCharacter(this Player player, CharacterModel character) =>
-        player.UserInfo.Characters.Add(character.Data.CharacterId, character);
+        player.UserInfo.CharacterIds.Add(character.Id);
 
-    public static void DeleteCharacter(this Player player, int id)
+    public static void DeleteCharacter(this Player player, int id, CharacterHandler characterHandler)
     {
-        player.UserInfo.Characters.Remove(id);
+        player.UserInfo.CharacterIds.Remove(id);
 
-        player.UserInfo.LastCharacterSelected = player.UserInfo.Characters.Count > 0
-            ? player.UserInfo.Characters.First().Value.Data.CharacterName
+        player.UserInfo.LastCharacterSelected = player.UserInfo.CharacterIds.Count > 0
+            ? characterHandler.Get(player.UserInfo.CharacterIds.First()).Data.CharacterName
             : string.Empty;
     }
 
@@ -254,7 +248,10 @@ public static class PlayerExtensions
     public static void CheckObjective(this Player player, QuestCatalog quests, ObjectiveCatalogInt objCatalog,
         ObjectiveEnum type, int gameObjectId, string prefabName, int count)
     {
-        if (!objCatalog.ObjectivePrefabs.TryGetValue(prefabName, out var itemId))
+        if (!objCatalog.ObjectivePrefabs.TryGetValue(prefabName, out var itemIds))
+            return;
+
+        if (itemIds == null)
             return;
 
         var character = player.Character.Data;
@@ -271,7 +268,7 @@ public static class PlayerExtensions
                         continue;
 
                 if (objective.ObjectiveType != type ||
-                    objective.ItemId != itemId ||
+                    !itemIds.Contains(objective.ItemId) ||
                     objective.Order > quest.CurrentOrder ||
                     objective.LevelId != player.Character.LevelData.LevelId ||
                     objective.Completed ||

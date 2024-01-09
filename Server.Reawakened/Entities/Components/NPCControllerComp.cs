@@ -2,6 +2,7 @@
 using FollowCamDefines;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Enums;
@@ -14,6 +15,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Models.Npcs;
+using System.Text;
 using static A2m.Server.QuestStatus;
 using static NPCController;
 
@@ -26,12 +28,14 @@ public class NPCControllerComp : Component<NPCController>
     public bool ShouldDisableNpcInteraction => ComponentData.ShouldDisableNPCInteraction;
 
     public ILogger<NPCControllerComp> Logger { get; set; }
-    public MiscTextDictionary MiscText { get; set; }
     public ServerRConfig RConfig { get; set; }
-    public Dialog Dialog { get; set; }
-    public ItemCatalog ItemCatalog { get; set; }
+    public FileLogger FileLogger { get; set; }
 
     public QuestCatalog QuestCatalog { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
+    public DialogDictionary Dialog { get; set; }
+    public MiscTextDictionary MiscText { get; set; }
+
     public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
     public VendorCatalogInt VendorCatalog { get; set; }
     public DialogCatalogInt DialogCatalog { get; set; }
@@ -378,6 +382,20 @@ public class NPCControllerComp : Component<NPCController>
                 player.AddQuest(givenQuest, givenQuest.Id, true);
 
                 Logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", givenQuest.Name, givenQuest.Id, NpcName);
+
+                var rewardIds = (Dictionary<int, int>)givenQuest.GetField("_rewardItemsIds");
+                var unknownRewards = rewardIds.Where(x => !ItemCatalog.Items.ContainsKey(x.Key));
+
+                if (unknownRewards.Any())
+                {
+                    var sb = new StringBuilder();
+
+                    foreach (var reward in unknownRewards)
+                        sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
+
+                    FileLogger.WriteGenericLog<NPCController>("unknown-rewards", $"[Unkwown Quest {givenQuest.Id} Rewards]", sb.ToString(),
+                        LoggerType.Error);
+                }
 
                 if (player.Character.TryGetQuest(givenQuest.Id, out var quest))
                 {

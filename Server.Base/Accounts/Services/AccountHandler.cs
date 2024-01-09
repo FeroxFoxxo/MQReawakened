@@ -18,6 +18,8 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
     FileLogger fileLogger, InternalRwConfig rwConfig, TemporaryDataStorage temporaryDataStorage) :
     DataHandler<Account>(sink, logger, rConfig, rwConfig)
 {
+    public override bool HasDefault => true;
+
     public Dictionary<IPAddress, int> IpTable = [];
 
     public override void OnAfterLoad() => CreateIpTables();
@@ -34,7 +36,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
         var email = Console.ReadLine();
 
         if (username != null)
-            return new Account(username, password, email, Data.Count, hasher)
+            return new Account(username, password, email, hasher)
             {
                 AccessLevel = AccessLevel.Owner
             };
@@ -174,8 +176,10 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
         Logger.LogInformation("Login: {Address}: Creating new account '{Username}'",
             ipAddress, username);
 
-        var account = new Account(username, password, email, Data.Count, hasher);
-        Data.Add(Data.Count, account);
+        var account = new Account(username, password, email, hasher);
+
+        Add(account);
+
         return account;
     }
 

@@ -21,7 +21,7 @@ public class FileLogger(ILoggerFactory loggerFactory, InternalRConfig config, IL
 
     private void WriteToFile<T>(string fileName, StringBuilder builder, LoggerType type)
     {
-        var message = builder.ToString();
+        var message = builder.ToString().TrimEnd('\r', '\n');
         fileName = $"{fileName}.log";
 
         ILogger logger;

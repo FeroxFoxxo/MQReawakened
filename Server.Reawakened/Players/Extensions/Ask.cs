@@ -8,9 +8,9 @@ namespace Server.Reawakened.Players.Extensions;
 public static class Ask
 {
     public static void GetCharacter(Microsoft.Extensions.Logging.ILogger logger, AccountHandler accountHandler,
-        UserInfoHandler userInfoHandler, out CharacterModel model, out UserInfo user)
+        UserInfoHandler userInfoHandler, CharacterHandler characterHandler, out CharacterModel model, out UserInfo user)
     {
-        logger.LogInformation("Please enter the username of whom you wish to edit:");
+        logger.LogInformation("Please enter the username of whom you wish to find:");
 
         var userName = Console.ReadLine()?.Trim();
 
@@ -24,26 +24,28 @@ public static class Ask
             return;
         }
 
-        user = userInfoHandler.Data.Values.FirstOrDefault(x => x.UserId == account.UserId);
+        user = userInfoHandler.Data.Values.FirstOrDefault(x => x.Id == account.Id);
 
         if (user == null)
         {
-            logger.LogError("Could not find user info for account: {AccountId}", account.UserId);
+            logger.LogError("Could not find user info for account: {AccountId}", account.Id);
             return;
         }
 
-        if (user.Characters.Count == 0)
+        if (user.CharacterIds.Count == 0)
         {
-            logger.LogError("Could not find any characters for account: {AccountId}", account.UserId);
+            logger.LogError("Could not find any characters for account: {AccountId}", account.Id);
             return;
         }
 
-        logger.LogInformation("Please select the ID for the character you want to change the name for:");
+        logger.LogInformation("Please select the ID for the character you want to run this command for:");
 
-        foreach (var possibleCharacter in user.Characters)
+        foreach (var possibleCharacter in user.CharacterIds)
         {
+            var character = characterHandler.Get(possibleCharacter);
+
             logger.LogInformation("    {CharacterId}: {CharacterName}",
-                possibleCharacter.Key, possibleCharacter.Value.Data.CharacterName);
+                possibleCharacter, character.Data.CharacterName);
         }
 
         var id = Console.ReadLine();
@@ -54,12 +56,12 @@ public static class Ask
             return;
         }
 
-        if (!user.Characters.TryGetValue(intId, out var value))
+        if (!user.CharacterIds.Contains(intId))
         {
             logger.LogError("Character list does not contain ID {Id}", id);
             return;
         }
 
-        model = value;
+        model = characterHandler.Get(intId);
     }
 }

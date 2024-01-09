@@ -8,7 +8,7 @@ public static class PlayerDamageExtensions
     public static void ApplyCharacterDamage(this Player player, Room room, int damage)
     {
         player.Character.Data.CurrentLife -= damage;
-        
+
         if (player.Character.Data.CurrentLife < 0)
         {
             player.Character.Data.CurrentLife = 0;

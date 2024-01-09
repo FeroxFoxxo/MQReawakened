@@ -1,15 +1,22 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Extensions;
+using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Enums;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using UnityEngine;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -18,10 +25,11 @@ public class UseSlot : ExternalProtocol
     public override string ProtocolName => "hu";
 
     public ILogger<UseSlot> Logger { get; set; }
-
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
+    public TimerThread TimerThread { get; set; }
 
     public override void Run(string[] message)
     {
@@ -45,15 +53,26 @@ public class UseSlot : ExternalProtocol
 
         switch (usedItem.ItemActionType)
         {
+            case ItemActionType.Drop:
+                HandleDrop(usedItem, position, direction);
+                break;
             case ItemActionType.Throw:
-                HandleRangedWeapon(position, direction, usedItem);
+                HandleRangedWeapon(usedItem, position, direction);
                 break;
             case ItemActionType.Drink:
+                HandleDrink(usedItem);
+                break;
             case ItemActionType.Eat:
                 HandleConsumable(usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
-                HandleMeleeWeapon(position, direction);
+                HandleMeleeWeapon(usedItem, position, direction);
+                break;
+            case ItemActionType.Pet:
+                HandlePet(usedItem);
+                break;
+            case ItemActionType.Relic:
+                HandleRelic(usedItem);
                 break;
             default:
                 Logger.LogError("Could not find how to handle item action type {ItemAction} for user {UserId}",
@@ -61,49 +80,178 @@ public class UseSlot : ExternalProtocol
                 break;
         }
     }
-
-    private void HandleConsumable(ItemDescription item, int hotbarSlotId)
+    private void HandlePet(ItemDescription usedItem)
     {
-        foreach (var effect in item.ItemEffects)
-        {
-            if (effect.Type is ItemEffectType.Invalid or ItemEffectType.Unknown)
-                continue;
-
-            var statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
-
-            Player.SendSyncEventToPlayer(statusEffect);
-        }
-
-        if (!item.UniqueInInventory)
-            RemoveFromHotbar(Player.Character, item, hotbarSlotId);
+        Player.SendXt("ZE", Player.UserId, usedItem.ItemId, 1);
+        Player.Character.Data.PetItemId = usedItem.ItemId;
     }
 
-    private void HandleRangedWeapon(Vector3Model position, int direction, ItemDescription usedItem)
+    private void HandleRelic(ItemDescription usedItem)
+    {
+        StatusEffect_SyncEvent itemEffect = null;
+
+        foreach (var effect in usedItem.ItemEffects)
+            itemEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                    (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
+
+        Player.SendSyncEventToPlayer(itemEffect);
+    }
+    
+    private void HandleDrink(ItemDescription usedItem)
+    {
+        StatusEffect_SyncEvent itemEffect = null;
+
+        foreach (var effect in usedItem.ItemEffects)
+            itemEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                    (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
+
+        Player.SendSyncEventToPlayer(itemEffect);
+
+        foreach (var effect in usedItem.ItemEffects)
+            if (effect.TypeId == (int)ItemEffectType.Healing)
+            {
+                Player.HealOnce(usedItem, ServerRConfig);
+                Logger.LogInformation("Used healing item {ItemName} of effect typeID: {TypeID}", usedItem.ItemName, usedItem.ItemEffects.FirstOrDefault().TypeId);
+            }
+    }
+
+    private void HandleDrop(ItemDescription usedItem, Vector3Model position, int direction)
     {
         var isLeft = direction > 0;
 
-        position.X += isLeft ? -3 : 3;
-        position.Y += 1;
+        var dropDirection = isLeft ? 1 : -1;
 
-        var bulletDirection = isLeft ? 7 : -7;
-
-        var prefabName = usedItem.PrefabName;
-
-        var projectile = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            position.X, position.Y, position.Z, bulletDirection, 0, 0, 0, prefabName);
-
-        Player.Room.SendSyncEvent(projectile);
-    }
-
-    private void HandleMeleeWeapon(Vector3Model position, int direction)
-    {
-        AiHealth_SyncEvent aiEvent = null;
-
-        var monsters = new List<GameObjectModel>();
+        var platform = new GameObjectModel();
 
         var planeName = position.Z > 10 ? "Plane1" : "Plane0";
         position.Z = 0;
+
+        var dropItemData = new DroppedItemData()
+        {
+            DropDirection = dropDirection,
+            Position = position,
+            UsedItem = usedItem
+        };
+
+        TimerThread.DelayCall(DropItem, dropItemData, TimeSpan.FromMilliseconds(1000), TimeSpan.Zero, 1);
+    }
+
+    private class DroppedItemData()
+    {
+        public int DropDirection { get; set; }
+        public ItemDescription UsedItem { get; set; }
+        public Vector3Model Position { get; set; }
+    }
+
+    private void DropItem(object data)
+    {
+        var dropData = (DroppedItemData)data;
+
+        var dropItem = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            Player.TempData.Position.X + dropData.DropDirection, Player.TempData.Position.Y, Player.TempData.Position.Z,
+            0, 0, 3, 0, dropData.UsedItem.PrefabName);
+
+        Player.Room.SendSyncEvent(dropItem);
+
+        foreach (var entity in Player.Room.Entities)
+        {
+            foreach (var component in entity.Value
+                .Where(comp => Vector3Model.Distance(dropData.Position, comp.Position) <= 5.4f))
+            {
+                var prefabName = component.PrefabName;
+                var objectId = component.Id;
+
+                if (component is HazardControllerComp or BreakableEventControllerComp)
+                {
+                    var bombData = new BombData()
+                    {
+                        PrefabName = prefabName,
+                        Component = component,
+                        ObjectId = objectId
+                    };
+
+                    TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2650), TimeSpan.Zero, 1);
+                }
+            }
+        }
+    }
+
+    private class BombData()
+    {
+        public string PrefabName { get; set; }
+        public int ObjectId { get; set; }
+        public BaseComponent Component { get; set; }
+    }
+
+    private void ExplodeBomb(object data)
+    {
+        var bData = (BombData)data;
+
+        Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", bData.PrefabName, bData.ObjectId);
+
+        if (bData.Component is BreakableEventControllerComp breakableObjEntity)
+            breakableObjEntity.Destroy(Player);
+        else if (bData.Component is InterObjStatusComp enemyEntity)
+            enemyEntity.SendDamageEvent(Player);
+    }
+
+    private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
+    {
+        StatusEffect_SyncEvent statusEffect = null;
+        foreach (var effect in usedItem.ItemEffects)
+        {
+            if (effect.Type is ItemEffectType.Invalid or ItemEffectType.Unknown)
+                return;
+
+            if (effect.Type is ItemEffectType.Healing)
+                Player.HealCharacter(usedItem, ServerRConfig);
+
+            statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
+        }
+        Player.SendSyncEventToPlayer(statusEffect);
+
+        var removeFromHotbar = true;
+
+        if (usedItem.ItemId == ServerRConfig.HealingStaff) //Prevents Healing Staff from removing itself.
+            removeFromHotbar = false;
+
+        if (!usedItem.UniqueInInventory && removeFromHotbar)
+            RemoveFromHotbar(Player.Character, usedItem, hotbarSlotId);
+    }
+
+
+    private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
+    {
+        var rand = new System.Random();
+        var prjId = Math.Abs(rand.Next());
+
+        while (Player.Room.GameObjectIds.Contains(prjId))
+            prjId = Math.Abs(rand.Next());
+
+        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem);
+
+        Player.Room.Projectiles.Add(prjId, prj);
+    }
+
+    private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
+    {
+        var monsters = new List<GameObjectModel>();
+
+        var planeName = position.Z > 10 ? "Plane1" : "Plane0";
+
+        var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time, position.X, position.Y, position.Z, direction, 1, 1, 0, usedItem.PrefabName);
+        Player.Room.SendSyncEvent(hitEvent);
+
+        position.Z = 0;
+
+        var meleeWeapon = ItemCatalog.GetItemFromId(usedItem.ItemId);
+        var weaponPrefabName = meleeWeapon.PrefabName;
+
+        var meleeSyncEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            position.X, position.Y, position.Z, 0, 0, 100, 0, weaponPrefabName);
+
+        Player.Room.SendSyncEvent(meleeSyncEvent);
 
         foreach (var obj in
                  Player.Room.Planes[planeName].GameObjects.Values
@@ -126,88 +274,15 @@ public class UseSlot : ExternalProtocol
             var objectId = obj.ObjectInfo.ObjectId;
             var prefabName = obj.ObjectInfo.PrefabName;
 
-            Logger.LogInformation("Found close game object {PrefabName} with Id {ObjectId}", prefabName, objectId);
-
             if (Player.Room.Entities.TryGetValue(objectId, out var entityComponents))
                 foreach (var component in entityComponents)
                     if (component is TriggerCoopControllerComp triggerCoopEntity)
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
-
-            switch (prefabName)
-            {
-                case "PF_R01_Barrel01":
-                case "PF_SHD_Barrel01":
-                case "PF_CRS_BarrelNewbZone01":
-                case "PF_CRS_BARREL01":
-                case "PF_OUT_BARREL03":
-                case "PF_WLD_Breakable01":
-                case "PF_BON_BreakableUrn01":
-                case "PF_EVT_HallwnPumpkinFloatBRK":
-                case "PF_EVT_XmasBrkIceCubeLoot01":
-                case "PF_EVT_XmasBrkIceCubeLoot02":
-                case "PF_EVT_XmasBrkIceCube02":
-                    DestroyObject(obj);
-                    break;
-            }
-
-            aiEvent = new AiHealth_SyncEvent(objectId.ToString(),
-                Player.Room.Time, 0, 100, 0, 0, "now", false, true);
-
-            foreach (var entinty in Player.Room.Entities.Values)
-                foreach (var component in entinty)
-                    if (component is HazardControllerComp triggerCoopEntity ||
-                        component.PrefabName.Contains("Spawner")) //Temp until BreakableEventControllerComp is added.              
-                        Player.Room.SendSyncEvent(aiEvent);
+                    else if (component is BreakableEventControllerComp breakableObjEntity)
+                        breakableObjEntity.Destroy(Player);
+                    else if (component is InterObjStatusComp enemyEntity)
+                        enemyEntity.SendDamageEvent(Player);
         }
-    }
-
-    private void DestroyObject(GameObjectModel obj)
-    {
-        var random = new Random();
-        var randomItem = random.Next(1, 4);
-        var itemReward = 0;
-
-        switch (randomItem)
-        {
-            case 1:
-                itemReward = 404;
-                break;
-            case 2:
-                itemReward = 1568;
-                break;
-            case 3:
-                itemReward = 510;
-                break;
-        }
-
-        var aiEvent = new AiHealth_SyncEvent(obj.ObjectInfo.ObjectId.ToString(),
-                        Player.Room.Time, 0, 100, 0, 0, "now", false, false);
-
-        Logger.LogInformation("Object name: {args1} Object Id: {args2}",
-            obj.ObjectInfo.PrefabName, obj.ObjectInfo.ObjectId);
-
-        Player.Room.SendSyncEvent(aiEvent);
-
-        if (obj.ObjectInfo.PrefabName is not "PF_EVT_XmasBrkIceCube02" and not "PF_EVT_HallwnPumpkinFloatBRK")
-            Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
-
-        switch (randomItem)
-        {
-            case 1:
-                itemReward = 1613;
-                break;
-            case 2:
-                itemReward = 1618;
-                break;
-            case 3:
-                itemReward = 1616;
-                break;
-        }
-
-        if (obj.ObjectInfo.PrefabName == "PF_EVT_HallwnPumpkinFloatBRK")
-            Player.Character.AddItem(ItemCatalog.GetItemFromId(itemReward), 1);
-
-        Player.SendUpdatedInventory(false);
     }
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item, int hotbarSlotId)

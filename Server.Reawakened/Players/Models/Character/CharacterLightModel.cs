@@ -9,7 +9,7 @@ public class CharacterLightModel
     public EquipmentModel Equipment { get; set; }
     public int PetItemId { get; set; }
     public bool Registered { get; set; }
-    public int CharacterId { get; set; }
+    public int LightCharacterId { get; set; }
     public string CharacterName { get; set; }
     public int UserUuid { get; set; }
     public int Gender { get; set; }
@@ -59,7 +59,7 @@ public class CharacterLightModel
     {
         var sb = new SeparatedStringBuilder('<');
 
-        sb.Append(CharacterId);
+        sb.Append(LightCharacterId);
         sb.Append(CharacterName);
         sb.Append(UserUuid);
         sb.Append(Gender);

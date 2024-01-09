@@ -30,7 +30,7 @@ public class GenericCollectibleComp : Component<GenericCollectible>
     }
 
     public override object[] GetInitData(Player player) =>
-        Collected ? [0] : Array.Empty<object>();
+        Collected ? [0] : [];
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {

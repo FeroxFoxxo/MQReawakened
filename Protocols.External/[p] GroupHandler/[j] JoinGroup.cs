@@ -8,14 +8,14 @@ public class JoinGroup : ExternalProtocol
 {
     public override string ProtocolName => "pj";
 
-    public PlayerHandler PlayerHandler { get; set; }
+    public DatabaseContainer DatabaseContainer { get; set; }
 
     public override void Run(string[] message)
     {
         var joinerName = Player.CharacterName;
 
         var leaderName = message[5];
-        var leaderPlayer = PlayerHandler.GetPlayerByName(leaderName);
+        var leaderPlayer = DatabaseContainer.GetPlayerByName(leaderName);
 
         var accepted = message[6] == "1";
         var status = int.Parse(message[7]);

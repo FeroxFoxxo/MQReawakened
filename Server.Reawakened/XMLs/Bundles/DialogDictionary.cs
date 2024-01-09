@@ -7,7 +7,7 @@ using ConversationModel = Server.Reawakened.XMLs.Models.Npcs.ConversationInfo;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class Dialog : DialogXML, ILocalizationXml
+public class DialogDictionary : DialogXML, ILocalizationXml
 {
     public string BundleName => "Dialog";
     public string LocalizationName => "DialogDict_en-US";
@@ -89,9 +89,9 @@ public class Dialog : DialogXML, ILocalizationXml
 
         DialogDict = this.GetField<DialogXML>("_dialogDict") as Dictionary<int, List<Conversation>>;
 
-        foreach(var dialog in DialogDict)
+        foreach (var dialog in DialogDict)
         {
-            foreach(var conversation in dialog.Value)
+            foreach (var conversation in dialog.Value)
             {
                 var dialogModel = dialog.Value.Select(c => new ConversationModel(c.DialogId, c.ConversationId)).ToList();
 

@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Enums;
@@ -18,23 +17,19 @@ public class CreateCharacter : ExternalProtocol
 {
     public override string ProtocolName => "cr";
 
-    public UserInfoHandler UserInfoHandler { get; set; }
+    public CharacterHandler CharacterHandler { get; set; }
     public NameGenSyllables NameGenSyllables { get; set; }
     public ServerRConfig ServerConfig { get; set; }
     public WorldGraph WorldGraph { get; set; }
     public WorldHandler WorldHandler { get; set; }
-    public ILogger<CreateCharacter> Logger { get; set; }
 
     public override void Run(string[] message)
     {
-        var lowestCharacterAvailable = Enumerable.Range(1, ServerConfig.MaxCharacterCount)
-            .Except(Player.UserInfo.Characters.Keys).Min();
-
         var firstName = message[5];
         var middleName = message[6];
         var lastName = message[7];
         var gender = (Gender)int.Parse(message[8]);
-        var characterData = new CharacterDataModel(message[9], lowestCharacterAvailable, ServerConfig);
+        var characterData = new CharacterDataModel(message[9]);
         var tribe = TribeType.Ook;
 
         if (ServerConfig.Is2014Client)
@@ -42,12 +37,12 @@ public class CreateCharacter : ExternalProtocol
 
         var names = new[] { firstName, middleName, lastName };
 
-        if (NameGenSyllables.IsNameReserved(names, UserInfoHandler))
+        if (NameGenSyllables.IsNameReserved(names, CharacterHandler))
         {
-            var suggestion = NameGenSyllables.GetRandomName(gender, UserInfoHandler);
+            var suggestion = NameGenSyllables.GetRandomName(gender, CharacterHandler);
             SendXt("cr", 0, suggestion[0], suggestion[1], suggestion[2]);
         }
-        else if (Player.UserInfo.Characters.Count > ServerConfig.MaxCharacterCount)
+        else if (Player.UserInfo.CharacterIds.Count > ServerConfig.MaxCharacterCount)
         {
             SendXt("cr", 1);
         }
@@ -62,22 +57,21 @@ public class CreateCharacter : ExternalProtocol
 
             characterData.Registered = true;
 
-            var model = new CharacterModel
+            var levelUpData = new LevelData
             {
-                Data = characterData,
-                LevelData = new LevelData
-                {
-                    LevelId = ServerConfig.Is2014Client ? WorldGraph.DefaultLevel : WorldGraph.NewbZone,
-                    SpawnPointId = 0
-                }
+                LevelId = ServerConfig.Is2014Client ? WorldGraph.DefaultLevel : WorldGraph.NewbZone,
+                SpawnPointId = 0
             };
+
+            var model = CharacterHandler.Create(characterData, levelUpData);
+
             model.SetLevelXp(1);
 
             Player.AddCharacter(model);
 
             var levelInfo = WorldHandler.GetLevelInfo(model.LevelData.LevelId);
 
-            Player.SendStartPlay(model, levelInfo);
+            Player.SendStartPlay(model, levelInfo, CharacterHandler);
         }
     }
 }

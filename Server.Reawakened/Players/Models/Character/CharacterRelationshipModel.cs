@@ -2,7 +2,7 @@
 
 namespace Server.Reawakened.Players.Models.Character;
 
-public class PlayerDataModel
+public class CharacterRelationshipModel
 {
     public string CharacterName { get; set; }
     public int CharacterId { get; set; }
@@ -13,25 +13,24 @@ public class PlayerDataModel
     public bool IsMuted { get; set; }
     public int InteractionStatus { get; set; }
 
-    public PlayerDataModel(int userId, int characterId, Player currentPlayer)
+    public CharacterRelationshipModel(int characterId, Player currentPlayer)
     {
-        var user = currentPlayer.PlayerHandler.UserInfoHandler.Data[userId];
-        var character = user.Characters[characterId];
-        var player = currentPlayer.PlayerHandler.GetPlayersByUserId(userId)
-            .FirstOrDefault(p => p.Character.Data.CharacterId == characterId);
+        var otherCharacter = currentPlayer.DatabaseContainer.CharacterHandler.Get(characterId);
+        var otherPlayer = currentPlayer.DatabaseContainer.GetPlayersByCharacterId(characterId)
+            .FirstOrDefault(p => p.Character.Id == characterId);
 
-        CharacterName = character.Data.CharacterName;
+        CharacterName = otherCharacter.Data.CharacterName;
         CharacterId = characterId;
 
-        IsOnline = player != null;
+        IsOnline = otherPlayer != null;
 
-        Level = character.LevelData.LevelId;
-        Location = player != null ? player.Room.GetRoomName() : "UNKNOWN";
+        Level = otherCharacter.LevelData.LevelId;
+        Location = otherPlayer != null ? otherPlayer.Room.GetRoomName() : "UNKNOWN";
 
-        IsBlocked = currentPlayer.Character.Data.BlockedList.Any(x => x.Key == userId && x.Value == userId);
-        IsMuted = currentPlayer.Character.Data.MutedList.Any(x => x.Key == userId && x.Value == userId);
+        IsBlocked = currentPlayer.Character.Data.Blocked.Any(x => x == characterId);
+        IsMuted = currentPlayer.Character.Data.Muted.Any(x => x == characterId);
 
-        InteractionStatus = (int)character.Data.InteractionStatus;
+        InteractionStatus = (int)otherCharacter.Data.InteractionStatus;
     }
 
     public override string ToString()

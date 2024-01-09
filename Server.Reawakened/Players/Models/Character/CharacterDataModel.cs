@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
@@ -26,15 +25,14 @@ public class CharacterDataModel : CharacterLightModel
         ?? [];
 
     private PlayerListModel FriendModels =>
-        new(FriendList.Select(f => new PlayerDataModel(f.Key, f.Value, _player)).ToList());
+        new(Friends.Select(f => new CharacterRelationshipModel(f, _player)).ToList());
 
     private PlayerListModel BlockModels =>
-        new(BlockedList.Select(b => new PlayerDataModel(b.Key, b.Value, _player)).ToList());
+        new(Blocked.Select(b => new CharacterRelationshipModel(b, _player)).ToList());
 
-    // USER ID + CHARACTER NAME
-    public Dictionary<int, int> FriendList { get; set; }
-    public Dictionary<int, int> BlockedList { get; set; }
-    public Dictionary<int, int> MutedList { get; set; }
+    public List<int> Friends { get; set; }
+    public List<int> Blocked { get; set; }
+    public List<int> Muted { get; set; }
 
     public int Cash { get; set; }
     public int NCash { get; set; }
@@ -52,20 +50,20 @@ public class CharacterDataModel : CharacterLightModel
 
     public CharacterDataModel() => InitializeDetailedLists();
 
-    public CharacterDataModel(string serverData, int id, ServerRConfig config) : base(serverData)
+    public CharacterDataModel(string serverData) : base(serverData)
     {
         Inventory = new InventoryModel();
         Hotbar = new HotbarModel();
         Resistances = new CharacterResistancesModel();
         RecipeList = new RecipeListModel();
 
-        CharacterId = id;
-        Customization.CharacterId = id;
-
         InitializeDetailedLists();
+    }
 
-        if (CharacterId > config.MaxCharacterCount || CharacterId < 0)
-            throw new InvalidDataException();
+    public void SetCharacterId(int id)
+    {
+        LightCharacterId = id;
+        Customization.CharacterId = id;
     }
 
     public void SetPlayerData(Player player)
@@ -81,9 +79,9 @@ public class CharacterDataModel : CharacterLightModel
         TribesDiscovered = [];
         TribesProgression = [];
         DiscoveredStats = [];
-        FriendList = [];
-        BlockedList = [];
-        MutedList = [];
+        Friends = [];
+        Blocked = [];
+        Muted = [];
         InitializeLiteLists();
     }
 
@@ -138,7 +136,7 @@ public class CharacterDataModel : CharacterLightModel
     {
         var sb = new SeparatedStringBuilder('<');
 
-        sb.Append(CharacterId);
+        sb.Append(LightCharacterId);
         sb.Append(CharacterName);
         sb.Append(Gender);
         sb.Append(Cash);

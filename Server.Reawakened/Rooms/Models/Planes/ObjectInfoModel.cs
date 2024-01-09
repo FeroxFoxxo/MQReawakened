@@ -14,6 +14,8 @@ public class ObjectInfoModel
 
     public string ParentPlane { get; set; }
 
+    public RectModel Rectangle { get; set; }
+
     public Dictionary<string, ComponentModel> Components { get; set; }
 
     public ObjectInfoModel() =>

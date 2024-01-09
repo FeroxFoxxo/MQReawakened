@@ -16,7 +16,7 @@ public class ClientToServer : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var server2Client = new ChunkedTransport(delegate(string protocol) { SendXt("dC", protocol); });
+        var server2Client = new ChunkedTransport(delegate (string protocol) { SendXt("dC", protocol); });
 
         var s2CProtocol = new TCompactProtocol(server2Client);
 

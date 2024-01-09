@@ -18,6 +18,7 @@ public static class GetItems
             var count = -1;
             var bindingCount = -1;
             var delayUseExpiry = DateTime.Now;
+            var weight = 1;
 
             foreach (XmlAttribute itemtAttributes in items.Attributes)
             {
@@ -35,6 +36,9 @@ public static class GetItems
                     case "delayUseExpiry":
                         delayUseExpiry = DateTime.Parse(itemtAttributes.Value);
                         break;
+                    case "weight":
+                        weight = int.Parse(itemtAttributes.Value);
+                        break;
                 }
             }
             itemList.Add(new ItemModel()
@@ -42,8 +46,9 @@ public static class GetItems
                 ItemId = itemId,
                 Count = count,
                 BindingCount = bindingCount,
-                DelayUseExpiry = delayUseExpiry
-            }) ;
+                DelayUseExpiry = delayUseExpiry,
+                Weight = weight
+            });
         }
 
         return itemList;

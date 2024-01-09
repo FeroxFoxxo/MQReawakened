@@ -35,10 +35,8 @@ public class Account : PersistantData, INetStateData
     {
     }
 
-    public Account(string username, string password, string email, int userId, PasswordHasher hasher)
+    public Account(string username, string password, string email, PasswordHasher hasher)
     {
-        UserId = userId;
-
         Username = username;
         Password = hasher.GetPassword(username, password);
         Email = email;

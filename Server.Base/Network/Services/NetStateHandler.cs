@@ -26,13 +26,13 @@ public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
 
     public void Initialize() =>
         sink.ServerStarted += _ =>
-            thread.DelayCall(CheckAllAlive, TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(1.5), 0);
+            thread.DelayCall(CheckAllAlive, null, TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(1.5), 0);
 
     public NetState FindUser(int userId) =>
         (from state in Instances
          let account = state.Get<Account>()
          where account != null
-         where account.UserId == userId
+         where account.Id == userId
          select state
     ).FirstOrDefault();
 
@@ -88,7 +88,7 @@ public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
         }
     }
 
-    public void CheckAllAlive()
+    public void CheckAllAlive(object _)
     {
         var curTicks = GetTicks.Ticks;
 

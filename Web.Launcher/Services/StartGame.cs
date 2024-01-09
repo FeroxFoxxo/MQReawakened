@@ -107,7 +107,7 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
             CultureInfo.InvariantCulture);
 
         sConfig.Is2014Client = lastUpdate > majorClientUpdate;
-        
+
         lWConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
         lWConfig.MajorClientUpdate = majorClientUpdate.ToUnixTimestamp();
 

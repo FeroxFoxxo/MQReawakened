@@ -14,7 +14,7 @@ public class ObjectiveCatalogInt : IBundledXml
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<string, int> ObjectivePrefabs;
+    public Dictionary<string, List<int>> ObjectivePrefabs;
 
     public ObjectiveCatalogInt()
     {
@@ -41,7 +41,7 @@ public class ObjectiveCatalogInt : IBundledXml
                 if (!(quest.Name == "Objective")) continue;
 
                 var prefabName = string.Empty;
-                var itemId = -1;
+                var itemId = string.Empty;
 
                 foreach (XmlAttribute itemAttributes in quest.Attributes)
                     switch (itemAttributes.Name)
@@ -50,18 +50,28 @@ public class ObjectiveCatalogInt : IBundledXml
                             prefabName = itemAttributes.Value;
                             break;
                         case "itemId":
-                            itemId = int.Parse(itemAttributes.Value);
+                            itemId = itemAttributes.Value;
                             break;
                     }
-                
-                ObjectivePrefabs.TryAdd(prefabName, itemId);
+                AddItem(prefabName, itemId);
             }
         }
 
         var itemCatalog = Services.GetRequiredService<ItemCatalog>();
 
         foreach (var item in itemCatalog.Items.Values)
-            ObjectivePrefabs.TryAdd(item.PrefabName, item.ItemId);
+            AddItem(item.PrefabName, item.ItemId.ToString());
+    }
+
+    public void AddItem(string prefabName, string item)
+    {
+        if (!ObjectivePrefabs.ContainsKey(prefabName))
+            ObjectivePrefabs.Add(prefabName, []);
+
+        var itemId = int.TryParse(item, out var id) ? id : default;
+
+        if (!ObjectivePrefabs[prefabName].Contains(itemId))
+            ObjectivePrefabs[prefabName].Add(itemId);
     }
 
     public void FinalizeBundle()

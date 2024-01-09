@@ -18,7 +18,7 @@ public class AutoSave(InternalRConfig config, ServerHandler handler, World world
 
     private void RunAutoSaveTimer()
     {
-        var timer = timerThread.DelayCall(Tick, _delayAutoSave - _delayWarning, _delayAutoSave, 0);
+        var timer = timerThread.DelayCall(Tick, null, _delayAutoSave - _delayWarning, _delayAutoSave, 0);
         timer.Stop();
     }
 
@@ -39,7 +39,7 @@ public class AutoSave(InternalRConfig config, ServerHandler handler, World world
         world.Save(true);
     }
 
-    private void Tick()
+    private void Tick(object _)
     {
         if (handler.Restarting)
             return;
@@ -68,7 +68,7 @@ public class AutoSave(InternalRConfig config, ServerHandler handler, World world
                     break;
             }
 
-            timerThread.DelayCall(Save, _delayWarning, TimeSpan.Zero, 1);
+            timerThread.DelayCall((object _) => Save(), null, _delayWarning, TimeSpan.Zero, 1);
         }
     }
 

@@ -4,7 +4,9 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Protocol;
+using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Enums;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using WorldGraphDefines;
 
@@ -38,7 +40,7 @@ public static class PlayerExtensions
 
     public static void SendUserEnterDataTo(this Player send, Player receive) =>
         receive.NetState.SendXml("uER",
-            $"<u i='{send.UserId}' m='{send.Account.IsModerator()}' s='{send.Account.IsSpectator()}' p='{send.Account.UserId}'>" +
+            $"<u i='{send.UserId}' m='{send.Account.IsModerator()}' s='{send.Account.IsSpectator()}' p='{send.Account.Id}'>" +
             $"<n>{send.Account.Username}</n>" +
             "</u>"
         );
@@ -76,17 +78,17 @@ public static class PlayerExtensions
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
     }
 
-    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
+    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo, CharacterHandler handler)
     {
         character.Data.SetPlayerData(player);
-        player.SetCharacterSelected(character.Data.CharacterId);
-        player.PlayerHandler.AddPlayer(player);
+        player.SetCharacterSelected(character.Id, handler);
+        player.DatabaseContainer.AddPlayer(player);
         player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
 
-        foreach (var friend in player.PlayerHandler.GetPlayersByFriend(player.UserId)
+        foreach (var friend in player.DatabaseContainer.GetPlayersByFriend(player.CharacterId)
                      .Where(p =>
-                         player.Character.Data.FriendList
-                             .Any(x => x.Key == p.UserId && x.Value == p.Character.Data.CharacterId)
+                         player.Character.Data.Friends
+                             .Any(x => x == p.Character.Id)
                      )
                 )
             friend.SendXt("fy", player.CharacterName);
@@ -94,7 +96,13 @@ public static class PlayerExtensions
 
     public static void DumpToLobby(this Player player)
     {
-        var room = player.PlayerHandler.WorldHandler.GetRoomFromLevelId(-1, player);
+        var room = player.DatabaseContainer.WorldHandler.GetRoomFromLevelId(-1, player);
         player.JoinRoom(room, out _);
+    }
+
+    public static List<GameObjectModel> GetPlaneEntities(this Player player)
+    {
+        var planeName = player.TempData.Position.Z > 10 ? "Plane1" : "Plane0";
+        return [.. player.Room.Planes[planeName].GameObjects.Values];
     }
 }

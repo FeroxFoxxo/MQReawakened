@@ -14,18 +14,18 @@ public class PlaneModel(string planeName)
         var id = colliderNode.Attributes!.GetIntValue("id");
 
         var colliderList = (from XmlNode collider in colliderNode.ChildNodes
-            where collider.Name == "vertex"
-            select collider.Attributes!
+                            where collider.Name == "vertex"
+                            select collider.Attributes!
             into vertex
-            select new Vector2
-            {
-                x = vertex.GetSingleValue("x"),
-                y = vertex.GetSingleValue("y")
-            }).ToArray();
+                            select new Vector2
+                            {
+                                x = vertex.GetSingleValue("x"),
+                                y = vertex.GetSingleValue("y")
+                            }).ToArray();
 
         if (!GameObjects.TryGetValue(id, out var value))
             return;
-        value.Rect = colliderList.GetSurroundingRect();
+        value.ObjectInfo.Rectangle = colliderList.GetSurroundingRect();
     }
 
     public void LoadGameObjectXml(XmlNode gameObjectNode)
@@ -57,7 +57,9 @@ public class PlaneModel(string planeName)
                 Y = attributes.GetSingleValue("sy"),
                 Z = attributes.GetSingleValue("sz")
             },
-            ParentPlane = PlaneName
+            ParentPlane = PlaneName,
+            Rectangle = new RectModel(-1000.0f, -1000.0f, 0f, 0f)
+
         };
 
         foreach (XmlNode componentNode in gameObjectNode.ChildNodes)

@@ -3,9 +3,11 @@ using Server.Reawakened.Rooms.Services;
 
 namespace Server.Reawakened.Players.Helpers;
 
-public class PlayerHandler(WorldHandler worldHandler)
+public class DatabaseContainer(WorldHandler worldHandler, CharacterHandler characterHandler)
 {
     public WorldHandler WorldHandler => worldHandler;
+    public CharacterHandler CharacterHandler => characterHandler;
+
     public UserInfoHandler UserInfoHandler;
 
     public object Lock { get; } = new object();
@@ -32,8 +34,14 @@ public class PlayerHandler(WorldHandler worldHandler)
 
     public IEnumerable<Player> GetPlayersByFriend(int friendId)
     {
-        lock(Lock)
-            return _playerList.ToList().Where(p => p.Character.Data.FriendList.ContainsKey(friendId));
+        lock (Lock)
+            return _playerList.ToList().Where(p => p.Character.Data.Friends.Contains(friendId));
+    }
+
+    public IEnumerable<Player> GetPlayersByCharacterId(int characterId)
+    {
+        lock (Lock)
+            return _playerList.ToList().Where(p => p.CharacterId == characterId);
     }
 
     public IEnumerable<Player> GetPlayersByUserId(int playerId)

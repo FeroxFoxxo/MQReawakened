@@ -1,4 +1,5 @@
 ﻿using AssetStudio;
+using System.Collections.Specialized;
 using Web.AssetBundles.Models;
 
 namespace Web.AssetBundles.Extensions;
@@ -7,88 +8,61 @@ public static class GetMainAsset
 {
     public static string GetMainAssetName(this SerializedFile assetFile, DefaultProgressBar bar)
     {
-        var assetBundle = assetFile.ObjectsDic.Values.First(o => o.type == ClassIDType.AssetBundle);
-
-        var dump = assetBundle.Dump();
-        var lines = dump.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-        var tree = GetTree(lines);
-
-        var baseBundle = tree.FirstOrDefault(a => a.Name == "AssetBundle Base");
-
-        if (baseBundle == null)
+        if (assetFile.Objects.FirstOrDefault(a => a is AssetBundle) is not AssetBundle assetBundle)
         {
-            bar.SetMessage($"Bundle '{assetFile.fileName}' does not have base. Returning...");
+            bar.SetMessage($"Could not find asset bundle for '{assetFile.fileName}'. Returning...");
             return null;
         }
 
-        var mainAsset = baseBundle.SubTrees.FirstOrDefault(a => a.Name == "AssetInfo m_MainAsset");
+        var type = assetBundle.ToType();
 
-        if (mainAsset == null)
-        {
-            bar.SetMessage($"Bundle '{assetFile.fileName}' does not have main asset. Returning...");
-            return null;
-        }
+        var mainAsset = type["m_MainAsset"];
+        var mainDictionary = mainAsset as OrderedDictionary;
 
-        var asset = GetAssetString(mainAsset);
+        var assetToFind = GetAsset(mainDictionary);
 
-        var container = baseBundle.SubTrees.FirstOrDefault(a => a.Name == "map m_Container");
+        var container = type["m_Container"];
+        var containerList = container as List<KeyValuePair<object, object>>;
 
-        if (container == null)
-        {
-            bar.SetMessage($"Bundle '{assetFile.fileName}' does not have map container. Returning...");
-            return null;
-        }
+        var foundAsset = containerList.FirstOrDefault(
+            x =>
+            {
+                var name = x.Key as string;
+                var dict = x.Value as OrderedDictionary;
+                var asset = GetAsset(dict);
 
-        var array = container.SubTrees.FirstOrDefault(a => a.Name.StartsWith("int size = "));
+                return CompareAsset(asset, assetToFind);
+            }
+        );
 
-        if (array == null)
-        {
-            bar.SetMessage($"Bundle '{assetFile.fileName}' does not have container size. Returning...");
-            return null;
-        }
-
-        foreach (var data in array.SubTrees.Where(a => a.Name == "pair data"))
-        {
-            var dAssetInfo = data.SubTrees.FirstOrDefault(a => a.Name == "AssetInfo second");
-
-            if (GetAssetString(dAssetInfo) != asset)
-                continue;
-
-            const string nameStart = "string first = \"";
-            var main = data.SubTrees.FirstOrDefault(a => a.Name.StartsWith(nameStart));
-
-            if (main != null)
-                return main.Name[nameStart.Length..][..^1];
-        }
-
-        throw new InvalidDataException();
+        return foundAsset.Key as string;
     }
 
-    private static string GetAssetString(TreeInfo info) =>
-        GenerateStringFromTree(info.SubTrees.FirstOrDefault(a => a.Name == "PPtr<Object> asset"));
-
-    private static string GenerateStringFromTree(TreeInfo tree) =>
-        $"{tree.Name}\n{string.Join('\t', tree.SubTrees.Select(GenerateStringFromTree))}";
-
-    private static TreeInfo[] GetTree(IEnumerable<string> tree)
+    public class Asset(int preloadSize, int fileId, int pathId)
     {
-        var info = new List<KeyValuePair<string, List<string>>>();
-        KeyValuePair<string, List<string>> pair = default;
-
-        foreach (var treeTxt in tree)
-        {
-            if (!treeTxt.StartsWith('\t'))
-            {
-                pair = new KeyValuePair<string, List<string>>(treeTxt, []);
-                if (pair.Key != default)
-                    info.Add(pair);
-            }
-            else if (pair.Key != default)
-            {
-                pair.Value.Add(treeTxt[1..]);
-            }
-        }
-
-        return info.Select(i => new TreeInfo(i.Key, GetTree(i.Value))).ToArray();
+        public int PreloadSize = preloadSize;
+        public int FileId = fileId;
+        public int PathId = pathId;
     }
+
+    private static Asset GetAsset(OrderedDictionary dictionary)
+    {
+        var preload = dictionary["preloadSize"];
+        var preloadSize = (int)preload;
+
+        var asset = dictionary["asset"];
+        var assetDictionary = asset as OrderedDictionary;
+
+        var file = assetDictionary["m_FileID"];
+        var fileId = (int)file;
+
+        var path = assetDictionary["m_PathID"];
+        var pathId = (int)path;
+
+        return new Asset(preloadSize, fileId, pathId);
+    }
+
+    private static bool CompareAsset(Asset asset1, Asset asset2)
+        => asset1.PreloadSize == asset2.PreloadSize &&
+        asset1.PathId == asset2.PathId && asset1.FileId == asset2.FileId;
 }

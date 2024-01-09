@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
+public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 {
     private int _activations;
     private int _deactivations;
@@ -26,6 +26,12 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
     public ILogger<TriggerReceiverComp> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
 
+    public override void InitializeComponent()
+    {
+        base.InitializeComponent();
+        Trigger(ActiveByDefault);
+    }
+
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
         if (syncEvent.Type != SyncEvent.EventType.TriggerReceiver)
@@ -36,7 +42,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
         Trigger(tEvent.Activate);
     }
 
-    public void TriggerStateChange(TriggerType triggerType, Room room, bool triggered)
+    public void TriggerStateChange(TriggerType triggerType, bool triggered)
     {
         Enabled = triggerType switch
         {
@@ -102,9 +108,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
         );
     }
 
-    public override void InitializeComponent() => Trigger(ActiveByDefault);
-
-    public override object[] GetInitData(Player player) => new object[] { Activated ? 1 : 0 };
+    public override object[] GetInitData(Player player) => [Activated ? 1 : 0];
 
     public void LogTriggerRecieved()
     {
@@ -125,11 +129,8 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ITriggerable
         var entityComponents = Room.Entities[Id];
 
         foreach (var component in entityComponents)
-            if (component is IMoveable moveable)
-                if (activated)
-                    moveable.GetMovement().Activate(Room.Time);
-                else
-                    moveable.GetMovement().Deactivate(Room.Time);
+            if (component is IRecieverTriggered recieveable)
+                recieveable.RecievedTrigger(activated);
 
         SendTriggerState(activated);
     }

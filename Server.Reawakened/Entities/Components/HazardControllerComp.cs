@@ -24,14 +24,12 @@ public class HazardControllerComp : Component<HazardController>
 
     public ILogger<HazardControllerComp> Logger { get; set; }
 
-    public override object[] GetInitData(Player player) => new object[] { 0 };
+    public override object[] GetInitData(Player player) => [0];
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
-        /* seems redundant with the other return statement below? not sure though
         if (HurtEffect == "NoEffect")
             return;
-        */
 
         var character = player.Character;
 
@@ -39,7 +37,9 @@ public class HazardControllerComp : Component<HazardController>
 
         if (effectType == default)
         {
-            if (notifyCollisionEvent.Colliding && notifyCollisionEvent.Message == "HitDamageZone") //probably won't work for until some collisions failing is fixed
+            // Probably won't work for until some collisions failing is fixed
+
+            if (notifyCollisionEvent.Colliding && notifyCollisionEvent.Message == "HitDamageZone")
                 player.ApplyDamageByObject(Room, int.Parse(notifyCollisionEvent.CollisionTarget));
 
             Logger.LogWarning("No hazard type found for {Type}. Returning...", HurtEffect);
@@ -47,7 +47,7 @@ public class HazardControllerComp : Component<HazardController>
         }
 
         var statusEffect = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), Room.Time, (int)effectType,
-            0, Convert.ToInt32(HurtLength), true, Entity.GameObject.ObjectInfo.PrefabName, false);
+            0, 1, true, Entity.GameObject.ObjectInfo.ObjectId.ToString(), false);
 
         Room.SendSyncEvent(statusEffect);
 
@@ -56,12 +56,12 @@ public class HazardControllerComp : Component<HazardController>
 
         switch (effectType)
         {
-            case ItemEffectType.FireDamage:
-                player.ApplyDamageByPercent(Room, .10);
+            case ItemEffectType.Unknown:
+                SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
+                $"Effect Type: {effectType}");
                 break;
             default:
-                SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
-                    $"Effect Type: {effectType}");
+                player.ApplyDamageByPercent(Room, .10);
                 break;
         }
     }
