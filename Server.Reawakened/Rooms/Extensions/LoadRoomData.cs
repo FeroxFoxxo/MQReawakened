@@ -99,7 +99,7 @@ public static class LoadRoomData
                             typeof(MQAttribute),
                             typeof(MQConstant),
                             typeof(MQAttributeSerializePrefabValue),
-                            typeof(MQAttributeGlobalPerPrefab),
+                            typeof(MQAttributeGlobalPerPrefab)
                         };
 
         foreach (var plane in room.Planes)
