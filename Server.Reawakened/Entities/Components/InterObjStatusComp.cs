@@ -45,8 +45,9 @@ public class InterObjStatusComp : Component<InterObjStatus>
 
     public void SendDamageEvent(Player player)
     {
-
         Logger.LogInformation("Enemy name: {args1} Enemy Id: {args2}", PrefabName, Id);
+
+        ComponentData.Health = 0;
 
         // Link to damage + health of object later
         var damageEvent = new AiHealth_SyncEvent(Id.ToString(), player.Room.Time, ComponentData.Health, 5, 0, 0, player.CharacterName, false, true);
