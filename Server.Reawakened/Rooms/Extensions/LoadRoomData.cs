@@ -94,6 +94,14 @@ public static class LoadRoomData
 
         string translateComponent;
         string[] translatedArray;
+
+        var attributes = new List<Type>() {
+                            typeof(MQAttribute),
+                            typeof(MQConstant),
+                            typeof(MQAttributeSerializePrefabValue),
+                            typeof(MQAttributeGlobalPerPrefab),
+                        };
+
         foreach (var plane in room.Planes)
             foreach (var entity in plane.Value.GameObjects)
                 foreach (var component in entity.Value.ObjectInfo.Components)
@@ -105,8 +113,17 @@ public static class LoadRoomData
                     {
                         var dataObj = RuntimeHelpers.GetUninitializedObject(mqType);
 
+                        var ctor = mqType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Array.Empty<Type>());
+
+                        try
+                        {
+                            ctor.Invoke(dataObj, null);
+                        }
+                        catch(TargetInvocationException)
+                        { }
+
                         var fields = mqType.GetFields()
-                            .Where(prop => prop.IsDefined(typeof(MQAttribute), false))
+                            .Where(prop => attributes.Any(a => prop.IsDefined(a, false)))
                             .ToArray();
 
                         foreach (var componentValue in component.Value.ComponentAttributes.Where(componentValue =>
@@ -133,10 +150,21 @@ public static class LoadRoomData
                                 translatedArray = translateComponent.Split(",");
                                 field.SetValue(dataObj, new Vector3(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2])));
                             }
+                            else if (field.FieldType == typeof(Color))
+                            {
+                                translateComponent = componentValue.Value.Replace("RGBA(", "").Replace(")", "");
+                                translatedArray = translateComponent.Split(",");
+                                field.SetValue(dataObj, new Color(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2]), float.Parse(translatedArray[3])));
+                            }
+                            else if (field.FieldType == typeof(string[]))
+                            {
+                                translatedArray = componentValue.Value.Split(",");
+                                field.SetValue(dataObj, translatedArray);
+                            }
                             else
                             {
-                                room.Logger.LogError("It is unknown how to convert a string to a {FieldType}.",
-                                    field.FieldType);
+                                room.Logger.LogError("It is unknown how to convert a string to a {FieldType} (data: {Data}).",
+                                    field.FieldType, componentValue.Value);
                             }
                         }
 

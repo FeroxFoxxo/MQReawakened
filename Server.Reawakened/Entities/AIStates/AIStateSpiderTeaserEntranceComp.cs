@@ -36,7 +36,7 @@ public class AIStateSpiderTeaserEntranceComp : Component<AIStateSpiderTeaserEntr
 
             Room.SendSyncEvent(syncEvent.GetSyncEvent(Id, Room));
 
-            TimerThread.DelayCall(RunDrop, null, TimeSpan.FromSeconds(16 + 1), TimeSpan.Zero, 1);
+            TimerThread.DelayCall(RunDrop, null, TimeSpan.FromSeconds(IntroDuration + DelayBeforeEntranceDuration), TimeSpan.Zero, 1);
         }
     }
 
