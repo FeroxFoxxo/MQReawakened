@@ -234,7 +234,7 @@ public class ItemCatalogInt : IBundledXml
 
                         if (!miscDict.LocalizationDict.TryGetValue(descriptionId, out var description))
                         {
-                            Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
+                            Logger.LogError("ITEM CATALOG: Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
                             continue;
                         }
 
@@ -244,7 +244,7 @@ public class ItemCatalogInt : IBundledXml
 
                         if (string.IsNullOrEmpty(nameId.Value))
                         {
-                            Logger.LogError("Could not find name for item {ItemName} in misc dictionary", itemName);
+                            Logger.LogError("ITEM CATALOG: Could not find name for item {ItemName} in misc dictionary", itemName);
                             continue;
                         }
 

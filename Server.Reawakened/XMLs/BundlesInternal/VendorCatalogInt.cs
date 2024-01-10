@@ -110,7 +110,7 @@ public class VendorCatalogInt : IBundledXml
 
                             if (itemD == null)
                             {
-                                Logger.LogError("Unknown item with prefab name: {Val}", id.Value);
+                                Logger.LogError("VENDOR: Unknown item with prefab name: {Val}", id.Value);
                                 continue;
                             }
 
