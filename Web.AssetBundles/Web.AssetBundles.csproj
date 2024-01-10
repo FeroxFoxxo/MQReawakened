@@ -57,6 +57,9 @@
       <None Update="Assets\LocalAssets\DialogRewriteInt.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Assets\LocalAssets\EditItemInt.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Assets\LocalAssets\ItemCatalogInt.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

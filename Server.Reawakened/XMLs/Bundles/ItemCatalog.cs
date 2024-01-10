@@ -127,6 +127,9 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         _itemCategories.Clear();
         _itemSubCategories.Clear();
 
+        var internalCatalog = Services.GetRequiredService<ItemCatalogInt>();
+        var editCatalog = Services.GetRequiredService<EditItemInt>();
+
         var items = new Dictionary<int, string>();
 
         foreach (XmlNode catalogs in xml.ChildNodes)
@@ -179,11 +182,15 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                         }
 
                         items.Add(id, name);
+
+                        if (editCatalog.EditedItemAttributes.TryGetValue(name, out var editedAttributes))
+                            foreach (XmlAttribute itemAttributes in item.Attributes)
+                                if (editedAttributes.TryGetValue(itemAttributes.Name, out var value))
+                                    itemAttributes.Value = value;
                     }
                 }
             }
 
-            var internalCatalog = Services.GetRequiredService<ItemCatalogInt>();
             var smallestItemId = 0;
 
             foreach (var item in internalCatalog.Items)
