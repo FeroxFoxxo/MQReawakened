@@ -88,8 +88,8 @@ public static class PlayerExtensions
         {
             var itemDesc = catalog.GetItemFromId(item.Key);
 
-            tradeModel.TradingPlayer.Character.AddItem(itemDesc, item.Value);
-            origin.Character.RemoveItem(itemDesc, item.Value);
+            tradeModel.TradingPlayer.AddItem(itemDesc, item.Value);
+            origin.RemoveItem(itemDesc, item.Value);
         }
 
         tradingPlayer.Character.Data.Cash += tradeModel.BananasInTrade;
@@ -245,13 +245,12 @@ public static class PlayerExtensions
         }
     }
 
-    public static void CheckObjective(this Player player, QuestCatalog quests, ObjectiveCatalogInt objCatalog,
-        ObjectiveEnum type, int gameObjectId, string prefabName, int count)
+    public static void CheckObjective(this Player player, ObjectiveEnum type, int gameObjectId, string prefabName, int count)
     {
-        if (!objCatalog.ObjectivePrefabs.TryGetValue(prefabName, out var itemIds))
+        if (!player.DatabaseContainer.Objectives.ObjectivePrefabs.TryGetValue(prefabName, out var objectiveInt))
             return;
 
-        if (itemIds == null)
+        if (objectiveInt == null)
             return;
 
         var character = player.Character.Data;
@@ -268,9 +267,9 @@ public static class PlayerExtensions
                         continue;
 
                 if (objective.ObjectiveType != type ||
-                    !itemIds.Contains(objective.ItemId) ||
+                    !objectiveInt.ItemIds.Contains(objective.ItemId) && !objectiveInt.ItemIds.Contains(default) ||
                     objective.Order > quest.CurrentOrder ||
-                    objective.LevelId != player.Character.LevelData.LevelId ||
+                    objective.LevelId != player.Character.LevelData.LevelId && !objectiveInt.GlobalLevel ||
                     objective.Completed ||
                     count <= 0)
                     continue;
@@ -300,7 +299,7 @@ public static class PlayerExtensions
                 }
             }
 
-            player.UpdateNpcsInLevel(quest, quests);
+            player.UpdateNpcsInLevel(quest, player.DatabaseContainer.Quests);
         }
     }
 

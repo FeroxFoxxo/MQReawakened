@@ -4,6 +4,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Protocols.External._C__CashShopHandler;
 
@@ -11,6 +12,8 @@ public class BuyItems : ExternalProtocol
 {
     public override string ProtocolName => "Cb";
 
+    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<BuyItems> Logger { get; set; }
 
@@ -37,10 +40,11 @@ public class BuyItems : ExternalProtocol
             var amount = int.Parse(args[1]);
 
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
-            Player.RemoveNCash(itemDescription.RegularPrice * amount);
 
-            character.AddItem(ItemCatalog.GetItemFromId(itemId), amount);
+            Player.RemoveNCash(itemDescription.RegularPrice * amount);
+            Player.AddItem(ItemCatalog.GetItemFromId(itemId), amount);
         }
+
         Player.SendCashUpdate();
         Player.SendUpdatedInventory(false);
     }

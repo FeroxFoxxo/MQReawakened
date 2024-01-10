@@ -1,12 +1,16 @@
 ﻿using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Server.Reawakened.Players.Helpers;
 
-public class DatabaseContainer(WorldHandler worldHandler, CharacterHandler characterHandler)
+public class DatabaseContainer(WorldHandler worldHandler, CharacterHandler characterHandler, QuestCatalog quests, ObjectiveCatalogInt objCatalog)
 {
     public WorldHandler WorldHandler => worldHandler;
     public CharacterHandler CharacterHandler => characterHandler;
+    public QuestCatalog Quests => quests;
+    public ObjectiveCatalogInt Objectives => objCatalog;
 
     public UserInfoHandler UserInfoHandler;
 

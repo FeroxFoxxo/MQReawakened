@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.EditBundles;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
@@ -59,6 +61,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
         {
             var internalCatalog = Services.GetRequiredService<VendorCatalogInt>();
             var miscTextDict = Services.GetRequiredService<MiscTextDictionary>();
+            var editVendor = Services.GetRequiredService<EditVendorInt>();
             var preExistingCategories = new List<int>();
 
             foreach (XmlNode aNode in vendors)
@@ -66,12 +69,25 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
                 if (aNode.Attributes == null)
                     continue;
 
+                var nameAttribute = aNode.Attributes["name"];
+
+                if (nameAttribute != null)
+                {
+                    if (editVendor.EditedVendorAttributes.TryGetValue(nameAttribute.InnerText, out var lItems))
+                    {
+                        foreach (var item in lItems)
+                        {
+                            var itemElement = xml.CreateElement("item");
+                            itemElement.SetAttribute("id", item);
+                            aNode.AppendChild(itemElement);
+                        }
+                    }
+                }
+
                 var categoryAttribute = aNode.Attributes["catalogid"];
 
-                if (categoryAttribute == null)
-                    continue;
-
-                preExistingCategories.Add(int.Parse(categoryAttribute.InnerText));
+                if (categoryAttribute != null)
+                    preExistingCategories.Add(int.Parse(categoryAttribute.InnerText));
             }
 
             var lastSmallest = 0;

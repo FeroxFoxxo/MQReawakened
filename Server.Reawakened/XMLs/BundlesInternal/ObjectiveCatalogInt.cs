@@ -2,6 +2,7 @@
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Models.Quests;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
@@ -14,7 +15,7 @@ public class ObjectiveCatalogInt : IBundledXml
     public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<string, List<int>> ObjectivePrefabs;
+    public Dictionary<string, ObjectiveInternal> ObjectivePrefabs;
 
     public ObjectiveCatalogInt()
     {
@@ -53,25 +54,25 @@ public class ObjectiveCatalogInt : IBundledXml
                             itemId = itemAttributes.Value;
                             break;
                     }
-                AddItem(prefabName, itemId);
+                AddItem(prefabName, itemId, false);
             }
         }
 
         var itemCatalog = Services.GetRequiredService<ItemCatalog>();
 
         foreach (var item in itemCatalog.Items.Values)
-            AddItem(item.PrefabName, item.ItemId.ToString());
+            AddItem(item.PrefabName, item.ItemId.ToString(), true);
     }
 
-    public void AddItem(string prefabName, string item)
+    public void AddItem(string prefabName, string item, bool globalLevel)
     {
         if (!ObjectivePrefabs.ContainsKey(prefabName))
-            ObjectivePrefabs.Add(prefabName, []);
+            ObjectivePrefabs.Add(prefabName, new ObjectiveInternal() { ItemIds = [], GlobalLevel = globalLevel });
 
         var itemId = int.TryParse(item, out var id) ? id : default;
 
-        if (!ObjectivePrefabs[prefabName].Contains(itemId))
-            ObjectivePrefabs[prefabName].Add(itemId);
+        if (!ObjectivePrefabs[prefabName].ItemIds.Contains(itemId))
+            ObjectivePrefabs[prefabName].ItemIds.Add(itemId);
     }
 
     public void FinalizeBundle()

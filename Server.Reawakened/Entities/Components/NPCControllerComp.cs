@@ -36,7 +36,6 @@ public class NPCControllerComp : Component<NPCController>
     public DialogDictionary Dialog { get; set; }
     public MiscTextDictionary MiscText { get; set; }
 
-    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
     public VendorCatalogInt VendorCatalog { get; set; }
     public DialogCatalogInt DialogCatalog { get; set; }
     public DialogRewriteInt DialogRewrites { get; set; }
@@ -109,7 +108,7 @@ public class NPCControllerComp : Component<NPCController>
 
             if (tEvent.Activate)
             {
-                player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.Talkto, Id, "GoToTrigger", 1);
+                player.CheckObjective(ObjectiveEnum.Talkto, Id, "GoToTrigger", 1);
 
                 switch (NpcType)
                 {

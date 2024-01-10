@@ -38,12 +38,12 @@ public class CraftItem : ExternalProtocol
             return;
         }
 
-        Player.Character.AddItem(item, amount);
+        Player.AddItem(item, amount);
 
         foreach (var ingredient in recipe.Ingredients)
         {
             var ingredientItem = ItemCatalog.GetItemFromId(ingredient.ItemId);
-            Player.Character.RemoveItem(ingredientItem, ingredient.Count * amount);
+            Player.RemoveItem(ingredientItem, ingredient.Count * amount);
         }
 
         Player.SendUpdatedInventory(false);

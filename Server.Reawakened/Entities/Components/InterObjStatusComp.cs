@@ -33,9 +33,6 @@ public class InterObjStatusComp : Component<InterObjStatus>
 
     public ILogger<InterObjStatusComp> Logger { get; set; }
 
-    public QuestCatalog QuestCatalog { get; set; }
-    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
-
     public override void InitializeComponent()
     {
         //Fix spawn position for duplicate position args when spawners are added
@@ -56,8 +53,8 @@ public class InterObjStatusComp : Component<InterObjStatus>
 
         // Check if dead before running
 
-        player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.Score, Id, PrefabName, 1); // Unknown if needed?
-        player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.Scoremultiple, Id, PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1); // Unknown if needed?
+        player.CheckObjective(ObjectiveEnum.Scoremultiple, Id, PrefabName, 1);
 
         //player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
         //player.SendUpdatedInventory(false);

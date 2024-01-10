@@ -24,8 +24,6 @@ public class UseItem : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
         var itemId = int.Parse(message[5]);
         var item = ItemCatalog.GetItemFromId(itemId);
 
@@ -35,7 +33,7 @@ public class UseItem : ExternalProtocol
             return;
         }
 
-        character.RemoveItem(item, 1);
+        Player.RemoveItem(item, 1);
 
         switch (item.SubCategoryId)
         {
@@ -79,7 +77,7 @@ public class UseItem : ExternalProtocol
                     if (packItem == null)
                         continue;
 
-                    character.AddItem(packItem, pair.Value);
+                    Player.AddItem(packItem, pair.Value);
                 }
                 break;
             default:

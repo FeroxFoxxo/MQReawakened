@@ -11,10 +11,6 @@ public class IdolControllerComp : Component<IdolController>
 {
     public int Index => ComponentData.Index;
 
-    public QuestCatalog QuestCatalog { get; set; }
-
-    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
-
     public override object[] GetInitData(Player player)
     {
         var character = player.Character;
@@ -41,6 +37,6 @@ public class IdolControllerComp : Component<IdolController>
 
         player.SendSyncEventToPlayer(collectedEvent);
 
-        player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.IdolCollect, Id, "COL_CRS_BananaIdol", 1);
+        player.CheckObjective(ObjectiveEnum.IdolCollect, Id, "COL_CRS_BananaIdol", 1);
     }
 }

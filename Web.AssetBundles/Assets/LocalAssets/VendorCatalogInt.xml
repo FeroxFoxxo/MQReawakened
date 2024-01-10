@@ -28,7 +28,6 @@
         <Item prefabName="PF_PET_Rig02_Tiger02" />
     </Vendor>
     <Vendor objectId="615" name="Altak" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1180" greetingConversationId="3173" leavingConversationId="3372">
-        <Item prefabName="Col_POT_ExperiencePotion02" />
         <Item prefabName="COL_POT_Rejuvenation02" />
         <Item prefabName="COL_POT_Healing01" />
         <Item prefabName="Add_COM_Explorator01_UF01" />
@@ -120,6 +119,7 @@
         <Item prefabName="Add_COM_Sheep01_S01" />
         <Item prefabName="Add_COM_Centurion01_TS01" />
         <Item prefabName="Add_COM_VespidWings01_BP01" />
+        <Item prefabName="COL_POT_FireElixer01" />
         <Item prefabName="Add_COM_Tiger01_S01" />
         <Item prefabName="Add_COM_Egg01_S01" />
         <Item prefabName="Add_BON_Mantis01_S01" />
@@ -152,11 +152,12 @@
         <Item prefabName="WPN_PRJ_FistOfTerra01" />
         <Item prefabName="ABIL_PoisonBomb03" />
         <Item prefabName="ABIL_Grenade03b" />
+        <Item prefabName="Add_COM_Armor01_LS01" />
     </Vendor>
     <Vendor objectId="244" name="Jitter" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="765" greetingConversationId="2069" leavingConversationId="2068">
         <Item prefabName="COL_BUFF_Bandage01" />
-        <Item prefabName="Col_POT_ExperiencePotion01" />
-        <Item prefabName="Col_POT_ExperiencePotion02" />
+        <Item prefabName="COL_POT_ExperiencePotion01" />
+        <Item prefabName="COL_POT_ExperiencePotion02" />
         <Item prefabName="COL_BUFF_GlyphProtection01" />
         <Item prefabName="COL_POT_Healing01" />
         <Item prefabName="COL_PACK_NC_Rejuvenation01" />
@@ -229,10 +230,10 @@
         <Item prefabName="Add_COM_GemTailRing01_T04" />
     </Vendor>
     <Vendor objectId="16907" name="Ursa" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1421" greetingConversationId="3610" leavingConversationId="3609">
-        <Item prefabName="Col_POT_BananaPotion01" />
-        <Item prefabName="Col_POT_ExperiencePotion01" />
+        <Item prefabName="COL_POT_BananaPotion01" />
+        <Item prefabName="COL_POT_ExperiencePotion01" />
         <Item prefabName="COL_ING_C_PureWater01" />
-        <Item prefabName="Col_POT_ExperiencePotion02" />
+        <Item prefabName="COL_POT_ExperiencePotion02" />
         <Item prefabName="COL_POT_Healing01" />
         <Item prefabName="COL_POT_Rejuvenation01" />
         <Item prefabName="COL_RECIP_POT_FireResist01" />

@@ -19,7 +19,7 @@ public class RemoveItem : ExternalProtocol
 
         var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
-        character.RemoveItem(itemDescription, removeCount);
+        Player.RemoveItem(itemDescription, removeCount);
 
         Player.SendUpdatedInventory(false);
     }

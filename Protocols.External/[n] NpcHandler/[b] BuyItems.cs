@@ -12,14 +12,10 @@ public class BuyItems : ExternalProtocol
     public override string ProtocolName => "nb";
 
     public ItemCatalog ItemCatalog { get; set; }
-    public QuestCatalog QuestCatalog { get; set; }
-    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
     public ServerRConfig ServerConfig { get; set; }
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
         var items = message[6].Split('|');
 
         // On 2014, vendorGoId[5] is the vendor id (unused)
@@ -35,14 +31,14 @@ public class BuyItems : ExternalProtocol
 
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
-            character.AddItem(itemDescription, amount);
+            Player.AddItem(itemDescription, amount);
 
             if (itemDescription.Currency == CurrencyType.Banana)
                 Player.RemoveBananas(itemDescription.RegularPrice * amount);
             else if (itemDescription.Currency == CurrencyType.NickCash)
                 Player.RemoveNCash(itemDescription.RegularPrice * amount);
 
-            Player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.Buyitem, vendorGoId, itemDescription.PrefabName, amount);
+            Player.CheckObjective(ObjectiveEnum.Buyitem, vendorGoId, itemDescription.PrefabName, amount);
         }
 
         Player.SendUpdatedInventory(false);
