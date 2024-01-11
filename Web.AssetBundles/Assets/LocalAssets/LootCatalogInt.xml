@@ -1305,6 +1305,67 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Bonsai Peaks">
+        <LootInfo objectId="3996" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="1641" count="1" bindingCount="0"/>
+                <Item itemId="10712" count="1" bindingCount="0"/>
+                <Item itemId="685" count="1" bindingCount="0"/>
+                <Item itemId="1240" count="1" bindingCount="0"/>
+                <Item itemId="1373" count="1" bindingCount="0"/>
+                <Item itemId="1225" count="1" bindingCount="0"/>
+                <Item itemId="622" count="1" bindingCount="0"/>
+                <Item itemId="1723" count="1" bindingCount="0"/>
+                <Item itemId="1511" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3995" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="10711" count="1" bindingCount="0"/>
+                <Item itemId="10712" count="1" bindingCount="0"/>
+                <Item itemId="644" count="1" bindingCount="0"/>
+                <Item itemId="1796" count="1" bindingCount="0"/>
+                <Item itemId="1640" count="1" bindingCount="0"/>
+                <Item itemId="1510" count="1" bindingCount="0"/>
+                <Item itemId="10714" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3994" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="1511" count="1" bindingCount="0"/>
+                <Item itemId="622" count="1" bindingCount="0"/>
+                <Item itemId="10712" count="1" bindingCount="0"/>
+                <Item itemId="1150" count="1" bindingCount="0"/>
+                <Item itemId="1866" count="1" bindingCount="0"/>
+                <Item itemId="644" count="1" bindingCount="0"/>
+                <Item itemId="1646" count="1" bindingCount="0"/>
+                <Item itemId="1640" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3993" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="1511" count="1" bindingCount="0"/>
+                <Item itemId="622" count="1" bindingCount="0"/>
+                <Item itemId="10712" count="1" bindingCount="0"/>
+                <Item itemId="1150" count="1" bindingCount="0"/>
+                <Item itemId="1866" count="1" bindingCount="0"/>
+                <Item itemId="644" count="1" bindingCount="0"/>
+                <Item itemId="1646" count="1" bindingCount="0"/>
+                <Item itemId="1640" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3992" doLootWheel="true">
+            <Items rewardAmount="1">    <!--Arena Purple Chest-->
+                <Item itemId="1496" count="1" bindingCount="0"/>
+                <Item itemId="2762" count="1" bindingCount="0"/>
+                <Item itemId="1374" count="1" bindingCount="0"/>
+                <Item itemId="644" count="1" bindingCount="0"/>
+                <Item itemId="1642" count="1" bindingCount="0"/>
+                <Item itemId="1373" count="1" bindingCount="0"/>
+                <Item itemId="623" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
     <Level name="Lost Fortress">
         <LootInfo objectId="3114" doLootWheel="true">
             <Items rewardAmount="1">
