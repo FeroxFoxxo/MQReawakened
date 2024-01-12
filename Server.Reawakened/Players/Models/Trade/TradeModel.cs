@@ -20,8 +20,8 @@ public class TradeModel(Player tradingPlayer)
 
         for (var i = 0; i < pairs.Length; i += 2)
         {
-            var key = int.Parse(pairs[i], CultureInfo.InvariantCulture);
-            var value = int.Parse(pairs[i + 1], CultureInfo.InvariantCulture);
+            var key = int.Parse(pairs[i]);
+            var value = int.Parse(pairs[i + 1]);
             items.Add(key, value);
         }
 

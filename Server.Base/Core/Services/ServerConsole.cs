@@ -8,6 +8,7 @@ using Server.Base.Network.Enums;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Base.Worlds.Services;
+using System.Globalization;
 using static Server.Base.Core.Models.ConsoleCommand;
 
 namespace Server.Base.Core.Services;
@@ -39,7 +40,8 @@ public class ServerConsole : IService
 
         _consoleThread = new Thread(ConsoleLoopThread)
         {
-            Name = "Console Thread"
+            Name = "Console Thread",
+            CurrentCulture = CultureInfo.InvariantCulture
         };
     }
 

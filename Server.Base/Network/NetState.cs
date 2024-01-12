@@ -123,7 +123,6 @@ public class NetState : IDisposable
         {
             lock (AsyncLock)
             {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 _logger.LogTrace("Beginning receiving information for {NetState}. Using thread culture {Culture}",
                     this, Thread.CurrentThread.CurrentCulture.NativeName);
 

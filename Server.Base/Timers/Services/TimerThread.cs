@@ -4,6 +4,7 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Timers.Helpers;
+using System.Globalization;
 
 namespace Server.Base.Timers.Services;
 
@@ -35,7 +36,8 @@ public class TimerThread : IService
 
         _timerThread = new Thread(RunTimer)
         {
-            Name = "Timer Thread"
+            Name = "Timer Thread",
+            CurrentCulture = CultureInfo.InvariantCulture
         };
     }
 
