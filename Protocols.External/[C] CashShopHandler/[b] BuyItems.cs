@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -29,6 +30,9 @@ public class BuyItems : ExternalProtocol
 
         var items = message[6].Split('|');
 
+        var bought = new List<Tuple<ItemDescription, int>>();
+        var price = 0;
+
         foreach (var item in items)
         {
             if (string.IsNullOrEmpty(item)) continue;
@@ -39,11 +43,24 @@ public class BuyItems : ExternalProtocol
 
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
-            Player.RemoveNCash(itemDescription.RegularPrice * amount);
-            Player.AddItem(ItemCatalog.GetItemFromId(itemId), amount);
+            price += itemDescription.RegularPrice * amount;
+            bought.Add(new (itemDescription, amount));
+        }
+
+        if (price > Player.Character.Data.NCash)
+        {
+            Player.SendXt("Ce", -1);
+            return;
+        }
+
+        foreach(var item in bought)
+        {
+            Player.RemoveNCash(item.Item1.RegularPrice * item.Item2);
+            Player.AddItem(item.Item1, item.Item2);
         }
 
         Player.SendCashUpdate();
         Player.SendUpdatedInventory(false);
+        Player.SendXt("Cb", 1);
     }
 }
