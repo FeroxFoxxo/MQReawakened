@@ -13,11 +13,15 @@ public class DeleteCharacter : ExternalProtocol
     public override void Run(string[] message)
     {
         var character = CharacterHandler.GetCharacterFromName(message[5]);
-        var characterExists = character != null;
 
-        if (characterExists)
-            Player.DeleteCharacter(character.Id, CharacterHandler);
+        if (character != null)
+            if (character.Data.UserUuid == Player.UserId)
+            {
+                Player.DeleteCharacter(character.Id, CharacterHandler);
+                SendXt("cd", 0);
+                return;
+            }
 
-        SendXt("cd", characterExists ? 0 : 1);
+        SendXt("cd", 1);
     }
 }
