@@ -1,6 +1,7 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Models.Minigames;
 
 namespace Protocols.External._M__MinigameHandler;
 public class WaypointReached : ExternalProtocol
@@ -12,6 +13,7 @@ public class WaypointReached : ExternalProtocol
         var minigameObjectId = message[5];
         var waypointId = message[6];
 
-        Player.SendXt("My", minigameObjectId, waypointId, Player.GameObjectId);
+        foreach (var player in ArenaModel.Participants)
+            player.SendXt("My", minigameObjectId, waypointId, Player.CharacterId);
     }
 }
