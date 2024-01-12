@@ -8,7 +8,6 @@ using Server.Base.Network.Enums;
 using Server.Base.Network.Events;
 using Server.Base.Network.Helpers;
 using Server.Base.Network.Services;
-using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -123,7 +122,6 @@ public class NetState : IDisposable
         {
             lock (AsyncLock)
             {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 _logger.LogTrace("Beginning receiving information for {NetState}. Using thread culture {Culture}",
                     this, Thread.CurrentThread.CurrentCulture.NativeName);
 

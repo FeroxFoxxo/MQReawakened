@@ -36,10 +36,9 @@ public class NPCControllerComp : Component<NPCController>
     public DialogDictionary Dialog { get; set; }
     public MiscTextDictionary MiscText { get; set; }
 
-    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
-    public VendorCatalogInt VendorCatalog { get; set; }
-    public DialogCatalogInt DialogCatalog { get; set; }
-    public DialogRewriteInt DialogRewrites { get; set; }
+    public InternalVendor VendorCatalog { get; set; }
+    public InternalDialog DialogCatalog { get; set; }
+    public InternalDialogRewrite DialogRewrites { get; set; }
 
     public VendorInfo VendorInfo;
     public DialogInfo DialogInfo;
@@ -109,7 +108,7 @@ public class NPCControllerComp : Component<NPCController>
 
             if (tEvent.Activate)
             {
-                player.CheckObjective(QuestCatalog, ObjectiveCatalog, ObjectiveEnum.Talkto, Id, "GoToTrigger", 1);
+                player.CheckObjective(ObjectiveEnum.Talkto, Id, "GoToTrigger", 1);
 
                 switch (NpcType)
                 {
@@ -341,7 +340,7 @@ public class NPCControllerComp : Component<NPCController>
             if (matchingQuest.QuestStatus != QuestState.TO_BE_VALIDATED)
                 continue;
 
-            SendNpcDialog(player, matchingQuest, quest, 1);
+            SendNpcDialog(player, matchingQuest, 1);
 
             var completedQuest = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
@@ -368,7 +367,7 @@ public class NPCControllerComp : Component<NPCController>
             if (matchingQuest == null || player.Character.Data.CompletedQuests.Contains(quest.Id))
                 continue;
 
-            SendNpcDialog(player, matchingQuest, quest, 2);
+            SendNpcDialog(player, matchingQuest, 2);
 
             break;
         }
@@ -379,7 +378,9 @@ public class NPCControllerComp : Component<NPCController>
         foreach (var givenQuest in GiverQuests)
             if (CanStartQuest(player.Character, givenQuest))
             {
-                player.AddQuest(givenQuest, givenQuest.Id, true);
+                var quest = player.AddQuest(givenQuest, true);
+
+                SendNpcDialog(player, quest, 0);
 
                 Logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", givenQuest.Name, givenQuest.Id, NpcName);
 
@@ -397,11 +398,7 @@ public class NPCControllerComp : Component<NPCController>
                         LoggerType.Error);
                 }
 
-                if (player.Character.TryGetQuest(givenQuest.Id, out var quest))
-                {
-                    SendNpcDialog(player, quest, givenQuest, 0);
-                    quest.QuestStatus = QuestState.IN_PROCESSING;
-                }
+                quest.QuestStatus = QuestState.IN_PROCESSING;
 
                 player.UpdateNpcsInLevel(givenQuest);
 
@@ -409,8 +406,9 @@ public class NPCControllerComp : Component<NPCController>
             }
     }
 
-    public void SendNpcDialog(Player player, QuestStatusModel questStatus, QuestDescription quest, int dialogNumber)
+    public void SendNpcDialog(Player player, QuestStatusModel questStatus, int dialogNumber)
     {
+        var quest = QuestCatalog.GetQuestData(questStatus.Id);
         var questName = quest.Name;
 
         if (quest.ValidatorGoId != quest.QuestGiverGoId && quest.ValidatorGoId == Id)
@@ -421,7 +419,7 @@ public class NPCControllerComp : Component<NPCController>
 
         if (!Dialog.QuestDialog.TryGetValue(questName, out var questDialog))
         {
-            Logger.LogError("[{QuestName}] [UNKNOWN QUEST]", questName);
+            Logger.LogError("[{QuestName}] [UNKNOWN QUEST DIALOG]", questName);
             return;
         }
 
@@ -447,9 +445,12 @@ public class NPCControllerComp : Component<NPCController>
             return;
         }
 
-        if (!conversation.Lines.Any(x => x.TextId > 0))
+        if (conversation.Lines.All(x => x.TextId == 0))
+        {
             SendDialog(player);
+            return;
+        }
 
-        player.NetState.SendXt("nl", questStatus, Id, NameId, questDialog[dialogNumber]);
+        player.NetState.SendXt("nl", questStatus, Id, NameId, dialog);
     }
 }

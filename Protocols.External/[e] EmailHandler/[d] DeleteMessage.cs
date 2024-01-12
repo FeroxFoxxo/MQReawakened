@@ -1,5 +1,6 @@
-﻿using A2m.Server.MessageCenter.Proto;
-using A2m.Server;
+﻿using A2m.Server;
+using Server.Base.Timers.Extensions;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
@@ -12,6 +13,7 @@ public class DeleteMessage : ExternalProtocol
     public override string ProtocolName => "ed";
 
     public ItemCatalog ItemCatalog { get; set; }
+    public TimerThread TimerThread { get; set; }
 
     public override void Run(string[] message)
     {
@@ -21,23 +23,35 @@ public class DeleteMessage : ExternalProtocol
         {
             var item = ItemCatalog.GetItemFromId(Player.Character.EmailMessages[messageId].Item.ItemId);
 
-            _ = RunGiftAnimation(item, messageId);
+            var giftData = new GiftData()
+            {
+                MessageId = messageId,
+                Item = item
+            };
+
+            TimerThread.DelayCall(RunGiftAnimation, giftData, TimeSpan.FromMilliseconds(3300), TimeSpan.Zero, 1);
         }
     }
 
-    public async Task RunGiftAnimation(ItemDescription item, int messageId)
+    public void RunGiftAnimation(object data)
     {
-        await Task.Delay(3300); //Adds item after open gift animation.
+        var gData = (GiftData)data;
 
-        Player.Character.AddItem(item, item.ItemNumber);
+        Player.AddItem(gData.Item, gData.Item.ItemNumber);
         Player.SendUpdatedInventory(false);
 
-        var mailMessage = Player.Character.EmailMessages[messageId];
-        var mail = Player.Character.Emails[messageId];
+        var mailMessage = Player.Character.EmailMessages[gData.MessageId];
+        var mail = Player.Character.Emails[gData.MessageId];
 
         Player.Character.EmailMessages.Remove(mailMessage);
         Player.Character.Emails.Remove(mail);
 
-        Player.SendXt("ed", messageId);
+        Player.SendXt("ed", gData.MessageId);
+    }
+
+    private class GiftData
+    {
+        public int MessageId;
+        public ItemDescription Item;
     }
 }

@@ -19,6 +19,29 @@ public static class ReflectionExtensions
                                             $"Possible fields: {string.Join(", ", type.GetFields(Bindings).Select(x => x.Name))}");
     }
 
+    public static void SetPropertyType<T>(this T instance, string propertyType, object propertyValue)
+    {
+        var type = instance.GetType();
+        var property = type.GetProperty(propertyType, Bindings);
+
+        if (property != null)
+            property.SetValue(instance, propertyValue);
+        else
+            throw new MissingFieldException($"{type.Name} is missing property {propertyType}. " +
+                                              $"Possible properties: {string.Join(", ", type.GetProperties(Bindings).Select(x => x.Name))}");
+    }
+
+    public static Type GetPropertyType<T>(this T instance, string propertyName)
+    {
+        var type = instance.GetType();
+        var property = type.GetProperty(propertyName, Bindings);
+
+        return property != null
+            ? property.PropertyType
+            : throw new MissingFieldException($"{type.Name} is missing property {propertyName}. " +
+                                              $"Possible properties: {string.Join(", ", type.GetProperties(Bindings).Select(x => x.Name))}");
+    }
+
     public static object GetField<T>(this T instance, string fieldName)
     {
         var type = typeof(T);
@@ -30,12 +53,12 @@ public static class ReflectionExtensions
                                               $"Possible fields: {string.Join(", ", type.GetFields(Bindings).Select(x => x.Name))}");
     }
 
-    public static MethodInfo GetMethod<T>(this T o, string methodName)
+    public static MethodInfo GetMethod<T>(this T instance, string methodName)
     {
-        var type = typeof(T);
-        var mi = o.GetType().GetMethod(methodName, Bindings);
+        var type = instance.GetType();
+        var method = type.GetMethod(methodName, Bindings);
 
-        return mi ?? throw new MissingMethodException($"{type.Name} is missing method {methodName}. " +
+        return method ?? throw new MissingMethodException($"{type.Name} is missing method {methodName}. " +
                                                       $"Possible methods: {string.Join(", ", type.GetMethods(Bindings).Select(x => x.Name))}");
     }
 }

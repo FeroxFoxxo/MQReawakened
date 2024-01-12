@@ -62,7 +62,7 @@ public class CharacterDataModel : CharacterLightModel
 
     public void SetCharacterId(int id)
     {
-        LightCharacterId = id;
+        CharacterId = id;
         Customization.CharacterId = id;
     }
 
@@ -136,7 +136,7 @@ public class CharacterDataModel : CharacterLightModel
     {
         var sb = new SeparatedStringBuilder('<');
 
-        sb.Append(LightCharacterId);
+        sb.Append(CharacterId);
         sb.Append(CharacterName);
         sb.Append(Gender);
         sb.Append(Cash);

@@ -16,7 +16,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
     public ILogger<ChestControllerComp> Logger { get; set; }
 
-    public LootCatalogInt LootCatalog { get; set; }
+    public InternalLoot LootCatalog { get; set; }
 
     public override object[] GetInitData(Player player) => [Collected ? 0 : 1];
 

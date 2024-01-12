@@ -1,15 +1,16 @@
-﻿using Server.Reawakened.XMLs.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class DialogRewriteInt : IBundledXml
+public class InternalDialogRewrite : IBundledXml<InternalDialogRewrite>
 {
-    public string BundleName => "DialogRewriteInt";
+    public string BundleName => "InternalDialogRewrite";
     public BundlePriority Priority => BundlePriority.Medium;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<InternalDialogRewrite> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public Dictionary<string, string> Rewrites;
@@ -25,25 +26,25 @@ public class DialogRewriteInt : IBundledXml
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
-        foreach (XmlNode dialogRewrites in xmlDocument.ChildNodes)
+        foreach (XmlNode dialogRewriteXml in xmlDocument.ChildNodes)
         {
-            if (dialogRewrites.Name != "DialogRewrites") continue;
+            if (dialogRewriteXml.Name != "DialogRewrites") continue;
 
-            foreach (XmlNode dialogXml in dialogRewrites.ChildNodes)
+            foreach (XmlNode dialogRewrite in dialogRewriteXml.ChildNodes)
             {
-                if (dialogXml.Name != "Dialog") continue;
+                if (dialogRewrite.Name != "Dialog") continue;
 
                 var oldDialogName = string.Empty;
                 var newDialogName = string.Empty;
 
-                foreach (XmlAttribute attributes in dialogXml.Attributes!)
-                    switch (attributes.Name)
+                foreach (XmlAttribute dialogRewriteAttribute in dialogRewrite.Attributes!)
+                    switch (dialogRewriteAttribute.Name)
                     {
                         case "oldDialogName":
-                            oldDialogName = attributes.Value;
+                            oldDialogName = dialogRewriteAttribute.Value;
                             continue;
                         case "newDialogName":
-                            newDialogName = attributes.Value;
+                            newDialogName = dialogRewriteAttribute.Value;
                             continue;
                     }
 

@@ -1,5 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Extensions;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
@@ -10,6 +12,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -23,8 +26,9 @@ public class UseSlot : ExternalProtocol
     public ILogger<UseSlot> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
-    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
+    public InternalObjective ObjectiveCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
+    public TimerThread TimerThread { get; set; }
 
     public override void Run(string[] message)
     {
@@ -49,7 +53,7 @@ public class UseSlot : ExternalProtocol
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drop:
-                _ = HandleDrop(usedItem, position, direction);
+                HandleDrop(usedItem, position, direction);
                 break;
             case ItemActionType.Throw:
                 HandleRangedWeapon(usedItem, position, direction);
@@ -103,13 +107,14 @@ public class UseSlot : ExternalProtocol
         Player.SendSyncEventToPlayer(itemEffect);
 
         foreach (var effect in usedItem.ItemEffects)
-            if (effect.TypeId == (int) ItemEffectType.Healing)
+            if (effect.TypeId == (int)ItemEffectType.Healing)
+            {
                 Player.HealOnce(usedItem, ServerRConfig);
-
-        Logger.LogInformation("Used healing item {ItemName} of effect typeID: {TypeID}", usedItem.ItemName, usedItem.ItemEffects.FirstOrDefault().TypeId);
+                Logger.LogInformation("Used healing item {ItemName} of effect typeID: {TypeID}", usedItem.ItemName, usedItem.ItemEffects.FirstOrDefault().TypeId);
+            }
     }
 
-    private async Task HandleDrop(ItemDescription usedItem, Vector3Model position, int direction) //Needs XML system and revamp.
+    private void HandleDrop(ItemDescription usedItem, Vector3Model position, int direction)
     {
         var isLeft = direction > 0;
 
@@ -120,34 +125,73 @@ public class UseSlot : ExternalProtocol
         var planeName = position.Z > 10 ? "Plane1" : "Plane0";
         position.Z = 0;
 
-        await Task.Delay(1000); //Wait for drop animation to finish.
+        var dropItemData = new DroppedItemData()
+        {
+            DropDirection = dropDirection,
+            Position = position,
+            UsedItem = usedItem
+        };
+
+        TimerThread.DelayCall(DropItem, dropItemData, TimeSpan.FromMilliseconds(1000), TimeSpan.Zero, 1);
+    }
+
+    private class DroppedItemData()
+    {
+        public int DropDirection { get; set; }
+        public ItemDescription UsedItem { get; set; }
+        public Vector3Model Position { get; set; }
+    }
+
+    private void DropItem(object data)
+    {
+        var dropData = (DroppedItemData)data;
 
         var dropItem = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            Player.TempData.Position.X + dropDirection, Player.TempData.Position.Y, Player.TempData.Position.Z,
-            0, 0, 3, 0, usedItem.PrefabName);
+            Player.TempData.Position.X + dropData.DropDirection, Player.TempData.Position.Y, Player.TempData.Position.Z,
+            0, 0, 3, 0, dropData.UsedItem.PrefabName);
 
         Player.Room.SendSyncEvent(dropItem);
 
         foreach (var entity in Player.Room.Entities)
         {
             foreach (var component in entity.Value
-                .Where(comp => Vector3Model.Distance(position, comp.Position) <= 5.4f))
+                .Where(comp => Vector3Model.Distance(dropData.Position, comp.Position) <= 5.4f))
             {
                 var prefabName = component.PrefabName;
                 var objectId = component.Id;
 
                 if (component is HazardControllerComp or BreakableEventControllerComp)
                 {
-                    await Task.Delay(2650); //Wait for bomb explosion.
-                    Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", prefabName, objectId);
+                    var bombData = new BombData()
+                    {
+                        PrefabName = prefabName,
+                        Component = component,
+                        ObjectId = objectId
+                    };
 
-                    if (component is BreakableEventControllerComp breakableObjEntity)
-                        breakableObjEntity.Destroy(Player);
-                    else if (component is InterObjStatusComp enemyEntity)
-                        enemyEntity.SendDamageEvent(Player);
+                    TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2650), TimeSpan.Zero, 1);
                 }
             }
         }
+    }
+
+    private class BombData()
+    {
+        public string PrefabName { get; set; }
+        public int ObjectId { get; set; }
+        public BaseComponent Component { get; set; }
+    }
+
+    private void ExplodeBomb(object data)
+    {
+        var bData = (BombData)data;
+
+        Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", bData.PrefabName, bData.ObjectId);
+
+        if (bData.Component is BreakableEventControllerComp breakableObjEntity)
+            breakableObjEntity.Destroy(Player);
+        else if (bData.Component is InterObjStatusComp enemyEntity)
+            enemyEntity.SendDamageEvent(Player);
     }
 
     private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
@@ -178,7 +222,7 @@ public class UseSlot : ExternalProtocol
 
     private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var rand = new Random();
+        var rand = new System.Random();
         var prjId = Math.Abs(rand.Next());
 
         while (Player.Room.GameObjectIds.Contains(prjId))

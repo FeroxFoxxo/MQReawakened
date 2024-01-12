@@ -4,6 +4,7 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Timers.Helpers;
+using System.Globalization;
 
 namespace Server.Base.Timers.Services;
 
@@ -35,7 +36,8 @@ public class TimerThread : IService
 
         _timerThread = new Thread(RunTimer)
         {
-            Name = "Timer Thread"
+            Name = "Timer Thread",
+            CurrentCulture = CultureInfo.InvariantCulture
         };
     }
 
@@ -120,7 +122,7 @@ public class TimerThread : IService
 
             for (var i = 0; i < _timers.Length; i++)
             {
-                var now = GetTicks.Ticks;
+                var now = GetTicks.TickCount;
 
                 if (now < _nextPriorities[i])
                     break;

@@ -46,14 +46,14 @@ public class RequestMiddleware
 
         var postData = string.Empty;
 
-        if (context.Request.HasFormContentType & webRwConfig.ShouldConcat)
+        if (context.Request.HasFormContentType)
         {
             postData = $" | Post Data: {string.Join(", ", context.Request.Form.Select(x => $"{x.Key}:{x.Value}"))}";
             var split = postData.Split('\n');
 
-            if (split.Length > 1)
+            if (split.Length > 1 && webRwConfig.ShouldConcat)
                 postData = $"{string.Join('\n', split.Take(1))}\n" +
-                           "More data found, but was concatenated. To view the full log, enable WebConfig.ShouldConcat.";
+                           "More data found, but was concatenated. To view the full log, disable WebConfig.ShouldConcat JSON file.";
         }
 
         var ip = GetIp(context, logger);

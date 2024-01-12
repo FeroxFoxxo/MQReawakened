@@ -1,20 +1,8 @@
-﻿using Server.Reawakened.XMLs.Enums;
-using System.Xml;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Server.Reawakened.XMLs.Abstractions;
 
-public interface IBundledXml
+public interface IBundledXml<T> : IInternalBundledXml
 {
-    public string BundleName { get; }
-    public BundlePriority Priority { get; }
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
-    public IServiceProvider Services { get; set; }
-
-    public void InitializeVariables();
-
-    public void EditDescription(XmlDocument xml);
-
-    public void ReadDescription(string xml);
-
-    public void FinalizeBundle();
+    public ILogger<T> Logger { get; set; }
 }

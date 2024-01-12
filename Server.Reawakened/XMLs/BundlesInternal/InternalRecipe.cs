@@ -8,12 +8,12 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class RecipeCatalogInt : IBundledXml
+public class InternalRecipe : IBundledXml<InternalRecipe>
 {
-    public string BundleName => "RecipeCatalogInt";
+    public string BundleName => "InternalRecipe";
     public BundlePriority Priority => BundlePriority.Low;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<InternalRecipe> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public Dictionary<int, RecipeModel> RecipeCatalog;
@@ -31,11 +31,11 @@ public class RecipeCatalogInt : IBundledXml
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
-        foreach (XmlNode recipeCatalog in xmlDocument.ChildNodes)
+        foreach (XmlNode recipeXml in xmlDocument.ChildNodes)
         {
-            if (recipeCatalog.Name != "RecipeCatalog") continue;
+            if (recipeXml.Name != "RecipeCatalog") continue;
 
-            foreach (XmlNode recipeType in recipeCatalog.ChildNodes)
+            foreach (XmlNode recipeType in recipeXml.ChildNodes)
             {
                 if (recipeType.Name != "RecipeType") continue;
 
@@ -64,15 +64,15 @@ public class RecipeCatalogInt : IBundledXml
                                 var ingredientItem = -1;
                                 var ingredientAmount = -1;
 
-                                foreach (XmlAttribute item in ingredient.Attributes)
+                                foreach (XmlAttribute ingredientAttribute in ingredient.Attributes)
                                 {
-                                    switch (item.Name)
+                                    switch (ingredientAttribute.Name)
                                     {
                                         case "itemId":
-                                            ingredientItem = int.Parse(item.Value);
+                                            ingredientItem = int.Parse(ingredientAttribute.Value);
                                             break;
                                         case "count":
-                                            ingredientAmount = int.Parse(item.Value);
+                                            ingredientAmount = int.Parse(ingredientAttribute.Value);
                                             break;
                                     }
                                 }

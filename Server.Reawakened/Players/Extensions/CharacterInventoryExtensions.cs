@@ -11,26 +11,37 @@ public static class CharacterInventoryExtensions
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>
         characterData.Data.Inventory.Items.TryGetValue(itemId, out outItem);
 
-    public static void RemoveItem(this CharacterModel characterData, ItemDescription item, int count)
+    public static void RemoveItem(this Player player, ItemDescription item, int count)
     {
+        var characterData = player.Character;
+
         if (!characterData.TryGetItem(item.ItemId, out var gottenItem))
             return;
 
-        characterData.Data.Inventory.Items[gottenItem.ItemId].Count -= count;
+        gottenItem.Count -= count;
+
+        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId, item.PrefabName, gottenItem.Count);
     }
 
-    public static void AddItem(this CharacterModel characterData, ItemDescription item, int count)
+    public static void AddItem(this Player player, ItemDescription item, int count)
     {
-        if (characterData.TryGetItem(item.ItemId, out var gottenItem))
-            gottenItem.Count += count;
-        else
+        var characterData = player.Character;
+
+        if (!characterData.Data.Inventory.Items.ContainsKey(item.ItemId))
             characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel
             {
                 ItemId = item.ItemId,
-                Count = count,
+                Count = 0,
                 BindingCount = item.BindingCount,
                 DelayUseExpiry = DateTime.MinValue
             });
+
+        if (!characterData.TryGetItem(item.ItemId, out var gottenItem))
+            return;
+
+        gottenItem.Count += count;
+
+        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId, item.PrefabName, gottenItem.Count);
     }
 
     public static void AddKit(this CharacterModel characterData, List<ItemDescription> items, int count)

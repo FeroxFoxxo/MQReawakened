@@ -5,6 +5,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Enums;
@@ -18,10 +19,14 @@ namespace Server.Reawakened.Rooms;
 
 public class Room : Timer
 {
+    private readonly object _roomLock;
+
     private readonly int _roomId;
     private readonly ServerRConfig _config;
     private readonly Level _level;
+
     public readonly HashSet<int> GameObjectIds;
+    public readonly HashSet<int> KilledObjects;
 
     public readonly Dictionary<int, Player> Players;
     public readonly Dictionary<int, List<BaseComponent>> Entities;
@@ -39,6 +44,7 @@ public class Room : Timer
     public LevelInfo LevelInfo => _level.LevelInfo;
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
+
     public int ProjectileCount;
 
     public Room(
@@ -46,6 +52,9 @@ public class Room : Timer
         IServiceProvider services, ILogger<Room> logger
     ) : base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
+        _roomLock = new object();
+        KilledObjects = [];
+
         _roomId = roomId;
         _config = config;
         Logger = logger;
@@ -92,9 +101,10 @@ public class Room : Timer
     {
         var entitiesCopy = Entities.Values.SelectMany(s => s).ToList();
         var projectilesCopy = Projectiles.Values.ToList();
+
         foreach (var entityComponent in entitiesCopy)
         {
-            if (!entityComponent.Disposed)
+            if (!IsObjectKilled(entityComponent.Id))
                 entityComponent.Update();
         }
 
@@ -105,6 +115,12 @@ public class Room : Timer
                      player => GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime
                  ))
             player.Remove(Logger);
+    }
+
+    public bool IsObjectKilled(int objectId)
+    {
+        lock (_roomLock)
+            return KilledObjects.Contains(objectId);
     }
 
     public void GroupMemberRoomChanged(Player player)
@@ -260,17 +276,30 @@ public class Room : Timer
             player.DumpToLobby();
     }
 
-    public void Dispose(int id)
+    public void Kill(int objectId)
     {
-        var roomEntities = Entities.Values.SelectMany(s => s).ToList();
-        foreach (var component in roomEntities)
-            if (component.Id == id)
-            {
-                component.Disposed = true;
+        lock (_roomLock)
+            if (KilledObjects.Contains(objectId))
+                return;
 
-                Logger.LogInformation("Disposed component {component} from GameObject {prefabname} with Id {id}",
+
+        Logger.LogInformation("Killing object {id}...", objectId);
+
+        var roomEntities = Entities.Values.SelectMany(s => s).ToList();
+
+        foreach (var component in roomEntities.Where(c => c is IKillable))
+            if (component.Id == objectId)
+            {
+                var kbComp = component as IKillable;
+
+                kbComp.ObjectKilled();
+
+                Logger.LogDebug("Killed component {component} from GameObject {prefabname} with Id {id}",
                     component.GetType().Name, component.PrefabName, component.Id);
             }
+
+        lock (_roomLock)
+            KilledObjects.Add(objectId);
     }
 
     public string GetRoomName() =>

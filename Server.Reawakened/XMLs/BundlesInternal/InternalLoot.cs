@@ -7,12 +7,12 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class LootCatalogInt : IBundledXml
+public class InternalLoot : IBundledXml<InternalLoot>
 {
-    public string BundleName => "LootCatalogInt";
+    public string BundleName => "InternalLoot";
     public BundlePriority Priority => BundlePriority.Low;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<InternalLoot> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public Dictionary<int, LootModel> LootCatalog;
@@ -28,11 +28,11 @@ public class LootCatalogInt : IBundledXml
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
-        foreach (XmlNode lootCatalog in xmlDocument.ChildNodes)
+        foreach (XmlNode lootXml in xmlDocument.ChildNodes)
         {
-            if (lootCatalog.Name != "LootCatalog") continue;
+            if (lootXml.Name != "LootCatalog") continue;
 
-            foreach (XmlNode lootLevel in lootCatalog.ChildNodes)
+            foreach (XmlNode lootLevel in lootXml.ChildNodes)
             {
                 if (lootLevel.Name != "Level") continue;
 
@@ -46,14 +46,14 @@ public class LootCatalogInt : IBundledXml
                     var itemRewards = new List<ItemReward>();
                     var weightRange = 1;
 
-                    foreach (XmlAttribute lootAttributes in lootInfo.Attributes)
-                        switch (lootAttributes.Name)
+                    foreach (XmlAttribute lootAttribute in lootInfo.Attributes)
+                        switch (lootAttribute.Name)
                         {
                             case "objectId":
-                                objectId = int.Parse(lootAttributes.Value);
+                                objectId = int.Parse(lootAttribute.Value);
                                 continue;
                             case "doLootWheel":
-                                doWheel = bool.Parse(lootAttributes.Value);
+                                doWheel = bool.Parse(lootAttribute.Value);
                                 continue;
                         }
 
@@ -64,14 +64,14 @@ public class LootCatalogInt : IBundledXml
                                 var bananaMin = -1;
                                 var bananaMax = -1;
 
-                                foreach (XmlAttribute lootAttributes in reward.Attributes)
-                                    switch (lootAttributes.Name)
+                                foreach (XmlAttribute rewardAttribute in reward.Attributes)
+                                    switch (rewardAttribute.Name)
                                     {
                                         case "bananaMin":
-                                            bananaMin = int.Parse(lootAttributes.Value);
+                                            bananaMin = int.Parse(rewardAttribute.Value);
                                             continue;
                                         case "bananaMax":
-                                            bananaMax = int.Parse(lootAttributes.Value);
+                                            bananaMax = int.Parse(rewardAttribute.Value);
                                             continue;
                                     }
                                 bananaRewards.Add(new BananaReward(bananaMin, bananaMax));
@@ -79,15 +79,16 @@ public class LootCatalogInt : IBundledXml
                             case "Items":
                                 var rewardAmount = 1;
 
-                                foreach (XmlAttribute lootAttributes in reward.Attributes)
-                                    switch (lootAttributes.Name)
+                                foreach (XmlAttribute rewardAttribute in reward.Attributes)
+                                    switch (rewardAttribute.Name)
                                     {
                                         case "rewardAmount":
-                                            bananaMin = int.Parse(lootAttributes.Value);
+                                            bananaMin = int.Parse(rewardAttribute.Value);
                                             continue;
                                     }
 
                                 var itemList = reward.GetXmlItems();
+
                                 foreach (var item in itemList)
                                 {
                                     weightRange += item.Weight;

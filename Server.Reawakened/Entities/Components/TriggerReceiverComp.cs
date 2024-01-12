@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Reawakened.Entities.Enums;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;

@@ -9,18 +9,18 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class ItemCatalogInt : IBundledXml
+public class InternalItem : IBundledXml<InternalItem>
 {
-    public string BundleName => "ItemCatalogInt";
+    public string BundleName => "InternalItem";
     public BundlePriority Priority => BundlePriority.High;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<InternalItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public List<ItemDescription> Items;
     public Dictionary<int, string> Descriptions;
 
-    public ItemCatalogInt()
+    public InternalItem()
     {
     }
 
@@ -41,31 +41,31 @@ public class ItemCatalogInt : IBundledXml
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
-        foreach (XmlNode catalogs in xmlDocument.ChildNodes)
+        foreach (XmlNode itemXml in xmlDocument.ChildNodes)
         {
-            if (!(catalogs.Name == "Catalog")) continue;
+            if (!(itemXml.Name == "Catalog")) continue;
 
-            foreach (XmlNode category in catalogs.ChildNodes)
+            foreach (XmlNode itemCategory in itemXml.ChildNodes)
             {
-                if (!(category.Name == "ItemCategory")) continue;
+                if (!(itemCategory.Name == "ItemCategory")) continue;
 
-                var itemCategory = ItemCategory.Unknown;
+                var itemCategoryType = ItemCategory.Unknown;
 
-                foreach (XmlAttribute categoryAttributes in category.Attributes)
-                    if (categoryAttributes.Name == "name")
-                        itemCategory = itemCategory.GetEnumValue(categoryAttributes.Value, Logger);
+                foreach (XmlAttribute categoryAttribute in itemCategory.Attributes)
+                    if (categoryAttribute.Name == "name")
+                        itemCategoryType = itemCategoryType.GetEnumValue(categoryAttribute.Value, Logger);
 
-                foreach (XmlNode subCategories in category.ChildNodes)
+                foreach (XmlNode subCategory in itemCategory.ChildNodes)
                 {
-                    if (!(subCategories.Name == "ItemSubCategory")) continue;
+                    if (!(subCategory.Name == "ItemSubCategory")) continue;
 
-                    var subCategory = ItemSubCategory.Unknown;
+                    var subCategoryType = ItemSubCategory.Unknown;
 
-                    foreach (XmlAttribute subCategoryAttributes in subCategories.Attributes)
-                        if (subCategoryAttributes.Name == "name")
-                            subCategory = subCategory.GetEnumValue(subCategoryAttributes.Value, Logger);
+                    foreach (XmlAttribute subCategoryAttribute in subCategory.Attributes)
+                        if (subCategoryAttribute.Name == "name")
+                            subCategoryType = subCategoryType.GetEnumValue(subCategoryAttribute.Value, Logger);
 
-                    foreach (XmlNode item in subCategories.ChildNodes)
+                    foreach (XmlNode item in subCategory.ChildNodes)
                     {
                         if (!(item.Name == "Item")) continue;
 
@@ -106,100 +106,100 @@ public class ItemCatalogInt : IBundledXml
                         var productionStatus = ProductionStatus.Unknown;
                         var releaseDate = DateTime.UnixEpoch;
 
-                        foreach (XmlAttribute itemAttributes in item.Attributes)
-                            switch (itemAttributes.Name)
+                        foreach (XmlAttribute itemAttribute in item.Attributes)
+                            switch (itemAttribute.Name)
                             {
                                 case "itemId":
-                                    itemId = int.Parse(itemAttributes.Value);
+                                    itemId = int.Parse(itemAttribute.Value);
                                     break;
 
                                 case "itemName":
-                                    itemName = itemAttributes.Value;
+                                    itemName = itemAttribute.Value;
                                     break;
                                 case "descriptionId":
-                                    descriptionId = int.Parse(itemAttributes.Value);
+                                    descriptionId = int.Parse(itemAttribute.Value);
                                     break;
                                 case "prefabName":
-                                    prefabName = itemAttributes.Value;
+                                    prefabName = itemAttribute.Value;
                                     break;
                                 case "specialDisplayPrefab":
-                                    specialDisplayPrefab = itemAttributes.Value;
+                                    specialDisplayPrefab = itemAttribute.Value;
                                     break;
                                 case "tribe":
-                                    tribe = tribe.GetEnumValue(itemAttributes.Value, Logger);
+                                    tribe = tribe.GetEnumValue(itemAttribute.Value, Logger);
                                     break;
                                 case "rarity":
-                                    rarity = rarity.GetEnumValue(itemAttributes.Value, Logger);
+                                    rarity = rarity.GetEnumValue(itemAttribute.Value, Logger);
                                     break;
                                 case "memberOnly":
-                                    memberOnly = memberOnly.GetBoolValue(itemAttributes.Value, Logger);
+                                    memberOnly = memberOnly.GetBoolValue(itemAttribute.Value, Logger);
                                     break;
 
                                 case "currency":
-                                    currency = currency.GetEnumValue(itemAttributes.Value, Logger);
+                                    currency = currency.GetEnumValue(itemAttribute.Value, Logger);
                                     break;
                                 case "regularPrice":
-                                    regularPrice = int.Parse(itemAttributes.Value);
+                                    regularPrice = int.Parse(itemAttribute.Value);
                                     break;
                                 case "sellPrice":
-                                    sellPrice = int.Parse(itemAttributes.Value);
+                                    sellPrice = int.Parse(itemAttribute.Value);
                                     break;
                                 case "sellCount":
-                                    sellCount = int.Parse(itemAttributes.Value);
+                                    sellCount = int.Parse(itemAttribute.Value);
                                     break;
 
                                 case "actionType":
-                                    actionType = actionType.GetEnumValue(itemAttributes.Value, Logger);
+                                    actionType = actionType.GetEnumValue(itemAttribute.Value, Logger);
                                     break;
                                 case "cooldownTime":
-                                    cooldownTime = float.Parse(itemAttributes.Value);
+                                    cooldownTime = float.Parse(itemAttribute.Value);
                                     break;
                                 case "delayUseDuration":
-                                    delayUseDuration = int.Parse(itemAttributes.Value);
+                                    delayUseDuration = int.Parse(itemAttribute.Value);
                                     break;
                                 case "binding":
-                                    binding = binding.GetEnumValue(itemAttributes.Value, Logger);
+                                    binding = binding.GetEnumValue(itemAttribute.Value, Logger);
                                     break;
 
                                 case "level":
-                                    level = int.Parse(itemAttributes.Value);
+                                    level = int.Parse(itemAttribute.Value);
                                     break;
                                 case "levelRequirement":
-                                    levelRequirement = int.Parse(itemAttributes.Value);
+                                    levelRequirement = int.Parse(itemAttribute.Value);
                                     break;
 
                                 case "uniqueInInventory":
-                                    uniqueInInventory = uniqueInInventory.GetBoolValue(itemAttributes.Value, Logger);
+                                    uniqueInInventory = uniqueInInventory.GetBoolValue(itemAttribute.Value, Logger);
                                     break;
 
                                 case "storeType":
-                                    storeType = storeType.GetEnumValue(itemAttributes.Value, Logger);
+                                    storeType = storeType.GetEnumValue(itemAttribute.Value, Logger);
                                     break;
                                 case "discountedFrom":
-                                    discountedFrom = discountedFrom.GetDateValue(itemAttributes.Value, Logger);
+                                    discountedFrom = discountedFrom.GetDateValue(itemAttribute.Value, Logger);
                                     break;
                                 case "discountedTo":
-                                    discountedTo = discountedTo.GetDateValue(itemAttributes.Value, Logger);
+                                    discountedTo = discountedTo.GetDateValue(itemAttribute.Value, Logger);
                                     break;
                                 case "discountPrice":
-                                    discountPrice = int.Parse(itemAttributes.Value);
+                                    discountPrice = int.Parse(itemAttribute.Value);
                                     break;
                                 case "stockPriority":
-                                    stockPriority = int.Parse(itemAttributes.Value);
+                                    stockPriority = int.Parse(itemAttribute.Value);
                                     break;
 
                                 case "lootId":
-                                    lootId = int.Parse(itemAttributes.Value);
+                                    lootId = int.Parse(itemAttribute.Value);
                                     break;
                                 case "recipeParentItemId":
-                                    recipeParentItemId = int.Parse(itemAttributes.Value);
+                                    recipeParentItemId = int.Parse(itemAttribute.Value);
                                     break;
 
                                 case "productionStatus":
-                                    productionStatus = productionStatus.GetEnumValue(itemAttributes.Value, Logger);
+                                    productionStatus = productionStatus.GetEnumValue(itemAttribute.Value, Logger);
                                     break;
                                 case "releaseDate":
-                                    releaseDate = releaseDate.GetDateValue(itemAttributes.Value, Logger);
+                                    releaseDate = releaseDate.GetDateValue(itemAttribute.Value, Logger);
                                     break;
                             }
 
@@ -215,17 +215,17 @@ public class ItemCatalogInt : IBundledXml
                                 var value = -1;
                                 var duration = -1;
 
-                                foreach (XmlAttribute effectAttributes in effect.Attributes)
-                                    switch (effectAttributes.Name)
+                                foreach (XmlAttribute effectAttribute in effect.Attributes)
+                                    switch (effectAttribute.Name)
                                     {
                                         case "type":
-                                            type = type.GetEnumValue(effectAttributes.Value, Logger);
+                                            type = type.GetEnumValue(effectAttribute.Value, Logger);
                                             break;
                                         case "value":
-                                            value = int.Parse(effectAttributes.Value);
+                                            value = int.Parse(effectAttribute.Value);
                                             break;
                                         case "duration":
-                                            duration = int.Parse(effectAttributes.Value);
+                                            duration = int.Parse(effectAttribute.Value);
                                             break;
                                     }
                                 itemEffects.Add(new ItemEffect(type, value, duration));
@@ -252,7 +252,7 @@ public class ItemCatalogInt : IBundledXml
 
                         if (!string.IsNullOrEmpty(prefabName))
                             Items.Add(new ItemDescription(itemId,
-                                tribe, itemCategory, subCategory, actionType,
+                                tribe, itemCategoryType, subCategoryType, actionType,
                                 (int)rarity, currency, regularPrice, sellPrice, sellCount,
                                 specialDisplayPrefab, itemName, description, prefabName,
                                 cooldownTime, binding, level, levelRequirement, itemEffects, uniqueInInventory,

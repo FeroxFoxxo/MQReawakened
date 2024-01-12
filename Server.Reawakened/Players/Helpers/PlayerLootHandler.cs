@@ -10,7 +10,7 @@ namespace Server.Reawakened.Players.Helpers;
 
 public static class PlayerLootHandler
 {
-    public static void GrantLoot(this Player player, int gameObjectId, LootCatalogInt lootCatalog,
+    public static void GrantLoot(this Player player, int gameObjectId, InternalLoot lootCatalog,
         ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
         var loot = lootCatalog.GetLootById(gameObjectId);
@@ -75,7 +75,7 @@ public static class PlayerLootHandler
         {
             itemsLooted.Append(item.ToString());
             if (item.ItemId > 0)
-                player.Character.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count);
+                player.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count);
         }
 
         if (doWheel)

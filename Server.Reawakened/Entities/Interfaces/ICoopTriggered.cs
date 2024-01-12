@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Entities.Enums;
 
-namespace Server.Reawakened.Rooms.Models.Entities;
+namespace Server.Reawakened.Entities.Interfaces;
 
 public interface ICoopTriggered
 {
