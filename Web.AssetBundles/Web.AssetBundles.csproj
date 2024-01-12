@@ -16,10 +16,10 @@
 
     <ItemGroup>
         <Reference Include="A2mCore">
-          <HintPath>..\Server.Reawakened\Dependencies\A2mCore.dll</HintPath>
+            <HintPath>..\Server.Reawakened\Dependencies\A2mCore.dll</HintPath>
         </Reference>
         <Reference Include="AssetRipper.IO.Endian">
-          <HintPath>Dependencies\AssetRipper.IO.Endian.dll</HintPath>
+            <HintPath>Dependencies\AssetRipper.IO.Endian.dll</HintPath>
         </Reference>
         <Reference Include="AssetStudio">
             <HintPath>Dependencies\AssetStudio.dll</HintPath>
@@ -28,74 +28,74 @@
             <HintPath>..\Server.Reawakened\Dependencies\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="AssetStudio.PInvoke">
-          <HintPath>Dependencies\AssetStudio\AssetStudio.PInvoke.dll</HintPath>
+            <HintPath>Dependencies\AssetStudio\AssetStudio.PInvoke.dll</HintPath>
         </Reference>
         <Reference Include="AssetStudioFBXWrapper">
-          <HintPath>Dependencies\AssetStudio\AssetStudioFBXWrapper.dll</HintPath>
+            <HintPath>Dependencies\AssetStudio\AssetStudioFBXWrapper.dll</HintPath>
         </Reference>
         <Reference Include="AssetStudioUtility">
-          <HintPath>Dependencies\AssetStudio\AssetStudioUtility.dll</HintPath>
+            <HintPath>Dependencies\AssetStudio\AssetStudioUtility.dll</HintPath>
         </Reference>
         <Reference Include="Mono.Cecil">
-          <HintPath>Dependencies\AssetStudio\Mono.Cecil.dll</HintPath>
+            <HintPath>Dependencies\AssetStudio\Mono.Cecil.dll</HintPath>
         </Reference>
         <Reference Include="SixLabors.ImageSharp">
-          <HintPath>Dependencies\AssetStudio\SixLabors.ImageSharp.dll</HintPath>
+            <HintPath>Dependencies\AssetStudio\SixLabors.ImageSharp.dll</HintPath>
         </Reference>
         <Reference Include="Texture2DDecoderWrapper">
-          <HintPath>Dependencies\AssetStudio\Texture2DDecoderWrapper.dll</HintPath>
+            <HintPath>Dependencies\AssetStudio\Texture2DDecoderWrapper.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine">
-          <HintPath>..\Server.Reawakened\Dependencies\UnityEngine.dll</HintPath>
+            <HintPath>..\Server.Reawakened\Dependencies\UnityEngine.dll</HintPath>
         </Reference>
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Assets\LocalAssets\DialogCatalogInt.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\LocalAssets\DialogRewriteInt.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\LocalAssets\EditItemInt.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\LocalAssets\EditVendorInt.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\LocalAssets\ItemCatalogInt.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\LocalAssets\EnemyCatalogInt.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\LocalAssets\ObjectiveCatalogInt.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\LocalAssets\QuestItemInt.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\LocalAssets\LootCatalogInt.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\LocalAssets\RecipeCatalogInt.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Licences\LICENSE_ASSETSTUDIO">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Licences\LICENSE_ASSETRIPPER">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\LocalAssets\VendorCatalogInt.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\LocalAssets\PetAbilities.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\TestAssetCache.cache">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+        <None Update="Assets\LocalAssets\EditItem.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\EditVendor.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalDialog.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalDialogRewrite.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalEventReward.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalItem.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalLoot.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalObjective.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalQuestItem.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalRecipe.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalVendor.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\PetAbilities.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Licences\LICENSE_ASSETSTUDIO">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Licences\LICENSE_ASSETRIPPER">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\TestAssetCache.cache">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

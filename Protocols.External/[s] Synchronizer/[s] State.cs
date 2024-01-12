@@ -18,9 +18,9 @@ public class State : ExternalProtocol
     public override string ProtocolName => "ss";
 
     public SyncEventManager SyncEventManager { get; set; }
-    public ILogger<State> Logger { get; set; }
     public ServerRConfig ServerConfig { get; set; }
     public FileLogger FileLogger { get; set; }
+    public ILogger<State> Logger { get; set; }
 
     public override void Run(string[] message)
     {

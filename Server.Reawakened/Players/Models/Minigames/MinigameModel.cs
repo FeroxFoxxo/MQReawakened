@@ -23,7 +23,7 @@ public class ArenaModel
         player.TempData.ArenaModel.FourthPlayerId = playersInGroup.Length > 3 ? playersInGroup[3].CharacterId : 0;
     }
 
-    public static string GrantLootedItems(LootCatalogInt LootCatalog, int arenaId)
+    public static string GrantLootedItems(InternalLoot LootCatalog, int arenaId)
     {
         var random = new Random();
         var itemsGotten = new List<ItemModel>();
@@ -38,7 +38,7 @@ public class ArenaModel
         return itemsLooted.ToString();
     }
 
-    public static string GrantLootableItems(LootCatalogInt LootCatalog, int arenaId)
+    public static string GrantLootableItems(InternalLoot LootCatalog, int arenaId)
     {
         var lootableItems = new SeparatedStringBuilder('|');
 

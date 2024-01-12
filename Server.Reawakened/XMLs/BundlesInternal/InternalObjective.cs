@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
@@ -7,17 +8,17 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class ObjectiveCatalogInt : IBundledXml
+public class InternalObjective : IBundledXml<InternalObjective>
 {
-    public string BundleName => "ObjectiveCatalogInt";
+    public string BundleName => "InternalObjective";
     public BundlePriority Priority => BundlePriority.Lowest;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<InternalObjective> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public Dictionary<string, ObjectiveInternal> ObjectivePrefabs;
 
-    public ObjectiveCatalogInt()
+    public InternalObjective()
     {
     }
 
@@ -33,25 +34,25 @@ public class ObjectiveCatalogInt : IBundledXml
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
-        foreach (XmlNode quests in xmlDocument.ChildNodes)
+        foreach (XmlNode objectiveXml in xmlDocument.ChildNodes)
         {
-            if (!(quests.Name == "ObjectiveCatalogs")) continue;
+            if (!(objectiveXml.Name == "ObjectiveCatalogs")) continue;
 
-            foreach (XmlNode quest in quests.ChildNodes)
+            foreach (XmlNode objective in objectiveXml.ChildNodes)
             {
-                if (!(quest.Name == "Objective")) continue;
+                if (!(objective.Name == "Objective")) continue;
 
                 var prefabName = string.Empty;
                 var itemId = string.Empty;
 
-                foreach (XmlAttribute itemAttributes in quest.Attributes)
-                    switch (itemAttributes.Name)
+                foreach (XmlAttribute objectiveAttribute in objective.Attributes)
+                    switch (objectiveAttribute.Name)
                     {
                         case "prefabName":
-                            prefabName = itemAttributes.Value;
+                            prefabName = objectiveAttribute.Value;
                             break;
                         case "itemId":
-                            itemId = itemAttributes.Value;
+                            itemId = objectiveAttribute.Value;
                             break;
                     }
                 AddItem(prefabName, itemId, false);

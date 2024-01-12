@@ -2,8 +2,6 @@
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Server.Reawakened.Entities.Components;
 public class QuestCollectibleControllerComp : Component<QuestCollectibleController>

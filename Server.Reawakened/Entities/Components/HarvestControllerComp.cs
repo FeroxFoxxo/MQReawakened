@@ -12,7 +12,7 @@ public class HarvestControllerComp : BaseChestControllerComp<HarvestController>
 {
     public bool Collected;
     public ItemCatalog ItemCatalog { get; set; }
-    public LootCatalogInt LootCatalog { get; set; }
+    public InternalLoot LootCatalog { get; set; }
     public ILogger<HarvestControllerComp> Logger { get; set; }
     public override object[] GetInitData(Player player) => [Collected ? 0 : 1];
 

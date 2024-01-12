@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
@@ -6,12 +7,13 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class CannedChatDictionary : CannedChatXML, ILocalizationXml
+public class CannedChatDictionary : CannedChatXML, ILocalizationXml<CannedChatDictionary>
 {
     public string BundleName => "CannedChat";
     public string LocalizationName => "CannedChatDict_en-US";
     public BundlePriority Priority => BundlePriority.Low;
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+
+    public ILogger<CannedChatDictionary> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     private Dictionary<int, string> CannedChatDict;

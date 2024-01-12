@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace Server.Reawakened.Players.Models.Trade;
+﻿namespace Server.Reawakened.Players.Models.Trade;
 
 public class TradeModel(Player tradingPlayer)
 {

@@ -8,7 +8,6 @@ using Server.Base.Network.Enums;
 using Server.Base.Network.Events;
 using Server.Base.Network.Helpers;
 using Server.Base.Network.Services;
-using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;

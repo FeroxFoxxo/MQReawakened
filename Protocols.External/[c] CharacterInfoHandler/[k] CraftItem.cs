@@ -12,7 +12,7 @@ public class CraftItem : ExternalProtocol
     public override string ProtocolName => "ck";
 
     public ItemCatalog ItemCatalog { get; set; }
-    public RecipeCatalogInt RecipeCatalog { get; set; }
+    public InternalRecipe RecipeCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public ILogger<CraftItem> Logger { get; set; }
 

@@ -26,7 +26,7 @@ public class UseSlot : ExternalProtocol
     public ILogger<UseSlot> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
-    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
+    public InternalObjective ObjectiveCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
 

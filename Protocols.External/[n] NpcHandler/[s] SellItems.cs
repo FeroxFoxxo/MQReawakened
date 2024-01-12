@@ -3,6 +3,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._n__NpcHandler;
+
 public class SellItems : ExternalProtocol
 {
     public override string ProtocolName => "ns";

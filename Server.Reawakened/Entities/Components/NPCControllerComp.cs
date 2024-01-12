@@ -36,9 +36,9 @@ public class NPCControllerComp : Component<NPCController>
     public DialogDictionary Dialog { get; set; }
     public MiscTextDictionary MiscText { get; set; }
 
-    public VendorCatalogInt VendorCatalog { get; set; }
-    public DialogCatalogInt DialogCatalog { get; set; }
-    public DialogRewriteInt DialogRewrites { get; set; }
+    public InternalVendor VendorCatalog { get; set; }
+    public InternalDialog DialogCatalog { get; set; }
+    public InternalDialogRewrite DialogRewrites { get; set; }
 
     public VendorInfo VendorInfo;
     public DialogInfo DialogInfo;
@@ -419,7 +419,7 @@ public class NPCControllerComp : Component<NPCController>
 
         if (!Dialog.QuestDialog.TryGetValue(questName, out var questDialog))
         {
-            Logger.LogError("[{QuestName}] [UNKNOWN QUEST]", questName);
+            Logger.LogError("[{QuestName}] [UNKNOWN QUEST DIALOG]", questName);
             return;
         }
 

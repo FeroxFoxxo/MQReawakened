@@ -1,25 +1,25 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.EditBundles;
-public class EditVendorInt : IBundledXml
+namespace Server.Reawakened.XMLs.BundlesEdit;
+public class EditItem : IBundledXml<EditItem>
 {
-    public string BundleName => "EditVendorInt";
-    public BundlePriority Priority => BundlePriority.Low;
+    public string BundleName => "EditItem";
+    public BundlePriority Priority => BundlePriority.Highest;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<EditItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
-    public Dictionary<string, List<string>> EditedVendorAttributes { get; set; }
 
-    public EditVendorInt()
+    public Dictionary<string, Dictionary<string, string>> EditedItemAttributes;
+
+    public EditItem()
     {
     }
 
     public void InitializeVariables() =>
-        EditedVendorAttributes = [];
+        EditedItemAttributes = [];
 
     public void EditDescription(XmlDocument xml)
     {
@@ -27,18 +27,16 @@ public class EditVendorInt : IBundledXml
 
     public void ReadDescription(string xml)
     {
-        var itemCatalog = Services.GetRequiredService<ItemCatalog>();
-
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
         foreach (XmlNode items in xmlDocument.ChildNodes)
         {
-            if (!(items.Name == "EditedVendors")) continue;
+            if (!(items.Name == "EditedItems")) continue;
 
             foreach (XmlNode item in items.ChildNodes)
             {
-                if (!(item.Name == "Vendor")) continue;
+                if (!(item.Name == "Item")) continue;
 
                 var name = string.Empty;
                 var itemId = string.Empty;
@@ -51,25 +49,27 @@ public class EditVendorInt : IBundledXml
                             break;
                     }
 
-                EditedVendorAttributes.Add(name, []);
+                EditedItemAttributes.Add(name, []);
 
                 foreach (XmlNode itemAttribute in item.ChildNodes)
                 {
-                    if (!(itemAttribute.Name == "Item")) continue;
+                    if (!(itemAttribute.Name == "EditAttribute")) continue;
 
-                    var prefabName = string.Empty;
+                    var key = string.Empty;
+                    var value = string.Empty;
 
                     foreach (XmlAttribute itemAttributes in itemAttribute.Attributes)
                         switch (itemAttributes.Name)
                         {
-                            case "name":
-                                prefabName = itemAttributes.Value;
+                            case "key":
+                                key = itemAttributes.Value;
+                                break;
+                            case "value":
+                                value = itemAttributes.Value;
                                 break;
                         }
 
-                    var itemDesc = itemCatalog.GetItemFromPrefabName(prefabName);
-
-                    EditedVendorAttributes[name].Add(itemDesc.ItemId.ToString());
+                    EditedItemAttributes[name].Add(key, value);
                 }
             }
         }

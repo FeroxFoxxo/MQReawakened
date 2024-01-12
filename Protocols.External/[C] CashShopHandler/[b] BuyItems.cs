@@ -12,15 +12,13 @@ public class BuyItems : ExternalProtocol
 {
     public override string ProtocolName => "Cb";
 
-    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
+    public InternalObjective ObjectiveCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<BuyItems> Logger { get; set; }
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
         var cashShop = (Cashshop)int.Parse(message[5]);
 
         if (cashShop != Cashshop.CashShop)

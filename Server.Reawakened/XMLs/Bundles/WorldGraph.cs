@@ -1,4 +1,5 @@
-﻿using Server.Base.Core.Extensions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using System.Xml;
@@ -6,12 +7,12 @@ using WorldGraphDefines;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class WorldGraph : WorldGraphXML, IBundledXml
+public class WorldGraph : WorldGraphXML, IBundledXml<WorldGraph>
 {
     public string BundleName => "world_graph";
     public BundlePriority Priority => BundlePriority.Low;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<WorldGraph> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public int DefaultLevel;

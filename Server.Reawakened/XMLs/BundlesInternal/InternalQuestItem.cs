@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Players.Models.Character;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
@@ -6,17 +7,17 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class QuestItemInt : IBundledXml
+public class InternalQuestItem : IBundledXml<InternalQuestItem>
 {
-    public string BundleName => "QuestItemInt";
+    public string BundleName => "InternalQuestItem";
     public BundlePriority Priority => BundlePriority.High;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<InternalQuestItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public Dictionary<int, List<ItemModel>> QuestItemList;
 
-    public QuestItemInt()
+    public InternalQuestItem()
     {
     }
 
@@ -32,21 +33,21 @@ public class QuestItemInt : IBundledXml
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
-        foreach (XmlNode quests in xmlDocument.ChildNodes)
+        foreach (XmlNode questItemXml in xmlDocument.ChildNodes)
         {
-            if (!(quests.Name == "QuestItems")) continue;
+            if (!(questItemXml.Name == "QuestItems")) continue;
 
-            foreach (XmlNode quest in quests.ChildNodes)
+            foreach (XmlNode quest in questItemXml.ChildNodes)
             {
                 if (!(quest.Name == "Quest")) continue;
 
                 var questId = -1;
 
-                foreach (XmlAttribute itemAttributes in quest.Attributes)
-                    switch (itemAttributes.Name)
+                foreach (XmlAttribute questAttribute in quest.Attributes)
+                    switch (questAttribute.Name)
                     {
                         case "questId":
-                            questId = int.Parse(itemAttributes.Value);
+                            questId = int.Parse(questAttribute.Value);
                             break;
                     }
 

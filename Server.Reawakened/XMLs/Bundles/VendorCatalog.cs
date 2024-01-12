@@ -1,21 +1,21 @@
-﻿using A2m.Server;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.EditBundles;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class VendorCatalog : VendorCatalogsXML, IBundledXml
+public class VendorCatalog : VendorCatalogsXML, IBundledXml<VendorCatalog>
 {
     public string BundleName => "vendor_catalogs";
     public BundlePriority Priority => BundlePriority.Lowest;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<VendorCatalog> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public void InitializeVariables()
@@ -59,9 +59,9 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
 
         if (vendors != null)
         {
-            var internalCatalog = Services.GetRequiredService<VendorCatalogInt>();
+            var internalCatalog = Services.GetRequiredService<InternalVendor>();
             var miscTextDict = Services.GetRequiredService<MiscTextDictionary>();
-            var editVendor = Services.GetRequiredService<EditVendorInt>();
+            var editVendor = Services.GetRequiredService<EditVendor>();
             var preExistingCategories = new List<int>();
 
             foreach (XmlNode aNode in vendors)

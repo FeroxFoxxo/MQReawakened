@@ -11,12 +11,14 @@ public class CharacterModel : PersistantData
     public Dictionary<int, List<int>> CollectedIdols { get; set; }
     public List<EmailHeaderModel> Emails { get; set; }
     public List<EmailMessageModel> EmailMessages { get; set; }
+    public List<int> Events { get; set; } = [];
 
     public CharacterModel()
     {
         CollectedIdols = [];
         Emails = [];
         EmailMessages = [];
+        Events = [];
         Data = new CharacterDataModel();
         LevelData = new LevelData();
     }

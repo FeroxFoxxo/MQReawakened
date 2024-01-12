@@ -3,8 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.EditBundles;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Reflection;
@@ -12,13 +12,13 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class ItemCatalog : ItemHandler, ILocalizationXml
+public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
 {
     public string BundleName => "ItemCatalog";
     public string LocalizationName => "ItemCatalogDict_en-US";
     public BundlePriority Priority => BundlePriority.Medium;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<ItemCatalog> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     private Dictionary<string, int> _itemNameDict;
@@ -56,7 +56,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
         if (dicts != null)
         {
-            var internalCatalog = Services.GetRequiredService<ItemCatalogInt>();
+            var internalCatalog = Services.GetRequiredService<InternalItem>();
 
             ReadLocalizationXml(xml.WriteToString());
             var localization = this.GetField<ItemHandler>("_localizationDict") as Dictionary<int, string>;
@@ -128,8 +128,8 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         _itemCategories.Clear();
         _itemSubCategories.Clear();
 
-        var internalCatalog = Services.GetRequiredService<ItemCatalogInt>();
-        var editCatalog = Services.GetRequiredService<EditItemInt>();
+        var internalCatalog = Services.GetRequiredService<InternalItem>();
+        var editCatalog = Services.GetRequiredService<EditItem>();
 
         var items = new Dictionary<int, string>();
 
