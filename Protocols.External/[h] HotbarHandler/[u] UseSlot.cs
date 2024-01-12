@@ -16,7 +16,6 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using UnityEngine;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -27,7 +26,7 @@ public class UseSlot : ExternalProtocol
     public ILogger<UseSlot> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
-    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
+    public InternalObjective ObjectiveCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
 

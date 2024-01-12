@@ -9,6 +9,7 @@ using Server.Base.Logging.Internal;
 using Server.Base.Network.Services;
 using Server.Base.Timers.Services;
 using Server.Base.Worlds;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.Versioning;
@@ -45,7 +46,8 @@ public class ServerWorker : IHostedService
 
         _serverThread = new Thread(ServerLoopThread)
         {
-            Name = "Server Thread"
+            Name = "Server Thread",
+            CurrentCulture = CultureInfo.InvariantCulture
         };
     }
 
@@ -55,6 +57,7 @@ public class ServerWorker : IHostedService
         _sink.ServerStarted += _ => _serverThread.Start();
 
         Thread.CurrentThread.Name = "Main Thread";
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
         var baseDirectory = InternalDirectory.GetBaseDirectory();
 

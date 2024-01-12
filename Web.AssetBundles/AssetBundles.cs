@@ -19,7 +19,7 @@ public class AssetBundles(ILogger<AssetBundles> logger) : WebModule(logger)
 
         Logger.LogDebug("Loading bundles");
 
-        foreach (var xml in modules.GetServices<IBundledXml>())
+        foreach (var xml in modules.GetServices<IInternalBundledXml>())
         {
             Logger.LogTrace("   Loaded: {ServiceName}", xml.Name);
             services.AddSingleton(xml, RuntimeHelpers.GetUninitializedObject(xml));

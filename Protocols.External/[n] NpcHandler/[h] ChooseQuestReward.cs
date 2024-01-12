@@ -31,7 +31,7 @@ public class ChooseQuestReward : ExternalProtocol
         Player.AddReputation(quest.ReputationReward);
 
         foreach (var item in quest.RewardItems)
-            Player.Character.AddItem(item.Key, item.Value);
+            Player.AddItem(item.Key, item.Value);
 
         Player.SendUpdatedInventory(false);
     }

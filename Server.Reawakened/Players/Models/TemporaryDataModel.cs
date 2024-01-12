@@ -18,6 +18,5 @@ public class TemporaryDataModel
     public Vector3Model Velocity { get; set; } = new Vector3Model();
     public bool Invincible { get; set; } = false;
 
-    public List<int> Events { get; set; } = [];
     public ArenaModel ArenaModel { get; set; } = new ArenaModel();
 }

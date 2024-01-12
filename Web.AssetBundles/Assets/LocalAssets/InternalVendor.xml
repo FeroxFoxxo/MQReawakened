@@ -28,7 +28,6 @@
         <Item prefabName="PF_PET_Rig02_Tiger02" />
     </Vendor>
     <Vendor objectId="615" name="Altak" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1180" greetingConversationId="3173" leavingConversationId="3372">
-        <Item prefabName="Col_POT_ExperiencePotion02" />
         <Item prefabName="COL_POT_Rejuvenation02" />
         <Item prefabName="COL_POT_Healing01" />
         <Item prefabName="Add_COM_Explorator01_UF01" />
@@ -120,6 +119,7 @@
         <Item prefabName="Add_COM_Sheep01_S01" />
         <Item prefabName="Add_COM_Centurion01_TS01" />
         <Item prefabName="Add_COM_VespidWings01_BP01" />
+        <Item prefabName="COL_POT_FireElixer01" />
         <Item prefabName="Add_COM_Tiger01_S01" />
         <Item prefabName="Add_COM_Egg01_S01" />
         <Item prefabName="Add_BON_Mantis01_S01" />
@@ -152,11 +152,12 @@
         <Item prefabName="WPN_PRJ_FistOfTerra01" />
         <Item prefabName="ABIL_PoisonBomb03" />
         <Item prefabName="ABIL_Grenade03b" />
+        <Item prefabName="Add_COM_Armor01_LS01" />
     </Vendor>
     <Vendor objectId="244" name="Jitter" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="765" greetingConversationId="2069" leavingConversationId="2068">
         <Item prefabName="COL_BUFF_Bandage01" />
-        <Item prefabName="Col_POT_ExperiencePotion01" />
-        <Item prefabName="Col_POT_ExperiencePotion02" />
+        <Item prefabName="COL_POT_ExperiencePotion01" />
+        <Item prefabName="COL_POT_ExperiencePotion02" />
         <Item prefabName="COL_BUFF_GlyphProtection01" />
         <Item prefabName="COL_POT_Healing01" />
         <Item prefabName="COL_PACK_NC_Rejuvenation01" />
@@ -229,43 +230,29 @@
         <Item prefabName="Add_COM_GemTailRing01_T04" />
     </Vendor>
     <Vendor objectId="16907" name="Ursa" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1421" greetingConversationId="3610" leavingConversationId="3609">
-        <Item prefabName="COL_PACK_NC_BananaPotion01" />
-        <Item prefabName="COL_PACK_NC_ExperiencePotion01" />
+        <Item prefabName="COL_POT_BananaPotion01" />
+        <Item prefabName="COL_POT_ExperiencePotion01" />
         <Item prefabName="COL_ING_C_PureWater01" />
-        <Item prefabName="COL_PACK_NC_ExperiencePotion02" />
+        <Item prefabName="COL_POT_ExperiencePotion02" />
         <Item prefabName="COL_POT_Healing01" />
-        <Item prefabName="COL_PACK_NC_Rejuvenation01" />
-        <Item prefabName="COL_PACK_NC_ExperiencePotion03" />
-        <Item prefabName="COL_RECIP_POT_IceElixir00" />
-        <Item prefabName="COL_RECIP_POT_IceResist00" />
-        <Item prefabName="COL_POT_Healing02" />
-        <Item prefabName="COL_PACK_NC_Rejuvenation02" />
-        <Item prefabName="COL_POT_Healing03" />
-        <Item prefabName="COL_RECIP_POT_IceElixir01" />
-        <Item prefabName="COL_RECIP_POT_IceResist01" />
+        <Item prefabName="COL_POT_Rejuvenation01" />
+        <Item prefabName="COL_RECIP_POT_FireResist01" />
         <Item prefabName="COL_PACK_NC_Rejuvenation03" />
         <Item prefabName="COL_POT_Healing04" />
         <Item prefabName="COL_PACK_NC_Rejuvenation04" />
-        <Item prefabName="COL_RECIP_POT_IceElixir02" />
-        <Item prefabName="COL_RECIP_POT_IceResist02" />
+        <Item prefabName="COL_RECIP_POT_FireResist02" />
         <Item prefabName="COL_POT_Healing05" />
         <Item prefabName="COL_PACK_NC_Rejuvenation05" />
-        <Item prefabName="COL_RECIP_POT_IceElixir03" />
-        <Item prefabName="COL_RECIP_POT_IceResist03" />
+        <Item prefabName="COL_RECIP_POT_FireResist03" />
     </Vendor>
     <Vendor objectId="16908" name="Bolvirk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="1422" greetingConversationId="3616" leavingConversationId="3615">
         <Item prefabName="COL_PACK_NC_BananaShake01" />
-        <Item prefabName="COL_PACK_NC_Cookie01" />
-        <Item prefabName="COL_PACK_NC_IceCream01" />
-        <Item prefabName="COL_FOOD_SnowBerries01" />
-        <Item prefabName="COL_PACK_NC_Pie01" />
-        <Item prefabName="COL_FOOD_OrangeIcePop01" />
-        <Item prefabName="COL_PACK_NC_Candy01" />
-        <Item prefabName="COL_FOOD_FishIceBlock01" />
-        <Item prefabName="COL_PACK_NC_LollyPop01" />
-        <Item prefabName="COL_FOOD_VanillaIceCream01" />
-        <Item prefabName="COL_PACK_NC_Sundae01" />
-        <Item prefabName="COL_FOOD_BerryLemonCone01" />
+        <Item prefabName="COL_FOOD_Cookie01" />
+        <Item prefabName="COL_FOOD_IceCream01" />
+        <Item prefabName="COL_FOOD_Pie01" />
+        <Item prefabName="COL_FOOD_Candy01" />
+        <Item prefabName="COL_FOOD_LollyPop01" />
+        <Item prefabName="COL_FOOD_Sundae01" />
         <Item prefabName="COL_FOOD_Cookie02" />
     </Vendor>
     <Vendor objectId="16906" name="Anora" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1420" greetingConversationId="3604" leavingConversationId="3603">
@@ -287,19 +274,5 @@
         <Item prefabName="COL_RECIP_BON_TailRing01_T03" />
         <Item prefabName="COL_RECIP_COM_DragonFish01_FH02" />
         <Item prefabName="COL_RECIP_COM_Indonesian01_LS02" />
-    </Vendor>
-    <Vendor objectId="5151" name="Chinzee" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1350" greetingConversationId="3420" leavingConversationId="3419">
-        <Item prefabName="COL_FOOD_Orange01" />
-        <Item prefabName="COL_RECIP_SHD_Snake01_TS01" />
-        <Item prefabName="COL_RECIP_PRJ_TornadoStaff01" />
-        <Item prefabName="COL_POT_Healing04" />
-        <Item prefabName="WPN_PRJ_Thunderbow01" />
-        <Item prefabName="Add_COM_Warrior01_W01" />
-        <Item prefabName="Add_SHD_Snake01_TS02" />
-        <Item prefabName="Add_COM_Warrior01_T01" />
-        <Item prefabName="Add_SHD_Snake01_S02" />
-        <Item prefabName="WPN_PRJ_AirFist01" />
-        <Item prefabName="Add_SHD_Snake01_LS02" />
-        <Item prefabName="COL_PACK_NC_Panda01" />
     </Vendor>
 </VendorCatalog>

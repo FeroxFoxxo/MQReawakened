@@ -11,11 +11,8 @@ public class TravelToFriend : ExternalProtocol
     public override string ProtocolName => "lA";
 
     public WorldGraph WorldGraph { get; set; }
-
     public WorldHandler WorldHandler { get; set; }
-
     public DatabaseContainer DatabaseContainer { get; set; }
-
     public ILogger<TravelToFriend> Logger { get; set; }
 
     public override void Run(string[] message)

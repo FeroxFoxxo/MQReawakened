@@ -9,12 +9,12 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class VendorCatalogInt : IBundledXml
+public class InternalVendor : IBundledXml<InternalVendor>
 {
-    public string BundleName => "VendorCatalogInt";
+    public string BundleName => "InternalVendor";
     public BundlePriority Priority => BundlePriority.Low;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<InternalVendor> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public Dictionary<int, VendorInfo> VendorCatalog;
@@ -33,11 +33,11 @@ public class VendorCatalogInt : IBundledXml
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
-        foreach (XmlNode vendors in xmlDocument.ChildNodes)
+        foreach (XmlNode vendorXml in xmlDocument.ChildNodes)
         {
-            if (vendors.Name != "VendorCatalog") continue;
+            if (vendorXml.Name != "VendorCatalog") continue;
 
-            foreach (XmlNode vendor in vendors.ChildNodes)
+            foreach (XmlNode vendor in vendorXml.ChildNodes)
             {
                 if (vendor.Name != "Vendor") continue;
 
@@ -58,44 +58,44 @@ public class VendorCatalogInt : IBundledXml
 
                 var items = new List<int>();
 
-                foreach (XmlAttribute vendorAttributes in vendor.Attributes!)
-                    switch (vendorAttributes.Name)
+                foreach (XmlAttribute vendorAttribute in vendor.Attributes)
+                    switch (vendorAttribute.Name)
                     {
                         case "objectId":
-                            objectId = int.Parse(vendorAttributes.Value);
+                            objectId = int.Parse(vendorAttribute.Value);
                             continue;
                         case "name":
-                            name = vendorAttributes.Value;
+                            name = vendorAttribute.Value;
                             continue;
                         case "descriptionId":
-                            descriptionId = int.Parse(vendorAttributes.Value);
+                            descriptionId = int.Parse(vendorAttribute.Value);
                             continue;
 
                         case "numberOfIdolsToAccessBackStore":
-                            numberOfIdolsToAccessBackStore = int.Parse(vendorAttributes.Value);
+                            numberOfIdolsToAccessBackStore = int.Parse(vendorAttribute.Value);
                             continue;
                         case "idolLevelId":
-                            idolLevelId = int.Parse(vendorAttributes.Value);
+                            idolLevelId = int.Parse(vendorAttribute.Value);
                             continue;
 
                         case "vendorId":
-                            vendorId = int.Parse(vendorAttributes.Value);
+                            vendorId = int.Parse(vendorAttribute.Value);
                             continue;
                         case "catalogId":
-                            catalogId = int.Parse(vendorAttributes.Value);
+                            catalogId = int.Parse(vendorAttribute.Value);
                             continue;
                         case "vendorType":
-                            vendorType = vendorType.GetEnumValue(vendorAttributes.Value, Logger);
+                            vendorType = vendorType.GetEnumValue(vendorAttribute.Value, Logger);
                             continue;
 
                         case "dialogId":
-                            dialogId = int.Parse(vendorAttributes.Value);
+                            dialogId = int.Parse(vendorAttribute.Value);
                             continue;
                         case "greetingConversationId":
-                            greetingConversationId = int.Parse(vendorAttributes.Value);
+                            greetingConversationId = int.Parse(vendorAttribute.Value);
                             continue;
                         case "leavingConversationId":
-                            leavingConversationId = int.Parse(vendorAttributes.Value);
+                            leavingConversationId = int.Parse(vendorAttribute.Value);
                             continue;
                     }
 
@@ -103,14 +103,14 @@ public class VendorCatalogInt : IBundledXml
                 {
                     if (!(item.Name == "Item")) continue;
 
-                    foreach (XmlAttribute id in item.Attributes)
-                        if (id.Name == "prefabName")
+                    foreach (XmlAttribute itemAttribute in item.Attributes)
+                        if (itemAttribute.Name == "prefabName")
                         {
-                            var itemD = itemCat.GetItemFromPrefabName(id.Value);
+                            var itemD = itemCat.GetItemFromPrefabName(itemAttribute.Value);
 
                             if (itemD == null)
                             {
-                                Logger.LogError("Unknown item with prefab name: {Val}", id.Value);
+                                Logger.LogError("Unknown item with prefab name: {Val}", itemAttribute.Value);
                                 continue;
                             }
 

@@ -12,9 +12,7 @@ public class HarvestControllerComp : BaseChestControllerComp<HarvestController>
 {
     public bool Collected;
     public ItemCatalog ItemCatalog { get; set; }
-    public QuestCatalog QuestCatalog { get; set; }
-    public ObjectiveCatalogInt ObjectiveCatalog { get; set; }
-    public LootCatalogInt LootCatalog { get; set; }
+    public InternalLoot LootCatalog { get; set; }
     public ILogger<HarvestControllerComp> Logger { get; set; }
     public override object[] GetInitData(Player player) => [Collected ? 0 : 1];
 
@@ -29,6 +27,6 @@ public class HarvestControllerComp : BaseChestControllerComp<HarvestController>
 
         player.SendUpdatedInventory(false);
 
-        player.CheckObjective(QuestCatalog, ObjectiveCatalog, A2m.Server.ObjectiveEnum.Collect, Id, PrefabName, 1);
+        player.CheckObjective(A2m.Server.ObjectiveEnum.Collect, Id, PrefabName, 1);
     }
 }

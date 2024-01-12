@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using UnityEngine;
 
@@ -25,16 +24,4 @@ public class EnemyControllerComp : Component<EnemyController>
 
     public override void InitializeComponent() => base.InitializeComponent();
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => base.RunSyncedEvent(syncEvent, player);
-
-    public void SendDamageEvent(Player player)
-    {
-        Logger.LogInformation("Enemy name: {args1} Enemy Id: {args2}", PrefabName, Id);
-
-        // Link to damage + health of object later
-        var damageEvent = new AiHealth_SyncEvent(Id.ToString(), player.Room.Time, 0, 5, 0, 0, player.CharacterName, false, true);
-        player.Room.SendSyncEvent(damageEvent);
-
-        //player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
-        //player.SendUpdatedInventory(false);
-    }
 }

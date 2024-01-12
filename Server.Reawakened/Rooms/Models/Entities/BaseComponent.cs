@@ -20,7 +20,6 @@ public abstract class BaseComponent
     public Vector3Model Scale => Entity.GameObject.ObjectInfo.Scale;
 
     public abstract string Name { get; }
-    public bool Disposed = false;
 
     public virtual void InitializeComponent()
     {

@@ -3,6 +3,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._n__NpcHandler;
+
 public class SellItems : ExternalProtocol
 {
     public override string ProtocolName => "ns";
@@ -11,8 +12,6 @@ public class SellItems : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
         var items = message[6].Split('|');
 
         foreach (var item in items)
@@ -26,7 +25,7 @@ public class SellItems : ExternalProtocol
 
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
-            character.RemoveItem(itemDescription, amount);
+            Player.RemoveItem(itemDescription, amount);
 
             Player.AddBananas(itemDescription.SellPrice * amount);
 
