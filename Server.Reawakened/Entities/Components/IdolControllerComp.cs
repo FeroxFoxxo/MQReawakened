@@ -35,6 +35,6 @@ public class IdolControllerComp : Component<IdolController>
 
         player.SendSyncEventToPlayer(collectedEvent);
 
-        player.CheckObjective(ObjectiveEnum.IdolCollect, Id, "COL_CRS_BananaIdol", 1);
+        player.CheckObjective(ObjectiveEnum.IdolCollect, Id, PrefabName, 1);
     }
 }

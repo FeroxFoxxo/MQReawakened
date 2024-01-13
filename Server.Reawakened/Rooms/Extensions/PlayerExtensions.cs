@@ -77,7 +77,7 @@ public static class PlayerExtensions
         var levelUpData = new LevelUpDataModel
         {
             Level = player.Character.Data.GlobalLevel,
-            IncPowerJewel = player.Character.Data.BadgePoints
+            IncPowerJewel = player.Character.Data.BadgePoints,
         };
 
         foreach (var currentPlayer in player.Room.Players.Values)

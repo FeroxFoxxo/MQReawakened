@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
@@ -358,6 +359,9 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
         {
             Room.SentEntityTriggered(Id, player, true, IsActive);
             Triggered(player, true, IsActive);
+
+            if (IsActive)
+                player.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
         }
     }
 
