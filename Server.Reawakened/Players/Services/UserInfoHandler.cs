@@ -82,7 +82,7 @@ public class UserInfoHandler : DataHandler<UserInfo>
 
         var user = new UserInfo(id, gender, dob, region, signUpExperience, _randomKeyGenerator, _config);
 
-        Add(user);
+        Add(user, id);
 
         return user;
     }
