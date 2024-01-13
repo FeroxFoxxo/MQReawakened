@@ -5,6 +5,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Minigames;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -12,53 +13,47 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
 {
     public string ArenaObjectId => ComponentData.ArenaObjectID;
     public DatabaseContainer DatabaseContainer { get; set; }
+    public ArenaCatalogInt ArenaCatalogInt { get; set; }
     public ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) => base.GetInitData(player);
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        if (player.TempData.ArenaModel.HasStarted)
+        var playersInRoom = DatabaseContainer.GetAllPlayers();
+        var arenaActivation = Convert.ToInt32(syncEvent.EventDataList[2]);
+
+        if (ArenaModel.ArenaActivated)
         {
             Logger.LogInformation("Arena has already started, stopping syncEvent.");
-            player.TempData.ArenaModel.ShouldStartArena = true;
             return;
         }
 
         player.Room.SendSyncEvent(syncEvent);
 
-        var playersInRoom = DatabaseContainer.GetAllPlayers();
-        var arenaActivation = Convert.ToInt32(syncEvent.EventDataList[2]);
+        player.TempData.ArenaModel.ActivatedSwitch = arenaActivation > 0;
 
-        //Method to determine if arena trigger event is minigame. if minigame, proceed with code below.
-
-        player.TempData.ArenaModel.ShouldStartArena = arenaActivation > 0;
-
-        if (playersInRoom.Count > 1)
+        if (player.TempData.ArenaModel.ActivatedSwitch)
         {
-            if (playersInRoom.All(p => p.TempData.ArenaModel.ShouldStartArena))
-            {
-                foreach (var member in playersInRoom)
-                {
-                    ArenaModel.SetCharacterIds(member, playersInRoom);
-                    member.TempData.ArenaModel.HasStarted = true;
-                    StartMinigame(member);
-                }
-            }
+            if (!ArenaModel.Participants.Contains(player))
+                ArenaModel.Participants.Add(player);
+
+            player.Room.SendSyncEvent(new TriggerUpdate_SyncEvent(ArenaObjectId, player.Room.Time, ArenaModel.Participants.Count));
         }
-        else
+
+
+        if (playersInRoom.All(p => p.TempData.ArenaModel.ActivatedSwitch))
         {
-            if (player.TempData.ArenaModel.ShouldStartArena)
+            foreach (var member in playersInRoom)
             {
-                StartMinigame(player);
-                ArenaModel.SetCharacterIds(player, new List<Player> { player });
+                ArenaModel.ArenaActivated = true;
+                ArenaModel.SetCharacterIds(playersInRoom);
+                StartArenaActivation(member);
             }
         }
     }
 
-    public void StartMinigame(Player player)
-    {
-        var startRace = new Trigger_SyncEvent(ArenaObjectId, Room.Time, true, player.GameObjectId.ToString(), Room.LevelInfo.LevelId, true, true);
-        player.SendSyncEventToPlayer(startRace);
-    }
+    public void StartArenaActivation(Player player) =>
+        player.SendSyncEventToPlayer(new Trigger_SyncEvent(ArenaObjectId, Room.Time,
+            true, player.GameObjectId.ToString(), Room.LevelInfo.LevelId, true, true));
 }
