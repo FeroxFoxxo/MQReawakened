@@ -10,13 +10,17 @@ using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using SmartFoxClientAPI.Data;
 using System.Collections.Generic;
+using System.Numerics;
 using WorldGraphDefines;
+using static LeaderBoardTopScoresJson;
 using Timer = Server.Base.Timers.Timer;
 
 namespace Server.Reawakened.Rooms;
@@ -228,68 +232,28 @@ public class Room : Timer
         // WHERE TO SPAWN
         var character = player.Character;
 
-        BaseComponent spawnLocation = null;
+        var spawnPoint = GetSpawnPoint(character);
+        var coords = GetSpawnCoords(spawnPoint);
 
-        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
-        var portals = this.GetComponentsOfType<PortalControllerComp>();
+        character.Data.SpawnPositionX = coords.X;
+        character.Data.SpawnPositionY = coords.Y;
 
-        var spawnId = character.LevelData.SpawnPointId;
-
-        if (spawnId != 0)
-        {
-            if (portals.TryGetValue(spawnId, out var portal))
-                spawnLocation = portal;
-
-            if (spawnLocation == null)
-            {
-                if (spawnPoints.TryGetValue(spawnId, out var spawnPoint))
-                {
-                    spawnLocation = spawnPoint;
-                }
-                else
-                {
-                    var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index == character.LevelData.SpawnPointId);
-                    if (indexSpawn != null)
-                        spawnLocation = indexSpawn;
-                }
-            }
-        }
-
-        spawnLocation ??= DefaultSpawn;
-
-        var x = spawnLocation.Rectangle.X;
-
-        if (x == 0)
-            x = spawnLocation.Position.X;
-
-        x -= .25f;
-
-        var y = spawnLocation.Rectangle.Y;
-
-        if (y == 0)
-            y = spawnLocation.Position.Y;
-
-        y += .25f;
-
-        character.Data.SpawnPositionX = x + spawnLocation.Rectangle.Width / 2;
-        character.Data.SpawnPositionY = y + spawnLocation.Rectangle.Height / 2;
-
-        if (spawnLocation.ParentPlane == "Plane1")
+        if (spawnPoint.ParentPlane == "Plane1")
             character.Data.SpawnOnBackPlane = true;
-        else if (spawnLocation.ParentPlane == "Plane0")
+        else if (spawnPoint.ParentPlane == "Plane0")
             character.Data.SpawnOnBackPlane = false;
         else
-            Logger.LogWarning("Unknown plane for portal: {PortalPlane}", spawnLocation.ParentPlane);
+            Logger.LogWarning("Unknown plane for portal: {PortalPlane}", spawnPoint.ParentPlane);
 
         Logger.LogDebug(
-            "Spawning {CharacterName} at object '{Object}' (spawn '{SpawnPoint}') at '{NewRoom}'.",
+            "Spawning {CharacterName} at object '{Object}' (spawn '{SpawnPoint}') for room id '{NewRoom}'.",
             character.Data.CharacterName,
-            spawnLocation.Id != 0 ? spawnLocation.Id : "DEFAULT",
+            spawnPoint.Id != 0 ? spawnPoint.Id : "DEFAULT",
             character.LevelData.SpawnPointId != 0 ? character.LevelData.SpawnPointId : "DEFAULT",
             character.LevelData.LevelId
         );
 
-        Logger.LogDebug("Position of spawn: {Position}", spawnLocation.Position);
+        Logger.LogDebug("Position of spawn: {Position}", spawnPoint.Position);
 
         // CHARACTER DATA
 
@@ -305,7 +269,56 @@ public class Room : Timer
         }
     }
 
-    public void DumpPlayersToLobby()
+    public static Vector2Model GetSpawnCoords(BaseComponent spawnLocation)
+    {
+        var x = spawnLocation.Rectangle.X;
+
+        if (x == 0)
+            x = spawnLocation.Position.X;
+
+        x -= .25f;
+
+        var y = spawnLocation.Rectangle.Y;
+
+        if (y == 0)
+            y = spawnLocation.Position.Y;
+
+        y += .25f;
+
+        x += spawnLocation.Rectangle.Width / 2;
+        y += spawnLocation.Rectangle.Height / 2;
+
+        return new Vector2Model()
+        {
+            X = x,
+            Y = y
+        };
+    }
+
+    public BaseComponent GetSpawnPoint(CharacterModel character)
+    {
+        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
+        var portals = this.GetComponentsOfType<PortalControllerComp>();
+
+        var spawnId = character.LevelData.SpawnPointId;
+
+        if (portals.TryGetValue(spawnId, out var portal))
+            if (portal != null)
+                return portal;
+
+        if (spawnPoints.TryGetValue(spawnId, out var spawnPoint))
+            if (spawnPoint != null)
+                return spawnPoint;
+
+        var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index == character.LevelData.SpawnPointId);
+
+        if (indexSpawn != null)
+            return indexSpawn;
+
+        return DefaultSpawn;
+    }
+
+public void DumpPlayersToLobby()
     {
         foreach (var player in Players.Values)
             player.DumpToLobby();

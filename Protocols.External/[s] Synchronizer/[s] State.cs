@@ -51,7 +51,6 @@ public class State : ExternalProtocol
 
         if (room.Players.TryGetValue(entityId, out var newPlayer))
         {
-
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.ChargeAttack:
