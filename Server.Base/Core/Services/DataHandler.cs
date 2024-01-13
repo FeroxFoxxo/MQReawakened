@@ -124,11 +124,12 @@ public abstract class DataHandler<T> : IService where T : PersistantData
         return type;
     }
 
-    public int CreateNewId() => Data.Count + 1;
+    public int CreateNewId() => Data.Count == 0 ? 1 : Data.Max(x => x.Key) + 1;
 
-    public void Add(T entity)
+    public void Add(T entity, int id = -1)
     {
-        var id = CreateNewId();
+        if (id == -1)
+            id = CreateNewId();
         Data.Add(id, entity);
         if (entity is PersistantData pd)
             pd.Id = id;

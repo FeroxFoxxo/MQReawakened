@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Players;
+﻿using A2m.Server;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -14,7 +15,8 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        player.CheckObjective(A2m.Server.ObjectiveEnum.Collect, Id, PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.Collect, Id, PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
 
         var questCollectible = new Trigger_SyncEvent(syncEvent);
         Room.SendSyncEvent(questCollectible);

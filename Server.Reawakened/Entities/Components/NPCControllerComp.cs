@@ -108,7 +108,7 @@ public class NPCControllerComp : Component<NPCController>
 
             if (tEvent.Activate)
             {
-                player.CheckObjective(ObjectiveEnum.Talkto, Id, "GoToTrigger", 1);
+                player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
 
                 switch (NpcType)
                 {

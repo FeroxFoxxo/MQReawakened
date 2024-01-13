@@ -59,19 +59,22 @@ public static class PlayerExtensions
     public static void AddReputation(this Player player, int reputation)
     {
         var charData = player.Character.Data;
-
         reputation += charData.Reputation;
+
+        var shouldLevelUp = false;
 
         while (reputation > charData.ReputationForNextLevel)
         {
             reputation -= charData.ReputationForNextLevel;
             player.Character.SetLevelXp(charData.GlobalLevel + 1, reputation);
-            player.SendLevelUp();
+            shouldLevelUp = true;
         }
 
         charData.Reputation = reputation;
-
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
+
+        if (shouldLevelUp)
+            player.SendLevelUp();
     }
 
     public static void TradeWithPlayer(this Player origin, ItemCatalog catalog)
@@ -247,31 +250,45 @@ public static class PlayerExtensions
 
     public static void CheckObjective(this Player player, ObjectiveEnum type, int gameObjectId, string prefabName, int count)
     {
-        if (!player.DatabaseContainer.Objectives.ObjectivePrefabs.TryGetValue(prefabName, out var objectiveInt))
-            return;
-
-        if (objectiveInt == null)
+        if (count <= 0)
             return;
 
         var character = player.Character.Data;
+        player.DatabaseContainer.Objectives.ObjectivePrefabs.TryGetValue(prefabName, out var objectiveInt);
+
+        player.Room.Logger.LogDebug("Checking {type} objective for {prefab} id ({id}) of count {count}.", type, prefabName, gameObjectId, count);
 
         foreach (var quest in character.QuestLog)
         {
+            var hasObjComplete = false;
+
             foreach (var objectiveKVP in quest.Objectives)
             {
                 var objective = objectiveKVP.Value;
-                var hasObjComplete = false;
-
-                if (objective.GameObjectId > 0)
-                    if (objective.GameObjectId != gameObjectId)
-                        continue;
+                var shouldIgnoreLevel = false;
 
                 if (objective.ObjectiveType != type ||
-                    !objectiveInt.ItemIds.Contains(objective.ItemId) && !objectiveInt.ItemIds.Contains(default) ||
                     objective.Order > quest.CurrentOrder ||
-                    objective.LevelId != player.Character.LevelData.LevelId && !objectiveInt.GlobalLevel ||
-                    objective.Completed ||
-                    count <= 0)
+                    objective.Completed)
+                    continue;
+
+                if (objective.GameObjectId > 0)
+                {
+                    if (objective.GameObjectId != gameObjectId)
+                        continue;
+                }
+                else
+                {
+                    if (objectiveInt == null)
+                        continue;
+
+                    if (!objectiveInt.ItemIds.Contains(objective.ItemId) && !objectiveInt.ItemIds.Contains(default))
+                        continue;
+
+                    shouldIgnoreLevel = objectiveInt.GlobalLevel;
+                }
+
+                if (objective.LevelId != player.Character.LevelData.LevelId && !shouldIgnoreLevel)
                     continue;
 
                 objective.CountLeft -= count;
@@ -289,17 +306,17 @@ public static class PlayerExtensions
                         quest.CurrentOrder = leftObjectives.Min(x => x.Value.Order);
 
                     player.SendXt("no", quest.Id, objectiveKVP.Key);
-                    hasObjComplete = true;
-                }
 
-                if (!quest.Objectives.Any(o => !o.Value.Completed) && hasObjComplete)
-                {
-                    player.SendXt("nQ", quest.Id);
-                    quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
+                    hasObjComplete = true;
                 }
             }
 
-            player.UpdateNpcsInLevel(quest, player.DatabaseContainer.Quests);
+            if (!quest.Objectives.Any(o => !o.Value.Completed) && hasObjComplete)
+            {
+                player.SendXt("nQ", quest.Id);
+                quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
+                player.UpdateNpcsInLevel(quest, player.DatabaseContainer.Quests);
+            }
         }
     }
 

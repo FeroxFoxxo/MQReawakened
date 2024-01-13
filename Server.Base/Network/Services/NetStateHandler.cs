@@ -1,4 +1,5 @@
-﻿using Server.Base.Accounts.Models;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
@@ -10,8 +11,8 @@ using Server.Base.Timers.Services;
 
 namespace Server.Base.Network.Services;
 
-public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
-    EventSink sink) : IService
+public class NetStateHandler(FileLogger fileLogger,
+    IServiceProvider services, EventSink sink) : IService
 {
     public delegate ProtocolResponse GetProtocol(string protocol);
     public delegate void SendProtocol(NetState netState, string actionType, object protocol);
@@ -26,7 +27,8 @@ public class NetStateHandler(FileLogger fileLogger, TimerThread thread,
 
     public void Initialize() =>
         sink.ServerStarted += _ =>
-            thread.DelayCall(CheckAllAlive, null, TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(1.5), 0);
+            services.GetRequiredService<TimerThread>()
+            .DelayCall(CheckAllAlive, null, TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(1.5), 0);
 
     public NetState FindUser(int userId) =>
         (from state in Instances
