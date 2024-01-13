@@ -61,7 +61,7 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
     private void GetGameInformation()
     {
         _console.AddCommand(
-            "runLauncher",
+            "r",
             "Runs the launcher and hooks it into the current process.",
             NetworkType.Client,
             _ => LaunchGame()

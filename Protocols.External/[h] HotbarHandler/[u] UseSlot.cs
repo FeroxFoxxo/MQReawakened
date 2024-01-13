@@ -58,11 +58,10 @@ public class UseSlot : ExternalProtocol
             case ItemActionType.Throw:
                 HandleRangedWeapon(usedItem, position, direction);
                 break;
+            case ItemActionType.Genericusing:
             case ItemActionType.Drink:
-                HandleDrink(usedItem);
-                break;
             case ItemActionType.Eat:
-                HandleConsumable(usedItem, hotbarSlotId);
+                HandleConsumable(usedItem, Logger, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
@@ -95,24 +94,7 @@ public class UseSlot : ExternalProtocol
 
         Player.SendSyncEventToPlayer(itemEffect);
     }
-    
-    private void HandleDrink(ItemDescription usedItem)
-    {
-        StatusEffect_SyncEvent itemEffect = null;
 
-        foreach (var effect in usedItem.ItemEffects)
-            itemEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                    (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
-
-        Player.SendSyncEventToPlayer(itemEffect);
-
-        foreach (var effect in usedItem.ItemEffects)
-            if (effect.TypeId == (int)ItemEffectType.Healing)
-            {
-                Player.HealOnce(usedItem, ServerRConfig);
-                Logger.LogInformation("Used healing item {ItemName} of effect typeID: {TypeID}", usedItem.ItemName, usedItem.ItemEffects.FirstOrDefault().TypeId);
-            }
-    }
 
     private void HandleDrop(ItemDescription usedItem, Vector3Model position, int direction)
     {
@@ -194,29 +176,59 @@ public class UseSlot : ExternalProtocol
             enemyEntity.SendDamageEvent(Player);
     }
 
-    private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
+    private void HandleConsumable(ItemDescription usedItem, ILogger<UseSlot> logger, int hotbarSlotId)
     {
-        StatusEffect_SyncEvent statusEffect = null;
-        foreach (var effect in usedItem.ItemEffects)
-        {
-            if (effect.Type is ItemEffectType.Invalid or ItemEffectType.Unknown)
-                return;
-
-            if (effect.Type is ItemEffectType.Healing)
-                Player.HealCharacter(usedItem, ServerRConfig);
-
-            statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
-        }
-        Player.SendSyncEventToPlayer(statusEffect);
+        HandleItemEffectBuff(usedItem, logger);
 
         var removeFromHotbar = true;
 
-        if (usedItem.ItemId == ServerRConfig.HealingStaff) //Prevents Healing Staff from removing itself.
+        if (usedItem.InventoryCategoryID is
+            ItemFilterCategory.WeaponAndAbilities or
+            ItemFilterCategory.Pets or
+            ItemFilterCategory.Keys or
+            ItemFilterCategory.QuestItems)
             removeFromHotbar = false;
 
-        if (!usedItem.UniqueInInventory && removeFromHotbar)
+        if (removeFromHotbar)
             RemoveFromHotbar(Player.Character, usedItem, hotbarSlotId);
+    }
+
+    public void HandleItemEffectBuff(ItemDescription usedItem, ILogger<UseSlot> logger)
+    {
+        var effect = usedItem.ItemEffects.FirstOrDefault();
+
+        Player.Room.SendSyncEvent(new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                            (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, true));
+
+        var effectCategory = usedItem.ItemEffects.FirstOrDefault().Type;
+
+        switch (effectCategory)
+        {
+            case ItemEffectType.Healing:
+            case ItemEffectType.HealthBoost:
+            case ItemEffectType.IncreaseHealing:
+            case ItemEffectType.Regeneration:
+                Player.HealCharacter(usedItem, effectCategory);
+                break;
+            case ItemEffectType.IncreaseAirDamage:
+            case ItemEffectType.IncreaseAllResist:
+            case ItemEffectType.Shield:
+            case ItemEffectType.WaterBreathing:
+            case ItemEffectType.PetRegainEnergy:
+            case ItemEffectType.PetEnergyValue:
+            case ItemEffectType.BananaMultiplier:
+            case ItemEffectType.ExperienceMultiplier:
+            case ItemEffectType.Defence:
+                break;
+            case ItemEffectType.Invalid:
+            case ItemEffectType.Unknown:
+            case ItemEffectType.Unknown_61:
+            case ItemEffectType.Unknown_70:
+            case ItemEffectType.Unknown_74:
+            default:
+                logger.LogError("Unknown ItemEffectType of ({effectType}) for item {usedItemName}", effectCategory, usedItem.PrefabName);
+                break;
+        }
     }
 
 

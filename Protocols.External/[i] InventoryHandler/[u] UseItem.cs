@@ -44,18 +44,12 @@ public class UseItem : ExternalProtocol
                     if (effect.Type is ItemEffectType.Invalid or ItemEffectType.Unknown)
                         return;
 
-                    if (effect.Type is ItemEffectType.Healing)
-                        Player.HealCharacter(item, ServerRConfig);
-
                     statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                         effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
                 }
                 Player.SendSyncEventToPlayer(statusEffect);
 
                 var removeFromHotbar = true;
-
-                if (item.ItemId == ServerRConfig.HealingStaff) //Prevents Healing Staff from removing itself.
-                    removeFromHotbar = false;
 
                 if (!item.UniqueInInventory && removeFromHotbar)
                     RemoveFromHotbar(Player.Character, item);

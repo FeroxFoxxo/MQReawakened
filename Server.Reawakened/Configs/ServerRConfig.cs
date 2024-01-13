@@ -16,7 +16,6 @@ public class ServerRConfig : IRConfig
     public int PlayerCap { get; }
     public int ReservedNameCount { get; }
     public int MaxCharacterCount { get; }
-    public int HealingStaff { get; }
 
     public int MaxLevel { get; }
 
@@ -161,7 +160,5 @@ public class ServerRConfig : IRConfig
         ];
 
         MaximumEntitiesToReturnLog = 15;
-
-        HealingStaff = 396;
     }
 }

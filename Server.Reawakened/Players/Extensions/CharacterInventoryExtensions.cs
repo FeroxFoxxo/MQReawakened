@@ -7,7 +7,7 @@ using Server.Reawakened.Players.Models.Character;
 namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterInventoryExtensions
-{
+{   
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>
         characterData.Data.Inventory.Items.TryGetValue(itemId, out outItem);
 
@@ -60,7 +60,7 @@ public static class CharacterInventoryExtensions
                     DelayUseExpiry = DateTime.MinValue
                 });
         }
-    }
+    }  
 
     public static string GetItemListString(this InventoryModel inventory)
     {
