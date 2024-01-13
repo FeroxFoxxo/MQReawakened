@@ -33,6 +33,6 @@ public class ChooseCharacter : ExternalProtocol
 
         var levelInfo = WorldHandler.GetLevelInfo(character.LevelData.LevelId);
 
-        Player.SendStartPlay(character, levelInfo, CharacterHandler);
+        Player.SendStartPlay(character, levelInfo);
     }
 }

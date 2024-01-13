@@ -1,6 +1,8 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
+using Server.Base.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
@@ -12,6 +14,8 @@ using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
+using SmartFoxClientAPI.Data;
+using System.Collections.Generic;
 using WorldGraphDefines;
 using Timer = Server.Base.Timers.Timer;
 
@@ -19,31 +23,32 @@ namespace Server.Reawakened.Rooms;
 
 public class Room : Timer
 {
-    private readonly object _roomLock;
+    private object _roomLock;
 
-    private readonly int _roomId;
-    private readonly ServerRConfig _config;
-    private readonly Level _level;
+    private int _roomId;
+    private ServerRConfig _config;
+    private Level _level;
 
-    public readonly HashSet<int> GameObjectIds;
-    public readonly HashSet<int> KilledObjects;
+    public HashSet<int> GameObjectIds;
+    public HashSet<int> KilledObjects;
 
-    public readonly Dictionary<int, Player> Players;
-    public readonly Dictionary<int, List<BaseComponent>> Entities;
-    public readonly Dictionary<int, ProjectileEntity> Projectiles;
-    public readonly Dictionary<int, BaseCollider> Colliders;
-    public readonly ILogger<Room> Logger;
+    public Dictionary<int, Player> Players;
+    public Dictionary<int, List<BaseComponent>> Entities;
+    public Dictionary<int, ProjectileEntity> Projectiles;
+    public Dictionary<int, BaseCollider> Colliders;
+    public ILogger<Room> Logger;
 
-    public readonly Dictionary<string, PlaneModel> Planes;
-    public readonly Dictionary<int, List<string>> UnknownEntities;
+    public Dictionary<string, PlaneModel> Planes;
+    public Dictionary<int, List<string>> UnknownEntities;
 
     public SpawnPointComp DefaultSpawn { get; set; }
-
     public SpawnPointComp CheckpointSpawn { get; set; }
     public int CheckpointId { get; set; }
     public LevelInfo LevelInfo => _level.LevelInfo;
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
+
+    public IServiceProvider Services { get; }
 
     public int ProjectileCount;
 
@@ -57,11 +62,11 @@ public class Room : Timer
 
         _roomId = roomId;
         _config = config;
+        Services = services;
         Logger = logger;
         _level = level;
 
-        CheckpointSpawn = null;
-        CheckpointId = 0;
+        ResetCheckpoints();
 
         Players = [];
         GameObjectIds = [];
@@ -95,6 +100,12 @@ public class Room : Timer
 
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
         Start();
+    }
+
+    public void ResetCheckpoints()
+    {
+        CheckpointSpawn = null;
+        CheckpointId = 0;
     }
 
     public override void OnTick()
@@ -182,7 +193,7 @@ public class Room : Timer
         }
     }
 
-    public void RemoveClient(Player player)
+    public void RemoveClient(Player player, bool useOriginalRoom)
     {
         Players.Remove(player.GameObjectId);
         GameObjectIds.Remove(player.GameObjectId);
@@ -198,8 +209,18 @@ public class Room : Timer
             return;
         }
 
-        _level.Rooms.Remove(_roomId);
-        Stop();
+        if (useOriginalRoom)
+        {
+            var checkpoints = Entities.Where(x => x.Value.Any(x => x is CheckpointControllerComp)).Select(x => x.Value).SelectMany(x => x);
+
+            foreach (var checkpoint in checkpoints)
+                checkpoint.InitializeComponent();
+        }
+        else
+        {
+            _level.Rooms.Remove(_roomId);
+            Stop();
+        }
     }
 
     public void SendCharacterInfo(Player player)
@@ -236,8 +257,22 @@ public class Room : Timer
 
         spawnLocation ??= DefaultSpawn;
 
-        character.Data.SpawnPositionX = spawnLocation.Position.X + spawnLocation.Scale.X / 2;
-        character.Data.SpawnPositionY = spawnLocation.Position.Y + spawnLocation.Scale.Y / 2;
+        var x = spawnLocation.Rectangle.X;
+
+        if (x == 0)
+            x = spawnLocation.Position.X;
+
+        x -= .25f;
+
+        var y = spawnLocation.Rectangle.Y;
+
+        if (y == 0)
+            y = spawnLocation.Position.Y;
+
+        y += .25f;
+
+        character.Data.SpawnPositionX = x + spawnLocation.Rectangle.Width / 2;
+        character.Data.SpawnPositionY = y + spawnLocation.Rectangle.Height / 2;
 
         if (spawnLocation.ParentPlane == "Plane1")
             character.Data.SpawnOnBackPlane = true;

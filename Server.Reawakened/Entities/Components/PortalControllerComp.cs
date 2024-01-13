@@ -57,7 +57,7 @@ public class PortalControllerComp : Component<PortalController>
         if (node != null)
         {
             spawnId = node.ToSpawnID;
-            Logger.LogDebug("Node Found: Portal ID '{Portal}', Spawn ID '{Spawn}'.", node.PortalID, node.ToSpawnID);
+            Logger.LogDebug("Node found! Portal ID: '{Portal}'. Spawn ID: '{Spawn}'.", node.PortalID, node.ToSpawnID);
         }
         else
         {
