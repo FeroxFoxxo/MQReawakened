@@ -115,7 +115,7 @@ public static class PlayerHealExtensions
         var tick = overTimeHealValue / totalTicks;
 
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            player.Character.Data.CurrentLife += tick, player.Character.Data.MaxLife, "now"));
+            player.Character.Data.CurrentLife += tick, player.Character.Data.MaxLife, "now")); 
     }
 
 }
