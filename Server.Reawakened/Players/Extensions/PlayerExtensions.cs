@@ -61,20 +61,15 @@ public static class PlayerExtensions
         var charData = player.Character.Data;
         reputation += charData.Reputation;
 
-        var shouldLevelUp = false;
-
         while (reputation > charData.ReputationForNextLevel)
         {
             reputation -= charData.ReputationForNextLevel;
             player.Character.SetLevelXp(charData.GlobalLevel + 1, reputation);
-            shouldLevelUp = true;
+            player.SendLevelUp();
         }
 
         charData.Reputation = reputation;
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
-
-        if (shouldLevelUp)
-            player.SendLevelUp();
     }
 
     public static void TradeWithPlayer(this Player origin, ItemCatalog catalog)

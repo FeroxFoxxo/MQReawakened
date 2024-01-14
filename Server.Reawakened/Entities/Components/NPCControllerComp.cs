@@ -107,51 +107,54 @@ public class NPCControllerComp : Component<NPCController>
             var tEvent = new Trigger_SyncEvent(syncEvent);
 
             if (tEvent.Activate)
-            {
-                player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
-
-                switch (NpcType)
-                {
-                    case NpcType.Vendor:
-                        player.SendXt("nv", VendorInfo.ToString(player));
-                        break;
-                    case NpcType.Quest:
-                        switch (GetQuestStatus(player.Character))
-                        {
-                            case NPCStatus.QuestAvailable:
-                                StartNewQuest(player);
-                                Logger.LogDebug("[AVALIABLE QUEST] [{Name} ({Id})]", Name, Id);
-                                break;
-                            case NPCStatus.QuestInProgress:
-                                SendQuestProgress(player);
-                                Logger.LogDebug("[IN PROGRESS QUEST] [{Name} ({Id})]", Name, Id);
-                                break;
-                            case NPCStatus.QuestCompleted:
-                                ValidateQuest(player);
-                                Logger.LogDebug("[COMPLETED QUEST] [{Name} ({Id})]", Name, Id);
-                                break;
-                            case NPCStatus.QuestUnavailable:
-                                SendDialog(player);
-                                Logger.LogDebug("[DIALOG QUEST] [{Name} ({Id})]", Name, Id);
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case NpcType.Dialog:
-                        SendDialog(player);
-                        Logger.LogDebug("[DIALOG] [{Name} ({Id})]", Name, Id);
-                        break;
-                    default:
-                        Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", Name, Id);
-                        break;
-                }
-            }
+                TalkToNpc(player);
             else
                 Logger.LogDebug("[INACTIVE NPC TRIGGERED] [{Name} ({Id})]", Name, Id);
         }
         else
             Logger.LogDebug("[UNKNOWN NPC EVENT] [{Type}] [{Name} ({Id})]", syncEvent.Type.ToString().ToUpperInvariant(), Name, Id);
+    }
+
+    public void TalkToNpc(Player player)
+    {
+        player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
+
+        switch (NpcType)
+        {
+            case NpcType.Vendor:
+                player.SendXt("nv", VendorInfo.ToString(player));
+                break;
+            case NpcType.Quest:
+                switch (GetQuestStatus(player.Character))
+                {
+                    case NPCStatus.QuestAvailable:
+                        StartNewQuest(player);
+                        Logger.LogDebug("[AVALIABLE QUEST] [{Name} ({Id})]", Name, Id);
+                        break;
+                    case NPCStatus.QuestInProgress:
+                        SendQuestProgress(player);
+                        Logger.LogDebug("[IN PROGRESS QUEST] [{Name} ({Id})]", Name, Id);
+                        break;
+                    case NPCStatus.QuestCompleted:
+                        ValidateQuest(player);
+                        Logger.LogDebug("[COMPLETED QUEST] [{Name} ({Id})]", Name, Id);
+                        break;
+                    case NPCStatus.QuestUnavailable:
+                        SendDialog(player);
+                        Logger.LogDebug("[DIALOG QUEST] [{Name} ({Id})]", Name, Id);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case NpcType.Dialog:
+                SendDialog(player);
+                Logger.LogDebug("[DIALOG] [{Name} ({Id})]", Name, Id);
+                break;
+            default:
+                Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", Name, Id);
+                break;
+        }
     }
 
     public void SendNpcInfo(CharacterModel character, NetState netState)
@@ -319,11 +322,16 @@ public class NPCControllerComp : Component<NPCController>
             return false;
         }
 
-        foreach (var requiredQuest in QuestCatalog.GetListOfPreviousQuests(quest))
-            if (character.Data.CompletedQuests.Contains(requiredQuest.Id))
-                return true;
+        var previousQuests = QuestCatalog.GetListOfPreviousQuests(quest);
 
-        Logger.LogTrace("[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUEST]", quest.Name, quest.Id);
+        foreach (var requiredQuest in previousQuests)
+            if (character.Data.CompletedQuests.Contains(requiredQuest.Id))
+            {
+                Logger.LogDebug("[{QuestName} ({QuestId})] [FOUND QUEST]", quest.Name, quest.Id);
+                return true;
+            }
+
+        Logger.LogTrace("[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS]", quest.Name, quest.Id);
 
         return false;
     }
@@ -350,6 +358,7 @@ public class NPCControllerComp : Component<NPCController>
                 player.NetState.SendXt("nq", completedQuest.Id);
                 player.Character.Data.CompletedQuests.Add(completedQuest.Id);
                 player.UpdateNpcsInLevel();
+                Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
             }
 
             break;
@@ -401,6 +410,8 @@ public class NPCControllerComp : Component<NPCController>
                 quest.QuestStatus = QuestState.IN_PROCESSING;
 
                 player.UpdateNpcsInLevel(givenQuest);
+
+                Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", givenQuest.Name, quest.Id);
 
                 return;
             }
