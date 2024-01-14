@@ -1426,7 +1426,7 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Stone Guardens">
+    <Level name="Stone Gardens">
         <LootInfo objectId="5028" doLootWheel="true">
             <Items rewardAmount="1">    <!--Platform Blue Chest-->
                 <Item itemId="12800" count="1" bindingCount="0"/>
