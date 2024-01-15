@@ -10,9 +10,7 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerHealExtensions
 {
-
-    public static TimerThread TimerThread { get; set; }
-    public static void HealCharacter(this Player player, ItemDescription usedItem, ItemEffectType effectType)
+    public static void HealCharacter(this Player player, ItemDescription usedItem, ItemEffectType effectType, TimerThread timerThread)
     {
         switch (effectType)
         {
@@ -20,7 +18,7 @@ public static class PlayerHealExtensions
                 HealOnce(player, usedItem, false);
                 break;
             case ItemEffectType.Regeneration:
-                HealOvertimeType(player, usedItem);
+                HealOvertimeType(player, usedItem, timerThread);
                 break;
         }
     }
@@ -41,20 +39,17 @@ public static class PlayerHealExtensions
                 player.Character.Data.CurrentLife += healValue, player.Character.Data.MaxLife, "Now"));
     }
 
-    private static async Task HealOvertimeType(Player player, ItemDescription usedItem)
+    private static void HealOvertimeType(Player player, ItemDescription usedItem, TimerThread timerThread)
     {
         switch (usedItem.SubCategoryId)
         {
             case ItemSubCategory.Usable:
-                await Task.Delay(1000);
-
-                HealOverTime(player, usedItem);
+                HealOverTime(player, usedItem, timerThread);
                 break;
             case ItemSubCategory.Potion:
-
                 HealOnce(player, usedItem, true);
 
-                HealOverTime(player, usedItem);
+                HealOverTime(player, usedItem, timerThread);
                 break;
             case ItemSubCategory.Defensive:
                 HealOnce(player, usedItem, false);
@@ -62,14 +57,9 @@ public static class PlayerHealExtensions
         }
     }
 
-    public static async void HealOverTime(Player player, ItemDescription usedItem)
+    public static void HealOverTime(Player player, ItemDescription usedItem, TimerThread timerThread)
     {
         var effect = usedItem.ItemEffects.FirstOrDefault();
-
-        var overTimeHealValue = effect.Value;
-        var potionDuration = effect.Duration;
-
-        var totalTicks = potionDuration / 3;
 
         var healItemdata = new ItemHealOverTimeData()
         {
@@ -77,19 +67,14 @@ public static class PlayerHealExtensions
             Player = player,
             PrefabName = usedItem.PrefabName,
             ObjectId = usedItem.ItemId,
-            OvertimeHealValue = overTimeHealValue,
-            Duration = potionDuration,
-            TotalTicks = totalTicks
+            OvertimeHealValue = effect.Value,
+            Duration = effect.Duration,
+            TotalTicks = effect.Duration / 3
         };
 
-        for (var healTick = healItemdata.TotalTicks; healTick > 0; healTick--)
-        {
-            await Task.Delay(3000); //Convert to TimerThread.
-            OvertimeHealTicks(healItemdata);
-            //TimerThread.DelayCall(OvertimeHealTicks, healItemdata, TimeSpan.FromMilliseconds(3000), TimeSpan.Zero, 1);
-        }
+        Console.WriteLine("effectDur: " + effect.Duration);
 
-
+        timerThread.DelayCall(OvertimeHealTicks, healItemdata, TimeSpan.FromMilliseconds(3000), TimeSpan.Zero, 1);
     }
 
     private class ItemHealOverTimeData()
@@ -106,16 +91,11 @@ public static class PlayerHealExtensions
     public static void OvertimeHealTicks(object itemData)
     {
         var itemHealData = (ItemHealOverTimeData)itemData;
+
         var player = itemHealData.Player;
-
-        var overTimeHealValue = itemHealData.Effect.Value;
-        var potionDuration = itemHealData.Effect.Duration;
-
-        var totalTicks = potionDuration / 3;
-        var tick = overTimeHealValue / totalTicks;
+        var tick = itemHealData.OvertimeHealValue / itemHealData.TotalTicks;
 
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            player.Character.Data.CurrentLife += tick, player.Character.Data.MaxLife, "now")); 
+            player.Character.Data.CurrentLife += tick, player.Character.Data.MaxLife, "now"));
     }
-
 }

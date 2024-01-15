@@ -61,7 +61,7 @@ public class UseSlot : ExternalProtocol
             case ItemActionType.Genericusing:
             case ItemActionType.Drink:
             case ItemActionType.Eat:
-                HandleConsumable(usedItem, Logger, hotbarSlotId);
+                HandleConsumable(usedItem, hotbarSlotId, Logger);
                 break;
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
@@ -176,7 +176,7 @@ public class UseSlot : ExternalProtocol
             enemyEntity.SendDamageEvent(Player);
     }
 
-    private void HandleConsumable(ItemDescription usedItem, ILogger<UseSlot> logger, int hotbarSlotId)
+    private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId, ILogger<UseSlot> logger)
     {
         HandleItemEffectBuff(usedItem, logger);
 
@@ -208,7 +208,7 @@ public class UseSlot : ExternalProtocol
             case ItemEffectType.HealthBoost:
             case ItemEffectType.IncreaseHealing:
             case ItemEffectType.Regeneration:
-                Player.HealCharacter(usedItem, effectCategory);
+                Player.HealCharacter(usedItem, effectCategory, TimerThread);
                 break;
             case ItemEffectType.IncreaseAirDamage:
             case ItemEffectType.IncreaseAllResist:
