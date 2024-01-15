@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Web.Apps.Achievements.Services;
+﻿using LitJson;
+using Microsoft.AspNetCore.Mvc;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Web.Apps.Achievements.API.Definition;
 
 [Route("Apps/achievements/api/definition/all")]
-public class AllDefinitionController(AchievementHandler handler) : Controller
+public class AllDefinitionController(InternalAchievement achievements) : Controller
 {
     [HttpGet]
-    public IActionResult GetAchievements() => Ok(JsonConvert.SerializeObject(handler.Definitions));
+    public IActionResult GetAchievements() => Ok(JsonMapper.ToJson(achievements.Definitions));
 }

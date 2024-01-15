@@ -37,7 +37,7 @@ public class InternalDialogRewrite : IBundledXml<InternalDialogRewrite>
                 var oldDialogName = string.Empty;
                 var newDialogName = string.Empty;
 
-                foreach (XmlAttribute dialogRewriteAttribute in dialogRewrite.Attributes!)
+                foreach (XmlAttribute dialogRewriteAttribute in dialogRewrite.Attributes)
                     switch (dialogRewriteAttribute.Name)
                     {
                         case "oldDialogName":

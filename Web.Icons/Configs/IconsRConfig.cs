@@ -17,13 +17,15 @@ public class IconsRConfig : IRConfig
         IconBanks =
         [
             "iconbank_achievements",
-            "iconbank_main",
-            "iconbank_pets",
-            "iconbank_vgmt"
+            //"iconbank_main",
+            //"iconbank_pets",
+            //"iconbank_vgmt"
         ];
         IgnoreStarting = [
             "LV_",
             "NPC_",
+            "Ach_",
+            "ACH_",
         ];
     }
 }

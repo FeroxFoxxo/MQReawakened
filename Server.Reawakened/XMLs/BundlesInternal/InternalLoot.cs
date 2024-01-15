@@ -53,7 +53,7 @@ public class InternalLoot : IBundledXml<InternalLoot>
                                 objectId = int.Parse(lootAttribute.Value);
                                 continue;
                             case "doLootWheel":
-                                doWheel = bool.Parse(lootAttribute.Value);
+                                doWheel = doWheel.GetBoolValue(lootAttribute.Value, Logger);
                                 continue;
                         }
 

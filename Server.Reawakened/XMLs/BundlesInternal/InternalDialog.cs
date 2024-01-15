@@ -42,7 +42,7 @@ public class InternalDialog : IBundledXml<InternalDialog>
 
                 var levelId = -1;
 
-                foreach (XmlAttribute levelAttribute in level.Attributes!)
+                foreach (XmlAttribute levelAttribute in level.Attributes)
                     switch (levelAttribute.Name)
                     {
                         case "id":
@@ -63,7 +63,7 @@ public class InternalDialog : IBundledXml<InternalDialog>
 
                     var dialogList = new Dictionary<int, ConversationInfo>();
 
-                    foreach (XmlAttribute npcAttribute in npc.Attributes!)
+                    foreach (XmlAttribute npcAttribute in npc.Attributes)
                         switch (npcAttribute.Name)
                         {
                             case "objectId":
@@ -85,7 +85,7 @@ public class InternalDialog : IBundledXml<InternalDialog>
                         var conversationId = -1;
                         var minimumReputation = -1;
 
-                        foreach (XmlAttribute dialogAttribute in dialog.Attributes!)
+                        foreach (XmlAttribute dialogAttribute in dialog.Attributes)
                             switch (dialogAttribute.Name)
                             {
                                 case "dialogId":

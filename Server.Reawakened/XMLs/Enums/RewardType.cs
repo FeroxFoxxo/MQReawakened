@@ -3,6 +3,10 @@
 public enum RewardType
 {
     Unknown,
+    Bananas,
     NickCash,
-    Bananas
+    Item,
+    Title,
+    Quest,
+    Xp
 }
