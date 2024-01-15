@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <EventRewards>
     <Event eventId="100">
-        <Reward rewardType="NickCash" rewardAmount="1"/>
+        <Reward type="NickCash" value="1" quantity="0" />
     </Event>
 </EventRewards>
