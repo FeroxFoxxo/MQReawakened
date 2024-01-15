@@ -1142,17 +1142,6 @@
                 <Item itemId="13010" count="1" bindingCount="0" />
             </Items>
         </LootInfo>
-        <LootInfo objectId="3286869" doLootWheel="true">
-            <Items rewardAmount="1">  <!--Purple Arena Chest-->
-                <Item itemId="12811" count="1" bindingCount="0" />
-                <Item itemId="5200" count="1" bindingCount="0" />
-                <Item itemId="7709" count="1" bindingCount="0" />
-                <Item itemId="1680" count="1" bindingCount="0" />
-                <Item itemId="1681" count="1" bindingCount="0" />
-                <Item itemId="1679" count="1" bindingCount="0" />
-                <Item itemId="9207" count="1" bindingCount="0" />
-            </Items>
-        </LootInfo>
     </Level>
     <Level name="Icewind Caverns">
         <LootInfo objectId="3287776" doLootWheel="true">  
