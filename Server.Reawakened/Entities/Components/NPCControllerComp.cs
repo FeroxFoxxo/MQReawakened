@@ -64,11 +64,20 @@ public class NPCControllerComp : Component<NPCController>
             NameId = VendorInfo.NameId;
         }
 
-        GiverQuests = [.. QuestCatalog.GetQuestGiverById(Id).OrderBy(x => x.Id)];
-        ValidatorQuests = [.. QuestCatalog.GetQuestValidatorById(Id).OrderBy(x => x.Id)];
+        GiverQuests = [..
+            QuestCatalog.GetQuestGiverById(Id)
+                .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
+                .OrderBy(x => x.Id)
+        ];
+
+        ValidatorQuests = [..
+            QuestCatalog.GetQuestValidatorById(Id)
+                .Where(x => x.ValidatorLevelId == Room.LevelInfo.LevelId)
+                .OrderBy(x => x.Id)
+        ];
 
         var questGiverNames = GiverQuests.Select(x => (int)x.GetField("_questGiverNameId"));
-        var questValidatorNames = GiverQuests.Select(x => (int)x.GetField("_validatorNameId"));
+        var questValidatorNames = ValidatorQuests.Select(x => (int)x.GetField("_validatorNameId"));
         var allQuestNames = questGiverNames.Concat(questValidatorNames).Where(i => i > 0).ToArray();
 
         if (allQuestNames.Length > 0)
