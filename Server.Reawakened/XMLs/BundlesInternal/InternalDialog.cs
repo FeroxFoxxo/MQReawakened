@@ -16,7 +16,8 @@ public class InternalDialog : IBundledXml<InternalDialog>
     public ILogger<InternalDialog> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<int, DialogInfo> NpcDialogs;
+    // <Level Id, <Npc Id, Dialog Info>>
+    public Dictionary<int, Dictionary<int, DialogInfo>> NpcDialogs;
 
     public void InitializeVariables() => NpcDialogs = [];
 
@@ -35,66 +36,84 @@ public class InternalDialog : IBundledXml<InternalDialog>
         {
             if (dialogXml.Name != "DialogCatalog") continue;
 
-            foreach (XmlNode npc in dialogXml.ChildNodes)
+            foreach (XmlNode level in dialogXml.ChildNodes)
             {
-                if (npc.Name != "NPC") continue;
+                if (level.Name != "Level") continue;
 
-                var objectId = -1;
-                var name = string.Empty;
-                var descriptionId = -1;
+                var levelId = -1;
 
-                var dialogList = new Dictionary<int, ConversationInfo>();
-
-                foreach (XmlAttribute npcAttribute in npc.Attributes!)
-                    switch (npcAttribute.Name)
+                foreach (XmlAttribute levelAttribute in level.Attributes!)
+                    switch (levelAttribute.Name)
                     {
-                        case "objectId":
-                            objectId = int.Parse(npcAttribute.Value);
-                            continue;
-                        case "name":
-                            name = npcAttribute.Value;
-                            continue;
-                        case "descriptionId":
-                            descriptionId = int.Parse(npcAttribute.Value);
+                        case "id":
+                            levelId = int.Parse(levelAttribute.Value);
                             continue;
                     }
 
-                foreach (XmlNode dialog in npc.ChildNodes)
+                if (!NpcDialogs.ContainsKey(levelId))
+                    NpcDialogs.Add(levelId, []);
+
+                foreach (XmlNode npc in level.ChildNodes)
                 {
-                    if (!(dialog.Name == "Dialog")) continue;
+                    if (npc.Name != "NPC") continue;
 
-                    var dialogId = -1;
-                    var conversationId = -1;
-                    var minimumReputation = -1;
+                    var objectId = -1;
+                    var name = string.Empty;
+                    var descriptionId = -1;
 
-                    foreach (XmlAttribute dialogAttribute in dialog.Attributes!)
-                        switch (dialogAttribute.Name)
+                    var dialogList = new Dictionary<int, ConversationInfo>();
+
+                    foreach (XmlAttribute npcAttribute in npc.Attributes!)
+                        switch (npcAttribute.Name)
                         {
-                            case "dialogId":
-                                dialogId = int.Parse(dialogAttribute.Value);
+                            case "objectId":
+                                objectId = int.Parse(npcAttribute.Value);
                                 continue;
-                            case "conversationId":
-                                conversationId = int.Parse(dialogAttribute.Value);
+                            case "name":
+                                name = npcAttribute.Value;
                                 continue;
-                            case "minimumReputation":
-                                minimumReputation = int.Parse(dialogAttribute.Value);
+                            case "descriptionId":
+                                descriptionId = int.Parse(npcAttribute.Value);
                                 continue;
                         }
 
-                    dialogList.TryAdd(minimumReputation, new ConversationInfo(dialogId, conversationId));
+                    foreach (XmlNode dialog in npc.ChildNodes)
+                    {
+                        if (!(dialog.Name == "Dialog")) continue;
+
+                        var dialogId = -1;
+                        var conversationId = -1;
+                        var minimumReputation = -1;
+
+                        foreach (XmlAttribute dialogAttribute in dialog.Attributes!)
+                            switch (dialogAttribute.Name)
+                            {
+                                case "dialogId":
+                                    dialogId = int.Parse(dialogAttribute.Value);
+                                    continue;
+                                case "conversationId":
+                                    conversationId = int.Parse(dialogAttribute.Value);
+                                    continue;
+                                case "minimumReputation":
+                                    minimumReputation = int.Parse(dialogAttribute.Value);
+                                    continue;
+                            }
+
+                        dialogList.TryAdd(minimumReputation, new ConversationInfo(dialogId, conversationId));
+                    }
+
+                    var nameModel = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == name);
+
+                    if (!string.IsNullOrEmpty(nameModel.Value))
+                    {
+                        if (NpcDialogs.ContainsKey(objectId))
+                            continue;
+
+                        NpcDialogs[levelId].Add(objectId, new DialogInfo(objectId, nameModel.Key, descriptionId, dialogList));
+                    }
+                    else
+                        Logger.LogError("Cannot find text id for character with name: {Name}", name);
                 }
-
-                var nameModel = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == name);
-
-                if (!string.IsNullOrEmpty(nameModel.Value))
-                {
-                    if (NpcDialogs.ContainsKey(objectId))
-                        continue;
-
-                    NpcDialogs.Add(objectId, new DialogInfo(objectId, nameModel.Key, descriptionId, dialogList));
-                }
-                else
-                    Logger.LogError("Cannot find text id for character with name: {Name}", name);
             }
         }
     }
@@ -103,6 +122,10 @@ public class InternalDialog : IBundledXml<InternalDialog>
     {
     }
 
-    public DialogInfo GetDialogById(int id) =>
-        NpcDialogs.TryGetValue(id, out var dialog) ? dialog : null;
+    public DialogInfo GetDialogById(int levelId, int dialogId) =>
+        NpcDialogs.TryGetValue(levelId, out var levelInfo) ?
+        levelInfo.TryGetValue(dialogId, out var dialog) ?
+        dialog :
+        null :
+        null;
 }

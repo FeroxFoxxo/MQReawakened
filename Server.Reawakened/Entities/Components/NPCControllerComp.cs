@@ -81,7 +81,7 @@ public class NPCControllerComp : Component<NPCController>
                       .First();
         }
 
-        DialogInfo = DialogCatalog.GetDialogById(Id);
+        DialogInfo = DialogCatalog.GetDialogById(Room.LevelInfo.LevelId, Id);
 
         if (DialogInfo != null && NpcType == NpcType.Unknown)
         {
