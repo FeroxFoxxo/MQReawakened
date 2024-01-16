@@ -1,5 +1,7 @@
-﻿using Server.Reawakened.Network.Protocols;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 
@@ -10,6 +12,8 @@ public class StartPlayRoom : ExternalProtocol
     public override string ProtocolName => "lz";
 
     public WorldHandler WorldHandler { get; set; }
+    public DatabaseContainer DatabaseContainer { get; set; }
+    public ILogger<StartPlayRoom> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -21,5 +25,15 @@ public class StartPlayRoom : ExternalProtocol
 
         var tribe = room.LevelInfo.Tribe;
         Player.DiscoverTribe(tribe);
+
+        RemoveLastCheckpoint();
+
+        Logger.LogInformation("Loading into [{levelName}]! PlayerCount: {playerCount}", room.LevelInfo.InGameName, DatabaseContainer.GetAllPlayers().Count);
+    }
+
+    public void RemoveLastCheckpoint()
+    {
+        if (Player.TempData.LastCheckpoint != null)
+            Player.TempData.LastCheckpoint = null;       
     }
 }

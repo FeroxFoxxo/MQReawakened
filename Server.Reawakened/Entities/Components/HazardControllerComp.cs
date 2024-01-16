@@ -28,7 +28,7 @@ public class HazardControllerComp : Component<HazardController>
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
-        if (HurtEffect == "NoEffect")
+        if (HurtEffect == "NoEffect" || player.TempData.Invincible)
             return;
 
         var character = player.Character;

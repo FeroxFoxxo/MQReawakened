@@ -10,25 +10,25 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerHealExtensions
 {
-    public static void HealCharacter(this Player player, ItemDescription usedItem, ItemEffectType effectType, TimerThread timerThread)
+    public static void HealCharacter(this Player player, ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, ItemEffectType effectType)
     {
         switch (effectType)
         {
             case ItemEffectType.Healing:
-                HealOnce(player, usedItem, false);
+                HealOnce(player, usedItem, serverRConfig, false);
                 break;
             case ItemEffectType.Regeneration:
-                HealOvertimeType(player, usedItem, timerThread);
+                HealOverTimeType(player, usedItem, timerThread, serverRConfig);
                 break;
         }
     }
 
-    public static void HealOnce(Player player, ItemDescription usedItem, bool isRejuvenationPotion)
+    public static void HealOnce(Player player, ItemDescription usedItem, ServerRConfig serverRConfig, bool isRejuvenationPotion)
     {
-        var healValue = isRejuvenationPotion ? usedItem.ItemEffects[1].Value : usedItem.ItemEffects.FirstOrDefault().Value;
+        var healValue = isRejuvenationPotion ? usedItem.ItemEffects[1].Value : usedItem.ItemEffects.FirstOrDefault().Value; //Rejuvenation Potion's initial heal value is stored as the second element in the ItemEffects list.
 
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities) //If healing staff, convert heal value.
-            healValue = Convert.ToInt32(player.Character.Data.MaxLife / 3.527);
+            healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealingStaffHealValue);
 
         var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
 
@@ -36,10 +36,10 @@ public static class PlayerHealExtensions
             healValue = hpUntilMaxHp;
 
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-                player.Character.Data.CurrentLife += healValue, player.Character.Data.MaxLife, "Now"));
+                player.Character.Data.CurrentLife += healValue, player.Character.Data.MaxLife, string.Empty));
     }
 
-    private static void HealOvertimeType(Player player, ItemDescription usedItem, TimerThread timerThread)
+    private static void HealOverTimeType(Player player, ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig)
     {
         switch (usedItem.SubCategoryId)
         {
@@ -47,12 +47,12 @@ public static class PlayerHealExtensions
                 HealOverTime(player, usedItem, timerThread);
                 break;
             case ItemSubCategory.Potion:
-                HealOnce(player, usedItem, true);
+                HealOnce(player, usedItem, serverRConfig, true);
 
                 HealOverTime(player, usedItem, timerThread);
                 break;
             case ItemSubCategory.Defensive:
-                HealOnce(player, usedItem, false);
+                HealOnce(player, usedItem, serverRConfig, false);
                 break;
         }
     }
@@ -61,41 +61,37 @@ public static class PlayerHealExtensions
     {
         var effect = usedItem.ItemEffects.FirstOrDefault();
 
-        var healItemdata = new ItemHealOverTimeData()
+        if (effect != null)
         {
-            Effect = effect,
-            Player = player,
-            PrefabName = usedItem.PrefabName,
-            ObjectId = usedItem.ItemId,
-            OvertimeHealValue = effect.Value,
-            Duration = effect.Duration,
-            TotalTicks = effect.Duration / 3
-        };
+            var healItemData = new ItemHealOverTimeData(player, effect.Value, effect.Duration / 3);
 
-        Console.WriteLine("effectDur: " + effect.Duration);
-
-        timerThread.DelayCall(OvertimeHealTicks, healItemdata, TimeSpan.FromMilliseconds(3000), TimeSpan.Zero, 1);
+            timerThread.DelayCall(OverTimeHealTicks, healItemData, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3), healItemData.TotalTicks);
+        }
     }
 
-    private class ItemHealOverTimeData()
+    private class ItemHealOverTimeData
     {
-        public ItemEffect Effect { get; set; }
-        public Player Player { get; set; }
-        public string PrefabName { get; set; }
-        public int ObjectId { get; set; }
-        public int OvertimeHealValue { get; set; }
-        public int Duration { get; set; }
-        public int TotalTicks { get; set; }
+        public ItemHealOverTimeData(Player player, int overTimeHealValue, int totalTicks)
+        {
+            Player = player;
+            OverTimeHealValue = overTimeHealValue;
+            TotalTicks = totalTicks;
+        }
+
+        public Player Player { get; }
+        public int OverTimeHealValue { get; }
+        public int TotalTicks { get; }
     }
 
-    public static void OvertimeHealTicks(object itemData)
+    private static void OverTimeHealTicks(object itemData)
     {
-        var itemHealData = (ItemHealOverTimeData)itemData;
+        if (itemData is ItemHealOverTimeData itemHealData)
+        {
+            var player = itemHealData.Player;
+            var tickHealValue = itemHealData.OverTimeHealValue / itemHealData.TotalTicks;
 
-        var player = itemHealData.Player;
-        var tick = itemHealData.OvertimeHealValue / itemHealData.TotalTicks;
-
-        player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            player.Character.Data.CurrentLife += tick, player.Character.Data.MaxLife, "now"));
+             player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+                player.Character.Data.CurrentLife += tickHealValue, player.Character.Data.MaxLife, string.Empty));
+        }
     }
 }
