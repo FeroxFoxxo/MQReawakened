@@ -158,10 +158,10 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                         switch(achievementLists.Name)
                         {
                             case "Rewards":
-                                achRewards = achievementLists.GetXmlRewards(Logger);
+                                achRewards = achievementLists.GetXmlRewards(Logger, achId);
                                 break;
                             case "Conditions":
-                                achConditions = achievementLists.GetXmlConditions(achId, Logger);
+                                achConditions = achievementLists.GetXmlConditions(Logger, achId);
                                 break;
                         }
                     }

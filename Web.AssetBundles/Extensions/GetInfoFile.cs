@@ -18,7 +18,7 @@ public static class GetInfoFile
             rwConfig.WebPlayerInfoFile = string.Empty;
         }
 
-        if (!rwConfig.WebPlayerInfoFile.ToLower().Contains("appdata"))
+        if (!rwConfig.WebPlayerInfoFile.Contains("appdata", StringComparison.CurrentCultureIgnoreCase))
         {
             logger.LogError("Web player cache has to be in the AppData/LocalLow folder! Skipping...");
             rwConfig.WebPlayerInfoFile = string.Empty;

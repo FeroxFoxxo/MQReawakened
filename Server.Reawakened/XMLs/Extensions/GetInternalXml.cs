@@ -62,9 +62,10 @@ public static class GetInternalXml
     }
 
     public static List<AchievementDefinitionRewards> GetXmlRewards(this XmlNode node,
-        Microsoft.Extensions.Logging.ILogger logger)
+        Microsoft.Extensions.Logging.ILogger logger, int achievementId = 0)
     {
         var rewardList = new List<AchievementDefinitionRewards>();
+        var id = 0;
 
         foreach (XmlNode reward in node.ChildNodes)
         {
@@ -91,10 +92,12 @@ public static class GetInternalXml
                 }
             }
 
+            id++;
+
             rewardList.Add(new AchievementDefinitionRewards()
             {
-                id = 0,
-                achievementId = 0,
+                id = int.Parse(achievementId <= 0 ? id.ToString() : achievementId.ToString() + id),
+                achievementId = achievementId,
                 typeId = (int)type,
                 value = value,
                 quantity = quantity
@@ -104,8 +107,8 @@ public static class GetInternalXml
         return rewardList;
     }
 
-    public static List<AchievementDefinitionConditions> GetXmlConditions(this XmlNode node, int achievementId,
-        Microsoft.Extensions.Logging.ILogger logger)
+    public static List<AchievementDefinitionConditions> GetXmlConditions(this XmlNode node,
+        Microsoft.Extensions.Logging.ILogger logger, int achievementId)
     {
         var conditionList = new List<AchievementDefinitionConditions>();
 
