@@ -1,19 +1,21 @@
-﻿using Server.Reawakened.Players;
+﻿using Server.Reawakened.Entities.Interfaces;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable where T : MovingObjectController
+public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable, IRecieverTriggered where T : MovingObjectController
 {
-    public IMovement Movement;
     public float InitialProgressRatio => ComponentData.InitialProgressRatio;
+
+    public IMovement Movement;
 
     public IMovement GetMovement() => Movement;
 
     public override void InitializeComponent()
     {
-        if (!Room.Entities[Id].OfType<ITriggerable>().Any())
+        if (!Room.Entities[Id].OfType<ICoopTriggered>().Any())
             return;
 
         Movement?.Activate(Room.Time);
@@ -34,14 +36,22 @@ public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable wh
         };
     }
 
-    public override object[] GetInitData(Player player) => new object[]
-    {
+    public override object[] GetInitData(Player player) =>
+    [
         Room.Time,
         Movement.GetBehaviorRatio(Room.Time),
         Movement.Activated ? 1 : 0
-    };
+    ];
 
     public void Activate() => Movement?.Activate(Room.Time);
 
     public void Deactivate() => Movement?.Deactivate(Room.Time);
+
+    public void RecievedTrigger(bool triggered)
+    {
+        if (triggered)
+            GetMovement().Activate(Room.Time);
+        else
+            GetMovement().Deactivate(Room.Time);
+    }
 }

@@ -27,13 +27,19 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
 
         InternalDirectory.OverwriteDirectory(rConfig.XmlSaveDirectory);
 
-        var bundles = services.GetRequiredServices<IBundledXml>(Modules)
+        var bundles = services.GetRequiredServices<IInternalBundledXml>(Modules)
             .ToDictionary(x => x.BundleName, x => x);
 
         foreach (var bundle in bundles)
         {
-            bundle.Value.Logger = logger;
             bundle.Value.Services = services;
+
+            const string loggerName = "Logger";
+
+            var loggerType = bundle.Value.GetPropertyType(loggerName);
+            var logger = services.GetService(loggerType);
+            bundle.Value.SetPropertyType(loggerName, logger);
+
             bundle.Value.InitializeVariables();
         }
 
@@ -59,7 +65,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
 
                 logger.LogTrace("Loading XML: {BundleName} ({DateTime})", asset.Name, time.Date.ToShortDateString());
 
-                if (bundle is ILocalizationXml localizedXmlBundle)
+                if (bundle is IInternalLocalizationXml localizedXmlBundle)
                 {
                     var localizedAsset = assets.FirstOrDefault(x =>
                         string.Equals(x.Name, localizedXmlBundle.LocalizationName,
@@ -132,7 +138,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
 
         logger.LogCritical("Possible XML files:");
 
-        foreach (var foundAsset in assets.Where(x => x.Type == AssetInfo.TypeAsset.XML))
+        foreach (var foundAsset in assets.Where(x => x.Type == AssetInfo.TypeAsset.XML).OrderBy(x => x.Name))
             logger.LogError("    {BundleName}", foundAsset.Name);
 
         logger.LogInformation("Read XML files");

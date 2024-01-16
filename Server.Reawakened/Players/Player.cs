@@ -13,19 +13,20 @@ using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Players;
 
-public class Player(Account account, UserInfo userInfo, NetState state, PlayerHandler playerHandler) : INetStateData
+public class Player(Account account, UserInfo userInfo, NetState state, DatabaseContainer databaseContainer) : INetStateData
 {
     public Account Account => account;
     public NetState NetState => state;
     public UserInfo UserInfo => userInfo;
-    public PlayerHandler PlayerHandler => playerHandler;
+    public DatabaseContainer DatabaseContainer => databaseContainer;
 
     public TemporaryDataModel TempData { get; set; } = new TemporaryDataModel();
     public CharacterModel Character { get; set; }
     public Room Room { get; set; }
 
-    public int UserId => userInfo.UserId;
-    public string CharacterName => Character.Data.CharacterName;
+    public int UserId => userInfo.Id;
+    public int CharacterId => Character != null ? Character.Id : -1;
+    public string CharacterName => Character != null ? Character.Data.CharacterName : string.Empty;
     public int GameObjectId => TempData.GameObjectId;
 
     public bool FirstLogin { get; set; } = true;
@@ -36,16 +37,16 @@ public class Player(Account account, UserInfo userInfo, NetState state, PlayerHa
 
     public void Remove(Microsoft.Extensions.Logging.ILogger logger)
     {
-        lock(playerHandler.Lock)
-            playerHandler.RemovePlayer(this);
+        lock (databaseContainer.Lock)
+            databaseContainer.RemovePlayer(this);
 
         this.RemoveFromGroup();
 
         if (Character != null)
         {
-            lock (playerHandler.Lock)
+            lock (databaseContainer.Lock)
             {
-                foreach (var player in playerHandler.GetPlayersByFriend(UserId))
+                foreach (var player in databaseContainer.GetPlayersByFriend(CharacterId))
                     player.SendXt("fz", Character.Data.CharacterName);
             }
 

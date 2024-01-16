@@ -1,5 +1,6 @@
 ﻿using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Services;
 
 namespace Protocols.External._c__CharacterInfoHandler;
 
@@ -7,14 +8,20 @@ public class DeleteCharacter : ExternalProtocol
 {
     public override string ProtocolName => "cd";
 
+    public CharacterHandler CharacterHandler { get; set; }
+
     public override void Run(string[] message)
     {
-        var character = Player.GetCharacterFromName(message[5]);
-        var characterExists = character != null;
+        var character = CharacterHandler.GetCharacterFromName(message[5]);
 
-        if (characterExists)
-            Player.DeleteCharacter(character.Data.CharacterId);
+        if (character != null)
+            if (character.Data.UserUuid == Player.UserId)
+            {
+                Player.DeleteCharacter(character.Id, CharacterHandler);
+                SendXt("cd", 0);
+                return;
+            }
 
-        SendXt("cd", characterExists ? 0 : 1);
+        SendXt("cd", 1);
     }
 }

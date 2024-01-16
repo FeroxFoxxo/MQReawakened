@@ -11,9 +11,8 @@ public class DeclineTrade : ExternalProtocol
 {
     public override string ProtocolName => "tr";
 
+    public DatabaseContainer DatabaseContainer { get; set; }
     public ILogger<DeclineType> Logger { get; set; }
-
-    public PlayerHandler PlayerHandler { get; set; }
 
     public override void Run(string[] message)
     {
@@ -23,7 +22,7 @@ public class DeclineTrade : ExternalProtocol
             return;
 
         var traderName = message[5];
-        var tradedPlayer = PlayerHandler.GetPlayerByName(traderName);
+        var tradedPlayer = DatabaseContainer.GetPlayerByName(traderName);
 
         if (tradedPlayer == null)
             return;

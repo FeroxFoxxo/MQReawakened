@@ -19,6 +19,9 @@
         <Reference Include="Crisp.AutoSuggest">
             <HintPath>..\Server.Reawakened\Dependencies\Crisp.AutoSuggest.dll</HintPath>
         </Reference>
+        <Reference Include="LitJson">
+          <HintPath>..\Server.Reawakened\Dependencies\LitJson.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
 </Project>

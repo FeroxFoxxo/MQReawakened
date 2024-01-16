@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Players;
+﻿using A2m.Server;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
@@ -33,5 +34,7 @@ public class IdolControllerComp : Component<IdolController>
             new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true);
 
         player.SendSyncEventToPlayer(collectedEvent);
+
+        player.CheckObjective(ObjectiveEnum.IdolCollect, Id, PrefabName, 1);
     }
 }

@@ -5,24 +5,32 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
-using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.Rooms.Models.Planes;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Extensions;
 
 public static class PlayerExtensions
 {
-    public static void JoinRoom(this Player player, Room room, out JoinReason reason)
+    private static void JoinRoom(this Player player, Room room, bool useOriginalRoom, out JoinReason reason)
     {
-        player.Room?.RemoveClient(player);
+        player.Room?.RemoveClient(player, useOriginalRoom);
         player.Room = room;
         player.Room.AddClient(player, out reason);
     }
 
-    public static void QuickJoinRoom(this Player player, int id, WorldHandler worldHandler)
+    public static void QuickJoinRoom(this Player player, int id, out JoinReason reason)
     {
-        var room = worldHandler.GetRoomFromLevelId(id, player);
-        player.JoinRoom(room, out _);
+        var useOriginalRoom = false;
+
+        if (player.Room != null)
+            if (player.Room.LevelInfo.LevelId == id)
+                useOriginalRoom = true;
+
+        var room = useOriginalRoom ? player.Room :
+            player.DatabaseContainer.WorldHandler.GetRoomFromLevelId(id, player);
+
+        player.JoinRoom(room, useOriginalRoom, out reason);
     }
 
     public static int GetLevelId(this Player player) =>
@@ -38,7 +46,7 @@ public static class PlayerExtensions
 
     public static void SendUserEnterDataTo(this Player send, Player receive) =>
         receive.NetState.SendXml("uER",
-            $"<u i='{send.UserId}' m='{send.Account.IsModerator()}' s='{send.Account.IsSpectator()}' p='{send.Account.UserId}'>" +
+            $"<u i='{send.UserId}' m='{send.Account.IsModerator()}' s='{send.Account.IsSpectator()}' p='{send.Account.Id}'>" +
             $"<n>{send.Account.Username}</n>" +
             "</u>"
         );
@@ -69,7 +77,7 @@ public static class PlayerExtensions
         var levelUpData = new LevelUpDataModel
         {
             Level = player.Character.Data.GlobalLevel,
-            IncPowerJewel = player.Character.Data.BadgePoints
+            IncPowerJewel = player.Character.Data.BadgePoints,
         };
 
         foreach (var currentPlayer in player.Room.Players.Values)
@@ -79,22 +87,24 @@ public static class PlayerExtensions
     public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
     {
         character.Data.SetPlayerData(player);
-        player.SetCharacterSelected(character.Data.CharacterId);
-        player.PlayerHandler.AddPlayer(player);
+        player.SetCharacterSelected(character.Id, player.DatabaseContainer.CharacterHandler);
+        player.DatabaseContainer.AddPlayer(player);
         player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
 
-        foreach (var friend in player.PlayerHandler.GetPlayersByFriend(player.UserId)
+        foreach (var friend in player.DatabaseContainer.GetPlayersByFriend(player.CharacterId)
                      .Where(p =>
-                         player.Character.Data.FriendList
-                             .Any(x => x.Key == p.UserId && x.Value == p.Character.Data.CharacterId)
+                         player.Character.Data.Friends
+                             .Any(x => x == p.Character.Id)
                      )
                 )
             friend.SendXt("fy", player.CharacterName);
     }
 
-    public static void DumpToLobby(this Player player)
+    public static void DumpToLobby(this Player player) => player.QuickJoinRoom(-1, out var _);
+
+    public static List<GameObjectModel> GetPlaneEntities(this Player player)
     {
-        var room = player.PlayerHandler.WorldHandler.GetRoomFromLevelId(-1, player);
-        player.JoinRoom(room, out _);
+        var planeName = player.TempData.Position.Z > 10 ? "Plane1" : "Plane0";
+        return [.. player.Room.Planes[planeName].GameObjects.Values];
     }
 }

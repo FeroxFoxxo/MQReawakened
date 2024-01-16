@@ -4,6 +4,8 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Timers.Helpers;
+using Server.Base.Worlds;
+using System.Globalization;
 
 namespace Server.Base.Timers.Services;
 
@@ -19,8 +21,9 @@ public class TimerThread : IService
     private readonly EventSink _sink;
     private readonly List<Timer>[] _timers;
     private readonly Thread _timerThread;
+    private readonly World _world;
 
-    public TimerThread(InternalRConfig config, TimerChangePool pool, EventSink sink, ServerHandler handler)
+    public TimerThread(InternalRConfig config, TimerChangePool pool, EventSink sink, ServerHandler handler, World world)
     {
         _config = config;
         _pool = pool;
@@ -29,13 +32,15 @@ public class TimerThread : IService
         _changed = [];
         _queue = new Queue<Timer>();
         _signal = new AutoResetEvent(false);
+        _world = world;
 
         _nextPriorities = Enumerable.Repeat(default(double), config.Delays.Length).ToArray();
         _timers = Enumerable.Repeat(new List<Timer>(), config.Delays.Length).ToArray();
 
         _timerThread = new Thread(RunTimer)
         {
-            Name = "Timer Thread"
+            Name = "Timer Thread",
+            CurrentCulture = CultureInfo.InvariantCulture
         };
     }
 
@@ -114,13 +119,19 @@ public class TimerThread : IService
     {
         while (!_handler.IsClosing)
         {
+            if (_world.Loading || _world.Saving)
+            {
+                _signal.WaitOne(1, false);
+                continue;
+            }
+
             ProcessChanged();
 
             var loaded = false;
 
             for (var i = 0; i < _timers.Length; i++)
             {
-                var now = GetTicks.Ticks;
+                var now = GetTicks.TickCount;
 
                 if (now < _nextPriorities[i])
                     break;

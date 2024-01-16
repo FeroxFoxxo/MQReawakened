@@ -97,10 +97,10 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
 
         var icons = new List<OrderedDictionary>();
 
-        foreach(DictionaryEntry entry in type)
-            if ((string) entry.Key == "Icons")
+        foreach (DictionaryEntry entry in type)
+            if ((string)entry.Key == "Icons")
                 icons = ((List<object>)entry.Value)
-                    .Select(x => (OrderedDictionary) x)
+                    .Select(x => (OrderedDictionary)x)
                 .ToList();
 
         var textureCount = new Dictionary<string, int>();
@@ -112,10 +112,10 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
 
             foreach (DictionaryEntry entry2 in entry)
             {
-                if ((string) entry2.Key == "Name")
-                    name = (string) entry2.Value;
+                if ((string)entry2.Key == "Name")
+                    name = (string)entry2.Value;
                 else if ((string)entry2.Key == "Texture")
-                    texturePath = (int) ((OrderedDictionary)entry2.Value)["m_PathID"];
+                    texturePath = (int)((OrderedDictionary)entry2.Value)["m_PathID"];
             }
 
             textureCount.TryAdd(name, texturePath);
@@ -128,7 +128,7 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
             .ToArray();
 
         using var defaultBar = new DefaultProgressBar(textures.Length, $"Extracting icons for {asset.Name}...", logger, aRwConfig);
-        
+
         foreach (var texture in textures)
         {
             defaultBar.TickBar();

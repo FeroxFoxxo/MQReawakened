@@ -28,7 +28,7 @@ public class Reawakened(ILogger<Reawakened> logger) : Module(logger)
         services
             .AddSingleton<ReflectionUtils>()
             .AddSingleton<SmartFoxClient>()
-            .AddSingleton<PlayerHandler>()
+            .AddSingleton<DatabaseContainer>()
             .AddSingleton<NameGenSyllables>();
     }
 

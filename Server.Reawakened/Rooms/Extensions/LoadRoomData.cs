@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Xml;
+using UnityEngine;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Extensions;
@@ -69,9 +70,8 @@ public static class LoadRoomData
 
         return planes;
     }
-
     public static Dictionary<int, List<BaseComponent>> LoadEntities(this Room room, IServiceProvider services,
-        out Dictionary<int, List<string>> unknownEntities)
+    out Dictionary<int, List<string>> unknownEntities)
     {
         var reflectionUtils = services.GetRequiredService<ReflectionUtils>();
         var fileLogger = services.GetRequiredService<FileLogger>();
@@ -92,6 +92,16 @@ public static class LoadRoomData
         var processable = typeof(DataComponentAccessor).Assembly.GetServices<DataComponentAccessor>()
             .ToDictionary(x => x.Name, x => x);
 
+        string translateComponent;
+        string[] translatedArray;
+
+        var attributes = new List<Type>() {
+                            typeof(MQAttribute),
+                            typeof(MQConstant),
+                            typeof(MQAttributeSerializePrefabValue),
+                            typeof(MQAttributeGlobalPerPrefab)
+                        };
+
         foreach (var plane in room.Planes)
             foreach (var entity in plane.Value.GameObjects)
                 foreach (var component in entity.Value.ObjectInfo.Components)
@@ -103,8 +113,17 @@ public static class LoadRoomData
                     {
                         var dataObj = RuntimeHelpers.GetUninitializedObject(mqType);
 
+                        var ctor = mqType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, []);
+
+                        try
+                        {
+                            ctor.Invoke(dataObj, null);
+                        }
+                        catch(TargetInvocationException)
+                        { }
+
                         var fields = mqType.GetFields()
-                            .Where(prop => prop.IsDefined(typeof(MQAttribute), false))
+                            .Where(prop => attributes.Any(a => prop.IsDefined(a, false)))
                             .ToArray();
 
                         foreach (var componentValue in component.Value.ComponentAttributes.Where(componentValue =>
@@ -125,9 +144,28 @@ public static class LoadRoomData
                                 field.SetValue(dataObj, float.Parse(componentValue.Value));
                             else if (field.FieldType.IsEnum)
                                 field.SetValue(dataObj, Enum.Parse(field.FieldType, componentValue.Value));
+                            else if (field.FieldType == typeof(Vector3))
+                            {
+                                translateComponent = componentValue.Value.Replace("(", "").Replace(")", "");
+                                translatedArray = translateComponent.Split(",");
+                                field.SetValue(dataObj, new Vector3(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2])));
+                            }
+                            else if (field.FieldType == typeof(Color))
+                            {
+                                translateComponent = componentValue.Value.Replace("RGBA(", "").Replace(")", "");
+                                translatedArray = translateComponent.Split(",");
+                                field.SetValue(dataObj, new Color(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2]), float.Parse(translatedArray[3])));
+                            }
+                            else if (field.FieldType == typeof(string[]))
+                            {
+                                translatedArray = componentValue.Value.Split(",");
+                                field.SetValue(dataObj, translatedArray);
+                            }
                             else
-                                room.Logger.LogError("It is unknown how to convert a string to a {FieldType}.",
-                                    field.FieldType);
+                            {
+                                room.Logger.LogError("It is unknown how to convert a string to a {FieldType} (data: {Data}).",
+                                    field.FieldType, componentValue.Value);
+                            }
                         }
 
                         var entityData = new Entity(entity.Value, room, fileLogger);
@@ -151,7 +189,7 @@ public static class LoadRoomData
                                 "Found invalid {Count} amount of initialization methods for {EntityId} ({EntityType})",
                                 methods.Length, entity.Key, internalType.Name);
                         else
-                            methods.First().Invoke(instancedComponent, new[] { dataObj, entityData });
+                            methods.First().Invoke(instancedComponent, [dataObj, entityData]);
 
                         if (!entities.ContainsKey(entity.Key))
                             entities.Add(entity.Key, []);
@@ -213,5 +251,18 @@ public static class LoadRoomData
         return $"Unknown {string.Join(", ",
             entityInfo.Select(a => $"{a.Key}: {string.Join(", ", a.Value)}")
         )}";
+    }
+    public static Dictionary<int, BaseCollider> LoadColliders(this Room _)
+    {
+        var colliders = new Dictionary<int, BaseCollider>();
+        // Use Later
+        //foreach (var plane in room.Planes)
+        //{
+        //    foreach (var gameObject in plane.Value.GameObjects.Values)
+        //    {
+        //        var id = gameObject.ObjectInfo.ObjectId;
+        //    }
+        //}
+        return colliders;
     }
 }

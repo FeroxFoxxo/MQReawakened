@@ -14,7 +14,7 @@ public abstract class BaseComponent
     public int Id => Entity.GameObject.ObjectInfo.ObjectId;
     public string PrefabName => Entity.GameObject.ObjectInfo.PrefabName;
     public string ParentPlane => Entity.GameObject.ObjectInfo.ParentPlane;
-
+    public RectModel Rectangle => Entity.GameObject.ObjectInfo.Rectangle;
     public Vector3Model Position => Entity.GameObject.ObjectInfo.Position;
     public Vector3Model Rotation => Entity.GameObject.ObjectInfo.Rotation;
     public Vector3Model Scale => Entity.GameObject.ObjectInfo.Scale;
@@ -25,7 +25,7 @@ public abstract class BaseComponent
     {
     }
 
-    public virtual object[] GetInitData(Player player) => Array.Empty<object>();
+    public virtual object[] GetInitData(Player player) => [];
 
     public virtual void SendDelayedData(Player player)
     {

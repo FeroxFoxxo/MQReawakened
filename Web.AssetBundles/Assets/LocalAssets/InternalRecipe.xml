@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<RecipeCatalog>
+    <RecipeType name="Alchemy">
+        <!--Healing Potion-->
+        <RecipeInfo recipeId="1704">
+            <Item itemId="404" count="2"/>
+        </RecipeInfo>
+        <!--Major Healing Potion-->
+        <RecipeInfo recipeId="1705">
+            <Item itemId="405" count="2"/>
+        </RecipeInfo>
+        <!--Ultimate Healing Potion-->
+        <RecipeInfo recipeId="1708">
+            <Item itemId="406" count="1"/>
+            <Item itemId="418" count="1"/>
+        </RecipeInfo>
+        <!--Water Breathing Potion-->
+        <RecipeInfo recipeId="284">
+            <Item itemId="483" count="2"/>
+            <Item itemId="556" count="1"/>
+        </RecipeInfo>
+        <!--Major Water Breathing Potion-->
+        <RecipeInfo recipeId="285">
+            <Item itemId="220" count="2"/>
+        </RecipeInfo>
+        <!--Super Water Breathing Potion-->
+        <RecipeInfo recipeId="286">
+            <Item itemId="221" count="2"/>
+        </RecipeInfo>
+        <!--Refined Garlic-->
+        <RecipeInfo recipeId="875">
+            <Item itemId="485" count="10"/>
+            <Item itemId="560" count="1"/>
+        </RecipeInfo>
+        <!--Purified Garlic-->
+        <RecipeInfo recipeId="872">
+            <Item itemId="486" count="10"/>
+            <Item itemId="561" count="1"/>
+        </RecipeInfo>
+        <!--Oak Log-->
+        <RecipeInfo recipeId="895">
+            <Item itemId="510" count="10"/>
+            <Item itemId="560" count="1"/>
+        </RecipeInfo>
+        <!--Oak Plank-->
+        <RecipeInfo recipeId="892">
+            <Item itemId="509" count="10"/>
+            <Item itemId="561" count="1"/>
+        </RecipeInfo>
+        <!--Refined Dandelions-->
+        <RecipeInfo recipeId="884">
+            <Item itemId="483" count="10"/>
+            <Item itemId="560" count="1"/>
+        </RecipeInfo>
+        <!--Purified Dandelions-->
+        <RecipeInfo recipeId="881">
+            <Item itemId="484" count="10"/>
+            <Item itemId="561" count="1"/>
+        </RecipeInfo>
+        <!--Iron Pebble-->
+        <RecipeInfo recipeId="181">
+            <Item itemId="110" count="10"/>
+            <Item itemId="560" count="1"/>
+        </RecipeInfo>
+        <!--Gold Pebble-->
+        <RecipeInfo recipeId="180">
+            <Item itemId="136" count="10"/>
+            <Item itemId="561" count="1"/>
+        </RecipeInfo>
+        <!--Linen Cloth-->
+        <RecipeInfo recipeId="876">
+            <Item itemId="523" count="10"/>
+            <Item itemId="560" count="1"/>
+        </RecipeInfo>
+        <!--Bolt of Linen-->
+        <RecipeInfo recipeId="873">
+            <Item itemId="524" count="10"/>
+            <Item itemId="561" count="1"/>
+        </RecipeInfo>
+        <!--Leather Hide-->
+        <RecipeInfo recipeId="1712">
+            <Item itemId="532" count="10"/>
+            <Item itemId="560" count="1"/>
+        </RecipeInfo>
+        <!--Bolt of Leather-->
+        <RecipeInfo recipeId="1713">
+            <Item itemId="533" count="10"/>
+            <Item itemId="561" count="1"/>
+        </RecipeInfo>
+        <!--Refined Aloe-->
+        <RecipeInfo recipeId="888">
+            <Item itemId="488" count="10"/>
+            <Item itemId="560" count="1"/>
+        </RecipeInfo>
+        <!--Purified Aloe-->
+        <RecipeInfo recipeId="885">
+            <Item itemId="482" count="10"/>
+            <Item itemId="561" count="1"/>
+        </RecipeInfo>
+        <!--Refined Ginger-->
+        <RecipeInfo recipeId="894">
+            <Item itemId="490" count="10"/>
+            <Item itemId="560" count="1"/>
+        </RecipeInfo>
+        <!--Purified Ginger-->
+        <RecipeInfo recipeId="891">
+            <Item itemId="491" count="10"/>
+            <Item itemId="561" count="1"/>
+        </RecipeInfo>
+    </RecipeType>
+    <!--Leafy Jungle Helmet-->
+    <RecipeType name="Tailoring">
+        <RecipeInfo recipeId="1663">
+            <Item itemId="544" count="1"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="3035">
+            <Item itemId="510" count="4"/>
+            <Item itemId="511" count="3"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2627">  <!--Dread Plate Helmet-->
+            <Item itemId="13407" count="12"/>
+            <Item itemId="12800" count="8"/>
+            <Item itemId="12814" count="15"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2638">  <!--Dread Plate Armor-->
+            <Item itemId="12814" count="8"/>  
+            <Item itemId="12800" count="4"/>
+            <Item itemId="13407" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2619">  <!--Dread Plate Leg Armor-->
+            <Item itemId="13407" count="8"/>
+            <Item itemId="12814" count="4"/>
+            <Item itemId="12800" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2643">  <!--Dread Plate Bracers-->
+            <Item itemId="13407" count="6"/>
+            <Item itemId="12800" count="4"/>
+            <Item itemId="12814" count="8"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2613">  <!--Dread Plate Shield-->
+            <Item itemId="12814" count="12"/>
+            <Item itemId="13407" count="12"/>
+            <Item itemId="12800" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2632">  <!--Dread Plate Tailguard-->
+            <Item itemId="12814" count="8"/>
+            <Item itemId="13407" count="6"/>
+            <Item itemId="12800" count="4"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2629">  <!--Boom Plate Helmet-->
+            <Item itemId="160" count="12"/>
+            <Item itemId="12805" count="8"/>
+            <Item itemId="108" count="15"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2641">  <!--Boom Plate Armor-->
+            <Item itemId="108" count="8"/>
+            <Item itemId="12805" count="4"/>
+            <Item itemId="160" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2623">  <!--Boom Plate Leg Armor-->
+            <Item itemId="160" count="8"/>
+            <Item itemId="108" count="4"/>
+            <Item itemId="12805" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2646">  <!--Boom Plate Bracers-->
+            <Item itemId="160" count="6"/>
+            <Item itemId="12805" count="4"/>
+            <Item itemId="108" count="8"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2617">  <!--Boom Plate Shield-->
+            <Item itemId="108" count="12"/>
+            <Item itemId="160" count="12"/>
+            <Item itemId="12805" count="6"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="2635">  <!--Boom Plate Tailguard-->
+            <Item itemId="108" count="8"/>
+            <Item itemId="160" count="6"/>
+            <Item itemId="12805" count="4"/>
+        </RecipeInfo>
+    </RecipeType>
+</RecipeCatalog>

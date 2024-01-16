@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Players.Models.Groups;
+using Server.Reawakened.Players.Models.Minigames;
 using Server.Reawakened.Players.Models.Trade;
 using Server.Reawakened.Rooms.Models.Planes;
 
@@ -17,5 +18,5 @@ public class TemporaryDataModel
     public Vector3Model Velocity { get; set; } = new Vector3Model();
     public bool Invincible { get; set; } = false;
 
-    public List<int> Events { get; set; } = [];
+    public ArenaModel ArenaModel { get; set; } = new ArenaModel();
 }

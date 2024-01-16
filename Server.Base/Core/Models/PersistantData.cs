@@ -4,5 +4,5 @@ namespace Server.Base.Core.Models;
 
 public abstract class PersistantData
 {
-    [Key] public int UserId { get; set; }
+    [Key] public int Id { get; set; }
 }

@@ -12,11 +12,8 @@ public class TravelToGroup : ExternalProtocol
     public override string ProtocolName => "la";
 
     public WorldGraph WorldGraph { get; set; }
-
     public WorldHandler WorldHandler { get; set; }
-
-    public PlayerHandler PlayerHandler { get; set; }
-
+    public DatabaseContainer DatabaseContainer { get; set; }
     public ILogger<TravelToGroup> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -24,7 +21,7 @@ public class TravelToGroup : ExternalProtocol
         var character = Player.Character;
 
         var leaderName = Player.TempData.Group.GetLeaderName();
-        var leader = PlayerHandler.GetPlayerByName(leaderName);
+        var leader = DatabaseContainer.GetPlayerByName(leaderName);
 
         var levelId = leader.Character.LevelData.LevelId;
 

@@ -21,7 +21,7 @@ public class PortalControllerComp : Component<PortalController>
     public ILogger<PortalControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) =>
-        new object[] { string.Empty };
+        [string.Empty];
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
@@ -40,33 +40,33 @@ public class PortalControllerComp : Component<PortalController>
         if (portalId == 0)
             portalId = Id;
 
-        var roomId = player.Room.LevelInfo.LevelId;
+        var levelId = player.Room.LevelInfo.LevelId;
 
-        var newLevelId = WorldGraph.GetLevelFromPortal(roomId, portalId);
+        var newLevelId = WorldGraph.GetLevelFromPortal(levelId, portalId);
 
         if (newLevelId <= 0)
         {
-            Logger.LogError("Could not find level for portal {PortalId} in room {RoomId}", portalId, roomId);
+            Logger.LogError("Could not find level for portal {PortalId} in room {RoomId}", portalId, levelId);
             return;
         }
 
-        var node = WorldGraph.GetDestNodeFromPortal(roomId, portalId);
+        var node = WorldGraph.GetDestNodeFromPortal(levelId, portalId);
 
         int spawnId;
 
         if (node != null)
         {
             spawnId = node.ToSpawnID;
-            Logger.LogDebug("Node Found: Portal ID '{Portal}', Spawn ID '{Spawn}'.", node.PortalID, node.ToSpawnID);
+            Logger.LogDebug("Node found! Portal ID: '{Portal}'. Spawn ID: '{Spawn}'.", node.PortalID, node.ToSpawnID);
         }
         else
         {
             spawnId = portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID);
 
-            Logger.LogError("Could not find node for '{Old}' -> '{New}' for portal {PortalId}.", roomId, newLevelId, portalId);
+            Logger.LogError("Could not find node for '{Old}' -> '{New}' for portal {PortalId}.", levelId, newLevelId, portalId);
         }
 
-        if (roomId == newLevelId && character.LevelData.SpawnPointId == spawnId)
+        if (levelId == newLevelId && character.LevelData.SpawnPointId == spawnId)
         {
             Logger.LogError("Attempt made to teleport to the same portal! Skipping...");
             return;
@@ -79,7 +79,7 @@ public class PortalControllerComp : Component<PortalController>
         Logger.LogInformation(
             "Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
             "using portal {PortalId}", character.Data.CharacterName,
-            character.Data.CharacterId, levelInfo.InGameName, levelInfo.LevelId, portalId
+            character.Id, levelInfo.InGameName, levelInfo.LevelId, portalId
         );
 
         player.SendLevelChange(WorldHandler, WorldGraph);

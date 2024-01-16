@@ -1,4 +1,5 @@
-﻿using Server.Base.Core.Extensions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
@@ -6,12 +7,12 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class NameSyllables : NamegenSyllablesXML, IBundledXml
+public class NameSyllables : NamegenSyllablesXML, IBundledXml<NameSyllables>
 {
     public string BundleName => "NamegenSyllabes";
     public BundlePriority Priority => BundlePriority.Low;
 
-    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+    public ILogger<NameSyllables> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public Dictionary<Gender, List<List<string>>> Syllables;

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using static NPCController;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -25,13 +27,25 @@ public class ChooseQuestReward : ExternalProtocol
         if (questRewardId != -1)
             Logger.LogError("[Vendor {NpcId}] Unknown quest reward id: {RewardId}", vendorId, questRewardId);
 
+        var npc = Player.Room.Entities[vendorId].FirstOrDefault(x => x is NPCControllerComp);
+
+        if (npc is not null)
+        {
+            var npcComp = npc as NPCControllerComp;
+
+            var status = npcComp.GetQuestStatus(Player.Character);
+
+            if (status == NPCStatus.QuestAvailable)
+                npcComp.TalkToNpc(Player);
+        }
+
         var quest = Catalog.QuestCatalogs[questId];
 
         Player.AddBananas(quest.BananaReward);
         Player.AddReputation(quest.ReputationReward);
 
         foreach (var item in quest.RewardItems)
-            Player.Character.AddItem(item.Key, item.Value);
+            Player.AddItem(item.Key, item.Value);
 
         Player.SendUpdatedInventory(false);
     }

@@ -4,8 +4,11 @@ using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Entity;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -17,56 +20,69 @@ namespace Server.Reawakened.Rooms;
 
 public class Room : Timer
 {
-    private readonly int _roomId;
-    private readonly ServerRConfig _config;
-    private readonly Level _level;
-    private readonly HashSet<int> _gameObjectIds;
+    private object _roomLock;
 
-    public readonly Dictionary<int, Player> Players;
-    public readonly Dictionary<int, List<BaseComponent>> Entities;
-    public readonly ILogger<Room> Logger;
+    private int _roomId;
+    private ServerRConfig _config;
+    private Level _level;
 
-    public readonly Dictionary<string, PlaneModel> Planes;
-    public readonly Dictionary<int, List<string>> UnknownEntities;
+    public HashSet<int> GameObjectIds;
+    public HashSet<int> KilledObjects;
+
+    public Dictionary<int, Player> Players;
+    public Dictionary<int, List<BaseComponent>> Entities;
+    public Dictionary<int, ProjectileEntity> Projectiles;
+    public Dictionary<int, BaseCollider> Colliders;
+    public ILogger<Room> Logger;
+
+    public Dictionary<string, PlaneModel> Planes;
+    public Dictionary<int, List<string>> UnknownEntities;
 
     public SpawnPointComp DefaultSpawn { get; set; }
-
     public SpawnPointComp CheckpointSpawn { get; set; }
     public int CheckpointId { get; set; }
-
     public LevelInfo LevelInfo => _level.LevelInfo;
-
     public long TimeOffset { get; set; }
-    public long Time => Convert.ToInt64(Math.Floor((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0));
+    public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
+
+    public IServiceProvider Services { get; }
+
+    public int ProjectileCount;
 
     public Room(
         int roomId, Level level, ServerRConfig config, TimerThread timerThread,
         IServiceProvider services, ILogger<Room> logger
     ) : base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
+        _roomLock = new object();
+        KilledObjects = [];
+
         _roomId = roomId;
         _config = config;
+        Services = services;
         Logger = logger;
         _level = level;
 
-        CheckpointSpawn = null;
-        CheckpointId = 0;
+        ResetCheckpoints();
 
         Players = [];
-        _gameObjectIds = [];
+        GameObjectIds = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
             return;
 
         Planes = LevelInfo.LoadPlanes(_config);
         Entities = this.LoadEntities(services, out UnknownEntities);
+        Projectiles = [];
+
+        Colliders = this.LoadColliders();
 
         foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects.Values)
                      .SelectMany(x => x)
                      .Select(x => x.ObjectInfo.ObjectId)
                 )
-            _gameObjectIds.Add(gameObjectId);
+            GameObjectIds.Add(gameObjectId);
 
         foreach (var component in Entities.Values.SelectMany(x => x))
             component.InitializeComponent();
@@ -83,15 +99,36 @@ public class Room : Timer
         Start();
     }
 
+    public void ResetCheckpoints()
+    {
+        CheckpointSpawn = null;
+        CheckpointId = 0;
+    }
+
     public override void OnTick()
     {
-        foreach (var entityComponent in Entities.Values.SelectMany(entityList => entityList))
-            entityComponent.Update();
+        var entitiesCopy = Entities.Values.SelectMany(s => s).ToList();
+        var projectilesCopy = Projectiles.Values.ToList();
+
+        foreach (var entityComponent in entitiesCopy)
+        {
+            if (!IsObjectKilled(entityComponent.Id))
+                entityComponent.Update();
+        }
+
+        foreach (var projectileComponent in projectilesCopy)
+            projectileComponent.Update();
 
         foreach (var player in Players.Values.Where(
                      player => GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime
                  ))
             player.Remove(Logger);
+    }
+
+    public bool IsObjectKilled(int objectId)
+    {
+        lock (_roomLock)
+            return KilledObjects.Contains(objectId);
     }
 
     public void GroupMemberRoomChanged(Player player)
@@ -121,10 +158,10 @@ public class Room : Timer
         {
             var gameObjectId = 1;
 
-            while (_gameObjectIds.Contains(gameObjectId))
+            while (GameObjectIds.Contains(gameObjectId))
                 gameObjectId++;
 
-            _gameObjectIds.Add(gameObjectId);
+            GameObjectIds.Add(gameObjectId);
 
             currentPlayer.TempData.GameObjectId = gameObjectId;
 
@@ -153,10 +190,10 @@ public class Room : Timer
         }
     }
 
-    public void RemoveClient(Player player)
+    public void RemoveClient(Player player, bool useOriginalRoom)
     {
         Players.Remove(player.GameObjectId);
-        _gameObjectIds.Remove(player.GameObjectId);
+        GameObjectIds.Remove(player.GameObjectId);
 
         if (LevelInfo.LevelId <= 0)
             return;
@@ -169,8 +206,18 @@ public class Room : Timer
             return;
         }
 
-        _level.Rooms.Remove(_roomId);
-        Stop();
+        if (useOriginalRoom)
+        {
+            var checkpoints = Entities.Where(x => x.Value.Any(x => x is CheckpointControllerComp)).Select(x => x.Value).SelectMany(x => x);
+
+            foreach (var checkpoint in checkpoints)
+                checkpoint.InitializeComponent();
+        }
+        else
+        {
+            _level.Rooms.Remove(_roomId);
+            Stop();
+        }
     }
 
     public void SendCharacterInfo(Player player)
@@ -178,54 +225,28 @@ public class Room : Timer
         // WHERE TO SPAWN
         var character = player.Character;
 
-        BaseComponent spawnLocation = null;
+        var spawnPoint = GetSpawnPoint(character);
+        var coords = GetSpawnCoords(spawnPoint);
 
-        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
-        var portals = this.GetComponentsOfType<PortalControllerComp>();
+        character.Data.SpawnPositionX = coords.X;
+        character.Data.SpawnPositionY = coords.Y;
 
-        var spawnId = character.LevelData.SpawnPointId;
-
-        if (spawnId != 0)
-        {
-            if (portals.TryGetValue(spawnId, out var portal))
-                spawnLocation = portal;
-
-            if (spawnLocation == null)
-            {
-                if (spawnPoints.TryGetValue(spawnId, out var spawnPoint))
-                {
-                    spawnLocation = spawnPoint;
-                }
-                else
-                {
-                    var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index == character.LevelData.SpawnPointId);
-                    if (indexSpawn != null)
-                        spawnLocation = indexSpawn;
-                }
-            }
-        }
-
-        spawnLocation ??= DefaultSpawn;
-
-        character.Data.SpawnPositionX = spawnLocation.Position.X + spawnLocation.Scale.X / 2;
-        character.Data.SpawnPositionY = spawnLocation.Position.Y + spawnLocation.Scale.Y / 2;
-
-        if (spawnLocation.ParentPlane == "Plane1")
+        if (spawnPoint.ParentPlane == "Plane1")
             character.Data.SpawnOnBackPlane = true;
-        else if (spawnLocation.ParentPlane == "Plane0")
+        else if (spawnPoint.ParentPlane == "Plane0")
             character.Data.SpawnOnBackPlane = false;
         else
-            Logger.LogWarning("Unknown plane for portal: {PortalPlane}", spawnLocation.ParentPlane);
+            Logger.LogWarning("Unknown plane for portal: {PortalPlane}", spawnPoint.ParentPlane);
 
         Logger.LogDebug(
-            "Spawning {CharacterName} at object '{Object}' (spawn '{SpawnPoint}') at '{NewRoom}'.",
+            "Spawning {CharacterName} at object '{Object}' (spawn '{SpawnPoint}') for room id '{NewRoom}'.",
             character.Data.CharacterName,
-            spawnLocation.Id != 0 ? spawnLocation.Id : "DEFAULT",
+            spawnPoint.Id != 0 ? spawnPoint.Id : "DEFAULT",
             character.LevelData.SpawnPointId != 0 ? character.LevelData.SpawnPointId : "DEFAULT",
             character.LevelData.LevelId
         );
 
-        Logger.LogDebug("Position of spawn: {Position}", spawnLocation.Position);
+        Logger.LogDebug("Position of spawn: {Position}", spawnPoint.Position);
 
         // CHARACTER DATA
 
@@ -241,12 +262,87 @@ public class Room : Timer
         }
     }
 
-    public void DumpPlayersToLobby()
+    public static Vector2Model GetSpawnCoords(BaseComponent spawnLocation)
+    {
+        var x = spawnLocation.Rectangle.X;
+
+        if (x == 0)
+            x = spawnLocation.Position.X;
+
+        x -= .25f;
+
+        var y = spawnLocation.Rectangle.Y;
+
+        if (y == 0)
+            y = spawnLocation.Position.Y;
+
+        y += .25f;
+
+        x += spawnLocation.Rectangle.Width / 2;
+        y += spawnLocation.Rectangle.Height / 2;
+
+        return new Vector2Model()
+        {
+            X = x,
+            Y = y
+        };
+    }
+
+    public BaseComponent GetSpawnPoint(CharacterModel character)
+    {
+        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
+        var portals = this.GetComponentsOfType<PortalControllerComp>();
+
+        var spawnId = character.LevelData.SpawnPointId;
+
+        if (portals.TryGetValue(spawnId, out var portal))
+            if (portal != null)
+                return portal;
+
+        if (spawnPoints.TryGetValue(spawnId, out var spawnPoint))
+            if (spawnPoint != null)
+                return spawnPoint;
+
+        var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index == character.LevelData.SpawnPointId);
+
+        if (indexSpawn != null)
+            return indexSpawn;
+
+        return DefaultSpawn;
+    }
+
+public void DumpPlayersToLobby()
     {
         foreach (var player in Players.Values)
             player.DumpToLobby();
     }
-    
+
+    public void Kill(int objectId)
+    {
+        lock (_roomLock)
+            if (KilledObjects.Contains(objectId))
+                return;
+
+
+        Logger.LogInformation("Killing object {id}...", objectId);
+
+        var roomEntities = Entities.Values.SelectMany(s => s).ToList();
+
+        foreach (var component in roomEntities.Where(c => c is IKillable))
+            if (component.Id == objectId)
+            {
+                var kbComp = component as IKillable;
+
+                kbComp.ObjectKilled();
+
+                Logger.LogDebug("Killed component {component} from GameObject {prefabname} with Id {id}",
+                    component.GetType().Name, component.PrefabName, component.Id);
+            }
+
+        lock (_roomLock)
+            KilledObjects.Add(objectId);
+    }
+
     public string GetRoomName() =>
-        $"{LevelInfo.LevelId}_{_roomId}";
+    $"{LevelInfo.LevelId}_{_roomId}";
 }

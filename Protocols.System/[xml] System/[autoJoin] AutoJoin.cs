@@ -4,8 +4,8 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Services;
 using System.Xml;
 
 namespace Protocols.System._xml__System;
@@ -14,12 +14,12 @@ public class AutoJoin : SystemProtocol
 {
     public override string ProtocolName => "autoJoin";
 
-    public WorldHandler WorldHandler { get; set; }
-    public ServerRConfig ServerRConfig { get;set;}
+    public CharacterHandler CharacterHandler { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
 
     public override void Run(XmlDocument xmlDoc)
     {
-        Player.QuickJoinRoom(0, WorldHandler);
+        Player.QuickJoinRoom(0, out var _);
 
         SendXt("cx", GetPropertyList(GetPropertiesOfUser(Player)));
         SendXt("cl", GetCharacterList(Player.UserInfo));
@@ -38,7 +38,7 @@ public class AutoJoin : SystemProtocol
             { CharacterInfoHandler.ExternalProperties.Birthdate, player.UserInfo.DateOfBirth },
             { CharacterInfoHandler.ExternalProperties.AccountAge, player.Account.Created },
             { CharacterInfoHandler.ExternalProperties.Silent, player.UserInfo.ChatLevel == 0 },
-            { CharacterInfoHandler.ExternalProperties.Uuid, player.Account.UserId },
+            { CharacterInfoHandler.ExternalProperties.Uuid, player.Account.Id },
             { CharacterInfoHandler.ExternalProperties.AccessRights, ServerRConfig.AccessRights },
             { CharacterInfoHandler.ExternalProperties.ClearCache, ServerRConfig.ClearCache ? 1 : 0 },
             {
@@ -60,14 +60,17 @@ public class AutoJoin : SystemProtocol
         return sb.ToString();
     }
 
-    private static string GetCharacterList(UserInfo userInfo)
+    private string GetCharacterList(UserInfo userInfo)
     {
         var sb = new SeparatedStringBuilder('%');
 
         sb.Append(userInfo.LastCharacterSelected);
 
-        foreach (var character in userInfo.Characters)
-            sb.Append(character.Value.Data.GetLightCharacterData());
+        foreach (var characterId in userInfo.CharacterIds)
+        {
+            var character = CharacterHandler.Get(characterId);
+            sb.Append(character.Data.GetLightCharacterData());
+        }
 
         return sb.ToString();
     }

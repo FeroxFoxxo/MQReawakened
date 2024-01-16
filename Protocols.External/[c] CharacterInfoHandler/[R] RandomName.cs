@@ -10,8 +10,8 @@ public class RandomName : ExternalProtocol
     public override string ProtocolName => "cR";
 
     public NameGenSyllables NameGenSyllables { get; set; }
-    public UserInfoHandler UserInfoHandler { get; set; }
+    public CharacterHandler CharacterHandler { get; set; }
 
     public override void Run(string[] message) =>
-        SendXt("cR", NameGenSyllables.GetRandomName((Gender)int.Parse(message[5]), UserInfoHandler));
+        SendXt("cR", NameGenSyllables.GetRandomName((Gender)int.Parse(message[5]), CharacterHandler));
 }

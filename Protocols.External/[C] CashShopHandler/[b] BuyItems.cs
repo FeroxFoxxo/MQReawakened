@@ -1,9 +1,11 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Protocols.External._C__CashShopHandler;
 
@@ -11,14 +13,14 @@ public class BuyItems : ExternalProtocol
 {
     public override string ProtocolName => "Cb";
 
+    public InternalObjective ObjectiveCatalog { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<BuyItems> Logger { get; set; }
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
-        var cashShop = (Cashshop) int.Parse(message[5]);
+        var cashShop = (Cashshop)int.Parse(message[5]);
 
         if (cashShop != Cashshop.CashShop)
         {
@@ -27,6 +29,9 @@ public class BuyItems : ExternalProtocol
         }
 
         var items = message[6].Split('|');
+
+        var bought = new List<Tuple<ItemDescription, int>>();
+        var price = 0;
 
         foreach (var item in items)
         {
@@ -37,11 +42,25 @@ public class BuyItems : ExternalProtocol
             var amount = int.Parse(args[1]);
 
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
-            Player.RemoveNCash(itemDescription.RegularPrice * amount);
 
-            character.AddItem(ItemCatalog.GetItemFromId(itemId), amount);
+            price += itemDescription.RegularPrice * amount;
+            bought.Add(new (itemDescription, amount));
         }
+
+        if (price > Player.Character.Data.NCash)
+        {
+            Player.SendXt("Ce", -1);
+            return;
+        }
+
+        foreach(var item in bought)
+        {
+            Player.RemoveNCash(item.Item1.RegularPrice * item.Item2);
+            Player.AddItem(item.Item1, item.Item2);
+        }
+
         Player.SendCashUpdate();
         Player.SendUpdatedInventory(false);
+        Player.SendXt("Cb", 1);
     }
 }

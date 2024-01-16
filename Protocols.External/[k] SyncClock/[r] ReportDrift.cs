@@ -8,8 +8,8 @@ public class ReportDrift : ExternalProtocol
 {
     public override string ProtocolName => "kr";
 
-    public ILogger<ReportDrift> Logger { get; set; }
     public ServerRConfig Config { get; set; }
+    public ILogger<ReportDrift> Logger { get; set; }
 
     public override void Run(string[] message)
     {

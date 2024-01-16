@@ -12,8 +12,8 @@ public class CraftItem : ExternalProtocol
     public override string ProtocolName => "ck";
 
     public ItemCatalog ItemCatalog { get; set; }
-    public RecipeCatalogInt RecipeCatalog { get; set; }
-    public ServerRConfig ServerRConfig { get;set; }
+    public InternalRecipe RecipeCatalog { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
     public ILogger<CraftItem> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -38,12 +38,12 @@ public class CraftItem : ExternalProtocol
             return;
         }
 
-        Player.Character.AddItem(item, amount);
+        Player.AddItem(item, amount);
 
         foreach (var ingredient in recipe.Ingredients)
         {
             var ingredientItem = ItemCatalog.GetItemFromId(ingredient.ItemId);
-            Player.Character.RemoveItem(ingredientItem, ingredient.Count * amount);
+            Player.RemoveItem(ingredientItem, ingredient.Count * amount);
         }
 
         Player.SendUpdatedInventory(false);

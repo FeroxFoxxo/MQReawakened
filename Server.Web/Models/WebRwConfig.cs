@@ -7,5 +7,5 @@ public class WebRwConfig : IRwConfig
     public bool ShouldConcat { get; }
 
     public WebRwConfig() =>
-        ShouldConcat = true;
+        ShouldConcat = false;
 }

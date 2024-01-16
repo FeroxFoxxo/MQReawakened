@@ -65,7 +65,7 @@ public class GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
             true
         );
 
-        var levels = (Dictionary<string, int>) worldGraph.GetField<WorldGraphXML>("_levelNameToID");
+        var levels = (Dictionary<string, int>)worldGraph.GetField<WorldGraphXML>("_levelNameToID");
 
         var lowercasedLevels = levelFiles.LevelFiles.Keys.Select(x => x.ToLower()).ToArray();
 

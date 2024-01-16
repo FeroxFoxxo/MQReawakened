@@ -1,12 +1,15 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Protocols.External._c__CharacterInfoHandler;
 
 public class EventCompleted : ExternalProtocol
 {
     public override string ProtocolName => "cE";
+
+    public InternalEventReward EventReward { get; set; }
 
     public override void Run(string[] message)
     {
@@ -17,10 +20,13 @@ public class EventCompleted : ExternalProtocol
             .ToArray();
 
         foreach (var e in events)
-            if (!Player.TempData.Events.Contains(e))
-                Player.TempData.Events.Add(e);
+            if (!Player.Character.Events.Contains(e))
+            {
+                Player.Character.Events.Add(e);
+                EventReward.CheckEventReward(e, Player);
+            }
 
-        var eventList = EventList(Player.TempData.Events);
+        var eventList = EventList(Player.Character.Events);
 
         Player.SendXt("cE", eventList);
     }
