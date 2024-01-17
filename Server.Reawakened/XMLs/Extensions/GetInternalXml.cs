@@ -180,7 +180,7 @@ public static class GetInternalXml
                 visible = visible,
                 typeId = (int) type,
                 sortOrder = id,
-                description = value
+                description = value.ToLower()
             });
         }
 

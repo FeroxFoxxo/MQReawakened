@@ -4,15 +4,18 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Extensions;
 
 namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerAchievementExtensions
 {
-    public static void CheckAchievement(this Player player, AchConditionType achType, string achValue, int count = 1)
+    public static void CheckAchievement(this Player player, AchConditionType achType, string achValue,
+        Microsoft.Extensions.Logging.ILogger logger, int count = 1)
     {
         var posCond = player.DatabaseContainer.InternalAchievement.PossibleConditions;
         var type = (int)achType;
+        achValue = achValue.ToLower();
 
         if (!posCond.TryGetValue(type, out var value))
             return;
@@ -28,9 +31,10 @@ public static class PlayerAchievementExtensions
         pAchObj[type].TryAdd(achValue, 0);
 
         var achievements = player.DatabaseContainer.InternalAchievement.Definitions.achievements
-            .Where(a => a.conditions.Any(c => c.typeId == type && c.description == achValue));
+            .Where(a => a.conditions.Any(c => c.typeId == type && c.description == achValue))
+            .ToList();
 
-        if (!achievements.Any())
+        if (achievements.Count == 0)
             return;
 
         var cond = achievements.Select(
@@ -38,16 +42,16 @@ public static class PlayerAchievementExtensions
                 a,
                 a.conditions.Where(c => c.typeId == type && c.description == achValue).ToList()
             )
-        );
+        ).ToList();
 
-        var inProgCond = cond.Where(a => a.Value.Any(c => c.GetObjectiveLeft(pAchObj[type][achValue]) > 1));
+        var inProgCond = cond.Where(a => a.Value.Any(c => c.GetObjectiveLeft(pAchObj[type][achValue]) > 0)).ToList();
 
-        if (!inProgCond.Any())
+        if (inProgCond.Count == 0)
             return;
 
         pAchObj[type][achValue] += count;
 
-        var oInProg = inProgCond.OrderBy(a => a.Value.Min(c => c.GetObjectiveLeft(pAchObj[type][achValue])));
+        var oInProg = inProgCond.OrderBy(a => player.Character.GetAchievement(a.Key)).ToList();
 
         var firstAch = oInProg.FirstOrDefault();
 
@@ -56,18 +60,36 @@ public static class PlayerAchievementExtensions
 
         var ach = player.Character.GetAchievement(firstAch.Key);
 
-        var oCond = firstAch.Value.OrderBy(c => pAchObj[type][achValue] - c.goal);
-        var firstCond = oCond.First();
-
         player.SendXt("Ap",
+            -1,
             firstAch.Key.id,
-            firstCond.id,
-            firstCond.GetObjectiveLeft(pAchObj[type][achValue]),
+            -1,
+            ach.GetAmountLeft(),
             ach.GetTotalProgress()
         );
+
+        foreach(var achievement in oInProg)
+        {
+            var currentAchievement = player.Character.GetAchievement(achievement.Key);
+
+            if (currentAchievement.GetAmountLeft() <= 0)
+                achievement.Key.rewards.RewardPlayer(player, logger);
+        }
     }
 
-    public static int GetObjectiveLeft(this AchievementDefinitionConditions cond, int count) => count - cond.goal;
+    public static int GetObjectiveLeft(this AchievementDefinitionConditions cond, int count) => cond.goal - count;
+
+    public static int GetAmountLeft(this CharacterAchievement achievement) => GetTotalGoal(achievement) - GetTotalProgress(achievement);
+
+    public static int GetTotalGoal(this CharacterAchievement achievement)
+    {
+        var count = 0;
+
+        foreach (var c in achievement.conditions)
+            count += c.completionCount;
+
+        return count;
+    }
 
     public static int GetTotalProgress(this CharacterAchievement achievement)
     {

@@ -23,19 +23,6 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
 
     public void InitializeVariables()
     {
-    }
-
-    public void EditDescription(XmlDocument xml)
-    {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
-        var catalog = Services.GetRequiredService<ItemCatalog>();
-
         Definitions = new AchievementStaticJson.AchievementDefinition()
         {
             status = true,
@@ -49,6 +36,20 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                 timeWindows = [] // UNUSED
             }
         };
+
+        PossibleConditions = [];
+    }
+
+    public void EditDescription(XmlDocument xml)
+    {
+    }
+
+    public void ReadDescription(string xml)
+    {
+        var xmlDocument = new XmlDocument();
+        xmlDocument.LoadXml(xml);
+
+        var catalog = Services.GetRequiredService<ItemCatalog>();
 
         var enumValues = Enum.GetValues<RewardType>();
 
