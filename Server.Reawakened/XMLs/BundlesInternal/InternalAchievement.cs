@@ -1,24 +1,25 @@
 ﻿using Achievement.Categories;
 using Achievement.StaticData;
 using Achievement.Types;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
-using System.Runtime.InteropServices;
 using System.Xml;
-using UnityEngine;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 public class InternalAchievement : IBundledXml<InternalAchievement>
 {
     public string BundleName => "InternalAchievement";
-    public BundlePriority Priority => BundlePriority.Medium;
+    public BundlePriority Priority => BundlePriority.Lowest;
 
     public ILogger<InternalAchievement> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public AchievementStaticJson.AchievementDefinition Definitions { get; private set; }
+    public Dictionary<int, List<string>> PossibleConditions { get; private set; }
 
     public void InitializeVariables()
     {
@@ -32,6 +33,8 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
     {
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
+
+        var catalog = Services.GetRequiredService<ItemCatalog>();
 
         Definitions = new AchievementStaticJson.AchievementDefinition()
         {
@@ -158,7 +161,7 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                         switch(achievementLists.Name)
                         {
                             case "Rewards":
-                                achRewards = achievementLists.GetXmlRewards(Logger, achId);
+                                achRewards = achievementLists.GetXmlRewards(Logger, catalog, achId);
                                 break;
                             case "Conditions":
                                 achConditions = achievementLists.GetXmlConditions(Logger, achId);
@@ -192,6 +195,21 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                 }
             }
         }
+
+        foreach (var achievement in Definitions.achievements)
+            foreach (var cond in achievement.conditions)
+            {
+                var type = (AchConditionType)cond.typeId;
+
+                if (type == AchConditionType.Unknown)
+                    continue;
+
+                if (!PossibleConditions.ContainsKey(cond.typeId))
+                    PossibleConditions.Add(cond.typeId, []);
+
+                if (!PossibleConditions[cond.typeId].Contains(cond.description))
+                    PossibleConditions[cond.typeId].Add(cond.description);
+            }
     }
 
     public void FinalizeBundle()

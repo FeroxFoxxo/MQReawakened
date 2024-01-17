@@ -480,15 +480,15 @@
                 <Reward type="Xp" value="80" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Knight's Gate &amp; Vespid Lair" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Knight's Gate &amp; Vespid Lair" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="60" title="Unknown Achievement 60" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_GuardiansKeep!" iconName="Collecting_IdolCrossroads_GuardiansKeep" points="1" sortOrder="44" repeatable="false">
+        <Achievement id="60" title="Guardian’s Keep Collector" description="Collect all Guardian’s Keep Idols" iconName="Collecting_IdolCrossroads_GuardiansKeep" points="25" sortOrder="44" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Guardian’s Keep" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="61" title="Unknown Achievement 61" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_ForgottenTemple!" iconName="Collecting_IdolCrossroads_ForgottenTemple" points="1" sortOrder="45" repeatable="false">
@@ -1453,12 +1453,12 @@
                 <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="181" title="Unknown Achievement 181" description="Unknown Description. Hint: the icon is named Defeat_1000_Rachnoids!" iconName="Defeat_1000_Rachnoids" points="1" sortOrder="84" repeatable="false">
+        <Achievement id="181" title="Rachnoid Conqueror" description="Defeat 1,000 Rachnoids" iconName="Defeat_1000_Rachnoids" points="200" sortOrder="84" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Rachnoids" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="182" title="Unknown Achievement 182" description="Unknown Description. Hint: the icon is named Combat_DefeaterRumbler_10!" iconName="Combat_DefeaterRumbler_10" points="1" sortOrder="85" repeatable="false">
@@ -1645,12 +1645,12 @@
                 <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="205" title="Unknown Achievement 205" description="Unknown Description. Hint: the icon is named Defeat_1000_Spinefish!" iconName="Defeat_1000_Spinefish" points="1" sortOrder="108" repeatable="false">
+        <Achievement id="205" title="Spinefish Conqueror" description="Defeat 1,000 Spinefish" iconName="Defeat_1000_Spinefish" points="200" sortOrder="108" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Spinefish" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="206" title="Unknown Achievement 206" description="Unknown Description. Hint: the icon is named Combat_zombiebat!" iconName="Combat_zombiebat" points="1" sortOrder="109" repeatable="false">
@@ -1685,20 +1685,20 @@
                 <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="210" title="Unknown Achievement 210" description="Unknown Description. Hint: the icon is named Combat_SpongeBob_MiniRoboPlankton_300!" iconName="Combat_SpongeBob_MiniRoboPlankton_300" points="1" sortOrder="113" repeatable="false">
+        <Achievement id="210" title="No No Robo" description="Defeat 300 Mini Robo-Plankton Enemies (2014 SpongeBob Event)" iconName="Combat_SpongeBob_MiniRoboPlankton_300" points="50" sortOrder="113" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 300 Mini Robo-Plankton Enemies" goal="300" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="211" title="Unknown Achievement 211" description="Unknown Description. Hint: the icon is named Combat_SpongeBob_BossPlankton_10!" iconName="Combat_SpongeBob_BossPlankton_10" points="1" sortOrder="114" repeatable="false">
+        <Achievement id="211" title="Walk The Plankton" description="Defeat Plankton 10 Times (2014 SpongeBob Event)" iconName="Combat_SpongeBob_BossPlankton_10" points="50" sortOrder="114" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="200" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
+                <Condition id="1" title="Defeat Plankton 10 Times" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="212" title="Unknown Achievement 212" description="Unknown Description. Hint: the icon is named Defeat_10_Bombs!" iconName="Defeat_10_Bombs" points="1" sortOrder="115" repeatable="false">
@@ -4263,12 +4263,12 @@
                 <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="531" title="Unknown Achievement 531" description="Unknown Description. Hint: the icon is named Fun_Food_GourmetGrubber_1000!" iconName="Fun_Food_GourmetGrubber_1000" points="1" sortOrder="5" repeatable="false">
+        <Achievement id="531" title="Gourmet Grubber" description="Eat 1000 Food Items" iconName="Fun_Food_GourmetGrubber_1000" points="100" sortOrder="5" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="300" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
+                <Condition id="1" title="Eat 1000 Food Items" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="532" title="Unknown Achievement 532" description="Unknown Description. Hint: the icon is named Fun_Food_PlanetoftheGrapes_100!" iconName="Fun_Food_PlanetoftheGrapes_100" points="1" sortOrder="6" repeatable="false">
@@ -4467,12 +4467,12 @@
                 <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="556" title="Unknown Achievement 556" description="Unknown Description. Hint: the icon is named Fun_Participate_SpongeBob_Tier2!" iconName="Fun_Participate_SpongeBob_Tier2" points="1" sortOrder="30" repeatable="false">
+        <Achievement id="556" title="Super SpongeBob Partier!" description="Participate in 25 SpongeBob Parties (2014 SpongeBob Event)" iconName="Fun_Participate_SpongeBob_Tier2" points="50" sortOrder="30" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="200" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="2" visible="true" />
+                <Condition id="1" title="Participate in 25 SpongeBob Parties" goal="25" visible="true" />
             </Conditions>
         </Achievement>
     </Category>

@@ -1,7 +1,6 @@
 ﻿using Server.Base.Core.Extensions;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Bundles;
 using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -43,8 +42,9 @@ public static class NpcExtensions
         return questModel;
     }
 
-    public static void UpdateNpcsInLevel(this Player player, QuestStatusModel status, QuestCatalog quests)
+    public static void UpdateNpcsInLevel(this Player player, QuestStatusModel status)
     {
+        var quests = player.DatabaseContainer.Quests;
         var quest = quests.QuestCatalogs[status.Id];
         UpdateNpcsInLevel(player, quest);
     }

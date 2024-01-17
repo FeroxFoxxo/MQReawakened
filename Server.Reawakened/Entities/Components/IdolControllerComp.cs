@@ -2,6 +2,7 @@
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -29,6 +30,8 @@ public class IdolControllerComp : Component<IdolController>
             return;
 
         character.CollectedIdols[levelId].Add(Index);
+
+        player.CheckAchievement(AchConditionType.CollectIdol, Room.LevelInfo.Name);
 
         var collectedEvent =
             new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true);

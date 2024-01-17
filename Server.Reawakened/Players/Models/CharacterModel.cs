@@ -11,7 +11,8 @@ public class CharacterModel : PersistantData
     public Dictionary<int, List<int>> CollectedIdols { get; set; }
     public List<EmailHeaderModel> Emails { get; set; }
     public List<EmailMessageModel> EmailMessages { get; set; }
-    public List<int> Events { get; set; } = [];
+    public List<int> Events { get; set; }
+    public Dictionary<int, Dictionary<string, int>> AchievementObjectives { get; set; }
 
     public CharacterModel()
     {
@@ -19,6 +20,8 @@ public class CharacterModel : PersistantData
         Emails = [];
         EmailMessages = [];
         Events = [];
+        AchievementObjectives = [];
+
         Data = new CharacterDataModel();
         LevelData = new LevelData();
     }

@@ -1,7 +1,9 @@
 ﻿using Achievement.StaticData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
@@ -11,7 +13,7 @@ namespace Server.Reawakened.XMLs.BundlesInternal;
 public class InternalEventReward : IBundledXml<InternalEventReward>
 {
     public string BundleName => "InternalEventReward";
-    public BundlePriority Priority => BundlePriority.Medium;
+    public BundlePriority Priority => BundlePriority.Lowest;
 
     public ILogger<InternalEventReward> Logger { get; set; }
     public IServiceProvider Services { get; set; }
@@ -28,6 +30,8 @@ public class InternalEventReward : IBundledXml<InternalEventReward>
     {
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
+
+        var catalog = Services.GetRequiredService<ItemCatalog>();
 
         foreach (XmlNode eventRewardXml in xmlDocument.ChildNodes)
         {
@@ -47,7 +51,7 @@ public class InternalEventReward : IBundledXml<InternalEventReward>
                             continue;
                     }
 
-                var rewards = tEvent.GetXmlRewards(Logger);
+                var rewards = tEvent.GetXmlRewards(Logger, catalog);
 
                 EventRewards.Add(eventId, rewards);
             }

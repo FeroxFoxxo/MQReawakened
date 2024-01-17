@@ -30,7 +30,7 @@ public class ArenaModel
 
         foreach (var reward in LootCatalog.LootCatalog[arenaId].ItemRewards)
             foreach (var item in reward.Items)
-                itemsGotten.Add(item);
+                itemsGotten.Add(item.Value);
 
         var randomItemReward = itemsGotten[random.Next(itemsGotten.Count)].ItemId;
         var itemsLooted = FormatItemString(randomItemReward, 1);
@@ -45,7 +45,7 @@ public class ArenaModel
         if (LootCatalog.LootCatalog.TryGetValue(arenaId, out var value))
             foreach (var reward in value.ItemRewards)
                 foreach (var itemReward in reward.Items)
-                    lootableItems.Append(itemReward.ItemId);
+                    lootableItems.Append(itemReward.Value.ItemId);
 
         return lootableItems.ToString();
     }
