@@ -177,6 +177,9 @@ public static class GetInternalXml
                     "(Achievement Id: {Id}, Condition Id {CId})", title, achievementId, id);
             }
 
+            if (string.IsNullOrEmpty(value))
+                value = "unknown";
+
             conditionList.Add(new AchievementDefinitionConditions()
             {
                 id = int.Parse(achievementId.ToString() + id),

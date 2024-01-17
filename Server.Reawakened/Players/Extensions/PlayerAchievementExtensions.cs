@@ -14,7 +14,7 @@ public static class PlayerAchievementExtensions
         Microsoft.Extensions.Logging.ILogger logger, int count = 1)
     {
         if (string.IsNullOrEmpty(achValue))
-            achValue = "UNKNOWN";
+            achValue = "unknown";
 
         var posCond = player.DatabaseContainer.InternalAchievement.PossibleConditions;
         var type = (int)achType;
@@ -77,11 +77,12 @@ public static class PlayerAchievementExtensions
                     currentAchievement.GetAmountLeft(),
                     currentAchievement.GetTotalProgress()
                 );
-                firstAchievement = false;
 
-                if (containsAch)
-                    player.TempData.CurrentAchievements[type].Add(achievement.Key.description);
+                firstAchievement = false;
             }
+
+            if (!containsAch)
+                player.TempData.CurrentAchievements[type].Add(achievement.Key.description);
 
             if (amountLeft <= 0)
                 achievement.Key.rewards.RewardPlayer(player, logger);
