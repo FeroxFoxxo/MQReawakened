@@ -142,7 +142,7 @@ public static class GetInternalXml
             var id = -1;
             var title = string.Empty;
             var goal = -1;
-            var type = AchConditionType.Unknown;
+            var type = AchConditionType.Invalid;
             var value = string.Empty;
             var visible = false;
 
@@ -169,6 +169,12 @@ public static class GetInternalXml
                         visible = visible.GetBoolValue(conditionAttribute.Value, logger);
                         continue;
                 }
+            }
+
+            if (type == AchConditionType.Invalid)
+            {
+                logger.LogError("Unknown condition type for {Name} " +
+                    "(Achievement Id: {Id}, Condition Id {CId})", title, achievementId, id);
             }
 
             conditionList.Add(new AchievementDefinitionConditions()

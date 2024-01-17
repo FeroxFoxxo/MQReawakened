@@ -202,7 +202,7 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
             {
                 var type = (AchConditionType)cond.typeId;
 
-                if (type == AchConditionType.Unknown)
+                if (type is AchConditionType.Unknown or AchConditionType.Invalid)
                     continue;
 
                 if (!PossibleConditions.ContainsKey(cond.typeId))

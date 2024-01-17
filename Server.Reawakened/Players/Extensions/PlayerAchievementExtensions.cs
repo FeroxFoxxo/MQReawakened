@@ -53,24 +53,17 @@ public static class PlayerAchievementExtensions
 
         var oInProg = inProgCond.OrderBy(a => player.Character.GetAchievement(a.Key)).ToList();
 
-        var firstAch = oInProg.FirstOrDefault();
-
-        if (firstAch.Key == null)
-            return;
-
-        var ach = player.Character.GetAchievement(firstAch.Key);
-
-        player.SendXt("Ap",
-            -1,
-            firstAch.Key.id,
-            -1,
-            ach.GetAmountLeft(),
-            ach.GetTotalProgress()
-        );
-
-        foreach(var achievement in oInProg)
+        foreach (var achievement in oInProg)
         {
             var currentAchievement = player.Character.GetAchievement(achievement.Key);
+
+            player.SendXt("Ap",
+                -1,
+                currentAchievement.id,
+                -1,
+                currentAchievement.GetAmountLeft(),
+                currentAchievement.GetTotalProgress()
+            );
 
             if (currentAchievement.GetAmountLeft() <= 0)
                 achievement.Key.rewards.RewardPlayer(player, logger);
