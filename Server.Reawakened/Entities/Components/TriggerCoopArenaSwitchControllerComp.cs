@@ -40,7 +40,7 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
             {
                 foreach (var member in playersInRoom)
                 {
-                    ArenaModel.SetCharacterIds(member, playersInRoom);
+                    player.TempData.ArenaModel.SetCharacterIds(playersInRoom);
                     member.TempData.ArenaModel.HasStarted = true;
                     StartMinigame(member);
                 }
@@ -51,7 +51,7 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
             if (player.TempData.ArenaModel.ShouldStartArena)
             {
                 StartMinigame(player);
-                ArenaModel.SetCharacterIds(player, new List<Player> { player });
+                player.TempData.ArenaModel.SetCharacterIds(new List<Player> { player });
             }
         }
     }

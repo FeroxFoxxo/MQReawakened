@@ -13,14 +13,14 @@ public class ArenaModel
     public int FourthPlayerId { get; set; }
     public Dictionary<string, float> BestTimeForLevel { get; set; } = [];
 
-    public static void SetCharacterIds(Player player, IEnumerable<Player> players)
+    public void SetCharacterIds(IEnumerable<Player> players)
     {
         var playersInGroup = players.ToArray();
 
-        player.TempData.ArenaModel.FirstPlayerId = playersInGroup.Length > 0 ? playersInGroup[0].CharacterId : 0;
-        player.TempData.ArenaModel.SecondPlayerId = playersInGroup.Length > 1 ? playersInGroup[1].CharacterId : 0;
-        player.TempData.ArenaModel.ThirdPlayerId = playersInGroup.Length > 2 ? playersInGroup[2].CharacterId : 0;
-        player.TempData.ArenaModel.FourthPlayerId = playersInGroup.Length > 3 ? playersInGroup[3].CharacterId : 0;
+        FirstPlayerId = playersInGroup.Length > 0 ? playersInGroup[0].CharacterId : 0;
+        SecondPlayerId = playersInGroup.Length > 1 ? playersInGroup[1].CharacterId : 0;
+        ThirdPlayerId = playersInGroup.Length > 2 ? playersInGroup[2].CharacterId : 0;
+        FourthPlayerId = playersInGroup.Length > 3 ? playersInGroup[3].CharacterId : 0;
     }
 
     public static string GrantLootedItems(InternalLoot LootCatalog, int arenaId)

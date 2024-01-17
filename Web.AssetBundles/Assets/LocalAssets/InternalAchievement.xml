@@ -2,12 +2,12 @@
 <Achievements>
     <Category id="1" title="All" iconName="Category_All" sortOrder="9" />
     <Category id="2" title="Daily" iconName="Category_Daily" sortOrder="8">
-        <Achievement id="1" title="Unknown Achievement 1" description="Unknown Description. Hint: the icon is named Daily_ThousandBananas!" iconName="Daily_ThousandBananas" points="1" sortOrder="1" repeatable="true">
+        <Achievement id="1" title="Mind Your Nanners" description="Collect 1,000 Bananas" iconName="Daily_ThousandBananas" points="10" sortOrder="1" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 1,000 Bananas" type="CollectBanana" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="2" title="Unknown Achievement 2" description="Unknown Description. Hint: the icon is named Daily_BreakfastLunchandDinner!" iconName="Daily_BreakfastLunchandDinner" points="1" sortOrder="2" repeatable="true">
@@ -18,20 +18,20 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="3" title="Around The World" description="Explore 5 Different Trails in a Day" iconName="Daily_AroundTheWorld" points="1" sortOrder="3" repeatable="true">
+        <Achievement id="3" title="Around The World" description="Explore 5 Different Trails in a Day" iconName="Daily_AroundTheWorld" points="5" sortOrder="3" repeatable="true">
             <Rewards>
                 <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Explore 5 Different Trails in a Day" type="Invalid" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="4" title="Unknown Achievement 4" description="Unknown Description. Hint: the icon is named Daily_EveryDayHustlin!" iconName="Daily_EveryDayHustlin" points="1" sortOrder="4" repeatable="true">
+        <Achievement id="4" title="Daily Dynamo" description="Complete 10 Quests" iconName="Daily_EveryDayHustlin" points="10" sortOrder="4" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete 10 Quests" type="Invalid" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="5" title="Unknown Achievement 5" description="Unknown Description. Hint: the icon is named Daily_DailyDaillies!" iconName="Daily_DailyDaillies" points="1" sortOrder="5" repeatable="true">
@@ -66,20 +66,20 @@
                 <Condition id="1" title="Unknown Condition" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="9" title="Unknown Achievement 9" description="Unknown Description. Hint: the icon is named Daily_IMadeAFriend!" iconName="Daily_IMadeAFriend" points="1" sortOrder="9" repeatable="true">
+        <Achievement id="9" title="Social Animal" description="Add 3 Friends" iconName="Daily_IMadeAFriend" points="3" sortOrder="9" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Add 3 Friends" type="Invalid" value="" goal="3" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="10" title="Unknown Achievement 10" description="Unknown Description. Hint: the icon is named Daily_Ready_to_Rumble!" iconName="Daily_Ready_to_Rumble" points="1" sortOrder="10" repeatable="true">
+        <Achievement id="10" title="Ready to Rumble" description="Accept an Invite to Play Pet Masters" iconName="Daily_Ready_to_Rumble" points="3" sortOrder="10" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Accept an Invite to Play Pet Masters" type="Invalid" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="11" title="Unknown Achievement 11" description="Unknown Description. Hint: the icon is named Daily_SocialAnimal!" iconName="Daily_SocialAnimal" points="1" sortOrder="11" repeatable="true">
@@ -90,12 +90,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="12" title="Unknown Achievement 12" description="Unknown Description. Hint: the icon is named Daily_SlayEveryDay!" iconName="Daily_SlayEveryDay" points="1" sortOrder="12" repeatable="true">
+        <Achievement id="12" title="Feared Fighter" description="Defeat 50 Enemies" iconName="Daily_SlayEveryDay" points="5" sortOrder="12" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Enemies" type="Invalid" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="13" title="Unknown Achievement 13" description="Unknown Description. Hint: the icon is named Daily_ClowinAround!" iconName="Daily_ClowinAround" points="1" sortOrder="13" repeatable="true">
@@ -114,12 +114,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="15" title="Unknown Achievement 15" description="Unknown Description. Hint: the icon is named Daily_Eggstra_Eggstra!" iconName="Daily_Eggstra_Eggstra" points="1" sortOrder="15" repeatable="true">
+        <Achievement id="15" title="Eggstra! Eggstra!" description="Open a Pet Egg" iconName="Daily_Eggstra_Eggstra" points="5" sortOrder="15" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Open a Pet Egg" type="Invalid" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="16" title="Unknown Achievement 16" description="Unknown Description. Hint: the icon is named Daily_HolidayTree!" iconName="Daily_HolidayTree" points="1" sortOrder="16" repeatable="true">
@@ -331,12 +331,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="41" title="Unknown Achievement 41" description="Unknown Description. Hint: the icon is named Collecting_SpongeBob_BubbleBlower!" iconName="Collecting_SpongeBob_BubbleBlower" points="1" sortOrder="25" repeatable="false">
+        <Achievement id="41" title="Bubbly" description="Craft the Bubble Blower (2014 SpongeBob Event Item)" iconName="Collecting_SpongeBob_BubbleBlower" points="5" sortOrder="25" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Craft the Bubble Blower" type="Invalid" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="42" title="Unknown Achievement 42" description="Unknown Description. Hint: the icon is named Collecting_SpongeBob_Karate_Outfit!" iconName="Collecting_SpongeBob_Karate_Outfit" points="1" sortOrder="26" repeatable="false">
@@ -472,7 +472,7 @@
                 <Reward type="Xp" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Shard Cavern" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Shard Cavern" type="CollectIdol" value="lv_r01_dungeon01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="59" title="Knight's Gate Collector" description="Collect all Knight's Gate &amp; Vespid Lair Idols" iconName="Collecting_IdolCrossroads_KnightsGate" points="25" sortOrder="43" repeatable="false">
@@ -480,7 +480,7 @@
                 <Reward type="Xp" value="80" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Knight's Gate &amp; Vespid Lair" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Knight's Gate &amp; Vespid Lair" type="CollectIdol" value="lv_r01_trail02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="60" title="Guardian's Keep Collector" description="Collect all Guardian's Keep Idols" iconName="Collecting_IdolCrossroads_GuardiansKeep" points="25" sortOrder="44" repeatable="false">
@@ -488,7 +488,7 @@
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Guardian's Keep" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Guardian's Keep" type="CollectIdol" value="lv_r01_dungeon01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="61" title="Unknown Achievement 61" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_ForgottenTemple!" iconName="Collecting_IdolCrossroads_ForgottenTemple" points="1" sortOrder="45" repeatable="false">
@@ -584,7 +584,7 @@
                 <Reward type="Xp" value="90" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Mountain Shrine Idols" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Mountain Shrine" type="CollectIdol" value="lv_shd_trail02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="73" title="Unknown Achievement 73" description="Unknown Description. Hint: the icon is named Collecting_IdolChimFoo_MagnoliaLake!" iconName="Collecting_IdolChimFoo_MagnoliaLake" points="1" sortOrder="57" repeatable="false">
@@ -648,7 +648,7 @@
                 <Reward type="Xp" value="90" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Overlook Cliff" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Overlook Cliff" type="CollectIdol" value="lv_out_trail02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="81" title="The Goon Cave Collector" description="Collect all The Goon Cave Idols" iconName="Collecting_IdolSeaDragons_GoonCave" points="25" sortOrder="65" repeatable="false">
@@ -656,7 +656,7 @@
                 <Reward type="Xp" value="180" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in The Goon Cave" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in The Goon Cave" type="CollectIdol" value="lv_out_dungeon01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="82" title="Unknown Achievement 82" description="Unknown Description. Hint: the icon is named Collecting_IdolSeaDragons_SkullCave!" iconName="Collecting_IdolSeaDragons_SkullCave" points="1" sortOrder="66" repeatable="false">
@@ -696,7 +696,7 @@
                 <Reward type="Xp" value="300" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Sunken City" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Sunken City" type="CollectIdol" value="lv_out_trail06" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="87" title="Unknown Achievement 87" description="Unknown Description. Hint: the icon is named Collecting_IdolOotu_MushroomHollow!" iconName="Collecting_IdolOotu_MushroomHollow" points="1" sortOrder="71" repeatable="false">
@@ -712,7 +712,7 @@
                 <Reward type="Xp" value="90" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in The Deep Swamp" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in The Deep Swamp" type="CollectIdol" value="lv_bon_trail02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="89" title="The Spider Cave Collector" description="Collect all Spider Cave Idols" iconName="Collecting_IdolOotu_SpiderCave" points="25" sortOrder="73" repeatable="false">
@@ -720,7 +720,7 @@
                 <Reward type="Xp" value="130" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in The Spider Cave" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in The Spider Cave" type="CollectIdol" value="lv_bon_trail03" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="90" title="Unknown Achievement 90" description="Unknown Description. Hint: the icon is named Collecting_IdolOotu_GiantTree!" iconName="Collecting_IdolOotu_GiantTree" points="1" sortOrder="74" repeatable="false">
@@ -760,7 +760,7 @@
                 <Reward type="Xp" value="350" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Moss Temple" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Moss Temple" type="CollectIdol" value="lv_bon_trail06" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="95" title="Unknown Achievement 95" description="Unknown Description. Hint: the icon is named Collecting_IdolIceRaiders_SnowSummit!" iconName="Collecting_IdolIceRaiders_SnowSummit" points="1" sortOrder="79" repeatable="false">
@@ -933,12 +933,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="116" title="Unknown Achievement 116" description="Unknown Description. Hint: the icon is named Combat_Superstomp_1000!" iconName="Combat_Superstomp_1000" points="1" sortOrder="19" repeatable="false">
+        <Achievement id="116" title="Stompasaurus Wrecks!" description="Defeat 1,000 Enemies with a Super Stomp" iconName="Combat_Superstomp_1000" points="350" sortOrder="19" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Enemies with a Super Stomp" type="Invalid" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="117" title="Unknown Achievement 117" description="Unknown Description. Hint: the icon is named Combat_Potions_5!" iconName="Combat_Potions_5" points="1" sortOrder="20" repeatable="false">
@@ -1125,12 +1125,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="140" title="Unknown Achievement 140" description="Unknown Description. Hint: the icon is named Defeat_1000_Boombugs!" iconName="Defeat_1000_Boombugs" points="1" sortOrder="43" repeatable="false">
+        <Achievement id="140" title="BoomBug Conqueror" description="Defeat 1,000 BoomBugs" iconName="Defeat_1000_Boombugs" points="200" sortOrder="43" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1,000 BoomBugs" type="Invalid" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="141" title="Unknown Achievement 141" description="Unknown Description. Hint: the icon is named Combat_DefeaterCragcrawler_10!" iconName="Combat_DefeaterCragcrawler_10" points="1" sortOrder="44" repeatable="false">
@@ -1269,12 +1269,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="158" title="Unknown Achievement 158" description="Unknown Description. Hint: the icon is named Defeat_1000_Draicons!" iconName="Defeat_1000_Draicons" points="1" sortOrder="61" repeatable="false">
+        <Achievement id="158" title="Draicon Conqueror" description="Defeat 1,000 Draicons" iconName="Defeat_1000_Draicons" points="200" sortOrder="61" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Draicons" type="Invalid" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="159" title="Unknown Achievement 159" description="Unknown Description. Hint: the icon is named Combat_DefeaterOgrak_10!" iconName="Combat_DefeaterOgrak_10" points="1" sortOrder="62" repeatable="false">
@@ -1309,12 +1309,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="163" title="Unknown Achievement 163" description="Unknown Description. Hint: the icon is named Defeat_1000_Ograks!" iconName="Defeat_1000_Ograks" points="1" sortOrder="66" repeatable="false">
+        <Achievement id="163" title="Ograk Conqueror" description="Defeat 1,000 Ograks" iconName="Defeat_1000_Ograks" points="1" sortOrder="66" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Ograks" type="Invalid" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="164" title="Unknown Achievement 164" description="Unknown Description. Hint: the icon is named Combat_DefeaterOrchid_10!" iconName="Combat_DefeaterOrchid_10" points="1" sortOrder="67" repeatable="false">
@@ -1501,12 +1501,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="187" title="Unknown Achievement 187" description="Unknown Description. Hint: the icon is named Defeat_1000_Rumblers!" iconName="Defeat_1000_Rumblers" points="1" sortOrder="90" repeatable="false">
+        <Achievement id="187" title="Rumbler Conqueror" description="Defeat 1,000 Rumblers" iconName="Defeat_1000_Rumblers" points="200" sortOrder="90" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Rumblers" type="Invalid" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="188" title="Unknown Achievement 188" description="Unknown Description. Hint: the icon is named Combat_DefeaterSpiker_10!" iconName="Combat_DefeaterSpiker_10" points="1" sortOrder="91" repeatable="false">
@@ -1549,12 +1549,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="193" title="Unknown Achievement 193" description="Unknown Description. Hint: the icon is named Defeat_1000_Spikers!" iconName="Defeat_1000_Spikers" points="1" sortOrder="96" repeatable="false">
+        <Achievement id="193" title="Spiker Conqueror" description="Defeat 1,000 Spikers" iconName="Defeat_1000_Spikers" points="200" sortOrder="96" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Spikers" type="Invalid" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="194" title="Unknown Achievement 194" description="Unknown Description. Hint: the icon is named Combat_DefeaterStomper_10!" iconName="Combat_DefeaterStomper_10" points="1" sortOrder="97" repeatable="false">
@@ -1597,12 +1597,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="199" title="Unknown Achievement 199" description="Unknown Description. Hint: the icon is named Defeat_1000_Stompers!" iconName="Defeat_1000_Stompers" points="1" sortOrder="102" repeatable="false">
+        <Achievement id="199" title="Stomper Conqueror" description="Defeat 1,000 Stompers" iconName="Defeat_1000_Stompers" points="200" sortOrder="102" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Stompers" type="Invalid" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="200" title="Unknown Achievement 200" description="Unknown Description. Hint: the icon is named Combat_DefeaterTrawler_10!" iconName="Combat_DefeaterTrawler_10" points="1" sortOrder="103" repeatable="false">
@@ -1821,12 +1821,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="227" title="Unknown Achievement 227" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_Rachnoks!" iconName="Combat_Defender_Crossroads_Rachnoks" points="1" sortOrder="130" repeatable="false">
+        <Achievement id="227" title="Rachnok’s Lair Defender" description="Defeat 25 Enemies in Rachnok’s Lair" iconName="Combat_Defender_Crossroads_Rachnoks" points="10" sortOrder="130" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Rachnok’s Lair" type="Invalid" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="228" title="Unknown Achievement 228" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_SoggyCreek!" iconName="Combat_Defender_Crossroads_SoggyCreek" points="1" sortOrder="131" repeatable="false">
@@ -2575,12 +2575,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="321" title="Unknown Achievement 321" description="Unknown Description. Hint: the icon is named Exploration_WinterMaze!" iconName="Exploration_WinterMaze" points="1" sortOrder="61" repeatable="false">
+        <Achievement id="321" title="Frostbeard’s Helper" description="Talk to Frostbeard in Winter Wonder Maze (2013 Holiday Event)" iconName="Exploration_WinterMaze" points="5" sortOrder="61" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Talk to Frostbeard in Winter Wonder Maze" type="Invalid" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="322" title="Unknown Achievement 322" description="Unknown Description. Hint: the icon is named Exploring_ScaryFun!" iconName="Exploring_ScaryFun" points="1" sortOrder="62" repeatable="false">

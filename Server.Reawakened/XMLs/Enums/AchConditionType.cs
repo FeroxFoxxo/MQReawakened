@@ -4,5 +4,6 @@ public enum AchConditionType
 {
     Invalid,
     Unknown,
-    CollectIdol
+    CollectIdol,
+    CollectBanana
 }

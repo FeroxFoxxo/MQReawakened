@@ -13,6 +13,9 @@ public static class PlayerAchievementExtensions
     public static void CheckAchievement(this Player player, AchConditionType achType, string achValue,
         Microsoft.Extensions.Logging.ILogger logger, int count = 1)
     {
+        if (string.IsNullOrEmpty(achValue))
+            achValue = "UNKNOWN";
+
         var posCond = player.DatabaseContainer.InternalAchievement.PossibleConditions;
         var type = (int)achType;
         achValue = achValue.ToLower();
@@ -53,19 +56,34 @@ public static class PlayerAchievementExtensions
 
         var oInProg = inProgCond.OrderBy(a => player.Character.GetAchievement(a.Key)).ToList();
 
+        var firstAchievement = true;
+
         foreach (var achievement in oInProg)
         {
             var currentAchievement = player.Character.GetAchievement(achievement.Key);
+            var amountLeft = currentAchievement.GetAmountLeft();
 
-            player.SendXt("Ap",
-                -1,
-                currentAchievement.id,
-                -1,
-                currentAchievement.GetAmountLeft(),
-                currentAchievement.GetTotalProgress()
-            );
+            if (!player.TempData.CurrentAchievements.ContainsKey(type))
+                player.TempData.CurrentAchievements.Add(type, []);
 
-            if (currentAchievement.GetAmountLeft() <= 0)
+            var containsAch = player.TempData.CurrentAchievements[type].Contains(achievement.Key.description);
+
+            if (amountLeft <= 0 || firstAchievement && !containsAch)
+            {
+                player.SendXt("Ap",
+                    -1,
+                    currentAchievement.id,
+                    -1,
+                    currentAchievement.GetAmountLeft(),
+                    currentAchievement.GetTotalProgress()
+                );
+                firstAchievement = false;
+
+                if (containsAch)
+                    player.TempData.CurrentAchievements[type].Add(achievement.Key.description);
+            }
+
+            if (amountLeft <= 0)
                 achievement.Key.rewards.RewardPlayer(player, logger);
         }
     }
