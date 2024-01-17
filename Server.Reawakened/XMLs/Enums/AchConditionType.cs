@@ -5,5 +5,6 @@ public enum AchConditionType
     Invalid,
     Unknown,
     CollectIdol,
-    CollectBanana
+    CollectBanana,
+    EquipItem
 }

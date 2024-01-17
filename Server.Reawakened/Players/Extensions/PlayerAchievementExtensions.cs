@@ -66,7 +66,7 @@ public static class PlayerAchievementExtensions
             if (!player.TempData.CurrentAchievements.ContainsKey(type))
                 player.TempData.CurrentAchievements.Add(type, []);
 
-            var containsAch = player.TempData.CurrentAchievements[type].Contains(achievement.Key.description);
+            var containsAch = player.TempData.CurrentAchievements[type].Contains(achValue);
 
             if (amountLeft <= 0 || firstAchievement && !containsAch)
             {
@@ -82,7 +82,7 @@ public static class PlayerAchievementExtensions
             }
 
             if (!containsAch)
-                player.TempData.CurrentAchievements[type].Add(achievement.Key.description);
+                player.TempData.CurrentAchievements[type].Add(achValue);
 
             if (amountLeft <= 0)
                 achievement.Key.rewards.RewardPlayer(player, logger);

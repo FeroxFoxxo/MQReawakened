@@ -225,9 +225,9 @@
                 <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Equip Reindeer Head" goal="1" visible="true" />
-                <Condition id="2" title="Equip Reindeer Shirt" goal="1" visible="true" />
-                <Condition id="3" title="Equip Reindeer Pants" goal="1" visible="true" />
+                <Condition id="1" title="Equip Reindeer Head" type="EquipItem" value="Add_EVT_Reindeer02_S01" goal="1" visible="true" />
+                <Condition id="2" title="Equip Reindeer Shirt" type="EquipItem" value="Add_EVT_Reindeer02_TS01" goal="1" visible="true" />
+                <Condition id="3" title="Equip Reindeer Pants" type="EquipItem" value="Add_EVT_Reindeer02_LS01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="29" title="Unknown Achievement 29" description="Unknown Description. Hint: the icon is named Equip_PirateAmulet!" iconName="Equip_PirateAmulet" points="1" sortOrder="13" repeatable="false">
