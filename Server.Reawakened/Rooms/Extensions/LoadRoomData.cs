@@ -22,7 +22,7 @@ public static class LoadRoomData
 
     public static Dictionary<int, BaseCollider> LoadColliders(this Room room, LevelInfo levelInfo, ServerRConfig config)
     {
-        var colliderInfoPath = Path.Join(config.XMLDirectory, "LevelColliderCatalogInt.xml");
+        var colliderInfoPath = Path.Join(config.XMLDirectory, "InternalColliders.xml");
         var baseColliderList = new Dictionary<int, BaseCollider>();
         var xmlDocument = new XmlDocument();
         xmlDocument.Load(colliderInfoPath);
