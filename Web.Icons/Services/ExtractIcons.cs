@@ -74,7 +74,7 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
         }
     }
 
-    public void ExtractIconsFrom(InternalAssetInfo asset, AssetBundleLoadEventArgs bundleEvent)
+    public void ExtractIconsFrom(InternalAssetInfo asset, AssetBundleLoadEventArgs _)
     {
         var manager = new AssetsManager();
         var assemblyLoader = new AssemblyLoader();
