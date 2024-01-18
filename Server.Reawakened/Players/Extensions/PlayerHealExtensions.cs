@@ -31,7 +31,7 @@ public static class PlayerHealExtensions
         {
             var healValue = effect.Value;
 
-            if (usedItem.ItemId == serverConfig.HealingStaff) //If healing staff, convert heal value.
+            if (usedItem.ItemId == serverConfig.HealingStaffID) //If healing staff, convert heal value.
                 healValue = Convert.ToInt32(player.Character.Data.MaxLife / 3.527);
 
             var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;

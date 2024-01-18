@@ -5,6 +5,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
+using Server.Reawakened.Entities.Entity.Enemies;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
@@ -34,6 +35,7 @@ public class Room : Timer
     public Dictionary<int, List<BaseComponent>> Entities;
     public Dictionary<int, ProjectileEntity> Projectiles;
     public Dictionary<int, BaseCollider> Colliders;
+    public readonly Dictionary<int, Enemy> Enemies;
     public ILogger<Room> Logger;
 
     public Dictionary<string, PlaneModel> Planes;
@@ -74,9 +76,9 @@ public class Room : Timer
 
         Planes = LevelInfo.LoadPlanes(_config);
         Entities = this.LoadEntities(services, out UnknownEntities);
-        Projectiles = [];
-
-        Colliders = this.LoadColliders();
+        Projectiles = new Dictionary<int, ProjectileEntity>();
+        Colliders = this.LoadColliders(LevelInfo, _config);
+        Enemies = new Dictionary<int, Enemy>();
 
         foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects.Values)
@@ -87,6 +89,30 @@ public class Room : Timer
 
         foreach (var component in Entities.Values.SelectMany(x => x))
             component.InitializeComponent();
+        foreach (var component in Entities.Values.SelectMany(x => x))
+        {
+            if (component.Name.Equals(config.EnemyComponentName))
+            {
+                // Move the name switcher out of ServerRConfig when the enemy xml is made.
+                switch (component.PrefabName)
+                {
+                    case string orchid when orchid.Contains(config.EnemyNameSearch[11]):
+                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));
+                        break;
+                    case string pincer when pincer.Contains(config.EnemyNameSearch[12]):
+                        Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component));
+                        break;
+                    default:
+                        foreach (var enemyType in config.EnemyNameSearch)
+                        {
+                            if (component.PrefabName.Contains(enemyType))
+                                Enemies.Add(component.Id, new EnemyGeneric(this, component.Id, component));
+                        }
+                        
+                        break;
+                }
+            }
+        }
 
         var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
 
@@ -110,6 +136,7 @@ public class Room : Timer
     {
         var entitiesCopy = Entities.Values.SelectMany(s => s).ToList();
         var projectilesCopy = Projectiles.Values.ToList();
+        var enemiesCopy = Enemies.Values.ToList();
 
         foreach (var entityComponent in entitiesCopy)
         {
@@ -117,8 +144,11 @@ public class Room : Timer
                 entityComponent.Update();
         }
 
-        foreach (var projectileComponent in projectilesCopy)
-            projectileComponent.Update();
+        foreach (var projectile in projectilesCopy)
+            projectile.Update();
+
+        foreach (var enemy in enemiesCopy)
+            enemy.Update();
 
         foreach (var player in Players.Values.Where(
                      player => GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime
@@ -319,31 +349,32 @@ public class Room : Timer
             player.DumpToLobby();
     }
 
-    public void Kill(int objectId)
-    {
-        lock (_roomLock)
-            if (KilledObjects.Contains(objectId))
-                return;
+    // Implement this for IDesctructible eventually.
+    //public void Kill(int objectId)
+    //{
+    //    lock (_roomLock)
+    //        if (KilledObjects.Contains(objectId))
+    //            return;
 
 
-        Logger.LogInformation("Killing object {id}...", objectId);
+    //    Logger.LogInformation("Killing object {id}...", objectId);
 
-        var roomEntities = Entities.Values.SelectMany(s => s).ToList();
+    //    var roomEntities = Entities.Values.SelectMany(s => s).ToList();
 
-        foreach (var component in roomEntities.Where(c => c is IKillable))
-            if (component.Id == objectId)
-            {
-                var kbComp = component as IKillable;
+    //    foreach (var component in roomEntities.Where(c => c is IKillable))
+    //        if (component.Id == objectId)
+    //        {
+    //            var kbComp = component as IKillable;
 
-                kbComp.ObjectKilled();
+    //            kbComp.ObjectKilled();
 
-                Logger.LogDebug("Killed component {component} from GameObject {prefabname} with Id {id}",
-                    component.GetType().Name, component.PrefabName, component.Id);
-            }
+    //            Logger.LogDebug("Killed component {component} from GameObject {prefabname} with Id {id}",
+    //                component.GetType().Name, component.PrefabName, component.Id);
+    //        }
 
-        lock (_roomLock)
-            KilledObjects.Add(objectId);
-    }
+    //    lock (_roomLock)
+    //        KilledObjects.Add(objectId);
+    //}
 
     public string GetRoomName() =>
     $"{LevelInfo.LevelId}_{_roomId}";

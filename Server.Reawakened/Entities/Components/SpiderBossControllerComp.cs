@@ -7,10 +7,11 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Base.Timers.Extensions;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Interfaces;
+using Server.Reawakened.Rooms;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class SpiderBossControllerComp : Component<SpiderBossController>, IRecieverTriggered, IKillable
+public class SpiderBossControllerComp : Component<SpiderBossController>, IRecieverTriggered, IDestructible
 {
     public bool Teaser => ComponentData.Teaser;
     public string NPCId => ComponentData.NPCId;
@@ -56,7 +57,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
         GoToNextState(nextState);
     }
 
-    public void ObjectKilled()
+    public void Destroy(Room room, int id)
     {
         if (Teaser)
         {

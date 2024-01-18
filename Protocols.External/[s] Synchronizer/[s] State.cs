@@ -45,10 +45,6 @@ public class State : ExternalProtocol
 
         var entityId = int.Parse(syncEvent.TargetID);
 
-        //This part exists because RequestRespawn seemingly just... sends the wrong id?
-        if (syncEvent.Type.Equals(SyncEvent.EventType.RequestRespawn))
-            entityId = Player.GameObjectId;
-
         if (room.Players.TryGetValue(entityId, out var newPlayer))
         {
             switch (syncEvent.Type)
@@ -73,8 +69,7 @@ public class State : ExternalProtocol
                     if (room.Entities.TryGetValue(collisionTarget, out var entityComponents))
                     {
                         foreach (var component in entityComponents)
-                            if (!room.IsObjectKilled(component.Id))
-                                component.NotifyCollision(notifyCollisionEvent, newPlayer);
+                            component.NotifyCollision(notifyCollisionEvent, newPlayer);
                     }
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
@@ -154,8 +149,7 @@ public class State : ExternalProtocol
         else if (room.Entities.TryGetValue(entityId, out var entityComponents))
         {
             foreach (var component in entityComponents)
-                if (!room.IsObjectKilled(component.Id))
-                    component.RunSyncedEvent(syncEvent, Player);
+                component.RunSyncedEvent(syncEvent, Player);
         }
         else
         {

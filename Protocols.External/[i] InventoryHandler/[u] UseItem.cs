@@ -54,7 +54,7 @@ public class UseItem : ExternalProtocol
 
                 var removeFromHotbar = true;
 
-                if (item.ItemId == ServerRConfig.HealingStaff) //Prevents Healing Staff from removing itself.
+                if (item.UniqueInInventory) //Prevents Healing Staff from removing itself.
                     removeFromHotbar = false;
 
                 if (!item.UniqueInInventory && removeFromHotbar)

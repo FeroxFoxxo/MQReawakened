@@ -5,6 +5,7 @@ using Server.Base.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -19,6 +20,81 @@ public static class LoadRoomData
 {
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
 
+    public static Dictionary<int, BaseCollider> LoadColliders(this Room room, LevelInfo levelInfo, ServerRConfig config)
+    {
+        var colliderInfoPath = Path.Join(config.XMLDirectory, "LevelColliderCatalogInt.xml");
+        var baseColliderList = new Dictionary<int, BaseCollider>();
+        var xmlDocument = new XmlDocument();
+        xmlDocument.Load(colliderInfoPath);
+
+        foreach (XmlNode colliderCatalog in xmlDocument.ChildNodes)
+            foreach (XmlNode level in colliderCatalog.ChildNodes)
+            {
+                var testId = 0;
+                var levelId = levelInfo.LevelId;
+                var colliderList = new List<Collider>();
+
+                foreach (XmlAttribute levelAttributes in level.Attributes)
+                    switch (levelAttributes.Name)
+                    {
+                        case "id":
+                            testId = int.Parse(levelAttributes.Value);
+                            continue;
+                    }
+                if (testId == levelId)
+                {
+                    foreach (XmlNode tcPlane in level.ChildNodes)
+                    {
+                        var plane = "Plane0";
+
+                        foreach (XmlAttribute planeAttributes in tcPlane.Attributes)
+                            switch (planeAttributes.Name)
+                            {
+                                case "plane":
+                                    var planeId = int.Parse(planeAttributes.Value);
+                                    if (planeId != 0)
+                                        plane = "Plane1";
+                                    continue;
+                            }
+
+                        foreach (XmlNode collider in tcPlane.ChildNodes)
+                        {
+                            var posX = 0f;
+                            var posY = 0f;
+                            var width = 1f;
+                            var height = 1f;
+
+                            foreach (XmlAttribute colliderAttributes in collider.Attributes)
+                            {
+                                switch (colliderAttributes.Name)
+                                {
+                                    case "x":
+                                        posX = float.Parse(colliderAttributes.Value);
+                                        continue;
+                                    case "y":
+                                        posY = float.Parse(colliderAttributes.Value);
+                                        continue;
+                                    case "width":
+                                        width = float.Parse(colliderAttributes.Value);
+                                        continue;
+                                    case "height":
+                                        height = float.Parse(colliderAttributes.Value);
+                                        continue;
+                                }
+                            }
+                            colliderList.Add(new Collider(plane, posX, posY, width, height));
+                        }
+                    }
+                }
+                var i = 0;
+                foreach (var collider in colliderList)
+                {
+                    i--;
+                    baseColliderList.Add(i, new TCCollider(collider, room));
+                }
+            }
+        return baseColliderList;
+    }
     public static Dictionary<string, PlaneModel> LoadPlanes(this LevelInfo levelInfo, ServerRConfig config)
     {
         var levelInfoPath = Path.Join(config.LevelSaveDirectory, $"{levelInfo.Name}.xml");
@@ -251,18 +327,5 @@ public static class LoadRoomData
         return $"Unknown {string.Join(", ",
             entityInfo.Select(a => $"{a.Key}: {string.Join(", ", a.Value)}")
         )}";
-    }
-    public static Dictionary<int, BaseCollider> LoadColliders(this Room _)
-    {
-        var colliders = new Dictionary<int, BaseCollider>();
-        // Use Later
-        //foreach (var plane in room.Planes)
-        //{
-        //    foreach (var gameObject in plane.Value.GameObjects.Values)
-        //    {
-        //        var id = gameObject.ObjectInfo.ObjectId;
-        //    }
-        //}
-        return colliders;
     }
 }

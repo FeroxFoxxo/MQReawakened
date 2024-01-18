@@ -16,7 +16,6 @@ public class ServerRConfig : IRConfig
     public int PlayerCap { get; }
     public int ReservedNameCount { get; }
     public int MaxCharacterCount { get; }
-    public int HealingStaff { get; }
 
     public int MaxLevel { get; }
 
@@ -26,6 +25,7 @@ public class ServerRConfig : IRConfig
 
     public string LevelSaveDirectory { get; }
     public string LevelDataSaveDirectory { get; }
+    public string XMLDirectory { get; }
     public string DataDirectory { get; }
 
     public string[] DefaultProtocolTypeIgnore { get; }
@@ -58,12 +58,16 @@ public class ServerRConfig : IRConfig
     public string[] IgnoredDoors { get; set; }
 
     public int MaximumEntitiesToReturnLog { get; set; }
-
+    public string[] EnemyNameSearch { get; set; }
+    public string EnemyComponentName { get; set; }
+    public int HealingStaffID { get; set; }
+    public int MysticCharmID { get; set; }
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
         LevelDataSaveDirectory = InternalDirectory.GetDirectory("XMLs/LevelData");
         DataDirectory = InternalDirectory.GetDirectory("XMLs/FormattedData");
+        XMLDirectory = InternalDirectory.GetDirectory("XMLs/XMLFiles");
 
         RoomTickRate = 32;
 
@@ -160,8 +164,29 @@ public class ServerRConfig : IRConfig
             "PF_GLB_DoorArena01"
         ];
 
-        MaximumEntitiesToReturnLog = 15;
 
-        HealingStaff = 396;
+        EnemyComponentName = "EnemyController";
+
+        EnemyNameSearch = [
+            "PF_Critter_Bird",
+            "PF_Critter_Fish",
+            "PF_Critter_Dragon",
+            //"PF_Critter_Drake",
+            "PF_Critter_Spider",
+            "PF_Spite_Bathog",
+            "PF_Spite_Bomber",
+            "PF_Spite_Crawler",
+            "PF_Spite_Dragon",
+            "PF_Spite_Grenadier",
+            //"PF_Spite_Hamster",
+            "PF_Spite_Orchid",
+            "PF_Spite_Pincer",
+            //"PF_Spite_Squirrel",
+            "PF_Spite_Stomper"
+        ];
+
+        MaximumEntitiesToReturnLog = 15;
+        HealingStaffID = 396;
+        MysticCharmID = 398;
     }
 }
