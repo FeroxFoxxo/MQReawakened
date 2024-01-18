@@ -96,10 +96,10 @@ public class Room : Timer
                 // Move the name switcher out of ServerRConfig when the enemy xml is made.
                 switch (component.PrefabName)
                 {
-                    case string orchid when orchid.Contains(config.EnemyNameSearch[11]):
+                    case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
                         Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));
                         break;
-                    case string pincer when pincer.Contains(config.EnemyNameSearch[12]):
+                    case string pincer when pincer.Contains(config.EnemyNameSearch[9]):
                         Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component));
                         break;
                     default:

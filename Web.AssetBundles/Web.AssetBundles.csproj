@@ -58,7 +58,10 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Assets\LocalAssets\InternalAchievement.xml">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalColliders.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Assets\LocalAssets\InternalDialog.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

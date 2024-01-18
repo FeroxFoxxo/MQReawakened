@@ -18,9 +18,10 @@ public class ProjectileEntity : Component<ProjectileController>
     public int ProjectileID = 0;
     private readonly string _plane;
     public BaseCollider PrjCollider;
+    public double Tickrate;
     public ILogger<ProjectileEntity> Logger { get; set; }
 
-    public ProjectileEntity(Player player, int id, float posX, float posY, float posZ, int direction, float lifeTime, ItemDescription item, int damage, Elemental type)
+    public ProjectileEntity(Player player, int id, float posX, float posY, float posZ, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, double tickrate)
     {
         // The magic numbers here are temporary. Will be updated with proper values when we do weapon infos
         var isLeft = direction > 0;
@@ -42,6 +43,7 @@ public class ProjectileEntity : Component<ProjectileController>
 
         var prj = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), StartTime, posX, posY, posZ, Speed, 0, LifeTime, ProjectileID, item.PrefabName);
         player.Room.SendSyncEvent(prj);
+        Tickrate = tickrate;
         //Logger.LogInformation("Created Synced Projectile with ID {args1} and lifetime {args2} at position ({args3}, {args4}, {args5})", ProjectileID, LifeTime, Position.X, Position.Y, Position.Z);
     }
 
@@ -49,7 +51,7 @@ public class ProjectileEntity : Component<ProjectileController>
     {
         base.Update();
         // The magic number here is the default game tickrate. This will be changed in a future commit
-        Position.X += Speed * 0.015625f;
+        Position.X += Speed / (float)Tickrate;
         PrjCollider.Position.x = Position.X;
 
         var Collisions = PrjCollider.IsColliding(true);

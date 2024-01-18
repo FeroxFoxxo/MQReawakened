@@ -226,7 +226,7 @@ public class UseSlot : ExternalProtocol
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next());
 
-        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem, 5, usedItem.Elemental);
+        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem, 5, usedItem.Elemental, ServerRConfig.RoomTickRate);
 
         Player.Room.Projectiles.Add(prjId, prj);
     }
