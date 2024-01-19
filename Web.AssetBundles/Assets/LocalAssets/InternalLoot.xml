@@ -1298,7 +1298,7 @@
         <LootInfo objectId="3996" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemId="1641" count="1" bindingCount="0"/>
-                <Item itemId="10712" count="1" bindingCount="0"/>
+                <Item itemId="11712" count="1" bindingCount="0"/>
                 <Item itemId="685" count="1" bindingCount="0"/>
                 <Item itemId="1240" count="1" bindingCount="0"/>
                 <Item itemId="1373" count="1" bindingCount="0"/>
@@ -1310,20 +1310,20 @@
         </LootInfo>
         <LootInfo objectId="3995" doLootWheel="true">
             <Items rewardAmount="1">
-                <Item itemId="10711" count="1" bindingCount="0"/>
-                <Item itemId="10712" count="1" bindingCount="0"/>
+                <Item itemId="11711" count="1" bindingCount="0"/>
+                <Item itemId="11712" count="1" bindingCount="0"/>
                 <Item itemId="644" count="1" bindingCount="0"/>
                 <Item itemId="1796" count="1" bindingCount="0"/>
                 <Item itemId="1640" count="1" bindingCount="0"/>
                 <Item itemId="1510" count="1" bindingCount="0"/>
-                <Item itemId="10714" count="1" bindingCount="0"/>
+                <Item itemId="11714" count="1" bindingCount="0"/>
             </Items>
         </LootInfo>
         <LootInfo objectId="3994" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemId="1511" count="1" bindingCount="0"/>
                 <Item itemId="622" count="1" bindingCount="0"/>
-                <Item itemId="10712" count="1" bindingCount="0"/>
+                <Item itemId="11712" count="1" bindingCount="0"/>
                 <Item itemId="1150" count="1" bindingCount="0"/>
                 <Item itemId="1866" count="1" bindingCount="0"/>
                 <Item itemId="644" count="1" bindingCount="0"/>
@@ -1335,7 +1335,7 @@
             <Items rewardAmount="1">
                 <Item itemId="1511" count="1" bindingCount="0"/>
                 <Item itemId="622" count="1" bindingCount="0"/>
-                <Item itemId="10712" count="1" bindingCount="0"/>
+                <Item itemId="11712" count="1" bindingCount="0"/>
                 <Item itemId="1150" count="1" bindingCount="0"/>
                 <Item itemId="1866" count="1" bindingCount="0"/>
                 <Item itemId="644" count="1" bindingCount="0"/>
