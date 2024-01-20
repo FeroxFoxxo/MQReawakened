@@ -49,9 +49,8 @@ public class CheckpointControllerComp : TriggerCoopControllerComp<CheckpointCont
         var checkpoints = Room.GetComponentsOfType<CheckpointControllerComp>().Values;
         var possibleLastCheckpoint = checkpoints.FirstOrDefault(c => c.Id == Room.CheckpointId);
 
-        player.TempData.LastCheckpoint = possibleLastCheckpoint;
-
-        possibleLastCheckpoint?.Trigger(player, false);
-
+        player.TempData.NextRespawnPosition = possibleLastCheckpoint;
+        player.TempData.NextRespawnPosition.Position.Z = player.TempData.Position.Z;
+        possibleLastCheckpoint?.Trigger(player, true);
     }
 }
