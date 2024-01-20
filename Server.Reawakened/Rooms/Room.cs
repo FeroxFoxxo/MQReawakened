@@ -89,6 +89,8 @@ public class Room : Timer
 
         foreach (var component in Entities.Values.SelectMany(x => x))
             component.InitializeComponent();
+
+        //Second loop required once all components are initialized
         foreach (var component in Entities.Values.SelectMany(x => x))
         {
             if (component.Name.Equals(config.EnemyComponentName))
@@ -112,6 +114,12 @@ public class Room : Timer
                         break;
                 }
             }
+            else if (component.Name.Equals(config.BreakableComponentName))
+            {
+                var breakable = (BreakableEventControllerComp)component;
+                breakable.PostInit();
+            }
+
         }
 
         var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();

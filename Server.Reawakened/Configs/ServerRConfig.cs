@@ -59,6 +59,7 @@ public class ServerRConfig : IRConfig
 
     public int MaximumEntitiesToReturnLog { get; set; }
     public string[] EnemyNameSearch { get; set; }
+    public string BreakableComponentName { get; set; }
     public string EnemyComponentName { get; set; }
     public int HealingStaffID { get; set; }
     public int MysticCharmID { get; set; }
@@ -166,6 +167,7 @@ public class ServerRConfig : IRConfig
 
 
         EnemyComponentName = "EnemyController";
+        BreakableComponentName = "BreakableEventController";
 
         EnemyNameSearch = [
             "PF_Critter_Bird",

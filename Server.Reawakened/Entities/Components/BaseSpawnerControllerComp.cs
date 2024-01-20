@@ -33,6 +33,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public string OnDeathTargetID => ComponentData.OnDeathTargetID;
     public override void InitializeComponent()
     {
+        Console.WriteLine(PrefabNameToSpawn1);
     }
     public override void Update()
     {

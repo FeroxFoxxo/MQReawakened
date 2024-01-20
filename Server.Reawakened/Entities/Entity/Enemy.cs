@@ -9,6 +9,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,14 +47,15 @@ public abstract class Enemy : IDestructible
     public float EndPathWaitTime;
     public int[] HitByAttackList;
 
+    public WorldGraph WorldGraph { get; set; }
+
     public Enemy(Room room, int entityId, BaseComponent baseEntity)
     {
-        Console.WriteLine("I be setty!");
         Entity = baseEntity;
         Room = room;
         Id = entityId;
         //temp
-        Health = 20;
+        Health = 80;
         ParentPlane = Entity.ParentPlane;
         Position = new Vector3(Entity.Position.X, Entity.Position.Y, Entity.Position.Z);
         if (ParentPlane == "Plane1")

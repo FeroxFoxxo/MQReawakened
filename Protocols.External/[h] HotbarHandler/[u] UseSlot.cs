@@ -226,7 +226,8 @@ public class UseSlot : ExternalProtocol
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next());
 
-        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem, 5, usedItem.Elemental, ServerRConfig.RoomTickRate);
+        // Magic number 10 is damage for now, until we add a serverside stat handler
+        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig.RoomTickRate);
 
         Player.Room.Projectiles.Add(prjId, prj);
     }
@@ -276,7 +277,7 @@ public class UseSlot : ExternalProtocol
                     if (component is TriggerCoopControllerComp triggerCoopEntity)
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
                     else if (component is BreakableEventControllerComp breakableObjEntity)
-                        breakableObjEntity.Damage(5, Player);
+                        breakableObjEntity.Damage(10, Player);
         }
     }
 
