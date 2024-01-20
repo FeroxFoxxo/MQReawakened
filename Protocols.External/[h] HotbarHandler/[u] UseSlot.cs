@@ -23,7 +23,7 @@ public class UseSlot : ExternalProtocol
 {
     public override string ProtocolName => "hu";
 
-    public ILogger<UseSlot> Logger { get; set; }
+    public ILogger<PlayerStatus> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public InternalObjective ObjectiveCatalog { get; set; }
@@ -58,11 +58,10 @@ public class UseSlot : ExternalProtocol
             case ItemActionType.Throw:
                 HandleRangedWeapon(usedItem, position, direction);
                 break;
+            case ItemActionType.Genericusing:
             case ItemActionType.Drink:
-                HandleDrink(usedItem);
-                break;
             case ItemActionType.Eat:
-                HandleConsumable(usedItem, hotbarSlotId);
+                HandleConsumable(usedItem, TimerThread, ServerRConfig, hotbarSlotId, Logger);
                 break;
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
@@ -95,24 +94,7 @@ public class UseSlot : ExternalProtocol
 
         Player.SendSyncEventToPlayer(itemEffect);
     }
-    
-    private void HandleDrink(ItemDescription usedItem)
-    {
-        StatusEffect_SyncEvent itemEffect = null;
 
-        foreach (var effect in usedItem.ItemEffects)
-            itemEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                    (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
-
-        Player.SendSyncEventToPlayer(itemEffect);
-
-        foreach (var effect in usedItem.ItemEffects)
-            if (effect.TypeId == (int)ItemEffectType.Healing)
-            {
-                Player.HealOnce(usedItem, ServerRConfig);
-                Logger.LogInformation("Used healing item {ItemName} of effect typeID: {TypeID}", usedItem.ItemName, usedItem.ItemEffects.FirstOrDefault().TypeId);
-            }
-    }
 
     private void HandleDrop(ItemDescription usedItem, Vector3Model position, int direction)
     {
@@ -194,31 +176,22 @@ public class UseSlot : ExternalProtocol
             enemyEntity.SendDamageEvent(Player);
     }
 
-    private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
+    private void HandleConsumable(ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, int hotbarSlotId, ILogger<PlayerStatus> logger)
     {
-        StatusEffect_SyncEvent statusEffect = null;
-        foreach (var effect in usedItem.ItemEffects)
-        {
-            if (effect.Type is ItemEffectType.Invalid or ItemEffectType.Unknown)
-                return;
-
-            if (effect.Type is ItemEffectType.Healing)
-                Player.HealCharacter(usedItem, ServerRConfig);
-
-            statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
-        }
-        Player.SendSyncEventToPlayer(statusEffect);
+        Player.HandleItemEffectBuff(usedItem, timerThread, serverRConfig, logger);
 
         var removeFromHotbar = true;
 
-        if (usedItem.ItemId == ServerRConfig.HealingStaff) //Prevents Healing Staff from removing itself.
+        if (usedItem.InventoryCategoryID is
+            ItemFilterCategory.WeaponAndAbilities or
+            ItemFilterCategory.Pets or
+            ItemFilterCategory.Keys or
+            ItemFilterCategory.QuestItems)
             removeFromHotbar = false;
 
-        if (!usedItem.UniqueInInventory && removeFromHotbar)
+        if (removeFromHotbar)
             RemoveFromHotbar(Player.Character, usedItem, hotbarSlotId);
-    }
-
+    }  
 
     private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ArenaCatalogs>
+    <LevelName prefabName="Monkey Run">
+        <ArenaInformation arenaId="102017" timeLimit="180000" isMinigame="true"/>
+    </LevelName>
+</ArenaCatalogs>

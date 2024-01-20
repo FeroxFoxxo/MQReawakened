@@ -16,9 +16,11 @@ public class ServerRConfig : IRConfig
     public int PlayerCap { get; }
     public int ReservedNameCount { get; }
     public int MaxCharacterCount { get; }
-    public int HealingStaff { get; }
+    public double HealingStaffHealValue { get; }
 
     public int MaxLevel { get; }
+
+    public Dictionary<bool, string > IsBackPlane {  get; }
 
     public int DefaultQuest { get; }
 
@@ -76,6 +78,12 @@ public class ServerRConfig : IRConfig
         DefaultChatLevel = 3;
         DefaultTrackingShortId = "false";
         DefaultMemberStatus = true;
+
+        IsBackPlane = new Dictionary<bool, string>()
+        {
+            { true, "Plane0" },
+            { false, "Plane1" }
+        };
 
         DefaultQuest = 802;
 
@@ -162,6 +170,6 @@ public class ServerRConfig : IRConfig
 
         MaximumEntitiesToReturnLog = 15;
 
-        HealingStaff = 396;
+        HealingStaffHealValue = 3.527;
     }
 }
