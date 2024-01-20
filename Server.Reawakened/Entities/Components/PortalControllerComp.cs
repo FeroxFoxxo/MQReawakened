@@ -2,7 +2,6 @@
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Entities.Components;
@@ -17,7 +16,6 @@ public class PortalControllerComp : Component<PortalController>
     public string TimedEventPortalOffAnim => ComponentData.TimedEventPortalOffAnim;
 
     public WorldGraph WorldGraph { get; set; }
-    public WorldHandler WorldHandler { get; set; }
     public ILogger<PortalControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) =>
@@ -82,6 +80,6 @@ public class PortalControllerComp : Component<PortalController>
             character.Id, levelInfo.InGameName, levelInfo.LevelId, portalId
         );
 
-        player.SendLevelChange(WorldHandler, WorldGraph);
+        player.SendLevelChange();
     }
 }

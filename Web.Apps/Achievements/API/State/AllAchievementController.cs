@@ -1,7 +1,7 @@
 ﻿using Achievement.CharacterData;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Server.Base.Core.Extensions;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Services;
 using Server.Reawakened.XMLs.BundlesInternal;
 
@@ -22,39 +22,18 @@ public class AllAchievementController(CharacterHandler characterHandler,
         if (character.Data.UserUuid != _uuid)
             return NotFound();
 
-        var random = new Random();
+        var achievements = character.GetAllAchievements(internalAchievement);
+
+        var points = 0;
+
+        foreach (var compAch in achievements.Where(a => a.conditions.All(c => c.value == c.completionCount)))
+            points += internalAchievement.Definitions.achievements.First(a => a.id == compAch.id).points;
 
         var ach = new AllCharacterAchievements()
         {
-            achievements = internalAchievement.Definitions.achievements.Select(x => new CharacterAchievement()
-            {
-                characterId = _characterId,
-                id = x.id,
-
-                conditions = x.conditions.Select(c => new CharacterCondition()
-                {
-                    id = c.id,
-                    characterId = _characterId,
-
-                    // GOAL TO COMPLETE
-                    completionCount = c.goal,
-
-                    // CURRENT PROGRESS
-                    value = random.Next(0),
-
-                    // UNUSED
-                    ctime = long.MinValue, // COMPLETION TIME
-                    mtime = long.MinValue, // MODIFIED TIME
-                }).ToList(),
-
-                // UNUSED
-                ctime = long.MinValue,
-                mtime = long.MinValue,
-            }).ToList(),
-
-            // INCREMENT BY ACHIEVEMENT POINTS
-            points = 0,
-            status = true // UNUSED
+            achievements = achievements,
+            points = points,
+            status = true
         };
 
         return Ok(JsonConvert.SerializeObject(ach));

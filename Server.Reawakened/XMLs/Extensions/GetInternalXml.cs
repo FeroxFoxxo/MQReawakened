@@ -1,9 +1,9 @@
 ﻿using Achievement.StaticData;
 using Microsoft.Extensions.Logging;
-using Server.Base.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
@@ -11,9 +11,12 @@ namespace Server.Reawakened.XMLs.Extensions;
 
 public static class GetInternalXml
 {
-    public static List<ItemModel> GetXmlItems(this XmlNode node)
+    public static List<ItemModel> GetXmlItems(this XmlNode node) =>
+        node.GetXmlLootItems().Select(c => c.Value).ToList();
+
+    public static List<KeyValuePair<int, ItemModel>> GetXmlLootItems(this XmlNode node)
     {
-        var itemList = new List<ItemModel>();
+        var itemList = new List<KeyValuePair<int, ItemModel>>();
 
         foreach (XmlNode item in node.ChildNodes)
         {
@@ -48,21 +51,25 @@ public static class GetInternalXml
                 }
             }
 
-            itemList.Add(new ItemModel()
-            {
-                ItemId = itemId,
-                Count = count,
-                BindingCount = bindingCount,
-                DelayUseExpiry = delayUseExpiry,
-                Weight = weight
-            });
+            itemList.Add(
+                new KeyValuePair<int, ItemModel>(
+                    weight,
+                    new ItemModel()
+                    {
+                        ItemId = itemId,
+                        Count = count,
+                        BindingCount = bindingCount,
+                        DelayUseExpiry = delayUseExpiry,
+                    }
+                )
+            );
         }
 
         return itemList;
     }
 
     public static List<AchievementDefinitionRewards> GetXmlRewards(this XmlNode node,
-        Microsoft.Extensions.Logging.ILogger logger, int achievementId = 0)
+        Microsoft.Extensions.Logging.ILogger logger, ItemCatalog catalog, int achievementId = 0)
     {
         var rewardList = new List<AchievementDefinitionRewards>();
         var id = 0;
@@ -94,6 +101,21 @@ public static class GetInternalXml
 
             id++;
 
+            if (type == RewardType.Item)
+            {
+                var item = catalog.GetItemFromPrefabName(value.ToString());
+
+                if (item != null)
+                {
+                    value = item.ItemId;
+                }
+                else
+                {
+                    logger.LogError("Unknown item with prefab name: {name}", value);
+                    continue;
+                }
+            }
+
             rewardList.Add(new AchievementDefinitionRewards()
             {
                 id = int.Parse(achievementId <= 0 ? id.ToString() : achievementId.ToString() + id),
@@ -120,6 +142,8 @@ public static class GetInternalXml
             var id = -1;
             var title = string.Empty;
             var goal = -1;
+            var type = AchConditionType.Invalid;
+            var value = string.Empty;
             var visible = false;
 
             foreach (XmlAttribute conditionAttribute in condition.Attributes)
@@ -132,6 +156,12 @@ public static class GetInternalXml
                     case "title":
                         title = conditionAttribute.Value;
                         continue;
+                    case "type":
+                        type = type.GetEnumValue(conditionAttribute.Value, logger);
+                        continue;
+                    case "value":
+                        value = conditionAttribute.Value;
+                        continue;
                     case "goal":
                         goal = int.Parse(conditionAttribute.Value);
                         continue;
@@ -141,13 +171,25 @@ public static class GetInternalXml
                 }
             }
 
+            if (type == AchConditionType.Invalid)
+            {
+                logger.LogError("Unknown condition type for {Name} " +
+                    "(Achievement Id: {Id}, Condition Id {CId})", title, achievementId, id);
+            }
+
+            if (string.IsNullOrEmpty(value))
+                value = "unknown";
+
             conditionList.Add(new AchievementDefinitionConditions()
             {
                 id = int.Parse(achievementId.ToString() + id),
                 achievementId = achievementId,
                 title = title,
                 goal = goal,
-                visible = visible
+                visible = visible,
+                typeId = (int) type,
+                sortOrder = id,
+                description = value.ToLower()
             });
         }
 

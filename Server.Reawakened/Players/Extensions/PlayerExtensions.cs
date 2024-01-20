@@ -4,10 +4,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -72,9 +69,10 @@ public static class PlayerExtensions
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
     }
 
-    public static void TradeWithPlayer(this Player origin, ItemCatalog catalog)
+    public static void TradeWithPlayer(this Player origin)
     {
         var tradeModel = origin.TempData.TradeModel;
+        var catalog = origin.DatabaseContainer.ItemCatalog;
 
         if (tradeModel == null)
             return;
@@ -153,8 +151,10 @@ public static class PlayerExtensions
         player.SendXt("ca", charData.Cash, charData.NCash);
     }
 
-    public static void SendLevelChange(this Player player, WorldHandler worldHandler, WorldGraphXML worldGraph)
+    public static void SendLevelChange(this Player player)
     {
+        var worldHandler = player.DatabaseContainer.WorldHandler;
+
         var error = string.Empty;
         var levelName = string.Empty;
         var surroundingLevels = string.Empty;
@@ -166,10 +166,7 @@ public static class PlayerExtensions
 
             var sb = new SeparatedStringBuilder('!');
 
-            var levels = worldGraph.GetLevelWorldGraphNodes(levelInfo.LevelId)
-                .Where(x => x.ToLevelID != x.LevelID)
-                .Select(x => worldGraph.GetInfoLevel(x.ToLevelID).Name)
-                .Distinct();
+            var levels = worldHandler.GetSurroundingLevels(levelInfo);
 
             foreach (var level in levels)
                 sb.Append(level);
@@ -184,8 +181,9 @@ public static class PlayerExtensions
         player.SendXt("lw", error, levelName, surroundingLevels);
     }
 
-    public static void SetCharacterSelected(this Player player, int characterId, CharacterHandler characterHandler)
+    public static void SetCharacterSelected(this Player player, int characterId)
     {
+        var characterHandler = player.DatabaseContainer.CharacterHandler;
         player.Character = characterHandler.Get(characterId);
         player.UserInfo.LastCharacterSelected = player.CharacterName;
     }
@@ -193,8 +191,9 @@ public static class PlayerExtensions
     public static void AddCharacter(this Player player, CharacterModel character) =>
         player.UserInfo.CharacterIds.Add(character.Id);
 
-    public static void DeleteCharacter(this Player player, int id, CharacterHandler characterHandler)
+    public static void DeleteCharacter(this Player player, int id)
     {
+        var characterHandler = player.DatabaseContainer.CharacterHandler;
         player.UserInfo.CharacterIds.Remove(id);
         characterHandler.Data.Remove(id);
 
@@ -310,7 +309,7 @@ public static class PlayerExtensions
             {
                 player.SendXt("nQ", quest.Id);
                 quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
-                player.UpdateNpcsInLevel(quest, player.DatabaseContainer.Quests);
+                player.UpdateNpcsInLevel(quest);
             }
         }
     }

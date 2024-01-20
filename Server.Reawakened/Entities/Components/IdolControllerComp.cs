@@ -1,13 +1,16 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Server.Reawakened.Entities.Components;
 
 public class IdolControllerComp : Component<IdolController>
 {
     public int Index => ComponentData.Index;
+    public ILogger<HarvestControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player)
     {
@@ -29,6 +32,8 @@ public class IdolControllerComp : Component<IdolController>
             return;
 
         character.CollectedIdols[levelId].Add(Index);
+
+        player.CheckAchievement(AchConditionType.CollectIdol, Room.LevelInfo.Name, Logger);
 
         var collectedEvent =
             new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true);

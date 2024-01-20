@@ -3,6 +3,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -35,6 +36,8 @@ public class GenericCollectibleComp : Component<GenericCollectible>
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
         Collected = true;
+
+        player.CheckAchievement(AchConditionType.CollectBanana, string.Empty, Logger, Value);
         var collectedValue = Value * Room.Players.Count;
 
         Room.SentEntityTriggered(Id, player, true, true);
