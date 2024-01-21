@@ -49,9 +49,6 @@
         <Item prefabName="PF_PET_Rig02_Bear01_03" />
         <Item prefabName="PF_PET_Rig02_Tiger02_02" />
         <Item prefabName="PF_PET_Rig02_Tiger02_03" />
-        <Item prefabName="PF_PET_Rig03_GaryBot01" />
-        <Item prefabName="PF_PET_Rig03_GaryBot01_02" />
-        <Item prefabName="PF_PET_Rig03_GaryBot01_03" />
     </Vendor>
     <Vendor objectId="1167" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
         <Item prefabName="PF_PET_Rig01_Pheonix01" />
