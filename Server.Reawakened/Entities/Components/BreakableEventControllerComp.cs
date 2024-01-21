@@ -11,6 +11,8 @@ using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Entities.Stats;
 using SmartFoxClientAPI.Data;
 using Room = Server.Reawakened.Rooms.Room;
+using Server.Base.Core.Abstractions;
+using Server.Reawakened.Entities.Entity.Enemies;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -42,7 +44,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             else if (entity.Id == Id && entity is BaseSpawnerControllerComp spawner)
             {
                 _spawner = spawner;
-                _health = 80;
+                _health = _spawner.Health;
                 _isSpawner = true;
             }
         }

@@ -48,6 +48,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("openVines", "", OpenVines));
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
+        AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -173,6 +174,21 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
                     continue;
 
                 triggerEntity.Trigger(true);
+            }
+        }
+
+        return true;
+    }
+
+    private bool ForceSpawners(Player player, string[] args)
+    {
+        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+        {
+            if (entityComponent is BaseSpawnerControllerComp spawner)
+            {
+                var spawn = new Spawn_SyncEvent(spawner.Id.ToString(), player.Room.Time, 1);
+
+                player.Room.SendSyncEvent(spawn);
             }
         }
 

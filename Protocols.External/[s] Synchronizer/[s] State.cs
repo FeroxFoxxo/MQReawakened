@@ -8,6 +8,7 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
+using System;
 using System.Text;
 using WorldGraphDefines;
 
@@ -63,17 +64,26 @@ public class State : ExternalProtocol
                         chargeAttackEvent.Type);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
+                    
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
-                    var collisionTarget = int.Parse(notifyCollisionEvent.CollisionTarget);
+                    var collisionTarget = notifyCollisionEvent.CollisionTarget;
+                    var collisionId = 1;
 
-                    if (room.Entities.TryGetValue(collisionTarget, out var entityComponents))
+                    if (collisionTarget.Contains("_"))
+                    {
+                        collisionId = int.Parse(collisionTarget.Substring(0, collisionTarget.Length - 2));
+                    }
+                    else
+                        collisionId = int.Parse(collisionTarget);
+
+                    if (room.Entities.TryGetValue(collisionId, out var entityComponents))
                     {
                         foreach (var component in entityComponents)
                             component.NotifyCollision(notifyCollisionEvent, newPlayer);
                     }
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
-                            collisionTarget, room.GetUnknownComponentTypes(collisionTarget));
+                            collisionTarget, room.GetUnknownComponentTypes(collisionId));
                     break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
