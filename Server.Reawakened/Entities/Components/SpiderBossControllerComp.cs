@@ -57,7 +57,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
         GoToNextState(nextState);
     }
 
-    public void Destroy(Room room, int id)
+    public void Destroy(Room room, string id)
     {
         if (Teaser)
         {

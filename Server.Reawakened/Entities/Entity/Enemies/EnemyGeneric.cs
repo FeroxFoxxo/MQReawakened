@@ -9,5 +9,5 @@ using UnityEngine;
 namespace Server.Reawakened.Entities.Entity.Enemies;
 public class EnemyGeneric : Enemy
 {
-    public EnemyGeneric(Room room, int entityId, BaseComponent baseEntity) : base(room, entityId, baseEntity) { }
+    public EnemyGeneric(Room room, string entityId, BaseComponent baseEntity) : base(room, entityId, baseEntity) { }
 }

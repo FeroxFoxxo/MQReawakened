@@ -11,7 +11,7 @@ public abstract class BaseComponent
 
     public Room Room => Entity.Room;
 
-    public int Id => Entity.GameObject.ObjectInfo.ObjectId;
+    public string Id => Entity.GameObject.ObjectInfo.ObjectId;
     public string PrefabName => Entity.GameObject.ObjectInfo.PrefabName;
     public string ParentPlane => Entity.GameObject.ObjectInfo.ParentPlane;
     public RectModel Rectangle => Entity.GameObject.ObjectInfo.Rectangle;

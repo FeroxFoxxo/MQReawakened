@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Server.Reawakened.Entities.Entity.Enemies;
 public class EnemyOrchid : Enemy
 {
-    public EnemyOrchid(Room room, int entityId, BaseComponent baseEntity) : base(room, entityId, baseEntity) { }
+    public EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) : base(room, entityId, baseEntity) { }
 
     public override void Initialize()
     {

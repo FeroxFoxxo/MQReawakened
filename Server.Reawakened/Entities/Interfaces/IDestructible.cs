@@ -2,5 +2,5 @@
 
 public interface IDestructible
 {
-    public void Destroy(Room room, int id);
+    public void Destroy(Room room, string id);
 }

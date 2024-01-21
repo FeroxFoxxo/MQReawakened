@@ -28,29 +28,26 @@ public class Room : Timer
     private readonly ServerRConfig _config;
     private readonly Level _level;
 
-    public HashSet<int> GameObjectIds;
-    public HashSet<int> KilledObjects;
+    public HashSet<string> GameObjectIds;
 
-    public Dictionary<int, Player> Players;
-    public Dictionary<int, List<BaseComponent>> Entities;
-    public Dictionary<int, ProjectileEntity> Projectiles;
-    public Dictionary<int, BaseCollider> Colliders;
-    public readonly Dictionary<int, Enemy> Enemies;
+    public Dictionary<string, Player> Players;
+    public Dictionary<string, List<BaseComponent>> Entities;
+    public Dictionary<string, ProjectileEntity> Projectiles;
+    public Dictionary<string, BaseCollider> Colliders;
+    public readonly Dictionary<string, Enemy> Enemies;
     public ILogger<Room> Logger;
 
     public Dictionary<string, PlaneModel> Planes;
-    public Dictionary<int, List<string>> UnknownEntities;
+    public Dictionary<string, List<string>> UnknownEntities;
 
     public SpawnPointComp DefaultSpawn { get; set; }
     public SpawnPointComp CheckpointSpawn { get; set; }
-    public int CheckpointId { get; set; }
+    public string CheckpointId { get; set; }
     public LevelInfo LevelInfo => _level.LevelInfo;
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
 
     public IServiceProvider Services { get; }
-
-    public int ProjectileCount;
 
     public Room(
         int roomId, Level level, ServerRConfig config, TimerThread timerThread,
@@ -58,7 +55,6 @@ public class Room : Timer
     ) : base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
         _roomLock = new object();
-        KilledObjects = [];
 
         _roomId = roomId;
         _config = config;
@@ -76,9 +72,9 @@ public class Room : Timer
 
         Planes = LevelInfo.LoadPlanes(_config);
         Entities = this.LoadEntities(services, out UnknownEntities);
-        Projectiles = new Dictionary<int, ProjectileEntity>();
+        Projectiles = new Dictionary<string, ProjectileEntity>();
         Colliders = this.LoadColliders(LevelInfo, _config);
-        Enemies = new Dictionary<int, Enemy>();
+        Enemies = new Dictionary<string, Enemy>();
 
         foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects.Values)
@@ -137,7 +133,7 @@ public class Room : Timer
     public void ResetCheckpoints()
     {
         CheckpointSpawn = null;
-        CheckpointId = 0;
+        CheckpointId = string.Empty;
     }
 
     public override void OnTick()
@@ -148,8 +144,8 @@ public class Room : Timer
 
         foreach (var entityComponent in entitiesCopy)
         {
-            if (!IsObjectKilled(entityComponent.Id))
-                entityComponent.Update();
+            //if (!IsObjectKilled(entityComponent.Id))
+            entityComponent.Update();
         }
 
         foreach (var projectile in projectilesCopy)
@@ -164,11 +160,11 @@ public class Room : Timer
             player.Remove(Logger);
     }
 
-    public bool IsObjectKilled(int objectId)
-    {
-        lock (_roomLock)
-            return KilledObjects.Contains(objectId);
-    }
+    //public bool IsObjectKilled(int objectId)
+    //{
+    //    lock (_roomLock)
+    //        return KilledObjects.Contains(objectId);
+    //}
 
     public void GroupMemberRoomChanged(Player player)
     {
@@ -197,14 +193,14 @@ public class Room : Timer
         {
             var gameObjectId = 1;
 
-            while (GameObjectIds.Contains(gameObjectId))
+            while (GameObjectIds.Contains(gameObjectId + "_Player"))
                 gameObjectId++;
 
-            GameObjectIds.Add(gameObjectId);
+            GameObjectIds.Add(gameObjectId + "_Player");
 
-            currentPlayer.TempData.GameObjectId = gameObjectId;
+            currentPlayer.TempData.GameObjectId = gameObjectId + "_Player";
 
-            Players.Add(gameObjectId, currentPlayer);
+            Players.Add(gameObjectId + "_Player", currentPlayer);
 
             GroupMemberRoomChanged(currentPlayer);
 
@@ -284,8 +280,8 @@ public class Room : Timer
         Logger.LogDebug(
             "Spawning {CharacterName} at object '{Object}' (spawn '{SpawnPoint}') for room id '{NewRoom}'.",
             character.Data.CharacterName,
-            spawnPoint.Id != 0 ? spawnPoint.Id : "DEFAULT",
-            character.LevelData.SpawnPointId != 0 ? character.LevelData.SpawnPointId : "DEFAULT",
+            spawnPoint.Id != string.Empty ? spawnPoint.Id : "DEFAULT",
+            character.LevelData.SpawnPointId != string.Empty ? character.LevelData.SpawnPointId : "DEFAULT",
             character.LevelData.LevelId
         );
 
@@ -346,7 +342,7 @@ public class Room : Timer
             if (spawnPoint != null)
                 return spawnPoint;
 
-        var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index == character.LevelData.SpawnPointId);
+        var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index.ToString() == character.LevelData.SpawnPointId);
 
         return indexSpawn ?? (BaseComponent) DefaultSpawn;
     }

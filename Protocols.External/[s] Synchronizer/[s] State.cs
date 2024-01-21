@@ -44,7 +44,7 @@ public class State : ExternalProtocol
         if (ServerConfig.LogSyncState)
             Logger.LogDebug("Found state: {State}", syncEvent.Type);
 
-        var entityId = int.Parse(syncEvent.TargetID);
+        var entityId = syncEvent.TargetID;
 
         if (room.Players.TryGetValue(entityId, out var newPlayer))
         {
@@ -67,23 +67,15 @@ public class State : ExternalProtocol
                     
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
                     var collisionTarget = notifyCollisionEvent.CollisionTarget;
-                    var collisionId = 1;
 
-                    if (collisionTarget.Contains("_"))
-                    {
-                        collisionId = int.Parse(collisionTarget.Substring(0, collisionTarget.Length - 2));
-                    }
-                    else
-                        collisionId = int.Parse(collisionTarget);
-
-                    if (room.Entities.TryGetValue(collisionId, out var entityComponents))
+                    if (room.Entities.TryGetValue(collisionTarget, out var entityComponents))
                     {
                         foreach (var component in entityComponents)
                             component.NotifyCollision(notifyCollisionEvent, newPlayer);
                     }
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
-                            collisionTarget, room.GetUnknownComponentTypes(collisionId));
+                            collisionTarget, room.GetUnknownComponentTypes(collisionTarget));
                     break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
@@ -177,10 +169,10 @@ public class State : ExternalProtocol
                 LogEvent(syncEvent, entityId, room);
     }
 
-    public void LogEvent(SyncEvent syncEvent, int entityId, Room room)
+    public void LogEvent(SyncEvent syncEvent, string entityId, Room room)
     {
         var uniqueType = "Unknown";
-        var uniqueIdentifier = entityId.ToString();
+        var uniqueIdentifier = entityId;
         var additionalInfo = string.Empty;
 
         if (room.Players.TryGetValue(entityId, out var newPlayer))
@@ -228,7 +220,7 @@ public class State : ExternalProtocol
                 syncEvent.Type, uniqueType, uniqueIdentifier, Player.CharacterName, additionalInfo, attributes);
     }
 
-    public void TraceSyncEventError(int entityId, SyncEvent syncEvent, LevelInfo levelInfo, string entityInfo)
+    public void TraceSyncEventError(string entityId, SyncEvent syncEvent, LevelInfo levelInfo, string entityInfo)
     {
         var builder = new StringBuilder()
             .AppendLine($"Entity: {entityId}")

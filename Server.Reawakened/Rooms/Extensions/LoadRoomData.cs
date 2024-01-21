@@ -20,10 +20,10 @@ public static class LoadRoomData
 {
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
 
-    public static Dictionary<int, BaseCollider> LoadColliders(this Room room, LevelInfo levelInfo, ServerRConfig config)
+    public static Dictionary<string, BaseCollider> LoadColliders(this Room room, LevelInfo levelInfo, ServerRConfig config)
     {
         var colliderInfoPath = Path.Join(config.XMLDirectory, "InternalColliders.xml");
-        var baseColliderList = new Dictionary<int, BaseCollider>();
+        var baseColliderList = new Dictionary<string, BaseCollider>();
         var xmlDocument = new XmlDocument();
         xmlDocument.Load(colliderInfoPath);
 
@@ -90,7 +90,7 @@ public static class LoadRoomData
                 foreach (var collider in colliderList)
                 {
                     i--;
-                    baseColliderList.Add(i, new TCCollider(collider, room));
+                    baseColliderList.Add(i.ToString(), new TCCollider(collider, room));
                 }
             }
         return baseColliderList;
@@ -146,13 +146,13 @@ public static class LoadRoomData
 
         return planes;
     }
-    public static Dictionary<int, List<BaseComponent>> LoadEntities(this Room room, IServiceProvider services,
-    out Dictionary<int, List<string>> unknownEntities)
+    public static Dictionary<string, List<BaseComponent>> LoadEntities(this Room room, IServiceProvider services,
+    out Dictionary<string, List<string>> unknownEntities)
     {
         var reflectionUtils = services.GetRequiredService<ReflectionUtils>();
         var fileLogger = services.GetRequiredService<FileLogger>();
 
-        var entities = new Dictionary<int, List<BaseComponent>>();
+        var entities = new Dictionary<string, List<BaseComponent>>();
         unknownEntities = [];
 
         if (room.Planes == null)
@@ -290,7 +290,7 @@ public static class LoadRoomData
         return entities;
     }
 
-    public static Dictionary<int, T> GetComponentsOfType<T>(this Room room) where T : class
+    public static Dictionary<string, T> GetComponentsOfType<T>(this Room room) where T : class
     {
         var type = typeof(T);
 
@@ -305,7 +305,7 @@ public static class LoadRoomData
         return [];
     }
 
-    public static string GetUnknownComponentTypes(this Room room, int id)
+    public static string GetUnknownComponentTypes(this Room room, string id)
     {
         var entityInfo = new Dictionary<string, IEnumerable<string>>();
 

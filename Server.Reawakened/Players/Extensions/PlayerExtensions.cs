@@ -242,7 +242,7 @@ public static class PlayerExtensions
         }
     }
 
-    public static void CheckObjective(this Player player, ObjectiveEnum type, int gameObjectId, string prefabName, int count)
+    public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName, int count)
     {
         if (count <= 0)
             return;
@@ -268,7 +268,7 @@ public static class PlayerExtensions
 
                 if (objective.GameObjectId > 0)
                 {
-                    if (objective.GameObjectId != gameObjectId)
+                    if (!objective.GameObjectId.Equals(gameObjectId))
                         continue;
                 }
                 else

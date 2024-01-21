@@ -20,7 +20,7 @@ public static class CharacterInventoryExtensions
 
         gottenItem.Count -= count;
 
-        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId, item.PrefabName, gottenItem.Count);
+        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count);
     }
 
     public static void AddItem(this Player player, ItemDescription item, int count)
@@ -41,7 +41,7 @@ public static class CharacterInventoryExtensions
 
         gottenItem.Count += count;
 
-        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId, item.PrefabName, gottenItem.Count);
+        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count);
     }
 
     public static void AddKit(this CharacterModel characterData, List<ItemDescription> items, int count)

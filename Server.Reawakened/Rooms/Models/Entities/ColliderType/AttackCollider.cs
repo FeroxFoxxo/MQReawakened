@@ -16,7 +16,7 @@ public class AttackCollider : BaseCollider
     public Player Owner;
     public int Damage;
     public Elemental Type;
-    public AttackCollider(int id, Vector3Model position, float sizeX, float sizeY, string plane, Player player, int damage, Elemental type, float lifeTime) : base(id, position, sizeX, sizeY, plane, player.Room, "attack")
+    public AttackCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Player player, int damage, Elemental type, float lifeTime) : base(id, position, sizeX, sizeY, plane, player.Room, "attack")
     {
         Owner = player;
         Damage = damage;
@@ -24,10 +24,10 @@ public class AttackCollider : BaseCollider
         LifeTime = lifeTime;
     }
 
-    public override int[] IsColliding(bool isAttack)
+    public override string[] IsColliding(bool isAttack)
     {
         var roomList = Room.Colliders.Values.ToList();
-        List<int> collidedWith = new List<int>();
+        List<string> collidedWith = new List<string>();
 
         if (isAttack)
         {

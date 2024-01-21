@@ -27,7 +27,7 @@ public class ChooseQuestReward : ExternalProtocol
         if (questRewardId != -1)
             Logger.LogError("[Vendor {NpcId}] Unknown quest reward id: {RewardId}", vendorId, questRewardId);
 
-        var npc = Player.Room.Entities[vendorId].FirstOrDefault(x => x is NPCControllerComp);
+        var npc = Player.Room.Entities[vendorId.ToString()].FirstOrDefault(x => x is NPCControllerComp);
 
         if (npc is not null)
         {

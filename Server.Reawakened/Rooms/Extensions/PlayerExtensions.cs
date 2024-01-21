@@ -36,7 +36,7 @@ public static class PlayerExtensions
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelData.LevelId ?? -1;
 
-    public static void SentEntityTriggered(this Room room, int id, Player player, bool success, bool active)
+    public static void SentEntityTriggered(this Room room, string id, Player player, bool success, bool active)
     {
         var collectedEvent =
             new Trigger_SyncEvent(id.ToString(), room.Time, success, player.GameObjectId.ToString(), active);

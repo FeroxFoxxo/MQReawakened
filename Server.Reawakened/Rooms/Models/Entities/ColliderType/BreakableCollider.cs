@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
 public class BreakableCollider : BaseCollider
 {
-    public BreakableCollider(int id, Vector3Model position, float sizeX, float sizeY, string plane, Room room) : base(id, position, sizeX, sizeY, plane, room, "breakable") { }
+    public BreakableCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room) : base(id, position, sizeX, sizeY, plane, room, "breakable") { }
 
     public override void SendCollisionEvent(BaseCollider received)
     {

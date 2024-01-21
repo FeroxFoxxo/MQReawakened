@@ -13,7 +13,7 @@ public class EnemyPincer : Enemy
     public float AggroSpeed;
     public float TargetPosX;
 
-    public EnemyPincer(Room room, int entityId, BaseComponent baseEntity) : base(room, entityId, baseEntity) { }
+    public EnemyPincer(Room room, string entityId, BaseComponent baseEntity) : base(room, entityId, baseEntity) { }
 
     public override void Initialize()
     {

@@ -70,7 +70,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             Destroy(Room, Id);
         }
     }
-    public void Destroy(Room room, int id)
+    public void Destroy(Room room, string id)
     {
         room.Entities.Remove(id);
         room.Enemies.Remove(id);

@@ -56,7 +56,7 @@ public class NPCControllerComp : Component<NPCController>
         NameId = -1;
         NpcType = NpcType.Unknown;
 
-        VendorInfo = VendorCatalog.GetVendorById(Id);
+        VendorInfo = VendorCatalog.GetVendorById(int.Parse(Id));
 
         if (VendorInfo != null)
         {
@@ -65,13 +65,13 @@ public class NPCControllerComp : Component<NPCController>
         }
 
         GiverQuests = [..
-            QuestCatalog.GetQuestGiverById(Id)
+            QuestCatalog.GetQuestGiverById(int.Parse(Id))
                 .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
                 .OrderBy(x => x.Id)
         ];
 
         ValidatorQuests = [..
-            QuestCatalog.GetQuestValidatorById(Id)
+            QuestCatalog.GetQuestValidatorById(int.Parse(Id))
                 .Where(x => x.ValidatorLevelId == Room.LevelInfo.LevelId)
                 .OrderBy(x => x.Id)
         ];
@@ -90,7 +90,7 @@ public class NPCControllerComp : Component<NPCController>
                       .First();
         }
 
-        DialogInfo = DialogCatalog.GetDialogById(Room.LevelInfo.LevelId, Id);
+        DialogInfo = DialogCatalog.GetDialogById(Room.LevelInfo.LevelId, int.Parse(Id));
 
         if (DialogInfo != null && NpcType == NpcType.Unknown)
         {
@@ -271,7 +271,7 @@ public class NPCControllerComp : Component<NPCController>
                         if (objective.CountLeft > 1 ||
                             objective.ObjectiveType != ObjectiveEnum.Talkto ||
                             objective.GameObjectLevelId != Room.LevelInfo.LevelId ||
-                            objective.GameObjectId != Id
+                            !objective.GameObjectId.Equals(Id)
                         )
                         {
                             canSendQuestComplete = false;
@@ -431,7 +431,7 @@ public class NPCControllerComp : Component<NPCController>
         var quest = QuestCatalog.GetQuestData(questStatus.Id);
         var questName = quest.Name;
 
-        if (quest.ValidatorGoId != quest.QuestGiverGoId && quest.ValidatorGoId == Id)
+        if (quest.ValidatorGoId != quest.QuestGiverGoId && quest.ValidatorGoId.Equals(Id))
             questName += "validator";
 
         if (DialogRewrites.Rewrites.TryGetValue(questName, out var rewrittenName))

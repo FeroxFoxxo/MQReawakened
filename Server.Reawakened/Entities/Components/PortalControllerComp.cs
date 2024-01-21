@@ -36,7 +36,7 @@ public class PortalControllerComp : Component<PortalController>
         var portalId = (int)portal.EventDataList[0];
 
         if (portalId == 0)
-            portalId = Id;
+            portalId = int.Parse(Id);
 
         var levelId = player.Room.LevelInfo.LevelId;
 
@@ -50,21 +50,21 @@ public class PortalControllerComp : Component<PortalController>
 
         var node = WorldGraph.GetDestNodeFromPortal(levelId, portalId);
 
-        int spawnId;
+        string spawnId;
 
         if (node != null)
         {
-            spawnId = node.ToSpawnID;
+            spawnId = node.ToSpawnID.ToString();
             Logger.LogDebug("Node found! Portal ID: '{Portal}'. Spawn ID: '{Spawn}'.", node.PortalID, node.ToSpawnID);
         }
         else
         {
-            spawnId = portal.EventDataList.Count < 4 ? 0 : int.Parse(portal.SpawnPointID);
+            spawnId = portal.EventDataList.Count < 4 ? "" : portal.SpawnPointID;
 
             Logger.LogError("Could not find node for '{Old}' -> '{New}' for portal {PortalId}.", levelId, newLevelId, portalId);
         }
 
-        if (levelId == newLevelId && character.LevelData.SpawnPointId == spawnId)
+        if (levelId == newLevelId && character.LevelData.SpawnPointId.Equals(spawnId))
         {
             Logger.LogError("Attempt made to teleport to the same portal! Skipping...");
             return;

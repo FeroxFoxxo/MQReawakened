@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
 public class EnemyCollider : BaseCollider
 {
-    public EnemyCollider(int id, Vector3Model position, float sizeX, float sizeY, string plane, Room room) : base(id, position, sizeX, sizeY, plane, room, "enemy") { }
+    public EnemyCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room) : base(id, position, sizeX, sizeY, plane, room, "enemy") { }
 
     public override void SendCollisionEvent(BaseCollider received)
     {

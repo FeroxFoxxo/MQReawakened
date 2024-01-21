@@ -10,5 +10,5 @@ using UnityEngine;
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
 public class DefaultCollider : BaseCollider
 {
-    public DefaultCollider(int id, Vector3Model position, float sizeX, float sizeY, string plane, Room room) : base(id, position, sizeX, sizeY, plane, room, "default") { }
+    public DefaultCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room) : base(id, position, sizeX, sizeY, plane, room, "default") { }
 }

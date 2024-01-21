@@ -178,7 +178,7 @@ public class UseSlot : ExternalProtocol
     private class BombData()
     {
         public string PrefabName { get; set; }
-        public int ObjectId { get; set; }
+        public string ObjectId { get; set; }
         public BaseComponent Component { get; set; }
     }
 
@@ -221,10 +221,10 @@ public class UseSlot : ExternalProtocol
     private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
         var rand = new System.Random();
-        var prjId = Math.Abs(rand.Next());
+        string prjId = Math.Abs(rand.Next()).ToString();
 
         while (Player.Room.GameObjectIds.Contains(prjId))
-            prjId = Math.Abs(rand.Next());
+            prjId = Math.Abs(rand.Next()).ToString();
 
         // Magic number 10 is damage for now, until we add a serverside stat handler
         var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig.RoomTickRate);

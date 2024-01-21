@@ -17,7 +17,7 @@ public class GoToEvent : ExternalProtocol
         var destinationIds = message[5].Split('|');
 
         var levelId = int.Parse(destinationIds[0]);
-        var spawnId = int.Parse(destinationIds[1]);
+        var spawnId = destinationIds[1];
 
         character.SetLevel(levelId, spawnId, Logger);
 

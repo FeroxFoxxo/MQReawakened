@@ -65,8 +65,8 @@ public class FinishedMinigame : ExternalProtocol
         var rdmBananaReward = new Random().Next(7, 11 * Player.Character.Data.GlobalLevel);
         var xpReward = Player.Character.Data.ReputationForNextLevel / 11;
 
-        var lootedItems = ArenaModel.GrantLootedItems(LootCatalog, minigameId);
-        var lootableItems = ArenaModel.GrantLootableItems(LootCatalog, minigameId);
+        var lootedItems = ArenaModel.GrantLootedItems(LootCatalog, minigameId.ToString());
+        var lootableItems = ArenaModel.GrantLootableItems(LootCatalog, minigameId.ToString());
 
         var sb = new SeparatedStringBuilder('<');
 

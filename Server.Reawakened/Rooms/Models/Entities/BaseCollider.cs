@@ -7,12 +7,12 @@ public abstract class BaseCollider
 {
     public Room Room;
     public Vector3 Position;
-    public int Id;
+    public string Id;
     public string Plane;
     public string ColliderType;
     public RectModel ColliderBox;
 
-    public BaseCollider(int id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, string colliderType)
+    public BaseCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, string colliderType)
     {
         // Builder for projectiles
         Id = id;
@@ -33,7 +33,7 @@ public abstract class BaseCollider
     }
     public BaseCollider(Collider collider, Room room)
     {
-        Id = 0;
+        Id = string.Empty;
         Position = new Vector3(collider.Position.x, collider.Position.y, 0);
         Plane = collider.Plane;
         Room = room;
@@ -41,7 +41,7 @@ public abstract class BaseCollider
         ColliderBox = new RectModel(Position.x, Position.y + 0.1f, collider.Width, collider.Height);
     }
 
-    public virtual int[] IsColliding(bool isAttack)
+    public virtual string[] IsColliding(bool isAttack)
     {
         return [];
     }

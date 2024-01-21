@@ -25,7 +25,7 @@ public abstract class Enemy : IDestructible
 {
     public bool Init;
     public Room Room;
-    public int Id;
+    public string Id;
     public Vector3 SpawnPosition;
     public Vector3 Position;
     public Rect DetectionRange;
@@ -49,7 +49,7 @@ public abstract class Enemy : IDestructible
 
     public WorldGraph WorldGraph { get; set; }
 
-    public Enemy(Room room, int entityId, BaseComponent baseEntity)
+    public Enemy(Room room, string entityId, BaseComponent baseEntity)
     {
         Entity = baseEntity;
         Room = room;
@@ -269,7 +269,7 @@ public abstract class Enemy : IDestructible
         return launch;
     }
 
-    public void Destroy(Room room, int id)
+    public void Destroy(Room room, string id)
     {
         room.Entities.Remove(id);
         room.Enemies.Remove(id);

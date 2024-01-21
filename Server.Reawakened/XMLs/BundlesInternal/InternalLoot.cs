@@ -15,7 +15,7 @@ public class InternalLoot : IBundledXml<InternalLoot>
     public ILogger<InternalLoot> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<int, LootModel> LootCatalog;
+    public Dictionary<string, LootModel> LootCatalog;
 
     public void InitializeVariables() => LootCatalog = [];
 
@@ -40,7 +40,7 @@ public class InternalLoot : IBundledXml<InternalLoot>
                 {
                     if (lootInfo.Name != "LootInfo") continue;
 
-                    var objectId = -1;
+                    var objectId = string.Empty;
                     var doWheel = true;
                     var bananaRewards = new List<BananaReward>();
                     var itemRewards = new List<ItemReward>();
@@ -50,7 +50,7 @@ public class InternalLoot : IBundledXml<InternalLoot>
                         switch (lootAttribute.Name)
                         {
                             case "objectId":
-                                objectId = int.Parse(lootAttribute.Value);
+                                objectId = lootAttribute.Value;
                                 continue;
                             case "doLootWheel":
                                 doWheel = doWheel.GetBoolValue(lootAttribute.Value, Logger);
@@ -111,6 +111,6 @@ public class InternalLoot : IBundledXml<InternalLoot>
     {
     }
 
-    public LootModel GetLootById(int objectId) =>
-        LootCatalog.TryGetValue(objectId, out var lootInfo) ? lootInfo : LootCatalog[0];
+    public LootModel GetLootById(string objectId) =>
+        LootCatalog.TryGetValue(objectId, out var lootInfo) ? lootInfo : new LootModel("", [], [], false, 1);
 }

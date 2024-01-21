@@ -10,11 +10,11 @@ namespace Server.Reawakened.Players.Helpers;
 
 public static class PlayerLootHandler
 {
-    public static void GrantLoot(this Player player, int gameObjectId, InternalLoot lootCatalog,
+    public static void GrantLoot(this Player player, string gameObjectId, InternalLoot lootCatalog,
         ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
         var loot = lootCatalog.GetLootById(gameObjectId);
-        if (loot.ObjectId <= 0)
+        if (loot.ObjectId.Equals(""))
             logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);
 
         if (loot.BananaRewards.Count > 0)
@@ -36,7 +36,7 @@ public static class PlayerLootHandler
         player.AddBananas(totalBananas);
     }
 
-    private static void GrantLootItems(this List<ItemReward> items, int objectId, Player player, ItemCatalog itemCatalog, bool doWheel, int weightRange)
+    private static void GrantLootItems(this List<ItemReward> items, string objectId, Player player, ItemCatalog itemCatalog, bool doWheel, int weightRange)
     {
         var random = new Random();
 
@@ -83,7 +83,7 @@ public static class PlayerLootHandler
         player.SendUpdatedInventory(false);
     }
 
-    private static void SendLootWheel(Player player, string itemsLooted, string lootableItems, int gameObjectId)
+    private static void SendLootWheel(Player player, string itemsLooted, string lootableItems, string gameObjectId)
         => player.SendXt("iW", itemsLooted, lootableItems, gameObjectId, 0);
 
 }
