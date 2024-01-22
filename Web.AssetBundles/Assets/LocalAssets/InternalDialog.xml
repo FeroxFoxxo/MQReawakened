@@ -242,9 +242,7 @@
     <Level id="564">
         <!-- SpongeBob's Amusement Park -->
         <NPC objectId="26294091" name="Barry Koda" descriptionId="0">
-            <Dialog dialogId="1600" coversationId="4065" minimumReputation="1" />
             <Dialog dialogId="1600" coversationId="4066" minimumReputation="1" />
-            <Dialog dialogId="1600" coversationId="4067" minimumReputation="1" />
             <Dialog dialogId="1601" coversationId="4068" minimumReputation="1" />
             <Dialog dialogId="1601" coversationId="4069" minimumReputation="1" />
             <Dialog dialogId="1601" coversationId="4070" minimumReputation="1" />
