@@ -155,6 +155,14 @@ public class NPCControllerComp : Component<NPCController>
                     default:
                         break;
                 }
+
+                player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
+
+                var newStatus = GetQuestStatus(player.Character);
+
+                if (newStatus is NPCStatus.QuestCompleted or NPCStatus.QuestAvailable)
+                    TalkToNpc(player);
+
                 break;
             case NpcType.Dialog:
                 SendDialog(player);
