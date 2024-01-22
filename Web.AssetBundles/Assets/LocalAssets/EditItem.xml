@@ -13,4 +13,9 @@
         <EditAttribute key="currency" value="NickCash"/>
         <EditAttribute key="price" value="1"/>
     </Item>
+    <Item name="ABIL_SmokeBomb01">
+        <EditAttribute key="ingamedescription" value="1000124"/>
+        <EditAttribute key="item_level" value="15"/>
+        <EditAttribute key="tribe" value="Shadow"/>
+    </Item>
 </EditedItems>
