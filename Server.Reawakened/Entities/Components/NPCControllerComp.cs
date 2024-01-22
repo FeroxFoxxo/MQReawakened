@@ -340,9 +340,10 @@ public class NPCControllerComp : Component<NPCController>
                 return true;
             }
 
-        Logger.LogTrace("[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS]", quest.Name, quest.Id);
+        if (previousQuests.Count != 0)
+            Logger.LogTrace("[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS]", quest.Name, quest.Id);
 
-        return false;
+        return previousQuests.Count == 0;
     }
 
     public void ValidateQuest(Player player)

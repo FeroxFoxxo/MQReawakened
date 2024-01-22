@@ -6,6 +6,7 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.Rooms.Services;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -75,6 +76,7 @@ public static class LoadRoomData
     {
         var reflectionUtils = services.GetRequiredService<ReflectionUtils>();
         var fileLogger = services.GetRequiredService<FileLogger>();
+        var classCopier = services.GetRequiredService<ClassCopier>();
 
         var entities = new Dictionary<int, List<BaseComponent>>();
         unknownEntities = [];
@@ -95,13 +97,6 @@ public static class LoadRoomData
         string translateComponent;
         string[] translatedArray;
 
-        var attributes = new List<Type>() {
-                            typeof(MQAttribute),
-                            typeof(MQConstant),
-                            typeof(MQAttributeSerializePrefabValue),
-                            typeof(MQAttributeGlobalPerPrefab)
-                        };
-
         foreach (var plane in room.Planes)
             foreach (var entity in plane.Value.GameObjects)
                 foreach (var component in entity.Value.ObjectInfo.Components)
@@ -111,20 +106,10 @@ public static class LoadRoomData
 
                     if (entityComponents.TryGetValue(mqType.FullName!, out var internalType))
                     {
-                        var dataObj = RuntimeHelpers.GetUninitializedObject(mqType);
+                        var newEntity = classCopier.GetClassAndInfo(mqType);
 
-                        var ctor = mqType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, []);
-
-                        try
-                        {
-                            ctor.Invoke(dataObj, null);
-                        }
-                        catch(TargetInvocationException)
-                        { }
-
-                        var fields = mqType.GetFields()
-                            .Where(prop => attributes.Any(a => prop.IsDefined(a, false)))
-                            .ToArray();
+                        var dataObj = newEntity.Key;
+                        var fields = newEntity.Value;
 
                         foreach (var componentValue in component.Value.ComponentAttributes.Where(componentValue =>
                                      !string.IsNullOrEmpty(componentValue.Value)))
