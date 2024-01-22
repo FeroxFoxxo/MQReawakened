@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Extensions;
 
 namespace Protocols.External._h__HotbarHandler;
 

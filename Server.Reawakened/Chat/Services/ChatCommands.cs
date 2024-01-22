@@ -12,14 +12,13 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.RegularExpressions;
 
 namespace Server.Reawakened.Chat.Services;
 
 public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
-    WorldHandler worldHandler, WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves) : IService
+    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
 
@@ -358,7 +357,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         var tribe = levelInfo.Tribe;
 
         player.DiscoverTribe(tribe);
-        player.SendLevelChange(worldHandler, worldGraph);
+        player.SendLevelChange();
 
         Log(
             $"Successfully set character {character.Id}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",

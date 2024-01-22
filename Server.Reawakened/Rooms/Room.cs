@@ -20,11 +20,11 @@ namespace Server.Reawakened.Rooms;
 
 public class Room : Timer
 {
-    private object _roomLock;
+    private readonly object _roomLock;
 
-    private int _roomId;
-    private ServerRConfig _config;
-    private Level _level;
+    private readonly int _roomId;
+    private readonly ServerRConfig _config;
+    private readonly Level _level;
 
     public HashSet<int> GameObjectIds;
     public HashSet<int> KilledObjects;
@@ -174,6 +174,9 @@ public class Room : Timer
             if (LevelInfo.LevelId == 0)
                 return;
 
+            if (currentPlayer.TempData.ArenaModel == null)
+                currentPlayer.TempData.ArenaModel = new ArenaModel();
+
             // USER ENTER
 
             foreach (var roomCharacter in Players.Values)
@@ -215,6 +218,7 @@ public class Room : Timer
         }
         else
         {
+            player.TempData.ArenaModel = null;
             _level.Rooms.Remove(_roomId);
             Stop();
         }
@@ -305,13 +309,10 @@ public class Room : Timer
 
         var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index == character.LevelData.SpawnPointId);
 
-        if (indexSpawn != null)
-            return indexSpawn;
-
-        return DefaultSpawn;
+        return indexSpawn ?? (BaseComponent) DefaultSpawn;
     }
 
-public void DumpPlayersToLobby()
+    public void DumpPlayersToLobby()
     {
         foreach (var player in Players.Values)
             player.DumpToLobby();

@@ -59,7 +59,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         };
 
         return new LevelInfo(name, name, name, levelId,
-            0, 0, LevelType.Unknown, TribeType._Invalid);
+            0, 0, A2m.Server.LevelType.Unknown, TribeType._Invalid);
     }
 
     public Room GetRoomFromLevelId(int levelId, Player player)
@@ -102,4 +102,11 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
         return room;
     }
+
+    public List<string> GetSurroundingLevels(LevelInfo levelInfo) =>
+        worldGraph.GetLevelWorldGraphNodes(levelInfo.LevelId)
+            .Where(x => x.ToLevelID != x.LevelID)
+            .Select(x => worldGraph.GetInfoLevel(x.ToLevelID).Name)
+            .Distinct()
+            .ToList();
 }

@@ -87,11 +87,11 @@ public class InternalLoot : IBundledXml<InternalLoot>
                                             continue;
                                     }
 
-                                var itemList = reward.GetXmlItems();
+                                var itemList = reward.GetXmlLootItems();
 
                                 foreach (var item in itemList)
                                 {
-                                    weightRange += item.Weight;
+                                    weightRange += item.Key;
                                 }
 
                                 itemRewards.Add(new ItemReward(itemList, rewardAmount));

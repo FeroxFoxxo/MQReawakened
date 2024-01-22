@@ -8,7 +8,6 @@ public class ItemModel
     public int Count { get; set; }
     public int BindingCount { get; set; }
     public DateTime DelayUseExpiry { get; set; }
-    public int Weight { get; set; }
 
     public override string ToString()
     {
@@ -18,7 +17,6 @@ public class ItemModel
         sb.Append(Count);
         sb.Append(BindingCount);
         sb.Append(DelayUseExpiry.Equals(DateTime.MinValue) ? 0 : DelayUseExpiry.Ticks);
-        sb.Append(Weight);
 
         return sb.ToString();
     }

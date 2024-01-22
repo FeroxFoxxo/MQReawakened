@@ -17,7 +17,7 @@ public class DeleteCharacter : ExternalProtocol
         if (character != null)
             if (character.Data.UserUuid == Player.UserId)
             {
-                Player.DeleteCharacter(character.Id, CharacterHandler);
+                Player.DeleteCharacter(character.Id);
                 SendXt("cd", 0);
                 return;
             }
