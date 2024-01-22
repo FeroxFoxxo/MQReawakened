@@ -26,7 +26,7 @@ public static class PlayerHealExtensions
         var healValue = isRejuvenationPotion ? usedItem.ItemEffects[1].Value : usedItem.ItemEffects.FirstOrDefault().Value; //Rejuvenation Potion's initial heal value is stored as the second element in the ItemEffects list.
 
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities) //If healing staff, convert heal value.
-            healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealingStaffHealValue);
+            healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealAmount);
 
         var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
 
@@ -67,18 +67,11 @@ public static class PlayerHealExtensions
         }
     }
 
-    private class ItemHealOverTimeData
+    private class ItemHealOverTimeData(Player player, int overTimeHealValue, int totalTicks)
     {
-        public ItemHealOverTimeData(Player player, int overTimeHealValue, int totalTicks)
-        {
-            Player = player;
-            OverTimeHealValue = overTimeHealValue;
-            TotalTicks = totalTicks;
-        }
-
-        public Player Player { get; }
-        public int OverTimeHealValue { get; }
-        public int TotalTicks { get; }
+        public Player Player { get; } = player;
+        public int OverTimeHealValue { get; } = overTimeHealValue;
+        public int TotalTicks { get; } = totalTicks;
     }
 
     private static void OverTimeHealTicks(object itemData)

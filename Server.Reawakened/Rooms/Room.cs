@@ -9,6 +9,7 @@ using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Models.Arenas;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;

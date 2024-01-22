@@ -109,7 +109,8 @@ public class UseSlot : ExternalProtocol
         foreach (var effect in usedItem.ItemEffects)
             if (effect.TypeId == (int)ItemEffectType.Healing)
             {
-                Player.HealOnce(usedItem, ServerRConfig);
+                var effectType = (ItemEffectType) effect.TypeId;
+                Player.HealCharacter(usedItem, TimerThread, ServerRConfig, effectType);
                 Logger.LogInformation("Used healing item {ItemName} of effect typeID: {TypeID}", usedItem.ItemName, usedItem.ItemEffects.FirstOrDefault().TypeId);
             }
     }
@@ -203,7 +204,7 @@ public class UseSlot : ExternalProtocol
                 return;
 
             if (effect.Type is ItemEffectType.Healing)
-                Player.HealCharacter(usedItem, ServerRConfig);
+                Player.HealCharacter(usedItem, TimerThread, ServerRConfig, effect.Type);
 
             statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                 effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);

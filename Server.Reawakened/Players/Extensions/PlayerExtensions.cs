@@ -194,7 +194,10 @@ public static class PlayerExtensions
     public static void DeleteCharacter(this Player player, int id)
     {
         var characterHandler = player.DatabaseContainer.CharacterHandler;
+
         player.UserInfo.CharacterIds.Remove(id);
+
+        if (characterHandler.Data.ContainsKey(id))
         characterHandler.Data.Remove(id);
 
         player.UserInfo.LastCharacterSelected = player.UserInfo.CharacterIds.Count > 0
