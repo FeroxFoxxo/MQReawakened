@@ -20,7 +20,7 @@ public class AllAchievementController(CharacterHandler characterHandler,
             return NotFound();
 
         if (character.Data.UserUuid != _uuid)
-            return NotFound();
+            return Forbid();
 
         var random = new Random();
 
