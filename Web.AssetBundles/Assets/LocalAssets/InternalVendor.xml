@@ -329,4 +329,30 @@
         <Item prefabName="COL_RECIP_COM_DragonFish01_FH02" />
         <Item prefabName="COL_RECIP_COM_Indonesian01_LS02" />
     </Vendor>
+    <!-- SpongeBob's Amusement Park -->
+    <Vendor objectId="26294092" name="Finn" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1606" greetingConversationId="4082" leavingConversationId="4081">
+        <Item prefabName="PF_PET_Rig03_GaryBot01_02" />
+        <Item prefabName="PF_PET_Rig03_GaryBot01_03" />
+        <Item prefabName="PF_PET_Rig03_GaryBot01" />
+        <Item prefabName="Add_COM_SpongeBob02_W01" />
+        <Item prefabName="Add_COM_SpongeBob02_TS01" />
+        <Item prefabName="Add_COM_SpongeBob02_T01" />
+        <Item prefabName="ABIL_ColorTonic07" />
+        <Item prefabName="COL_PACK_NC_ColorTonic07" />
+        <Item prefabName="Add_COM_SpongeBob01_BP01" />
+        <Item prefabName="WPN_PRJ_SpongeBobPartyGun01" />
+        <Item prefabName="WPN_PRJ_SpongeBob02" />
+        <Item prefabName="Add_COM_SpongeBob01_S01" />
+    </Vendor>
+    <Vendor objectId="554" name="Karrp" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1607" greetingConversationId="4088" leavingConversationId="4087">
+        <Item prefabName="COL_FOOD_SpongeBob01" />
+        <Item prefabName="ABIL_ColorTonic07" />
+        <Item prefabName="COL_PACK_NC_ColorTonic07" />
+        <Item prefabName="COL_FOOD_SpongeBob02" />
+        <Item prefabName="COL_FOOD_SpongeBob04" />
+        <Item prefabName="COL_FOOD_SpongeBob03" />
+        <Item prefabName="COL_FOOD_SpongeBob06" />
+        <Item prefabName="COL_FOOD_SpongeBob07" />
+        <Item prefabName="COL_FOOD_SpongeBob08" />
+    </Vendor>
 </VendorCatalog>
