@@ -290,8 +290,6 @@ public static class PlayerExtensions
 
                 objective.CountLeft -= count;
 
-                player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
-
                 if (objective.CountLeft <= 0)
                 {
                     objective.CountLeft = 0;
@@ -306,6 +304,8 @@ public static class PlayerExtensions
 
                     hasObjComplete = true;
                 }
+                else
+                    player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
             }
 
             if (!quest.Objectives.Any(o => !o.Value.Completed) && hasObjComplete)

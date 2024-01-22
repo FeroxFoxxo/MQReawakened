@@ -240,9 +240,9 @@
         </NPC>
     </Level>
     <Level id="564">
-        <!-- SpongeBob's Amusement Park -->
+        <!--SpongeBob's Amusement Park-->
         <NPC objectId="26294091" name="Barry Koda" descriptionId="0">
-            <Dialog dialogId="1605" coversationId="4078" minimumReputation="1" />
+            <Dialog dialogId="1605" conversationId="4078" minimumReputation="1" />
         </NPC>
     </Level>
 </DialogCatalog>

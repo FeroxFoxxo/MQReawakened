@@ -44,15 +44,15 @@ public class WorldGraph : WorldGraphXML, IBundledXml<WorldGraph>
     public void FinalizeBundle() =>
         WorldGraphNodes = (Dictionary<int, List<DestNode>>)this.GetField<WorldGraphXML>("_worldGraphNodes");
 
-    public DestNode GetDestNodeFromPortal(int levelId, int portalId) =>
+    public DestNode GetDestinationNodeFromPortal(int levelId, int portalId) =>
         !WorldGraphNodes.TryGetValue(levelId, out var value)
             ? null
-            : value.Where(destNode => destNode.PortalID == portalId && destNode.ToLevelID != 0)
+            : value.Where(destinationNode => destinationNode.PortalID == portalId && destinationNode.ToLevelID != 0)
         .FirstOrDefault();
 
     public int GetLevelFromPortal(int levelId, int portalId)
     {
-        var node = GetDestNodeFromPortal(levelId, portalId);
+        var node = GetDestinationNodeFromPortal(levelId, portalId);
         return node == null ? 0 : node.ToLevelID;
     }
 }
