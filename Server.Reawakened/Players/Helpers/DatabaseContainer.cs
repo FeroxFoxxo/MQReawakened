@@ -6,13 +6,14 @@ using Server.Reawakened.XMLs.BundlesInternal;
 namespace Server.Reawakened.Players.Helpers;
 
 public class DatabaseContainer(WorldHandler worldHandler, CharacterHandler characterHandler,
-    QuestCatalog quests, InternalObjective objCatalog, ItemCatalog itemCatalog)
+    QuestCatalog quests, InternalObjective objCatalog, ItemCatalog itemCatalog, InternalAchievement internalAchievement)
 {
     public WorldHandler WorldHandler => worldHandler;
     public CharacterHandler CharacterHandler => characterHandler;
     public QuestCatalog Quests => quests;
     public InternalObjective Objectives => objCatalog;
     public ItemCatalog ItemCatalog => itemCatalog;
+    public InternalAchievement InternalAchievement => internalAchievement;
 
     public UserInfoHandler UserInfoHandler;
 

@@ -48,7 +48,7 @@ public static class PlayerLootHandler
         foreach (var itemReward in items)
         {
             foreach (var item in itemReward.Items)
-                lootableItems.Append(item.ItemId);
+                lootableItems.Append(item.Value.ItemId);
 
             var count = itemReward.RewardAmount;
 
@@ -59,14 +59,14 @@ public static class PlayerLootHandler
                 var selector = 0;
                 foreach (var item in itemReward.Items)
                 {
-                    randomWeight -= item.Weight;
+                    randomWeight -= item.Key;
                     if (randomWeight <= 0)
                         break;
                     else
                         selector++;
                 }
                 var chosenItem = itemReward.Items[selector];
-                gottenItems.Add(chosenItem);
+                gottenItems.Add(chosenItem.Value);
                 count--;
             }
         }

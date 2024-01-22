@@ -12,7 +12,6 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Events;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Players.Services;
@@ -20,7 +19,7 @@ namespace Server.Reawakened.Players.Services;
 public class EditCharacter(ServerConsole console, EventSink sink,
     ILogger<EditCharacter> logger, UserInfoHandler userInfoHandler,
     AccountHandler accountHandler, CharacterHandler characterHandler, WorldGraph worldGraph,
-    ServerRConfig config, NetStateHandler handler, WorldHandler worldHandler,
+    ServerRConfig config, NetStateHandler handler,
     ItemCatalog itemCatalog, PlayerEventSink playerEventSink,
     ChatCommands chatCommands) : IService
 {
@@ -150,7 +149,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
         if (handler.IsPlayerOnline(user.Id, out var player))
         {
             player.DiscoverTribe(tribe);
-            player.SendLevelChange(worldHandler, worldGraph);
+            player.SendLevelChange();
         }
         else
         {
