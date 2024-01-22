@@ -252,7 +252,6 @@
             <Dialog dialogId="1603" coversationId="4074" minimumReputation="1" />
             <Dialog dialogId="1603" coversationId="4075" minimumReputation="1" />
             <Dialog dialogId="1603" coversationId="4076" minimumReputation="1" />
-            <Dialog dialogId="1605" coversationId="4078" minimumReputation="1" />
         </NPC>
     </Level>
 </DialogCatalog>
