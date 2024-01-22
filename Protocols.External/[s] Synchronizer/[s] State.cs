@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Base.Core.Extensions;
 using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
@@ -122,7 +121,7 @@ public class State : ExternalProtocol
                     Player.Room.SendSyncEvent(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                              respawnPosition.X, respawnPosition.Y, respawnPosition.Z > 0));
 
-                    TimerThread.DelayCall(Player.SetInvincibleFalse, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
+                    TimerThread.DelayCall(Player.DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
                     break;
                 case SyncEvent.EventType.PhysicStatus:
                     foreach (var entity in room.Entities)

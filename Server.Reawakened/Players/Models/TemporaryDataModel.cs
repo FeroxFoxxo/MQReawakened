@@ -1,9 +1,7 @@
 ﻿using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Players.Models.Groups;
-using Server.Reawakened.Players.Models.Minigames;
 using Server.Reawakened.Players.Models.Trade;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Enums;
 
 namespace Server.Reawakened.Players.Models;
 

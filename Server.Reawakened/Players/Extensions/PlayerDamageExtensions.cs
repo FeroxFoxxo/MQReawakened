@@ -1,6 +1,5 @@
 ﻿using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 
@@ -19,7 +18,7 @@ public static class PlayerDamageExtensions
             player.Character.Data.CurrentLife, player.Character.Data.MaxLife, "Hurt"));
 
         player.TempData.Invincible = true;
-        timerThread.DelayCall(player.SetInvincibleFalse, player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
+        timerThread.DelayCall(player.DisableInvincibility, player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
     }
     public static void ApplyDamageByPercent(this Player player, Room room, double percentage, TimerThread timerThread)
     {
@@ -30,23 +29,14 @@ public static class PlayerDamageExtensions
         ApplyCharacterDamage(player, room, damage, timerThread);
     }
 
-    public static void ApplyDamageByObject(this Player player, Room room, int objectId, TimerThread timerThread)
-    {
+    public static void ApplyDamageByObject(this Player player, Room room, int _, TimerThread timerThread) =>
         //temporary code until enemy/hazard system is implemented
         ApplyDamageByPercent(player, room, .10, timerThread);
-    }
 
-    public static void SetInvincibleTrue(this Player player, object invincibleData)
+    public static void DisableInvincibility(this Player player, object invincibleData)
     {
         var playerData = (Player)invincibleData;
-        if (!playerData.TempData.Invincible)
-            playerData.TempData.Invincible = true;
-    }
-    public static void SetInvincibleFalse(this Player player, object invincibleData)
-    {
-        var playerData = (Player)invincibleData;
-        if (playerData.TempData.Invincible)
-            playerData.TempData.Invincible = false;
+        playerData.TempData.Invincible = false;
     }
 }
 
