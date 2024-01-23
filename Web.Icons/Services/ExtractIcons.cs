@@ -16,12 +16,15 @@ namespace Web.Icons.Services;
 public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBundleRwConfig aRwConfig,
     ILogger<ExtractIcons> logger, IServiceProvider services, ServerHandler serverHandler, ItemCatalog itemCatalog) : IService
 {
+    public List<string> FoundIcons { get; private set; }
+
     public void Initialize() => sink.AssetBundlesLoaded += ExtractAllIcons;
 
     private void ExtractAllIcons(AssetBundleLoadEventArgs bundleEvent)
     {
         var count = 0;
         var assets = new List<InternalAssetInfo>();
+        FoundIcons = [];
 
         foreach (var iconBankName in rConfig.IconBanks)
         {
@@ -72,9 +75,15 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
                 File.Copy(icon, Path.Combine(rConfig.UnknownItemsDirectory, nameWExten));
             }
         }
+
+        foreach (var icon in Directory.GetFiles(rConfig.IconDirectory))
+        {
+            var iconName = Path.GetFileNameWithoutExtension(icon);
+            FoundIcons.Add(iconName);
+        }
     }
 
-    public void ExtractIconsFrom(InternalAssetInfo asset, AssetBundleLoadEventArgs bundleEvent)
+    public void ExtractIconsFrom(InternalAssetInfo asset, AssetBundleLoadEventArgs _)
     {
         var manager = new AssetsManager();
         var assemblyLoader = new AssemblyLoader();
