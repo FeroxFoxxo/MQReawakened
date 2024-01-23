@@ -1,8 +1,15 @@
-﻿using Server.Reawakened.Entities.AbstractComponents;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Logging;
+using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Enums;
+using Server.Reawakened.Entities.Interfaces;
+using Server.Reawakened.Entities.Stats;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 using SmartFoxClientAPI.Data;
+using System.Text;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -51,55 +58,57 @@ public class TriggerArenaComp : TriggerCoopControllerComp<TriggerArena>
             TargetReward04LevelEditorID
         ];
 
-        _arenaEntities = [];
+        _arenaEntities = new List<string>();
     }
 
     public override void Update()
     {
         if(Active)
+        {
             ActiveArena();
+        }
+
     }
 
-    public void StartArena(Player _)
+    public void StartArena(Player player)
     {
         if (!Active)
         {
             foreach (var entity in TriggeredEntities)
             {
-                if (Room.Entities.TryGetValue(entity.ToString(), out var foundTrigger) && entity != 0)
+                if (Room.Entities.TryGetValue(entity.ToString(), out var foundTrigger) && !(entity == null || entity == 0))
                 {
                     foreach (var component in foundTrigger)
                     {
                         if (component is TriggerReceiverComp trigger)
                             trigger.Trigger(true);
-
                         // Add "PF_CRS_SpawnerBoss01" to config on cleanup
                         if (component is BaseSpawnerControllerComp spawner)
                         {
                             if (component.PrefabName != "PF_CRS_SpawnerBoss01")
+                            {
                                 _arenaEntities.Add(entity.ToString());
+                            }
 
                             // A Special surprise tool that'll help us later!
                             //var spawn = new Spawn_SyncEvent(spawner.Id, player.Room.Time, 1);
                             //player.Room.SendSyncEvent(spawn);
                         }
+
                     }
                 }
             }
 
             _timer = Room.Time + ActiveDuration;
-
             //Add to ServerRConfig eventually. This exists to stop the arena from regenerating if the spawners are defeated before it has finished initializing
             _minClearTime = Room.Time + 12;
         }
-
         Active = true;
     }
 
     public void StopArena(bool win)
     {
         Active = false;
-
         if (win)
         {
             Room.SendSyncEvent(new Trigger_SyncEvent(Id, Room.Time, true, GrabAnyPlayer(), false));
@@ -117,7 +126,6 @@ public class TriggerArenaComp : TriggerCoopControllerComp<TriggerArena>
         }
         else
             Room.SendSyncEvent(new Trigger_SyncEvent(Id, Room.Time, false, GrabAnyPlayer(), false));
-
         foreach (var entity in TriggeredEntities)
         {
             if (Room.Entities.TryGetValue(entity.ToString(), out var foundTrigger))
@@ -142,17 +150,21 @@ public class TriggerArenaComp : TriggerCoopControllerComp<TriggerArena>
     private string GrabAnyPlayer()
     {
         foreach (var player in Room.Players)
+        {
             return player.Value.GameObjectId;
-
+        }
         return "0";
     }
 
     private bool IsArenaComplete()
     {
         foreach (var entity in _arenaEntities)
-            if (Room.Entities.TryGetValue(entity.ToString(), out var _))
+        {
+            if (Room.Entities.TryGetValue(entity.ToString(), out var x))
+            {
                 return false;
-
+            }
+        }
         return true;
     }
 }

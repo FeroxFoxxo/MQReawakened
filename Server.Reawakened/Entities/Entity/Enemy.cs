@@ -1,4 +1,6 @@
-﻿using Server.Reawakened.Entities.AIBehavior;
+﻿using Server.Base.Core.Extensions;
+using Server.Reawakened.Configs;
+using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Stats;
 using Server.Reawakened.Players;
@@ -8,7 +10,15 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.Marshalling;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Server.Reawakened.Entities.Entity;
 
@@ -29,7 +39,7 @@ public abstract class Enemy : IDestructible
     public AIStatsGlobalComp Global;
     public AIStatsGenericComp Generic;
     public InterObjStatusComp Status;
-    private readonly EnemyControllerComp _enemyController;
+    private EnemyControllerComp _enemyController;
     public BaseComponent Entity;
 
     public AIProcessData AiData;
@@ -37,7 +47,7 @@ public abstract class Enemy : IDestructible
     public AIBaseBehavior Behavior;
     public float PatrolSpeed;
     public float EndPathWaitTime;
-    private readonly int[] _hitByAttackList;
+    private int[] _hitByAttackList;
 
     public WorldGraph WorldGraph { get; set; }
 
@@ -52,12 +62,9 @@ public abstract class Enemy : IDestructible
         //All of these are temporary until the stat applier is made
         Health = 50;
         ParentPlane = Entity.ParentPlane;
-
         Position = new Vector3(Entity.Position.X, Entity.Position.Y, Entity.Position.Z);
-
         if (ParentPlane == "Plane1")
             Position.z = 20;
-
         SpawnPosition = Position;
 
         var entityList = room.Entities.Values.SelectMany(s => s);
@@ -103,10 +110,8 @@ public abstract class Enemy : IDestructible
         AiData.SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio;
 
         NegativeHeight = 0;
-
         if (Entity.Scale.Y < 0)
             NegativeHeight = Entity.Rectangle.Height;
-
         Hitbox = new EnemyCollider(Id, new Vector3Model { X = Position.x, Y = Position.y - NegativeHeight, Z = Position.z }, Entity.Rectangle.Width, Entity.Rectangle.Height, Entity.ParentPlane, Room);
         Room.Colliders.Add(Id, Hitbox);
     }
@@ -139,7 +144,7 @@ public abstract class Enemy : IDestructible
     //This entire class will become deprecated! Right now, it exists to plug in all the magic numbers
     public virtual string WriteBehaviorList()
     {
-        var output = "Idle||";
+        string output = "Idle||";
         List<string> behaviorList = [];
 
         if (Entity.PrefabName.Contains("PF_Critter_Bird"))
@@ -204,12 +209,10 @@ public abstract class Enemy : IDestructible
                 output = output + "`" + bah;
         }
 
-        Behavior = new AIBehavior_Patrol(
-            new Vector3(SpawnPosition.x, SpawnPosition.y, SpawnPosition.z),
-            new Vector3(SpawnPosition.x + Generic.Patrol_DistanceX, SpawnPosition.y + Generic.Patrol_DistanceY, SpawnPosition.z),
-            PatrolSpeed,
-            EndPathWaitTime
-        );
+        Behavior = new AIBehavior_Patrol(new Vector3(SpawnPosition.x, SpawnPosition.y, SpawnPosition.z),
+        new Vector3(SpawnPosition.x + Generic.Patrol_DistanceX, SpawnPosition.y + Generic.Patrol_DistanceY, SpawnPosition.z),
+        PatrolSpeed,
+        EndPathWaitTime);
 
         return output;
     }
@@ -224,9 +227,13 @@ public abstract class Enemy : IDestructible
         if (Health <= 0)
         {
             if (_enemyController.OnDeathTargetID != null && Room.Entities.TryGetValue(_enemyController.OnDeathTargetID, out var foundTrigger) && !_enemyController.OnDeathTargetID.Equals("0"))
+            {
                 foreach (var component in foundTrigger)
+                {
                     if (component is TriggerReceiverComp trigger)
                         trigger.Trigger(true);
+                }
+            }
 
             var kill = new SyncEvent(Id.ToString(), SyncEvent.EventType.AIDie, Room.Time);
             kill.EventDataList.Add("");
@@ -235,15 +242,17 @@ public abstract class Enemy : IDestructible
             kill.EventDataList.Add(origin.GameObjectId.ToString());
             kill.EventDataList.Add(0);
             Room.SendSyncEvent(kill);
-
             Destroy(Room, Id);
         }
     }
 
-    public virtual bool PlayerInRange(Vector3Model pos) =>
-        Position.x - DetectionRange.width / 2 < pos.X && pos.X < Position.x + DetectionRange.width / 2 &&
-            Position.y < pos.Y && pos.Y < Position.y + DetectionRange.height && Position.z == pos.Z;
-
+    public virtual bool PlayerInRange(Vector3Model pos)
+    {
+        if (Position.x - DetectionRange.width / 2 < pos.X && pos.X < Position.x + DetectionRange.width / 2 &&
+            Position.y < pos.Y && pos.Y < Position.y + DetectionRange.height && Position.z == pos.Z)
+            return true;
+        return false;
+    }
     public virtual AIDo_SyncEvent AIDo(float speedFactor, int behaviorId, string args, float targetPosX, float targetPosY, int direction, int awareBool)
     {
         var aiDo = new AIDo_SyncEvent(new SyncEvent(Id.ToString(), SyncEvent.EventType.AIDo, Room.Time));
@@ -258,7 +267,6 @@ public abstract class Enemy : IDestructible
         aiDo.EventDataList.Add(direction);
         // 0 for false, 1 for true.
         aiDo.EventDataList.Add(awareBool);
-
         return aiDo;
     }
 
@@ -266,11 +274,9 @@ public abstract class Enemy : IDestructible
     {
         var aiInit = new AIInit_SyncEvent(Id.ToString(), Room.Time, Position.x, Position.y, Position.z, Position.x, Position.y, Generic.Patrol_InitialProgressRatio,
             Status.MaxHealth, Status.MaxHealth, healthMod, sclMod, resMod, Status.Stars, Status.GenericLevel, EnemyGlobalProps.ToString(), WriteBehaviorList());
-
         aiInit.EventDataList[2] = Position.x;
         aiInit.EventDataList[3] = Position.y;
         aiInit.EventDataList[4] = Position.z;
-
         return aiInit;
     }
 
@@ -278,7 +284,6 @@ public abstract class Enemy : IDestructible
     {
         var launch = new AILaunchItem_SyncEvent(new SyncEvent(Id.ToString(), SyncEvent.EventType.AILaunchItem, Room.Time));
         launch.EventDataList.Clear();
-
         launch.EventDataList.Add(Position.x);
         launch.EventDataList.Add(Position.y);
         launch.EventDataList.Add(Position.z);
@@ -287,7 +292,6 @@ public abstract class Enemy : IDestructible
         launch.EventDataList.Add(lifeTime);
         launch.EventDataList.Add(prjId);
         launch.EventDataList.Add(isGrenade);
-
         return launch;
     }
 

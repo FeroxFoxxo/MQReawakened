@@ -1,5 +1,6 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Helpers;
 
 namespace Protocols.External._t__TradeHandler;
 
@@ -7,7 +8,7 @@ public class AcceptTrade : ExternalProtocol
 {
     public override string ProtocolName => "ta";
 
-    public PlayerHandler PlayerHandler { get; set; }
+    public DatabaseContainer DatabaseContainer { get; set; }
 
     public override void Run(string[] message)
     {
@@ -17,7 +18,7 @@ public class AcceptTrade : ExternalProtocol
             return;
 
         var traderName = message[5];
-        var tradedPlayer = PlayerHandler.GetPlayerByName(traderName);
+        var tradedPlayer = DatabaseContainer.GetPlayerByName(traderName);
 
         if (tradedPlayer == null)
             return;

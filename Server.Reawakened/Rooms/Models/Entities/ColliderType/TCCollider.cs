@@ -1,5 +1,14 @@
-﻿namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
+﻿using Server.Reawakened.Rooms.Models.Planes;
+using SmartFoxClientAPI.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
 
-public class TCCollider(Collider collider, Room room) : BaseCollider(collider, room)
+namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
+public class TCCollider : BaseCollider
 {
+    public TCCollider(Collider collider, Room room) : base(collider, room) { }
 }

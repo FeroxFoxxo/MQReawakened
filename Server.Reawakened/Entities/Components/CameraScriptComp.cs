@@ -1,4 +1,7 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -58,5 +61,5 @@ public class CameraScriptComp: Component<CameraScript>
         CamZoneDuration12 +
         CamZoneDuration13 +
         CamZoneDuration14 +
-        CamZoneDuration15;
+        CamZoneDuration15 ;
 }
