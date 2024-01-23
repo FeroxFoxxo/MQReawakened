@@ -14,6 +14,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -49,6 +50,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
         AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
+        AddCommand(new ChatCommand("endAllArenas", "", EndAllArenas));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -189,6 +191,19 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
                 var spawn = new Spawn_SyncEvent(spawner.Id.ToString(), player.Room.Time, 1);
 
                 player.Room.SendSyncEvent(spawn);
+            }
+        }
+
+        return true;
+    }
+
+    private bool EndAllArenas(Player player, string[] args)
+    {
+        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+        {
+            if (entityComponent is TriggerArenaComp arena)
+            {
+                arena.StopArena(true);
             }
         }
 

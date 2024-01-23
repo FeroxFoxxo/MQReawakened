@@ -193,14 +193,14 @@ public class Room : Timer
         {
             var gameObjectId = 1;
 
-            while (GameObjectIds.Contains(gameObjectId + "_Player"))
+            while (GameObjectIds.Contains(gameObjectId.ToString()))
                 gameObjectId++;
 
-            GameObjectIds.Add(gameObjectId + "_Player");
+            GameObjectIds.Add(gameObjectId.ToString());
 
-            currentPlayer.TempData.GameObjectId = gameObjectId + "_Player";
+            currentPlayer.TempData.GameObjectId = gameObjectId.ToString();
 
-            Players.Add(gameObjectId + "_Player", currentPlayer);
+            Players.Add(gameObjectId.ToString(), currentPlayer);
 
             GroupMemberRoomChanged(currentPlayer);
 

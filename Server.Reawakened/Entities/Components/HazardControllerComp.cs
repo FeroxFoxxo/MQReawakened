@@ -28,41 +28,39 @@ public class HazardControllerComp : Component<HazardController>
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
-        if (HurtEffect == "NoEffect")
-            return;
-
-        var character = player.Character;
-
-        Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
-
-        if (effectType == default)
+        if (notifyCollisionEvent.Colliding == true)
         {
-            // Probably won't work for until some collisions failing is fixed
+            var character = player.Character;
 
-            if (notifyCollisionEvent.Colliding && notifyCollisionEvent.Message == "HitDamageZone")
-                player.ApplyDamageByObject(Room, int.Parse(notifyCollisionEvent.CollisionTarget));
+            Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
 
-            Logger.LogWarning("No hazard type found for {Type}. Returning...", HurtEffect);
-            return;
-        }
+            if (effectType == default)
+            {
+                var noEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, 10,
+                0, 1, true, Entity.GameObject.ObjectInfo.ObjectId, false);
 
-        var statusEffect = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), Room.Time, (int)effectType,
-            0, 1, true, Entity.GameObject.ObjectInfo.ObjectId.ToString(), false);
+                Room.SendSyncEvent(noEffect);
+            }
+            else
+            {
+                var statusEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)effectType,
+                    0, 1, true, Entity.GameObject.ObjectInfo.ObjectId, false);
 
-        Room.SendSyncEvent(statusEffect);
+                Room.SendSyncEvent(statusEffect);
 
-        Logger.LogTrace("Triggered status effect for {Character} of {HurtType}", character.Data.CharacterName,
-            effectType);
-
-        switch (effectType)
-        {
-            case ItemEffectType.Unknown:
-                SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
-                $"Effect Type: {effectType}");
-                break;
-            default:
-                player.ApplyDamageByPercent(Room, .10);
-                break;
+                Logger.LogTrace("Triggered status effect for {Character} of {HurtType}", character.Data.CharacterName,
+                    effectType);
+            }
+            switch (effectType)
+            {
+                case ItemEffectType.Unknown:
+                    SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
+                    $"Effect Type: {effectType}");
+                    break;
+                default:
+                    player.ApplyDamageByPercent(Room, .10);
+                    break;
+            }
         }
     }
 }

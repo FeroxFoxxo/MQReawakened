@@ -38,11 +38,12 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     private GlobalProperties _globalProps;
     public override void InitializeComponent()
     {
-        //For globalproperties, make a per-enemy initializer for this in the enemy resource.
+        //For globalproperties, make a per-enemy initializer for this in the enemy resource (or add a generic GlobalProperties to SeverRConfig)
         _globalProps = new GlobalProperties(false, 0, 2, 0, 0, 0, 1.5f, 8, 0, 0, "Generic", "", false, false, 0);
+
+        //Everything here is temporary until I add that world statistics xml thingy
         Level = 1;
-        Health = 80;
-        Console.WriteLine(PrefabNameToSpawn1);
+        Health = 30;
         Room.SendSyncEvent(InitializeAIInit());
         Room.SendSyncEvent(InitializeAIDo());
     }
@@ -83,5 +84,14 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     {
         var spawn = new Spawn_SyncEvent(Id.ToString(), Room.Time, 1);
         Room.SendSyncEvent(spawn);
+
+        //Add way to consult InternalEnemyResources.xml here
+        string behavior = "Idle||`Patrol|" + 1.8 + ";" + 0 + ";" + 3 + ";" + PatrolDistance.x + ";" + PatrolDistance.y + ";" + 0 + ";" + 0 + "|";
+        var aiInit = new AIInit_SyncEvent(Id + "_1", Room.Time, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY, Position.Z, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
+            0, Health, Health, 1, 1, 1, 0, Level, _globalProps.ToString(), behavior);
+        aiInit.EventDataList[2] = Position.X + SpawningOffsetX;
+        aiInit.EventDataList[3] = Position.Y + SpawningOffsetY;
+        aiInit.EventDataList[4] = Position.Z;
+        Room.SendSyncEvent(aiInit);
     }
 }

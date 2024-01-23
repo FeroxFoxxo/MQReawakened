@@ -38,6 +38,7 @@ public abstract class Enemy : IDestructible
     public AIStatsGlobalComp Global;
     public AIStatsGenericComp Generic;
     public InterObjStatusComp Status;
+    private EnemyControllerComp _enemyController;
     public BaseComponent Entity;
 
     public AIProcessData AiData;
@@ -45,17 +46,18 @@ public abstract class Enemy : IDestructible
     public AIBaseBehavior Behavior;
     public float PatrolSpeed;
     public float EndPathWaitTime;
-    public int[] HitByAttackList;
+    private int[] _hitByAttackList;
 
     public WorldGraph WorldGraph { get; set; }
 
     public Enemy(Room room, string entityId, BaseComponent baseEntity)
     {
         Entity = baseEntity;
+        _enemyController = (EnemyControllerComp)baseEntity;
         Room = room;
         Id = entityId;
-        //temp
-        Health = 80;
+        //All of these are temporary until the stat applier is made
+        Health = 50;
         ParentPlane = Entity.ParentPlane;
         Position = new Vector3(Entity.Position.X, Entity.Position.Y, Entity.Position.Z);
         if (ParentPlane == "Plane1")
@@ -134,6 +136,7 @@ public abstract class Enemy : IDestructible
 
     }
 
+    //This entire class will become deprecated! Right now, it exists to plug in all the magic numbers
     public virtual string WriteBehaviorList()
     {
         string output = "Idle||";
@@ -188,6 +191,12 @@ public abstract class Enemy : IDestructible
             EndPathWaitTime = 4;
             behaviorList.Add("Patrol|" + PatrolSpeed + ";" + 0 + ";" + EndPathWaitTime + ";" + Generic.Patrol_DistanceX + ";" + Generic.Patrol_DistanceY + ";" + Generic.Patrol_ForceDirectionX + ";" + Generic.Patrol_InitialProgressRatio + "|");
         }
+        else if (Entity.PrefabName.Contains("PF_Spite_Grenadier"))
+        {
+            PatrolSpeed = 1.8f;
+            EndPathWaitTime = 3;
+            behaviorList.Add("Patrol|" + PatrolSpeed + ";" + 0 + ";" + EndPathWaitTime + ";" + Generic.Patrol_DistanceX + ";" + Generic.Patrol_DistanceY + ";" + Generic.Patrol_ForceDirectionX + ";" + Generic.Patrol_InitialProgressRatio + "|");
+        }
 
         foreach (var bah in behaviorList)
         {
@@ -206,16 +215,28 @@ public abstract class Enemy : IDestructible
     public virtual void Damage(int damage, Player origin)
     {
         Health -= damage;
+
         var damageEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, 0, 0, origin.CharacterName, false, true);
         Room.SendSyncEvent(damageEvent);
+
         if (Health <= 0)
         {
+            if (_enemyController.OnDeathTargetID != null && Room.Entities.TryGetValue(_enemyController.OnDeathTargetID, out var foundTrigger) && !_enemyController.OnDeathTargetID.Equals("0"))
+            {
+                foreach (var component in foundTrigger)
+                {
+                    if (component is TriggerReceiverComp trigger)
+                        trigger.Trigger(true);
+                }
+            }
+
             var kill = new SyncEvent(Id.ToString(), SyncEvent.EventType.AIDie, Room.Time);
             kill.EventDataList.Add("");
             kill.EventDataList.Add(10);
             kill.EventDataList.Add(1);
             kill.EventDataList.Add(origin.GameObjectId.ToString());
             kill.EventDataList.Add(0);
+            Room.SendSyncEvent(kill);
             Destroy(Room, Id);
         }
     }

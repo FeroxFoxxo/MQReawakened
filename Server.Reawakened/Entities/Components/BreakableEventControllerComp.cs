@@ -41,7 +41,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         {
             if (entity.Id == Id && entity is BreakableObjStatusComp status)
                 _status = status;
-            else if (entity.Id == Id && entity is BaseSpawnerControllerComp spawner)
+            if (entity.Id == Id && entity is BaseSpawnerControllerComp spawner)
             {
                 _spawner = spawner;
                 _health = _spawner.Health;
@@ -57,7 +57,6 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public void Damage(int damage, Player origin)
     {
         _health -= damage;
-        Console.WriteLine(_health);
         Logger.LogInformation("Object name: {args1} Object Id: {args2}", PrefabName, Id);
 
         var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true);

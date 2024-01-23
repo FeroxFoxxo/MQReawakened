@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -8,12 +9,12 @@ using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSwitchController>
+public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<TriggerCoopArenaSwitchController>
 {
     public string ArenaObjectId => ComponentData.ArenaObjectID;
     public DatabaseContainer DatabaseContainer { get; set; }
     public ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
-
+    public TriggerArenaComp Arena = null;
     public override object[] GetInitData(Player player) => base.GetInitData(player);
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
@@ -26,6 +27,16 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
         }
 
         player.Room.SendSyncEvent(syncEvent);
+
+        if (Arena == null)
+        {
+            Room.Entities.TryGetValue(ArenaObjectId, out var foundEntity);
+            foreach (var component in foundEntity)
+            {
+                if (component is TriggerArenaComp arenaComponent)
+                    Arena = arenaComponent;
+            }
+        }
 
         var playersInRoom = DatabaseContainer.GetAllPlayers();
         var arenaActivation = Convert.ToInt32(syncEvent.EventDataList[2]);
@@ -42,21 +53,24 @@ public class TriggerCoopArenaSwitchControllerComp : Component<TriggerCoopArenaSw
                 {
                     player.TempData.ArenaModel.SetCharacterIds(playersInRoom);
                     member.TempData.ArenaModel.HasStarted = true;
-                    StartMinigame(member);
+                    StartArena(member);
+                    Arena.StartArena(member);
                 }
+                
             }
         }
         else
         {
             if (player.TempData.ArenaModel.ShouldStartArena)
             {
-                StartMinigame(player);
+                StartArena(player);
                 player.TempData.ArenaModel.SetCharacterIds(new List<Player> { player });
+                Arena.StartArena(player);
             }
         }
     }
 
-    public void StartMinigame(Player player)
+    public void StartArena(Player player)
     {
         var startRace = new Trigger_SyncEvent(ArenaObjectId, Room.Time, true, player.GameObjectId.ToString(), Room.LevelInfo.LevelId, true, true);
         player.SendSyncEventToPlayer(startRace);
