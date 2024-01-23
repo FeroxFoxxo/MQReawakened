@@ -177,10 +177,12 @@
             <Item itemId="160" count="6"/>
             <Item itemId="12805" count="4"/>
         </RecipeInfo>
-        <RecipeInfo recipeId="11215">
-            <!--Bubble Blower-->
+        <RecipeInfo recipeId="11215">  <!--Bubble Blower-->
             <Item itemId="12814" count="4"/>
             <Item itemId="13200" count="4"/>
+        </RecipeInfo>
+        <RecipeInfo recipeId="11216">  <!--Krusty Krab Spatula-->
+            <Item itemId="13201" count="5"/>
         </RecipeInfo>
     </RecipeType>
 </RecipeCatalog>
