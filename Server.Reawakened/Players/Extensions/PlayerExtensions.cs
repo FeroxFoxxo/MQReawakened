@@ -181,10 +181,9 @@ public static class PlayerExtensions
         player.SendXt("lw", error, levelName, surroundingLevels);
     }
 
-    public static void SetCharacterSelected(this Player player, int characterId)
+    public static void SetCharacterSelected(this Player player, CharacterModel character)
     {
-        var characterHandler = player.DatabaseContainer.CharacterHandler;
-        player.Character = characterHandler.Get(characterId);
+        player.Character = character;
         player.UserInfo.LastCharacterSelected = player.CharacterName;
     }
 

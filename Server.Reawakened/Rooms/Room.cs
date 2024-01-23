@@ -157,35 +157,38 @@ public class Room : Timer
 
         if (reason == JoinReason.Accepted)
         {
-            var gameObjectId = 1;
-
-            while (GameObjectIds.Contains(gameObjectId))
-                gameObjectId++;
-
-            GameObjectIds.Add(gameObjectId);
-
-            currentPlayer.TempData.GameObjectId = gameObjectId;
-
-            Players.Add(gameObjectId, currentPlayer);
-
-            GroupMemberRoomChanged(currentPlayer);
-
-            currentPlayer.NetState.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
-
-            if (LevelInfo.LevelId == 0)
-                return;
-
-            if (currentPlayer.TempData.ArenaModel == null)
-                currentPlayer.TempData.ArenaModel = new ArenaModel();
-
-            // USER ENTER
-
-            foreach (var roomCharacter in Players.Values)
+            lock (_roomLock)
             {
-                currentPlayer.SendUserEnterDataTo(roomCharacter);
+                var gameObjectId = 1;
 
-                if (roomCharacter != currentPlayer)
-                    roomCharacter.SendUserEnterDataTo(currentPlayer);
+                while (GameObjectIds.Contains(gameObjectId))
+                    gameObjectId++;
+
+                GameObjectIds.Add(gameObjectId);
+
+                currentPlayer.TempData.GameObjectId = gameObjectId;
+
+                Players.Add(gameObjectId, currentPlayer);
+
+                GroupMemberRoomChanged(currentPlayer);
+
+                currentPlayer.NetState.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
+
+                if (LevelInfo.LevelId == 0)
+                    return;
+
+                if (currentPlayer.TempData.ArenaModel == null)
+                    currentPlayer.TempData.ArenaModel = new ArenaModel();
+
+                // USER ENTER
+
+                foreach (var roomCharacter in Players.Values)
+                {
+                    currentPlayer.SendUserEnterDataTo(roomCharacter);
+
+                    if (roomCharacter != currentPlayer)
+                        roomCharacter.SendUserEnterDataTo(currentPlayer);
+                }
             }
         }
         else
@@ -196,16 +199,22 @@ public class Room : Timer
 
     public void RemoveClient(Player player, bool useOriginalRoom)
     {
-        Players.Remove(player.GameObjectId);
-        GameObjectIds.Remove(player.GameObjectId);
+        lock (_roomLock)
+        {
+            Players.Remove(player.GameObjectId);
+            GameObjectIds.Remove(player.GameObjectId);
+        }
 
         if (LevelInfo.LevelId <= 0)
             return;
 
         if (Players.Count != 0)
         {
-            foreach (var currentPlayer in Players.Values)
-                player.SendUserGoneDataTo(currentPlayer);
+            lock (_roomLock)
+            {
+                foreach (var currentPlayer in Players.Values)
+                    player.SendUserGoneDataTo(currentPlayer);
+            }
 
             return;
         }
@@ -220,7 +229,12 @@ public class Room : Timer
         else
         {
             player.TempData.ArenaModel = null;
-            _level.Rooms.Remove(_roomId);
+
+            lock (_level.Lock)
+            {
+                _level.Rooms.Remove(_roomId);
+            }
+
             Stop();
         }
     }
