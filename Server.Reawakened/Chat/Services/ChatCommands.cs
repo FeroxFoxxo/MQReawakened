@@ -483,9 +483,9 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
             var distance = Math.Round(Math.Sqrt(Math.Pow(Math.Abs(x), 2) + Math.Pow(Math.Abs(y), 2)));
 
             return new Tuple<double, GameObjectModel>(distance, gameObject);
-        }).OrderBy(x => x.Item1);
+        }).OrderBy(x => x.Item1).ToList();
 
-        if (!closestGameObjects.Any())
+        if (closestGameObjects.Count == 0)
         {
             Log("No game objects found close to player!", player);
             return false;
@@ -494,6 +494,11 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         Log("Closest Game Objects:", player);
 
         var count = 0;
+
+        if (closestGameObjects.Count() > config.MaximumEntitiesToReturnLog)
+            closestGameObjects = closestGameObjects.Take(config.MaximumEntitiesToReturnLog).ToList();
+
+        closestGameObjects.Reverse();
 
         foreach (var item in closestGameObjects)
         {
