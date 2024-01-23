@@ -35,7 +35,7 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) :
                     AiData.Sync_PosX = Position.x;
                     Room.SendSyncEvent(AIDo(1.0f, 2, "", pos.X, Position.y, AiData.SyncInit_Dir, 1));
                     Behavior = new AIBehavior_Aggro(AggroSpeed, 0, false, 0, 4, 1);
-                    Behavior.Start(AiData, Room.Time, [""]);
+                    Behavior.Start(ref AiData, Room.Time, [""]);
                 }
             }
         }

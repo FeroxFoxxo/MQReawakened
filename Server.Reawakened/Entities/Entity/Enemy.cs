@@ -132,7 +132,7 @@ public abstract class Enemy : IDestructible
             Init = true;
         }
 
-        Behavior.Update(AiData, Room.Time);
+        Behavior.Update(ref AiData, Room.Time);
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
 
