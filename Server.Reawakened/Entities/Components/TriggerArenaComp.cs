@@ -58,7 +58,7 @@ public class TriggerArenaComp : TriggerCoopControllerComp<TriggerArena>
             TargetReward04LevelEditorID
         ];
 
-        _arenaEntities = new List<string>();
+        _arenaEntities = [];
     }
 
     public override void Update()

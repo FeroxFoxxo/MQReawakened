@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
-public class DefaultCollider : BaseCollider
+public class DefaultCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room) : BaseCollider(id, position, sizeX, sizeY, plane, room, "default")
 {
-    public DefaultCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room) : base(id, position, sizeX, sizeY, plane, room, "default") { }
 }

@@ -66,7 +66,7 @@ public class PortalControllerComp : Component<PortalController>
             Logger.LogError("Could not find node for '{Old}' -> '{New}' for portal {PortalId}.", levelId, newLevelId, portalId);
         }
 
-        if (levelId == newLevelId && character.LevelData.SpawnPointId.Equals(spawnId))
+        if (levelId == newLevelId && character.LevelData.SpawnPointId == spawnId)
         {
             Logger.LogError("Attempt made to teleport to the same portal! Skipping...");
             return;

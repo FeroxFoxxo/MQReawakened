@@ -14,7 +14,7 @@ public static class PlayerLootHandler
         ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
         var loot = lootCatalog.GetLootById(gameObjectId);
-        if (loot.ObjectId.Equals(""))
+        if (string.IsNullOrEmpty(loot.ObjectId))
             logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);
 
         if (loot.BananaRewards.Count > 0)

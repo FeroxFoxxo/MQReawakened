@@ -196,7 +196,6 @@ public static class PlayerExtensions
 
         player.UserInfo.CharacterIds.Remove(id);
 
-        if (characterHandler.Data.ContainsKey(id))
         characterHandler.Data.Remove(id);
 
         player.UserInfo.LastCharacterSelected = player.UserInfo.CharacterIds.Count > 0
@@ -270,7 +269,7 @@ public static class PlayerExtensions
 
                 if (objective.GameObjectId > 0)
                 {
-                    if (!objective.GameObjectId.Equals(gameObjectId))
+                    if (objective.GameObjectId.ToString() != gameObjectId)
                         continue;
                 }
                 else

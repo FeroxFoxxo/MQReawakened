@@ -41,22 +41,13 @@ public abstract class BaseCollider
         ColliderBox = new RectModel(Position.x, Position.y + 0.1f, collider.Width, collider.Height);
     }
 
-    public virtual string[] IsColliding(bool isAttack)
-    {
-        return [];
-    }
+    public virtual string[] IsColliding(bool isAttack) => [];
 
     public virtual void SendCollisionEvent(BaseCollider received)
     {
     }
 
-    public virtual bool CheckCollision(BaseCollider collided)
-    {
-        if (Position.x < collided.Position.x + collided.ColliderBox.Width && collided.Position.x < Position.x + ColliderBox.Width &&
+    public virtual bool CheckCollision(BaseCollider collided) => Position.x < collided.Position.x + collided.ColliderBox.Width && collided.Position.x < Position.x + ColliderBox.Width &&
             Position.y < collided.Position.y + collided.ColliderBox.Height && collided.Position.y < Position.y + ColliderBox.Height &&
-            Plane == collided.Plane)
-            return true;
-        else
-            return false;
-    }
+            Plane == collided.Plane;
 }

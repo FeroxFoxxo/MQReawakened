@@ -2,10 +2,5 @@
 
 public static class CheckDefault
 {
-    public static bool IsDefault<T>(this T value) where T : struct
-    {
-        var isDefault = value.Equals(default(T));
-
-        return isDefault;
-    }
+    public static bool IsDefault<T>(this T value) where T : struct => value.Equals(default(T));
 }

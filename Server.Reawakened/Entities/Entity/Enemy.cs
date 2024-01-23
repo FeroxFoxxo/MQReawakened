@@ -226,7 +226,7 @@ public abstract class Enemy : IDestructible
 
         if (Health <= 0)
         {
-            if (_enemyController.OnDeathTargetID != null && Room.Entities.TryGetValue(_enemyController.OnDeathTargetID, out var foundTrigger) && !_enemyController.OnDeathTargetID.Equals("0"))
+            if (_enemyController.OnDeathTargetID != null && Room.Entities.TryGetValue(_enemyController.OnDeathTargetID, out var foundTrigger) && _enemyController.OnDeathTargetID != "0")
             {
                 foreach (var component in foundTrigger)
                 {
@@ -246,13 +246,10 @@ public abstract class Enemy : IDestructible
         }
     }
 
-    public virtual bool PlayerInRange(Vector3Model pos)
-    {
-        if (Position.x - DetectionRange.width / 2 < pos.X && pos.X < Position.x + DetectionRange.width / 2 &&
-            Position.y < pos.Y && pos.Y < Position.y + DetectionRange.height && Position.z == pos.Z)
-            return true;
-        return false;
-    }
+    public virtual bool PlayerInRange(Vector3Model pos) =>
+        Position.x - DetectionRange.width / 2 < pos.X && pos.X < Position.x + DetectionRange.width / 2 &&
+            Position.y < pos.Y && pos.Y < Position.y + DetectionRange.height && Position.z == pos.Z;
+
     public virtual AIDo_SyncEvent AIDo(float speedFactor, int behaviorId, string args, float targetPosX, float targetPosY, int direction, int awareBool)
     {
         var aiDo = new AIDo_SyncEvent(new SyncEvent(Id.ToString(), SyncEvent.EventType.AIDo, Room.Time));

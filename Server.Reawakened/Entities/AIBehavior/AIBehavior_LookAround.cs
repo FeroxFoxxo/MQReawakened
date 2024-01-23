@@ -7,23 +7,16 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.AIBehavior;
-public class AIBehavior_LookAround : AIBaseBehavior
+public class AIBehavior_LookAround(float LookAround_LookTime, float LookAround_InitialProgressRatio, bool LookAround_SnapOnGround) : AIBaseBehavior
 {
-    private float LookAround_LookTime;
-    private float LookAround_InitialProgressRatio;
-    private bool LookAround_SnapOnGround;
+    private float LookAround_LookTime = LookAround_LookTime;
+    private float LookAround_InitialProgressRatio = LookAround_InitialProgressRatio;
+    private bool LookAround_SnapOnGround = LookAround_SnapOnGround;
     private int _currentStep;
     private float _behaviorStartTime;
     private float _behaviorDuration;
     private float _currentRatio;
     private AI_Action_GoTo _goTo;
-
-    public AIBehavior_LookAround(float LookAround_LookTime, float LookAround_InitialProgressRatio, bool LookAround_SnapOnGround)
-    {
-        this.LookAround_LookTime = LookAround_LookTime;
-        this.LookAround_InitialProgressRatio = LookAround_InitialProgressRatio;
-        this.LookAround_SnapOnGround = LookAround_SnapOnGround;
-    }
 
     public override void Start(AIProcessData aiData, float startTime, string[] args)
     {

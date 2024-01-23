@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.AIBehavior;
-public class AIBehavior_Aggro : AIBaseBehavior
+public class AIBehavior_Aggro(float attackSpeed, float moveBeyondTargetDistance, bool stayOnPatrolPath, float attackBeyondPatrolLine, float detectionHeightUp, float detectionHeightDown) : AIBaseBehavior
 {
-    private float Aggro_AttackSpeed;
-    private float Aggro_MoveBeyondTargetDistance;
-    private bool Aggro_StayOnPatrolPath;
-    private float Aggro_AttackBeyondPatrolLine;
-    private float detectionHeightUp;
-    private float detectionHeightDown;
+    private float Aggro_AttackSpeed = attackSpeed;
+    private float Aggro_MoveBeyondTargetDistance = moveBeyondTargetDistance;
+    private bool Aggro_StayOnPatrolPath = stayOnPatrolPath;
+    private float Aggro_AttackBeyondPatrolLine = attackBeyondPatrolLine;
+    private float detectionHeightUp = detectionHeightUp;
+    private float detectionHeightDown = detectionHeightDown;
     private float _fromPosX;
     private float _fromPosY;
     private float _toPosX;
@@ -24,16 +24,6 @@ public class AIBehavior_Aggro : AIBaseBehavior
     private float _behaviorStartTime;
     private float _currentRatio;
     private AIAction_GoTo _goTo;
-
-    public AIBehavior_Aggro(float attackSpeed, float moveBeyondTargetDistance, bool stayOnPatrolPath, float attackBeyondPatrolLine, float detectionHeightUp, float detectionHeightDown)
-    {
-        Aggro_AttackSpeed = attackSpeed;
-        Aggro_MoveBeyondTargetDistance = moveBeyondTargetDistance;
-        Aggro_StayOnPatrolPath = stayOnPatrolPath;
-        Aggro_AttackBeyondPatrolLine = attackBeyondPatrolLine;
-        this.detectionHeightUp = detectionHeightUp;
-        this.detectionHeightDown = detectionHeightDown;
-    }
 
     public override void Start(AIProcessData aiData, float startTime, string[] args)
     {
@@ -89,11 +79,7 @@ public class AIBehavior_Aggro : AIBaseBehavior
             _goTo = new AIAction_GoTo(ref aiData, _fromPosX, _fromPosY, _toPosX, _toPosY, behaviorStartTime, finalTime, sinusMove: false);
         }
         _goTo.Update(ref aiData, clockTime);
-        if (_currentRatio == 1f)
-        {
-            return false;
-        }
-        return true;
+        return _currentRatio != 1f;
     }
 
     public override float GetBehaviorRatio(AIProcessData aiData, float clockTime)

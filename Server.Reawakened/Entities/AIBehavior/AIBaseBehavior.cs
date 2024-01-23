@@ -11,13 +11,7 @@ public class AIBaseBehavior
     {
     }
 
-    public virtual bool Update(AIProcessData aiData, float time)
-    {
-        return false;
-    }
+    public virtual bool Update(AIProcessData aiData, float time) => false;
 
-    public virtual float GetBehaviorRatio(AIProcessData aiData, float time)
-    {
-        return 0f;
-    }
+    public virtual float GetBehaviorRatio(AIProcessData aiData, float time) => 0f;
 }

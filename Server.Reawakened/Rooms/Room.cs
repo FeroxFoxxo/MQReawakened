@@ -72,9 +72,9 @@ public class Room : Timer
 
         Planes = LevelInfo.LoadPlanes(_config);
         Entities = this.LoadEntities(services, out UnknownEntities);
-        Projectiles = new Dictionary<string, ProjectileEntity>();
+        Projectiles = [];
         Colliders = this.LoadColliders(LevelInfo, _config);
-        Enemies = new Dictionary<string, Enemy>();
+        Enemies = [];
 
         foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects.Values)
@@ -89,7 +89,7 @@ public class Room : Timer
         //Second loop required once all components are initialized
         foreach (var component in Entities.Values.SelectMany(x => x))
         {
-            if (component.Name.Equals(config.EnemyComponentName))
+            if (component.Name == config.EnemyComponentName)
             {
                 // Move the name switcher out of ServerRConfig when the enemy xml is made.
                 switch (component.PrefabName)
@@ -110,7 +110,7 @@ public class Room : Timer
                         break;
                 }
             }
-            else if (component.Name.Equals(config.BreakableComponentName))
+            else if (component.Name == config.BreakableComponentName)
             {
                 var breakable = (BreakableEventControllerComp)component;
                 breakable.PostInit();

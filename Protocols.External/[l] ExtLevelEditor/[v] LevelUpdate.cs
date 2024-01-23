@@ -27,7 +27,7 @@ public class RoomUpdate : ExternalProtocol
         Player.Room.SendCharacterInfo(Player);
 
         foreach (var npc in Player.Room.GetComponentsOfType<NPCControllerComp>())
-            npc.Value.SendNpcInfo(Player.Character, NetState);
+            npc.Value.SendNpcInfo(Player);
 
         if (!Player.FirstLogin)
             return;

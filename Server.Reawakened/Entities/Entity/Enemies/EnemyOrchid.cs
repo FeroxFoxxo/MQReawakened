@@ -7,10 +7,8 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyOrchid : Enemy
+public class EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
 {
-    public EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) : base(room, entityId, baseEntity) { }
-
     public override void Initialize()
     {
     }

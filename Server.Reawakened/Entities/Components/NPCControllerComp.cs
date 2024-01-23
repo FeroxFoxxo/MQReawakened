@@ -16,6 +16,7 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Models.Npcs;
 using System.Text;
+using UnityEngine;
 using static A2m.Server.QuestStatus;
 using static NPCController;
 
@@ -174,7 +175,7 @@ public class NPCControllerComp : Component<NPCController>
         }
     }
 
-    public void SendNpcInfo(CharacterModel character, NetState netState)
+    public void SendNpcInfo(Player player)
     {
         var npcStatus = NPCStatus.Unknown;
         var descriptionId = 0;
@@ -186,7 +187,7 @@ public class NPCControllerComp : Component<NPCController>
                 descriptionId = VendorInfo.DescriptionId;
                 break;
             case NpcType.Quest:
-                npcStatus = GetQuestStatus(character);
+                npcStatus = GetQuestStatus(player.Character);
                 break;
             case NpcType.Dialog:
                 npcStatus = NPCStatus.Dialog;
@@ -196,7 +197,7 @@ public class NPCControllerComp : Component<NPCController>
                 break;
         }
 
-        netState.SendXt("nt", Id, (int)npcStatus, descriptionId);
+        player.SendXt("nt", Id, (int)npcStatus, descriptionId);
     }
 
     public void SendDialog(Player player)
@@ -279,7 +280,7 @@ public class NPCControllerComp : Component<NPCController>
                         if (objective.CountLeft > 1 ||
                             objective.ObjectiveType != ObjectiveEnum.Talkto ||
                             objective.GameObjectLevelId != Room.LevelInfo.LevelId ||
-                            !objective.GameObjectId.Equals(Id)
+                            objective.GameObjectId.ToString() != Id
                         )
                         {
                             canSendQuestComplete = false;
@@ -375,7 +376,6 @@ public class NPCControllerComp : Component<NPCController>
                 player.Character.Data.QuestLog.Remove(completedQuest);
                 player.NetState.SendXt("nq", completedQuest.Id);
                 player.Character.Data.CompletedQuests.Add(completedQuest.Id);
-                player.UpdateNpcsInLevel();
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
             }
 
@@ -440,7 +440,7 @@ public class NPCControllerComp : Component<NPCController>
         var quest = QuestCatalog.GetQuestData(questStatus.Id);
         var questName = quest.Name;
 
-        if (quest.ValidatorGoId != quest.QuestGiverGoId && quest.ValidatorGoId.Equals(Id))
+        if (quest.ValidatorGoId != quest.QuestGiverGoId && quest.ValidatorGoId.ToString() == Id)
             questName += "validator";
 
         if (DialogRewrites.Rewrites.TryGetValue(questName, out var rewrittenName))

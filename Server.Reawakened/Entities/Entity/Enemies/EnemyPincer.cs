@@ -8,12 +8,10 @@ using System.Xml.Linq;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyPincer : Enemy
+public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
 {
     public float AggroSpeed;
     public float TargetPosX;
-
-    public EnemyPincer(Room room, string entityId, BaseComponent baseEntity) : base(room, entityId, baseEntity) { }
 
     public override void Initialize()
     {
