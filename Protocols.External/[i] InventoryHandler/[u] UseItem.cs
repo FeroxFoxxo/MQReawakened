@@ -154,15 +154,41 @@ public class UseItem : ExternalProtocol
                         PrefabName = prefabName,
                         Component = component,
                         ObjectId = objectId,
-                        Damage = dropData.UsedItem.ItemEffects.FirstOrDefault().Value
+                        Damage = GetDamageType(usedItem)
                     };
 
-                    TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2650), TimeSpan.Zero, 1);
+                    TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2850), TimeSpan.Zero, 1);
                 }
             }
         }
     }
+    
+    private int GetDamageType(ItemDescription usedItem)
+    {
+        var damage = ServerRConfig.DefaultDamage;
+        if (usedItem.ItemEffects.Count == 0)
+        {
+            Logger.LogWarning("Item ({usedItemName}) has 0 ItemEffects! Are you sure this item was set up correctly?", usedItem.PrefabName);
+            return damage;
+        }
 
+        foreach (var effect in usedItem.ItemEffects)
+        {
+            switch (effect.Type)
+            {    
+                case ItemEffectType.FireDamage:
+                case ItemEffectType.PoisonDamage:
+                case ItemEffectType.IceDamage:
+                case ItemEffectType.AirDamage:
+                    damage = effect.Value;
+                    break;
+                default:
+                    break;
+            }
+        }
+        return damage;
+    }
+    
     private class BombData()
     {
         public string PrefabName { get; set; }
