@@ -29,6 +29,7 @@ public class TriggerArenaComp : TriggerCoopControllerComp<TriggerArena>
     public int TargetReward04LevelEditorID => ComponentData.TargetReward04LevelEditorID;
 
     private float _timer;
+    private float _minClearTime;
     private List<string> _arenaEntities;
 
     public override void InitializeComponent()
@@ -99,6 +100,8 @@ public class TriggerArenaComp : TriggerCoopControllerComp<TriggerArena>
             }
 
             _timer = Room.Time + ActiveDuration;
+            //Add to ServerRConfig eventually. This exists to stop the arena from regenerating if the spawners are defeated before it has finished initializing
+            _minClearTime = Room.Time + 12;
         }
         Active = true;
     }
@@ -140,7 +143,7 @@ public class TriggerArenaComp : TriggerCoopControllerComp<TriggerArena>
     {
         if (Room.Time >= _timer)
             StopArena(false);
-        else if (IsArenaComplete())
+        else if (IsArenaComplete() && Room.Time >= _minClearTime)
             StopArena(true);
     }
 
