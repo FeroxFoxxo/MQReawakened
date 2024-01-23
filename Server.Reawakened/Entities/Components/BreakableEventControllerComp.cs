@@ -6,13 +6,9 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Entities.Stats;
-using SmartFoxClientAPI.Data;
 using Room = Server.Reawakened.Rooms.Room;
-using Server.Base.Core.Abstractions;
-using Server.Reawakened.Entities.Entity.Enemies;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -21,6 +17,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
+
     private int _health;
     private BreakableObjStatusComp _status;
     private BaseSpawnerControllerComp _spawner;
@@ -37,11 +34,12 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public void PostInit()
     {
         var entityList = Room.Entities.Values.SelectMany(s => s);
-        foreach (var entity in entityList)
+
+        foreach (var entity in entityList.Where(e => e.Id == Id)
         {
-            if (entity.Id == Id && entity is BreakableObjStatusComp status)
+            if (entity is BreakableObjStatusComp status)
                 _status = status;
-            if (entity.Id == Id && entity is BaseSpawnerControllerComp spawner)
+            else if (entity is BaseSpawnerControllerComp spawner)
             {
                 _spawner = spawner;
                 _health = _spawner.Health;
@@ -69,6 +67,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             Destroy(Room, Id);
         }
     }
+
     public void Destroy(Room room, string id)
     {
         room.Entities.Remove(id);

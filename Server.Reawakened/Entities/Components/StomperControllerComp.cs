@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Entities.AbstractComponents;
-using static Stomper_Movement;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -22,9 +21,7 @@ public class StomperControllerComp : MovingObjectControllerComp<StomperControlle
         _firstStep = WaitTimeUp;
         _secondStep = _firstStep + DownMoveTime;
         _thirdStep = _secondStep + WaitTimeDown;
-
         _fullBehaviorTime = _thirdStep + UpMoveTime;
-
         Movement = new Stomper_Movement(DownMoveTime, WaitTimeDown, UpMoveTime, WaitTimeUp, VerticalDistance);
         Movement.Init(
             new vector3(Position.X, Position.Y, Position.Z),
@@ -37,8 +34,13 @@ public class StomperControllerComp : MovingObjectControllerComp<StomperControlle
     public override void Update()
     {
         base.Update();
-
         var movement = (Stomper_Movement)Movement;
+        // Don't touch this, it's debug!
+        //if (Id == 340)
+        //{
+        //    Console.WriteLine(GetState(Room.Time));
+        //    Console.WriteLine(Room.Time);
+        //}
         movement.GetBehaviorRatio(Room.Time);
     }
 

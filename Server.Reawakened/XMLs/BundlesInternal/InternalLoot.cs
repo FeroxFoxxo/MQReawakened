@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using Server.Reawakened.XMLs.Models.LootRewards;

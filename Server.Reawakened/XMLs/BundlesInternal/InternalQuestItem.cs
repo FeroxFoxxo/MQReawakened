@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;

@@ -27,7 +27,7 @@ public class CollapsingPlatformComp : Component<CollapsingPlatform>
         var syncEvent = new SyncEvent(Id.ToString(), SyncEvent.EventType.CollapsingPlatform, Room.Time);
         if (regen)
         {
-            syncEvent.EventDataList.Add((float)Room.Time);
+            syncEvent.EventDataList.Add(Room.Time);
             syncEvent.EventDataList.Add(0);
             _timer = Room.Time + 1;
         }

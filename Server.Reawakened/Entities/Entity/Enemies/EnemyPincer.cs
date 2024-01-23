@@ -2,18 +2,13 @@
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using System;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyPincer : Enemy
+public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
 {
     public float AggroSpeed;
     public float TargetPosX;
-
-    public EnemyPincer(Room room, string entityId, BaseComponent baseEntity) : base(room, entityId, baseEntity) { }
 
     public override void Initialize()
     {
@@ -74,7 +69,7 @@ public class EnemyPincer : Enemy
 
     public override string WriteBehaviorList()
     {
-        string output = "Idle||";
+        var output = "Idle||";
         List<string> behaviorList = [];
 
         PatrolSpeed = 2.4f;
@@ -90,11 +85,10 @@ public class EnemyPincer : Enemy
         behaviorList.Add("Patrol|" + PatrolSpeed + ";" + 0 + ";" + EndPathWaitTime + ";" + Generic.Patrol_DistanceX + ";" + Generic.Patrol_DistanceY + ";" + Generic.Patrol_ForceDirectionX + ";" + Generic.Patrol_InitialProgressRatio + "|");
         behaviorList.Add("Aggro|" + AggroSpeed + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 2 + ";" + 1 + "|");
         behaviorList.Add("LookAround|" + 2 + ";" + AiData.SyncInit_Dir + ";" + Global.LookAround_ForceDirection + ";" + Global.LookAround_InitialProgressRatio + ";" + 0 + "|");
+        
         foreach (var bah in behaviorList)
-        {
             if (behaviorList.Count > 0)
                 output = output + "`" + bah;
-        }
 
         Behavior = new AIBehavior_Patrol(SpawnPosition, new Vector3(SpawnPosition.x + Generic.Patrol_DistanceX, SpawnPosition.y + Generic.Patrol_DistanceY, SpawnPosition.z),
                    PatrolSpeed,

@@ -1,10 +1,6 @@
-﻿using Server.Reawakened.Entities.AbstractComponents;
-using Server.Reawakened.Rooms.Extensions;
+﻿using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using System;
-using System.ComponentModel;
 using UnityEngine;
-using static UIBase;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -33,9 +29,12 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public float DetectionRadius => ComponentData.DetectionRadius;
     public Vector3 PatrolDistance => ComponentData.PatrolDistance;
     public string OnDeathTargetID => ComponentData.OnDeathTargetID;
+
     public int Health;
     public int Level;
+
     private GlobalProperties _globalProps;
+
     public override void InitializeComponent()
     {
         //For globalproperties, make a per-enemy initializer for this in the enemy resource (or add a generic GlobalProperties to SeverRConfig)
@@ -54,7 +53,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public AIInit_SyncEvent InitializeAIInit()
     {
         //Add way to consult InternalEnemyResources.xml here
-        string behavior = "Idle||`Patrol|" + 1.8 + ";" + 0 + ";" + 3 + ";" + PatrolDistance.x + ";" + PatrolDistance.y + ";" + 0 + ";" + 0 + "|";
+        var behavior = "Idle||`Patrol|" + 1.8 + ";" + 0 + ";" + 3 + ";" + PatrolDistance.x + ";" + PatrolDistance.y + ";" + 0 + ";" + 0 + "|";
         var aiInit = new AIInit_SyncEvent(Id + "_1", Room.Time, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY, Position.Z, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
             0, Health, Health, 1, 1, 1, 0, Level, _globalProps.ToString(), behavior);
         aiInit.EventDataList[2] = Position.X + SpawningOffsetX;
@@ -76,8 +75,10 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         aiDo.EventDataList.Add(PatrolDistance.x);
         aiDo.EventDataList.Add(PatrolDistance.y);
         aiDo.EventDataList.Add(0);
+
         // 0 for false, 1 for true.
         aiDo.EventDataList.Add(0);
+
         return aiDo;
     }
     public void Spawn()
@@ -86,12 +87,14 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         Room.SendSyncEvent(spawn);
 
         //Add way to consult InternalEnemyResources.xml here
-        string behavior = "Idle||`Patrol|" + 1.8 + ";" + 0 + ";" + 3 + ";" + PatrolDistance.x + ";" + PatrolDistance.y + ";" + 0 + ";" + 0 + "|";
+        var behavior = "Idle||`Patrol|" + 1.8 + ";" + 0 + ";" + 3 + ";" + PatrolDistance.x + ";" + PatrolDistance.y + ";" + 0 + ";" + 0 + "|";
+
         var aiInit = new AIInit_SyncEvent(Id + "_1", Room.Time, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY, Position.Z, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
             0, Health, Health, 1, 1, 1, 0, Level, _globalProps.ToString(), behavior);
         aiInit.EventDataList[2] = Position.X + SpawningOffsetX;
         aiInit.EventDataList[3] = Position.Y + SpawningOffsetY;
         aiInit.EventDataList[4] = Position.Z;
+
         Room.SendSyncEvent(aiInit);
     }
 }

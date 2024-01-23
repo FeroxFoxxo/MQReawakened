@@ -1,21 +1,18 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.BundlesEdit;
-using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class VendorCatalog : VendorCatalogsXML, IBundledXml<VendorCatalog>
+public class VendorCatalog : VendorCatalogsXML, IBundledXml
 {
     public string BundleName => "vendor_catalogs";
     public BundlePriority Priority => BundlePriority.Lowest;
 
-    public ILogger<VendorCatalog> Logger { get; set; }
+    public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
     public void InitializeVariables()
@@ -59,9 +56,8 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml<VendorCatalog>
 
         if (vendors != null)
         {
-            var internalCatalog = Services.GetRequiredService<InternalVendor>();
+            var internalCatalog = Services.GetRequiredService<VendorCatalogInt>();
             var miscTextDict = Services.GetRequiredService<MiscTextDictionary>();
-            var editVendor = Services.GetRequiredService<EditVendor>();
             var preExistingCategories = new List<int>();
 
             foreach (XmlNode aNode in vendors)
@@ -69,25 +65,12 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml<VendorCatalog>
                 if (aNode.Attributes == null)
                     continue;
 
-                var nameAttribute = aNode.Attributes["name"];
-
-                if (nameAttribute != null)
-                {
-                    if (editVendor.EditedVendorAttributes.TryGetValue(nameAttribute.InnerText, out var lItems))
-                    {
-                        foreach (var item in lItems)
-                        {
-                            var itemElement = xml.CreateElement("item");
-                            itemElement.SetAttribute("id", item);
-                            aNode.AppendChild(itemElement);
-                        }
-                    }
-                }
-
                 var categoryAttribute = aNode.Attributes["catalogid"];
 
-                if (categoryAttribute != null)
-                    preExistingCategories.Add(int.Parse(categoryAttribute.InnerText));
+                if (categoryAttribute == null)
+                    continue;
+
+                preExistingCategories.Add(int.Parse(categoryAttribute.InnerText));
             }
 
             var lastSmallest = 0;

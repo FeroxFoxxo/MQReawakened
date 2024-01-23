@@ -1,8 +1,8 @@
 ﻿using Server.Reawakened.Rooms.Models.Planes;
-using SmartFoxClientAPI.Data;
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
+
 public abstract class BaseCollider
 {
     public Room Room;
@@ -21,15 +21,12 @@ public abstract class BaseCollider
         Room = room;
 
         ColliderType = colliderType.ToLower();
-        switch (ColliderType)
+
+        ColliderBox = ColliderType switch
         {
-            case "projectile":
-                ColliderBox = new RectModel(position.X - (position.X * 0.5f), position.Y - (position.Y * 0.5f), sizeX, sizeY);
-                break;
-            default:
-                ColliderBox = new RectModel(position.X, position.Y, sizeX, sizeY);
-                break;
-        }
+            "projectile" => new RectModel(position.X - position.X * 0.5f, position.Y - position.Y * 0.5f, sizeX, sizeY),
+            _ => new RectModel(position.X, position.Y, sizeX, sizeY),
+        };
     }
     public BaseCollider(Collider collider, Room room)
     {
@@ -41,22 +38,14 @@ public abstract class BaseCollider
         ColliderBox = new RectModel(Position.x, Position.y + 0.1f, collider.Width, collider.Height);
     }
 
-    public virtual string[] IsColliding(bool isAttack)
-    {
-        return [];
-    }
+    public virtual string[] IsColliding(bool isAttack) => [];
 
     public virtual void SendCollisionEvent(BaseCollider received)
     {
     }
 
-    public virtual bool CheckCollision(BaseCollider collided)
-    {
-        if (Position.x < collided.Position.x + collided.ColliderBox.Width && collided.Position.x < Position.x + ColliderBox.Width &&
+    public virtual bool CheckCollision(BaseCollider collided) =>
+        Position.x < collided.Position.x + collided.ColliderBox.Width && collided.Position.x < Position.x + ColliderBox.Width &&
             Position.y < collided.Position.y + collided.ColliderBox.Height && collided.Position.y < Position.y + ColliderBox.Height &&
-            Plane == collided.Plane)
-            return true;
-        else
-            return false;
-    }
+            Plane == collided.Plane;
 }

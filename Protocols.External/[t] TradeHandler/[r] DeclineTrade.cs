@@ -2,7 +2,6 @@
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Trade;
 
 namespace Protocols.External._t__TradeHandler;
@@ -11,8 +10,9 @@ public class DeclineTrade : ExternalProtocol
 {
     public override string ProtocolName => "tr";
 
-    public DatabaseContainer DatabaseContainer { get; set; }
     public ILogger<DeclineType> Logger { get; set; }
+
+    public PlayerHandler PlayerHandler { get; set; }
 
     public override void Run(string[] message)
     {
@@ -22,7 +22,7 @@ public class DeclineTrade : ExternalProtocol
             return;
 
         var traderName = message[5];
-        var tradedPlayer = DatabaseContainer.GetPlayerByName(traderName);
+        var tradedPlayer = PlayerHandler.GetPlayerByName(traderName);
 
         if (tradedPlayer == null)
             return;

@@ -6,7 +6,6 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Entity.Enemies;
-using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Models;
@@ -72,9 +71,9 @@ public class Room : Timer
 
         Planes = LevelInfo.LoadPlanes(_config);
         Entities = this.LoadEntities(services, out UnknownEntities);
-        Projectiles = new Dictionary<string, ProjectileEntity>();
+        Projectiles = [];
         Colliders = this.LoadColliders(LevelInfo, _config);
-        Enemies = new Dictionary<string, Enemy>();
+        Enemies = [];
 
         foreach (var gameObjectId in Planes.Values
                      .Select(x => x.GameObjects.Values)

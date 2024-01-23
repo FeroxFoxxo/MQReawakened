@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using System.Xml;

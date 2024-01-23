@@ -1,5 +1,4 @@
 ﻿using Server.Base.Core.Abstractions;
-using Server.Base.Network.Enums;
 
 namespace Server.Reawakened.Configs;
 
