@@ -1,4 +1,4 @@
-﻿using A2m.Server;
+using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
@@ -17,6 +17,9 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using System.ComponentModel;
+using Thrift.Protocol;
+using UnityEngine;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -84,7 +87,7 @@ public class UseSlot : ExternalProtocol
         Player.Character.Data.PetItemId = usedItem.ItemId;
     }
 
-    private void HandleRelic(ItemDescription usedItem)
+    private void HandleRelic(ItemDescription usedItem) //Needs rework.
     {
         StatusEffect_SyncEvent itemEffect = null;
 
@@ -103,8 +106,7 @@ public class UseSlot : ExternalProtocol
 
         var platform = new GameObjectModel();
 
-        var planeName = position.Z > 10 ? "Plane1" : "Plane0";
-        position.Z = 0;
+        var planeName = position.Z > 10 ? ServerRConfig.IsBackPlane[true] : ServerRConfig.IsBackPlane[false];
 
         var dropItemData = new DroppedItemData()
         {
@@ -148,13 +150,39 @@ public class UseSlot : ExternalProtocol
                         PrefabName = prefabName,
                         Component = component,
                         ObjectId = objectId,
-                        Damage = dropData.UsedItem.ItemEffects.FirstOrDefault().Value
+                        Damage = GetDamageType(dropData.UsedItem)
                     };
 
-                    TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2650), TimeSpan.Zero, 1);
+                    TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2850), TimeSpan.Zero, 1);
                 }
             }
         }
+    }
+
+    private int GetDamageType(ItemDescription usedItem)
+    {
+        var damage = 0;
+        if (usedItem.ItemEffects.Count == 0)
+        {
+            Logger.LogWarning("Item ({usedItemName}) has 0 ItemEffects! Are you sure this item was set up correctly?", usedItem.PrefabName);
+            return damage;
+        }
+
+        foreach (var effect in usedItem.ItemEffects)
+        {
+            switch (effect.Type)
+            {
+                case ItemEffectType.FireDamage:
+                case ItemEffectType.PoisonDamage:
+                case ItemEffectType.IceDamage:
+                case ItemEffectType.AirDamage:
+                    damage = effect.Value;
+                    break;
+                default:
+                    break;
+            }
+        }
+        return damage;
     }
 
     private class BombData()
@@ -207,25 +235,29 @@ public class UseSlot : ExternalProtocol
 
     private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var monsters = new List<GameObjectModel>();
+        var planeName = position.Z < 10 ? ServerRConfig.IsBackPlane[false] : ServerRConfig.IsBackPlane[true];
 
-        var planeName = position.Z > 10 ? ServerRConfig.IsBackPlane[false] : ServerRConfig.IsBackPlane[true];
+        var rand = new System.Random();
+        var meleeId = Math.Abs(rand.Next());
 
         var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            position.X, position.Y, position.Z, direction, 1, 1, 0, usedItem.PrefabName);
+            position.X, position.Y, position.Z, direction, 1, 1, meleeId, usedItem.PrefabName);
         Player.Room.SendSyncEvent(hitEvent);
 
-        position.Z = 0;
+        var hitboxWidth = 3f;
+        var hitboxHeight = 4f;
 
-        var weaponDamage = 20; //Temp value if weapon damage value is null.
-        if (usedItem.ItemEffects.Count > 0)
-            weaponDamage = usedItem.ItemEffects.FirstOrDefault().Value; //Replace with xml system?
+        if (!Player.TempData.OnGround)
+            hitboxHeight = 4.5f;
 
-        foreach (var obj in
-                 Player.Room.Planes[planeName].GameObjects.Values
-                     .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3.4f)
-                )
+        var meleeHitbox = new BaseCollider(meleeId, Player.TempData.Position, hitboxWidth, hitboxHeight, planeName, Player.Room);
+
+        foreach (var obj in Player.Room.Planes[planeName].GameObjects.Values)
         {
+
+            var objCollider = new BaseCollider(obj.ObjectInfo.ObjectId, obj.ObjectInfo.Position,
+                obj.ObjectInfo.Rectangle.Width, obj.ObjectInfo.Rectangle.Height, planeName, Player.Room);
+
             var isLeft = direction > 0;
 
             if (isLeft)
@@ -239,20 +271,28 @@ public class UseSlot : ExternalProtocol
                     continue;
             }
 
+            var weaponDamage = GetDamageType(usedItem);
+
+            var isColliding = meleeHitbox.CheckObjectCollision(objCollider);
+
+            if (isColliding)
+            {
+                if (Player.Room.Entities.TryGetValue(obj.ObjectInfo.ObjectId, out var entityComponents))
+                    foreach (var component in entityComponents)
+                        if (component is TriggerCoopControllerComp triggerCoopEntity)
+                            triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
+                        else if (component is BreakableEventControllerComp breakableObjEntity)
+                            breakableObjEntity.Destroy(Player);
+                        //else if (component is InterObjStatusComp enemyEntity)
+                        //    enemyEntity.SendDamageEvent(Player, weaponDamage);
+                        else if (component is AIStatePatrolComp enemy)
+                            enemy.SendDamageEvent(Player, weaponDamage);
+            }
+
             var objectId = obj.ObjectInfo.ObjectId;
             var prefabName = obj.ObjectInfo.PrefabName;
-
-            if (Player.Room.Entities.TryGetValue(objectId, out var entityComponents))
-                foreach (var component in entityComponents)
-                    if (component is TriggerCoopControllerComp triggerCoopEntity)
-                        triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
-                    else if (component is BreakableEventControllerComp breakableObjEntity)
-                        breakableObjEntity.Destroy(Player);
-                    else if (component is InterObjStatusComp enemyEntity)
-                        enemyEntity.SendDamageEvent(Player, weaponDamage);
         }
     }
-
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item, int hotbarSlotId)
     {
