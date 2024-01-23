@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Server.Base.Core.Extensions;
 

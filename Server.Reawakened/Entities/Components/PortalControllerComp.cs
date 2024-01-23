@@ -61,7 +61,7 @@ public class PortalControllerComp : Component<PortalController>
         }
         else
         {
-            spawnId = portal.EventDataList.Count < 4 ? "" : portal.SpawnPointID;
+            spawnId = portal.EventDataList.Count < 4 ? string.Empty : portal.SpawnPointID;
 
             Logger.LogError("Could not find node for '{Old}' -> '{New}' for portal {PortalId}.", levelId, newLevelId, portalId);
         }

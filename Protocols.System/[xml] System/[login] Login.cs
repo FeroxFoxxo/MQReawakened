@@ -4,7 +4,6 @@ using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Models;
 using Server.Base.Accounts.Services;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Services;
 using System.Xml;
 
@@ -16,7 +15,7 @@ public class Login : SystemProtocol
 
     public AccountHandler AccountHandler { get; set; }
     public UserInfoHandler UserInfoHandler { get; set; }
-    public DatabaseContainer DatabaseContainer { get; set; }
+    public PlayerHandler PlayerHandler { get; set; }
     public ILogger<Login> Logger { get; set; }
 
     public override void Run(XmlDocument xmlDoc)
@@ -28,19 +27,19 @@ public class Login : SystemProtocol
 
         if (reason == AlrReason.Accepted)
         {
-            lock (DatabaseContainer.Lock)
+            lock (PlayerHandler.Lock)
             {
                 var account = NetState.Get<Account>();
 
-                foreach (var player in DatabaseContainer.GetPlayersByUserId(account.Id))
+                foreach (var player in PlayerHandler.GetPlayersByUserId(account.UserId))
                     player.Remove(Logger);
 
-                if (!DatabaseContainer.AnyPlayersByUserId(account.Id))
+                if (!PlayerHandler.AnyPlayersByUserId(account.UserId))
                 {
                     UserInfoHandler.InitializeUser(NetState);
                     SendXml(
                         "logOK",
-                        $"<login id='{account.Id}' mod='{account.IsModerator()}' n='{username}' />"
+                        $"<login id='{account.UserId}' mod='{account.IsModerator()}' n='{username}' />"
                     );
                     return;
                 }

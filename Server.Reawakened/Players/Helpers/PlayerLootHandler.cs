@@ -14,8 +14,12 @@ public static class PlayerLootHandler
         ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
         var loot = lootCatalog.GetLootById(gameObjectId);
-        if (loot.ObjectId.Equals(""))
+
+        if (string.IsNullOrEmpty(loot.ObjectId))
+        {
             logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);
+            return;
+        }
 
         if (loot.BananaRewards.Count > 0)
             loot.BananaRewards.GrantLootBananas(player);
@@ -54,19 +58,22 @@ public static class PlayerLootHandler
 
             while (count > 0)
             {
-
                 var randomWeight = random.NextInt64(1, weightRange);
                 var selector = 0;
+
                 foreach (var item in itemReward.Items)
                 {
                     randomWeight -= item.Key;
+
                     if (randomWeight <= 0)
                         break;
                     else
                         selector++;
                 }
+
                 var chosenItem = itemReward.Items[selector];
                 gottenItems.Add(chosenItem.Value);
+
                 count--;
             }
         }
@@ -74,12 +81,14 @@ public static class PlayerLootHandler
         foreach (var item in gottenItems)
         {
             itemsLooted.Append(item.ToString());
+
             if (item.ItemId > 0)
                 player.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count);
         }
 
         if (doWheel)
             SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
+
         player.SendUpdatedInventory(false);
     }
 

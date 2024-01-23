@@ -14,7 +14,6 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -185,14 +184,12 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
     private bool ForceSpawners(Player player, string[] args)
     {
         foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
-        {
             if (entityComponent is BaseSpawnerControllerComp spawner)
             {
                 var spawn = new Spawn_SyncEvent(spawner.Id.ToString(), player.Room.Time, 1);
 
                 player.Room.SendSyncEvent(spawn);
             }
-        }
 
         return true;
     }
@@ -200,12 +197,8 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
     private bool EndAllArenas(Player player, string[] args)
     {
         foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
-        {
             if (entityComponent is TriggerArenaComp arena)
-            {
                 arena.StopArena(true);
-            }
-        }
 
         return true;
     }

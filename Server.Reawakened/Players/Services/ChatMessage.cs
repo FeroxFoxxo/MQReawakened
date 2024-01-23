@@ -4,12 +4,11 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
 using Server.Reawakened.Network.Extensions;
-using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Services;
 
 public class ChatMessage(ServerConsole serverConsole,
-    DatabaseContainer databaseContainer, EventSink eventSink) : IService
+    PlayerHandler playerHandler, EventSink eventSink) : IService
 {
     public void Initialize()
     {
@@ -27,9 +26,9 @@ public class ChatMessage(ServerConsole serverConsole,
 
     public void SendConsoleMessage(string message)
     {
-        lock (databaseContainer.Lock)
+        lock (playerHandler.Lock)
         {
-            foreach (var player in databaseContainer.GetAllPlayers())
+            foreach (var player in playerHandler.GetAllPlayers())
             {
                 player.Chat(CannedChatChannel.Tell, "Console", message);
             }

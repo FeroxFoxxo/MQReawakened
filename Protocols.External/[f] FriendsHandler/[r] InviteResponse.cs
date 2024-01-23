@@ -1,6 +1,5 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Helpers;
 
 namespace Protocols.External._f__FriendsHandler;
 
@@ -8,7 +7,7 @@ public class InviteResponse : ExternalProtocol
 {
     public override string ProtocolName => "fr";
 
-    public DatabaseContainer DatabaseContainer { get; set; }
+    public PlayerHandler PlayerHandler { get; set; }
 
     public override void Run(string[] message)
     {
@@ -16,15 +15,15 @@ public class InviteResponse : ExternalProtocol
         var status = int.Parse(message[7]);
 
         var frienderName = message[5];
-        var friender = DatabaseContainer.GetPlayerByName(frienderName);
+        var friender = PlayerHandler.GetPlayerByName(frienderName);
 
         if (friender == null)
             return;
 
         if (accepted)
         {
-            friender.Character.Data.Friends.Add(Player.CharacterId);
-            Player.Character.Data.Friends.Add(Player.CharacterId);
+            friender.Character.Data.FriendList.Add(Player.UserId, Player.Character.Data.CharacterId);
+            Player.Character.Data.FriendList.Add(friender.UserId, Player.Character.Data.CharacterId);
 
             friender.SendXt("fr",
                 friender.CharacterName,

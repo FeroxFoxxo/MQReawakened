@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Server.Reawakened.Entities.AIAction;
+﻿namespace Server.Reawakened.Entities.AIAction;
 public class AIAction_Shoot
 {
-    private int _nbBulletsPerRound;
-    private float _delayBetweenBullets;
-    private float _fireSpreadAngle;
-    private int _nbFireRounds;
-    private float _delayBetweenFireRound;
-    private float _projectileSpeed;
-    private float _delayShot_Anim;
-    private bool _fireSpreadClockwise;
-    private float _fireSpreadStartAngle;
-    private float _startTime;
+    private readonly int _nbBulletsPerRound;
+    private readonly int _nbFireRounds;
+    private readonly float _delayBetweenBullets;
+    private readonly float _fireSpreadAngle;
+    private readonly float _delayBetweenFireRound;
+    private readonly float _projectileSpeed;
+    private readonly float _delayShot_Anim;
+    private readonly float _fireSpreadStartAngle;
+    private readonly float _startTime;
+    private readonly bool _fireSpreadClockwise;
+    private readonly bool _fireLobTrajectory;
+
     private int _currentFireRound;
     private int _currentBulletInFireRound;
-    private bool _fireLobTrajectory;
 
-    public AIAction_Shoot(ref AIProcessData aiData, float startTime, int nbBulletsPerRound, float fireSpreadStartAngle, float fireSpreadAngle, int nbFireRounds, float delayBetweenBullets, float delayBetweenFireRound, float projectileSpeed, bool fireSpreadClockwise, float delayShot_Anim, bool lobTrajectory)
+    public AIAction_Shoot(ref AIProcessData _, float startTime, int nbBulletsPerRound, float fireSpreadStartAngle, float fireSpreadAngle, int nbFireRounds, float delayBetweenBullets, float delayBetweenFireRound, float projectileSpeed, bool fireSpreadClockwise, float delayShot_Anim, bool lobTrajectory)
     {
         _currentFireRound = -1;
         _startTime = startTime;
@@ -39,12 +34,13 @@ public class AIAction_Shoot
 
     public void Update(ref AIProcessData aiData, float clockTime)
     {
-        int num = (int)((clockTime - _startTime) / _delayBetweenFireRound);
+        var num = (int) ((clockTime - _startTime) / _delayBetweenFireRound);
+
         if (_nbFireRounds == 1)
-        {
             num = 0;
-        }
-        float num2 = _startTime + (float)num * _delayBetweenFireRound;
+
+        var num2 = _startTime + num * _delayBetweenFireRound;
+
         if (num < _nbFireRounds)
         {
             if (_currentFireRound != num)
@@ -54,15 +50,15 @@ public class AIAction_Shoot
                 aiData.Intern_AnimName = "Shoot";
                 aiData.Intern_ForceAnimRepetition = true;
             }
-            int num3 = 0;
+
+            var num3 = 0;
+
             if (_delayBetweenBullets > 0f)
-            {
                 num3 = (int)((clockTime - (num2 + _delayShot_Anim)) / _delayBetweenBullets);
-            }
+
             if (clockTime - (num2 + _delayShot_Anim) < 0f)
-            {
                 num3 = -1;
-            }
+
             if (_currentBulletInFireRound != num3 && num3 < _nbBulletsPerRound)
             {
                 _currentBulletInFireRound = num3;
@@ -73,23 +69,22 @@ public class AIAction_Shoot
 
     private void ShootProjectile(ref AIProcessData aiData)
     {
-        float num = _fireSpreadStartAngle;
+        var num = _fireSpreadStartAngle;
+
         aiData.Intern_FireSpeed = _projectileSpeed;
         aiData.Intern_FireProjectile = true;
         aiData.Intern_FireAngle = 0f;
         aiData.Intern_FireLobTrajectory = _fireLobTrajectory;
+
         if (_nbBulletsPerRound > 1)
-        {
-            aiData.Intern_FireAngle = (float)_currentBulletInFireRound * _fireSpreadAngle / (float)(_nbBulletsPerRound - 1);
-        }
-        if ((_fireSpreadClockwise && aiData.Intern_Dir == 1) || (!_fireSpreadClockwise && aiData.Intern_Dir == -1))
-        {
+            aiData.Intern_FireAngle = _currentBulletInFireRound * _fireSpreadAngle / (_nbBulletsPerRound - 1);
+
+        if (_fireSpreadClockwise && aiData.Intern_Dir == 1 || !_fireSpreadClockwise && aiData.Intern_Dir == -1)
             aiData.Intern_FireAngle = 0f - aiData.Intern_FireAngle;
-        }
+
         if (aiData.Intern_Dir == -1)
-        {
             num = 180f - _fireSpreadStartAngle;
-        }
+
         aiData.Intern_FireAngle = (aiData.Intern_FireAngle + num) * 0.01745f;
     }
 }
