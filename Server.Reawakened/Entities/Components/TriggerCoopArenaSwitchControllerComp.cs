@@ -12,7 +12,7 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
 {
     public string ArenaObjectId => ComponentData.ArenaObjectID;
     public DatabaseContainer DatabaseContainer { get; set; }
-    public ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
+    public new ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
     public TriggerArenaComp Arena = null;
     public override object[] GetInitData(Player player) => base.GetInitData(player);
 
