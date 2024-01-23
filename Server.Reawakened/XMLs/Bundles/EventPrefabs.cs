@@ -207,11 +207,17 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
     {
         GameFlow.EventPrefabsXML = this;
 
-        var defaultEvent = Services.GetRequiredService<ServerRwConfig>().CurrentEvent;
+        var rwConfig = Services.GetRequiredService<ServerRwConfig>();
+        var rConfig = Services.GetRequiredService<ServerRConfig>();
+
+        var defaultEvent = rConfig.Is2014Client ? rwConfig.Current2014Event : rwConfig.Current2013Event;
 
         var combinedDict = EventIdToNameDict.ToDictionary(x => x.Value, x => x.Key)
             .Concat(TimedSocialEvents.ToDictionary(x => x.Key.Value, x => x.Key.Key))
             .ToDictionary(x => x.Key, x => x.Value);
+
+        if (!combinedDict.ContainsKey(defaultEvent))
+            defaultEvent = PrefabMap.MaxBy(x => x.Value.Count).Key;
 
         var eventId = combinedDict[defaultEvent];
 
