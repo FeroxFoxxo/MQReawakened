@@ -2,6 +2,7 @@
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Services;
@@ -64,13 +65,23 @@ public class AutoJoin : SystemProtocol
     {
         var sb = new SeparatedStringBuilder('%');
 
-        sb.Append(userInfo.LastCharacterSelected);
+        var characterIds = userInfo.CharacterIds.ToList();
+        var characterData = new List<string>();
 
-        foreach (var characterId in userInfo.CharacterIds)
+        foreach(var characterId in characterIds)
         {
             var character = CharacterHandler.Get(characterId);
-            sb.Append(character.Data.GetLightCharacterData());
+
+            if (character == null)
+                Player.DeleteCharacter(characterId);
+            else
+                characterData.Add(character.Data.GetLightCharacterData());
         }
+
+        sb.Append(userInfo.LastCharacterSelected);
+
+        foreach (var character in characterData)
+            sb.Append(character);
 
         return sb.ToString();
     }

@@ -16,6 +16,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
     ILogger<Room> roomLogger) : IService
 {
     private readonly Dictionary<int, Level> _levels = [];
+    private readonly object Lock = new();
 
     public void Initialize() => sink.WorldLoad += LoadRooms;
 
@@ -59,46 +60,51 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         };
 
         return new LevelInfo(name, name, name, levelId,
-            0, 0, A2m.Server.LevelType.Unknown, TribeType._Invalid);
+            0, 0, LevelType.Unknown, TribeType._Invalid);
     }
 
     public Room GetRoomFromLevelId(int levelId, Player player)
     {
-        if (!_levels.ContainsKey(levelId))
-            _levels.Add(levelId, new Level(GetLevelInfo(levelId)));
+        lock (Lock)
+        {
+            if (!_levels.ContainsKey(levelId))
+                _levels.Add(levelId, new Level(GetLevelInfo(levelId)));
+        }
 
         var level = _levels[levelId];
 
-        if (level.Rooms.Count > 0)
+        Room room = null;
+
+        lock (level.Lock)
         {
-            if (level.LevelInfo.IsATrailLevel())
+            if (level.Rooms.Count > 0)
             {
-                if (player.TempData.Group != null)
+                if (level.LevelInfo.IsATrailLevel())
                 {
-                    var playerMembers = player.TempData.Group.GetMembers();
+                    if (player.TempData.Group != null)
+                    {
+                        var playerMembers = player.TempData.Group.GetMembers();
 
-                    var trailRoom = level.Rooms.Values.FirstOrDefault(r =>
-                        r.Players.Any(c => playerMembers.Contains(c.Value))
-                    );
+                        var trailRoom = level.Rooms.Values.FirstOrDefault(r =>
+                            r.Players.Any(c => playerMembers.Contains(c.Value))
+                        );
 
-                    if (trailRoom != null)
-                        return trailRoom;
+                        if (trailRoom != null)
+                            return trailRoom;
+                    }
+                }
+                else
+                {
+                    return level.Rooms.Values.FirstOrDefault();
                 }
             }
-            else
-            {
-                return level.Rooms.Values.FirstOrDefault();
-            }
+
+            var roomId = level.Rooms.Keys.Count > 0 ? level.Rooms.Keys.Max() + 1 : 1;
+
+            room = new Room(roomId, level, config, timerThread, services, roomLogger);
+
+            level.Rooms.Add(roomId, room);
         }
-
-        var roomId = 1;
-
-        while (level.Rooms.ContainsKey(roomId))
-            roomId++;
-
-        var room = new Room(roomId, level, config, timerThread, services, roomLogger);
-
-        level.Rooms.Add(roomId, room);
 
         return room;
     }

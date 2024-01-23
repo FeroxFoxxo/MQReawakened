@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
@@ -41,6 +43,8 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
         };
 
         Room.SendSyncEvent(trig);
+
+        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
 
         var rec = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);
 

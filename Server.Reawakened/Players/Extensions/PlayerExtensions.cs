@@ -181,10 +181,9 @@ public static class PlayerExtensions
         player.SendXt("lw", error, levelName, surroundingLevels);
     }
 
-    public static void SetCharacterSelected(this Player player, int characterId)
+    public static void SetCharacterSelected(this Player player, CharacterModel character)
     {
-        var characterHandler = player.DatabaseContainer.CharacterHandler;
-        player.Character = characterHandler.Get(characterId);
+        player.Character = character;
         player.UserInfo.LastCharacterSelected = player.CharacterName;
     }
 
@@ -194,7 +193,10 @@ public static class PlayerExtensions
     public static void DeleteCharacter(this Player player, int id)
     {
         var characterHandler = player.DatabaseContainer.CharacterHandler;
+
         player.UserInfo.CharacterIds.Remove(id);
+
+        if (characterHandler.Data.ContainsKey(id))
         characterHandler.Data.Remove(id);
 
         player.UserInfo.LastCharacterSelected = player.UserInfo.CharacterIds.Count > 0
@@ -287,8 +289,6 @@ public static class PlayerExtensions
 
                 objective.CountLeft -= count;
 
-                player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
-
                 if (objective.CountLeft <= 0)
                 {
                     objective.CountLeft = 0;
@@ -303,6 +303,8 @@ public static class PlayerExtensions
 
                     hasObjComplete = true;
                 }
+                else
+                    player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
             }
 
             if (!quest.Objectives.Any(o => !o.Value.Completed) && hasObjComplete)

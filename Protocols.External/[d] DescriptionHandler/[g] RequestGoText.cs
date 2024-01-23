@@ -14,6 +14,7 @@ public class RequestGoText : ExternalProtocol
         var gameObjectId = message[5];
 
         // %dg is not used anywhere else but portals, so the all id fields are unnecessary.
+        Logger.LogDebug("Description requested for game object {Id}", gameObjectId);
         SendXt("dg", gameObjectId, 1, 1, 1);
     }
 }

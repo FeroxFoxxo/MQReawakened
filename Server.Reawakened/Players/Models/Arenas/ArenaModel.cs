@@ -2,7 +2,8 @@
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.BundlesInternal;
 
-namespace Server.Reawakened.Players.Models.Minigames;
+namespace Server.Reawakened.Players.Models.Arenas;
+
 public class ArenaModel
 {
     public bool ShouldStartArena { get; set; }

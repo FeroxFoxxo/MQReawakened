@@ -1,8 +1,8 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Models;
 
 namespace Server.Reawakened.Players.Extensions;
 

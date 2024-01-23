@@ -155,6 +155,14 @@ public class NPCControllerComp : Component<NPCController>
                     default:
                         break;
                 }
+
+                player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
+
+                var newStatus = GetQuestStatus(player.Character);
+
+                if (newStatus is NPCStatus.QuestCompleted or NPCStatus.QuestAvailable)
+                    TalkToNpc(player);
+
                 break;
             case NpcType.Dialog:
                 SendDialog(player);
@@ -340,9 +348,10 @@ public class NPCControllerComp : Component<NPCController>
                 return true;
             }
 
-        Logger.LogTrace("[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS]", quest.Name, quest.Id);
+        if (previousQuests.Count != 0)
+            Logger.LogTrace("[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS]", quest.Name, quest.Id);
 
-        return false;
+        return previousQuests.Count == 0;
     }
 
     public void ValidateQuest(Player player)

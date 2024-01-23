@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._l__ExtLevelEditor;
 
@@ -9,6 +10,7 @@ public class GoToEvent : ExternalProtocol
     public override string ProtocolName => "le";
 
     public ILogger<GoToEvent> Logger { get; set; }
+    public EventPrefabs EventPrefabs { get; set; }
 
     public override void Run(string[] message)
     {
@@ -17,9 +19,25 @@ public class GoToEvent : ExternalProtocol
         var destinationIds = message[5].Split('|');
 
         var levelId = int.Parse(destinationIds[0]);
-        var spawnId = destinationIds[1];
 
-        character.SetLevel(levelId, spawnId, Logger);
+        var spawnId = 0;
+
+        if (destinationIds.Length > 1)
+        {
+            spawnId = int.Parse(destinationIds[1]);
+        }
+        else
+        {
+            if (EventPrefabs.EventIdToLevelId.TryGetValue(levelId, out var level))
+            {
+                if (!int.TryParse(level, out levelId))
+                    return;
+            }
+            else return;
+        }
+
+
+        character.SetLevel(levelId, spawnId.ToString(), Logger);
 
         Player.SendLevelChange();
     }

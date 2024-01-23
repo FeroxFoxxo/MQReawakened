@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
@@ -22,6 +23,7 @@ public class HazardControllerComp : Component<HazardController>
     public float HealthRatioDamage => ComponentData.HealthRatioDamage;
     public int HurtSelfOnDamage => ComponentData.HurtSelfOnDamage;
 
+    public TimerThread TimerThread { get; set; }
     public ILogger<HazardControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) => [0];
@@ -58,7 +60,7 @@ public class HazardControllerComp : Component<HazardController>
                     $"Effect Type: {effectType}");
                     break;
                 default:
-                    player.ApplyDamageByPercent(Room, .10);
+                    player.ApplyDamageByPercent(Room, .10, TimerThread);
                     break;
             }
         }

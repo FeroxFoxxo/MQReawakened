@@ -13,6 +13,42 @@
         <Item prefabName="PF_PET_Rig01_Owl01" />
         <Item prefabName="PF_PET_Rig02_Bear01" />
         <Item prefabName="PF_PET_Rig02_Tiger02" />
+        <Item prefabName="PF_PET_Rig02_Dog01" />
+        <Item prefabName="PF_PET_Rig03_Orca01" />
+        <Item prefabName="PF_PET_Rig03_Pumpkin01" />
+        <Item prefabName="PF_PET_Rig02_Penguin01" />
+        <Item prefabName="PF_PET_Rig02_Tiger01_02" />
+        <Item prefabName="PF_PET_Rig02_Tiger01_03" />
+        <Item prefabName="PF_PET_Rig01_Pheonix01_02" />
+        <Item prefabName="PF_PET_Rig01_Pheonix01_03" />
+        <Item prefabName="PF_PET_Rig03_Squid01_02" />
+        <Item prefabName="PF_PET_Rig03_Squid01_03" />
+        <Item prefabName="PF_PET_Rig03_Shark01_02" />
+        <Item prefabName="PF_PET_Rig03_Shark01_03" />
+        <Item prefabName="PF_PET_Rig02_Dog01_02" />
+        <Item prefabName="PF_PET_Rig02_Dog01_03" />
+        <Item prefabName="PF_PET_Rig03_Orca01_02" />
+        <Item prefabName="PF_PET_Rig03_Orca01_03" />
+        <Item prefabName="PF_PET_Rig02_Enzo01_02" />
+        <Item prefabName="PF_PET_Rig02_Enzo01_03" />
+        <Item prefabName="PF_PET_Rig02_Panda01_02" />
+        <Item prefabName="PF_PET_Rig02_Panda01_03" />
+        <Item prefabName="PF_PET_Rig02_Fox01_02" />
+        <Item prefabName="PF_PET_Rig02_Fox01_03" />
+        <Item prefabName="PF_PET_Rig01_Dragon01_02" />
+        <Item prefabName="PF_PET_Rig01_Dragon01_03" />
+        <Item prefabName="PF_PET_Rig01_Toad01_02" />
+        <Item prefabName="PF_PET_Rig01_Toad01_03" />
+        <Item prefabName="PF_PET_Rig01_Owl01_02" />
+        <Item prefabName="PF_PET_Rig01_Owl01_03" />
+        <Item prefabName="PF_PET_Rig03_Pumpkin01_02" />
+        <Item prefabName="PF_PET_Rig03_Pumpkin01_03" />
+        <Item prefabName="PF_PET_Rig02_Penguin01_02" />
+        <Item prefabName="PF_PET_Rig02_Penguin01_03" />
+        <Item prefabName="PF_PET_Rig02_Bear01_02" />
+        <Item prefabName="PF_PET_Rig02_Bear01_03" />
+        <Item prefabName="PF_PET_Rig02_Tiger02_02" />
+        <Item prefabName="PF_PET_Rig02_Tiger02_03" />
     </Vendor>
     <Vendor objectId="1167" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
         <Item prefabName="PF_PET_Rig01_Pheonix01" />
@@ -46,7 +82,7 @@
         <Item prefabName="Add_COM_AviatorPunk01_S01" />
         <Item prefabName="Add_COM_AviatorPunk01_TS01" />
         <Item prefabName="COL_FOOD_Nuts01" />
-        <Item prefabName="COL_POT_Rejuvenation01" />
+        <Item prefabName="COL_PACK_NC_ExperiencePotion01" />
         <Item prefabName="COL_FOOD_Candy01" />
         <Item prefabName="Add_COM_AnimalWood01_S02" />
         <Item prefabName="COL_POT_Healing02" />
@@ -79,6 +115,8 @@
         <Item prefabName="Add_EVT_Zombie01_TS01" />
         <Item prefabName="Add_EVT_Zombie01_LS01" />
         <Item prefabName="PF_PET_Rig01_Skull01" />
+        <Item prefabName="PF_PET_Rig01_Skull01_02" />
+        <Item prefabName="PF_PET_Rig01_Skull01_03" />
     </Vendor>
     <Vendor objectId="32790" name="Starshine" descriptionId="1" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1022" greetingConversationId="2819" leavingConversationId="2818">
         <Item prefabName="Add_EVT_Winter01_T01" />
@@ -290,5 +328,42 @@
         <Item prefabName="COL_RECIP_BON_TailRing01_T03" />
         <Item prefabName="COL_RECIP_COM_DragonFish01_FH02" />
         <Item prefabName="COL_RECIP_COM_Indonesian01_LS02" />
+    </Vendor>
+    <Vendor objectId="13160924" name="Raphael" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1478" greetingConversationId="3741" leavingConversationId="3740">
+        <Item prefabName="WPN_PRJ_ChimFooAmulet01" />
+        <Item prefabName="ABIL_ColorTonic10" />
+        <Item prefabName="COL_PACK_NC_ColorTonic10" />
+        <Item prefabName="WPN_PRJ_Shuriken01" />
+        <Item prefabName="WPN_SPC_ChimFooPopper01" />
+        <Item prefabName="WPN_PRJ_TMNTShuriken01" />
+        <Item prefabName="Add_EVT_TMNT_Casey01_S01" />
+        <Item prefabName="Add_EVT_TMNT_Casey01_TS01" />
+        <Item prefabName="Add_EVT_TMNT_Casey01_LS01" />
+    </Vendor>
+    <!-- SpongeBob's Amusement Park -->
+    <Vendor objectId="26294092" name="Finn" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1606" greetingConversationId="4082" leavingConversationId="4081">
+        <Item prefabName="PF_PET_Rig03_GaryBot01_02" />
+        <Item prefabName="PF_PET_Rig03_GaryBot01_03" />
+        <Item prefabName="PF_PET_Rig03_GaryBot01" />
+        <Item prefabName="Add_COM_SpongeBob02_W01" />
+        <Item prefabName="Add_COM_SpongeBob02_TS01" />
+        <Item prefabName="Add_COM_SpongeBob02_T01" />
+        <Item prefabName="ABIL_ColorTonic07" />
+        <Item prefabName="COL_PACK_NC_ColorTonic07" />
+        <Item prefabName="Add_COM_SpongeBob01_BP01" />
+        <Item prefabName="WPN_PRJ_SpongeBobPartyGun01" />
+        <Item prefabName="WPN_PRJ_SpongeBob02" />
+        <Item prefabName="Add_COM_SpongeBob01_S01" />
+    </Vendor>
+    <Vendor objectId="554" name="Karrp" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1607" greetingConversationId="4088" leavingConversationId="4087">
+        <Item prefabName="COL_FOOD_SpongeBob01" />
+        <Item prefabName="ABIL_ColorTonic07" />
+        <Item prefabName="COL_PACK_NC_ColorTonic07" />
+        <Item prefabName="COL_FOOD_SpongeBob02" />
+        <Item prefabName="COL_FOOD_SpongeBob04" />
+        <Item prefabName="COL_FOOD_SpongeBob03" />
+        <Item prefabName="COL_FOOD_SpongeBob06" />
+        <Item prefabName="COL_FOOD_SpongeBob07" />
+        <Item prefabName="COL_FOOD_SpongeBob08" />
     </Vendor>
 </VendorCatalog>

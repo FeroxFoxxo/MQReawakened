@@ -24,7 +24,7 @@ public static class NpcExtensions
                 Id = questId,
                 QuestStatus = QuestState.NOT_START,
                 CurrentOrder = quest.Objectives.Values.Count > 0 ? quest.Objectives.Values.Min(x => x.Order) : 1,
-                Objectives = quest.Objectives.ToDictionary(q => q.Key, q => new ObjectiveModel()
+                Objectives = quest.Objectives.OrderBy(q => q.Value.Order).ToDictionary(q => q.Key, q => new ObjectiveModel()
                 {
                     Completed = false,
                     CountLeft = q.Value.TotalCount,

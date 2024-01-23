@@ -10,7 +10,7 @@ using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Players.Models.Minigames;
+using Server.Reawakened.Players.Models.Arenas;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -160,12 +160,6 @@ public class Room : Timer
             player.Remove(Logger);
     }
 
-    //public bool IsObjectKilled(int objectId)
-    //{
-    //    lock (_roomLock)
-    //        return KilledObjects.Contains(objectId);
-    //}
-
     public void GroupMemberRoomChanged(Player player)
     {
         if (player.TempData.Group == null)
@@ -191,7 +185,9 @@ public class Room : Timer
 
         if (reason == JoinReason.Accepted)
         {
-            var gameObjectId = 1;
+            lock (_roomLock)
+            {
+                var gameObjectId = 1;
 
             while (GameObjectIds.Contains(gameObjectId.ToString()))
                 gameObjectId++;
@@ -202,24 +198,25 @@ public class Room : Timer
 
             Players.Add(gameObjectId.ToString(), currentPlayer);
 
-            GroupMemberRoomChanged(currentPlayer);
+                GroupMemberRoomChanged(currentPlayer);
 
-            currentPlayer.NetState.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
+                currentPlayer.NetState.SendXml("joinOK", $"<pid id='{gameObjectId}' /><uLs />");
 
-            if (LevelInfo.LevelId == 0)
-                return;
+                if (LevelInfo.LevelId == 0)
+                    return;
 
-            if (currentPlayer.TempData.ArenaModel == null)
-                currentPlayer.TempData.ArenaModel = new ArenaModel();
+                if (currentPlayer.TempData.ArenaModel == null)
+                    currentPlayer.TempData.ArenaModel = new ArenaModel();
 
-            // USER ENTER
+                // USER ENTER
 
-            foreach (var roomCharacter in Players.Values)
-            {
-                currentPlayer.SendUserEnterDataTo(roomCharacter);
+                foreach (var roomCharacter in Players.Values)
+                {
+                    currentPlayer.SendUserEnterDataTo(roomCharacter);
 
-                if (roomCharacter != currentPlayer)
-                    roomCharacter.SendUserEnterDataTo(currentPlayer);
+                    if (roomCharacter != currentPlayer)
+                        roomCharacter.SendUserEnterDataTo(currentPlayer);
+                }
             }
         }
         else
@@ -230,16 +227,22 @@ public class Room : Timer
 
     public void RemoveClient(Player player, bool useOriginalRoom)
     {
-        Players.Remove(player.GameObjectId);
-        GameObjectIds.Remove(player.GameObjectId);
+        lock (_roomLock)
+        {
+            Players.Remove(player.GameObjectId);
+            GameObjectIds.Remove(player.GameObjectId);
+        }
 
         if (LevelInfo.LevelId <= 0)
             return;
 
         if (Players.Count != 0)
         {
-            foreach (var currentPlayer in Players.Values)
-                player.SendUserGoneDataTo(currentPlayer);
+            lock (_roomLock)
+            {
+                foreach (var currentPlayer in Players.Values)
+                    player.SendUserGoneDataTo(currentPlayer);
+            }
 
             return;
         }
@@ -254,7 +257,12 @@ public class Room : Timer
         else
         {
             player.TempData.ArenaModel = null;
-            _level.Rooms.Remove(_roomId);
+
+            lock (_level.Lock)
+            {
+                _level.Rooms.Remove(_roomId);
+            }
+
             Stop();
         }
     }

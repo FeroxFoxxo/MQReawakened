@@ -1,9 +1,12 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Base.Timers.Extensions;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -21,6 +24,7 @@ public class State : ExternalProtocol
     public SyncEventManager SyncEventManager { get; set; }
     public ServerRConfig ServerConfig { get; set; }
     public FileLogger FileLogger { get; set; }
+    public TimerThread TimerThread { get; set; }
     public ILogger<State> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -101,8 +105,20 @@ public class State : ExternalProtocol
                     newPlayer.TempData.Direction = directionEvent.Direction;
                     break;
                 case SyncEvent.EventType.RequestRespawn:
-                    var respawnEvent = new RequestRespawn_SyncEvent(entityId.ToString(), syncEvent.TriggerTime);
-                    room.SendSyncEvent(respawnEvent);
+                    Player.Room.SendSyncEvent(new RequestRespawn_SyncEvent(entityId.ToString(), syncEvent.TriggerTime));
+
+                    Player.TempData.Invincible = true;
+                    Player.Character.Data.CurrentLife = Player.Character.Data.MaxLife;
+
+                    Player.Room.SendSyncEvent(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                        Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
+
+                    var respawnPosition = Player.TempData.NextRespawnPosition != null ? Player.TempData.NextRespawnPosition.Position : room.DefaultSpawn.Position;
+
+                    Player.Room.SendSyncEvent(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                             respawnPosition.X, respawnPosition.Y, respawnPosition.Z > 0));
+
+                    TimerThread.DelayCall(Player.DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
                     break;
                 case SyncEvent.EventType.PhysicStatus:
                     foreach (var entity in room.Entities)

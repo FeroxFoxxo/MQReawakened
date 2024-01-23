@@ -54,7 +54,11 @@ public static class PlayerAchievementExtensions
 
         pAchObj[type][achValue] += count;
 
-        var oInProg = inProgCond.OrderBy(a => player.Character.GetAchievement(a.Key)).ToList();
+        var oInProg = inProgCond.OrderBy(a =>
+            a.Key.repeatable ?
+                int.MaxValue : 
+                player.Character.GetAchievement(a.Key).GetAmountLeft()
+            ).ToList();
 
         var firstAchievement = true;
 

@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
@@ -19,6 +20,7 @@ public class UseItem : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public InternalRecipe RecipeCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
+    public TimerThread TimerThread { get; set; }
     public ILogger<UseItem> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -45,7 +47,7 @@ public class UseItem : ExternalProtocol
                         return;
 
                     if (effect.Type is ItemEffectType.Healing)
-                        Player.HealCharacter(item, ServerRConfig);
+                        Player.HealCharacter(item, TimerThread, ServerRConfig, effect.Type);
 
                     statusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                         effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
