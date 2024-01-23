@@ -7,13 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Entities\Entity\Enemies\EnemyGeneric.cs" />
-      <Compile Remove="Entities\Entity\Enemies\EnemyOrchid.cs" />
-      <Compile Remove="Entities\Entity\Enemies\EnemyPincer.cs" />
-      <Compile Remove="Entities\Entity\Enemy.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\Server.Base\Server.Base.csproj" />
     </ItemGroup>
 
@@ -72,10 +65,6 @@
       <None Update="Thrift\NOTICE">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Entities\Entity\Enemies\" />
     </ItemGroup>
     
 </Project>
