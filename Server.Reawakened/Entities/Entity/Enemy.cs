@@ -65,7 +65,8 @@ public abstract class Enemy : IDestructible
         SpawnPosition = Position;
 
         var entityList = room.Entities.Values.SelectMany(s => s);
-        foreach (var entity in entityList)
+
+        foreach (var entity in entityList.Where(x => x.Id == Id))
         {
             if (entity.Id == Id && entity is AIStatsGlobalComp global)
                 Global = global;
