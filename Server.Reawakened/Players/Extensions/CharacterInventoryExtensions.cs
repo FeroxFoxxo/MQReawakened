@@ -48,17 +48,17 @@ public static class CharacterInventoryExtensions
     {
         foreach (var item in items)
         {
-            if (characterData.Data.Inventory.Items.TryGetValue(item.ItemId, out var gottenKit))
-                gottenKit.Count += count;
-
-            else
-                characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel
-                {
-                    ItemId = item.ItemId,
-                    Count = count,
-                    BindingCount = item.BindingCount,
-                    DelayUseExpiry = DateTime.MinValue
-                });
+            if (item != null)
+                if (characterData.Data.Inventory.Items.TryGetValue(item.ItemId, out var gottenKit))
+                    gottenKit.Count += count;
+                else
+                    characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel
+                    {
+                        ItemId = item.ItemId,
+                        Count = count,
+                        BindingCount = item.BindingCount,
+                        DelayUseExpiry = DateTime.MinValue
+                    });
         }
     }
 

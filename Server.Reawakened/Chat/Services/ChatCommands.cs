@@ -15,6 +15,7 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -131,20 +132,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool GodMode(Player player, string[] args)
     {
-        var items = config.SingleItemKit
-            .Select(itemCatalog.GetItemFromId)
-            .ToList();
-
-        foreach (var itemId in config.StackedItemKit)
-        {
-            var stackedItem = itemCatalog.GetItemFromId(itemId);
-
-            for (var i = 0; i < config.AmountToStack; i++)
-                items.Add(stackedItem);
-        }
-
-        player.Character.AddKit(items, 1);
-        player.SendUpdatedInventory(false);
+        AddKit(player, 1);
         player.AddSlots(true);
 
         player.AddBananas(config.CashKitAmount);
@@ -164,6 +152,31 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         player.Room.SendSyncEvent(heal);
 
         return true;
+    }
+
+    private void AddKit(Player player, int amount)
+    {
+        var items = config.SingleItemKit
+            .Select(itemCatalog.GetItemFromId)
+            .ToList();
+
+        foreach (var itemId in config.StackedItemKit)
+        {
+            var stackedItem = itemCatalog.GetItemFromId(itemId);
+
+            if (stackedItem == null)
+            {
+                logger.LogError("Unknown item with id {itemId}", itemId);
+                continue;
+            }
+
+            for (var i = 0; i < config.AmountToStack; i++)
+                items.Add(stackedItem);
+        }
+
+        player.Character.AddKit(items, amount);
+
+        player.SendUpdatedInventory(false);
     }
 
     private bool OpenDoors(Player player, string[] args)
@@ -288,21 +301,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
                 amount = 1;
         }
 
-        var items = config.SingleItemKit
-            .Select(itemCatalog.GetItemFromId)
-            .ToList();
-
-        foreach (var itemId in config.StackedItemKit)
-        {
-            var stackedItem = itemCatalog.GetItemFromId(itemId);
-
-            for (var i = 0; i < config.AmountToStack; i++)
-                items.Add(stackedItem);
-        }
-
-        character.AddKit(items, amount);
-
-        player.SendUpdatedInventory(false);
+        AddKit(player, amount);
 
         Log($"{character.Data.CharacterName} received {amount} item kit{(amount > 1 ? "s" : "")}!", player);
 
