@@ -112,5 +112,5 @@ public class InternalLoot : IBundledXml<InternalLoot>
     }
 
     public LootModel GetLootById(string objectId) =>
-        LootCatalog.TryGetValue(objectId, out var lootInfo) ? lootInfo : new LootModel("", [], [], false, 1);
+        LootCatalog.TryGetValue(objectId, out var lootInfo) ? lootInfo : new LootModel(string.Empty, [], [], false, 1);
 }

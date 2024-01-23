@@ -15,6 +15,7 @@ using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.BundlesInternal;
 using WorldGraphDefines;
 using Timer = Server.Base.Timers.Timer;
 
@@ -42,6 +43,8 @@ public class Room : Timer
 
     public SpawnPointComp DefaultSpawn { get; set; }
     public SpawnPointComp CheckpointSpawn { get; set; }
+    public InternalColliders ColliderCatalog;
+
     public string CheckpointId { get; set; }
     public LevelInfo LevelInfo => _level.LevelInfo;
     public long TimeOffset { get; set; }
@@ -51,7 +54,7 @@ public class Room : Timer
 
     public Room(
         int roomId, Level level, ServerRConfig config, TimerThread timerThread,
-        IServiceProvider services, ILogger<Room> logger
+        IServiceProvider services, ILogger<Room> logger, InternalColliders colliderCatalog
     ) : base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
         _roomLock = new object();
@@ -60,6 +63,7 @@ public class Room : Timer
         _config = config;
         Services = services;
         Logger = logger;
+        ColliderCatalog = colliderCatalog;
         _level = level;
 
         ResetCheckpoints();
@@ -73,7 +77,7 @@ public class Room : Timer
         Planes = LevelInfo.LoadPlanes(_config);
         Entities = this.LoadEntities(services, out UnknownEntities);
         Projectiles = [];
-        Colliders = this.LoadColliders(LevelInfo, _config);
+        Colliders = this.LoadTerrainColliders();
         Enemies = [];
 
         foreach (var gameObjectId in Planes.Values

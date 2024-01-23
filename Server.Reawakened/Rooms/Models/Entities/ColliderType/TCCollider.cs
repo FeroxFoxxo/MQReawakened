@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
-public class TCCollider(Collider collider, Room room) : BaseCollider(collider, room)
+public class TCCollider(ColliderModel collider, Room room) : BaseCollider(collider, room)
 {
 }

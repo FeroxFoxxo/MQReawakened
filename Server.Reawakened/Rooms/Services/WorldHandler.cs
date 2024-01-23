@@ -7,13 +7,14 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Services;
 
 public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph,
     TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> handlerLogger,
-    ILogger<Room> roomLogger) : IService
+    ILogger<Room> roomLogger, InternalColliders internalCollider) : IService
 {
     private readonly Dictionary<int, Level> _levels = [];
     private readonly object Lock = new();
@@ -101,7 +102,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
             var roomId = level.Rooms.Keys.Count > 0 ? level.Rooms.Keys.Max() + 1 : 1;
 
-            room = new Room(roomId, level, config, timerThread, services, roomLogger);
+            room = new Room(roomId, level, config, timerThread, services, roomLogger, internalCollider);
 
             level.Rooms.Add(roomId, room);
         }

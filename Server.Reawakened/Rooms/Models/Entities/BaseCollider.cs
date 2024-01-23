@@ -31,7 +31,7 @@ public abstract class BaseCollider
                 break;
         }
     }
-    public BaseCollider(Collider collider, Room room)
+    public BaseCollider(ColliderModel collider, Room room)
     {
         Id = string.Empty;
         Position = new Vector3(collider.Position.x, collider.Position.y, 0);

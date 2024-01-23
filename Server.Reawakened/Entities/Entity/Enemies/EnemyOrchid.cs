@@ -21,7 +21,7 @@ public class EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) :
             var pos = player.Value.TempData.Position;
             if (PlayerInRange(pos))
             {
-                Room.SendSyncEvent(AIDo(1.0f, 2, "", Position.x, Position.y, Generic.Patrol_ForceDirectionX, 0));
+                Room.SendSyncEvent(AIDo(1.0f, 2, string.Empty, Position.x, Position.y, Generic.Patrol_ForceDirectionX, 0));
             }
         }
     }

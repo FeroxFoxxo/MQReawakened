@@ -128,7 +128,7 @@ public abstract class Enemy : IDestructible
             Room.SendSyncEvent(AIInit(1, 1, 1));
 
             // Address first magic number when we get to adding enemy effect mods
-            Room.SendSyncEvent(AIDo(1.0f, 1, "", Position.x, Position.y, AiData.SyncInit_Dir, 0));
+            Room.SendSyncEvent(AIDo(1.0f, 1, string.Empty, Position.x, Position.y, AiData.SyncInit_Dir, 0));
             Init = true;
         }
 
@@ -240,7 +240,7 @@ public abstract class Enemy : IDestructible
             }
 
             var kill = new SyncEvent(Id.ToString(), SyncEvent.EventType.AIDie, Room.Time);
-            kill.EventDataList.Add("");
+            kill.EventDataList.Add(string.Empty);
             kill.EventDataList.Add(10);
             kill.EventDataList.Add(1);
             kill.EventDataList.Add(origin.GameObjectId.ToString());

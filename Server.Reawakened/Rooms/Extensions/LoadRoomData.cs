@@ -8,6 +8,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.BundlesInternal;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -21,80 +22,17 @@ public static class LoadRoomData
 {
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
 
-    public static Dictionary<string, BaseCollider> LoadColliders(this Room room, LevelInfo levelInfo, ServerRConfig config)
+    public static Dictionary<string, BaseCollider> LoadTerrainColliders(this Room room)
     {
-        var colliderInfoPath = Path.Join(config.XMLDirectory, "InternalColliders.xml");
-        var baseColliderList = new Dictionary<string, BaseCollider>();
-        var xmlDocument = new XmlDocument();
-        xmlDocument.Load(colliderInfoPath);
-
-        foreach (XmlNode colliderCatalog in xmlDocument.ChildNodes)
-            foreach (XmlNode level in colliderCatalog.ChildNodes)
-            {
-                var testId = 0;
-                var levelId = levelInfo.LevelId;
-                var colliderList = new List<Collider>();
-
-                foreach (XmlAttribute levelAttributes in level.Attributes)
-                    switch (levelAttributes.Name)
-                    {
-                        case "id":
-                            testId = int.Parse(levelAttributes.Value);
-                            continue;
-                    }
-                if (testId == levelId)
-                {
-                    foreach (XmlNode tcPlane in level.ChildNodes)
-                    {
-                        var plane = "Plane0";
-
-                        foreach (XmlAttribute planeAttributes in tcPlane.Attributes)
-                            switch (planeAttributes.Name)
-                            {
-                                case "plane":
-                                    var planeId = int.Parse(planeAttributes.Value);
-                                    if (planeId != 0)
-                                        plane = "Plane1";
-                                    continue;
-                            }
-
-                        foreach (XmlNode collider in tcPlane.ChildNodes)
-                        {
-                            var posX = 0f;
-                            var posY = 0f;
-                            var width = 1f;
-                            var height = 1f;
-
-                            foreach (XmlAttribute colliderAttributes in collider.Attributes)
-                            {
-                                switch (colliderAttributes.Name)
-                                {
-                                    case "x":
-                                        posX = float.Parse(colliderAttributes.Value);
-                                        continue;
-                                    case "y":
-                                        posY = float.Parse(colliderAttributes.Value);
-                                        continue;
-                                    case "width":
-                                        width = float.Parse(colliderAttributes.Value);
-                                        continue;
-                                    case "height":
-                                        height = float.Parse(colliderAttributes.Value);
-                                        continue;
-                                }
-                            }
-                            colliderList.Add(new Collider(plane, posX, posY, width, height));
-                        }
-                    }
-                }
-                var i = 0;
-                foreach (var collider in colliderList)
-                {
-                    i--;
-                    baseColliderList.Add(i.ToString(), new TCCollider(collider, room));
-                }
-            }
-        return baseColliderList;
+        var outColliderList = new Dictionary<string, BaseCollider>();
+        room.ColliderCatalog.TerrainColliderCatalog.TryGetValue(room.LevelInfo.LevelId, out var colliderList);
+        Console.WriteLine(room.LevelInfo.LevelId);
+        foreach (var collider in colliderList)
+        {
+            outColliderList.Add("0", new TCCollider(collider, room));
+            Console.WriteLine(collider.Position + ", " + collider.Width + collider.Height);
+        }
+        return outColliderList;
     }
     public static Dictionary<string, PlaneModel> LoadPlanes(this LevelInfo levelInfo, ServerRConfig config)
     {

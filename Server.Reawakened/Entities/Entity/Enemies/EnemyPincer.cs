@@ -33,7 +33,7 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) :
                     AiData.Sync_TargetPosX = pos.X;
                     AiData.Sync_TargetPosY = Position.y;
                     AiData.Sync_PosX = Position.x;
-                    Room.SendSyncEvent(AIDo(1.0f, 2, "", pos.X, Position.y, AiData.SyncInit_Dir, 1));
+                    Room.SendSyncEvent(AIDo(1.0f, 2, string.Empty, pos.X, Position.y, AiData.SyncInit_Dir, 1));
                     Behavior = new AIBehavior_Aggro(AggroSpeed, 0, false, 0, 4, 1);
                     Behavior.Start(ref AiData, Room.Time, [""]);
                 }
@@ -50,7 +50,7 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) :
                     //Add method to detect if the player is dead. If player is dead, enemy does not target
                     if (!PlayerInRange(pos))
                     {
-                        Room.SendSyncEvent(AIDo(1.0f, 3, "", Position.x, Position.y, AiData.SyncInit_Dir, 0));
+                        Room.SendSyncEvent(AIDo(1.0f, 3, string.Empty, Position.x, Position.y, AiData.SyncInit_Dir, 0));
                         AiData.Intern_BehaviorRequestTime = Room.Time + 2;
                         Behavior = new AIBehavior_LookAround(2, Global.LookAround_InitialProgressRatio, false);
                     }
@@ -61,7 +61,7 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) :
         {
             if (Room.Time >= AiData.Intern_BehaviorRequestTime)
             {
-                Room.SendSyncEvent(AIDo(1.0f, 1, "", Position.x, Position.y, AiData.SyncInit_Dir, 0));
+                Room.SendSyncEvent(AIDo(1.0f, 1, string.Empty, Position.x, Position.y, AiData.SyncInit_Dir, 0));
                 Behavior = new AIBehavior_Patrol(
             Generic.Patrol_DistanceX,
             Generic.Patrol_DistanceY,

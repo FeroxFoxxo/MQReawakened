@@ -88,7 +88,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
             Log(
                 $"  {config.ChatCommandStart}{command.Name.PadRight(padding)}" +
-                $"{(command.Arguments.Length > 0 ? $" - {command.Arguments}" : "")}",
+                $"{(command.Arguments.Length > 0 ? $" - {command.Arguments}" : string.Empty)}",
                 player
             );
         }
@@ -271,7 +271,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
             hasPet = petSlot == 1;
 
-            Log($"Adding slots ({(hasPet ? "" : "no ")}pet slot)", player);
+            Log($"Adding slots ({(hasPet ? string.Empty : "no ")}pet slot)", player);
         }
 
         player.AddSlots(hasPet);
@@ -303,7 +303,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         AddKit(player, amount);
 
-        Log($"{character.Data.CharacterName} received {amount} item kit{(amount > 1 ? "s" : "")}!", player);
+        Log($"{character.Data.CharacterName} received {amount} item kit{(amount > 1 ? "s" : string.Empty)}!", player);
 
         return true;
     }

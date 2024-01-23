@@ -39,7 +39,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public override void InitializeComponent()
     {
         //For globalproperties, make a per-enemy initializer for this in the enemy resource (or add a generic GlobalProperties to SeverRConfig)
-        _globalProps = new GlobalProperties(false, 0, 2, 0, 0, 0, 1.5f, 8, 0, 0, "Generic", "", false, false, 0);
+        _globalProps = new GlobalProperties(false, 0, 2, 0, 0, 0, 1.5f, 8, 0, 0, "Generic", string.Empty, false, false, 0);
 
         //Everything here is temporary until I add that world statistics xml thingy
         Level = 1;
@@ -72,7 +72,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         aiDo.EventDataList.Add(Position.Y + SpawningOffsetY);
         aiDo.EventDataList.Add(1.0);
         aiDo.EventDataList.Add(1);
-        aiDo.EventDataList.Add("");
+        aiDo.EventDataList.Add(string.Empty);
         aiDo.EventDataList.Add(PatrolDistance.x);
         aiDo.EventDataList.Add(PatrolDistance.y);
         aiDo.EventDataList.Add(0);
