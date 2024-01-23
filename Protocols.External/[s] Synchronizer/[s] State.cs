@@ -9,6 +9,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using System;
@@ -105,20 +106,7 @@ public class State : ExternalProtocol
                     newPlayer.TempData.Direction = directionEvent.Direction;
                     break;
                 case SyncEvent.EventType.RequestRespawn:
-                    Player.Room.SendSyncEvent(new RequestRespawn_SyncEvent(entityId.ToString(), syncEvent.TriggerTime));
-
-                    Player.TempData.Invincible = true;
-                    Player.Character.Data.CurrentLife = Player.Character.Data.MaxLife;
-
-                    Player.Room.SendSyncEvent(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                        Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
-
-                    var respawnPosition = Player.TempData.NextRespawnPosition != null ? Player.TempData.NextRespawnPosition.Position : room.DefaultSpawn.Position;
-
-                    Player.Room.SendSyncEvent(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                             respawnPosition.X, respawnPosition.Y, respawnPosition.Z > 0));
-
-                    TimerThread.DelayCall(Player.DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
+                    RequestRespawn(entityId, syncEvent.TriggerTime);
                     break;
                 case SyncEvent.EventType.PhysicStatus:
                     foreach (var entity in room.Entities)
@@ -173,6 +161,9 @@ public class State : ExternalProtocol
         {
             switch (syncEvent.Type)
             {
+                case SyncEvent.EventType.RequestRespawn:
+                    RequestRespawn(Player.GameObjectId, syncEvent.TriggerTime);
+                    break;
                 default:
                     TraceSyncEventError(entityId, syncEvent, room.LevelInfo,
                         room.GetUnknownComponentTypes(entityId));
@@ -183,6 +174,24 @@ public class State : ExternalProtocol
         if (entityId != Player.GameObjectId)
             if (ServerConfig.LogAllSyncEvents)
                 LogEvent(syncEvent, entityId, room);
+    }
+
+    private void RequestRespawn(string entityId, float triggerTime)
+    {
+        Player.Room.SendSyncEvent(new RequestRespawn_SyncEvent(entityId.ToString(), triggerTime));
+
+        Player.TempData.Invincible = true;
+        Player.Character.Data.CurrentLife = Player.Character.Data.MaxLife;
+
+        Player.Room.SendSyncEvent(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
+
+        var respawnPosition = Player.TempData.NextRespawnPosition != null ? Player.TempData.NextRespawnPosition.Position : Player.Room.DefaultSpawn.Position;
+
+        Player.Room.SendSyncEvent(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                 respawnPosition.X, respawnPosition.Y, respawnPosition.Z > 0));
+
+        TimerThread.DelayCall(Player.DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
     }
 
     public void LogEvent(SyncEvent syncEvent, string entityId, Room room)
