@@ -44,9 +44,11 @@ public abstract class Enemy : IDestructible
     public Enemy(Room room, string entityId, BaseComponent baseEntity)
     {
         Entity = baseEntity;
-        _enemyController = (EnemyControllerComp)baseEntity;
         Room = room;
         Id = entityId;
+
+        _enemyController = (EnemyControllerComp)baseEntity;
+
         //All of these are temporary until the stat applier is made
         Health = 50;
         ParentPlane = Entity.ParentPlane;
@@ -60,13 +62,13 @@ public abstract class Enemy : IDestructible
 
         var entityList = room.Entities.Values.SelectMany(s => s);
 
-        foreach (var entity in entityList)
+        foreach (var entity in entityList.Where(x => x.Id == Id))
         {
-            if (entity.Id == Id && entity is AIStatsGlobalComp global)
+            if (entity is AIStatsGlobalComp global)
                 Global = global;
-            else if (entity.Id == Id && entity is AIStatsGenericComp generic)
+            else if (entity is AIStatsGenericComp generic)
                 Generic = generic;
-            else if (entity.Id == Id && entity is InterObjStatusComp status)
+            else if (entity is InterObjStatusComp status)
                 Status = status;
         }
 
@@ -108,6 +110,7 @@ public abstract class Enemy : IDestructible
         Hitbox = new EnemyCollider(Id, new Vector3Model { X = Position.x, Y = Position.y - NegativeHeight, Z = Position.z }, Entity.Rectangle.Width, Entity.Rectangle.Height, Entity.ParentPlane, Room);
         Room.Colliders.Add(Id, Hitbox);
     }
+
     public virtual void Initialize()
     {
     }
