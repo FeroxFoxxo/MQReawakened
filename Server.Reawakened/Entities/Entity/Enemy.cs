@@ -209,10 +209,14 @@ public abstract class Enemy : IDestructible
                 output = output + "`" + bah;
         }
 
-        Behavior = new AIBehavior_Patrol(new Vector3(SpawnPosition.x, SpawnPosition.y, SpawnPosition.z),
-        new Vector3(SpawnPosition.x + Generic.Patrol_DistanceX, SpawnPosition.y + Generic.Patrol_DistanceY, SpawnPosition.z),
-        PatrolSpeed,
-        EndPathWaitTime);
+        Behavior = new AIBehavior_Patrol(
+            Generic.Patrol_DistanceX,
+            Generic.Patrol_DistanceY,
+            PatrolSpeed,
+            EndPathWaitTime,
+            Generic.Patrol_ForceDirectionX,
+            Generic.Patrol_InitialProgressRatio
+        );
 
         return output;
     }

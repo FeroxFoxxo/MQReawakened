@@ -62,9 +62,14 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) :
             if (Room.Time >= AiData.Intern_BehaviorRequestTime)
             {
                 Room.SendSyncEvent(AIDo(1.0f, 1, "", Position.x, Position.y, AiData.SyncInit_Dir, 0));
-                Behavior = new AIBehavior_Patrol(SpawnPosition, new Vector3(SpawnPosition.x + Generic.Patrol_DistanceX, SpawnPosition.y + Generic.Patrol_DistanceY, SpawnPosition.z),
-                   PatrolSpeed,
-                   EndPathWaitTime);
+                Behavior = new AIBehavior_Patrol(
+            Generic.Patrol_DistanceX,
+            Generic.Patrol_DistanceY,
+            PatrolSpeed,
+            EndPathWaitTime,
+            Generic.Patrol_ForceDirectionX,
+            Generic.Patrol_InitialProgressRatio
+        );
             }
         }
         base.Update();
@@ -94,9 +99,14 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) :
                 output = output + "`" + bah;
         }
 
-        Behavior = new AIBehavior_Patrol(SpawnPosition, new Vector3(SpawnPosition.x + Generic.Patrol_DistanceX, SpawnPosition.y + Generic.Patrol_DistanceY, SpawnPosition.z),
-                   PatrolSpeed,
-                   EndPathWaitTime);
+        Behavior = new AIBehavior_Patrol(
+            Generic.Patrol_DistanceX,
+            Generic.Patrol_DistanceY,
+            PatrolSpeed,
+            EndPathWaitTime,
+            Generic.Patrol_ForceDirectionX,
+            Generic.Patrol_InitialProgressRatio
+        );
 
         return output;
     }
