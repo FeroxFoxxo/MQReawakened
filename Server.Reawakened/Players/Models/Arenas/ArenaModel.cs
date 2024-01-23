@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Players.Helpers;
+﻿using Server.Base.Core.Extensions;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.BundlesInternal;
 
@@ -33,8 +34,9 @@ public class ArenaModel
             foreach (var item in reward.Items)
                 itemsGotten.Add(item.Value);
 
-        var randomItemReward = itemsGotten[random.Next(itemsGotten.Count)].ItemId;
-        var itemsLooted = FormatItemString(randomItemReward, 1);
+        var randomItemReward = itemsGotten[random.Next(itemsGotten.Count)];
+
+        var itemsLooted = randomItemReward.DeepCopy();
 
         return itemsLooted.ToString();
     }
@@ -49,17 +51,5 @@ public class ArenaModel
                     lootableItems.Append(itemReward.Value.ItemId);
 
         return lootableItems.ToString();
-    }
-
-    public static string FormatItemString(int itemId, int amount)
-    {
-        var sb = new SeparatedStringBuilder('{');
-
-        sb.Append(itemId);
-        sb.Append(amount);
-        sb.Append(amount);
-        sb.Append(DateTime.Now);
-
-        return sb.ToString();
     }
 }
