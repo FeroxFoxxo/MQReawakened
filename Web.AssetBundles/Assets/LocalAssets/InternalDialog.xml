@@ -245,4 +245,22 @@
             <Dialog dialogId="1605" conversationId="4078" minimumReputation="1" />
         </NPC>
     </Level>
+    <Level id="557">
+        <!--Party Tree-->
+        <NPC objectId="26323857" name="Snowball" descriptionId="0">
+            <Dialog dialogId="1560" conversationId="3955" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="13161827" name="Michelangelo" descriptionId="0">
+            <Dialog dialogId="1481" conversationId="3746" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="13161885" name="Red Ranger Monkey" descriptionId="0">
+            <Dialog dialogId="1088" conversationId="3021" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="13161842" name="Papa Matu" descriptionId="0">
+            <Dialog dialogId="1005" conversationId="2757" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="13162712" name="Terod" descriptionId="0">
+            <Dialog dialogId="817" conversationId="2291" minimumReputation="1" />
+        </NPC>
+    </Level>
 </DialogCatalog>
