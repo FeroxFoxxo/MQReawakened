@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
@@ -21,36 +22,31 @@ public class ProjectileEntity : Component<ProjectileController>
     public double Tickrate;
     public ILogger<ProjectileEntity> Logger { get; set; }
 
-    public ProjectileEntity(Player player, string id, float posX, float posY, float posZ, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, double tickrate)
+    public ProjectileEntity(Player player, string id, float posX, float posY, float posZ, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig config)
     {
-        // The magic numbers here are temporary. Will be updated with proper values when we do weapon infos
+        // Initialize projectile info
         var isLeft = direction > 0;
-        posX += isLeft ? 0.25f : -0.25f;
-        posY += 0.8333f;
-        Speed = isLeft ? 10 : -10;
-
-        Player = player;
-        ProjectileID = id;
-        Position = new Vector3Model
-        {
-            X = posX, Y = posY, Z = posZ
-        };
+        posX += isLeft ? config.ProjectileXOffset : -config.ProjectileXOffset;
+        posY += config.ProjectileYOffset;
+        Speed = isLeft ? config.ProjectileSpeed : -config.ProjectileSpeed;
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
-        _plane = Position.Z > 10 ? "Plane1" : "Plane0";
-        //Magic Numbers 0.5f, 0.5f, add to config as DefaultProjectileSize
-        PrjCollider = new AttackCollider(id, Position, 0.5f, 0.5f, _plane, player, damage, type, LifeTime);
 
+        // Initialize projectile location info
+        Tickrate = config.RoomTickRate;
+        Player = player;
+        ProjectileID = id;
+        Position = new Vector3Model{ X = posX, Y = posY, Z = posZ };
+        _plane = Position.Z > 10 ? "Plane1" : "Plane0";
+
+        // Send all information to room
+        PrjCollider = new AttackCollider(id, Position, config.ProjectileWidth, config.ProjectileHeight, _plane, player, damage, type, LifeTime);
         var prj = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), StartTime, posX, posY, posZ, Speed, 0, LifeTime, int.Parse(ProjectileID), item.PrefabName);
         player.Room.SendSyncEvent(prj);
-        Tickrate = tickrate;
-        //Logger.LogInformation("Created Synced Projectile with ID {args1} and lifetime {args2} at position ({args3}, {args4}, {args5})", ProjectileID, LifeTime, Position.X, Position.Y, Position.Z);
     }
 
     public override void Update()
     {
-        base.Update();
-        // The magic number here is the default game tickrate. This will be changed in a future commit
         Position.X += Speed / (float)Tickrate;
         PrjCollider.Position.x = Position.X;
 
@@ -74,6 +70,7 @@ public class ProjectileEntity : Component<ProjectileController>
         hit.EventDataList.Add(0);
         hit.EventDataList.Add(Position.X);
         hit.EventDataList.Add(Position.Y);
+
         Player.Room.SendSyncEvent(hit);
         Player.Room.Projectiles.Remove(ProjectileID);
     }

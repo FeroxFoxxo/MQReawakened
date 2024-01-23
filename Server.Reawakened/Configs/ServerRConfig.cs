@@ -63,6 +63,11 @@ public class ServerRConfig : IRConfig
     public string EnemyComponentName { get; set; }
     public int HealingStaffID { get; set; }
     public int MysticCharmID { get; set; }
+    public float ProjectileSpeed { get; set; }
+    public float ProjectileXOffset { get; set; }
+    public float ProjectileYOffset { get; set; }
+    public float ProjectileWidth { get; set; }
+    public float ProjectileHeight { get; set; }
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -186,5 +191,11 @@ public class ServerRConfig : IRConfig
         MaximumEntitiesToReturnLog = 15;
         HealingStaffID = 396;
         MysticCharmID = 398;
+
+        ProjectileSpeed = 10;
+        ProjectileXOffset = 0.25f;
+        ProjectileYOffset = 0.8333f;
+        ProjectileHeight = 0.5f;
+        ProjectileWidth = 0.5f;
     }
 }

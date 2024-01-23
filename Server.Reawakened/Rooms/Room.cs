@@ -90,31 +90,30 @@ public class Room : Timer
         foreach (var component in Entities.Values.SelectMany(x => x))
             component.InitializeComponent();
 
-        //Second loop required once all components are initialized
         foreach (var component in Entities.Values.SelectMany(x => x))
         {
-            if (component.Name == config.EnemyComponentName)
-            {
-                // Move the name switcher out of ServerRConfig when the enemy xml is made.
-                switch (component.PrefabName)
-                {
-                    case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
-                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));
-                        break;
-                    case string pincer when pincer.Contains(config.EnemyNameSearch[9]):
-                        Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component));
-                        break;
-                    default:
-                        foreach (var enemyType in config.EnemyNameSearch)
-                        {
-                            if (component.PrefabName.Contains(enemyType))
-                                Enemies.Add(component.Id, new EnemyGeneric(this, component.Id, component));
-                        }
-                        
-                        break;
-                }
-            }
-            else if (component.Name == config.BreakableComponentName)
+        //    if (component.Name == config.EnemyComponentName)
+        //    {
+        //        // Move the name switcher out of ServerRConfig when the enemy xml is made.
+        //        switch (component.PrefabName)
+        //        {
+        //            case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
+        //                Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));
+        //                break;
+        //            case string pincer when pincer.Contains(config.EnemyNameSearch[9]):
+        //                Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component));
+        //                break;
+        //            default:
+        //                foreach (var enemyType in config.EnemyNameSearch)
+        //                {
+        //                    if (component.PrefabName.Contains(enemyType))
+        //                        Enemies.Add(component.Id, new EnemyGeneric(this, component.Id, component));
+        //                }
+        //                
+        //                break;
+        //        }
+        //    }
+            if (component.Name == config.BreakableComponentName)
             {
                 var breakable = (BreakableEventControllerComp)component;
                 breakable.PostInit();

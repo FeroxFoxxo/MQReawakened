@@ -59,6 +59,8 @@ public class HazardControllerComp : Component<HazardController>
                     SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
                     $"Effect Type: {effectType}");
                     break;
+                case ItemEffectType.WaterBreathing:
+                    break;
                 default:
                     player.ApplyDamageByPercent(Room, .10, TimerThread);
                     break;

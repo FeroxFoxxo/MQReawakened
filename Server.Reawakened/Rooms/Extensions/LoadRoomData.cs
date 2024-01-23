@@ -25,12 +25,11 @@ public static class LoadRoomData
     public static Dictionary<string, BaseCollider> LoadTerrainColliders(this Room room)
     {
         var outColliderList = new Dictionary<string, BaseCollider>();
-        room.ColliderCatalog.TerrainColliderCatalog.TryGetValue(room.LevelInfo.LevelId, out var colliderList);
-        Console.WriteLine(room.LevelInfo.LevelId);
-        foreach (var collider in colliderList)
+        var idCounter = 0;
+        foreach (var collider in room.ColliderCatalog.GetTerrainColliders(room.LevelInfo.LevelId))
         {
-            outColliderList.Add("0", new TCCollider(collider, room));
-            Console.WriteLine(collider.Position + ", " + collider.Width + collider.Height);
+            idCounter--;
+            outColliderList.Add(idCounter.ToString(), new TCCollider(collider, room));
         }
         return outColliderList;
     }

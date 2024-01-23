@@ -57,7 +57,7 @@ public class InternalColliders : IBundledXml<InternalColliders>
                     foreach (XmlAttribute planeAttribute in levelPlane.Attributes)
                         if (planeAttribute.Name == "plane")
                         {
-                            plane = (planeAttribute.Value == "Plane1") ? "Plane1" : "Plane0";
+                            plane = (planeAttribute.Value == "1") ? "Plane1" : "Plane0";
                             continue;
                         }
 
@@ -85,10 +85,8 @@ public class InternalColliders : IBundledXml<InternalColliders>
                                     height = float.Parse(colliderAttributes.Value);
                                     continue;
                             }
-
-                            colliderList.Add(new ColliderModel(plane, posX, posY, width, height));
-
                         }
+                        colliderList.Add(new ColliderModel(plane, posX, posY, width, height));
                     }
                 }
                 TerrainColliderCatalog.Add(levelId, colliderList);

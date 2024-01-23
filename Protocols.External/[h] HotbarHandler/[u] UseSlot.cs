@@ -228,7 +228,7 @@ public class UseSlot : ExternalProtocol
             prjId = Math.Abs(rand.Next()).ToString();
 
         // Magic number 10 is damage for now, until we add a serverside stat handler
-        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig.RoomTickRate);
+        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig);
 
         Player.Room.Projectiles.Add(prjId, prj);
     }
