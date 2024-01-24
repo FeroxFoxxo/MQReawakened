@@ -1,5 +1,4 @@
-﻿using Server.Base.Timers.Extensions;
-using Server.Base.Timers.Services;
+﻿using A2m.Server;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 
@@ -7,36 +6,39 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerDamageExtensions
 {
-    public static void ApplyCharacterDamage(this Player player, Room room, int damage, TimerThread timerThread)
+    public static void ApplyUnderwaterDamage(this Player player, object _)
     {
-        player.Character.Data.CurrentLife -= damage;
+        if (player.TempData.UnderWater == false) return;
 
+        var damage = Convert.ToInt32(player.Character.Data.MaxLife / 10);
+
+        player.ApplyCharacterDamage(player.Room, damage);
+
+        var WaterDmgStatusEffect = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+            (int)ItemEffectType.WaterDamage, damage, 1, true, string.Empty, false);
+        player.SendSyncEventToPlayer(WaterDmgStatusEffect);
+    }
+    public static void ApplyCharacterDamage(this Player player, Room room, int damage)
+    {
         if (player.Character.Data.CurrentLife < 0)
             player.Character.Data.CurrentLife = 0;
 
-        room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), room.Time,
-            player.Character.Data.CurrentLife, player.Character.Data.MaxLife, "Hurt"));
-
-        player.TempData.Invincible = true;
-        timerThread.DelayCall(player.DisableInvincibility, player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
+        var waterDamage = new Health_SyncEvent(player.GameObjectId.ToString(), room.Time,
+            player.Character.Data.CurrentLife -= damage, player.Character.Data.MaxLife, "Hurt");
+        player.SendSyncEventToPlayer(waterDamage);
     }
-    public static void ApplyDamageByPercent(this Player player, Room room, double percentage, TimerThread timerThread)
+    public static void ApplyDamageByPercent(this Player player, Room room, double percentage)
     {
         var health = (double)player.Character.Data.MaxLife;
 
-        var damage = Convert.ToInt32(Math.Ceiling(health * percentage));
+        var damage = Convert.ToInt32(Math.Round(health * percentage));
 
-        ApplyCharacterDamage(player, room, damage, timerThread);
+        ApplyCharacterDamage(player, room, damage);
     }
 
-    public static void ApplyDamageByObject(this Player player, Room room, int _, TimerThread timerThread) =>
-        //temporary code until enemy/hazard system is implemented
-        ApplyDamageByPercent(player, room, .10, timerThread);
-
-    public static void DisableInvincibility(this Player player, object invincibleData)
+    public static void ApplyDamageByObject(this Player player, Room room, int objectId)
     {
-        var playerData = (Player)invincibleData;
-        playerData.TempData.Invincible = false;
+        //temporary code until enemy/hazard system is implemented
+        ApplyDamageByPercent(player, room, .10);
     }
 }
-

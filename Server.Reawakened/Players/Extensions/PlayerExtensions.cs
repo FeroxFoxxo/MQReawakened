@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -65,6 +66,9 @@ public static class PlayerExtensions
             player.SendLevelUp();
         }
 
+        if (player.TempData.ReputationBoostsElixir)
+            reputation = Convert.ToInt32(reputation * 0.1);
+
         charData.Reputation = reputation;
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
     }
@@ -110,6 +114,10 @@ public static class PlayerExtensions
     public static void AddBananas(this Player player, int collectedBananas)
     {
         var charData = player.Character.Data;
+
+        if (player.TempData.BananaBoostsElixir)
+            collectedBananas = Convert.ToInt32(collectedBananas * 0.1);
+
         charData.Cash += collectedBananas;
         player.SendCashUpdate();
     }
