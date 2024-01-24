@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<InternalDefaultEnemies>
+	<Enemy name="PF_Critter_Bird">
+		<Patrol speed="3.2" smoothMove="false" endPathWaitTime="0"/>
+	</Enemy>
+	<Enemy name="PF_Critter_Fish">
+		<Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
+	</Enemy>
+	<Enemy name="PF_Critter_Spider">
+		<Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
+	</Enemy>
+	<Enemy name="PF_Spite_Bathog">
+		<Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+	</Enemy>
+	<Enemy name="PF_Spite_Bomber">
+		<Patrol speed="2.4" smoothMove="false" endPathWaitTime="2"/>
+	</Enemy>
+	<Enemy name="PF_Spite_Crawler">
+		<Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
+		<Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+	</Enemy>
+	<Enemy name="PF_Spite_Dragon">
+		<Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+	</Enemy>
+	<Enemy name="PF_Spite_Grenadier">
+		<Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
+	</Enemy>
+	<Enemy name="PF_Spite_Orchid">
+		<Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+	</Enemy>
+	<Enemy name="PF_Spite_Pincer">
+		<Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
+        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+	</Enemy>
+	<Enemy name="PF_Spite_Stomper">
+		<Patrol speed="1.5" smoothMove="false" endPathWaitTime="4"/>
+	</Enemy>
+</InternalDefaultEnemies>

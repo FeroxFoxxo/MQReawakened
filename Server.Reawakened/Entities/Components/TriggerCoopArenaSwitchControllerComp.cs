@@ -53,7 +53,9 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
                     player.TempData.ArenaModel.SetCharacterIds(playersInRoom);
                     member.TempData.ArenaModel.HasStarted = true;
                     StartArena(member);
-                    Arena.StartArena(member);
+
+                    if (Arena != null)
+                        Arena.StartArena(member);
                 }
                 
             }
@@ -64,7 +66,9 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
             {
                 StartArena(player);
                 player.TempData.ArenaModel.SetCharacterIds(new List<Player> { player });
-                Arena.StartArena(player);
+
+                if (Arena != null)
+                    Arena.StartArena(player);
             }
         }
     }

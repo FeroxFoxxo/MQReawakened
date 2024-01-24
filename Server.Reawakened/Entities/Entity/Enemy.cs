@@ -49,8 +49,6 @@ public abstract class Enemy : IDestructible
     public float EndPathWaitTime;
     private int[] _hitByAttackList;
 
-    public WorldGraph WorldGraph { get; set; }
-
     public Enemy(Room room, string entityId, BaseComponent baseEntity)
     {
         Entity = baseEntity;
@@ -68,7 +66,6 @@ public abstract class Enemy : IDestructible
         SpawnPosition = Position;
 
         var entityList = room.Entities.Values.SelectMany(s => s);
-
         foreach (var entity in entityList.Where(x => x.Id == Id))
         {
             if (entity is AIStatsGlobalComp global)
@@ -182,7 +179,7 @@ public abstract class Enemy : IDestructible
             PatrolSpeed = 1.8f;
             EndPathWaitTime = 3;
             behaviorList.Add("Patrol|" + PatrolSpeed + ";" + 0 + ";" + EndPathWaitTime + ";" + Generic.Patrol_DistanceX + ";" + Generic.Patrol_DistanceY + ";" + Generic.Patrol_ForceDirectionX + ";" + Generic.Patrol_InitialProgressRatio + "|");
-            behaviorList.Add("Aggro|" + 3.2 + ";" + Global.Aggro_MoveBeyondTargetDistance + ";" + 0 + ";" + Global.Aggro_AttackBeyondPatrolLine + ";" + 0 + ";" + Global.Global_FrontDetectionRangeUpY + ";" + Global.Global_FrontDetectionRangeDownY + "|");
+            behaviorList.Add("Aggro|" + 3.2 + ";" + Global.Aggro_MoveBeyondTargetDistance + ";" + Global.Aggro_StayOnPatrolPath + ";" + Global.Aggro_AttackBeyondPatrolLine + ";" + 0 + ";" + Global.Global_FrontDetectionRangeUpY + ";" + Global.Global_FrontDetectionRangeDownY + "|");
         }
         else if (Entity.PrefabName.Contains("PF_Spite_Dragon"))
         {
