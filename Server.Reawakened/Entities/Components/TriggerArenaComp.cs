@@ -109,6 +109,21 @@ public class TriggerArenaComp : TriggerCoopControllerComp<TriggerArena>
     public void StopArena(bool win)
     {
         Active = false;
+
+        //Shut down all active entities on stop
+        foreach (var entity in TriggeredEntities)
+        {
+            if (Room.Entities.TryGetValue(entity.ToString(), out var foundTrigger))
+            {
+                foreach (var component in foundTrigger)
+                {
+                    if (component is TriggerReceiverComp trigger)
+                        trigger.Trigger(false);
+                }
+            }
+        }
+
+        //Trigger rewarded entities on win and shut down Arena
         if (win)
         {
             Room.SendSyncEvent(new Trigger_SyncEvent(Id, Room.Time, true, GrabAnyPlayer(), false));
@@ -126,17 +141,6 @@ public class TriggerArenaComp : TriggerCoopControllerComp<TriggerArena>
         }
         else
             Room.SendSyncEvent(new Trigger_SyncEvent(Id, Room.Time, false, GrabAnyPlayer(), false));
-        foreach (var entity in TriggeredEntities)
-        {
-            if (Room.Entities.TryGetValue(entity.ToString(), out var foundTrigger))
-            {
-                foreach (var component in foundTrigger)
-                {
-                    if (component is TriggerReceiverComp trigger)
-                        trigger.Trigger(false);
-                }
-            }
-        }
     }
 
     private void ActiveArena()

@@ -30,5 +30,4 @@ public class InterObjStatusComp : Component<InterObjStatus>
     public int FreezeStatusEffectResistSecs => ComponentData.FreezeStatusEffectResistSecs;
 
     public ILogger<InterObjStatusComp> Logger { get; set; }
-
 }

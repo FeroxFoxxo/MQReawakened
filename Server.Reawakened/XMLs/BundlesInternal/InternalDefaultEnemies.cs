@@ -20,7 +20,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
     public ILogger<InternalDefaultEnemies> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<string, Dictionary<string, Dictionary<string, object>>> EnemyInfoCatalog;
+    public Dictionary<string, BehaviorModel> EnemyInfoCatalog;
 
     public void InitializeVariables() => EnemyInfoCatalog = [];
 
@@ -42,7 +42,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                 if (enemy.Name != "Enemy") continue;
 
                 var enemyType = string.Empty;
-                var behaviorDict = new Dictionary<string, Dictionary<string, object>>();
+                var behaviorModel = new BehaviorModel(new Dictionary<string, BehaviorDataModel>(), string.Empty);
 
                 foreach (XmlAttribute enemyName in enemy.Attributes)
                     if (enemyName.Name == "name")
@@ -52,10 +52,12 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                     }
                 foreach (XmlNode behavior in enemy.ChildNodes)
                 {
-                    var behaviorDataDict = new Dictionary<string, object>();
+                    var behaviorDataModel = new BehaviorDataModel(new Dictionary<string, object>());
 
                     switch (behavior.Name)
                     {
+
+                        // Patrol Behavior
                         case "Patrol":
                             var speed = 0f;
                             var smoothMove = 0;
@@ -66,25 +68,27 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                                 {
                                     case "speed":
                                         speed = float.Parse(behaviorData.Value);
-                                        behaviorDataDict.Add(behaviorData.Name, speed);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, speed);
                                         continue;
                                     case "smoothMove":
                                         smoothMove = bool.Parse(behaviorData.Value) ? 1 : 0;
-                                        behaviorDataDict.Add(behaviorData.Name, smoothMove);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, smoothMove);
                                         continue;
                                     case "endPathWaitTime":
                                         endPathWaitTime = float.Parse(behaviorData.Value);
-                                        behaviorDataDict.Add(behaviorData.Name, endPathWaitTime);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, endPathWaitTime);
                                         continue;
                                 }
                             }
                             break;
 
+                        // Aggro Behavior
                         case "Aggro":
                             var aggroSpeed = 0f;
                             var moveBeyondTargetDistance = 0f;
                             var stayOnPatrolPath = 0;
                             var attackBeyondPatrolLine = 0f;
+                            var useAttackBeyondPatrolLine = 0f;
                             var detectionRangeUpY = 0f;
                             var detectionRangeDownY = 0f;
                             foreach (XmlAttribute behaviorData in behavior.Attributes)
@@ -93,32 +97,37 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                                 {
                                     case "speed":
                                         aggroSpeed = float.Parse(behaviorData.Value);
-                                        behaviorDataDict.Add(behaviorData.Name, aggroSpeed);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, aggroSpeed);
                                         continue;
                                     case "moveBeyondTargetDistance":
                                         moveBeyondTargetDistance = float.Parse(behaviorData.Value);
-                                        behaviorDataDict.Add(behaviorData.Name, moveBeyondTargetDistance);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, moveBeyondTargetDistance);
                                         continue;
                                     case "stayOnPatrolPath":
                                         stayOnPatrolPath = bool.Parse(behaviorData.Value) ? 1 : 0;
-                                        behaviorDataDict.Add(behaviorData.Name, stayOnPatrolPath);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, stayOnPatrolPath);
                                         continue;
                                     case "attackBeyondPatrolLine":
                                         attackBeyondPatrolLine = float.Parse(behaviorData.Value);
-                                        behaviorDataDict.Add(behaviorData.Name, attackBeyondPatrolLine);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, attackBeyondPatrolLine);
+                                        continue;
+                                    case "useAttackBeyondPatrolLine":
+                                        useAttackBeyondPatrolLine = bool.Parse(behaviorData.Value) ? 1 : 0;
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, useAttackBeyondPatrolLine);
                                         continue;
                                     case "detectionRangeUpY":
                                         detectionRangeUpY = float.Parse(behaviorData.Value);
-                                        behaviorDataDict.Add(behaviorData.Name, detectionRangeUpY);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, detectionRangeUpY);
                                         continue;
                                     case "detectionRangeDownY":
                                         detectionRangeDownY = float.Parse(behaviorData.Value);
-                                        behaviorDataDict.Add(behaviorData.Name, detectionRangeDownY);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, detectionRangeDownY);
                                         continue;
                                 }
                             }
                             break;
 
+                        // LookAround Behavior
                         case "LookAround":
                             var lookTime = 0f;
                             var startDirection = 0f;
@@ -131,31 +140,32 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                                 {
                                     case "lookTime":
                                         lookTime = float.Parse(behaviorData.Value);
-                                        behaviorDataDict.Add(behaviorData.Name, lookTime);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, lookTime);
                                         continue;
                                     case "startDirection":
                                         startDirection = float.Parse(behaviorData.Value);
-                                        behaviorDataDict.Add(behaviorData.Name, startDirection);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, startDirection);
                                         continue;
                                     case "forceDirection":
                                         forceDirection = float.Parse(behaviorData.Value);
-                                        behaviorDataDict.Add(behaviorData.Name, forceDirection);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, forceDirection);
                                         continue;
                                     case "initialProgressRatio":
                                         initialProgressRatio = float.Parse(behaviorData.Value);
-                                        behaviorDataDict.Add(behaviorData.Name, initialProgressRatio);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, initialProgressRatio);
                                         continue;
                                     case "snapOnGround":
                                         snapOnGround = bool.Parse(behaviorData.Value) ? 1 : 0;
-                                        behaviorDataDict.Add(behaviorData.Name, snapOnGround);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, snapOnGround);
                                         continue;
                                 }
                             }
                             break;
+
                     }
-                    behaviorDict.Add(behavior.Name, behaviorDataDict);
+                    behaviorModel.BehaviorData.Add(behavior.Name, behaviorDataModel);
                 }
-                EnemyInfoCatalog.Add(enemyType, behaviorDict);
+                EnemyInfoCatalog.Add(enemyType, behaviorModel);
             }
         }
 
@@ -179,6 +189,6 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
     {
     }
 
-    public Dictionary<string, Dictionary<string, object>> GetBehaviorsByName(string enemyName) =>
-        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : [];
+    public BehaviorModel GetBehaviorsByName(string enemyName) =>
+        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel(new Dictionary<string, BehaviorDataModel>(), string.Empty);
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.BundlesInternal;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components;
@@ -21,7 +22,12 @@ public class EnemyControllerComp : Component<EnemyController>
     public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
 
     public ILogger<EnemyControllerComp> Logger { get; set; }
+    public InternalDefaultEnemies EnemyInfoXml { get; set; }
 
-    public override void InitializeComponent() => base.InitializeComponent();
+    public int Level;
+    public override void InitializeComponent()
+    {
+        Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
+    }
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => base.RunSyncedEvent(syncEvent, player);
 }
