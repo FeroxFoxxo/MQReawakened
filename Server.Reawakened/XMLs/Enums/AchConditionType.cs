@@ -6,5 +6,6 @@ public enum AchConditionType
     Unknown,
     CollectIdol,
     CollectBanana,
-    EquipItem
+    EquipItem,
+    CraftItem
 }
