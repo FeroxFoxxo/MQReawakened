@@ -279,6 +279,8 @@ public class UseSlot : ExternalProtocol
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
                     else if (component is BreakableEventControllerComp breakableObjEntity)
                         breakableObjEntity.Damage(10, Player);
+                    else if (component is EnemyControllerComp enemy)
+                        enemy.Damage(10, Player);
         }
     }
 

@@ -1,6 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using UnityEngine;
 
@@ -30,4 +35,17 @@ public class EnemyControllerComp : Component<EnemyController>
         Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
     }
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => base.RunSyncedEvent(syncEvent, player);
+
+    public void Damage(int damage, Player origin)
+    {
+        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, 0, damage, 0, 0, origin.CharacterName, false, true);
+        origin.Room.SendSyncEvent(breakEvent);
+        Destroy(Room, Id);
+    }
+    public void Destroy(Room room, string id)
+    {
+        room.Entities.Remove(id);
+        room.Enemies.Remove(id);
+        room.Colliders.Remove(id);
+    }
 }

@@ -169,18 +169,17 @@ public abstract class Enemy : IDestructible
         var outBehaviorList = string.Empty;
         List<string> behaviorList = [];
 
-        SeparatedStringBuilder bList = new SeparatedStringBuilder('`');
-        SeparatedStringBuilder bDefinesList = new SeparatedStringBuilder('|');
+        var bList = new SeparatedStringBuilder('`');
+        var bDefinesList = new SeparatedStringBuilder('|');
 
-        foreach (var behavior in BehaviorList.BehaviorData)
-        {
-            bDefinesList.Append(behavior.Key);
-            foreach (var behaviorData in behavior.Value.DataList)
-            {
-                BehaviorFactory
-            }
-
-        }
+        //foreach (var behavior in BehaviorList.BehaviorData)
+        //{
+        //    bDefinesList.Append(behavior.Key);
+        //    foreach (var behaviorData in behavior.Value.DataList)
+        //    {
+        //    }
+        //
+        //}
 
         return outBehaviorList;
     }
