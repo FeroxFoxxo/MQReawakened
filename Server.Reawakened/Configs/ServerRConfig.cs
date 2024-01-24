@@ -103,7 +103,7 @@ public class ServerRConfig : IRConfig
         [
             394,  // glider
             395,  // grappling hook
-            393,  // snowboard
+            240181867,  // snowboard
             397,  // wooden slingshot
             423,  // golden slingshot
             453,  // kernel blaster
