@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
-public class BehaviorModel(Dictionary<string, BehaviorDataModel> behaviorData, string asset)
+public class BehaviorModel(Dictionary<string, BehaviorDataModel> behaviorData)
 {
     public Dictionary<string, BehaviorDataModel> BehaviorData { get; } = behaviorData;
-    public string requiredAsset { get; } = asset;
 
     public int IndexOf(string behaviorName)
     {

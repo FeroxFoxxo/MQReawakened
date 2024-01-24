@@ -50,7 +50,7 @@ public abstract class Enemy : IDestructible
     public AIBaseBehavior AiBehavior;
     public BehaviorModel BehaviorList;
 
-    public AISyncEventHelper SyncBuilder;
+    public AISyncEventHelper SyncBuilder = new AISyncEventHelper();
 
     public Enemy(Room room, string entityId, BaseComponent baseEntity)
     {
@@ -98,15 +98,8 @@ public abstract class Enemy : IDestructible
 
         AiData = new AIProcessData();
         AiData.SetStats(EnemyGlobalProps);
-        AiData.SyncInit_PosX = Position.x;
-        AiData.SyncInit_PosY = Position.y;
-        AiData.Sync_PosX = Position.x;
-        AiData.Sync_PosY = Position.y;
-        AiData.Intern_SpawnPosX = Position.x;
-        AiData.Intern_SpawnPosY = Position.y;
-        AiData.Intern_SpawnPosZ = Position.z;
-        AiData.SyncInit_Dir = Generic.Patrol_ForceDirectionX;
-        AiData.SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio;
+        AiData.Intern_SpawnPosX = SpawnPosition.x;
+        AiData.Intern_SpawnPosY = SpawnPosition.y;
 
         _negativeHeight = 0;
         if (Entity.Scale.Y < 0)
@@ -154,6 +147,10 @@ public abstract class Enemy : IDestructible
         }
 
         AiBehavior.Update(ref AiData, Room.Time);
+        if (Entity.Id == "17745")
+        {
+            Console.WriteLine(AiData.Sync_PosX);
+        }
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
         Entity.Position.X = Position.x;
@@ -163,25 +160,22 @@ public abstract class Enemy : IDestructible
 
     }
 
-    public virtual string WriteBehaviorList()
+    public string WriteBehaviorList()
     {
-        EnemyBehaviorFactory BehaviorFactory;
-        var outBehaviorList = string.Empty;
-        List<string> behaviorList = [];
+        var compiler = new AIPropertiesCompiler();
 
         var bList = new SeparatedStringBuilder('`');
         var bDefinesList = new SeparatedStringBuilder('|');
 
-        //foreach (var behavior in BehaviorList.BehaviorData)
-        //{
-        //    bDefinesList.Append(behavior.Key);
-        //    foreach (var behaviorData in behavior.Value.DataList)
-        //    {
-        //    }
-        //
-        //}
+        foreach (var behavior in BehaviorList.BehaviorData)
+        {
+            bDefinesList.Append(behavior.Key);
+            bDefinesList.Append(compiler.CreateBehaviorString(this, behavior.Key));
+            bDefinesList.Append(compiler.CreateResource(behavior.Value.Resource));
+            bList.Append(bDefinesList.ToString());
+        }
 
-        return outBehaviorList;
+        return bList.ToString();
     }
 
     public virtual void Damage(int damage, Player origin)
