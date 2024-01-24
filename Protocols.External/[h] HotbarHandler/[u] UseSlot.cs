@@ -1,5 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Extensions;
+using Server.Base.Core.Extensions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
@@ -16,6 +18,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -105,6 +108,9 @@ public class UseSlot : ExternalProtocol
                     (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
 
         Player.SendSyncEventToPlayer(itemEffect);
+
+        if (usedItem != null)
+            Player.CheckAchievement(AchConditionType.Drink, string.Empty, Logger);
 
         foreach (var effect in usedItem.ItemEffects)
             if (effect.TypeId == (int)ItemEffectType.Healing)
@@ -210,6 +216,9 @@ public class UseSlot : ExternalProtocol
                 effect.TypeId, effect.Value, effect.Duration, true, Player.GameObjectId.ToString(), true);
         }
         Player.SendSyncEventToPlayer(statusEffect);
+
+        if (usedItem != null)
+            Player.CheckAchievement(AchConditionType.Consumable, string.Empty, Logger);
 
         var removeFromHotbar = true;
 

@@ -7,5 +7,7 @@ public enum AchConditionType
     CollectIdol,
     CollectBanana,
     EquipItem,
-    CraftItem
+    CraftItem,
+    Drink,
+    Consumable
 }
