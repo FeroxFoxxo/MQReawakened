@@ -36,9 +36,7 @@ public static class PlayerDamageExtensions
         ApplyCharacterDamage(player, room, damage);
     }
 
-    public static void ApplyDamageByObject(this Player player, Room room, int objectId)
-    {
+    public static void ApplyDamageByObject(this Player player, Room room, int _) =>
         //temporary code until enemy/hazard system is implemented
         ApplyDamageByPercent(player, room, .10);
-    }
 }

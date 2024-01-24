@@ -31,7 +31,7 @@ public static class PlayerHealExtensions
         var healValue = usedItem.ItemEffects.Count > 1 ? usedItem.ItemEffects.LastOrDefault().Value : usedItem.ItemEffects.FirstOrDefault().Value; ; //Rejuvenation Potion's initial heal value is stored as the second element in the ItemEffects list.
 
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities) //If healing staff, convert heal value.
-            healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealingStaffHealValue);
+            healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealAmount);
 
         var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
 

@@ -43,11 +43,11 @@ public static class CharacterInventoryExtensions
             case ItemEffectType.PetEnergyValue:
             case ItemEffectType.BananaMultiplier:
                 player.TempData.BananaBoostsElixir = true;
-                timerThread.DelayCall(player.SetBananaElixirTimer, player.TempData.BananaBoostsElixir, TimeSpan.FromMinutes(30), TimeSpan.Zero);
+                timerThread.DelayCall(player.SetBananaElixirTimer, player.TempData.BananaBoostsElixir, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
                 break;
             case ItemEffectType.ExperienceMultiplier:
                 player.TempData.ReputationBoostsElixir = true;
-                timerThread.DelayCall(player.SetXpElixirTimer, player.TempData.BananaBoostsElixir, TimeSpan.FromMinutes(30), TimeSpan.Zero);
+                timerThread.DelayCall(player.SetXpElixirTimer, player.TempData.BananaBoostsElixir, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
                 break;
             case ItemEffectType.Defence:
                 break;

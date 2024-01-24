@@ -116,7 +116,7 @@ public class State : ExternalProtocol
                     Player.Room.SendSyncEvent(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                         Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
 
-                    var respawnPosition = Player.TempData.NextRespawnPosition != null ? Player.TempData.NextRespawnPosition.Position : room.DefaultSpawn.Position;
+                    var respawnPosition = Player.Room.CheckpointSpawn != null ? Player.Room.CheckpointSpawn.Position : room.DefaultSpawn.Position;
 
                     Player.Room.SendSyncEvent(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                              respawnPosition.X, respawnPosition.Y, respawnPosition.Z > 0));

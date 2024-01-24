@@ -21,8 +21,6 @@ public class TemporaryDataModel
     public Vector3Model Position { get; set; } = new Vector3Model();
     public Vector3Model Velocity { get; set; } = new Vector3Model();
 
-    public CheckpointControllerComp LastCheckpoint { get; set; }
-
     public ArenaModel ArenaModel { get; set; }
     public TradeModel TradeModel { get; set; }
     public GroupModel Group { get; set; }
