@@ -11,7 +11,7 @@ using Server.Reawakened.XMLs.BundlesInternal;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components;
-public class EnemyControllerComp : Component<EnemyController>
+public class EnemyControllerComp : Component<EnemyController>, IDestructible
 {
     public int OnKillRepPoints => ComponentData.OnKillRepPoints;
     public bool TopBounceImmune => ComponentData.TopBounceImmune;
@@ -47,11 +47,10 @@ public class EnemyControllerComp : Component<EnemyController>
 
         if (Room.Entities.TryGetValue(Id, out var comps))
             foreach (var comp in comps)
-                if (comp is SpiderBossControllerComp sbc)
-                    sbc.Destroy(Room, Id);
-
-        Destroy(Room, Id);
+                if (comp is IDestructible dest)
+                    dest.Destroy(Room, Id);
     }
+
     public void Destroy(Room room, string id)
     {
         room.Entities.Remove(id);
