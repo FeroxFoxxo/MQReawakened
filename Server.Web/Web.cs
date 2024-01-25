@@ -70,6 +70,11 @@ public class Web(ILogger<Web> logger) : WebModule(logger)
             app.UseHsts();
         }
 
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseHttpsRedirection();
+        }
+
         app.UseDefaultFiles();
         app.UseStaticFiles();
 
