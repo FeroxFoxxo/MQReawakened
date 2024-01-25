@@ -290,7 +290,13 @@ public class UseSlot : ExternalProtocol
                     else if (component is BreakableEventControllerComp breakableObjEntity)
                         breakableObjEntity.Destroy(Player);
                     else if (component is InterObjStatusComp enemyEntity)
+                    {
+                        Player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
+                        Player.CheckAchievement(AchConditionType.DefeatEnemy, prefabName, Logger);
+                        Player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, Player.Room.LevelInfo.Name, Logger);
+
                         enemyEntity.SendDamageEvent(Player);
+                    }
         }
     }
 

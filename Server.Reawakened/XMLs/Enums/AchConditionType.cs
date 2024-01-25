@@ -9,5 +9,7 @@ public enum AchConditionType
     EquipItem,
     CraftItem,
     Drink,
-    Consumable
+    Consumable,
+    DefeatEnemy,
+    DefeatEnemyInLevel
 }
