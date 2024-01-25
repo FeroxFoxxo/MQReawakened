@@ -100,6 +100,10 @@ public abstract class Enemy : IDestructible
         AiData.SetStats(EnemyGlobalProps);
         AiData.Intern_SpawnPosX = SpawnPosition.x;
         AiData.Intern_SpawnPosY = SpawnPosition.y;
+        AiData.Sync_PosX = SpawnPosition.x;
+        AiData.Sync_PosY = SpawnPosition.y;
+        AiData.SyncInit_Dir = Generic.Patrol_ForceDirectionX;
+        AiData.SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio;
 
         _negativeHeight = 0;
         if (Entity.Scale.Y < 0)
