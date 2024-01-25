@@ -164,12 +164,21 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
 
             var path = Path.Join(rConfig.IconDirectory, $"{name}.png");
 
-            using var stream = texture.ConvertToStream(ImageFormat.Png, true);
+            try
+            {
+                using var stream = texture.ConvertToStream(ImageFormat.Png, true);
 
-            if (stream == null)
-                continue;
+                if (stream == null)
+                    continue;
 
-            File.WriteAllBytes(path, stream.ToArray());
+                File.WriteAllBytes(path, stream.ToArray());
+            }
+            catch (TypeInitializationException)
+            {
+                defaultBar.Dispose();
+                logger.LogError("Texture DLL files did not initialise! This is a known bug for linux users.");
+                return;
+            }
         }
     }
 }
