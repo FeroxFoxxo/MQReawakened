@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -40,6 +41,8 @@ public class EnemyControllerComp : Component<EnemyController>
     {
         var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, 0, damage, 0, 0, origin.CharacterName, false, true);
         origin.Room.SendSyncEvent(breakEvent);
+        origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1);
+        origin.CheckObjective(ObjectiveEnum.Scoremultiple, Id, PrefabName, 1);
         Destroy(Room, Id);
     }
     public void Destroy(Room room, string id)
