@@ -110,7 +110,10 @@ public class UseSlot : ExternalProtocol
         Player.SendSyncEventToPlayer(itemEffect);
 
         if (usedItem != null)
+        {
             Player.CheckAchievement(AchConditionType.Drink, string.Empty, Logger);
+            Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, Logger);
+        }
 
         foreach (var effect in usedItem.ItemEffects)
             if (effect.TypeId == (int)ItemEffectType.Healing)
@@ -218,7 +221,10 @@ public class UseSlot : ExternalProtocol
         Player.SendSyncEventToPlayer(statusEffect);
 
         if (usedItem != null)
+        {
             Player.CheckAchievement(AchConditionType.Consumable, string.Empty, Logger);
+            Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, Logger);
+        }
 
         var removeFromHotbar = true;
 
