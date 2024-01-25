@@ -88,7 +88,9 @@ public class Room : Timer
             GameObjectIds.Add(gameObjectId);
 
         foreach (var component in Entities.Values.SelectMany(x => x))
+        {
             component.InitializeComponent();
+        }
 
         foreach (var component in Entities.Values.SelectMany(x => x))
         {
@@ -105,6 +107,9 @@ public class Room : Timer
                         break;
                     case string spider when spider.Contains(config.EnemyNameSearch[2]):
                         Enemies.Add(component.Id, new EnemySpider(this, component.Id, component));
+                        break;
+                    case string crawler when crawler.Contains(config.EnemyNameSearch[5]):
+                        Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, component));
                         break;
                     case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
                         //Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));

@@ -10,12 +10,12 @@ namespace Server.Reawakened.Entities.Entity.Utils;
 public class AISyncEventHelper
 {
 
-    public AIDo_SyncEvent AIDo(BaseComponent entity, float speedFactor, int behaviorId, string args, float targetPosX, float targetPosY, int direction, bool awareBool)
+    public AIDo_SyncEvent AIDo(BaseComponent entity, Vector3 position, float speedFactor, int behaviorId, string args, float targetPosX, float targetPosY, int direction, bool awareBool)
     {
-        var aiDo = new AIDo_SyncEvent(new SyncEvent(entity.Id.ToString(), SyncEvent.EventType.AIDo, entity.Room.Time));
+        var aiDo = new AIDo_SyncEvent(new SyncEvent(entity.Id, SyncEvent.EventType.AIDo, entity.Room.Time));
         aiDo.EventDataList.Clear();
-        aiDo.EventDataList.Add(entity.Position.X);
-        aiDo.EventDataList.Add(entity.Position.Y);
+        aiDo.EventDataList.Add(position.x);
+        aiDo.EventDataList.Add(position.y);
         aiDo.EventDataList.Add(speedFactor);
         aiDo.EventDataList.Add(behaviorId);
         aiDo.EventDataList.Add(args);
@@ -27,13 +27,13 @@ public class AISyncEventHelper
         return aiDo;
     }
 
-    public AILaunchItem_SyncEvent AILaunchItem(BaseComponent entity, float posX, float posY, float posZ, float speedX, float speedY, float lifeTime, int prjId, int isGrenade)
+    public AILaunchItem_SyncEvent AILaunchItem(BaseComponent entity, Vector3 pos, float speedX, float speedY, float lifeTime, int prjId, int isGrenade)
     {
-        var launch = new AILaunchItem_SyncEvent(new SyncEvent(entity.Id.ToString(), SyncEvent.EventType.AILaunchItem, entity.Room.Time));
+        var launch = new AILaunchItem_SyncEvent(new SyncEvent(entity.Id, SyncEvent.EventType.AILaunchItem, entity.Room.Time));
         launch.EventDataList.Clear();
-        launch.EventDataList.Add(entity.Position.X);
-        launch.EventDataList.Add(entity.Position.Y);
-        launch.EventDataList.Add(entity.Position.Z);
+        launch.EventDataList.Add(pos.x);
+        launch.EventDataList.Add(pos.y);
+        launch.EventDataList.Add(pos.z);
         launch.EventDataList.Add(speedX);
         launch.EventDataList.Add(speedY);
         launch.EventDataList.Add(lifeTime);
@@ -45,7 +45,7 @@ public class AISyncEventHelper
 
     public AIDie_SyncEvent AIDie(BaseComponent entity, string spawnItemPrefabName, int spawnItemQuantity, bool spawnLoot, string killedById, bool suicide)
     {
-        var die = new AIDie_SyncEvent(new SyncEvent(entity.Id.ToString(), SyncEvent.EventType.AIDie, entity.Room.Time));
+        var die = new AIDie_SyncEvent(new SyncEvent(entity.Id, SyncEvent.EventType.AIDie, entity.Room.Time));
         die.EventDataList.Add(spawnItemPrefabName);
         die.EventDataList.Add(spawnItemQuantity);
         die.EventDataList.Add(spawnLoot ? 1 : 0);

@@ -36,6 +36,7 @@ public abstract class Enemy : IDestructible
     public EnemyCollider Hitbox;
     public string ParentPlane;
     public int Health;
+    public bool IsFromSpawner;
 
     private float _negativeHeight;
 
@@ -58,6 +59,7 @@ public abstract class Enemy : IDestructible
         Room = room;
         Id = entityId;
         Health = 50;
+        IsFromSpawner = false;
 
         //Component Info
         Entity = baseEntity;
@@ -158,12 +160,11 @@ public abstract class Enemy : IDestructible
             //AIBehavior_GoTo
         }
 
-        AiBehavior.Update(ref AiData, Room.Time);
         if (Entity.Id == "17745")
             Console.WriteLine(Position.ToString());
 
-        Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - _negativeHeight, Position.z);
-        Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
+        Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
+        Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - _negativeHeight, Position.z);
 
     }
 
@@ -183,7 +184,6 @@ public abstract class Enemy : IDestructible
             bList.Append(bDefinesList.ToString());
         }
 
-        Console.WriteLine(bList.ToString());
         return bList.ToString();
     }
 
@@ -214,7 +214,51 @@ public abstract class Enemy : IDestructible
         Position.x - DetectionRange.width / 2 < pos.X && pos.X < Position.x + DetectionRange.width / 2 &&
             Position.y < pos.Y && pos.Y < Position.y + DetectionRange.height && Position.z == pos.Z;
 
-    public virtual void HandlePatrol() { }
+    public virtual AIBaseBehavior ChangeBehavior(string behaviorName)
+    {
+        AiBehavior = new AIBaseBehavior();
+
+        switch (behaviorName)
+        {
+            case "Patrol":
+                AiBehavior = new AIBehavior_Patrol(
+                    Generic.Patrol_DistanceX,
+                    Generic.Patrol_DistanceY,
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Patrol", "speed")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Patrol", "endPathWaitTime")),
+                    AiData.Intern_Dir,
+                    Generic.Patrol_InitialProgressRatio
+                    );
+                break;
+
+            case "Aggro":
+                AiBehavior = new AIBehavior_Aggro(
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "speed")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "moveBeyondTargetDistance")),
+                    Convert.ToBoolean(BehaviorList.GetBehaviorStat("Aggro", "stayOnPatrolPath")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "attackBeyondPatrolLine")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "detectionHeightUpY")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "detectionHeightDownY"))
+                    );
+                break;
+
+            case "LookAround":
+                AiBehavior = new AIBehavior_LookAround(
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "initialProgressRatio")),
+                    Convert.ToBoolean(BehaviorList.GetBehaviorStat("LookAround", "snapOnGround"))
+                    );
+                break;
+        }
+
+        AiBehavior.Start(ref AiData, Room.Time, []);
+        return AiBehavior;
+    }
+
+    public virtual void HandlePatrol() 
+    {
+        AiBehavior.Update(ref AiData, Room.Time);
+    }
     public virtual void HandleAggro() { }
     public virtual void HandleLookAround() { }
     public virtual void HandleComeBack() { }
