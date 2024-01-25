@@ -290,6 +290,9 @@ public static class PlayerExtensions
 
                 objective.CountLeft -= count;
 
+                if (objective.ObjectiveType == ObjectiveEnum.AlterandReceiveitem)
+                    objective.CountLeft = 0;
+
                 if (objective.CountLeft <= 0)
                 {
                     objective.CountLeft = 0;

@@ -8,7 +8,9 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using SmartFoxClientAPI.Data;
 using UnityEngine;
+using Room = Server.Reawakened.Rooms.Room;
 
 namespace Server.Reawakened.Entities.Components;
 public class EnemyControllerComp : Component<EnemyController>, IDestructible
@@ -49,11 +51,12 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
             foreach (var comp in comps)
                 if (comp is IDestructible dest)
                     dest.Destroy(Room, Id);
+
+        Room.Entities.Remove(Id);
     }
 
     public void Destroy(Room room, string id)
     {
-        room.Entities.Remove(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
     }

@@ -19,6 +19,12 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
+        if (Id == "5664") // Temporary while blue arenas are in progress
+        {
+            player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1);
+            return;
+        }
+
         if (player.TempData.ArenaModel.HasStarted)
         {
             Logger.LogInformation("Arena has already started, stopping syncEvent.");
@@ -78,7 +84,5 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
     {
         var startRace = new Trigger_SyncEvent(ArenaObjectId, Room.Time, true, player.GameObjectId.ToString(), Room.LevelInfo.LevelId, true, true);
         player.SendSyncEventToPlayer(startRace);
-
-        player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1);
     }
 }
