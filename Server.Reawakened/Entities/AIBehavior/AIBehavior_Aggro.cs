@@ -1,20 +1,25 @@
 ﻿namespace Server.Reawakened.Entities.AIBehavior;
 internal class AIBehavior_Aggro : AIBaseBehavior
 {
-    public AI_Behavior_ComeBack ComeBackBehavior;
+    public AI_Behavior_Aggro AggroBehavior;
 
-    public AIBehavior_Aggro(float speed)
+    public AIBehavior_Aggro(float attackSpeed, float moveBeyondTargetDistance, bool stayOnPatrolPath, float attackBeyondPatrolLine, float detectionHeightUp, float detectionHeightDown)
     {
-        ComeBackBehavior = new AI_Behavior_ComeBack(speed);
+        AggroBehavior = new AI_Behavior_Aggro(attackSpeed, moveBeyondTargetDistance, stayOnPatrolPath, attackBeyondPatrolLine, detectionHeightUp, detectionHeightDown);
+    }
+
+    public override void Start(ref AIProcessData aiData, float roomTime, string[] args)
+    {
+        AggroBehavior.Start(aiData, roomTime, args);
     }
 
     public override bool Update(ref AIProcessData aiData, float roomTime)
     {
-        return ComeBackBehavior.Update(aiData, roomTime);
+        return AggroBehavior.Update(aiData, roomTime);
     }
 
     public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime)
     {
-        return ComeBackBehavior.GetBehaviorRatio(aiData, roomTime);
+        return AggroBehavior.GetBehaviorRatio(aiData, roomTime);
     }
 }

@@ -54,11 +54,12 @@ public abstract class Enemy : IDestructible
 
     public Enemy(Room room, string entityId, BaseComponent baseEntity)
     {
-
+        //Basic Stats
         Room = room;
         Id = entityId;
         Health = 50;
 
+        //Component Info
         Entity = baseEntity;
         EnemyController = (EnemyControllerComp)baseEntity;
         var entityList = room.Entities.Values.SelectMany(s => s);
@@ -72,12 +73,22 @@ public abstract class Enemy : IDestructible
                 Status = status;
         }
 
+        //Position Info
         ParentPlane = Entity.ParentPlane;
         Position = new Vector3(Entity.Position.X, Entity.Position.Y, Entity.Position.Z);
         if (ParentPlane == "Plane1")
             Position.z = 20;
         SpawnPosition = Position;
 
+        //Hitbox Info
+        _negativeHeight = 0;
+        if (Entity.Scale.Y < 0)
+            _negativeHeight = Entity.Rectangle.Height;
+        Hitbox = new EnemyCollider(Id, new Vector3Model { X = Position.x, Y = Position.y - _negativeHeight, Z = Position.z },
+            Entity.Rectangle.Width, Entity.Rectangle.Height, Entity.ParentPlane, Room);
+        Room.Colliders.Add(Id, Hitbox);
+
+        //GlobalProperties assignment, used for AI_Behavior
         EnemyGlobalProps = new GlobalProperties(
             Global.Global_DetectionLimitedByPatrolLine,
             Global.Global_BackDetectionRangeX,
@@ -96,6 +107,7 @@ public abstract class Enemy : IDestructible
             Global.Aggro_AttackBeyondPatrolLine
         );
 
+        //AIProcessData assignment, used for AI_Behavior
         AiData = new AIProcessData();
         AiData.SetStats(EnemyGlobalProps);
         AiData.Intern_SpawnPosX = SpawnPosition.x;
@@ -105,13 +117,7 @@ public abstract class Enemy : IDestructible
         AiData.SyncInit_Dir = Generic.Patrol_ForceDirectionX;
         AiData.SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio;
 
-        _negativeHeight = 0;
-        if (Entity.Scale.Y < 0)
-            _negativeHeight = Entity.Rectangle.Height;
 
-        Hitbox = new EnemyCollider(Id, new Vector3Model { X = Position.x, Y = Position.y - _negativeHeight, Z = Position.z }, 
-            Entity.Rectangle.Width, Entity.Rectangle.Height, Entity.ParentPlane, Room);
-        Room.Colliders.Add(Id, Hitbox);
     }
 
     public virtual void Initialize()
@@ -126,6 +132,8 @@ public abstract class Enemy : IDestructible
 
         switch (AiBehavior)
         {
+            //All commented lines are behaviors that have not been added yet
+
             //AIBehavior_Acting
             case AIBehavior_LookAround:
                 HandleLookAround();
@@ -133,11 +141,11 @@ public abstract class Enemy : IDestructible
             case AIBehavior_Patrol:
                 HandlePatrol();
                 break;
-            case AIBehavior_ComeBack:
-                HandleComeBack();
-                break;
             case AIBehavior_Aggro:
                 HandleAggro();
+                break;
+            case AIBehavior_ComeBack:
+                HandleComeBack();
                 break;
             //AIBehavior_Shooting
             //AIBehavior_Projectile
@@ -152,15 +160,10 @@ public abstract class Enemy : IDestructible
 
         AiBehavior.Update(ref AiData, Room.Time);
         if (Entity.Id == "17745")
-        {
-            Console.WriteLine(AiData.Sync_PosX);
-        }
+            Console.WriteLine(Position.ToString());
 
-        Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
-        Entity.Position.X = Position.x;
-        Entity.Position.Y = Position.y;
-        Entity.Position.Z = Position.z;
-        Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - _negativeHeight, Position.z);
+        Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - _negativeHeight, Position.z);
+        Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
 
     }
 
@@ -169,16 +172,18 @@ public abstract class Enemy : IDestructible
         var compiler = new AIPropertiesCompiler();
 
         var bList = new SeparatedStringBuilder('`');
-        var bDefinesList = new SeparatedStringBuilder('|');
+        SeparatedStringBuilder bDefinesList;
 
         foreach (var behavior in BehaviorList.BehaviorData)
         {
+            bDefinesList = new SeparatedStringBuilder('|');
             bDefinesList.Append(behavior.Key);
             bDefinesList.Append(compiler.CreateBehaviorString(this, behavior.Key));
             bDefinesList.Append(compiler.CreateResource(behavior.Value.Resource));
             bList.Append(bDefinesList.ToString());
         }
 
+        Console.WriteLine(bList.ToString());
         return bList.ToString();
     }
 

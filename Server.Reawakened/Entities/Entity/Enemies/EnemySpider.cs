@@ -1,5 +1,6 @@
 ﻿using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using Server.Reawakened.Entities.AIBehavior;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
@@ -33,9 +34,24 @@ public class EnemySpider(Room room, string entityId, BaseComponent baseEntity) :
         Room.SendSyncEvent(SyncBuilder.AIDo(Entity, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.SyncInit_Dir, false));
     }
 
-    public override void Update()
+    public override void Damage(int damage, Player origin)
     {
-        base.Update();
+        base.Damage(damage, origin);
+        if (AiBehavior is not AIBehavior_Aggro)
+        {
+            AiBehavior = new AIBehavior_Aggro(
+                Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "speed")),
+                Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "moveBeyondTargetDistance")),
+                Convert.ToBoolean(BehaviorList.GetBehaviorStat("Aggro", "stayOnPatrolPath")),
+                Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "attackBeyondPatrolLine")),
+                Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "detectionHeightUpY")),
+                Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "detectionHeightDownY"))
+            );
+            AiBehavior.Start(ref AiData, Room.Time, []);
+
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, 1.0f, BehaviorList.IndexOf("Aggro"), string.Empty, Position.x, Position.y, AiData.SyncInit_Dir, false));
+        }
+
     }
 
     public override void HandlePatrol()

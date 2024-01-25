@@ -71,7 +71,7 @@ public class AIPropertiesCompiler
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Aggro", "moveBeyondTargetDistance"));
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Aggro", "stayOnPatrolPath"));
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Aggro", "attackBeyondPatrolLine"));
-        sb.Append(enemy.Generic.Aggro_UseAttackBeyondPatrolLine);
+        sb.Append(enemy.Generic.Aggro_UseAttackBeyondPatrolLine ? 1 : 0);
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Aggro", "detectionRangeUpY"));
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Aggro", "detectionRangeDownY"));
 
