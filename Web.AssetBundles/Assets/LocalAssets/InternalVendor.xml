@@ -366,4 +366,21 @@
         <Item prefabName="COL_FOOD_SpongeBob07" />
         <Item prefabName="COL_FOOD_SpongeBob08" />
     </Vendor>
+    <Vendor objectId="574" name="Koopu" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1108" greetingConversationId="3342" leavingConversationId="3079">
+        <Item prefabName="COL_FOOD_Apple01" />
+        <Item prefabName="COL_FOOD_Cookie01" />
+        <Item prefabName="COL_FOOD_BananaBits01" />
+        <Item prefabName="COL_FOOD_IceCream01" />
+        <Item prefabName="COL_FOOD_Coconut01" />
+        <Item prefabName="COL_FOOD_Nuts01" />
+        <Item prefabName="COL_FOOD_Candy01" />
+        <Item prefabName="COL_FOOD_Melon01" />
+        <Item prefabName="COL_FOOD_BananaBits02" />
+        <Item prefabName="COL_FOOD_LollyPop01" />
+        <Item prefabName="COL_FOOD_Orange01" />
+        <Item prefabName="COL_FOOD_Mango01" />
+        <Item prefabName="COL_FOOD_Sundae01" />
+        <Item prefabName="COL_FOOD_Cookie02" />
+        <Item prefabName="COL_FOOD_Pinapple01" />
+    </Vendor>
 </VendorCatalog>
