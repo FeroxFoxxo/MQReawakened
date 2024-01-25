@@ -41,8 +41,15 @@ public class EnemyControllerComp : Component<EnemyController>
     {
         var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, 0, damage, 0, 0, origin.CharacterName, false, true);
         origin.Room.SendSyncEvent(breakEvent);
+
         origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1);
         origin.CheckObjective(ObjectiveEnum.Scoremultiple, Id, PrefabName, 1);
+
+        if (Room.Entities.TryGetValue(Id, out var comps))
+            foreach (var comp in comps)
+                if (comp is SpiderBossControllerComp sbc)
+                    sbc.Destroy(Room, Id);
+
         Destroy(Room, Id);
     }
     public void Destroy(Room room, string id)
