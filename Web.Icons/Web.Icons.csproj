@@ -29,13 +29,4 @@
       </Reference>
     </ItemGroup>
 
-    <ItemGroup>
-      <None Update="x64\Texture2DDecoderNative.dll">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="x86\Texture2DDecoderNative.dll">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
 </Project>
