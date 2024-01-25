@@ -249,7 +249,6 @@ public static class PlayerExtensions
             return;
 
         var character = player.Character.Data;
-        player.DatabaseContainer.Objectives.ObjectivePrefabs.TryGetValue(prefabName, out var objectiveInt);
 
         player.Room.Logger.LogDebug("Checking {type} objective for {prefab} id ({id}) of count {count}.", type, prefabName, gameObjectId, count);
 
@@ -260,10 +259,9 @@ public static class PlayerExtensions
             foreach (var objectiveKVP in quest.Objectives)
             {
                 var objective = objectiveKVP.Value;
-                var shouldIgnoreLevel = false;
+                bool isItem;
 
                 if (objective.ObjectiveType != type ||
-                    objective.Order > quest.CurrentOrder ||
                     objective.Completed)
                     continue;
 
@@ -271,19 +269,23 @@ public static class PlayerExtensions
                 {
                     if (objective.GameObjectId.ToString() != gameObjectId)
                         continue;
+
+                    isItem = false;
                 }
                 else
                 {
-                    if (objectiveInt == null)
+                    var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(prefabName);
+
+                    if (item == null)
                         continue;
 
-                    if (!objectiveInt.ItemIds.Contains(objective.ItemId) && !objectiveInt.ItemIds.Contains(default))
+                    if (item.ItemId != objective.ItemId)
                         continue;
 
-                    shouldIgnoreLevel = objectiveInt.GlobalLevel;
+                    isItem = true;
                 }
 
-                if (objective.LevelId != player.Character.LevelData.LevelId && !shouldIgnoreLevel)
+                if (objective.LevelId != player.Character.LevelData.LevelId && !isItem)
                     continue;
 
                 objective.CountLeft -= count;

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -57,7 +58,7 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
                     if (Arena != null)
                         Arena.StartArena(member);
                 }
-                
+
             }
         }
         else
@@ -77,5 +78,7 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
     {
         var startRace = new Trigger_SyncEvent(ArenaObjectId, Room.Time, true, player.GameObjectId.ToString(), Room.LevelInfo.LevelId, true, true);
         player.SendSyncEventToPlayer(startRace);
+
+        player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1);
     }
 }

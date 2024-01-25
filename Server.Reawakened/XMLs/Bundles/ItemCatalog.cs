@@ -194,8 +194,10 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
 
             var smallestItemId = 0;
 
-            foreach (var item in internalCatalog.Items)
+            foreach (var itemKVP in internalCatalog.Items)
             {
+                var item = itemKVP.Value;
+
                 if (!_itemCategories.TryGetValue(item.CategoryId, out var categoryNode))
                 {
                     var category = xml.CreateElement("ItemCategory");

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Models.Quests;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
@@ -11,12 +10,12 @@ namespace Server.Reawakened.XMLs.BundlesInternal;
 public class InternalObjective : IBundledXml<InternalObjective>
 {
     public string BundleName => "InternalObjective";
-    public BundlePriority Priority => BundlePriority.Lowest;
+    public BundlePriority Priority => BundlePriority.Highest;
 
     public ILogger<InternalObjective> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<string, ObjectiveInternal> ObjectivePrefabs;
+    public Dictionary<int, string> ObjectivePrefabs;
 
     public InternalObjective()
     {
@@ -43,7 +42,7 @@ public class InternalObjective : IBundledXml<InternalObjective>
                 if (!(objective.Name == "Objective")) continue;
 
                 var prefabName = string.Empty;
-                var itemId = string.Empty;
+                var itemId = -1;
 
                 foreach (XmlAttribute objectiveAttribute in objective.Attributes)
                     switch (objectiveAttribute.Name)
@@ -52,28 +51,13 @@ public class InternalObjective : IBundledXml<InternalObjective>
                             prefabName = objectiveAttribute.Value;
                             break;
                         case "itemId":
-                            itemId = objectiveAttribute.Value;
+                            itemId = int.Parse(objectiveAttribute.Value);
                             break;
                     }
-                AddItem(prefabName, itemId, false);
+
+                ObjectivePrefabs.Add(itemId, prefabName);
             }
         }
-
-        var itemCatalog = Services.GetRequiredService<ItemCatalog>();
-
-        foreach (var item in itemCatalog.Items.Values)
-            AddItem(item.PrefabName, item.ItemId.ToString(), true);
-    }
-
-    public void AddItem(string prefabName, string item, bool globalLevel)
-    {
-        if (!ObjectivePrefabs.ContainsKey(prefabName))
-            ObjectivePrefabs.Add(prefabName, new ObjectiveInternal() { ItemIds = [], GlobalLevel = globalLevel });
-
-        var itemId = int.TryParse(item, out var id) ? id : default;
-
-        if (!ObjectivePrefabs[prefabName].ItemIds.Contains(itemId))
-            ObjectivePrefabs[prefabName].ItemIds.Add(itemId);
     }
 
     public void FinalizeBundle()
