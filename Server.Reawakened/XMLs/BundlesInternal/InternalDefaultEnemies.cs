@@ -42,7 +42,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                 if (enemy.Name != "Enemy") continue;
 
                 var enemyType = string.Empty;
-                var behaviorModel = new BehaviorModel(new Dictionary<string, BehaviorDataModel>(), string.Empty);
+                var behaviorModel = new BehaviorModel(new Dictionary<string, BehaviorDataModel>());
 
                 foreach (XmlAttribute enemyName in enemy.Attributes)
                     if (enemyName.Name == "name")
@@ -52,7 +52,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                     }
                 foreach (XmlNode behavior in enemy.ChildNodes)
                 {
-                    var behaviorDataModel = new BehaviorDataModel(new Dictionary<string, object>());
+                    var behaviorDataModel = new BehaviorDataModel(new Dictionary<string, object>(), string.Empty);
 
                     switch (behavior.Name)
                     {
@@ -190,5 +190,5 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
     }
 
     public BehaviorModel GetBehaviorsByName(string enemyName) =>
-        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel(new Dictionary<string, BehaviorDataModel>(), string.Empty);
+        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel(new Dictionary<string, BehaviorDataModel>());
 }

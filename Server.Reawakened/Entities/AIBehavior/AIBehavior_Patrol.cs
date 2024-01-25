@@ -8,6 +8,11 @@ internal class AIBehavior_Patrol : AIBaseBehavior
         PatrolBehavior = new AI_Behavior_Patrol(patrolSpeed, endPathWaitTime, patrolX, patrolY, patrolForceDirectionX, initialProgressRatio);
     }
 
+    public override void Start(ref AIProcessData aiData, float roomTime, string[] args)
+    {
+        PatrolBehavior.Start(aiData, roomTime, args);
+    }
+
     public override bool Update(ref AIProcessData aiData, float roomTime)
     {
         return PatrolBehavior.Update(aiData, roomTime);
