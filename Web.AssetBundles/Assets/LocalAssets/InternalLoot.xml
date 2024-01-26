@@ -120,7 +120,7 @@
         </LootInfo>
     </Level>
     <Level name="Clock Tower Square">
-        <LootInfo objectId="213218" doLootWheel="false">
+        <LootInfo objectId="213218" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemId="939" count="1" bindingCount="0"/>
                 <Item itemId="940" count="1" bindingCount="0"/>

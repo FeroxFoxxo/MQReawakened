@@ -263,4 +263,10 @@
             <Dialog dialogId="817" conversationId="2291" minimumReputation="1" />
         </NPC>
     </Level>
+    <Level id="209">
+        <!--The Volcano Lair-->
+        <NPC objectId="2530" name="Urymo" descriptionId="0">
+            <Dialog dialogId="41" conversationId="140" minimumReputation="1" />
+        </NPC>
+    </Level>
 </DialogCatalog>
