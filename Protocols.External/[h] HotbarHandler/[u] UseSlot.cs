@@ -221,8 +221,8 @@ public class UseSlot : ExternalProtocol
 
     private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var rand = new System.Random();
-        string prjId = Math.Abs(rand.Next()).ToString();
+        var rand = new Random();
+        var prjId = Math.Abs(rand.Next()).ToString();
 
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next()).ToString();
@@ -253,7 +253,7 @@ public class UseSlot : ExternalProtocol
         Player.Room.SendSyncEvent(meleeSyncEvent);
 
         foreach (var obj in
-                 Player.Room.Planes[planeName].GameObjects.Values
+                 Player.Room.Planes[planeName].GameObjects.Values.SelectMany(x => x)
                      .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3.4f)
                 )
         {
