@@ -273,7 +273,7 @@ public class UseSlot : ExternalProtocol
 
             var weaponDamage = GetDamageType(usedItem);
 
-            var isColliding = meleeHitbox.CheckObjectCollision(objCollider);
+            var isColliding = meleeHitbox.CheckCollision(objCollider);
 
             if (isColliding)
             {
@@ -283,10 +283,8 @@ public class UseSlot : ExternalProtocol
                             triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
                         else if (component is BreakableEventControllerComp breakableObjEntity)
                             breakableObjEntity.Destroy(Player);
-                        //else if (component is InterObjStatusComp enemyEntity)
-                        //    enemyEntity.SendDamageEvent(Player, weaponDamage);
-                        else if (component is AIStatePatrolComp enemy)
-                            enemy.SendDamageEvent(Player, weaponDamage);
+                        else if (component is InterObjStatusComp enemyEntity)
+                            enemyEntity.SendDamageEvent(Player, weaponDamage);
             }
 
             var objectId = obj.ObjectInfo.ObjectId;
