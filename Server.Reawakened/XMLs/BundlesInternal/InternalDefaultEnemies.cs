@@ -172,7 +172,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
         // Debug purposes. Prints all behaviors to console.
         //foreach (var enemy in EnemyInfoCatalog)
         //{
-        //    Console.WriteLine(enemy.Key);
+        //    moveLine(enemy.Key);
         //    foreach(var behavior in enemy.Value)
         //    {
         //        Console.WriteLine("Behavior: " + behavior.Key);

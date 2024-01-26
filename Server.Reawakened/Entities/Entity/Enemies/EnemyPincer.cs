@@ -77,7 +77,6 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) :
 
         if (Room.Time >= _behaviorEndTime)
         {
-            Console.WriteLine("Initial Direction: " + _initialDirection);
             if (_initialDirection != AiData.Intern_Dir)
                 AiData.Intern_Dir *= -1;
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
