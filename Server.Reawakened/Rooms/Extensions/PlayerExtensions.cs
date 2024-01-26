@@ -106,6 +106,6 @@ public static class PlayerExtensions
     public static List<GameObjectModel> GetPlaneEntities(this Player player)
     {
         var planeName = player.TempData.Position.Z > 10 ? "Plane1" : "Plane0";
-        return [.. player.Room.Planes[planeName].GameObjects.Values];
+        return [.. player.Room.Planes[planeName].GameObjects.Values.SelectMany(x => x)];
     }
 }

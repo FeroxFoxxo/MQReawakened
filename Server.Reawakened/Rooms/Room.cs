@@ -16,6 +16,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.BundlesInternal;
+using SmartFoxClientAPI.Data;
 using WorldGraphDefines;
 using Timer = Server.Base.Timers.Timer;
 
@@ -35,11 +36,12 @@ public class Room : Timer
     public Dictionary<string, List<BaseComponent>> Entities;
     public Dictionary<string, ProjectileEntity> Projectiles;
     public Dictionary<string, BaseCollider> Colliders;
-    public Dictionary<string, Enemy> Enemies;
     public ILogger<Room> Logger;
 
     public Dictionary<string, PlaneModel> Planes;
     public Dictionary<string, List<string>> UnknownEntities;
+    public Dictionary<string, Enemy> Enemies;
+    public Dictionary<string, List<List<BaseComponent>>> DuplicateEntities;
 
     public SpawnPointComp DefaultSpawn { get; set; }
     public SpawnPointComp CheckpointSpawn { get; set; }
@@ -70,20 +72,23 @@ public class Room : Timer
 
         Players = [];
         GameObjectIds = [];
+        DuplicateEntities = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
             return;
 
         Planes = LevelInfo.LoadPlanes(_config);
-        Entities = this.LoadEntities(services, out UnknownEntities);
+        Entities = this.LoadEntities(services);
         Projectiles = [];
         Colliders = this.LoadTerrainColliders();
         Enemies = [];
 
+        foreach (var type in UnknownEntities.Values.SelectMany(x => x).Distinct().Order())
+            Logger.LogWarning("Could not find synced entity for {EntityType}", type);
+
         foreach (var gameObjectId in Planes.Values
-                     .Select(x => x.GameObjects.Values)
-                     .SelectMany(x => x)
-                     .Select(x => x.ObjectInfo.ObjectId)
+                     .Select(x => x.GameObjects)
+                     .SelectMany(x => x.Keys)
                 )
             GameObjectIds.Add(gameObjectId);
 
