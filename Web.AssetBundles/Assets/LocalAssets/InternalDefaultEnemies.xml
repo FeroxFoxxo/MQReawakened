@@ -19,7 +19,7 @@
 	</Enemy>
 	<Enemy name="PF_Spite_Crawler">
 		<Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
-		<Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+		<Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
 	</Enemy>
 	<Enemy name="PF_Spite_Dragon">
@@ -33,8 +33,8 @@
 	</Enemy>
 	<Enemy name="PF_Spite_Pincer">
 		<Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
 	</Enemy>
 	<Enemy name="PF_Spite_Stomper">
 		<Patrol speed="1.5" smoothMove="false" endPathWaitTime="4"/>

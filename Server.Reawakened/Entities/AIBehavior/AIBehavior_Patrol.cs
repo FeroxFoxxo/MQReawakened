@@ -22,4 +22,9 @@ internal class AIBehavior_Patrol : AIBaseBehavior
     {
         return PatrolBehavior.GetBehaviorRatio(aiData, roomTime);
     }
+
+    public override void Stop(ref AIProcessData aiData)
+    {
+        PatrolBehavior.Stop(aiData);
+    }
 }

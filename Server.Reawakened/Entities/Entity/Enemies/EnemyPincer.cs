@@ -11,7 +11,7 @@ using System.Xml.Linq;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemySpider(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
+public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
 {
 
     private float _behaviorEndTime;
@@ -21,7 +21,7 @@ public class EnemySpider(Room room, string entityId, BaseComponent baseEntity) :
     {
         base.Initialize();
 
-        BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName("PF_Critter_Spider");
+        BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName("PF_Spite_Pincer");
 
         AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
 

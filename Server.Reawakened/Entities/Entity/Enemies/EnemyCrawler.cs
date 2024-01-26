@@ -15,6 +15,7 @@ public class EnemyCrawler(Room room, string entityId, BaseComponent baseEntity) 
 {
 
     private float _behaviorEndTime;
+    private float _initialDirection;
 
     public override void Initialize()
     {
@@ -22,9 +23,11 @@ public class EnemyCrawler(Room room, string entityId, BaseComponent baseEntity) 
 
         BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName("PF_Spite_Crawler");
 
+        AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
+
         // Address magic numbers when we get to adding enemy effect mods
         Room.SendSyncEvent(AIInit(1, 1, 1));
-        Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.SyncInit_Dir, false));
+        Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
 
         // Set these calls to the xml later. Instead of using hardcoded "Patrol", "Aggro", etc.
         // the XML can just specify which behaviors to use when attacked, when moving, etc.
@@ -36,16 +39,23 @@ public class EnemyCrawler(Room room, string entityId, BaseComponent baseEntity) 
         base.Damage(damage, origin);
 
         Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Aggro"), string.Empty, origin.TempData.Position.X, origin.TempData.Position.Y,
-            origin.TempData.Position.X > Position.x ? 1 : 0, false));
-        AiData.SyncInit_Dir = origin.TempData.Position.X > Position.x ? 1 : 0;
+             AiData.Intern_Dir, false));
+
+        // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
+        AiData.Sync_TargetPosX = origin.TempData.Position.X;
+        AiData.Sync_TargetPosY = origin.TempData.Position.Y;
+
+        if (AiBehavior is AIBehavior_Patrol)
+        {
+            AiBehavior.Stop(ref AiData);
+            _initialDirection = AiData.Intern_Dir;
+        }
 
         AiBehavior = ChangeBehavior("Aggro");
     }
 
     public override void HandlePatrol()
     {
-        if (Entity.Id == "17745")
-            Console.WriteLine("Patrolling!");
         base.HandlePatrol();
     }
     public override void HandleAggro()
@@ -55,7 +65,7 @@ public class EnemyCrawler(Room room, string entityId, BaseComponent baseEntity) 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, Position.x, Position.y,
-            AiData.SyncInit_Dir, false));
+            AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("LookAround");
             _behaviorEndTime = Room.Time + Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime"));
@@ -67,7 +77,10 @@ public class EnemyCrawler(Room room, string entityId, BaseComponent baseEntity) 
 
         if (Room.Time >= _behaviorEndTime)
         {
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.SyncInit_Dir, false));
+            Console.WriteLine("Initial Direction: " + _initialDirection);
+            if (_initialDirection != AiData.Intern_Dir)
+                AiData.Intern_Dir *= -1;
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("Patrol");
         }
