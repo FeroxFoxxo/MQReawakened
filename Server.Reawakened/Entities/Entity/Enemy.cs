@@ -263,7 +263,7 @@ public abstract class Enemy : IDestructible
     //This one is not in the helper because it needs too many arguments and too much reformatted data to quantify being there.
     public AIInit_SyncEvent AIInit(float healthMod, float sclMod, float resMod)
     {
-        var aiInit = new AIInit_SyncEvent(Id.ToString(), Room.Time, Position.x, Position.y, Position.z, Position.x, Position.y, Generic.Patrol_InitialProgressRatio,
+        var aiInit = new AIInit_SyncEvent(Id, Room.Time, Position.x, Position.y, Position.z, Position.x, Position.y, Generic.Patrol_InitialProgressRatio,
         Status.MaxHealth, Status.MaxHealth, healthMod, sclMod, resMod, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
         aiInit.EventDataList[2] = Position.x;
         aiInit.EventDataList[3] = Position.y;

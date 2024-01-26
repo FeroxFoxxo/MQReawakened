@@ -35,7 +35,7 @@ public class Room : Timer
     public Dictionary<string, List<BaseComponent>> Entities;
     public Dictionary<string, ProjectileEntity> Projectiles;
     public Dictionary<string, BaseCollider> Colliders;
-    public readonly Dictionary<string, Enemy> Enemies;
+    public Dictionary<string, Enemy> Enemies;
     public ILogger<Room> Logger;
 
     public Dictionary<string, PlaneModel> Planes;

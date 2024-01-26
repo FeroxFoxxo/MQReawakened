@@ -21,7 +21,7 @@ public class EnemyCrawler(Room room, string entityId, BaseComponent baseEntity) 
     {
         base.Initialize();
 
-        BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName("PF_Spite_Crawler");
+        BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName(Entity.PrefabName);
 
         AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
 

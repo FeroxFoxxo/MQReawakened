@@ -168,21 +168,6 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                 EnemyInfoCatalog.Add(enemyType, behaviorModel);
             }
         }
-
-        // Debug purposes. Prints all behaviors to console.
-        //foreach (var enemy in EnemyInfoCatalog)
-        //{
-        //    moveLine(enemy.Key);
-        //    foreach(var behavior in enemy.Value)
-        //    {
-        //        Console.WriteLine("Behavior: " + behavior.Key);
-        //        foreach(var data in behavior.Value)
-        //        {
-        //            Console.WriteLine("- " + data.Key + ": " + data.Value);
-        //        }
-        //    }
-        //    Console.WriteLine("--------------");
-        //}
     }
 
     public void FinalizeBundle()

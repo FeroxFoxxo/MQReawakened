@@ -21,7 +21,7 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) :
     {
         base.Initialize();
 
-        BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName("PF_Spite_Pincer");
+        BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName(Entity.PrefabName);
 
         AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
 

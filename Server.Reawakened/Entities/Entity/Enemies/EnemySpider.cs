@@ -21,7 +21,7 @@ public class EnemySpider(Room room, string entityId, BaseComponent baseEntity) :
     {
         base.Initialize();
 
-        BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName("PF_Critter_Spider");
+        BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName(Entity.PrefabName);
 
         AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
 

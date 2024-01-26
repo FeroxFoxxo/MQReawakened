@@ -38,7 +38,7 @@ public class EnemyBird(Room room, string entityId, BaseComponent baseEntity) : E
     {
         base.Damage(damage, origin);
 
-        Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Aggro"), string.Empty, origin.TempData.Position.X, origin.TempData.Position.Y,
+        Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Shooting"), string.Empty, Position.x, Position.y,
              AiData.Intern_Dir, false));
 
         // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
@@ -51,39 +51,17 @@ public class EnemyBird(Room room, string entityId, BaseComponent baseEntity) : E
             _initialDirection = AiData.Intern_Dir;
         }
 
-        AiBehavior = ChangeBehavior("Aggro");
+        AiBehavior = ChangeBehavior("Shooting");
     }
 
     public override void HandlePatrol()
     {
         base.HandlePatrol();
     }
-    public override void HandleAggro()
-    {
-        base.HandleAggro();
-
-        if (!AiBehavior.Update(ref AiData, Room.Time))
-        {
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, Position.x, Position.y,
-            AiData.Intern_Dir, false));
-
-            AiBehavior = ChangeBehavior("LookAround");
-            _behaviorEndTime = Room.Time + Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime"));
-        }
-    }
-    public override void HandleLookAround()
-    {
-        base.HandleLookAround();
-
-        if (Room.Time >= _behaviorEndTime)
-        {
-            // These two lines right here took me 7 hours to figure out.
-            if (_initialDirection != AiData.Intern_Dir)
-                AiData.Intern_Dir *= -1;
-
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
-
-            AiBehavior = ChangeBehavior("Patrol");
-        }
-    }
+    //public override void HandleShooting()
+    //{
+    //    base.HandleShooting();
+    //
+    //    Console.WriteLine("hai!");
+    //}
 }
