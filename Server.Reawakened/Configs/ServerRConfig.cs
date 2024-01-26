@@ -194,7 +194,7 @@ public class ServerRConfig : IRConfig
 
         ProjectileSpeed = 10;
         ProjectileXOffset = 0.25f;
-        ProjectileYOffset = 0.8333f;
+        ProjectileYOffset = 0.8f;
         ProjectileHeight = 0.5f;
         ProjectileWidth = 0.5f;
     }

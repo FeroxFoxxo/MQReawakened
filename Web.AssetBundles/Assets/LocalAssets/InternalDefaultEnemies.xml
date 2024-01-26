@@ -10,78 +10,243 @@
 	</Enemy>
     <!--Rachnoids-->
     <Enemy name="PF_Critter_Spider_Boss">
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
+        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider_Boss_Ceiling_Shoot">
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
+        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider_Boss_Shoot">
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
+        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
 	<Enemy name="PF_Critter_Spider01">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
 		<Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
 	</Enemy>
     <Enemy name="PF_Critter_Spider01_Ceiling_Shoot">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider01_Shoot">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider02">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider02_Ceiling_Shoot">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider02_Shoot">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider03">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider03_Ceiling_Shoot">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider03_Shoot">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider04">
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
+        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider04_Ceiling_Shoot">
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
+        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider04_Shoot">
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
+        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <!--Bathogs-->
@@ -94,26 +259,81 @@
 	</Enemy>
     <!--Cragcrawlers-->
     <Enemy name="PF_Spite_Crawler_Boss">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
         <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Spite_Crawler_Invis">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
         <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Spite_Crawler_Lava">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
         <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
 	<Enemy name="PF_Spite_Crawler_Rock">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
 		<Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
 		<Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
 	</Enemy>
     <Enemy name="PF_Spite_Crawler_Swamp">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="1"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
         <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
@@ -132,26 +352,81 @@
 	</Enemy>
     <!--Pincers-->
     <Enemy name="PF_Spite_Pincer_Boss">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="6"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="6"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
         <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Invis">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="6"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="6"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
         <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Lava">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="6"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="6"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
         <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Rock">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="6"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="6"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
         <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
         <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
     </Enemy>
 	<Enemy name="PF_Spite_Pincer_Swamp">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="6"/>
+            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeDownY value="0"/>
+            <BackDetectionRangeX value="6"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="0"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+        </GlobalProperties>
 		<Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
         <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>

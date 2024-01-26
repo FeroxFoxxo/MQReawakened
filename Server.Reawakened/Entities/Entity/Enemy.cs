@@ -37,6 +37,7 @@ public abstract class Enemy : IDestructible
     public string ParentPlane;
     public int Health;
     public bool IsFromSpawner;
+    public float MinBehaviorTime;
 
     private float _negativeHeight;
 
@@ -60,6 +61,7 @@ public abstract class Enemy : IDestructible
         Id = entityId;
         Health = 50;
         IsFromSpawner = false;
+        MinBehaviorTime = 0;
 
         //Component Info
         Entity = baseEntity;
@@ -160,6 +162,9 @@ public abstract class Enemy : IDestructible
             //AIBehavior_GoTo
         }
 
+        if (Id.Equals("13897"))
+            Console.WriteLine(AiData.Intern_Dir);
+
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
         Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - _negativeHeight, Position.z);
 
@@ -207,10 +212,6 @@ public abstract class Enemy : IDestructible
         }
     }
 
-    public virtual bool PlayerInRange(Vector3Model pos) =>
-        Position.x - DetectionRange.width / 2 < pos.X && pos.X < Position.x + DetectionRange.width / 2 &&
-            Position.y < pos.Y && pos.Y < Position.y + DetectionRange.height && Position.z == pos.Z;
-
     public virtual AIBaseBehavior ChangeBehavior(string behaviorName)
     {
         AiBehavior = new AIBaseBehavior();
@@ -223,7 +224,7 @@ public abstract class Enemy : IDestructible
                     Generic.Patrol_DistanceY,
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Patrol", "speed")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Patrol", "endPathWaitTime")),
-                    AiData.Intern_Dir,
+                    Generic.Patrol_ForceDirectionX,
                     Generic.Patrol_InitialProgressRatio
                     );
                 break;
@@ -251,6 +252,29 @@ public abstract class Enemy : IDestructible
         AiBehavior.Start(ref AiData, Room.Time, []);
         return AiBehavior;
     }
+
+    public virtual void DetectPlayers(string behaviorToRun)
+    {
+    }
+
+    public bool PlayerInRange(Vector3Model pos)
+    {
+        if (AiData.Intern_Dir < 0)
+        {
+            return AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
+                   AiData.Sync_PosY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY && Position.z == pos.Z &&
+                   pos.X > AiData.Intern_MinPointX - 1 && pos.X < AiData.Intern_MaxPointX + 1;
+        }
+        else if (AiData.Intern_Dir >= 0)
+        {
+            return AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
+                   AiData.Sync_PosY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY && Position.z == pos.Z &&
+                   pos.X > AiData.Intern_MinPointX - 1 && pos.X < AiData.Intern_MaxPointX + 1;
+        }
+        return false;
+    }
+
+    public float ResetBehaviorTime(float behaviorEndTime) =>  Room.Time + behaviorEndTime;
 
     public virtual void HandlePatrol() 
     {

@@ -42,7 +42,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                 if (enemy.Name != "Enemy") continue;
 
                 var enemyType = string.Empty;
-                var behaviorModel = new BehaviorModel(new Dictionary<string, BehaviorDataModel>());
+                var behaviorModel = new BehaviorModel(new Dictionary<string, BehaviorDataModel>(), new Dictionary<string, object>());
 
                 foreach (XmlAttribute enemyName in enemy.Attributes)
                     if (enemyName.Name == "name")
@@ -162,8 +162,22 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                             }
                             break;
 
+                        case "GlobalProperties":
+                            foreach (XmlNode globalProperty in behavior.ChildNodes)
+                            {
+                                var gDataName = string.Empty;
+                                object gDataValue = null;
+                                foreach (XmlAttribute globalPropValue in globalProperty.Attributes)
+                                {
+                                    gDataName = globalProperty.Name;
+                                    gDataValue = globalPropValue.Value;
+                                }
+                                behaviorModel.GlobalProperties.Add(gDataName, gDataValue);
+                            }
+                            break;
                     }
-                    behaviorModel.BehaviorData.Add(behavior.Name, behaviorDataModel);
+                    if (behaviorDataModel.DataList.ToList().Count > 0)
+                        behaviorModel.BehaviorData.Add(behavior.Name, behaviorDataModel);
                 }
                 EnemyInfoCatalog.Add(enemyType, behaviorModel);
             }
@@ -175,5 +189,5 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
     }
 
     public BehaviorModel GetBehaviorsByName(string enemyName) =>
-        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel(new Dictionary<string, BehaviorDataModel>());
+        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel(new Dictionary<string, BehaviorDataModel>(), new Dictionary<string, object>());
 }

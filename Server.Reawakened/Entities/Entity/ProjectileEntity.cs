@@ -47,7 +47,7 @@ public class ProjectileEntity : Component<ProjectileController>
 
     public override void Update()
     {
-        Position.X += Speed / (float)Tickrate;
+        Position.X += Speed / (float)(Tickrate - 2);
         PrjCollider.Position.x = Position.X;
 
         var Collisions = PrjCollider.IsColliding(true);
