@@ -11,5 +11,8 @@ public enum AchConditionType
     Drink,
     Consumable,
     DefeatEnemy,
-    DefeatEnemyInLevel
+    DefeatEnemyInLevel,
+    CompleteQuest,
+    CompleteQuestInLevel,
+    ExploreTrail
 }

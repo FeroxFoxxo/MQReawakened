@@ -4,6 +4,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -81,6 +82,9 @@ public class PortalControllerComp : Component<PortalController>
             "using portal {PortalId}", character.Data.CharacterName,
             character.Id, levelInfo.InGameName, levelInfo.LevelId, portalId
         );
+
+        player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, Logger);
+        player.CheckAchievement(AchConditionType.ExploreTrail, levelInfo.Name, Logger);
 
         player.SendLevelChange();
     }
