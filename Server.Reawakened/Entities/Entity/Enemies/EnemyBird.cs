@@ -58,10 +58,4 @@ public class EnemyBird(Room room, string entityId, BaseComponent baseEntity) : E
     {
         base.HandlePatrol();
     }
-    //public override void HandleShooting()
-    //{
-    //    base.HandleShooting();
-    //
-    //    Console.WriteLine("hai!");
-    //}
 }
