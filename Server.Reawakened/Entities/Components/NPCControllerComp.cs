@@ -14,6 +14,7 @@ using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Models.Npcs;
 using System.Text;
 using static A2m.Server.QuestStatus;
@@ -127,6 +128,8 @@ public class NPCControllerComp : Component<NPCController>
     public void TalkToNpc(Player player)
     {
         player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
+
+        player.CheckAchievement(AchConditionType.Talkto, PrefabName, Logger);
 
         switch (NpcType)
         {
