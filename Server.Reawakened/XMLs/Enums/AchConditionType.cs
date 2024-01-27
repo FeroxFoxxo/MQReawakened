@@ -14,5 +14,6 @@ public enum AchConditionType
     DefeatEnemyInLevel,
     CompleteQuest,
     CompleteQuestInLevel,
-    ExploreTrail
+    ExploreTrail,
+    Talkto
 }
