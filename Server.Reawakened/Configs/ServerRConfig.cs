@@ -173,6 +173,6 @@ public class ServerRConfig : IRConfig
 
         HealingStaff = 396;
         HealingStaffHealValue = 3.527f;
-        DefaultDamage = 0;
+        DefaultDamage = 10;
     }
 }
