@@ -121,7 +121,7 @@ public static class LoadRoomData
                         room.UnknownEntities.Add(entityId, unknownComponents);
 
                     if (componentList.Count > 0)
-                        entities.Add(entityId, componentList);
+                        entities.TryAdd(entityId, componentList);
                 }
                 else
                 {

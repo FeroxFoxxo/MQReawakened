@@ -151,11 +151,15 @@ public abstract class Enemy : IDestructible
             case AIBehavior_ComeBack:
                 HandleComeBack();
                 break;
-            //AIBehavior_Shooting
+            case AIBehavior_Shooting:
+                HandleShooting();
+                break;
             //AIBehavior_Projectile
             //AIBehavior_Bomber
             //AIBehavior_Grenadier
-            //AIBehavior_Stomper
+            case AIBehavior_Stomper:
+                HandleStomper();
+                break;
             //AIBehavior_Idle
             //AIBehavior_Stinger
             //AIBehavior_Spike
@@ -179,7 +183,7 @@ public abstract class Enemy : IDestructible
             bDefinesList = new SeparatedStringBuilder('|');
             bDefinesList.Append(behavior.Key);
             bDefinesList.Append(compiler.CreateBehaviorString(this, behavior.Key));
-            bDefinesList.Append(compiler.CreateResource(behavior.Value.Resource));
+            bDefinesList.Append(compiler.CreateResources(behavior.Value.Resources));
             bList.Append(bDefinesList.ToString());
         }
 
@@ -204,7 +208,8 @@ public abstract class Enemy : IDestructible
                 }
             }
 
-            Room.SendSyncEvent(SyncBuilder.AIDie(Entity, string.Empty, 10, true, origin.GameObjectId, false));
+            //Temp values for now
+            Room.SendSyncEvent(SyncBuilder.AIDie(Entity, "VO_CragCrowler_Death", 10, true, origin.GameObjectId, false));
             Destroy(Room, Id);
         }
     }
@@ -244,6 +249,29 @@ public abstract class Enemy : IDestructible
                     Convert.ToBoolean(BehaviorList.GetBehaviorStat("LookAround", "snapOnGround"))
                     );
                 break;
+
+            case "Shooting":
+                AiBehavior = new AIBehavior_Shooting(
+                    Convert.ToInt32(BehaviorList.GetBehaviorStat("Shooting", "nbBulletsPerRound")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "fireSpreadAngle")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "delayBetweenBullet")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "delayShoot_Anim")),
+                    Convert.ToInt32(BehaviorList.GetBehaviorStat("Shooting", "nbFireRounds")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "delayBetweenFireRound")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "startCoolDownTime")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "endCoolDownTime")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "projectileSpeed")),
+                    Convert.ToBoolean(BehaviorList.GetBehaviorStat("Shooting", "fireSpreadClockwise")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "fireSpreadStartAngle"))
+                    );
+                break;
+
+            case "Stomper":
+                AiBehavior = new AIBehavior_Stomper(
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Stomper", "attackTime")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Stomper", "impactTime"))
+                    );
+                break;
         }
 
         AiBehavior.Start(ref AiData, Room.Time, []);
@@ -258,28 +286,61 @@ public abstract class Enemy : IDestructible
     {
         if (AiData.Intern_Dir < 0)
         {
+            if (Generic.Patrol_DistanceX <= 0)
+            {
+                return AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
+                   Position.z == pos.Z;
+            }
             return AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
-                   AiData.Sync_PosY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY && Position.z == pos.Z &&
-                   pos.X > AiData.Intern_MinPointX - 1 && pos.X < AiData.Intern_MaxPointX + 1;
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY && 
+                   Position.z == pos.Z &&
+                   pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
         }
         else if (AiData.Intern_Dir >= 0)
         {
+            if (Generic.Patrol_DistanceX <= 0)
+            {
+                return AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
+                   Position.z == pos.Z;
+            }
             return AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
-                   AiData.Sync_PosY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY && Position.z == pos.Z &&
-                   pos.X > AiData.Intern_MinPointX - 1 && pos.X < AiData.Intern_MaxPointX + 1;
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY && 
+                   Position.z == pos.Z &&
+                   pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
         }
         return false;
     }
 
     public float ResetBehaviorTime(float behaviorEndTime) =>  Room.Time + behaviorEndTime;
 
+    public virtual void HandleLookAround() { }
+
     public virtual void HandlePatrol() 
     {
         AiBehavior.Update(ref AiData, Room.Time);
     }
-    public virtual void HandleAggro() { }
-    public virtual void HandleLookAround() { }
+
     public virtual void HandleComeBack() { }
+
+    public virtual void HandleAggro() { }
+
+    public virtual void HandleShooting() { }
+
+    public virtual void HandleProjectile() { }
+
+    public virtual void HandleBomber() { }
+
+    public virtual void HandleGrenadier() { }
+
+    public virtual void HandleStomper() { }
+
+    public virtual void HandleIdle() { }
+
+    public virtual void HandleStinger() { }
+
+    public virtual void HandleSpike() { }
 
     //This one is not in the helper because it needs too many arguments and too much reformatted data to quantify being there.
     public AIInit_SyncEvent AIInit(float healthMod, float sclMod, float resMod)

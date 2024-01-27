@@ -20,6 +20,10 @@ public class AIPropertiesCompiler
                 return CreateComeBack(enemy);
             case "Aggro":
                 return CreateAggro(enemy);
+            case "Shooting":
+                return CreateShooting(enemy);
+            case "Stomper":
+                return CreateStomper(enemy);
             default:
                 break;
         }
@@ -71,15 +75,60 @@ public class AIPropertiesCompiler
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Aggro", "moveBeyondTargetDistance"));
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Aggro", "stayOnPatrolPath"));
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Aggro", "attackBeyondPatrolLine"));
-        sb.Append(enemy.Generic.Aggro_UseAttackBeyondPatrolLine ? 1 : 0);
+        sb.Append(Convert.ToInt32(enemy.BehaviorList.GetBehaviorStat("Aggro", "attackBeyondPatrolLine")) > 0 ? 1 : 0);
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Aggro", "detectionRangeUpY"));
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Aggro", "detectionRangeDownY"));
 
         return sb.ToString();
     }
 
-    public string CreateResource(string asset)
+    public string CreateShooting(Enemy enemy)
     {
+        var sb = new SeparatedStringBuilder(';');
+
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "nbBulletsPerRound"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "fireSpreadAngle"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "delayBetweenBullet"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "delayShoot_Anim"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "nbFireRounds"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "delayBetweenFireRound"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "startCoolDownTime"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "endCoolDownTime"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "projectileSpeed"));
+        sb.Append(Convert.ToBoolean(enemy.BehaviorList.GetBehaviorStat("Shooting", "fireSpreadClockwise")) ? 1 : 0);
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "fireSpreadStartAngle"));
+
+        Console.WriteLine(sb.ToString());
+        return sb.ToString();
+    }
+
+    public string CreateStomper(Enemy enemy)
+    {
+        var sb = new SeparatedStringBuilder(';');
+
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Stomper", "attackTime"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Stomper", "impactTime"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Stomper", "damageDistance"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Stomper", "damageOffset"));
+
+        return sb.ToString();
+    }
+
+    public string CreateResources(List<EnemyResourceModel> resources)
+    {
+        SeparatedStringBuilder assetList = new SeparatedStringBuilder('+');
+        string asset;
+
+        if (resources.Count > 0)
+        {
+            foreach (var prefab in resources)
+            {
+                asset = string.Empty;
+                asset = prefab.Type + '-' + prefab.Resource;
+                assetList.Append(asset);
+            }
+            return assetList.ToString();
+        }
         return string.Empty;
     }
 }

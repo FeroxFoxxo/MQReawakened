@@ -56,10 +56,7 @@ public class EnemyCrawler(Room room, string entityId, BaseComponent baseEntity) 
         AiData.Sync_TargetPosY = origin.TempData.Position.Y;
 
         if (AiBehavior is AIBehavior_Patrol)
-        {
             AiBehavior.Stop(ref AiData);
-            _initialDirection = AiData.Intern_Dir;
-        }
 
         AiBehavior = ChangeBehavior("Aggro");
         _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
@@ -77,7 +74,7 @@ public class EnemyCrawler(Room room, string entityId, BaseComponent baseEntity) 
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, Position.x, Position.y,
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
             AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("LookAround");
@@ -91,8 +88,6 @@ public class EnemyCrawler(Room room, string entityId, BaseComponent baseEntity) 
         DetectPlayers("Aggro");
         if (Room.Time >= _behaviorEndTime)
         {
-            if (_initialDirection != AiData.Intern_Dir)
-                AiData.Intern_Dir *= -1;
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("Patrol");

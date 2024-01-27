@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
+public class EnemyStomper(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
 {
 
     private float _behaviorEndTime;
@@ -30,11 +30,10 @@ public class EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) :
         EnemyGlobalProps.Global_FrontDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeUpY"));
         EnemyGlobalProps.Global_FrontDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeDownY"));
         EnemyGlobalProps.Global_BackDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeX"));
-        EnemyGlobalProps.Global_ShootOffsetX = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetX"));
-        EnemyGlobalProps.Global_ShootOffsetY = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetY"));
-        EnemyGlobalProps.Global_ShootingProjectilePrefabName = BehaviorList.GetGlobalProperty("ProjectilePrefabName").ToString();
+        EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
+        EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
 
-        AiData.Intern_Dir = 1;
+        AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
 
         // Address magic numbers when we get to adding enemy effect mods
         Room.SendSyncEvent(AIInit(1, 1, 1));
@@ -49,16 +48,23 @@ public class EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) :
     {
         base.Damage(damage, origin);
 
-        if (AiBehavior is not AIBehavior_Shooting)
+        if (AiBehavior is not AIBehavior_Stomper)
         {
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Shooting"), string.Empty, origin.TempData.Position.X, origin.TempData.Position.Y,
+
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Aggro"), string.Empty, origin.TempData.Position.X, origin.TempData.Position.Y,
                  AiData.Intern_Dir, false));
 
             // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
             AiData.Sync_TargetPosX = origin.TempData.Position.X;
             AiData.Sync_TargetPosY = origin.TempData.Position.Y;
 
-            AiBehavior = ChangeBehavior("Shooting");
+            if (AiBehavior is AIBehavior_Patrol)
+            {
+                AiBehavior.Stop(ref AiData);
+                _initialDirection = AiData.Intern_Dir;
+            }
+
+            AiBehavior = ChangeBehavior("Aggro");
             _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
         }
     }
@@ -66,34 +72,27 @@ public class EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) :
     public override void HandlePatrol()
     {
         base.HandlePatrol();
-        DetectPlayers("Shooting");
+        DetectPlayers("Aggro");
     }
 
-    public override void HandleShooting()
+    public override void HandleAggro()
     {
-        base.HandleShooting();
+        base.HandleAggro();
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Stomper"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
             AiData.Intern_Dir, false));
 
-            AiBehavior = ChangeBehavior("LookAround");
-            _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
-        }
-
-        if (AiData.Intern_FireProjectile)
-        {
-            Room.SendSyncEvent(SyncBuilder.AILaunchItem(Entity, Position.x + EnemyGlobalProps.Global_ShootOffsetX, Position.y + EnemyGlobalProps.Global_ShootOffsetY, Position.z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, 0, 0));
-
-            AiData.Intern_FireProjectile = false;
+            AiBehavior = ChangeBehavior("Stomper");
+            _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("Stomper", "attackTime")));
         }
     }
 
-    public override void HandleLookAround()
+    public override void HandleStomper()
     {
-        base.HandleLookAround();
-        DetectPlayers("Shooting");
+        base.HandleStomper();
+        //DetectPlayers("Aggro");
         if (Room.Time >= _behaviorEndTime)
         {
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
@@ -109,11 +108,11 @@ public class EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) :
             if (PlayerInRange(player.Value.TempData.Position))
             {
                 Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
-                    player.Value.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
+                    Position.y, Generic.Patrol_ForceDirectionX, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
                 AiData.Sync_TargetPosX = player.Value.TempData.Position.X;
-                AiData.Sync_TargetPosY = player.Value.TempData.Position.Y;
+                AiData.Sync_TargetPosY = Position.y;
 
                 AiBehavior = ChangeBehavior(behaviorToRun);
 

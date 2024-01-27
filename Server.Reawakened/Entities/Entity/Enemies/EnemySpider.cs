@@ -77,7 +77,7 @@ public class EnemySpider(Room room, string entityId, BaseComponent baseEntity) :
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, Position.x, Position.y,
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
             AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("LookAround");
@@ -91,8 +91,8 @@ public class EnemySpider(Room room, string entityId, BaseComponent baseEntity) :
         DetectPlayers("Aggro");
         if (Room.Time >= _behaviorEndTime)
         {
-            if (_initialDirection != AiData.Intern_Dir)
-                AiData.Intern_Dir *= -1;
+            //if (_initialDirection != AiData.Intern_Dir)
+            //    AiData.Intern_Dir *= -1;
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("Patrol");

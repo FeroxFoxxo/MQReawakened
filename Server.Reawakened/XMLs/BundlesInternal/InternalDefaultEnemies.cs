@@ -52,9 +52,24 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                     }
                 foreach (XmlNode behavior in enemy.ChildNodes)
                 {
-                    var behaviorDataModel = new BehaviorDataModel(new Dictionary<string, object>(), string.Empty);
+                    var behaviorDataModel = new BehaviorDataModel(new Dictionary<string, object>(), new List<EnemyResourceModel>());
 
-                    switch (behavior.Name)
+                    foreach (XmlNode enemyResource in behavior.ChildNodes)
+                    {
+                        var resourceType = string.Empty;
+                        var resourceName = string.Empty;
+                        foreach (XmlAttribute enemyResourceData in enemyResource.Attributes)
+                        {
+                            if (enemyResourceData.Name.Equals("type"))
+                                resourceType = enemyResourceData.Value;
+                            else if (enemyResourceData.Name.Equals("name"))
+                                resourceName = enemyResourceData.Value;
+                        }
+                        if (!string.IsNullOrEmpty(resourceType))
+                            behaviorDataModel.Resources.Add(new EnemyResourceModel(resourceType, resourceName));
+                    }
+
+                        switch (behavior.Name)
                     {
 
                         // Patrol Behavior
@@ -157,6 +172,127 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                                     case "snapOnGround":
                                         snapOnGround = bool.Parse(behaviorData.Value) ? 1 : 0;
                                         behaviorDataModel.DataList.Add(behaviorData.Name, snapOnGround);
+                                        continue;
+                                }
+                            }
+                            break;
+
+                        // Shooting
+                        case "Shooting":
+                            var nbBulletsPerRound = 1;
+                            var fireSpreadAngle = 0f;
+                            var delayBetweenBullet = 0f;
+                            var delayShootAnim = 0f;
+                            var nbFireRounds = 1;
+                            var delayBetweenFireRound = 0f;
+                            var startCoolDownTime = 0f;
+                            var endCoolDownTime = 0f;
+                            var projectileSpeed = 0f;
+                            var fireSpreadClockwise = true;
+                            var fireSpreadStartAngle = 0f;
+
+                            foreach (XmlAttribute behaviorData in behavior.Attributes)
+                            {
+                                switch (behaviorData.Name)
+                                {
+                                    case "nbBulletsPerRound":
+                                        nbBulletsPerRound = int.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, nbBulletsPerRound);
+                                        continue;
+                                    case "fireSpreadAngle":
+                                        fireSpreadAngle = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, fireSpreadAngle);
+                                        continue;
+                                    case "delayBetweenBullet":
+                                        delayBetweenBullet = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, delayBetweenBullet);
+                                        continue;
+                                    case "delayShoot_Anim":
+                                        delayShootAnim = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, delayShootAnim);
+                                        continue;
+                                    case "delayBetweenFireRound":
+                                        delayBetweenFireRound = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, delayBetweenFireRound);
+                                        continue;
+                                    case "nbFireRounds":
+                                        nbFireRounds = int.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, nbFireRounds);
+                                        continue;
+                                    case "startCoolDownTime":
+                                        startCoolDownTime = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, startCoolDownTime);
+                                        continue;
+                                    case "endCoolDownTime":
+                                        endCoolDownTime = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, endCoolDownTime);
+                                        continue;
+                                    case "projectileSpeed":
+                                        projectileSpeed = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, projectileSpeed);
+                                        continue;
+                                    case "fireSpreadClockwise":
+                                        fireSpreadClockwise = bool.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, fireSpreadClockwise);
+                                        continue;
+                                    case "fireSpreadStartAngle":
+                                        fireSpreadStartAngle = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, fireSpreadStartAngle);
+                                        continue;
+                                }
+                            }
+                            break;
+
+                        // Bomber
+                        case "Bomber":
+                            var inTime = 0f;
+                            var loopTime = 0f;
+                            var bombRadius = 0f;
+                            foreach (XmlAttribute behaviorData in behavior.Attributes)
+                            {
+                                switch (behaviorData.Name)
+                                {
+                                    case "attackTime":
+                                        inTime = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, inTime);
+                                        continue;
+                                    case "loopTime":
+                                        loopTime = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, loopTime);
+                                        continue;
+                                    case "bombRadius":
+                                        bombRadius = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, bombRadius);
+                                        continue;
+                                }
+                            }
+                            break;
+
+                        // Stomper
+                        case "Stomper":
+                            var attackTime = 0f;
+                            var impactTime = 0f;
+                            var damageDistance = 0f;
+                            var damageOffset = 0f;
+                            foreach (XmlAttribute behaviorData in behavior.Attributes)
+                            {
+                                switch (behaviorData.Name)
+                                {
+                                    case "attackTime":
+                                        attackTime = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, attackTime);
+                                        continue;
+                                    case "impactTime":
+                                        impactTime = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, impactTime);
+                                        continue;
+                                    case "damageDistance":
+                                        damageDistance = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, damageDistance);
+                                        continue;
+                                    case "damageOffset":
+                                        damageOffset = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, damageOffset);
                                         continue;
                                 }
                             }

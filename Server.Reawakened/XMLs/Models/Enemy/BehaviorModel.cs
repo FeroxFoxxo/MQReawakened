@@ -48,6 +48,6 @@ public class BehaviorModel(Dictionary<string, BehaviorDataModel> behaviorData, D
             }
         }
 
-        return 0;
+        return property.Equals("ProjectilePrefabName") ? "COL_PRJ_DamageProjectile" : 0;
     }
 }

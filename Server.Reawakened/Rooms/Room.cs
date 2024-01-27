@@ -117,14 +117,14 @@ public class Room : Timer
                         Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, component));
                         break;
                     case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
-                        //Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));
                         break;
                     case string pincer when pincer.Contains(config.EnemyNameSearch[9]):
                         Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component));
                         break;
-                        //case string pincer when pincer.Contains(config.EnemyNameSearch[9]):
-                        //    Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component));
-                        //    break;
+                    case string stomper when stomper.Contains(config.EnemyNameSearch[10]):
+                        Enemies.Add(component.Id, new EnemyStomper(this, component.Id, component));
+                        break;
                 }
             }
             if (component.Name == config.BreakableComponentName)
