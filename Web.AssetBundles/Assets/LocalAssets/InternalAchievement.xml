@@ -2588,7 +2588,7 @@
                 <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Talk to Frostbeard in Winter Wonder Maze" type="Talkto" value="" goal="1" visible="true" />
+                <Condition id="1" title="Talk to Frostbeard in Winter Wonder Maze" type="Talkto" value="NPC_EVT_XmasYeti01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="322" title="Unknown Achievement 322" description="Unknown Description. Hint: the icon is named Exploring_ScaryFun!" iconName="Exploring_ScaryFun" points="1" sortOrder="62" repeatable="false">
