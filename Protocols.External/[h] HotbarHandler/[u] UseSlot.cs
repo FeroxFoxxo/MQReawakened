@@ -161,10 +161,10 @@ public class UseSlot : ExternalProtocol
 
     private int GetDamageType(ItemDescription usedItem)
     {
-        var damage = 0;
+        var damage = ServerRConfig.DefaultDamage;
         if (usedItem.ItemEffects.Count == 0)
         {
-            Logger.LogWarning("Item ({usedItemName}) has 0 ItemEffects! Are you sure this item was set up correctly?", usedItem.PrefabName);
+            Logger.LogWarning("Item ({usedItemName}) has 0 ItemEffects! Are you sure this item was set up correctly?", usedItem.ItemName);
             return damage;
         }
 
@@ -172,15 +172,23 @@ public class UseSlot : ExternalProtocol
         {
             switch (effect.Type)
             {
+                case ItemEffectType.BluntDamage:
                 case ItemEffectType.FireDamage:
                 case ItemEffectType.PoisonDamage:
                 case ItemEffectType.IceDamage:
                 case ItemEffectType.AirDamage:
+                case ItemEffectType.EarthDamage:
+                case ItemEffectType.WaterDamage:
+                case ItemEffectType.LightningDamage:
+                case ItemEffectType.StompDamage:
+                case ItemEffectType.ArmorPiercingDamage:
                     damage = effect.Value;
                     break;
                 default:
                     break;
             }
+
+            Logger.LogInformation("Item ({usedItemName}) with ({damageType}) has been used!", usedItem.ItemName, effect.Type);
         }
         return damage;
     }
@@ -247,14 +255,11 @@ public class UseSlot : ExternalProtocol
         var hitboxWidth = 3f;
         var hitboxHeight = 4f;
 
-        if (!Player.TempData.OnGround)
-            hitboxHeight = 4.5f;
-
         var meleeHitbox = new BaseCollider(meleeId, Player.TempData.Position, hitboxWidth, hitboxHeight, planeName, Player.Room);
+        var weaponDamage = GetDamageType(usedItem);
 
         foreach (var obj in Player.Room.Planes[planeName].GameObjects.Values)
         {
-
             var objCollider = new BaseCollider(obj.ObjectInfo.ObjectId, obj.ObjectInfo.Position,
                 obj.ObjectInfo.Rectangle.Width, obj.ObjectInfo.Rectangle.Height, planeName, Player.Room);
 
@@ -271,23 +276,17 @@ public class UseSlot : ExternalProtocol
                     continue;
             }
 
-            var weaponDamage = GetDamageType(usedItem);
-
             var isColliding = meleeHitbox.CheckObjectCollision(objCollider);
 
             if (isColliding)
-            {
                 if (Player.Room.Entities.TryGetValue(obj.ObjectInfo.ObjectId, out var entityComponents))
                     foreach (var component in entityComponents)
                         if (component is TriggerCoopControllerComp triggerCoopEntity)
                             triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
                         else if (component is BreakableEventControllerComp breakableObjEntity)
                             breakableObjEntity.Destroy(Player);
-                        //else if (component is InterObjStatusComp enemyEntity)
-                        //    enemyEntity.SendDamageEvent(Player, weaponDamage);
-                        else if (component is AIStatePatrolComp enemy)
-                            enemy.SendDamageEvent(Player, weaponDamage);
-            }
+                        else if (component is InterObjStatusComp enemyEntity)
+                            enemyEntity.SendDamageEvent(Player, weaponDamage);
 
             var objectId = obj.ObjectInfo.ObjectId;
             var prefabName = obj.ObjectInfo.PrefabName;

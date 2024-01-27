@@ -17,6 +17,10 @@ public class ServerRConfig : IRConfig
     public int ReservedNameCount { get; }
     public int MaxCharacterCount { get; }
     public int HealingStaff { get; }
+    public double HealingStaffHealValue { get; }
+    public int DefaultDamage { get; }
+
+    public Dictionary<bool, string> IsBackPlane { get; }
 
     public int MaxLevel { get; }
 
@@ -152,6 +156,11 @@ public class ServerRConfig : IRConfig
         };
 
         Is2014Client = false;
+        IsBackPlane = new Dictionary<bool, string>()
+        {
+            { true, "Plane1" },
+            { false, "Plane0" }
+        };
 
         MaxLevel = 65;
         HealAmount = 100000;
@@ -163,5 +172,7 @@ public class ServerRConfig : IRConfig
         MaximumEntitiesToReturnLog = 15;
 
         HealingStaff = 396;
+        HealingStaffHealValue = 3.527f;
+        DefaultDamage = 0;
     }
 }

@@ -154,7 +154,7 @@ public class UseItem : ExternalProtocol
                         PrefabName = prefabName,
                         Component = component,
                         ObjectId = objectId,
-                        Damage = GetDamageType(usedItem)
+                        Damage = GetDamageType(dropData.UsedItem)
                     };
 
                     TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2850), TimeSpan.Zero, 1);
