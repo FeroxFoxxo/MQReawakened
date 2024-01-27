@@ -13,11 +13,10 @@ using System.Xml.Linq;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
+public class EnemyDragon(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
 {
 
     private float _behaviorEndTime;
-    private float _initialDirection;
 
     public override void Initialize()
     {
@@ -33,8 +32,6 @@ public class EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) :
         EnemyGlobalProps.Global_ShootOffsetX = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetX"));
         EnemyGlobalProps.Global_ShootOffsetY = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetY"));
         EnemyGlobalProps.Global_ShootingProjectilePrefabName = BehaviorList.GetGlobalProperty("ProjectilePrefabName").ToString();
-
-        AiData.Intern_Dir = 1;
 
         // Address magic numbers when we get to adding enemy effect mods
         Room.SendSyncEvent(AIInit(1, 1, 1));
@@ -84,7 +81,7 @@ public class EnemyOrchid(Room room, string entityId, BaseComponent baseEntity) :
 
         if (AiData.Intern_FireProjectile)
         {
-            Room.SendSyncEvent(SyncBuilder.AILaunchItem(Entity, Position.x + EnemyGlobalProps.Global_ShootOffsetX, Position.y + EnemyGlobalProps.Global_ShootOffsetY, Position.z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, 0, 0));
+            Room.SendSyncEvent(SyncBuilder.AILaunchItem(Entity, Position.x + EnemyGlobalProps.Global_ShootOffsetX*AiData.Intern_Dir, Position.y + EnemyGlobalProps.Global_ShootOffsetY, Position.z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, 0, 0));
 
             AiData.Intern_FireProjectile = false;
         }

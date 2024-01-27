@@ -116,6 +116,9 @@ public class Room : Timer
                     case string crawler when crawler.Contains(config.EnemyNameSearch[5]):
                         Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, component));
                         break;
+                    case string dragon when dragon.Contains(config.EnemyNameSearch[6]):
+                        Enemies.Add(component.Id, new EnemyDragon(this, component.Id, component));
+                        break;
                     case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
                         Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));
                         break;

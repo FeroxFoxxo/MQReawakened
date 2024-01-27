@@ -92,7 +92,7 @@ public class EnemyBird(Room room, string entityId, BaseComponent baseEntity) : E
     {
         foreach (var player in Room.Players)
         {
-            if (PlayerInRange(player.Value.TempData.Position))
+            if (PlayerInRange(player.Value.TempData.Position, false))
             {
                 Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
                     player.Value.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));

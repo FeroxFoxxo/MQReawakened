@@ -282,11 +282,11 @@ public abstract class Enemy : IDestructible
     {
     }
 
-    public bool PlayerInRange(Vector3Model pos)
+    public bool PlayerInRange(Vector3Model pos, bool limitedByPatrolLine)
     {
         if (AiData.Intern_Dir < 0)
         {
-            if (Generic.Patrol_DistanceX <= 0)
+            if (!limitedByPatrolLine)
             {
                 return AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
@@ -299,7 +299,7 @@ public abstract class Enemy : IDestructible
         }
         else if (AiData.Intern_Dir >= 0)
         {
-            if (Generic.Patrol_DistanceX <= 0)
+            if (!limitedByPatrolLine)
             {
                 return AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&

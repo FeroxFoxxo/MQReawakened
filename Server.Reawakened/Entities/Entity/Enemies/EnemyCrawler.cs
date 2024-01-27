@@ -98,7 +98,7 @@ public class EnemyCrawler(Room room, string entityId, BaseComponent baseEntity) 
     {
         foreach (var player in Room.Players)
         {
-            if (PlayerInRange(player.Value.TempData.Position))
+            if (PlayerInRange(player.Value.TempData.Position, true))
             {
                 Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
                     Position.y, Generic.Patrol_ForceDirectionX, false));
