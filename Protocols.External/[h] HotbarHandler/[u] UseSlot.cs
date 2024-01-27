@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.AIStates;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Enums;
@@ -16,18 +15,18 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using System.ComponentModel;
-using Thrift.Protocol;
-using UnityEngine;
+using Server.Reawakened.XMLs.Enums;
+
 namespace Protocols.External._h__HotbarHandler;
 public class UseSlot : ExternalProtocol
 {
     public override string ProtocolName => "hu";
+
     public ItemCatalog ItemCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
+
     public override void Run(string[] message)
     {
         var hotbarSlotId = int.Parse(message[5]);
@@ -71,11 +70,13 @@ public class UseSlot : ExternalProtocol
                 break;
         }
     }
+
     private void HandlePet(ItemDescription usedItem)
     {
         Player.SendXt("ZE", Player.UserId, usedItem.ItemId, 1);
         Player.Character.Data.PetItemId = usedItem.ItemId;
     }
+
     private void HandleRelic(ItemDescription usedItem) //Needs rework.
     {
         StatusEffect_SyncEvent itemEffect = null;
@@ -84,6 +85,7 @@ public class UseSlot : ExternalProtocol
                     (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
         Player.SendSyncEventToPlayer(itemEffect);
     }
+
     private void HandleDrop(ItemDescription usedItem, Vector3Model position, int direction)
     {
         var isLeft = direction > 0;
@@ -104,6 +106,7 @@ public class UseSlot : ExternalProtocol
         public ItemDescription UsedItem { get; set; }
         public Vector3Model Position { get; set; }
     }
+
     private void DropItem(object data)
     {
         var dropData = (DroppedItemData)data;
@@ -132,6 +135,7 @@ public class UseSlot : ExternalProtocol
             }
         }
     }
+
     private int GetDamageType(ItemDescription usedItem)
     {
         var damage = ServerRConfig.DefaultDamage;
@@ -163,6 +167,7 @@ public class UseSlot : ExternalProtocol
         }
         return damage;
     }
+
     private class BombData()
     {
         public string PrefabName { get; set; }
@@ -170,6 +175,7 @@ public class UseSlot : ExternalProtocol
         public BaseComponent Component { get; set; }
         public int Damage { get; set; }
     }
+
     private void ExplodeBomb(object data)
     {
         var bData = (BombData)data;
@@ -179,6 +185,7 @@ public class UseSlot : ExternalProtocol
         else if (bData.Component is InterObjStatusComp enemyEntity)
             enemyEntity.SendDamageEvent(Player, bData.Damage);
     }
+
     private void HandleConsumable(ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, int hotbarSlotId, ILogger<PlayerStatus> logger)
     {
         Player.HandleItemEffect(usedItem, timerThread, serverRConfig, logger);
@@ -188,8 +195,22 @@ public class UseSlot : ExternalProtocol
             ItemFilterCategory.Pets)
             removeFromHotbar = false;
         if (removeFromHotbar)
+        {
+            if (usedItem.ItemActionType == ItemActionType.Eat)
+            {
+                Player.CheckAchievement(AchConditionType.Consumable, string.Empty, Logger);
+                Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, Logger);
+            } 
+            else if (usedItem.ItemActionType == ItemActionType.Drink)
+            {
+                Player.CheckAchievement(AchConditionType.Drink, string.Empty, Logger);
+                Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, Logger);
+            }
+
             RemoveFromHotbar(Player.Character, usedItem, hotbarSlotId);
+        }
     }
+
     private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
         var rand = new System.Random();
@@ -204,7 +225,7 @@ public class UseSlot : ExternalProtocol
     {
         var planeName = position.Z < 10 ? ServerRConfig.IsBackPlane[false] : ServerRConfig.IsBackPlane[true];
 
-        var rand = new System.Random();
+        var rand = new Random();
         var meleeId = Math.Abs(rand.Next());
         var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
             position.X, position.Y, position.Z, direction, 1, 1, meleeId, usedItem.PrefabName);
@@ -213,11 +234,16 @@ public class UseSlot : ExternalProtocol
         var hitboxHeight = 4f;
         var meleeHitbox = new BaseCollider(meleeId, Player.TempData.Position, hitboxWidth, hitboxHeight, planeName, Player.Room);
         var weaponDamage = GetDamageType(usedItem);
+
         foreach (var obj in Player.Room.Planes[planeName].GameObjects.Values)
         {
-            var objCollider = new BaseCollider(obj.ObjectInfo.ObjectId, obj.ObjectInfo.Position,
+            var objectId = obj.ObjectInfo.ObjectId;
+            var prefabName = obj.ObjectInfo.PrefabName;
+
+            var objCollider = new BaseCollider(objectId, obj.ObjectInfo.Position,
                 obj.ObjectInfo.Rectangle.Width, obj.ObjectInfo.Rectangle.Height, planeName, Player.Room);
             var isLeft = direction > 0;
+
             if (isLeft)
             {
                 if (obj.ObjectInfo.Position.X < position.X)
@@ -228,7 +254,9 @@ public class UseSlot : ExternalProtocol
                 if (obj.ObjectInfo.Position.X > position.X)
                     continue;
             }
+
             var isColliding = meleeHitbox.CheckObjectCollision(objCollider);
+
             if (isColliding)
                 if (Player.Room.Entities.TryGetValue(obj.ObjectInfo.ObjectId, out var entityComponents))
                     foreach (var component in entityComponents)
@@ -237,11 +265,16 @@ public class UseSlot : ExternalProtocol
                         else if (component is BreakableEventControllerComp breakableObjEntity)
                             breakableObjEntity.Destroy(Player);
                         else if (component is InterObjStatusComp enemyEntity)
+                        {
+                            Player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
+                            Player.CheckAchievement(AchConditionType.DefeatEnemy, prefabName, Logger);
+                            Player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, Player.Room.LevelInfo.Name, Logger);
+
                             enemyEntity.SendDamageEvent(Player, weaponDamage);
-            var objectId = obj.ObjectInfo.ObjectId;
-            var prefabName = obj.ObjectInfo.PrefabName;
+                        }
         }
     }
+
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item, int hotbarSlotId)
     {
         character.Data.Inventory.Items[item.ItemId].Count--;
