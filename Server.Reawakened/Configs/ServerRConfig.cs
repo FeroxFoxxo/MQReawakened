@@ -158,8 +158,8 @@ public class ServerRConfig : IRConfig
         Is2014Client = false;
         IsBackPlane = new Dictionary<bool, string>()
         {
-            { true, "Plane0" },
-            { false, "Plane1" }
+            { true, "Plane1" },
+            { false, "Plane0" }
         };
 
         MaxLevel = 65;
