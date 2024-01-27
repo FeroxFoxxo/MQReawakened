@@ -1,5 +1,7 @@
 using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Extensions;
+using Server.Base.Core.Extensions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
@@ -17,6 +19,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 using System.ComponentModel;
 using Thrift.Protocol;
 using UnityEngine;
@@ -96,6 +99,31 @@ public class UseSlot : ExternalProtocol
                     (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
 
         Player.SendSyncEventToPlayer(itemEffect);
+    }
+    
+    private void HandleDrink(ItemDescription usedItem)
+    {
+        StatusEffect_SyncEvent itemEffect = null;
+
+        foreach (var effect in usedItem.ItemEffects)
+            itemEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                    (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
+
+        Player.SendSyncEventToPlayer(itemEffect);
+
+        if (usedItem != null)
+        {
+            Player.CheckAchievement(AchConditionType.Drink, string.Empty, Logger);
+            Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, Logger);
+        }
+
+        foreach (var effect in usedItem.ItemEffects)
+            if (effect.TypeId == (int)ItemEffectType.Healing)
+            {
+                var effectType = (ItemEffectType) effect.TypeId;
+                Player.HealCharacter(usedItem, TimerThread, ServerRConfig, effectType);
+                Logger.LogInformation("Used healing item {ItemName} of effect typeID: {TypeID}", usedItem.ItemName, usedItem.ItemEffects.FirstOrDefault().TypeId);
+            }
     }
 
     private void HandleDrop(ItemDescription usedItem, Vector3Model position, int direction)
@@ -217,6 +245,12 @@ public class UseSlot : ExternalProtocol
     {
         Player.HandleItemEffect(usedItem, timerThread, serverRConfig, logger);
 
+        if (usedItem != null)
+        {
+            Player.CheckAchievement(AchConditionType.Consumable, string.Empty, Logger);
+            Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, Logger);
+        }
+
         var removeFromHotbar = true;
 
         if (usedItem.InventoryCategoryID is
@@ -290,6 +324,21 @@ public class UseSlot : ExternalProtocol
 
             var objectId = obj.ObjectInfo.ObjectId;
             var prefabName = obj.ObjectInfo.PrefabName;
+
+            if (Player.Room.Entities.TryGetValue(objectId, out var entityComponents))
+                foreach (var component in entityComponents)
+                    if (component is TriggerCoopControllerComp triggerCoopEntity)
+                        triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
+                    else if (component is BreakableEventControllerComp breakableObjEntity)
+                        breakableObjEntity.Destroy(Player);
+                    else if (component is InterObjStatusComp enemyEntity)
+                    {
+                        Player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
+                        Player.CheckAchievement(AchConditionType.DefeatEnemy, prefabName, Logger);
+                        Player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, Player.Room.LevelInfo.Name, Logger);
+
+                        enemyEntity.SendDamageEvent(Player);
+                    }
         }
     }
 

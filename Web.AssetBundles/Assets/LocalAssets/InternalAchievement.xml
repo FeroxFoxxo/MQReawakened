@@ -23,7 +23,7 @@
                 <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Explore 5 Different Trails in a Day" type="Invalid" value="" goal="5" visible="true" />
+                <Condition id="1" title="Explore 5 Different Trails in a Day" type="ExploreTrail" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="4" title="Daily Dynamo" description="Complete 10 Quests" iconName="Daily_EveryDayHustlin" points="10" sortOrder="4" repeatable="true">
@@ -31,7 +31,7 @@
                 <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete 10 Quests" type="Invalid" value="" goal="10" visible="true" />
+                <Condition id="1" title="Complete 10 Quests" type="CompleteQuest" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="5" title="Unknown Achievement 5" description="Unknown Description. Hint: the icon is named Daily_DailyDaillies!" iconName="Daily_DailyDaillies" points="1" sortOrder="5" repeatable="true">
