@@ -58,4 +58,9 @@ public class BaseCollider
         Position.x < collided.ColliderBox.X + collided.ColliderBox.Width && collided.ColliderBox.X < Position.x + ColliderBox.Width &&
         Position.y < collided.ColliderBox.Y + collided.ColliderBox.Height && collided.ColliderBox.Y < Position.y + ColliderBox.Height &&
         Plane == collided.Plane;
+
+    public bool CheckObjectCollision(BaseCollider collided) => 
+        collided.ColliderBox.X < ColliderBox.X + ColliderBox.Width && collided.ColliderBox.X > ColliderBox.X - ColliderBox.Width &&
+        collided.ColliderBox.Y > ColliderBox.Y - ColliderBox.Height && collided.ColliderBox.Y < ColliderBox.Y + ColliderBox.Height &&
+        collided.Plane == Plane;
 }

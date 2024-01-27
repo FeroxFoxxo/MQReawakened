@@ -17,7 +17,7 @@ public class StartPlayRoom : ExternalProtocol
         var tribe = Player.Room.LevelInfo.Tribe;
         Player.DiscoverTribe(tribe);
 
-        if (Player.TempData.NextRespawnPosition != null)
-            Player.TempData.NextRespawnPosition = null;
+        if (Player.TempData.LastCheckpoint != null)
+            Player.TempData.LastCheckpoint = null;
     }
 }

@@ -15,7 +15,6 @@
         <Folder Include="[x] ItemHandler\" />
         <Folder Include="[b] LocalizationHandler\" />
         <Folder Include="[j] LootHandler\" />
-        <Folder Include="[M] MinigameHandler\" />
         <Folder Include="[w] WarningMessageHandler\" />
         <Folder Include="[r] RoomHandler\" />
         <Folder Include="[o] ReportMessageHandler\" />

@@ -3,6 +3,8 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
+using System;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -13,7 +15,7 @@ public static class PlayerHealExtensions
         switch (effectType)
         {
             case ItemEffectType.Healing:
-                HealOnce(player, usedItem, serverRConfig, false);
+                HealOnce(player, usedItem, serverRConfig);
                 break;
             case ItemEffectType.Regeneration:
                 HealOverTimeType(player, usedItem, timerThread, serverRConfig);
@@ -21,9 +23,12 @@ public static class PlayerHealExtensions
         }
     }
 
-    public static void HealOnce(Player player, ItemDescription usedItem, ServerRConfig serverRConfig, bool isRejuvenationPotion)
+    public static void HealOnce(Player player, ItemDescription usedItem, ServerRConfig serverRConfig)
     {
-        var healValue = isRejuvenationPotion ? usedItem.ItemEffects[1].Value : usedItem.ItemEffects.FirstOrDefault().Value; //Rejuvenation Potion's initial heal value is stored as the second element in the ItemEffects list.
+        if (player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
+            return;
+
+        var healValue = usedItem.ItemEffects.Count > 1 ? usedItem.ItemEffects.LastOrDefault().Value : usedItem.ItemEffects.FirstOrDefault().Value; ; //Rejuvenation Potion's initial heal value is stored as the second element in the ItemEffects list.
 
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities) //If healing staff, convert heal value.
             healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealAmount);
@@ -37,28 +42,12 @@ public static class PlayerHealExtensions
                 player.Character.Data.CurrentLife += healValue, player.Character.Data.MaxLife, string.Empty));
     }
 
-    private static void HealOverTimeType(Player player, ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig)
-    {
-        switch (usedItem.SubCategoryId)
-        {
-            case ItemSubCategory.Usable:
-                HealOverTime(player, usedItem, timerThread);
-                break;
-            case ItemSubCategory.Potion:
-                HealOnce(player, usedItem, serverRConfig, true);
-
-                HealOverTime(player, usedItem, timerThread);
-                break;
-            case ItemSubCategory.Defensive:
-                HealOnce(player, usedItem, serverRConfig, false);
-                break;
-        }
-    }
-
     public static void HealOverTime(Player player, ItemDescription usedItem, TimerThread timerThread)
     {
-        var effect = usedItem.ItemEffects.FirstOrDefault();
+        if (player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
+            return;
 
+        var effect = usedItem.ItemEffects.FirstOrDefault();
         if (effect != null)
         {
             var healItemData = new ItemHealOverTimeData(player, effect.Value, effect.Duration / 3);
@@ -67,11 +56,37 @@ public static class PlayerHealExtensions
         }
     }
 
-    private class ItemHealOverTimeData(Player player, int overTimeHealValue, int totalTicks)
+    private static void HealOverTimeType(Player player, ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig)
     {
-        public Player Player { get; } = player;
-        public int OverTimeHealValue { get; } = overTimeHealValue;
-        public int TotalTicks { get; } = totalTicks;
+        switch (usedItem.SubCategoryId)
+        {
+            case ItemSubCategory.Usable:
+                HealOverTime(player, usedItem, timerThread);
+                break;
+            case ItemSubCategory.Potion:
+                if (usedItem.ItemEffects.Count > 1)
+                    HealOnce(player, usedItem, serverRConfig);
+
+                HealOverTime(player, usedItem, timerThread);
+                break;
+            case ItemSubCategory.Defensive:
+                HealOnce(player, usedItem, serverRConfig);
+                break;
+        }
+    }
+
+    private class ItemHealOverTimeData
+    {
+        public ItemHealOverTimeData(Player player, int overTimeHealValue, int totalTicks)
+        {
+            Player = player;
+            OverTimeHealValue = overTimeHealValue;
+            TotalTicks = totalTicks;
+        }
+
+        public Player Player { get; }
+        public int OverTimeHealValue { get; }
+        public int TotalTicks { get; }
     }
 
     private static void OverTimeHealTicks(object itemData)
@@ -81,8 +96,8 @@ public static class PlayerHealExtensions
             var player = itemHealData.Player;
             var tickHealValue = itemHealData.OverTimeHealValue / itemHealData.TotalTicks;
 
-             player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-                player.Character.Data.CurrentLife += tickHealValue, player.Character.Data.MaxLife, string.Empty));
+            player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+               player.Character.Data.CurrentLife += tickHealValue, player.Character.Data.MaxLife, string.Empty));
         }
     }
 }
