@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Server.Base.Core.Abstractions;
@@ -24,7 +26,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 namespace Web.Launcher.Services;
 
 public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole _console,
-    World world, PlayerEventSink playerEventSink, RandomKeyGenerator generator,
+    World world, PlayerEventSink playerEventSink, RandomKeyGenerator generator, IServer server,
     LauncherRConfig lConfig, LauncherRwConfig lWConfig, InternalRwConfig ilWConfig, ServerRConfig sConfig) : IService
 {
     private string _directory;
@@ -32,6 +34,7 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
     private Process _game;
 
     public PackageInformation CurrentVersion { get; private set; }
+    public string ServerAddress { get; private set; }
 
     public void Initialize()
     {
@@ -55,6 +58,8 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
     private void AppStarted()
     {
         _appStart = true;
+        ServerAddress = server.Features.Get<IServerAddressesFeature>().Addresses.First();
+        logger.LogInformation("Set listening URL to: {Url}", ServerAddress);
         RunGame();
     }
 
@@ -210,7 +215,7 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
         logger.LogInformation("Writing Build Config To {Place}", config);
 
         var newDoc = new XDocument();
-        var root = new XElement("MQBuildConfg");
+        var root = new XElement("MQBuildConfig");
 
         foreach (var item in GetConfigValues(headerFolder))
         {
@@ -231,23 +236,23 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
 
     private Dictionary<string, string> GetConfigValues(string header) => new()
     {
-        { $"{header}.unity.url.membership", $"{lConfig.ServerBaseUrl1}/Membership" },
-        { $"{header}.unity.cache.domain", $"{lConfig.ServerBaseUrl1}/Cache" },
+        { $"{header}.unity.url.membership", $"{ServerAddress}/Membership" },
+        { $"{header}.unity.cache.domain", $"{ServerAddress}/Cache" },
         { $"{header}.unity.cache.license", $"{lConfig.CacheLicense}" },
         { $"{header}.unity.cache.size", lConfig.CacheSize.ToString() },
         { $"{header}.unity.cache.expiration", lConfig.CacheExpiration.ToString() },
         { "game.cacheversion", lConfig.CacheVersion.ToString() },
-        { $"{header}.unity.url.crisp.host", $"{lConfig.ServerBaseUrl1}/Chat/" },
+        { $"{header}.unity.url.crisp.host", $"{ServerAddress}/Chat/" },
         { "asset.log", lConfig.LogAssets ? "true" : "false" },
         { "asset.disableversioning", lConfig.DisableVersions ? "true" : "false" },
-        { "asset.jboss", $"{lConfig.ServerBaseUrl1}/Apps{(sConfig.Is2014Client ? "/" : string.Empty)}" },
-        { "asset.bundle", $"{lConfig.ServerBaseUrl1}/Client/Bundles" },
-        { "asset.audio", $"{lConfig.ServerBaseUrl1}/Client/Audio" },
-        { "logout.url", $"{lConfig.ServerBaseUrl1}/Logout" },
-        { "contactus.url", $"{lConfig.ServerBaseUrl1}/Contact" },
-        { "tools.urlbase", $"{lConfig.ServerBaseUrl1}/Tools/" },
-        { "leaderboard.domain", $"{lConfig.ServerBaseUrl1}/Apps/" },
-        { "analytics.baseurl", $"{lConfig.ServerBaseUrl1}/Analytics/" },
+        { "asset.jboss", $"{ServerAddress}/Apps{(sConfig.Is2014Client ? "/" : string.Empty)}" },
+        { "asset.bundle", $"{ServerAddress}/Client/Bundles" },
+        { "asset.audio", $"{ServerAddress}/Client/Audio" },
+        { "logout.url", $"{ServerAddress}/Logout" },
+        { "contactus.url", $"{ServerAddress}/Contact" },
+        { "tools.urlbase", $"{ServerAddress}/Tools/" },
+        { "leaderboard.domain", $"{ServerAddress}/Apps/" },
+        { "analytics.baseurl", $"{ServerAddress}/Analytics/" },
         { "analytics.enabled", lConfig.AnalyticsEnabled ? "true" : "false" },
         { "analytics.apikey", lWConfig.AnalyticsApiKey },
         { "project.name", lConfig.ProjectName }
