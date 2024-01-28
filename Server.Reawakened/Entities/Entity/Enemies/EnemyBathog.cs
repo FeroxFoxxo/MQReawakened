@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
+public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
 {
 
     private float _behaviorEndTime;
@@ -34,6 +34,7 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
         EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
         EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
         EnemyGlobalProps.Aggro_AttackBeyondPatrolLine = Convert.ToSingle(BehaviorList.GetGlobalProperty("AttackBeyondPatrolLine"));
+        EnemyGlobalProps.Global_ShootingProjectilePrefabName = BehaviorList.GetGlobalProperty("ProjectilePrefabName").ToString();
 
         AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
 
@@ -107,7 +108,7 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
-        
+
             AiBehavior = ChangeBehavior("Patrol");
         }
     }

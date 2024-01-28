@@ -30,7 +30,6 @@ public abstract class Enemy : IDestructible
     public Room Room;
     public string Id;
 
-    public Vector3 SpawnPosition;
     public Vector3 Position;
     public Rect DetectionRange;
     public EnemyCollider Hitbox;
@@ -82,7 +81,6 @@ public abstract class Enemy : IDestructible
         Position = new Vector3(Entity.Position.X, Entity.Position.Y, Entity.Position.Z);
         if (ParentPlane == "Plane1")
             Position.z = 20;
-        SpawnPosition = Position;
 
         //Hitbox Info
         _negativeHeight = 0;
@@ -114,10 +112,10 @@ public abstract class Enemy : IDestructible
         //AIProcessData assignment, used for AI_Behavior
         AiData = new AIProcessData();
         AiData.SetStats(EnemyGlobalProps);
-        AiData.Intern_SpawnPosX = SpawnPosition.x;
-        AiData.Intern_SpawnPosY = SpawnPosition.y;
-        AiData.Sync_PosX = SpawnPosition.x;
-        AiData.Sync_PosY = SpawnPosition.y;
+        AiData.Intern_SpawnPosX = Position.x;
+        AiData.Intern_SpawnPosY = Position.y;
+        AiData.Sync_PosX = Position.x;
+        AiData.Sync_PosY = Position.y;
         AiData.SyncInit_Dir = Generic.Patrol_ForceDirectionX;
         AiData.SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio;
 
@@ -160,10 +158,8 @@ public abstract class Enemy : IDestructible
             case AIBehavior_Stomper:
                 HandleStomper();
                 break;
-            //AIBehavior_Idle
             //AIBehavior_Stinger
             //AIBehavior_Spike
-            //AIBehavior_GoTo
         }
 
         if (Id.Equals("14912"))
@@ -240,8 +236,8 @@ public abstract class Enemy : IDestructible
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "moveBeyondTargetDistance")),
                     Convert.ToBoolean(BehaviorList.GetBehaviorStat("Aggro", "stayOnPatrolPath")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "attackBeyondPatrolLine")),
-                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "detectionHeightUpY")),
-                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "detectionHeightDownY"))
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "detectionRangeUpY")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "detectionRangeDownY"))
                     );
                 break;
 
@@ -252,6 +248,13 @@ public abstract class Enemy : IDestructible
                     Convert.ToBoolean(BehaviorList.GetBehaviorStat("LookAround", "snapOnGround"))
                     );
                 break;
+
+            case "ComeBack":
+                AiBehavior = new AIBehavior_ComeBack(
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("ComeBack", "speed"))
+                    );
+                AiBehavior.Start(ref AiData, Room.Time, [Position.x.ToString(), AiData.Intern_SpawnPosY.ToString()]);
+                return AiBehavior;
 
             case "Shooting":
                 AiBehavior = new AIBehavior_Shooting(
@@ -329,7 +332,16 @@ public abstract class Enemy : IDestructible
 
     public virtual void HandleAggro() { }
 
-    public virtual void HandleShooting() { }
+    public virtual void HandleShooting() 
+    {
+        if (AiData.Intern_FireProjectile)
+        {
+            // Magic numbers here are temporary
+            Room.SendSyncEvent(SyncBuilder.AILaunchItem(Entity, Position.x + EnemyGlobalProps.Global_ShootOffsetX, Position.y + EnemyGlobalProps.Global_ShootOffsetY, Position.z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, 0, 0));
+
+            AiData.Intern_FireProjectile = false;
+        }
+    }
 
     public virtual void HandleProjectile() { }
 

@@ -25,6 +25,7 @@ public class EnemyBird(Room room, string entityId, BaseComponent baseEntity) : E
         BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName(Entity.PrefabName);
 
         MinBehaviorTime = Convert.ToSingle(BehaviorList.GetGlobalProperty("MinBehaviorTime"));
+        EnemyGlobalProps.Global_DetectionLimitedByPatrolLine = Convert.ToBoolean(BehaviorList.GetGlobalProperty("DetectionLimitedByPatrolLine"));
         EnemyGlobalProps.Global_FrontDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeX"));
         EnemyGlobalProps.Global_FrontDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeUpY"));
         EnemyGlobalProps.Global_FrontDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeDownY"));
@@ -78,13 +79,6 @@ public class EnemyBird(Room room, string entityId, BaseComponent baseEntity) : E
             AiBehavior = ChangeBehavior("LookAround");
             _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
         }
-
-        if (AiData.Intern_FireProjectile)
-        {
-            Room.SendSyncEvent(SyncBuilder.AILaunchItem(Entity, Position.x + EnemyGlobalProps.Global_ShootOffsetX * AiData.Intern_Dir, Position.y + EnemyGlobalProps.Global_ShootOffsetY, Position.z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, 0, 0));
-
-            AiData.Intern_FireProjectile = false;
-        }
     }
 
     public override void HandleLookAround()
@@ -103,7 +97,7 @@ public class EnemyBird(Room room, string entityId, BaseComponent baseEntity) : E
     {
         foreach (var player in Room.Players)
         {
-            if (PlayerInRange(player.Value.TempData.Position, false))
+            if (PlayerInRange(player.Value.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
                 Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
                     player.Value.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));

@@ -177,6 +177,21 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                             }
                             break;
 
+                        // ComeBack Behavior
+                        case "ComeBack":
+                            var comeBackSpeed = 1f;
+                            foreach (XmlAttribute behaviorData in behavior.Attributes)
+                            {
+                                switch (behaviorData.Name)
+                                {
+                                    case "speed":
+                                        comeBackSpeed = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, comeBackSpeed);
+                                        continue;
+                                }
+                            }
+                            break;
+
                         // Shooting
                         case "Shooting":
                             var nbBulletsPerRound = 1;

@@ -16,4 +16,6 @@ public class AIBaseBehavior
     public virtual float GetBehaviorRatio(ref AIProcessData aiData, float time) => 0f;
 
     public virtual void Stop(ref AIProcessData aiData) { }
+
+    public virtual bool MustDoComeback(AIProcessData aiData) => false;
 }
