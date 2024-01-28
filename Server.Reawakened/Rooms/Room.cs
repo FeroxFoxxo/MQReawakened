@@ -131,6 +131,9 @@ public class Room : Timer
                     case string stomper when stomper.Contains(config.EnemyNameSearch[10]):
                         Enemies.Add(component.Id, new EnemyStomper(this, component.Id, component));
                         break;
+                    //case string vespid when vespid.Contains(config.EnemyNameSearch[11]):
+                    //    Enemies.Add(component.Id, new EnemyVespid(this, component.Id, component));
+                    //    break;
                 }
             }
             if (component.Name == config.BreakableComponentName)

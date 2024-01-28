@@ -24,6 +24,8 @@ public class AIPropertiesCompiler
                 return CreateShooting(enemy);
             case "Stomper":
                 return CreateStomper(enemy);
+            case "Stinger":
+                return CreateStinger(enemy);
             default:
                 break;
         }
@@ -110,6 +112,21 @@ public class AIPropertiesCompiler
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Stomper", "impactTime"));
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Stomper", "damageDistance"));
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Stomper", "damageOffset"));
+
+        return sb.ToString();
+    }
+
+    public string CreateStinger(Enemy enemy)
+    {
+        var sb = new SeparatedStringBuilder(';');
+
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Stinger", "speedForward"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Stinger", "speedBackward"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Stinger", "inDurationForward"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Stinger", "attackDuration"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Stinger", "damageAttackTimeOffset"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Stinger", "inDurationBackward"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Stinger", "damageDistance"));
 
         return sb.ToString();
     }

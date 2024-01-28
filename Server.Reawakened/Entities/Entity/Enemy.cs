@@ -5,6 +5,7 @@ using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity.Utils;
 using Server.Reawakened.Entities.Stats;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
@@ -21,6 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using static System.Net.Mime.MediaTypeNames;
+using static UIBase;
 
 namespace Server.Reawakened.Entities.Entity;
 
@@ -158,8 +160,10 @@ public abstract class Enemy : IDestructible
             case AIBehavior_Stomper:
                 HandleStomper();
                 break;
-            //AIBehavior_Stinger
-            //AIBehavior_Spike
+            case AIBehavior_Stinger:
+                HandleStinger();
+                break;
+                //AIBehavior_Spike
         }
 
         //if (Id.Equals("28489"))
@@ -278,6 +282,17 @@ public abstract class Enemy : IDestructible
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Stomper", "impactTime"))
                     );
                 break;
+
+            case "Stinger":
+                AiBehavior = new AIBehavior_Stinger(
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "speedForward")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "speedBackward")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "inDurationForward")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "attackDuration")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "damageAttackTimeOffset")),
+                    Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "inDurationBackward"))
+                    );
+                break;
         }
 
         AiBehavior.Start(ref AiData, Room.Time, []);
@@ -366,6 +381,29 @@ public abstract class Enemy : IDestructible
         aiInit.EventDataList[3] = Position.y;
         aiInit.EventDataList[4] = Position.z;
         return aiInit;
+    }
+
+    public void GetInitEnemyData(Player player)
+    {
+        var aiInit = new AIInit_SyncEvent(Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ, Position.z, AiData.Intern_SpawnPosY, AiData.SyncInit_ProgressRatio,
+        Health, Status.MaxHealth, 1f, 1f, 1f, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
+        aiInit.EventDataList[2] = AiData.Intern_SpawnPosX;
+        aiInit.EventDataList[3] = AiData.Intern_SpawnPosY;
+        aiInit.EventDataList[4] = Position.z;
+        player.SendSyncEventToPlayer(aiInit);
+
+        var aiDo = new AIDo_SyncEvent(new SyncEvent(Id, SyncEvent.EventType.AIDo, Room.Time));
+        aiDo.EventDataList.Clear();
+        aiDo.EventDataList.Add(AiData.Sync_PosX);
+        aiDo.EventDataList.Add(AiData.Sync_PosY);
+        aiDo.EventDataList.Add(1f);
+        aiDo.EventDataList.Add(BehaviorList.IndexOf("Patrol"));
+        aiDo.EventDataList.Add("");
+        aiDo.EventDataList.Add(AiData.Sync_TargetPosX);
+        aiDo.EventDataList.Add(AiData.Sync_TargetPosY);
+        aiDo.EventDataList.Add(AiData.Intern_Dir);
+        aiDo.EventDataList.Add(0);
+        player.SendSyncEventToPlayer(aiDo);
     }
 
     public void Destroy(Room room, string id)

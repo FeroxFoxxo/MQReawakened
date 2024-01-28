@@ -313,6 +313,51 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                             }
                             break;
 
+                        // Stinger
+                        case "Stinger":
+                            var speedForward = 0f;
+                            var speedBackward = 0f;
+                            var inDurationForward = 0f;
+                            var attackDuration = 0f;
+                            var damageAttackTimeOffset = 0f;
+                            var inDurationBackward = 0f;
+                            var stingerDamageDistance = 0f;
+                            foreach (XmlAttribute behaviorData in behavior.Attributes)
+                            {
+                                switch (behaviorData.Name)
+                                {
+                                    case "speedForward":
+                                        speedForward = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, speedForward);
+                                        continue;
+                                    case "speedBackward":
+                                        speedForward = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, speedBackward);
+                                        continue;
+                                    case "inDurationForward":
+                                        inDurationForward = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, inDurationForward);
+                                        continue;
+                                    case "attackDuration":
+                                        attackDuration = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, attackDuration);
+                                        continue;
+                                    case "damageAttackTimeOffset":
+                                        damageAttackTimeOffset = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, damageAttackTimeOffset);
+                                        continue;
+                                    case "inDurationBackward":
+                                        inDurationBackward = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, inDurationBackward);
+                                        continue;
+                                    case "damageDistance":
+                                        stingerDamageDistance = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, stingerDamageDistance);
+                                        continue;
+                                }
+                            }
+                            break;
+
                         case "GlobalProperties":
                             foreach (XmlNode globalProperty in behavior.ChildNodes)
                             {

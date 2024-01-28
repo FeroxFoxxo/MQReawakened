@@ -203,7 +203,8 @@ public class ServerRConfig : IRConfig
             "PF_Spite_Grenadier",
             "PF_Spite_Orchid",
             "PF_Spite_Pincer",
-            "PF_Spite_Stomper"
+            "PF_Spite_Stomper",
+            "Spite_Wasp_Boss01"
         ];
 
         MaximumEntitiesToReturnLog = 15;

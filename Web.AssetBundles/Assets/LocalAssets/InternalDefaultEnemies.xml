@@ -1280,4 +1280,25 @@
             <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Miniboss"/>
         </Stomper>
     </Enemy>
+
+    <!--Vespid-->
+    <Enemy name="Spite_Wasp_Boss01">
+        <GlobalProperties>
+            <OffensiveBehavior value="Stinger"/>
+            <MinBehaviorTime value="4"/>
+            <DetectionLimitedByPatrolLine value="false"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="8"/>
+            <FrontDetectionRangeDownY value="8"/>
+            <BackDetectionRangeX value="8"/>
+            <BackDetectionRangeUpY value="8"/>
+            <BackDetectionRangeDownY value="8"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value="COL_PRJ_WaspProjectile01"/>
+        </GlobalProperties>
+        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+        <Stinger speedForward="5" speedBackward="3.333" inDurationForward="2" attackDuration="3" damageAttackTimeOffset="0.5" inDurationBackward="3" damageDistance="2">
+            <Resource type="EABIL" name="PF_EABIL_Spite_Vespid_StingerAttack"/>
+        </Stinger>
+    </Enemy>
 </InternalDefaultEnemies>
