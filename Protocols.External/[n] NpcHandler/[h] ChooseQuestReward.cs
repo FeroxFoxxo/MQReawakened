@@ -33,6 +33,10 @@ public class ChooseQuestReward : ExternalProtocol
         foreach (var item in quest.RewardItems)
             Player.AddItem(item.Key, item.Value);
 
+        Player.CheckAchievement(AchConditionType.CompleteQuest, string.Empty, Logger); // Any Quest
+        Player.CheckAchievement(AchConditionType.CompleteQuest, quest.Name, Logger); // Specific Quest by name for example EVT_SB_1_01
+        Player.CheckAchievement(AchConditionType.CompleteQuestInLevel, Player.Room.LevelInfo.Name, Logger); // Quest by Level/Trail if any exist
+
         Player.SendUpdatedInventory(false);
     }
 }

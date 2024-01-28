@@ -13,6 +13,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Enums;
 using System.Text.RegularExpressions;
 
 namespace Server.Reawakened.Chat.Services;
@@ -381,6 +382,9 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         }
 
         character.SetLevel(levelId, logger);
+
+        player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, logger);
+        player.CheckAchievement(AchConditionType.ExploreTrail, player.Room.LevelInfo.Name, logger);
 
         var tribe = levelInfo.Tribe;
 

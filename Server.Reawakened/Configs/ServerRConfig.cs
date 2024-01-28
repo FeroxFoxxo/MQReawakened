@@ -16,6 +16,12 @@ public class ServerRConfig : IRConfig
     public int PlayerCap { get; }
     public int ReservedNameCount { get; }
     public int MaxCharacterCount { get; }
+    
+    public int HealingStaff { get; }
+    public double HealingStaffHealValue { get; }
+    public int DefaultDamage { get; }
+
+    public Dictionary<bool, string> IsBackPlane { get; }
 
     public int MaxLevel { get; }
 
@@ -113,7 +119,7 @@ public class ServerRConfig : IRConfig
         [
             394,  // glider
             395,  // grappling hook
-            393,  // snowboard
+            240181867,  // snowboard
             397,  // wooden slingshot
             423,  // golden slingshot
             453,  // kernel blaster
@@ -162,6 +168,11 @@ public class ServerRConfig : IRConfig
         };
 
         Is2014Client = false;
+        IsBackPlane = new Dictionary<bool, string>()
+        {
+            { true, "Plane1" },
+            { false, "Plane0" }
+        };
 
         MaxLevel = 65;
         HealAmount = 100000;
@@ -170,7 +181,10 @@ public class ServerRConfig : IRConfig
             "PF_GLB_DoorArena01"
         ];
 
-
+        HealingStaff = 396;
+        HealingStaffHealValue = 3.527f;
+        DefaultDamage = 10;
+        
         EnemyComponentName = "EnemyController";
         BreakableComponentName = "BreakableEventController";
 

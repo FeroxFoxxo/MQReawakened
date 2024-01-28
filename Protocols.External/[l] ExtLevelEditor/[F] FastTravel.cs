@@ -2,6 +2,7 @@
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Protocols.External._l__ExtLevelEditor;
 
@@ -21,6 +22,9 @@ public class FastTravel : ExternalProtocol
         var newLevelId = WorldGraph.GetLevelFromPortal(levelId, goId);
 
         character.SetLevel(newLevelId, Logger);
+
+        Player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, Logger);
+        Player.CheckAchievement(AchConditionType.ExploreTrail, Player.Room.LevelInfo.Name, Logger);
 
         Player.SendLevelChange();
     }

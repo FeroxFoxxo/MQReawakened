@@ -7,6 +7,12 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterExtensions
 {
+    public static void DisableInvincibilityTimer(this Player player, object _)
+    {
+        if (player.TempData.Invincible)
+            player.TempData.Invincible = false;
+    }
+
     public static bool HasDiscoveredTribe(this CharacterModel characterData, TribeType tribe)
     {
         if (characterData == null) return false;

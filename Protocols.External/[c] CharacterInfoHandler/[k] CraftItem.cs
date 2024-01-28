@@ -4,6 +4,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Protocols.External._c__CharacterInfoHandler;
 
@@ -45,6 +46,11 @@ public class CraftItem : ExternalProtocol
             var ingredientItem = ItemCatalog.GetItemFromId(ingredient.ItemId);
             Player.RemoveItem(ingredientItem, ingredient.Count * amount);
         }
+
+        var itemDesc = ItemCatalog.GetItemFromId(recipe.ItemId);
+
+        if (itemDesc != null)
+            Player.CheckAchievement(AchConditionType.CraftItem, itemDesc.PrefabName, Logger);
 
         Player.SendUpdatedInventory(false);
 
