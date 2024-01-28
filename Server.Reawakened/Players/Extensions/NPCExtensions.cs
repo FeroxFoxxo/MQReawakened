@@ -52,14 +52,14 @@ public static class NpcExtensions
     public static void UpdateNpcsInLevel(this Player player)
     {
         foreach (var npc in GetNpcs(player))
-            npc.SendNpcInfo(player.Character, player.NetState);
+            npc.SendNpcInfo(player);
     }
 
     public static void UpdateNpcsInLevel(this Player player, QuestDescription quest)
     {
         if (quest != null)
-            foreach (var npc in GetNpcs(player).Where(e => e.Id == quest.QuestGiverGoId || e.Id == quest.ValidatorGoId))
-                npc.SendNpcInfo(player.Character, player.NetState);
+            foreach (var npc in GetNpcs(player).Where(e => e.Id == quest.QuestGiverGoId.ToString() || e.Id == quest.ValidatorGoId.ToString()))
+                npc.SendNpcInfo(player);
     }
 
     public static List<NPCControllerComp> GetNpcs(Player player)

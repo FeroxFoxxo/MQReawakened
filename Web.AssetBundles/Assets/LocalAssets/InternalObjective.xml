@@ -1,9 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ObjectiveCatalogs>
     <Objective prefabName="PF_Spite_Spiderling_Boss01" itemId="1555909043"/>
-    <Objective prefabName="Col_CRS_Marshmallow01" itemId="1408"/>
     <Objective prefabName="Col_BON_TribeBox01" itemId="3348"/>
     <Objective prefabName="Col_OUT_TribeBox01" itemId="3349"/>
     <Objective prefabName="Col_SHD_TribeBox01" itemId="3350"/>
     <Objective prefabName="Col_WLD_TribeBox01" itemId="457798722"/>
+    <Objective prefabName="Col_CRS_SpiderSilk02" itemId="754480462"/>
+    <Objective prefabName="Col_CRS_DeadSpiderShell" itemId="794698273" />
+    <Objective prefabName="Col_OUT_PirateInsigna02" itemId="3354" />
+    <Objective prefabName="Col_OUT_Gems01" itemId="3356" />
+    <Objective prefabName="Col_OUT_Gems02" itemId="3357" />
 </ObjectiveCatalogs>

@@ -49,6 +49,8 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("openVines", "", OpenVines));
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
+        AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
+        AddCommand(new ChatCommand("endAllArenas", "", EndAllArenas));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -85,7 +87,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
             Log(
                 $"  {config.ChatCommandStart}{command.Name.PadRight(padding)}" +
-                $"{(command.Arguments.Length > 0 ? $" - {command.Arguments}" : "")}",
+                $"{(command.Arguments.Length > 0 ? $" - {command.Arguments}" : string.Empty)}",
                 player
             );
         }
@@ -129,20 +131,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool GodMode(Player player, string[] args)
     {
-        var items = config.SingleItemKit
-            .Select(itemCatalog.GetItemFromId)
-            .ToList();
-
-        foreach (var itemId in config.StackedItemKit)
-        {
-            var stackedItem = itemCatalog.GetItemFromId(itemId);
-
-            for (var i = 0; i < config.AmountToStack; i++)
-                items.Add(stackedItem);
-        }
-
-        player.Character.AddKit(items, 1);
-        player.SendUpdatedInventory(false);
+        AddKit(player, 1);
         player.AddSlots(true);
 
         player.AddBananas(config.CashKitAmount);
@@ -164,6 +153,31 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         return true;
     }
 
+    private void AddKit(Player player, int amount)
+    {
+        var items = config.SingleItemKit
+            .Select(itemCatalog.GetItemFromId)
+            .ToList();
+
+        foreach (var itemId in config.StackedItemKit)
+        {
+            var stackedItem = itemCatalog.GetItemFromId(itemId);
+
+            if (stackedItem == null)
+            {
+                logger.LogError("Unknown item with id {itemId}", itemId);
+                continue;
+            }
+
+            for (var i = 0; i < config.AmountToStack; i++)
+                items.Add(stackedItem);
+        }
+
+        player.Character.AddKit(items, amount);
+
+        player.SendUpdatedInventory(false);
+    }
+
     private bool OpenDoors(Player player, string[] args)
     {
         foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
@@ -174,6 +188,34 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
                     continue;
 
                 triggerEntity.Trigger(true);
+            }
+        }
+
+        return true;
+    }
+
+    private bool ForceSpawners(Player player, string[] args)
+    {
+        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+        {
+            if (entityComponent is BaseSpawnerControllerComp spawner)
+            {
+                var spawn = new Spawn_SyncEvent(spawner.Id.ToString(), player.Room.Time, 1);
+
+                player.Room.SendSyncEvent(spawn);
+            }
+        }
+
+        return true;
+    }
+
+    private bool EndAllArenas(Player player, string[] args)
+    {
+        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+        {
+            if (entityComponent is TriggerArenaComp arena)
+            {
+                arena.StopArena(true);
             }
         }
 
@@ -228,7 +270,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
             hasPet = petSlot == 1;
 
-            Log($"Adding slots ({(hasPet ? "" : "no ")}pet slot)", player);
+            Log($"Adding slots ({(hasPet ? string.Empty : "no ")}pet slot)", player);
         }
 
         player.AddSlots(hasPet);
@@ -258,23 +300,9 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
                 amount = 1;
         }
 
-        var items = config.SingleItemKit
-            .Select(itemCatalog.GetItemFromId)
-            .ToList();
+        AddKit(player, amount);
 
-        foreach (var itemId in config.StackedItemKit)
-        {
-            var stackedItem = itemCatalog.GetItemFromId(itemId);
-
-            for (var i = 0; i < config.AmountToStack; i++)
-                items.Add(stackedItem);
-        }
-
-        character.AddKit(items, amount);
-
-        player.SendUpdatedInventory(false);
-
-        Log($"{character.Data.CharacterName} received {amount} item kit{(amount > 1 ? "s" : "")}!", player);
+        Log($"{character.Data.CharacterName} received {amount} item kit{(amount > 1 ? "s" : string.Empty)}!", player);
 
         return true;
     }
@@ -457,9 +485,9 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
             var distance = Math.Round(Math.Sqrt(Math.Pow(Math.Abs(x), 2) + Math.Pow(Math.Abs(y), 2)));
 
             return new Tuple<double, GameObjectModel>(distance, gameObject);
-        }).OrderBy(x => x.Item1);
+        }).OrderBy(x => x.Item1).ToList();
 
-        if (!closestGameObjects.Any())
+        if (closestGameObjects.Count == 0)
         {
             Log("No game objects found close to player!", player);
             return false;
@@ -468,6 +496,11 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         Log("Closest Game Objects:", player);
 
         var count = 0;
+
+        if (closestGameObjects.Count() > config.MaximumEntitiesToReturnLog)
+            closestGameObjects = closestGameObjects.Take(config.MaximumEntitiesToReturnLog).ToList();
+
+        closestGameObjects.Reverse();
 
         foreach (var item in closestGameObjects)
         {

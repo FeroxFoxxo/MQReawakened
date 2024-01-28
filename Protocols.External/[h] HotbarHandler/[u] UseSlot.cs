@@ -171,7 +171,7 @@ public class UseSlot : ExternalProtocol
     private class BombData()
     {
         public string PrefabName { get; set; }
-        public int ObjectId { get; set; }
+        public string ObjectId { get; set; }
         public BaseComponent Component { get; set; }
         public int Damage { get; set; }
     }
@@ -181,19 +181,19 @@ public class UseSlot : ExternalProtocol
         var bData = (BombData)data;
         Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", bData.PrefabName, bData.ObjectId);
         if (bData.Component is BreakableEventControllerComp breakableObjEntity)
-            breakableObjEntity.Destroy(Player);
-        else if (bData.Component is InterObjStatusComp enemyEntity)
-            enemyEntity.SendDamageEvent(Player, bData.Damage);
+            breakableObjEntity.Damage(5, Player);
     }
 
     private void HandleConsumable(ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, int hotbarSlotId, ILogger<PlayerStatus> logger)
     {
         Player.HandleItemEffect(usedItem, timerThread, serverRConfig, logger);
         var removeFromHotbar = true;
+        
         if (usedItem.InventoryCategoryID is
             ItemFilterCategory.WeaponAndAbilities or
             ItemFilterCategory.Pets)
             removeFromHotbar = false;
+            
         if (removeFromHotbar)
         {
             if (usedItem.ItemActionType == ItemActionType.Eat)
@@ -213,11 +213,15 @@ public class UseSlot : ExternalProtocol
 
     private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var rand = new System.Random();
-        var prjId = Math.Abs(rand.Next());
+        var rand = new Random();
+        var prjId = Math.Abs(rand.Next()).ToString();
+
         while (Player.Room.GameObjectIds.Contains(prjId))
-            prjId = Math.Abs(rand.Next());
-        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem);
+            prjId = Math.Abs(rand.Next()).ToString();
+
+        // Magic number 10 is damage for now, until we add a serverside stat handler
+        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig);
+
         Player.Room.Projectiles.Add(prjId, prj);
     }
 
@@ -235,7 +239,20 @@ public class UseSlot : ExternalProtocol
         var meleeHitbox = new BaseCollider(meleeId, Player.TempData.Position, hitboxWidth, hitboxHeight, planeName, Player.Room);
         var weaponDamage = GetDamageType(usedItem);
 
-        foreach (var obj in Player.Room.Planes[planeName].GameObjects.Values)
+        position.Z = 0;
+
+        var meleeWeapon = ItemCatalog.GetItemFromId(usedItem.ItemId);
+        var weaponPrefabName = meleeWeapon.PrefabName;
+
+        var meleeSyncEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            position.X, position.Y, position.Z, 0, 0, 100, 0, weaponPrefabName);
+
+        Player.Room.SendSyncEvent(meleeSyncEvent);
+
+        foreach (var obj in
+                 Player.Room.Planes[planeName].GameObjects.Values.SelectMany(x => x)
+                     .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3.4f)
+                )
         {
             var objectId = obj.ObjectInfo.ObjectId;
             var prefabName = obj.ObjectInfo.PrefabName;
@@ -263,14 +280,14 @@ public class UseSlot : ExternalProtocol
                         if (component is TriggerCoopControllerComp triggerCoopEntity)
                             triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
                         else if (component is BreakableEventControllerComp breakableObjEntity)
-                            breakableObjEntity.Destroy(Player);
-                        else if (component is InterObjStatusComp enemyEntity)
+                            breakableObjEntity.Damage(10, Player);
+                        else if (component is EnemyControllerComp enemy)
                         {
                             Player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
                             Player.CheckAchievement(AchConditionType.DefeatEnemy, prefabName, Logger);
                             Player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, Player.Room.LevelInfo.Name, Logger);
 
-                            enemyEntity.SendDamageEvent(Player, weaponDamage);
+                            enemy.Damage(10, Player);
                         }
         }
     }

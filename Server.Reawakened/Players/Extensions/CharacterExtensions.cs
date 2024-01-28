@@ -63,9 +63,9 @@ public static class CharacterExtensions
 
     public static void SetLevel(this CharacterModel character, int levelId,
         Microsoft.Extensions.Logging.ILogger logger) =>
-        character.SetLevel(levelId, 0, logger);
+        character.SetLevel(levelId, string.Empty, logger);
 
-    public static void SetLevel(this CharacterModel character, int levelId, int spawnId,
+    public static void SetLevel(this CharacterModel character, int levelId, string spawnId,
         Microsoft.Extensions.Logging.ILogger logger)
     {
         character.LevelData.LevelId = levelId;

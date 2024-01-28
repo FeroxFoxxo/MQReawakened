@@ -30,31 +30,4 @@ public class InterObjStatusComp : Component<InterObjStatus>
     public int FreezeStatusEffectResistSecs => ComponentData.FreezeStatusEffectResistSecs;
 
     public ILogger<InterObjStatusComp> Logger { get; set; }
-
-    public override void InitializeComponent()
-    {
-        //Fix spawn position for duplicate position args when spawners are added
-        base.InitializeComponent();
-        Room.Colliders.Add(Id, new BaseCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
-        ComponentData.Health = ComponentData.MaxHealth;
-    }
-
-    public void SendDamageEvent(Player player, int damage)
-    {
-        Logger.LogInformation("Enemy name: {args1} Enemy Id: {args2}", PrefabName, Id);
-
-        player.Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), player.Room.Time,
-            ComponentData.Health -= damage, 5, 0, 0, player.GameObjectId.ToString(), false, true));
-
-        if (ComponentData.Health <= 0)
-        {
-            player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1); // Unknown if needed?
-            player.CheckObjective(ObjectiveEnum.Scoremultiple, Id, PrefabName, 1);
-
-            player.Room.Kill(Id);
-            //player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
-            //player.SendUpdatedInventory(false);
-        }
-
-    }
 }

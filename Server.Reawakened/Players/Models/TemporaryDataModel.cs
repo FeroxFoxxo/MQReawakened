@@ -8,7 +8,7 @@ namespace Server.Reawakened.Players.Models;
 
 public class TemporaryDataModel
 {
-    public int GameObjectId { get; set; } = 0;
+    public string GameObjectId { get; set; } = "0";
     public int Direction { get; set; } = 0;
 
     public bool Invincible { get; set; } = false;

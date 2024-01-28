@@ -9,8 +9,10 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
+using System;
 using System.Text;
 using WorldGraphDefines;
 
@@ -47,11 +49,7 @@ public class State : ExternalProtocol
         if (ServerConfig.LogSyncState)
             Logger.LogDebug("Found state: {State}", syncEvent.Type);
 
-        var entityId = int.Parse(syncEvent.TargetID);
-
-        //This part exists because RequestRespawn seemingly just... sends the wrong id?
-        if (syncEvent.Type.Equals(SyncEvent.EventType.RequestRespawn))
-            entityId = Player.GameObjectId;
+        var entityId = syncEvent.TargetID;
 
         if (room.Players.TryGetValue(entityId, out var newPlayer))
         {
@@ -71,14 +69,14 @@ public class State : ExternalProtocol
                         chargeAttackEvent.Type);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
+                    
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
-                    var collisionTarget = int.Parse(notifyCollisionEvent.CollisionTarget);
+                    var collisionTarget = notifyCollisionEvent.CollisionTarget;
 
                     if (room.Entities.TryGetValue(collisionTarget, out var entityComponents))
                     {
                         foreach (var component in entityComponents)
-                            if (!room.IsObjectKilled(component.Id))
-                                component.NotifyCollision(notifyCollisionEvent, newPlayer);
+                            component.NotifyCollision(notifyCollisionEvent, newPlayer);
                     }
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
@@ -108,20 +106,7 @@ public class State : ExternalProtocol
                     newPlayer.TempData.Direction = directionEvent.Direction;
                     break;
                 case SyncEvent.EventType.RequestRespawn:
-                    Player.Room.SendSyncEvent(new RequestRespawn_SyncEvent(entityId.ToString(), syncEvent.TriggerTime));
-
-                    Player.TempData.Invincible = true;
-                    Player.Character.Data.CurrentLife = Player.Character.Data.MaxLife;
-
-                    Player.Room.SendSyncEvent(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                        Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
-
-                    var respawnPosition = Player.Room.CheckpointSpawn != null ? Player.Room.CheckpointSpawn.Position : room.DefaultSpawn.Position;
-
-                    Player.Room.SendSyncEvent(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                             respawnPosition.X, respawnPosition.Y, respawnPosition.Z > 0));
-
-                    TimerThread.DelayCall(Player.DisableInvincibilityTimer, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
+                    RequestRespawn(entityId, syncEvent.TriggerTime);
                     break;
                 case SyncEvent.EventType.PhysicStatus:
                     foreach (var entity in room.Entities)
@@ -170,13 +155,15 @@ public class State : ExternalProtocol
         else if (room.Entities.TryGetValue(entityId, out var entityComponents))
         {
             foreach (var component in entityComponents)
-                if (!room.IsObjectKilled(component.Id))
-                    component.RunSyncedEvent(syncEvent, Player);
+                component.RunSyncedEvent(syncEvent, Player);
         }
         else
         {
             switch (syncEvent.Type)
             {
+                case SyncEvent.EventType.RequestRespawn:
+                    RequestRespawn(Player.GameObjectId, syncEvent.TriggerTime);
+                    break;
                 default:
                     TraceSyncEventError(entityId, syncEvent, room.LevelInfo,
                         room.GetUnknownComponentTypes(entityId));
@@ -189,10 +176,28 @@ public class State : ExternalProtocol
                 LogEvent(syncEvent, entityId, room);
     }
 
-    public void LogEvent(SyncEvent syncEvent, int entityId, Room room)
+    private void RequestRespawn(string entityId, float triggerTime)
+    {
+        Player.Room.SendSyncEvent(new RequestRespawn_SyncEvent(entityId.ToString(), triggerTime));
+
+        Player.TempData.Invincible = true;
+        Player.Character.Data.CurrentLife = Player.Character.Data.MaxLife;
+
+        Player.Room.SendSyncEvent(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
+
+        var respawnPosition = Player.TempData.NextRespawnPosition != null ? Player.TempData.NextRespawnPosition.Position : Player.Room.DefaultSpawn.Position;
+
+        Player.Room.SendSyncEvent(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                 respawnPosition.X, respawnPosition.Y, respawnPosition.Z > 0));
+
+        TimerThread.DelayCall(Player.DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
+    }
+
+    public void LogEvent(SyncEvent syncEvent, string entityId, Room room)
     {
         var uniqueType = "Unknown";
-        var uniqueIdentifier = entityId.ToString();
+        var uniqueIdentifier = entityId;
         var additionalInfo = string.Empty;
 
         if (room.Players.TryGetValue(entityId, out var newPlayer))
@@ -240,7 +245,7 @@ public class State : ExternalProtocol
                 syncEvent.Type, uniqueType, uniqueIdentifier, Player.CharacterName, additionalInfo, attributes);
     }
 
-    public void TraceSyncEventError(int entityId, SyncEvent syncEvent, LevelInfo levelInfo, string entityInfo)
+    public void TraceSyncEventError(string entityId, SyncEvent syncEvent, LevelInfo levelInfo, string entityInfo)
     {
         var builder = new StringBuilder()
             .AppendLine($"Entity: {entityId}")

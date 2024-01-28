@@ -15,14 +15,14 @@ namespace Server.Reawakened.Entities.AbstractComponents;
 
 public abstract class TriggerCoopControllerComp<T> : Component<T> where T : TriggerCoopController
 {
-    public List<int> CurrentPhysicalInteractors;
+    public List<string> CurrentPhysicalInteractors;
     public int CurrentInteractions;
     public int Interactions => CurrentInteractions + CurrentPhysicalInteractors.Count;
 
     public bool IsActive = true;
     public bool IsEnabled = true;
 
-    public Dictionary<int, TriggerType> Triggers;
+    public Dictionary<string, TriggerType> Triggers;
     public List<ActivationType> Activations;
 
     public bool DisabledAfterActivation => ComponentData.DisabledAfterActivation;
@@ -159,7 +159,7 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
     public void AddToTriggers(List<int> triggers, TriggerType triggerType)
     {
         foreach (var trigger in triggers.Where(trigger => trigger > 0))
-            Triggers.TryAdd(trigger, triggerType);
+            Triggers.TryAdd(trigger.ToString(), triggerType);
     }
 
     public override void SendDelayedData(Player player)
@@ -365,7 +365,7 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
         }
     }
 
-    public void LogTriggerErrors(int triggerId, TriggerType type)
+    public void LogTriggerErrors(string triggerId, TriggerType type)
     {
         var sb2 = new StringBuilder();
 

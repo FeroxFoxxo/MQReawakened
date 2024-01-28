@@ -19,6 +19,7 @@ public class GoToEvent : ExternalProtocol
         var destinationIds = message[5].Split('|');
 
         var levelId = int.Parse(destinationIds[0]);
+
         var spawnId = 0;
 
         if (destinationIds.Length > 1)
@@ -35,7 +36,8 @@ public class GoToEvent : ExternalProtocol
             else return;
         }
 
-        character.SetLevel(levelId, spawnId, Logger);
+
+        character.SetLevel(levelId, spawnId.ToString(), Logger);
 
         Player.SendLevelChange();
     }

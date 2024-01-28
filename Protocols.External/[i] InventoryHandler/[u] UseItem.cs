@@ -45,6 +45,9 @@ public class UseItem : ExternalProtocol
         var direction = Player.TempData.Direction;
 
         var subCategoryId = usedItem.SubCategoryId;
+        
+        if (item.UniqueInInventory) //Prevents Healing Staff from removing itself.
+            removeFromHotbar = false;
 
         switch (subCategoryId)
         {

@@ -75,7 +75,7 @@ public static class CharacterInventoryExtensions
 
         gottenItem.Count -= count;
 
-        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId, item.PrefabName, gottenItem.Count);
+        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count);
     }
 
     public static void AddItem(this Player player, ItemDescription item, int count)
@@ -96,24 +96,24 @@ public static class CharacterInventoryExtensions
 
         gottenItem.Count += count;
 
-        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId, item.PrefabName, gottenItem.Count);
+        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count);
     }
 
     public static void AddKit(this CharacterModel characterData, List<ItemDescription> items, int count)
     {
         foreach (var item in items)
         {
-            if (characterData.Data.Inventory.Items.TryGetValue(item.ItemId, out var gottenKit))
-                gottenKit.Count += count;
-
-            else
-                characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel
-                {
-                    ItemId = item.ItemId,
-                    Count = count,
-                    BindingCount = item.BindingCount,
-                    DelayUseExpiry = DateTime.MinValue
-                });
+            if (item != null)
+                if (characterData.Data.Inventory.Items.TryGetValue(item.ItemId, out var gottenKit))
+                    gottenKit.Count += count;
+                else
+                    characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel
+                    {
+                        ItemId = item.ItemId,
+                        Count = count,
+                        BindingCount = item.BindingCount,
+                        DelayUseExpiry = DateTime.MinValue
+                    });
         }
     }
 

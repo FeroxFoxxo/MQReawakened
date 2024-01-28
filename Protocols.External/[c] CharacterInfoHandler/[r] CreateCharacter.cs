@@ -54,13 +54,15 @@ public class CreateCharacter : ExternalProtocol
 
             if (ServerConfig.Is2014Client)
                 characterData.CompletedQuests.Add(ServerConfig.TutorialTribe2014[tribe]);
+            else
+                characterData.CompletedQuests.Add(GetStartingTribeQuest(tribe));
 
             characterData.Registered = true;
 
             var levelUpData = new LevelData
             {
                 LevelId = ServerConfig.Is2014Client ? WorldGraph.DefaultLevel : WorldGraph.NewbZone,
-                SpawnPointId = 0
+                SpawnPointId = ""
             };
 
             var model = CharacterHandler.Create(characterData, levelUpData);
@@ -74,4 +76,28 @@ public class CreateCharacter : ExternalProtocol
             Player.SendStartPlay(model, levelInfo);
         }
     }
+
+    public static int GetStartingTribeQuest(TribeType allegiance)
+    {
+        var result = -1;
+
+        switch (allegiance)
+        {
+            case TribeType.Bone:
+                result = 978;
+                break;
+            case TribeType.Wild:
+                result = 831;
+                break;
+            case TribeType.Outlaw:
+                result = 976;
+                break;
+            case TribeType.Shadow:
+                result = 977;
+                break;
+        }
+
+        return result;
+    }
+
 }

@@ -37,7 +37,7 @@ public class BuyItems : ExternalProtocol
             else if (itemDescription.Currency == CurrencyType.NickCash)
                 Player.RemoveNCash(itemDescription.RegularPrice * amount);
 
-            Player.CheckObjective(ObjectiveEnum.Buyitem, vendorGoId, itemDescription.PrefabName, amount);
+            Player.CheckObjective(ObjectiveEnum.Buyitem, vendorGoId.ToString(), itemDescription.PrefabName, amount);
         }
 
         Player.SendUpdatedInventory(false);
