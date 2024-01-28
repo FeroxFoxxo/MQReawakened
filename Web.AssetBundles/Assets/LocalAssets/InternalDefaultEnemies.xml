@@ -205,7 +205,7 @@
         <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="5" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+        <Shooting nbBulletsPerRound="5" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
             <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
         </Shooting>
     </Enemy>
@@ -221,13 +221,13 @@
             <BackDetectionRangeUpY value="1"/>
             <BackDetectionRangeDownY value="0"/>
             <ViewOffsetY value="0"/>
-            <ShootOffsetY value="-2.7"/>
+            <ShootOffsetY value="-2.9"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
         <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="5" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="5" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+        <Shooting nbBulletsPerRound="5" fireSpreadAngle="60" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="-60">
             <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
         </Shooting>
     </Enemy>
@@ -243,13 +243,13 @@
             <BackDetectionRangeUpY value="1"/>
             <BackDetectionRangeDownY value="0"/>
             <ViewOffsetY value="0"/>
-            <ShootOffsetY value="2.7"/>
+            <ShootOffsetY value="2.9"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
         <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="5" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+        <Shooting nbBulletsPerRound="5" fireSpreadAngle="60" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
             <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
         </Shooting>
     </Enemy>
@@ -509,7 +509,7 @@
         <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+        <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
             <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
         </Shooting>
     </Enemy>
@@ -533,6 +533,29 @@
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
         <ComeBack speed="2.4"/>
 	</Enemy>
+    <Enemy name="PF_Spite_Bathog_Shoot_Rock">
+        <GlobalProperties>
+            <OffensiveBehavior value="Shooting"/>
+            <MinBehaviorTime value="0.5"/>
+            <DetectionLimitedByPatrolLine value="true"/>
+            <FrontDetectionRangeX value="5"/>
+            <FrontDetectionRangeUpY value="3"/>
+            <FrontDetectionRangeDownY value="5"/>
+            <BackDetectionRangeX value="2"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="2"/>
+            <ViewOffsetY value="0"/>
+            <ShootOffsetY value="0.5"/>
+            <ProjectilePrefabName value="COL_PRJ_DamageProjectile"/>
+        </GlobalProperties>
+        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3"/>
+        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+            <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
+        </Shooting>
+        <ComeBack speed="2.4"/>
+	</Enemy>
     <Enemy name="PF_Spite_Bathog_Lava">
         <GlobalProperties>
             <OffensiveBehavior value="Aggro"/>
@@ -552,6 +575,29 @@
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
         <ComeBack speed="2.4"/>
     </Enemy>
+    <Enemy name="PF_Spite_Bathog_Shoot_Lava">
+        <GlobalProperties>
+            <OffensiveBehavior value="Shooting"/>
+            <MinBehaviorTime value="0.5"/>
+            <DetectionLimitedByPatrolLine value="true"/>
+            <FrontDetectionRangeX value="5"/>
+            <FrontDetectionRangeUpY value="3"/>
+            <FrontDetectionRangeDownY value="5"/>
+            <BackDetectionRangeX value="2"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="2"/>
+            <ViewOffsetY value="0"/>
+            <ShootOffsetY value="1"/>
+            <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
+        </GlobalProperties>
+        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3"/>
+        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+            <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
+        </Shooting>
+        <ComeBack speed="2.4"/>
+	</Enemy>
     <Enemy name="PF_Spite_Bathog_Invis">
         <GlobalProperties>
             <OffensiveBehavior value="Aggro"/>
@@ -571,6 +617,29 @@
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
         <ComeBack speed="2.4"/>
     </Enemy>
+    <Enemy name="PF_Spite_Bathog_Shoot_Invis">
+        <GlobalProperties>
+            <OffensiveBehavior value="Shooting"/>
+            <MinBehaviorTime value="0.5"/>
+            <DetectionLimitedByPatrolLine value="true"/>
+            <FrontDetectionRangeX value="5"/>
+            <FrontDetectionRangeUpY value="3"/>
+            <FrontDetectionRangeDownY value="5"/>
+            <BackDetectionRangeX value="2"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="2"/>
+            <ViewOffsetY value="0"/>
+            <ShootOffsetY value="1"/>
+            <ProjectilePrefabName value="COL_PRJ_DamageProjectile"/>
+        </GlobalProperties>
+        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3"/>
+        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+            <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
+        </Shooting>
+        <ComeBack speed="2.4"/>
+	</Enemy>
     <Enemy name="PF_Spite_Bathog_Swamp">
         <GlobalProperties>
             <OffensiveBehavior value="Aggro"/>
@@ -590,6 +659,29 @@
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
         <ComeBack speed="2.4"/>
     </Enemy>
+    <Enemy name="PF_Spite_Bathog_Shoot_Swamp">
+        <GlobalProperties>
+            <OffensiveBehavior value="Shooting"/>
+            <MinBehaviorTime value="0.5"/>
+            <DetectionLimitedByPatrolLine value="true"/>
+            <FrontDetectionRangeX value="5"/>
+            <FrontDetectionRangeUpY value="3"/>
+            <FrontDetectionRangeDownY value="5"/>
+            <BackDetectionRangeX value="2"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="2"/>
+            <ViewOffsetY value="0"/>
+            <ShootOffsetY value="1"/>
+            <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
+        </GlobalProperties>
+        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3"/>
+        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+        </Shooting>
+        <ComeBack speed="2.4"/>
+	</Enemy>
     <Enemy name="PF_Spite_Bathog_Boss">
         <GlobalProperties>
             <OffensiveBehavior value="Aggro"/>
@@ -607,6 +699,28 @@
         <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2"/>
         <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3"/>
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <ComeBack speed="3.2"/>
+    </Enemy>
+    <Enemy name="PF_Spite_Bathog_Shoot_Boss">
+        <GlobalProperties>
+            <OffensiveBehavior value="Shooting"/>
+            <MinBehaviorTime value="0.5"/>
+            <DetectionLimitedByPatrolLine value="true"/>
+            <FrontDetectionRangeX value="6"/>
+            <FrontDetectionRangeUpY value="4"/>
+            <FrontDetectionRangeDownY value="6"/>
+            <BackDetectionRangeX value="2"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="2"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value="COL_PRJ_DamageSuperProjectile"/>
+        </GlobalProperties>
+        <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3"/>
+        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="5" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+            <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile"/>
+        </Shooting>
         <ComeBack speed="3.2"/>
     </Enemy>
     <!--Boombugs-->

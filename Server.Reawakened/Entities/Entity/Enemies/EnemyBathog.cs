@@ -18,6 +18,7 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
 
     private float _behaviorEndTime;
     private float _initialDirection;
+    private string _offensiveBehavior;
 
     public override void Initialize()
     {
@@ -26,6 +27,7 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
         BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName(Entity.PrefabName);
 
         MinBehaviorTime = Convert.ToSingle(BehaviorList.GetGlobalProperty("MinBehaviorTime"));
+        _offensiveBehavior = Convert.ToString(BehaviorList.GetGlobalProperty("OffensiveBehavior"));
         EnemyGlobalProps.Global_DetectionLimitedByPatrolLine = Convert.ToBoolean(BehaviorList.GetGlobalProperty("DetectionLimitedByPatrolLine"));
         EnemyGlobalProps.Global_FrontDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeX"));
         EnemyGlobalProps.Global_FrontDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeUpY"));
@@ -34,6 +36,8 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
         EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
         EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
         EnemyGlobalProps.Aggro_AttackBeyondPatrolLine = Convert.ToSingle(BehaviorList.GetGlobalProperty("AttackBeyondPatrolLine"));
+        EnemyGlobalProps.Global_ShootOffsetX = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetX"));
+        EnemyGlobalProps.Global_ShootOffsetY = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetY"));
         EnemyGlobalProps.Global_ShootingProjectilePrefabName = BehaviorList.GetGlobalProperty("ProjectilePrefabName").ToString();
 
         AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
@@ -51,7 +55,7 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
     {
         base.Damage(damage, origin);
 
-        Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Aggro"), string.Empty, origin.TempData.Position.X, origin.TempData.Position.Y,
+        Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, origin.TempData.Position.X, origin.TempData.Position.Y,
              AiData.Intern_Dir, false));
 
         // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
@@ -61,14 +65,14 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
         if (AiBehavior is AIBehavior_Patrol)
             AiBehavior.Stop(ref AiData);
 
-        AiBehavior = ChangeBehavior("Aggro");
+        AiBehavior = ChangeBehavior(_offensiveBehavior);
         _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
     }
 
     public override void HandlePatrol()
     {
         base.HandlePatrol();
-        DetectPlayers("Aggro");
+        DetectPlayers(_offensiveBehavior);
     }
 
     public override void HandleAggro()
@@ -88,7 +92,7 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
     public override void HandleLookAround()
     {
         base.HandleLookAround();
-        DetectPlayers("Aggro");
+        DetectPlayers(_offensiveBehavior);
         if (Room.Time >= _behaviorEndTime)
         {
             var argBuilder = new SeparatedStringBuilder('`');
@@ -99,6 +103,20 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
 
             AiBehavior = ChangeBehavior("ComeBack");
             AiBehavior.MustDoComeback(AiData);
+        }
+    }
+
+    public override void HandleShooting()
+    {
+        base.HandleShooting();
+
+        if (!AiBehavior.Update(ref AiData, Room.Time))
+        {
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
+            AiData.Intern_Dir, false));
+
+            AiBehavior = ChangeBehavior("LookAround");
+            _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
         }
     }
 

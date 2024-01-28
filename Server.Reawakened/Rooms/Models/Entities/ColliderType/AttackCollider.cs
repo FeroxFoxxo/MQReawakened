@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
 public class AttackCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Player player, int damage, Elemental type, float lifeTime) : BaseCollider(id, position, sizeX, sizeY, plane, player.Room, "attack")
 {
-    public float LifeTime = lifeTime;
+    public float LifeTime = lifeTime + player.Room.Time;
     public Player Owner = player;
     public int Damage = damage;
     public Elemental Type = type;
@@ -21,6 +21,13 @@ public class AttackCollider(string id, Vector3Model position, float sizeX, float
     {
         var roomList = Room.Colliders.Values.ToList();
         List<string> collidedWith = [];
+
+        if (LifeTime <= Room.Time)
+        {
+            Console.WriteLine("I am dead.");
+            Room.Colliders.Remove(Id);
+            return ["0"];
+        }
 
         if (isAttack)
         {
@@ -33,6 +40,7 @@ public class AttackCollider(string id, Vector3Model position, float sizeX, float
                 }
             }
         }
+
         return [.. collidedWith];
     }
 }

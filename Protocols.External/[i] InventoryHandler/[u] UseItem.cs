@@ -46,8 +46,9 @@ public class UseItem : ExternalProtocol
 
         var subCategoryId = usedItem.SubCategoryId;
         
-        if (item.UniqueInInventory) //Prevents Healing Staff from removing itself.
-            removeFromHotbar = false;
+        // Causes compile error due to missing removeFromHotbar variable
+        //if (item.UniqueInInventory)
+        //    removeFromHotbar = false;
 
         switch (subCategoryId)
         {
@@ -91,8 +92,6 @@ public class UseItem : ExternalProtocol
 
     private void HandleConsumable(ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, ILogger<PlayerStatus> logger)
     {
-        Player.HandleItemEffect(usedItem, timerThread, serverRConfig, logger);
-
         var removeFromHotbar = true;
 
         if (usedItem.InventoryCategoryID is
@@ -156,7 +155,7 @@ public class UseItem : ExternalProtocol
                     {
                         PrefabName = prefabName,
                         Component = component,
-                        ObjectId = objectId,
+                        ObjectId = int.Parse(objectId),
                         Damage = GetDamageType(dropData.UsedItem)
                     };
 
@@ -207,9 +206,9 @@ public class UseItem : ExternalProtocol
         Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", bData.PrefabName, bData.ObjectId);
 
         if (bData.Component is BreakableEventControllerComp breakableObjEntity)
-            breakableObjEntity.Destroy(Player);
-        else if (bData.Component is InterObjStatusComp enemyEntity)
-            enemyEntity.SendDamageEvent(Player, bData.Damage);
+            breakableObjEntity.Damage(10, Player);
+        else if (bData.Component is EnemyControllerComp enemyEntity)
+            enemyEntity.Damage(bData.Damage, Player);
     }
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item)

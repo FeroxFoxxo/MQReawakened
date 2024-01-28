@@ -73,4 +73,10 @@ public class Player(Account account, UserInfo userInfo, NetState state, Database
 
         this.DumpToLobby();
     }
+
+    public void DisableInvincibility(object _)
+    {
+        if (TempData.Invincible)
+            TempData.Invincible = false;
+    }
 }

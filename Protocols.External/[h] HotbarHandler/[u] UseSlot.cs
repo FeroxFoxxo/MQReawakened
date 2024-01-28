@@ -13,6 +13,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
@@ -229,67 +230,18 @@ public class UseSlot : ExternalProtocol
     {
         var planeName = position.Z < 10 ? ServerRConfig.IsBackPlane[false] : ServerRConfig.IsBackPlane[true];
 
-        var rand = new Random();
-        var meleeId = Math.Abs(rand.Next());
-        var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            position.X, position.Y, position.Z, direction, 1, 1, meleeId, usedItem.PrefabName);
-        Player.Room.SendSyncEvent(hitEvent);
+        //Fix these magic numbers at some point
         var hitboxWidth = 3f;
         var hitboxHeight = 4f;
-        var meleeHitbox = new BaseCollider(meleeId, Player.TempData.Position, hitboxWidth, hitboxHeight, planeName, Player.Room);
-        var weaponDamage = GetDamageType(usedItem);
 
-        position.Z = 0;
+        var rand = new Random();
+        var prjId = Math.Abs(rand.Next());
 
-        var meleeWeapon = ItemCatalog.GetItemFromId(usedItem.ItemId);
-        var weaponPrefabName = meleeWeapon.PrefabName;
+        var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            position.X, position.Y, position.Z, direction, 1, 1, prjId, usedItem.PrefabName);
+        Player.Room.SendSyncEvent(hitEvent);
 
-        var meleeSyncEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            position.X, position.Y, position.Z, 0, 0, 100, 0, weaponPrefabName);
-
-        Player.Room.SendSyncEvent(meleeSyncEvent);
-
-        foreach (var obj in
-                 Player.Room.Planes[planeName].GameObjects.Values.SelectMany(x => x)
-                     .Where(obj => Vector3Model.Distance(position, obj.ObjectInfo.Position) <= 3.4f)
-                )
-        {
-            var objectId = obj.ObjectInfo.ObjectId;
-            var prefabName = obj.ObjectInfo.PrefabName;
-
-            var objCollider = new BaseCollider(objectId, obj.ObjectInfo.Position,
-                obj.ObjectInfo.Rectangle.Width, obj.ObjectInfo.Rectangle.Height, planeName, Player.Room);
-            var isLeft = direction > 0;
-
-            if (isLeft)
-            {
-                if (obj.ObjectInfo.Position.X < position.X)
-                    continue;
-            }
-            else
-            {
-                if (obj.ObjectInfo.Position.X > position.X)
-                    continue;
-            }
-
-            var isColliding = meleeHitbox.CheckObjectCollision(objCollider);
-
-            if (isColliding)
-                if (Player.Room.Entities.TryGetValue(obj.ObjectInfo.ObjectId, out var entityComponents))
-                    foreach (var component in entityComponents)
-                        if (component is TriggerCoopControllerComp triggerCoopEntity)
-                            triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
-                        else if (component is BreakableEventControllerComp breakableObjEntity)
-                            breakableObjEntity.Damage(10, Player);
-                        else if (component is EnemyControllerComp enemy)
-                        {
-                            Player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
-                            Player.CheckAchievement(AchConditionType.DefeatEnemy, prefabName, Logger);
-                            Player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, Player.Room.LevelInfo.Name, Logger);
-
-                            enemy.Damage(10, Player);
-                        }
-        }
+        Player.Room.Colliders.Add(prjId.ToString(), new AttackCollider(prjId.ToString(), Player.TempData.Position, hitboxWidth, hitboxHeight, planeName, Player, 10, usedItem.Elemental, 0.1f));
     }
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item, int hotbarSlotId)
