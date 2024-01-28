@@ -14,7 +14,80 @@
             <ProjectilePrefabName value="COL_PRJ_WaterMelon"/>
         </GlobalProperties>
         <Patrol speed="3.2" smoothMove="false" endPathWaitTime="0"/>
-        <Shooting nbBulletsPerRound="1" fireSpreadAngle="0" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="0.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+        <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="1" fireSpreadAngle="0" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
+            <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
+        </Shooting>
+    </Enemy>
+    <Enemy name="PF_Critter_Bird02">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="0.25"/>
+            <FrontDetectionRangeUpY value="0"/>
+            <FrontDetectionRangeDownY value="8"/>
+            <BackDetectionRangeX value="0.25"/>
+            <BackDetectionRangeUpY value="0"/>
+            <BackDetectionRangeDownY value="8"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value="COL_PRJ_WaterMelon"/>
+        </GlobalProperties>
+        <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0"/>
+        <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="15" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
+            <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
+        </Shooting>
+    </Enemy>
+    <Enemy name="PF_Critter_Bird03">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="0.25"/>
+            <FrontDetectionRangeUpY value="0"/>
+            <FrontDetectionRangeDownY value="8"/>
+            <BackDetectionRangeX value="0.25"/>
+            <BackDetectionRangeUpY value="0"/>
+            <BackDetectionRangeDownY value="8"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value="COL_PRJ_WaterMelon"/>
+        </GlobalProperties>
+        <Patrol speed="3.2" smoothMove="false" endPathWaitTime="0"/>
+        <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="15" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
+            <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
+        </Shooting>
+    </Enemy>
+    <Enemy name="PF_Critter_Bird04">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="0.25"/>
+            <FrontDetectionRangeUpY value="0"/>
+            <FrontDetectionRangeDownY value="8"/>
+            <BackDetectionRangeX value="0.25"/>
+            <BackDetectionRangeUpY value="0"/>
+            <BackDetectionRangeDownY value="8"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value="COL_PRJ_WaterMelon"/>
+        </GlobalProperties>
+        <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0"/>
+        <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="3" fireSpreadAngle="15" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-75">
+            <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
+        </Shooting>
+    </Enemy>
+    <Enemy name="PF_Critter_Bird_Boss">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="0.25"/>
+            <FrontDetectionRangeUpY value="0"/>
+            <FrontDetectionRangeDownY value="8"/>
+            <BackDetectionRangeX value="0.25"/>
+            <BackDetectionRangeUpY value="0"/>
+            <BackDetectionRangeDownY value="8"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value="COL_PRJ_WaterMelon"/>
+        </GlobalProperties>
+        <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0"/>
+        <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="3" fireSpreadAngle="15" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-75">
             <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
         </Shooting>
     </Enemy>
@@ -47,12 +120,12 @@
             <BackDetectionRangeDownY value="2"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
-            <AttackBeyondPatrolLine value ="4"/>
+            <AttackBeyondPatrolLine value="6"/>
         </GlobalProperties>
-		<Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="4" detectionRangeUpY="4" detectionRangeDownY="4"/>
+        <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="6" detectionRangeUpY="6" detectionRangeDownY="6"/>
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-	</Enemy>
+    </Enemy>
     <Enemy name="PF_Critter_Fish03">
         <GlobalProperties>
             <MinBehaviorTime value="0.5"/>
@@ -64,13 +137,13 @@
             <BackDetectionRangeDownY value="2"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
-            <AttackBeyondPatrolLine value ="4"/>
+            <AttackBeyondPatrolLine value="6"/>
         </GlobalProperties>
-		<Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="4" detectionRangeUpY="4" detectionRangeDownY="4"/>
+        <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="6" detectionRangeUpY="6" detectionRangeDownY="6"/>
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-	</Enemy>
-	<Enemy name="PF_Critter_Fish04">
+    </Enemy>
+    <Enemy name="PF_Critter_Fish04">
         <GlobalProperties>
             <MinBehaviorTime value="0.5"/>
             <FrontDetectionRangeX value="6"/>
@@ -81,12 +154,29 @@
             <BackDetectionRangeDownY value="2"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
-            <AttackBeyondPatrolLine value ="4"/>
+            <AttackBeyondPatrolLine value="6"/>
         </GlobalProperties>
-		<Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="4" detectionRangeUpY="4" detectionRangeDownY="4"/>
+        <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="3.2" moveBeyondTargetDistance="6" stayOnPatrolPath="false" attackBeyondPatrolLine="6" detectionRangeUpY="6" detectionRangeDownY="6"/>
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-	</Enemy>
+    </Enemy>
+    <Enemy name="PF_Critter_Fish_Boss">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="8"/>
+            <FrontDetectionRangeUpY value="8"/>
+            <FrontDetectionRangeDownY value="8"/>
+            <BackDetectionRangeX value="3"/>
+            <BackDetectionRangeUpY value="3"/>
+            <BackDetectionRangeDownY value="3"/>
+            <ViewOffsetY value="0"/>
+            <ProjectilePrefabName value=""/>
+            <AttackBeyondPatrolLine value="6"/>
+        </GlobalProperties>
+        <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
+        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="6" detectionRangeUpY="6" detectionRangeDownY="6"/>
+        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+    </Enemy>
     <!--Rachnoids-->
     <Enemy name="PF_Critter_Spider_Boss">
         <GlobalProperties>
@@ -433,7 +523,7 @@
         </GlobalProperties>
         <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="1" fireSpreadAngle="0" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="2.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+        <Shooting nbBulletsPerRound="1" fireSpreadAngle="0" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
             <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
         </Shooting>
     </Enemy>
@@ -446,14 +536,71 @@
             <BackDetectionRangeX value="4"/>
             <BackDetectionRangeUpY value="2"/>
             <BackDetectionRangeDownY value="1"/>
-            <ShootOffsetX value="1"/>
-            <ShootOffsetY value="0.5"/>
+            <ShootOffsetX value="2.0"/>
+            <ShootOffsetY value="0.6"/>
             <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
         </GlobalProperties>
         <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
         <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="2.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
             <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
+        </Shooting>
+    </Enemy>
+    <Enemy name="PF_Spite_Dragon_Invis">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="7"/>
+            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeDownY value="1"/>
+            <BackDetectionRangeX value="4"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="1"/>
+            <ShootOffsetX value="2.0"/>
+            <ShootOffsetY value="0.6"/>
+            <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
+        </GlobalProperties>
+        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+            <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
+        </Shooting>
+    </Enemy>
+    <Enemy name="PF_Spite_Dragon_Boss">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="7"/>
+            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeDownY value="1"/>
+            <BackDetectionRangeX value="4"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="1"/>
+            <ShootOffsetX value="3.0"/>
+            <ShootOffsetY value="0.7"/>
+            <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
+        </GlobalProperties>
+        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+            <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
+        </Shooting>
+    </Enemy>
+    <Enemy name="PF_Spite_Dragon_Swamp">
+        <GlobalProperties>
+            <MinBehaviorTime value="0.5"/>
+            <FrontDetectionRangeX value="7"/>
+            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeDownY value="1"/>
+            <BackDetectionRangeX value="4"/>
+            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeDownY value="1"/>
+            <ShootOffsetX value="2.0"/>
+            <ShootOffsetY value="0.6"/>
+            <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
+        </GlobalProperties>
+        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
         </Shooting>
     </Enemy>
     <!--Rumblers-->
@@ -475,7 +622,7 @@
         </GlobalProperties>
         <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
         <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="1" delayBetweenFireRound="2" startCoolDownTime="1.0" endCoolDownTime="0.0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="1" delayBetweenFireRound="2" startCoolDownTime="1.0" endCoolDownTime="0.0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
             <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
         </Shooting>
     </Enemy>
@@ -511,7 +658,7 @@
         </GlobalProperties>
         <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
         <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="2" startCoolDownTime="1.0" endCoolDownTime="0.0" projectileSpeed="6.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="2" startCoolDownTime="1.0" endCoolDownTime="0.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
             <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
         </Shooting>
     </Enemy>
@@ -529,7 +676,7 @@
         </GlobalProperties>
         <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
         <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="2" startCoolDownTime="1.0" endCoolDownTime="0.0" projectileSpeed="6.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="2" startCoolDownTime="1.0" endCoolDownTime="0.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
             <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
         </Shooting>
     </Enemy>
@@ -547,7 +694,7 @@
         </GlobalProperties>
         <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
         <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="2" startCoolDownTime="1.0" endCoolDownTime="0.0" projectileSpeed="6.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="2" startCoolDownTime="1.0" endCoolDownTime="0.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
             <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
         </Shooting>
     </Enemy>
@@ -565,7 +712,7 @@
         </GlobalProperties>
         <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
         <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="2" startCoolDownTime="1.0" endCoolDownTime="0.0" projectileSpeed="6.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
+        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="2" startCoolDownTime="1.0" endCoolDownTime="0.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
             <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
         </Shooting>
     </Enemy>

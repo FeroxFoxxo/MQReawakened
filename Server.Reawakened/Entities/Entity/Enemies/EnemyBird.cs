@@ -29,11 +29,9 @@ public class EnemyBird(Room room, string entityId, BaseComponent baseEntity) : E
         EnemyGlobalProps.Global_FrontDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeUpY"));
         EnemyGlobalProps.Global_FrontDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeDownY"));
         EnemyGlobalProps.Global_BackDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeX"));
-        EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
-        EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
+        EnemyGlobalProps.Global_ShootOffsetX = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetX"));
+        EnemyGlobalProps.Global_ShootOffsetY = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetY"));
         EnemyGlobalProps.Global_ShootingProjectilePrefabName = BehaviorList.GetGlobalProperty("ProjectilePrefabName").ToString();
-
-        AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
 
         // Address magic numbers when we get to adding enemy effect mods
         Room.SendSyncEvent(AIInit(1, 1, 1));
@@ -57,7 +55,6 @@ public class EnemyBird(Room room, string entityId, BaseComponent baseEntity) : E
             AiData.Sync_TargetPosX = origin.TempData.Position.X;
             AiData.Sync_TargetPosY = origin.TempData.Position.Y;
 
-
             AiBehavior = ChangeBehavior("Shooting");
             _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
         }
@@ -73,18 +70,32 @@ public class EnemyBird(Room room, string entityId, BaseComponent baseEntity) : E
     {
         base.HandleShooting();
 
+        if (!AiBehavior.Update(ref AiData, Room.Time))
+        {
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
+            AiData.Intern_Dir, false));
+
+            AiBehavior = ChangeBehavior("LookAround");
+            _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
+        }
+
+        if (AiData.Intern_FireProjectile)
+        {
+            Room.SendSyncEvent(SyncBuilder.AILaunchItem(Entity, Position.x + EnemyGlobalProps.Global_ShootOffsetX * AiData.Intern_Dir, Position.y + EnemyGlobalProps.Global_ShootOffsetY, Position.z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, 0, 0));
+
+            AiData.Intern_FireProjectile = false;
+        }
+    }
+
+    public override void HandleLookAround()
+    {
+        base.HandleLookAround();
+        DetectPlayers("Shooting");
         if (Room.Time >= _behaviorEndTime)
         {
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("Patrol");
-        }
-
-        if (AiData.Intern_FireProjectile)
-        {
-            Room.SendSyncEvent(SyncBuilder.AILaunchItem(Entity, Position.x + EnemyGlobalProps.Global_ShootOffsetX, Position.y + EnemyGlobalProps.Global_ShootOffsetY, Position.z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, 0, 0));
-
-            AiData.Intern_FireProjectile = false;
         }
     }
 

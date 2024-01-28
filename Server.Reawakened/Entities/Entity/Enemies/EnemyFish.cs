@@ -75,7 +75,7 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, Position.x, Position.y,
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, Position.x, AiData.SyncInit_PosY,
             AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("LookAround");
@@ -89,8 +89,6 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
         DetectPlayers("Aggro");
         if (Room.Time >= _behaviorEndTime)
         {
-            if (_initialDirection != AiData.Intern_Dir)
-                AiData.Intern_Dir *= -1;
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("Patrol");

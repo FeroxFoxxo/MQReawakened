@@ -166,6 +166,9 @@ public abstract class Enemy : IDestructible
             //AIBehavior_GoTo
         }
 
+        if (Id.Equals("14912"))
+            Console.WriteLine(Position.ToString());
+
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
         Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - _negativeHeight, Position.z);
 
