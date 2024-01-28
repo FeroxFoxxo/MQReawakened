@@ -34,7 +34,7 @@ public class Room : Timer
 
     public Dictionary<string, Player> Players;
     public Dictionary<string, List<BaseComponent>> Entities;
-    public Dictionary<string, ProjectileEntity> Projectiles;
+    public Dictionary<string, TicklyEntity> Projectiles;
     public Dictionary<string, BaseCollider> Colliders;
     public ILogger<Room> Logger;
 

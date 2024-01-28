@@ -74,6 +74,10 @@ public class ServerRConfig : IRConfig
     public float ProjectileYOffset { get; set; }
     public float ProjectileWidth { get; set; }
     public float ProjectileHeight { get; set; }
+    public float MeleeXOffset { get; set; }
+    public float MeleeYOffset { get; set; }
+    public float MeleeWidth { get; set; }
+    public float MeleeHeight { get; set; }
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -207,9 +211,15 @@ public class ServerRConfig : IRConfig
         MysticCharmID = 398;
 
         ProjectileSpeed = 10;
+
         ProjectileXOffset = 0.25f;
         ProjectileYOffset = 0.8f;
         ProjectileHeight = 0.5f;
         ProjectileWidth = 0.5f;
+
+        MeleeXOffset = 0f;
+        MeleeYOffset = 0f;
+        MeleeHeight = 1f;
+        MeleeWidth = 3f;
     }
 }

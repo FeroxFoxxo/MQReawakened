@@ -17,6 +17,7 @@ using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
+using System.Linq;
 
 namespace Protocols.External._h__HotbarHandler;
 public class UseSlot : ExternalProtocol
@@ -216,32 +217,26 @@ public class UseSlot : ExternalProtocol
     {
         var rand = new Random();
         var prjId = Math.Abs(rand.Next()).ToString();
-
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next()).ToString();
 
         // Magic number 10 is damage for now, until we add a serverside stat handler
-        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig);
+        var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig);
 
         Player.Room.Projectiles.Add(prjId, prj);
     }
 
     private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var planeName = position.Z < 10 ? ServerRConfig.IsBackPlane[false] : ServerRConfig.IsBackPlane[true];
-
-        //Fix these magic numbers at some point
-        var hitboxWidth = 3f;
-        var hitboxHeight = 4f;
-
         var rand = new Random();
-        var prjId = Math.Abs(rand.Next());
+        var prjId = Math.Abs(rand.Next()).ToString(); ;
+        while (Player.Room.GameObjectIds.Contains(prjId))
+            prjId = Math.Abs(rand.Next()).ToString();
 
-        var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            position.X, position.Y, position.Z, direction, 1, 1, prjId, usedItem.PrefabName);
-        Player.Room.SendSyncEvent(hitEvent);
+        // Magic number 10 is damage for now, until we add a serverside stat handler
+        var prj = new MeleeEntity(Player, prjId, position, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig);
 
-        Player.Room.Colliders.Add(prjId.ToString(), new AttackCollider(prjId.ToString(), Player.TempData.Position, hitboxWidth, hitboxHeight, planeName, Player, 10, usedItem.Elemental, 0.1f));
+        Player.Room.Projectiles.Add(prjId, prj);
     }
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item, int hotbarSlotId)

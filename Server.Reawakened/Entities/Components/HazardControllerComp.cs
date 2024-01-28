@@ -23,6 +23,7 @@ public class HazardControllerComp : Component<HazardController>
     public float HealthRatioDamage => ComponentData.HealthRatioDamage;
     public int HurtSelfOnDamage => ComponentData.HurtSelfOnDamage;
 
+    public TimerThread TimerThread { get; set; }
     public ILogger<HazardControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) => [0];
@@ -33,9 +34,6 @@ public class HazardControllerComp : Component<HazardController>
         {
             var character = player.Character;
 
-            if (notifyCollisionEvent.Colliding && notifyCollisionEvent.Message == "HitDamageZone")
-                player.ApplyDamageByObject(Room, int.Parse(notifyCollisionEvent.CollisionTarget));
-                
             Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
 
             if (effectType == default)
@@ -51,11 +49,10 @@ public class HazardControllerComp : Component<HazardController>
                     0, 1, true, Entity.GameObject.ObjectInfo.ObjectId, false);
 
                 Room.SendSyncEvent(statusEffect);
- 
+
                 Logger.LogTrace("Triggered status effect for {Character} of {HurtType}", character.Data.CharacterName,
                     effectType);
             }
-            
             switch (effectType)
             {
                 case ItemEffectType.Unknown:
