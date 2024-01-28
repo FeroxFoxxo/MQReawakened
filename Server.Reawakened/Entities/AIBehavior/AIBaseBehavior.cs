@@ -18,4 +18,8 @@ public class AIBaseBehavior
     public virtual void Stop(ref AIProcessData aiData) { }
 
     public virtual bool MustDoComeback(AIProcessData aiData) => false;
+
+    public virtual void GetComebackPosition(AIProcessData aiData, ref float outPosX, ref float outPosY)
+    {
+    }
 }

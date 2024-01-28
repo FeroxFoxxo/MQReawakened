@@ -17,7 +17,6 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
 {
 
     private float _behaviorEndTime;
-    private float _initialDirection;
     private string _offensiveBehavior;
 
     public override void Initialize()
@@ -51,22 +50,22 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
         AiBehavior = ChangeBehavior("Patrol");
     }
 
-    public override void Damage(int damage, Player origin)
+    public override void Damage(int damage, Player player)
     {
-        base.Damage(damage, origin);
+        base.Damage(damage, player);
+        if (AiBehavior is not AIBehavior_Shooting)
+        {
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, player.TempData.Position.X,
+                    player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
 
-        Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, origin.TempData.Position.X, origin.TempData.Position.Y,
-             AiData.Intern_Dir, false));
+            // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
+            AiData.Sync_TargetPosX = player.TempData.Position.X;
+            AiData.Sync_TargetPosY = player.TempData.Position.Y;
 
-        // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
-        AiData.Sync_TargetPosX = origin.TempData.Position.X;
-        AiData.Sync_TargetPosY = origin.TempData.Position.Y;
+            AiBehavior = ChangeBehavior(_offensiveBehavior);
 
-        if (AiBehavior is AIBehavior_Patrol)
-            AiBehavior.Stop(ref AiData);
-
-        AiBehavior = ChangeBehavior(_offensiveBehavior);
-        _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
+            _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
+        }
     }
 
     public override void HandlePatrol()
@@ -122,7 +121,7 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
 
     public override void HandleComeBack()
     {
-        base.HandleLookAround();
+        base.HandleComeBack();
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));

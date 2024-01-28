@@ -17,7 +17,6 @@ public class EnemySpider(Room room, string entityId, BaseComponent baseEntity) :
 {
 
     private float _behaviorEndTime;
-    private float _initialDirection;
     private string _offensiveBehavior;
 
     public override void Initialize()
@@ -26,8 +25,8 @@ public class EnemySpider(Room room, string entityId, BaseComponent baseEntity) :
 
         BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName(Entity.PrefabName);
 
-        _offensiveBehavior = Convert.ToString(BehaviorList.GetGlobalProperty("OffensiveBehavior"));
         MinBehaviorTime = Convert.ToSingle(BehaviorList.GetGlobalProperty("MinBehaviorTime"));
+        _offensiveBehavior = Convert.ToString(BehaviorList.GetGlobalProperty("OffensiveBehavior"));
         EnemyGlobalProps.Global_DetectionLimitedByPatrolLine = Convert.ToBoolean(BehaviorList.GetGlobalProperty("DetectionLimitedByPatrolLine"));
         EnemyGlobalProps.Global_FrontDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeX"));
         EnemyGlobalProps.Global_FrontDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeUpY"));
@@ -50,26 +49,20 @@ public class EnemySpider(Room room, string entityId, BaseComponent baseEntity) :
         AiBehavior = ChangeBehavior("Patrol");
     }
 
-    public override void Damage(int damage, Player origin)
+    public override void Damage(int damage, Player player)
     {
-        base.Damage(damage, origin);
-
+        base.Damage(damage, player);
         if (AiBehavior is not AIBehavior_Shooting)
         {
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, origin.TempData.Position.X, origin.TempData.Position.Y,
-             AiData.Intern_Dir, false));
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, player.TempData.Position.X,
+                    player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
 
             // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
-            AiData.Sync_TargetPosX = origin.TempData.Position.X;
-            AiData.Sync_TargetPosY = origin.TempData.Position.Y;
-
-            if (AiBehavior is AIBehavior_Patrol)
-            {
-                AiBehavior.Stop(ref AiData);
-                _initialDirection = AiData.Intern_Dir;
-            }
+            AiData.Sync_TargetPosX = player.TempData.Position.X;
+            AiData.Sync_TargetPosY = player.TempData.Position.Y;
 
             AiBehavior = ChangeBehavior(_offensiveBehavior);
+
             _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
         }
     }

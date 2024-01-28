@@ -162,8 +162,8 @@ public abstract class Enemy : IDestructible
             //AIBehavior_Spike
         }
 
-        if (Id.Equals("14912"))
-            Console.WriteLine(Position.ToString());
+        //if (Id.Equals("28489"))
+        //    Console.WriteLine(AiData.Intern_Dir);
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
         Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - _negativeHeight, Position.z);
@@ -319,7 +319,7 @@ public abstract class Enemy : IDestructible
         return false;
     }
 
-    public float ResetBehaviorTime(float behaviorEndTime) =>  Room.Time + behaviorEndTime;
+    public float ResetBehaviorTime(float behaviorEndTime) => Room.Time + behaviorEndTime;
 
     public virtual void HandleLookAround() { }
 

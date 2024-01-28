@@ -44,7 +44,7 @@ public class ProjectileEntity : TicklyEntity
     public override void Hit(string hitGoID)
     {
         //Logger.LogInformation("Projectile with ID {args1} destroyed at position ({args2}, {args3}, {args4})", ProjectileID, Position.X, Position.Y, Position.Z);
-        var hit = new ProjectileHit_SyncEvent(new SyncEvent(hitGoID, SyncEvent.EventType.ProjectileHit, Player.Room.Time));
+        var hit = new ProjectileHit_SyncEvent(new SyncEvent(Player.GameObjectId, SyncEvent.EventType.ProjectileHit, Player.Room.Time));
         hit.EventDataList.Add(int.Parse(ProjectileID));
         hit.EventDataList.Add(hitGoID);
         hit.EventDataList.Add(0);

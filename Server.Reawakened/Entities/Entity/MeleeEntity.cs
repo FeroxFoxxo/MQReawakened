@@ -31,7 +31,7 @@ public class MeleeEntity : TicklyEntity
         Position.X += isRight ? 0 : 0;
         Position.Y += config.MeleeYOffset;
         _hitboxPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
-        _hitboxPosition.X -= isRight ? 0 : 5;
+        _hitboxPosition.X -= isRight ? 0 : config.MeleeWidth;
         Speed = 0;
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
@@ -45,7 +45,7 @@ public class MeleeEntity : TicklyEntity
     public override void Hit(string hitGoID)
     {
         //Logger.LogInformation("Projectile with ID {args1} destroyed at position ({args2}, {args3}, {args4})", ProjectileID, Position.X, Position.Y, Position.Z);
-        var hit = new MeleeHit_SyncEvent(new SyncEvent(hitGoID, SyncEvent.EventType.MeleeHit, Player.Room.Time));
+        var hit = new MeleeHit_SyncEvent(new SyncEvent(Player.GameObjectId, SyncEvent.EventType.MeleeHit, Player.Room.Time));
         hit.EventDataList.Add(0);
         hit.EventDataList.Add(Position.X);
         hit.EventDataList.Add(Position.Y);

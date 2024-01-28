@@ -24,8 +24,11 @@ public class TicklyEntity : Component<ProjectileController>
 
     public override void Update()
     {
-        Position.X += Speed / (float)(Tickrate - 2);
-        Collider.Position.x = Position.X;
+        if (Speed != 0)
+        {
+            Position.X += Speed / (float)(Tickrate - 2);
+            Collider.Position.x = Position.X;
+        }
 
         var Collisions = Collider.IsColliding(true);
         if (Collisions.Length > 0)

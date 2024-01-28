@@ -64,7 +64,7 @@ public class NPCControllerComp : Component<NPCController>
         }
 
         GiverQuests = [..
-            QuestCatalog.GetQuestGiverById(int.Parse(Id))
+            QuestCatalog.GetQuestGiverByName("Captain Tyran")
                 .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
                 .OrderBy(x => x.Id)
         ];

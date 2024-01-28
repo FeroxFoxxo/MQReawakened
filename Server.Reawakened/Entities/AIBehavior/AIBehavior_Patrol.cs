@@ -27,4 +27,8 @@ internal class AIBehavior_Patrol : AIBaseBehavior
     {
         PatrolBehavior.Stop(aiData);
     }
+    public override void GetComebackPosition(AIProcessData aiData, ref float outPosX, ref float outPosY)
+    {
+        PatrolBehavior.GetComebackPosition(aiData, ref outPosX, ref outPosY);
+    }
 }
