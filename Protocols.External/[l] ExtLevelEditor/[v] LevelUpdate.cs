@@ -24,6 +24,9 @@ public class RoomUpdate : ExternalProtocol
         foreach (var entityComponent in Player.Room.Entities.Values.SelectMany(x => x))
             entityComponent.SendDelayedData(Player);
 
+        foreach (var enemy in Player.Room.Enemies.Values)
+            enemy.GetInitEnemyData(Player);
+
         Player.Room.SendCharacterInfo(Player);
 
         foreach (var npc in Player.Room.GetComponentsOfType<NPCControllerComp>())

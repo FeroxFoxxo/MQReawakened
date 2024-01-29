@@ -34,7 +34,7 @@ public class Room : Timer
 
     public Dictionary<string, Player> Players;
     public Dictionary<string, List<BaseComponent>> Entities;
-    public Dictionary<string, ProjectileEntity> Projectiles;
+    public Dictionary<string, TicklyEntity> Projectiles;
     public Dictionary<string, BaseCollider> Colliders;
     public ILogger<Room> Logger;
 
@@ -113,18 +113,27 @@ public class Room : Timer
                     case string spider when spider.Contains(config.EnemyNameSearch[2]):
                         Enemies.Add(component.Id, new EnemySpider(this, component.Id, component));
                         break;
+                    case string bathog when bathog.Contains(config.EnemyNameSearch[3]):
+                        Enemies.Add(component.Id, new EnemyBathog(this, component.Id, component));
+                        break;
                     case string crawler when crawler.Contains(config.EnemyNameSearch[5]):
                         Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, component));
                         break;
+                    case string dragon when dragon.Contains(config.EnemyNameSearch[6]):
+                        Enemies.Add(component.Id, new EnemyDragon(this, component.Id, component));
+                        break;
                     case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
-                        //Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));
                         break;
                     case string pincer when pincer.Contains(config.EnemyNameSearch[9]):
                         Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component));
                         break;
-                        //case string pincer when pincer.Contains(config.EnemyNameSearch[9]):
-                        //    Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component));
-                        //    break;
+                    case string stomper when stomper.Contains(config.EnemyNameSearch[10]):
+                        Enemies.Add(component.Id, new EnemyStomper(this, component.Id, component));
+                        break;
+                    //case string vespid when vespid.Contains(config.EnemyNameSearch[11]):
+                    //    Enemies.Add(component.Id, new EnemyVespid(this, component.Id, component));
+                    //    break;
                 }
             }
             if (component.Name == config.BreakableComponentName)

@@ -21,15 +21,7 @@ public abstract class BaseCollider
         Room = room;
 
         ColliderType = colliderType.ToLower();
-        switch (ColliderType)
-        {
-            case "projectile":
-                ColliderBox = new RectModel(position.X - (position.X * 0.5f), position.Y - (position.Y * 0.5f), sizeX, sizeY);
-                break;
-            default:
-                ColliderBox = new RectModel(position.X, position.Y, sizeX, sizeY);
-                break;
-        }
+        ColliderBox = new RectModel(position.X, position.Y, sizeX, sizeY);
     }
     public BaseCollider(ColliderModel collider, Room room)
     {

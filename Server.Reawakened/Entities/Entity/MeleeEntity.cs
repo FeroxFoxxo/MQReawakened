@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using agsXMPP;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
@@ -11,12 +12,12 @@ using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity;
-public class ProjectileEntity : TicklyEntity
+public class MeleeEntity : TicklyEntity
 {
     private Vector3Model _hitboxPosition;
     public ILogger<TicklyEntity> Logger { get; set; }
 
-    public ProjectileEntity(Player player, string id, Vector3Model position, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig config)
+    public MeleeEntity(Player player, string id, Vector3Model position, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig config)
     {
         // Initialize projectile location info
         Tickrate = config.RoomTickRate;
@@ -27,26 +28,24 @@ public class ProjectileEntity : TicklyEntity
 
         // Initialize projectile info
         var isRight = direction > 0;
-        Position.X += isRight ? config.ProjectileXOffset : -config.ProjectileXOffset;
-        Position.Y += config.ProjectileYOffset;
-        Speed = isRight ? config.ProjectileSpeed : -config.ProjectileSpeed;
+        Position.X += isRight ? 0 : 0;
+        Position.Y += config.MeleeYOffset;
+        _hitboxPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
+        _hitboxPosition.X -= isRight ? 0 : config.MeleeWidth;
+        Speed = 0;
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
-        _hitboxPosition = Position;
-        _hitboxPosition.X -= isRight ? 0 : config.ProjectileWidth;
 
         // Send all information to room
-        Collider = new AttackCollider(id, _hitboxPosition, config.ProjectileWidth, config.ProjectileHeight, PrjPlane, player, damage, type, LifeTime);
-        var prj = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), StartTime, Position.X, Position.Y, Position.Z, Speed, 0, LifeTime, int.Parse(ProjectileID), item.PrefabName);
-        player.Room.SendSyncEvent(prj);
+        Collider = new AttackCollider(id, _hitboxPosition, config.MeleeWidth, config.MeleeHeight, PrjPlane, player, damage, type, LifeTime);
+        var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time, Position.X, Position.Y, Position.Z, direction, 1, 1, int.Parse(ProjectileID), item.PrefabName);
+        Player.Room.SendSyncEvent(hitEvent);
     }
 
     public override void Hit(string hitGoID)
     {
         //Logger.LogInformation("Projectile with ID {args1} destroyed at position ({args2}, {args3}, {args4})", ProjectileID, Position.X, Position.Y, Position.Z);
-        var hit = new ProjectileHit_SyncEvent(new SyncEvent(Player.GameObjectId, SyncEvent.EventType.ProjectileHit, Player.Room.Time));
-        hit.EventDataList.Add(int.Parse(ProjectileID));
-        hit.EventDataList.Add(hitGoID);
+        var hit = new MeleeHit_SyncEvent(new SyncEvent(Player.GameObjectId, SyncEvent.EventType.MeleeHit, Player.Room.Time));
         hit.EventDataList.Add(0);
         hit.EventDataList.Add(Position.X);
         hit.EventDataList.Add(Position.Y);

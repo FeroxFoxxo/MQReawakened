@@ -5,11 +5,12 @@ using Server.Base.Accounts.Services;
 using Server.Reawakened.Players.Services;
 using System.Dynamic;
 using Web.Launcher.Models;
+using Web.Launcher.Services;
 
 namespace Web.Launcher.Controllers.API.JSON.DLC;
 
 [Route("api/json/dlc/login")]
-public class LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler,
+public class LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler, StartGame startGame,
     LauncherRConfig rConfig, PasswordHasher passwordHasher, LauncherRwConfig config, ILogger<LoginController> logger) : Controller
 {
     [HttpPost]
@@ -62,7 +63,7 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
         analytics.enabled = rConfig.AnalyticsEnabled;
         analytics.firstTimeLogin = account.Created == account.LastLogin ? "true" : "false";
         analytics.firstLoginToday = (DateTime.UtcNow - account.LastLogin).TotalDays >= 1;
-        analytics.baseUrl = $"{rConfig.ServerBaseUrl1}/Analytics";
+        analytics.baseUrl = $"{startGame.ServerAddress}/Analytics";
         analytics.apiKey = config.AnalyticsApiKey;
         resp.analytics = analytics;
 

@@ -16,6 +16,12 @@ public class ServerRConfig : IRConfig
     public int PlayerCap { get; }
     public int ReservedNameCount { get; }
     public int MaxCharacterCount { get; }
+    
+    public int HealingStaff { get; }
+    public double HealingStaffHealValue { get; }
+    public int DefaultDamage { get; }
+
+    public Dictionary<bool, string> IsBackPlane { get; }
 
     public int MaxLevel { get; }
 
@@ -68,6 +74,10 @@ public class ServerRConfig : IRConfig
     public float ProjectileYOffset { get; set; }
     public float ProjectileWidth { get; set; }
     public float ProjectileHeight { get; set; }
+    public float MeleeXOffset { get; set; }
+    public float MeleeYOffset { get; set; }
+    public float MeleeWidth { get; set; }
+    public float MeleeHeight { get; set; }
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -113,7 +123,7 @@ public class ServerRConfig : IRConfig
         [
             394,  // glider
             395,  // grappling hook
-            393,  // snowboard
+            240181867,  // snowboard
             397,  // wooden slingshot
             423,  // golden slingshot
             453,  // kernel blaster
@@ -162,6 +172,11 @@ public class ServerRConfig : IRConfig
         };
 
         Is2014Client = false;
+        IsBackPlane = new Dictionary<bool, string>()
+        {
+            { true, "Plane1" },
+            { false, "Plane0" }
+        };
 
         MaxLevel = 65;
         HealAmount = 100000;
@@ -170,7 +185,10 @@ public class ServerRConfig : IRConfig
             "PF_GLB_DoorArena01"
         ];
 
-
+        HealingStaff = 396;
+        HealingStaffHealValue = 3.527f;
+        DefaultDamage = 10;
+        
         EnemyComponentName = "EnemyController";
         BreakableComponentName = "BreakableEventController";
 
@@ -185,7 +203,8 @@ public class ServerRConfig : IRConfig
             "PF_Spite_Grenadier",
             "PF_Spite_Orchid",
             "PF_Spite_Pincer",
-            "PF_Spite_Stomper"
+            "PF_Spite_Stomper",
+            "Spite_Wasp_Boss01"
         ];
 
         MaximumEntitiesToReturnLog = 15;
@@ -193,9 +212,15 @@ public class ServerRConfig : IRConfig
         MysticCharmID = 398;
 
         ProjectileSpeed = 10;
+
         ProjectileXOffset = 0.25f;
-        ProjectileYOffset = 0.8333f;
+        ProjectileYOffset = 0.8f;
         ProjectileHeight = 0.5f;
         ProjectileWidth = 0.5f;
+
+        MeleeXOffset = 0f;
+        MeleeYOffset = 0f;
+        MeleeHeight = 1f;
+        MeleeWidth = 3f;
     }
 }

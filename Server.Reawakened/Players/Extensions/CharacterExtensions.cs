@@ -7,6 +7,7 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterExtensions
 {
+
     public static bool HasDiscoveredTribe(this CharacterModel characterData, TribeType tribe)
     {
         if (characterData == null) return false;

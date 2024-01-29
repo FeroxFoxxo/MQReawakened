@@ -62,7 +62,7 @@ public class HazardControllerComp : Component<HazardController>
                 case ItemEffectType.WaterBreathing:
                     break;
                 default:
-                    player.ApplyDamageByPercent(Room, .10, TimerThread);
+                    player.ApplyDamageByPercent(Room, .10);
                     break;
             }
         }

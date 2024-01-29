@@ -27,13 +27,13 @@ public class AISyncEventHelper
         return aiDo;
     }
 
-    public AILaunchItem_SyncEvent AILaunchItem(BaseComponent entity, Vector3 pos, float speedX, float speedY, float lifeTime, int prjId, int isGrenade)
+    public AILaunchItem_SyncEvent AILaunchItem(BaseComponent entity, float posX, float posY, float posZ, float speedX, float speedY, float lifeTime, int prjId, int isGrenade)
     {
         var launch = new AILaunchItem_SyncEvent(new SyncEvent(entity.Id, SyncEvent.EventType.AILaunchItem, entity.Room.Time));
         launch.EventDataList.Clear();
-        launch.EventDataList.Add(pos.x);
-        launch.EventDataList.Add(pos.y);
-        launch.EventDataList.Add(pos.z);
+        launch.EventDataList.Add(posX);
+        launch.EventDataList.Add(posY);
+        launch.EventDataList.Add(posZ);
         launch.EventDataList.Add(speedX);
         launch.EventDataList.Add(speedY);
         launch.EventDataList.Add(lifeTime);

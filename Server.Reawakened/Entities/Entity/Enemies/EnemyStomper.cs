@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
+public class EnemyStomper(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
 {
 
     private float _behaviorEndTime;
@@ -34,7 +34,6 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
         EnemyGlobalProps.Global_BackDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeX"));
         EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
         EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
-        EnemyGlobalProps.Aggro_AttackBeyondPatrolLine = Convert.ToSingle(BehaviorList.GetGlobalProperty("AttackBeyondPatrolLine"));
 
         AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
 
@@ -77,38 +76,22 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, Position.x, Position.y,
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Stomper"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
             AiData.Intern_Dir, false));
 
-            AiBehavior = ChangeBehavior("LookAround");
-            _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
+            AiBehavior = ChangeBehavior("Stomper");
+            _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("Stomper", "attackTime")));
         }
     }
 
-    public override void HandleLookAround()
+    public override void HandleStomper()
     {
-        base.HandleLookAround();
-        DetectPlayers("Aggro");
+        base.HandleStomper();
+        //DetectPlayers("Aggro");
         if (Room.Time >= _behaviorEndTime)
         {
-            var argBuilder = new SeparatedStringBuilder('`');
-            argBuilder.Append(Position.x);
-            argBuilder.Append(AiData.Intern_SpawnPosY);
-
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("ComeBack"), argBuilder.ToString(), Position.x, AiData.Intern_SpawnPosY, AiData.Intern_Dir, false));
-
-            AiBehavior = ChangeBehavior("ComeBack");
-            AiBehavior.MustDoComeback(AiData);
-        }
-    }
-
-    public override void HandleComeBack()
-    {
-        base.HandleComeBack();
-        if (!AiBehavior.Update(ref AiData, Room.Time))
-        {
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
-        
+
             AiBehavior = ChangeBehavior("Patrol");
         }
     }
@@ -120,11 +103,11 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
             if (PlayerInRange(player.Value.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
                 Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
-                    player.Value.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
+                    Position.y, Generic.Patrol_ForceDirectionX, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
                 AiData.Sync_TargetPosX = player.Value.TempData.Position.X;
-                AiData.Sync_TargetPosY = player.Value.TempData.Position.Y;
+                AiData.Sync_TargetPosY = Position.y;
 
                 AiBehavior = ChangeBehavior(behaviorToRun);
 

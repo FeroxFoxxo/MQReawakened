@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
+public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
 {
 
     private float _behaviorEndTime;
@@ -35,6 +35,9 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
         EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
         EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
         EnemyGlobalProps.Aggro_AttackBeyondPatrolLine = Convert.ToSingle(BehaviorList.GetGlobalProperty("AttackBeyondPatrolLine"));
+        EnemyGlobalProps.Global_ShootOffsetX = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetX"));
+        EnemyGlobalProps.Global_ShootOffsetY = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetY"));
+        EnemyGlobalProps.Global_ShootingProjectilePrefabName = BehaviorList.GetGlobalProperty("ProjectilePrefabName").ToString();
 
         AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
 
@@ -68,7 +71,7 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
     public override void HandlePatrol()
     {
         base.HandlePatrol();
-        DetectPlayers("Aggro");
+        DetectPlayers(_offensiveBehavior);
     }
 
     public override void HandleAggro()
@@ -88,7 +91,7 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
     public override void HandleLookAround()
     {
         base.HandleLookAround();
-        DetectPlayers("Aggro");
+        DetectPlayers(_offensiveBehavior);
         if (Room.Time >= _behaviorEndTime)
         {
             var argBuilder = new SeparatedStringBuilder('`');
@@ -102,13 +105,27 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
         }
     }
 
+    public override void HandleShooting()
+    {
+        base.HandleShooting();
+
+        if (!AiBehavior.Update(ref AiData, Room.Time))
+        {
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
+            AiData.Intern_Dir, false));
+
+            AiBehavior = ChangeBehavior("LookAround");
+            _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
+        }
+    }
+
     public override void HandleComeBack()
     {
         base.HandleComeBack();
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
-        
+
             AiBehavior = ChangeBehavior("Patrol");
         }
     }

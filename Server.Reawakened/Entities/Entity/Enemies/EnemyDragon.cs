@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
+public class EnemyDragon(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
 {
 
     private float _behaviorEndTime;
@@ -32,11 +32,9 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
         EnemyGlobalProps.Global_FrontDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeUpY"));
         EnemyGlobalProps.Global_FrontDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeDownY"));
         EnemyGlobalProps.Global_BackDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeX"));
-        EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
-        EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
-        EnemyGlobalProps.Aggro_AttackBeyondPatrolLine = Convert.ToSingle(BehaviorList.GetGlobalProperty("AttackBeyondPatrolLine"));
-
-        AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
+        EnemyGlobalProps.Global_ShootOffsetX = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetX"));
+        EnemyGlobalProps.Global_ShootOffsetY = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetY"));
+        EnemyGlobalProps.Global_ShootingProjectilePrefabName = BehaviorList.GetGlobalProperty("ProjectilePrefabName").ToString();
 
         // Address magic numbers when we get to adding enemy effect mods
         Room.SendSyncEvent(AIInit(1, 1, 1));
@@ -68,16 +66,16 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
     public override void HandlePatrol()
     {
         base.HandlePatrol();
-        DetectPlayers("Aggro");
+        DetectPlayers("Shooting");
     }
 
-    public override void HandleAggro()
+    public override void HandleShooting()
     {
-        base.HandleAggro();
+        base.HandleShooting();
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, Position.x, Position.y,
+            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
             AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("LookAround");
@@ -88,27 +86,11 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
     public override void HandleLookAround()
     {
         base.HandleLookAround();
-        DetectPlayers("Aggro");
+        DetectPlayers("Shooting");
         if (Room.Time >= _behaviorEndTime)
         {
-            var argBuilder = new SeparatedStringBuilder('`');
-            argBuilder.Append(Position.x);
-            argBuilder.Append(AiData.Intern_SpawnPosY);
-
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("ComeBack"), argBuilder.ToString(), Position.x, AiData.Intern_SpawnPosY, AiData.Intern_Dir, false));
-
-            AiBehavior = ChangeBehavior("ComeBack");
-            AiBehavior.MustDoComeback(AiData);
-        }
-    }
-
-    public override void HandleComeBack()
-    {
-        base.HandleComeBack();
-        if (!AiBehavior.Update(ref AiData, Room.Time))
-        {
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
-        
+
             AiBehavior = ChangeBehavior("Patrol");
         }
     }

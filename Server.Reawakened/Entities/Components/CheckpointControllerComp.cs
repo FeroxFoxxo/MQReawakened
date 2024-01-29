@@ -44,13 +44,11 @@ public class CheckpointControllerComp : TriggerCoopControllerComp<CheckpointCont
                 sb.ToString(), LoggerType.Warning);
         }
 
-        Room.CheckpointId = Id;
-
         var checkpoints = Room.GetComponentsOfType<CheckpointControllerComp>().Values;
         var possibleLastCheckpoint = checkpoints.FirstOrDefault(c => c.Id == Room.CheckpointId);
 
-        player.TempData.NextRespawnPosition = possibleLastCheckpoint;
-        player.TempData.NextRespawnPosition.Position.Z = player.TempData.Position.Z;
-        possibleLastCheckpoint?.Trigger(player, true);
+        possibleLastCheckpoint?.Trigger(player, false);
+
+        Room.CheckpointId = Id;
     }
 }

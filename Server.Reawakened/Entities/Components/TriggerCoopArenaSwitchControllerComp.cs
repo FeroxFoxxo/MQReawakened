@@ -5,7 +5,6 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -14,7 +13,9 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
     public string ArenaObjectId => ComponentData.ArenaObjectID;
     public DatabaseContainer DatabaseContainer { get; set; }
     public new ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
+
     public TriggerArenaComp Arena = null;
+
     public override object[] GetInitData(Player player) => base.GetInitData(player);
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
@@ -61,8 +62,7 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
                     member.TempData.ArenaModel.HasStarted = true;
                     StartArena(member);
 
-                    if (Arena != null)
-                        Arena.StartArena(member);
+                    Arena?.StartArena(member);
                 }
 
             }
@@ -72,12 +72,13 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
             if (player.TempData.ArenaModel.ShouldStartArena)
             {
                 StartArena(player);
-                player.TempData.ArenaModel.SetCharacterIds(new List<Player> { player });
+                player.TempData.ArenaModel.SetCharacterIds([player]);
 
-                if (Arena != null)
-                    Arena.StartArena(player);
+                Arena?.StartArena(player);
             }
         }
+
+        base.RunSyncedEvent(syncEvent, player);
     }
 
     public void StartArena(Player player)

@@ -13,11 +13,15 @@ public class TemporaryDataModel
 
     public bool Invincible { get; set; } = false;
     public bool OnGround { get; set; } = false;
+    public bool UnderWater { get; set; } = false;
+    public Base.Timers.Timer UnderwaterTimer { get; set; }
+    public bool BananaBoostsElixir { get; set; }
+    public bool ReputationBoostsElixir { get; set; }
 
     public Vector3Model Position { get; set; } = new Vector3Model();
     public Vector3Model Velocity { get; set; } = new Vector3Model();
 
-    public CheckpointControllerComp NextRespawnPosition { get; set; }
+    public CheckpointControllerComp LastCheckpoint { get; set; }
 
     public ArenaModel ArenaModel { get; set; }
     public TradeModel TradeModel { get; set; }

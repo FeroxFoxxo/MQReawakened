@@ -8,7 +8,7 @@ public class InternalRwConfig : IRwConfig
     public string[] IgnoreProtocolType { get; set; }
     public NetworkType NetworkType { get; set; }
     public string ServerAddress { get; set; }
-    public int Port { get; }
+    public int Port { get; set; }
     public string[] UnhandledPackets { get; set; }
     public bool IndentSaves { get; set; }
 
