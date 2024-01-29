@@ -1290,7 +1290,7 @@
                 <Item itemId="3722" count="1" bindingCount="0"/>
                 <Item itemId="4211" count="1" bindingCount="0"/>
                 <Item itemId="6707" count="1" bindingCount="0"/>
-                <Item itemId="11708" count="1" bindingCount="0"/>
+                <Item itemId="11212" count="1" bindingCount="0"/>
             </Items>
         </LootInfo>
     </Level>
@@ -1359,7 +1359,7 @@
         <LootInfo objectId="3114" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemId="13001" count="1" bindingCount="0"/>
-                <Item itemId="11709" count="1" bindingCount="0"/>
+                <Item itemId="11213" count="1" bindingCount="0"/>
                 <Item itemId="2638" count="1" bindingCount="0"/>
                 <Item itemId="11211" count="1" bindingCount="0"/>
                 <Item itemId="2632" count="1" bindingCount="0"/>
@@ -1371,7 +1371,7 @@
         <LootInfo objectId="3199" doLootWheel="true">
             <Items rewardAmount="1">    <!--Vine Blue Chest-->
                 <Item itemId="13001" count="1" bindingCount="0"/>
-                <Item itemId="11709" count="1" bindingCount="0"/>
+                <Item itemId="11213" count="1" bindingCount="0"/>
                 <Item itemId="2638" count="1" bindingCount="0"/>
                 <Item itemId="11211" count="1" bindingCount="0"/>
                 <Item itemId="2632" count="1" bindingCount="0"/>
@@ -1383,7 +1383,7 @@
         <LootInfo objectId="3285" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemId="13001" count="1" bindingCount="0"/>
-                <Item itemId="11709" count="1" bindingCount="0"/>
+                <Item itemId="11213" count="1" bindingCount="0"/>
                 <Item itemId="2638" count="1" bindingCount="0"/>
                 <Item itemId="11211" count="1" bindingCount="0"/>
                 <Item itemId="2632" count="1" bindingCount="0"/>
@@ -1426,7 +1426,7 @@
                 <Item itemId="2632" count="1" bindingCount="0"/>
                 <Item itemId="2638" count="1" bindingCount="0"/>
                 <Item itemId="11200" count="1" bindingCount="0"/>
-                <Item itemId="11709" count="1" bindingCount="0"/>
+                <Item itemId="11213" count="1" bindingCount="0"/>
                 <Item itemId="2619" count="1" bindingCount="0"/>
                 <Item itemId="13001" count="1" bindingCount="0"/>
             </Items>
@@ -1463,7 +1463,7 @@
                 <Item itemId="2632" count="1" bindingCount="0"/>
                 <Item itemId="2638" count="1" bindingCount="0"/>
                 <Item itemId="11200" count="1" bindingCount="0"/>
-                <Item itemId="11709" count="1" bindingCount="0"/>
+                <Item itemId="11213" count="1" bindingCount="0"/>
             </Items>
         </LootInfo>
         <LootInfo objectId="5030" doLootWheel="true">
@@ -1476,7 +1476,7 @@
                 <Item itemId="2632" count="1" bindingCount="0"/>
                 <Item itemId="2638" count="1" bindingCount="0"/>
                 <Item itemId="11200" count="1" bindingCount="0"/>
-                <Item itemId="11709" count="1" bindingCount="0"/>
+                <Item itemId="11213" count="1" bindingCount="0"/>
             </Items>
         </LootInfo>
         <LootInfo objectId="5029" doLootWheel="true">
@@ -1489,7 +1489,7 @@
                 <Item itemId="2632" count="1" bindingCount="0"/>
                 <Item itemId="2638" count="1" bindingCount="0"/>
                 <Item itemId="11200" count="1" bindingCount="0"/>
-                <Item itemId="11709" count="1" bindingCount="0"/>
+                <Item itemId="11213" count="1" bindingCount="0"/>
             </Items>
         </LootInfo>
         <LootInfo objectId="3411" doLootWheel="true">
@@ -1502,7 +1502,7 @@
                 <Item itemId="2632" count="1" bindingCount="0"/>
                 <Item itemId="2638" count="1" bindingCount="0"/>
                 <Item itemId="11200" count="1" bindingCount="0"/>
-                <Item itemId="11709" count="1" bindingCount="0"/>
+                <Item itemId="11213" count="1" bindingCount="0"/>
                 <Item itemId="2728" count="1" bindingCount="0"/>
             </Items>
         </LootInfo>
