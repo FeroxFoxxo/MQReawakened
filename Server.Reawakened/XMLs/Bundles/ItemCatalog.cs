@@ -249,39 +249,36 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
                     smallestItemId = itemId;
                 }
 
-                itemElement.SetAttribute("id", itemId.ToString());
-                itemElement.SetAttribute("ingamename", _itemNameDict[item.ItemName].ToString());
-                itemElement.SetAttribute("ingamedescription", _itemNameDict[item.DescriptionText].ToString());
-                itemElement.SetAttribute("prefab", item.PrefabName.ToString());
-                itemElement.SetAttribute("special_display_prefab", item.SpecialDisplayPrefab.ToString());
-
-                itemElement.SetAttribute("tribe", Enum.GetName(item.Tribe));
                 itemElement.SetAttribute("action_type", Enum.GetName(item.ItemActionType));
-                itemElement.SetAttribute("rarity", Enum.GetName(item.Rarity));
-                itemElement.SetAttribute("currency", Enum.GetName(item.Currency)); itemElement.SetAttribute("member_only", item.MemberOnly ? "true" : "false");
-                itemElement.SetAttribute("member_only", item.MemberOnly ? "true" : "false");
-
-                itemElement.SetAttribute("item_level", item.Level.ToString());
-                itemElement.SetAttribute("global_level", item.LevelRequired.ToString());
-                itemElement.SetAttribute("unique_in_inventory", item.UniqueInInventory ? "true" : "false");
-
-                itemElement.SetAttribute("store_type", storeType);
-                itemElement.SetAttribute("stock_priority", item.StockPriority.ToString());
-                itemElement.SetAttribute("price", item.RegularPrice.ToString());
-                itemElement.SetAttribute("price_discount", item.DiscountPrice.ToString());
-                itemElement.SetAttribute("sell_price", item.SellPrice.ToString());
-                itemElement.SetAttribute("sell_count", item.SellCount.ToString());
+                itemElement.SetAttribute("bind_type", Enum.GetName(item.Binding));
+                itemElement.SetAttribute("cooldown_time", item.CooldownTime.ToString());
+                itemElement.SetAttribute("currency", Enum.GetName(item.Currency));
                 itemElement.SetAttribute("discounted_from", item.DiscountedFrom == new DateTime(0L) ? "None" : item.DiscountedFrom.ToString());
                 itemElement.SetAttribute("discounted_to", item.DiscountedTo == new DateTime(0L) ? "None" : item.DiscountedTo.ToString());
-
-                itemElement.SetAttribute("cooldown_time", item.CooldownTime.ToString());
-                itemElement.SetAttribute("delay_use_duration", item.DelayUseDuration.ToString());
-                itemElement.SetAttribute("bind_type", Enum.GetName(item.Binding));
-
-                itemElement.SetAttribute("recipe_parent_item_id", item.RecipeParentItemID.ToString());
-                itemElement.SetAttribute("loot_id", item.LootId.ToString());
-
+                itemElement.SetAttribute("global_level", item.LevelRequired.ToString());
+                itemElement.SetAttribute("id", itemId.ToString());
+                itemElement.SetAttribute("ingamename", _itemNameDict[item.ItemName].ToString());
+                itemElement.SetAttribute("item_level", item.Level.ToString());
+                // name
+                itemElement.SetAttribute("prefab", item.PrefabName.ToString());
+                // prefab type
+                itemElement.SetAttribute("price", item.RegularPrice.ToString());
+                itemElement.SetAttribute("price_discount", item.DiscountPrice.ToString());
                 itemElement.SetAttribute("production_status", Enum.GetName(item.ProductionStatus));
+                itemElement.SetAttribute("rarity", Enum.GetName(item.Rarity));
+                itemElement.SetAttribute("recipe_parent_item_id", item.RecipeParentItemID.ToString());
+                itemElement.SetAttribute("sell_price", item.SellPrice.ToString());
+                itemElement.SetAttribute("stock_priority", item.StockPriority.ToString());
+                itemElement.SetAttribute("store_type", storeType);
+                itemElement.SetAttribute("tribe", Enum.GetName(item.Tribe));
+                itemElement.SetAttribute("unique_in_inventory", item.UniqueInInventory ? "true" : "false");
+
+                itemElement.SetAttribute("sell_count", item.SellCount.ToString());
+                itemElement.SetAttribute("ingamedescription", _itemNameDict[item.DescriptionText].ToString());
+                itemElement.SetAttribute("special_display_prefab", item.SpecialDisplayPrefab.ToString());
+                itemElement.SetAttribute("member_only", item.MemberOnly ? "true" : "false");
+                itemElement.SetAttribute("delay_use_duration", item.DelayUseDuration.ToString());
+                itemElement.SetAttribute("loot_id", item.LootId.ToString());
                 itemElement.SetAttribute("release_date", item.ReleaseDate == DateTime.UnixEpoch ? "None" : item.ReleaseDate.ToString());
 
                 if (item.ItemEffects.Count > 0)

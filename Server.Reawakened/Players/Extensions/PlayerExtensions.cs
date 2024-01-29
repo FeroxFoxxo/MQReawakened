@@ -1,10 +1,13 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -65,6 +68,9 @@ public static class PlayerExtensions
             player.SendLevelUp();
         }
 
+        if (player.TempData.ReputationBoostsElixir)
+            reputation = Convert.ToInt32(reputation * 0.1);
+
         charData.Reputation = reputation;
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
     }
@@ -110,6 +116,10 @@ public static class PlayerExtensions
     public static void AddBananas(this Player player, int collectedBananas)
     {
         var charData = player.Character.Data;
+
+        if (player.TempData.BananaBoostsElixir)
+            collectedBananas = Convert.ToInt32(collectedBananas * 0.1);
+
         charData.Cash += collectedBananas;
         player.SendCashUpdate();
     }
@@ -181,10 +191,9 @@ public static class PlayerExtensions
         player.SendXt("lw", error, levelName, surroundingLevels);
     }
 
-    public static void SetCharacterSelected(this Player player, int characterId)
+    public static void SetCharacterSelected(this Player player, CharacterModel character)
     {
-        var characterHandler = player.DatabaseContainer.CharacterHandler;
-        player.Character = characterHandler.Get(characterId);
+        player.Character = character;
         player.UserInfo.LastCharacterSelected = player.CharacterName;
     }
 
@@ -194,7 +203,10 @@ public static class PlayerExtensions
     public static void DeleteCharacter(this Player player, int id)
     {
         var characterHandler = player.DatabaseContainer.CharacterHandler;
+
         player.UserInfo.CharacterIds.Remove(id);
+
+        if (characterHandler.Data.ContainsKey(id))
         characterHandler.Data.Remove(id);
 
         player.UserInfo.LastCharacterSelected = player.UserInfo.CharacterIds.Count > 0
@@ -287,8 +299,6 @@ public static class PlayerExtensions
 
                 objective.CountLeft -= count;
 
-                player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
-
                 if (objective.CountLeft <= 0)
                 {
                     objective.CountLeft = 0;
@@ -303,6 +313,8 @@ public static class PlayerExtensions
 
                     hasObjComplete = true;
                 }
+                else
+                    player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
             }
 
             if (!quest.Objectives.Any(o => !o.Value.Completed) && hasObjComplete)

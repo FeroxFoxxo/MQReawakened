@@ -1,9 +1,9 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._e__EmailHandler;

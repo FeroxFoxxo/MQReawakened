@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
@@ -28,7 +29,8 @@ public class HazardControllerComp : Component<HazardController>
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
-        if (HurtEffect == "NoEffect")
+        if (HurtEffect == "NoEffect" ||
+            player.TempData.Invincible)
             return;
 
         var character = player.Character;

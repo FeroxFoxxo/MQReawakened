@@ -6,5 +6,14 @@ public enum AchConditionType
     Unknown,
     CollectIdol,
     CollectBanana,
-    EquipItem
+    EquipItem,
+    CraftItem,
+    Drink,
+    Consumable,
+    DefeatEnemy,
+    DefeatEnemyInLevel,
+    CompleteQuest,
+    CompleteQuestInLevel,
+    ExploreTrail,
+    Talkto
 }

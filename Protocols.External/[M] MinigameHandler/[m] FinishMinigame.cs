@@ -4,7 +4,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Players.Models.Minigames;
+using Server.Reawakened.Players.Models.Arenas;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.BundlesInternal;
 

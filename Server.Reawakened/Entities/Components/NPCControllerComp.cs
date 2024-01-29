@@ -14,6 +14,7 @@ using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Models.Npcs;
 using System.Text;
 using static A2m.Server.QuestStatus;
@@ -128,6 +129,8 @@ public class NPCControllerComp : Component<NPCController>
     {
         player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
 
+        player.CheckAchievement(AchConditionType.Talkto, PrefabName, Logger);
+
         switch (NpcType)
         {
             case NpcType.Vendor:
@@ -155,6 +158,14 @@ public class NPCControllerComp : Component<NPCController>
                     default:
                         break;
                 }
+
+                player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
+
+                var newStatus = GetQuestStatus(player.Character);
+
+                if (newStatus is NPCStatus.QuestCompleted or NPCStatus.QuestAvailable)
+                    TalkToNpc(player);
+
                 break;
             case NpcType.Dialog:
                 SendDialog(player);
@@ -340,9 +351,10 @@ public class NPCControllerComp : Component<NPCController>
                 return true;
             }
 
-        Logger.LogTrace("[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS]", quest.Name, quest.Id);
+        if (previousQuests.Count != 0)
+            Logger.LogTrace("[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS]", quest.Name, quest.Id);
 
-        return false;
+        return previousQuests.Count == 0;
     }
 
     public void ValidateQuest(Player player)

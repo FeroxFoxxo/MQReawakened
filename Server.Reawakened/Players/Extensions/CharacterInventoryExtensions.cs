@@ -1,13 +1,68 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
+using Server.Base.Logging;
+using Server.Base.Timers.Extensions;
+using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterInventoryExtensions
 {
+    public static void SetBananaElixirTimer(this Player player, object _) => player.TempData.BananaBoostsElixir = false;
+    public static void SetXpElixirTimer(this Player player, object _) => player.TempData.ReputationBoostsElixir = false;    
+
+    public static void HandleItemEffect(this Player player, ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, ILogger<PlayerStatus> logger)
+    {
+        var effect = usedItem.ItemEffects.FirstOrDefault();
+        if (usedItem.ItemEffects.Count > 0)
+            player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+                                (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, true));
+
+        switch (effect.Type)
+        {
+            case ItemEffectType.Healing:
+            case ItemEffectType.HealthBoost:
+            case ItemEffectType.IncreaseHealing:
+            case ItemEffectType.Regeneration:
+                if (player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
+                    return;
+
+                player.HealCharacter(usedItem, timerThread, serverRConfig, effect.Type);
+                break;
+            case ItemEffectType.IncreaseAirDamage:
+            case ItemEffectType.IncreaseAllResist:
+            case ItemEffectType.Shield:
+            case ItemEffectType.WaterBreathing:
+            case ItemEffectType.PetRegainEnergy:
+            case ItemEffectType.PetEnergyValue:
+            case ItemEffectType.BananaMultiplier:
+                player.TempData.BananaBoostsElixir = true;
+                timerThread.DelayCall(player.SetBananaElixirTimer, player.TempData.BananaBoostsElixir, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
+                break;
+            case ItemEffectType.ExperienceMultiplier:
+                player.TempData.ReputationBoostsElixir = true;
+                timerThread.DelayCall(player.SetXpElixirTimer, player.TempData.BananaBoostsElixir, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
+                break;
+            case ItemEffectType.Defence:
+                break;
+            case ItemEffectType.Invalid:
+            case ItemEffectType.Unknown:
+            case ItemEffectType.Unknown_61:
+            case ItemEffectType.Unknown_70:
+            case ItemEffectType.Unknown_74:
+            default:
+                logger.LogError("Unknown ItemEffectType of ({effectType}) for item {usedItemName}", effect.Type, usedItem.PrefabName);
+                return;
+        }
+        logger.LogError("Applied ItemEffectType of ({effectType}) from item {usedItemName} for player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
+    }
+
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>
         characterData.Data.Inventory.Items.TryGetValue(itemId, out outItem);
 

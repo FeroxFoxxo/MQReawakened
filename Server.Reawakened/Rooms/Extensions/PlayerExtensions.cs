@@ -87,9 +87,10 @@ public static class PlayerExtensions
     public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
     {
         character.Data.SetPlayerData(player);
-        player.SetCharacterSelected(character.Id);
+        player.SetCharacterSelected(character);
         player.DatabaseContainer.AddPlayer(player);
         player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
+        player.SendXt("de", player.DatabaseContainer.EventPrefabs.EventInfo.ToString());
 
         foreach (var friend in player.DatabaseContainer.GetPlayersByFriend(player.CharacterId)
                      .Where(p =>
@@ -99,7 +100,7 @@ public static class PlayerExtensions
                 )
             friend.SendXt("fy", player.CharacterName);
     }
-
+    
     public static void DumpToLobby(this Player player) => player.QuickJoinRoom(-1, out var _);
 
     public static List<GameObjectModel> GetPlaneEntities(this Player player)
