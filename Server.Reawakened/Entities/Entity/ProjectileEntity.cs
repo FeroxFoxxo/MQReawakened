@@ -19,7 +19,6 @@ public class ProjectileEntity : TicklyEntity
     public ProjectileEntity(Player player, string id, Vector3Model position, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig config)
     {
         // Initialize projectile location info
-        Tickrate = config.RoomTickRate;
         Player = player;
         ProjectileID = id;
         Position = position;
@@ -29,10 +28,12 @@ public class ProjectileEntity : TicklyEntity
         var isRight = direction > 0;
         Position.X += isRight ? config.ProjectileXOffset : -config.ProjectileXOffset;
         Position.Y += config.ProjectileYOffset;
+        SpawnPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
+
         Speed = isRight ? config.ProjectileSpeed : -config.ProjectileSpeed;
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
-        _hitboxPosition = Position;
+        _hitboxPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
         _hitboxPosition.X -= isRight ? 0 : config.ProjectileWidth;
 
         // Send all information to room

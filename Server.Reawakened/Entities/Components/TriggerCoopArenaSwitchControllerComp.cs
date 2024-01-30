@@ -20,6 +20,8 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
+        base.RunSyncedEvent(syncEvent, player);
+
         if (Id == "5664") // Temporary while blue arenas are in progress
         {
             player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1);

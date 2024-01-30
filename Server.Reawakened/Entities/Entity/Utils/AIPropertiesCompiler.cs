@@ -22,6 +22,10 @@ public class AIPropertiesCompiler
                 return CreateAggro(enemy);
             case "Shooting":
                 return CreateShooting(enemy);
+            case "Bomber":
+                return CreateBomber(enemy);
+            case "Grenadier":
+                return CreateGrenadier(enemy);
             case "Stomper":
                 return CreateStomper(enemy);
             case "Stinger":
@@ -101,6 +105,32 @@ public class AIPropertiesCompiler
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "fireSpreadStartAngle"));
 
         Console.WriteLine(sb.ToString());
+        return sb.ToString();
+    }
+
+    public string CreateBomber(Enemy enemy)
+    {
+        var sb = new SeparatedStringBuilder(';');
+
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Bomber", "inTime"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Bomber", "loopTime"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Bomber", "bombRadius"));
+
+        return sb.ToString();
+    }
+
+    public string CreateGrenadier(Enemy enemy)
+    {
+        var sb = new SeparatedStringBuilder(';');
+
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Grenadier", "inTime"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Grenadier", "loopTime"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Grenadier", "outTime"));
+        sb.Append(Convert.ToBoolean(enemy.BehaviorList.GetBehaviorStat("Grenadier", "isTracking")) ? 1 : 0);
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Grenadier", "projCount"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Grenadier", "projSpeed"));
+        sb.Append(enemy.BehaviorList.GetBehaviorStat("Grenadier", "maxHeight"));
+
         return sb.ToString();
     }
 

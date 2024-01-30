@@ -229,7 +229,7 @@ public class UseSlot : ExternalProtocol
     private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
         var rand = new Random();
-        var prjId = Math.Abs(rand.Next()).ToString(); ;
+        var prjId = Math.Abs(rand.Next()).ToString();
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next()).ToString();
 

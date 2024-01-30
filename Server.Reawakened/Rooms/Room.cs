@@ -116,11 +116,17 @@ public class Room : Timer
                     case string bathog when bathog.Contains(config.EnemyNameSearch[3]):
                         Enemies.Add(component.Id, new EnemyBathog(this, component.Id, component));
                         break;
+                    case string bomber when bomber.Contains(config.EnemyNameSearch[4]):
+                        Enemies.Add(component.Id, new EnemyBomber(this, component.Id, component));
+                        break;
                     case string crawler when crawler.Contains(config.EnemyNameSearch[5]):
                         Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, component));
                         break;
                     case string dragon when dragon.Contains(config.EnemyNameSearch[6]):
                         Enemies.Add(component.Id, new EnemyDragon(this, component.Id, component));
+                        break;
+                    case string grenadier when grenadier.Contains(config.EnemyNameSearch[7]):
+                        Enemies.Add(component.Id, new EnemyGrenadier(this, component.Id, component));
                         break;
                     case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
                         Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));
@@ -131,9 +137,9 @@ public class Room : Timer
                     case string stomper when stomper.Contains(config.EnemyNameSearch[10]):
                         Enemies.Add(component.Id, new EnemyStomper(this, component.Id, component));
                         break;
-                    //case string vespid when vespid.Contains(config.EnemyNameSearch[11]):
-                    //    Enemies.Add(component.Id, new EnemyVespid(this, component.Id, component));
-                    //    break;
+                    case string vespid when vespid.Contains(config.EnemyNameSearch[11]):
+                        Enemies.Add(component.Id, new EnemyVespid(this, component.Id, component));
+                        break;
                 }
             }
             if (component.Name == config.BreakableComponentName)

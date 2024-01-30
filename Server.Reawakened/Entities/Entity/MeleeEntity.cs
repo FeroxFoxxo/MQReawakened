@@ -20,7 +20,6 @@ public class MeleeEntity : TicklyEntity
     public MeleeEntity(Player player, string id, Vector3Model position, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig config)
     {
         // Initialize projectile location info
-        Tickrate = config.RoomTickRate;
         Player = player;
         ProjectileID = id;
         Position = position;
@@ -30,6 +29,8 @@ public class MeleeEntity : TicklyEntity
         var isRight = direction > 0;
         Position.X += isRight ? 0 : 0;
         Position.Y += config.MeleeYOffset;
+        SpawnPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
+
         _hitboxPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
         _hitboxPosition.X -= isRight ? 0 : config.MeleeWidth;
         Speed = 0;

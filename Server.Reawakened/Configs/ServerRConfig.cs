@@ -78,6 +78,8 @@ public class ServerRConfig : IRConfig
     public float MeleeYOffset { get; set; }
     public float MeleeWidth { get; set; }
     public float MeleeHeight { get; set; }
+    public float PlayerWidth { get; set; }
+    public float PlayerHeight { get; set; }
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -222,5 +224,8 @@ public class ServerRConfig : IRConfig
         MeleeYOffset = 0f;
         MeleeHeight = 1f;
         MeleeWidth = 3f;
+
+        PlayerHeight = 1f;
+        PlayerWidth = 1f;
     }
 }

@@ -267,7 +267,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                             {
                                 switch (behaviorData.Name)
                                 {
-                                    case "attackTime":
+                                    case "inTime":
                                         inTime = float.Parse(behaviorData.Value);
                                         behaviorDataModel.DataList.Add(behaviorData.Name, inTime);
                                         continue;
@@ -278,6 +278,51 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                                     case "bombRadius":
                                         bombRadius = float.Parse(behaviorData.Value);
                                         behaviorDataModel.DataList.Add(behaviorData.Name, bombRadius);
+                                        continue;
+                                }
+                            }
+                            break;
+
+                        // Grenadier
+                        case "Grenadier":
+                            var gInTime = 0f;
+                            var gLoopTime = 0f;
+                            var gOutTime = 0f;
+                            var isTracking = true;
+                            var projCount = 1;
+                            var projSpeed = 1f;
+                            var maxHeight = 1f;
+                            foreach (XmlAttribute behaviorData in behavior.Attributes)
+                            {
+                                switch (behaviorData.Name)
+                                {
+                                    case "inTime":
+                                        gInTime = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, gInTime);
+                                        continue;
+                                    case "loopTime":
+                                        gLoopTime = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, gLoopTime);
+                                        continue;
+                                    case "outTime":
+                                        gOutTime = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, gOutTime);
+                                        continue;
+                                    case "isTracking":
+                                        isTracking = bool.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, isTracking);
+                                        continue;
+                                    case "projCount":
+                                        projCount = int.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, projCount);
+                                        continue;
+                                    case "projSpeed":
+                                        projSpeed = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, projSpeed);
+                                        continue;
+                                    case "maxHeight":
+                                        maxHeight = float.Parse(behaviorData.Value);
+                                        behaviorDataModel.DataList.Add(behaviorData.Name, maxHeight);
                                         continue;
                                 }
                             }

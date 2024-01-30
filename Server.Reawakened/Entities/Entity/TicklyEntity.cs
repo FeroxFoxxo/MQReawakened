@@ -14,19 +14,19 @@ namespace Server.Reawakened.Entities.Entity;
 public class TicklyEntity : Component<ProjectileController>
 {
     public new Vector3Model Position;
+    public new Vector3Model SpawnPosition;
     public float Speed, LifeTime, StartTime;
     public Player Player;
     public string ProjectileID = string.Empty;
     public string PrjPlane;
     public BaseCollider Collider;
-    public double Tickrate;
     public ILogger<TicklyEntity> Logger { get; set; }
 
     public override void Update()
     {
         if (Speed != 0)
         {
-            Position.X += Speed / (float)(Tickrate - 2);
+            Position.X = SpawnPosition.X + (Player.Room.Time - StartTime) * Speed;
             Collider.Position.x = Position.X;
         }
 
