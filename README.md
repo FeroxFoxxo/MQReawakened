@@ -32,7 +32,7 @@ Please email me at feroxfoxxo@gmail.com if anything is in breach, which will be 
 
 #### Developer information
 
-We use [GitHub Projects](https://github.com/FeroxFoxxo/MQReawakened/projects) for managing what teams are working on, and [Github Wiki](https://github.com/FeroxFoxxo/MQReawakened/wiki) for documenting the codebase.
+~~We use [GitHub Projects](https://github.com/FeroxFoxxo/MQReawakened/projects) for managing what teams are working on, and [Github Wiki](https://github.com/FeroxFoxxo/MQReawakened/wiki) for documenting the codebase.~~ We've moved to using [Discord](https://discord.gg/gSbZ8apE6V) to handle this!
 
 If you have anything you wish to report, please submit an issue through [the repo's issue system](https://github.com/FeroxFoxxo/MQReawakened/issues), and it will be assigned to someone accordingly.
 
