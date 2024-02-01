@@ -59,6 +59,9 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml<QuestCatalog>
     public QuestDescription[] GetQuestValidatorById(int npcId) =>
         QuestCatalogs.Values.Where(q => q.ValidatorGoId == npcId).ToArray();
 
+    public QuestDescription[] GetQuestValidatorByName(string npcName) =>
+        QuestCatalogs.Values.Where(q => q.ValidatorName == npcName).ToArray();
+
     public List<QuestDescription> GetQuestLineQuests(QuestLineDescription questLine) =>
         QuestLines.TryGetValue(questLine, out var v) ? v : null;
 }

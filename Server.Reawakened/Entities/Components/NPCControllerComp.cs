@@ -35,6 +35,8 @@ public class NPCControllerComp : Component<NPCController>
     public DialogDictionary Dialog { get; set; }
     public MiscTextDictionary MiscText { get; set; }
 
+    public ServerRConfig Config { get; set; }
+
     public InternalVendor VendorCatalog { get; set; }
     public InternalDialog DialogCatalog { get; set; }
     public InternalDialogRewrite DialogRewrites { get; set; }
@@ -65,8 +67,8 @@ public class NPCControllerComp : Component<NPCController>
 
         GiverQuests = [..
             QuestCatalog.GetQuestGiverById(int.Parse(Id))
-                .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
-                .OrderBy(x => x.Id)
+            .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
+            .OrderBy(x => x.Id)
         ];
 
         ValidatorQuests = [..
@@ -75,9 +77,46 @@ public class NPCControllerComp : Component<NPCController>
                 .OrderBy(x => x.Id)
         ];
 
+        if (!Config.Is2014Client)
+        {
+            if (GiverQuests.Length > 0)
+            {
+                Console.WriteLine(GiverQuests[0].QuestgGiverName);
+                GiverQuests = [..
+                    QuestCatalog.GetQuestGiverByName(GiverQuests[0].QuestgGiverName)
+                        .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
+                        .OrderBy(x => x.Id)
+                ];
+            }
+
+            if (ValidatorQuests.Length > 0)
+            {
+                ValidatorQuests = [..
+                    QuestCatalog.GetQuestGiverByName(ValidatorQuests[0].ValidatorName)
+                                .Where(x => x.ValidatorLevelId == Room.LevelInfo.LevelId)
+                                .OrderBy(x => x.Id)
+                ];
+            }
+        }
+        
+
         var questGiverNames = GiverQuests.Select(x => (int)x.GetField("_questGiverNameId"));
         var questValidatorNames = ValidatorQuests.Select(x => (int)x.GetField("_validatorNameId"));
         var allQuestNames = questGiverNames.Concat(questValidatorNames).Where(i => i > 0).ToArray();
+
+        Console.WriteLine(ComponentData.NpcName);
+
+       // GiverQuests2013 = [..
+       //     QuestCatalog.GetQuestGiverById(int.Parse(Id))
+       //         .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
+       //         .OrderBy(x => x.Id)
+       // ];
+
+        //ValidatorQuests2013 = [..
+        //    QuestCatalog.GetQuestValidatorById(int.Parse(Id))
+        //        .Where(x => x.ValidatorLevelId == Room.LevelInfo.LevelId)
+        //        .OrderBy(x => x.Id)
+        //];
 
         if (allQuestNames.Length > 0)
         {
