@@ -128,6 +128,10 @@ public static class PlayerExtensions
     {
         var charData = player.Character.Data;
         charData.Cash -= collectedBananas;
+
+        if (charData.Cash < 0)
+            charData.Cash = 0;
+
         player.SendCashUpdate();
     }
 
@@ -142,6 +146,10 @@ public static class PlayerExtensions
     {
         var charData = player.Character.Data;
         charData.NCash -= collectedNCash;
+
+        if (charData.NCash < 0)
+            charData.NCash = 0;
+
         player.SendCashUpdate();
     }
 

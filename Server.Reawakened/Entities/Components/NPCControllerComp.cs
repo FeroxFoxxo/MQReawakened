@@ -78,19 +78,20 @@ public class NPCControllerComp : Component<NPCController>
         ValidatorQuests = [..
             QuestCatalog.GetQuestValidatorById(int.Parse(Id))
                 .Where(x => x.ValidatorLevelId == Room.LevelInfo.LevelId)
-                .OrderBy(x => x.Id)
         ];
 
         GiverQuests = Config.Is2014Client
             ? ([..
                 QuestCatalog.GetQuestGiverById(int.Parse(Id))
                 .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
-                .OrderBy(x => x.Id)
             ]) : ([..
                 QuestCatalog.GetQuestGiverByName(
                     MiscText.GetLocalizationTextById(NameId > 0 ? NameId : GetNameId())
                 )
             ]);
+
+        GiverQuests = [.. GiverQuests.OrderBy(x => x.Id)];
+        ValidatorQuests = [.. ValidatorQuests.OrderBy(x => x.Id)];
 
         var questName = GetNameId();
 
