@@ -44,10 +44,10 @@ public class Room : Timer
     public Dictionary<string, List<List<BaseComponent>>> DuplicateEntities;
 
     public SpawnPointComp DefaultSpawn { get; set; }
-    public SpawnPointComp CheckpointSpawn { get; set; }
     public InternalColliders ColliderCatalog;
 
-    public string CheckpointId { get; set; }
+    public CheckpointControllerComp LastCheckpoint { get; set; }
+
     public LevelInfo LevelInfo => _level.LevelInfo;
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
@@ -67,8 +67,6 @@ public class Room : Timer
         Logger = logger;
         ColliderCatalog = colliderCatalog;
         _level = level;
-
-        ResetCheckpoints();
 
         Players = [];
         GameObjectIds = [];
@@ -160,12 +158,6 @@ public class Room : Timer
 
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
         Start();
-    }
-
-    public void ResetCheckpoints()
-    {
-        CheckpointSpawn = null;
-        CheckpointId = string.Empty;
     }
 
     public override void OnTick()
@@ -305,17 +297,11 @@ public class Room : Timer
         var character = player.Character;
 
         var spawnPoint = GetSpawnPoint(character);
-        var coords = GetSpawnCoords(spawnPoint);
+        var coordinates = GetSpawnCoordinates(spawnPoint);
 
-        character.Data.SpawnPositionX = coords.X;
-        character.Data.SpawnPositionY = coords.Y;
-
-        if (spawnPoint.ParentPlane == "Plane1")
-            character.Data.SpawnOnBackPlane = true;
-        else if (spawnPoint.ParentPlane == "Plane0")
-            character.Data.SpawnOnBackPlane = false;
-        else
-            Logger.LogWarning("Unknown plane for portal: {PortalPlane}", spawnPoint.ParentPlane);
+        character.Data.SpawnPositionX = coordinates.X;
+        character.Data.SpawnPositionY = coordinates.Y;
+        character.Data.SpawnOnBackPlane = spawnPoint.IsOnBackPlane(Logger);
 
         Logger.LogDebug(
             "Spawning {CharacterName} at object '{Object}' (spawn '{SpawnPoint}') for room id '{NewRoom}'.",
@@ -341,7 +327,7 @@ public class Room : Timer
         }
     }
 
-    public static Vector2Model GetSpawnCoords(BaseComponent spawnLocation)
+    public static Vector2Model GetSpawnCoordinates(BaseComponent spawnLocation)
     {
         var x = spawnLocation.Rectangle.X;
 
@@ -392,33 +378,6 @@ public class Room : Timer
         foreach (var player in Players.Values)
             player.DumpToLobby();
     }
-
-    // Implement this for IDesctructible eventually.
-    //public void Kill(int objectId)
-    //{
-    //    lock (_roomLock)
-    //        if (KilledObjects.Contains(objectId))
-    //            return;
-
-
-    //    Logger.LogInformation("Killing object {id}...", objectId);
-
-    //    var roomEntities = Entities.Values.SelectMany(s => s).ToList();
-
-    //    foreach (var component in roomEntities.Where(c => c is IKillable))
-    //        if (component.Id == objectId)
-    //        {
-    //            var kbComp = component as IKillable;
-
-    //            kbComp.ObjectKilled();
-
-    //            Logger.LogDebug("Killed component {component} from GameObject {prefabname} with Id {id}",
-    //                component.GetType().Name, component.PrefabName, component.Id);
-    //        }
-
-    //    lock (_roomLock)
-    //        KilledObjects.Add(objectId);
-    //}
 
     public string GetRoomName() =>
     $"{LevelInfo.LevelId}_{_roomId}";

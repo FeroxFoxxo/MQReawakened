@@ -20,35 +20,20 @@ public class CheckpointControllerComp : TriggerCoopControllerComp<CheckpointCont
 
         Logger.LogInformation("Checkpoint 1: {SpawnPoint}", SpawnPoint);
 
-        if (Room.CheckpointId == Id)
+        if (Room.LastCheckpoint != null)
+            if (Room.LastCheckpoint.Id == Id)
+            {
+                Logger.LogTrace("Skipped checkpoint: {SpawnPoint}", SpawnPoint);
+                return;
+            }
+
+        if (player.Room.LastCheckpoint != null)
         {
-            Logger.LogTrace("Skipped checkpoint: {SpawnPoint}", SpawnPoint);
-            return;
+            var checkpoints = Room.GetComponentsOfType<CheckpointControllerComp>().Values;
+            var possibleLastCheckpoint = checkpoints.FirstOrDefault(c => c.Id == player.Room.LastCheckpoint.Id);
+            possibleLastCheckpoint?.Trigger(player, false);
         }
 
-        var spawns = Room.GetComponentsOfType<SpawnPointComp>()
-            .Values.OrderBy(s => s.Index).ToArray();
-
-        var spawnPoint = spawns.FirstOrDefault(s => s.Index == SpawnPoint);
-
-        if (spawnPoint != null)
-            Room.CheckpointSpawn = spawnPoint;
-        else
-        {
-            var sb = new StringBuilder();
-
-            sb.AppendLine($"SpawnPoint Index: {SpawnPoint}")
-                .Append($"Possibilities: {string.Join(", ", spawns.Select(s => $"{s.Index} (ID: {s.Id})"))}");
-
-            FileLogger.WriteGenericLog<CheckpointController>("checkpoints-errors", "Checkpoint Spawn Failed",
-                sb.ToString(), LoggerType.Warning);
-        }
-
-        var checkpoints = Room.GetComponentsOfType<CheckpointControllerComp>().Values;
-        var possibleLastCheckpoint = checkpoints.FirstOrDefault(c => c.Id == Room.CheckpointId);
-
-        possibleLastCheckpoint?.Trigger(player, false);
-
-        Room.CheckpointId = Id;
+        player.Room.LastCheckpoint = this;
     }
 }

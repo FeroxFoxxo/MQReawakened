@@ -1,6 +1,9 @@
-﻿using Server.Reawakened.Players;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 using System.Xml;
+using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Rooms.Extensions;
 
@@ -33,5 +36,17 @@ public static class RoomExtensions
     {
         var x = attributes.GetValue(valName);
         return !string.IsNullOrEmpty(x) ? Convert.ToSingle(x) : 0;
+    }
+
+    public static bool IsOnBackPlane(this BaseComponent component, Microsoft.Extensions.Logging.ILogger logger)
+    {
+        if (component.ParentPlane == "Plane1")
+            return true;
+        else if (component.ParentPlane == "Plane0")
+            return false;
+        else
+            logger.LogWarning("Unknown plane for portal: {PortalPlane}", component.ParentPlane);
+
+        return false;
     }
 }
