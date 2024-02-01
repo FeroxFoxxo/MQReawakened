@@ -14,6 +14,7 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Models.Npcs;
+using System.Linq;
 using System.Text;
 using static A2m.Server.QuestStatus;
 using static NPCController;
@@ -221,11 +222,29 @@ public class NPCControllerComp : Component<NPCController>
     public void SendDialog(Player player)
     {
         if (DialogInfo == null)
-        {
-            Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog catalog found for NPC",
-                NpcName, Id);
-            return;
-        }
+            if (!string.IsNullOrEmpty(Name))
+            {
+                var foundDialog = Dialog.GenericDialog.FirstOrDefault(x => x.Key.Contains(Name + Id) && x.Value.Count > 0).Value;
+
+                if (foundDialog == null) {
+                    Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog catalog found for NPC", NpcName, Id);
+                    return;
+                }
+
+                var foundConversation = foundDialog.FirstOrDefault();
+
+                var dialogEntry = new Dictionary<int, ConversationInfo>
+                {
+                    {
+                        1,
+                        new ConversationInfo(foundConversation.DialogId, foundConversation.ConversationId)
+                    }
+                };
+
+                DialogInfo = new DialogInfo(int.Parse(Id), NameId, 0, dialogEntry);
+            }
+            else
+                return;
 
         var dialog = DialogInfo.Dialog
             .Where(d => d.Key <= player.Character.Data.GlobalLevel)

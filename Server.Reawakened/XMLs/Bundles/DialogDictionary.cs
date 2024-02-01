@@ -23,7 +23,7 @@ public class DialogDictionary : DialogXML, ILocalizationXml<DialogDictionary>
 
     public Dictionary<int, List<Conversation>> DialogDict;
 
-    private Dictionary<int, string> _dialogNames;
+    public Dictionary<int, string> DialogNames;
 
     public void InitializeVariables()
     {
@@ -33,7 +33,7 @@ public class DialogDictionary : DialogXML, ILocalizationXml<DialogDictionary>
         this.SetField<DialogXML>("_localizationDict", new Dictionary<int, string>());
         this.SetField<DialogXML>("_dialogDict", new Dictionary<int, List<Conversation>>());
 
-        _dialogNames = [];
+        DialogNames = [];
 
         DialogDict = [];
         QuestDialog = [];
@@ -79,7 +79,7 @@ public class DialogDictionary : DialogXML, ILocalizationXml<DialogDictionary>
                         dialogName = attribute.Value;
                 }
 
-                _dialogNames.TryAdd(id, dialogName);
+                DialogNames.TryAdd(id, dialogName);
             }
         }
     }
@@ -97,11 +97,11 @@ public class DialogDictionary : DialogXML, ILocalizationXml<DialogDictionary>
                 var dialogModel = dialog.Value.Select(c => new ConversationModel(c.DialogId, c.ConversationId)).ToList();
 
                 if (conversation.DialogType == "Quest")
-                    QuestDialog.TryAdd(_dialogNames[dialog.Key], dialogModel);
+                    QuestDialog.TryAdd(DialogNames[dialog.Key], dialogModel);
                 else if (conversation.DialogType == "Generic")
-                    GenericDialog.TryAdd(_dialogNames[dialog.Key], dialogModel);
+                    GenericDialog.TryAdd(DialogNames[dialog.Key], dialogModel);
                 else if (conversation.DialogType == "Vendor")
-                    VendorDialog.TryAdd(_dialogNames[dialog.Key], dialogModel);
+                    VendorDialog.TryAdd(DialogNames[dialog.Key], dialogModel);
             }
         }
     }
