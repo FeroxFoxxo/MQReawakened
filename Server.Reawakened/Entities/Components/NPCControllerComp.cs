@@ -77,24 +77,25 @@ public class NPCControllerComp : Component<NPCController>
                 .OrderBy(x => x.Id)
         ];
 
+
+        // Clean this part up. For now, this is to get progress on 2013 working.
         if (!Config.Is2014Client)
         {
-            if (GiverQuests.Length > 0)
+            if (Id == Config.OnkoGoId.ToString())
             {
-                Console.WriteLine(GiverQuests[0].QuestgGiverName);
+                Console.WriteLine("hi");
                 GiverQuests = [..
-                    QuestCatalog.GetQuestGiverByName(GiverQuests[0].QuestgGiverName)
+                    QuestCatalog.GetQuestGiverByName("Onko")
                         .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
                         .OrderBy(x => x.Id)
                 ];
             }
-
-            if (ValidatorQuests.Length > 0)
+            if (GiverQuests.Length > 0)
             {
-                ValidatorQuests = [..
-                    QuestCatalog.GetQuestGiverByName(ValidatorQuests[0].ValidatorName)
-                                .Where(x => x.ValidatorLevelId == Room.LevelInfo.LevelId)
-                                .OrderBy(x => x.Id)
+                GiverQuests = [..
+                    QuestCatalog.GetQuestGiverByName(GiverQuests[0].QuestgGiverName)
+                        .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
+                        .OrderBy(x => x.Id)
                 ];
             }
         }
