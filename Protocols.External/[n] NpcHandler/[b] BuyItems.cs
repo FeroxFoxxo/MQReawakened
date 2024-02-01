@@ -18,7 +18,7 @@ public class BuyItems : ExternalProtocol
         var items = message[6].Split('|');
 
         // On 2014, vendorGoId[5] is the vendor id (unused)
-        var vendorGoId = int.Parse(message[ServerConfig.Is2014Client ? 7 : 5]);
+        var vendorGoId = int.Parse(message[ServerConfig.GameVersion >= GameVersion.v2014 ? 7 : 5]);
 
         foreach (var item in items)
         {

@@ -383,4 +383,10 @@
         <Item prefabName="COL_FOOD_Cookie02" />
         <Item prefabName="COL_FOOD_Pinapple01" />
     </Vendor>
+    <Level id="514">
+        <!-- Crossroads Path Update -->
+        <Vendor objectId="615" name="Altak" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1180" greetingConversationId="3173" leavingConversationId="3372">
+            <Item prefabName="Add_COM_Armor01_LS01" />
+        </Vendor>
+    </Level>
 </VendorCatalog>

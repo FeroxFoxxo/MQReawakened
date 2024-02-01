@@ -40,10 +40,10 @@ public static class AssetBuilderExtensions
             }
             else
             {
-                var oldAssetTime = value.CacheTime - config.MajorClientUpdate;
-                var newAssetTime = newAsset.CacheTime - config.MajorClientUpdate;
+                var oldAssetTime = value.CacheTime - config.v2014Timestamp;
+                var newAssetTime = newAsset.CacheTime - config.v2014Timestamp;
 
-                if (!sConfig.Is2014Client)
+                if (sConfig.GameVersion <= GameVersion.v2013)
                 {
                     oldAssetTime *= -1;
                     newAssetTime *= -1;

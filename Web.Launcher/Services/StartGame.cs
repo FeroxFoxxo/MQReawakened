@@ -108,13 +108,20 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
 
         var lastUpdate = DateTime.ParseExact(CurrentVersion.game.lastUpdate, lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
-        var majorClientUpdate = DateTime.ParseExact(lConfig.MajorClientUpdate, lConfig.TimeFilter,
-            CultureInfo.InvariantCulture);
-
-        sConfig.Is2014Client = lastUpdate > majorClientUpdate;
-
         lWConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
-        lWConfig.MajorClientUpdate = majorClientUpdate.ToUnixTimestamp();
+
+        sConfig.GameVersion = GameVersion.Unknown;
+        lWConfig.v2014Timestamp = DateTime.ParseExact(lConfig.ClientUpdates[GameVersion.v2014], lConfig.TimeFilter, CultureInfo.InvariantCulture).ToUnixTimestamp();
+
+        foreach (var updateDate in lConfig.ClientUpdates
+            .ToDictionary(x => x.Key, x => DateTime.ParseExact(x.Value, lConfig.TimeFilter, CultureInfo.InvariantCulture))
+            .OrderBy(x => x.Value))
+        {
+            if (updateDate.Value > lastUpdate)
+                break;
+
+            sConfig.GameVersion = updateDate.Key;
+        }
 
         if (string.IsNullOrEmpty(lWConfig.AnalyticsApiKey))
         {
@@ -245,7 +252,7 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
         { $"{header}.unity.url.crisp.host", $"{ServerAddress}/Chat/" },
         { "asset.log", lConfig.LogAssets ? "true" : "false" },
         { "asset.disableversioning", lConfig.DisableVersions ? "true" : "false" },
-        { "asset.jboss", $"{ServerAddress}/Apps{(sConfig.Is2014Client ? "/" : string.Empty)}" },
+        { "asset.jboss", $"{ServerAddress}/Apps{(sConfig.GameVersion >= GameVersion.v2014 ? "/" : string.Empty)}" },
         { "asset.bundle", $"{ServerAddress}/Client/Bundles" },
         { "asset.audio", $"{ServerAddress}/Client/Audio" },
         { "logout.url", $"{ServerAddress}/Logout" },

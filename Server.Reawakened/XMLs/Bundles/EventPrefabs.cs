@@ -218,8 +218,8 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
         var rwConfig = Services.GetRequiredService<ServerRwConfig>();
         var rConfig = Services.GetRequiredService<ServerRConfig>();
 
-        var defaultEventName = rConfig.Is2014Client ? rwConfig.Current2014Event : rwConfig.Current2013Event;
-        var defaultTimedEvent = rConfig.Is2014Client ? rwConfig.Current2014TimedEvent : rwConfig.Current2013TimedEvent;
+        var defaultEventName = new string(rwConfig.CurrentEvent[rConfig.GameVersion].Reverse().ToArray());
+        var defaultTimedEvent = new string(rwConfig.CurrentTimedEvent[rConfig.GameVersion].Reverse().ToArray());
 
         var reversedDict = EventIdToNameDict.ToDictionary(
             x => x.Value,

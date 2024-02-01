@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Entities.Stats;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -127,6 +129,7 @@ public class TriggerArenaComp : TriggerCoopControllerComp<TriggerArena>
         if (win)
         {
             Room.SendSyncEvent(new Trigger_SyncEvent(Id, Room.Time, true, GrabAnyPlayer(), false));
+
             foreach (var entity in TriggeredRewards)
             {
                 if (Room.Entities.TryGetValue(entity.ToString(), out var foundTrigger))
@@ -138,6 +141,9 @@ public class TriggerArenaComp : TriggerCoopControllerComp<TriggerArena>
                     }
                 }
             }
+
+            foreach (var player in Room.Players.Values)
+                player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1);
         }
         else
             Room.SendSyncEvent(new Trigger_SyncEvent(Id, Room.Time, false, GrabAnyPlayer(), false));

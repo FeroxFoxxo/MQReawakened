@@ -1,4 +1,5 @@
 ﻿using Server.Base.Core.Abstractions;
+using Server.Reawakened.Configs;
 
 namespace Web.Launcher.Models;
 
@@ -24,7 +25,7 @@ public class LauncherRConfig : IRConfig
 
     public bool OverwriteGameConfig { get; }
     public string TimeFilter { get; }
-    public string MajorClientUpdate { get; }
+    public Dictionary<GameVersion, string> ClientUpdates { get; }
 
     public bool Fullscreen { get; }
     public bool OnGameClosePopup { get; }
@@ -52,7 +53,11 @@ public class LauncherRConfig : IRConfig
         TimeFilter = "yyyy-MM-dd_HH-mm-ss";
 
         // Likely occured between Nov 20 - Nov 24
-        MajorClientUpdate = "2013-11-22_12-00-00";
+        ClientUpdates = new Dictionary<GameVersion, string>
+        {
+            { GameVersion.v2013, "2009-01-01_12-00-00" },
+            { GameVersion.v2014, "2013-11-22_12-00-00" }
+        };
 
         Fullscreen = false;
         OnGameClosePopup = false;

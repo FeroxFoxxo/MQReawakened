@@ -4,24 +4,21 @@ namespace Server.Reawakened.Configs;
 
 public class ServerRwConfig : IRwConfig
 {
-    public string Current2014Event { get; set; }
-    public string Current2013Event { get; set; }
-    
-    public string Current2014TimedEvent { get; set; }
-    public string Current2013TimedEvent { get; set; }
+    public Dictionary<GameVersion, string> CurrentEvent { get; set; }
+    public Dictionary<GameVersion, string> CurrentTimedEvent { get; set; }
 
     public ServerRwConfig()
     {
-        var eventId2014 = "Sponge";
-        var eventId2013 = "TM";
+        CurrentEvent = new Dictionary<GameVersion, string>
+        {
+            { GameVersion.v2014, "boBegnopS_4102_TVE" },
+            { GameVersion.v2013, "10TNMT_3102_TVE" }
+        };
 
-        eventId2014 += "Bob";
-        eventId2013 += "NT";
-
-        Current2013Event = "EVT" + "_2013_" + eventId2013 + "01";
-        Current2014Event = "EVT" + "_2014_" + eventId2014;
-
-        Current2014TimedEvent = eventId2014 + "Party" + "Event";
-        Current2013TimedEvent = string.Empty;
+        CurrentTimedEvent = new Dictionary<GameVersion, string>
+        {
+            { GameVersion.v2014, "tnevEytraPboBegnopS" },
+            { GameVersion.v2013, string.Empty }
+        };
     }
 }

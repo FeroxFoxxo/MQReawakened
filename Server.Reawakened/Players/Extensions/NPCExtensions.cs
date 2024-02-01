@@ -1,4 +1,5 @@
-﻿using Server.Base.Core.Extensions;
+﻿using A2m.Server;
+using Server.Base.Core.Extensions;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Players.Models.Character;
 using static A2m.Server.QuestStatus;
@@ -28,6 +29,7 @@ public static class NpcExtensions
                 {
                     Completed = false,
                     CountLeft = q.Value.TotalCount,
+                    Total = q.Value.TotalCount,
                     GameObjectId = q.Value.GoId,
                     GameObjectLevelId = q.Value.GoLevelId,
                     ItemId = (int)q.Value.GetField("_itemId"),
@@ -36,6 +38,21 @@ public static class NpcExtensions
                     Order = q.Value.Order
                 })
             };
+
+            foreach (var objective in questModel.Objectives)
+            {
+                if (objective.Value.ObjectiveType == ObjectiveEnum.IdolCollect)
+                {
+                    if (player.Character.CollectedIdols.TryGetValue(objective.Value.LevelId, out var idols))
+                    {
+                        objective.Value.CountLeft = objective.Value.Total - idols.Count;
+
+                        if (objective.Value.CountLeft <= 0)
+                            objective.Value.Completed = true;
+                    }
+                }
+            }
+
             character.Data.QuestLog.Add(questModel);
         }
 

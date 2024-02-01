@@ -1,5 +1,6 @@
 ﻿using Achievement.CharacterData;
 using Achievement.StaticData;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -95,17 +96,7 @@ public static class PlayerAchievementExtensions
 
     public static int GetObjectiveLeft(this AchievementDefinitionConditions cond, int count) => cond.goal - count;
 
-    public static int GetAmountLeft(this CharacterAchievement achievement) => GetTotalGoal(achievement) - GetTotalProgress(achievement);
-
-    public static int GetTotalGoal(this CharacterAchievement achievement)
-    {
-        var count = 0;
-
-        foreach (var c in achievement.conditions)
-            count += c.completionCount;
-
-        return count;
-    }
+    public static int GetAmountLeft(this CharacterAchievement achievement) => achievement.goal - GetTotalProgress(achievement);
 
     public static int GetTotalProgress(this CharacterAchievement achievement)
     {
@@ -146,6 +137,7 @@ public static class PlayerAchievementExtensions
                     mtime = long.MinValue, // MODIFIED TIME
                 };
             }).ToList(),
+            goal = achievement.goal,
 
             // UNUSED
             ctime = long.MinValue,

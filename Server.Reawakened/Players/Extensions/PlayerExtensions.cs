@@ -261,7 +261,10 @@ public static class PlayerExtensions
         }
     }
 
-    public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName, int count)
+    public static void SetObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName, int count) =>
+        player.CheckObjective(type, gameObjectId, prefabName, count, true);
+
+    public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName, int count, bool setObjective = false)
     {
         if (count <= 0)
             return;
@@ -306,7 +309,10 @@ public static class PlayerExtensions
                 if (objective.LevelId != player.Character.LevelData.LevelId && !isItem)
                     continue;
 
-                objective.CountLeft -= count;
+                if (setObjective)
+                    objective.CountLeft = objective.Total - count;
+                else
+                    objective.CountLeft -= count;
 
                 if (objective.ObjectiveType == ObjectiveEnum.AlterandReceiveitem)
                     objective.CountLeft = 0;
@@ -329,10 +335,13 @@ public static class PlayerExtensions
                     player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
             }
 
-            if (!quest.Objectives.Any(o => !o.Value.Completed) && hasObjComplete)
+            if (hasObjComplete)
             {
-                player.SendXt("nQ", quest.Id);
-                quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
+                if (!quest.Objectives.Any(o => !o.Value.Completed))
+                {
+                    player.SendXt("nQ", quest.Id);
+                    quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
+                }
                 player.UpdateNpcsInLevel(quest);
             }
         }

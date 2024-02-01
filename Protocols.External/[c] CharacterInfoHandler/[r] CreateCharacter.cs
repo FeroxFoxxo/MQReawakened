@@ -32,7 +32,7 @@ public class CreateCharacter : ExternalProtocol
         var characterData = new CharacterDataModel(message[9]);
         var tribe = TribeType.Ook;
 
-        if (ServerConfig.Is2014Client)
+        if (ServerConfig.GameVersion >= GameVersion.v2014)
             tribe = (TribeType)int.Parse(message[10]);
 
         var names = new[] { firstName, middleName, lastName };
@@ -52,16 +52,14 @@ public class CreateCharacter : ExternalProtocol
             characterData.CharacterName = string.Join(string.Empty, names);
             characterData.UserUuid = Player.UserId;
 
-            if (ServerConfig.Is2014Client)
+            if (ServerConfig.GameVersion >= GameVersion.v2014)
                 characterData.CompletedQuests.Add(ServerConfig.TutorialTribe2014[tribe]);
-            else
-                characterData.CompletedQuests.Add(GetStartingTribeQuest(tribe));
 
             characterData.Registered = true;
 
             var levelUpData = new LevelData
             {
-                LevelId = ServerConfig.Is2014Client ? WorldGraph.DefaultLevel : WorldGraph.NewbZone,
+                LevelId = ServerConfig.GameVersion >= GameVersion.v2014 ? WorldGraph.DefaultLevel : WorldGraph.NewbZone,
                 SpawnPointId = ""
             };
 
@@ -76,28 +74,4 @@ public class CreateCharacter : ExternalProtocol
             Player.SendStartPlay(model, levelInfo);
         }
     }
-
-    public static int GetStartingTribeQuest(TribeType allegiance)
-    {
-        var result = -1;
-
-        switch (allegiance)
-        {
-            case TribeType.Bone:
-                result = 978;
-                break;
-            case TribeType.Wild:
-                result = 831;
-                break;
-            case TribeType.Outlaw:
-                result = 976;
-                break;
-            case TribeType.Shadow:
-                result = 977;
-                break;
-        }
-
-        return result;
-    }
-
 }

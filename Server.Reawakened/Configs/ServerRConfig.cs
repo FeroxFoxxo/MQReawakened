@@ -59,7 +59,7 @@ public class ServerRConfig : IRConfig
     public int AccessRights { get; }
 
     public Dictionary<TribeType, int> TutorialTribe2014 { get; }
-    public bool Is2014Client { get; set; }
+    public GameVersion GameVersion { get; set; }
 
     public string[] IgnoredDoors { get; set; }
 
@@ -173,7 +173,7 @@ public class ServerRConfig : IRConfig
             { TribeType.Bone,   969 }, // OOTU
         };
 
-        Is2014Client = false;
+        GameVersion = GameVersion.v2013;
         IsBackPlane = new Dictionary<bool, string>()
         {
             { true, "Plane1" },

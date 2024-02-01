@@ -57,10 +57,10 @@ public class NPCControllerComp : Component<NPCController>
         NameId = -1;
         NpcType = NpcType.Unknown;
 
-        if (!Config.Is2014Client)
+        if (Config.GameVersion <= GameVersion.v2013)
             GiverQuests = [];
 
-        VendorInfo = VendorCatalog.GetVendorById(int.Parse(Id));
+        VendorInfo = VendorCatalog.GetVendorById(Room.LevelInfo.LevelId, int.Parse(Id));
 
         if (VendorInfo != null)
         {
@@ -81,7 +81,7 @@ public class NPCControllerComp : Component<NPCController>
                 .Where(x => x.ValidatorLevelId == Room.LevelInfo.LevelId)
         ];
 
-        GiverQuests = Config.Is2014Client
+        GiverQuests = Config.GameVersion >= GameVersion.v2014
             ? ([..
                 QuestCatalog.GetQuestGiverById(int.Parse(Id))
                 .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
@@ -490,7 +490,7 @@ public class NPCControllerComp : Component<NPCController>
         var quest = QuestCatalog.GetQuestData(questStatus.Id);
         var questName = quest.Name;
 
-        if (quest.ValidatorGoId != quest.QuestGiverGoId && quest.ValidatorGoId.ToString() == Id)
+        if (quest.ValidatorName != quest.QuestgGiverName && quest.ValidatorGoId.ToString() == Id)
             questName += "validator";
 
         if (DialogRewrites.Rewrites.TryGetValue(questName, out var rewrittenName))

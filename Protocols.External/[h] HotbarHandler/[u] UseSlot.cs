@@ -265,9 +265,15 @@ public class UseSlot : ExternalProtocol
         var hitboxWidth = 3f;
         var hitboxHeight = 4f;
 
+        var isLeft = direction > 0;
+
         var meleeHitbox = new DefaultCollider(
             meleeId.ToString(),
-            Player.TempData.Position,
+            new Vector3Model() {
+                X = isLeft ? Player.TempData.Position.X : Player.TempData.Position.X - hitboxWidth,
+                Y = Player.TempData.Position.Y,
+                Z = Player.TempData.Position.Z
+            },
             hitboxWidth,
             hitboxHeight,
             planeName,
@@ -291,8 +297,6 @@ public class UseSlot : ExternalProtocol
                     planeName,
                     Player.Room
                 );
-
-                var isLeft = direction > 0;
 
                 if (isLeft)
                 {

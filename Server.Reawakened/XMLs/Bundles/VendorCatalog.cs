@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -62,6 +63,8 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml<VendorCatalog>
             var internalCatalog = Services.GetRequiredService<InternalVendor>();
             var miscTextDict = Services.GetRequiredService<MiscTextDictionary>();
             var editVendor = Services.GetRequiredService<EditVendor>();
+            var config = Services.GetRequiredService<ServerRConfig>();
+
             var preExistingCategories = new List<int>();
 
             foreach (XmlNode aNode in vendors)
@@ -73,7 +76,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml<VendorCatalog>
 
                 if (nameAttribute != null)
                 {
-                    if (editVendor.EditedVendorAttributes.TryGetValue(nameAttribute.InnerText, out var lItems))
+                    if (editVendor.EditedVendorAttributes[config.GameVersion].TryGetValue(nameAttribute.InnerText, out var lItems))
                     {
                         foreach (var item in lItems)
                         {
@@ -96,7 +99,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml<VendorCatalog>
             {
                 if (!(vendorCatalogNode.Name == "vendor_catalogs")) continue;
 
-                foreach (var vendor in internalCatalog.VendorCatalog.Values)
+                foreach (var vendor in internalCatalog.VendorCatalog.Values.SelectMany(x => x))
                 {
                     if (vendor.CatalogId != -1)
                         return;

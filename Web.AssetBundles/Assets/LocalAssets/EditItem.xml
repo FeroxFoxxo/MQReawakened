@@ -1,24 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <EditedItems>
-    <Item name="Add_COM_Armor01_LS01">
-        <EditAttribute key="currency" value="NickCash"/>
-        <EditAttribute key="price" value="1"/>
-    </Item>
-    <Item name="Add_COM_Armor01_TS01">
-        <EditAttribute key="global_level" value="1"/>
-        <EditAttribute key="currency" value="NickCash"/>
-        <EditAttribute key="price" value="1"/>
-    </Item>
-    <Item name="Add_COM_Armor01_S01">
-        <EditAttribute key="currency" value="NickCash"/>
-        <EditAttribute key="price" value="1"/>
-    </Item>
-    <Item name="ABIL_SmokeBomb01">
-        <EditAttribute key="ingamedescription" value="1000124"/>
-        <EditAttribute key="item_level" value="15"/>
-        <EditAttribute key="tribe" value="Shadow"/>
-    </Item>
-    <Item name="QI_CRS_Marshmallow01_Marshmallow">
-        <EditAttribute key="prefab" value="Col_CRS_Marshmallow01"/>
-    </Item>
+    <GameVersion version="v2014">
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="currency" value="NickCash"/>
+            <EditAttribute key="price" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="currency" value="NickCash"/>
+            <EditAttribute key="price" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="currency" value="NickCash"/>
+            <EditAttribute key="price" value="1"/>
+        </Item>
+        <Item name="ABIL_SmokeBomb01">
+            <EditAttribute key="ingamedescription" value="1000124"/>
+            <EditAttribute key="item_level" value="15"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+        </Item>
+        <Item name="QI_CRS_Marshmallow01_Marshmallow">
+            <EditAttribute key="prefab" value="Col_CRS_Marshmallow01"/>
+        </Item>
+    </GameVersion>
+    <GameVersion version="v2013">
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="price" value="50"/>
+        </Item>
+        <Item name="ABIL_SlingShot02">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="currency" value="NickCash"/>
+            <EditAttribute key="price" value="1"/>
+        </Item>
+    </GameVersion>
 </EditedItems>

@@ -189,7 +189,8 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                         sortOrder = achSortOrder,
                         repeatable = achRepeatable,
                         rewards = achRewards,
-                        conditions = achConditions
+                        conditions = achConditions,
+                        goal = achConditions.Sum(c => c.goal)
                     };
 
                     Definitions.achievements.Add(achievementStatic);

@@ -40,6 +40,6 @@ public class IdolControllerComp : Component<IdolController>
 
         player.SendSyncEventToPlayer(collectedEvent);
 
-        player.CheckObjective(ObjectiveEnum.IdolCollect, Id, PrefabName, 1);
+        player.SetObjective(ObjectiveEnum.IdolCollect, Id, PrefabName, character.CollectedIdols[levelId].Count);
     }
 }
