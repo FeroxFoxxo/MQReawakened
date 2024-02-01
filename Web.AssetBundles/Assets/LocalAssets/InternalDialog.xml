@@ -111,7 +111,7 @@
         </NPC>
     </Level>
     <Level id="301">
-        <!--Hovering Markets-->
+        <!-- Hovering Markets -->
         <NPC objectId="342" name="The Underbelly Guard" descriptionId="0">
             <Dialog dialogId="1310" conversationId="3036" minimumReputation="1" />
         </NPC>
@@ -159,19 +159,19 @@
         </NPC>
     </Level>
     <Level id="497">
-        <!--Snowdrift Hills-->
+        <!-- Snowdrift Hills -->
         <NPC objectId="3286758" name="Oswik" descriptionId="0">
             <Dialog dialogId="1414" conversationId="3580" minimumReputation="1" />
         </NPC>
     </Level>
     <Level id="498">
-        <!--Peaks of Z'or-->
+        <!-- Peaks of Z'or -->
         <NPC objectId="3286428" name="Brinn" descriptionId="0">
             <Dialog dialogId="1403" conversationId="3569" minimumReputation="1" />
         </NPC>
     </Level>
     <Level id="500">
-        <!--Raider Village-->
+        <!-- Raider Village -->
         <NPC objectId="16767" name="Torin" descriptionId="0">
             <Dialog dialogId="1407" conversationId="3573" minimumReputation="1" />
         </NPC>
@@ -183,7 +183,7 @@
         </NPC>
     </Level>
     <Level id="501">
-        <!--Snowstorm Summit-->
+        <!-- Snowstorm Summit -->
         <NPC objectId="3286583" name="Holm" descriptionId="0">
             <Dialog dialogId="1406" conversationId="3572" minimumReputation="1" />
         </NPC>
@@ -192,7 +192,7 @@
         </NPC>
     </Level>
     <Level id="502">
-        <!--Icewind Caverns-->
+        <!-- Icewind Caverns -->
         <NPC objectId="3287782" name="Vargon" descriptionId="0">
             <Dialog dialogId="1405" conversationId="3571" minimumReputation="1" />
         </NPC>
@@ -210,7 +210,7 @@
         </NPC>
     </Level>
     <Level id="499">
-        <!--Tempest Chasm-->
+        <!-- Tempest Chasm -->
         <NPC objectId="13160347" name="Siv" descriptionId="0">
             <Dialog dialogId="1408" conversationId="3574" minimumReputation="1" />
         </NPC>
@@ -225,7 +225,7 @@
         </NPC>
     </Level>
     <Level id="556">
-        <!--Viking Warrior Trial-->
+        <!-- Viking Warrior Trial -->
         <NPC objectId="26292758" name="Dolvin" descriptionId="0">
             <Dialog dialogId="1578" conversationId="4012" minimumReputation="1" />
         </NPC>
@@ -234,19 +234,19 @@
         </NPC>
     </Level>
     <Level id="308">
-        <!--Smuggler's Highway-->
+        <!-- Smuggler's Highway -->
         <NPC objectId="1028" name="Armond" descriptionId="0">
             <Dialog dialogId="1413" conversationId="3579" minimumReputation="1" />
         </NPC>
     </Level>
     <Level id="564">
-        <!--SpongeBob's Amusement Park-->
+        <!-- SpongeBob's Amusement Park -->
         <NPC objectId="26294091" name="Barry Koda" descriptionId="0">
             <Dialog dialogId="1605" conversationId="4078" minimumReputation="1" />
         </NPC>
     </Level>
     <Level id="557">
-        <!--Party Tree-->
+        <!-- Party Tree -->
         <NPC objectId="26323857" name="Snowball" descriptionId="0">
             <Dialog dialogId="1560" conversationId="3955" minimumReputation="1" />
         </NPC>
@@ -264,9 +264,15 @@
         </NPC>
     </Level>
     <Level id="209">
-        <!--The Volcano Lair-->
+        <!-- The Volcano Lair -->
         <NPC objectId="2530" name="Urymo" descriptionId="0">
             <Dialog dialogId="41" conversationId="140" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level id="452">
+        <!-- Noogo Village -->
+        <NPC objectId="33976" name="Onko" nameId="10597" descriptionId="0">
+            <Dialog dialogId="975" conversationId="2689" minimumReputation="1" />
         </NPC>
     </Level>
 </DialogCatalog>

@@ -173,10 +173,10 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
 
                 File.WriteAllBytes(path, stream.ToArray());
             }
-            catch (TypeInitializationException)
+            catch (TypeInitializationException e)
             {
                 defaultBar.Dispose();
-                logger.LogError("Texture DLL files did not initialise! This is a known bug for linux users.");
+                logger.LogError(e, "Texture DLL files did not initialise! This is a known bug for linux users.");
                 return;
             }
         }

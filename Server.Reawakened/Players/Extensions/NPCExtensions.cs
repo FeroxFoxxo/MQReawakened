@@ -58,7 +58,11 @@ public static class NpcExtensions
     public static void UpdateNpcsInLevel(this Player player, QuestDescription quest)
     {
         if (quest != null)
-            foreach (var npc in GetNpcs(player).Where(e => e.Id == quest.QuestGiverGoId.ToString() || e.Id == quest.ValidatorGoId.ToString()))
+            foreach (var npc in GetNpcs(player)
+                .Where(e =>
+                    e.Id == quest.QuestGiverGoId.ToString() || e.Name == quest.QuestgGiverName ||
+                    e.Id == quest.ValidatorGoId.ToString() || e.Name == quest.ValidatorName)
+                )
                 npc.SendNpcInfo(player);
     }
 

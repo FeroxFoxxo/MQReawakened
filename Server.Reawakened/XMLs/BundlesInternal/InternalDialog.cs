@@ -59,6 +59,7 @@ public class InternalDialog : IBundledXml<InternalDialog>
 
                     var objectId = -1;
                     var name = string.Empty;
+                    var nameId = -1;
                     var descriptionId = -1;
 
                     var dialogList = new Dictionary<int, ConversationInfo>();
@@ -71,6 +72,9 @@ public class InternalDialog : IBundledXml<InternalDialog>
                                 continue;
                             case "name":
                                 name = npcAttribute.Value;
+                                continue;
+                            case "nameId":
+                                nameId = int.Parse(npcAttribute.Value);
                                 continue;
                             case "descriptionId":
                                 descriptionId = int.Parse(npcAttribute.Value);
@@ -102,7 +106,9 @@ public class InternalDialog : IBundledXml<InternalDialog>
                         dialogList.TryAdd(minimumReputation, new ConversationInfo(dialogId, conversationId));
                     }
 
-                    var nameModel = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == name);
+                    var nameModel = nameId > 0 ?
+                        miscDict.LocalizationDict.FirstOrDefault(x => x.Key == nameId) :
+                        miscDict.LocalizationDict.FirstOrDefault(x => x.Value == name);
 
                     if (!string.IsNullOrEmpty(nameModel.Value))
                     {
@@ -112,7 +118,7 @@ public class InternalDialog : IBundledXml<InternalDialog>
                         NpcDialogs[levelId].Add(objectId, new DialogInfo(objectId, nameModel.Key, descriptionId, dialogList));
                     }
                     else
-                        Logger.LogError("Cannot find text id for character with name: {Name}", name);
+                        Logger.LogError("Cannot find text id for character with name: {Name}", nameId > 0 ? nameId : name);
                 }
             }
         }

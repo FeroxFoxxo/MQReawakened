@@ -27,7 +27,6 @@ public class NPCControllerComp : Component<NPCController>
     public bool ShouldDisableNpcInteraction => ComponentData.ShouldDisableNPCInteraction;
 
     public ILogger<NPCControllerComp> Logger { get; set; }
-    public ServerRConfig RConfig { get; set; }
     public FileLogger FileLogger { get; set; }
 
     public QuestCatalog QuestCatalog { get; set; }
@@ -57,6 +56,9 @@ public class NPCControllerComp : Component<NPCController>
         NameId = -1;
         NpcType = NpcType.Unknown;
 
+        if (!Config.Is2014Client)
+            GiverQuests = [];
+
         VendorInfo = VendorCatalog.GetVendorById(int.Parse(Id));
 
         if (VendorInfo != null)
@@ -65,11 +67,13 @@ public class NPCControllerComp : Component<NPCController>
             NameId = VendorInfo.NameId;
         }
 
-        GiverQuests = [..
-            QuestCatalog.GetQuestGiverById(int.Parse(Id))
-            .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
-            .OrderBy(x => x.Id)
-        ];
+        DialogInfo = DialogCatalog.GetDialogById(Room.LevelInfo.LevelId, int.Parse(Id));
+
+        if (DialogInfo != null)
+        {
+            NpcType = NpcType.Dialog;
+            NameId = DialogInfo.NameId;
+        }
 
         ValidatorQuests = [..
             QuestCatalog.GetQuestValidatorById(int.Parse(Id))
@@ -77,64 +81,23 @@ public class NPCControllerComp : Component<NPCController>
                 .OrderBy(x => x.Id)
         ];
 
+        GiverQuests = Config.Is2014Client
+            ? ([..
+                QuestCatalog.GetQuestGiverById(int.Parse(Id))
+                .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
+                .OrderBy(x => x.Id)
+            ]) : ([..
+                QuestCatalog.GetQuestGiverByName(
+                    MiscText.GetLocalizationTextById(NameId > 0 ? NameId : GetNameId())
+                )
+            ]);
 
-        // Clean this part up. For now, this is to get progress on 2013 working.
-        if (!Config.Is2014Client)
-        {
-            if (Id == Config.OnkoGoId.ToString())
-            {
-                Console.WriteLine("hi");
-                GiverQuests = [..
-                    QuestCatalog.GetQuestGiverByName("Onko")
-                        .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
-                        .OrderBy(x => x.Id)
-                ];
-            }
-            if (GiverQuests.Length > 0)
-            {
-                GiverQuests = [..
-                    QuestCatalog.GetQuestGiverByName(GiverQuests[0].QuestgGiverName)
-                        .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
-                        .OrderBy(x => x.Id)
-                ];
-            }
-        }
-        
+        var questName = GetNameId();
 
-        var questGiverNames = GiverQuests.Select(x => (int)x.GetField("_questGiverNameId"));
-        var questValidatorNames = ValidatorQuests.Select(x => (int)x.GetField("_validatorNameId"));
-        var allQuestNames = questGiverNames.Concat(questValidatorNames).Where(i => i > 0).ToArray();
-
-        Console.WriteLine(ComponentData.NpcName);
-
-       // GiverQuests2013 = [..
-       //     QuestCatalog.GetQuestGiverById(int.Parse(Id))
-       //         .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
-       //         .OrderBy(x => x.Id)
-       // ];
-
-        //ValidatorQuests2013 = [..
-        //    QuestCatalog.GetQuestValidatorById(int.Parse(Id))
-        //        .Where(x => x.ValidatorLevelId == Room.LevelInfo.LevelId)
-        //        .OrderBy(x => x.Id)
-        //];
-
-        if (allQuestNames.Length > 0)
+        if (questName > 0)
         {
             NpcType = NpcType.Quest;
-            NameId = (from item in allQuestNames
-                      group item by item into g
-                      orderby g.Count() descending
-                      select g.Key)
-                      .First();
-        }
-
-        DialogInfo = DialogCatalog.GetDialogById(Room.LevelInfo.LevelId, int.Parse(Id));
-
-        if (DialogInfo != null && NpcType == NpcType.Unknown)
-        {
-            NpcType = NpcType.Dialog;
-            NameId = DialogInfo.NameId;
+            NameId = questName;
         }
 
         if (NameId < 0)
@@ -144,6 +107,18 @@ public class NPCControllerComp : Component<NPCController>
         }
 
         NpcName = MiscText.GetLocalizationTextById(NameId);
+    }
+
+    public int GetNameId()
+    {
+        var questGiverNames = GiverQuests.Select(x => (int)x.GetField("_questGiverNameId"));
+        var questValidatorNames = ValidatorQuests.Select(x => (int)x.GetField("_validatorNameId"));
+        var allQuestNames = questGiverNames.Concat(questValidatorNames).Where(i => i > 0).ToArray();
+
+        return (from item in allQuestNames
+                group item by item into g
+                orderby g.Count() descending
+                select g.Key).FirstOrDefault();
     }
 
     public override object[] GetInitData(Player player) => NameId <= 0 ? [] : [NameId.ToString()];
@@ -161,6 +136,8 @@ public class NPCControllerComp : Component<NPCController>
         }
         else
             Logger.LogDebug("[UNKNOWN NPC EVENT] [{Type}] [{Name} ({Id})]", syncEvent.Type.ToString().ToUpperInvariant(), Name, Id);
+
+        SendNpcInfo(player);
     }
 
     public void TalkToNpc(Player player)
@@ -379,25 +356,6 @@ public class NPCControllerComp : Component<NPCController>
                 questData.Name, questData.Id, player.Character.Data.GlobalLevel, questData.LevelRequired);
             return NPCStatus.Unknown;
         }
-
-        /*
-        var previousQuestOnQuestLine = QuestCatalog.GetPreviousQuestOnQuestLine(questLine, questData);
-
-        if (previousQuestOnQuestLine != null)
-        {
-            if (player.Character.Data.CompletedQuests.Contains(previousQuestOnQuestLine.Id))
-            {
-                Logger.LogDebug("[{QuestName} ({QuestId})] [FOUND QUEST FROM NEXT IN LINE]", questData.Name, questData.Id);
-                return NPCStatus.QuestAvailable;
-            }
-            else
-            {
-                Logger.LogTrace("[{QuestName} ({QuestId})] [CAN NOT START AS PREVIOUS QUEST] Quest {Name} {Id} has not begun",
-                    questData.Name, questData.Id, previousQuestOnQuestLine.Name, previousQuestOnQuestLine.Id);
-                return NPCStatus.Unknown;
-            }
-        }
-        */
 
         var requiredQuests = QuestCatalog.GetListOfPreviousQuests(questData);
 

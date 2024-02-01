@@ -60,7 +60,6 @@ public class ServerRConfig : IRConfig
 
     public Dictionary<TribeType, int> TutorialTribe2014 { get; }
     public bool Is2014Client { get; set; }
-    public int OnkoGoId { get; set; }
 
     public string[] IgnoredDoors { get; set; }
 
@@ -228,7 +227,5 @@ public class ServerRConfig : IRConfig
 
         PlayerHeight = 1f;
         PlayerWidth = 1f;
-
-        OnkoGoId = 33976;
     }
 }

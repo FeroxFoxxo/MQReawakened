@@ -21,10 +21,10 @@ public class ChooseQuestReward : ExternalProtocol
         var questRewardId = int.Parse(message[8]);
 
         if (itemId != -1)
-            Logger.LogError("[Vendor {NpcId}] Unknown quest item reward: {ItemId}", vendorId, itemId);
+            Logger.LogError("[Quest Validator {NpcId}] Unknown quest item reward: {ItemId}", vendorId, itemId);
 
         if (questRewardId != -1)
-            Logger.LogError("[Vendor {NpcId}] Unknown quest reward id: {RewardId}", vendorId, questRewardId);
+            Logger.LogError("[Quest Validator {NpcId}] Unknown quest reward id: {RewardId}", vendorId, questRewardId);
 
         var quest = Catalog.QuestCatalogs[questId];
 
