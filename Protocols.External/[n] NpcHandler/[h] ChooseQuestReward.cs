@@ -11,22 +11,30 @@ public class ChooseQuestReward : ExternalProtocol
     public override string ProtocolName => "nh";
 
     public ILogger<ChooseQuestReward> Logger { get; set; }
-    public QuestCatalog Catalog { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     public override void Run(string[] message)
     {
-        var vendorId = int.Parse(message[5]);
+        var npcId = int.Parse(message[5]);
         var questId = int.Parse(message[6]);
         var itemId = int.Parse(message[7]);
         var questRewardId = int.Parse(message[8]);
 
-        if (itemId != -1)
-            Logger.LogError("[Quest Validator {NpcId}] Unknown quest item reward: {ItemId}", vendorId, itemId);
+        if (itemId > 0)
+        {
+            var item = ItemCatalog.GetItemFromId(itemId);
+
+            if (item != null)
+                Player.AddItem(item, 1);
+            else
+                Logger.LogError("[Quest Validator {NpcId}] Unknown item reward with id: {RewardId}", npcId, itemId);
+        }
 
         if (questRewardId != -1)
-            Logger.LogError("[Quest Validator {NpcId}] Unknown quest reward id: {RewardId}", vendorId, questRewardId);
+            Logger.LogError("[Quest Validator {NpcId}] Unknown field 'quest reward' with id: {RewardId}", npcId, questRewardId);
 
-        var quest = Catalog.QuestCatalogs[questId];
+        var quest = QuestCatalog.QuestCatalogs[questId];
 
         Player.AddBananas(quest.BananaReward);
         Player.AddReputation(quest.ReputationReward);
