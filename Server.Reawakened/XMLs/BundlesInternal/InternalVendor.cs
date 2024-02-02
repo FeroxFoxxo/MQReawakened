@@ -37,107 +37,112 @@ public class InternalVendor : IBundledXml<InternalVendor>
         {
             if (vendorXml.Name != "VendorCatalog") continue;
 
-            foreach (XmlNode vendor in vendorXml.ChildNodes)
+            foreach (XmlNode level in vendorXml.ChildNodes)
             {
-                if (vendor.Name != "Vendor") continue;
+                if (level.Name != "Level") continue;
 
-                var objectId = -1;
-                var name = string.Empty;
-                var descriptionId = -1;
+                foreach (XmlNode vendor in level.ChildNodes)
+                {
+                    if (vendor.Name != "Vendor") continue;
 
-                var numberOfIdolsToAccessBackStore = -1;
-                var idolLevelId = -1;
+                    var objectId = -1;
+                    var name = string.Empty;
+                    var descriptionId = -1;
 
-                var vendorId = -1;
-                var catalogId = -1;
-                var vendorType = NPCController.NPCStatus.Unknown;
+                    var numberOfIdolsToAccessBackStore = -1;
+                    var idolLevelId = -1;
 
-                var dialogId = -1;
-                var greetingConversationId = -1;
-                var leavingConversationId = -1;
+                    var vendorId = -1;
+                    var catalogId = -1;
+                    var vendorType = NPCController.NPCStatus.Unknown;
 
-                var items = new List<int>();
+                    var dialogId = -1;
+                    var greetingConversationId = -1;
+                    var leavingConversationId = -1;
 
-                foreach (XmlAttribute vendorAttribute in vendor.Attributes)
-                    switch (vendorAttribute.Name)
+                    var items = new List<int>();
+
+                    foreach (XmlAttribute vendorAttribute in vendor.Attributes)
+                        switch (vendorAttribute.Name)
+                        {
+                            case "objectId":
+                                objectId = int.Parse(vendorAttribute.Value);
+                                continue;
+                            case "name":
+                                name = vendorAttribute.Value;
+                                continue;
+                            case "descriptionId":
+                                descriptionId = int.Parse(vendorAttribute.Value);
+                                continue;
+
+                            case "numberOfIdolsToAccessBackStore":
+                                numberOfIdolsToAccessBackStore = int.Parse(vendorAttribute.Value);
+                                continue;
+                            case "idolLevelId":
+                                idolLevelId = int.Parse(vendorAttribute.Value);
+                                continue;
+
+                            case "vendorId":
+                                vendorId = int.Parse(vendorAttribute.Value);
+                                continue;
+                            case "catalogId":
+                                catalogId = int.Parse(vendorAttribute.Value);
+                                continue;
+                            case "vendorType":
+                                vendorType = vendorType.GetEnumValue(vendorAttribute.Value, Logger);
+                                continue;
+
+                            case "dialogId":
+                                dialogId = int.Parse(vendorAttribute.Value);
+                                continue;
+                            case "greetingConversationId":
+                                greetingConversationId = int.Parse(vendorAttribute.Value);
+                                continue;
+                            case "leavingConversationId":
+                                leavingConversationId = int.Parse(vendorAttribute.Value);
+                                continue;
+                        }
+
+                    foreach (XmlNode item in vendor.ChildNodes)
                     {
-                        case "objectId":
-                            objectId = int.Parse(vendorAttribute.Value);
-                            continue;
-                        case "name":
-                            name = vendorAttribute.Value;
-                            continue;
-                        case "descriptionId":
-                            descriptionId = int.Parse(vendorAttribute.Value);
-                            continue;
+                        if (!(item.Name == "Item")) continue;
 
-                        case "numberOfIdolsToAccessBackStore":
-                            numberOfIdolsToAccessBackStore = int.Parse(vendorAttribute.Value);
-                            continue;
-                        case "idolLevelId":
-                            idolLevelId = int.Parse(vendorAttribute.Value);
-                            continue;
+                        foreach (XmlAttribute itemAttribute in item.Attributes)
+                            if (itemAttribute.Name == "prefabName")
+                            {
+                                var itemD = itemCat.GetItemFromPrefabName(itemAttribute.Value);
 
-                        case "vendorId":
-                            vendorId = int.Parse(vendorAttribute.Value);
-                            continue;
-                        case "catalogId":
-                            catalogId = int.Parse(vendorAttribute.Value);
-                            continue;
-                        case "vendorType":
-                            vendorType = vendorType.GetEnumValue(vendorAttribute.Value, Logger);
-                            continue;
+                                if (itemD == null)
+                                {
+                                    Logger.LogError("Unknown item with prefab name: {Val}", itemAttribute.Value);
+                                    continue;
+                                }
 
-                        case "dialogId":
-                            dialogId = int.Parse(vendorAttribute.Value);
-                            continue;
-                        case "greetingConversationId":
-                            greetingConversationId = int.Parse(vendorAttribute.Value);
-                            continue;
-                        case "leavingConversationId":
-                            leavingConversationId = int.Parse(vendorAttribute.Value);
-                            continue;
+                                items.Add(itemD.ItemId);
+                                break;
+                            }
                     }
 
-                foreach (XmlNode item in vendor.ChildNodes)
-                {
-                    if (!(item.Name == "Item")) continue;
+                    var nameModel = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == name);
 
-                    foreach (XmlAttribute itemAttribute in item.Attributes)
-                        if (itemAttribute.Name == "prefabName")
-                        {
-                            var itemD = itemCat.GetItemFromPrefabName(itemAttribute.Value);
+                    if (!string.IsNullOrEmpty(nameModel.Value))
+                    {
+                        if (VendorCatalog.ContainsKey(objectId))
+                            continue;
 
-                            if (itemD == null)
-                            {
-                                Logger.LogError("Unknown item with prefab name: {Val}", itemAttribute.Value);
-                                continue;
-                            }
+                        var greetingConversation = new ConversationInfo(dialogId, greetingConversationId);
+                        var leavingConversation = new ConversationInfo(dialogId, leavingConversationId);
 
-                            items.Add(itemD.ItemId);
-                            break;
-                        }
+                        VendorCatalog.Add(objectId, new VendorInfo(
+                            objectId, nameModel.Key, descriptionId,
+                            numberOfIdolsToAccessBackStore, idolLevelId,
+                            vendorId, catalogId, vendorType,
+                            greetingConversation, leavingConversation, [.. items]
+                        ));
+                    }
+                    else
+                        Logger.LogError("Cannot find text id for character with name: {Name}", name);
                 }
-
-                var nameModel = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == name);
-
-                if (!string.IsNullOrEmpty(nameModel.Value))
-                {
-                    if (VendorCatalog.ContainsKey(objectId))
-                        continue;
-
-                    var greetingConversation = new ConversationInfo(dialogId, greetingConversationId);
-                    var leavingConversation = new ConversationInfo(dialogId, leavingConversationId);
-
-                    VendorCatalog.Add(objectId, new VendorInfo(
-                        objectId, nameModel.Key, descriptionId,
-                        numberOfIdolsToAccessBackStore, idolLevelId,
-                        vendorId, catalogId, vendorType,
-                        greetingConversation, leavingConversation, [.. items]
-                    ));
-                }
-                else
-                    Logger.LogError("Cannot find text id for character with name: {Name}", name);
             }
         }
     }
