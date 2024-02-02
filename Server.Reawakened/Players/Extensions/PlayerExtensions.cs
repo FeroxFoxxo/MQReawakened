@@ -303,7 +303,13 @@ public static class PlayerExtensions
                     if (item.ItemId != objective.ItemId)
                         continue;
 
-                    isItem = true;
+                    isItem = item.InventoryCategoryID is
+                        ItemFilterCategory.Accessories or
+                        ItemFilterCategory.Clothing or
+                        ItemFilterCategory.Consumables or
+                        ItemFilterCategory.Pets or
+                        ItemFilterCategory.RecipesAndCraftingIngredients or
+                        ItemFilterCategory.WeaponAndAbilities;
                 }
 
                 if (objective.LevelId != player.Character.LevelData.LevelId && !isItem)
