@@ -80,6 +80,8 @@ public class ServerRConfig : IRConfig
     public float MeleeHeight { get; set; }
     public float PlayerWidth { get; set; }
     public float PlayerHeight { get; set; }
+    public Dictionary<int, string> TrainingGear { get; set; }
+
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -227,5 +229,13 @@ public class ServerRConfig : IRConfig
 
         PlayerHeight = 1f;
         PlayerWidth = 1f;
+
+        TrainingGear = new Dictionary<int, string>
+        {
+            { 465, "ABIL_GrapplingHook02" }, // lv_shd_teaser01
+            { 466, "ABIL_Glider02" }, // lv_out_teaser01
+            { 467, "ABIL_MysticCharm01" }, // lv_bon_teaser01
+            { 497, "ABIL_SnowBoard01" }, // lv_wld_teaser01
+        };
     }
 }

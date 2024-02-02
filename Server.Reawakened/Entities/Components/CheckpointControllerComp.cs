@@ -27,6 +27,9 @@ public class CheckpointControllerComp : TriggerCoopControllerComp<CheckpointCont
                 return;
             }
 
+        if (player.Room.Entities.ContainsKey(SpawnPoint.ToString()))
+            player.Character.LevelData.SpawnPointId = Id;
+
         if (player.Room.LastCheckpoint != null)
         {
             var checkpoints = Room.GetComponentsOfType<CheckpointControllerComp>().Values;

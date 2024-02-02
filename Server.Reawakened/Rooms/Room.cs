@@ -6,9 +6,9 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Entity.Enemies;
-using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Arenas;
 using Server.Reawakened.Rooms.Enums;
@@ -16,7 +16,6 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.BundlesInternal;
-using SmartFoxClientAPI.Data;
 using WorldGraphDefines;
 using Timer = Server.Base.Timers.Timer;
 
@@ -213,14 +212,14 @@ public class Room : Timer
             {
                 var gameObjectId = 1;
 
-            while (GameObjectIds.Contains(gameObjectId.ToString()))
-                gameObjectId++;
+                while (GameObjectIds.Contains(gameObjectId.ToString()))
+                    gameObjectId++;
 
-            GameObjectIds.Add(gameObjectId.ToString());
+                GameObjectIds.Add(gameObjectId.ToString());
 
-            currentPlayer.TempData.GameObjectId = gameObjectId.ToString();
+                currentPlayer.TempData.GameObjectId = gameObjectId.ToString();
 
-            Players.Add(gameObjectId.ToString(), currentPlayer);
+                Players.Add(gameObjectId.ToString(), currentPlayer);
 
                 GroupMemberRoomChanged(currentPlayer);
 
@@ -240,6 +239,20 @@ public class Room : Timer
 
                     if (roomCharacter != currentPlayer)
                         roomCharacter.SendUserEnterDataTo(currentPlayer);
+                }
+            }
+
+            if (_config.TrainingGear.TryGetValue(LevelInfo.LevelId, out var trainingGear))
+            {
+                var item = currentPlayer.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(trainingGear);
+
+                if (item != null)
+                {
+                    if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+                    {
+                        currentPlayer.AddItem(item, 1);
+                        currentPlayer.SendUpdatedInventory(false);
+                    }
                 }
             }
         }
