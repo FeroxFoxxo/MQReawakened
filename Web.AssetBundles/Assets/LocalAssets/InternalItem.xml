@@ -561,6 +561,13 @@
                     <Effect duration="5" type="Charm" value="1"/>
                 </ItemEffects>
             </Item>
+            <Item itemId="9703" itemName="Frog Leg Charm" descriptionId="554340491" prefabName="ABIL_MysticCharm02" specialDisplayPrefab="" tribe="Bone" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Drink" cooldownTime="0" delayUseDuration="0" binding="On Pick" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+                <ItemEffects>
+                    <Effect duration="5" type="Charm" value="1"/>
+                </ItemEffects>
+            </Item>
+            <Item itemId="9704" itemName="Glider" descriptionId="1872160101" prefabName="ABIL_Glider02" specialDisplayPrefab="" tribe="Outlaw" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Ability" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+            <Item itemId="9705" itemName="Grappling Hook" descriptionId="903849392" prefabName="ABIL_GrapplingHook02" specialDisplayPrefab="" tribe="Shadow" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Ability" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
         </ItemSubCategory>
         <ItemSubCategory name="None" />
     </ItemCategory>
