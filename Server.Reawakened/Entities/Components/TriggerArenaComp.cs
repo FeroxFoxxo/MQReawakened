@@ -11,51 +11,10 @@ namespace Server.Reawakened.Entities.Components;
 
 public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
 {
-    public int[] TriggeredEntities;
-    public int[] TriggeredRewards;
-
-    public int Target09LevelEditorId => ComponentData.Target09LevelEditorID;
-    public int Target10LevelEditorId => ComponentData.Target10LevelEditorID;
-    public int Target11LevelEditorId => ComponentData.Target11LevelEditorID;
-    public int Target12LevelEditorId => ComponentData.Target12LevelEditorID;
-
-    public int TargetReward01LevelEditorID => ComponentData.TargetReward01LevelEditorID;
-    public int TargetReward02LevelEditorID => ComponentData.TargetReward02LevelEditorID;
-    public int TargetReward03LevelEditorID => ComponentData.TargetReward03LevelEditorID;
-    public int TargetReward04LevelEditorID => ComponentData.TargetReward04LevelEditorID;
-
     private float _timer;
     private float _minClearTime;
-    private List<string> _arenaEntities;
 
-    public override void InitializeComponent()
-    {
-        base.InitializeComponent();
-
-        TriggeredEntities = [
-            TargetLevelEditorId,
-            Target02LevelEditorId,
-            Target03LevelEditorId,
-            Target04LevelEditorId,
-            Target05LevelEditorId,
-            Target06LevelEditorId,
-            Target07LevelEditorId,
-            Target08LevelEditorId,
-            Target09LevelEditorId,
-            Target10LevelEditorId,
-            Target11LevelEditorId,
-            Target12LevelEditorId
-        ];
-
-        TriggeredRewards = [
-            TargetReward01LevelEditorID,
-            TargetReward02LevelEditorID,
-            TargetReward03LevelEditorID,
-            TargetReward04LevelEditorID
-        ];
-
-        _arenaEntities = [];
-    }
+    public readonly List<string> ArenaEntities = [];
 
     public override void Triggered(Player _, bool isSuccess, bool isActive)
     {
@@ -73,7 +32,7 @@ public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
                         {
                             // Add "PF_CRS_SpawnerBoss01" to config on cleanup
                             if (spawner.PrefabName != "PF_CRS_SpawnerBoss01")
-                                _arenaEntities.Add(entity.ToString());
+                                ArenaEntities.Add(entity.ToString());
 
                             // A special surprise tool that'll help us later!
                             //var spawn = new Spawn_SyncEvent(spawner.Id, player.Room.Time, 1);
@@ -101,7 +60,7 @@ public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
 
             if (Room.Time >= _timer)
                 hasWon = false;
-            else if (!_arenaEntities.Any(Room.Entities.ContainsKey) && Room.Time >= _minClearTime)
+            else if (!ArenaEntities.Any(Room.Entities.ContainsKey) && Room.Time >= _minClearTime)
                 hasWon = true;
             else
                 Logger.LogError("Unkown arena condition for {Id}", Id);
