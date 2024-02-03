@@ -1,10 +1,8 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
-using Server.Reawakened.Rooms.Extensions;
 using SmartFoxClientAPI.Data;
 
 namespace Server.Reawakened.Entities.Components;
@@ -75,7 +73,7 @@ public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
                     player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1);
             }
             else
-                foreach (var )
+                CurrentPhysicalInteractors.Clear();
         }
 
         _hasStarted = isActive;

@@ -232,8 +232,8 @@ public class ServerRConfig : IRConfig
 
         TrainingGear = new Dictionary<int, string>
         {
-            { 465, "ABIL_GrapplingHook02" }, // lv_shd_teaser01
-            { 466, "ABIL_Glider02" }, // lv_out_teaser01
+            { 465, "ABIL_GrapplingHook01" }, // lv_shd_teaser01
+            { 466, "ABIL_Glider01" }, // lv_out_teaser01
             { 467, "ABIL_MysticCharm01" }, // lv_bon_teaser01
             { 497, "ABIL_SnowBoard01" }, // lv_wld_teaser01
         };

@@ -140,9 +140,6 @@ public class InternalVendor : IBundledXml<InternalVendor>
 
                     if (!string.IsNullOrEmpty(nameModel.Value))
                     {
-                        if (VendorCatalog.ContainsKey(objectId))
-                            continue;
-
                         var greetingConversation = new ConversationInfo(dialogId, greetingConversationId);
                         var leavingConversation = new ConversationInfo(dialogId, leavingConversationId);
 
