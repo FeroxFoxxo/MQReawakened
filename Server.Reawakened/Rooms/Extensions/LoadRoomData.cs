@@ -99,7 +99,9 @@ public static class LoadRoomData
         var entityComponents = typeof(BaseComponent).Assembly.GetServices<BaseComponent>()
             .Where(t => t.BaseType != null)
             .Where(t => t.BaseType.GenericTypeArguments.Length > 0)
-            .ToDictionary(t => t.BaseType.GenericTypeArguments.First().FullName, t => t);
+            .Select(t => new Tuple<string, Type>(t.BaseType.GenericTypeArguments.FirstOrDefault(x => !string.IsNullOrEmpty(x.FullName))?.FullName, t))
+            .Where(t => !string.IsNullOrEmpty(t.Item1))
+            .ToDictionary(t => t.Item1, t => t.Item2);
 
         var processable = typeof(DataComponentAccessor).Assembly.GetServices<DataComponentAccessor>()
             .ToDictionary(x => x.Name, x => x);

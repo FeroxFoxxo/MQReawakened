@@ -4,7 +4,6 @@ using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -14,78 +13,52 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
     public DatabaseContainer DatabaseContainer { get; set; }
     public new ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
 
-    public TriggerArenaComp Arena = null;
+    public IStatueComp Statue;
 
-    public override object[] GetInitData(Player player) => base.GetInitData(player);
-
-    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
+    public override void InitializeComponent()
     {
-        base.RunSyncedEvent(syncEvent, player);
-
-        if (Id == "5664") // Temporary while blue arenas are in progress
-        {
-            player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1);
-            return;
-        }
-
-        if (player.TempData.ArenaModel.HasStarted)
-        {
-            Logger.LogInformation("Arena has already started, stopping syncEvent.");
-            player.TempData.ArenaModel.ShouldStartArena = true;
-            return;
-        }
-
-        player.Room.SendSyncEvent(syncEvent);
-
-        if (Arena == null)
-        {
-            Room.Entities.TryGetValue(ArenaObjectId, out var foundEntity);
+        if (Room.Entities.TryGetValue(ArenaObjectId, out var foundEntity))
             foreach (var component in foundEntity)
-            {
-                if (component is TriggerArenaComp arenaComponent)
-                    Arena = arenaComponent;
-            }
-        }
-
-        var playersInRoom = DatabaseContainer.GetAllPlayers();
-        var arenaActivation = Convert.ToInt32(syncEvent.EventDataList[2]);
-
-        //Method to determine if arena trigger event is minigame. if minigame, proceed with code below.
-
-        player.TempData.ArenaModel.ShouldStartArena = arenaActivation > 0;
-
-        if (playersInRoom.Count > 1)
-        {
-            if (playersInRoom.All(p => p.TempData.ArenaModel.ShouldStartArena))
-            {
-                foreach (var member in playersInRoom)
-                {
-                    player.TempData.ArenaModel.SetCharacterIds(playersInRoom);
-                    member.TempData.ArenaModel.HasStarted = true;
-                    StartArena(member);
-
-                    Arena?.StartArena(member);
-                }
-
-            }
-        }
-        else
-        {
-            if (player.TempData.ArenaModel.ShouldStartArena)
-            {
-                StartArena(player);
-                player.TempData.ArenaModel.SetCharacterIds([player]);
-
-                Arena?.StartArena(player);
-            }
-        }
-
-        base.RunSyncedEvent(syncEvent, player);
+                if (component is IStatueComp statueComp)
+                    Statue = statueComp;
     }
 
-    public void StartArena(Player player)
+    public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
-        var startRace = new Trigger_SyncEvent(ArenaObjectId, Room.Time, true, player.GameObjectId.ToString(), Room.LevelInfo.LevelId, true, true);
-        player.SendSyncEventToPlayer(startRace);
+        if (Statue == null)
+        {
+            Logger.LogError("Could not find statue with id {Id}!", Id);
+            return;
+        }
+
+        if (Statue.CurrentPhysicalInteractors.Count > 0)
+            return;
+
+        foreach (var playerId in CurrentPhysicalInteractors)
+            if (playerId != player.GameObjectId)
+                Statue.CurrentPhysicalInteractors.Add(playerId);
+
+        var statueSyncEvent = new Trigger_SyncEvent(ArenaObjectId, Room.Time, true, player.GameObjectId, isActive);
+        Statue.RunSyncedEvent(statueSyncEvent, player);
+
+        if (isActive)
+        {
+            if (Id == "5664") // Temporary while blue arenas are in progress
+            {
+                player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1);
+                return;
+            }
+
+            foreach (var playerId in CurrentPhysicalInteractors)
+                if (playerId != player.GameObjectId)
+                    Statue.CurrentPhysicalInteractors.Remove(playerId);
+
+            IsActive = false;
+
+            var triggerSyncEvent = new Trigger_SyncEvent(Id, Room.Time, true, player.GameObjectId, IsActive);
+            RunSyncedEvent(triggerSyncEvent, player);
+
+            IsEnabled = false;
+        }
     }
 }

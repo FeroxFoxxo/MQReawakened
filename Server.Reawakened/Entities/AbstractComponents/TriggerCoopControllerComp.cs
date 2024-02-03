@@ -19,8 +19,8 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
     public int CurrentInteractions;
     public int Interactions => CurrentInteractions + CurrentPhysicalInteractors.Count;
 
-    public bool IsActive = true;
-    public bool IsEnabled = true;
+    public bool IsActive = false;
+    public bool IsEnabled = false;
 
     public Dictionary<string, TriggerType> Triggers;
     public List<ActivationType> Activations;
@@ -361,7 +361,8 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
             Triggered(player, true, IsActive);
 
             if (IsActive)
-                player.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
+                foreach (var rPlayer in CurrentPhysicalInteractors)
+                    Room.Players[rPlayer].CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
         }
     }
 

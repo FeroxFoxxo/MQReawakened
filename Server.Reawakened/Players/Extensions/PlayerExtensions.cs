@@ -280,39 +280,29 @@ public static class PlayerExtensions
             foreach (var objectiveKVP in quest.Objectives)
             {
                 var objective = objectiveKVP.Value;
-                bool isItem;
 
-                if (objective.ObjectiveType != type ||
-                    objective.Completed)
+                if (objective.ObjectiveType != type || objective.Completed)
                     continue;
 
-                if (objective.GameObjectId > 0)
-                {
-                    if (objective.GameObjectId.ToString() != gameObjectId)
-                        continue;
+                var meetsRequirement = false;
 
-                    isItem = false;
-                }
-                else
-                {
+                if (objective.GameObjectId > 0)
+                    if (objective.GameObjectId.ToString() == gameObjectId &&
+                        objective.LevelId == player.Character.LevelData.LevelId)
+                        meetsRequirement = true;
+                
+                if (objective.ItemId > 0 && !meetsRequirement)
+                {   
                     var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(prefabName);
 
-                    if (item == null)
-                        continue;
-
-                    if (item.ItemId != objective.ItemId)
-                        continue;
-
-                    isItem = item.InventoryCategoryID is
-                        ItemFilterCategory.Accessories or
-                        ItemFilterCategory.Clothing or
-                        ItemFilterCategory.Consumables or
-                        ItemFilterCategory.Pets or
-                        ItemFilterCategory.RecipesAndCraftingIngredients or
-                        ItemFilterCategory.WeaponAndAbilities;
+                    if (item != null)
+                        if (item.ItemId == objective.ItemId)
+                            meetsRequirement = item.InventoryCategoryID is not ItemFilterCategory.None
+                                                                        and not ItemFilterCategory.QuestItems
+                                               || objective.LevelId == player.Character.LevelData.LevelId;
                 }
 
-                if (objective.LevelId != player.Character.LevelData.LevelId && !isItem)
+                if (!meetsRequirement)
                     continue;
 
                 if (setObjective)

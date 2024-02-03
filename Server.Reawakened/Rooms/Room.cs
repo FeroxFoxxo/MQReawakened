@@ -228,9 +228,6 @@ public class Room : Timer
                 if (LevelInfo.LevelId == 0)
                     return;
 
-                if (currentPlayer.TempData.ArenaModel == null)
-                    currentPlayer.TempData.ArenaModel = new ArenaModel();
-
                 // USER ENTER
 
                 foreach (var roomCharacter in Players.Values)
@@ -293,8 +290,6 @@ public class Room : Timer
         }
         else
         {
-            player.TempData.ArenaModel = null;
-
             lock (_level.Lock)
             {
                 _level.Rooms.Remove(_roomId);

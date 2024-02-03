@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Arenas;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.BundlesInternal;
 
@@ -20,57 +23,71 @@ public class FinishedMinigame : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var minigameId = int.Parse(message[5]);
+        var objectId = message[5];
         var finishedRaceTime = float.Parse(message[6]);
 
-        Logger.LogInformation("Minigame with ID ({minigameId}) has completed.", minigameId);
+        Logger.LogInformation("Minigame with ID ({minigameId}) has completed.", objectId);
 
-        SendXt("Mt", minigameId, Player.GameObjectId, finishedRaceTime);
-
-        if (Player.TempData.ArenaModel.BestTimeForLevel == null)
+        SendXt("Mt", objectId, Player.GameObjectId, finishedRaceTime);
+        
+        if (Player.Character.BestMinigameTimes.TryGetValue(Player.Room.LevelInfo.Name, out var time))
         {
-            Player.TempData.ArenaModel.BestTimeForLevel = [];
-            Player.TempData.ArenaModel.BestTimeForLevel.Add(Player.Room.LevelInfo.Name, finishedRaceTime);
-        }
-
-        if (Player.TempData.ArenaModel.BestTimeForLevel.TryGetValue(Player.Room.LevelInfo.Name, out var time))
             if (finishedRaceTime < time)
             {
-                Player.TempData.ArenaModel.BestTimeForLevel[Player.Room.LevelInfo.Name] = finishedRaceTime;
+                Player.Character.BestMinigameTimes[Player.Room.LevelInfo.Name] = finishedRaceTime;
                 Player.SendXt("Ms", Player.Room.LevelInfo.InGameName);
             }
+        }
+        else
+            Player.Character.BestMinigameTimes.Add(Player.Room.LevelInfo.Name, finishedRaceTime);
 
-        Player.TempData.ArenaModel.ShouldStartArena = false;
-        Player.TempData.ArenaModel.HasStarted = false;
+        IStatueComp statue = null;
 
-        var playersInRoom = DatabaseContainer.GetAllPlayers();
+        if (Player.Room.Entities.TryGetValue(objectId, out var foundEntity))
+            foreach (var component in foundEntity)
+                if (component is IStatueComp statueComp)
+                    statue = statueComp;
 
-        if (playersInRoom.Count > 1)
+        if (statue == null)
         {
-            if (playersInRoom.All(p => !p.TempData.ArenaModel.HasStarted))
-                foreach (var player in playersInRoom)
-                    FinishMinigame(minigameId, playersInRoom.Count);
+            Logger.LogError("Cannot find statue with ID: {ID}", objectId);
+            return;
         }
 
-        else
-            FinishMinigame(minigameId, 1);
+        if (statue.CurrentPhysicalInteractors.Contains(Player.GameObjectId))
+            statue.CurrentPhysicalInteractors.Remove(Player.GameObjectId);
+
+        if (statue.CurrentPhysicalInteractors.Count == 0)
+        {
+            foreach (var player in Player.Room.Players)
+                FinishMinigame(player.Value, objectId, Player.Room.Players.Count);
+
+            if (Player.Room.Entities.TryGetValue(objectId, out var switchEntity))
+                foreach (var component in switchEntity)
+                    if (component is TriggerCoopArenaSwitchControllerComp tComp)
+                    {
+                        tComp.IsActive = true;
+                        tComp.IsEnabled = true;
+                        tComp.CurrentPhysicalInteractors.Clear();
+                    }
+        }
     }
 
-    public void FinishMinigame(int minigameId, int membersInGroup)
+    public void FinishMinigame(Player player, string minigameId, int membersInRoom)
     {
-        var endRace = new TriggerUpdate_SyncEvent(minigameId.ToString(), Player.Room.Time, membersInGroup);
+        var endRace = new TriggerUpdate_SyncEvent(minigameId, player.Room.Time, membersInRoom);
 
-        Player.Room.SendSyncEvent(endRace);
+        player.SendSyncEventToPlayer(endRace);
 
-        var rdmBananaReward = new Random().Next(7, 11 * Player.Character.Data.GlobalLevel);
-        var xpReward = Player.Character.Data.ReputationForNextLevel / 11;
+        var rdmBananaReward = new Random().Next(7, 11 * player.Character.Data.GlobalLevel);
+        var xpReward = player.Character.Data.ReputationForNextLevel / 11;
 
-        var lootedItems = ArenaModel.GrantLootedItems(LootCatalog, minigameId.ToString());
-        var lootableItems = ArenaModel.GrantLootableItems(LootCatalog, minigameId.ToString());
+        var lootedItems = ArenaModel.GrantLootedItems(LootCatalog, minigameId);
+        var lootableItems = ArenaModel.GrantLootableItems(LootCatalog, minigameId);
 
         var sb = new SeparatedStringBuilder('<');
 
-        sb.Append(membersInGroup.ToString());
+        sb.Append(membersInRoom.ToString());
         sb.Append(rdmBananaReward.ToString());
         sb.Append(xpReward.ToString());
         sb.Append(lootedItems.ToString());
@@ -78,6 +95,6 @@ public class FinishedMinigame : ExternalProtocol
 
         SendXt("Mp", minigameId, sb.ToString());
 
-        Player.SendCashUpdate();
+        player.SendCashUpdate();
     }
 }
