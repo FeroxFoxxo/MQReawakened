@@ -2,8 +2,8 @@
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public interface IStatueComp
+public interface ITriggerComp
 {
     public List<string> CurrentPhysicalInteractors { get; set; }
-    public void RunSyncedEvent(SyncEvent syncEvent, Player player);
+    public void RunTrigger(Player player);
 }

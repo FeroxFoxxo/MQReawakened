@@ -13,22 +13,35 @@ public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
 {
     private float _timer;
     private float _minClearTime;
+    private bool _hasStarted;
 
-    public readonly List<string> ArenaEntities = [];
+    public List<string> ArenaEntities;
+
+    public override void InitializeComponent()
+    {
+        base.InitializeComponent();
+        ArenaEntities = [];
+        _hasStarted = false;
+    }
+
+    public override void Update()
+    {
+        if (_hasStarted)
+            if (Room.Time >= _timer || !ArenaEntities.Any(Room.Entities.ContainsKey) && Room.Time >= _minClearTime)
+                Trigger(Room.Players.FirstOrDefault().Value, false);
+    }
 
     public override void Triggered(Player _, bool isSuccess, bool isActive)
     {
         if (IsActive)
         {
-            foreach (var entity in TriggeredEntities)
+            foreach (var entity in Triggers.Where(x => x.Value == Enums.TriggerType.Activate).Select(x => x.Key))
             {
-                if (Room.Entities.TryGetValue(entity.ToString(), out var foundTrigger) && entity != 0)
+                if (Room.Entities.TryGetValue(entity.ToString(), out var foundTrigger) && int.Parse(entity) > 0)
                 {
                     foreach (var component in foundTrigger)
                     {
-                        if (component is TriggerReceiverComp trigger)
-                            trigger.Trigger(true);
-                        else if (component is BaseSpawnerControllerComp spawner)
+                        if (component is BaseSpawnerControllerComp spawner)
                         {
                             // Add "PF_CRS_SpawnerBoss01" to config on cleanup
                             if (spawner.PrefabName != "PF_CRS_SpawnerBoss01")
@@ -49,27 +62,8 @@ public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
         }
         else
         {
-            //Shut down all active entities on stop
-            foreach (var entity in TriggeredEntities)
-                if (Room.Entities.TryGetValue(entity.ToString(), out var foundTrigger))
-                    foreach (var component in foundTrigger)
-                        if (component is TriggerReceiverComp trigger)
-                            trigger.Trigger(false);
-
-            var hasWon = false;
-
-            if (Room.Time >= _timer)
-                hasWon = false;
-            else if (!ArenaEntities.Any(Room.Entities.ContainsKey) && Room.Time >= _minClearTime)
-                hasWon = true;
-            else
-                Logger.LogError("Unkown arena condition for {Id}", Id);
-
-            foreach (var player in Room.Players.Values)
-                Room.SendSyncEvent(new Trigger_SyncEvent(Id, Room.Time, hasWon, player.GameObjectId, false));
-
             //Trigger rewarded entities on win and shut down Arena
-            if (hasWon)
+            if (!ArenaEntities.Any(Room.Entities.ContainsKey) && Room.Time >= _minClearTime)
             {
                 foreach (var entity in TriggeredRewards)
                     if (Room.Entities.TryGetValue(entity.ToString(), out var foundTrigger))
@@ -80,6 +74,10 @@ public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
                 foreach (var player in Room.Players.Values)
                     player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1);
             }
+            else
+                foreach (var )
         }
+
+        _hasStarted = isActive;
     }
 }

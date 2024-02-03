@@ -41,11 +41,11 @@ public class FinishedMinigame : ExternalProtocol
         else
             Player.Character.BestMinigameTimes.Add(Player.Room.LevelInfo.Name, finishedRaceTime);
 
-        IStatueComp statue = null;
+        ITriggerComp statue = null;
 
         if (Player.Room.Entities.TryGetValue(objectId, out var foundEntity))
             foreach (var component in foundEntity)
-                if (component is IStatueComp statueComp)
+                if (component is ITriggerComp statueComp)
                     statue = statueComp;
 
         if (statue == null)

@@ -13,34 +13,23 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
     public DatabaseContainer DatabaseContainer { get; set; }
     public new ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
 
-    public IStatueComp Statue;
+    public ITriggerComp triggerable;
 
     public override void InitializeComponent()
     {
+        base.InitializeComponent();
+
         if (Room.Entities.TryGetValue(ArenaObjectId, out var foundEntity))
             foreach (var component in foundEntity)
-                if (component is IStatueComp statueComp)
-                    Statue = statueComp;
+                if (component is ITriggerComp triggerableComp)
+                    triggerable = triggerableComp;
+
+        if (!IsEnabled)
+            IsEnabled = triggerable != null;
     }
 
     public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
-        if (Statue == null)
-        {
-            Logger.LogError("Could not find statue with id {Id}!", Id);
-            return;
-        }
-
-        if (Statue.CurrentPhysicalInteractors.Count > 0)
-            return;
-
-        foreach (var playerId in CurrentPhysicalInteractors)
-            if (playerId != player.GameObjectId)
-                Statue.CurrentPhysicalInteractors.Add(playerId);
-
-        var statueSyncEvent = new Trigger_SyncEvent(ArenaObjectId, Room.Time, true, player.GameObjectId, isActive);
-        Statue.RunSyncedEvent(statueSyncEvent, player);
-
         if (isActive)
         {
             if (Id == "5664") // Temporary while blue arenas are in progress
@@ -49,14 +38,26 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
                 return;
             }
 
+            if (triggerable == null)
+            {
+                Logger.LogError("Could not find trigger with id {Id}!", ArenaObjectId);
+                return;
+            }
+
+            if (triggerable.CurrentPhysicalInteractors.Count > 0)
+                return;
+
             foreach (var playerId in CurrentPhysicalInteractors)
-                if (playerId != player.GameObjectId)
-                    Statue.CurrentPhysicalInteractors.Remove(playerId);
+                triggerable.CurrentPhysicalInteractors.Add(playerId);
+
+            triggerable.RunTrigger(player);
+
+            foreach (var playerId in CurrentPhysicalInteractors.ToList())
+                CurrentPhysicalInteractors.Remove(playerId);
 
             IsActive = false;
 
-            var triggerSyncEvent = new Trigger_SyncEvent(Id, Room.Time, true, player.GameObjectId, IsActive);
-            RunSyncedEvent(triggerSyncEvent, player);
+            RunTrigger(player);
 
             IsEnabled = false;
         }

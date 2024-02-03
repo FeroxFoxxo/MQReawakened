@@ -3,11 +3,8 @@ using Server.Reawakened.Entities.Enums;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public class TriggerStatueComp<T> : TriggerCoopControllerComp<T>, IStatueComp where T : TriggerStatue
+public class TriggerStatueComp<T> : TriggerCoopControllerComp<T> where T : TriggerStatue
 {
-    List<string> IStatueComp.CurrentPhysicalInteractors { get => CurrentPhysicalInteractors; set => CurrentPhysicalInteractors = value; }
-
-    public int[] TriggeredEntities;
     public int[] TriggeredRewards;
 
     public int Target09LevelEditorId => ComponentData.Target09LevelEditorID;

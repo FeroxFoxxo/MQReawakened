@@ -13,7 +13,7 @@ using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class TriggerCoopControllerComp<T> : Component<T> where T : TriggerCoopController
+public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T : TriggerCoopController
 {
     public List<string> CurrentPhysicalInteractors;
     public int CurrentInteractions;
@@ -24,6 +24,8 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
 
     public Dictionary<string, TriggerType> Triggers;
     public List<ActivationType> Activations;
+
+    List<string> ITriggerComp.CurrentPhysicalInteractors { get => CurrentPhysicalInteractors; set => CurrentPhysicalInteractors = value; }
 
     public bool DisabledAfterActivation => ComponentData.DisabledAfterActivation;
 
@@ -175,8 +177,8 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
         if (!IsEnabled || syncEvent.Type != SyncEvent.EventType.Trigger)
             return;
 
-        if (!TriggerOnPressed)
-            return;
+        //if (!TriggerOnPressed)
+        //    return;
 
         var tEvent = new Trigger_SyncEvent(syncEvent);
 
@@ -197,6 +199,8 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
 
         if (updated)
             RunTrigger(player);
+        else
+            LogTrigger();
 
         if (Interactions < NbInteractionsNeeded && !IsActive)
         {
@@ -204,7 +208,6 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
             tUpdate.EventDataList.Add(Interactions);
             Room.SendSyncEvent(tUpdate);
         }
-        LogTrigger();
     }
 
     public virtual void Triggered(Player player, bool isSuccess, bool isActive)
@@ -222,12 +225,16 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
         RunTrigger(player);
     }
 
-    private void RunTrigger(Player player)
+    public void RunTrigger(Player player)
     {
         if (!IsActive)
         {
-            if (Interactions < NbInteractionsNeeded ||
-                NbInteractionsMatchesNbPlayers && Interactions < Room.Players.Count)
+            if (NbInteractionsMatchesNbPlayers)
+            {
+                if (Interactions < Room.Players.Count || player == null)
+                    return;
+            }
+            else if (Interactions < NbInteractionsNeeded)
                 return;
 
             Trigger(player, true);
@@ -247,6 +254,7 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
 
             Trigger(player, false);
         }
+        LogTrigger();
     }
 
     public void LogTriggerEvent(Trigger_SyncEvent tEvent)
