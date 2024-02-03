@@ -44,19 +44,15 @@ public class AIStatePatrolComp : Component<AIStatePatrol>
 
     public float PatrolZoneSizeOffset => ComponentData.PatrolZoneSizeOffset;
 
-    public int AttackingEnemyId;
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
-    public GameObjectComponents PreviousState = [];
-
     public ILogger<AIStatePatrolComp> Logger { get; set; }
-    public int Health = 50;
-
+    public GameObjectComponents PreviousState {  get; set; }
     public override void InitializeComponent()
     {
         RunPlacement();
-        //TimerThread.DelayCall(SpikerTest, null, TimeSpan.FromSeconds(15), TimeSpan.Zero, 1);
         base.InitializeComponent();
+        //TimerThread.DelayCall(SpikerTest, null, TimeSpan.FromSeconds(15), TimeSpan.Zero, 1);
     }
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => base.RunSyncedEvent(syncEvent, player);
 

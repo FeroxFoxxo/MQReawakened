@@ -23,7 +23,6 @@ public class DrakeEnemyControllerComp : Component<DrakeEnemyController>
     public TimerThread TimerThread { get; set; }
     public ILogger<SpiderBossControllerComp> Logger { get; set; }
 
-    public GameObjectComponents PreviousState = [];
     public bool IsAttacking = false;
     public int IdOfAttackingEnemy;
     public int TempHealth = 100;
