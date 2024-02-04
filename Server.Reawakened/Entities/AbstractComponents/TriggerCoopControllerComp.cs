@@ -203,12 +203,18 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
     public void AddPhysicalInteractor(string playerId)
     {
+        if (_currentPhysicalInteractors.Contains(playerId))
+            return;
+
         _currentPhysicalInteractors.Add(playerId);
         SendInteractionUpdate();
     }
 
     public void RemovePhysicalInteractor(string playerId)
     {
+        if (!_currentPhysicalInteractors.Contains(playerId))
+            return;
+
         _currentPhysicalInteractors.Remove(playerId);
         SendInteractionUpdate();
     }
