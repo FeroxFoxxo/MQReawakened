@@ -63,8 +63,5 @@ public class CameraScriptComp: Component<CameraScript>
         CamZoneDuration14 +
         CamZoneDuration15 ;
 
-    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
-    {
-        Room.SendSyncEvent(syncEvent);
-    }
+    public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => Room.SendSyncEvent(syncEvent);
 }

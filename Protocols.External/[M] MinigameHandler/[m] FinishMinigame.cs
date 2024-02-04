@@ -7,8 +7,6 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Arenas;
-using Server.Reawakened.Rooms;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Protocols.External._M__MinigameHandler;
@@ -54,10 +52,9 @@ public class FinishedMinigame : ExternalProtocol
             return;
         }
 
-        if (statue.CurrentPhysicalInteractors.Contains(Player.GameObjectId))
-            statue.CurrentPhysicalInteractors.Remove(Player.GameObjectId);
+        statue.RemovePhysicalInteractor(Player.GameObjectId);
 
-        if (statue.CurrentPhysicalInteractors.Count == 0)
+        if (statue.GetPhysicalInteractorCount() == 0)
         {
             foreach (var player in Player.Room.Players)
                 FinishMinigame(player.Value, objectId, Player.Room.Players.Count);
@@ -68,7 +65,6 @@ public class FinishedMinigame : ExternalProtocol
                     {
                         tComp.IsActive = true;
                         tComp.IsEnabled = true;
-                        tComp.CurrentPhysicalInteractors.Clear();
                     }
         }
     }

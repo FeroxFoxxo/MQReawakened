@@ -28,6 +28,7 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
             IsEnabled = triggerable != null;
     }
 
+    // Should be redone to connect to ArenaSwitchBase
     public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
         if (isActive)
@@ -44,21 +45,10 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
                 return;
             }
 
-            if (triggerable.CurrentPhysicalInteractors.Count > 0)
-                return;
-
-            foreach (var playerId in CurrentPhysicalInteractors)
-                triggerable.CurrentPhysicalInteractors.Add(playerId);
-
+            triggerable.AddPhysicalInteractor(player.GameObjectId);
             triggerable.RunTrigger(player);
 
-            foreach (var playerId in CurrentPhysicalInteractors.ToList())
-                CurrentPhysicalInteractors.Remove(playerId);
-
             IsActive = false;
-
-            RunTrigger(player);
-
             IsEnabled = false;
         }
     }

@@ -15,17 +15,15 @@ namespace Server.Reawakened.Entities.AbstractComponents;
 
 public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T : TriggerCoopController
 {
-    public List<string> CurrentPhysicalInteractors;
+    private List<string> _currentPhysicalInteractors;
     public int CurrentInteractions;
-    public int Interactions => CurrentInteractions + CurrentPhysicalInteractors.Count;
+    public int Interactions => CurrentInteractions + _currentPhysicalInteractors.Count;
 
     public bool IsActive = false;
     public bool IsEnabled = false;
 
     public Dictionary<string, TriggerType> Triggers;
     public List<ActivationType> Activations;
-
-    List<string> ITriggerComp.CurrentPhysicalInteractors { get => CurrentPhysicalInteractors; set => CurrentPhysicalInteractors = value; }
 
     public bool DisabledAfterActivation => ComponentData.DisabledAfterActivation;
 
@@ -102,7 +100,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         IsEnabled = IsEnable;
         IsActive = false;
 
-        CurrentPhysicalInteractors = [];
+        _currentPhysicalInteractors = [];
 
         Triggers = [];
         Activations = [];
@@ -186,14 +184,14 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
         var updated = false;
 
-        if (tEvent.Activate && !CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        if (tEvent.Activate && !_currentPhysicalInteractors.Contains(player.GameObjectId))
         {
-            CurrentPhysicalInteractors.Add(player.GameObjectId);
+            AddPhysicalInteractor(player.GameObjectId);
             updated = true;
         }
-        else if (!tEvent.Activate && CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        else if (!tEvent.Activate && _currentPhysicalInteractors.Contains(player.GameObjectId))
         {
-            CurrentPhysicalInteractors.Remove(player.GameObjectId);
+            RemovePhysicalInteractor(player.GameObjectId);
             updated = true;
         }
 
@@ -201,14 +199,29 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
             RunTrigger(player);
         else
             LogTrigger();
-
-        if (Interactions < NbInteractionsNeeded && !IsActive)
-        {
-            var tUpdate = new TriggerUpdate_SyncEvent(new SyncEvent(Id.ToString(), SyncEvent.EventType.TriggerUpdate, Room.Time));
-            tUpdate.EventDataList.Add(Interactions);
-            Room.SendSyncEvent(tUpdate);
-        }
     }
+
+    public void AddPhysicalInteractor(string playerId)
+    {
+        _currentPhysicalInteractors.Add(playerId);
+        SendInteractionUpdate();
+    }
+
+    public void RemovePhysicalInteractor(string playerId)
+    {
+        _currentPhysicalInteractors.Remove(playerId);
+        SendInteractionUpdate();
+    }
+
+    public void SendInteractionUpdate()
+    {
+        var tUpdate = new TriggerUpdate_SyncEvent(new SyncEvent(Id.ToString(), SyncEvent.EventType.TriggerUpdate, Room.Time));
+        tUpdate.EventDataList.Add(Interactions);
+        Room.SendSyncEvent(tUpdate);
+    }
+
+    public int GetPhysicalInteractorCount() => _currentPhysicalInteractors.Count;
+    public string[] GetPhysicalInteractorIds() => _currentPhysicalInteractors.ToArray();
 
     public virtual void Triggered(Player player, bool isSuccess, bool isActive)
     {
@@ -369,7 +382,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
             Triggered(player, true, IsActive);
 
             if (IsActive)
-                foreach (var rPlayer in CurrentPhysicalInteractors)
+                foreach (var rPlayer in _currentPhysicalInteractors)
                     Room.Players[rPlayer].CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
         }
     }

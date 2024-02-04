@@ -22,6 +22,8 @@ public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
         _hasStarted = false;
     }
 
+    public override object[] GetInitData(Player player) => [ -1 ];
+
     public override void Update()
     {
         if (_hasStarted)
@@ -73,7 +75,8 @@ public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
                     player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1);
             }
             else
-                CurrentPhysicalInteractors.Clear();
+                foreach (var player in Room.Players.Values)
+                    RemovePhysicalInteractor(player.GameObjectId);
         }
 
         _hasStarted = isActive;

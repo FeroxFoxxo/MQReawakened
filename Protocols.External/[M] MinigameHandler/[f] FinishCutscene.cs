@@ -27,7 +27,7 @@ public class FinishCutscene : ExternalProtocol
 
         var players = new SeparatedStringBuilder('%');
 
-        foreach (var playerId in arena.CurrentPhysicalInteractors)
+        foreach (var playerId in arena.GetPhysicalInteractorIds())
             players.Append(playerId);
 
         Player.SendXt("Mc", arenaObjectId, Player.Room.Time, 5f, players.ToString());
