@@ -33,7 +33,6 @@ public class TriggerRaceComp : TriggerStatueComp<TriggerRace>
         else
         {
             IsMinigameStarted = false;
-
         }
     }
 }

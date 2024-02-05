@@ -416,4 +416,11 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
             triggers.Select(trigger => receivers[trigger.Key])
             .All(receiver => receiver.Activated);
     }
+
+    public void ResetTrigger()
+    {
+        _currentPhysicalInteractors.Clear();
+        SendInteractionUpdate();
+        IsActive = false;
+    }
 }

@@ -110,10 +110,16 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         return room;
     }
 
-    public List<string> GetSurroundingLevels(LevelInfo levelInfo) =>
-        worldGraph.GetLevelWorldGraphNodes(levelInfo.LevelId)
+    public List<string> GetSurroundingLevels(LevelInfo levelInfo)
+    {
+        var nodes = worldGraph.GetLevelWorldGraphNodes(levelInfo.LevelId);
+
+        return nodes == null
+            ? []
+            : nodes
             .Where(x => x.ToLevelID != x.LevelID)
             .Select(x => worldGraph.GetInfoLevel(x.ToLevelID).Name)
             .Distinct()
             .ToList();
+    }
 }

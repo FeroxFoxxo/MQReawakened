@@ -39,33 +39,28 @@ public class FinishedMinigame : ExternalProtocol
         else
             Player.Character.BestMinigameTimes.Add(Player.Room.LevelInfo.Name, finishedRaceTime);
 
-        ITriggerComp statue = null;
+        ITriggerComp trigger = null;
 
         if (Player.Room.Entities.TryGetValue(objectId, out var foundEntity))
             foreach (var component in foundEntity)
                 if (component is ITriggerComp statueComp)
-                    statue = statueComp;
+                    trigger = statueComp;
 
-        if (statue == null)
+        if (trigger == null)
         {
             Logger.LogError("Cannot find statue with ID: {ID}", objectId);
             return;
         }
 
-        statue.RemovePhysicalInteractor(Player.GameObjectId);
+        trigger.RemovePhysicalInteractor(Player.GameObjectId);
 
-        if (statue.GetPhysicalInteractorCount() == 0)
+        if (trigger.GetPhysicalInteractorCount() == 0)
         {
             foreach (var player in Player.Room.Players)
                 FinishMinigame(player.Value, objectId, Player.Room.Players.Count);
 
-            if (Player.Room.Entities.TryGetValue(objectId, out var switchEntity))
-                foreach (var component in switchEntity)
-                    if (component is TriggerCoopArenaSwitchControllerComp tComp)
-                    {
-                        tComp.IsActive = true;
-                        tComp.IsEnabled = true;
-                    }
+            trigger.ResetTrigger();
+            trigger.RunTrigger(Player);
         }
     }
 
