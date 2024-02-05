@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
@@ -16,11 +17,11 @@ public class FinishCutscene : ExternalProtocol
     {
         var arenaObjectId = message[5];
 
-        TriggerCoopControllerComp trigger = null;
+        ITriggerComp trigger = null;
 
         if (Player.Room.Entities.TryGetValue(arenaObjectId, out var foundEntity))
             foreach (var component in foundEntity)
-                if (component is TriggerCoopControllerComp foundTrigger)
+                if (component is ITriggerComp foundTrigger)
                     trigger = foundTrigger;
 
         if (trigger == null)
@@ -31,7 +32,12 @@ public class FinishCutscene : ExternalProtocol
 
         var players = new SeparatedStringBuilder('%');
 
-        foreach (var playerId in trigger.GetPhysicalInteractorIds())
+        var ids = trigger.GetPhysicalInteractorIds().ToList();
+
+        for (var i = ids.Count; i < 4; i++)
+            ids.Add("0");
+
+        foreach (var playerId in ids)
             players.Append(playerId);
 
         Player.SendXt("Mc", arenaObjectId, Player.Room.Time, 5f, players.ToString());

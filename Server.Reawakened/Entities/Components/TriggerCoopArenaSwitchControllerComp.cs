@@ -47,9 +47,6 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
 
             triggerable.AddPhysicalInteractor(player.GameObjectId);
             triggerable.RunTrigger(player);
-
-            IsActive = false;
-            IsEnabled = false;
         }
     }
 }
