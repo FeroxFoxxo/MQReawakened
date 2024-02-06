@@ -8,6 +8,7 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Enums;
+using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -336,7 +337,7 @@ public static class PlayerExtensions
                 if (!quest.Objectives.Any(o => !o.Value.Completed))
                 {
                     player.SendXt("nQ", quest.Id);
-                    quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
+                    quest.QuestStatus = QuestState.TO_BE_VALIDATED;
                 }
                 player.UpdateNpcsInLevel(quest);
             }
