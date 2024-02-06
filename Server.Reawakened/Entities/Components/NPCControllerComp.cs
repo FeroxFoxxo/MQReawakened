@@ -317,31 +317,21 @@ public class NPCControllerComp : Component<NPCController>
         {
             if (currentQuest.QuestStatus == QuestState.IN_PROCESSING)
             {
-                var canSendQuestComplete = true;
+                var incompleteQuestObjs = currentQuest.Objectives.Values.Where(o => !o.Completed);
 
-                foreach (var objective in currentQuest.Objectives.Values)
+                if (incompleteQuestObjs.Count() == 1)
                 {
-                    if (objective.Completed)
-                        continue;
-
-                    if (objective.CountLeft > 1 ||
-                        objective.ObjectiveType != ObjectiveEnum.Talkto ||
-                        objective.GameObjectLevelId != Room.LevelInfo.LevelId ||
-                        objective.GameObjectId.ToString() != Id
-                    )
+                    var incompleteQuestObj = incompleteQuestObjs.FirstOrDefault();
+                    
+                    if (incompleteQuestObj.GameObjectId.ToString() == Id &&
+                        incompleteQuestObj.GameObjectLevelId == Room.LevelInfo.LevelId &&
+                        incompleteQuestObj.ObjectiveType == ObjectiveEnum.Talkto)
                     {
-                        canSendQuestComplete = false;
-                        break;
-                    }
-                    else
-                    {
-                        objective.Completed = true;
-                        objective.CountLeft = 0;
+                        incompleteQuestObj.Completed = true;
+                        incompleteQuestObj.CountLeft = 0;
+                        currentQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
                     }
                 }
-
-                if (canSendQuestComplete)
-                    currentQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
             }
 
             if (currentQuest.QuestStatus == QuestState.IN_PROCESSING)
@@ -352,7 +342,7 @@ public class NPCControllerComp : Component<NPCController>
             else if (currentQuest.QuestStatus == QuestState.TO_BE_VALIDATED)
             {
                 Logger.LogTrace("[{QuestName} ({QuestId})] [TO BE VALIDATED]", questData.Name, questData.Id);
-                return NPCStatus.QuestCompleted;
+                return questData.ValidatorGoId.ToString() == Id ? NPCStatus.QuestCompleted : NPCStatus.QuestInProgress;
             }
         }
 
@@ -415,7 +405,7 @@ public class NPCControllerComp : Component<NPCController>
             if (matchingQuest.QuestStatus != QuestState.TO_BE_VALIDATED)
                 continue;
 
-            SendNpcDialog(player, matchingQuest, 1);
+            SendNpcDialog(player, matchingQuest, QuestState.TO_BE_VALIDATED);
 
             var completedQuest = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
@@ -442,7 +432,7 @@ public class NPCControllerComp : Component<NPCController>
             if (matchingQuest == null || player.Character.Data.CompletedQuests.Contains(quest.Id))
                 continue;
 
-            SendNpcDialog(player, matchingQuest, 2);
+            SendNpcDialog(player, matchingQuest, QuestState.IN_PROCESSING);
 
             break;
         }
@@ -456,7 +446,7 @@ public class NPCControllerComp : Component<NPCController>
             {
                 var quest = player.AddQuest(givenQuest, true);
 
-                SendNpcDialog(player, quest, 0);
+                SendNpcDialog(player, quest, QuestState.NOT_START);
 
                 Logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", givenQuest.Name, givenQuest.Id, NpcName);
 
@@ -485,7 +475,7 @@ public class NPCControllerComp : Component<NPCController>
         }
     }
 
-    public void SendNpcDialog(Player player, QuestStatusModel questStatus, int dialogNumber)
+    public void SendNpcDialog(Player player, QuestStatusModel questStatus, QuestState state)
     {
         var quest = QuestCatalog.GetQuestData(questStatus.Id);
         var questName = quest.Name;
@@ -501,6 +491,14 @@ public class NPCControllerComp : Component<NPCController>
             Logger.LogError("[{QuestName}] [UNKNOWN QUEST DIALOG]", questName);
             return;
         }
+
+        var dialogNumber = state switch
+        {
+            QuestState.IN_PROCESSING => 2,
+            QuestState.NOT_START => 0,
+            QuestState.TO_BE_VALIDATED => 1,
+            _ => -1,
+        };
 
         if (questDialog.Count < dialogNumber)
         {
@@ -530,6 +528,10 @@ public class NPCControllerComp : Component<NPCController>
             return;
         }
 
-        player.NetState.SendXt("nl", questStatus, Id, NameId, dialog);
+        var oQuestStatus = questStatus.DeepCopy();
+
+        oQuestStatus.QuestStatus = state;
+
+        player.NetState.SendXt("nl", oQuestStatus, Id, NameId, dialog);
     }
 }
