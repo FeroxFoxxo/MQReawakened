@@ -490,7 +490,7 @@ public class NPCControllerComp : Component<NPCController>
         var quest = QuestCatalog.GetQuestData(questStatus.Id);
         var questName = quest.Name;
 
-        if (quest.ValidatorName != quest.QuestgGiverName && quest.ValidatorGoId.ToString() == Id)
+        if (quest.ValidatorGoId.ToString() == Id)
             questName += "validator";
 
         if (DialogRewrites.Rewrites.TryGetValue(questName, out var rewrittenName))
