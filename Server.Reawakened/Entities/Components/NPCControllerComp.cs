@@ -134,10 +134,10 @@ public class NPCControllerComp : Component<NPCController>
             if (tEvent.Activate)
                 TalkToNpc(player);
             else
-                Logger.LogDebug("[INACTIVE NPC TRIGGERED] [{Name} ({Id})]", Name, Id);
+                Logger.LogDebug("[INACTIVE NPC TRIGGERED] [{Name} ({Id})]", NpcName, Id);
         }
         else
-            Logger.LogDebug("[UNKNOWN NPC EVENT] [{Type}] [{Name} ({Id})]", syncEvent.Type.ToString().ToUpperInvariant(), Name, Id);
+            Logger.LogDebug("[UNKNOWN NPC EVENT] [{Type}] [{Name} ({Id})]", syncEvent.Type.ToString().ToUpperInvariant(), NpcName, Id);
 
         SendNpcInfo(player);
     }
@@ -158,19 +158,19 @@ public class NPCControllerComp : Component<NPCController>
                 {
                     case NPCStatus.QuestAvailable:
                         StartNewQuest(player);
-                        Logger.LogDebug("[AVALIABLE QUEST] [{Name} ({Id})]", Name, Id);
+                        Logger.LogDebug("[AVALIABLE QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
                     case NPCStatus.QuestInProgress:
                         SendQuestProgress(player);
-                        Logger.LogDebug("[IN PROGRESS QUEST] [{Name} ({Id})]", Name, Id);
+                        Logger.LogDebug("[IN PROGRESS QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
                     case NPCStatus.QuestCompleted:
                         ValidateQuest(player);
-                        Logger.LogDebug("[COMPLETED QUEST] [{Name} ({Id})]", Name, Id);
+                        Logger.LogDebug("[COMPLETED QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
                     case NPCStatus.QuestUnavailable:
                         SendDialog(player);
-                        Logger.LogDebug("[DIALOG QUEST] [{Name} ({Id})]", Name, Id);
+                        Logger.LogDebug("[DIALOG QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
                     default:
                         break;
@@ -186,10 +186,10 @@ public class NPCControllerComp : Component<NPCController>
                 break;
             case NpcType.Dialog:
                 SendDialog(player);
-                Logger.LogDebug("[DIALOG] [{Name} ({Id})]", Name, Id);
+                Logger.LogDebug("[DIALOG] [{Name} ({Id})]", NpcName, Id);
                 break;
             default:
-                Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", Name, Id);
+                Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", NpcName, Id);
                 break;
         }
     }
@@ -222,9 +222,9 @@ public class NPCControllerComp : Component<NPCController>
     public void SendDialog(Player player)
     {
         if (DialogInfo == null)
-            if (!string.IsNullOrEmpty(Name))
+            if (!string.IsNullOrEmpty(NpcName))
             {
-                var foundDialog = Dialog.GenericDialog.FirstOrDefault(x => x.Key.Contains(Name + Id) && x.Value.Count > 0).Value;
+                var foundDialog = Dialog.GenericDialog.FirstOrDefault(x => x.Key.Contains(NpcName + Id) && x.Value.Count > 0).Value;
 
                 if (foundDialog == null) {
                     Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog catalog found for NPC", NpcName, Id);
