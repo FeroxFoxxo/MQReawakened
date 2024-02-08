@@ -411,10 +411,44 @@ public class NPCControllerComp : Component<NPCController>
 
             if (completedQuest != null)
             {
+                player.CheckAchievement(AchConditionType.CompleteQuest, string.Empty, Logger); // Any Quest
+                player.CheckAchievement(AchConditionType.CompleteQuest, quest.Name, Logger); // Specific Quest by name for example EVT_SB_1_01
+                player.CheckAchievement(AchConditionType.CompleteQuestInLevel, player.Room.LevelInfo.Name, Logger); // Quest by Level/Trail if any exist
+
                 player.Character.Data.QuestLog.Remove(completedQuest);
                 player.NetState.SendXt("nq", completedQuest.Id);
                 player.Character.Data.CompletedQuests.Add(completedQuest.Id);
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
+
+                if (quest.QuestRewards.Count != 0)
+                {
+                    var newQuest = QuestCatalog.QuestCatalogs[quest.QuestRewards.Keys.First()];
+
+                    if (newQuest != null)
+                    {
+                        var oQuest = player.AddQuest(newQuest, true);
+
+                        Logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", newQuest.Name, newQuest.Id, NpcName);
+
+                        var rewardIds = (Dictionary<int, int>)newQuest.GetField("_rewardItemsIds");
+                        var unknownRewards = rewardIds.Where(x => !ItemCatalog.Items.ContainsKey(x.Key));
+
+                        if (unknownRewards.Any())
+                        {
+                            var sb = new StringBuilder();
+
+                            foreach (var reward in unknownRewards)
+                                sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
+
+                            FileLogger.WriteGenericLog<NPCController>("unknown-rewards", $"[Unkwown Quest {newQuest.Id} Rewards]", sb.ToString(),
+                        LoggerType.Error);
+                        }
+
+                        player.UpdateNpcsInLevel(newQuest);
+
+                        Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", newQuest.Name, newQuest.Id);
+                    }
+                }
             }
 
             break;
