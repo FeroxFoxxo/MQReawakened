@@ -12,4 +12,6 @@
     <Objective prefabName="Col_OUT_Gems02" itemId="3357" />
     <Objective prefabName="Col_SHD_WoodWish01" itemId="3370" />
     <Objective prefabName="Col_SHD_Ink02" itemId="3364" />
+    <Objective prefabName="Col_BON_Bones01" itemId="3359" />
+    <Objective prefabName="Col_BON_Skull01" itemId="3361" />
 </ObjectiveCatalogs>
