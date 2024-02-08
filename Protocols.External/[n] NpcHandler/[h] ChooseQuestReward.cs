@@ -8,6 +8,7 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using static A2m.Server.QuestStatus;
 using System.Text;
+using Server.Reawakened.Network.Extensions;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -54,6 +55,8 @@ public class ChooseQuestReward : ExternalProtocol
                     foreach (var reward in unknownRewards)
                         sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
                 }
+
+                oQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
 
                 Player.UpdateNpcsInLevel(newQuest);
 

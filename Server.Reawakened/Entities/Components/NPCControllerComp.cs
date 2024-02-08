@@ -444,6 +444,8 @@ public class NPCControllerComp : Component<NPCController>
                         LoggerType.Error);
                         }
 
+                        oQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
+
                         player.UpdateNpcsInLevel(newQuest);
 
                         Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", newQuest.Name, newQuest.Id);
