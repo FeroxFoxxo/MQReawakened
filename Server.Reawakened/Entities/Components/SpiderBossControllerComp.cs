@@ -8,6 +8,7 @@ using Server.Base.Timers.Extensions;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Rooms;
+using Server.Reawakened.Players;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -63,7 +64,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
         });
     }
     
-    public void Destroy(Room room, string id)
+    public void Destroy(Player player, Room room, string id)
     {
         var delay = 0f;
         var doorId = 0;

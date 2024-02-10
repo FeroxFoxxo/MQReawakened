@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
-using Server.Base.Logging;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.Enums;
 using static A2m.Server.QuestStatus;
 using System.Text;
+using Server.Base.Logging;
 using Server.Reawakened.Network.Extensions;
 
 namespace Protocols.External._n__NpcHandler;
@@ -19,6 +18,7 @@ public class ChooseQuestReward : ExternalProtocol
     public ILogger<ChooseQuestReward> Logger { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+    public FileLogger FileLogger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -39,7 +39,7 @@ public class ChooseQuestReward : ExternalProtocol
 
         if (questRewardId > 0) 
         {
-            var newQuest = QuestCatalog.QuestCatalogs[questRewardId];
+            var newQuest = QuestCatalog.GetQuestData(questRewardId);
 
             if (newQuest != null)
             {
@@ -54,9 +54,14 @@ public class ChooseQuestReward : ExternalProtocol
 
                     foreach (var reward in unknownRewards)
                         sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
+
+                    FileLogger.WriteGenericLog<NPCController>("unknown-rewards", $"[Unkwown Quest {newQuest.Id} Rewards]", sb.ToString(),
+                        LoggerType.Error);
                 }
 
                 oQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
+
+                Player.SendXt("na", oQuest, true);
 
                 Player.UpdateNpcsInLevel(newQuest);
 

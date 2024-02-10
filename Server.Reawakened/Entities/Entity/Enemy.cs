@@ -1,5 +1,5 @@
-﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.Configs;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity.Utils;
@@ -12,17 +12,8 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Bundles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.Marshalling;
-using System.Text;
-using System.Threading.Tasks;
+using Server.Reawakened.XMLs.Enums;
 using UnityEngine;
-using static System.Net.Mime.MediaTypeNames;
-using static UIBase;
 
 namespace Server.Reawakened.Entities.Entity;
 
@@ -54,6 +45,8 @@ public abstract class Enemy : IDestructible
     public BehaviorModel BehaviorList;
 
     public AISyncEventHelper SyncBuilder = new AISyncEventHelper();
+
+    public ILogger<Enemy> Logger { get; set; }
 
     public Enemy(Room room, string entityId, BaseComponent baseEntity)
     {
@@ -218,7 +211,7 @@ public abstract class Enemy : IDestructible
 
             //Temp values for now
             Room.SendSyncEvent(SyncBuilder.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
-            Destroy(Room, Id);
+            Destroy(origin, Room, Id);
         }
     }
 
@@ -460,8 +453,15 @@ public abstract class Enemy : IDestructible
         player.SendSyncEventToPlayer(aiDo);
     }
 
-    public void Destroy(Room room, string id)
+    public void Destroy(Player player, Room room, string id)
     {
+        player.CheckObjective(ObjectiveEnum.Score, id, Entity.PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.Scoremultiple, id, Entity.PrefabName, 1);
+
+        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, Logger);
+
         room.Entities.Remove(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);

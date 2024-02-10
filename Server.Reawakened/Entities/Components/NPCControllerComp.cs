@@ -14,7 +14,6 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Models.Npcs;
-using System.Linq;
 using System.Text;
 using static A2m.Server.QuestStatus;
 using static NPCController;
@@ -420,12 +419,15 @@ public class NPCControllerComp : Component<NPCController>
                 player.Character.Data.CompletedQuests.Add(completedQuest.Id);
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
 
-                if (quest.QuestRewards.Count != 0)
+                if (quest.QuestRewards.Count > 0)
                 {
-                    var newQuest = QuestCatalog.QuestCatalogs[quest.QuestRewards.Keys.First()];
-
-                    if (newQuest != null)
+                    foreach (var item in quest.QuestRewards) 
                     {
+                        var newQuest = QuestCatalog.GetQuestData(item.Key);
+
+                        if (newQuest == null)
+                            continue;
+
                         var oQuest = player.AddQuest(newQuest, true);
 
                         Logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", newQuest.Name, newQuest.Id, NpcName);
@@ -446,9 +448,12 @@ public class NPCControllerComp : Component<NPCController>
 
                         oQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
 
+                        player.SendXt("na", oQuest, true);
+
                         player.UpdateNpcsInLevel(newQuest);
 
                         Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", newQuest.Name, newQuest.Id);
+                        break;
                     }
                 }
             }
