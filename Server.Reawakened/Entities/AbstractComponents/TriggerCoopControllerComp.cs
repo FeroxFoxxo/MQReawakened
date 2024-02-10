@@ -21,6 +21,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
     public bool IsActive = false;
     public bool IsEnabled = false;
+    public float LastActivationTime = 0;
 
     public Dictionary<string, TriggerType> Triggers;
     public List<ActivationType> Activations;
@@ -95,7 +96,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
     public FileLogger FileLogger { get; set; }
 
-    public override void InitializeComponent()
+    public override void DelayedComponentInitialization()
     {
         IsEnabled = IsEnable;
         IsActive = false;
@@ -246,6 +247,9 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
     public void RunTrigger(Player player)
     {
+        // GoTo must be outside for if someone in the room has interactd with the trigger in the past (i.e. in public rooms like CTS)
+        player?.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
+
         if (!IsActive)
         {
             if (NbInteractionsMatchesNbPlayers)
@@ -260,6 +264,8 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
             if (DisabledAfterActivation)
                 IsEnabled = false;
+
+            LastActivationTime = Room.Time;
         }
         else
         {
@@ -268,7 +274,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
             if (StayTriggeredOnReceiverActivated && triggerRecieverActivated)
                 return;
 
-            if (StayTriggeredOnUnpressed)
+            if (StayTriggeredOnUnpressed && (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time || ActivationTimeAfterFirstInteraction <= 0))
                 return;
 
             Trigger(player, false);
@@ -386,10 +392,6 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         {
             Room.SentEntityTriggered(Id, player, true, IsActive);
             Triggered(player, true, IsActive);
-
-            if (IsActive)
-                foreach (var rPlayer in _currentPhysicalInteractors)
-                    Room.Players[rPlayer].CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
         }
     }
 

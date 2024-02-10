@@ -96,6 +96,11 @@ public class Room : Timer
 
         foreach (var component in Entities.Values.SelectMany(x => x))
         {
+            component.DelayedComponentInitialization();
+        }
+
+        foreach (var component in Entities.Values.SelectMany(x => x))
+        {
             if (component.Name == config.EnemyComponentName)
             {
                 // Move the name switcher out of ServerRConfig when the enemy xml is made.
