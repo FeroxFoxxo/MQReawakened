@@ -25,6 +25,10 @@ public abstract class BaseComponent
     {
     }
 
+    public virtual void DelayedComponentInitialization()
+    {
+    }
+
     public virtual object[] GetInitData(Player player) => [];
 
     public virtual void SendDelayedData(Player player)

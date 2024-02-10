@@ -1,4 +1,7 @@
-﻿using Server.Reawakened.Network.Protocols;
+﻿using A2m.Server;
+using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Extensions;
 
 namespace Protocols.External._M__MinigameHandler;
 
@@ -16,6 +19,18 @@ public class HoopGroup : ExternalProtocol
             if (!string.IsNullOrEmpty(message[7]))
                 hoopGroupName = message[7];
 
-        Console.WriteLine("HIT HOOP");
+        if (completed)
+        {
+            var hoops = Player.Room.Entities.Values.SelectMany(x => x)
+                .Where(x => x is HoopControllerComp)
+                .Select(x => x as HoopControllerComp);
+
+            var masterHoop = hoops.First(x => x.HoopGroupStringId == hoopGroupName && x.IsMasterController);
+
+            var hitHoops = hoops.Where(x => x.HoopGroupId == masterHoop.HoopGroupId);
+
+            foreach (var hoop in hitHoops)
+                Player.CheckObjective(ObjectiveEnum.Invalid, hoop.Id, hoop.PrefabName, 1);
+        }
     }
 }
