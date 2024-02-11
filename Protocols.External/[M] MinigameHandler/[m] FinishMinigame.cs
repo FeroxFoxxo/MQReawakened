@@ -58,8 +58,8 @@ public class FinishedMinigame : ExternalProtocol
             foreach (var player in Player.Room.Players)
                 FinishMinigame(player.Value, objectId, Player.Room.Players.Count);
 
-            trigger.ResetTrigger();
             trigger.RunTrigger(Player);
+            trigger.ResetTrigger();
         }
     }
 
