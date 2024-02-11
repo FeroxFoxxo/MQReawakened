@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Logging;
 using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
-using System.Text;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -20,37 +18,24 @@ public class CheckpointControllerComp : TriggerCoopControllerComp<CheckpointCont
 
         Logger.LogInformation("Checkpoint 1: {SpawnPoint}", SpawnPoint);
 
-        if (Room.CheckpointId == Id)
-        {
-            Logger.LogTrace("Skipped checkpoint: {SpawnPoint}", SpawnPoint);
-            return;
-        }
+        if (Room.LastCheckpoint != null)
+            if (Room.LastCheckpoint.Id == Id)
+            {
+                Logger.LogTrace("Skipped checkpoint: {SpawnPoint}", SpawnPoint);
+                return;
+            }
 
-        var spawns = Room.GetComponentsOfType<SpawnPointComp>()
-            .Values.OrderBy(s => s.Index).ToArray();
-
-        var spawnPoint = spawns.FirstOrDefault(s => s.Index == SpawnPoint);
+        var spawnPoint = player.Room.GetComponentsOfType<SpawnPointComp>().Values.FirstOrDefault(x => x.Index == SpawnPoint);
 
         if (spawnPoint != null)
-            Room.CheckpointSpawn = spawnPoint;
-        else
+            player.Character.LevelData.SpawnPointId = spawnPoint.Id;
+
+        if (player.Room.LastCheckpoint != null)
         {
-            var sb = new StringBuilder();
-
-            sb.AppendLine($"SpawnPoint Index: {SpawnPoint}")
-                .Append($"Possibilities: {string.Join(", ", spawns.Select(s => $"{s.Index} (ID: {s.Id})"))}");
-
-            FileLogger.WriteGenericLog<CheckpointController>("checkpoints-errors", "Checkpoint Spawn Failed",
-                sb.ToString(), LoggerType.Warning);
+            var possibleLastCheckpoint = Room.GetComponentsOfType<CheckpointControllerComp>().Values.FirstOrDefault(c => c.Id == player.Room.LastCheckpoint.Id);
+            possibleLastCheckpoint?.Trigger(player, false);
         }
 
-        Room.CheckpointId = Id;
-
-        var checkpoints = Room.GetComponentsOfType<CheckpointControllerComp>().Values;
-        var possibleLastCheckpoint = checkpoints.FirstOrDefault(c => c.Id == Room.CheckpointId);
-
-        possibleLastCheckpoint?.Trigger(player, false);
-
-        Room.CheckpointId = Id;
+        player.Room.LastCheckpoint = this;
     }
 }

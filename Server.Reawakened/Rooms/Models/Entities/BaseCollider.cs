@@ -2,65 +2,43 @@
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
-
-public class BaseCollider
+public abstract class BaseCollider
 {
-    public int Id;
-
     public Room Room;
     public Vector3 Position;
+    public string Id;
     public string Plane;
-
-    public bool IsAttackBox;
+    public string ColliderType;
     public RectModel ColliderBox;
 
-    public BaseCollider(int id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, bool isAttackBox)
+    public BaseCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, string colliderType)
     {
         // Builder for projectiles
         Id = id;
         Position = new Vector3(position.X, position.Y, position.Z);
         Plane = plane;
-        IsAttackBox = isAttackBox;
-        ColliderBox = new RectModel(position.X - position.X * 0.5f, position.Y - position.Y * 0.5f, sizeX, sizeY);
         Room = room;
-    }
 
-    public BaseCollider(int id, Vector3Model position, float sizeX, float sizeY, string plane, Room room)
-    {
-        // Builder for objects
-        Id = id;
-        Position = new Vector3(position.X, position.Y, position.Z);
-        Plane = plane;
-        IsAttackBox = false;
+        ColliderType = colliderType.ToLower();
         ColliderBox = new RectModel(position.X, position.Y, sizeX, sizeY);
-        Room = room;
     }
-
-    public virtual void Update() { }
-
-    public virtual void OnCollision(BaseCollider collider, SyncEvent syncEvent) { }
-
-    public int[] IsColliding()
+    public BaseCollider(ColliderModel collider, Room room)
     {
-        var roomList = Room.Colliders.Values.ToList();
-        var collidedWith = new List<int>();
-
-        foreach (var collider in roomList)
-        {
-            if (CheckCollision(collider) && !collider.IsAttackBox)
-                collidedWith.Add(collider.Id);
-        }
-
-        return [.. collidedWith];
+        Id = string.Empty;
+        Position = new Vector3(collider.Position.x, collider.Position.y, 0);
+        Plane = collider.Plane;
+        Room = room;
+        ColliderType = "terrain";
+        ColliderBox = new RectModel(Position.x, Position.y + 0.1f, collider.Width, collider.Height);
     }
 
-    public bool CheckCollision(BaseCollider collided) =>
-        Position.x < collided.ColliderBox.X + collided.ColliderBox.Width && collided.ColliderBox.X < Position.x + ColliderBox.Width &&
-        Position.y < collided.ColliderBox.Y + collided.ColliderBox.Height && collided.ColliderBox.Y < Position.y + ColliderBox.Height &&
-        Plane == collided.Plane;
+    public virtual string[] IsColliding(bool isAttack) => [];
 
-    public bool CheckObjectCollision(BaseCollider collided) => 
-        collided.ColliderBox.X < ColliderBox.X + ColliderBox.Width && collided.ColliderBox.X > ColliderBox.X - ColliderBox.Width &&
-        collided.ColliderBox.Y > ColliderBox.Y - ColliderBox.Height && collided.ColliderBox.Y < ColliderBox.Y + ColliderBox.Height &&
-        collided.Plane == Plane;
+    public virtual void SendCollisionEvent(BaseCollider received)
+    {
+    }
+
+    public virtual bool CheckCollision(BaseCollider collided) => Position.x < collided.Position.x + collided.ColliderBox.Width && collided.Position.x < Position.x + ColliderBox.Width &&
+            Position.y < collided.Position.y + collided.ColliderBox.Height && collided.Position.y < Position.y + ColliderBox.Height &&
+            Plane == collided.Plane;
 }

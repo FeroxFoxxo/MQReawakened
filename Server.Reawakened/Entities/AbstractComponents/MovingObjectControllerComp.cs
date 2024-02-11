@@ -5,21 +5,14 @@ using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable, IRecieverTriggered where T : MovingObjectController
+public abstract class MovingObjectControllerComp<T> : Component<T>, IRecieverTriggered where T : MovingObjectController
 {
     public float InitialProgressRatio => ComponentData.InitialProgressRatio;
 
     public IMovement Movement;
 
-    public IMovement GetMovement() => Movement;
-
-    public override void InitializeComponent()
-    {
-        if (!Room.Entities[Id].OfType<ICoopTriggered>().Any())
-            return;
-
-        Movement?.Activate(Room.Time);
-    }
+    public override void InitializeComponent() =>
+        Movement.Activate(Room.Time);
 
     public override void Update()
     {
@@ -43,15 +36,11 @@ public abstract class MovingObjectControllerComp<T> : Component<T>, IMoveable, I
         Movement.Activated ? 1 : 0
     ];
 
-    public void Activate() => Movement?.Activate(Room.Time);
-
-    public void Deactivate() => Movement?.Deactivate(Room.Time);
-
     public void RecievedTrigger(bool triggered)
     {
         if (triggered)
-            GetMovement().Activate(Room.Time);
+            Movement.Activate(Room.Time);
         else
-            GetMovement().Deactivate(Room.Time);
+            Movement.Deactivate(Room.Time);
     }
 }

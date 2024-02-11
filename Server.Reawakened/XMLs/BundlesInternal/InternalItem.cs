@@ -17,7 +17,7 @@ public class InternalItem : IBundledXml<InternalItem>
     public ILogger<InternalItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public List<ItemDescription> Items;
+    public Dictionary<int, ItemDescription> Items;
     public Dictionary<int, string> Descriptions;
 
     public InternalItem()
@@ -251,17 +251,42 @@ public class InternalItem : IBundledXml<InternalItem>
                         Descriptions.Add(nameId.Key, nameId.Value);
 
                         if (!string.IsNullOrEmpty(prefabName))
-                            Items.Add(new ItemDescription(itemId,
-                                tribe, itemCategoryType, subCategoryType, actionType,
-                                (int)rarity, currency, regularPrice, sellPrice, sellCount,
-                                specialDisplayPrefab, itemName, description, prefabName,
-                                cooldownTime, binding, level, levelRequirement, itemEffects, uniqueInInventory,
-                                storeType, discountedFrom, discountedTo, discountPrice, stockPriority, lootId,
-                                productionStatus, recipeParentItemId, releaseDate, memberOnly, delayUseDuration
-                            ));
+                            if (Items.TryGetValue(itemId, out var itemDesc))
+                                Logger.LogError("Item {PrefabName} cannot be added as item {PrefabName} already exists with id {Id}", prefabName, itemDesc.PrefabName, itemId);
+                            else
+                                Items.Add(itemId, new ItemDescription(itemId,
+                                    tribe, itemCategoryType, subCategoryType, actionType,
+                                    (int)rarity, currency, regularPrice, sellPrice, sellCount,
+                                    specialDisplayPrefab, itemName, description, prefabName,
+                                    cooldownTime, binding, level, levelRequirement, itemEffects, uniqueInInventory,
+                                    storeType, discountedFrom, discountedTo, discountPrice, stockPriority, lootId,
+                                    productionStatus, recipeParentItemId, releaseDate, memberOnly, delayUseDuration
+                                ));
                     }
                 }
             }
+        }
+
+        var questObjs = Services.GetRequiredService<InternalObjective>();
+
+        var maxDesc = Descriptions.Max(x => x.Key);
+
+        foreach (var obj in questObjs.ObjectivePrefabs)
+        {
+            maxDesc++;
+
+            if (!Items.ContainsKey(obj.Key))
+            {
+                Descriptions.Add(maxDesc, obj.Value);
+
+                Items.Add(obj.Key, new ItemDescription(obj.Key, TribeType.Unknown, ItemCategory.Quest,
+                    ItemSubCategory.Unknown, ItemActionType.Invalid, 0, CurrencyType.Unknown, 0, 0, 0,
+                    string.Empty, obj.Value, obj.Value, obj.Value, 0f, ItemBinding.Unknown, 0, 0, [],
+                    false, StoreType.Unknown, DateTime.Now, DateTime.Now, 0, 0, 0, ProductionStatus.Ingame,
+                    0, DateTime.Now, false, 0));
+            }
+            else
+                Logger.LogError("Objective with id {Id} and prefab {Name} already exists in item dictionary!", obj.Key, obj.Value);
         }
     }
 

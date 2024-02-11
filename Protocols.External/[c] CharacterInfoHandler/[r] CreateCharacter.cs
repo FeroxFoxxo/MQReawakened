@@ -30,9 +30,9 @@ public class CreateCharacter : ExternalProtocol
         var lastName = message[7];
         var gender = (Gender)int.Parse(message[8]);
         var characterData = new CharacterDataModel(message[9]);
-        var tribe = TribeType.Ook;
+        var tribe = TribeType.Invalid;
 
-        if (ServerConfig.Is2014Client)
+        if (ServerConfig.GameVersion >= GameVersion.v2014)
             tribe = (TribeType)int.Parse(message[10]);
 
         var names = new[] { firstName, middleName, lastName };
@@ -52,15 +52,15 @@ public class CreateCharacter : ExternalProtocol
             characterData.CharacterName = string.Join(string.Empty, names);
             characterData.UserUuid = Player.UserId;
 
-            if (ServerConfig.Is2014Client)
+            if (ServerConfig.GameVersion >= GameVersion.v2014)
                 characterData.CompletedQuests.Add(ServerConfig.TutorialTribe2014[tribe]);
 
             characterData.Registered = true;
 
             var levelUpData = new LevelData
             {
-                LevelId = ServerConfig.Is2014Client ? WorldGraph.DefaultLevel : WorldGraph.NewbZone,
-                SpawnPointId = 0
+                LevelId = ServerConfig.GameVersion >= GameVersion.v2014 ? WorldGraph.DefaultLevel : WorldGraph.NewbZone,
+                SpawnPointId = ""
             };
 
             var model = CharacterHandler.Create(characterData, levelUpData);

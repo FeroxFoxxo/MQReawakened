@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesEdit;
@@ -14,7 +16,7 @@ public class EditVendor : IBundledXml<EditVendor>
     public ILogger<EditVendor> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<string, List<string>> EditedVendorAttributes;
+    public Dictionary<GameVersion, Dictionary<string, List<string>>> EditedVendorAttributes;
 
     public EditVendor()
     {
@@ -38,40 +40,57 @@ public class EditVendor : IBundledXml<EditVendor>
         {
             if (!(items.Name == "EditedVendors")) continue;
 
-            foreach (XmlNode item in items.ChildNodes)
+            foreach (XmlNode gVXml in items.ChildNodes)
             {
-                if (!(item.Name == "Vendor")) continue;
+                if (!(gVXml.Name == "GameVersion")) continue;
 
-                var name = string.Empty;
-                var itemId = string.Empty;
+                var gameVersion = GameVersion.Unknown;
 
-                foreach (XmlAttribute itemAttributes in item.Attributes)
-                    switch (itemAttributes.Name)
+                foreach (XmlAttribute gVAttribute in gVXml.Attributes)
+                    switch (gVAttribute.Name)
                     {
-                        case "name":
-                            name = itemAttributes.Value;
+                        case "version":
+                            gameVersion = gameVersion.GetEnumValue(gVAttribute.Value, Logger);
                             break;
                     }
 
-                EditedVendorAttributes.Add(name, []);
+                EditedVendorAttributes.Add(gameVersion, []);
 
-                foreach (XmlNode itemAttribute in item.ChildNodes)
+                foreach (XmlNode item in gVXml.ChildNodes)
                 {
-                    if (!(itemAttribute.Name == "Item")) continue;
+                    if (!(item.Name == "Vendor")) continue;
 
-                    var prefabName = string.Empty;
+                    var name = string.Empty;
+                    var itemId = string.Empty;
 
-                    foreach (XmlAttribute itemAttributes in itemAttribute.Attributes)
+                    foreach (XmlAttribute itemAttributes in item.Attributes)
                         switch (itemAttributes.Name)
                         {
                             case "name":
-                                prefabName = itemAttributes.Value;
+                                name = itemAttributes.Value;
                                 break;
                         }
 
-                    var itemDesc = itemCatalog.GetItemFromPrefabName(prefabName);
+                    EditedVendorAttributes[gameVersion].Add(name, []);
 
-                    EditedVendorAttributes[name].Add(itemDesc.ItemId.ToString());
+                    foreach (XmlNode itemAttribute in item.ChildNodes)
+                    {
+                        if (!(itemAttribute.Name == "Item")) continue;
+
+                        var prefabName = string.Empty;
+
+                        foreach (XmlAttribute itemAttributes in itemAttribute.Attributes)
+                            switch (itemAttributes.Name)
+                            {
+                                case "name":
+                                    prefabName = itemAttributes.Value;
+                                    break;
+                            }
+
+                        var itemDesc = itemCatalog.GetItemFromPrefabName(prefabName);
+
+                        EditedVendorAttributes[gameVersion][name].Add(itemDesc.ItemId.ToString());
+                    }
                 }
             }
         }

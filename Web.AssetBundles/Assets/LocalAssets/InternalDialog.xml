@@ -31,18 +31,18 @@
         </NPC>
         <NPC objectId="905" name="Mondy" descriptionId="0">
             <Dialog dialogId="884" conversationId="2451" minimumReputation="1" />
-            <Dialog dialogId="884" conversationId="2452" minimumReputation="5" />
-            <Dialog dialogId="884" conversationId="2453" minimumReputation="10" />
+            <Dialog dialogId="884" conversationId="2452" minimumReputation="1" />
+            <Dialog dialogId="884" conversationId="2453" minimumReputation="1" />
         </NPC>
         <NPC objectId="153" name="Wijit" descriptionId="0">
             <Dialog dialogId="841" conversationId="2351" minimumReputation="1" />
-            <Dialog dialogId="661" conversationId="1911" minimumReputation="5" />
-            <Dialog dialogId="662" conversationId="1912" minimumReputation="10" />
+            <Dialog dialogId="661" conversationId="1911" minimumReputation="1" />
+            <Dialog dialogId="662" conversationId="1912" minimumReputation="1" />
         </NPC>
         <NPC objectId="145" name="Jeet" descriptionId="0">
             <Dialog dialogId="839" conversationId="2349" minimumReputation="1" />
-            <Dialog dialogId="654" conversationId="1904" minimumReputation="5" />
-            <Dialog dialogId="655" conversationId="1905" minimumReputation="10" />
+            <Dialog dialogId="654" conversationId="1904" minimumReputation="1" />
+            <Dialog dialogId="655" conversationId="1905" minimumReputation="1" />
         </NPC>
         <NPC objectId="102097" name="Argus" descriptionId="0">
             <!-- Apparently should be 5? -->
@@ -50,31 +50,31 @@
         </NPC>
         <NPC objectId="684" name="Mayor Bumbee" descriptionId="0">
             <Dialog dialogId="837" conversationId="2347" minimumReputation="1" />
-            <Dialog dialogId="648" conversationId="1898" minimumReputation="5" />
+            <Dialog dialogId="648" conversationId="1898" minimumReputation="1" />
             <Dialog dialogId="649" conversationId="1899" minimumReputation="1" />
         </NPC>
         <NPC objectId="193" name="Kama" descriptionId="0">
             <Dialog dialogId="840" conversationId="2350" minimumReputation="1" />
-            <Dialog dialogId="657" conversationId="1907" minimumReputation="5" />
-            <Dialog dialogId="658" conversationId="1908" minimumReputation="10" />
-            <Dialog dialogId="659" conversationId="1909" minimumReputation="15" />
+            <Dialog dialogId="657" conversationId="1907" minimumReputation="1" />
+            <Dialog dialogId="658" conversationId="1908" minimumReputation="1" />
+            <Dialog dialogId="659" conversationId="1909" minimumReputation="1" />
         </NPC>
         <NPC objectId="788" name="Flit" descriptionId="0">
             <Dialog dialogId="1416" conversationId="3582" minimumReputation="1" />
-            <Dialog dialogId="651" conversationId="1901" minimumReputation="15" />
-            <Dialog dialogId="652" conversationId="1902" minimumReputation="40" />
+            <Dialog dialogId="651" conversationId="1901" minimumReputation="1" />
+            <Dialog dialogId="652" conversationId="1902" minimumReputation="1" />
         </NPC>
         <NPC objectId="128" name="Memee" descriptionId="0">
             <Dialog dialogId="842" conversationId="2352" minimumReputation="1" />
-            <Dialog dialogId="664" conversationId="1914" minimumReputation="5" />
-            <Dialog dialogId="666" conversationId="1916" minimumReputation="15" />
-            <Dialog dialogId="667" conversationId="1917" minimumReputation="20" />
+            <Dialog dialogId="664" conversationId="1914" minimumReputation="1" />
+            <Dialog dialogId="666" conversationId="1916" minimumReputation="1" />
+            <Dialog dialogId="667" conversationId="1917" minimumReputation="1" />
         </NPC>
         <NPC objectId="741" name="Hardtack" descriptionId="0">
             <Dialog dialogId="835" conversationId="2345" minimumReputation="1" />
-            <Dialog dialogId="643" conversationId="1893" minimumReputation="5" />
-            <Dialog dialogId="644" conversationId="1894" minimumReputation="10" />
-            <Dialog dialogId="645" conversationId="1895" minimumReputation="15" />
+            <Dialog dialogId="643" conversationId="1893" minimumReputation="1" />
+            <Dialog dialogId="644" conversationId="1894" minimumReputation="1" />
+            <Dialog dialogId="645" conversationId="1895" minimumReputation="1" />
         </NPC>
         <NPC objectId="98585" name="Mysterious Warrior Guard" descriptionId="0">
             <Dialog dialogId="1528" conversationId="3879" minimumReputation="1" />
@@ -111,9 +111,20 @@
         </NPC>
     </Level>
     <Level id="301">
-        <!--Hovering Markets-->
+        <!-- Hovering Markets -->
         <NPC objectId="342" name="The Underbelly Guard" descriptionId="0">
             <Dialog dialogId="1310" conversationId="3036" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="145" name="Jeet" descriptionId="0">
+            <Dialog dialogId="839" conversationId="2349" minimumReputation="1" />
+            <Dialog dialogId="654" conversationId="1904" minimumReputation="1" />
+            <Dialog dialogId="655" conversationId="1905" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="193" name="Kama" descriptionId="0">
+            <Dialog dialogId="840" conversationId="2350" minimumReputation="1" />
+            <Dialog dialogId="657" conversationId="1907" minimumReputation="1" />
+            <Dialog dialogId="658" conversationId="1908" minimumReputation="1" />
+            <Dialog dialogId="659" conversationId="1909" minimumReputation="1" />
         </NPC>
     </Level>
     <Level id="458">
@@ -159,19 +170,19 @@
         </NPC>
     </Level>
     <Level id="497">
-        <!--Snowdrift Hills-->
+        <!-- Snowdrift Hills -->
         <NPC objectId="3286758" name="Oswik" descriptionId="0">
             <Dialog dialogId="1414" conversationId="3580" minimumReputation="1" />
         </NPC>
     </Level>
     <Level id="498">
-        <!--Peaks of Z'or-->
+        <!-- Peaks of Z'or -->
         <NPC objectId="3286428" name="Brinn" descriptionId="0">
             <Dialog dialogId="1403" conversationId="3569" minimumReputation="1" />
         </NPC>
     </Level>
     <Level id="500">
-        <!--Raider Village-->
+        <!-- Raider Village -->
         <NPC objectId="16767" name="Torin" descriptionId="0">
             <Dialog dialogId="1407" conversationId="3573" minimumReputation="1" />
         </NPC>
@@ -183,7 +194,7 @@
         </NPC>
     </Level>
     <Level id="501">
-        <!--Snowstorm Summit-->
+        <!-- Snowstorm Summit -->
         <NPC objectId="3286583" name="Holm" descriptionId="0">
             <Dialog dialogId="1406" conversationId="3572" minimumReputation="1" />
         </NPC>
@@ -192,7 +203,7 @@
         </NPC>
     </Level>
     <Level id="502">
-        <!--Icewind Caverns-->
+        <!-- Icewind Caverns -->
         <NPC objectId="3287782" name="Vargon" descriptionId="0">
             <Dialog dialogId="1405" conversationId="3571" minimumReputation="1" />
         </NPC>
@@ -210,7 +221,7 @@
         </NPC>
     </Level>
     <Level id="499">
-        <!--Tempest Chasm-->
+        <!-- Tempest Chasm -->
         <NPC objectId="13160347" name="Siv" descriptionId="0">
             <Dialog dialogId="1408" conversationId="3574" minimumReputation="1" />
         </NPC>
@@ -225,7 +236,7 @@
         </NPC>
     </Level>
     <Level id="556">
-        <!--Viking Warrior Trial-->
+        <!-- Viking Warrior Trial -->
         <NPC objectId="26292758" name="Dolvin" descriptionId="0">
             <Dialog dialogId="1578" conversationId="4012" minimumReputation="1" />
         </NPC>
@@ -234,19 +245,19 @@
         </NPC>
     </Level>
     <Level id="308">
-        <!--Smuggler's Highway-->
+        <!-- Smuggler's Highway -->
         <NPC objectId="1028" name="Armond" descriptionId="0">
             <Dialog dialogId="1413" conversationId="3579" minimumReputation="1" />
         </NPC>
     </Level>
     <Level id="564">
-        <!--SpongeBob's Amusement Park-->
+        <!-- SpongeBob's Amusement Park -->
         <NPC objectId="26294091" name="Barry Koda" descriptionId="0">
             <Dialog dialogId="1605" conversationId="4078" minimumReputation="1" />
         </NPC>
     </Level>
     <Level id="557">
-        <!--Party Tree-->
+        <!-- Party Tree -->
         <NPC objectId="26323857" name="Snowball" descriptionId="0">
             <Dialog dialogId="1560" conversationId="3955" minimumReputation="1" />
         </NPC>
@@ -264,9 +275,29 @@
         </NPC>
     </Level>
     <Level id="209">
-        <!--The Volcano Lair-->
+        <!-- The Volcano Lair -->
         <NPC objectId="2530" name="Urymo" descriptionId="0">
             <Dialog dialogId="41" conversationId="140" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level id="452">
+        <!-- Noogo Village -->
+        <NPC objectId="33976" name="Onko" nameId="10597" descriptionId="0">
+            <Dialog dialogId="975" conversationId="2689" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level id="302">
+        <!-- The Underbelly -->
+        <NPC objectId="128" name="Memee" descriptionId="0">
+            <Dialog dialogId="842" conversationId="2352" minimumReputation="1" />
+            <Dialog dialogId="664" conversationId="1914" minimumReputation="1" />
+            <Dialog dialogId="666" conversationId="1916" minimumReputation="1" />
+            <Dialog dialogId="667" conversationId="1917" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="153" name="Wijit" descriptionId="0">
+            <Dialog dialogId="841" conversationId="2351" minimumReputation="1" />
+            <Dialog dialogId="661" conversationId="1911" minimumReputation="1" />
+            <Dialog dialogId="662" conversationId="1912" minimumReputation="1" />
         </NPC>
     </Level>
 </DialogCatalog>

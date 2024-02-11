@@ -76,6 +76,8 @@ public class Listener : IDisposable
 
             socket.ExclusiveAddressUse = false;
 
+            _logger.LogInformation("Binding to port: {Port}", ipEndPoint);
+
             socket.Bind(ipEndPoint);
             socket.Listen(8);
 

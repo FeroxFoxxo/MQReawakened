@@ -24,10 +24,13 @@ public class RoomUpdate : ExternalProtocol
         foreach (var entityComponent in Player.Room.Entities.Values.SelectMany(x => x))
             entityComponent.SendDelayedData(Player);
 
+        foreach (var enemy in Player.Room.Enemies.Values)
+            enemy.GetInitEnemyData(Player);
+
         Player.Room.SendCharacterInfo(Player);
 
         foreach (var npc in Player.Room.GetComponentsOfType<NPCControllerComp>())
-            npc.Value.SendNpcInfo(Player.Character, NetState);
+            npc.Value.SendNpcInfo(Player);
 
         if (!Player.FirstLogin)
             return;
@@ -36,7 +39,7 @@ public class RoomUpdate : ExternalProtocol
         Player.FirstLogin = false;
     }
 
-    private string GetGameObjectStore(Dictionary<int, List<BaseComponent>> entities)
+    private string GetGameObjectStore(Dictionary<string, List<BaseComponent>> entities)
     {
         var sb = new SeparatedStringBuilder('&');
 
@@ -48,7 +51,7 @@ public class RoomUpdate : ExternalProtocol
         return sb.ToString();
     }
 
-    private string GetEntity(KeyValuePair<int, List<BaseComponent>> entity)
+    private string GetEntity(KeyValuePair<string, List<BaseComponent>> entity)
     {
         var entityId = entity.Key;
         var entityComponents = entity.Value;

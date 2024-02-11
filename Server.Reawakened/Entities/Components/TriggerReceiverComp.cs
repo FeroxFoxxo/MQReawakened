@@ -27,7 +27,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
     public ILogger<TriggerReceiverComp> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
 
-    public override void InitializeComponent()
+    public override void DelayedComponentInitialization()
     {
         base.InitializeComponent();
         Trigger(ActiveByDefault);

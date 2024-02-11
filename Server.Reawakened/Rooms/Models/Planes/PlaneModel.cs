@@ -6,17 +6,17 @@ namespace Server.Reawakened.Rooms.Models.Planes;
 
 public class PlaneModel(string planeName)
 {
-    public Dictionary<int, GameObjectModel> GameObjects { get; set; } = [];
+    public Dictionary<string, List<GameObjectModel>> GameObjects { get; set; } = [];
     public string PlaneName { get; } = planeName;
 
     public void LoadColliderXml(XmlNode colliderNode)
     {
-        var id = colliderNode.Attributes!.GetIntValue("id");
+        var id = colliderNode.Attributes!.GetValue("id");
 
         var colliderList = (from XmlNode collider in colliderNode.ChildNodes
                             where collider.Name == "vertex"
                             select collider.Attributes!
-            into vertex
+                            into vertex
                             select new Vector2
                             {
                                 x = vertex.GetSingleValue("x"),
@@ -25,7 +25,11 @@ public class PlaneModel(string planeName)
 
         if (!GameObjects.TryGetValue(id, out var value))
             return;
-        value.ObjectInfo.Rectangle = colliderList.GetSurroundingRect();
+
+        var rect = colliderList.GetSurroundingRect();
+
+        foreach (var obj in value)
+            obj.ObjectInfo.Rectangle = rect;
     }
 
     public void LoadGameObjectXml(XmlNode gameObjectNode)
@@ -38,7 +42,7 @@ public class PlaneModel(string planeName)
         var objectInfo = new ObjectInfoModel
         {
             PrefabName = attributes.GetValue("name"),
-            ObjectId = attributes.GetIntValue("id"),
+            ObjectId = attributes.GetValue("id"),
             Position = new Vector3Model
             {
                 X = attributes.GetSingleValue("x"),
@@ -85,9 +89,11 @@ public class PlaneModel(string planeName)
             ObjectInfo = objectInfo
         };
 
-        if (GameObjects.ContainsKey(obj.ObjectInfo.ObjectId))
-            return;
+        var id = obj.ObjectInfo.ObjectId;
 
-        GameObjects.Add(obj.ObjectInfo.ObjectId, obj);
+        if (!GameObjects.ContainsKey(id))
+            GameObjects.Add(id, []);
+
+        GameObjects[id].Add(obj);
     }
 }

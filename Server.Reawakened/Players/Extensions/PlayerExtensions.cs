@@ -1,13 +1,11 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Base.Logging;
-using Server.Base.Timers.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.XMLs.Enums;
+using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -128,6 +126,10 @@ public static class PlayerExtensions
     {
         var charData = player.Character.Data;
         charData.Cash -= collectedBananas;
+
+        if (charData.Cash < 0)
+            charData.Cash = 0;
+
         player.SendCashUpdate();
     }
 
@@ -142,6 +144,10 @@ public static class PlayerExtensions
     {
         var charData = player.Character.Data;
         charData.NCash -= collectedNCash;
+
+        if (charData.NCash < 0)
+            charData.NCash = 0;
+
         player.SendCashUpdate();
     }
 
@@ -206,7 +212,6 @@ public static class PlayerExtensions
 
         player.UserInfo.CharacterIds.Remove(id);
 
-        if (characterHandler.Data.ContainsKey(id))
         characterHandler.Data.Remove(id);
 
         player.UserInfo.LastCharacterSelected = player.UserInfo.CharacterIds.Count > 0
@@ -254,13 +259,15 @@ public static class PlayerExtensions
         }
     }
 
-    public static void CheckObjective(this Player player, ObjectiveEnum type, int gameObjectId, string prefabName, int count)
+    public static void SetObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName, int count) =>
+        player.CheckObjective(type, gameObjectId, prefabName, count, true);
+
+    public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName, int count, bool setObjective = false)
     {
         if (count <= 0)
             return;
 
         var character = player.Character.Data;
-        player.DatabaseContainer.Objectives.ObjectivePrefabs.TryGetValue(prefabName, out var objectiveInt);
 
         player.Room.Logger.LogDebug("Checking {type} objective for {prefab} id ({id}) of count {count}.", type, prefabName, gameObjectId, count);
 
@@ -271,33 +278,38 @@ public static class PlayerExtensions
             foreach (var objectiveKVP in quest.Objectives)
             {
                 var objective = objectiveKVP.Value;
-                var shouldIgnoreLevel = false;
 
-                if (objective.ObjectiveType != type ||
-                    objective.Order > quest.CurrentOrder ||
-                    objective.Completed)
+                if (objective.ObjectiveType != type || objective.Completed)
                     continue;
+
+                var meetsRequirement = false;
 
                 if (objective.GameObjectId > 0)
+                    if (objective.GameObjectId.ToString() == gameObjectId &&
+                        objective.LevelId == player.Character.LevelData.LevelId)
+                        meetsRequirement = true;
+
+                if (objective.ItemId > 0 && !meetsRequirement)
                 {
-                    if (objective.GameObjectId != gameObjectId)
-                        continue;
-                }
-                else
-                {
-                    if (objectiveInt == null)
-                        continue;
+                    var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(prefabName);
 
-                    if (!objectiveInt.ItemIds.Contains(objective.ItemId) && !objectiveInt.ItemIds.Contains(default))
-                        continue;
-
-                    shouldIgnoreLevel = objectiveInt.GlobalLevel;
+                    if (item != null)
+                        if (item.ItemId == objective.ItemId)
+                            meetsRequirement = item.InventoryCategoryID is not ItemFilterCategory.None
+                                                                        and not ItemFilterCategory.QuestItems
+                                               || objective.LevelId == player.Character.LevelData.LevelId;
                 }
 
-                if (objective.LevelId != player.Character.LevelData.LevelId && !shouldIgnoreLevel)
+                if (!meetsRequirement)
                     continue;
 
-                objective.CountLeft -= count;
+                if (setObjective)
+                    objective.CountLeft = objective.Total - count;
+                else
+                    objective.CountLeft -= count;
+
+                if (objective.ObjectiveType == ObjectiveEnum.AlterandReceiveitem)
+                    objective.CountLeft = 0;
 
                 if (objective.CountLeft <= 0)
                 {
@@ -317,10 +329,13 @@ public static class PlayerExtensions
                     player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
             }
 
-            if (!quest.Objectives.Any(o => !o.Value.Completed) && hasObjComplete)
+            if (hasObjComplete)
             {
-                player.SendXt("nQ", quest.Id);
-                quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
+                if (!quest.Objectives.Any(o => !o.Value.Completed))
+                {
+                    player.SendXt("nQ", quest.Id);
+                    quest.QuestStatus = QuestState.TO_BE_VALIDATED;
+                }
                 player.UpdateNpcsInLevel(quest);
             }
         }

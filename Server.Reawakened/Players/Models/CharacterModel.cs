@@ -13,6 +13,7 @@ public class CharacterModel : PersistantData
     public List<EmailMessageModel> EmailMessages { get; set; }
     public List<int> Events { get; set; }
     public Dictionary<int, Dictionary<string, int>> AchievementObjectives { get; set; }
+    public Dictionary<string, float> BestMinigameTimes { get; set; }
 
     public CharacterModel()
     {
@@ -21,6 +22,7 @@ public class CharacterModel : PersistantData
         EmailMessages = [];
         Events = [];
         AchievementObjectives = [];
+        BestMinigameTimes = [];
 
         Data = new CharacterDataModel();
         LevelData = new LevelData();

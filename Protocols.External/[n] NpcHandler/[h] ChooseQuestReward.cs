@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.Components;
+using Server.Base.Logging;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.Enums;
-using static NPCController;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -13,32 +12,42 @@ public class ChooseQuestReward : ExternalProtocol
     public override string ProtocolName => "nh";
 
     public ILogger<ChooseQuestReward> Logger { get; set; }
-    public QuestCatalog Catalog { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
+    public FileLogger FileLogger { get; set; }
 
     public override void Run(string[] message)
     {
-        var vendorId = int.Parse(message[5]);
+        var npcId = int.Parse(message[5]);
         var questId = int.Parse(message[6]);
         var itemId = int.Parse(message[7]);
         var questRewardId = int.Parse(message[8]);
 
-        if (itemId != -1)
-            Logger.LogError("[Vendor {NpcId}] Unknown quest item reward: {ItemId}", vendorId, itemId);
+        if (itemId > 0)
+        {
+            var item = ItemCatalog.GetItemFromId(itemId);
 
-        if (questRewardId != -1)
-            Logger.LogError("[Vendor {NpcId}] Unknown quest reward id: {RewardId}", vendorId, questRewardId);
+            if (item != null)
+                Player.AddItem(item, 1);
+            else
+                Logger.LogError("[Quest Validator {NpcId}] Unknown item reward with id: {RewardId}", npcId, itemId);
+        }
 
-        var quest = Catalog.QuestCatalogs[questId];
+        if (questRewardId > 0)
+        {
+            var newQuest = QuestCatalog.GetQuestData(questRewardId);
+
+            if (newQuest != null)
+                Player.AddQuest(newQuest, Logger, ItemCatalog, FileLogger, $"Quest reward from {npcId}");
+        }
+
+        var quest = QuestCatalog.QuestCatalogs[questId];
 
         Player.AddBananas(quest.BananaReward);
         Player.AddReputation(quest.ReputationReward);
 
         foreach (var item in quest.RewardItems)
             Player.AddItem(item.Key, item.Value);
-
-        Player.CheckAchievement(AchConditionType.CompleteQuest, string.Empty, Logger); // Any Quest
-        Player.CheckAchievement(AchConditionType.CompleteQuest, quest.Name, Logger); // Specific Quest by name for example EVT_SB_1_01
-        Player.CheckAchievement(AchConditionType.CompleteQuestInLevel, Player.Room.LevelInfo.Name, Logger); // Quest by Level/Trail if any exist
 
         Player.SendUpdatedInventory(false);
     }

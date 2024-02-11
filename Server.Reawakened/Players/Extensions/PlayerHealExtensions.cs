@@ -3,8 +3,6 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
-using System;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -91,13 +89,20 @@ public static class PlayerHealExtensions
 
     private static void OverTimeHealTicks(object itemData)
     {
-        if (itemData is ItemHealOverTimeData itemHealData)
-        {
-            var player = itemHealData.Player;
-            var tickHealValue = itemHealData.OverTimeHealValue / itemHealData.TotalTicks;
+        var itemHealData = (ItemHealOverTimeData)itemData;
 
-            player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-               player.Character.Data.CurrentLife += tickHealValue, player.Character.Data.MaxLife, string.Empty));
-        }
+        var player = itemHealData.Player;
+        var tickHealValue = itemHealData.OverTimeHealValue / itemHealData.TotalTicks;
+
+        if (player == null)
+            return;
+
+        if (player.Room == null || player.Character == null)
+            return;
+
+        var healEvent = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+           player.Character.Data.CurrentLife += tickHealValue, player.Character.Data.MaxLife, string.Empty);
+
+        player.Room.SendSyncEvent(healEvent);
     }
 }

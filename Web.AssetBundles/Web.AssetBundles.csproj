@@ -36,11 +36,29 @@
         <Reference Include="AssetStudioUtility">
             <HintPath>Dependencies\AssetStudio\AssetStudioUtility.dll</HintPath>
         </Reference>
+        <Reference Include="K4os.Compression.LZ4">
+          <HintPath>Dependencies\AssetStudio\K4os.Compression.LZ4.dll</HintPath>
+        </Reference>
         <Reference Include="Mono.Cecil">
             <HintPath>Dependencies\AssetStudio\Mono.Cecil.dll</HintPath>
         </Reference>
+        <Reference Include="Mono.Cecil.Mdb">
+          <HintPath>Dependencies\AssetStudio\Mono.Cecil.Mdb.dll</HintPath>
+        </Reference>
+        <Reference Include="Mono.Cecil.Pdb">
+          <HintPath>Dependencies\AssetStudio\Mono.Cecil.Pdb.dll</HintPath>
+        </Reference>
+        <Reference Include="Mono.Cecil.Rocks">
+          <HintPath>Dependencies\AssetStudio\Mono.Cecil.Rocks.dll</HintPath>
+        </Reference>
+        <Reference Include="SixLabors.Fonts">
+          <HintPath>Dependencies\AssetStudio\SixLabors.Fonts.dll</HintPath>
+        </Reference>
         <Reference Include="SixLabors.ImageSharp">
             <HintPath>Dependencies\AssetStudio\SixLabors.ImageSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="SixLabors.ImageSharp.Drawing">
+          <HintPath>Dependencies\AssetStudio\SixLabors.ImageSharp.Drawing.dll</HintPath>
         </Reference>
         <Reference Include="Texture2DDecoderWrapper">
             <HintPath>Dependencies\AssetStudio\Texture2DDecoderWrapper.dll</HintPath>
@@ -58,7 +76,13 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Assets\LocalAssets\InternalAchievement.xml">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalColliders.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Assets\LocalAssets\InternalDefaultEnemies.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Assets\LocalAssets\InternalDialog.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -89,6 +113,12 @@
         </None>
         <None Update="Assets\LocalAssets\PetAbilities.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="DLLs\Arm64\Texture2DDecoderNative.dll">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="DLLs\X64\Texture2DDecoderNative.dll">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Licences\LICENSE_ASSETSTUDIO">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

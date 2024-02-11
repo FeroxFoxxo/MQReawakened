@@ -56,7 +56,7 @@ public static class PlayerAchievementExtensions
 
         var oInProg = inProgCond.OrderBy(a =>
             a.Key.repeatable ?
-                int.MaxValue : 
+                int.MaxValue :
                 player.Character.GetAchievement(a.Key).GetAmountLeft()
             ).ToList();
 
@@ -95,17 +95,7 @@ public static class PlayerAchievementExtensions
 
     public static int GetObjectiveLeft(this AchievementDefinitionConditions cond, int count) => cond.goal - count;
 
-    public static int GetAmountLeft(this CharacterAchievement achievement) => GetTotalGoal(achievement) - GetTotalProgress(achievement);
-
-    public static int GetTotalGoal(this CharacterAchievement achievement)
-    {
-        var count = 0;
-
-        foreach (var c in achievement.conditions)
-            count += c.completionCount;
-
-        return count;
-    }
+    public static int GetAmountLeft(this CharacterAchievement achievement) => achievement.goal - GetTotalProgress(achievement);
 
     public static int GetTotalProgress(this CharacterAchievement achievement)
     {
@@ -146,6 +136,7 @@ public static class PlayerAchievementExtensions
                     mtime = long.MinValue, // MODIFIED TIME
                 };
             }).ToList(),
+            goal = achievement.goal,
 
             // UNUSED
             ctime = long.MinValue,

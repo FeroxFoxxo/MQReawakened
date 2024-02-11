@@ -59,7 +59,7 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
 
             var reward = new AchievementRewardType()
             {
-                id = (int) value,
+                id = (int)value,
                 title = enumName
             };
 
@@ -159,7 +159,7 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
 
                     foreach (XmlNode achievementLists in achievement.ChildNodes)
                     {
-                        switch(achievementLists.Name)
+                        switch (achievementLists.Name)
                         {
                             case "Rewards":
                                 achRewards = achievementLists.GetXmlRewards(Logger, catalog, achId);
@@ -189,7 +189,8 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                         sortOrder = achSortOrder,
                         repeatable = achRepeatable,
                         rewards = achRewards,
-                        conditions = achConditions
+                        conditions = achConditions,
+                        goal = achConditions.Sum(c => c.goal)
                     };
 
                     Definitions.achievements.Add(achievementStatic);

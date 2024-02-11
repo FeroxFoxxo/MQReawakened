@@ -1,40 +1,74 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using Room = Server.Reawakened.Rooms.Room;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class BreakableEventControllerComp : Component<BreakableEventController>
+public class BreakableEventControllerComp : Component<BreakableEventController>, IDestructible
 {
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
+    private int _health;
+    private BreakableObjStatusComp _status;
+    private BaseSpawnerControllerComp _spawner;
+    private bool _isSpawner;
 
     public override void InitializeComponent()
     {
         base.InitializeComponent();
-        Room.Colliders.Add(Id, new BaseCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+        _health = 1;
+        _isSpawner = false;
+        Room.Colliders.Add(Id, new BreakableCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+    }
+
+    public void PostInit()
+    {
+        var entityList = Room.Entities.Values.SelectMany(s => s);
+        foreach (var entity in entityList)
+        {
+            if (entity.Id == Id && entity is BreakableObjStatusComp status)
+                _status = status;
+            if (entity.Id == Id && entity is BaseSpawnerControllerComp spawner)
+            {
+                _spawner = spawner;
+                _health = _spawner.Health;
+                _isSpawner = true;
+            }
+        }
     }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
     }
 
-    public void Destroy(Player player)
+    public void Damage(int damage, Player origin)
     {
+        _health -= damage;
         Logger.LogInformation("Object name: {args1} Object Id: {args2}", PrefabName, Id);
 
-        // Link to damage + health of object later
-        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), player.Room.Time, 0, 100, 0, 0, player.CharacterName, false, true);
-        player.Room.SendSyncEvent(breakEvent);
+        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true);
+        origin.Room.SendSyncEvent(breakEvent);
 
-        player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
-        player.SendUpdatedInventory(false);
-        player.Room.Kill(Id);
+        if (_health <= 0)
+        {
+            origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
+            origin.SendUpdatedInventory(false);
+            Destroy(origin, Room, Id);
+        }
+    }
+    public void Destroy(Player player, Room room, string id)
+    {
+        room.Entities.Remove(id);
+        room.Enemies.Remove(id);
+        room.Colliders.Remove(id);
     }
 }

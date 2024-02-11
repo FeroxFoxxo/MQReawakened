@@ -1,10 +1,17 @@
-﻿using Server.Reawakened.Network.Protocols;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Protocols.External._M__MinigameHandler;
 
 public class HoopGroup : ExternalProtocol
 {
     public override string ProtocolName => "MH";
+
+    public ILogger<HoopGroup> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -16,6 +23,26 @@ public class HoopGroup : ExternalProtocol
             if (!string.IsNullOrEmpty(message[7]))
                 hoopGroupName = message[7];
 
-        Console.WriteLine("HIT HOOP");
+        if (completed)
+        {
+            var hoops = Player.Room.Entities.Values.SelectMany(x => x)
+                .Where(x => x is HoopControllerComp)
+                .Select(x => x as HoopControllerComp);
+
+            var masterHoop = hoops.First(x => x.HoopGroupStringId == hoopGroupName && x.IsMasterController);
+
+            var hitHoops = hoops.Where(x => x.HoopGroupId == masterHoop.HoopGroupId);
+
+            foreach (var hoop in hitHoops)
+            {
+                Player.CheckObjective(ObjectiveEnum.Invalid, hoop.Id, hoop.PrefabName, 1);
+
+                Player.CheckAchievement(AchConditionType.Hoop, string.Empty, Logger);
+                Player.CheckAchievement(AchConditionType.HoopInLevel, Player.Room.LevelInfo.Name, Logger);
+            }
+
+            Player.CheckAchievement(AchConditionType.HoopGroup, string.Empty, Logger);
+            Player.CheckAchievement(AchConditionType.HoopGroupInLevel, Player.Room.LevelInfo.Name, Logger);
+        }
     }
 }

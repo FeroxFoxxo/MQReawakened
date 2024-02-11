@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Accounts.Services;
 using Server.Reawakened.Players.Services;
-using System.Dynamic;
+using Web.Launcher.Extensions;
 using Web.Launcher.Models;
 using Web.Launcher.Services;
 
@@ -35,43 +36,13 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
         }
 
         if (account.Password != hashedPw && userInfo.AuthToken != password)
+        {
+            logger.LogError("Account password does not match for {Username} (ID: {Id})", username, account.Id);
             return Unauthorized();
+        }
 
-        dynamic resp = new ExpandoObject();
-        resp.status = true;
+        var loginData = account.GetLoginData(userInfo, startGame, config, rConfig);
 
-        dynamic user = new ExpandoObject();
-        user.premium = userInfo.Member;
-
-        dynamic local = new ExpandoObject();
-        local.uuid = account.Id.ToString();
-        local.username = account.Username;
-        local.createdTime = ((DateTimeOffset)account.Created).ToUnixTimeSeconds();
-        user.local = local;
-
-        dynamic sso = new ExpandoObject();
-        sso.authToken = userInfo.AuthToken;
-        sso.gender = Enum.GetName(userInfo.Gender)!;
-        sso.dob = userInfo.DateOfBirth;
-        user.sso = sso;
-
-        resp.user = user;
-
-        dynamic analytics = new ExpandoObject();
-        analytics.id = rConfig.AnalyticsId.ToString();
-        analytics.trackingShortId = userInfo.TrackingShortId;
-        analytics.enabled = rConfig.AnalyticsEnabled;
-        analytics.firstTimeLogin = account.Created == account.LastLogin ? "true" : "false";
-        analytics.firstLoginToday = (DateTime.UtcNow - account.LastLogin).TotalDays >= 1;
-        analytics.baseUrl = $"{startGame.ServerAddress}/Analytics";
-        analytics.apiKey = config.AnalyticsApiKey;
-        resp.analytics = analytics;
-
-        dynamic additional = new ExpandoObject();
-        additional.signupExperience = userInfo.SignUpExperience;
-        additional.region = userInfo.Region;
-        resp.additional = additional;
-
-        return Ok(resp);
+        return Ok(JsonConvert.SerializeObject(loginData));
     }
 }

@@ -11,7 +11,7 @@ public class BestResultForLevel : ExternalProtocol
     {
         var levelName = message[5];
 
-        if (Player.TempData.ArenaModel.BestTimeForLevel.TryGetValue(levelName, out var value))
+        if (Player.Character.BestMinigameTimes.TryGetValue(levelName, out var value))
             Player.SendXt("MB", value);
     }
 }

@@ -22,6 +22,49 @@
                 <Item itemId="404" count="1" bindingCount="0"/>
             </Items>
         </LootInfo>
+        <LootInfo objectId="8498" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+                <Item itemId="1803" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3528" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="942" count="1" bindingCount="0"/>
+                <Item itemId="1417" count="1" bindingCount="0"/>
+                <Item itemId="1434" count="1" bindingCount="0"/>
+                <Item itemId="618" count="1" bindingCount="0"/>
+                <Item itemId="700" count="1" bindingCount="0"/>
+                <Item itemId="1016" count="1" bindingCount="0"/>
+                <Item itemId="1435" count="1" bindingCount="0"/>
+                <Item itemId="1754" count="1" bindingCount="0"/>
+                <Item itemId="947" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3497438" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemId="997" count="1" bindingCount="0"/>
+                <!--Item itemId="0" count="1" bindingCount="0" Unknown Recipe/-->
+                <!--Item itemId="0" count="1" bindingCount="0" Unknown Recipe/-->
+                <Item itemId="754" count="1" bindingCount="0"/>
+                <Item itemId="1418" count="1" bindingCount="0"/>
+                <Item itemId="2695" count="1" bindingCount="0"/>
+                <Item itemId="1734" count="1" bindingCount="0"/>
+                <!--Item itemId="0" count="1" bindingCount="0" Unknown Recipe/-->
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="8496" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+                <Item itemId="1803" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="8497" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+                <Item itemId="1803" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
     </Level>
     <Level name="Forgotten Temple">
         <LootInfo objectId="30938" doLootWheel="true">
@@ -1504,6 +1547,34 @@
                 <Item itemId="11200" count="1" bindingCount="0"/>
                 <Item itemId="11213" count="1" bindingCount="0"/>
                 <Item itemId="2728" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Blimp Ridge">
+        <LootInfo objectId="3286474" doLootWheel="true"> <!--Blue Arena-->
+            <Items rewardAmount="1">
+                <Item itemId="1253" count="1" bindingCount="0"/>
+                <Item itemId="999" count="1" bindingCount="0"/>
+                <Item itemId="1734" count="1" bindingCount="0"/>
+                <Item itemId="1262" count="1" bindingCount="0"/>
+                <Item itemId="1435" count="1" bindingCount="0"/>
+                <Item itemId="1289" count="1" bindingCount="0"/>
+                <Item itemId="1365" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7145" doLootWheel="false"> <!--Normal Arena-->
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10420" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="1803" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10422" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
             </Items>
         </LootInfo>
     </Level>

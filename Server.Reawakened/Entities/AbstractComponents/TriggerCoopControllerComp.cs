@@ -13,16 +13,17 @@ using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class TriggerCoopControllerComp<T> : Component<T> where T : TriggerCoopController
+public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T : TriggerCoopController
 {
-    public List<int> CurrentPhysicalInteractors;
+    private List<string> _currentPhysicalInteractors;
     public int CurrentInteractions;
-    public int Interactions => CurrentInteractions + CurrentPhysicalInteractors.Count;
+    public int Interactions => CurrentInteractions + _currentPhysicalInteractors.Count;
 
-    public bool IsActive = true;
-    public bool IsEnabled = true;
+    public bool IsActive = false;
+    public bool IsEnabled = false;
+    public float LastActivationTime = 0;
 
-    public Dictionary<int, TriggerType> Triggers;
+    public Dictionary<string, TriggerType> Triggers;
     public List<ActivationType> Activations;
 
     public bool DisabledAfterActivation => ComponentData.DisabledAfterActivation;
@@ -95,12 +96,12 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
 
     public FileLogger FileLogger { get; set; }
 
-    public override void InitializeComponent()
+    public override void DelayedComponentInitialization()
     {
         IsEnabled = IsEnable;
         IsActive = false;
 
-        CurrentPhysicalInteractors = [];
+        _currentPhysicalInteractors = [];
 
         Triggers = [];
         Activations = [];
@@ -159,7 +160,7 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
     public void AddToTriggers(List<int> triggers, TriggerType triggerType)
     {
         foreach (var trigger in triggers.Where(trigger => trigger > 0))
-            Triggers.TryAdd(trigger, triggerType);
+            Triggers.TryAdd(trigger.ToString(), triggerType);
     }
 
     public override void SendDelayedData(Player player)
@@ -175,8 +176,8 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
         if (!IsEnabled || syncEvent.Type != SyncEvent.EventType.Trigger)
             return;
 
-        if (!TriggerOnPressed)
-            return;
+        //if (!TriggerOnPressed)
+        //    return;
 
         var tEvent = new Trigger_SyncEvent(syncEvent);
 
@@ -184,28 +185,50 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
 
         var updated = false;
 
-        if (tEvent.Activate && !CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        if (tEvent.Activate && !_currentPhysicalInteractors.Contains(player.GameObjectId))
         {
-            CurrentPhysicalInteractors.Add(player.GameObjectId);
+            AddPhysicalInteractor(player.GameObjectId);
             updated = true;
         }
-        else if (!tEvent.Activate && CurrentPhysicalInteractors.Contains(player.GameObjectId))
+        else if (!tEvent.Activate && _currentPhysicalInteractors.Contains(player.GameObjectId))
         {
-            CurrentPhysicalInteractors.Remove(player.GameObjectId);
+            RemovePhysicalInteractor(player.GameObjectId);
             updated = true;
         }
 
         if (updated)
             RunTrigger(player);
-
-        if (Interactions < NbInteractionsNeeded && !IsActive)
-        {
-            var tUpdate = new TriggerUpdate_SyncEvent(new SyncEvent(Id.ToString(), SyncEvent.EventType.TriggerUpdate, Room.Time));
-            tUpdate.EventDataList.Add(Interactions);
-            Room.SendSyncEvent(tUpdate);
-        }
-        LogTrigger();
+        else
+            LogTrigger();
     }
+
+    public void AddPhysicalInteractor(string playerId)
+    {
+        if (_currentPhysicalInteractors.Contains(playerId))
+            return;
+
+        _currentPhysicalInteractors.Add(playerId);
+        SendInteractionUpdate();
+    }
+
+    public void RemovePhysicalInteractor(string playerId)
+    {
+        if (!_currentPhysicalInteractors.Contains(playerId))
+            return;
+
+        _currentPhysicalInteractors.Remove(playerId);
+        SendInteractionUpdate();
+    }
+
+    public void SendInteractionUpdate()
+    {
+        var tUpdate = new TriggerUpdate_SyncEvent(new SyncEvent(Id.ToString(), SyncEvent.EventType.TriggerUpdate, Room.Time));
+        tUpdate.EventDataList.Add(Interactions);
+        Room.SendSyncEvent(tUpdate);
+    }
+
+    public int GetPhysicalInteractorCount() => _currentPhysicalInteractors.Count;
+    public string[] GetPhysicalInteractorIds() => _currentPhysicalInteractors.ToArray();
 
     public virtual void Triggered(Player player, bool isSuccess, bool isActive)
     {
@@ -222,18 +245,28 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
         RunTrigger(player);
     }
 
-    private void RunTrigger(Player player)
+    public void RunTrigger(Player player)
     {
+        // GoTo must be outside for if someone in the room has interactd with the trigger in the past (i.e. in public rooms like CTS)
+        player?.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
+        player?.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1);
+
         if (!IsActive)
         {
-            if (Interactions < NbInteractionsNeeded ||
-                NbInteractionsMatchesNbPlayers && Interactions < Room.Players.Count)
+            if (NbInteractionsMatchesNbPlayers)
+            {
+                if (Interactions < Room.Players.Count || player == null)
+                    return;
+            }
+            else if (Interactions < NbInteractionsNeeded)
                 return;
 
             Trigger(player, true);
 
             if (DisabledAfterActivation)
                 IsEnabled = false;
+
+            LastActivationTime = Room.Time;
         }
         else
         {
@@ -242,11 +275,12 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
             if (StayTriggeredOnReceiverActivated && triggerRecieverActivated)
                 return;
 
-            if (StayTriggeredOnUnpressed)
+            if (StayTriggeredOnUnpressed && (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time || ActivationTimeAfterFirstInteraction <= 0))
                 return;
 
             Trigger(player, false);
         }
+        LogTrigger();
     }
 
     public void LogTriggerEvent(Trigger_SyncEvent tEvent)
@@ -359,13 +393,10 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
         {
             Room.SentEntityTriggered(Id, player, true, IsActive);
             Triggered(player, true, IsActive);
-
-            if (IsActive)
-                player.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
         }
     }
 
-    public void LogTriggerErrors(int triggerId, TriggerType type)
+    public void LogTriggerErrors(string triggerId, TriggerType type)
     {
         var sb2 = new StringBuilder();
 
@@ -387,5 +418,12 @@ public abstract class TriggerCoopControllerComp<T> : Component<T> where T : Trig
         return triggers.Any() &&
             triggers.Select(trigger => receivers[trigger.Key])
             .All(receiver => receiver.Activated);
+    }
+
+    public void ResetTrigger()
+    {
+        _currentPhysicalInteractors.Clear();
+        SendInteractionUpdate();
+        IsActive = false;
     }
 }

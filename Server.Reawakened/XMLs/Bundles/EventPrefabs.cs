@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
@@ -203,33 +202,74 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
         this.SetField<EventPrefabsXML>("_timedSocialEventAssetNames", TimedSocialEvents.ToDictionary(x => x.Key.Key, x => x.Value));
     }
 
+    private class Event
+    {
+        public int EventId { get; set; }
+        public string EventName { get; set; }
+        public bool HasEventAd { get; set; }
+        public bool HasEventPopupIcon { get; set; }
+        public bool HasEventPopupMenu { get; set; }
+    }
+
     public void FinalizeBundle()
     {
         GameFlow.EventPrefabsXML = this;
 
-        var defaultEvent = Services.GetRequiredService<ServerRwConfig>().CurrentEvent;
+        var rwConfig = Services.GetRequiredService<ServerRwConfig>();
+        var rConfig = Services.GetRequiredService<ServerRConfig>();
 
-        var combinedDict = EventIdToNameDict.ToDictionary(x => x.Value, x => x.Key)
-            .Concat(TimedSocialEvents.ToDictionary(x => x.Key.Value, x => x.Key.Key))
-            .ToDictionary(x => x.Key, x => x.Value);
+        var defaultEventName = new string(rwConfig.CurrentEvent[rConfig.GameVersion].Reverse().ToArray());
+        var defaultTimedEvent = new string(rwConfig.CurrentTimedEvent[rConfig.GameVersion].Reverse().ToArray());
 
-        var eventId = combinedDict[defaultEvent];
+        var reversedDict = EventIdToNameDict.ToDictionary(
+            x => x.Value,
+            x =>
+            {
+                var hasEventAd = PrefabMap[x.Value].ContainsKey("Event_Ads");
+                var hasEventPopupIcon = PrefabMap[x.Value].ContainsKey("EventPopupIcon");
+                var hasEventPopupMenu = PrefabMap[x.Value].ContainsKey("EventPopupMenu");
+
+                return new Event()
+                {
+                    EventId = x.Key,
+                    EventName = x.Value,
+                    HasEventAd = hasEventAd,
+                    HasEventPopupIcon = hasEventPopupIcon,
+                    HasEventPopupMenu = hasEventPopupMenu
+                };
+            }
+        );
+
+        if (!reversedDict.ContainsKey(defaultEventName))
+            defaultEventName = PrefabMap.MaxBy(x => x.Value.Count).Key;
+
+        if (!TimedSocialEvents.Any(x => x.Key.Value == defaultTimedEvent))
+            defaultTimedEvent = TimedSocialEvents.Count > 0 ?
+                TimedSocialEvents.MaxBy(x => x.Value.TimeWindows.Count).Key.Value :
+                string.Empty;
+
+        var defaultEvent = reversedDict[defaultEventName];
 
         EventInfo = new EventInfo()
         {
-            DisplayAd = true,
-            DisplayAutoPopup = true,
-            DisplayPopupIcon = true,
-            DisplayPopupMenu = true,
+            DisplayAd = defaultEvent.HasEventAd,
+            DisplayAutoPopup = defaultEvent.HasEventPopupIcon || defaultEvent.HasEventPopupMenu,
+            DisplayPopupIcon = defaultEvent.HasEventPopupIcon,
+            DisplayPopupMenu = defaultEvent.HasEventPopupMenu,
 
-            EventId = eventId,
+            EventId = defaultEvent.EventId,
 
-            SecondaryEvents = combinedDict.Values
-                .Where(x => x != eventId)
-                .Select(x => new SecondaryEventInfo() { EventId = x, DisplayAd = true, DisplayIcon = true })
+            SecondaryEvents = reversedDict.Values
+                .Where(x => x.EventId != defaultEvent.EventId)
+                .Select(x => new SecondaryEventInfo()
+                {
+                    EventId = x.EventId,
+                    DisplayAd = x.HasEventAd,
+                    DisplayIcon = x.HasEventPopupIcon
+                })
                 .ToList(),
 
-            TimedEventName = defaultEvent
+            TimedEventName = defaultTimedEvent
         };
     }
 }

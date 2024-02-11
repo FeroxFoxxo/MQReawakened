@@ -1,19 +1,25 @@
-﻿using Server.Base.Core.Extensions;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
+using Server.Base.Logging;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.XMLs.Bundles;
+using System.Text;
 using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
 
 public static class NpcExtensions
 {
-    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest, bool setActiveQuest)
+    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest,
+        Microsoft.Extensions.Logging.ILogger logger, ItemCatalog itemCatalog, FileLogger fileLogger, string identifier)
     {
         var character = player.Character;
         var questId = quest.Id;
 
-        if (setActiveQuest)
-            character.Data.ActiveQuestId = questId;
+        character.Data.ActiveQuestId = questId;
 
         var questModel = character.Data.QuestLog.FirstOrDefault(x => x.Id == questId);
 
@@ -28,6 +34,7 @@ public static class NpcExtensions
                 {
                     Completed = false,
                     CountLeft = q.Value.TotalCount,
+                    Total = q.Value.TotalCount,
                     GameObjectId = q.Value.GoId,
                     GameObjectLevelId = q.Value.GoLevelId,
                     ItemId = (int)q.Value.GetField("_itemId"),
@@ -36,8 +43,48 @@ public static class NpcExtensions
                     Order = q.Value.Order
                 })
             };
+
+            foreach (var objective in questModel.Objectives)
+            {
+                if (objective.Value.ObjectiveType == ObjectiveEnum.IdolCollect)
+                {
+                    if (player.Character.CollectedIdols.TryGetValue(objective.Value.LevelId, out var idols))
+                    {
+                        objective.Value.CountLeft = objective.Value.Total - idols.Count;
+
+                        if (objective.Value.CountLeft <= 0)
+                            objective.Value.Completed = true;
+                    }
+                }
+            }
+
             character.Data.QuestLog.Add(questModel);
         }
+
+        logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", quest.Name, quest.Id, identifier);
+
+        var rewardIds = (Dictionary<int, int>)quest.GetField("_rewardItemsIds");
+        var unknownRewards = rewardIds.Where(x => !itemCatalog.Items.ContainsKey(x.Key));
+
+        if (unknownRewards.Any())
+        {
+            var sb = new StringBuilder();
+
+            foreach (var reward in unknownRewards)
+                sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
+
+            fileLogger.WriteGenericLog<NPCController>("unknown-rewards", $"[Unknown Quest {quest.Id} Rewards]", sb.ToString(),
+                LoggerType.Error);
+        }
+
+        if (questModel.QuestStatus == QuestState.NOT_START)
+            questModel.QuestStatus = QuestState.IN_PROCESSING;
+
+        player.SendXt("na", quest, true);
+
+        player.UpdateNpcsInLevel(quest);
+
+        logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", quest.Name, questModel.Id);
 
         return questModel;
     }
@@ -49,17 +96,15 @@ public static class NpcExtensions
         UpdateNpcsInLevel(player, quest);
     }
 
-    public static void UpdateNpcsInLevel(this Player player)
-    {
-        foreach (var npc in GetNpcs(player))
-            npc.SendNpcInfo(player.Character, player.NetState);
-    }
-
     public static void UpdateNpcsInLevel(this Player player, QuestDescription quest)
     {
         if (quest != null)
-            foreach (var npc in GetNpcs(player).Where(e => e.Id == quest.QuestGiverGoId || e.Id == quest.ValidatorGoId))
-                npc.SendNpcInfo(player.Character, player.NetState);
+            foreach (var npc in GetNpcs(player)
+                .Where(e =>
+                    e.Id == quest.QuestGiverGoId.ToString() || e.Name == quest.QuestgGiverName ||
+                    e.Id == quest.ValidatorGoId.ToString() || e.Name == quest.ValidatorName)
+                )
+                npc.SendNpcInfo(player);
     }
 
     public static List<NPCControllerComp> GetNpcs(Player player)

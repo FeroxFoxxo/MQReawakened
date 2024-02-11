@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -130,6 +131,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
 
         var internalCatalog = Services.GetRequiredService<InternalItem>();
         var editCatalog = Services.GetRequiredService<EditItem>();
+        var config = Services.GetRequiredService<ServerRConfig>();
 
         var items = new Dictionary<int, string>();
 
@@ -184,7 +186,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
 
                         items.Add(id, name);
 
-                        if (editCatalog.EditedItemAttributes.TryGetValue(name, out var editedAttributes))
+                        if (editCatalog.EditedItemAttributes[config.GameVersion].TryGetValue(name, out var editedAttributes))
                             foreach (XmlAttribute itemAttributes in item.Attributes)
                                 if (editedAttributes.TryGetValue(itemAttributes.Name, out var value))
                                     itemAttributes.Value = value;
@@ -194,8 +196,10 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
 
             var smallestItemId = 0;
 
-            foreach (var item in internalCatalog.Items)
+            foreach (var itemKVP in internalCatalog.Items)
             {
+                var item = itemKVP.Value;
+
                 if (!_itemCategories.TryGetValue(item.CategoryId, out var categoryNode))
                 {
                     var category = xml.CreateElement("ItemCategory");

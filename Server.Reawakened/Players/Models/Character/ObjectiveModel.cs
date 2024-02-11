@@ -6,6 +6,7 @@ public class ObjectiveModel
 {
     public bool Completed { get; set; }
     public int CountLeft { get; set; }
+    public int Total { get; set; }
 
     public ObjectiveEnum ObjectiveType { get; set; }
     public int Order { get; set; }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesEdit;
@@ -12,7 +14,7 @@ public class EditItem : IBundledXml<EditItem>
     public ILogger<EditItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<string, Dictionary<string, string>> EditedItemAttributes;
+    public Dictionary<GameVersion, Dictionary<string, Dictionary<string, string>>> EditedItemAttributes;
 
     public EditItem()
     {
@@ -34,42 +36,59 @@ public class EditItem : IBundledXml<EditItem>
         {
             if (!(items.Name == "EditedItems")) continue;
 
-            foreach (XmlNode item in items.ChildNodes)
+            foreach (XmlNode gVXml in items.ChildNodes)
             {
-                if (!(item.Name == "Item")) continue;
+                if (!(gVXml.Name == "GameVersion")) continue;
 
-                var name = string.Empty;
-                var itemId = string.Empty;
+                var gameVersion = GameVersion.Unknown;
 
-                foreach (XmlAttribute itemAttributes in item.Attributes)
-                    switch (itemAttributes.Name)
+                foreach (XmlAttribute gVAttribute in gVXml.Attributes)
+                    switch (gVAttribute.Name)
                     {
-                        case "name":
-                            name = itemAttributes.Value;
+                        case "version":
+                            gameVersion = gameVersion.GetEnumValue(gVAttribute.Value, Logger);
                             break;
                     }
 
-                EditedItemAttributes.Add(name, []);
+                EditedItemAttributes.Add(gameVersion, []);
 
-                foreach (XmlNode itemAttribute in item.ChildNodes)
+                foreach (XmlNode item in gVXml.ChildNodes)
                 {
-                    if (!(itemAttribute.Name == "EditAttribute")) continue;
+                    if (!(item.Name == "Item")) continue;
 
-                    var key = string.Empty;
-                    var value = string.Empty;
+                    var name = string.Empty;
+                    var itemId = string.Empty;
 
-                    foreach (XmlAttribute itemAttributes in itemAttribute.Attributes)
+                    foreach (XmlAttribute itemAttributes in item.Attributes)
                         switch (itemAttributes.Name)
                         {
-                            case "key":
-                                key = itemAttributes.Value;
-                                break;
-                            case "value":
-                                value = itemAttributes.Value;
+                            case "name":
+                                name = itemAttributes.Value;
                                 break;
                         }
 
-                    EditedItemAttributes[name].Add(key, value);
+                    EditedItemAttributes[gameVersion].Add(name, []);
+
+                    foreach (XmlNode itemAttribute in item.ChildNodes)
+                    {
+                        if (!(itemAttribute.Name == "EditAttribute")) continue;
+
+                        var key = string.Empty;
+                        var value = string.Empty;
+
+                        foreach (XmlAttribute itemAttributes in itemAttribute.Attributes)
+                            switch (itemAttributes.Name)
+                            {
+                                case "key":
+                                    key = itemAttributes.Value;
+                                    break;
+                                case "value":
+                                    value = itemAttributes.Value;
+                                    break;
+                            }
+
+                        EditedItemAttributes[gameVersion][name].Add(key, value);
+                    }
                 }
             }
         }

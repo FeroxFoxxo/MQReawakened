@@ -8,7 +8,7 @@ public class ObjectInfoModel
 
     public Vector3Model Scale { get; set; }
 
-    public int ObjectId { get; set; }
+    public string ObjectId { get; set; }
 
     public string PrefabName { get; set; }
 

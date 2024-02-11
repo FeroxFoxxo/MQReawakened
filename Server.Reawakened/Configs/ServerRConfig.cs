@@ -16,6 +16,7 @@ public class ServerRConfig : IRConfig
     public int PlayerCap { get; }
     public int ReservedNameCount { get; }
     public int MaxCharacterCount { get; }
+
     public int HealingStaff { get; }
     public double HealingStaffHealValue { get; }
     public int DefaultDamage { get; }
@@ -30,6 +31,7 @@ public class ServerRConfig : IRConfig
 
     public string LevelSaveDirectory { get; }
     public string LevelDataSaveDirectory { get; }
+    public string XMLDirectory { get; }
     public string DataDirectory { get; }
 
     public string[] DefaultProtocolTypeIgnore { get; }
@@ -57,17 +59,35 @@ public class ServerRConfig : IRConfig
     public int AccessRights { get; }
 
     public Dictionary<TribeType, int> TutorialTribe2014 { get; }
-    public bool Is2014Client { get; set; }
+    public GameVersion GameVersion { get; set; }
 
     public string[] IgnoredDoors { get; set; }
 
     public int MaximumEntitiesToReturnLog { get; set; }
+    public string[] EnemyNameSearch { get; set; }
+    public string BreakableComponentName { get; set; }
+    public string EnemyComponentName { get; set; }
+    public int HealingStaffID { get; set; }
+    public int MysticCharmID { get; set; }
+    public float ProjectileSpeed { get; set; }
+    public float ProjectileXOffset { get; set; }
+    public float ProjectileYOffset { get; set; }
+    public float ProjectileWidth { get; set; }
+    public float ProjectileHeight { get; set; }
+    public float MeleeXOffset { get; set; }
+    public float MeleeYOffset { get; set; }
+    public float MeleeWidth { get; set; }
+    public float MeleeHeight { get; set; }
+    public float PlayerWidth { get; set; }
+    public float PlayerHeight { get; set; }
+    public Dictionary<int, string> TrainingGear { get; set; }
 
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
         LevelDataSaveDirectory = InternalDirectory.GetDirectory("XMLs/LevelData");
         DataDirectory = InternalDirectory.GetDirectory("XMLs/FormattedData");
+        XMLDirectory = InternalDirectory.GetDirectory("XMLs/XMLFiles");
 
         RoomTickRate = 32;
 
@@ -155,7 +175,7 @@ public class ServerRConfig : IRConfig
             { TribeType.Bone,   969 }, // OOTU
         };
 
-        Is2014Client = false;
+        GameVersion = GameVersion.v2013;
         IsBackPlane = new Dictionary<bool, string>()
         {
             { true, "Plane1" },
@@ -169,10 +189,53 @@ public class ServerRConfig : IRConfig
             "PF_GLB_DoorArena01"
         ];
 
-        MaximumEntitiesToReturnLog = 15;
-
         HealingStaff = 396;
         HealingStaffHealValue = 3.527f;
         DefaultDamage = 10;
+
+        EnemyComponentName = "EnemyController";
+        BreakableComponentName = "BreakableEventController";
+
+        EnemyNameSearch = [
+            "PF_Critter_Bird",
+            "PF_Critter_Fish",
+            "PF_Critter_Spider",
+            "PF_Spite_Bathog",
+            "PF_Spite_Bomber",
+            "PF_Spite_Crawler",
+            "PF_Spite_Dragon",
+            "PF_Spite_Grenadier",
+            "PF_Spite_Orchid",
+            "PF_Spite_Pincer",
+            "PF_Spite_Stomper",
+            "Spite_Wasp_Boss01"
+        ];
+
+        MaximumEntitiesToReturnLog = 15;
+        HealingStaffID = 396;
+        MysticCharmID = 398;
+
+        ProjectileSpeed = 10;
+
+        ProjectileXOffset = 0.25f;
+        ProjectileYOffset = 0.8f;
+        ProjectileHeight = 0.5f;
+        ProjectileWidth = 0.5f;
+
+        MeleeXOffset = 0f;
+        MeleeYOffset = 0f;
+        MeleeHeight = 1f;
+        MeleeWidth = 3f;
+
+        PlayerHeight = 1f;
+        PlayerWidth = 1f;
+
+        TrainingGear = new Dictionary<int, string>
+        {
+            { 465, "ABIL_GrapplingHook01" }, // lv_shd_teaser01
+            { 466, "ABIL_Glider01" }, // lv_out_teaser01
+            { 467, "ABIL_MysticCharm01" }, // lv_bon_teaser01
+            { 497, "ABIL_SnowBoard01" }, // lv_wld_teaser01
+        };
     }
 }

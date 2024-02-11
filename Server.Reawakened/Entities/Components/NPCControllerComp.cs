@@ -3,20 +3,17 @@ using FollowCamDefines;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
-using Server.Base.Network;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Models.Npcs;
-using System.Text;
 using static A2m.Server.QuestStatus;
 using static NPCController;
 
@@ -29,13 +26,14 @@ public class NPCControllerComp : Component<NPCController>
     public bool ShouldDisableNpcInteraction => ComponentData.ShouldDisableNPCInteraction;
 
     public ILogger<NPCControllerComp> Logger { get; set; }
-    public ServerRConfig RConfig { get; set; }
     public FileLogger FileLogger { get; set; }
 
     public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public DialogDictionary Dialog { get; set; }
     public MiscTextDictionary MiscText { get; set; }
+
+    public ServerRConfig Config { get; set; }
 
     public InternalVendor VendorCatalog { get; set; }
     public InternalDialog DialogCatalog { get; set; }
@@ -57,7 +55,10 @@ public class NPCControllerComp : Component<NPCController>
         NameId = -1;
         NpcType = NpcType.Unknown;
 
-        VendorInfo = VendorCatalog.GetVendorById(Id);
+        if (Config.GameVersion <= GameVersion.v2013)
+            GiverQuests = [];
+
+        VendorInfo = VendorCatalog.GetVendorById(Room.LevelInfo.LevelId, int.Parse(Id));
 
         if (VendorInfo != null)
         {
@@ -65,38 +66,38 @@ public class NPCControllerComp : Component<NPCController>
             NameId = VendorInfo.NameId;
         }
 
-        GiverQuests = [..
-            QuestCatalog.GetQuestGiverById(Id)
-                .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
-                .OrderBy(x => x.Id)
-        ];
+        DialogInfo = DialogCatalog.GetDialogById(Room.LevelInfo.LevelId, int.Parse(Id));
 
-        ValidatorQuests = [..
-            QuestCatalog.GetQuestValidatorById(Id)
-                .Where(x => x.ValidatorLevelId == Room.LevelInfo.LevelId)
-                .OrderBy(x => x.Id)
-        ];
-
-        var questGiverNames = GiverQuests.Select(x => (int)x.GetField("_questGiverNameId"));
-        var questValidatorNames = ValidatorQuests.Select(x => (int)x.GetField("_validatorNameId"));
-        var allQuestNames = questGiverNames.Concat(questValidatorNames).Where(i => i > 0).ToArray();
-
-        if (allQuestNames.Length > 0)
-        {
-            NpcType = NpcType.Quest;
-            NameId = (from item in allQuestNames
-                      group item by item into g
-                      orderby g.Count() descending
-                      select g.Key)
-                      .First();
-        }
-
-        DialogInfo = DialogCatalog.GetDialogById(Room.LevelInfo.LevelId, Id);
-
-        if (DialogInfo != null && NpcType == NpcType.Unknown)
+        if (DialogInfo != null)
         {
             NpcType = NpcType.Dialog;
             NameId = DialogInfo.NameId;
+        }
+
+        ValidatorQuests = [..
+            QuestCatalog.GetQuestValidatorById(int.Parse(Id))
+                .Where(x => x.ValidatorLevelId == Room.LevelInfo.LevelId)
+        ];
+
+        GiverQuests = Config.GameVersion >= GameVersion.v2014
+            ? ([..
+                QuestCatalog.GetQuestGiverById(int.Parse(Id))
+                .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
+            ]) : ([..
+                QuestCatalog.GetQuestGiverByName(
+                    MiscText.GetLocalizationTextById(NameId > 0 ? NameId : GetNameId())
+                )
+            ]);
+
+        GiverQuests = [.. GiverQuests.OrderBy(x => x.Id)];
+        ValidatorQuests = [.. ValidatorQuests.OrderBy(x => x.Id)];
+
+        var questName = GetNameId();
+
+        if (questName > 0)
+        {
+            NpcType = NpcType.Quest;
+            NameId = questName;
         }
 
         if (NameId < 0)
@@ -106,6 +107,18 @@ public class NPCControllerComp : Component<NPCController>
         }
 
         NpcName = MiscText.GetLocalizationTextById(NameId);
+    }
+
+    public int GetNameId()
+    {
+        var questGiverNames = GiverQuests.Select(x => (int)x.GetField("_questGiverNameId"));
+        var questValidatorNames = ValidatorQuests.Select(x => (int)x.GetField("_validatorNameId"));
+        var allQuestNames = questGiverNames.Concat(questValidatorNames).Where(i => i > 0).ToArray();
+
+        return (from item in allQuestNames
+                group item by item into g
+                orderby g.Count() descending
+                select g.Key).FirstOrDefault();
     }
 
     public override object[] GetInitData(Player player) => NameId <= 0 ? [] : [NameId.ToString()];
@@ -119,10 +132,12 @@ public class NPCControllerComp : Component<NPCController>
             if (tEvent.Activate)
                 TalkToNpc(player);
             else
-                Logger.LogDebug("[INACTIVE NPC TRIGGERED] [{Name} ({Id})]", Name, Id);
+                Logger.LogDebug("[INACTIVE NPC TRIGGERED] [{Name} ({Id})]", NpcName, Id);
         }
         else
-            Logger.LogDebug("[UNKNOWN NPC EVENT] [{Type}] [{Name} ({Id})]", syncEvent.Type.ToString().ToUpperInvariant(), Name, Id);
+            Logger.LogDebug("[UNKNOWN NPC EVENT] [{Type}] [{Name} ({Id})]", syncEvent.Type.ToString().ToUpperInvariant(), NpcName, Id);
+
+        SendNpcInfo(player);
     }
 
     public void TalkToNpc(Player player)
@@ -137,23 +152,23 @@ public class NPCControllerComp : Component<NPCController>
                 player.SendXt("nv", VendorInfo.ToString(player));
                 break;
             case NpcType.Quest:
-                switch (GetQuestStatus(player.Character))
+                switch (GetQuestStatus(player))
                 {
                     case NPCStatus.QuestAvailable:
                         StartNewQuest(player);
-                        Logger.LogDebug("[AVALIABLE QUEST] [{Name} ({Id})]", Name, Id);
+                        Logger.LogDebug("[AVALIABLE QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
                     case NPCStatus.QuestInProgress:
                         SendQuestProgress(player);
-                        Logger.LogDebug("[IN PROGRESS QUEST] [{Name} ({Id})]", Name, Id);
+                        Logger.LogDebug("[IN PROGRESS QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
                     case NPCStatus.QuestCompleted:
                         ValidateQuest(player);
-                        Logger.LogDebug("[COMPLETED QUEST] [{Name} ({Id})]", Name, Id);
+                        Logger.LogDebug("[COMPLETED QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
                     case NPCStatus.QuestUnavailable:
                         SendDialog(player);
-                        Logger.LogDebug("[DIALOG QUEST] [{Name} ({Id})]", Name, Id);
+                        Logger.LogDebug("[DIALOG QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
                     default:
                         break;
@@ -161,7 +176,7 @@ public class NPCControllerComp : Component<NPCController>
 
                 player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
 
-                var newStatus = GetQuestStatus(player.Character);
+                var newStatus = GetQuestStatus(player);
 
                 if (newStatus is NPCStatus.QuestCompleted or NPCStatus.QuestAvailable)
                     TalkToNpc(player);
@@ -169,15 +184,15 @@ public class NPCControllerComp : Component<NPCController>
                 break;
             case NpcType.Dialog:
                 SendDialog(player);
-                Logger.LogDebug("[DIALOG] [{Name} ({Id})]", Name, Id);
+                Logger.LogDebug("[DIALOG] [{Name} ({Id})]", NpcName, Id);
                 break;
             default:
-                Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", Name, Id);
+                Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", NpcName, Id);
                 break;
         }
     }
 
-    public void SendNpcInfo(CharacterModel character, NetState netState)
+    public void SendNpcInfo(Player player)
     {
         var npcStatus = NPCStatus.Unknown;
         var descriptionId = 0;
@@ -189,7 +204,7 @@ public class NPCControllerComp : Component<NPCController>
                 descriptionId = VendorInfo.DescriptionId;
                 break;
             case NpcType.Quest:
-                npcStatus = GetQuestStatus(character);
+                npcStatus = GetQuestStatus(player);
                 break;
             case NpcType.Dialog:
                 npcStatus = NPCStatus.Dialog;
@@ -199,17 +214,36 @@ public class NPCControllerComp : Component<NPCController>
                 break;
         }
 
-        netState.SendXt("nt", Id, (int)npcStatus, descriptionId);
+        player.SendXt("nt", Id, (int)npcStatus, descriptionId);
     }
 
     public void SendDialog(Player player)
     {
         if (DialogInfo == null)
-        {
-            Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog catalog found for NPC",
-                NpcName, Id);
-            return;
-        }
+            if (!string.IsNullOrEmpty(NpcName))
+            {
+                var foundDialog = Dialog.GenericDialog.FirstOrDefault(x => x.Key.Contains(NpcName + Id) && x.Value.Count > 0).Value;
+
+                if (foundDialog == null)
+                {
+                    Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog catalog found for NPC", NpcName, Id);
+                    return;
+                }
+
+                var foundConversation = foundDialog.FirstOrDefault();
+
+                var dialogEntry = new Dictionary<int, ConversationInfo>
+                {
+                    {
+                        1,
+                        new ConversationInfo(foundConversation.DialogId, foundConversation.ConversationId)
+                    }
+                };
+
+                DialogInfo = new DialogInfo(int.Parse(Id), NameId, 0, dialogEntry);
+            }
+            else
+                return;
 
         var dialog = DialogInfo.Dialog
             .Where(d => d.Key <= player.Character.Data.GlobalLevel)
@@ -227,134 +261,135 @@ public class NPCControllerComp : Component<NPCController>
         player.NetState.SendXt("nd", Id, NameId, dialog);
     }
 
-    public NPCStatus GetQuestStatus(CharacterModel character)
+    public NPCStatus GetQuestStatus(Player player)
     {
-        var giverCount = 0;
-        var questStatus = NPCStatus.QuestAvailable;
-
-        foreach (var giverQuest in GiverQuests)
-            if (character.Data.CompletedQuests.Contains(giverQuest.Id))
-                giverCount++;
-
-        if (giverCount >= GiverQuests.Length)
+        foreach (var validatorQuest in ValidatorQuests)
         {
-            questStatus = NPCStatus.Dialog;
-            Logger.LogTrace("[DIALOG] [{NpcName} ({Id})] All quests have been completed", NpcName, Id);
+            var questStatus = GetQuestType(player, validatorQuest.Id);
+
+            if (questStatus == NPCStatus.QuestCompleted)
+            {
+                Logger.LogTrace("[{QuestId}] [COMPLETED QUEST] Quest from {NpcName} ({Id}) has been validated",
+                    validatorQuest.Id, NpcName, Id);
+
+                return NPCStatus.QuestCompleted;
+            }
         }
 
         foreach (var givenQuest in GiverQuests)
-            if (CanStartQuest(character, givenQuest))
+        {
+            var questStatus = GetQuestType(player, givenQuest.Id);
+
+            if (questStatus == NPCStatus.QuestInProgress)
             {
-                questStatus = NPCStatus.QuestAvailable;
+                Logger.LogTrace("[{QuestId}] [QUEST IN PROGRESS] Quest from {NpcName} ({Id}) is in progress",
+                    givenQuest.Id, NpcName, Id);
+
+                return NPCStatus.QuestInProgress;
+            }
+
+            if (questStatus == NPCStatus.QuestAvailable)
+            {
                 Logger.LogTrace("[{Quest} ({QuestId})] [AVAILABLE QUEST] Availale from {NpcName} ({Id})",
                     givenQuest.Name, givenQuest.Id, NpcName, Id);
-                break;
+
+                return NPCStatus.QuestAvailable;
             }
-            else
-            {
-                questStatus = NPCStatus.QuestUnavailable;
-                Logger.LogTrace("[{Quest} ({QuestId})] [UNAVAILABLE QUEST] Cannot start quest from {NpcName} ({Id})",
-                    givenQuest.Name, givenQuest.Id, NpcName, Id);
-            }
-
-        foreach (var quest in character.Data.QuestLog)
-        {
-            var catalogedQuest = QuestCatalog.GetQuestData(quest.Id);
-
-            if (ValidatorQuests.Any(v => v.QuestLineId == catalogedQuest.QuestLineId && v.Id == quest.Id))
-            {
-                if (quest.QuestStatus == QuestState.TO_BE_VALIDATED)
-                {
-                    questStatus = NPCStatus.QuestCompleted;
-                    Logger.LogTrace("[{QuestId}] [COMPLETED QUEST] Quest from {NpcName} ({Id}) has been validated",
-                        quest.Id, NpcName, Id);
-                    break;
-                }
-                if (quest.QuestStatus == QuestState.IN_PROCESSING)
-                {
-                    var canSendQuestComplete = true;
-
-                    foreach (var objective in quest.Objectives.Values)
-                    {
-                        if (objective.Completed)
-                            continue;
-
-                        if (objective.CountLeft > 1 ||
-                            objective.ObjectiveType != ObjectiveEnum.Talkto ||
-                            objective.GameObjectLevelId != Room.LevelInfo.LevelId ||
-                            objective.GameObjectId != Id
-                        )
-                        {
-                            canSendQuestComplete = false;
-                            break;
-                        }
-                    }
-
-                    questStatus = canSendQuestComplete ? NPCStatus.QuestCompleted : NPCStatus.QuestInProgress;
-                }
-            }
-
-            if (GiverQuests.Any(v => v.QuestLineId == catalogedQuest.QuestLineId && v.Id == quest.Id))
-                if (quest.QuestStatus == QuestState.IN_PROCESSING)
-                {
-                    questStatus = NPCStatus.QuestInProgress;
-                    Logger.LogTrace("[{QuestId}] [QUEST IN PROGRESS] Quest from {NpcName} ({Id}) is in progress",
-                        quest.Id, NpcName, Id);
-                    break;
-                }
         }
 
-        return questStatus;
+        return NPCStatus.QuestUnavailable;
     }
 
-    public bool CanStartQuest(CharacterModel character, QuestDescription quest)
+    private NPCStatus GetQuestType(Player player, int questId)
     {
-        if (character.Data.CompletedQuests.Contains(quest.Id))
+        var questData = QuestCatalog.GetQuestData(questId);
+
+        if (player.Character.Data.CompletedQuests.Contains(questId))
         {
-            Logger.LogTrace("[{QuestName} ({QuestId})] [ALREADY COMPLETED]", quest.Name, quest.Id);
-            return false;
+            Logger.LogTrace("[{QuestName} ({QuestId})] [ALREADY COMPLETED]", questData.Name, questData.Id);
+            return NPCStatus.Unknown;
         }
 
-        if (character.Data.QuestLog.Any(q => q.Id == quest.Id))
+        var currentQuest = player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == questId);
+
+        if (currentQuest != null)
         {
-            Logger.LogTrace("[{QuestName} ({QuestId})] [ALREADY IN PROGRESS]", quest.Name, quest.Id);
-            return false;
+            if (currentQuest.QuestStatus == QuestState.IN_PROCESSING)
+            {
+                var incompleteQuestObjs = currentQuest.Objectives.Values.Where(o => !o.Completed);
+
+                if (incompleteQuestObjs.Count() == 1)
+                {
+                    var incompleteQuestObj = incompleteQuestObjs.FirstOrDefault();
+
+                    if (incompleteQuestObj.GameObjectId.ToString() == Id &&
+                        incompleteQuestObj.GameObjectLevelId == Room.LevelInfo.LevelId &&
+                        incompleteQuestObj.ObjectiveType == ObjectiveEnum.Talkto)
+                    {
+                        incompleteQuestObj.Completed = true;
+                        incompleteQuestObj.CountLeft = 0;
+                        currentQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
+                    }
+                }
+            }
+
+            if (currentQuest.QuestStatus == QuestState.IN_PROCESSING)
+            {
+                Logger.LogTrace("[{QuestName} ({QuestId})] [ALREADY IN PROGRESS]", questData.Name, questData.Id);
+                return NPCStatus.QuestInProgress;
+            }
+            else if (currentQuest.QuestStatus == QuestState.TO_BE_VALIDATED)
+            {
+                Logger.LogTrace("[{QuestName} ({QuestId})] [TO BE VALIDATED]", questData.Name, questData.Id);
+                return questData.ValidatorGoId.ToString() == Id ? NPCStatus.QuestCompleted : NPCStatus.QuestInProgress;
+            }
         }
 
-        if (!QuestCatalog.QuestLineCatalogs.TryGetValue(quest.QuestLineId, out var questLine))
+        if (!QuestCatalog.QuestLineCatalogs.TryGetValue(questData.QuestLineId, out var questLine))
         {
             Logger.LogTrace("[{QuestName} ({QuestId})] [INVALID QUESTLINE] Quest with line {QuestLineId} could not be found",
-                quest.Name, quest.Id, quest.QuestLineId);
-            return false;
+                questData.Name, questData.Id, questData.QuestLineId);
+            return NPCStatus.Unknown;
         }
 
         if (questLine.QuestType == QuestType.Daily || !questLine.ShowInJournal || QuestCatalog.GetQuestLineTotalQuestCount(questLine) == 0)
         {
             Logger.LogTrace("[{QuestName} ({QuestId})] [SKIPPED QUESTLINE] Quest with line {QuestLineId} was skipped as it does not meet valid preconditions",
-                quest.Name, quest.Id, quest.QuestLineId);
-            return false;
+                questData.Name, questData.Id, questData.QuestLineId);
+            return NPCStatus.Unknown;
         }
 
-        if (character.Data.GlobalLevel < quest.LevelRequired)
+        if (player.Character.Data.GlobalLevel < questData.LevelRequired)
         {
             Logger.LogTrace("[{QuestName} ({QuestId})] [SKIPPED QUEST] Level {Current} is less than required {Required}",
-                quest.Name, quest.Id, character.Data.GlobalLevel, quest.LevelRequired);
-            return false;
+                questData.Name, questData.Id, player.Character.Data.GlobalLevel, questData.LevelRequired);
+            return NPCStatus.Unknown;
         }
 
-        var previousQuests = QuestCatalog.GetListOfPreviousQuests(quest);
+        var requiredQuests = QuestCatalog.GetListOfPreviousQuests(questData);
 
-        foreach (var requiredQuest in previousQuests)
-            if (character.Data.CompletedQuests.Contains(requiredQuest.Id))
+        var canStartQuest = false;
+
+        foreach (var item in requiredQuests)
+            if (player.Character.Data.CompletedQuests.Contains(item.Id))
             {
-                Logger.LogDebug("[{QuestName} ({QuestId})] [FOUND QUEST]", quest.Name, quest.Id);
-                return true;
+                canStartQuest = true;
+                break;
             }
 
-        if (previousQuests.Count != 0)
-            Logger.LogTrace("[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS]", quest.Name, quest.Id);
+        if (requiredQuests.Count == 0 || canStartQuest)
+        {
+            Logger.LogDebug("[{QuestName} ({QuestId})] [FOUND QUEST THAT MEETS REQUIREMENTS]", questData.Name, questData.Id);
+            return NPCStatus.QuestAvailable;
+        }
 
-        return previousQuests.Count == 0;
+        Logger.LogTrace(
+            "[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS] {Quests}",
+            questData.Name, questData.Id,
+            string.Join(", ", requiredQuests.Select(x => x.Name))
+        );
+
+        return NPCStatus.Unknown;
     }
 
     public void ValidateQuest(Player player)
@@ -369,17 +404,31 @@ public class NPCControllerComp : Component<NPCController>
             if (matchingQuest.QuestStatus != QuestState.TO_BE_VALIDATED)
                 continue;
 
-            SendNpcDialog(player, matchingQuest, 1);
+            SendNpcDialog(player, matchingQuest, QuestState.TO_BE_VALIDATED);
 
             var completedQuest = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
             if (completedQuest != null)
             {
+                player.CheckAchievement(AchConditionType.CompleteQuest, string.Empty, Logger); // Any Quest
+                player.CheckAchievement(AchConditionType.CompleteQuest, quest.Name, Logger); // Specific Quest by name for example EVT_SB_1_01
+                player.CheckAchievement(AchConditionType.CompleteQuestInLevel, player.Room.LevelInfo.Name, Logger); // Quest by Level/Trail if any exist
+
                 player.Character.Data.QuestLog.Remove(completedQuest);
                 player.NetState.SendXt("nq", completedQuest.Id);
                 player.Character.Data.CompletedQuests.Add(completedQuest.Id);
-                player.UpdateNpcsInLevel();
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
+
+                if (quest.QuestRewards.Count > 0)
+                {
+                    foreach (var item in quest.QuestRewards)
+                    {
+                        var newQuest = QuestCatalog.GetQuestData(item.Key);
+
+                        if (newQuest != null)
+                            player.AddQuest(newQuest, Logger, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}");
+                    }
+                }
             }
 
             break;
@@ -397,7 +446,7 @@ public class NPCControllerComp : Component<NPCController>
             if (matchingQuest == null || player.Character.Data.CompletedQuests.Contains(quest.Id))
                 continue;
 
-            SendNpcDialog(player, matchingQuest, 2);
+            SendNpcDialog(player, matchingQuest, QuestState.IN_PROCESSING);
 
             break;
         }
@@ -406,44 +455,24 @@ public class NPCControllerComp : Component<NPCController>
     public void StartNewQuest(Player player)
     {
         foreach (var givenQuest in GiverQuests)
-            if (CanStartQuest(player.Character, givenQuest))
+        {
+            if (GetQuestType(player, givenQuest.Id) == NPCStatus.QuestAvailable)
             {
-                var quest = player.AddQuest(givenQuest, true);
+                var quest = player.AddQuest(givenQuest, Logger, ItemCatalog, FileLogger, NpcName);
 
-                SendNpcDialog(player, quest, 0);
-
-                Logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", givenQuest.Name, givenQuest.Id, NpcName);
-
-                var rewardIds = (Dictionary<int, int>)givenQuest.GetField("_rewardItemsIds");
-                var unknownRewards = rewardIds.Where(x => !ItemCatalog.Items.ContainsKey(x.Key));
-
-                if (unknownRewards.Any())
-                {
-                    var sb = new StringBuilder();
-
-                    foreach (var reward in unknownRewards)
-                        sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
-
-                    FileLogger.WriteGenericLog<NPCController>("unknown-rewards", $"[Unkwown Quest {givenQuest.Id} Rewards]", sb.ToString(),
-                        LoggerType.Error);
-                }
-
-                quest.QuestStatus = QuestState.IN_PROCESSING;
-
-                player.UpdateNpcsInLevel(givenQuest);
-
-                Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", givenQuest.Name, quest.Id);
+                SendNpcDialog(player, quest, QuestState.NOT_START);
 
                 return;
             }
+        }
     }
 
-    public void SendNpcDialog(Player player, QuestStatusModel questStatus, int dialogNumber)
+    public void SendNpcDialog(Player player, QuestStatusModel questStatus, QuestState state)
     {
         var quest = QuestCatalog.GetQuestData(questStatus.Id);
         var questName = quest.Name;
 
-        if (quest.ValidatorGoId != quest.QuestGiverGoId && quest.ValidatorGoId == Id)
+        if (quest.ValidatorName != quest.QuestgGiverName && quest.ValidatorGoId.ToString() == Id)
             questName += "validator";
 
         if (DialogRewrites.Rewrites.TryGetValue(questName, out var rewrittenName))
@@ -454,6 +483,14 @@ public class NPCControllerComp : Component<NPCController>
             Logger.LogError("[{QuestName}] [UNKNOWN QUEST DIALOG]", questName);
             return;
         }
+
+        var dialogNumber = state switch
+        {
+            QuestState.IN_PROCESSING => 2,
+            QuestState.NOT_START => 0,
+            QuestState.TO_BE_VALIDATED => 1,
+            _ => -1,
+        };
 
         if (questDialog.Count < dialogNumber)
         {
@@ -483,6 +520,10 @@ public class NPCControllerComp : Component<NPCController>
             return;
         }
 
-        player.NetState.SendXt("nl", questStatus, Id, NameId, dialog);
+        var oQuestStatus = questStatus.DeepCopy();
+
+        oQuestStatus.QuestStatus = state;
+
+        player.NetState.SendXt("nl", oQuestStatus, Id, NameId, dialog);
     }
 }

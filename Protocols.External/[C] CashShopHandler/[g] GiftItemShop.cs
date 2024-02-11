@@ -58,8 +58,8 @@ public class GiftItemShop : ExternalProtocol
 
         friend.SendXt("en", emailHeader.ToString());
 
-        //I don't think you can gift more than 1 item at a time,
-        //so I'm not entirely sure how attachments is supposed to be used. 
+        // I don't think you can gift more than 1 item at a time,
+        // so I'm not entirely sure how attachments is supposed to be used. 
 
         var attachments = new Dictionary<ItemDescription, int> { { item, 1 } };
 

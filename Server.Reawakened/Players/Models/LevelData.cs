@@ -3,5 +3,5 @@
 public class LevelData
 {
     public int LevelId { get; set; }
-    public int SpawnPointId { get; set; }
+    public string SpawnPointId { get; set; }
 }

@@ -13,6 +13,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
@@ -45,7 +46,7 @@ public class UseSlot : ExternalProtocol
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drop:
-                HandleDrop(usedItem, position, direction);
+                Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
                 break;
             case ItemActionType.Throw:
                 HandleRangedWeapon(usedItem, position, direction);
@@ -86,196 +87,145 @@ public class UseSlot : ExternalProtocol
         Player.SendSyncEventToPlayer(itemEffect);
     }
 
-    private void HandleDrop(ItemDescription usedItem, Vector3Model position, int direction)
-    {
-        var isLeft = direction > 0;
-        var dropDirection = isLeft ? 1 : -1;
-        var platform = new GameObjectModel();
-        var planeName = position.Z > 10 ? ServerRConfig.IsBackPlane[true] : ServerRConfig.IsBackPlane[false];
-        var dropItemData = new DroppedItemData()
-        {
-            DropDirection = dropDirection,
-            Position = position,
-            UsedItem = usedItem
-        };
-        TimerThread.DelayCall(DropItem, dropItemData, TimeSpan.FromMilliseconds(1000), TimeSpan.Zero, 1);
-    }
-    private class DroppedItemData()
-    {
-        public int DropDirection { get; set; }
-        public ItemDescription UsedItem { get; set; }
-        public Vector3Model Position { get; set; }
-    }
-
-    private void DropItem(object data)
-    {
-        var dropData = (DroppedItemData)data;
-        var dropItem = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            Player.TempData.Position.X + dropData.DropDirection, Player.TempData.Position.Y, Player.TempData.Position.Z,
-            0, 0, 3, 0, dropData.UsedItem.PrefabName);
-        Player.Room.SendSyncEvent(dropItem);
-        foreach (var entity in Player.Room.Entities)
-        {
-            foreach (var component in entity.Value
-                .Where(comp => Vector3Model.Distance(dropData.Position, comp.Position) <= 5.4f))
-            {
-                var prefabName = component.PrefabName;
-                var objectId = component.Id;
-                if (component is HazardControllerComp or BreakableEventControllerComp)
-                {
-                    var bombData = new BombData()
-                    {
-                        PrefabName = prefabName,
-                        Component = component,
-                        ObjectId = objectId,
-                        Damage = GetDamageType(dropData.UsedItem)
-                    };
-                    TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2850), TimeSpan.Zero, 1);
-                }
-            }
-        }
-    }
-
-    private int GetDamageType(ItemDescription usedItem)
-    {
-        var damage = ServerRConfig.DefaultDamage;
-        if (usedItem.ItemEffects.Count == 0)
-        {
-            Logger.LogWarning("Item ({usedItemName}) has 0 ItemEffects! Are you sure this item was set up correctly?", usedItem.ItemName);
-            return damage;
-        }
-        foreach (var effect in usedItem.ItemEffects)
-        {
-            switch (effect.Type)
-            {
-                case ItemEffectType.BluntDamage:
-                case ItemEffectType.FireDamage:
-                case ItemEffectType.PoisonDamage:
-                case ItemEffectType.IceDamage:
-                case ItemEffectType.AirDamage:
-                case ItemEffectType.EarthDamage:
-                case ItemEffectType.WaterDamage:
-                case ItemEffectType.LightningDamage:
-                case ItemEffectType.StompDamage:
-                case ItemEffectType.ArmorPiercingDamage:
-                    damage = effect.Value;
-                    break;
-                default:
-                    break;
-            }
-            Logger.LogInformation("Item ({usedItemName}) with ({damageType}) has been used!", usedItem.ItemName, effect.Type);
-        }
-        return damage;
-    }
-
-    private class BombData()
-    {
-        public string PrefabName { get; set; }
-        public int ObjectId { get; set; }
-        public BaseComponent Component { get; set; }
-        public int Damage { get; set; }
-    }
-
-    private void ExplodeBomb(object data)
-    {
-        var bData = (BombData)data;
-        Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", bData.PrefabName, bData.ObjectId);
-        if (bData.Component is BreakableEventControllerComp breakableObjEntity)
-            breakableObjEntity.Destroy(Player);
-        else if (bData.Component is InterObjStatusComp enemyEntity)
-            enemyEntity.SendDamageEvent(Player, bData.Damage);
-    }
-
     private void HandleConsumable(ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, int hotbarSlotId, ILogger<PlayerStatus> logger)
     {
         Player.HandleItemEffect(usedItem, timerThread, serverRConfig, logger);
-        var removeFromHotbar = true;
+        var removeFromHotBar = true;
+
         if (usedItem.InventoryCategoryID is
             ItemFilterCategory.WeaponAndAbilities or
             ItemFilterCategory.Pets)
-            removeFromHotbar = false;
-        if (removeFromHotbar)
+            removeFromHotBar = false;
+
+        if (removeFromHotBar)
         {
             if (usedItem.ItemActionType == ItemActionType.Eat)
             {
                 Player.CheckAchievement(AchConditionType.Consumable, string.Empty, Logger);
                 Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, Logger);
-            } 
+            }
             else if (usedItem.ItemActionType == ItemActionType.Drink)
             {
                 Player.CheckAchievement(AchConditionType.Drink, string.Empty, Logger);
                 Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, Logger);
             }
 
-            RemoveFromHotbar(Player.Character, usedItem, hotbarSlotId);
+            RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
         }
     }
 
     private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var rand = new System.Random();
-        var prjId = Math.Abs(rand.Next());
+        var rand = new Random();
+        var prjId = Math.Abs(rand.Next()).ToString();
         while (Player.Room.GameObjectIds.Contains(prjId))
-            prjId = Math.Abs(rand.Next());
-        var prj = new ProjectileEntity(Player, prjId, position.X, position.Y, position.Z, direction, 3, usedItem);
+            prjId = Math.Abs(rand.Next()).ToString();
+
+        // Magic number 10 is damage for now, until we add a server side stat handler
+        var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig);
+
         Player.Room.Projectiles.Add(prjId, prj);
     }
 
     private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
+        var rand = new Random();
+        var prjId = Math.Abs(rand.Next()).ToString();
+
+        while (Player.Room.GameObjectIds.Contains(prjId))
+            prjId = Math.Abs(rand.Next()).ToString();
+
+        // Magic number 10 is damage for now, until we add a server side stat handler
+        var prj = new MeleeEntity(Player, prjId, position, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig);
+
+        Player.Room.Projectiles.Add(prjId, prj);
+
+        HandleOldMelee(usedItem, position, direction);
+    }
+
+    private void HandleOldMelee(ItemDescription usedItem, Vector3Model position, int direction)
+    {
         var planeName = position.Z < 10 ? ServerRConfig.IsBackPlane[false] : ServerRConfig.IsBackPlane[true];
 
         var rand = new Random();
         var meleeId = Math.Abs(rand.Next());
-        var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            position.X, position.Y, position.Z, direction, 1, 1, meleeId, usedItem.PrefabName);
+
+        var hitEvent = new Melee_SyncEvent(
+            Player.GameObjectId.ToString(),
+            Player.Room.Time,
+            position.X,
+            position.Y,
+            position.Z,
+            direction,
+            1,
+            1,
+            meleeId,
+            usedItem.PrefabName
+        );
+
         Player.Room.SendSyncEvent(hitEvent);
         var hitboxWidth = 3f;
         var hitboxHeight = 4f;
-        var meleeHitbox = new BaseCollider(meleeId, Player.TempData.Position, hitboxWidth, hitboxHeight, planeName, Player.Room);
-        var weaponDamage = GetDamageType(usedItem);
 
-        foreach (var obj in Player.Room.Planes[planeName].GameObjects.Values)
+        var isLeft = direction > 0;
+
+        var meleeHitbox = new DefaultCollider(
+            meleeId.ToString(),
+            new Vector3Model()
+            {
+                X = isLeft ? Player.TempData.Position.X : Player.TempData.Position.X - hitboxWidth,
+                Y = Player.TempData.Position.Y,
+                Z = Player.TempData.Position.Z
+            },
+            hitboxWidth,
+            hitboxHeight,
+            planeName,
+            Player.Room
+        );
+
+        var weaponDamage = usedItem.GetDamageAmount(Logger, ServerRConfig);
+
+        foreach (var objects in Player.Room.Planes[planeName].GameObjects.Values)
         {
-            var objectId = obj.ObjectInfo.ObjectId;
-            var prefabName = obj.ObjectInfo.PrefabName;
-
-            var objCollider = new BaseCollider(objectId, obj.ObjectInfo.Position,
-                obj.ObjectInfo.Rectangle.Width, obj.ObjectInfo.Rectangle.Height, planeName, Player.Room);
-            var isLeft = direction > 0;
-
-            if (isLeft)
+            foreach (var obj in objects)
             {
-                if (obj.ObjectInfo.Position.X < position.X)
-                    continue;
+                var objectId = obj.ObjectInfo.ObjectId;
+                var prefabName = obj.ObjectInfo.PrefabName;
+
+                var objCollider = new DefaultCollider(
+                    objectId,
+                    obj.ObjectInfo.Position,
+                    obj.ObjectInfo.Rectangle.Width,
+                    obj.ObjectInfo.Rectangle.Height,
+                    planeName,
+                    Player.Room
+                );
+
+                if (isLeft)
+                {
+                    if (obj.ObjectInfo.Position.X < position.X)
+                        continue;
+                }
+                else
+                {
+                    if (obj.ObjectInfo.Position.X > position.X)
+                        continue;
+                }
+
+                var isColliding = meleeHitbox.CheckCollision(objCollider);
+
+                if (isColliding)
+                    if (Player.Room.Entities.TryGetValue(obj.ObjectInfo.ObjectId, out var entityComponents))
+                        foreach (var component in entityComponents)
+                            if (component is TriggerCoopControllerComp triggerCoopEntity)
+                                triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
+                            else if (component is EnemyControllerComp enemyEntity)
+                                enemyEntity.Damage(weaponDamage, Player);
             }
-            else
-            {
-                if (obj.ObjectInfo.Position.X > position.X)
-                    continue;
-            }
-
-            var isColliding = meleeHitbox.CheckObjectCollision(objCollider);
-
-            if (isColliding)
-                if (Player.Room.Entities.TryGetValue(obj.ObjectInfo.ObjectId, out var entityComponents))
-                    foreach (var component in entityComponents)
-                        if (component is TriggerCoopControllerComp triggerCoopEntity)
-                            triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
-                        else if (component is BreakableEventControllerComp breakableObjEntity)
-                            breakableObjEntity.Destroy(Player);
-                        else if (component is InterObjStatusComp enemyEntity)
-                        {
-                            Player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
-                            Player.CheckAchievement(AchConditionType.DefeatEnemy, prefabName, Logger);
-                            Player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, Player.Room.LevelInfo.Name, Logger);
-
-                            enemyEntity.SendDamageEvent(Player, weaponDamage);
-                        }
         }
     }
 
-    private void RemoveFromHotbar(CharacterModel character, ItemDescription item, int hotbarSlotId)
+    private void RemoveFromHotBar(CharacterModel character, ItemDescription item, int hotbarSlotId)
     {
         character.Data.Inventory.Items[item.ItemId].Count--;
         if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
