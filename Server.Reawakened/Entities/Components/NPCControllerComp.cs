@@ -142,7 +142,7 @@ public class NPCControllerComp : Component<NPCController>
 
     public void TalkToNpc(Player player)
     {
-        player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
+        RunObjectives(player);
 
         player.CheckAchievement(AchConditionType.Talkto, PrefabName, Logger);
 
@@ -174,7 +174,7 @@ public class NPCControllerComp : Component<NPCController>
                         break;
                 }
 
-                player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
+                RunObjectives(player);
 
                 var newStatus = GetQuestStatus(player);
 
@@ -190,6 +190,13 @@ public class NPCControllerComp : Component<NPCController>
                 Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", NpcName, Id);
                 break;
         }
+    }
+
+    public void RunObjectives(Player player)
+    {
+        player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1);
     }
 
     public void SendNpcInfo(Player player)
@@ -324,7 +331,7 @@ public class NPCControllerComp : Component<NPCController>
 
                     if (incompleteQuestObj.GameObjectId.ToString() == Id &&
                         incompleteQuestObj.GameObjectLevelId == Room.LevelInfo.LevelId &&
-                        incompleteQuestObj.ObjectiveType == ObjectiveEnum.Talkto)
+                        incompleteQuestObj.ObjectiveType is ObjectiveEnum.Talkto or ObjectiveEnum.Goto or ObjectiveEnum.HiddenGoto)
                     {
                         incompleteQuestObj.Completed = true;
                         incompleteQuestObj.CountLeft = 0;
