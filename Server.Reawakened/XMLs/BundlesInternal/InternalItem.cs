@@ -275,7 +275,7 @@ public class InternalItem : IBundledXml<InternalItem>
         {
             maxDesc++;
 
-            if (!Items.ContainsKey(obj.Key) )
+            if (!Items.ContainsKey(obj.Key))
             {
                 Descriptions.Add(maxDesc, obj.Value);
 

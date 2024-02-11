@@ -187,7 +187,7 @@ public static class GetInternalXml
                 title = title,
                 goal = goal,
                 visible = visible,
-                typeId = (int) type,
+                typeId = (int)type,
                 sortOrder = id,
                 description = value.ToLower()
             });
@@ -215,7 +215,7 @@ public static class GetInternalXml
                 case RewardType.Item:
                     var itemId = int.Parse(reward.value.ToString());
                     var quantity = reward.quantity;
-                    
+
                     var item = player.DatabaseContainer.ItemCatalog.GetItemFromId(itemId);
 
                     player.AddItem(item, quantity);

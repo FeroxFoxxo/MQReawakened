@@ -50,6 +50,8 @@ public class Room : Timer
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
 
+    public IServiceProvider Services { get; }
+
     public Room(
         int roomId, Level level, ServerRConfig config, TimerThread timerThread,
         IServiceProvider services, ILogger<Room> logger, InternalColliders colliderCatalog
@@ -59,6 +61,7 @@ public class Room : Timer
 
         _roomId = roomId;
         _config = config;
+        Services = services;
         Logger = logger;
         ColliderCatalog = colliderCatalog;
         _level = level;
@@ -88,11 +91,6 @@ public class Room : Timer
         foreach (var component in Entities.Values.SelectMany(x => x))
         {
             component.InitializeComponent();
-        }
-
-        foreach (var component in Entities.Values.SelectMany(x => x))
-        {
-            component.DelayedComponentInitialization();
         }
 
         foreach (var component in Entities.Values.SelectMany(x => x))
@@ -379,7 +377,7 @@ public class Room : Timer
 
         var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index.ToString() == character.LevelData.SpawnPointId);
 
-        return indexSpawn ?? (BaseComponent) DefaultSpawn;
+        return indexSpawn ?? (BaseComponent)DefaultSpawn;
     }
 
     public void DumpPlayersToLobby()

@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Players;
+﻿using Server.Reawakened.Rooms;
 
-namespace Server.Reawakened.Rooms.Models.Entities;
+namespace Server.Reawakened.Entities.Interfaces;
 
 public interface IDestructible
 {
-    public void Destroy(Player player, Room room, string id);
+    public void Destroy(Room room, string id);
 }

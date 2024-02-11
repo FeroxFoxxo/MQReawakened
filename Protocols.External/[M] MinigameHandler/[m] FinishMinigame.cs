@@ -26,7 +26,7 @@ public class FinishedMinigame : ExternalProtocol
         Logger.LogInformation("Minigame with ID ({minigameId}) has completed.", objectId);
 
         SendXt("Mt", objectId, Player.GameObjectId, finishedRaceTime);
-        
+
         if (Player.Character.BestMinigameTimes.TryGetValue(Player.Room.LevelInfo.Name, out var time))
         {
             if (finishedRaceTime < time)

@@ -156,7 +156,7 @@ public static class LoadRoomData
         return entities;
     }
 
-    private class EntityTransfer (ReflectionUtils reflectionUtils, ClassCopier classCopier,
+    private class EntityTransfer(ReflectionUtils reflectionUtils, ClassCopier classCopier,
         Room room, FileLogger fileLogger, Dictionary<string, Type> knownComps,
         IServiceProvider serviceProvider, Dictionary<string, Type> processableComps)
     {

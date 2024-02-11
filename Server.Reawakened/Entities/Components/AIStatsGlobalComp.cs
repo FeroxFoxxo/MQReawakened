@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Stats;
+namespace Server.Reawakened.Entities.Components;
 public class AIStatsGlobalComp : Component<AI_Stats_Global>
 {
     public float Global_viewOffsetY => ComponentData.Global_viewOffsetY;

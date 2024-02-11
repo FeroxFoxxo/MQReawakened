@@ -14,7 +14,6 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Models.Npcs;
-using System.Text;
 using static A2m.Server.QuestStatus;
 using static NPCController;
 
@@ -225,7 +224,8 @@ public class NPCControllerComp : Component<NPCController>
             {
                 var foundDialog = Dialog.GenericDialog.FirstOrDefault(x => x.Key.Contains(NpcName + Id) && x.Value.Count > 0).Value;
 
-                if (foundDialog == null) {
+                if (foundDialog == null)
+                {
                     Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog catalog found for NPC", NpcName, Id);
                     return;
                 }
@@ -321,7 +321,7 @@ public class NPCControllerComp : Component<NPCController>
                 if (incompleteQuestObjs.Count() == 1)
                 {
                     var incompleteQuestObj = incompleteQuestObjs.FirstOrDefault();
-                    
+
                     if (incompleteQuestObj.GameObjectId.ToString() == Id &&
                         incompleteQuestObj.GameObjectLevelId == Room.LevelInfo.LevelId &&
                         incompleteQuestObj.ObjectiveType == ObjectiveEnum.Talkto)
@@ -421,7 +421,7 @@ public class NPCControllerComp : Component<NPCController>
 
                 if (quest.QuestRewards.Count > 0)
                 {
-                    foreach (var item in quest.QuestRewards) 
+                    foreach (var item in quest.QuestRewards)
                     {
                         var newQuest = QuestCatalog.GetQuestData(item.Key);
 

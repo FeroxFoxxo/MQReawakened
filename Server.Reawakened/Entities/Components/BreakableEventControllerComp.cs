@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
-using Server.Reawakened.Entities.Stats;
 using Room = Server.Reawakened.Rooms.Room;
 
 namespace Server.Reawakened.Entities.Components;
@@ -62,10 +62,10 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         {
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
             origin.SendUpdatedInventory(false);
-            Destroy(origin, Room, Id);
+            Destroy(Room, Id);
         }
     }
-    public void Destroy(Player player, Room room, string id)
+    public void Destroy(Room room, string id)
     {
         room.Entities.Remove(id);
         room.Enemies.Remove(id);

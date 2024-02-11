@@ -1,11 +1,10 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.Players;
 
 namespace Protocols.External._e__EmailHandler;
 
@@ -27,41 +26,32 @@ public class DeleteMessage : ExternalProtocol
             var giftData = new GiftData()
             {
                 MessageId = messageId,
-                Item = item,
-                Player = Player
+                Item = item
             };
 
             TimerThread.DelayCall(RunGiftAnimation, giftData, TimeSpan.FromMilliseconds(3300), TimeSpan.Zero, 1);
         }
     }
 
-    public static void RunGiftAnimation(object data)
+    public void RunGiftAnimation(object data)
     {
         var gData = (GiftData)data;
-        var player = gData.Player;
 
-        if (player == null)
-            return;
+        Player.AddItem(gData.Item, gData.Item.ItemNumber);
+        Player.SendUpdatedInventory(false);
 
-        if (player.Character == null)
-            return;
+        var mailMessage = Player.Character.EmailMessages[gData.MessageId];
+        var mail = Player.Character.Emails[gData.MessageId];
 
-        player.AddItem(gData.Item, gData.Item.ItemNumber);
-        player.SendUpdatedInventory(false);
+        Player.Character.EmailMessages.Remove(mailMessage);
+        Player.Character.Emails.Remove(mail);
 
-        var mailMessage = player.Character.EmailMessages[gData.MessageId];
-        var mail = player.Character.Emails[gData.MessageId];
-
-        player.Character.EmailMessages.Remove(mailMessage);
-        player.Character.Emails.Remove(mail);
-
-        player.SendXt("ed", gData.MessageId);
+        Player.SendXt("ed", gData.MessageId);
     }
 
     private class GiftData
     {
-        public int MessageId { get; set; }
-        public ItemDescription Item { get; set; }
-        public Player Player { get; set; }
+        public int MessageId;
+        public ItemDescription Item;
     }
 }

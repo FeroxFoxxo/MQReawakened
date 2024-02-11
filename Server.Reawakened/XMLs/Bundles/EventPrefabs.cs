@@ -223,12 +223,14 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
 
         var reversedDict = EventIdToNameDict.ToDictionary(
             x => x.Value,
-            x => {
+            x =>
+            {
                 var hasEventAd = PrefabMap[x.Value].ContainsKey("Event_Ads");
                 var hasEventPopupIcon = PrefabMap[x.Value].ContainsKey("EventPopupIcon");
                 var hasEventPopupMenu = PrefabMap[x.Value].ContainsKey("EventPopupMenu");
 
-                return new Event() {
+                return new Event()
+                {
                     EventId = x.Key,
                     EventName = x.Value,
                     HasEventAd = hasEventAd,
@@ -259,7 +261,8 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
 
             SecondaryEvents = reversedDict.Values
                 .Where(x => x.EventId != defaultEvent.EventId)
-                .Select(x => new SecondaryEventInfo() {
+                .Select(x => new SecondaryEventInfo()
+                {
                     EventId = x.EventId,
                     DisplayAd = x.HasEventAd,
                     DisplayIcon = x.HasEventPopupIcon

@@ -288,9 +288,9 @@ public static class PlayerExtensions
                     if (objective.GameObjectId.ToString() == gameObjectId &&
                         objective.LevelId == player.Character.LevelData.LevelId)
                         meetsRequirement = true;
-                
+
                 if (objective.ItemId > 0 && !meetsRequirement)
-                {   
+                {
                     var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(prefabName);
 
                     if (item != null)

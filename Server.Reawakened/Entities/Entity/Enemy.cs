@@ -1,9 +1,7 @@
-﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.AIBehavior;
+﻿using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity.Utils;
-using Server.Reawakened.Entities.Stats;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -12,7 +10,6 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Enums;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity;
@@ -44,9 +41,7 @@ public abstract class Enemy : IDestructible
     public AIBaseBehavior AiBehavior;
     public BehaviorModel BehaviorList;
 
-    public AISyncEventHelper SyncBuilder = new AISyncEventHelper();
-
-    public ILogger<Enemy> Logger { get; set; }
+    public AISyncEventHelper SyncBuilder = new();
 
     public Enemy(Room room, string entityId, BaseComponent baseEntity)
     {
@@ -118,10 +113,7 @@ public abstract class Enemy : IDestructible
 
     }
 
-    public virtual void Initialize()
-    {
-        Init = true;
-    }
+    public virtual void Initialize() => Init = true;
 
     public virtual void Update()
     {
@@ -211,7 +203,7 @@ public abstract class Enemy : IDestructible
 
             //Temp values for now
             Room.SendSyncEvent(SyncBuilder.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
-            Destroy(origin, Room, Id);
+            Destroy(Room, Id);
         }
     }
 
@@ -342,7 +334,7 @@ public abstract class Enemy : IDestructible
                    Position.z == pos.Z;
             }
             return AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY && 
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
                    Position.z == pos.Z &&
                    pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
         }
@@ -355,7 +347,7 @@ public abstract class Enemy : IDestructible
                    Position.z == pos.Z;
             }
             return AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY && 
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
                    Position.z == pos.Z &&
                    pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
         }
@@ -366,16 +358,13 @@ public abstract class Enemy : IDestructible
 
     public virtual void HandleLookAround() { }
 
-    public virtual void HandlePatrol() 
-    {
-        AiBehavior.Update(ref AiData, Room.Time);
-    }
+    public virtual void HandlePatrol() => AiBehavior.Update(ref AiData, Room.Time);
 
     public virtual void HandleComeBack() { }
 
     public virtual void HandleAggro() { }
 
-    public virtual void HandleShooting() 
+    public virtual void HandleShooting()
     {
         if (AiData.Intern_FireProjectile)
         {
@@ -453,15 +442,8 @@ public abstract class Enemy : IDestructible
         player.SendSyncEventToPlayer(aiDo);
     }
 
-    public void Destroy(Player player, Room room, string id)
+    public void Destroy(Room room, string id)
     {
-        player.CheckObjective(ObjectiveEnum.Score, id, Entity.PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.Scoremultiple, id, Entity.PrefabName, 1);
-
-        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, Logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, Logger);
-
         room.Entities.Remove(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);

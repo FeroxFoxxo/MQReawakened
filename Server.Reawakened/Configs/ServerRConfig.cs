@@ -16,7 +16,7 @@ public class ServerRConfig : IRConfig
     public int PlayerCap { get; }
     public int ReservedNameCount { get; }
     public int MaxCharacterCount { get; }
-    
+
     public int HealingStaff { get; }
     public double HealingStaffHealValue { get; }
     public int DefaultDamage { get; }
@@ -192,7 +192,7 @@ public class ServerRConfig : IRConfig
         HealingStaff = 396;
         HealingStaffHealValue = 3.527f;
         DefaultDamage = 10;
-        
+
         EnemyComponentName = "EnemyController";
         BreakableComponentName = "BreakableEventController";
 

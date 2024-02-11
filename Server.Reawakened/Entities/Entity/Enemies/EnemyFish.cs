@@ -101,7 +101,7 @@ public class EnemyFish(Room room, string entityId, BaseComponent baseEntity) : E
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
-        
+
             AiBehavior = ChangeBehavior("Patrol");
         }
     }

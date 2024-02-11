@@ -1,13 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Core.Extensions;
+using Server.Base.Logging;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
-using static A2m.Server.QuestStatus;
-using System.Text;
-using Server.Base.Logging;
-using Server.Reawakened.Network.Extensions;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -37,7 +33,7 @@ public class ChooseQuestReward : ExternalProtocol
                 Logger.LogError("[Quest Validator {NpcId}] Unknown item reward with id: {RewardId}", npcId, itemId);
         }
 
-        if (questRewardId > 0) 
+        if (questRewardId > 0)
         {
             var newQuest = QuestCatalog.GetQuestData(questRewardId);
 

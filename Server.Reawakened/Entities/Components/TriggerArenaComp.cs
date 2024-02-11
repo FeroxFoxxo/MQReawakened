@@ -22,7 +22,7 @@ public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
         _hasStarted = false;
     }
 
-    public override object[] GetInitData(Player player) => [ -1 ];
+    public override object[] GetInitData(Player player) => [-1];
 
     public override void Update()
     {

@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Stats;
+namespace Server.Reawakened.Entities.Components;
 public class BreakableObjStatusComp : Component<BreakableObjStatus>
 {
     public string OnKillMessageReceiver => ComponentData.OnKillMessageReceiver;

@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Stats;
+namespace Server.Reawakened.Entities.Components;
 public class AIStatsGenericComp : Component<AI_Stats_Generic>
 {
     public float Patrol_DistanceX => ComponentData.Patrol_DistanceX;

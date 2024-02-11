@@ -62,7 +62,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                             behaviorDataModel.Resources.Add(new EnemyResourceModel(resourceType, resourceName));
                     }
 
-                        switch (behavior.Name)
+                    switch (behavior.Name)
                     {
 
                         // Patrol Behavior

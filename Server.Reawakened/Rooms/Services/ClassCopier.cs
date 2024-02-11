@@ -39,7 +39,7 @@ public class ClassCopier : IService
 
             foreach (var field in fields)
                 field.SetValue(copiedObj, field.GetValue(originalObj));
-            
+
             return new KeyValuePair<object, FieldInfo[]>(copiedObj, _fields[mqType]);
         }
     }
