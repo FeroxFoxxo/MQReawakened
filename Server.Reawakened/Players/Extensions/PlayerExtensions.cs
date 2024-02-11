@@ -300,6 +300,9 @@ public static class PlayerExtensions
                                                || objective.LevelId == player.Character.LevelData.LevelId;
                 }
 
+                if (!meetsRequirement && objective.LevelId == player.Character.LevelData.LevelId && type == ObjectiveEnum.MinigameMedal)
+                    meetsRequirement = true;
+
                 if (!meetsRequirement)
                     continue;
 
