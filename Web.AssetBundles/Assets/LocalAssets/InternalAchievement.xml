@@ -3472,7 +3472,7 @@
                 <Reward type="Item" value="COL_BOMB_FireBomb02" quantity="5" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Light up 1,000 Hoops in Clock Tower Square" type="Invalid" value="" goal="1000" visible="true" />
+                <Condition id="1" title="Light up 1,000 Hoops in Clock Tower Square" type="HoopInLevel" value="lv_crs_townsquare01" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="432" title="Unknown Achievement 432" description="Unknown Description. Hint: the icon is named Games_HoopAny_CTS_Hard!" iconName="Games_HoopAny_CTS_Hard" points="1" sortOrder="6" repeatable="false">
@@ -3496,7 +3496,7 @@
                 <Reward type="Item" value="ABIL_SmokeBomb01" quantity="5" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete 100 ‘Hoop Groups’ in Clock Tower Square" type="Invalid" value="" goal="100" visible="true" />
+                <Condition id="1" title="Complete 100 ‘Hoop Groups’ in Clock Tower Square" type="HoopGroupInLevel" value="lv_crs_townsquare01" goal="100" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="435" title="Unknown Achievement 435" description="Unknown Description. Hint: the icon is named Games_HoopGroup_CTS_Hard!" iconName="Games_HoopGroup_CTS_Hard" points="1" sortOrder="9" repeatable="false">
