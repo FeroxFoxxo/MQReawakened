@@ -50,8 +50,6 @@ public class Room : Timer
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
 
-    public IServiceProvider Services { get; }
-
     public Room(
         int roomId, Level level, ServerRConfig config, TimerThread timerThread,
         IServiceProvider services, ILogger<Room> logger, InternalColliders colliderCatalog
@@ -61,7 +59,6 @@ public class Room : Timer
 
         _roomId = roomId;
         _config = config;
-        Services = services;
         Logger = logger;
         ColliderCatalog = colliderCatalog;
         _level = level;
