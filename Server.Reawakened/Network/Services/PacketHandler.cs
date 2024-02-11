@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
@@ -15,7 +16,7 @@ using System.Xml;
 
 namespace Server.Reawakened.Network.Services;
 
-public class PacketHandler(IServiceProvider services, ReflectionUtils reflectionUtils,
+public class PacketHandler(IServiceScopeFactory serviceFact, ReflectionUtils reflectionUtils,
     NetStateHandler handler, EventSink sink, ILogger<PacketHandler> logger, ServerRConfig serverConfig,
     InternalRwConfig internalWConfig) : IService
 {
@@ -55,6 +56,8 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
 
     private void AddProtocols(ServerStartedEventArgs e)
     {
+        using var scope = serviceFact.CreateScope();
+
         foreach (var type in e.Modules.Select(m => m.GetType().Assembly.GetTypes())
                      .SelectMany(sl => sl).Where(myType => myType.IsClass && !myType.IsAbstract))
         {
@@ -71,7 +74,7 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
                     instance.Run(document);
                 }
 
-                _protocolsSystem.Add(createInstance(services).ProtocolName, Callback);
+                _protocolsSystem.Add(createInstance(scope.ServiceProvider).ProtocolName, Callback);
             }
             else if (type.IsSubclassOf(typeof(ExternalProtocol)))
             {
@@ -86,7 +89,7 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
                     instance.Run(msg);
                 }
 
-                _protocolsExternal.Add(createInstance(services).ProtocolName, Callback);
+                _protocolsExternal.Add(createInstance(scope.ServiceProvider).ProtocolName, Callback);
             }
         }
 
@@ -116,9 +119,15 @@ public class PacketHandler(IServiceProvider services, ReflectionUtils reflection
         return new ProtocolResponse(actionType, unhandled, xmlDocument);
     }
 
-    public void SendXt(NetState netState, string actionType, object packetStr) =>
-        _protocolsExternal[actionType](netState, (string[])packetStr, services);
+    public void SendXt(NetState netState, string actionType, object packetStr)
+    {
+        using var scope = serviceFact.CreateScope();
+        _protocolsExternal[actionType](netState, (string[])packetStr, scope.ServiceProvider);
+    }
 
-    public void SendSys(NetState netState, string actionType, object packetXml) =>
-        _protocolsSystem[actionType](netState, (XmlDocument)packetXml, services);
+    public void SendSys(NetState netState, string actionType, object packetXml)
+    {
+        using var scope = serviceFact.CreateScope();
+        _protocolsSystem[actionType](netState, (XmlDocument)packetXml, scope.ServiceProvider);
+    }
 }

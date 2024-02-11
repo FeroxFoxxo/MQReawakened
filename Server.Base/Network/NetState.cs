@@ -227,50 +227,7 @@ public class NetState : IDisposable
                     if (string.IsNullOrEmpty(packet))
                         continue;
 
-                    NetStateHandler.GetProtocol getProtocolData = null;
-                    var protocolType = packet[0];
-
-                    lock (_handler.Disposed)
-                    {
-                        if (_handler.ProtocolLookup.TryGetValue(protocolType, out var handlerProtocol))
-                            getProtocolData = handlerProtocol;
-                    }
-
-                    if (getProtocolData != null)
-                    {
-                        var protocolData = getProtocolData(packet);
-
-                        if (string.IsNullOrEmpty(protocolData.ProtocolId))
-                            continue;
-
-                        if (protocolData.IsUnhandled)
-                        {
-                            AddUnhandledPacket(protocolData.ProtocolId);
-
-                            TracePacketError(protocolData.ProtocolId, packet);
-                        }
-                        else
-                        {
-                            RemoveUnhandledPacket(protocolData.ProtocolId);
-
-                            if (!_rwConfig.IgnoreProtocolType.Contains(protocolData.ProtocolId))
-                                WriteClient(packet);
-
-                            NetStateHandler.SendProtocol sendProtocolData = null;
-
-                            lock (_handler.Disposed)
-                            {
-                                if (_handler.ProtocolSend.TryGetValue(protocolType, out var handlerProtocol))
-                                    sendProtocolData = handlerProtocol;
-                            }
-
-                            sendProtocolData?.Invoke(this, protocolData.ProtocolId, protocolData.PacketData);
-                        }
-                    }
-                    else
-                    {
-                        TracePacketError(protocolType.ToString(), packet);
-                    }
+                    Task.Factory.StartNew(() => RunPacket(packet));
                 }
 
                 lock (AsyncLock)
@@ -300,6 +257,54 @@ public class NetState : IDisposable
             lock (_handler.Disposed)
                 _handler.TraceNetworkError(ex, this);
             Dispose();
+        }
+    }
+
+    public void RunPacket(string packet)
+    {
+        NetStateHandler.GetProtocol getProtocolData = null;
+        var protocolType = packet[0];
+
+        lock (_handler.Disposed)
+        {
+            if (_handler.ProtocolLookup.TryGetValue(protocolType, out var handlerProtocol))
+                getProtocolData = handlerProtocol;
+        }
+
+        if (getProtocolData != null)
+        {
+            var protocolData = getProtocolData(packet);
+
+            if (string.IsNullOrEmpty(protocolData.ProtocolId))
+                return;
+
+            if (protocolData.IsUnhandled)
+            {
+                AddUnhandledPacket(protocolData.ProtocolId);
+
+                TracePacketError(protocolData.ProtocolId, packet);
+            }
+            else
+            {
+                RemoveUnhandledPacket(protocolData.ProtocolId);
+
+                if (!_rwConfig.IgnoreProtocolType.Contains(protocolData.ProtocolId))
+                    WriteClient(packet);
+
+                NetStateHandler.SendProtocol sendProtocolData = null;
+
+                lock (_handler.Disposed)
+                {
+                    if (_handler.ProtocolSend.TryGetValue(protocolType, out var handlerProtocol))
+                        sendProtocolData = handlerProtocol;
+                }
+
+                sendProtocolData?.Invoke(this, protocolData.ProtocolId, protocolData.PacketData);
+            }
+        }
+        else
+        {
+            TracePacketError(protocolType.ToString(), packet);
         }
     }
 
