@@ -1,5 +1,7 @@
-﻿using Server.Reawakened.Entities.AbstractComponents;
+﻿using A2m.Server;
+using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -33,6 +35,8 @@ public class TriggerRaceComp : TriggerStatueComp<TriggerRace>
         else
         {
             IsMinigameStarted = false;
+
+            player.CheckObjective(ObjectiveEnum.MinigameMedal, Room.LevelInfo.LevelId.ToString(), Room.LevelInfo.Name, 1);
         }
     }
 }

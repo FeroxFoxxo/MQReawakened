@@ -96,6 +96,12 @@ public static class NpcExtensions
         UpdateNpcsInLevel(player, quest);
     }
 
+    public static void UpdateAllNpcsInLevel(this Player player)
+    {
+        foreach (var npc in GetNpcs(player))
+            npc.SendNpcInfo(player);
+    }
+
     public static void UpdateNpcsInLevel(this Player player, QuestDescription quest)
     {
         if (quest != null)

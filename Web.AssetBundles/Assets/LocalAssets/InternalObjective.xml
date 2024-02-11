@@ -14,4 +14,5 @@
     <Objective prefabName="Col_SHD_Ink02" itemId="3364" />
     <Objective prefabName="Col_BON_Bones01" itemId="3359" />
     <Objective prefabName="Col_BON_Skull01" itemId="3361" />
+    <Objective prefabName="LV_CRS_MiniRace01" itemId="315035194" />
 </ObjectiveCatalogs>

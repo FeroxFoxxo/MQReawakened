@@ -429,6 +429,8 @@ public class NPCControllerComp : Component<NPCController>
                             player.AddQuest(newQuest, Logger, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}");
                     }
                 }
+
+                player.UpdateAllNpcsInLevel();
             }
 
             break;
