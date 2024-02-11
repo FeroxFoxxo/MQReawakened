@@ -28,6 +28,23 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
             IsEnabled = triggerable != null;
     }
 
+    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
+    {
+        if (triggerable == null)
+        {
+            Logger.LogError("Could not find trigger with id {Id}!", ArenaObjectId);
+            return;
+        }
+
+        if (triggerable.IsActive())
+        {
+            Logger.LogError("Trigger {Id} is already running!", ArenaObjectId);
+            return;
+        }
+
+        base.RunSyncedEvent(syncEvent, player);
+    }
+
     // Should be redone to connect to ArenaSwitchBase
     public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
@@ -36,12 +53,6 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
             if (Id == "5664") // Temporary while blue arenas are in progress
             {
                 player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1);
-                return;
-            }
-
-            if (triggerable == null)
-            {
-                Logger.LogError("Could not find trigger with id {Id}!", ArenaObjectId);
                 return;
             }
 

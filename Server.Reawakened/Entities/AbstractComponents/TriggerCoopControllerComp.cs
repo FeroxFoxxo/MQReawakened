@@ -426,4 +426,6 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         SendInteractionUpdate();
         IsActive = false;
     }
+
+    bool ITriggerComp.IsActive() => IsActive;
 }
