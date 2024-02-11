@@ -158,7 +158,7 @@ public class AIPropertiesCompiler
 
     public string CreateResources(List<EnemyResourceModel> resources)
     {
-        SeparatedStringBuilder assetList = new SeparatedStringBuilder('+');
+        var assetList = new SeparatedStringBuilder('+');
         string asset;
 
         if (resources.Count > 0)

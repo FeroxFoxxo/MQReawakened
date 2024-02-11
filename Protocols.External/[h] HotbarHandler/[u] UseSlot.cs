@@ -1,5 +1,6 @@
 using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
@@ -11,6 +12,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
@@ -89,19 +91,19 @@ public class UseSlot : ExternalProtocol
     {
         Player.HandleItemEffect(usedItem, timerThread, serverRConfig, logger);
         var removeFromHotBar = true;
-        
+
         if (usedItem.InventoryCategoryID is
             ItemFilterCategory.WeaponAndAbilities or
             ItemFilterCategory.Pets)
             removeFromHotBar = false;
-            
+
         if (removeFromHotBar)
         {
             if (usedItem.ItemActionType == ItemActionType.Eat)
             {
                 Player.CheckAchievement(AchConditionType.Consumable, string.Empty, Logger);
                 Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, Logger);
-            } 
+            }
             else if (usedItem.ItemActionType == ItemActionType.Drink)
             {
                 Player.CheckAchievement(AchConditionType.Drink, string.Empty, Logger);
@@ -169,7 +171,8 @@ public class UseSlot : ExternalProtocol
 
         var meleeHitbox = new DefaultCollider(
             meleeId.ToString(),
-            new Vector3Model() {
+            new Vector3Model()
+            {
                 X = isLeft ? Player.TempData.Position.X : Player.TempData.Position.X - hitboxWidth,
                 Y = Player.TempData.Position.Y,
                 Z = Player.TempData.Position.Z
@@ -179,7 +182,7 @@ public class UseSlot : ExternalProtocol
             planeName,
             Player.Room
         );
-        
+
         var weaponDamage = usedItem.GetDamageAmount(Logger, ServerRConfig);
 
         foreach (var objects in Player.Room.Planes[planeName].GameObjects.Values)

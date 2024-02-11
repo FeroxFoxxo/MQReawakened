@@ -46,7 +46,8 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
     public override void Damage(int damage, Player player)
     {
         base.Damage(damage, player);
-        if (AiBehavior is not AIBehavior_Shooting)
+
+        if (AiBehavior is not AIBehaviorShooting)
         {
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, player.TempData.Position.X,
                     player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
@@ -64,6 +65,7 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
     public override void HandlePatrol()
     {
         base.HandlePatrol();
+
         DetectPlayers(_offensiveBehavior);
     }
 
@@ -84,7 +86,9 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
     public override void HandleLookAround()
     {
         base.HandleLookAround();
+
         DetectPlayers(_offensiveBehavior);
+
         if (Room.Time >= _behaviorEndTime)
         {
             var argBuilder = new SeparatedStringBuilder('`');
@@ -115,6 +119,7 @@ public class EnemyBathog(Room room, string entityId, BaseComponent baseEntity) :
     public override void HandleComeBack()
     {
         base.HandleComeBack();
+
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));

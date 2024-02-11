@@ -100,7 +100,7 @@ public static class PlayerExtensions
                 )
             friend.SendXt("fy", player.CharacterName);
     }
-    
+
     public static void DumpToLobby(this Player player) => player.QuickJoinRoom(-1, out var _);
 
     public static List<GameObjectModel> GetPlaneEntities(this Player player)

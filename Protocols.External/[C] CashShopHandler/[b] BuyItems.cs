@@ -44,7 +44,7 @@ public class BuyItems : ExternalProtocol
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
             price += itemDescription.RegularPrice * amount;
-            bought.Add(new (itemDescription, amount));
+            bought.Add(new(itemDescription, amount));
         }
 
         if (price > Player.Character.Data.NCash && price > 1)
@@ -53,7 +53,7 @@ public class BuyItems : ExternalProtocol
             return;
         }
 
-        foreach(var item in bought)
+        foreach (var item in bought)
         {
             Player.RemoveNCash(item.Item1.RegularPrice * item.Item2);
             Player.AddItem(item.Item1, item.Item2);

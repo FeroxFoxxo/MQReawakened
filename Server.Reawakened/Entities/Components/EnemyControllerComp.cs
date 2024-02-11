@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
@@ -30,11 +31,8 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public InternalDefaultEnemies EnemyInfoXml { get; set; }
 
     public int Level;
-    public override void InitializeComponent() => 
-        Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
 
-    public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => 
-        base.RunSyncedEvent(syncEvent, player);
+    public override void InitializeComponent() => Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
 
     public void Damage(int damage, Player origin)
     {
@@ -43,8 +41,8 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
         if (Room.Entities.TryGetValue(Id, out var comps))
             foreach (var comp in comps)
-                if (comp is IDestructible dest)
-                    dest.Destroy(origin, Room, Id);
+                if (comp is IDestructible destroyable)
+                    destroyable.Destroy(origin, Room, Id);
 
         Room.Entities.Remove(Id);
     }
@@ -57,7 +55,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
         player.CheckAchievement(AchConditionType.DefeatEnemy, PrefabName, Logger);
         player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, Logger);
-
+        
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
     }

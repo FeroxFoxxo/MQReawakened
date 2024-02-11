@@ -56,7 +56,7 @@ public static class PlayerAchievementExtensions
 
         var oInProg = inProgCond.OrderBy(a =>
             a.Key.repeatable ?
-                int.MaxValue : 
+                int.MaxValue :
                 player.Character.GetAchievement(a.Key).GetAmountLeft()
             ).ToList();
 

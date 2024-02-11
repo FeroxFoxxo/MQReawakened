@@ -61,7 +61,7 @@ public static class CharacterInventoryExtensions
 
     public static void SetBananaElixirTimer(object playerObj)
     {
-        var player = (Player) playerObj;
+        var player = (Player)playerObj;
 
         if (player == null)
             return;

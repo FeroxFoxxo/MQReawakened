@@ -12,7 +12,7 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
     public string CollectedFx => ComponentData.CollectedFx;
     public float GatherTime => ComponentData.GatherTime;
 
-    public override object[] GetInitData(Player player) => [(int) (Collected ? CollectibleState.Collected : CollectibleState.Active)];
+    public override object[] GetInitData(Player player) => [(int)(Collected ? CollectibleState.Collected : CollectibleState.Active)];
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {

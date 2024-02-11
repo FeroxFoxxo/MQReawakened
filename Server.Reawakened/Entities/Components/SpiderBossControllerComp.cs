@@ -1,14 +1,14 @@
-﻿using Server.Base.Timers.Services;
-using Server.Reawakened.Entities.AIStates.SyncEvents;
-using Server.Reawakened.Entities.AIStates;
-using static A2m.Server.ExtLevelEditor;
-using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Extensions;
+﻿using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
-using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
+using Server.Reawakened.Entities.AIStates;
+using Server.Reawakened.Entities.AIStates.SyncEvents;
 using Server.Reawakened.Entities.Interfaces;
-using Server.Reawakened.Rooms;
 using Server.Reawakened.Players;
+using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
+using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -56,7 +56,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
     {
         if (Room == null)
             return;
-
+        
         var drop = Room.Entities[Id].First(x => x is AIStateSpiderDropComp) as AIStateSpiderDropComp;
 
         Position.Y = drop.FloorY;
@@ -66,7 +66,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
             {"AIStateSpiderIdle", new ComponentSettings() {"ST", "0"}}
         });
     }
-    
+
     public void Destroy(Player player, Room room, string id)
     {
         var delay = 0f;

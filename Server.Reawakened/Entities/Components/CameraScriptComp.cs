@@ -4,7 +4,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class CameraScriptComp: Component<CameraScript>
+public class CameraScriptComp : Component<CameraScript>
 {
     public bool DisablePlayerInput => ComponentData.DisablePlayerInput;
     public bool TriggerIfInBox => ComponentData.TriggerIfInBox;
@@ -47,20 +47,20 @@ public class CameraScriptComp: Component<CameraScript>
 
     public override void InitializeComponent() => TotalTime =
         CamZoneDuration1 +
-        CamZoneDuration2  +
-        CamZoneDuration3  +
-        CamZoneDuration4  +
-        CamZoneDuration5  +
-        CamZoneDuration6  +
-        CamZoneDuration7  +
-        CamZoneDuration8  +
-        CamZoneDuration9  +
+        CamZoneDuration2 +
+        CamZoneDuration3 +
+        CamZoneDuration4 +
+        CamZoneDuration5 +
+        CamZoneDuration6 +
+        CamZoneDuration7 +
+        CamZoneDuration8 +
+        CamZoneDuration9 +
         CamZoneDuration10 +
         CamZoneDuration11 +
         CamZoneDuration12 +
         CamZoneDuration13 +
         CamZoneDuration14 +
-        CamZoneDuration15 ;
+        CamZoneDuration15;
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => Room.SendSyncEvent(syncEvent);
 }

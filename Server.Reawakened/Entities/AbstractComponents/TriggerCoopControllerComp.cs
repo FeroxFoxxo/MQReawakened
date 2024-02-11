@@ -249,6 +249,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
     {
         // GoTo must be outside for if someone in the room has interactd with the trigger in the past (i.e. in public rooms like CTS)
         player?.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
+        player?.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1);
 
         if (!IsActive)
         {

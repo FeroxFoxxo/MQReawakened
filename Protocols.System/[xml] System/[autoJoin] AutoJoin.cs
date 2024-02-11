@@ -68,7 +68,7 @@ public class AutoJoin : SystemProtocol
         var characterIds = userInfo.CharacterIds.ToList();
         var characterData = new List<string>();
 
-        foreach(var characterId in characterIds)
+        foreach (var characterId in characterIds)
         {
             var character = CharacterHandler.Get(characterId);
 

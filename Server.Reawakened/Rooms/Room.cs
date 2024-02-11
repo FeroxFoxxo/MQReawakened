@@ -86,14 +86,10 @@ public class Room : Timer
             GameObjectIds.Add(gameObjectId);
 
         foreach (var component in Entities.Values.SelectMany(x => x))
-        {
             component.InitializeComponent();
-        }
 
         foreach (var component in Entities.Values.SelectMany(x => x))
-        {
             component.DelayedComponentInitialization();
-        }
 
         foreach (var component in Entities.Values.SelectMany(x => x))
         {
@@ -379,7 +375,7 @@ public class Room : Timer
 
         var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index.ToString() == character.LevelData.SpawnPointId);
 
-        return indexSpawn ?? (BaseComponent) DefaultSpawn;
+        return indexSpawn ?? (BaseComponent)DefaultSpawn;
     }
 
     public void DumpPlayersToLobby()

@@ -68,7 +68,7 @@ public class State : ExternalProtocol
                         chargeAttackEvent.Type);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
-                    
+
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
                     var collisionTarget = notifyCollisionEvent.CollisionTarget;
 
