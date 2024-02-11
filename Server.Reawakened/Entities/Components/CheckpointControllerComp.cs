@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Logging;
 using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
-using System.Text;
 
 namespace Server.Reawakened.Entities.Components;
 

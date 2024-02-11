@@ -51,8 +51,11 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
         }
     }
 
-    public void RunDrop(object _)
+    private void RunDrop(object _)
     {
+        if (Room == null)
+            return;
+
         var drop = Room.Entities[Id].First(x => x is AIStateSpiderDropComp) as AIStateSpiderDropComp;
 
         Position.Y = drop.FloorY;
@@ -93,9 +96,12 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
             TimerThread.DelayCall(OpenDoor, doorId, TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
     }
 
-    public void OpenDoor(object door)
+    private void OpenDoor(object door)
     {
         var doorId = (int)door;
+
+        if (Room == null)
+            return;
 
         if (Room.Entities.TryGetValue(doorId.ToString(), out var foundTrigger))
             foreach (var comp in foundTrigger)

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class BehaviorModel(Dictionary<string, BehaviorDataModel> behaviorData, Dictionary<string, object> global)
+﻿public class BehaviorModel(Dictionary<string, BehaviorDataModel> behaviorData, Dictionary<string, object> global)
 {
     public Dictionary<string, BehaviorDataModel> BehaviorData { get; } = behaviorData;
 

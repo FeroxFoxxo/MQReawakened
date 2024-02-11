@@ -1,10 +1,6 @@
-﻿using Server.Reawakened.Entities.AbstractComponents;
-using Server.Reawakened.Rooms.Extensions;
+﻿using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using System;
-using System.ComponentModel;
 using UnityEngine;
-using static UIBase;
 
 namespace Server.Reawakened.Entities.Components;
 

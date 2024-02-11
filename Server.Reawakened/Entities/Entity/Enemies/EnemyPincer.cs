@@ -1,16 +1,8 @@
-﻿using A2m.Server;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using Server.Reawakened.Entities.AIBehavior;
+﻿using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Planes;
-using System;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
-using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
 public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)

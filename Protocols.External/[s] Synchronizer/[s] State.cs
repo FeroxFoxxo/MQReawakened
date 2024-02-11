@@ -6,13 +6,12 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
-using System;
 using System.Text;
 using WorldGraphDefines;
 
@@ -191,7 +190,21 @@ public class State : ExternalProtocol
         Player.Room.SendSyncEvent(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                  respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
 
-        TimerThread.DelayCall(Player.DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
+        TimerThread.DelayCall(DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
+    }
+
+    private static void DisableInvincibility(object playerObj)
+    {
+        var player = (Player)playerObj;
+
+        if (player == null)
+            return;
+
+        if (player.TempData == null)
+            return;
+
+        if (player.TempData.Invincible)
+            player.TempData.Invincible = false;
     }
 
     public void LogEvent(SyncEvent syncEvent, string entityId, Room room)

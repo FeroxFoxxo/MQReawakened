@@ -1,14 +1,10 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
-using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity;
 public class ProjectileEntity : TicklyEntity

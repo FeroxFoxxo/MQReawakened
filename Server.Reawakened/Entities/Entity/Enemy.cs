@@ -1,6 +1,4 @@
-﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.AIBehavior;
+﻿using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity.Utils;
 using Server.Reawakened.Entities.Stats;
@@ -12,17 +10,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Bundles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.Marshalling;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using static System.Net.Mime.MediaTypeNames;
-using static UIBase;
 
 namespace Server.Reawakened.Entities.Entity;
 

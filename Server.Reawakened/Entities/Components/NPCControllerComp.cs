@@ -14,7 +14,6 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Models.Npcs;
-using System.Linq;
 using System.Text;
 using static A2m.Server.QuestStatus;
 using static NPCController;
