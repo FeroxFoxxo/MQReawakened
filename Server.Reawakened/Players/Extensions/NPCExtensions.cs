@@ -1,20 +1,25 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using Server.Base.Logging;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.XMLs.Bundles;
+using System.Text;
 using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
 
 public static class NpcExtensions
 {
-    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest, bool setActiveQuest)
+    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest,
+        Microsoft.Extensions.Logging.ILogger logger, ItemCatalog itemCatalog, FileLogger fileLogger, string identifier)
     {
         var character = player.Character;
         var questId = quest.Id;
 
-        if (setActiveQuest)
-            character.Data.ActiveQuestId = questId;
+        character.Data.ActiveQuestId = questId;
 
         var questModel = character.Data.QuestLog.FirstOrDefault(x => x.Id == questId);
 
@@ -56,6 +61,31 @@ public static class NpcExtensions
             character.Data.QuestLog.Add(questModel);
         }
 
+        logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", quest.Name, quest.Id, identifier);
+
+        var rewardIds = (Dictionary<int, int>)quest.GetField("_rewardItemsIds");
+        var unknownRewards = rewardIds.Where(x => !itemCatalog.Items.ContainsKey(x.Key));
+
+        if (unknownRewards.Any())
+        {
+            var sb = new StringBuilder();
+
+            foreach (var reward in unknownRewards)
+                sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
+
+            fileLogger.WriteGenericLog<NPCController>("unknown-rewards", $"[Unknown Quest {quest.Id} Rewards]", sb.ToString(),
+                LoggerType.Error);
+        }
+
+        if (questModel.QuestStatus == QuestState.NOT_START)
+            questModel.QuestStatus = QuestState.IN_PROCESSING;
+
+        player.SendXt("na", quest, true);
+
+        player.UpdateNpcsInLevel(quest);
+
+        logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", quest.Name, questModel.Id);
+
         return questModel;
     }
 
@@ -64,12 +94,6 @@ public static class NpcExtensions
         var quests = player.DatabaseContainer.Quests;
         var quest = quests.QuestCatalogs[status.Id];
         UpdateNpcsInLevel(player, quest);
-    }
-
-    public static void UpdateNpcsInLevel(this Player player)
-    {
-        foreach (var npc in GetNpcs(player))
-            npc.SendNpcInfo(player);
     }
 
     public static void UpdateNpcsInLevel(this Player player, QuestDescription quest)

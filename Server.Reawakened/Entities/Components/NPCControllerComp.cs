@@ -425,35 +425,8 @@ public class NPCControllerComp : Component<NPCController>
                     {
                         var newQuest = QuestCatalog.GetQuestData(item.Key);
 
-                        if (newQuest == null)
-                            continue;
-
-                        var oQuest = player.AddQuest(newQuest, true);
-
-                        Logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", newQuest.Name, newQuest.Id, NpcName);
-
-                        var rewardIds = (Dictionary<int, int>)newQuest.GetField("_rewardItemsIds");
-                        var unknownRewards = rewardIds.Where(x => !ItemCatalog.Items.ContainsKey(x.Key));
-
-                        if (unknownRewards.Any())
-                        {
-                            var sb = new StringBuilder();
-
-                            foreach (var reward in unknownRewards)
-                                sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
-
-                            FileLogger.WriteGenericLog<NPCController>("unknown-rewards", $"[Unkwown Quest {newQuest.Id} Rewards]", sb.ToString(),
-                        LoggerType.Error);
-                        }
-
-                        oQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
-
-                        player.SendXt("na", oQuest, true);
-
-                        player.UpdateNpcsInLevel(newQuest);
-
-                        Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", newQuest.Name, newQuest.Id);
-                        break;
+                        if (newQuest != null)
+                            player.AddQuest(newQuest, Logger, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}");
                     }
                 }
             }
@@ -485,31 +458,9 @@ public class NPCControllerComp : Component<NPCController>
         {
             if (GetQuestType(player, givenQuest.Id) == NPCStatus.QuestAvailable)
             {
-                var quest = player.AddQuest(givenQuest, true);
+                var quest = player.AddQuest(givenQuest, Logger, ItemCatalog, FileLogger, NpcName);
 
                 SendNpcDialog(player, quest, QuestState.NOT_START);
-
-                Logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", givenQuest.Name, givenQuest.Id, NpcName);
-
-                var rewardIds = (Dictionary<int, int>)givenQuest.GetField("_rewardItemsIds");
-                var unknownRewards = rewardIds.Where(x => !ItemCatalog.Items.ContainsKey(x.Key));
-
-                if (unknownRewards.Any())
-                {
-                    var sb = new StringBuilder();
-
-                    foreach (var reward in unknownRewards)
-                        sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
-
-                    FileLogger.WriteGenericLog<NPCController>("unknown-rewards", $"[Unkwown Quest {givenQuest.Id} Rewards]", sb.ToString(),
-                        LoggerType.Error);
-                }
-
-                quest.QuestStatus = QuestState.IN_PROCESSING;
-
-                player.UpdateNpcsInLevel(givenQuest);
-
-                Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", givenQuest.Name, quest.Id);
 
                 return;
             }

@@ -1,4 +1,6 @@
-﻿using Server.Reawakened.Configs;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -12,7 +14,10 @@ public class SetActiveQuest : ExternalProtocol
     public override string ProtocolName => "nz";
 
     public ServerRConfig Config { get; set; }
+    public ILogger<ChooseQuestReward> Logger { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
+    public FileLogger FileLogger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -35,12 +40,9 @@ public class SetActiveQuest : ExternalProtocol
         if (character.Data.ActiveQuestId == activeQuest || character.Data.CompletedQuests.Contains(activeQuest))
             return;
 
-        var questData = QuestCatalog.GetQuestData(activeQuest);
+        var newQuest = QuestCatalog.GetQuestData(activeQuest);
 
-        var questModel = Player.AddQuest(questData, true);
-
-        Player.SendXt("na", questModel, true);
-
-        Player.UpdateNpcsInLevel(questData);
+        if (newQuest != null)
+            Player.AddQuest(newQuest, Logger, ItemCatalog, FileLogger, $"Active quest protocol");
     }
 }

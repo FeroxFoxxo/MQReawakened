@@ -42,31 +42,7 @@ public class ChooseQuestReward : ExternalProtocol
             var newQuest = QuestCatalog.GetQuestData(questRewardId);
 
             if (newQuest != null)
-            {
-                var oQuest = Player.AddQuest(newQuest, true);
-
-                var rewardIds = (Dictionary<int, int>)newQuest.GetField("_rewardItemsIds");
-                var unknownRewards = rewardIds.Where(x => !ItemCatalog.Items.ContainsKey(x.Key));
-
-                if (unknownRewards.Any())
-                {
-                    var sb = new StringBuilder();
-
-                    foreach (var reward in unknownRewards)
-                        sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
-
-                    FileLogger.WriteGenericLog<NPCController>("unknown-rewards", $"[Unkwown Quest {newQuest.Id} Rewards]", sb.ToString(),
-                        LoggerType.Error);
-                }
-
-                oQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
-
-                Player.SendXt("na", oQuest, true);
-
-                Player.UpdateNpcsInLevel(newQuest);
-
-                Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", newQuest.Name, newQuest.Id);
-            }
+                Player.AddQuest(newQuest, Logger, ItemCatalog, FileLogger, $"Quest reward from {npcId}");
         }
 
         var quest = QuestCatalog.QuestCatalogs[questId];
