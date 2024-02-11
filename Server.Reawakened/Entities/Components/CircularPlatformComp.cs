@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Entities.AbstractComponents;
-using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 

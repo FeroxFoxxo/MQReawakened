@@ -1,6 +1,5 @@
 ﻿using Achievement.CharacterData;
 using Achievement.StaticData;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.BundlesInternal;

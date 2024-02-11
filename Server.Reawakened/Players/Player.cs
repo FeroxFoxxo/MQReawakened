@@ -4,7 +4,6 @@ using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
-using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -73,11 +72,5 @@ public class Player(Account account, UserInfo userInfo, NetState state, Database
         }
 
         this.DumpToLobby();
-    }
-
-    public void DisableInvincibility(object _)
-    {
-        if (TempData.Invincible)
-            TempData.Invincible = false;
     }
 }

@@ -1,13 +1,4 @@
-﻿using A2m.Server;
-using Server.Reawakened.Players;
-using Server.Reawakened.Rooms.Models.Planes;
-using SmartFoxClientAPI.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
 public class AIProjectileCollider(string ownerId, Room room, string id, Vector3Model position, float sizeX, float sizeY, string plane, float lifeTime) : BaseCollider(id, position, sizeX, sizeY, plane, room, "aiattack")

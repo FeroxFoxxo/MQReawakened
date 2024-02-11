@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace Server.Reawakened.Entities.AIBehavior;
+﻿namespace Server.Reawakened.Entities.AIBehavior;
 internal class AIBehavior_Shooting : AIBaseBehavior
 {
     public AI_Behavior_Shooting ShootingBehavior;
