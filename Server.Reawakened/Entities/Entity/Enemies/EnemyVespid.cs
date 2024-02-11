@@ -42,7 +42,8 @@ public class EnemyVespid(Room room, string entityId, BaseComponent baseEntity) :
     public override void Damage(int damage, Player player)
     {
         base.Damage(damage, player);
-        if (AiBehavior is not AIBehavior_Shooting)
+
+        if (AiBehavior is not AIBehaviorShooting)
         {
             Console.WriteLine("I be hurtin");
             Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, player.TempData.Position.X,
@@ -61,10 +62,9 @@ public class EnemyVespid(Room room, string entityId, BaseComponent baseEntity) :
     public override void HandlePatrol()
     {
         base.HandlePatrol();
+
         if (Room.Time >= _behaviorEndTime)
-        {
             DetectPlayers("Stinger");
-        }
     }
 
     public override void HandleStinger()

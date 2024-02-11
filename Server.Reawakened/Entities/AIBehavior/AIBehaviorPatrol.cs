@@ -1,5 +1,6 @@
 ﻿namespace Server.Reawakened.Entities.AIBehavior;
-internal class AIBehavior_Patrol(float patrolX, float patrolY, float patrolSpeed, float endPathWaitTime, int patrolForceDirectionX, float initialProgressRatio) : AIBaseBehavior
+
+public class AIBehaviorPatrol(float patrolX, float patrolY, float patrolSpeed, float endPathWaitTime, int patrolForceDirectionX, float initialProgressRatio) : AIBaseBehavior
 {
     public AI_Behavior_Patrol PatrolBehavior = new(patrolSpeed, endPathWaitTime, patrolX, patrolY, patrolForceDirectionX, initialProgressRatio);
 

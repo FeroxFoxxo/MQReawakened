@@ -1,5 +1,6 @@
 ﻿namespace Server.Reawakened.Entities.AIBehavior;
-internal class AIBehavior_Stomper(float attackTime, float impactTime) : AIBaseBehavior
+
+public class AIBehaviorStomper(float attackTime, float impactTime) : AIBaseBehavior
 {
     public AI_Behavior_Stomper StomperBehavior = new(attackTime, impactTime);
 

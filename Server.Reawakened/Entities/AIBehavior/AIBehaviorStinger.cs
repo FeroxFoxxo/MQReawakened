@@ -1,5 +1,6 @@
 ﻿namespace Server.Reawakened.Entities.AIBehavior;
-internal class AIBehavior_Stinger(float speedForward, float speedBackward, float inDurationForward, float attackDuration, float damageAttackTimeOffset, float inDurationBackward) : AIBaseBehavior
+
+public class AIBehaviorStinger(float speedForward, float speedBackward, float inDurationForward, float attackDuration, float damageAttackTimeOffset, float inDurationBackward) : AIBaseBehavior
 {
     public AI_Behavior_Stinger StingerBehavior = new(speedForward, speedBackward, inDurationForward, attackDuration, damageAttackTimeOffset, inDurationBackward);
 

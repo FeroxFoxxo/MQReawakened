@@ -1,5 +1,6 @@
 ﻿namespace Server.Reawakened.Entities.AIBehavior;
-internal class AIBehavior_Shooting(int nbBullets, float fireSpreadAngle, float delay, float delayShotAnim, int nbFireRounds, float delayBtwnRounds, float startTime, float endTime, float prjSpeed, bool isClockwise, float startAngle) : AIBaseBehavior
+
+public class AIBehaviorShooting(int nbBullets, float fireSpreadAngle, float delay, float delayShotAnim, int nbFireRounds, float delayBtwnRounds, float startTime, float endTime, float prjSpeed, bool isClockwise, float startAngle) : AIBaseBehavior
 {
     public AI_Behavior_Shooting ShootingBehavior = new(nbBullets, fireSpreadAngle, delay, delayShotAnim, nbFireRounds, delayBtwnRounds, startTime, endTime, prjSpeed, isClockwise, startAngle);
 

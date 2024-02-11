@@ -1,5 +1,6 @@
 ﻿namespace Server.Reawakened.Entities.AIBehavior;
-internal class AIBehavior_ComeBack(float speed) : AIBaseBehavior
+
+public class AIBehaviorComeBack(float speed) : AIBaseBehavior
 {
     public AI_Behavior_ComeBack ComeBackBehavior = new(speed);
 

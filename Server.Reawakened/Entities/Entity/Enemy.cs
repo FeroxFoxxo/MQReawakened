@@ -125,32 +125,32 @@ public abstract class Enemy : IDestructible
             //All commented lines are behaviors that have not been added yet
 
             //AIBehavior_Acting
-            case AIBehavior_LookAround:
+            case AIBehaviorLookAround:
                 HandleLookAround();
                 break;
-            case AIBehavior_Patrol:
+            case AIBehaviorPatrol:
                 HandlePatrol();
                 break;
-            case AIBehavior_Aggro:
+            case AIBehaviorAggro:
                 HandleAggro();
                 break;
-            case AIBehavior_ComeBack:
+            case AIBehaviorComeBack:
                 HandleComeBack();
                 break;
-            case AIBehavior_Shooting:
+            case AIBehaviorShooting:
                 HandleShooting();
                 break;
             //AIBehavior_Projectile
-            case AIBehavior_Bomber:
+            case AIBehaviorBomber:
                 HandleBomber();
                 break;
-            case AIBehavior_Grenadier:
+            case AIBehaviorGrenadier:
                 HandleGrenadier();
                 break;
-            case AIBehavior_Stomper:
+            case AIBehaviorStomper:
                 HandleStomper();
                 break;
-            case AIBehavior_Stinger:
+            case AIBehaviorStinger:
                 HandleStinger();
                 break;
                 //AIBehavior_Spike
@@ -214,7 +214,7 @@ public abstract class Enemy : IDestructible
         switch (behaviorName)
         {
             case "Patrol":
-                AiBehavior = new AIBehavior_Patrol(
+                AiBehavior = new AIBehaviorPatrol(
                     Generic.Patrol_DistanceX,
                     Generic.Patrol_DistanceY,
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Patrol", "speed")),
@@ -225,7 +225,7 @@ public abstract class Enemy : IDestructible
                 break;
 
             case "Aggro":
-                AiBehavior = new AIBehavior_Aggro(
+                AiBehavior = new AIBehaviorAggro(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "speed")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "moveBeyondTargetDistance")),
                     Convert.ToBoolean(BehaviorList.GetBehaviorStat("Aggro", "stayOnPatrolPath")),
@@ -236,7 +236,7 @@ public abstract class Enemy : IDestructible
                 break;
 
             case "LookAround":
-                AiBehavior = new AIBehavior_LookAround(
+                AiBehavior = new AIBehaviorLookAround(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "initialProgressRatio")),
                     Convert.ToBoolean(BehaviorList.GetBehaviorStat("LookAround", "snapOnGround"))
@@ -244,14 +244,14 @@ public abstract class Enemy : IDestructible
                 break;
 
             case "ComeBack":
-                AiBehavior = new AIBehavior_ComeBack(
+                AiBehavior = new AIBehaviorComeBack(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("ComeBack", "speed"))
                     );
                 AiBehavior.Start(ref AiData, Room.Time, [Position.x.ToString(), AiData.Intern_SpawnPosY.ToString()]);
                 return AiBehavior;
 
             case "Shooting":
-                AiBehavior = new AIBehavior_Shooting(
+                AiBehavior = new AIBehaviorShooting(
                     Convert.ToInt32(BehaviorList.GetBehaviorStat("Shooting", "nbBulletsPerRound")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "fireSpreadAngle")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "delayBetweenBullet")),
@@ -267,14 +267,14 @@ public abstract class Enemy : IDestructible
                 break;
 
             case "Bomber":
-                AiBehavior = new AIBehavior_Bomber(
+                AiBehavior = new AIBehaviorBomber(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Bomber", "inTime")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Bomber", "loopTime"))
                     );
                 break;
 
             case "Grenadier":
-                AiBehavior = new AIBehavior_Grenadier(
+                AiBehavior = new AIBehaviorGrenadier(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Grenadier", "inTime")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Grenadier", "loopTime")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Grenadier", "outTime")),
@@ -286,14 +286,14 @@ public abstract class Enemy : IDestructible
                 break;
 
             case "Stomper":
-                AiBehavior = new AIBehavior_Stomper(
+                AiBehavior = new AIBehaviorStomper(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Stomper", "attackTime")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Stomper", "impactTime"))
                     );
                 break;
 
             case "Stinger":
-                AiBehavior = new AIBehavior_Stinger(
+                AiBehavior = new AIBehaviorStinger(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "speedForward")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "speedBackward")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "inDurationForward")),

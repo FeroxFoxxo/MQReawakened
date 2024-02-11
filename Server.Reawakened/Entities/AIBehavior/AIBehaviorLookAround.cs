@@ -1,5 +1,6 @@
 ﻿namespace Server.Reawakened.Entities.AIBehavior;
-internal class AIBehavior_LookAround(float lookTime, float initialProgressRatio, bool snapOnGround) : AIBaseBehavior
+
+public class AIBehaviorLookAround(float lookTime, float initialProgressRatio, bool snapOnGround) : AIBaseBehavior
 {
     public AI_Behavior_LookAround LookAroundBehavior = new(lookTime, initialProgressRatio, snapOnGround);
 

@@ -1,5 +1,6 @@
 ﻿namespace Server.Reawakened.Entities.AIBehavior;
-internal class AIBehavior_Grenadier(float inDuration, float loopDuration, float outDuration, bool isTracking, int projCount, float projSpeed, float maxHeight) : AIBaseBehavior
+
+public class AIBehaviorGrenadier(float inDuration, float loopDuration, float outDuration, bool isTracking, int projCount, float projSpeed, float maxHeight) : AIBaseBehavior
 {
     public AI_Behavior_Grenadier GrenadierBehavior = new(inDuration, loopDuration, outDuration, isTracking, projCount, projSpeed, maxHeight);
 

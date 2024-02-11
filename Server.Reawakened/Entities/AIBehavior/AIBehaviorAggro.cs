@@ -1,5 +1,6 @@
 ﻿namespace Server.Reawakened.Entities.AIBehavior;
-internal class AIBehavior_Aggro(float attackSpeed, float moveBeyondTargetDistance, bool stayOnPatrolPath, float attackBeyondPatrolLine, float detectionHeightUp, float detectionHeightDown) : AIBaseBehavior
+
+public class AIBehaviorAggro(float attackSpeed, float moveBeyondTargetDistance, bool stayOnPatrolPath, float attackBeyondPatrolLine, float detectionHeightUp, float detectionHeightDown) : AIBaseBehavior
 {
     public AI_Behavior_Aggro AggroBehavior = new(attackSpeed, moveBeyondTargetDistance, stayOnPatrolPath, attackBeyondPatrolLine, detectionHeightUp, detectionHeightDown);
 

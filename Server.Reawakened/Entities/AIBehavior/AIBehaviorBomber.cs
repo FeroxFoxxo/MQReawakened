@@ -1,5 +1,6 @@
 ﻿namespace Server.Reawakened.Entities.AIBehavior;
-internal class AIBehavior_Bomber(float inTime, float loopTime) : AIBaseBehavior
+
+public class AIBehaviorBomber(float inTime, float loopTime) : AIBaseBehavior
 {
     public AI_Behavior_Bomber BomberBehavior = new(inTime, loopTime);
 
