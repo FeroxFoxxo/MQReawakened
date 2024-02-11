@@ -4,6 +4,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.AIStates;
 using Server.Reawakened.Entities.AIStates.SyncEvents;
 using Server.Reawakened.Entities.Interfaces;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -51,8 +52,11 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
         }
     }
 
-    public void RunDrop(object _)
+    private void RunDrop(object _)
     {
+        if (Room == null)
+            return;
+        
         var drop = Room.Entities[Id].First(x => x is AIStateSpiderDropComp) as AIStateSpiderDropComp;
 
         Position.Y = drop.FloorY;
@@ -63,7 +67,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
         });
     }
 
-    public void Destroy(Room room, string id)
+    public void Destroy(Player player, Room room, string id)
     {
         var delay = 0f;
         var doorId = 0;
@@ -93,9 +97,12 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
             TimerThread.DelayCall(OpenDoor, doorId, TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
     }
 
-    public void OpenDoor(object door)
+    private void OpenDoor(object door)
     {
         var doorId = (int)door;
+
+        if (Room == null)
+            return;
 
         if (Room.Entities.TryGetValue(doorId.ToString(), out var foundTrigger))
             foreach (var comp in foundTrigger)

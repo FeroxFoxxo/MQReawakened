@@ -1,4 +1,6 @@
-﻿using Server.Reawakened.Entities.AIBehavior;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity.Utils;
 using Server.Reawakened.Entities.Interfaces;
@@ -10,6 +12,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Enums;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity;
@@ -28,7 +31,7 @@ public abstract class Enemy : IDestructible
     public bool IsFromSpawner;
     public float MinBehaviorTime;
 
-    private float _negativeHeight;
+    private readonly float _negativeHeight;
 
     public BaseComponent Entity;
     public AIStatsGlobalComp Global;
@@ -42,6 +45,7 @@ public abstract class Enemy : IDestructible
     public BehaviorModel BehaviorList;
 
     public AISyncEventHelper SyncBuilder = new();
+    public ILogger<Enemy> Logger { get; set; }
 
     public Enemy(Room room, string entityId, BaseComponent baseEntity)
     {
@@ -55,7 +59,9 @@ public abstract class Enemy : IDestructible
         //Component Info
         Entity = baseEntity;
         EnemyController = (EnemyControllerComp)baseEntity;
+
         var entityList = room.Entities.Values.SelectMany(s => s);
+
         foreach (var entity in entityList.Where(x => x.Id == Id))
         {
             if (entity is AIStatsGlobalComp global)
@@ -69,13 +75,16 @@ public abstract class Enemy : IDestructible
         //Position Info
         ParentPlane = Entity.ParentPlane;
         Position = new Vector3(Entity.Position.X, Entity.Position.Y, Entity.Position.Z);
+
         if (ParentPlane == "Plane1")
             Position.z = 20;
 
         //Hitbox Info
         _negativeHeight = 0;
+
         if (Entity.Scale.Y < 0)
             _negativeHeight = Entity.Rectangle.Height;
+
         Hitbox = new EnemyCollider(Id, new Vector3Model { X = Position.x, Y = Position.y - _negativeHeight, Z = Position.z },
             Entity.Rectangle.Width, Entity.Rectangle.Height, Entity.ParentPlane, Room);
         Room.Colliders.Add(Id, Hitbox);
@@ -109,8 +118,6 @@ public abstract class Enemy : IDestructible
         AiData.Sync_PosY = Position.y;
         AiData.SyncInit_Dir = Generic.Patrol_ForceDirectionX;
         AiData.SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio;
-
-
     }
 
     public virtual void Initialize() => Init = true;
@@ -161,7 +168,6 @@ public abstract class Enemy : IDestructible
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
         Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - _negativeHeight, Position.z);
-
     }
 
     public string WriteBehaviorList()
@@ -169,6 +175,7 @@ public abstract class Enemy : IDestructible
         var compiler = new AIPropertiesCompiler();
 
         var bList = new SeparatedStringBuilder('`');
+
         SeparatedStringBuilder bDefinesList;
 
         foreach (var behavior in BehaviorList.BehaviorData)
@@ -203,7 +210,7 @@ public abstract class Enemy : IDestructible
 
             //Temp values for now
             Room.SendSyncEvent(SyncBuilder.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
-            Destroy(Room, Id);
+            Destroy(origin, Room, Id);
         }
     }
 
@@ -327,26 +334,22 @@ public abstract class Enemy : IDestructible
     {
         if (AiData.Intern_Dir < 0)
         {
-            if (!limitedByPatrolLine)
-            {
-                return AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
+            return !limitedByPatrolLine
+                ? AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z == pos.Z;
-            }
-            return AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
+                   Position.z == pos.Z
+                : AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
                    Position.z == pos.Z &&
                    pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
         }
         else if (AiData.Intern_Dir >= 0)
         {
-            if (!limitedByPatrolLine)
-            {
-                return AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
+            return !limitedByPatrolLine
+                ? AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z == pos.Z;
-            }
-            return AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
+                   Position.z == pos.Z
+                : AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
                    Position.z == pos.Z &&
                    pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
@@ -372,6 +375,7 @@ public abstract class Enemy : IDestructible
 
             var rand = new System.Random();
             var prjId = Math.Abs(rand.Next()).ToString();
+
             while (Room.GameObjectIds.Contains(prjId))
                 prjId = Math.Abs(rand.Next()).ToString();
 
@@ -413,9 +417,11 @@ public abstract class Enemy : IDestructible
     {
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, Position.x, Position.y, Position.z, Position.x, Position.y, Generic.Patrol_InitialProgressRatio,
         Status.MaxHealth, Status.MaxHealth, healthMod, sclMod, resMod, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
+
         aiInit.EventDataList[2] = Position.x;
         aiInit.EventDataList[3] = Position.y;
         aiInit.EventDataList[4] = Position.z;
+
         return aiInit;
     }
 
@@ -423,12 +429,15 @@ public abstract class Enemy : IDestructible
     {
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ, Position.z, AiData.Intern_SpawnPosY, Generic.Patrol_InitialProgressRatio,
         Health, Status.MaxHealth, 1f, 1f, 1f, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
+
         aiInit.EventDataList[2] = AiData.Intern_SpawnPosX;
         aiInit.EventDataList[3] = AiData.Intern_SpawnPosY;
         aiInit.EventDataList[4] = Position.z;
+
         player.SendSyncEventToPlayer(aiInit);
 
         var aiDo = new AIDo_SyncEvent(new SyncEvent(Id, SyncEvent.EventType.AIDo, Room.Time));
+
         aiDo.EventDataList.Clear();
         aiDo.EventDataList.Add(AiData.Sync_PosX);
         aiDo.EventDataList.Add(AiData.Sync_PosY);
@@ -439,11 +448,19 @@ public abstract class Enemy : IDestructible
         aiDo.EventDataList.Add(AiData.Sync_TargetPosY);
         aiDo.EventDataList.Add(AiData.Intern_Dir);
         aiDo.EventDataList.Add(0);
+
         player.SendSyncEventToPlayer(aiDo);
     }
 
-    public void Destroy(Room room, string id)
+    public void Destroy(Player player, Room room, string id)
     {
+        player.CheckObjective(ObjectiveEnum.Score, id, Entity.PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.Scoremultiple, id, Entity.PrefabName, 1);
+
+        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, Logger);
+        
         room.Entities.Remove(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);

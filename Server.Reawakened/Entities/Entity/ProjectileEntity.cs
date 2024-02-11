@@ -9,7 +9,7 @@ using Server.Reawakened.Rooms.Models.Planes;
 namespace Server.Reawakened.Entities.Entity;
 public class ProjectileEntity : TicklyEntity
 {
-    private Vector3Model _hitboxPosition;
+    private readonly Vector3Model _hitboxPosition;
     public ILogger<TicklyEntity> Logger { get; set; }
 
     public ProjectileEntity(Player player, string id, Vector3Model position, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig config)

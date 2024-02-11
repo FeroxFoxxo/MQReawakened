@@ -13,9 +13,6 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterInventoryExtensions
 {
-    public static void SetBananaElixirTimer(this Player player, object _) => player.TempData.BananaBoostsElixir = false;
-    public static void SetXpElixirTimer(this Player player, object _) => player.TempData.ReputationBoostsElixir = false;
-
     public static void HandleItemEffect(this Player player, ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, ILogger<PlayerStatus> logger)
     {
         var effect = usedItem.ItemEffects.FirstOrDefault();
@@ -42,11 +39,11 @@ public static class CharacterInventoryExtensions
             case ItemEffectType.PetEnergyValue:
             case ItemEffectType.BananaMultiplier:
                 player.TempData.BananaBoostsElixir = true;
-                timerThread.DelayCall(player.SetBananaElixirTimer, player.TempData.BananaBoostsElixir, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
+                timerThread.DelayCall(SetBananaElixirTimer, player, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
                 break;
             case ItemEffectType.ExperienceMultiplier:
                 player.TempData.ReputationBoostsElixir = true;
-                timerThread.DelayCall(player.SetXpElixirTimer, player.TempData.BananaBoostsElixir, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
+                timerThread.DelayCall(SetXpElixirTimer, player, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
                 break;
             case ItemEffectType.Defence:
                 break;
@@ -60,6 +57,32 @@ public static class CharacterInventoryExtensions
                 return;
         }
         logger.LogError("Applied ItemEffectType of ({effectType}) from item {usedItemName} for player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
+    }
+
+    public static void SetBananaElixirTimer(object playerObj)
+    {
+        var player = (Player)playerObj;
+
+        if (player == null)
+            return;
+
+        if (player.TempData == null)
+            return;
+
+        player.TempData.BananaBoostsElixir = false;
+    }
+
+    public static void SetXpElixirTimer(object playerObj)
+    {
+        var player = (Player)playerObj;
+
+        if (player == null)
+            return;
+
+        if (player.TempData == null)
+            return;
+
+        player.TempData.ReputationBoostsElixir = false;
     }
 
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>

@@ -62,10 +62,10 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         {
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
             origin.SendUpdatedInventory(false);
-            Destroy(Room, Id);
+            Destroy(origin, Room, Id);
         }
     }
-    public void Destroy(Room room, string id)
+    public void Destroy(Player player, Room room, string id)
     {
         room.Entities.Remove(id);
         room.Enemies.Remove(id);
