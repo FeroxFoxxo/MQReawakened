@@ -237,12 +237,12 @@
                 <Reward type="Item" value="WPN_PRJ_EggGun01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Equip Nest Raider Mask" goal="1" visible="true" />
-                <Condition id="2" title="Equip Nest Raider Armor" goal="1" visible="true" />
-                <Condition id="3" title="Equip Nest Raider Pants" goal="1" visible="true" />
-                <Condition id="4" title="Equip Nest Raider Cuffs" goal="1" visible="true" />
-                <Condition id="5" title="Equip Nest Raider Wing" goal="1" visible="true" />
-                <Condition id="6" title="Equip Nest Raider Tail Feathers" goal="1" visible="true" />
+                <Condition id="1" title="Equip Nest Raider Mask" type="EquipItem" value="3748" goal="1" visible="true" />
+                <Condition id="2" title="Equip Nest Raider Armor" type="EquipItem" value="4240" goal="1" visible="true" />
+                <Condition id="3" title="Equip Nest Raider Pants" type="EquipItem" value="4738" goal="1" visible="true" />
+                <Condition id="4" title="Equip Nest Raider Cuffs" type="EquipItem" value="6721" goal="1" visible="true" />
+                <Condition id="5" title="Equip Nest Raider Wing" type="EquipItem" value="7218" goal="1" visible="true" />
+                <Condition id="6" title="Equip Nest Raider Tail Feathers" type="EquipItem" value="7723" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="31" title="Eggscellent!" description="Open 10 Pet Eggs" iconName="Collecting_Eggscellent_10" points="50" sortOrder="15" repeatable="false">
@@ -370,7 +370,10 @@
                 <Reward type="Xp" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="4" visible="true" />
+                <Condition id="1" title="Equip Splinter Head" type="EquipItem" value="3743" goal="1" visible="true" />
+                <Condition id="2" title="Equip Splinter Robe Top" type="EquipItem" value="4230" goal="1" visible="true" />
+                <Condition id="3" title="Equip Splinter Robe Bottom" type="EquipItem" value="4730" goal="1" visible="true" />
+                <Condition id="4" title="Equip Splinter Beard" type="EquipItem" value="6203" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="46" title="Unknown Achievement 46" description="Unknown Description. Hint: the icon is named Collecting_Pets_1!" iconName="Collecting_Pets_1" points="1" sortOrder="30" repeatable="false">
