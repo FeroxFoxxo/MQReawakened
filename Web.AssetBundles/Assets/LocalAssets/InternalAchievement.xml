@@ -23,7 +23,7 @@
                 <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Explore 5 Different Trails in a Day" type="ExploreTrail" value="" goal="5" visible="true" />
+                <Condition id="1" title="Explore 5 Different Trails in a Day" type="Invalid" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="4" title="Daily Dynamo" description="Complete 10 Quests" iconName="Daily_EveryDayHustlin" points="10" sortOrder="4" repeatable="true">
@@ -31,7 +31,7 @@
                 <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete 10 Quests" type="CompleteQuest" value="" goal="10" visible="true" />
+                <Condition id="1" title="Complete 10 Quests" type="Invalid" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="5" title="Unknown Achievement 5" description="Unknown Description. Hint: the icon is named Daily_DailyDaillies!" iconName="Daily_DailyDaillies" points="1" sortOrder="5" repeatable="true">
@@ -95,7 +95,7 @@
                 <Reward type="Bananas" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 50 Enemies" type="Invalid" value="" goal="50" visible="true" />
+                <Condition id="1" title="Defeat 50 Enemies" type="DefeatEnemy" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="13" title="Unknown Achievement 13" description="Unknown Description. Hint: the icon is named Daily_ClowinAround!" iconName="Daily_ClowinAround" points="1" sortOrder="13" repeatable="true">
@@ -322,7 +322,7 @@
                 <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Craft the Spatula" type="Invalid" value="" goal="10" visible="true" />
+                <Condition id="1" title="Craft the Spatula" type="CraftItem" value="WPN_MEL_SpongeBob_Spatula01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="41" title="Bubbly" description="Craft the Bubble Blower (2014 SpongeBob Event Item)" iconName="Collecting_SpongeBob_BubbleBlower" points="5" sortOrder="25" repeatable="false">
@@ -330,7 +330,7 @@
                 <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Craft the Bubble Blower" type="Invalid" value="" goal="1" visible="true" />
+                <Condition id="1" title="Craft the Bubble Blower" type="CraftItem" value="WPN_PRJ_SpongeBob_Bubble01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="42" title="Unknown Achievement 42" description="Unknown Description. Hint: the icon is named Collecting_SpongeBob_Karate_Outfit!" iconName="Collecting_SpongeBob_Karate_Outfit" points="1" sortOrder="26" repeatable="false">
@@ -961,7 +961,7 @@
                 <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Use 10 Potions" type="Invalid" value="" goal="10" visible="true" />
+                <Condition id="1" title="Use 10 Potions" type="Drink" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="119" title="Unknown Achievement 119" description="Unknown Description. Hint: the icon is named Combat_Potions_25!" iconName="Combat_Potions_25" points="1" sortOrder="22" repeatable="false">
@@ -1818,7 +1818,7 @@
                 <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 25 Enemies in The Floating Isles" goal="25" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in The Floating Isles" type="DefeatEnemy" value="lv_crs_trail01"  goal="25" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="226" title="Unknown Achievement 226" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_BlimpRidge!" iconName="Combat_Defender_Crossroads_BlimpRidge" points="1" sortOrder="129" repeatable="false">
@@ -1834,7 +1834,7 @@
                 <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 25 Enemies in Rachnok’s Lair" type="Invalid" value="" goal="25" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Rachnok’s Lair" type="Defeat" value="lv_crs_dungeon00" goal="25" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="228" title="Unknown Achievement 228" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_SoggyCreek!" iconName="Combat_Defender_Crossroads_SoggyCreek" points="1" sortOrder="131" repeatable="false">
@@ -2588,7 +2588,7 @@
                 <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Talk to Frostbeard in Winter Wonder Maze" type="Talkto" value="NPC_EVT_XmasYeti01" goal="1" visible="true" />
+                <Condition id="1" title="Talk to Frostbeard in Winter Wonder Maze" type="Invalid" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="322" title="Unknown Achievement 322" description="Unknown Description. Hint: the icon is named Exploring_ScaryFun!" iconName="Exploring_ScaryFun" points="1" sortOrder="62" repeatable="false">
@@ -3448,7 +3448,7 @@
                 <Reward type="Item" value="Add_EVT_Reindeer02_TS01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Compete in Alaina’s Race 50 Times”" type="Invalid" value="" goal="50" visible="true" />
+                <Condition id="1" title="Compete in Alaina’s Race 50 Times" type="Invalid" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="429" title="Unknown Achievement 429" description="Unknown Description. Hint: the icon is named Games_All_3Star_1000!" iconName="Games_All_3Star_1000" points="1" sortOrder="3" repeatable="false">
@@ -3475,12 +3475,12 @@
                 <Condition id="1" title="Light up 1,000 Hoops in Clock Tower Square" type="HoopInLevel" value="lv_crs_townsquare01" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="432" title="Unknown Achievement 432" description="Unknown Description. Hint: the icon is named Games_HoopAny_CTS_Hard!" iconName="Games_HoopAny_CTS_Hard" points="1" sortOrder="6" repeatable="false">
+        <Achievement id="432" title="Hooper Duper Star!" description="Light up 10,000 Hoops in Clock Tower Square" iconName="Games_HoopAny_CTS_Hard" points="100" sortOrder="6" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_POT_BananaPotion01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Light up 10,000 Hoops in Clock Tower Square" type="HoopInLevel" value="lv_crs_townsquare01" goal="10000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="433" title="Unknown Achievement 433" description="Unknown Description. Hint: the icon is named Games_HoopGroup_CTS_Easy!" iconName="Games_HoopGroup_CTS_Easy" points="1" sortOrder="7" repeatable="false">
@@ -3907,12 +3907,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="486" title="Unknown Achievement 486" description="Unknown Description. Hint: the icon is named Games_Transcendent_Trainer_25!" iconName="Games_Transcendent_Trainer_25" points="1" sortOrder="60" repeatable="false">
+        <Achievement id="486" title="Tip Top Trainer" description="Level Up 25 Pets to Level 2" iconName="Games_Transcendent_Trainer_25" points="150" sortOrder="60" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="PF_PetEgg01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Level Up 25 Pets to Level 2" type="Invalid" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="487" title="Unknown Achievement 487" description="Unknown Description. Hint: the icon is named Games_Grow_and_Whoa!" iconName="Games_Grow_and_Whoa" points="1" sortOrder="61" repeatable="false">
@@ -4284,7 +4284,7 @@
                 <Reward type="Xp" value="300" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Eat 1000 Food Items" goal="1000" visible="true" />
+                <Condition id="1" title="Eat 1000 Food Items" type="Consumable" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="532" title="Unknown Achievement 532" description="Unknown Description. Hint: the icon is named Fun_Food_PlanetoftheGrapes_100!" iconName="Fun_Food_PlanetoftheGrapes_100" points="1" sortOrder="6" repeatable="false">
@@ -4384,7 +4384,7 @@
                 <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="10" visible="true" />
+                <Condition id="1" title="Eat 10 Sour Bathog Boogers" type="Consumable" value="COL_FOOD_SourBathogBoogers01"  goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="544" title="Unknown Achievement 544" description="Unknown Description. Hint: the icon is named Silly_ChickenEmote!" iconName="Silly_ChickenEmote" points="1" sortOrder="18" repeatable="false">
