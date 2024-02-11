@@ -1,8 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.Enums;
+using static A2m.Server.QuestStatus;
+using System.Text;
+using Server.Base.Logging;
+using Server.Reawakened.Network.Extensions;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -13,6 +18,7 @@ public class ChooseQuestReward : ExternalProtocol
     public ILogger<ChooseQuestReward> Logger { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+    public FileLogger FileLogger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -31,8 +37,37 @@ public class ChooseQuestReward : ExternalProtocol
                 Logger.LogError("[Quest Validator {NpcId}] Unknown item reward with id: {RewardId}", npcId, itemId);
         }
 
-        if (questRewardId != -1)
-            Logger.LogError("[Quest Validator {NpcId}] Unknown field 'quest reward' with id: {RewardId}", npcId, questRewardId);
+        if (questRewardId > 0) 
+        {
+            var newQuest = QuestCatalog.GetQuestData(questRewardId);
+
+            if (newQuest != null)
+            {
+                var oQuest = Player.AddQuest(newQuest, true);
+
+                var rewardIds = (Dictionary<int, int>)newQuest.GetField("_rewardItemsIds");
+                var unknownRewards = rewardIds.Where(x => !ItemCatalog.Items.ContainsKey(x.Key));
+
+                if (unknownRewards.Any())
+                {
+                    var sb = new StringBuilder();
+
+                    foreach (var reward in unknownRewards)
+                        sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
+
+                    FileLogger.WriteGenericLog<NPCController>("unknown-rewards", $"[Unkwown Quest {newQuest.Id} Rewards]", sb.ToString(),
+                        LoggerType.Error);
+                }
+
+                oQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
+
+                Player.SendXt("na", oQuest, true);
+
+                Player.UpdateNpcsInLevel(newQuest);
+
+                Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", newQuest.Name, newQuest.Id);
+            }
+        }
 
         var quest = QuestCatalog.QuestCatalogs[questId];
 
@@ -41,10 +76,6 @@ public class ChooseQuestReward : ExternalProtocol
 
         foreach (var item in quest.RewardItems)
             Player.AddItem(item.Key, item.Value);
-
-        Player.CheckAchievement(AchConditionType.CompleteQuest, string.Empty, Logger); // Any Quest
-        Player.CheckAchievement(AchConditionType.CompleteQuest, quest.Name, Logger); // Specific Quest by name for example EVT_SB_1_01
-        Player.CheckAchievement(AchConditionType.CompleteQuestInLevel, Player.Room.LevelInfo.Name, Logger); // Quest by Level/Trail if any exist
 
         Player.SendUpdatedInventory(false);
     }

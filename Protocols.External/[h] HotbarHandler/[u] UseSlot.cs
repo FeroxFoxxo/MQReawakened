@@ -217,13 +217,7 @@ public class UseSlot : ExternalProtocol
                             if (component is TriggerCoopControllerComp triggerCoopEntity)
                                 triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
                             else if (component is EnemyControllerComp enemyEntity)
-                            {
-                                Player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
-                                Player.CheckAchievement(AchConditionType.DefeatEnemy, prefabName, Logger);
-                                Player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, Player.Room.LevelInfo.Name, Logger);
-
                                 enemyEntity.Damage(weaponDamage, Player);
-                            }
             }
         }
     }

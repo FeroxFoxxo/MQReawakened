@@ -15,5 +15,9 @@ public enum AchConditionType
     CompleteQuest,
     CompleteQuestInLevel,
     ExploreTrail,
-    Talkto
+    Talkto,
+    Hoop,
+    HoopGroup,
+    HoopInLevel,
+    HoopGroupInLevel
 }

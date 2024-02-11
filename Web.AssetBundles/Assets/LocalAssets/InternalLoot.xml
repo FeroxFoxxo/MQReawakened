@@ -1550,4 +1550,32 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Blimp Ridge">
+        <LootInfo objectId="3286474" doLootWheel="true"> <!--Blue Arena-->
+            <Items rewardAmount="1">
+                <Item itemId="1253" count="1" bindingCount="0"/>
+                <Item itemId="999" count="1" bindingCount="0"/>
+                <Item itemId="1734" count="1" bindingCount="0"/>
+                <Item itemId="1262" count="1" bindingCount="0"/>
+                <Item itemId="1435" count="1" bindingCount="0"/>
+                <Item itemId="1289" count="1" bindingCount="0"/>
+                <Item itemId="1365" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7145" doLootWheel="false"> <!--Normal Arena-->
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10420" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="1803" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10422" doLootWheel="false">
+            <Items rewardAmount="1">
+                <Item itemId="404" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
 </LootCatalog>
