@@ -244,7 +244,7 @@ public class Room : Timer
                 {
                     if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
                     {
-                        currentPlayer.AddItem(item, 1);
+                        currentPlayer.AddItem(item, 1, _config);
                         currentPlayer.SendUpdatedInventory(false);
                     }
                 }

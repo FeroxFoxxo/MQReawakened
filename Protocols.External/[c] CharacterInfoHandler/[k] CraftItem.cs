@@ -39,7 +39,7 @@ public class CraftItem : ExternalProtocol
             return;
         }
 
-        Player.AddItem(item, amount);
+        Player.AddItem(item, amount, ServerRConfig);
 
         foreach (var ingredient in recipe.Ingredients)
         {

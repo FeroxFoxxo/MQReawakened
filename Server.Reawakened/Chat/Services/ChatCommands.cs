@@ -109,7 +109,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
             var chosenCategory = itemCatalog.GetItemsDescription((ItemFilterCategory)categoryValue);
 
             foreach (var item in chosenCategory)
-                player.AddItem(item, 1);
+                player.AddItem(item, 1, config);
         }
 
         else
@@ -120,7 +120,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
             foreach (var category in categoryList)
                 foreach (var item in category)
-                    player.AddItem(item, 1);
+                    player.AddItem(item, 1, config);
         }
 
         player.SendUpdatedInventory(false);
@@ -441,7 +441,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
             return false;
         }
 
-        player.AddItem(item, amount);
+        player.AddItem(item, amount, config);
 
         player.SendUpdatedInventory(false);
 

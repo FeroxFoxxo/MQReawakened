@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -13,6 +14,7 @@ public class BuyItems : ExternalProtocol
 {
     public override string ProtocolName => "Cb";
 
+    public ServerRConfig ServerRConfig { get; set; }
     public InternalObjective ObjectiveCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
@@ -56,7 +58,7 @@ public class BuyItems : ExternalProtocol
         foreach (var item in bought)
         {
             Player.RemoveNCash(item.Item1.RegularPrice * item.Item2);
-            Player.AddItem(item.Item1, item.Item2);
+            Player.AddItem(item.Item1, item.Item2, ServerRConfig);
         }
 
         Player.SendCashUpdate();

@@ -78,7 +78,7 @@ public class UseItem : ExternalProtocol
                     if (packItem == null)
                         continue;
 
-                    Player.AddItem(packItem, pair.Value);
+                    Player.AddItem(packItem, pair.Value, ServerRConfig);
                 }
                 break;
             default:
