@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -35,7 +36,7 @@ public class DeleteMessage : ExternalProtocol
         }
     }
 
-    public static void RunGiftAnimation(object data)
+    private static void RunGiftAnimation(object data)
     {
         var gData = (GiftData)data;
         var player = gData.Player;
@@ -46,7 +47,7 @@ public class DeleteMessage : ExternalProtocol
         if (player.Character == null)
             return;
 
-        player.AddItem(gData.Item, gData.Item.ItemNumber);
+        player.AddItem(gData.Item, gData.Item.ItemNumber, player.DatabaseContainer.ServerRConfig);
         player.SendUpdatedInventory(false);
 
         var mailMessage = player.Character.EmailMessages[gData.MessageId];

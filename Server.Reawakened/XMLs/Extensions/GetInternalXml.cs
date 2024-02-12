@@ -218,7 +218,7 @@ public static class GetInternalXml
 
                     var item = player.DatabaseContainer.ItemCatalog.GetItemFromId(itemId);
 
-                    player.AddItem(item, quantity);
+                    player.AddItem(item, quantity, player.DatabaseContainer.ServerRConfig);
                     hasUpdatedItems = true;
                     break;
                 case RewardType.Xp:

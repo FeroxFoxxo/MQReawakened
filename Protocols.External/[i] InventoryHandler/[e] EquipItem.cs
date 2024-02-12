@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
@@ -13,6 +14,7 @@ public class EquipItem : ExternalProtocol
 
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<EquipItem> Logger { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -23,7 +25,7 @@ public class EquipItem : ExternalProtocol
         foreach (var item in newEquipment.EquippedItems)
         {
             if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquipped))
-                Player.AddItem(ItemCatalog.GetItemFromId(previouslyEquipped), 1);
+                Player.AddItem(ItemCatalog.GetItemFromId(previouslyEquipped), 1, ServerRConfig);
 
 
             var itemDesc = ItemCatalog.GetItemFromId(item.Value);

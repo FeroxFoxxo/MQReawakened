@@ -100,9 +100,16 @@ public static class CharacterInventoryExtensions
         player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count);
     }
 
-    public static void AddItem(this Player player, ItemDescription item, int count)
+    public static void AddItem(this Player player, ItemDescription item, int count, ServerRConfig config)
     {
         var characterData = player.Character;
+
+        if (!config.LoadedAssets.Contains(item.PrefabName) && item.InventoryCategoryID != ItemFilterCategory.RecipesAndCraftingIngredients)
+            return;
+
+        if (item.InventoryCategoryID is ItemFilterCategory.Housing or ItemFilterCategory.QuestItems or 
+            ItemFilterCategory.Keys or ItemFilterCategory.None)
+            return;
 
         if (!characterData.Data.Inventory.Items.ContainsKey(item.ItemId))
             characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel

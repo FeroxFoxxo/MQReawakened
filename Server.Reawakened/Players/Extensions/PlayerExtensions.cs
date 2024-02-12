@@ -87,7 +87,7 @@ public static class PlayerExtensions
         {
             var itemDesc = catalog.GetItemFromId(item.Key);
 
-            tradeModel.TradingPlayer.AddItem(itemDesc, item.Value);
+            tradeModel.TradingPlayer.AddItem(itemDesc, item.Value, origin.DatabaseContainer.ServerRConfig);
             origin.RemoveItem(itemDesc, item.Value);
         }
 

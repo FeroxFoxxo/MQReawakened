@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -15,6 +16,7 @@ public class ChooseQuestReward : ExternalProtocol
     public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public FileLogger FileLogger { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -28,7 +30,7 @@ public class ChooseQuestReward : ExternalProtocol
             var item = ItemCatalog.GetItemFromId(itemId);
 
             if (item != null)
-                Player.AddItem(item, 1);
+                Player.AddItem(item, 1, ServerRConfig);
             else
                 Logger.LogError("[Quest Validator {NpcId}] Unknown item reward with id: {RewardId}", npcId, itemId);
         }
@@ -49,7 +51,7 @@ public class ChooseQuestReward : ExternalProtocol
         Player.AddReputation(quest.ReputationReward);
 
         foreach (var item in quest.RewardItems)
-            Player.AddItem(item.Key, item.Value);
+            Player.AddItem(item.Key, item.Value, ServerRConfig);
 
         Player.SendUpdatedInventory(false);
     }
