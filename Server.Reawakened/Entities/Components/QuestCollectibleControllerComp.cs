@@ -16,12 +16,15 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        player.CheckObjective(ObjectiveEnum.Receiveitem, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.Collect, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.AlterandReceiveitem, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.Deliver, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.Alter, Id, PrefabName, 1);
+        foreach (var rPlayer in player.Room.Players.Values)
+        {
+            rPlayer.CheckObjective(ObjectiveEnum.Receiveitem, Id, PrefabName, 1);
+            rPlayer.CheckObjective(ObjectiveEnum.Collect, Id, PrefabName, 1);
+            rPlayer.CheckObjective(ObjectiveEnum.AlterandReceiveitem, Id, PrefabName, 1);
+            rPlayer.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
+            rPlayer.CheckObjective(ObjectiveEnum.Deliver, Id, PrefabName, 1);
+            rPlayer.CheckObjective(ObjectiveEnum.Alter, Id, PrefabName, 1);
+        }
 
         var questCollectible = new Trigger_SyncEvent(syncEvent);
         Room.SendSyncEvent(questCollectible);

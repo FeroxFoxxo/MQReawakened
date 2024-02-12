@@ -248,8 +248,17 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
     public void RunTrigger(Player player)
     {
         // GoTo must be outside for if someone in the room has interactd with the trigger in the past (i.e. in public rooms like CTS)
-        player?.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
-        player?.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1);
+        if (player != null)
+        {
+            foreach (var rPlayer in player.Room.Players.Where(x => _currentPhysicalInteractors.Contains(x.Key)))
+            {
+                if (rPlayer.Value == null)
+                    continue;
+
+                rPlayer.Value.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
+                rPlayer.Value.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1);
+            }
+        }
 
         if (!IsActive)
         {
@@ -280,6 +289,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
             Trigger(player, false);
         }
+
         LogTrigger();
     }
 
