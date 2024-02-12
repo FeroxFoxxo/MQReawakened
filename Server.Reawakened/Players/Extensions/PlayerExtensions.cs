@@ -267,6 +267,12 @@ public static class PlayerExtensions
         if (count <= 0)
             return;
 
+        if (player == null)
+            return;
+
+        if (player.Character == null || player.Room == null)
+            return;
+
         var character = player.Character.Data;
 
         player.Room.Logger.LogDebug("Checking {type} objective for {prefab} id ({id}) of count {count}.", type, prefabName, gameObjectId, count);
@@ -278,6 +284,9 @@ public static class PlayerExtensions
             foreach (var objectiveKVP in quest.Objectives)
             {
                 var objective = objectiveKVP.Value;
+
+                if (objective == null)
+                    continue;
 
                 if (objective.ObjectiveType != type || objective.Completed)
                     continue;
