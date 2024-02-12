@@ -82,6 +82,8 @@ public class ServerRConfig : IRConfig
     public float PlayerHeight { get; set; }
     public Dictionary<int, string> TrainingGear { get; set; }
 
+    public List<string> LoadedAssets { get; set; }
+
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -237,5 +239,7 @@ public class ServerRConfig : IRConfig
             { 467, "ABIL_MysticCharm01" }, // lv_bon_teaser01
             { 497, "ABIL_SnowBoard01" }, // lv_wld_teaser01
         };
+
+        LoadedAssets = [];
     }
 }
