@@ -13,7 +13,7 @@ public class TemporaryDataModel
     public bool OnGround { get; set; } = false;
     public bool BananaBoostsElixir { get; set; }
     public bool ReputationBoostsElixir { get; set; }
-
+     
     public Vector3Model Position { get; set; } = new Vector3Model();
     public Vector3Model Velocity { get; set; } = new Vector3Model();
 

@@ -55,7 +55,7 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
                 }
 
                 else if (collect)
-                {
+                { 
                     if (player.TempData.ActiveObjectives.ContainsKey(Id))
                         player.TempData.ActiveObjectives.Remove(Id);
 

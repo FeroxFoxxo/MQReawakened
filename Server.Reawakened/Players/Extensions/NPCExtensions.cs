@@ -129,7 +129,7 @@ public static class NpcExtensions
 
     public static void UpdateAllNpcsInLevel(this Player player)
     {
-        foreach (var npc in GetNpcs(player))
+        foreach (var npc in GetNpcs(player)) 
             npc.SendNpcInfo(player);
     }
 

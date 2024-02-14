@@ -349,7 +349,7 @@ public static class PlayerExtensions
                     UpdateActiveObjectives(player, prefabName);
                 }
             }
-
+             
             if (hasObjComplete)
             {
                 if (!quest.Objectives.Any(o => !o.Value.Completed))
