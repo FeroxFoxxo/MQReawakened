@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 
@@ -27,11 +28,14 @@ public class SwapSlot : ExternalProtocol
         {
             if (hotbarKVP.Value.ItemId == itemId)
             {
+                if (!character.Data.Hotbar.HotbarButtons.ContainsKey(hotbarSlotId))
+                    continue;
+
                 character.Data.Hotbar.HotbarButtons[hotbarKVP.Key] = character.Data.Hotbar.HotbarButtons[hotbarSlotId];
                 character.Data.Hotbar.HotbarButtons[hotbarSlotId] = item;
             }
         }
 
-        SendXt("hw", character.Data.Hotbar);
+        Player.SendXt("hw", character.Data.Hotbar);
     }
 }
