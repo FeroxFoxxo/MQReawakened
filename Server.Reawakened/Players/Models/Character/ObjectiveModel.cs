@@ -4,7 +4,7 @@ namespace Server.Reawakened.Players.Models.Character;
 
 public class ObjectiveModel
 {
-    public bool Completed { get; set; } = false;
+    public bool Completed { get; set; }
     public int CountLeft { get; set; }
     public int Total { get; set; }
 
