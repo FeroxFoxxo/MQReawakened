@@ -57,15 +57,23 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.ChargeAttack:
                     var chargeAttackEvent = new ChargeAttack_SyncEvent(syncEvent);
 
-                    var startEvent = new ChargeAttackStart_SyncEvent(entityId.ToString(), chargeAttackEvent.TriggerTime,
-                        chargeAttackEvent.PosX, chargeAttackEvent.PosY, chargeAttackEvent.SpeedX,
-                        chargeAttackEvent.SpeedY,
-                        chargeAttackEvent.ItemId, chargeAttackEvent.ZoneId);
+                    var startPosition = chargeAttackEvent.EventDataList[2].ToString();
+                    var endPosition = chargeAttackEvent.EventDataList[7].ToString();
 
-                    room.SendSyncEvent(startEvent);
+                    var totalDistance = Convert.ToInt32(Math.Floor(Convert.ToDouble(startPosition)) - Math.Floor(Convert.ToDouble(endPosition)));
 
-                    Logger.LogWarning("Collision system not yet written and implemented for {Type}.",
-                        chargeAttackEvent.Type);
+                    room.SendSyncEvent(new ChargeAttackStart_SyncEvent(entityId.ToString(), chargeAttackEvent.TriggerTime,
+                        chargeAttackEvent.PosX, chargeAttackEvent.PosY - totalDistance, chargeAttackEvent.SpeedX,
+                        chargeAttackEvent.SpeedY, chargeAttackEvent.ItemId, chargeAttackEvent.ZoneId));
+                    break;
+                case SyncEvent.EventType.ChargeAttackStop:
+                    var chargeAttackStopSyncEvent = new ChargeAttackStop_SyncEvent(syncEvent);
+
+                    room.SendSyncEvent(new ChargeAttackStop_SyncEvent(chargeAttackStopSyncEvent.TargetID, chargeAttackStopSyncEvent.TriggerTime,
+                        chargeAttackStopSyncEvent.PosX, chargeAttackStopSyncEvent.PosY, chargeAttackStopSyncEvent.ItemId,
+                        chargeAttackStopSyncEvent.ZoneId, chargeAttackStopSyncEvent.HitId));
+
+                    Logger.LogWarning("Collision system not yet written and implemented for {Type}.", chargeAttackStopSyncEvent.Type);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
 
