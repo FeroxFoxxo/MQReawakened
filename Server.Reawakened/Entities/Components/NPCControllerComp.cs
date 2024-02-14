@@ -430,7 +430,7 @@ public class NPCControllerComp : Component<NPCController>
                     {
                         var newQuest = QuestCatalog.GetQuestData(item.Key);
 
-                        if (newQuest != null)
+                        if (newQuest != null && player.Character.Data.CompletedQuests.Contains(newQuest.PreviousQuests.First().Value))
                             player.AddQuest(newQuest, Logger, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}");
                     }
                 }
