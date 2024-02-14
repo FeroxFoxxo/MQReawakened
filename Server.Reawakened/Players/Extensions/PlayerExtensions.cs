@@ -303,7 +303,7 @@ public static class PlayerExtensions
                     var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(prefabName);
 
                     if (item != null)
-                        if (item.ItemId == objective.ItemId)
+                        if (item.ItemId == objective.ItemId || quest.Objectives.First().Value.Order == objective.Order)
                             meetsRequirement = item.InventoryCategoryID is not ItemFilterCategory.None
                                                                         and not ItemFilterCategory.QuestItems
                                                || objective.LevelId == player.Character.LevelData.LevelId;
