@@ -21,6 +21,7 @@ public class TemporaryDataModel
     public GroupModel Group { get; set; }
 
     public Dictionary<int, List<string>> CurrentAchievements { get; set; } = [];
+    public Dictionary<string, bool> ActiveObjectives { get; set; } = [];
 
     //Make the player size and such a config option down the line
     public ColliderModel DrawPlayerRect() => new(Position.Z > 10 ? "Plane1" : "Plane0", Position.X - 0.5f, Position.Y - 0.5f, 1, 1);

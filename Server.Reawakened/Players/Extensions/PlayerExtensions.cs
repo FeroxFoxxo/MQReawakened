@@ -1,11 +1,14 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.XMLs.Bundles;
 using static A2m.Server.QuestStatus;
+using static CollectibleController;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -336,9 +339,15 @@ public static class PlayerExtensions
                     player.SendXt("no", quest.Id, objectiveKVP.Key);
 
                     hasObjComplete = true;
+
+                    UpdateQuestCollectiblesInRoom(player);
                 }
                 else
+                {
                     player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
+
+                    UpdateActiveObjectives(player, prefabName);
+                }
             }
 
             if (hasObjComplete)
@@ -351,6 +360,56 @@ public static class PlayerExtensions
                 player.UpdateNpcsInLevel(quest);
             }
         }
+    }
+
+    public static void UpdateActiveObjectives(Player player, string prefabName)
+    {
+        foreach (var questCollectible in player.Room.GetComponentsOfType<QuestCollectibleControllerComp>().Values)
+        {
+            foreach (var objective in player.Character.Data.QuestLog.SelectMany(x => x.Objectives.Values))
+            {
+                var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(prefabName);
+
+                if (objective.GameObjectId.ToString() == questCollectible.Id &&
+                    objective.GameObjectLevelId == player.Room.LevelInfo.LevelId ||
+                    item != null && item.ItemId == objective.ItemId)
+                {
+                    if (player.TempData.ActiveObjectives.ContainsKey(questCollectible.Id))
+                    {
+                        questCollectible.CollectedState = (int)CollectibleState.Collected;
+
+                        player.SendSyncEventToPlayer(new Trigger_SyncEvent(questCollectible.Id.ToString(), player.Room.Time,
+                        true, player.GameObjectId.ToString(), false));
+
+                        player.TempData.ActiveObjectives.Remove(questCollectible.Id);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void UpdateQuestCollectiblesInRoom(Player player)
+    {
+        foreach (var questCollectible in player.Room.GetComponentsOfType<QuestCollectibleControllerComp>().Values)
+        {
+            foreach (var objective in player.Character.Data.QuestLog.Where(x => x.Id == player.Character.Data.ActiveQuestId).SelectMany(x => x.Objectives.Values))
+            {
+                var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(questCollectible.PrefabName);
+
+                if (objective.GameObjectId.ToString() == questCollectible.Id &&
+                    objective.GameObjectLevelId == player.Room.LevelInfo.LevelId ||
+                    item != null && item.ItemId == objective.ItemId)
+                {
+                    questCollectible.CollectedState = (int)CollectibleState.Collected;
+
+                    Console.WriteLine("ShouldTurnOff: " + questCollectible.Id);
+                    player.SendSyncEventToPlayer(new Trigger_SyncEvent(questCollectible.Id.ToString(), player.Room.Time,
+                        false, player.GameObjectId.ToString(), false));
+                }
+            }
+        }
+
+        player.TempData.ActiveObjectives.Clear();
     }
 
     public static void UpdateEquipment(this Player sentPlayer)

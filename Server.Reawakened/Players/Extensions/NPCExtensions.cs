@@ -5,6 +5,7 @@ using Server.Base.Logging;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text;
 using static A2m.Server.QuestStatus;
@@ -86,7 +87,37 @@ public static class NpcExtensions
 
         logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", quest.Name, questModel.Id);
 
+        player.Character.Data.ActiveQuestId = questModel.Id;
+
+        UpdateActiveObjectives(player, quest.Id, itemCatalog);
+
         return questModel;
+    }
+
+    public static void UpdateActiveObjectives(Player player, int questId, ItemCatalog itemCatalog)
+    {
+        player.TempData.ActiveObjectives.Clear();
+
+        foreach (var questCollectible in player.Room.GetComponentsOfType<QuestCollectibleControllerComp>().Values)
+        {
+            foreach (var objective in player.Character.Data.QuestLog.Where(x => x.Id == questId).SelectMany(x => x.Objectives.Values))
+            {
+                var item = itemCatalog.GetItemFromPrefabName(questCollectible.PrefabName);
+
+                if (objective.GameObjectId.ToString() == questCollectible.Id &&
+                    objective.GameObjectLevelId == player.Room.LevelInfo.LevelId ||
+                    item != null && item.ItemId == objective.ItemId)
+                {
+                    if (!player.TempData.ActiveObjectives.ContainsKey(questCollectible.Id))
+                        player.TempData.ActiveObjectives.Add(questCollectible.Id, true);
+
+                    questCollectible.CollectedState = 1;
+
+                    player.SendSyncEventToPlayer(new Trigger_SyncEvent(questCollectible.Id.ToString(), player.Room.Time,
+                        true, player.GameObjectId.ToString(), true));
+                }
+            }
+        }
     }
 
     public static void UpdateNpcsInLevel(this Player player, QuestStatusModel status)
