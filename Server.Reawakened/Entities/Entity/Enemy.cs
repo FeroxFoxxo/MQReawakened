@@ -12,7 +12,6 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using UnityEngine;
 
@@ -46,7 +45,6 @@ public abstract class Enemy : IDestructible
     public BehaviorModel BehaviorList;
 
     public AISyncEventHelper SyncBuilder = new();
-    public ItemCatalog ItemCatalog { get; set; }
     public ILogger<Enemy> Logger { get; set; }
 
     public Enemy(Room room, string entityId, BaseComponent baseEntity)

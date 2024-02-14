@@ -16,7 +16,6 @@ using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Models.Npcs;
 using static A2m.Server.QuestStatus;
-using static CollectibleController;
 using static NPCController;
 
 namespace Server.Reawakened.Entities.Components;

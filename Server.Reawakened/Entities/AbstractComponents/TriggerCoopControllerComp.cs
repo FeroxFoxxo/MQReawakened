@@ -8,7 +8,6 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.Bundles;
 using System.Text;
 using static TriggerCoopController;
 
@@ -93,7 +92,6 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
     public float ActivationTimeAfterFirstInteraction => ComponentData.ActivationTimeAfterFirstInteraction;
 
-    public ItemCatalog ItemCatalog { get; set; }
     public ILogger<TriggerCoopController> Logger { get; set; }
 
     public FileLogger FileLogger { get; set; }

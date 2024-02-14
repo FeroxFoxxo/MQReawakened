@@ -89,7 +89,7 @@ public class EditVendor : IBundledXml<EditVendor>
 
                         var itemDesc = itemCatalog.GetItemFromPrefabName(prefabName);
 
-                        //EditedVendorAttributes[gameVersion][name].Add(itemDesc.ItemId.ToString());
+                        EditedVendorAttributes[gameVersion][name].Add(itemDesc.ItemId.ToString());
                     }
                 }
             }

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 
 namespace Server.Reawakened.Entities.Components;
@@ -11,7 +10,6 @@ namespace Server.Reawakened.Entities.Components;
 public class IdolControllerComp : Component<IdolController>
 {
     public int Index => ComponentData.Index;
-    public ItemCatalog ItemCatalog { get; set; }
     public ILogger<HarvestControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player)

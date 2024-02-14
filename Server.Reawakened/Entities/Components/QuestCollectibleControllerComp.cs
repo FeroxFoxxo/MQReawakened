@@ -15,7 +15,7 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
     public float GatherTime => ComponentData.GatherTime;
 
     public override object[] GetInitData(Player player) => [UpdateActiveObjectives(player, false)];
-
+     
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
         player.CheckObjective(ObjectiveEnum.Receiveitem, Id, PrefabName, 1);

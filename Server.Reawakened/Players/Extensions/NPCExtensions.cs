@@ -93,7 +93,7 @@ public static class NpcExtensions
 
         return questModel;
     }
-
+     
     public static void UpdateActiveObjectives(Player player, int questId, ItemCatalog itemCatalog)
     {
         player.TempData.ActiveObjectives.Clear();

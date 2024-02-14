@@ -5,7 +5,6 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using UnityEngine;
@@ -28,7 +27,6 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public bool CanAutoScaleResistance => ComponentData.CanAutoScaleResistance;
     public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
 
-    public ItemCatalog ItemCatalog { get; set; }
     public ILogger<EnemyControllerComp> Logger { get; set; }
     public InternalDefaultEnemies EnemyInfoXml { get; set; }
 
