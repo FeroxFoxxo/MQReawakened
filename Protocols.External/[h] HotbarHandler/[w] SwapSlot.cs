@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 
@@ -36,6 +35,6 @@ public class SwapSlot : ExternalProtocol
             }
         }
 
-        Player.SendXt("hw", character.Data.Hotbar);
+        SendXt("hw", character.Data.Hotbar);
     }
 }
