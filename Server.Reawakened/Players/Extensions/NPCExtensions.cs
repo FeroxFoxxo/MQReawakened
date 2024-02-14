@@ -80,7 +80,7 @@ public static class NpcExtensions
         if (questModel.QuestStatus == QuestState.NOT_START)
             questModel.QuestStatus = QuestState.IN_PROCESSING;
 
-        player.SendXt("na", quest, true);
+        player.SendXt("na", questModel, true);
 
         player.UpdateNpcsInLevel(quest);
 

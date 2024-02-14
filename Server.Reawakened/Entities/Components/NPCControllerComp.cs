@@ -142,8 +142,6 @@ public class NPCControllerComp : Component<NPCController>
 
     public void TalkToNpc(Player player)
     {
-        RunObjectives(player);
-
         player.CheckAchievement(AchConditionType.Talkto, PrefabName, Logger);
 
         switch (NpcType)
