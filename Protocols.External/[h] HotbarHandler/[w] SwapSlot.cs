@@ -27,6 +27,9 @@ public class SwapSlot : ExternalProtocol
         {
             if (hotbarKVP.Value.ItemId == itemId)
             {
+                if (!character.Data.Hotbar.HotbarButtons.ContainsKey(hotbarSlotId))
+                    continue;
+
                 character.Data.Hotbar.HotbarButtons[hotbarKVP.Key] = character.Data.Hotbar.HotbarButtons[hotbarSlotId];
                 character.Data.Hotbar.HotbarButtons[hotbarSlotId] = item;
             }
