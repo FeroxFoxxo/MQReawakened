@@ -402,7 +402,6 @@ public static class PlayerExtensions
                 {
                     questCollectible.CollectedState = (int)CollectibleState.Collected;
 
-                    Console.WriteLine("ShouldTurnOff: " + questCollectible.Id);
                     player.SendSyncEventToPlayer(new Trigger_SyncEvent(questCollectible.Id.ToString(), player.Room.Time,
                         false, player.GameObjectId.ToString(), false));
                 }

@@ -26,8 +26,7 @@ public class EquipItem : ExternalProtocol
         {
             if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquipped))
                 Player.AddItem(ItemCatalog.GetItemFromId(previouslyEquipped), 1, ServerRConfig);
-
-
+            
             var itemDesc = ItemCatalog.GetItemFromId(item.Value);
 
             if (itemDesc != null)

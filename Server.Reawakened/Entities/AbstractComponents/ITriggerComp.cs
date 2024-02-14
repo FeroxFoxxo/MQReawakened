@@ -10,5 +10,5 @@ public interface ITriggerComp
     public void RemovePhysicalInteractor(string playerId);
     public int GetPhysicalInteractorCount();
     public string[] GetPhysicalInteractorIds();
-    public bool IsActive();
+    bool IsActive();
 }

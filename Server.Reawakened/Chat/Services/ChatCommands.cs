@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
@@ -19,7 +20,7 @@ using System.Text.RegularExpressions;
 namespace Server.Reawakened.Chat.Services;
 
 public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
-    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves) : IService
+    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
 
@@ -50,6 +51,8 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
         AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
+        AddCommand(new ChatCommand("listQuests", "", ListQuestNamesIds));
+        AddCommand(new ChatCommand("startQuest", "[Id]", StartQuest));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -94,34 +97,45 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
+    public bool StartQuest(Player player, string[] args)
+    {
+        player.Character.Data.ActiveQuestId = int.Parse(args[1]);
+
+        player.SendXt("na", QuestStatus.QuestState.IN_PROCESSING, int.Parse(args[1]));
+
+        return true;
+    }
+
+    public bool ListQuestNamesIds(Player player, string[] args)
+    {
+        foreach (var quest in questCatalog.QuestCatalogs.Values)
+        {
+            if (quest.Id == player.Character.Data.ActiveQuestId)
+            {
+                Console.WriteLine("QuestName: " + quest.Title + " Id: " + quest.Id + " FileName: " + quest.Name);
+                foreach (var objective in quest.Objectives.Values)
+                {
+                    Console.WriteLine("Objective: " + objective.GoId + " | " + objective.Id);
+                }
+            }
+        }
+
+        return true;
+    }
+
     public bool GetAllItems(Player player, string[] args)
     {
-        if (args.Length > 1)
-        {
-            if (!int.TryParse(args[1], out var categoryValue))
-                return false;
+        var categoryList = new List<List<ItemDescription>>();
+        for (var i = 0; i < 5; i++)
+            categoryList.Add(itemCatalog.GetItemsDescription((ItemFilterCategory)i));
 
-            if (categoryValue is < 0 or > 12)
-            {
-                Log($"Please enter a category value between 0-12!", player);
-                return false;
-            }
-            var chosenCategory = itemCatalog.GetItemsDescription((ItemFilterCategory)categoryValue);
+        categoryList.Add(itemCatalog.GetItemsDescription(ItemFilterCategory.PassiveAbilities));
+        categoryList.Add(itemCatalog.GetItemsDescription(ItemFilterCategory.Pets));
+        categoryList.Add(itemCatalog.GetItemsDescription(ItemFilterCategory.NestedSuperPack));
 
-            foreach (var item in chosenCategory)
+        foreach (var category in categoryList)
+            foreach (var item in category)
                 player.AddItem(item, 1, config);
-        }
-
-        else
-        {
-            var categoryList = new List<List<ItemDescription>>();
-            for (var i = 0; i < 12; i++)
-                categoryList.Add(itemCatalog.GetItemsDescription((ItemFilterCategory)i));
-
-            foreach (var category in categoryList)
-                foreach (var item in category)
-                    player.AddItem(item, 1, config);
-        }
 
         player.SendUpdatedInventory(false);
 

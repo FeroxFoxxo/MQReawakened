@@ -9,12 +9,14 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Models.Npcs;
 using static A2m.Server.QuestStatus;
+using static CollectibleController;
 using static NPCController;
 
 namespace Server.Reawakened.Entities.Components;
