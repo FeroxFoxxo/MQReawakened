@@ -162,7 +162,6 @@ public class NPCControllerComp : Component<NPCController>
                         Logger.LogDebug("[IN PROGRESS QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
                     case NPCStatus.QuestCompleted:
-                        RunObjectives(player);
                         ValidateQuest(player);
                         Logger.LogDebug("[COMPLETED QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
