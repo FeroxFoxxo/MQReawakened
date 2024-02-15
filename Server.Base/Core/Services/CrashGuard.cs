@@ -57,7 +57,7 @@ public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, Eve
 
             InternalDirectory.CreateDirectory(backup);
 
-            CopyFiles(config.SaveDirectory, config.CrashBackupDirectory);
+            CopyFiles(config.SaveDirectory, backup);
 
             logger.LogInformation("Backed up!");
         }
