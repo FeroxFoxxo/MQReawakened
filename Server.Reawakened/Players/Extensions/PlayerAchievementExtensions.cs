@@ -16,6 +16,9 @@ public static class PlayerAchievementExtensions
         if (string.IsNullOrEmpty(achValue))
             achValue = "unknown";
 
+        if (player == null)
+            return;
+
         var posCond = player.DatabaseContainer.InternalAchievement.PossibleConditions;
         var type = (int)achType;
         achValue = achValue.ToLower();

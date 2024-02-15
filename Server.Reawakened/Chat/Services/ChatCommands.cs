@@ -1,6 +1,8 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Enums;
+using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
 using Server.Base.Worlds.Services;
@@ -45,7 +47,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("openDoors", "", OpenDoors));
         AddCommand(new ChatCommand("getAllItems", "[categoryValue]", GetAllItems));
         AddCommand(new ChatCommand("godmode", "", GodMode));
-        AddCommand(new ChatCommand("save", "", SaveLevel));
+        AddCommand(new ChatCommand("save", "[owner only]", SaveLevel));
         AddCommand(new ChatCommand("openVines", "", OpenVines));
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
@@ -408,6 +410,9 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool SaveLevel(Player player, string[] args)
     {
+        if (player.NetState.Get<Account>().AccessLevel < AccessLevel.Owner)
+            return false;
+
         saves.Save();
         return true;
     }

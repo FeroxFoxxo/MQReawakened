@@ -12,7 +12,7 @@ using System.Diagnostics;
 namespace Server.Base.Core.Services;
 
 public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink,
-    IServiceProvider services, InternalRConfig config) : IService
+    IServiceProvider services, InternalRConfig config, InternalRwConfig rwConfig) : IService
 {
     private readonly Module[] _modules = services.GetServices<Module>().ToArray();
 
@@ -24,7 +24,8 @@ public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, Eve
 
         Backup();
 
-        Restart(e);
+        if (rwConfig.RestartOnCrash)
+            Restart(e);
     }
 
     private void Restart(CrashedEventArgs e)
@@ -56,7 +57,7 @@ public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, Eve
 
             InternalDirectory.CreateDirectory(backup);
 
-            CopyFiles(config.SaveDirectory, config.CrashBackupDirectory);
+            CopyFiles(config.SaveDirectory, backup);
 
             logger.LogInformation("Backed up!");
         }
