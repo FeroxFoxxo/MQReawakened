@@ -298,7 +298,7 @@ public static class PlayerExtensions
                         objective.LevelId == player.Character.LevelData.LevelId)
                         meetsRequirement = true;
 
-                if (objective.ItemId > 0 && !meetsRequirement)
+                if (objective.GameObjectId <= 0 && objective.ItemId > 0 && !meetsRequirement)
                 {
                     var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(prefabName);
 
@@ -307,6 +307,13 @@ public static class PlayerExtensions
                             meetsRequirement = item.InventoryCategoryID is not ItemFilterCategory.None
                                                                         and not ItemFilterCategory.QuestItems
                                                || objective.LevelId == player.Character.LevelData.LevelId;
+                }
+
+                if (objective.MultiScorePrefabs.Count > 0 && !meetsRequirement)
+                {
+                    if (objective.MultiScorePrefabs.Contains(prefabName))
+                        if (objective.LevelId > 0 && objective.LevelId == player.Room.LevelInfo.LevelId)
+                            meetsRequirement = true;
                 }
 
                 if (!meetsRequirement && objective.LevelId == player.Character.LevelData.LevelId && type == ObjectiveEnum.MinigameMedal)
