@@ -77,8 +77,9 @@ public static class NpcExtensions
                 LoggerType.Error);
         }
 
-        if (questModel.QuestStatus == QuestState.NOT_START)
-            questModel.QuestStatus = QuestState.IN_PROCESSING;
+        questModel.QuestStatus = questModel.Objectives.Any(x => !x.Value.Completed) ?
+            QuestState.IN_PROCESSING :
+            QuestState.TO_BE_VALIDATED;
 
         player.SendXt("na", quest, true);
 
