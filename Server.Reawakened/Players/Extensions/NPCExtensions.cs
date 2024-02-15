@@ -104,9 +104,7 @@ public static class NpcExtensions
                 var itemDesc = itemCatalog.GetItemFromId(objective.ItemId);
 
                 if (objective2.ObjectiveType == ObjectiveEnum.Scoremultiple && objective2.Order == objective.Order && itemDesc != null)
-                {
                     objective2.MultiScorePrefabs.Add(itemDesc.PrefabName);
-                }
             }
         }
     }
