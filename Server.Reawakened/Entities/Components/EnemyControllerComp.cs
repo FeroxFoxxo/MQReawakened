@@ -39,12 +39,10 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, 0, damage, 0, 0, origin.CharacterName, false, true);
         origin.Room.SendSyncEvent(breakEvent);
 
-        if (Room.Entities.TryGetValue(Id, out var comps))
-            foreach (var comp in comps)
-                if (comp is IDestructible destroyable)
-                    destroyable.Destroy(origin, Room, Id);
+        foreach (var destroyable in Room.GetEntitiesFromId<IDestructible>(Id))
+            destroyable.Destroy(origin, Room, Id);
 
-        Room.Entities.Remove(Id);
+        Room.RemoveEntity(Id);
     }
 
     public void Destroy(Player player, Room room, string id)

@@ -6,15 +6,8 @@ public class BreakableCollider(string id, Vector3Model position, float sizeX, fl
 {
     public override void SendCollisionEvent(BaseCollider received)
     {
-        if (received is AttackCollider)
-        {
-            var attack = (AttackCollider)received;
-            Room.Entities.TryGetValue(Id, out var entity);
-            foreach (var component in entity)
-            {
-                if (component is BreakableEventControllerComp breakable)
-                    breakable.Damage(attack.Damage, attack.Owner);
-            }
-        }
+        if (received is AttackCollider attack)
+            foreach (var breakable in Room.GetEntitiesFromId<BreakableEventControllerComp>(Id))
+                breakable.Damage(attack.Damage, attack.Owner);
     }
 }

@@ -99,31 +99,24 @@ public static class NpcExtensions
 
     public static void UpdateAllNpcsInLevel(this Player player)
     {
-        foreach (var npc in GetNpcs(player))
+        if (player.Room == null)
+            return;
+
+        foreach (var npc in player.Room.GetEntitiesFromType<NPCControllerComp>())
             npc.SendNpcInfo(player);
     }
 
     public static void UpdateNpcsInLevel(this Player player, QuestDescription quest)
     {
-        if (quest != null)
-            foreach (var npc in GetNpcs(player)
+        if (player.Room == null || quest == null)
+            return;
+
+        foreach (var npc in player.Room.GetEntitiesFromType<NPCControllerComp>()
                 .Where(e =>
                     e.Id == quest.QuestGiverGoId.ToString() || e.Name == quest.QuestgGiverName ||
-                    e.Id == quest.ValidatorGoId.ToString() || e.Name == quest.ValidatorName)
+                    e.Id == quest.ValidatorGoId.ToString() || e.Name == quest.ValidatorName
                 )
-                npc.SendNpcInfo(player);
-    }
-
-    public static List<NPCControllerComp> GetNpcs(Player player)
-    {
-        if (player.Room != null && player.Character != null)
-            if (player.Room.Entities != null)
-                return player.Room.Entities
-                    .SelectMany(e => e.Value)
-                    .Where(e => e is NPCControllerComp)
-                    .Select(e => e as NPCControllerComp)
-                    .ToList();
-
-        return [];
+            )
+            npc.SendNpcInfo(player);
     }
 }

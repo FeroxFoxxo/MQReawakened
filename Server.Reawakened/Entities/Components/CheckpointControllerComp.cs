@@ -25,14 +25,14 @@ public class CheckpointControllerComp : TriggerCoopControllerComp<CheckpointCont
                 return;
             }
 
-        var spawnPoint = player.Room.GetComponentsOfType<SpawnPointComp>().Values.FirstOrDefault(x => x.Index == SpawnPoint);
+        var spawnPoint = Room.GetEntitiesFromType<SpawnPointComp>().FirstOrDefault(x => x.Index == SpawnPoint);
 
         if (spawnPoint != null)
             player.Character.LevelData.SpawnPointId = spawnPoint.Id;
 
         if (player.Room.LastCheckpoint != null)
         {
-            var possibleLastCheckpoint = Room.GetComponentsOfType<CheckpointControllerComp>().Values.FirstOrDefault(c => c.Id == player.Room.LastCheckpoint.Id);
+            var possibleLastCheckpoint = Room.GetEntityFromId<CheckpointControllerComp>(player.Room.LastCheckpoint.Id);
             possibleLastCheckpoint?.Trigger(player, false);
         }
 

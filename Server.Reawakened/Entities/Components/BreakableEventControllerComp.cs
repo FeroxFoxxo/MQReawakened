@@ -17,6 +17,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
+
     private int _health;
     private BreakableObjStatusComp _status;
     private BaseSpawnerControllerComp _spawner;
@@ -32,17 +33,18 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public void PostInit()
     {
-        var entityList = Room.Entities.Values.SelectMany(s => s);
-        foreach (var entity in entityList)
+        var status = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
+
+        if (status != null)
+            _status = status;
+
+        var spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
+
+        if (spawner != null)
         {
-            if (entity.Id == Id && entity is BreakableObjStatusComp status)
-                _status = status;
-            if (entity.Id == Id && entity is BaseSpawnerControllerComp spawner)
-            {
-                _spawner = spawner;
-                _health = _spawner.Health;
-                _isSpawner = true;
-            }
+            _spawner = spawner;
+            _health = _spawner.Health;
+            _isSpawner = true;
         }
     }
 
@@ -67,7 +69,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     }
     public void Destroy(Player player, Room room, string id)
     {
-        room.Entities.Remove(id);
+        room.RemoveEntity(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
     }

@@ -19,10 +19,8 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
     {
         base.InitializeComponent();
 
-        if (Room.Entities.TryGetValue(ArenaObjectId, out var foundEntity))
-            foreach (var component in foundEntity)
-                if (component is ITriggerComp triggerableComp)
-                    triggerable = triggerableComp;
+        foreach (var triggerableComp in Room.GetEntitiesFromId<ITriggerComp>(ArenaObjectId))
+            triggerable = triggerableComp;
 
         if (!IsEnabled)
             IsEnabled = triggerable != null;

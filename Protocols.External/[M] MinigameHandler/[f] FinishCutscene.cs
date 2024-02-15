@@ -16,12 +16,7 @@ public class FinishCutscene : ExternalProtocol
     {
         var arenaObjectId = message[5];
 
-        ITriggerComp trigger = null;
-
-        if (Player.Room.Entities.TryGetValue(arenaObjectId, out var foundEntity))
-            foreach (var component in foundEntity)
-                if (component is ITriggerComp foundTrigger)
-                    trigger = foundTrigger;
+        var trigger = Player.Room.GetEntityFromId<ITriggerComp>(arenaObjectId);
 
         if (trigger == null)
         {

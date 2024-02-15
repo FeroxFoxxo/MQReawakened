@@ -3,6 +3,7 @@ using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
@@ -17,11 +18,11 @@ public class RoomUpdate : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var gameObjectStore = GetGameObjectStore(Player.Room.Entities);
+        var gameObjectStore = GetGameObjectStore(Player.Room);
 
         SendXt("lv", 0, gameObjectStore);
 
-        foreach (var entityComponent in Player.Room.Entities.Values.SelectMany(x => x))
+        foreach (var entityComponent in Player.Room.GetEntitiesFromType<BaseComponent>())
             entityComponent.SendDelayedData(Player);
 
         foreach (var enemy in Player.Room.Enemies.Values)
@@ -29,8 +30,8 @@ public class RoomUpdate : ExternalProtocol
 
         Player.Room.SendCharacterInfo(Player);
 
-        foreach (var npc in Player.Room.GetComponentsOfType<NPCControllerComp>())
-            npc.Value.SendNpcInfo(Player);
+        foreach (var npc in Player.Room.GetEntitiesFromType<NPCControllerComp>())
+            npc.SendNpcInfo(Player);
 
         if (!Player.FirstLogin)
             return;
@@ -39,11 +40,11 @@ public class RoomUpdate : ExternalProtocol
         Player.FirstLogin = false;
     }
 
-    private string GetGameObjectStore(Dictionary<string, List<BaseComponent>> entities)
+    private string GetGameObjectStore(Room room)
     {
         var sb = new SeparatedStringBuilder('&');
 
-        foreach (var gameObject in entities.Where(e => e.Value != null).Select(GetEntity)
+        foreach (var gameObject in room.GetEntities().Where(e => e.Value != null).Select(GetEntity)
                      .Where(gameObject => gameObject.Split('~').Length > 1))
             if (!string.IsNullOrEmpty(gameObject))
                 sb.Append(gameObject);

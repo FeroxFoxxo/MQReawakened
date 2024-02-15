@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Enums;
 
@@ -25,9 +26,7 @@ public class HoopGroup : ExternalProtocol
 
         if (completed)
         {
-            var hoops = Player.Room.Entities.Values.SelectMany(x => x)
-                .Where(x => x is HoopControllerComp)
-                .Select(x => x as HoopControllerComp);
+            var hoops = Player.Room.GetEntitiesFromType<HoopControllerComp>();
 
             var masterHoop = hoops.First(x => x.HoopGroupStringId == hoopGroupName && x.IsMasterController);
 

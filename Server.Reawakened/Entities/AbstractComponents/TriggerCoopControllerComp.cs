@@ -228,7 +228,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
     }
 
     public int GetPhysicalInteractorCount() => _currentPhysicalInteractors.Count;
-    public string[] GetPhysicalInteractorIds() => _currentPhysicalInteractors.ToArray();
+    public string[] GetPhysicalInteractorIds() => [.. _currentPhysicalInteractors];
 
     public virtual void Triggered(Player player, bool isSuccess, bool isActive)
     {
@@ -384,19 +384,13 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
         foreach (var trigger in Triggers)
         {
-            if (Room.Entities.TryGetValue(trigger.Key, out var triggers))
-                if (triggers.Count > 0)
-                {
-                    var triggerableEntities = triggers.OfType<ICoopTriggered>().ToArray();
+            var triggers = Room.GetEntitiesFromId<ICoopTriggered>(trigger.Key);
 
-                    if (triggerableEntities.Length != 0)
-                        foreach (var triggeredEntity in triggerableEntities)
-                            triggeredEntity.TriggerStateChange(trigger.Value, IsActive);
-
-                    continue;
-                }
-
-            LogTriggerErrors(trigger.Key, trigger.Value);
+            if (triggers.Length > 0)
+                foreach (var triggeredEntity in triggers)
+                    triggeredEntity.TriggerStateChange(trigger.Value, IsActive);
+            else
+                LogTriggerErrors(trigger.Key, trigger.Value);
         }
 
         if (player != null)
@@ -419,7 +413,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
     private bool TriggerReceiverActivated()
     {
-        var receivers = Room.GetComponentsOfType<TriggerReceiverComp>();
+        var receivers = Room.GetEntitiesFromType<TriggerReceiverComp>().ToDictionary(x => x.Id, x => x);
 
         var triggers = Triggers
             .Where(r => r.Value == TriggerType.Activate)

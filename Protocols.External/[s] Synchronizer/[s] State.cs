@@ -37,11 +37,6 @@ public class State : ExternalProtocol
             return;
         }
 
-        var room = Player.Room;
-
-        if (room.Entities == null)
-            return;
-
         var syncedData = message[5].Split('&');
         var syncEvent = SyncEventManager.DecodeEvent(syncedData);
 
@@ -50,7 +45,7 @@ public class State : ExternalProtocol
 
         var entityId = syncEvent.TargetID;
 
-        if (room.Players.TryGetValue(entityId, out var newPlayer))
+        if (Player.Room.Players.TryGetValue(entityId, out var newPlayer))
         {
             switch (syncEvent.Type)
             {
@@ -62,7 +57,7 @@ public class State : ExternalProtocol
                         chargeAttackEvent.SpeedY,
                         chargeAttackEvent.ItemId, chargeAttackEvent.ZoneId);
 
-                    room.SendSyncEvent(startEvent);
+                    Player.Room.SendSyncEvent(startEvent);
 
                     Logger.LogWarning("Collision system not yet written and implemented for {Type}.",
                         chargeAttackEvent.Type);
@@ -72,14 +67,12 @@ public class State : ExternalProtocol
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
                     var collisionTarget = notifyCollisionEvent.CollisionTarget;
 
-                    if (room.Entities.TryGetValue(collisionTarget, out var entityComponents))
-                    {
-                        foreach (var component in entityComponents)
+                    if (Player.Room.ContainsEntity(collisionTarget))
+                        foreach (var component in Player.Room.GetEntitiesFromId<BaseComponent>(collisionTarget))
                             component.NotifyCollision(notifyCollisionEvent, newPlayer);
-                    }
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
-                            collisionTarget, room.GetUnknownComponentTypes(collisionTarget));
+                            collisionTarget, Player.Room.GetUnknownComponentTypes(collisionTarget));
                     break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
@@ -108,52 +101,46 @@ public class State : ExternalProtocol
                     RequestRespawn(entityId, syncEvent.TriggerTime);
                     break;
                 case SyncEvent.EventType.PhysicStatus:
-                    foreach (var entity in room.Entities)
+                    foreach (var hazard in Player.Room.GetEntitiesFromType<HazardControllerComp>())
                     {
-                        foreach (var comp in entity.Value)
+                        Enum.TryParse(hazard.HurtEffect, true, out ItemEffectType effectType);
+
+                        if (effectType == ItemEffectType.SlowStatusEffect)
                         {
-                            if (comp is HazardControllerComp hazard)
+                            var distanceXThreshold = 4.0f;
+                            var distanceYThreshold = 1f;
+                            var distanceX = Math.Abs(Player.TempData.Position.X - hazard.Entity.GameObject.ObjectInfo.Position.X + -4.0f);
+                            var distanceY = Math.Abs(Player.TempData.Position.Y - hazard.Entity.GameObject.ObjectInfo.Position.Y + 4);
+
+                            if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold)
                             {
-                                Enum.TryParse(hazard.HurtEffect, true, out ItemEffectType effectType);
+                                var slowStatusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                                    (int)ItemEffectType.SlowStatusEffect, 1, 1, true, hazard.PrefabName, false);
 
-                                if (effectType == ItemEffectType.SlowStatusEffect)
-                                {
-                                    var distanceXThreshold = 4.0f;
-                                    var distanceYThreshold = 1f;
-                                    var distanceX = Math.Abs(Player.TempData.Position.X - comp.Entity.GameObject.ObjectInfo.Position.X + -4.0f);
-                                    var distanceY = Math.Abs(Player.TempData.Position.Y - comp.Entity.GameObject.ObjectInfo.Position.Y + 4);
-
-                                    if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold)
-                                    {
-                                        var slowStatusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                                            (int)ItemEffectType.SlowStatusEffect, 1, 1, true, comp.PrefabName, false);
-
-                                        Player.Room.SendSyncEvent(slowStatusEffect);
-                                    }
-                                }
-                            }
-                            if (comp is CollapsingPlatformComp platform)
-                            {
-                                var distanceXThreshold = 1.0f;
-                                var distanceYThreshold = 1f;
-                                var distanceX = Math.Abs(Player.TempData.Position.X - comp.Entity.GameObject.ObjectInfo.Position.X);
-                                var distanceY = Math.Abs(Player.TempData.Position.Y - comp.Entity.GameObject.ObjectInfo.Position.Y + -1.0f);
-
-                                if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold && !platform.IsBroken)
-                                {
-                                    platform.Collapse(false);
-                                }
+                                Player.Room.SendSyncEvent(slowStatusEffect);
                             }
                         }
                     }
+
+                    foreach (var platform in Player.Room.GetEntitiesFromType<CollapsingPlatformComp>())
+                    {
+                        var distanceXThreshold = 1.0f;
+                        var distanceYThreshold = 1f;
+                        var distanceX = Math.Abs(Player.TempData.Position.X - platform.Entity.GameObject.ObjectInfo.Position.X);
+                        var distanceY = Math.Abs(Player.TempData.Position.Y - platform.Entity.GameObject.ObjectInfo.Position.Y + -1.0f);
+
+                        if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold && !platform.IsBroken)
+                            platform.Collapse(false);
+                    }
+
                     break;
             }
 
-            room.SendSyncEvent(syncEvent, Player);
+            Player.Room.SendSyncEvent(syncEvent, Player);
         }
-        else if (room.Entities.TryGetValue(entityId, out var entityComponents))
+        else if (Player.Room.ContainsEntity(entityId))
         {
-            foreach (var component in entityComponents)
+            foreach (var component in Player.Room.GetEntitiesFromId<BaseComponent>(entityId))
                 component.RunSyncedEvent(syncEvent, Player);
         }
         else
@@ -164,15 +151,15 @@ public class State : ExternalProtocol
                     RequestRespawn(Player.GameObjectId, syncEvent.TriggerTime);
                     break;
                 default:
-                    TraceSyncEventError(entityId, syncEvent, room.LevelInfo,
-                        room.GetUnknownComponentTypes(entityId));
+                    TraceSyncEventError(entityId, syncEvent, Player.Room.LevelInfo,
+                        Player.Room.GetUnknownComponentTypes(entityId));
                     break;
             }
         }
 
         if (entityId != Player.GameObjectId)
             if (ServerConfig.LogAllSyncEvents)
-                LogEvent(syncEvent, entityId, room);
+                LogEvent(syncEvent, entityId, Player.Room);
     }
 
     private void RequestRespawn(string entityId, float triggerTime)
@@ -226,15 +213,12 @@ public class State : ExternalProtocol
 
         var prefabName = string.Empty;
 
-        if (room.Entities.TryGetValue(entityId, out var entityComponents))
+        foreach (var component in room.GetEntitiesFromId<BaseComponent>(entityId))
         {
-            foreach (var component in entityComponents)
-            {
-                entityComponentList.Add($"K:{component.Name}");
+            entityComponentList.Add($"K:{component.Name}");
 
-                if (!string.IsNullOrEmpty(component.PrefabName))
-                    prefabName = component.PrefabName;
-            }
+            if (!string.IsNullOrEmpty(component.PrefabName))
+                prefabName = component.PrefabName;
         }
 
         if (room.UnknownEntities.TryGetValue(entityId, out var unknownEntityComponents))
