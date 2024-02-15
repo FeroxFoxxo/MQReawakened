@@ -30,7 +30,7 @@ public class BuyItems : ExternalProtocol
 
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
-            Player.AddItem(itemDescription, amount);
+            Player.AddItem(itemDescription, amount, ServerConfig);
 
             if (itemDescription.Currency == CurrencyType.Banana)
                 Player.RemoveBananas(itemDescription.RegularPrice * amount);
