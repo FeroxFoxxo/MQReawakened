@@ -40,9 +40,12 @@ public static class NpcExtensions
                     ItemId = (int)q.Value.GetField("_itemId"),
                     LevelId = q.Value.LevelId,
                     ObjectiveType = q.Value.Type,
-                    Order = q.Value.Order
+                    Order = q.Value.Order,
+                    MultiScorePrefabs = []
                 })
             };
+
+            SetMultiscoreObjectives(questModel, itemCatalog);
 
             foreach (var objective in questModel.Objectives)
             {
@@ -87,6 +90,25 @@ public static class NpcExtensions
         logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", quest.Name, questModel.Id);
 
         return questModel;
+    }
+
+    private static void SetMultiscoreObjectives(QuestStatusModel questModel, ItemCatalog itemCatalog)
+    {
+        foreach (var objective in questModel.Objectives.Values)
+        {
+            if (objective.ObjectiveType != ObjectiveEnum.Scoremultiple)
+                continue;
+
+            foreach (var objective2 in questModel.Objectives.Values)
+            {
+                var itemDesc = itemCatalog.GetItemFromId(objective.ItemId);
+
+                if (objective2.ObjectiveType == ObjectiveEnum.Scoremultiple && objective2.Order == objective.Order && itemDesc != null)
+                {
+                    objective2.MultiScorePrefabs.Add(itemDesc.PrefabName);
+                }
+            }
+        }
     }
 
     public static void UpdateNpcsInLevel(this Player player, QuestStatusModel status)

@@ -172,8 +172,6 @@ public class NPCControllerComp : Component<NPCController>
                         break;
                 }
 
-                RunObjectives(player);
-
                 var newStatus = GetQuestStatus(player);
 
                 if (newStatus is NPCStatus.QuestCompleted or NPCStatus.QuestAvailable)
@@ -188,6 +186,8 @@ public class NPCControllerComp : Component<NPCController>
                 Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", NpcName, Id);
                 break;
         }
+
+        RunObjectives(player);
     }
 
     public void RunObjectives(Player player)

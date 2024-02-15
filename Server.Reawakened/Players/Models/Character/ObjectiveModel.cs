@@ -16,4 +16,6 @@ public class ObjectiveModel
 
     public int LevelId { get; set; }
     public int ItemId { get; set; }
+
+    public List<string> MultiScorePrefabs { get; set; }
 }
