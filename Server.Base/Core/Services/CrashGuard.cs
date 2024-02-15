@@ -7,12 +7,13 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Extensions;
 using Server.Base.Network.Services;
+using Server.Base.Worlds;
 using System.Diagnostics;
 
 namespace Server.Base.Core.Services;
 
 public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink,
-    IServiceProvider services, InternalRConfig config, InternalRwConfig rwConfig) : IService
+    IServiceProvider services, InternalRConfig config, InternalRwConfig rwConfig, World world) : IService
 {
     private readonly Module[] _modules = services.GetServices<Module>().ToArray();
 
@@ -22,6 +23,7 @@ public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, Eve
     {
         GenerateCrashReport(e);
 
+        world.Save(false);
         Backup();
 
         if (rwConfig.RestartOnCrash)
