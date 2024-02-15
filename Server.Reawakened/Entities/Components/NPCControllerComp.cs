@@ -142,6 +142,7 @@ public class NPCControllerComp : Component<NPCController>
 
     public void TalkToNpc(Player player)
     {
+        RunObjectives(player);
         player.CheckAchievement(AchConditionType.Talkto, PrefabName, Logger);
 
         switch (NpcType)
@@ -161,6 +162,7 @@ public class NPCControllerComp : Component<NPCController>
                         Logger.LogDebug("[IN PROGRESS QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
                     case NPCStatus.QuestCompleted:
+                        RunObjectives(player);
                         ValidateQuest(player);
                         Logger.LogDebug("[COMPLETED QUEST] [{Name} ({Id})]", NpcName, Id);
                         break;
@@ -186,8 +188,6 @@ public class NPCControllerComp : Component<NPCController>
                 Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", NpcName, Id);
                 break;
         }
-
-        RunObjectives(player);
     }
 
     public void RunObjectives(Player player)
