@@ -11,6 +11,7 @@ public class InternalRwConfig : IRwConfig
     public int Port { get; set; }
     public string[] UnhandledPackets { get; set; }
     public bool IndentSaves { get; set; }
+    public bool RestartOnCrash { get; set; }
 
     public InternalRwConfig()
     {
@@ -20,6 +21,7 @@ public class InternalRwConfig : IRwConfig
         ServerAddress = string.Empty;
         Port = 9339;
         IndentSaves = true;
+        RestartOnCrash = true;
     }
 
     public string GetHostName() => $"{ServerAddress}:{Port}";
