@@ -1,11 +1,7 @@
 ﻿using A2m.Server;
-using Server.Base.Core.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.Bundles;
-using System.Linq;
 using static CollectibleController;
 
 namespace Server.Reawakened.Entities.Components;

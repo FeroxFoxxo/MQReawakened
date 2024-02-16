@@ -4,7 +4,6 @@ using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Protocols.External._l__ExtLevelEditor;

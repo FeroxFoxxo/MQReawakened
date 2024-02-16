@@ -1,38 +1,36 @@
 ﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Models;
 using Server.Base.Worlds.EventArguments;
+using System.Text.Json;
 
 namespace Server.Base.Core.Services;
 
-public abstract class DataHandler<T> : IService where T : PersistantData
+public abstract class DataHandler<T>(EventSink sink, ILogger<T> logger, InternalRConfig rConfig, InternalRwConfig rwConfig) : IService where T : PersistantData
 {
-    public readonly ILogger<T> Logger;
-    public readonly EventSink Sink;
-    public readonly InternalRConfig RConfig;
-    public readonly InternalRwConfig RwConfig;
+    public readonly ILogger<T> Logger = logger;
+    public readonly EventSink Sink = sink;
+    public readonly InternalRConfig RConfig = rConfig;
+    public readonly InternalRwConfig RwConfig = rwConfig;
 
-    public Dictionary<int, T> Data;
+    public Dictionary<int, T> Data = [];
+
+    private JsonSerializerOptions jsonSerializerOptions;
 
     public abstract bool HasDefault { get; }
-
-    protected DataHandler(EventSink sink, ILogger<T> logger, InternalRConfig rConfig, InternalRwConfig rwConfig)
-    {
-        Sink = sink;
-        Logger = logger;
-        RConfig = rConfig;
-        RwConfig = rwConfig;
-        Data = [];
-    }
 
     public virtual void Initialize()
     {
         Sink.WorldLoad += Load;
         Sink.WorldSave += Save;
         Sink.CreateData += () => CreateInternal($"new {typeof(T).Name.ToLower()}");
+
+        jsonSerializerOptions = new JsonSerializerOptions()
+        {
+            WriteIndented = RwConfig.IndentSaves
+        };
     }
 
     public string GetFileName() =>
@@ -49,7 +47,7 @@ public abstract class DataHandler<T> : IService where T : PersistantData
                 using StreamReader streamReader = new(filePath, false);
                 var contents = streamReader.ReadToEnd();
 
-                Data = JsonConvert.DeserializeObject<Dictionary<int, T>>(contents) ??
+                Data = JsonSerializer.Deserialize<Dictionary<int, T>>(contents, jsonSerializerOptions) ??
                        throw new InvalidOperationException();
 
                 var count = Data.Count;
@@ -110,9 +108,9 @@ public abstract class DataHandler<T> : IService where T : PersistantData
 
         using StreamWriter streamWriter = new(filePath, false);
 
-        streamWriter.Write(
-            JsonConvert.SerializeObject(Data, RwConfig.IndentSaves ? Formatting.Indented : Formatting.None)
-        );
+        var json = JsonSerializer.Serialize(Data, jsonSerializerOptions);
+
+        streamWriter.Write(json);
 
         streamWriter.Close();
     }
