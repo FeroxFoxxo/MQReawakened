@@ -7,7 +7,7 @@ We invite you to join our team! Everyone is welcome to contribute code via pull 
 
 We grant commit access to people who have gained our trust and demonstrated a commitment to MQReawakened.
 
-We communicate primarily over [GitHub Projects](https://github.com/FeroxFoxxo/MQReawakened/projects).
+We communicate primarily over [Discord](https://discord.gg/sA4kmsxC7N).
 
 Developing for MQReawakened
 ----------------------
