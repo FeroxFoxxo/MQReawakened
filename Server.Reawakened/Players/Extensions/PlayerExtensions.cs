@@ -345,17 +345,11 @@ public static class PlayerExtensions
                     player.SendXt("no", quest.Id, objectiveKVP.Key);
 
                     hasObjComplete = true;
-
-                    UpdateQuestCollectiblesInRoom(player);
                 }
                 else
-                {
                     player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);
-
-                    UpdateActiveObjectives(player, prefabName);
-                }
             }
-              
+
             if (hasObjComplete)
             {
                 if (!quest.Objectives.Any(o => !o.Value.Completed))
@@ -368,54 +362,6 @@ public static class PlayerExtensions
         }
     }
 
-    public static void UpdateActiveObjectives(Player player, string prefabName)
-    {
-        foreach (var questCollectible in player.Room.GetComponentsOfType<QuestCollectibleControllerComp>().Values)
-        {
-            foreach (var objective in player.Character.Data.QuestLog.SelectMany(x => x.Objectives.Values))
-            {
-                var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(prefabName);
-
-                if (objective.GameObjectId.ToString() == questCollectible.Id &&
-                    objective.GameObjectLevelId == player.Room.LevelInfo.LevelId ||
-                    item != null && item.ItemId == objective.ItemId)
-                {
-                    if (player.TempData.ActiveObjectives.ContainsKey(questCollectible.Id))
-                    {
-                        questCollectible.CollectedState = (int)CollectibleState.Collected;
-
-                        player.SendSyncEventToPlayer(new Trigger_SyncEvent(questCollectible.Id.ToString(), player.Room.Time,
-                        true, player.GameObjectId.ToString(), false));
-
-                        player.TempData.ActiveObjectives.Remove(questCollectible.Id);
-                    }
-                }
-            }
-        }
-    }
-
-    public static void UpdateQuestCollectiblesInRoom(Player player)
-    {
-        foreach (var questCollectible in player.Room.GetComponentsOfType<QuestCollectibleControllerComp>().Values)
-        {
-            foreach (var objective in player.Character.Data.QuestLog.Where(x => x.Id == player.Character.Data.ActiveQuestId).SelectMany(x => x.Objectives.Values))
-            {
-                var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(questCollectible.PrefabName);
-
-                if (objective.GameObjectId.ToString() == questCollectible.Id &&
-                    objective.GameObjectLevelId == player.Room.LevelInfo.LevelId ||
-                    item != null && item.ItemId == objective.ItemId)
-                {
-                    questCollectible.CollectedState = (int)CollectibleState.Collected;
-
-                    player.SendSyncEventToPlayer(new Trigger_SyncEvent(questCollectible.Id.ToString(), player.Room.Time,
-                        false, player.GameObjectId.ToString(), false));
-                }
-            }
-        }
-
-        player.TempData.ActiveObjectives.Clear();
-    }
 
     public static void UpdateEquipment(this Player sentPlayer)
     {
