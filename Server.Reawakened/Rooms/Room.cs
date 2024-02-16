@@ -402,10 +402,14 @@ public class Room : Timer
     public Dictionary<string, List<BaseComponent>> GetEntities() => _entities;
 
     public T GetEntityFromId<T>(string id) where T : class =>
-        _entities[id].FirstOrDefault(x => x is T) as T;
+        _entities.TryGetValue(id, out var entities) ?
+            entities.FirstOrDefault(x => x is T) as T :
+            null;
 
     public T[] GetEntitiesFromId<T>(string id) where T : class =>
-        _entities[id].Where(x => x is T).Select(x => x as T).ToArray();
+        _entities.TryGetValue(id, out var entities) ?
+            entities.Where(x => x is T).Select(x => x as T).ToArray() :
+            [];
 
     public T[] GetEntitiesFromType<T>() where T : class =>
         typeof(T) == typeof(BaseComponent)
