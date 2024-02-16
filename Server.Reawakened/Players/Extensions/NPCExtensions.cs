@@ -5,9 +5,11 @@ using Server.Base.Logging;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text;
 using static A2m.Server.QuestStatus;
+using static CollectibleController;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -90,9 +92,25 @@ public static class NpcExtensions
 
         logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", quest.Name, questModel.Id);
 
+        player.Character.Data.ActiveQuestId = questModel.Id;
+
+        UpdateActiveObjectives(player);
+
         return questModel;
     }
 
+    public static void UpdateActiveObjectives(Player player)
+    {
+        foreach (var questCollectible in player.Room?.GetComponentsOfType<QuestCollectibleControllerComp>().Values)
+        {
+            var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(questCollectible.PrefabName);
+
+            foreach (var objective in player.Character.Data.QuestLog.SelectMany(x => x.Objectives.Values).Where
+                (x => x.GameObjectId.ToString() == questCollectible.Id || item != null && x.ItemId == item.ItemId))
+                questCollectible.UpdateActiveObjectives(player, CollectibleState.Active);
+        }
+    }
+  
     private static void SetMultiscoreObjectives(QuestStatusModel questModel, ItemCatalog itemCatalog)
     {
         foreach (var objective in questModel.Objectives.Values)

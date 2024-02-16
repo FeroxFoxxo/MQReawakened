@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;

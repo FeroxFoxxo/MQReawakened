@@ -1,4 +1,4 @@
-﻿using A2m.Server;
+using A2m.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Enums;
