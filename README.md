@@ -56,10 +56,15 @@ When hosting a local server, you will have access to all commands by default (ac
 
 MQ consists of the following components:
 
-* A web browser compatible with the old NPAPI plugin interface
-* A `.unity3d` bundle that contains the game code and essential resources (loading screen, etc.)
 * A login server that speaks the MQ network protocol over TCP
 * A shard server that does the same on another port
+
+#### For 2012
+* A web browser compatible with the old NPAPI plugin interface
+* A `.unity3d` bundle that contains the game code and essential resources (loading screen, etc.)
+
+#### For 2013/2014
+* A Unity executable file, typically in the /game/ folder, as well as a launcher.
 
 Both the login and shard server run on the same Asp.Net server application, seen in this git repository.
 
