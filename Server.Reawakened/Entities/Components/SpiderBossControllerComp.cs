@@ -25,13 +25,20 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
 
     public void RecievedTrigger(bool triggered)
     {
+        if (Room == null)
+            return;
+
         if (triggered)
         {
             var delay = 0f;
 
             if (Teaser)
             {
-                var entrance = Room.Entities[Id].First(x => x is AIStateSpiderTeaserEntranceComp) as AIStateSpiderTeaserEntranceComp;
+                var entrance = Room.GetEntityFromId<AIStateSpiderTeaserEntranceComp>(Id);
+
+                if (entrance == null)
+                    return;
+
                 delay = entrance.IntroDuration + entrance.DelayBeforeEntranceDuration;
 
                 GoToNextState(new GameObjectComponents() {
@@ -40,7 +47,11 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
             }
             else
             {
-                var entrance = Room.Entities[Id].First(x => x is AIStateSpiderEntranceComp) as AIStateSpiderEntranceComp;
+                var entrance = Room.GetEntityFromId<AIStateSpiderEntranceComp>(Id);
+
+                if (entrance == null)
+                    return;
+
                 delay = entrance.IntroDuration + entrance.DelayBeforeEntranceDuration;
 
                 GoToNextState(new GameObjectComponents() {
@@ -56,8 +67,11 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
     {
         if (Room == null)
             return;
-        
-        var drop = Room.Entities[Id].First(x => x is AIStateSpiderDropComp) as AIStateSpiderDropComp;
+
+        var drop = Room.GetEntityFromId<AIStateSpiderDropComp>(Id);
+
+        if (drop == null)
+            return;
 
         Position.Y = drop.FloorY;
 
@@ -69,12 +83,19 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
 
     public void Destroy(Player player, Room room, string id)
     {
+        if (room == null)
+            return;
+
         var delay = 0f;
         var doorId = 0;
 
         if (Teaser)
         {
-            var retreat = Room.Entities[Id].First(x => x is AIStateSpiderTeaserRetreatComp) as AIStateSpiderTeaserRetreatComp;
+            var retreat = room.GetEntityFromId<AIStateSpiderTeaserRetreatComp>(Id);
+
+            if (retreat == null)
+                return;
+
             delay = retreat.TalkDuration + retreat.DieDuration + retreat.TransTime;
             doorId = retreat.DoorToOpenID;
 
@@ -84,7 +105,11 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
         }
         else
         {
-            var retreat = Room.Entities[Id].First(x => x is AIStateSpiderRetreatComp) as AIStateSpiderRetreatComp;
+            var retreat = Room.GetEntityFromId<AIStateSpiderRetreatComp>(Id);
+
+            if (retreat == null)
+                return;
+
             delay = retreat.TalkDuration + retreat.DieDuration + retreat.TransTime;
             doorId = retreat.DoorToOpenID;
 
@@ -104,14 +129,15 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
         if (Room == null)
             return;
 
-        if (Room.Entities.TryGetValue(doorId.ToString(), out var foundTrigger))
-            foreach (var comp in foundTrigger)
-                if (comp is TriggerReceiverComp trigReciev)
-                    trigReciev.Trigger(true);
+        foreach (var trigReciev in Room.GetEntitiesFromId<TriggerReceiverComp>(doorId.ToString()))
+            trigReciev.Trigger(true);
     }
 
     public void GoToNextState(GameObjectComponents NewState)
     {
+        if (Room == null)
+            return;
+
         var syncEvent2 = new AiStateSyncEvent()
         {
             InStates = PreviousState,
@@ -119,7 +145,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
         };
 
         PreviousState = NewState;
-
+        
         Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, Room));
     }
 }

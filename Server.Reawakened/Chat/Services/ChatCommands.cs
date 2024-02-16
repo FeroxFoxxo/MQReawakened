@@ -1,6 +1,8 @@
 using A2m.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Enums;
+using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
 using Server.Base.Worlds.Services;
@@ -45,7 +47,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("openDoors", "", OpenDoors));
         AddCommand(new ChatCommand("getAllItems", "[categoryValue]", GetAllItems));
         AddCommand(new ChatCommand("godmode", "", GodMode));
-        AddCommand(new ChatCommand("save", "", SaveLevel));
+        AddCommand(new ChatCommand("save", "[owner only]", SaveLevel));
         AddCommand(new ChatCommand("openVines", "", OpenVines));
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
@@ -179,15 +181,12 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool OpenDoors(Player player, string[] args)
     {
-        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+        foreach (var triggerEntity in player.Room.GetEntitiesFromType<TriggerReceiverComp>())
         {
-            if (entityComponent is TriggerReceiverComp triggerEntity)
-            {
-                if (config.IgnoredDoors.Contains(entityComponent.PrefabName))
-                    continue;
+            if (config.IgnoredDoors.Contains(triggerEntity.PrefabName))
+                continue;
 
-                triggerEntity.Trigger(true);
-            }
+            triggerEntity.Trigger(true);
         }
 
         return true;
@@ -195,14 +194,10 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool ForceSpawners(Player player, string[] args)
     {
-        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+        foreach (var spawner in player.Room.GetEntitiesFromType<BaseSpawnerControllerComp>())
         {
-            if (entityComponent is BaseSpawnerControllerComp spawner)
-            {
-                var spawn = new Spawn_SyncEvent(spawner.Id.ToString(), player.Room.Time, 1);
-
-                player.Room.SendSyncEvent(spawn);
-            }
+            var spawn = new Spawn_SyncEvent(spawner.Id.ToString(), player.Room.Time, 1);
+            player.Room.SendSyncEvent(spawn);
         }
 
         return true;
@@ -210,8 +205,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool OpenVines(Player player, string[] args)
     {
-        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
-            if (entityComponent is MysticCharmTargetComp vineEntity)
+        foreach (var vineEntity in player.Room.GetEntitiesFromType<MysticCharmTargetComp>())
                 vineEntity.Charm(player);
 
         return true;
@@ -408,6 +402,9 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool SaveLevel(Player player, string[] args)
     {
+        if (player.NetState.Get<Account>().AccessLevel < AccessLevel.Owner)
+            return false;
+
         saves.Save();
         return true;
     }
@@ -456,9 +453,6 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         return true;
     }
 
-    [GeneratedRegex("[^A-Za-z0-9]+")]
-    private static partial Regex AlphanumericRegex();
-
     private bool ClosestEntity(Player player, string[] args)
     {
         var plane = player.GetPlaneEntities();
@@ -483,7 +477,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         var count = 0;
 
-        if (closestGameObjects.Count() > config.MaximumEntitiesToReturnLog)
+        if (closestGameObjects.Count > config.MaximumEntitiesToReturnLog)
             closestGameObjects = closestGameObjects.Take(config.MaximumEntitiesToReturnLog).ToList();
 
         closestGameObjects.Reverse();

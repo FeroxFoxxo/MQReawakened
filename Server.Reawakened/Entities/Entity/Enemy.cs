@@ -60,18 +60,21 @@ public abstract class Enemy : IDestructible
         Entity = baseEntity;
         EnemyController = (EnemyControllerComp)baseEntity;
 
-        var entityList = room.Entities.Values.SelectMany(s => s);
+        var global = room.GetEntityFromId<AIStatsGlobalComp>(Id);
 
-        foreach (var entity in entityList.Where(x => x.Id == Id))
-        {
-            if (entity is AIStatsGlobalComp global)
-                Global = global;
-            else if (entity is AIStatsGenericComp generic)
-                Generic = generic;
-            else if (entity is InterObjStatusComp status)
-                Status = status;
-        }
+        if (global != null)
+            Global = global;
 
+        var generic = room.GetEntityFromId<AIStatsGenericComp>(Id);
+
+        if (generic != null)
+            Generic = generic;
+
+        var status = room.GetEntityFromId<InterObjStatusComp>(Id);
+
+        if (status != null)
+            Status = status;
+        
         //Position Info
         ParentPlane = Entity.ParentPlane;
         Position = new Vector3(Entity.Position.X, Entity.Position.Y, Entity.Position.Z);
@@ -199,14 +202,9 @@ public abstract class Enemy : IDestructible
 
         if (Health <= 0)
         {
-            if (EnemyController.OnDeathTargetID != null && Room.Entities.TryGetValue(EnemyController.OnDeathTargetID, out var foundTrigger) && EnemyController.OnDeathTargetID != "0")
-            {
-                foreach (var component in foundTrigger)
-                {
-                    if (component is TriggerReceiverComp trigger)
-                        trigger.Trigger(true);
-                }
-            }
+            if (EnemyController.OnDeathTargetID is not null and not "0")
+                foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(EnemyController.OnDeathTargetID))
+                    trigger.Trigger(true);
 
             //Temp values for now
             Room.SendSyncEvent(SyncBuilder.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
@@ -461,7 +459,7 @@ public abstract class Enemy : IDestructible
         player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, Logger);
         player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, Logger);
         
-        room.Entities.Remove(id);
+        room.RemoveEntity(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
     }

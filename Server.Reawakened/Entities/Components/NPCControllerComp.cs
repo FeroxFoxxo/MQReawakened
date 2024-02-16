@@ -144,7 +144,6 @@ public class NPCControllerComp : Component<NPCController>
     public void TalkToNpc(Player player)
     {
         RunObjectives(player);
-
         player.CheckAchievement(AchConditionType.Talkto, PrefabName, Logger);
 
         switch (NpcType)
@@ -174,8 +173,6 @@ public class NPCControllerComp : Component<NPCController>
                     default:
                         break;
                 }
-
-                RunObjectives(player);
 
                 var newStatus = GetQuestStatus(player);
 
@@ -433,7 +430,7 @@ public class NPCControllerComp : Component<NPCController>
                     {
                         var newQuest = QuestCatalog.GetQuestData(item.Key);
 
-                        if (newQuest != null)
+                        if (newQuest != null && player.Character.Data.CompletedQuests.Any(x => newQuest.PreviousQuests.Any(y => y.Key == x)))
                             player.AddQuest(newQuest, Logger, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}");
                     }
                 }

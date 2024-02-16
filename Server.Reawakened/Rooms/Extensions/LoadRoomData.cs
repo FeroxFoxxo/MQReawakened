@@ -260,21 +260,6 @@ public static class LoadRoomData
         return componentList;
     }
 
-    public static Dictionary<string, T> GetComponentsOfType<T>(this Room room) where T : class
-    {
-        var type = typeof(T);
-
-        var components = room.Entities.Values.SelectMany(t => t).Where(t => t is T).ToArray();
-
-        if (components.Length > 0)
-            return components.ToDictionary(x => x.Id, x => x as T);
-
-        room.Logger.LogError("Could not find components with type {TypeName}. Returning empty. " +
-                             "Possible types: {Types}", type.Name, string.Join(", ", room.Entities.Keys));
-
-        return [];
-    }
-
     public static string GetUnknownComponentTypes(this Room room, string id)
     {
         var entityInfo = new Dictionary<string, IEnumerable<string>>();

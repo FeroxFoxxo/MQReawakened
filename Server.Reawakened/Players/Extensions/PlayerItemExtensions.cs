@@ -61,28 +61,29 @@ public static class PlayerItemExtensions
 
         player.Room.SendSyncEvent(dropItem);
 
-        foreach (var entity in player.Room.Entities)
+        var components = new List<BaseComponent>();
+
+        components.AddRange(player.Room.GetEntitiesFromType<HazardControllerComp>());
+        components.AddRange(player.Room.GetEntitiesFromType<BreakableEventControllerComp>());
+
+        foreach (var component in components.Where(comp => Vector3Model.Distance(dropData.Position, comp.Position) <= 5.4f))
         {
-            foreach (var component in entity.Value
-                .Where(comp => Vector3Model.Distance(dropData.Position, comp.Position) <= 5.4f))
+            var prefabName = component.PrefabName;
+            var objectId = component.Id;
+
+            if (component is HazardControllerComp or BreakableEventControllerComp)
             {
-                var prefabName = component.PrefabName;
-                var objectId = component.Id;
-
-                if (component is HazardControllerComp or BreakableEventControllerComp)
+                var bombData = new BombData()
                 {
-                    var bombData = new BombData()
-                    {
-                        PrefabName = prefabName,
-                        Component = component,
-                        ObjectId = objectId,
-                        Damage = dropData.UsedItem.GetDamageAmount(dropData.Logger, dropData.ServerRConfig),
-                        Player = player,
-                        Logger = dropData.Logger
-                    };
+                    PrefabName = prefabName,
+                    Component = component,
+                    ObjectId = objectId,
+                    Damage = dropData.UsedItem.GetDamageAmount(dropData.Logger, dropData.ServerRConfig),
+                    Player = player,
+                    Logger = dropData.Logger
+                };
 
-                    dropData.TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2850), TimeSpan.Zero, 1);
-                }
+                dropData.TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2850), TimeSpan.Zero, 1);
             }
         }
     }

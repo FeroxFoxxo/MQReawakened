@@ -42,9 +42,12 @@ public static class NpcExtensions
                     ItemId = (int)q.Value.GetField("_itemId"),
                     LevelId = q.Value.LevelId,
                     ObjectiveType = q.Value.Type,
-                    Order = q.Value.Order
+                    Order = q.Value.Order,
+                    MultiScorePrefabs = []
                 })
             };
+
+            SetMultiscoreObjectives(questModel, itemCatalog);
 
             foreach (var objective in questModel.Objectives)
             {
@@ -79,10 +82,11 @@ public static class NpcExtensions
                 LoggerType.Error);
         }
 
-        if (questModel.QuestStatus == QuestState.NOT_START)
-            questModel.QuestStatus = QuestState.IN_PROCESSING;
+        questModel.QuestStatus = questModel.Objectives.Any(x => !x.Value.Completed) ?
+            QuestState.IN_PROCESSING :
+            QuestState.TO_BE_VALIDATED;
 
-        player.SendXt("na", quest, true);
+        player.SendXt("na", questModel, true);
 
         player.UpdateNpcsInLevel(quest);
 
@@ -106,6 +110,23 @@ public static class NpcExtensions
                 questCollectible.UpdateActiveObjectives(player, CollectibleState.Active);
         }
     }
+  
+    private static void SetMultiscoreObjectives(QuestStatusModel questModel, ItemCatalog itemCatalog)
+    {
+        foreach (var objective in questModel.Objectives.Values)
+        {
+            if (objective.ObjectiveType != ObjectiveEnum.Scoremultiple)
+                continue;
+
+            foreach (var objective2 in questModel.Objectives.Values)
+            {
+                var itemDesc = itemCatalog.GetItemFromId(objective.ItemId);
+
+                if (objective2.ObjectiveType == ObjectiveEnum.Scoremultiple && objective2.Order == objective.Order && itemDesc != null)
+                    objective2.MultiScorePrefabs.Add(itemDesc.PrefabName);
+            }
+        }
+    }
 
     public static void UpdateNpcsInLevel(this Player player, QuestStatusModel status)
     {
@@ -116,31 +137,24 @@ public static class NpcExtensions
 
     public static void UpdateAllNpcsInLevel(this Player player)
     {
-        foreach (var npc in GetNpcs(player))
+        if (player.Room == null)
+            return;
+
+        foreach (var npc in player.Room.GetEntitiesFromType<NPCControllerComp>())
             npc.SendNpcInfo(player);
     }
 
     public static void UpdateNpcsInLevel(this Player player, QuestDescription quest)
     {
-        if (quest != null)
-            foreach (var npc in GetNpcs(player)
+        if (player.Room == null || quest == null)
+            return;
+
+        foreach (var npc in player.Room.GetEntitiesFromType<NPCControllerComp>()
                 .Where(e =>
                     e.Id == quest.QuestGiverGoId.ToString() || e.Name == quest.QuestgGiverName ||
-                    e.Id == quest.ValidatorGoId.ToString() || e.Name == quest.ValidatorName)
+                    e.Id == quest.ValidatorGoId.ToString() || e.Name == quest.ValidatorName
                 )
-                npc.SendNpcInfo(player);
-    }
-
-    public static List<NPCControllerComp> GetNpcs(Player player)
-    {
-        if (player.Room != null && player.Character != null)
-            if (player.Room.Entities != null)
-                return player.Room.Entities
-                    .SelectMany(e => e.Value)
-                    .Where(e => e is NPCControllerComp)
-                    .Select(e => e as NPCControllerComp)
-                    .ToList();
-
-        return [];
+            )
+            npc.SendNpcInfo(player);
     }
 }

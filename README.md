@@ -26,25 +26,65 @@
 
 ### Information
 
-MQReawakened is a community-driven server emulator meant for **non-commercial, educational use only**. It is meant to show how games like these are created, through reverse engineering how they work. It is not, and should never be, commercialised in any way. It is fundamentally transformative from the original client it's based on, and only shares similar data models with it. Users **must provide** the original game's code, assets, executables etc themselves.
+MQReawakened is a community-driven server emulator meant for **non-commercial, educational use only**. It is meant to show how games like these are created, through reverse engineering how they work. It is not, and should never be, commercialised in any way. It is fundamentally transformative from the original client, as it handles the inverse of requests, and only shares similar data models. Users **must provide** the original game's code, assets, executables etc themselves.
 
 Please email me at feroxfoxxo@gmail.com if anything is in breach, which will be rectified ASAP.
 
 #### Developer information
 
-~~We use [GitHub Projects](https://github.com/FeroxFoxxo/MQReawakened/projects) for managing what teams are working on, and [Github Wiki](https://github.com/FeroxFoxxo/MQReawakened/wiki) for documenting the codebase.~~ We've moved to using [Discord](https://discord.gg/gSbZ8apE6V) to handle this!
+We've moved to using [Discord](https://discord.gg/gSbZ8apE6V) to handle our to-do list!
 
 If you have anything you wish to report, please submit an issue through [the repo's issue system](https://github.com/FeroxFoxxo/MQReawakened/issues), and it will be assigned to someone accordingly.
+
+## Contributing
+
+If you'd like to contribute to this project, please read [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Prerequisites
 
 - You **must** have your own copy of the game and its associated asset bundles.
 - You **must** have the associated DLL for the game added to your server project, as to ensure it doesn't contain any copywritten code itself.
 
+## Gameplay
+
+The goal of the project is to faithfully recreate the game as it was at the time of the targeted build.
+While most features are implemented and the game is playable start to finish, there may be missing functionality or bugs present.
+
+When hosting a local server, you will have access to all commands by default (account level: owner).
+
+## Architecture
+
+MQ consists of the following components:
+
+* A web browser compatible with the old NPAPI plugin interface
+* A `.unity3d` bundle that contains the game code and essential resources (loading screen, etc.)
+* A login server that speaks the MQ network protocol over TCP
+* A shard server that does the same on another port
+
+Both the login and shard server run on the same Asp.Net server application, seen in this git repository.
+
+The original game made use of the player's actual web browser to launch the game, but since then the NPAPI plugin interface the game relied on has been deprecated and is no longer available in most modern browsers. MQ gets around this issue by distributing an older version of Electron, a software package that is essentially a specialized web browser.
+
+The browser/Electron client opens a web page with an `<embed>` tag of the appropriate MIME type, where the `src` param is the address of the game's `.unity3d` entrypoint. This triggers the browser to load an NPAPI plugin that handles said MIME type, in this case the Unity Web Player.
+
+*(similarly to https://github.com/OpenFusionProject/OpenFusion)*
+
 ### Other information
 
 - You may also wish to download ILSpy to peek around any dependencies of the original game, to understand how they work, as to reverse engineer them in order to develop a server side implementation.
 - https://sourceforge.net/projects/ilspy.mirror
+
+### Running the game client on Linux
+
+While the MQ server supports both Windows and Linux (and other Unix-like systems), the game client natively supports only Windows because of the NPAPI Unity Web Player plugin needed to run the game. Nevertheless, the client runs very well in Wine if configured properly.
+
+Due to the plethora of Wine prefix managers that people use (in addition to the option of just configuring your Wine prefix by hand), there's a number of ways you could set the game up. Regardless of which you prefer, for MQ there's a handful of dependencies you need to satisfy, which are common to all of them:
+
+- Electron (OpenFusionClient.exe) needs allfonts to run
+- - It also needs to be run with the following arguments: --no-sandbox --disable-gpu
+- Using DXVK instead of wined3d is highly recommended to avoid graphical glitches like mission indicator rings not rendering
+
+While we have not written a full guide of how to do this yet, visiting <a href="https://github.com/OpenFusionProject/OpenFusion/wiki/Running-the-game-client-on-Linux">OpenFusion's guide in how to do this</a>, another Unity WebPlayer MMO, may provide a good enough understanding of where to start.
 
 ### Open Source Licenses
 

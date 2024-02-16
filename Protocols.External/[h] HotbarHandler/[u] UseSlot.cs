@@ -215,12 +215,13 @@ public class UseSlot : ExternalProtocol
                 var isColliding = meleeHitbox.CheckCollision(objCollider);
 
                 if (isColliding)
-                    if (Player.Room.Entities.TryGetValue(obj.ObjectInfo.ObjectId, out var entityComponents))
-                        foreach (var component in entityComponents)
-                            if (component is TriggerCoopControllerComp triggerCoopEntity)
-                                triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
-                            else if (component is EnemyControllerComp enemyEntity)
-                                enemyEntity.Damage(weaponDamage, Player);
+                {
+                    foreach (var triggerCoopEntity in Player.Room.GetEntitiesFromId<TriggerCoopControllerComp>(obj.ObjectInfo.ObjectId))
+                        triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
+
+                    foreach (var enemyEntity in Player.Room.GetEntitiesFromId<EnemyControllerComp>(obj.ObjectInfo.ObjectId))
+                        enemyEntity.Damage(weaponDamage, Player);
+                }
             }
         }
     }

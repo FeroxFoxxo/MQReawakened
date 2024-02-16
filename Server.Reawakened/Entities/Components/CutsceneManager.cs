@@ -39,9 +39,7 @@ public class CutsceneManagerComp : TriggerCoopControllerComp<CutsceneManager>
     public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
         foreach (var entity in TriggeredRewards)
-            if (Room.Entities.TryGetValue(entity.ToString(), out var foundTrigger))
-                foreach (var component in foundTrigger)
-                    if (component is TriggerReceiverComp trigger)
-                        trigger.Trigger(true);
+            foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(entity.ToString()))
+                trigger.Trigger(true);
     }
 }

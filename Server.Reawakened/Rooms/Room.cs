@@ -31,7 +31,6 @@ public class Room : Timer
     public HashSet<string> GameObjectIds;
 
     public Dictionary<string, Player> Players;
-    public Dictionary<string, List<BaseComponent>> Entities;
     public Dictionary<string, TicklyEntity> Projectiles;
     public Dictionary<string, BaseCollider> Colliders;
     public ILogger<Room> Logger;
@@ -40,6 +39,8 @@ public class Room : Timer
     public Dictionary<string, List<string>> UnknownEntities;
     public Dictionary<string, Enemy> Enemies;
     public Dictionary<string, List<List<BaseComponent>>> DuplicateEntities;
+
+    private readonly Dictionary<string, List<BaseComponent>> _entities;
 
     public SpawnPointComp DefaultSpawn { get; set; }
     public InternalColliders ColliderCatalog;
@@ -71,7 +72,7 @@ public class Room : Timer
             return;
 
         Planes = LevelInfo.LoadPlanes(_config);
-        Entities = this.LoadEntities(services);
+        _entities = this.LoadEntities(services);
         Projectiles = [];
         Colliders = this.LoadTerrainColliders();
         Enemies = [];
@@ -85,13 +86,13 @@ public class Room : Timer
                 )
             GameObjectIds.Add(gameObjectId);
 
-        foreach (var component in Entities.Values.SelectMany(x => x))
+        foreach (var component in _entities.Values.SelectMany(x => x))
             component.InitializeComponent();
 
-        foreach (var component in Entities.Values.SelectMany(x => x))
+        foreach (var component in _entities.Values.SelectMany(x => x))
             component.DelayedComponentInitialization();
 
-        foreach (var component in Entities.Values.SelectMany(x => x))
+        foreach (var component in _entities.Values.SelectMany(x => x))
         {
             if (component.Name == config.EnemyComponentName)
             {
@@ -144,9 +145,9 @@ public class Room : Timer
 
         }
 
-        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
+        var spawnPoints = GetEntitiesFromType<SpawnPointComp>();
 
-        DefaultSpawn = spawnPoints.Values.MinBy(p => p.Index);
+        DefaultSpawn = spawnPoints.MinBy(p => p.Index);
 
         if (DefaultSpawn == null)
             Logger.LogError("Could not find default spawn for level: {RoomId} ({RoomName})",
@@ -158,7 +159,7 @@ public class Room : Timer
 
     public override void OnTick()
     {
-        var entitiesCopy = Entities.Values.SelectMany(s => s).ToList();
+        var entitiesCopy = _entities.Values.SelectMany(s => s).ToList();
         var projectilesCopy = Projectiles.Values.ToList();
         var enemiesCopy = Enemies.Values.ToList();
 
@@ -280,7 +281,7 @@ public class Room : Timer
 
         if (useOriginalRoom)
         {
-            var checkpoints = Entities.Where(x => x.Value.Any(x => x is CheckpointControllerComp)).Select(x => x.Value).SelectMany(x => x);
+            var checkpoints = _entities.Where(x => x.Value.Any(x => x is CheckpointControllerComp)).Select(x => x.Value).SelectMany(x => x);
 
             foreach (var checkpoint in checkpoints)
                 checkpoint.InitializeComponent();
@@ -360,8 +361,8 @@ public class Room : Timer
 
     public BaseComponent GetSpawnPoint(CharacterModel character)
     {
-        var spawnPoints = this.GetComponentsOfType<SpawnPointComp>();
-        var portals = this.GetComponentsOfType<PortalControllerComp>();
+        var spawnPoints = GetEntitiesFromType<SpawnPointComp>().ToDictionary(x => x.Id, x => x);
+        var portals = GetEntitiesFromType<PortalControllerComp>().ToDictionary(x => x.Id, x => x);
 
         var spawnId = character.LevelData.SpawnPointId;
 
@@ -385,5 +386,33 @@ public class Room : Timer
     }
 
     public string GetRoomName() =>
-    $"{LevelInfo.LevelId}_{_roomId}";
+        $"{LevelInfo.LevelId}_{_roomId}";
+
+    // Entity Code
+
+    public bool ContainsEntity(string id) =>
+        _entities.ContainsKey(id);
+
+    public void RemoveEntity(string id)
+    {
+        lock (_roomLock)
+            _entities.Remove(id);
+    }
+
+    public Dictionary<string, List<BaseComponent>> GetEntities() => _entities;
+
+    public T GetEntityFromId<T>(string id) where T : class =>
+        _entities.TryGetValue(id, out var entities) ?
+            entities.FirstOrDefault(x => x is T) as T :
+            null;
+
+    public T[] GetEntitiesFromId<T>(string id) where T : class =>
+        _entities.TryGetValue(id, out var entities) ?
+            entities.Where(x => x is T).Select(x => x as T).ToArray() :
+            [];
+
+    public T[] GetEntitiesFromType<T>() where T : class =>
+        typeof(T) == typeof(BaseComponent)
+            ? _entities.Values.SelectMany(x => x).ToArray() as T[]
+            : _entities.SelectMany(x => x.Value).Where(x => x is T).Select(x => x as T).ToArray();
 }

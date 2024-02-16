@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
@@ -10,7 +9,6 @@ namespace Server.Reawakened.Entities.Entity;
 public class ProjectileEntity : TicklyEntity
 {
     private readonly Vector3Model _hitboxPosition;
-    public ILogger<TicklyEntity> Logger { get; set; }
 
     public ProjectileEntity(Player player, string id, Vector3Model position, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig config)
     {
