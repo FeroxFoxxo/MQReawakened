@@ -56,8 +56,8 @@ When hosting a local server, you will have access to all commands by default (ac
 
 MQ consists of the following components:
 
-* A login server that speaks the MQ network protocol over TCP
-* A shard server that does the same on another port
+* A login server and asset host running through Asp.Net via HTTP
+* A shard server that speaks the MQ network protocol over TCP
 
 #### For 2012
 * A web browser compatible with the old NPAPI plugin interface
