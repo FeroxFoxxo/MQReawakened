@@ -64,7 +64,7 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.ChargeAttackStop:
                     var chargeAttackStopSyncEvent = new ChargeAttackStop_SyncEvent(syncEvent);
 
-                    room.SendSyncEvent(new ChargeAttackStop_SyncEvent(chargeAttackStopSyncEvent.TargetID, chargeAttackStopSyncEvent.TriggerTime,
+                    Player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(chargeAttackStopSyncEvent.TargetID, chargeAttackStopSyncEvent.TriggerTime,
                         chargeAttackStopSyncEvent.PosX, chargeAttackStopSyncEvent.PosY, chargeAttackStopSyncEvent.ItemId,
                         chargeAttackStopSyncEvent.ZoneId, chargeAttackStopSyncEvent.HitId));
 

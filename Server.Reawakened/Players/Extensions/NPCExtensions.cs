@@ -101,7 +101,7 @@ public static class NpcExtensions
 
     public static void UpdateActiveObjectives(Player player)
     {
-        foreach (var questCollectible in player.Room?.GetComponentsOfType<QuestCollectibleControllerComp>().Values)
+        foreach (var questCollectible in player.Room?.GetEntitiesFromType<QuestCollectibleControllerComp>())
         {
             var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(questCollectible.PrefabName);
 
@@ -110,7 +110,7 @@ public static class NpcExtensions
                 questCollectible.UpdateActiveObjectives(player, CollectibleState.Active);
         }
     }
-  
+
     private static void SetMultiscoreObjectives(QuestStatusModel questModel, ItemCatalog itemCatalog)
     {
         foreach (var objective in questModel.Objectives.Values)
