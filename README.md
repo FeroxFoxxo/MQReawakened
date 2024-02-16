@@ -56,7 +56,7 @@ When hosting a local server, you will have access to all commands by default (ac
 
 MQ consists of the following components:
 
-* A login server and asset host running through Asp.Net via HTTP
+* A login server and asset hosting service over HTTP
 * A shard server that speaks the MQ network protocol over TCP
 
 #### For 2012
