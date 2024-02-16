@@ -65,7 +65,7 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
 
                 case CollectibleState.Collected:
                     player.SendSyncEventToPlayer(new Trigger_SyncEvent(Id.ToString(), player.Room.Time,
-                        true, player.GameObjectId.ToString(), true));
+                        true, player.GameObjectId.ToString(), false));
                     break;
             }
         }
