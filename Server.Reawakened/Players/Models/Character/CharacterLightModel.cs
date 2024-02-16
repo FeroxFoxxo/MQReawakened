@@ -19,7 +19,7 @@ public class CharacterLightModel
     public CharacterLightData.InteractionStatus InteractionStatus { get; set; }
     public TribeType Allegiance { get; set; }
     public bool ForceTribeSelection { get; set; }
-    public HashSet<int> DiscoveredStats { get; set; }
+    public List<int> DiscoveredStats { get; set; }
 
     public CharacterLightModel() => InitializeLiteLists();
 
