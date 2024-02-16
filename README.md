@@ -74,6 +74,18 @@ The browser/Electron client opens a web page with an `<embed>` tag of the approp
 - You may also wish to download ILSpy to peek around any dependencies of the original game, to understand how they work, as to reverse engineer them in order to develop a server side implementation.
 - https://sourceforge.net/projects/ilspy.mirror
 
+### Running the game client on Linux
+
+While the MQ server supports both Windows and Linux (and other Unix-like systems), the game client natively supports only Windows because of the NPAPI Unity Web Player plugin needed to run the game. Nevertheless, the client runs very well in Wine if configured properly.
+
+Due to the plethora of Wine prefix managers that people use (in addition to the option of just configuring your Wine prefix by hand), there's a number of ways you could set the game up. Regardless of which you prefer, for MQ there's a handful of dependencies you need to satisfy, which are common to all of them:
+
+- Electron (OpenFusionClient.exe) needs allfonts to run
+- - It also needs to be run with the following arguments: --no-sandbox --disable-gpu
+- Using DXVK instead of wined3d is highly recommended to avoid graphical glitches like mission indicator rings not rendering
+
+While we have not written a full guide of how to do this yet, visiting <a href="https://github.com/OpenFusionProject/OpenFusion/wiki/Running-the-game-client-on-Linux">OpenFusion's guide in how to do this</a>, another Unity WebPlayer MMO, may provide a good enough understanding of where to start.
+
 ### Open Source Licenses
 
 - <a href="https://github.com/AssetRipper/AssetRipper/">AssetRipper.IO.Endian</a> - Binary read/write utility [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETRIPPER)
