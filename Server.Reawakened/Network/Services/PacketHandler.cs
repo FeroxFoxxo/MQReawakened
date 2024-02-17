@@ -8,7 +8,9 @@ using Server.Base.Core.Extensions;
 using Server.Base.Network;
 using Server.Base.Network.Models;
 using Server.Base.Network.Services;
+using Server.Base.Worlds.EventArguments;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Network.Protocols;
 using System.Reflection;
@@ -18,7 +20,7 @@ namespace Server.Reawakened.Network.Services;
 
 public class PacketHandler(IServiceScopeFactory serviceFact, ReflectionUtils reflectionUtils,
     NetStateHandler handler, EventSink sink, ILogger<PacketHandler> logger, ServerRConfig serverConfig,
-    InternalRwConfig internalWConfig) : IService
+    InternalRwConfig internalWConfig, InternalRConfig internalRConfig) : IService
 {
     public delegate void ExternalCallback(NetState state, string[] message, IServiceProvider serviceProvider);
     public delegate void SystemCallback(NetState state, XmlDocument document, IServiceProvider serviceProvider);
@@ -30,6 +32,34 @@ public class PacketHandler(IServiceScopeFactory serviceFact, ReflectionUtils ref
     {
         sink.ServerStarted += AddProtocols;
         sink.WorldLoad += AskProtocolIgnore;
+        sink.WorldBroadcast += CheckForShutdown;
+    }
+
+    private void CheckForShutdown(WorldBroadcastEventArgs @event)
+    {
+        if (@event.Message == internalRConfig.ServerShutdownMessage)
+        {
+            lock (handler.Disposed)
+            {
+                try
+                {
+                    foreach (var netState in handler.Instances)
+                    {
+                        if (netState == null)
+                            continue;
+
+                        try
+                        {
+                            netState.Dispose();
+                        }
+                        catch (Exception)
+                        { }
+                    }
+                }
+                catch (Exception)
+                { }
+            }
+        }
     }
 
     private void AskProtocolIgnore()
