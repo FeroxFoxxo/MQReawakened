@@ -56,10 +56,15 @@ When hosting a local server, you will have access to all commands by default (ac
 
 MQ consists of the following components:
 
+* A login server and asset hosting service over HTTP
+* A shard server that speaks the MQ network protocol over TCP
+
+#### For 2012
 * A web browser compatible with the old NPAPI plugin interface
 * A `.unity3d` bundle that contains the game code and essential resources (loading screen, etc.)
-* A login server that speaks the MQ network protocol over TCP
-* A shard server that does the same on another port
+
+#### For 2013/2014
+* A Unity executable file, typically in the /game/ folder, as well as a launcher.
 
 Both the login and shard server run on the same Asp.Net server application, seen in this git repository.
 
@@ -81,7 +86,7 @@ While the MQ server supports both Windows and Linux (and other Unix-like systems
 Due to the plethora of Wine prefix managers that people use (in addition to the option of just configuring your Wine prefix by hand), there's a number of ways you could set the game up. Regardless of which you prefer, for MQ there's a handful of dependencies you need to satisfy, which are common to all of them:
 
 - Electron (OpenFusionClient.exe) needs allfonts to run
-- - It also needs to be run with the following arguments: --no-sandbox --disable-gpu
+- It also needs to be run with the following arguments: --no-sandbox --disable-gpu
 - Using DXVK instead of wined3d is highly recommended to avoid graphical glitches like mission indicator rings not rendering
 
 While we have not written a full guide of how to do this yet, visiting <a href="https://github.com/OpenFusionProject/OpenFusion/wiki/Running-the-game-client-on-Linux">OpenFusion's guide in how to do this</a>, another Unity WebPlayer MMO, may provide a good enough understanding of where to start.
