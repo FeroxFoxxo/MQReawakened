@@ -92,8 +92,6 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
     public float ActivationTimeAfterFirstInteraction => ComponentData.ActivationTimeAfterFirstInteraction;
 
-    public ILogger<TriggerCoopController> Logger { get; set; }
-
     public FileLogger FileLogger { get; set; }
 
     public override void DelayedComponentInitialization()

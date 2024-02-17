@@ -452,15 +452,15 @@ public abstract class Enemy : IDestructible
 
     public void Destroy(Player player, Room room, string id)
     {
+        room.RemoveEntity(id);
+        room.Enemies.Remove(id);
+        room.Colliders.Remove(id);
+
         player.CheckObjective(ObjectiveEnum.Score, id, Entity.PrefabName, 1);
         player.CheckObjective(ObjectiveEnum.Scoremultiple, id, Entity.PrefabName, 1);
 
         player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
         player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, Logger);
         player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, Logger);
-        
-        room.RemoveEntity(id);
-        room.Enemies.Remove(id);
-        room.Colliders.Remove(id);
     }
 }
