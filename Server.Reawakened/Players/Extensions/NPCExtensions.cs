@@ -102,7 +102,7 @@ public static class NpcExtensions
 
     public static void UpdateActiveObjectives(Player player)
     {
-        foreach (var questCollectible in player.Room?.GetEntitiesFromType<QuestCollectibleControllerComp>())
+        foreach (var questCollectible in player.Room.GetEntitiesFromType<QuestCollectibleControllerComp>())
         {
             var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(questCollectible.PrefabName);
 
