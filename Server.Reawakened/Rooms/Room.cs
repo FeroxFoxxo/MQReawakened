@@ -33,7 +33,9 @@ public class Room : Timer
     public Dictionary<string, Player> Players;
     public Dictionary<string, TicklyEntity> Projectiles;
     public Dictionary<string, BaseCollider> Colliders;
+
     public ILogger<Room> Logger;
+    public ILogger<Enemy> EnemyLogger;
 
     public Dictionary<string, PlaneModel> Planes;
     public Dictionary<string, List<string>> UnknownEntities;
@@ -53,7 +55,7 @@ public class Room : Timer
 
     public Room(
         int roomId, Level level, ServerRConfig config, TimerThread timerThread,
-        IServiceProvider services, ILogger<Room> logger, InternalColliders colliderCatalog
+        IServiceProvider services, ILogger<Room> logger, ILogger<Enemy> EnemyLogger, InternalColliders colliderCatalog
     ) : base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
         _roomLock = new object();
@@ -100,40 +102,40 @@ public class Room : Timer
                 switch (component.PrefabName)
                 {
                     case string bird when bird.Contains(config.EnemyNameSearch[0]):
-                        Enemies.Add(component.Id, new EnemyBird(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyBird(this, component.Id, EnemyLogger, component));
                         break;
                     case string fish when fish.Contains(config.EnemyNameSearch[1]):
-                        Enemies.Add(component.Id, new EnemyFish(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyFish(this, component.Id, EnemyLogger, component));
                         break;
                     case string spider when spider.Contains(config.EnemyNameSearch[2]):
-                        Enemies.Add(component.Id, new EnemySpider(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemySpider(this, component.Id, EnemyLogger, component));
                         break;
                     case string bathog when bathog.Contains(config.EnemyNameSearch[3]):
-                        Enemies.Add(component.Id, new EnemyBathog(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyBathog(this, component.Id, EnemyLogger, component));
                         break;
                     case string bomber when bomber.Contains(config.EnemyNameSearch[4]):
-                        Enemies.Add(component.Id, new EnemyBomber(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyBomber(this, component.Id, EnemyLogger, component));
                         break;
                     case string crawler when crawler.Contains(config.EnemyNameSearch[5]):
-                        Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, EnemyLogger, component));
                         break;
                     case string dragon when dragon.Contains(config.EnemyNameSearch[6]):
-                        Enemies.Add(component.Id, new EnemyDragon(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyDragon(this, component.Id, EnemyLogger, component));
                         break;
                     case string grenadier when grenadier.Contains(config.EnemyNameSearch[7]):
-                        Enemies.Add(component.Id, new EnemyGrenadier(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyGrenadier(this, component.Id, EnemyLogger, component));
                         break;
                     case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
-                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, EnemyLogger, component));
                         break;
                     case string pincer when pincer.Contains(config.EnemyNameSearch[9]):
-                        Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyPincer(this, component.Id, EnemyLogger, component));
                         break;
                     case string stomper when stomper.Contains(config.EnemyNameSearch[10]):
-                        Enemies.Add(component.Id, new EnemyStomper(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyStomper(this, component.Id, EnemyLogger, component));
                         break;
                     case string vespid when vespid.Contains(config.EnemyNameSearch[11]):
-                        Enemies.Add(component.Id, new EnemyVespid(this, component.Id, component));
+                        Enemies.Add(component.Id, new EnemyVespid(this, component.Id, EnemyLogger, component));
                         break;
                 }
             }
@@ -142,7 +144,6 @@ public class Room : Timer
                 var breakable = (BreakableEventControllerComp)component;
                 breakable.PostInit();
             }
-
         }
 
         var spawnPoints = GetEntitiesFromType<SpawnPointComp>();

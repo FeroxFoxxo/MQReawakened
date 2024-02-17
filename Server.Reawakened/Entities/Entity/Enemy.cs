@@ -19,9 +19,11 @@ namespace Server.Reawakened.Entities.Entity;
 
 public abstract class Enemy : IDestructible
 {
+    public readonly Room Room;
+    public readonly string Id;
+    private readonly ILogger<Enemy> _logger;
+
     public bool Init;
-    public Room Room;
-    public string Id;
 
     public Vector3 Position;
     public Rect DetectionRange;
@@ -44,10 +46,9 @@ public abstract class Enemy : IDestructible
     public AIBaseBehavior AiBehavior;
     public BehaviorModel BehaviorList;
 
-    public AISyncEventHelper SyncBuilder = new();
-    public ILogger<Enemy> Logger { get; set; }
+    public AISyncEventHelper SyncBuilder;
 
-    public Enemy(Room room, string entityId, BaseComponent baseEntity)
+    public Enemy(Room room, string entityId, ILogger<Enemy> logger, BaseComponent baseEntity)
     {
         //Basic Stats
         Room = room;
@@ -55,6 +56,8 @@ public abstract class Enemy : IDestructible
         Health = 50;
         IsFromSpawner = false;
         MinBehaviorTime = 0;
+        SyncBuilder = new AISyncEventHelper();
+        _logger = logger;
 
         //Component Info
         Entity = baseEntity;
@@ -175,8 +178,6 @@ public abstract class Enemy : IDestructible
 
     public string WriteBehaviorList()
     {
-        var compiler = new AIPropertiesCompiler();
-
         var bList = new SeparatedStringBuilder('`');
 
         SeparatedStringBuilder bDefinesList;
@@ -185,8 +186,8 @@ public abstract class Enemy : IDestructible
         {
             bDefinesList = new SeparatedStringBuilder('|');
             bDefinesList.Append(behavior.Key);
-            bDefinesList.Append(compiler.CreateBehaviorString(this, behavior.Key));
-            bDefinesList.Append(compiler.CreateResources(behavior.Value.Resources));
+            bDefinesList.Append(this.CreateBehaviorString(behavior.Key));
+            bDefinesList.Append(behavior.Value.Resources.CreateResources());
             bList.Append(bDefinesList.ToString());
         }
 
@@ -207,7 +208,7 @@ public abstract class Enemy : IDestructible
                     trigger.Trigger(true);
 
             //Temp values for now
-            Room.SendSyncEvent(SyncBuilder.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
+            Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
             Destroy(origin, Room, Id);
         }
     }
@@ -378,7 +379,7 @@ public abstract class Enemy : IDestructible
                 prjId = Math.Abs(rand.Next()).ToString();
 
             // Magic numbers here are temporary
-            Room.SendSyncEvent(SyncBuilder.AILaunchItem(Entity, pos.X, pos.Y, pos.Z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, int.Parse(prjId), 0));
+            Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Entity, pos.X, pos.Y, pos.Z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, int.Parse(prjId), 0));
 
             AiData.Intern_FireProjectile = false;
 
@@ -396,7 +397,7 @@ public abstract class Enemy : IDestructible
         if (AiData.Intern_FireProjectile)
         {
             // Magic numbers here are temporary
-            Room.SendSyncEvent(SyncBuilder.AILaunchItem(Entity, Position.x + EnemyGlobalProps.Global_ShootOffsetX, Position.y + EnemyGlobalProps.Global_ShootOffsetY, Position.z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, 0, 1));
+            Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Entity, Position.x + EnemyGlobalProps.Global_ShootOffsetX, Position.y + EnemyGlobalProps.Global_ShootOffsetY, Position.z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, 0, 1));
 
             AiData.Intern_FireProjectile = false;
         }
@@ -459,8 +460,8 @@ public abstract class Enemy : IDestructible
         player.CheckObjective(ObjectiveEnum.Score, id, Entity.PrefabName, 1);
         player.CheckObjective(ObjectiveEnum.Scoremultiple, id, Entity.PrefabName, 1);
 
-        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, Logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, _logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, _logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, _logger);
     }
 }

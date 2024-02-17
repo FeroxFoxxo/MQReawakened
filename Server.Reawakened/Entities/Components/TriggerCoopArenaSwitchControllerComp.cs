@@ -11,7 +11,7 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
 {
     public string ArenaObjectId => ComponentData.ArenaObjectID;
     public DatabaseContainer DatabaseContainer { get; set; }
-    public new ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
+    public ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
 
     public ITriggerComp triggerable;
 

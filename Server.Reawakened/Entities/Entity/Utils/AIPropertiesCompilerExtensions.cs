@@ -1,9 +1,9 @@
 ﻿using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Entities.Entity.Utils;
-public class AIPropertiesCompiler
+public static class AIPropertiesCompilerExtensions
 {
-    public string CreateBehaviorString(Enemy enemy, string name)
+    public static string CreateBehaviorString(this Enemy enemy, string name)
     {
         switch (name)
         {
@@ -31,7 +31,7 @@ public class AIPropertiesCompiler
         return string.Empty;
     }
 
-    public string CreateLookAround(Enemy enemy)
+    private static string CreateLookAround(Enemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -44,7 +44,7 @@ public class AIPropertiesCompiler
         return sb.ToString();
     }
 
-    public string CreatePatrol(Enemy enemy)
+    private static string CreatePatrol(Enemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -59,7 +59,7 @@ public class AIPropertiesCompiler
         return sb.ToString();
     }
 
-    public string CreateComeBack(Enemy enemy)
+    private static string CreateComeBack(Enemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -68,7 +68,7 @@ public class AIPropertiesCompiler
         return sb.ToString();
     }
 
-    public string CreateAggro(Enemy enemy)
+    private static string CreateAggro(Enemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -83,7 +83,7 @@ public class AIPropertiesCompiler
         return sb.ToString();
     }
 
-    public string CreateShooting(Enemy enemy)
+    private static string CreateShooting(Enemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -103,7 +103,7 @@ public class AIPropertiesCompiler
         return sb.ToString();
     }
 
-    public string CreateBomber(Enemy enemy)
+    private static string CreateBomber(Enemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -114,7 +114,7 @@ public class AIPropertiesCompiler
         return sb.ToString();
     }
 
-    public string CreateGrenadier(Enemy enemy)
+    private static string CreateGrenadier(Enemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -129,7 +129,7 @@ public class AIPropertiesCompiler
         return sb.ToString();
     }
 
-    public string CreateStomper(Enemy enemy)
+    private static string CreateStomper(Enemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -141,7 +141,7 @@ public class AIPropertiesCompiler
         return sb.ToString();
     }
 
-    public string CreateStinger(Enemy enemy)
+    private static string CreateStinger(Enemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -156,7 +156,7 @@ public class AIPropertiesCompiler
         return sb.ToString();
     }
 
-    public string CreateResources(List<EnemyResourceModel> resources)
+    public static string CreateResources(this List<EnemyResourceModel> resources)
     {
         var assetList = new SeparatedStringBuilder('+');
         string asset;

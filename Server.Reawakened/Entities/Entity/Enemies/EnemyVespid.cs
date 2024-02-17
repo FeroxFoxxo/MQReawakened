@@ -1,11 +1,12 @@
-﻿using Server.Reawakened.Entities.AIBehavior;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyVespid(Room room, string entityId, BaseComponent baseEntity) : Enemy(room, entityId, baseEntity)
+public class EnemyVespid(Room room, string entityId, ILogger<Enemy> logger, BaseComponent baseEntity) : Enemy(room, entityId, logger, baseEntity)
 {
 
     private float _behaviorEndTime;
@@ -32,7 +33,7 @@ public class EnemyVespid(Room room, string entityId, BaseComponent baseEntity) :
         // Address magic numbers when we get to adding enemy effect mods
         Position.z = 10;
         Room.SendSyncEvent(AIInit(1, 1, 1));
-        Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
+        Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
 
         // Set these calls to the xml later. Instead of using hardcoded "Patrol", "Aggro", etc.
         // the XML can just specify which behaviors to use when attacked, when moving, etc.
@@ -46,7 +47,7 @@ public class EnemyVespid(Room room, string entityId, BaseComponent baseEntity) :
         if (AiBehavior is not AIBehaviorShooting)
         {
             Console.WriteLine("I be hurtin");
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, player.TempData.Position.X,
+            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, player.TempData.Position.X,
                     player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
 
             // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
@@ -73,7 +74,7 @@ public class EnemyVespid(Room room, string entityId, BaseComponent baseEntity) :
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
+            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("Patrol");
         }
@@ -85,7 +86,7 @@ public class EnemyVespid(Room room, string entityId, BaseComponent baseEntity) :
         {
             if (PlayerInRange(player.Value.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
-                Room.SendSyncEvent(SyncBuilder.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
+                Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
                     Position.y, Generic.Patrol_ForceDirectionX, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here

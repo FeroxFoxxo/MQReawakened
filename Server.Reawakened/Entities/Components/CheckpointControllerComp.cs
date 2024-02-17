@@ -8,7 +8,7 @@ public class CheckpointControllerComp : TriggerCoopControllerComp<CheckpointCont
 {
     public int SpawnPoint => ComponentData.SpawnpointID;
 
-    public new ILogger<CheckpointControllerComp> Logger { get; set; }
+    public ILogger<CheckpointControllerComp> Logger { get; set; }
 
     public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
