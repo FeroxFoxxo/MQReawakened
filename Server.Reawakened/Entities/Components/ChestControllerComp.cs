@@ -55,7 +55,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
         //Temp way for adding bananas to empty chests to create a better user experience.
         if (string.IsNullOrEmpty(LootCatalog.GetLootById(Id).ObjectId))
         {
-            var bananaReward = new Random().Next(30, 75);
+            var bananaReward = new Random().Next(30, 55);
 
             player.AddBananas(bananaReward);
             triggerEvent.EventDataList[0] = bananaReward;
