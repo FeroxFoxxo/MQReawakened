@@ -31,23 +31,21 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
         player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
 
-        var trig = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true)
-        {
-            //need to redo trigger for ChestController
-            /*
-            EventDataList =
-            {
-                [0] = bananas
-            }
-            */
-        };
+        var triggerEvent = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true);
 
-        Room.SendSyncEvent(trig);
+        //Temp way for adding bananas to empty chests to create a better user experience.
+        if (string.IsNullOrEmpty(LootCatalog.GetLootById(Id).ObjectId))
+        {
+            var bananaReward = new Random().Next(30, 75);
+
+            player.AddBananas(bananaReward);
+            triggerEvent.EventDataList[0] = bananaReward;
+        }
+        Room.SendSyncEvent(triggerEvent);
 
         player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
 
-        var rec = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);
-
-        Room.SendSyncEvent(rec);
+        var triggerReceiver = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);
+        Room.SendSyncEvent(triggerReceiver);
     }
 }
