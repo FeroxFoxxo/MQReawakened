@@ -74,7 +74,7 @@ public static class NpcExtensions
         {
             var sb = new StringBuilder();
 
-            sb.Append($"Quest name: '{quest.Name}', given by {identifier} in {player.Room?.LevelInfo?.InGameName})");
+            sb.AppendLine($"Quest name: '{quest.Name}', given by {identifier} in {player.Room?.LevelInfo?.InGameName})");
 
             foreach (var reward in unknownRewards)
                 sb.AppendLine($"Reward Id {reward.Key}, Count {reward.Value}");
