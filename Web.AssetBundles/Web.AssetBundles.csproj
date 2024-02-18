@@ -114,10 +114,10 @@
         <None Update="Assets\LocalAssets\PetAbilities.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="DLLs\Arm64\Texture2DDecoderNative.dll">
+        <None Update="DLLs\X64\Texture2DDecoderNative.dll">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="DLLs\X64\Texture2DDecoderNative.dll">
+        <None Update="DLLs\X86\Texture2DDecoderNative.dll">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Licences\LICENSE_ASSETSTUDIO">

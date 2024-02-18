@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
@@ -94,7 +93,8 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
 
     public FileLogger FileLogger { get; set; }
 
-    public override void DelayedComponentInitialization()
+
+    public override void InitializeComponent()
     {
         IsEnabled = IsEnable;
         IsActive = false;
@@ -151,9 +151,9 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         if (TriggerOnNormalDamage) Activations.Add(ActivationType.NormalDamage);
         if (TriggerOnGrapplingHook) Activations.Add(ActivationType.NormalDamage);
         if (!string.IsNullOrEmpty(TriggeredByItemInInventory)) Activations.Add(ActivationType.ItemInInventory);
-
-        RunTrigger(null);
     }
+
+    public override void DelayedComponentInitialization() => RunTrigger(null);
 
     public void AddToTriggers(List<int> triggers, TriggerType triggerType)
     {

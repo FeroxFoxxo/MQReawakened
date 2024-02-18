@@ -18,6 +18,7 @@ public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
     public override void InitializeComponent()
     {
         base.InitializeComponent();
+
         ArenaEntities = [];
         _hasStarted = false;
     }

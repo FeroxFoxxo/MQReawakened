@@ -17,7 +17,6 @@ public class AttackCollider(string id, Vector3Model position, float sizeX, float
 
         if (LifeTime <= Room.Time)
         {
-            Console.WriteLine("I am dead.");
             Room.Colliders.Remove(Id);
             return ["0"];
         }

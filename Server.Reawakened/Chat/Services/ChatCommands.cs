@@ -52,6 +52,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
         AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
+        AddCommand(new ChatCommand("playerCount", "", PlayerCount));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -355,7 +356,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         var levelInfo = worldGraph.GetInfoLevel(levelId);
 
-        if (string.IsNullOrEmpty(levelInfo.Name))
+        if (string.IsNullOrEmpty(levelInfo.Name) || !config.LoadedAssets.Contains(levelInfo.Name))
         {
             Log($"Please specify a valid level.", player);
             return false;
@@ -494,6 +495,13 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
             count++;
         }
+
+        return true;
+    }
+
+    private bool PlayerCount(Player player, string[] args)
+    {
+        Log($"Currently online players: {player.DatabaseContainer.GetAllPlayers().Count}", player);
 
         return true;
     }
