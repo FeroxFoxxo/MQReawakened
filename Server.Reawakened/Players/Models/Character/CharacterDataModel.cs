@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Levels;
 using UnityEngine;
 
 namespace Server.Reawakened.Players.Models.Character;
@@ -75,7 +76,7 @@ public class CharacterDataModel : CharacterLightModel
         _player.NetState.Identifier = CharacterName;
     }
 
-    public bool CanActivateDailyHarvest(Player player, string dailyId)
+    public bool CanActivateDailies(Player player, string dailyId)
     {
         if (player.Character.Data.CurrentCollectedDailies == null)
             player.Character.Data.CurrentCollectedDailies = new Dictionary<string, DateTime>();
@@ -88,7 +89,6 @@ public class CharacterDataModel : CharacterLightModel
 
         return DateTime.Now >= timeForNextHarvest;
     }
-
 
     private void InitializeDetailedLists()
     {

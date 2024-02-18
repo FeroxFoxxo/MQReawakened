@@ -3,20 +3,20 @@ using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using System;
 
 namespace Server.Reawakened.Entities.Components
 {
     public class HarvestControllerComp : BaseChestControllerComp<HarvestController>
     {
+        public int HarvestState;
         public ItemCatalog ItemCatalog { get; set; }
         public InternalLoot LootCatalog { get; set; }
         public ILogger<HarvestControllerComp> Logger { get; set; }
 
-        public override object[] GetInitData(Player player) => [player.Character.Data.CanActivateDailyHarvest(player, Id) ? 1 : 0];
+        public override object[] GetInitData(Player player) => [player.Character.Data.CanActivateDailies
+            (player, Id) ? (int)DailiesState.Active : (int)DailiesState.Collected];
 
         public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
         {

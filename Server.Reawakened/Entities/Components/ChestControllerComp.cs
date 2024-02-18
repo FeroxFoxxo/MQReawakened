@@ -5,6 +5,7 @@ using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -13,7 +14,7 @@ namespace Server.Reawakened.Entities.Components;
 
 public class ChestControllerComp : BaseChestControllerComp<ChestController>
 {
-    public bool Collected;
+    public int ChestState;
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
@@ -21,31 +22,27 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
     public override object[] GetInitData(Player player)
     {
-        var canActivate = 1;
+        ChestState = (int)DailiesState.Active;
+
+        var dailyModel = new DailiesModel()
+        {
+            GameObjectId = int.Parse(Id),
+            LevelId = Room.LevelInfo.LevelId
+        };
 
         if (PrefabName.Contains(ServerRConfig.DailyBoxPrefabName) && player.Character.Data.CurrentCollectedDailies.ContainsKey(Id))
         {
-            canActivate = 0;
+            ChestState = (int)DailiesState.Collected;
 
-            var timeOfHarvest = player.Character.Data.CurrentCollectedDailies[Id];
-            var timeForNextHarvest = timeOfHarvest + TimeSpan.FromDays(1);
-
-            if (DateTime.Now >= timeForNextHarvest)
-                canActivate = 1;
-
-            return [canActivate];
+            if (player.Character.Data.CanActivateDailies(player, Id))
+                ChestState = (int)DailiesState.Active;
         }
 
-        return [canActivate];
+        return [ChestState];
     }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        if (Collected)
-            return;
-
-        Collected = true;
-
         player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
 
         player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
@@ -65,8 +62,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
         if (PrefabName.Contains(ServerRConfig.DailyBoxPrefabName))
         {
-            if (!player.Character.Data.CurrentCollectedDailies.ContainsKey(Id))
-                player.Character.Data.CurrentCollectedDailies.Add(Id, DateTime.Now);
+            player.Character.Data.CurrentCollectedDailies.TryAdd(Id, DateTime.Now);
 
             player.SendSyncEventToPlayer(triggerEvent);
             player.SendSyncEventToPlayer(triggerReceiver);
