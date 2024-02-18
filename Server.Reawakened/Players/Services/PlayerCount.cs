@@ -18,6 +18,13 @@ public class PlayerCount(ServerConsole serverConsole,
             NetworkType.Server, 
             SendPlayerCount);
 
-    private void SendPlayerCount(string[] command) => 
-        logger.LogInformation($"Currently online players: {databaseContainer.GetAllPlayers().Count}");
+    private void SendPlayerCount(string[] command)
+    {
+        if (command.Length == 1)
+            logger.LogInformation($"Currently online players: {databaseContainer.GetAllPlayers().Count}");
+
+        if (command.Length == 2)
+            foreach (var item in databaseContainer.GetAllPlayers())
+                logger.LogInformation($"{item.CharacterName} - {item.Room.LevelInfo.InGameName} / {item.Room.LevelInfo.LevelId}");
+    }
 }

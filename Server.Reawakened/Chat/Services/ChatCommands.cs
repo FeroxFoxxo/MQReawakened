@@ -52,7 +52,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
         AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
-        AddCommand(new ChatCommand("playerCount", "", PlayerCount));
+        AddCommand(new ChatCommand("playerCount", "[detailed]", PlayerCount));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -507,7 +507,12 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool PlayerCount(Player player, string[] args)
     {
-        Log($"Currently online players: {player.DatabaseContainer.GetAllPlayers().Count}", player);
+        if (args.Length == 1)
+            Log($"Currently online players: {player.DatabaseContainer.GetAllPlayers().Count}", player);
+
+        if (args.Length == 2)
+            foreach (var item in player.DatabaseContainer.GetAllPlayers())
+                Log($"{item.CharacterName} - {item.Room.LevelInfo.InGameName} / {item.Room.LevelInfo.LevelId}", player);
 
         return true;
     }
