@@ -21,7 +21,7 @@ namespace Server.Reawakened.Entities.Components
         public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
         {
             base.RunSyncedEvent(syncEvent, player);
-            Room.SendSyncEvent(new Dailies_SyncEvent(syncEvent));
+            player.SendSyncEventToPlayer(new Dailies_SyncEvent(syncEvent));
 
             player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
             player.SendUpdatedInventory(false);
