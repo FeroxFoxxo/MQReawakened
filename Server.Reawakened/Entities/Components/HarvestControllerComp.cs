@@ -16,7 +16,7 @@ namespace Server.Reawakened.Entities.Components
         public InternalLoot LootCatalog { get; set; }
         public ILogger<HarvestControllerComp> Logger { get; set; }
 
-        public override object[] GetInitData(Player player) => [player.Character.Data.CanActivateDailyHarvest(player, Id) ? 0 : 1];
+        public override object[] GetInitData(Player player) => [player.Character.Data.CanActivateDailyHarvest(player, Id) ? 1 : 0];
 
         public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
         {
@@ -29,6 +29,5 @@ namespace Server.Reawakened.Entities.Components
 
             player.Character.Data.CurrentCollectedDailies.TryAdd(Id, DateTime.Now);
         }
-
     }
 }
