@@ -18,6 +18,7 @@ public class CharacterDataModel : CharacterLightModel
     public RecipeListModel RecipeList { get; set; }
     public Dictionary<TribeType, bool> TribesDiscovered { get; set; }
     public Dictionary<TribeType, TribeDataModel> TribesProgression { get; set; }
+    public Dictionary<string, DateTime> CurrentCollectedDailies { get; set; }
 
     private Dictionary<int, int> IdolCount =>
         _player?.Character.CollectedIdols
