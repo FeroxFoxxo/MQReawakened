@@ -232,7 +232,6 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         return true;
     }
 
-
     private bool DiscoverTribes(Player player, string[] args)
     {
         var character = player.Character;
