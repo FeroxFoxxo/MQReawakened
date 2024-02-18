@@ -99,7 +99,6 @@ public static class AIPropertiesCompilerExtensions
         sb.Append(Convert.ToBoolean(enemy.BehaviorList.GetBehaviorStat("Shooting", "fireSpreadClockwise")) ? 1 : 0);
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Shooting", "fireSpreadStartAngle"));
 
-        Console.WriteLine(sb.ToString());
         return sb.ToString();
     }
 
