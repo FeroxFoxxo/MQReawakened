@@ -48,6 +48,8 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
         player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
 
+        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
+
         var triggerEvent = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true);
 
         //Temp way for adding bananas to empty chests to create a better user experience.
@@ -58,14 +60,21 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
             player.AddBananas(bananaReward);
             triggerEvent.EventDataList[0] = bananaReward;
         }
-        Room.SendSyncEvent(triggerEvent);
-
-        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
 
         var triggerReceiver = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);
-        Room.SendSyncEvent(triggerReceiver);
 
-        if (!player.Character.Data.CurrentCollectedDailies.ContainsKey(Id))
-            player.Character.Data.CurrentCollectedDailies.Add(Id, DateTime.Now);
+        if (PrefabName.Contains(ServerRConfig.DailyBoxPrefabName))
+        {
+            if (!player.Character.Data.CurrentCollectedDailies.ContainsKey(Id))
+                player.Character.Data.CurrentCollectedDailies.Add(Id, DateTime.Now);
+
+            player.SendSyncEventToPlayer(triggerEvent);
+            player.SendSyncEventToPlayer(triggerReceiver);
+
+            return;
+        }
+
+        Room.SendSyncEvent(triggerEvent);
+        Room.SendSyncEvent(triggerReceiver);
     }
 }
