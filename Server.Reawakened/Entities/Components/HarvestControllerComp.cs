@@ -16,7 +16,7 @@ namespace Server.Reawakened.Entities.Components
         public InternalLoot LootCatalog { get; set; }
         public ILogger<HarvestControllerComp> Logger { get; set; }
 
-        public override object[] GetInitData(Player player) => [ActivateDailyHarvest(player) ? 1 : 0];
+        public override object[] GetInitData(Player player) => [player.Character.Data.CanActivateDailyHarvest(player, Id) ? 0 : 1];
 
         public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
         {
@@ -30,22 +30,5 @@ namespace Server.Reawakened.Entities.Components
             player.Character.Data.CurrentCollectedDailies.TryAdd(Id, DateTime.Now);
         }
 
-        public bool ActivateDailyHarvest(Player player)
-        {
-            if (player.Character.Data.CurrentCollectedDailies == null)
-                player.Character.Data.CurrentCollectedDailies = new Dictionary<string, DateTime>();
-
-            if (!player.Character.Data.CurrentCollectedDailies.TryGetValue(Id, out var time))
-                return true;
-
-            var nextHarvestedTime = time + TimeSpan.FromDays(1);
-
-            if (player.Character.Data.CurrentCollectedDailies[Id] >= nextHarvestedTime)
-                return true;
-
-            Logger.LogInformation("Daily of Id ({Id}) isn't ready for harvest. Return on ({nextHarvestedTime}) to harvest.", Id, nextHarvestedTime);
-
-            return false;
-        }
     }
 }

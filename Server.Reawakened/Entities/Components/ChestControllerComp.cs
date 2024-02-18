@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -13,14 +14,30 @@ namespace Server.Reawakened.Entities.Components;
 public class ChestControllerComp : BaseChestControllerComp<ChestController>
 {
     public bool Collected;
-
     public ItemCatalog ItemCatalog { get; set; }
-
+    public InternalLoot LootCatalog { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
     public ILogger<ChestControllerComp> Logger { get; set; }
 
-    public InternalLoot LootCatalog { get; set; }
+    public override object[] GetInitData(Player player)
+    {
+        var canActivate = 1;
 
-    public override object[] GetInitData(Player player) => [Collected ? 0 : 1];
+        if (PrefabName.Contains(ServerRConfig.DailyBoxPrefabName) && player.Character.Data.CurrentCollectedDailies.ContainsKey(Id))
+        {
+            canActivate = 0;
+
+            var timeOfHarvest = player.Character.Data.CurrentCollectedDailies[Id];
+            var timeForNextHarvest = timeOfHarvest + TimeSpan.FromDays(1);
+
+            if (DateTime.Now >= timeForNextHarvest)
+                canActivate = 1;
+
+            return [canActivate];
+        }
+
+        return [canActivate];
+    }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
@@ -47,5 +64,8 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
         var triggerReceiver = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);
         Room.SendSyncEvent(triggerReceiver);
+
+        if (!player.Character.Data.CurrentCollectedDailies.ContainsKey(Id))
+            player.Character.Data.CurrentCollectedDailies.Add(Id, DateTime.Now);
     }
 }
