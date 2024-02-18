@@ -207,7 +207,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
     private bool OpenVines(Player player, string[] args)
     {
         foreach (var vineEntity in player.Room.GetEntitiesFromType<MysticCharmTargetComp>())
-                vineEntity.Charm(player);
+            vineEntity.Charm(player);
 
         return true;
     }
@@ -220,8 +220,14 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
             return false;
         }
 
-        var zPos = args.Length > 3 && int.TryParse(args[3], out var z) ? z : 0;
-        player.TeleportPlayer(xPos, yPos, zPos);
+        var currentZPosition = player.TempData.Position.Z == 0 ? 0 : 1;
+
+        var zPos = args.Length > 3 ? int.Parse(args[3]) : currentZPosition;
+
+        if (zPos is < 0 or > 1)
+            zPos = currentZPosition;
+
+        player.TeleportPlayer(xPos, yPos, Convert.ToInt32(zPos));
 
         return true;
     }

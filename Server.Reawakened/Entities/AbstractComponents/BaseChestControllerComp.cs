@@ -8,4 +8,9 @@ public abstract class BaseChestControllerComp<T> : Component<T> where T : BaseCh
     public bool IsLootByPlayerLevel => ComponentData.IsLootByPlayerLevel;
     public bool IsInviteOnly => ComponentData.IsInviteOnly;
     public string TimedEventName => ComponentData.TimedEventName;
+    public enum DailiesState
+    {
+        Collected = 0,
+        Active = 1
+    }
 }
