@@ -15,9 +15,8 @@ namespace Server.Reawakened.Entities.Components
         public InternalLoot LootCatalog { get; set; }
         public ILogger<HarvestControllerComp> Logger { get; set; }
 
-        public override object[] GetInitData(Player player) => [player.Character.CanActivateDailies
-            (player, Id) ? (int)DailiesState.Active : (int)DailiesState.Collected];
-
+        public override object[] GetInitData(Player player) => [CanActivateDailies(player, Id)
+            ? (int)DailiesState.Active : (int)DailiesState.Collected];
 
         public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
         {
@@ -28,7 +27,7 @@ namespace Server.Reawakened.Entities.Components
             player.SendUpdatedInventory(false);
             player.CheckObjective(A2m.Server.ObjectiveEnum.Collect, Id, PrefabName, 1);
 
-            player.Character.CurrentCollectedDailies.TryAdd(Id, player.Character.SetDailyHarvest(Id, Room.LevelInfo.LevelId, DateTime.Now));
+            player.Character.CurrentCollectedDailies.TryAdd(Id, SetDailyHarvest(Id, Room.LevelInfo.LevelId, DateTime.Now));
         }
     }
 }

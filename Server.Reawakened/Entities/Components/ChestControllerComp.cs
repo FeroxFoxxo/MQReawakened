@@ -26,7 +26,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
         ChestState = DailiesState.Active;
 
         if (player.Character.CurrentCollectedDailies != null && PrefabName.Contains(ServerRConfig.DailyBoxName))
-            if (!player.Character.CanActivateDailies(player, Id))
+            if (!CanActivateDailies(player, Id))
                 ChestState = DailiesState.Collected;
 
         return [(int)ChestState];
@@ -55,7 +55,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
             player.SendSyncEventToPlayer(triggerEvent);
             player.SendSyncEventToPlayer(triggerReceiver);
 
-            player.Character.CurrentCollectedDailies.TryAdd(Id, player.Character.SetDailyHarvest(Id, Room.LevelInfo.LevelId, DateTime.Now));
+            player.Character.CurrentCollectedDailies.TryAdd(Id, SetDailyHarvest(Id, Room.LevelInfo.LevelId, DateTime.Now));
 
             return;
         }

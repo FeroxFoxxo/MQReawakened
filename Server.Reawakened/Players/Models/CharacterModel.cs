@@ -28,24 +28,7 @@ public class CharacterModel : PersistantData
 
         Data = new CharacterDataModel();
         LevelData = new LevelData();
-    }
-
-    public bool CanActivateDailies(Player player, string dailyObjectId)
-    {
-        if (player.Character.CurrentCollectedDailies == null)
-            player.Character.CurrentCollectedDailies = new Dictionary<string, DailiesModel>();
-
-        return !player.Character.CurrentCollectedDailies.ContainsKey(dailyObjectId) ||
-            player.Character.CurrentCollectedDailies.Values.Any(x => x.GameObjectId == dailyObjectId &&
-                x.LevelId == player.Room.LevelInfo.LevelId && DateTime.Now >= x.TimeOfHarvest + TimeSpan.FromDays(1));
-    }
-
-    public DailiesModel SetDailyHarvest(string gameObjectId, int levelId, DateTime timeOfHarvest) => new()
-    {
-        GameObjectId = gameObjectId,
-        LevelId = levelId,
-        TimeOfHarvest = timeOfHarvest
-    };
+    } 
 
     public override string ToString() => throw new InvalidOperationException();
 }
