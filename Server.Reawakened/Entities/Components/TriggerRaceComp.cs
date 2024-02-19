@@ -18,9 +18,10 @@ public class TriggerRaceComp : TriggerStatueComp<TriggerRace>
 
     public override void InitializeComponent()
     {
+        base.InitializeComponent();
+
         IsMinigameStarted = false;
         HasMinigameStartedBefore = false;
-        base.InitializeComponent();
     }
 
     public override void Triggered(Player player, bool isSuccess, bool isActive)

@@ -238,6 +238,7 @@ public class ServerRConfig : IRConfig
             { 466, "ABIL_Glider01" }, // lv_out_teaser01
             { 467, "ABIL_MysticCharm01" }, // lv_bon_teaser01
             { 497, "ABIL_SnowBoard01" }, // lv_wld_teaser01
+            { 498, "ABIL_SnowBoard02" }, // lv_wld_teaser01
         };
 
         LoadedAssets = [];

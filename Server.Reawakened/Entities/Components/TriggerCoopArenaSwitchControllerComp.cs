@@ -28,15 +28,13 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        if (Id == "5664") // Temporary while blue arenas are in progress
-        {
-            player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1);
-            return;
-        }
-
         if (triggerable == null)
         {
             Logger.LogError("Could not find trigger with id {Id}!", ArenaObjectId);
+
+            // Temporary while blue arenas are in progress
+            player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1);
+
             return;
         }
 

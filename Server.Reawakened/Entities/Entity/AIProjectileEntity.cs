@@ -15,6 +15,7 @@ public class AIProjectileEntity : TicklyEntity
         // Initialize projectile location info
         _room = room;
         _ownerId = ownerId;
+
         ProjectileID = id;
         Position = position;
         PrjPlane = Position.Z > 10 ? "Plane1" : "Plane0";
@@ -38,13 +39,11 @@ public class AIProjectileEntity : TicklyEntity
         Position.Y = SpawnPosition.Y + (_room.Time - StartTime) * SpeedY;
         Collider.Position.y = Position.Y;
 
-        var Collisions = Collider.IsColliding(true);
-        if (Collisions.Length > 0)
-            foreach (var collision in Collisions)
-            {
-                Console.WriteLine(collision);
+        var collisions = Collider.IsColliding(true);
+
+        if (collisions.Length > 0)
+            foreach (var collision in collisions)
                 Hit(collision);
-            }
 
         if (LifeTime <= _room.Time)
             Hit("-1");
@@ -54,6 +53,7 @@ public class AIProjectileEntity : TicklyEntity
     {
         //Logger.LogInformation("Projectile with ID {args1} destroyed at position ({args2}, {args3}, {args4})", ProjectileID, Position.X, Position.Y, Position.Z);
         var hit = new ProjectileHit_SyncEvent(new SyncEvent(_ownerId, SyncEvent.EventType.ProjectileHit, _room.Time));
+
         hit.EventDataList.Add(int.Parse(ProjectileID));
         hit.EventDataList.Add(hitGoID);
         hit.EventDataList.Add(0);

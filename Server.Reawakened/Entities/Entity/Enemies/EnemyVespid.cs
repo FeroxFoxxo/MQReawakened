@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.AIBehavior;
+using Server.Reawakened.Entities.Entity.Utils;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
@@ -46,9 +47,12 @@ public class EnemyVespid(Room room, string entityId, ILogger<Enemy> logger, Base
 
         if (AiBehavior is not AIBehaviorShooting)
         {
-            Console.WriteLine("I be hurtin");
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, player.TempData.Position.X,
-                    player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
+            var aiEvent = AISyncEventHelper.AIDo(
+                Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty,
+                player.TempData.Position.X, player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false
+            );
+
+            Room.SendSyncEvent(aiEvent);
 
             // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
             AiData.Sync_TargetPosX = player.TempData.Position.X;

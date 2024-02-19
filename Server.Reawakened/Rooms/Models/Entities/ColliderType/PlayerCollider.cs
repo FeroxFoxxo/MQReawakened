@@ -7,8 +7,6 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
     {
         if (received is AIProjectileCollider)
         {
-            var attack = (AIProjectileCollider)received;
-            Console.WriteLine("holy fuck i just got shot");
         }
     }
 }
