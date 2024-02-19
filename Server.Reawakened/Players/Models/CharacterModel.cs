@@ -14,7 +14,7 @@ public class CharacterModel : PersistantData
     public List<int> Events { get; set; }
     public Dictionary<int, Dictionary<string, int>> AchievementObjectives { get; set; }
     public Dictionary<string, float> BestMinigameTimes { get; set; }
-    public Dictionary<DailiesModel, DateTime> CurrentCollectedDailies { get; set; }
+    public Dictionary<string, DailiesModel> CurrentCollectedDailies { get; set; }
 
     public CharacterModel()
     {
@@ -24,35 +24,27 @@ public class CharacterModel : PersistantData
         Events = [];
         AchievementObjectives = [];
         BestMinigameTimes = [];
+        CurrentCollectedDailies = [];
 
         Data = new CharacterDataModel();
         LevelData = new LevelData();
     }
 
-    public bool CanActivateDailies(Player player, DailiesModel daily)
+    public bool CanActivateDailies(Player player, string dailyObjectId)
     {
         if (player.Character.CurrentCollectedDailies == null)
-            player.Character.CurrentCollectedDailies = new Dictionary<DailiesModel, DateTime>();
+            player.Character.CurrentCollectedDailies = new Dictionary<string, DailiesModel>();
 
-        foreach (var dailyHarvest in player.Character.CurrentCollectedDailies)
-        {
-            if (dailyHarvest.Key.GameObjectId == daily.GameObjectId && dailyHarvest.Key.LevelId == daily.LevelId)
-                return false;
-
-            else
-                return true;
-        }
-
-        player.Character.CurrentCollectedDailies.TryGetValue(daily, out var timeOfHarvest);
-        var timeForNextHarvest = timeOfHarvest + TimeSpan.FromDays(1);
-
-        return DateTime.Now >= timeForNextHarvest;
+        return !player.Character.CurrentCollectedDailies.ContainsKey(dailyObjectId) ||
+            player.Character.CurrentCollectedDailies.Values.Any(x => x.GameObjectId == dailyObjectId &&
+                x.LevelId == player.Room.LevelInfo.LevelId && DateTime.Now >= x.TimeOfHarvest + TimeSpan.FromDays(1));
     }
 
-    public DailiesModel GetDailyHarvest(string gameObjectId, int levelId) => new()
+    public DailiesModel SetDailyHarvest(string gameObjectId, int levelId, DateTime timeOfHarvest) => new()
     {
         GameObjectId = gameObjectId,
-        LevelId = levelId
+        LevelId = levelId,
+        TimeOfHarvest = timeOfHarvest
     };
 
     public override string ToString() => throw new InvalidOperationException();
