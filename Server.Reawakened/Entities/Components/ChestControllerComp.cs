@@ -9,6 +9,7 @@ using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using static BaseChestController;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -24,17 +25,22 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
     {
         ChestState = (int)DailiesState.Active;
 
-        var dailyModel = new DailiesModel()
-        {
-            GameObjectId = int.Parse(Id),
-            LevelId = Room.LevelInfo.LevelId
-        };
+        if (player.Character.CurrentCollectedDailies != null)
+            foreach (var dailyHarvest in player.Character.CurrentCollectedDailies)
+            {
+                if (dailyHarvest.Key.GameObjectId == Id && dailyHarvest.Key.LevelId == Room.LevelInfo.LevelId)
+                    Console.WriteLine("True Test");
 
-        if (PrefabName.Contains(ServerRConfig.DailyBoxPrefabName) && player.Character.Data.CurrentCollectedDailies.ContainsKey(Id))
+                else
+                    Console.WriteLine("False Test");
+            }
+
+        if (PrefabName.Contains(ServerRConfig.DailyBoxPrefabName) && player.Character.CurrentCollectedDailies.ContainsKey
+            (player.Character.GetDailyHarvest(Id, Room.LevelInfo.LevelId)))
         {
             ChestState = (int)DailiesState.Collected;
 
-            if (player.Character.Data.CanActivateDailies(player, Id))
+            if (player.Character.CanActivateDailies(player, player.Character.GetDailyHarvest(Id, Room.LevelInfo.LevelId)))
                 ChestState = (int)DailiesState.Active;
         }
 
@@ -62,10 +68,11 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
         if (PrefabName.Contains(ServerRConfig.DailyBoxPrefabName))
         {
-            player.Character.Data.CurrentCollectedDailies.TryAdd(Id, DateTime.Now);
-
             player.SendSyncEventToPlayer(triggerEvent);
             player.SendSyncEventToPlayer(triggerReceiver);
+
+            if (!player.Character.CurrentCollectedDailies.ContainsKey(player.Character.GetDailyHarvest(Id, Room.LevelInfo.LevelId)))
+                player.Character.CurrentCollectedDailies.Add(player.Character.GetDailyHarvest(Id, Room.LevelInfo.LevelId), DateTime.Now);
 
             return;
         }
