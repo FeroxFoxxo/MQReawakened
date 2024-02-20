@@ -7,6 +7,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using System.Text;
 using static TriggerCoopController;
 
@@ -151,6 +152,13 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         if (TriggerOnNormalDamage) Activations.Add(ActivationType.NormalDamage);
         if (TriggerOnGrapplingHook) Activations.Add(ActivationType.NormalDamage);
         if (!string.IsNullOrEmpty(TriggeredByItemInInventory)) Activations.Add(ActivationType.ItemInInventory);
+
+        if (Rectangle.X > 0)
+            Position.X += Rectangle.Width - 0.5f;
+        else
+            Position.X -= Rectangle.Width + 0.5f;
+
+        Room.Colliders.Add(Id, new TriggerableTargetCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
     }
 
     public override void DelayedComponentInitialization() => RunTrigger(null);

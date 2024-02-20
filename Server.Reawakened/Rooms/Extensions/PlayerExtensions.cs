@@ -1,4 +1,5 @@
 ﻿using Server.Base.Accounts.Extensions;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -32,6 +33,9 @@ public static class PlayerExtensions
 
         player.JoinRoom(room, useOriginalRoom, out reason);
     }
+
+    public static string GetPlayersPlaneString(this Player player, ServerRConfig serverRConfig) =>
+serverRConfig.PlayerPlane[Convert.ToInt32(player.TempData.Position.Z)];
 
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelData.LevelId ?? -1;

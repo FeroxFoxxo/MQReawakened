@@ -5,9 +5,8 @@ public class EnemyCollider(string id, Vector3Model position, float sizeX, float 
 {
     public override void SendCollisionEvent(BaseCollider received)
     {
-        if (received is AttackCollider)
+        if (received is AttackCollider attack)
         {
-            var attack = (AttackCollider)received;
             Room.Enemies.TryGetValue(Id, out var enemy);
             enemy.Damage(attack.Damage, attack.Owner);
         }
