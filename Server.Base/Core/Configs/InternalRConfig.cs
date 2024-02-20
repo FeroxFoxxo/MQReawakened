@@ -87,7 +87,7 @@ public class InternalRConfig : IRConfig
         ExpireAge = TimeSpan.FromDays(30);
         Merge = MergeType.Minutes;
 
-        DisconnectionTimeout = 900000000;
+        DisconnectionTimeout = 1000;
 
         ServerShutdownMessage = "Server is shutting down!";
     }

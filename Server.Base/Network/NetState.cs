@@ -93,7 +93,15 @@ public class NetState : IDisposable
     public void CheckAlive(double curTicks)
     {
         if (Socket == null)
+        {
+            lock (_handler.Disposed)
+            {
+                if (!_handler.Disposed.Contains(this))
+                _handler.Disposed.Enqueue(this);
+            }
+
             return;
+        }
 
         if (_nextCheckActivity - curTicks >= 0)
             return;
@@ -226,6 +234,21 @@ public class NetState : IDisposable
                 {
                     if (string.IsNullOrEmpty(packet))
                         continue;
+
+                    const string PolicyFileRequest = "<policy-file-request/>";
+
+                    const string AllPolicy =
+                        @"<?xml version='1.0'?>
+                        <cross-domain-policy>
+                            <allow-access-from domain=""*"" to-ports=""*"" />
+                        </cross-domain-policy>";
+
+                    if (packet == PolicyFileRequest)
+                    {
+                        var policy = Encoding.UTF8.GetBytes(AllPolicy);
+                        socket.BeginSend(policy, 0, policy.Length, SocketFlags.None, new AsyncCallback(OnSend), socket);
+                        return;
+                    }
 
                     Task.Factory.StartNew(() => RunPacket(packet));
                 }
