@@ -9,12 +9,13 @@ using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using static BaseChestController;
 
 namespace Server.Reawakened.Entities.Components;
 
 public class ChestControllerComp : BaseChestControllerComp<ChestController>
 {
-    public int ChestState;
+    public DailiesState ChestState;
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
@@ -22,23 +23,13 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
     public override object[] GetInitData(Player player)
     {
-        ChestState = (int)DailiesState.Active;
+        ChestState = DailiesState.Active;
 
-        var dailyModel = new DailiesModel()
-        {
-            GameObjectId = int.Parse(Id),
-            LevelId = Room.LevelInfo.LevelId
-        };
+        if (player.Character.CurrentCollectedDailies != null && PrefabName.Contains(ServerRConfig.DailyBoxName))
+            if (!CanActivateDailies(player, Id))
+                ChestState = DailiesState.Collected;
 
-        if (PrefabName.Contains(ServerRConfig.DailyBoxPrefabName) && player.Character.Data.CurrentCollectedDailies.ContainsKey(Id))
-        {
-            ChestState = (int)DailiesState.Collected;
-
-            if (player.Character.Data.CanActivateDailies(player, Id))
-                ChestState = (int)DailiesState.Active;
-        }
-
-        return [ChestState];
+        return [(int)ChestState];
     }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
@@ -48,6 +39,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
         player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
 
         var triggerEvent = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true);
+        var triggerReceiver = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);
 
         //Temp way for adding bananas to empty chests to create a better user experience.
         if (string.IsNullOrEmpty(LootCatalog.GetLootById(Id).ObjectId))
@@ -58,14 +50,12 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
             triggerEvent.EventDataList[0] = bananaReward;
         }
 
-        var triggerReceiver = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);
-
-        if (PrefabName.Contains(ServerRConfig.DailyBoxPrefabName))
+        if (PrefabName.Contains(ServerRConfig.DailyBoxName))
         {
-            player.Character.Data.CurrentCollectedDailies.TryAdd(Id, DateTime.Now);
-
             player.SendSyncEventToPlayer(triggerEvent);
             player.SendSyncEventToPlayer(triggerReceiver);
+
+            player.Character.CurrentCollectedDailies.TryAdd(Id, SetDailyHarvest(Id, Room.LevelInfo.LevelId, DateTime.Now));
 
             return;
         }
