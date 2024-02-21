@@ -32,7 +32,11 @@ public class ReserveCharacterName : ExternalProtocol
         var sb = new SeparatedStringBuilder('%');
 
         for (var i = 0; i < ServerConfig.ReservedNameCount; i++)
-            sb.Append(NameGenSyllables.GetRandomName(gender, CharacterHandler));
+            sb.Append(
+                NameGenSyllables.GetName(
+                    NameGenSyllables.GetRandomName(gender, CharacterHandler)
+                )
+            );
 
         return sb.ToString();
     }
