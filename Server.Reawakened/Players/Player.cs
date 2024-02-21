@@ -72,5 +72,11 @@ public class Player(Account account, UserInfo userInfo, NetState state, Database
         }
 
         this.DumpToLobby();
+
+        try
+        {
+            NetState.Dispose();
+        }
+        catch (Exception) { }
     }
 }

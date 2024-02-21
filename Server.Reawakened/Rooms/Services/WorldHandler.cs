@@ -41,6 +41,9 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             {
                 var levelInfo = worldGraph!.GetInfoLevel(levelId);
 
+                if (string.IsNullOrEmpty(levelInfo.Name))
+                    levelInfo = worldGraph!.GetInfoLevel(worldGraph.DefaultLevel);
+
                 return string.IsNullOrEmpty(levelInfo.Name)
                     ? throw new MissingFieldException($"Room '{levelId}' does not have a valid name!")
                     : levelInfo;

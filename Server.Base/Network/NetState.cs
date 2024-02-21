@@ -96,8 +96,11 @@ public class NetState : IDisposable
         {
             lock (_handler.Disposed)
             {
-                if (!_handler.Disposed.Contains(this))
-                _handler.Disposed.Enqueue(this);
+                if (!_handler.Disposed.Contains(this) && _handler.Instances.Contains(this))
+                {
+                    _logger.LogError("{NetState}: Disconnecting due to socket being null...", this);
+                    _handler.Disposed.Enqueue(this);
+                }
             }
 
             return;
@@ -426,6 +429,8 @@ public class NetState : IDisposable
         _data.Clear();
 
         Running = false;
+
+        _logger.LogError("{NetState}: Dumping net state...", this);
 
         lock (_handler.Disposed)
             _handler.Disposed.Enqueue(this);
