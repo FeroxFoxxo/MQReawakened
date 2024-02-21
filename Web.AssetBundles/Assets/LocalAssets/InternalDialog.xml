@@ -300,4 +300,19 @@
             <Dialog dialogId="662" conversationId="1912" minimumReputation="1" />
         </NPC>
     </Level>
+    <Level id="508">
+        <!-- Rachnok's Lair -->
+        <NPC objectId="2466934" name="Villager" descriptionId="0">
+            <Dialog dialogId="1475" conversationId="3735" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="13160125" name="Villager" descriptionId="0">
+            <Dialog dialogId="1475" conversationId="3735" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="2466936" name="Villager" descriptionId="0">
+            <Dialog dialogId="1475" conversationId="3735" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="2466935" name="Villager" descriptionId="0">
+            <Dialog dialogId="1475" conversationId="3735" minimumReputation="1" />
+        </NPC>
+    </Level>        
 </DialogCatalog>
