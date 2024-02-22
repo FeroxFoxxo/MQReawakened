@@ -31,17 +31,6 @@ public abstract class BaseCollider
         ColliderType = "terrain";
         ColliderBox = new RectModel(Position.x, Position.y + 0.1f, collider.Width, collider.Height);
     }
-    public BaseCollider(string triggerableId, ColliderModel collider, Room room)
-    {
-        // Builder for triggerable components
-        Id = triggerableId;
-        var targetWidth = collider.Width < 0 ? collider.Position.x - 0.5f : collider.Position.x + 0.5f;
-        Position = new Vector3(targetWidth, collider.Position.y, 0);
-        Plane = collider.Plane;
-        Room = room;
-        ColliderType = "triggerable";
-        ColliderBox = new RectModel(Position.x, Position.y, collider.Width, collider.Height);
-    }
 
     public virtual string[] IsColliding(bool isAttack) => [];
 
