@@ -5,8 +5,10 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -50,37 +52,54 @@ public class State : ExternalProtocol
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.ChargeAttack:
-                    var chargeAttackEvent = new ChargeAttack_SyncEvent(syncEvent);
+                    Player.TempData.IsSuperStomping = true;
 
-                    var startPosition = chargeAttackEvent.EventDataList[2].ToString();
-                    var endPosition = chargeAttackEvent.EventDataList[7].ToString();
+                    var startChargeAttack = new ChargeAttack_SyncEvent(syncEvent);
 
-                    var totalDistance = Convert.ToInt32(Math.Floor(Convert.ToDouble(startPosition)) - Math.Floor(Convert.ToDouble(endPosition)));
+                    var startPosition = startChargeAttack.PosY;
+                    var endPosition = startChargeAttack.MaxPosY;
 
-                    Player.Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(entityId.ToString(), chargeAttackEvent.TriggerTime,
-                        chargeAttackEvent.PosX, chargeAttackEvent.PosY - totalDistance, chargeAttackEvent.SpeedX,
-                        chargeAttackEvent.SpeedY, chargeAttackEvent.ItemId, chargeAttackEvent.ZoneId));
+                    var totalDistance = startPosition - endPosition;
+
+                    Player.Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                        startChargeAttack.PosX, startChargeAttack.PosY - totalDistance, startChargeAttack.SpeedX,
+                        startChargeAttack.SpeedY, startChargeAttack.ItemId, startChargeAttack.ZoneId));
                     break;
+
                 case SyncEvent.EventType.ChargeAttackStop:
-                    var chargeAttackStopSyncEvent = new ChargeAttackStop_SyncEvent(syncEvent);
+                    var closestGameObjects = new Dictionary<double, BaseCollider>();
 
-                    Player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(chargeAttackStopSyncEvent.TargetID, chargeAttackStopSyncEvent.TriggerTime,
-                        chargeAttackStopSyncEvent.PosX, chargeAttackStopSyncEvent.PosY, chargeAttackStopSyncEvent.ItemId,
-                        chargeAttackStopSyncEvent.ZoneId, chargeAttackStopSyncEvent.HitId));
+                    foreach (var destructible in Player.Room.GetEntitiesFromType<BaseComponent>()
+                        .Where(entity => entity is IDestructible))
+                    {
+                        if (!Player.Room.Colliders.ContainsKey(destructible.Id)) continue;
 
-                    Logger.LogWarning("Collision system not yet written and implemented for {Type}.", chargeAttackStopSyncEvent.Type);
+                        var destructibleCollider = Player.Room.Colliders[destructible.Id];
+
+                        var x = destructible.Position.X - Player.TempData.Position.X;
+                        var y = destructible.Position.Y - Player.TempData.Position.Y;
+
+                        var distance = Math.Round(Math.Sqrt(Math.Pow(Math.Abs(x), 2) + Math.Pow(Math.Abs(y), 2)));
+                        closestGameObjects.TryAdd(distance, destructibleCollider);
+                    }
+
+                    var closestEntity = closestGameObjects[closestGameObjects.Keys.Min()];
+
+                    if (closestEntity.CheckCollision(Player.ChargeAttackCollider()))
+                        Player.SendStuperStompCollision(closestEntity.Id);
+
+                    Player.TempData.IsSuperStomping = false;
                     break;
                 case SyncEvent.EventType.NotifyCollision:
-
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
                     var collisionTarget = notifyCollisionEvent.CollisionTarget;
 
-                    if (Player.Room.ContainsEntity(collisionTarget))
+                    if (newPlayer.Room.ContainsEntity(collisionTarget))
                         foreach (var component in Player.Room.GetEntitiesFromId<BaseComponent>(collisionTarget))
                             component.NotifyCollision(notifyCollisionEvent, newPlayer);
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
-                            collisionTarget, Player.Room.GetUnknownComponentTypes(collisionTarget));
+                            collisionTarget, newPlayer.Room.GetUnknownComponentTypes(collisionTarget));
                     break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);

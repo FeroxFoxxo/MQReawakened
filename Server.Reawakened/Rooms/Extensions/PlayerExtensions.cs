@@ -34,8 +34,8 @@ public static class PlayerExtensions
         player.JoinRoom(room, useOriginalRoom, out reason);
     }
 
-    public static string GetPlayersPlaneString(this Player player, ServerRConfig serverRConfig) =>
-serverRConfig.PlayerPlane[Convert.ToInt32(player.TempData.Position.Z)];
+    public static string GetPlayersPlaneString(this Player player, ServerRConfig serverRConfig)
+        => player.TempData.Position.Z > 0 ? serverRConfig.Planes[1] : (serverRConfig?.Planes[0]);
 
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelData.LevelId ?? -1;

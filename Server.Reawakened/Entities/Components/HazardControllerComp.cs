@@ -30,41 +30,53 @@ public class HazardControllerComp : Component<HazardController>
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
-        if (notifyCollisionEvent.Colliding == true)
+        if (!notifyCollisionEvent.Colliding) return;
+
+        var character = player.Character;
+
+        Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
+
+        if (player.TempData.IsSuperStomping)
         {
-            var character = player.Character;
+            player.SetTempInvincibility(TimerThread, 1);
+            player.SendStuperStompCollision(Id);
+            player.TempData.IsSuperStomping = false;
+        }
 
-            Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
+        if (player.TempData.Invincible)
+            return;
 
-            if (effectType == default)
-            {
-                var noEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, 10,
+        if (effectType == default)
+        {
+            var noEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.ArmorPiercingDamage,
+            0, 1, true, Entity.GameObject.ObjectInfo.ObjectId, false);
+
+            Room.SendSyncEvent(noEffect);
+        }
+        else
+        {
+            var statusEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)effectType,
                 0, 1, true, Entity.GameObject.ObjectInfo.ObjectId, false);
 
-                Room.SendSyncEvent(noEffect);
-            }
-            else
-            {
-                var statusEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)effectType,
-                    0, 1, true, Entity.GameObject.ObjectInfo.ObjectId, false);
+            Room.SendSyncEvent(statusEffect);
 
-                Room.SendSyncEvent(statusEffect);
+            Logger.LogTrace("Triggered status effect for {Character} of {HurtType}", character.Data.CharacterName,
+                effectType);
+        }
 
-                Logger.LogTrace("Triggered status effect for {Character} of {HurtType}", character.Data.CharacterName,
-                    effectType);
-            }
-            switch (effectType)
-            {
-                case ItemEffectType.Unknown:
-                    SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
-                    $"Effect Type: {effectType}");
-                    break;
-                case ItemEffectType.WaterBreathing:
-                    break;
-                default:
-                    player.ApplyDamageByPercent(Room, .10);
-                    break;
-            }
+        player.SetTempInvincibility(TimerThread, 1.5);
+
+        switch (effectType)
+        {
+            case ItemEffectType.Unknown:
+                SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
+                $"Effect Type: {effectType}");
+                break;
+            case ItemEffectType.WaterBreathing:
+                break;
+            default:
+                player.ApplyDamageByPercent(Room, .10);
+                break;
         }
     }
 }
