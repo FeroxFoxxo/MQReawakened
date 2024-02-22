@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Server.Reawakened.Players.Helpers;
 
-namespace Web.Launcher.Controllers.API;
+namespace Web.WebPlayer.Controllers.API;
 
-[Route("api/getHost")]
+[Route("api/getPlayers")]
 public class GetPlayerCount(PlayerContainer container) : Controller
 {
     [HttpGet]
-    public IActionResult GetPlayers() => Ok(container.GetAllPlayers);
+    public IActionResult GetPlayers() => Ok(container.GetPlayerCount());
 }

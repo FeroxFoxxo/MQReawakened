@@ -26,10 +26,10 @@ public class PlayerContainer
             return [.. _playerList];
     }
 
-    public List<Player> GetPlayerCount()
+    public int GetPlayerCount()
     {
         lock (Lock)
-            return [.. _playerList];
+            return _playerList.Count;
     }
 
     public IEnumerable<Player> GetPlayersByFriend(int friendId)

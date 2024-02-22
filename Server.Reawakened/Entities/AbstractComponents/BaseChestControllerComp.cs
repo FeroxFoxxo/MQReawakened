@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.Players;
+﻿using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Players.Models;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
