@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Game\_Place MQServer In Bin_">
+      <None Update="WebPlayers\_Place MQServer In Bin_">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
