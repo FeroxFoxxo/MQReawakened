@@ -154,7 +154,8 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         if (TriggerOnGrapplingHook) Activations.Add(ActivationType.NormalDamage);
         if (!string.IsNullOrEmpty(TriggeredByItemInInventory)) Activations.Add(ActivationType.ItemInInventory);
 
-        Room.Colliders.Add(Id, new TriggerableTargetCollider(Id, AdjustColliderPositionX(Position), Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+        Room.Colliders.Add(Id, new TriggerableTargetCollider
+            (Id, AdjustColliderPositionX(Position), Rectangle.Width, Rectangle.Height, ParentPlane, Room));
     }
 
     public Vector3Model AdjustColliderPositionX(Vector3Model position)
