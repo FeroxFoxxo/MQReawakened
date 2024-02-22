@@ -11,10 +11,4 @@
         <ProjectReference Include="..\Server.Reawakened\Server.Reawakened.csproj" />
         <ProjectReference Include="..\Server.Web\Server.Web.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <None Update="WebPlayers\_Place MQServer In Bin_">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
 </Project>
