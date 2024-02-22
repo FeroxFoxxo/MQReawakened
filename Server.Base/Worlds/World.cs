@@ -60,7 +60,10 @@ public class World(ILogger<World> logger, IServiceProvider services, ServerHandl
     public void Save(bool message)
     {
         if (Saving)
+        {
+            Broadcast("The world is already saving, please wait.");
             return;
+        }
 
         netStateHandler.Pause();
 

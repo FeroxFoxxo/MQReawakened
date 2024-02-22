@@ -77,7 +77,10 @@ public class Web(ILogger<Web> logger) : WebModule(logger)
         }
 
         app.UseDefaultFiles();
-        app.UseStaticFiles();
+        app.UseStaticFiles(new StaticFileOptions()
+        {
+            ServeUnknownFileTypes = true
+        });
 
         app.UseIpRateLimiting();
 
