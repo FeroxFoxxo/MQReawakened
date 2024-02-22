@@ -72,7 +72,11 @@ public class UseItem : ExternalProtocol
 
     private void HandleBomb(ItemDescription usedItem, Vector3Model position, int direction)
     {
+        Player.CheckAchievement(AchConditionType.Bomb, string.Empty, InternalAchievement, Logger);
+        Player.CheckAchievement(AchConditionType.Bomb, usedItem.PrefabName, InternalAchievement, Logger);
+
         Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
+
         var removeFromHotbar = true;
 
         if (usedItem.InventoryCategoryID is
@@ -98,6 +102,7 @@ public class UseItem : ExternalProtocol
         }
 
         Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
+
         var removeFromHotbar = true;
 
         if (usedItem.InventoryCategoryID is
