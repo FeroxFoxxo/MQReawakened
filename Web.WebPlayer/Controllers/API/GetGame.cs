@@ -11,5 +11,5 @@ public class GetGame(LoadGameClients loadGameClients) : Controller
     public IActionResult GetGameExecutable([FromRoute] string gameVersion) =>
         loadGameClients.ClientFiles.TryGetValue(gameVersion, out var path)
             ? new FileContentResult(FileIO.ReadAllBytes(path), "application/octet-stream")
-            : (IActionResult)new FileNotFoundException();
+            : new NotFoundResult();
 }
