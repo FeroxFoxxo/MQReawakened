@@ -9,6 +9,8 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Protocols.External._i__InventoryHandler;
 
@@ -22,6 +24,7 @@ public class UseItem : ExternalProtocol
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public override void Run(string[] message)
     {
@@ -34,21 +37,15 @@ public class UseItem : ExternalProtocol
             return;
         }
 
-        Player.RemoveItem(usedItem, 1, ItemCatalog);
-
         var position = Player.TempData.Position;
         var direction = Player.TempData.Direction;
 
         var subCategoryId = usedItem.SubCategoryId;
 
-        // Causes compile error due to missing removeFromHotbar variable
-        //if (item.UniqueInInventory)
-        //    removeFromHotbar = false;
-
         switch (subCategoryId)
         {
             case ItemSubCategory.Bomb:
-                Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
+                HandleBomb(usedItem, position, direction);
                 break;
             case ItemSubCategory.Nut:
             case ItemSubCategory.Usable:
@@ -59,22 +56,10 @@ public class UseItem : ExternalProtocol
                 break;
             case ItemSubCategory.Tailoring:
             case ItemSubCategory.Alchemy:
-                var recipe = RecipeCatalog.GetRecipeById(itemId);
-
-                Player.Character.Data.RecipeList.RecipeList.Add(recipe);
-
-                Player.SendXt("cz", recipe);
+                HandleRecipe(usedItem);
                 break;
             case ItemSubCategory.SuperPack:
-                foreach (var pair in VendorCatalog.GetSuperPacksItemQuantityMap(itemId))
-                {
-                    var packItem = ItemCatalog.GetItemFromId(pair.Key);
-
-                    if (packItem == null)
-                        continue;
-
-                    Player.AddItem(packItem, pair.Value, ItemCatalog);
-                }
+                HandleSuperPack(usedItem);
                 break;
             default:
                 Logger.LogWarning("Could not find use for item {ItemId}, type {ItemType}.",
@@ -84,9 +69,76 @@ public class UseItem : ExternalProtocol
 
         Player.SendUpdatedInventory(false);
     }
+    private void HandleBomb(ItemDescription usedItem, Vector3Model position, int direction)
+    {
+        Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
+        var removeFromHotbar = true;
+
+        if (usedItem.InventoryCategoryID is
+            ItemFilterCategory.WeaponAndAbilities or
+            ItemFilterCategory.Pets)
+            removeFromHotbar = false;
+
+        if (removeFromHotbar)
+            RemoveFromHotbar(Player.Character, usedItem);
+    }
 
     private void HandleConsumable(ItemDescription usedItem)
     {
+        if (usedItem.ItemActionType == ItemActionType.Eat)
+        {
+            Player.CheckAchievement(AchConditionType.Consumable, string.Empty, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, InternalAchievement, Logger);
+        }
+        else if (usedItem.ItemActionType == ItemActionType.Drink)
+        {
+            Player.CheckAchievement(AchConditionType.Drink, string.Empty, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, InternalAchievement, Logger);
+        }
+
+        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
+        var removeFromHotbar = true;
+
+        if (usedItem.InventoryCategoryID is
+            ItemFilterCategory.WeaponAndAbilities or
+            ItemFilterCategory.Pets)
+            removeFromHotbar = false;
+
+        if (removeFromHotbar)
+            RemoveFromHotbar(Player.Character, usedItem);
+    }
+
+    private void HandleRecipe(ItemDescription usedItem)
+    {
+        var recipe = RecipeCatalog.GetRecipeById(usedItem.ItemId);
+
+        Player.Character.Data.RecipeList.RecipeList.Add(recipe);
+
+        Player.SendXt("cz", recipe);
+
+        var removeFromHotbar = true;
+
+        if (usedItem.InventoryCategoryID is
+            ItemFilterCategory.WeaponAndAbilities or
+            ItemFilterCategory.Pets)
+            removeFromHotbar = false;
+
+        if (removeFromHotbar)
+            RemoveFromHotbar(Player.Character, usedItem);
+    }
+
+    private void HandleSuperPack(ItemDescription usedItem)
+    {
+        foreach (var pair in VendorCatalog.GetSuperPacksItemQuantityMap(usedItem.ItemId))
+        {
+            var packItem = ItemCatalog.GetItemFromId(pair.Key);
+
+            if (packItem == null)
+                continue;
+
+            Player.AddItem(packItem, pair.Value, ItemCatalog);
+        }
+
         var removeFromHotbar = true;
 
         if (usedItem.InventoryCategoryID is
