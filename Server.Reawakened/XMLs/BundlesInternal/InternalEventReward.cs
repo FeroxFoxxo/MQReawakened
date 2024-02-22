@@ -1,6 +1,7 @@
 ﻿using Achievement.StaticData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
@@ -62,11 +63,11 @@ public class InternalEventReward : IBundledXml<InternalEventReward>
     {
     }
 
-    public void CheckEventReward(int eventId, Player player)
+    public void CheckEventReward(int eventId, ItemCatalog itemCatalog, Player player)
     {
         if (!EventRewards.TryGetValue(eventId, out var eventRewards))
             return;
 
-        eventRewards.RewardPlayer(player, Logger);
+        eventRewards.RewardPlayer(player, itemCatalog, Logger);
     }
 }

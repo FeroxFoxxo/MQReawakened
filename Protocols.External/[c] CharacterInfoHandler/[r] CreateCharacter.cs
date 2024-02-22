@@ -22,6 +22,7 @@ public class CreateCharacter : ExternalProtocol
     public ServerRConfig ServerConfig { get; set; }
     public WorldGraph WorldGraph { get; set; }
     public WorldHandler WorldHandler { get; set; }
+    public EventPrefabs EventPrefabs { get; set; }
 
     public override void Run(string[] message)
     {
@@ -71,7 +72,7 @@ public class CreateCharacter : ExternalProtocol
 
             var levelInfo = WorldHandler.GetLevelInfo(model.LevelData.LevelId);
 
-            Player.SendStartPlay(model, levelInfo);
+            Player.SendStartPlay(model, levelInfo, EventPrefabs);
         }
     }
 }

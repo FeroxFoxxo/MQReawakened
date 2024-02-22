@@ -16,6 +16,7 @@ public class ChooseCharacter : ExternalProtocol
     public ILogger<ChooseCharacter> Logger { get; set; }
     public WorldGraph WorldGraph { get; set; }
     public CharacterHandler CharacterHandler { get; set; }
+    public EventPrefabs EventPrefabs { get; set; }
 
     public override void Run(string[] message)
     {
@@ -33,6 +34,6 @@ public class ChooseCharacter : ExternalProtocol
 
         var levelInfo = WorldHandler.GetLevelInfo(character.LevelData.LevelId);
 
-        Player.SendStartPlay(character, levelInfo);
+        Player.SendStartPlay(character, levelInfo, EventPrefabs);
     }
 }

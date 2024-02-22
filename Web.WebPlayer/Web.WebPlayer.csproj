@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Game\MQServer.1.6577.unity3d" />
+      <None Remove="Game\MQServer.4.187.unity3d" />
+      <None Remove="Game\MQServer.4.287.unity3d" />
+      <None Remove="Game\MQServer.4.310.unity3d" />
+      <None Remove="Game\MQServer.4.342.unity3d" />
+      <None Remove="Game\MQServer.4.482.unity3d" />
+      <None Remove="Game\MQServer.4.89.unity3d" />
+      <None Remove="Game\_Place MQServer Here_" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="Game\_Place MQServer Here_" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Game\MQServer.1.6577.unity3d">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Game\MQServer.4.187.unity3d">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Game\MQServer.4.287.unity3d">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Game\MQServer.4.310.unity3d">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Game\MQServer.4.342.unity3d">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Game\MQServer.4.482.unity3d">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Game\MQServer.4.89.unity3d">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Server.Base\Server.Base.csproj" />
+        <ProjectReference Include="..\Server.Reawakened\Server.Reawakened.csproj" />
+        <ProjectReference Include="..\Server.Web\Server.Web.csproj" />
+    </ItemGroup>
+</Project>

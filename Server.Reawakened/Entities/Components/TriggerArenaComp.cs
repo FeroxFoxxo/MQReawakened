@@ -68,7 +68,7 @@ public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
                         trigger.Trigger(true);
 
                 foreach (var player in Room.Players.Values)
-                    player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1);
+                    player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, QuestCatalog);
             }
             else
                 foreach (var player in Room.Players.Values)

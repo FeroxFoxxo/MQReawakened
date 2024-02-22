@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -67,6 +68,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             Destroy(origin, Room, Id);
         }
     }
+
     public void Destroy(Player player, Room room, string id)
     {
         room.RemoveEntity(id);

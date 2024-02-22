@@ -3,6 +3,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 
 namespace Server.Reawakened.Entities.Components;
@@ -12,7 +13,9 @@ public class GenericCollectibleComp : Component<GenericCollectible>
     public bool Collected;
 
     public int Value;
+
     public ILogger<GenericCollectibleComp> Logger { get; set; }
+    public InternalAchievement Achievement { get; set; }
 
     public override void InitializeComponent()
     {
@@ -37,7 +40,7 @@ public class GenericCollectibleComp : Component<GenericCollectible>
     {
         Collected = true;
 
-        player.CheckAchievement(AchConditionType.CollectBanana, string.Empty, Logger, Value);
+        player.CheckAchievement(AchConditionType.CollectBanana, string.Empty, Achievement, Logger, Value);
         var collectedValue = Value * Room.Players.Count;
 
         Room.SentEntityTriggered(Id, player, true, true);

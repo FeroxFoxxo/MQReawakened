@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._l__ExtLevelEditor;
@@ -11,6 +12,7 @@ public class GoToEvent : ExternalProtocol
 
     public ILogger<GoToEvent> Logger { get; set; }
     public EventPrefabs EventPrefabs { get; set; }
+    public WorldHandler WorldHandler { get; set; }
 
     public override void Run(string[] message)
     {
@@ -39,6 +41,6 @@ public class GoToEvent : ExternalProtocol
 
         character.SetLevel(levelId, spawnId.ToString(), Logger);
 
-        Player.SendLevelChange();
+        Player.SendLevelChange(WorldHandler);
     }
 }

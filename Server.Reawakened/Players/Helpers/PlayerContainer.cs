@@ -1,26 +1,9 @@
-﻿using Server.Reawakened.Configs;
-using Server.Reawakened.Players.Services;
-using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
+﻿using Server.Reawakened.Players.Services;
 
 namespace Server.Reawakened.Players.Helpers;
 
-public class DatabaseContainer(WorldHandler worldHandler, CharacterHandler characterHandler,
-    QuestCatalog quests, InternalObjective objCatalog, ItemCatalog itemCatalog,
-    InternalAchievement internalAchievement, EventPrefabs eventPrefabs, ServerRConfig config)
+public class PlayerContainer
 {
-    public WorldHandler WorldHandler => worldHandler;
-    public CharacterHandler CharacterHandler => characterHandler;
-    public QuestCatalog Quests => quests;
-    public InternalObjective Objectives => objCatalog;
-    public ItemCatalog ItemCatalog => itemCatalog;
-    public InternalAchievement InternalAchievement => internalAchievement;
-    public EventPrefabs EventPrefabs => eventPrefabs;
-    public ServerRConfig ServerRConfig => config;
-
-    public UserInfoHandler UserInfoHandler;
-
     public object Lock { get; } = new object();
 
     private readonly List<Player> _playerList = [];
@@ -38,6 +21,12 @@ public class DatabaseContainer(WorldHandler worldHandler, CharacterHandler chara
     }
 
     public List<Player> GetAllPlayers()
+    {
+        lock (Lock)
+            return [.. _playerList];
+    }
+
+    public List<Player> GetPlayerCount()
     {
         lock (Lock)
             return [.. _playerList];

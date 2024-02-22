@@ -28,6 +28,7 @@ public class NPCControllerComp : Component<NPCController>
     public ILogger<NPCControllerComp> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
 
+    public InternalAchievement InternalAchievement { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public DialogDictionary Dialog { get; set; }
@@ -143,7 +144,7 @@ public class NPCControllerComp : Component<NPCController>
     public void TalkToNpc(Player player)
     {
         RunObjectives(player);
-        player.CheckAchievement(AchConditionType.Talkto, PrefabName, Logger);
+        player.CheckAchievement(AchConditionType.Talkto, PrefabName, InternalAchievement, Logger);
 
         switch (NpcType)
         {
@@ -191,9 +192,9 @@ public class NPCControllerComp : Component<NPCController>
 
     public void RunObjectives(Player player)
     {
-        player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1, QuestCatalog);
     }
 
     public void SendNpcInfo(Player player)
@@ -414,9 +415,9 @@ public class NPCControllerComp : Component<NPCController>
 
             if (completedQuest != null)
             {
-                player.CheckAchievement(AchConditionType.CompleteQuest, string.Empty, Logger); // Any Quest
-                player.CheckAchievement(AchConditionType.CompleteQuest, quest.Name, Logger); // Specific Quest by name for example EVT_SB_1_01
-                player.CheckAchievement(AchConditionType.CompleteQuestInLevel, player.Room.LevelInfo.Name, Logger); // Quest by Level/Trail if any exist
+                player.CheckAchievement(AchConditionType.CompleteQuest, string.Empty, InternalAchievement, Logger); // Any Quest
+                player.CheckAchievement(AchConditionType.CompleteQuest, quest.Name, InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
+                player.CheckAchievement(AchConditionType.CompleteQuestInLevel, player.Room.LevelInfo.Name, InternalAchievement, Logger); // Quest by Level/Trail if any exist
 
                 player.Character.Data.QuestLog.Remove(completedQuest);
                 player.NetState.SendXt("nq", completedQuest.Id);

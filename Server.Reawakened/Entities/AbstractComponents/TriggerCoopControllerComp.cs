@@ -7,6 +7,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Bundles;
 using System.Text;
 using static TriggerCoopController;
 
@@ -92,7 +93,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
     public float ActivationTimeAfterFirstInteraction => ComponentData.ActivationTimeAfterFirstInteraction;
 
     public FileLogger FileLogger { get; set; }
-
+    public QuestCatalog QuestCatalog { get; set; }
 
     public override void InitializeComponent()
     {
@@ -253,8 +254,8 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
                 if (rPlayer.Value == null)
                     continue;
 
-                rPlayer.Value.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
-                rPlayer.Value.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1);
+                rPlayer.Value.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1, QuestCatalog);
+                rPlayer.Value.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1, QuestCatalog);
             }
         }
 

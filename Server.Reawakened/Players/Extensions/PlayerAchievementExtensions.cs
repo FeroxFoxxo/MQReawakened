@@ -1,7 +1,10 @@
 ﻿using Achievement.CharacterData;
 using Achievement.StaticData;
+using Microsoft.Extensions.DependencyInjection;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
@@ -11,7 +14,7 @@ namespace Server.Reawakened.Players.Extensions;
 public static class PlayerAchievementExtensions
 {
     public static void CheckAchievement(this Player player, AchConditionType achType, string achValue,
-        Microsoft.Extensions.Logging.ILogger logger, int count = 1)
+        InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger, int count = 1)
     {
         if (string.IsNullOrEmpty(achValue))
             achValue = "unknown";
@@ -19,7 +22,7 @@ public static class PlayerAchievementExtensions
         if (player == null)
             return;
 
-        var posCond = player.DatabaseContainer.InternalAchievement.PossibleConditions;
+        var posCond = internalAchievement.PossibleConditions;
         var type = (int)achType;
         achValue = achValue.ToLower();
 
@@ -36,7 +39,7 @@ public static class PlayerAchievementExtensions
 
         pAchObj[type].TryAdd(achValue, 0);
 
-        var achievements = player.DatabaseContainer.InternalAchievement.Definitions.achievements
+        var achievements = internalAchievement.Definitions.achievements
             .Where(a => a.conditions.Any(c => c.typeId == type && c.description == achValue))
             .ToList();
 
@@ -91,8 +94,10 @@ public static class PlayerAchievementExtensions
             if (!containsAch)
                 player.TempData.CurrentAchievements[type].Add(achValue);
 
+            var itemCatalog = internalAchievement.Services.GetRequiredService<ItemCatalog>();
+
             if (amountLeft <= 0)
-                achievement.Key.rewards.RewardPlayer(player, logger);
+                achievement.Key.rewards.RewardPlayer(player, itemCatalog, logger);
         }
     }
 

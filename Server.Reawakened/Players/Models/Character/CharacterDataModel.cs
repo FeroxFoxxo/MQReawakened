@@ -73,20 +73,6 @@ public class CharacterDataModel : CharacterLightModel
         _player.NetState.Identifier = CharacterName;
     }
 
-    public bool CanActivateDailies(Player player, string dailyId)
-    {
-        if (player.Character.Data.CurrentCollectedDailies == null)
-            player.Character.Data.CurrentCollectedDailies = new Dictionary<string, DateTime>();
-
-        if (!player.Character.Data.CurrentCollectedDailies.ContainsKey(dailyId))
-            return true;
-
-        var timeOfHarvest = player.Character.Data.CurrentCollectedDailies[dailyId];
-        var timeForNextHarvest = timeOfHarvest + TimeSpan.FromDays(1);
-
-        return DateTime.Now >= timeForNextHarvest;
-    }
-
     private void InitializeDetailedLists()
     {
         QuestLog = [];

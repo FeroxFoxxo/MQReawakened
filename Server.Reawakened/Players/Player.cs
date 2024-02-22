@@ -8,17 +8,20 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Services;
 
 namespace Server.Reawakened.Players;
 
-public class Player(Account account, UserInfo userInfo, NetState state, DatabaseContainer databaseContainer) : INetStateData
+public class Player(Account account, UserInfo userInfo, NetState state, WorldHandler worldHandler, PlayerContainer playerContainer, CharacterHandler characterHandler) : INetStateData
 {
     public Account Account => account;
     public NetState NetState => state;
     public UserInfo UserInfo => userInfo;
-    public DatabaseContainer DatabaseContainer => databaseContainer;
+    public PlayerContainer PlayerContainer => playerContainer;
+    public CharacterHandler CharacterHandler => characterHandler;
 
     public TemporaryDataModel TempData { get; set; } = new TemporaryDataModel();
     public CharacterModel Character { get; set; }
@@ -37,16 +40,16 @@ public class Player(Account account, UserInfo userInfo, NetState state, Database
 
     public void Remove(Microsoft.Extensions.Logging.ILogger logger)
     {
-        lock (databaseContainer.Lock)
-            databaseContainer.RemovePlayer(this);
+        lock (playerContainer.Lock)
+            playerContainer.RemovePlayer(this);
 
         this.RemoveFromGroup();
 
         if (Character != null)
         {
-            lock (databaseContainer.Lock)
+            lock (playerContainer.Lock)
             {
-                foreach (var player in databaseContainer.GetPlayersByFriend(CharacterId))
+                foreach (var player in playerContainer.GetPlayersByFriend(CharacterId))
                     player.SendXt("fz", Character.Data.CharacterName);
             }
 
@@ -71,7 +74,7 @@ public class Player(Account account, UserInfo userInfo, NetState state, Database
                 logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
         }
 
-        this.DumpToLobby();
+        this.DumpToLobby(worldHandler);
 
         try
         {

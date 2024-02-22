@@ -34,7 +34,7 @@ public class UseItem : ExternalProtocol
             return;
         }
 
-        Player.RemoveItem(usedItem, 1);
+        Player.RemoveItem(usedItem, 1, ItemCatalog);
 
         var position = Player.TempData.Position;
         var direction = Player.TempData.Direction;
@@ -73,7 +73,7 @@ public class UseItem : ExternalProtocol
                     if (packItem == null)
                         continue;
 
-                    Player.AddItem(packItem, pair.Value, ServerRConfig);
+                    Player.AddItem(packItem, pair.Value, ItemCatalog);
                 }
                 break;
             default:

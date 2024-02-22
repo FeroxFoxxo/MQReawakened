@@ -14,6 +14,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 
 namespace Protocols.External._h__HotbarHandler;
@@ -25,6 +26,7 @@ public class UseSlot : ExternalProtocol
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public override void Run(string[] message)
     {
@@ -99,13 +101,13 @@ public class UseSlot : ExternalProtocol
         {
             if (usedItem.ItemActionType == ItemActionType.Eat)
             {
-                Player.CheckAchievement(AchConditionType.Consumable, string.Empty, Logger);
-                Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, Logger);
+                Player.CheckAchievement(AchConditionType.Consumable, string.Empty, InternalAchievement, Logger);
+                Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, InternalAchievement, Logger);
             }
             else if (usedItem.ItemActionType == ItemActionType.Drink)
             {
-                Player.CheckAchievement(AchConditionType.Drink, string.Empty, Logger);
-                Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, Logger);
+                Player.CheckAchievement(AchConditionType.Drink, string.Empty, InternalAchievement, Logger);
+                Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, InternalAchievement, Logger);
             }
 
             RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);

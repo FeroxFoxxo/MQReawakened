@@ -1,5 +1,6 @@
 ﻿using Achievement.StaticData;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
@@ -197,7 +198,7 @@ public static class GetInternalXml
     }
 
     public static void RewardPlayer(this List<AchievementDefinitionRewards> rewards, Player player,
-        Microsoft.Extensions.Logging.ILogger logger)
+        ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
         var hasUpdatedItems = false;
 
@@ -216,9 +217,9 @@ public static class GetInternalXml
                     var itemId = int.Parse(reward.value.ToString());
                     var quantity = reward.quantity;
 
-                    var item = player.DatabaseContainer.ItemCatalog.GetItemFromId(itemId);
+                    var item = itemCatalog.GetItemFromId(itemId);
 
-                    player.AddItem(item, quantity, player.DatabaseContainer.ServerRConfig);
+                    player.AddItem(item, quantity, itemCatalog);
                     hasUpdatedItems = true;
                     break;
                 case RewardType.Xp:
