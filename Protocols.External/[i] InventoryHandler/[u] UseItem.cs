@@ -69,6 +69,7 @@ public class UseItem : ExternalProtocol
 
         Player.SendUpdatedInventory(false);
     }
+
     private void HandleBomb(ItemDescription usedItem, Vector3Model position, int direction)
     {
         Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
