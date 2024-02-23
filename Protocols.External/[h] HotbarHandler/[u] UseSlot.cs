@@ -143,7 +143,7 @@ public class UseSlot : ExternalProtocol
 
     private void HandleOldMelee(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var planeName = position.Z < 10 ? ServerRConfig.IsBackPlane[false] : ServerRConfig.IsBackPlane[true];
+        var planeName = Player.GetPlayersPlaneString(ServerRConfig);
 
         var rand = new Random();
         var meleeId = Math.Abs(rand.Next());
