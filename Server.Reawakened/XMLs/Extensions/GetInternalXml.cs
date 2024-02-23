@@ -1,6 +1,5 @@
 ﻿using Achievement.StaticData;
 using Microsoft.Extensions.Logging;
-using Server.Base.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
