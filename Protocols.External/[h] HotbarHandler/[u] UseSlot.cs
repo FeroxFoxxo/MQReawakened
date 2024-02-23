@@ -54,7 +54,7 @@ public class UseSlot : ExternalProtocol
             case ItemActionType.Genericusing:
             case ItemActionType.Drink:
             case ItemActionType.Eat:
-                HandleConsumable(usedItem, TimerThread, ServerRConfig, hotbarSlotId, Logger);
+                HandleConsumable(usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
@@ -87,9 +87,9 @@ public class UseSlot : ExternalProtocol
         Player.SendSyncEventToPlayer(itemEffect);
     }
 
-    private void HandleConsumable(ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, int hotbarSlotId, ILogger<PlayerStatus> logger)
+    private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
     {
-        Player.HandleItemEffect(usedItem, timerThread, serverRConfig, logger);
+        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
         var removeFromHotBar = true;
 
         if (usedItem.InventoryCategoryID is
