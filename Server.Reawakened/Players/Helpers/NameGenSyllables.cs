@@ -11,10 +11,13 @@ public class NameGenSyllables(NameSyllables nameGen, Random random)
 
     public static bool IsNameReserved(string[] names, CharacterHandler handler)
     {
-        var name = $"{names[0]}{names[1]}{names[2]}";
+        var name = GetName(names);
         return handler.Data.Any(c => c.Value.Data.CharacterName == name);
     }
 
+    public static string GetName(string[] names) =>
+        $"{names[0]}{names[1]}{names[2]}";
+    
     public bool IsPossible(Gender gender, string[] names) =>
         nameGen.Syllables[gender][0].Contains(names[0]) &&
         nameGen.Syllables[gender][1].Contains(names[1]) &&

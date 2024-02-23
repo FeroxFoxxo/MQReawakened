@@ -28,6 +28,7 @@ public class NPCControllerComp : Component<NPCController>
     public ILogger<NPCControllerComp> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
 
+    public InternalAchievement InternalAchievement { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public DialogDictionary Dialog { get; set; }
@@ -38,6 +39,7 @@ public class NPCControllerComp : Component<NPCController>
     public InternalVendor VendorCatalog { get; set; }
     public InternalDialog DialogCatalog { get; set; }
     public InternalDialogRewrite DialogRewrites { get; set; }
+    public InternalQuestItem QuestItems { get; set; }
 
     public VendorInfo VendorInfo;
     public DialogInfo DialogInfo;
@@ -143,7 +145,7 @@ public class NPCControllerComp : Component<NPCController>
     public void TalkToNpc(Player player)
     {
         RunObjectives(player);
-        player.CheckAchievement(AchConditionType.Talkto, PrefabName, Logger);
+        player.CheckAchievement(AchConditionType.Talkto, PrefabName, InternalAchievement, Logger);
 
         switch (NpcType)
         {
@@ -191,9 +193,9 @@ public class NPCControllerComp : Component<NPCController>
 
     public void RunObjectives(Player player)
     {
-        player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.Talkto, Id, PrefabName, 1, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1, QuestCatalog);
     }
 
     public void SendNpcInfo(Player player)
@@ -414,9 +416,9 @@ public class NPCControllerComp : Component<NPCController>
 
             if (completedQuest != null)
             {
-                player.CheckAchievement(AchConditionType.CompleteQuest, string.Empty, Logger); // Any Quest
-                player.CheckAchievement(AchConditionType.CompleteQuest, quest.Name, Logger); // Specific Quest by name for example EVT_SB_1_01
-                player.CheckAchievement(AchConditionType.CompleteQuestInLevel, player.Room.LevelInfo.Name, Logger); // Quest by Level/Trail if any exist
+                player.CheckAchievement(AchConditionType.CompleteQuest, string.Empty, InternalAchievement, Logger); // Any Quest
+                player.CheckAchievement(AchConditionType.CompleteQuest, quest.Name, InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
+                player.CheckAchievement(AchConditionType.CompleteQuestInLevel, player.Room.LevelInfo.Name, InternalAchievement, Logger); // Quest by Level/Trail if any exist
 
                 player.Character.Data.QuestLog.Remove(completedQuest);
                 player.NetState.SendXt("nq", completedQuest.Id);
@@ -430,7 +432,7 @@ public class NPCControllerComp : Component<NPCController>
                         var newQuest = QuestCatalog.GetQuestData(item.Key);
 
                         if (newQuest != null && player.Character.Data.CompletedQuests.Any(x => newQuest.PreviousQuests.Any(y => y.Key == x)))
-                            player.AddQuest(newQuest, Logger, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}");
+                            player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}", Logger);
                     }
                 }
 
@@ -464,7 +466,7 @@ public class NPCControllerComp : Component<NPCController>
         {
             if (GetQuestType(player, givenQuest.Id) == NPCStatus.QuestAvailable)
             {
-                var quest = player.AddQuest(givenQuest, Logger, ItemCatalog, FileLogger, NpcName);
+                var quest = player.AddQuest(givenQuest, QuestItems, ItemCatalog, FileLogger, NpcName, Logger);
 
                 SendNpcDialog(player, quest, QuestState.NOT_START);
 

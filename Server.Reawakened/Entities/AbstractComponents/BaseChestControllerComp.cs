@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.Players;
+﻿using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Players.Models;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
@@ -19,7 +19,7 @@ public abstract class BaseChestControllerComp<T> : Component<T> where T : BaseCh
     public bool CanActivateDailies(Player player, string dailyObjectId)
     {
         if (player.Character.CurrentCollectedDailies == null)
-            player.Character.CurrentCollectedDailies = new Dictionary<string, DailiesModel>();
+            player.Character.CurrentCollectedDailies = [];
 
         return !player.Character.CurrentCollectedDailies.ContainsKey(dailyObjectId) ||
             player.Character.CurrentCollectedDailies.Values.Any(x => x.GameObjectId == dailyObjectId &&

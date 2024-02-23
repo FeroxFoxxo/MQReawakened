@@ -7,6 +7,8 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Extensions;
@@ -20,7 +22,7 @@ public static class PlayerExtensions
         player.Room.AddClient(player, out reason);
     }
 
-    public static void QuickJoinRoom(this Player player, int id, out JoinReason reason)
+    public static void QuickJoinRoom(this Player player, int id, WorldHandler worldHandler, out JoinReason reason)
     {
         var useOriginalRoom = false;
 
@@ -29,7 +31,7 @@ public static class PlayerExtensions
                 useOriginalRoom = true;
 
         var room = useOriginalRoom ? player.Room :
-            player.DatabaseContainer.WorldHandler.GetRoomFromLevelId(id, player);
+            worldHandler.GetRoomFromLevelId(id, player);
 
         player.JoinRoom(room, useOriginalRoom, out reason);
     }
@@ -88,15 +90,16 @@ public static class PlayerExtensions
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
     }
 
-    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
+    public static void SendStartPlay(this Player player, CharacterModel character,
+        LevelInfo levelInfo, EventPrefabs eventPrefabs, ServerRConfig config)
     {
-        character.Data.SetPlayerData(player);
+        character.Data.SetDynamicData(player, config);
         player.SetCharacterSelected(character);
-        player.DatabaseContainer.AddPlayer(player);
+        player.PlayerContainer.AddPlayer(player);
         player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
-        player.SendXt("de", player.DatabaseContainer.EventPrefabs.EventInfo.ToString());
+        player.SendXt("de", eventPrefabs.EventInfo.ToString());
 
-        foreach (var friend in player.DatabaseContainer.GetPlayersByFriend(player.CharacterId)
+        foreach (var friend in player.PlayerContainer.GetPlayersByFriend(player.CharacterId)
                      .Where(p =>
                          player.Character.Data.Friends
                              .Any(x => x == p.Character.Id)
@@ -105,7 +108,8 @@ public static class PlayerExtensions
             friend.SendXt("fy", player.CharacterName);
     }
 
-    public static void DumpToLobby(this Player player) => player.QuickJoinRoom(-1, out var _);
+    public static void DumpToLobby(this Player player, WorldHandler worldHandler) =>
+        player.QuickJoinRoom(-1, worldHandler, out var _);
 
     public static List<GameObjectModel> GetPlaneEntities(this Player player)
     {

@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
@@ -14,6 +15,8 @@ using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using WorldGraphDefines;
 using Timer = Server.Base.Timers.Timer;
@@ -25,7 +28,6 @@ public class Room : Timer
     private readonly object _roomLock;
 
     private readonly int _roomId;
-    private readonly ServerRConfig _config;
     private readonly Level _level;
 
     public HashSet<string> GameObjectIds;
@@ -35,7 +37,6 @@ public class Room : Timer
     public Dictionary<string, BaseCollider> Colliders;
 
     public ILogger<Room> Logger;
-    public ILogger<Enemy> EnemyLogger;
 
     public Dictionary<string, PlaneModel> Planes;
     public Dictionary<string, List<string>> UnknownEntities;
@@ -45,6 +46,10 @@ public class Room : Timer
     private readonly Dictionary<string, List<BaseComponent>> _entities;
 
     public SpawnPointComp DefaultSpawn { get; set; }
+
+    private readonly ServerRConfig _config;
+
+    public ItemCatalog ItemCatalog;
     public InternalColliders ColliderCatalog;
 
     public CheckpointControllerComp LastCheckpoint { get; set; }
@@ -53,17 +58,18 @@ public class Room : Timer
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
 
-    public Room(
-        int roomId, Level level, ServerRConfig config, TimerThread timerThread,
-        IServiceProvider services, ILogger<Room> logger, ILogger<Enemy> EnemyLogger, InternalColliders colliderCatalog
-    ) : base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
+    public Room(int roomId, Level level, TimerThread timerThread, IServiceProvider services, ServerRConfig config) :
+        base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
         _roomLock = new object();
 
         _roomId = roomId;
         _config = config;
-        Logger = logger;
-        ColliderCatalog = colliderCatalog;
+
+        ColliderCatalog = services.GetRequiredService<InternalColliders>();
+        ItemCatalog = services.GetRequiredService<ItemCatalog>();
+        Logger = services.GetRequiredService<ILogger<Room>>();
+
         _level = level;
 
         Players = [];
@@ -102,40 +108,40 @@ public class Room : Timer
                 switch (component.PrefabName)
                 {
                     case string bird when bird.Contains(config.EnemyNameSearch[0]):
-                        Enemies.Add(component.Id, new EnemyBird(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemyBird(this, component.Id, component, services));
                         break;
                     case string fish when fish.Contains(config.EnemyNameSearch[1]):
-                        Enemies.Add(component.Id, new EnemyFish(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemyFish(this, component.Id, component, services));
                         break;
                     case string spider when spider.Contains(config.EnemyNameSearch[2]):
-                        Enemies.Add(component.Id, new EnemySpider(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemySpider(this, component.Id, component, services));
                         break;
                     case string bathog when bathog.Contains(config.EnemyNameSearch[3]):
-                        Enemies.Add(component.Id, new EnemyBathog(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemyBathog(this, component.Id, component, services));
                         break;
                     case string bomber when bomber.Contains(config.EnemyNameSearch[4]):
-                        Enemies.Add(component.Id, new EnemyBomber(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemyBomber(this, component.Id, component, services));
                         break;
                     case string crawler when crawler.Contains(config.EnemyNameSearch[5]):
-                        Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, component, services));
                         break;
                     case string dragon when dragon.Contains(config.EnemyNameSearch[6]):
-                        Enemies.Add(component.Id, new EnemyDragon(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemyDragon(this, component.Id, component, services));
                         break;
                     case string grenadier when grenadier.Contains(config.EnemyNameSearch[7]):
-                        Enemies.Add(component.Id, new EnemyGrenadier(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemyGrenadier(this, component.Id, component, services));
                         break;
                     case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
-                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component, services));
                         break;
                     case string pincer when pincer.Contains(config.EnemyNameSearch[9]):
-                        Enemies.Add(component.Id, new EnemyPincer(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component, services));
                         break;
                     case string stomper when stomper.Contains(config.EnemyNameSearch[10]):
-                        Enemies.Add(component.Id, new EnemyStomper(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemyStomper(this, component.Id, component, services));
                         break;
                     case string vespid when vespid.Contains(config.EnemyNameSearch[11]):
-                        Enemies.Add(component.Id, new EnemyVespid(this, component.Id, EnemyLogger, component));
+                        Enemies.Add(component.Id, new EnemyVespid(this, component.Id, component, services));
                         break;
                 }
             }
@@ -240,13 +246,13 @@ public class Room : Timer
 
             if (_config.TrainingGear.TryGetValue(LevelInfo.LevelId, out var trainingGear))
             {
-                var item = currentPlayer.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(trainingGear);
+                var item = ItemCatalog.GetItemFromPrefabName(trainingGear);
 
                 if (item != null)
                 {
                     if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
                     {
-                        currentPlayer.AddItem(item, 1, _config);
+                        currentPlayer.AddItem(item, 1, ItemCatalog);
                         currentPlayer.SendUpdatedInventory(false);
                     }
                 }
@@ -275,6 +281,9 @@ public class Room : Timer
             {
                 foreach (var currentPlayer in Players.Values)
                     player.SendUserGoneDataTo(currentPlayer);
+
+                foreach (var entity in GetEntitiesFromType<TriggerCoopControllerComp>())
+                    entity.RemovePhysicalInteractor(player.GameObjectId);
             }
 
             return;
@@ -380,10 +389,10 @@ public class Room : Timer
         return indexSpawn ?? (BaseComponent)DefaultSpawn;
     }
 
-    public void DumpPlayersToLobby()
+    public void DumpPlayersToLobby(WorldHandler worldHandler)
     {
         foreach (var player in Players.Values)
-            player.DumpToLobby();
+            player.DumpToLobby(worldHandler);
     }
 
     public string GetRoomName() =>

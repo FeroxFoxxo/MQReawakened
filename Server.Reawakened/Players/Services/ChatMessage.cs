@@ -9,7 +9,7 @@ using Server.Reawakened.Players.Helpers;
 namespace Server.Reawakened.Players.Services;
 
 public class ChatMessage(ServerConsole serverConsole,
-    DatabaseContainer databaseContainer, EventSink eventSink) : IService
+    PlayerContainer playerContainer, EventSink eventSink) : IService
 {
     public void Initialize()
     {
@@ -27,9 +27,9 @@ public class ChatMessage(ServerConsole serverConsole,
 
     public void SendConsoleMessage(string message)
     {
-        lock (databaseContainer.Lock)
+        lock (playerContainer.Lock)
         {
-            foreach (var player in databaseContainer.GetAllPlayers())
+            foreach (var player in playerContainer.GetAllPlayers())
             {
                 player.Chat(CannedChatChannel.Tell, "Console", message);
             }

@@ -1,10 +1,14 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -73,10 +77,9 @@ public static class PlayerExtensions
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
     }
 
-    public static void TradeWithPlayer(this Player origin)
+    public static void TradeWithPlayer(this Player origin, ItemCatalog itemCatalog)
     {
         var tradeModel = origin.TempData.TradeModel;
-        var catalog = origin.DatabaseContainer.ItemCatalog;
 
         if (tradeModel == null)
             return;
@@ -85,10 +88,10 @@ public static class PlayerExtensions
 
         foreach (var item in tradeModel.ItemsInTrade)
         {
-            var itemDesc = catalog.GetItemFromId(item.Key);
+            var itemDesc = itemCatalog.GetItemFromId(item.Key);
 
-            tradeModel.TradingPlayer.AddItem(itemDesc, item.Value, origin.DatabaseContainer.ServerRConfig);
-            origin.RemoveItem(itemDesc, item.Value);
+            tradeModel.TradingPlayer.AddItem(itemDesc, item.Value, itemCatalog);
+            origin.RemoveItem(itemDesc, item.Value, itemCatalog);
         }
 
         tradingPlayer.Character.Data.Cash += tradeModel.BananasInTrade;
@@ -167,10 +170,8 @@ public static class PlayerExtensions
         player.SendXt("ca", charData.Cash, charData.NCash);
     }
 
-    public static void SendLevelChange(this Player player)
+    public static void SendLevelChange(this Player player, WorldHandler worldHandler)
     {
-        var worldHandler = player.DatabaseContainer.WorldHandler;
-
         var error = string.Empty;
         var levelName = string.Empty;
         var surroundingLevels = string.Empty;
@@ -206,10 +207,8 @@ public static class PlayerExtensions
     public static void AddCharacter(this Player player, CharacterModel character) =>
         player.UserInfo.CharacterIds.Add(character.Id);
 
-    public static void DeleteCharacter(this Player player, int id)
+    public static void DeleteCharacter(this Player player, int id, CharacterHandler characterHandler)
     {
-        var characterHandler = player.DatabaseContainer.CharacterHandler;
-
         player.UserInfo.CharacterIds.Remove(id);
 
         characterHandler.Data.Remove(id);
@@ -259,10 +258,36 @@ public static class PlayerExtensions
         }
     }
 
-    public static void SetObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName, int count) =>
-        player.CheckObjective(type, gameObjectId, prefabName, count, true);
+    public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
+        int count, QuestCatalog questCatalog)
+    {
+        var itemCatalog = questCatalog.Services.GetRequiredService<ItemCatalog>();
+        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog);
+    }
 
-    public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName, int count, bool setObjective = false)
+    public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
+        int count, ItemCatalog itemCatalog)
+    {
+        var questCatalog = itemCatalog.Services.GetRequiredService<QuestCatalog>();
+        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog);
+    }
+
+    public static void SetObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
+        int count, QuestCatalog questCatalog)
+    {
+        var itemCatalog = questCatalog.Services.GetRequiredService<ItemCatalog>();
+        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog, true);
+    }
+
+    public static void SetObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
+        int count, ItemCatalog itemCatalog)
+    {
+        var questCatalog = itemCatalog.Services.GetRequiredService<QuestCatalog>();
+        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog, true);
+    }
+
+    private static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
+        int count, QuestCatalog questCatalog, ItemCatalog itemCatalog, bool setObjective = false)
     {
         if (count <= 0)
             return;
@@ -300,7 +325,7 @@ public static class PlayerExtensions
 
                 if (objective.GameObjectId <= 0 && objective.ItemId > 0 && !meetsRequirement)
                 {
-                    var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(prefabName);
+                    var item = itemCatalog.GetItemFromPrefabName(prefabName);
 
                     if (item != null)
                         if (item.ItemId == objective.ItemId)
@@ -354,7 +379,7 @@ public static class PlayerExtensions
                     player.SendXt("nQ", quest.Id);
                     quest.QuestStatus = QuestState.TO_BE_VALIDATED;
                 }
-                player.UpdateNpcsInLevel(quest);
+                player.UpdateNpcsInLevel(quest, questCatalog);
             }
         }
     }

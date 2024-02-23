@@ -37,7 +37,7 @@ public class TriggerRaceComp : TriggerStatueComp<TriggerRace>
         {
             IsMinigameStarted = false;
 
-            player.CheckObjective(ObjectiveEnum.MinigameMedal, Room.LevelInfo.LevelId.ToString(), Room.LevelInfo.Name, 1);
+            player.CheckObjective(ObjectiveEnum.MinigameMedal, Room.LevelInfo.LevelId.ToString(), Room.LevelInfo.Name, 1, QuestCatalog);
         }
     }
 }

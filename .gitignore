@@ -361,4 +361,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /Server.Reawakened/Dependencies/*.dll
-/Init/wwwroot/Game/*.unity3d
+/Web.WebPlayer/WebPlayers/*.unity3d

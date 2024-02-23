@@ -9,6 +9,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles;
 using System.Text;
 using static TriggerCoopController;
 
@@ -94,7 +95,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
     public float ActivationTimeAfterFirstInteraction => ComponentData.ActivationTimeAfterFirstInteraction;
 
     public FileLogger FileLogger { get; set; }
-
+    public QuestCatalog QuestCatalog { get; set; }
 
     public override void InitializeComponent()
     {
@@ -220,6 +221,28 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         if (_currentPhysicalInteractors.Contains(playerId))
             return;
 
+        if (Room.Players.TryGetValue(playerId, out var player))
+        {
+            if (!string.IsNullOrEmpty(QuestCompletedRequired))
+            {
+                var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
+
+                if (requiredQuest != null)
+                    if (!player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
+                        return;
+            }
+
+            if (!string.IsNullOrEmpty(QuestInProgressRequired))
+            {
+                var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
+
+                if (requiredQuest != null)
+                    if (player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
+                        return;
+            }
+        }
+        else return;
+
         _currentPhysicalInteractors.Add(playerId);
         SendInteractionUpdate();
     }
@@ -268,8 +291,8 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
                 if (rPlayer.Value == null)
                     continue;
 
-                rPlayer.Value.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1);
-                rPlayer.Value.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1);
+                rPlayer.Value.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1, QuestCatalog);
+                rPlayer.Value.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1, QuestCatalog);
             }
         }
 
