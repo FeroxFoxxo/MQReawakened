@@ -27,7 +27,7 @@ public class UserInfoHandler(EventSink sink, ILogger<UserInfo> logger, WorldHand
 
         var userId = account?.Id ?? throw new NullReferenceException("Account not found!");
 
-        if (!Data.TryGetValue(userId, out var value))
+        if (!GetInternal().TryGetValue(userId, out var value))
             throw new NullReferenceException();
 
         state.Set(new Player(account, value, state, worldHandler, playerContainer, characterHandler));

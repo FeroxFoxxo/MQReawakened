@@ -15,7 +15,7 @@ public abstract class DataHandler<T>(EventSink sink, ILogger<T> logger, Internal
     public readonly InternalRConfig RConfig = rConfig;
     public readonly InternalRwConfig RwConfig = rwConfig;
 
-    public Dictionary<int, T> Data = [];
+    private Dictionary<int, T> _data = [];
 
     private JsonSerializerOptions jsonSerializerOptions;
 
@@ -47,10 +47,10 @@ public abstract class DataHandler<T>(EventSink sink, ILogger<T> logger, Internal
                 using StreamReader streamReader = new(filePath, false);
                 var contents = streamReader.ReadToEnd();
 
-                Data = JsonSerializer.Deserialize<Dictionary<int, T>>(contents, jsonSerializerOptions) ??
+                _data = JsonSerializer.Deserialize<Dictionary<int, T>>(contents, jsonSerializerOptions) ??
                        throw new InvalidOperationException();
 
-                var count = Data.Count;
+                var count = _data.Count;
 
                 Logger.LogInformation("Loaded {Count} {Name}{Plural} to memory from {Directory}", count,
                     typeof(T).Name.ToLower(), count != 1 ? "s" : string.Empty, filePath);
@@ -67,7 +67,7 @@ public abstract class DataHandler<T>(EventSink sink, ILogger<T> logger, Internal
             Logger.LogError(ex, "Could not deserialize save for {Type}.", typeof(T).Name);
         }
 
-        if (Data.Count <= 0)
+        if (_data.Count <= 0)
             CreateInternal("server owner");
 
         OnAfterLoad();
@@ -108,28 +108,34 @@ public abstract class DataHandler<T>(EventSink sink, ILogger<T> logger, Internal
 
         using StreamWriter streamWriter = new(filePath, false);
 
-        var json = JsonSerializer.Serialize(Data, jsonSerializerOptions);
+        var json = JsonSerializer.Serialize(_data, jsonSerializerOptions);
 
         streamWriter.Write(json);
 
         streamWriter.Close();
     }
 
-    public T Get(int userId)
+    public virtual T Get(int id)
     {
-        Data.TryGetValue(userId, out var type);
+        _data.TryGetValue(id, out var type);
 
         return type;
     }
 
-    public int CreateNewId() => Data.Count == 0 ? 1 : Data.Max(x => x.Key) + 1;
+    public Dictionary<int, T> GetInternal() => _data;
+
+    public int CreateNewId() => _data.Count == 0 ? 1 : _data.Max(x => x.Key) + 1;
 
     public void Add(T entity, int id = -1)
     {
         if (id == -1)
             id = CreateNewId();
-        Data.Add(id, entity);
+
+        _data.Add(id, entity);
+
         if (entity is PersistantData pd)
             pd.Id = id;
     }
+
+    public void Remove(int id) => _data.Remove(id);
 }
