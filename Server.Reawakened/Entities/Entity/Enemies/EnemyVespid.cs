@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.AIBehavior;
+﻿using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Entity.Utils;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;

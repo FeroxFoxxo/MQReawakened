@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Razor", "Web.Razor\Web.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Icons", "Web.Icons\Web.Icons.csproj", "{677EF63F-9C4B-407E-9DA9-C042E0DEA933}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.WebPlayer", "Web.WebPlayer\Web.WebPlayer.csproj", "{881791A4-0F9D-4C95-B842-841727B9C006}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.WebPlayer", "Web.WebPlayer\Web.WebPlayer.csproj", "{881791A4-0F9D-4C95-B842-841727B9C006}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

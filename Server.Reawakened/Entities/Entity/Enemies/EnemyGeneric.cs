@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Rooms;
+﻿using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;

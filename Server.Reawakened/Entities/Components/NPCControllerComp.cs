@@ -39,6 +39,7 @@ public class NPCControllerComp : Component<NPCController>
     public InternalVendor VendorCatalog { get; set; }
     public InternalDialog DialogCatalog { get; set; }
     public InternalDialogRewrite DialogRewrites { get; set; }
+    public InternalQuestItem QuestItems { get; set; }
 
     public VendorInfo VendorInfo;
     public DialogInfo DialogInfo;
@@ -431,7 +432,7 @@ public class NPCControllerComp : Component<NPCController>
                         var newQuest = QuestCatalog.GetQuestData(item.Key);
 
                         if (newQuest != null && player.Character.Data.CompletedQuests.Any(x => newQuest.PreviousQuests.Any(y => y.Key == x)))
-                            player.AddQuest(newQuest, Logger, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}");
+                            player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}", Logger);
                     }
                 }
 
@@ -465,7 +466,7 @@ public class NPCControllerComp : Component<NPCController>
         {
             if (GetQuestType(player, givenQuest.Id) == NPCStatus.QuestAvailable)
             {
-                var quest = player.AddQuest(givenQuest, Logger, ItemCatalog, FileLogger, NpcName);
+                var quest = player.AddQuest(givenQuest, QuestItems, ItemCatalog, FileLogger, NpcName, Logger);
 
                 SendNpcDialog(player, quest, QuestState.NOT_START);
 

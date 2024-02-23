@@ -1,6 +1,6 @@
 ﻿using Achievement.StaticData;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
+using Server.Base.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
@@ -12,10 +12,10 @@ namespace Server.Reawakened.XMLs.Extensions;
 
 public static class GetInternalXml
 {
-    public static List<ItemModel> GetXmlItems(this XmlNode node) =>
-        node.GetXmlLootItems().Select(c => c.Value).ToList();
+    public static List<ItemModel> GetXmlItems(this XmlNode node, ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger) =>
+        node.GetXmlLootItems(itemCatalog, logger).Select(c => c.Value).ToList();
 
-    public static List<KeyValuePair<int, ItemModel>> GetXmlLootItems(this XmlNode node)
+    public static List<KeyValuePair<int, ItemModel>> GetXmlLootItems(this XmlNode node, ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
         var itemList = new List<KeyValuePair<int, ItemModel>>();
 
@@ -24,7 +24,7 @@ public static class GetInternalXml
             if (item.Name != "Item")
                 continue;
 
-            var itemId = -1;
+            var itemName = string.Empty;
             var count = -1;
             var bindingCount = -1;
             var delayUseExpiry = DateTime.Now;
@@ -34,8 +34,8 @@ public static class GetInternalXml
             {
                 switch (itemAttribute.Name)
                 {
-                    case "itemId":
-                        itemId = int.Parse(itemAttribute.Value);
+                    case "itemName":
+                        itemName = itemAttribute.Value;
                         break;
                     case "count":
                         count = int.Parse(itemAttribute.Value);
@@ -52,12 +52,20 @@ public static class GetInternalXml
                 }
             }
 
+            var itemModel = itemCatalog.GetItemFromPrefabName(itemName);
+
+            if (itemModel == null)
+            {
+                logger.LogError("Could not find item with name: {ItemName}", itemName);
+                continue;
+            }
+
             itemList.Add(
                 new KeyValuePair<int, ItemModel>(
                     weight,
                     new ItemModel()
                     {
-                        ItemId = itemId,
+                        ItemId = itemModel.ItemId,
                         Count = count,
                         BindingCount = bindingCount,
                         DelayUseExpiry = delayUseExpiry,

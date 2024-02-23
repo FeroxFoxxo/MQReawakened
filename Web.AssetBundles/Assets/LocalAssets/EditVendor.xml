@@ -12,4 +12,6 @@
             <Item name="ABIL_SlingShot02"/>
         </Vendor>
     </GameVersion>
+    <GameVersion version="v2012">
+    </GameVersion>
 </EditedVendors>

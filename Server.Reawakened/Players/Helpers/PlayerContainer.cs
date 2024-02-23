@@ -1,6 +1,4 @@
-﻿using Server.Reawakened.Players.Services;
-
-namespace Server.Reawakened.Players.Helpers;
+﻿namespace Server.Reawakened.Players.Helpers;
 
 public class PlayerContainer
 {

@@ -206,6 +206,28 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         if (_currentPhysicalInteractors.Contains(playerId))
             return;
 
+        if (Room.Players.TryGetValue(playerId, out var player))
+        {
+            if (!string.IsNullOrEmpty(QuestCompletedRequired))
+            {
+                var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
+
+                if (requiredQuest != null)
+                    if (!player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
+                        return;
+            }
+
+            if (!string.IsNullOrEmpty(QuestInProgressRequired))
+            {
+                var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
+
+                if (requiredQuest != null)
+                    if (player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
+                        return;
+            }
+        }
+        else return;
+
         _currentPhysicalInteractors.Add(playerId);
         SendInteractionUpdate();
     }

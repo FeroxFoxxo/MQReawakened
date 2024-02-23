@@ -6,6 +6,7 @@ using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 using System.Text;
 using static A2m.Server.QuestStatus;
 using static CollectibleController;
@@ -14,8 +15,8 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class NpcExtensions
 {
-    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest,
-        Microsoft.Extensions.Logging.ILogger logger, ItemCatalog itemCatalog, FileLogger fileLogger, string identifier)
+    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest, InternalQuestItem questItem,
+        ItemCatalog itemCatalog, FileLogger fileLogger, string identifier, Microsoft.Extensions.Logging.ILogger logger)
     {
         var character = player.Character;
         var questId = quest.Id;
@@ -96,6 +97,21 @@ public static class NpcExtensions
         player.Character.Data.ActiveQuestId = questModel.Id;
 
         UpdateActiveObjectives(player, itemCatalog);
+
+        if (questItem.QuestItemList.TryGetValue(questId, out var itemList))
+        {
+            foreach (var itemModel in itemList)
+            {
+                var item = itemCatalog.GetItemFromId(itemModel.ItemId);
+
+                if (item == null)
+                    continue;
+
+                player.AddItem(item, itemModel.Count, itemCatalog);
+            }
+
+            player.SendUpdatedInventory(false);
+        }
 
         return questModel;
     }

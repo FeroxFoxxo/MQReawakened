@@ -1,4 +1,5 @@
 ﻿using Server.Base.Accounts.Extensions;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -86,9 +87,10 @@ public static class PlayerExtensions
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
     }
 
-    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo, EventPrefabs eventPrefabs)
+    public static void SendStartPlay(this Player player, CharacterModel character,
+        LevelInfo levelInfo, EventPrefabs eventPrefabs, ServerRConfig config)
     {
-        character.Data.SetPlayerData(player);
+        character.Data.SetDynamicData(player, config);
         player.SetCharacterSelected(character);
         player.PlayerContainer.AddPlayer(player);
         player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);

@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
@@ -67,10 +68,11 @@ public class CharacterDataModel : CharacterLightModel
         Customization.CharacterId = id;
     }
 
-    public void SetPlayerData(Player player)
+    public void SetDynamicData(Player player, ServerRConfig config)
     {
         _player = player;
         _player.NetState.Identifier = CharacterName;
+        SetVersion(config.GameVersion);
     }
 
     private void InitializeDetailedLists()

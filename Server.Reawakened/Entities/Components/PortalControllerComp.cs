@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;

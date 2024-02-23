@@ -72,7 +72,7 @@ public class CreateCharacter : ExternalProtocol
 
             var levelInfo = WorldHandler.GetLevelInfo(model.LevelData.LevelId);
 
-            Player.SendStartPlay(model, levelInfo, EventPrefabs);
+            Player.SendStartPlay(model, levelInfo, EventPrefabs, ServerConfig);
         }
     }
 }

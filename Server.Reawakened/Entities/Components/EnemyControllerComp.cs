@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;

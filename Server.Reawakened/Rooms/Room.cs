@@ -281,6 +281,9 @@ public class Room : Timer
             {
                 foreach (var currentPlayer in Players.Values)
                     player.SendUserGoneDataTo(currentPlayer);
+
+                foreach (var entity in GetEntitiesFromType<TriggerCoopControllerComp>())
+                    entity.RemovePhysicalInteractor(player.GameObjectId);
             }
 
             return;
