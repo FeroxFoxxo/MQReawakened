@@ -5,6 +5,7 @@ using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Base.Timers.Services;
 using Server.Base.Timers.Extensions;
+using Server.Reawakened.Configs;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -34,22 +35,22 @@ public static class PlayerDamageExtensions
         invinsibleData.Player.TempData.Invincible = invinsibleData.IsInvincible;
     }
 
-    public static AttackCollider ChargeAttackCollider(this Player player)
+    public static AttackCollider ChargeAttackCollider(this Player player, ServerRConfig serverRConfig)
        => new(player.GameObjectId.ToString(), new Vector3Model()
        {
            X = player.TempData.Position.X,
            Y = player.TempData.Position.Y - 4f,
            Z = player.TempData.Position.Z
        },
-       4f, 2f, player.GetPlayersPlaneString(player.DatabaseContainer.ServerRConfig),
+       4f, 2f, player.GetPlayersPlaneString(serverRConfig),
        player, 25, Elemental.Standard, 10f);
 
-    public static void SendStuperStompCollision(this Player player, string entityId)
+    public static void SendStuperStompCollision(this Player player, string entityId, ServerRConfig serverRConfig)
     {
         if (!player.Room.Colliders.ContainsKey(entityId)) return;
 
         var destructibleCollider = player.Room.Colliders[entityId];
-        destructibleCollider.SendCollisionEvent(player.ChargeAttackCollider());
+        destructibleCollider.SendCollisionEvent(player.ChargeAttackCollider(serverRConfig));
 
         player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
             destructibleCollider.Position.x, destructibleCollider.Position.y, -1, -1, "1"));

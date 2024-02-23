@@ -85,8 +85,8 @@ public class State : ExternalProtocol
 
                     var closestEntity = closestGameObjects[closestGameObjects.Keys.Min()];
 
-                    if (closestEntity.CheckCollision(Player.ChargeAttackCollider()))
-                        Player.SendStuperStompCollision(closestEntity.Id);
+                    if (closestEntity.CheckCollision(Player.ChargeAttackCollider(ServerConfig)))
+                        Player.SendStuperStompCollision(closestEntity.Id, ServerConfig);
 
                     Player.TempData.IsSuperStomping = false;
                     break;

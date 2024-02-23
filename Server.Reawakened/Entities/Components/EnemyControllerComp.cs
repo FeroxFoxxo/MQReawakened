@@ -32,10 +32,9 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public int EnemyHealth = 50; //Make method to generate health later.
 
     public InternalDefaultEnemies EnemyInfoXml { get; set; }
-    public TimerThread TimerThread { get; set; }
-    public ILogger<EnemyControllerComp> Logger { get; set; }
-    public InternalDefaultEnemies EnemyInfoXml { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
+    public ILogger<EnemyControllerComp> Logger { get; set; }
 
     public int Level;
 

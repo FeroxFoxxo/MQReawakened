@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
@@ -23,6 +24,7 @@ public class HazardControllerComp : Component<HazardController>
     public float HealthRatioDamage => ComponentData.HealthRatioDamage;
     public int HurtSelfOnDamage => ComponentData.HurtSelfOnDamage;
 
+    public ServerRConfig ServerRConfig {  get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<HazardControllerComp> Logger { get; set; }
 
@@ -39,7 +41,7 @@ public class HazardControllerComp : Component<HazardController>
         if (player.TempData.IsSuperStomping)
         {
             player.SetTempInvincibility(TimerThread, 1);
-            player.SendStuperStompCollision(Id);
+            player.SendStuperStompCollision(Id, ServerRConfig);
             player.TempData.IsSuperStomping = false;
         }
 
