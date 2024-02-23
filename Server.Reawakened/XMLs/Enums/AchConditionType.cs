@@ -19,5 +19,6 @@ public enum AchConditionType
     Hoop,
     HoopGroup,
     HoopInLevel,
-    HoopGroupInLevel
+    HoopGroupInLevel,
+    Bomb
 }
