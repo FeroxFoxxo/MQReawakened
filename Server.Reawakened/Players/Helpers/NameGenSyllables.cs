@@ -12,7 +12,7 @@ public class NameGenSyllables(NameSyllables nameGen, Random random)
     public static bool IsNameReserved(string[] names, CharacterHandler handler)
     {
         var name = GetName(names);
-        return handler.Data.Any(c => c.Value.Data.CharacterName == name);
+        return handler.GetInternal().Any(c => c.Value.Data.CharacterName == name);
     }
 
     public static string GetName(string[] names) =>

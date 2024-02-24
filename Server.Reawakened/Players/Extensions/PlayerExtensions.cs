@@ -211,7 +211,7 @@ public static class PlayerExtensions
     {
         player.UserInfo.CharacterIds.Remove(id);
 
-        characterHandler.Data.Remove(id);
+        characterHandler.Remove(id);
 
         player.UserInfo.LastCharacterSelected = player.UserInfo.CharacterIds.Count > 0
             ? characterHandler.Get(player.UserInfo.CharacterIds.First()).Data.CharacterName

@@ -51,12 +51,19 @@ public static class GetInternalXml
                 }
             }
 
-            var itemModel = itemCatalog.GetItemFromPrefabName(itemName);
+            var itemId = 0;
 
-            if (itemModel == null)
+            if (!itemName.Equals("none", StringComparison.CurrentCultureIgnoreCase))
             {
-                logger.LogError("Could not find item with name: {ItemName}", itemName);
-                continue;
+                var itemModel = itemCatalog.GetItemFromPrefabName(itemName);
+
+                if (itemModel == null)
+                {
+                    logger.LogError("Could not find item with name: {ItemName}", itemName);
+                    continue;
+                }
+
+                itemId = itemModel.ItemId;
             }
 
             itemList.Add(
@@ -64,7 +71,7 @@ public static class GetInternalXml
                     weight,
                     new ItemModel()
                     {
-                        ItemId = itemModel.ItemId,
+                        ItemId = itemId,
                         Count = count,
                         BindingCount = bindingCount,
                         DelayUseExpiry = delayUseExpiry,

@@ -74,10 +74,10 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
         if (!Date.HasValue)
             return Page();
 
-        if (accountHandler.Data.Any(a => a.Value.Username == Username))
+        if (accountHandler.GetInternal().Any(a => a.Value.Username == Username))
             return Forbid();
 
-        if (accountHandler.Data.Any(a => a.Value.Email == Email))
+        if (accountHandler.GetInternal().Any(a => a.Value.Email == Email))
             return Forbid();
 
         var ip = Request.HttpContext.Connection.RemoteIpAddress;
