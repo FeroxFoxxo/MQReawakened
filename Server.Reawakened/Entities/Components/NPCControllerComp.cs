@@ -421,7 +421,6 @@ public class NPCControllerComp : Component<NPCController>
                 player.CheckAchievement(AchConditionType.CompleteQuestInLevel, player.Room.LevelInfo.Name, InternalAchievement, Logger); // Quest by Level/Trail if any exist
 
                 player.Character.Data.QuestLog.Remove(completedQuest);
-                player.NetState.SendXt("nq", completedQuest.Id);
                 player.Character.Data.CompletedQuests.Add(completedQuest.Id);
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
 

@@ -5,7 +5,6 @@ using Server.Base.Core.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
-using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Players.Services;
 public class CharacterHandler(EventSink sink, ILogger<CharacterModel> logger,

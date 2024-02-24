@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -24,6 +25,8 @@ public class ChooseQuestReward : ExternalProtocol
         var questId = int.Parse(message[6]);
         var itemId = int.Parse(message[7]);
         var questRewardId = int.Parse(message[8]);
+
+        Player.SendXt("nq", questId);
 
         if (itemId > 0)
         {
