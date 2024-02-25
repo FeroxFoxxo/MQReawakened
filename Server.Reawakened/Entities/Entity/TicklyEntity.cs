@@ -9,7 +9,7 @@ public class TicklyEntity : Component<ProjectileController>
     public new Vector3Model Position;
     public Vector3Model SpawnPosition;
 
-    public float Speed, LifeTime, StartTime;
+    public float SpeedX, SpeedY, LifeTime, StartTime;
 
     public Player Player;
 
@@ -24,10 +24,13 @@ public class TicklyEntity : Component<ProjectileController>
         if (Player == null) return;
         if (Player.Room == null) return;
 
-        if (Speed != 0)
+        if (SpeedX != 0 || SpeedY != 0)
         {
-            Position.X = SpawnPosition.X + (Player.Room.Time - StartTime) * Speed;
+            Position.X = SpawnPosition.X + (Player.Room.Time - StartTime) * SpeedX;
             Collider.Position.x = Position.X;
+
+            Position.Y = SpawnPosition.Y + (Player.Room.Time - StartTime) * SpeedY;
+            Collider.Position.y = Position.Y;
         }
 
         var Collisions = Collider.IsColliding(true);

@@ -5,6 +5,7 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -53,42 +54,32 @@ public class State : ExternalProtocol
             {
                 case SyncEvent.EventType.ChargeAttack:
                     Player.TempData.IsSuperStomping = true;
+                    Player.TempData.Invincible = true;
 
                     var startChargeAttack = new ChargeAttack_SyncEvent(syncEvent);
 
-                    var startPosition = startChargeAttack.PosY;
-                    var endPosition = startChargeAttack.MaxPosY;
+                    var totalYDistance = startChargeAttack.PosY - startChargeAttack.MaxPosY;
+                    var totalXDistance = startChargeAttack.PosX - startChargeAttack.MaxPosX;
 
-                    var totalDistance = startPosition - endPosition;
+                    var chargeAttackCollider = new ChargeAttackEntity(Player,
+                        new Vector3Model() { X = startChargeAttack.PosX, Y = startChargeAttack.PosY, Z = Player.TempData.Position.Z },
+                        new Vector3Model() { X = totalXDistance, Y = totalYDistance, Z = Player.TempData.Position.Z },
+                        new Vector2Model() { X = startChargeAttack.SpeedX, Y = startChargeAttack.SpeedY },
+                        10, startChargeAttack.ItemId, startChargeAttack.ZoneId,
+                        25, Elemental.Standard, TimerThread);
 
-                    Player.Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                        startChargeAttack.PosX, startChargeAttack.PosY - totalDistance, startChargeAttack.SpeedX,
-                        startChargeAttack.SpeedY, startChargeAttack.ItemId, startChargeAttack.ZoneId));
+                    Player.Room.Projectiles.TryAdd(Player.GameObjectId, chargeAttackCollider);
                     break;
 
                 case SyncEvent.EventType.ChargeAttackStop:
-                    var closestGameObjects = new Dictionary<double, BaseCollider>();
-
-                    foreach (var destructible in Player.Room.GetEntitiesFromType<BaseComponent>()
-                        .Where(entity => entity is IDestructible))
-                    {
-                        if (!Player.Room.Colliders.ContainsKey(destructible.Id)) continue;
-
-                        var destructibleCollider = Player.Room.Colliders[destructible.Id];
-
-                        var x = destructible.Position.X - Player.TempData.Position.X;
-                        var y = destructible.Position.Y - Player.TempData.Position.Y;
-
-                        var distance = Math.Round(Math.Sqrt(Math.Pow(Math.Abs(x), 2) + Math.Pow(Math.Abs(y), 2)));
-                        closestGameObjects.TryAdd(distance, destructibleCollider);
-                    }
-
-                    var closestEntity = closestGameObjects[closestGameObjects.Keys.Min()];
-
-                    if (closestEntity.CheckCollision(Player.ChargeAttackCollider(ServerConfig)))
-                        Player.SendStuperStompCollision(closestEntity.Id, ServerConfig);
-
                     Player.TempData.IsSuperStomping = false;
+                    Player.TempData.Invincible = false;
+
+                    Player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                        Player.TempData.Position.X, Player.TempData.Position.Y, -1, -1, "1"));
+
+                    if (Player.Room.Projectiles.ContainsKey(Player.GameObjectId))
+                        Player.Room.Projectiles.Remove(Player.GameObjectId);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);

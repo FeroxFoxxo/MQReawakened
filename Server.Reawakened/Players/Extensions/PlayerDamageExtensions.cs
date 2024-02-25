@@ -17,7 +17,7 @@ public static class PlayerDamageExtensions
         public bool IsInvincible;
     }
 
-    public static void SetTempInvincibility(this Player player, TimerThread timerThread, double durationInSeconds)
+    public static void SetTemporaryInvincibility(this Player player, TimerThread timerThread, double durationInSeconds)
     {
         player.TempData.Invincible = true;
 
@@ -29,33 +29,11 @@ public static class PlayerDamageExtensions
 
         timerThread.DelayCall(DisableInvincibility, invinsibleData, TimeSpan.FromSeconds(durationInSeconds), TimeSpan.Zero, 1);
     }
+
     public static void DisableInvincibility(object data)
     {
         var invinsibleData = (InvincibiltyData)data;
         invinsibleData.Player.TempData.Invincible = invinsibleData.IsInvincible;
-    }
-
-    public static AttackCollider ChargeAttackCollider(this Player player, ServerRConfig serverRConfig)
-       => new(player.GameObjectId.ToString(), new Vector3Model()
-       {
-           X = player.TempData.Position.X,
-           Y = player.TempData.Position.Y - 4f,
-           Z = player.TempData.Position.Z
-       },
-       4f, 2f, player.GetPlayersPlaneString(serverRConfig),
-       player, 25, Elemental.Standard, 10f);
-
-    public static void SendStuperStompCollision(this Player player, string entityId, ServerRConfig serverRConfig)
-    {
-        if (!player.Room.Colliders.ContainsKey(entityId)) return;
-
-        var destructibleCollider = player.Room.Colliders[entityId];
-        destructibleCollider.SendCollisionEvent(player.ChargeAttackCollider(serverRConfig));
-
-        player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            destructibleCollider.Position.x, destructibleCollider.Position.y, -1, -1, "1"));
-
-        return;
     }
 
     public static void ApplyCharacterDamage(this Player player, Room room, int damage)
