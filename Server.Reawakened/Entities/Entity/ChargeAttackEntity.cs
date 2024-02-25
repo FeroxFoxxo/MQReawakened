@@ -35,7 +35,7 @@ public class ChargeAttackEntity : TicklyEntity
     {
         //Logger.LogInformation("ChargeAttackStooped at position ({args1}, {args2}, {args3})", Position.X, Position.Y, Position.Z);
         Player.TempData.IsSuperStomping = false;
-        Player.TempData.Invincible = false;
+        Player.SetTemporaryInvincibility(TimerThread, 1.5);
 
         Player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
            Player.TempData.Position.X, Player.TempData.Position.Y, -1, -1, "1"));
