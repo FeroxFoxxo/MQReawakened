@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Server.Base.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Entities.Interfaces;
@@ -155,8 +156,9 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         if (TriggerOnGrapplingHook) Activations.Add(ActivationType.NormalDamage);
         if (!string.IsNullOrEmpty(TriggeredByItemInInventory)) Activations.Add(ActivationType.ItemInInventory);
 
-        Room.Colliders.Add(Id, new TriggerableTargetCollider
-            (Id, AdjustColliderPositionX(Position), Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+        if (TriggerOnNormalDamage && StayTriggeredOnUnpressed)
+            Room.Colliders.Add(Id, new TriggerableTargetCollider
+                (Id, AdjustColliderPositionX(Position), Rectangle.Width, Rectangle.Height, ParentPlane, Room));
     }
 
     public Vector3Model AdjustColliderPositionX(Vector3Model position)
