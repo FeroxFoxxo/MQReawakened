@@ -1578,4 +1578,14 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Rachnok's Lair">
+        <LootInfo objectId="2466335" doLootWheel="true">
+            <!--Rachnok Boss Battle Purple Chest-->
+            <Items rewardAmount="1">
+                <Item itemId="3750" count="1" bindingCount="0"/>
+                <Item itemId="4242" count="1" bindingCount="0"/>
+                <Item itemId="6723" count="1" bindingCount="0"/>
+            </Items>
+        </LootInfo>
+    </Level>
 </LootCatalog>
