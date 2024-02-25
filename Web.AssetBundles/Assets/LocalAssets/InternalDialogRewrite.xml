@@ -2,4 +2,5 @@
 <DialogRewrites>
     <Dialog oldDialogName="CRS_Hoop01" newDialogName="CTS_Hoop01" />
     <Dialog oldDialogName="DAY_CRS_TS01" newDialogName="Daily_CRS_TS01" />
+    <Dialog oldDialogName="DAY_CRS_IND01" newDialogName="Daily_CRS_IND01" />
 </DialogRewrites>
