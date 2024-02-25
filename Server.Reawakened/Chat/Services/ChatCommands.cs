@@ -40,7 +40,7 @@ public partial class ChatCommands(
 
         AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
-        AddCommand(new ChatCommand("hotbar", "[hotbardId] [itemId]", Hotbar));
+        AddCommand(new ChatCommand("hotbar", "[hotbarNum] [itemId]", Hotbar));
         AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
         AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
