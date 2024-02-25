@@ -38,13 +38,6 @@ public class HazardControllerComp : Component<HazardController>
 
         Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
 
-        if (player.TempData.IsSuperStomping)
-        {
-            player.SetTempInvincibility(TimerThread, 1);
-            player.SendStuperStompCollision(Id, ServerRConfig);
-            player.TempData.IsSuperStomping = false;
-        }
-
         if (player.TempData.Invincible)
             return;
 
@@ -66,7 +59,7 @@ public class HazardControllerComp : Component<HazardController>
                 effectType);
         }
 
-        player.SetTempInvincibility(TimerThread, 1.5);
+        player.SetTemporaryInvincibility(TimerThread, 1.5);
 
         switch (effectType)
         {

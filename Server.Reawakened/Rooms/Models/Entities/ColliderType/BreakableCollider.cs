@@ -8,6 +8,6 @@ public class BreakableCollider(string breakableId, Vector3Model position, float 
     {
         if (received is AttackCollider attack)
             foreach (var breakable in Room.GetEntitiesFromId<BreakableEventControllerComp>(breakableId))
-                breakable.Damage(attack.Damage, attack.Owner);
+                breakable.Damage(attack.Damage, attack.DamageType, attack.Owner);
     }
 }

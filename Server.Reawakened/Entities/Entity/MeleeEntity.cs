@@ -27,7 +27,7 @@ public class MeleeEntity : TicklyEntity
 
         _hitboxPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
         _hitboxPosition.X -= isRight ? 0 : config.MeleeWidth;
-        Speed = 0;
+        SpeedX = 0;
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
 

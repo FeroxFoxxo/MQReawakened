@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
@@ -26,4 +27,6 @@ public class InterObjStatusComp : Component<InterObjStatus>
     public int FreezeStatusEffectResistSecs => ComponentData.FreezeStatusEffectResistSecs;
 
     public ILogger<InterObjStatusComp> Logger { get; set; }
+
+    public override void InitializeComponent() => base.InitializeComponent();
 }

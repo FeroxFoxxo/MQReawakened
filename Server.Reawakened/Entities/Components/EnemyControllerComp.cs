@@ -42,10 +42,10 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
     public void Damage(int damage, Player origin)
     {
-        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, 0, damage, 0, 0, origin.CharacterName, false, true);
-        origin.Room.SendSyncEvent(breakEvent);
-
         EnemyHealth -= damage;
+
+        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, EnemyHealth, damage, 0, 0, origin.CharacterName, false, true);
+        origin.Room.SendSyncEvent(breakEvent);
 
         if (EnemyHealth <= 0)
             Destroy(origin, Room, Id);
