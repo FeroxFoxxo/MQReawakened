@@ -16,6 +16,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
     public DailiesState ChestState;
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public ILogger<ChestControllerComp> Logger { get; set; }
 
@@ -34,7 +35,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
     {
         player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
 
-        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1, QuestCatalog);
 
         var triggerEvent = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true);
         var triggerReceiver = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);

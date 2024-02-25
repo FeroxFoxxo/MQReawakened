@@ -5,6 +5,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using UnityEngine;
@@ -27,8 +28,10 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public bool CanAutoScaleResistance => ComponentData.CanAutoScaleResistance;
     public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
 
+    public QuestCatalog QuestCatalog { get; set; }
     public ILogger<EnemyControllerComp> Logger { get; set; }
     public InternalDefaultEnemies EnemyInfoXml { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public int Level;
 
@@ -47,12 +50,12 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
     public void Destroy(Player player, Room room, string id)
     {
-        player.CheckObjective(ObjectiveEnum.Score, id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.Scoremultiple, id, PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.Score, id, PrefabName, 1, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.Scoremultiple, id, PrefabName, 1, QuestCatalog);
 
-        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, Logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemy, PrefabName, Logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, InternalAchievement, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, PrefabName, InternalAchievement, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, InternalAchievement, Logger);
         
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);

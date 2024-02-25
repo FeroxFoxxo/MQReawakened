@@ -25,7 +25,7 @@ public class SellItems : ExternalProtocol
 
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
-            Player.RemoveItem(itemDescription, amount);
+            Player.RemoveItem(itemDescription, amount, ItemCatalog);
 
             Player.AddBananas(itemDescription.SellPrice * amount);
 

@@ -18,12 +18,12 @@ public class AuthenticateController(AccountHandler accHandler, UserInfoHandler u
     [HttpPost]
     public IActionResult GetLoginInfo([FromForm] string username, [FromForm] string token)
     {
-        var account = accHandler.Data.FirstOrDefault(x => x.Value.Username == username).Value;
+        var account = accHandler.GetInternal().FirstOrDefault(x => x.Value.Username == username).Value;
 
         if (account == null)
             return Unauthorized();
 
-        if (!userInfoHandler.Data.TryGetValue(account.Id, out var userInfo))
+        if (!userInfoHandler.GetInternal().TryGetValue(account.Id, out var userInfo))
             return Unauthorized();
 
         if (userInfo.AuthToken != token)

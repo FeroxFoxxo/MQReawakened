@@ -6,6 +6,7 @@ using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 using System.Text;
 using static A2m.Server.QuestStatus;
 using static CollectibleController;
@@ -14,8 +15,8 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class NpcExtensions
 {
-    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest,
-        Microsoft.Extensions.Logging.ILogger logger, ItemCatalog itemCatalog, FileLogger fileLogger, string identifier)
+    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest, InternalQuestItem questItem,
+        ItemCatalog itemCatalog, FileLogger fileLogger, string identifier, Microsoft.Extensions.Logging.ILogger logger)
     {
         var character = player.Character;
         var questId = quest.Id;
@@ -95,16 +96,31 @@ public static class NpcExtensions
 
         player.Character.Data.ActiveQuestId = questModel.Id;
 
-        UpdateActiveObjectives(player);
+        UpdateActiveObjectives(player, itemCatalog);
+
+        if (questItem.QuestItemList.TryGetValue(questId, out var itemList))
+        {
+            foreach (var itemModel in itemList)
+            {
+                var item = itemCatalog.GetItemFromId(itemModel.ItemId);
+
+                if (item == null)
+                    continue;
+
+                player.AddItem(item, itemModel.Count, itemCatalog);
+            }
+
+            player.SendUpdatedInventory(false);
+        }
 
         return questModel;
     }
 
-    public static void UpdateActiveObjectives(Player player)
+    public static void UpdateActiveObjectives(Player player, ItemCatalog itemCatalog)
     {
         foreach (var questCollectible in player.Room?.GetEntitiesFromType<QuestCollectibleControllerComp>())
         {
-            var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(questCollectible.PrefabName);
+            var item = itemCatalog.GetItemFromPrefabName(questCollectible.PrefabName);
 
             foreach (var objective in player.Character.Data.QuestLog.SelectMany(x => x.Objectives.Values).Where
                 (x => x.GameObjectId.ToString() == questCollectible.Id || item != null && x.ItemId == item.ItemId))
@@ -129,10 +145,9 @@ public static class NpcExtensions
         }
     }
 
-    public static void UpdateNpcsInLevel(this Player player, QuestStatusModel status)
+    public static void UpdateNpcsInLevel(this Player player, QuestStatusModel status, QuestCatalog questCatalog)
     {
-        var quests = player.DatabaseContainer.Quests;
-        var quest = quests.QuestCatalogs[status.Id];
+        var quest = questCatalog.QuestCatalogs[status.Id];
         UpdateNpcsInLevel(player, quest);
     }
 

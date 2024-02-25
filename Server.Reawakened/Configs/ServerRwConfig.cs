@@ -12,13 +12,15 @@ public class ServerRwConfig : IRwConfig
         CurrentEvent = new Dictionary<GameVersion, string>
         {
             { GameVersion.v2014, "boBegnopS_4102_TVE" },
-            { GameVersion.v2013, "10TNMT_3102_TVE" }
+            { GameVersion.v2013, "10TNMT_3102_TVE" },
+            { GameVersion.v2012, "regnaRrewoP_2102_ORP" }
         };
 
         CurrentTimedEvent = new Dictionary<GameVersion, string>
         {
             { GameVersion.v2014, "tnevEytraPboBegnopS" },
-            { GameVersion.v2013, string.Empty }
+            { GameVersion.v2013, string.Empty },
+            { GameVersion.v2012, string.Empty }
         };
     }
 }

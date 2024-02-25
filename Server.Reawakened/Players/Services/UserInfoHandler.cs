@@ -9,29 +9,17 @@ using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Rooms.Services;
 using System.Globalization;
 using System.Net;
 
 namespace Server.Reawakened.Players.Services;
 
-public class UserInfoHandler : DataHandler<UserInfo>
+public class UserInfoHandler(EventSink sink, ILogger<UserInfo> logger, WorldHandler worldHandler,
+    RandomKeyGenerator randomKeyGenerator, ServerRConfig config, InternalRConfig rConfig,
+    InternalRwConfig rwConfig, PlayerContainer playerContainer, CharacterHandler characterHandler) : DataHandler<UserInfo>(sink, logger, rConfig, rwConfig)
 {
     public override bool HasDefault => true;
-
-    private readonly ServerRConfig _config;
-    private readonly RandomKeyGenerator _randomKeyGenerator;
-    private readonly DatabaseContainer _databaseContainer;
-
-    public UserInfoHandler(EventSink sink, ILogger<UserInfo> logger,
-        RandomKeyGenerator randomKeyGenerator, ServerRConfig config, InternalRConfig rConfig,
-        InternalRwConfig rwConfig, DatabaseContainer databaseContainer) :
-        base(sink, logger, rConfig, rwConfig)
-    {
-        _randomKeyGenerator = randomKeyGenerator;
-        _config = config;
-        _databaseContainer = databaseContainer;
-        _databaseContainer.UserInfoHandler = this;
-    }
 
     public void InitializeUser(NetState state)
     {
@@ -39,10 +27,10 @@ public class UserInfoHandler : DataHandler<UserInfo>
 
         var userId = account?.Id ?? throw new NullReferenceException("Account not found!");
 
-        if (!Data.TryGetValue(userId, out var value))
+        if (!GetInternal().TryGetValue(userId, out var value))
             throw new NullReferenceException();
 
-        state.Set(new Player(account, value, state, _databaseContainer));
+        state.Set(new Player(account, value, state, worldHandler, playerContainer, characterHandler));
     }
 
     public override UserInfo CreateDefault()
@@ -72,7 +60,7 @@ public class UserInfoHandler : DataHandler<UserInfo>
             Logger.LogWarning("Incorrect input! Must be a date!");
         }
 
-        return new UserInfo(CreateNewId(), gender, dob, RegionInfo.CurrentRegion.Name, _config.DefaultSignUpExperience, _randomKeyGenerator, _config);
+        return new UserInfo(CreateNewId(), gender, dob, RegionInfo.CurrentRegion.Name, config.DefaultSignUpExperience, randomKeyGenerator, config);
     }
 
     public UserInfo Create(IPAddress ip, int id, Gender gender, DateTime dob, string region, string signUpExperience)
@@ -80,7 +68,7 @@ public class UserInfoHandler : DataHandler<UserInfo>
         Logger.LogInformation("Login: {Address}: Creating new user info '{Id}' of gender '{Gender}', DOB '{DOB}', region '{region}' and sign up experience '{SignUpExperience}'.",
             ip, id, gender, dob, region, signUpExperience);
 
-        var user = new UserInfo(id, gender, dob, region, signUpExperience, _randomKeyGenerator, _config);
+        var user = new UserInfo(id, gender, dob, region, signUpExperience, randomKeyGenerator, config);
 
         Add(user, id);
 

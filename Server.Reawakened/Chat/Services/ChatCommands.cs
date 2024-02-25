@@ -14,13 +14,17 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using System.Text.RegularExpressions;
 
 namespace Server.Reawakened.Chat.Services;
 
-public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
+public partial class ChatCommands(
+    ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
+    WorldHandler worldHandler, InternalAchievement internalAchievement,
     WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
@@ -112,7 +116,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
             var chosenCategory = itemCatalog.GetItemsDescription((ItemFilterCategory)categoryValue);
 
             foreach (var item in chosenCategory)
-                player.AddItem(item, 1, config);
+                player.AddItem(item, 1, itemCatalog);
         }
 
         else
@@ -123,7 +127,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
             foreach (var category in categoryList)
                 foreach (var item in category)
-                    player.AddItem(item, 1, config);
+                    player.AddItem(item, 1, itemCatalog);
         }
 
         player.SendUpdatedInventory(false);
@@ -370,13 +374,13 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         character.SetLevel(levelId, logger);
 
-        player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, logger);
-        player.CheckAchievement(AchConditionType.ExploreTrail, player.Room.LevelInfo.Name, logger);
+        player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, internalAchievement, logger);
+        player.CheckAchievement(AchConditionType.ExploreTrail, player.Room.LevelInfo.Name, internalAchievement, logger);
 
         var tribe = levelInfo.Tribe;
 
         player.DiscoverTribe(tribe);
-        player.SendLevelChange();
+        player.SendLevelChange(worldHandler);
 
         Log(
             $"Successfully set character {character.Id}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
@@ -445,7 +449,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
             return false;
         }
 
-        player.AddItem(item, amount, config);
+        player.AddItem(item, amount, itemCatalog);
 
         player.SendUpdatedInventory(false);
 
@@ -508,10 +512,10 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
     private bool PlayerCount(Player player, string[] args)
     {
         if (args.Length == 1)
-            Log($"Currently online players: {player.DatabaseContainer.GetAllPlayers().Count}", player);
+            Log($"Currently online players: {player.PlayerContainer.GetAllPlayers().Count}", player);
 
         if (args.Length == 2)
-            foreach (var item in player.DatabaseContainer.GetAllPlayers())
+            foreach (var item in player.PlayerContainer.GetAllPlayers())
                 Log($"{item.CharacterName} - {item.Room.LevelInfo.InGameName} / {item.Room.LevelInfo.LevelId}", player);
 
         return true;

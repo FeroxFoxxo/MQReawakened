@@ -9,14 +9,14 @@ public class InvitePlayer : ExternalProtocol
 {
     public override string ProtocolName => "pi";
 
-    public DatabaseContainer DatabaseContainer { get; set; }
+    public PlayerContainer PlayerContainer { get; set; }
 
     public override void Run(string[] message)
     {
         Player.TempData.Group ??= new GroupModel(Player);
 
         var characterName = message[5];
-        var invitedCharacter = DatabaseContainer.GetPlayerByName(characterName);
+        var invitedCharacter = PlayerContainer.GetPlayerByName(characterName);
 
         invitedCharacter?.SendXt("pi", Player.TempData.Group.GetLeaderName());
     }

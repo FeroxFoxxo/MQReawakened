@@ -68,7 +68,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
             }
             else
             {
-                account = Data.Values.FirstOrDefault(a => a.Username == username);
+                account = GetInternal().Values.FirstOrDefault(a => a.Username == username);
 
                 if (account != null)
                     if (!hasher.CheckPassword(account, password))
@@ -121,7 +121,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
     {
         IpTable = [];
 
-        foreach (var account in Data.Values.Where(account => account.LoginIPs.Length > 0))
+        foreach (var account in GetInternal().Values.Where(account => account.LoginIPs.Length > 0))
         {
             if (IPAddress.TryParse(account.LoginIPs[0], out var ipAddress))
             {
@@ -141,7 +141,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
     {
         if (username.Trim().Length <= 0 || password.Trim().Length <= 0 || email.Trim().Length <= 0)
         {
-            Logger.LogInformation("Login: {Address}: User post data for '{Username}' is invalid in length!",
+            Logger.LogInformation("Login: {Address}: User post _data for '{Username}' is invalid in length!",
                 ipAddress, username);
             throw new InvalidOperationException();
         }

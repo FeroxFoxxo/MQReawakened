@@ -10,7 +10,7 @@ namespace Server.Reawakened.Entities.Components;
 public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<TriggerCoopArenaSwitchController>
 {
     public string ArenaObjectId => ComponentData.ArenaObjectID;
-    public DatabaseContainer DatabaseContainer { get; set; }
+    public PlayerContainer PlayerContainer { get; set; }
     public ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
 
     public ITriggerComp triggerable;
@@ -33,7 +33,7 @@ public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<Tr
             Logger.LogError("Could not find trigger with id {Id}!", ArenaObjectId);
 
             // Temporary while blue arenas are in progress
-            player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1);
+            player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1, QuestCatalog);
 
             return;
         }

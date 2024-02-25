@@ -14,6 +14,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 
 namespace Protocols.External._h__HotbarHandler;
@@ -25,6 +26,7 @@ public class UseSlot : ExternalProtocol
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public override void Run(string[] message)
     {
@@ -52,7 +54,7 @@ public class UseSlot : ExternalProtocol
             case ItemActionType.Genericusing:
             case ItemActionType.Drink:
             case ItemActionType.Eat:
-                HandleConsumable(usedItem, TimerThread, ServerRConfig, hotbarSlotId, Logger);
+                HandleConsumable(usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
@@ -85,9 +87,9 @@ public class UseSlot : ExternalProtocol
         Player.SendSyncEventToPlayer(itemEffect);
     }
 
-    private void HandleConsumable(ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, int hotbarSlotId, ILogger<PlayerStatus> logger)
+    private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
     {
-        Player.HandleItemEffect(usedItem, timerThread, serverRConfig, logger);
+        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
         var removeFromHotBar = true;
 
         if (usedItem.InventoryCategoryID is
@@ -99,13 +101,13 @@ public class UseSlot : ExternalProtocol
         {
             if (usedItem.ItemActionType == ItemActionType.Eat)
             {
-                Player.CheckAchievement(AchConditionType.Consumable, string.Empty, Logger);
-                Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, Logger);
+                Player.CheckAchievement(AchConditionType.Consumable, string.Empty, InternalAchievement, Logger);
+                Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, InternalAchievement, Logger);
             }
             else if (usedItem.ItemActionType == ItemActionType.Drink)
             {
-                Player.CheckAchievement(AchConditionType.Drink, string.Empty, Logger);
-                Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, Logger);
+                Player.CheckAchievement(AchConditionType.Drink, string.Empty, InternalAchievement, Logger);
+                Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, InternalAchievement, Logger);
             }
 
             RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);

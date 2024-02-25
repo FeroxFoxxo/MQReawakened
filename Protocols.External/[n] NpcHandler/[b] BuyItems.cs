@@ -10,8 +10,8 @@ public class BuyItems : ExternalProtocol
 {
     public override string ProtocolName => "nb";
 
-    public ItemCatalog ItemCatalog { get; set; }
     public ServerRConfig ServerConfig { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     public override void Run(string[] message)
     {
@@ -30,14 +30,14 @@ public class BuyItems : ExternalProtocol
 
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
-            Player.AddItem(itemDescription, amount, ServerConfig);
+            Player.AddItem(itemDescription, amount, ItemCatalog);
 
             if (itemDescription.Currency == CurrencyType.Banana)
                 Player.RemoveBananas(itemDescription.RegularPrice * amount);
             else if (itemDescription.Currency == CurrencyType.NickCash)
                 Player.RemoveNCash(itemDescription.RegularPrice * amount);
 
-            Player.CheckObjective(ObjectiveEnum.Buyitem, vendorGoId.ToString(), itemDescription.PrefabName, amount);
+            Player.CheckObjective(ObjectiveEnum.Buyitem, vendorGoId.ToString(), itemDescription.PrefabName, amount, ItemCatalog);
         }
 
         Player.SendUpdatedInventory(false);

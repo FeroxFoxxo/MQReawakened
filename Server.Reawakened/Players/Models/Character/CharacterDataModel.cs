@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
@@ -19,6 +20,7 @@ public class CharacterDataModel : CharacterLightModel
     public Dictionary<TribeType, bool> TribesDiscovered { get; set; }
     public Dictionary<TribeType, TribeDataModel> TribesProgression { get; set; }
     public Dictionary<string, DateTime> CurrentCollectedDailies { get; set; }
+    public Dictionary<string, DateTime> CurrentQuestDailies { get; set; }
 
     private Dictionary<int, int> IdolCount =>
         _player?.Character.CollectedIdols
@@ -67,24 +69,11 @@ public class CharacterDataModel : CharacterLightModel
         Customization.CharacterId = id;
     }
 
-    public void SetPlayerData(Player player)
+    public void SetDynamicData(Player player, ServerRConfig config)
     {
         _player = player;
         _player.NetState.Identifier = CharacterName;
-    }
-
-    public bool CanActivateDailies(Player player, string dailyId)
-    {
-        if (player.Character.Data.CurrentCollectedDailies == null)
-            player.Character.Data.CurrentCollectedDailies = new Dictionary<string, DateTime>();
-
-        if (!player.Character.Data.CurrentCollectedDailies.ContainsKey(dailyId))
-            return true;
-
-        var timeOfHarvest = player.Character.Data.CurrentCollectedDailies[dailyId];
-        var timeForNextHarvest = timeOfHarvest + TimeSpan.FromDays(1);
-
-        return DateTime.Now >= timeForNextHarvest;
+        SetVersion(config.GameVersion);
     }
 
     private void InitializeDetailedLists()

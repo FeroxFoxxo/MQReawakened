@@ -3542,28 +3542,28 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="440" title="Unknown Achievement 440" description="Unknown Description. Hint: the icon is named Games_MonkeyRun_3Star_10!" iconName="Games_MonkeyRun_3Star_10" points="1" sortOrder="14" repeatable="false">
+        <Achievement id="440" title="First-Rate Runner" description="Get 10 3-Star Finishes in Monkey Run" iconName="Games_MonkeyRun_3Star_10" points="25" sortOrder="14" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="ABIL_ColorTonic01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Get 10 3-Star Finishes in Monkey Run" type="Invalid" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="441" title="Unknown Achievement 441" description="Unknown Description. Hint: the icon is named Games_MonkeyRun_3Star_100!" iconName="Games_MonkeyRun_3Star_100" points="1" sortOrder="15" repeatable="false">
+        <Achievement id="441" title="Renowned Runner" description="Get 100 3-Star Finishes in Monkey Run" iconName="Games_MonkeyRun_3Star_100" points="200" sortOrder="15" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_POT_Rejuvenation03" quantity="3" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Get 100 3-Star Finishes in Monkey Run" type="Invalid" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="442" title="Unknown Achievement 442" description="Unknown Description. Hint: the icon is named Games_MonkeyRun_3Star_1000!" iconName="Games_MonkeyRun_3Star_1000" points="1" sortOrder="16" repeatable="false">
+        <Achievement id="442" title="Unrivaled Runner" description="Get 1000 3-Star Finishes in Monkey Run" iconName="Games_MonkeyRun_3Star_1000" points="500" sortOrder="16" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="Add_COM_RibbonTail01_T04" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Get 1000 3-Star Finishes in Monkey Run" type="Invalid" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="443" title="Unknown Achievement 443" description="Unknown Description. Hint: the icon is named Games_MidnightRun_1Star!" iconName="Games_MidnightRun_1Star" points="1" sortOrder="17" repeatable="false">
@@ -3598,20 +3598,20 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="447" title="Unknown Achievement 447" description="Unknown Description. Hint: the icon is named Games_MidnightRun_3Star_10!" iconName="Games_MidnightRun_3Star_10" points="1" sortOrder="21" repeatable="false">
+        <Achievement id="447" title="So Bright at Midnight" description="Get 10 3-Star Finishes in Midnight Monkey Run" iconName="Games_MidnightRun_3Star_10" points="25" sortOrder="21" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="ABIL_ColorTonic06" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Get 10 3-Star Finishes in Midnight Monkey Run" type="Invalid" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="448" title="Unknown Achievement 448" description="Unknown Description. Hint: the icon is named Games_MidnightRun_3Star_100!" iconName="Games_MidnightRun_3Star_100" points="1" sortOrder="22" repeatable="false">
+        <Achievement id="448" title="Midnight Marvel" description="Get 100 3-Star Finishes in Midnight Monkey Run" iconName="Games_MidnightRun_3Star_100" points="200" sortOrder="22" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="ABIL_InvincibilityPotion04" quantity="3" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Get 100 3-Star Finishes in Midnight Monkey Run" type="Invalid" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="449" title="Unknown Achievement 449" description="Unknown Description. Hint: the icon is named Games_MidnightRun_3Star_1000!" iconName="Games_MidnightRun_3Star_1000" points="1" sortOrder="23" repeatable="false">
@@ -3686,12 +3686,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="458" title="Unknown Achievement 458" description="Unknown Description. Hint: the icon is named Games_TorchMania_1Star_50!" iconName="Games_TorchMania_1Star_50" points="1" sortOrder="32" repeatable="false">
+        <Achievement id="458" title="More Mania" description="Get 50 1-Star Finishes (or better!) in Torch Mania" iconName="Games_TorchMania_1Star_50" points="50" sortOrder="32" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_BOMB_FireBomb02" quantity="10" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Get 50 1-Star Finishes (or better!) in Torch Mania" type="Invalid" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="459" title="Unknown Achievement 459" description="Unknown Description. Hint: the icon is named Games_TorchMania_1Star_500!" iconName="Games_TorchMania_1Star_500" points="1" sortOrder="33" repeatable="false">
@@ -3710,12 +3710,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="461" title="Unknown Achievement 461" description="Unknown Description. Hint: the icon is named Games_TorchMania_3Star_10!" iconName="Games_TorchMania_3Star_10" points="1" sortOrder="35" repeatable="false">
+        <Achievement id="461" title="Mania Maestro" description="Get 10 3-Star Finishes in Torch Mania" iconName="Games_TorchMania_3Star_10" points="25" sortOrder="35" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="ABIL_ColorTonic03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Get 10 3-Star Finishes in Torch Mania" type="Invalid" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="462" title="Unknown Achievement 462" description="Unknown Description. Hint: the icon is named Games_TorchMania_3Star_100!" iconName="Games_TorchMania_3Star_100" points="1" sortOrder="36" repeatable="false">
@@ -3726,12 +3726,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="463" title="Unknown Achievement 463" description="Unknown Description. Hint: the icon is named Games_TorchMania_3Star_1000!" iconName="Games_TorchMania_3Star_1000" points="1" sortOrder="37" repeatable="false">
+        <Achievement id="463" title="Mania Maniac!" description="Get 1000 3-Star Finishes in Torch Mania" iconName="Games_TorchMania_3Star_1000" points="500" sortOrder="37" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="Add_COM_RibbonTail02_T01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Get 1000 3-Star Finishes in Torch Mania" type="Invalid" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="464" title="Unknown Achievement 464" description="Unknown Description. Hint: the icon is named Games_Monkeyblast_3Star_Easy!" iconName="Games_Monkeyblast_3Star_Easy" points="1" sortOrder="38" repeatable="false">

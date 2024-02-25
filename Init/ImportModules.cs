@@ -11,6 +11,7 @@ using Web.AssetBundles;
 using Web.Icons;
 using Web.Launcher;
 using Web.Razor;
+using Web.WebPlayer;
 
 namespace Init;
 
@@ -29,7 +30,8 @@ public static class ImportModules
             typeof(Apps),
             typeof(AssetBundles),
             typeof(Razor),
-            typeof(Icons)
+            typeof(Icons),
+            typeof(WebPlayer)
         };
 
         var services = new ServiceCollection();
