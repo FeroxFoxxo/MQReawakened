@@ -22,7 +22,13 @@ public class CraftItem : ExternalProtocol
     {
         var recipeId = int.Parse(message[5]);
 
-        if (!RecipeCatalog.RecipeCatalog.TryGetValue(recipeId, out var recipe))
+        if (!ItemCatalog.Items.TryGetValue(recipeId, out var item))
+        {
+            Logger.LogError("Could not find recipe item with id: {ItemId}", item.ItemId);
+            return;
+        }
+
+        if (!RecipeCatalog.RecipeCatalog.TryGetValue(item.RecipeParentItemID, out var recipe))
         {
             Logger.LogError("Recipe with id {RecipeId} does not exist!", recipeId);
             return;
@@ -34,14 +40,6 @@ public class CraftItem : ExternalProtocol
                 ? recipe.Ingredients.Min(ing => Player.Character.TryGetItem(ing.ItemId, out var pItem) ? 0 : pItem.Count / ing.Count)
                 : 1;
 
-        if (!ItemCatalog.Items.TryGetValue(recipe.ItemId, out var item))
-        {
-            Logger.LogError("Could not find recipe item with id: {ItemId}", recipe.ItemId);
-            return;
-        }
-
-        Player.AddItem(item, amount, ItemCatalog);
-
         foreach (var ingredient in recipe.Ingredients)
         {
             var ingredientItem = ItemCatalog.GetItemFromId(ingredient.ItemId);
@@ -51,7 +49,11 @@ public class CraftItem : ExternalProtocol
         var itemDesc = ItemCatalog.GetItemFromId(recipe.ItemId);
 
         if (itemDesc != null)
+        {
+            Player.AddItem(itemDesc, amount, ItemCatalog);
+
             Player.CheckAchievement(AchConditionType.CraftItem, itemDesc.PrefabName, InternalAchievement, Logger);
+        }
 
         Player.SendUpdatedInventory(false);
 
