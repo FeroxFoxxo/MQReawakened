@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
@@ -12,6 +13,8 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using UnityEngine;
 
@@ -21,7 +24,10 @@ public abstract class Enemy : IDestructible
 {
     public readonly Room Room;
     public readonly string Id;
+
     private readonly ILogger<Enemy> _logger;
+    private readonly InternalAchievement _internalAchievement;
+    private readonly QuestCatalog _questCatalog;
 
     public bool Init;
 
@@ -48,7 +54,7 @@ public abstract class Enemy : IDestructible
 
     public AISyncEventHelper SyncBuilder;
 
-    public Enemy(Room room, string entityId, ILogger<Enemy> logger, BaseComponent baseEntity)
+    public Enemy(Room room, string entityId, BaseComponent baseEntity, IServiceProvider services)
     {
         //Basic Stats
         Room = room;
@@ -57,7 +63,10 @@ public abstract class Enemy : IDestructible
         IsFromSpawner = false;
         MinBehaviorTime = 0;
         SyncBuilder = new AISyncEventHelper();
-        _logger = logger;
+
+        _logger = services.GetRequiredService<ILogger<Enemy>>();
+        _internalAchievement = services.GetRequiredService<InternalAchievement>();
+        _questCatalog = services.GetRequiredService<QuestCatalog>();
 
         //Component Info
         Entity = baseEntity;
@@ -454,11 +463,11 @@ public abstract class Enemy : IDestructible
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
 
-        player.CheckObjective(ObjectiveEnum.Score, id, Entity.PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.Scoremultiple, id, Entity.PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.Score, id, Entity.PrefabName, 1, _questCatalog);
+        player.CheckObjective(ObjectiveEnum.Scoremultiple, id, Entity.PrefabName, 1, _questCatalog);
 
-        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, _logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, _logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, _logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, _internalAchievement, _logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, _internalAchievement, _logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, _internalAchievement, _logger);
     }
 }

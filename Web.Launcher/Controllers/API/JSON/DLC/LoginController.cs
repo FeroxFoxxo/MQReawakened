@@ -19,7 +19,7 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
     {
         var hashedPw = passwordHasher.GetPassword(username, password);
 
-        var account = accHandler.Data.Values.FirstOrDefault(x => x.Username == username);
+        var account = accHandler.GetInternal().Values.FirstOrDefault(x => x.Username == username);
 
         if (account == null)
         {
@@ -27,7 +27,7 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
             return BadRequest();
         }
 
-        var userInfo = userInfoHandler.Data.Values.FirstOrDefault(x => x.Id == account.Id);
+        var userInfo = userInfoHandler.GetInternal().Values.FirstOrDefault(x => x.Id == account.Id);
 
         if (userInfo == null)
         {

@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -12,42 +13,53 @@ namespace Server.Reawakened.Entities.Components;
 
 public class ChestControllerComp : BaseChestControllerComp<ChestController>
 {
-    public bool Collected;
-
+    public DailiesState ChestState;
     public ItemCatalog ItemCatalog { get; set; }
-
+    public InternalLoot LootCatalog { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
     public ILogger<ChestControllerComp> Logger { get; set; }
 
-    public InternalLoot LootCatalog { get; set; }
+    public override object[] GetInitData(Player player)
+    {
+        ChestState = DailiesState.Active;
 
-    public override object[] GetInitData(Player player) => [Collected ? 0 : 1];
+        if (player.Character.CurrentCollectedDailies != null && PrefabName.Contains(ServerRConfig.DailyBoxName))
+            if (!CanActivateDailies(player, Id))
+                ChestState = DailiesState.Collected;
+
+        return [(int)ChestState];
+    }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        if (Collected)
-            return;
-
-        Collected = true;
-
         player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
 
-        var trig = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true)
+        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1, QuestCatalog);
+
+        var triggerEvent = new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true);
+        var triggerReceiver = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);
+
+        //Temp way for adding bananas to empty chests to create a better user experience.
+        if (string.IsNullOrEmpty(LootCatalog.GetLootById(Id).ObjectId))
         {
-            //need to redo trigger for ChestController
-            /*
-            EventDataList =
-            {
-                [0] = bananas
-            }
-            */
-        };
+            var bananaReward = new Random().Next(30, 55);
 
-        Room.SendSyncEvent(trig);
+            player.AddBananas(bananaReward);
+            triggerEvent.EventDataList[0] = bananaReward;
+        }
 
-        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
+        if (PrefabName.Contains(ServerRConfig.DailyBoxName))
+        {
+            player.SendSyncEventToPlayer(triggerEvent);
+            player.SendSyncEventToPlayer(triggerReceiver);
 
-        var rec = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);
+            player.Character.CurrentCollectedDailies.TryAdd(Id, SetDailyHarvest(Id, Room.LevelInfo.LevelId, DateTime.Now));
 
-        Room.SendSyncEvent(rec);
+            return;
+        }
+
+        Room.SendSyncEvent(triggerEvent);
+        Room.SendSyncEvent(triggerReceiver);
     }
 }

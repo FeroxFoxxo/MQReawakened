@@ -2,12 +2,13 @@
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 
 namespace Server.Reawakened.Players.Services;
 public class CharacterHandler(EventSink sink, ILogger<CharacterModel> logger,
-    InternalRConfig rConfig, InternalRwConfig rwConfig) :
+    InternalRConfig rConfig, InternalRwConfig rwConfig, ServerRConfig serverRConfig) :
     DataHandler<CharacterModel>(sink, logger, rConfig, rwConfig)
 {
     public override bool HasDefault => false;
@@ -28,7 +29,18 @@ public class CharacterHandler(EventSink sink, ILogger<CharacterModel> logger,
 
         return character;
     }
-    public CharacterModel GetCharacterFromName(string characterName)
-        => Data.FirstOrDefault(c => c.Value.Data.CharacterName == characterName).Value;
 
+    public override CharacterModel Get(int id)
+    {
+        var character = base.Get(id);
+        character.Data.SetVersion(serverRConfig.GameVersion);
+        return character;
+    }
+
+    public CharacterModel GetCharacterFromName(string characterName)
+    {
+        var character = GetInternal().FirstOrDefault(c => c.Value.Data.CharacterName == characterName).Value;
+        character.Data.SetVersion(serverRConfig.GameVersion);
+        return character;
+    }
 }

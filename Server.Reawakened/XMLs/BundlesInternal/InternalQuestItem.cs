@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
@@ -10,7 +12,7 @@ namespace Server.Reawakened.XMLs.BundlesInternal;
 public class InternalQuestItem : IBundledXml<InternalQuestItem>
 {
     public string BundleName => "InternalQuestItem";
-    public BundlePriority Priority => BundlePriority.High;
+    public BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<InternalQuestItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
@@ -30,6 +32,8 @@ public class InternalQuestItem : IBundledXml<InternalQuestItem>
 
     public void ReadDescription(string xml)
     {
+        var itemCatalog = Services.GetRequiredService<ItemCatalog>();
+
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
@@ -51,7 +55,7 @@ public class InternalQuestItem : IBundledXml<InternalQuestItem>
                             break;
                     }
 
-                var itemList = quest.GetXmlItems();
+                var itemList = quest.GetXmlItems(itemCatalog, Logger);
 
                 QuestItemList.TryAdd(questId, itemList);
             }

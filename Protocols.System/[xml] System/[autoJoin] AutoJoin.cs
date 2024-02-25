@@ -7,6 +7,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Services;
 using System.Xml;
 
 namespace Protocols.System._xml__System;
@@ -15,12 +16,13 @@ public class AutoJoin : SystemProtocol
 {
     public override string ProtocolName => "autoJoin";
 
+    public WorldHandler WorldHandler { get; set; }
     public CharacterHandler CharacterHandler { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
 
     public override void Run(XmlDocument xmlDoc)
     {
-        Player.QuickJoinRoom(0, out var _);
+        Player.QuickJoinRoom(0, WorldHandler, out var _);
 
         SendXt("cx", GetPropertyList(GetPropertiesOfUser(Player)));
         SendXt("cl", GetCharacterList(Player.UserInfo));
@@ -73,7 +75,7 @@ public class AutoJoin : SystemProtocol
             var character = CharacterHandler.Get(characterId);
 
             if (character == null)
-                Player.DeleteCharacter(characterId);
+                Player.DeleteCharacter(characterId, CharacterHandler);
             else
                 characterData.Add(character.Data.GetLightCharacterData());
         }

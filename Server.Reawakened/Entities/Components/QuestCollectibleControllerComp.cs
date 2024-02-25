@@ -2,6 +2,7 @@
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Bundles;
 using static CollectibleController;
 
 namespace Server.Reawakened.Entities.Components;
@@ -11,11 +12,14 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
     public string CollectedFx => ComponentData.CollectedFx;
     public float GatherTime => ComponentData.GatherTime;
 
+    public QuestCatalog QuestCatalog { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
+
     public override object[] GetInitData(Player player)
     {
         CollectedState = CollectibleState.NotActive;
 
-        var questItem = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(PrefabName);
+        var questItem = ItemCatalog.GetItemFromPrefabName(PrefabName);
 
         foreach (var objective in player.Character.Data.QuestLog.SelectMany(x => x.Objectives.Values).Where
             (x => x.GameObjectId.ToString() == Id || questItem != null && x.ItemId == questItem.ItemId))
@@ -26,12 +30,12 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        player.CheckObjective(ObjectiveEnum.Receiveitem, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.Collect, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.AlterandReceiveitem, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.Deliver, Id, PrefabName, 1);
-        player.CheckObjective(ObjectiveEnum.Alter, Id, PrefabName, 1);
+        player.CheckObjective(ObjectiveEnum.Receiveitem, Id, PrefabName, 1, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.Collect, Id, PrefabName, 1, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.AlterandReceiveitem, Id, PrefabName, 1, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.Deliver, Id, PrefabName, 1, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.Alter, Id, PrefabName, 1, QuestCatalog);
 
         player.SendSyncEventToPlayer(new Trigger_SyncEvent(syncEvent));
 
@@ -42,7 +46,7 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
 
     public int UpdateActiveObjectives(Player player, CollectibleState collectedState)
     {
-        var questItem = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(PrefabName);
+        var questItem = ItemCatalog.GetItemFromPrefabName(PrefabName);
 
         foreach (var objective in player.Character.Data.QuestLog.SelectMany(x => x.Objectives.Values).Where
             (x => x.GameObjectId.ToString() == Id || questItem != null && x.ItemId == questItem.ItemId))

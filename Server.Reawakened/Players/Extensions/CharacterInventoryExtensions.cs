@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
@@ -8,6 +9,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -88,7 +90,7 @@ public static class CharacterInventoryExtensions
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>
         characterData.Data.Inventory.Items.TryGetValue(itemId, out outItem);
 
-    public static void RemoveItem(this Player player, ItemDescription item, int count)
+    public static void RemoveItem(this Player player, ItemDescription item, int count, ItemCatalog itemCatalog)
     {
         var characterData = player.Character;
 
@@ -97,12 +99,14 @@ public static class CharacterInventoryExtensions
 
         gottenItem.Count -= count;
 
-        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count);
+        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count, itemCatalog);
     }
-
-    public static void AddItem(this Player player, ItemDescription item, int count, ServerRConfig config)
+    
+    public static void AddItem(this Player player, ItemDescription item, int count, ItemCatalog itemCatalog)
     {
         var characterData = player.Character;
+
+        var config = itemCatalog.Services.GetRequiredService<ServerRConfig>();
 
         if (!config.LoadedAssets.Contains(item.PrefabName) && item.InventoryCategoryID != ItemFilterCategory.RecipesAndCraftingIngredients)
             return;
@@ -125,7 +129,7 @@ public static class CharacterInventoryExtensions
 
         gottenItem.Count += count;
 
-        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count);
+        player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count, itemCatalog);
     }
 
     public static void AddKit(this CharacterModel characterData, List<ItemDescription> items, int count)

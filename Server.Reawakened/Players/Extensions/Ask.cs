@@ -14,7 +14,7 @@ public static class Ask
 
         var userName = Console.ReadLine()?.Trim();
 
-        var account = accountHandler.Data.Values.FirstOrDefault(x => x.Username == userName);
+        var account = accountHandler.GetInternal().Values.FirstOrDefault(x => x.Username == userName);
         model = null;
         user = null;
 
@@ -24,7 +24,7 @@ public static class Ask
             return;
         }
 
-        user = userInfoHandler.Data.Values.FirstOrDefault(x => x.Id == account.Id);
+        user = userInfoHandler.GetInternal().Values.FirstOrDefault(x => x.Id == account.Id);
 
         if (user == null)
         {

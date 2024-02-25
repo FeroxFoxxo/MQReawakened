@@ -28,7 +28,8 @@ public class DeleteMessage : ExternalProtocol
             {
                 MessageId = messageId,
                 Item = item,
-                Player = Player
+                Player = Player,
+                ItemCatalog = ItemCatalog
             };
 
             TimerThread.DelayCall(RunGiftAnimation, giftData, TimeSpan.FromMilliseconds(3300), TimeSpan.Zero, 1);
@@ -46,7 +47,7 @@ public class DeleteMessage : ExternalProtocol
         if (player.Character == null)
             return;
 
-        player.AddItem(gData.Item, gData.Item.ItemNumber, player.DatabaseContainer.ServerRConfig);
+        player.AddItem(gData.Item, gData.Item.ItemNumber, gData.ItemCatalog);
         player.SendUpdatedInventory(false);
 
         var mailMessage = player.Character.EmailMessages[gData.MessageId];
@@ -63,5 +64,6 @@ public class DeleteMessage : ExternalProtocol
         public int MessageId { get; set; }
         public ItemDescription Item { get; set; }
         public Player Player { get; set; }
+        public ItemCatalog ItemCatalog { get; set; }
     }
 }

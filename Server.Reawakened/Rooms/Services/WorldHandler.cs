@@ -5,17 +5,14 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Services;
 
 public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph,
-    TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> handlerLogger,
-    ILogger<Room> roomLogger, ILogger<Enemy> enemyLogger, InternalColliders internalCollider) : IService
+    TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> handlerLogger) : IService
 {
     private readonly Dictionary<int, Level> _levels = [];
     private readonly object Lock = new();
@@ -29,7 +26,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         foreach (var room in _levels
                      .Where(level => level.Key > 0)
                      .SelectMany(level => level.Value.Rooms))
-            room.Value.DumpPlayersToLobby();
+            room.Value.DumpPlayersToLobby(this);
 
         _levels.Clear();
     }
@@ -40,6 +37,9 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             try
             {
                 var levelInfo = worldGraph!.GetInfoLevel(levelId);
+
+                if (string.IsNullOrEmpty(levelInfo.Name))
+                    levelInfo = worldGraph!.GetInfoLevel(worldGraph.DefaultLevel);
 
                 return string.IsNullOrEmpty(levelInfo.Name)
                     ? throw new MissingFieldException($"Room '{levelId}' does not have a valid name!")
@@ -103,7 +103,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
             var roomId = level.Rooms.Keys.Count > 0 ? level.Rooms.Keys.Max() + 1 : 1;
 
-            room = new Room(roomId, level, config, timerThread, services, roomLogger, enemyLogger, internalCollider);
+            room = new Room(roomId, level, timerThread, services, config);
 
             level.Rooms.Add(roomId, room);
         }

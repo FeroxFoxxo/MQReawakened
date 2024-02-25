@@ -9,7 +9,7 @@ public class InviteToTrade : ExternalProtocol
 {
     public override string ProtocolName => "ti";
 
-    public DatabaseContainer DatabaseContainer { get; set; }
+    public PlayerContainer PlayerContainer { get; set; }
 
     public override void Run(string[] message)
     {
@@ -17,7 +17,7 @@ public class InviteToTrade : ExternalProtocol
             return;
 
         var traderName = message[5];
-        var invitedPlayer = DatabaseContainer.GetPlayerByName(traderName);
+        var invitedPlayer = PlayerContainer.GetPlayerByName(traderName);
 
         if (invitedPlayer == null)
             return;

@@ -67,6 +67,7 @@ public class ServerRConfig : IRConfig
     public string[] EnemyNameSearch { get; set; }
     public string BreakableComponentName { get; set; }
     public string EnemyComponentName { get; set; }
+    public string DailyBoxName { get; set; }
     public int HealingStaffID { get; set; }
     public int MysticCharmID { get; set; }
     public float ProjectileSpeed { get; set; }
@@ -197,6 +198,7 @@ public class ServerRConfig : IRConfig
 
         EnemyComponentName = "EnemyController";
         BreakableComponentName = "BreakableEventController";
+        DailyBoxName = "Daily";
 
         EnemyNameSearch = [
             "PF_Critter_Bird",

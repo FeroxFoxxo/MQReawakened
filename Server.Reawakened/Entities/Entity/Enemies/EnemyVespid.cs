@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.AIBehavior;
+﻿using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Entity.Utils;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
@@ -7,7 +6,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyVespid(Room room, string entityId, ILogger<Enemy> logger, BaseComponent baseEntity) : Enemy(room, entityId, logger, baseEntity)
+public class EnemyVespid(Room room, string entityId, BaseComponent baseEntity, IServiceProvider services) : Enemy(room, entityId, baseEntity, services)
 {
 
     private float _behaviorEndTime;

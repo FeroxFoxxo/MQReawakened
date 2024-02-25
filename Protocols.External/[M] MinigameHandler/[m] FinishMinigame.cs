@@ -15,7 +15,7 @@ public class FinishedMinigame : ExternalProtocol
     public override string ProtocolName => "Mm";
 
     public InternalLoot LootCatalog { get; set; }
-    public DatabaseContainer DatabaseContainer { get; set; }
+    public PlayerContainer PlayerContainer { get; set; }
     public ILogger<FinishedMinigame> Logger { get; set; }
 
     public override void Run(string[] message)

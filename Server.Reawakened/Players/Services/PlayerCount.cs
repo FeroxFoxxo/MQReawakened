@@ -7,7 +7,7 @@ using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Services;
 public class PlayerCount(ServerConsole serverConsole,
-    DatabaseContainer databaseContainer, EventSink sink, ILogger<PlayerCount> logger) : IService
+    PlayerContainer playerContainer, EventSink sink, ILogger<PlayerCount> logger) : IService
 {
     public void Initialize() => sink.WorldLoad += Load;
 
@@ -18,6 +18,13 @@ public class PlayerCount(ServerConsole serverConsole,
             NetworkType.Server, 
             SendPlayerCount);
 
-    private void SendPlayerCount(string[] command) => 
-        logger.LogInformation($"Currently online players: {databaseContainer.GetAllPlayers().Count}");
+    private void SendPlayerCount(string[] command)
+    {
+        if (command.Length == 1)
+            logger.LogInformation($"Currently online players: {playerContainer.GetAllPlayers().Count}");
+
+        if (command.Length == 2)
+            foreach (var item in playerContainer.GetAllPlayers())
+                logger.LogInformation($"{item.CharacterName} - {item.Room.LevelInfo.InGameName} / {item.Room.LevelInfo.LevelId}");
+    }
 }

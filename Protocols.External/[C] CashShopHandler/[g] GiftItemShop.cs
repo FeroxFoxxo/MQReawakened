@@ -15,7 +15,7 @@ public class GiftItemShop : ExternalProtocol
     public override string ProtocolName => "Cg";
 
     public ItemCatalog ItemCatalog { get; set; }
-    public DatabaseContainer DatabaseContainer { get; set; }
+    public PlayerContainer PlayerContainer { get; set; }
     public ILogger<GiftItemShop> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -34,7 +34,7 @@ public class GiftItemShop : ExternalProtocol
         var backgroundId = int.Parse(message[9]);
         var packageId = int.Parse(message[10]);
 
-        var friend = DatabaseContainer.GetPlayerByName(friendName);
+        var friend = PlayerContainer.GetPlayerByName(friendName);
 
         var package = ItemCatalog.GetItemFromId(packageId);
         Player.RemoveBananas(package.RegularPrice);
