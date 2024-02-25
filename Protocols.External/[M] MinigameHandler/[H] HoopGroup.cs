@@ -29,24 +29,24 @@ public class HoopGroup : ExternalProtocol
             if (!string.IsNullOrEmpty(message[7]))
                 hoopGroupName = message[7];
 
+        Player.CheckAchievement(AchConditionType.Hoop, string.Empty, InternalAchievement, Logger, numberOfHoops);
+        Player.CheckAchievement(AchConditionType.HoopInLevel, Player.Room.LevelInfo.Name, InternalAchievement, Logger, numberOfHoops);
+
         if (completed)
         {
-            var hoops = Player.Room.GetEntitiesFromType<HoopControllerComp>();
-
-            var masterHoop = hoops.First(x => x.HoopGroupStringId == hoopGroupName && x.IsMasterController);
-
-            var hitHoops = hoops.Where(x => x.HoopGroupId == masterHoop.HoopGroupId);
-
-            foreach (var hoop in hitHoops)
-            {
-                Player.CheckObjective(ObjectiveEnum.Invalid, hoop.Id, hoop.PrefabName, 1, QuestCatalog);
-
-                Player.CheckAchievement(AchConditionType.Hoop, string.Empty, InternalAchievement, Logger);
-                Player.CheckAchievement(AchConditionType.HoopInLevel, Player.Room.LevelInfo.Name, InternalAchievement, Logger);
-            }
-
             Player.CheckAchievement(AchConditionType.HoopGroup, string.Empty, InternalAchievement, Logger);
             Player.CheckAchievement(AchConditionType.HoopGroupInLevel, Player.Room.LevelInfo.Name, InternalAchievement, Logger);
+
+            var hoops = Player.Room.GetEntitiesFromType<HoopControllerComp>();
+
+            var masterHoop = hoops.FirstOrDefault(x => x.HoopGroupStringId == hoopGroupName && x.IsMasterController);
+
+            var hitHoops = masterHoop != null
+                ? hoops.Where(x => x.HoopGroupId == masterHoop.HoopGroupId)
+                : hoops.Where(x => x.HoopGroupStringId == hoopGroupName);
+
+            foreach (var hoop in hitHoops)
+                Player.CheckObjective(ObjectiveEnum.Invalid, hoop.Id, hoop.PrefabName, 1, QuestCatalog);
         }
     }
 }
