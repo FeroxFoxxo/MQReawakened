@@ -53,8 +53,10 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     {
     }
 
-    public void Damage(int damage, Player origin)
+    public void Damage(int damage, Elemental damageType, Player origin)
     {
+        damage = GetDamageType(damage, damageType);
+
         _health -= damage;
         Logger.LogInformation("Object name: {args1} Object Id: {args2}", PrefabName, Id);
 
@@ -67,6 +69,39 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             origin.SendUpdatedInventory(false);
             Destroy(origin, Room, Id);
         }
+    }
+
+    public int GetDamageType(int damage, Elemental damageType)
+    {
+        var status = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
+
+        if (status != null)
+        {
+            if (damageType == Elemental.Air) damage -= status.ComponentData.AirDamageResistPoints;
+            if (damageType == Elemental.Fire) damage -= status.ComponentData.FireDamageResistPoints;
+            if (damageType == Elemental.Ice) damage -= status.ComponentData.IceDamageResistPoints;
+            if (damageType == Elemental.Earth) damage -= status.ComponentData.EarthDamageResistPoints;
+            if (damageType == Elemental.Poison) damage -= status.ComponentData.PoisonDamageResistPoints;
+            if (damageType is Elemental.Standard or Elemental.Invalid or Elemental.Unknown)
+                damage -= status.ComponentData.AirDamageResistPoints;
+        }
+
+        else
+        {
+            var intrenalStatus = Room.GetEntityFromId<InterObjStatusComp>(Id);
+
+            if (damageType == Elemental.Air) damage -= intrenalStatus.AirDamageResistPoints;
+            if (damageType == Elemental.Fire) damage -= intrenalStatus.FireDamageResistPoints;
+            if (damageType == Elemental.Ice) damage -= intrenalStatus.IceDamageResistPoints;
+            if (damageType == Elemental.Earth) damage -= intrenalStatus.EarthDamageResistPoints;
+            if (damageType == Elemental.Poison) damage -= intrenalStatus.PoisonDamageResistPoints;
+            if (damageType is Elemental.Standard or Elemental.Invalid or Elemental.Unknown)
+                damage -= intrenalStatus.AirDamageResistPoints;
+        }
+
+        if (damage < 0) damage = 0;
+
+        return damage;
     }
 
     public void Destroy(Player player, Room room, string id)

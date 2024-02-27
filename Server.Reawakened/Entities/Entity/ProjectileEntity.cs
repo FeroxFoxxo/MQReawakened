@@ -10,7 +10,7 @@ public class ProjectileEntity : TicklyEntity
 {
     private readonly Vector3Model _hitboxPosition;
 
-    public ProjectileEntity(Player player, string id, Vector3Model position, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig config)
+    public ProjectileEntity(Player player, string id, Vector3Model position, int direction, float lifeTime, ItemDescription item, int damage, Elemental damageType, ServerRConfig config)
     {
         // Initialize projectile location info
         Player = player;
@@ -24,15 +24,15 @@ public class ProjectileEntity : TicklyEntity
         Position.Y += config.ProjectileYOffset;
         SpawnPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
 
-        Speed = isRight ? config.ProjectileSpeed : -config.ProjectileSpeed;
+        SpeedX = isRight ? config.ProjectileSpeed : -config.ProjectileSpeed;
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
         _hitboxPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
         _hitboxPosition.X -= isRight ? 0 : config.ProjectileWidth;
 
         // Send all information to room
-        Collider = new AttackCollider(id, _hitboxPosition, config.ProjectileWidth, config.ProjectileHeight, PrjPlane, player, damage, type, LifeTime);
-        var prj = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), StartTime, Position.X, Position.Y, Position.Z, Speed, 0, LifeTime, int.Parse(ProjectileID), item.PrefabName);
+        Collider = new AttackCollider(id, _hitboxPosition, config.ProjectileWidth, config.ProjectileHeight, PrjPlane, player, damage, damageType, LifeTime);
+        var prj = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), StartTime, Position.X, Position.Y, Position.Z, SpeedX, 0, LifeTime, int.Parse(ProjectileID), item.PrefabName);
         player.Room.SendSyncEvent(prj);
     }
 

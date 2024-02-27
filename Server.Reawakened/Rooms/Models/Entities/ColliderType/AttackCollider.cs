@@ -8,7 +8,7 @@ public class AttackCollider(string id, Vector3Model position, float sizeX, float
     public float LifeTime = lifeTime + player.Room.Time;
     public Player Owner = player;
     public int Damage = damage;
-    public Elemental Type = type;
+    public Elemental DamageType = type;
 
     public override string[] IsColliding(bool isAttack)
     {

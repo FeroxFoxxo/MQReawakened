@@ -5,6 +5,7 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
@@ -50,37 +51,44 @@ public class State : ExternalProtocol
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.ChargeAttack:
-                    var chargeAttackEvent = new ChargeAttack_SyncEvent(syncEvent);
+                    Player.TempData.IsSuperStomping = true;
+                    Player.TempData.Invincible = true;
 
-                    var startPosition = chargeAttackEvent.EventDataList[2].ToString();
-                    var endPosition = chargeAttackEvent.EventDataList[7].ToString();
+                    var startChargeAttack = new ChargeAttack_SyncEvent(syncEvent);
 
-                    var totalDistance = Convert.ToInt32(Math.Floor(Convert.ToDouble(startPosition)) - Math.Floor(Convert.ToDouble(endPosition)));
+                    var totalYDistance = startChargeAttack.PosY - startChargeAttack.MaxPosY;
+                    var totalXDistance = startChargeAttack.PosX - startChargeAttack.MaxPosX;
 
-                    Player.Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(entityId.ToString(), chargeAttackEvent.TriggerTime,
-                        chargeAttackEvent.PosX, chargeAttackEvent.PosY - totalDistance, chargeAttackEvent.SpeedX,
-                        chargeAttackEvent.SpeedY, chargeAttackEvent.ItemId, chargeAttackEvent.ZoneId));
+                    var chargeAttackCollider = new ChargeAttackEntity(Player,
+                        new Vector3Model() { X = startChargeAttack.PosX, Y = startChargeAttack.PosY, Z = Player.TempData.Position.Z },
+                        new Vector3Model() { X = totalXDistance, Y = totalYDistance, Z = Player.TempData.Position.Z },
+                        new Vector2Model() { X = startChargeAttack.SpeedX, Y = startChargeAttack.SpeedY },
+                        10, startChargeAttack.ItemId, startChargeAttack.ZoneId,
+                        25, Elemental.Standard, TimerThread);
+
+                    Player.Room.Projectiles.TryAdd(Player.GameObjectId, chargeAttackCollider);
                     break;
+
                 case SyncEvent.EventType.ChargeAttackStop:
-                    var chargeAttackStopSyncEvent = new ChargeAttackStop_SyncEvent(syncEvent);
+                    Player.TempData.IsSuperStomping = false;
+                    Player.TempData.Invincible = false;
 
-                    Player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(chargeAttackStopSyncEvent.TargetID, chargeAttackStopSyncEvent.TriggerTime,
-                        chargeAttackStopSyncEvent.PosX, chargeAttackStopSyncEvent.PosY, chargeAttackStopSyncEvent.ItemId,
-                        chargeAttackStopSyncEvent.ZoneId, chargeAttackStopSyncEvent.HitId));
+                    Player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+                        Player.TempData.Position.X, Player.TempData.Position.Y, -1, -1, "1"));
 
-                    Logger.LogWarning("Collision system not yet written and implemented for {Type}.", chargeAttackStopSyncEvent.Type);
+                    if (Player.Room.Projectiles.ContainsKey(Player.GameObjectId))
+                        Player.Room.Projectiles.Remove(Player.GameObjectId);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
-
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
                     var collisionTarget = notifyCollisionEvent.CollisionTarget;
 
-                    if (Player.Room.ContainsEntity(collisionTarget))
+                    if (newPlayer.Room.ContainsEntity(collisionTarget))
                         foreach (var component in Player.Room.GetEntitiesFromId<BaseComponent>(collisionTarget))
                             component.NotifyCollision(notifyCollisionEvent, newPlayer);
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
-                            collisionTarget, Player.Room.GetUnknownComponentTypes(collisionTarget));
+                            collisionTarget, newPlayer.Room.GetUnknownComponentTypes(collisionTarget));
                     break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);

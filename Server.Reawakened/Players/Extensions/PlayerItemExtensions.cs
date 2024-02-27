@@ -17,7 +17,7 @@ public static class PlayerItemExtensions
         var isLeft = direction > 0;
         var dropDirection = isLeft ? 1 : -1;
         var platform = new GameObjectModel();
-        var planeName = position.Z > 10 ? config.IsBackPlane[true] : config.IsBackPlane[false];
+        var planeName = player.GetPlayersPlaneString(config);
 
         var dropItemData = new DroppedItemData()
         {
@@ -79,6 +79,7 @@ public static class PlayerItemExtensions
                     Component = component,
                     ObjectId = objectId,
                     Damage = dropData.UsedItem.GetDamageAmount(dropData.Logger, dropData.ServerRConfig),
+                    DamageType = dropData.UsedItem.Elemental,
                     Player = player,
                     Logger = dropData.Logger
                 };
@@ -94,6 +95,7 @@ public static class PlayerItemExtensions
         public string ObjectId { get; set; }
         public BaseComponent Component { get; set; }
         public int Damage { get; set; }
+        public Elemental DamageType { get; set; }
         public Player Player { get; set; }
         public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
     }
@@ -108,7 +110,7 @@ public static class PlayerItemExtensions
             return;
 
         if (bData.Component is BreakableEventControllerComp breakableObjEntity)
-            breakableObjEntity.Damage(5, bData.Player);
+            breakableObjEntity.Damage(5, bData.DamageType, bData.Player);
     }
 
     public static int GetDamageAmount(this ItemDescription usedItem, Microsoft.Extensions.Logging.ILogger logger, ServerRConfig config)

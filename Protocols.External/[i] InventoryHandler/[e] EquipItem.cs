@@ -13,8 +13,8 @@ public class EquipItem : ExternalProtocol
     public override string ProtocolName => "ie";
 
     public ItemCatalog ItemCatalog { get; set; }
-    public ILogger<EquipItem> Logger { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
+    public ILogger<EquipItem> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -26,7 +26,6 @@ public class EquipItem : ExternalProtocol
         {
             if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquipped))
                 Player.AddItem(ItemCatalog.GetItemFromId(previouslyEquipped), 1, ItemCatalog);
-
 
             var itemDesc = ItemCatalog.GetItemFromId(item.Value);
 
