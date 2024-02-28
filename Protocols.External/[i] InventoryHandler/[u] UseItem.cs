@@ -118,7 +118,7 @@ public class UseItem : ExternalProtocol
     {
         Player.RemoveItem(usedItem, 1, ItemCatalog);
 
-        var recipe = RecipeCatalog.GetRecipeById(usedItem.ItemId);
+        var recipe = RecipeCatalog.GetRecipeById(usedItem.RecipeParentItemID);
 
         Player.Character.Data.RecipeList.RecipeList.Add(recipe);
 

@@ -323,7 +323,7 @@ public static class PlayerExtensions
                         objective.LevelId == player.Character.LevelData.LevelId)
                         meetsRequirement = true;
 
-                if (objective.GameObjectId <= 0 && objective.ItemId > 0 && !meetsRequirement)
+                if (objective.ItemId > 0 && !meetsRequirement)
                 {
                     var item = itemCatalog.GetItemFromPrefabName(prefabName);
 

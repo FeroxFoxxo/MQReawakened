@@ -15,6 +15,7 @@ public class CharacterModel : PersistantData
     public Dictionary<int, Dictionary<string, int>> AchievementObjectives { get; set; }
     public Dictionary<string, float> BestMinigameTimes { get; set; }
     public Dictionary<string, DailiesModel> CurrentCollectedDailies { get; set; }
+    public Dictionary<string, DailiesModel> CurrentQuestDailies { get; set; }
 
     public CharacterModel()
     {
@@ -25,6 +26,7 @@ public class CharacterModel : PersistantData
         AchievementObjectives = [];
         BestMinigameTimes = [];
         CurrentCollectedDailies = [];
+        CurrentQuestDailies = [];
 
         Data = new CharacterDataModel();
         LevelData = new LevelData();

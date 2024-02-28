@@ -85,7 +85,7 @@ While the MQ server supports both Windows and Linux (and other Unix-like systems
 
 Due to the plethora of Wine prefix managers that people use (in addition to the option of just configuring your Wine prefix by hand), there's a number of ways you could set the game up. Regardless of which you prefer, for MQ there's a handful of dependencies you need to satisfy, which are common to all of them:
 
-- Electron (OpenFusionClient.exe) needs allfonts to run
+- Electron (MQClient.exe) needs allfonts to run
 - It also needs to be run with the following arguments: --no-sandbox --disable-gpu
 - Using DXVK instead of wined3d is highly recommended to avoid graphical glitches like mission indicator rings not rendering
 
