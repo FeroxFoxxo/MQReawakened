@@ -56,12 +56,9 @@ public class State : ExternalProtocol
 
                     var startChargeAttack = new ChargeAttack_SyncEvent(syncEvent);
 
-                    var totalYDistance = startChargeAttack.PosY - startChargeAttack.MaxPosY;
-                    var totalXDistance = startChargeAttack.PosX - startChargeAttack.MaxPosX;
-
                     var chargeAttackCollider = new ChargeAttackEntity(Player,
                         new Vector3Model() { X = startChargeAttack.PosX, Y = startChargeAttack.PosY, Z = Player.TempData.Position.Z },
-                        new Vector3Model() { X = totalXDistance, Y = totalYDistance, Z = Player.TempData.Position.Z },
+                        new Vector3Model() { X = startChargeAttack.MaxPosX, Y = startChargeAttack.MaxPosY, Z = Player.TempData.Position.Z },
                         new Vector2Model() { X = startChargeAttack.SpeedX, Y = startChargeAttack.SpeedY },
                         10, startChargeAttack.ItemId, startChargeAttack.ZoneId,
                         25, Elemental.Standard, TimerThread);
@@ -72,9 +69,6 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.ChargeAttackStop:
                     Player.TempData.IsSuperStomping = false;
                     Player.TempData.Invincible = false;
-
-                    Player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                        Player.TempData.Position.X, Player.TempData.Position.Y, -1, -1, "1"));
 
                     if (Player.Room.Projectiles.ContainsKey(Player.GameObjectId))
                         Player.Room.Projectiles.Remove(Player.GameObjectId);
