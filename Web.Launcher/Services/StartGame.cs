@@ -129,6 +129,8 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
             logger.LogDebug("Set API key to: {ApiKey}", lWConfig.AnalyticsApiKey);
         }
 
+        logger.LogDebug("Set version to: {Version}", Enum.GetName(sConfig.GameVersion));
+
         _dirSet = true;
 
         RunGame();

@@ -23,7 +23,7 @@
             <EditAttribute key="prefab" value="Col_CRS_Marshmallow01"/>
         </Item>
     </GameVersion>
-    <GameVersion version="v2013">
+    <GameVersion version="vLate2013">
         <Item name="Add_COM_Armor01_S01">
             <EditAttribute key="global_level" value="1"/>
         </Item>
@@ -40,6 +40,16 @@
             <EditAttribute key="price" value="1"/>
         </Item>
     </GameVersion>
-    <GameVersion version="v2012">
+    <GameVersion version="vEarly2013">
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="price" value="50"/>
+        </Item>
     </GameVersion>
 </EditedItems>
