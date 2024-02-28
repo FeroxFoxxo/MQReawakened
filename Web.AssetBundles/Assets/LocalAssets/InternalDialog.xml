@@ -299,6 +299,9 @@
             <Dialog dialogId="661" conversationId="1911" minimumReputation="1" />
             <Dialog dialogId="662" conversationId="1912" minimumReputation="1" />
         </NPC>
+        <NPC objectId="250" name="Loch" descriptionId="0">
+            <Dialog dialogId="1009" conversationId="2761" minimumReputation="1" />
+        </NPC>
     </Level>
     <Level id="508">
         <!-- Rachnok's Lair -->
