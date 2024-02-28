@@ -20,13 +20,14 @@ public class ChargeAttackEntity : TicklyEntity
 
         // Initialize charge attack info
         SpawnPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
+        EndPosition = endPosition;
         SpeedY = speed.Y;
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
         TimerThread = timerThread;
 
         // Send all information to room
-        Collider = new AttackCollider(Player.GameObjectId, startPosition, 0.5f, 0.5f, PrjPlane, player, damage, type, 10f);
+        Collider = new AttackCollider(Player.GameObjectId, startPosition, 0.5f, 0.5f, PrjPlane, player, damage, type, 15f);
         Player.Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                         endPosition.X, endPosition.Y, speed.X, speed.Y, itemId, zoneId));
     }
