@@ -5,5 +5,4 @@ namespace Server.Reawakened.Entities.Components;
 
 public class MultiInteractionTriggerCoopControllerComp : BaseTriggerCoopController<MultiInteractionTriggerCoopController>
 {
-    public override void InitializeComponent() => base.InitializeComponent();
 }
