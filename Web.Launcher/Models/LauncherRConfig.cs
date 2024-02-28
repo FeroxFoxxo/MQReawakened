@@ -55,8 +55,8 @@ public class LauncherRConfig : IRConfig
         // Likely occured between Nov 20 - Nov 24
         ClientUpdates = new Dictionary<GameVersion, string>
         {
-            { GameVersion.v2012, "2009-01-01_12-00-00" },
-            { GameVersion.v2013, "2013-01-27_12-00-00" },
+            { GameVersion.vEarly2013, "2009-01-01_12-00-00" },
+            { GameVersion.vLate2013, "2013-01-27_12-00-00" },
             { GameVersion.v2014, "2013-11-22_12-00-00" }
         };
 
