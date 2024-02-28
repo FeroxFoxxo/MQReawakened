@@ -58,7 +58,7 @@ public class NPCControllerComp : Component<NPCController>
         NameId = -1;
         NpcType = NpcType.Unknown;
 
-        if (Config.GameVersion <= GameVersion.vLate2013)
+        if (Config.GameVersion <= GameVersion.v2013)
             GiverQuests = [];
 
         VendorInfo = VendorCatalog.GetVendorById(Room.LevelInfo.LevelId, int.Parse(Id));

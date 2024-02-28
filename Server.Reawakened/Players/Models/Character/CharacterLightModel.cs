@@ -65,7 +65,7 @@ public class CharacterLightModel
         sb.Append(CharacterId);
         sb.Append(CharacterName);
 
-        if (_version >= GameVersion.vLate2013)
+        if (_version >= GameVersion.v2013)
             sb.Append(UserUuid);
 
         sb.Append(Gender);

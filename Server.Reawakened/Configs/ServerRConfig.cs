@@ -178,7 +178,7 @@ public class ServerRConfig : IRConfig
             { TribeType.Bone,   969 }, // OOTU
         };
 
-        GameVersion = GameVersion.vLate2013;
+        GameVersion = GameVersion.v2013;
         IsBackPlane = new Dictionary<bool, string>()
         {
             { true, "Plane1" },

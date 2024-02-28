@@ -7,11 +7,11 @@
             <Item name="Add_COM_Armor01_S01"/>
         </Vendor>
     </GameVersion>
-    <GameVersion version="vLate2013">
+    <GameVersion version="v2013">
         <Vendor name="CashShop_Clothes">
             <Item name="ABIL_SlingShot02"/>
         </Vendor>
     </GameVersion>
-    <GameVersion version="vEarly2013">
+    <GameVersion version="v2012">
     </GameVersion>
 </EditedVendors>
