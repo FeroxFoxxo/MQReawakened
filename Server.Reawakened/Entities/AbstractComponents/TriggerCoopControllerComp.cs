@@ -305,7 +305,10 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
             if (StayTriggeredOnReceiverActivated && triggerRecieverActivated)
                 return;
 
-            if (StayTriggeredOnUnpressed && (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time || ActivationTimeAfterFirstInteraction <= 0))
+            if (StayTriggeredOnUnpressed)
+                return;
+
+            if (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time && ActivationTimeAfterFirstInteraction > 0)
                 return;
 
             Trigger(player, false);
