@@ -23,8 +23,8 @@ public class InviteResponse : ExternalProtocol
 
         if (accepted)
         {
-            friender.Character.Data.Friends.Add(Player.CharacterId);
-            Player.Character.Data.Friends.Add(Player.CharacterId);
+            friender.Character.Data.Friends.Add(Player.Account.Id);
+            Player.Character.Data.Friends.Add(Player.Account.Id);
 
             friender.SendXt("fr",
                 friender.CharacterName,

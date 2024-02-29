@@ -96,10 +96,10 @@ public static class PlayerExtensions
         player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
         player.SendXt("de", eventPrefabs.EventInfo.ToString());
 
-        foreach (var friend in player.PlayerContainer.GetPlayersByFriend(player.CharacterId)
+        foreach (var friend in player.PlayerContainer.GetPlayersByFriend(player.Account.Id)
                      .Where(p =>
                          player.Character.Data.Friends
-                             .Any(x => x == p.Character.Id)
+                             .Any(x => x == p.Account.Id)
                      )
                 )
             friend.SendXt("fy", player.CharacterName);
