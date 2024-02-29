@@ -22,7 +22,7 @@ public class AIProjectileEntity : TicklyEntity
         SpawnPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
 
         // Initialize projectile info
-        Speed = speedX;
+        SpeedX = speedX;
         SpeedY = speedY;
         StartTime = _room.Time;
         LifeTime = StartTime + lifeTime;
@@ -33,7 +33,7 @@ public class AIProjectileEntity : TicklyEntity
 
     public override void Update()
     {
-        Position.X = SpawnPosition.X + (_room.Time - StartTime) * Speed;
+        Position.X = SpawnPosition.X + (_room.Time - StartTime) * SpeedX;
         Collider.Position.x = Position.X;
 
         Position.Y = SpawnPosition.Y + (_room.Time - StartTime) * SpeedY;

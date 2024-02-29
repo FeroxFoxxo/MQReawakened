@@ -3,7 +3,7 @@ using static TriggerWeather;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class TriggerWeatherComp : TriggerCoopControllerComp<TriggerWeather>
+public class TriggerWeatherComp : BaseTriggerCoopController<TriggerWeather>
 {
     public WeatherType WeatherLevel => ComponentData.WeatherLevel;
     public WeatherGUIEffect ApplyGUIEffect => ComponentData.ApplyGUIEffect;

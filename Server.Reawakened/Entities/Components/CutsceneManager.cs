@@ -3,7 +3,7 @@ using Server.Reawakened.Players;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class CutsceneManagerComp : TriggerCoopControllerComp<CutsceneManager>
+public class CutsceneManagerComp : BaseTriggerCoopController<CutsceneManager>
 {
     public int[] TriggeredRewards;
 

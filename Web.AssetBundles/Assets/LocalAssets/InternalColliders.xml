@@ -334,6 +334,14 @@
         <Plane plane="1">
         </Plane>
     </Level>
+    <Level name="LV_SHD_Trail02" id="106">
+        <Plane plane="0">
+            <Collider x="87" y="33" width="1" height="1.75"/>
+            <Collider x="81" y="33" width="1" height="1.75"/>
+        </Plane>
+        <Plane plane="1">
+        </Plane>
+    </Level>
     <Level name="LV_CRS_Trail05" id="93">
         <Plane plane="0">
             <Collider x="126" y="44" width="2" height="0.2"/>
