@@ -21,6 +21,7 @@ public class ServerRConfig : IRConfig
     public double HealingStaffHealValue { get; }
     public int DefaultMeleeDamage { get; }
     public int DefaultRangedDamage { get; }
+    public int DefaultDropDamage { get; }
 
     public int MaxLevel { get; }
 
@@ -196,6 +197,7 @@ public class ServerRConfig : IRConfig
         HealingStaffHealValue = 3.527f;
         DefaultMeleeDamage = 22;
         DefaultRangedDamage = 18;
+        DefaultDropDamage = 35;
 
         EnemyComponentName = "EnemyController";
         BreakableComponentName = "BreakableEventController";

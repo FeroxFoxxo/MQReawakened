@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Server.Base.Logging;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Entities.Interfaces;

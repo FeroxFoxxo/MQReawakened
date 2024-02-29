@@ -24,22 +24,20 @@ public class HazardControllerComp : Component<HazardController>
     public float HealthRatioDamage => ComponentData.HealthRatioDamage;
     public int HurtSelfOnDamage => ComponentData.HurtSelfOnDamage;
 
-    public ServerRConfig ServerRConfig {  get; set; }
     public TimerThread TimerThread { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
     public ILogger<HazardControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) => [0];
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
-        if (!notifyCollisionEvent.Colliding) return;
+        if (!notifyCollisionEvent.Colliding || player.TempData.Invincible)
+            return;
 
         var character = player.Character;
 
         Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
-
-        if (player.TempData.Invincible)
-            return;
 
         if (effectType == default)
         {
