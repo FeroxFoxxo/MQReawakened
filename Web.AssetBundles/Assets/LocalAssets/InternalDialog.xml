@@ -299,6 +299,9 @@
             <Dialog dialogId="661" conversationId="1911" minimumReputation="1" />
             <Dialog dialogId="662" conversationId="1912" minimumReputation="1" />
         </NPC>
+        <NPC objectId="250" name="Loch" descriptionId="0">
+            <Dialog dialogId="1009" conversationId="2761" minimumReputation="1" />
+        </NPC>
     </Level>
     <Level id="508">
         <!-- Rachnok's Lair -->
@@ -313,6 +316,36 @@
         </NPC>
         <NPC objectId="2466936" name="Villager" descriptionId="0">
             <Dialog dialogId="1475" conversationId="3735" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level id="48">
+        <!-- Jade Mountain -->
+        <NPC objectId="648" name="Chim Foo Guard" descriptionId="0">
+            <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="647" name="Chim Foo Guard" descriptionId="0">
+            <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level id="144">
+        <!-- Ancient Foo Archibe -->
+        <NPC objectId="598" name="Chim Foo Guard" descriptionId="0">
+            <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="597" name="Chim Foo Guard" descriptionId="0">
+            <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level id="146">
+        <!-- Chim Foo Square -->
+        <NPC objectId="4873" name="Kiki" descriptionId="0">
+            <Dialog dialogId="1347" conversationId="3297" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="1099" name="Chim Foo Guard" descriptionId="0">
+            <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="1098" name="Chim Foo Guard" descriptionId="0">
+            <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
         </NPC>
     </Level>
 </DialogCatalog>
