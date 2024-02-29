@@ -49,7 +49,7 @@ public class Player(Account account, UserInfo userInfo, NetState state, WorldHan
         {
             lock (playerContainer.Lock)
             {
-                foreach (var player in playerContainer.GetPlayersByFriend(Account.Id))
+                foreach (var player in playerContainer.GetPlayersByFriend(CharacterId))
                     player.SendXt("fz", Character.Data.CharacterName);
             }
 
