@@ -3,7 +3,7 @@ using Server.Reawakened.Entities.Enums;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public class TriggerStatueComp<T> : BaseTriggerCoopController<T> where T : TriggerStatue
+public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> where T : TriggerStatue
 {
     public int[] TriggeredRewards;
 

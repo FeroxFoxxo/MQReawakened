@@ -5,7 +5,7 @@ using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class MovingObjectControllerComp<T> : Component<T>, IRecieverTriggered where T : MovingObjectController
+public abstract class BaseMovingObjectControllerComp<T> : Component<T>, IRecieverTriggered where T : MovingObjectController
 {
     public float InitialProgressRatio => ComponentData.InitialProgressRatio;
 

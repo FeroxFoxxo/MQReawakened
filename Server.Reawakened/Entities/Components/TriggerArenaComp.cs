@@ -7,7 +7,7 @@ using SmartFoxClientAPI.Data;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class TriggerArenaComp : TriggerStatueComp<TriggerArena>
+public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 {
     private float _timer;
     private float _minClearTime;

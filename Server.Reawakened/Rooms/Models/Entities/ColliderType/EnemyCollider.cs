@@ -1,4 +1,4 @@
-﻿using A2m.Server;
+﻿using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
@@ -11,8 +11,13 @@ public class EnemyCollider(string id, Vector3Model position, float sizeX, float 
             Room.Enemies.TryGetValue(Id, out var enemy);
             if (enemy != null)
             {
-                var damage = enemy.GetDamageType(attack.Damage, attack.DamageType);
-                enemy.Damage(damage, attack.Owner);
+                var damage = Room.GetEntityFromId<IDamageable>(Id);
+
+                if (damage != null)
+                {
+                    var amountToDamage = damage.GetDamageType(attack.Damage, attack.DamageType);
+                    enemy.Damage(amountToDamage, attack.Owner);
+                }
             }
         }
     }

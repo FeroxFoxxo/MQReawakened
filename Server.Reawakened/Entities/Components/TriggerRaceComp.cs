@@ -5,7 +5,7 @@ using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class TriggerRaceComp : TriggerStatueComp<TriggerRace>
+public class TriggerRaceComp : BaseTriggerStatueComp<TriggerRace>
 {
     public string StartRaceSpawnPoint => ComponentData.StartRaceSpawnPoint;
     public string[] TargetToEnableDelayedLevelEditorIDs => ComponentData.TargetToEnableDelayedLevelEditorIDs;

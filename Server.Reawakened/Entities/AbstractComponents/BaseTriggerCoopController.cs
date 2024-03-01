@@ -15,7 +15,7 @@ using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public class BaseTriggerCoopController<T> : Component<T>, ITriggerComp where T : TriggerCoopController
+public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp where T : TriggerCoopController
 {
     private List<string> _currentPhysicalInteractors;
     public int CurrentInteractions;

@@ -2,7 +2,7 @@
 
 namespace Server.Reawakened.Entities.Components;
 
-public class CircularPlatformComp : MovingObjectControllerComp<CircularPlatform>
+public class CircularPlatformComp : BaseMovingObjectControllerComp<CircularPlatform>
 {
     public float RadiusX => ComponentData.RadiusX;
     public float RadiusY => ComponentData.RadiusY;
