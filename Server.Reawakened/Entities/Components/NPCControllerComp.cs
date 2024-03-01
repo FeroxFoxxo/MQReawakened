@@ -229,7 +229,7 @@ public class NPCControllerComp : Component<NPCController>
         if (DialogInfo == null)
             if (!string.IsNullOrEmpty(NpcName))
             {
-                var foundDialog = Dialog.GenericDialog.FirstOrDefault(x => x.Key.Contains(NpcName + Id) && x.Value.Count > 0).Value;
+                var foundDialog = Dialog.GenericDialog.FirstOrDefault(x => x.Key.Contains(NpcName) && x.Value.Count > 0).Value;
 
                 if (foundDialog == null)
                 {
@@ -380,14 +380,25 @@ public class NPCControllerComp : Component<NPCController>
                 return NPCStatus.Unknown;
             }
 
-        var requiredQuests = QuestCatalog.GetListOfPreviousQuests(questData);
+        var requiredQuests = QuestCatalog.GetAllQuestLineRequiredQuest(questLine);
+        var previousQuests = QuestCatalog.GetListOfPreviousQuests(questData);
 
+        var reqQuestMet = false;
+        var prevQuestMet = false;
         var canStartQuest = false;
 
         foreach (var item in requiredQuests)
             if (player.Character.Data.CompletedQuests.Contains(item.Id))
             {
-                canStartQuest = true;
+                reqQuestMet = true;
+                break;
+            }
+
+        foreach (var prev in previousQuests)
+            if (player.Character.Data.CompletedQuests.Contains(prev.Id))
+            {
+                prevQuestMet = true;
+                canStartQuest = reqQuestMet && prevQuestMet;
                 break;
             }
 
