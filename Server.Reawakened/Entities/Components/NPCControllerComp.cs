@@ -229,7 +229,7 @@ public class NPCControllerComp : Component<NPCController>
         if (DialogInfo == null)
             if (!string.IsNullOrEmpty(NpcName))
             {
-                var foundDialog = Dialog.GenericDialog.FirstOrDefault(x => x.Key.Contains(NpcName) && x.Value.Count > 0).Value;
+                var foundDialog = Dialog.GenericDialog.FirstOrDefault(x => x.Key.Contains(NpcName + Id) && x.Value.Count > 0).Value;
 
                 if (foundDialog == null)
                 {
