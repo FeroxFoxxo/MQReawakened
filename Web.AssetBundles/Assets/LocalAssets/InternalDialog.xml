@@ -97,6 +97,9 @@
         <NPC objectId="855" name="Hovering Markets Guard" descriptionId="0">
             <Dialog dialogId="994" conversationId="2742" minimumReputation="1" />
         </NPC>
+        <NPC objectId="681" name="Terod" descriptionId="0">
+            <Dialog dialogId="817" conversationId="2291" minimumReputation="1" />
+        </NPC>
     </Level>
     <Level id="89">
         <!-- The Floating Isles -->
@@ -333,6 +336,15 @@
             <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
         </NPC>
         <NPC objectId="597" name="Chim Foo Guard" descriptionId="0">
+            <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level id="145">
+        <!-- Grand Glowing Market -->
+        <NPC objectId="1141" name="Chim Foo Guard" descriptionId="0">
+            <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="1142" name="Chim Foo Guard" descriptionId="0">
             <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
         </NPC>
     </Level>

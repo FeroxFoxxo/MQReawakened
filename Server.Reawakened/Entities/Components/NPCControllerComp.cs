@@ -380,14 +380,20 @@ public class NPCControllerComp : Component<NPCController>
                 return NPCStatus.Unknown;
             }
 
-        var requiredQuests = QuestCatalog.GetListOfPreviousQuests(questData);
+        var requiredQuests = QuestCatalog.GetAllQuestLineRequiredQuest(questLine);
+        var previousQuests = QuestCatalog.GetListOfPreviousQuests(questData);
 
         var canStartQuest = false;
 
-        foreach (var item in requiredQuests)
-            if (player.Character.Data.CompletedQuests.Contains(item.Id))
+        foreach (var requiredQuest in requiredQuests)
+            if (player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
             {
-                canStartQuest = true;
+                foreach (var previousQuest in previousQuests)
+                    if (player.Character.Data.CompletedQuests.Contains(previousQuest.Id))
+                    {
+                        canStartQuest = true;
+                        break;
+                    }
                 break;
             }
 
