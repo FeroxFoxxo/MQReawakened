@@ -339,6 +339,15 @@
             <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
         </NPC>
     </Level>
+    <Level id="145">
+        <!-- Grand Glowing Market -->
+        <NPC objectId="1141" name="Chim Foo Guard" descriptionId="0">
+            <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="1142" name="Chim Foo Guard" descriptionId="0">
+            <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
+        </NPC>
+    </Level>
     <Level id="146">
         <!-- Chim Foo Square -->
         <NPC objectId="4873" name="Kiki" descriptionId="0">
