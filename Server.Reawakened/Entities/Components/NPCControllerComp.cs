@@ -383,22 +383,17 @@ public class NPCControllerComp : Component<NPCController>
         var requiredQuests = QuestCatalog.GetAllQuestLineRequiredQuest(questLine);
         var previousQuests = QuestCatalog.GetListOfPreviousQuests(questData);
 
-        var reqQuestMet = false;
-        var prevQuestMet = false;
         var canStartQuest = false;
 
-        foreach (var item in requiredQuests)
-            if (player.Character.Data.CompletedQuests.Contains(item.Id))
+        foreach (var requiredQuest in QuestCatalog.GetAllQuestLineRequiredQuest(questLine))
+            if (player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
             {
-                reqQuestMet = true;
-                break;
-            }
-
-        foreach (var prev in previousQuests)
-            if (player.Character.Data.CompletedQuests.Contains(prev.Id))
-            {
-                prevQuestMet = true;
-                canStartQuest = reqQuestMet && prevQuestMet;
+                foreach (var previousQuest in QuestCatalog.GetListOfPreviousQuests(questData))
+                    if (player.Character.Data.CompletedQuests.Contains(previousQuest.Id))
+                    {
+                        canStartQuest = true;
+                        break;
+                    }
                 break;
             }
 
