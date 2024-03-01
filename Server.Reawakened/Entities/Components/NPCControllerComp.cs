@@ -385,10 +385,10 @@ public class NPCControllerComp : Component<NPCController>
 
         var canStartQuest = false;
 
-        foreach (var requiredQuest in QuestCatalog.GetAllQuestLineRequiredQuest(questLine))
+        foreach (var requiredQuest in requiredQuests)
             if (player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
             {
-                foreach (var previousQuest in QuestCatalog.GetListOfPreviousQuests(questData))
+                foreach (var previousQuest in previousQuests)
                     if (player.Character.Data.CompletedQuests.Contains(previousQuest.Id))
                     {
                         canStartQuest = true;
