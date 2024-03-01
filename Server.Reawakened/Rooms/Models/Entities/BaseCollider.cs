@@ -38,7 +38,8 @@ public abstract class BaseCollider
     {
     }
 
-    public virtual bool CheckCollision(BaseCollider collided) => Position.x < collided.Position.x + collided.ColliderBox.Width && collided.Position.x < Position.x + ColliderBox.Width &&
-            Position.y < collided.Position.y + collided.ColliderBox.Height && collided.Position.y < Position.y + ColliderBox.Height &&
-            Plane == collided.Plane;
+    public virtual bool CheckCollision(BaseCollider collided) =>
+        Position.x < collided.Position.x + collided.ColliderBox.Width && collided.Position.x < Position.x + ColliderBox.Width &&
+        Position.y < collided.Position.y + collided.ColliderBox.Height && collided.Position.y < Position.y + ColliderBox.Height &&
+        Plane == collided.Plane;
 }

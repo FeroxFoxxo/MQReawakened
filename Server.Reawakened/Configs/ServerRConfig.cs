@@ -19,9 +19,9 @@ public class ServerRConfig : IRConfig
 
     public int HealingStaff { get; }
     public double HealingStaffHealValue { get; }
-    public int DefaultDamage { get; }
-
-    public Dictionary<bool, string> IsBackPlane { get; }
+    public int DefaultMeleeDamage { get; }
+    public int DefaultRangedDamage { get; }
+    public int DefaultDropDamage { get; }
 
     public int MaxLevel { get; }
 
@@ -81,6 +81,7 @@ public class ServerRConfig : IRConfig
     public float MeleeHeight { get; set; }
     public float PlayerWidth { get; set; }
     public float PlayerHeight { get; set; }
+    public Dictionary<bool, string> IsBackPlane { get; set; }
     public Dictionary<int, string> TrainingGear { get; set; }
 
     public List<string> LoadedAssets { get; set; }
@@ -181,8 +182,8 @@ public class ServerRConfig : IRConfig
         GameVersion = GameVersion.vLate2013;
         IsBackPlane = new Dictionary<bool, string>()
         {
-            { true, "Plane1" },
-            { false, "Plane0" }
+            { true, "Plane0" },
+            { false, "Plane1" }
         };
 
         MaxLevel = 65;
@@ -194,7 +195,9 @@ public class ServerRConfig : IRConfig
 
         HealingStaff = 396;
         HealingStaffHealValue = 3.527f;
-        DefaultDamage = 10;
+        DefaultMeleeDamage = 22;
+        DefaultRangedDamage = 18;
+        DefaultDropDamage = 35;
 
         EnemyComponentName = "EnemyController";
         BreakableComponentName = "BreakableEventController";

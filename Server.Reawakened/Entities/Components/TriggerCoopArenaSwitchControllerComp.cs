@@ -7,7 +7,7 @@ using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<TriggerCoopArenaSwitchController>
+public class TriggerCoopArenaSwitchControllerComp : BaseTriggerCoopController<TriggerCoopArenaSwitchController>
 {
     public string ArenaObjectId => ComponentData.ArenaObjectID;
     public PlayerContainer PlayerContainer { get; set; }

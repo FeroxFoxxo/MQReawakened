@@ -13,6 +13,7 @@ public class TemporaryDataModel
     public bool OnGround { get; set; } = false;
     public bool BananaBoostsElixir { get; set; }
     public bool ReputationBoostsElixir { get; set; }
+    public bool IsSuperStomping { get; set; } = false;
 
     public Vector3Model Position { get; set; } = new Vector3Model();
     public Vector3Model Velocity { get; set; } = new Vector3Model();
@@ -23,5 +24,5 @@ public class TemporaryDataModel
     public Dictionary<int, List<string>> CurrentAchievements { get; set; } = [];
 
     //Make the player size and such a config option down the line
-    public ColliderModel DrawPlayerRect() => new(Position.Z > 10 ? "Plane1" : "Plane0", Position.X - 0.5f, Position.Y - 0.5f, 1, 1);
+    public ColliderModel DrawPlayerRect() => new(Position.Z > 10 ? "Plane1" : "Plane0", Position.X - 0.5f, Position.Y - 0.5f, 1, 1);   
 }

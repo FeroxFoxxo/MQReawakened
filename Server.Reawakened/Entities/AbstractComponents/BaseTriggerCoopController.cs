@@ -7,13 +7,15 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text;
 using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T : TriggerCoopController
+public class BaseTriggerCoopController<T> : Component<T>, ITriggerComp where T : TriggerCoopController
 {
     private List<string> _currentPhysicalInteractors;
     public int CurrentInteractions;
@@ -152,6 +154,20 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         if (TriggerOnNormalDamage) Activations.Add(ActivationType.NormalDamage);
         if (TriggerOnGrapplingHook) Activations.Add(ActivationType.NormalDamage);
         if (!string.IsNullOrEmpty(TriggeredByItemInInventory)) Activations.Add(ActivationType.ItemInInventory);
+
+        if (TriggerOnNormalDamage && StayTriggeredOnUnpressed)
+            Room.Colliders.Add(Id, new TriggerableTargetCollider
+                (Id, AdjustColliderPositionX(Position), Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+    }
+
+    public Vector3Model AdjustColliderPositionX(Vector3Model position)
+    {
+        if (Rectangle.X > 0)
+            position.X += Rectangle.Width;
+        else
+            position.X -= Rectangle.Width;
+
+        return position;
     }
 
     public override void DelayedComponentInitialization() => RunTrigger(null);
