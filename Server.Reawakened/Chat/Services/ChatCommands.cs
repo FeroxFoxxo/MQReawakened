@@ -25,7 +25,7 @@ namespace Server.Reawakened.Chat.Services;
 public partial class ChatCommands(
     ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
     WorldHandler worldHandler, InternalAchievement internalAchievement,
-    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves) : IService
+    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
 
@@ -57,6 +57,7 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
         AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
         AddCommand(new ChatCommand("playerCount", "[detailed]", PlayerCount));
+        AddCommand(new ChatCommand("completeQuest", "[id]", CompleteQuest));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -544,6 +545,43 @@ public partial class ChatCommands(
         if (args.Length == 2)
             foreach (var item in player.PlayerContainer.GetAllPlayers())
                 Log($"{item.CharacterName} - {item.Room.LevelInfo.InGameName} / {item.Room.LevelInfo.LevelId}", player);
+
+        return true;
+    }
+
+    private bool CompleteQuest(Player player, string[] args)
+    {
+        if (args.Length == 1)
+        {
+            Log("Please provide a quest id.", player);
+            return false;
+        }
+
+        if (args.Length == 2)
+        {
+            if (!int.TryParse(args[1], out var questId))
+            {
+                Log("Please provide a valid quest id.", player);
+                return false;
+            }
+
+            var questData = questCatalog.GetQuestData(questId);
+
+            if (questData == null)
+            {
+                Log("Please provide a valid quest id.", player);
+                return false;
+            }
+
+            if (player.Character.Data.CompletedQuests.Contains(questData.Id))
+            {
+                Log($"Quest {questData.Name} with id {questData.Id} has been completed already.", player);
+                return false;
+            }
+
+            player.Character.Data.CompletedQuests.Add(questData.Id);
+            Log($"Added quest {questData.Name} with id {questData.Id} to completed quests.", player);
+        }
 
         return true;
     }
