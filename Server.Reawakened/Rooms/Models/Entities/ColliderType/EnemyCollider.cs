@@ -15,7 +15,7 @@ public class EnemyCollider(string id, Vector3Model position, float sizeX, float 
 
                 if (damage != null)
                 {
-                    var amountToDamage = damage.GetDamageType(attack.Damage, attack.DamageType);
+                    var amountToDamage = damage.GetDamageAmount(attack.Damage, attack.DamageType);
                     enemy.Damage(amountToDamage, attack.Owner);
                 }
             }

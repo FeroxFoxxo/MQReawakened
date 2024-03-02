@@ -20,33 +20,28 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public InternalLoot LootCatalog { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
 
+    private int _numberOfHits;
     private int _health;
-    private BreakableObjStatusComp _status;
     private BaseSpawnerControllerComp _spawner;
-    private bool _isSpawner;
 
     public override void InitializeComponent()
     {
         base.InitializeComponent();
+
         _health = 1;
-        _isSpawner = false;
+        _numberOfHits = 0;
+
         Room.Colliders.Add(Id, new BreakableCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
     }
 
     public void PostInit()
     {
-        var status = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
-
-        if (status != null)
-            _status = status;
-
         var spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
 
         if (spawner != null)
         {
             _spawner = spawner;
             _health = _spawner.Health;
-            _isSpawner = true;
         }
     }
 
@@ -56,15 +51,23 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public void Damage(int damage, Elemental damageType, Player origin)
     {
-        damage = Room.GetEntityFromId<IDamageable>(Id).GetDamageType(damage, damageType);
+        var damagable = Room.GetEntityFromId<IDamageable>(Id);
+        
+        _health -= damagable.GetDamageAmount(damage, damageType);
+        _numberOfHits--;
 
-        _health -= damage;
         Logger.LogInformation("Object name: {args1} Object Id: {args2}", PrefabName, Id);
 
         var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true);
         origin.Room.SendSyncEvent(breakEvent);
 
-        if (_health <= 0)
+        var broken = _health <= 0;
+
+        if (damagable is IBreakable breakable)
+            if (breakable.NumberOfHitsToBreak > 0)
+                broken = _numberOfHits >= breakable.NumberOfHitsToBreak;
+
+        if (broken)
         {
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
             origin.SendUpdatedInventory(false);

@@ -4,5 +4,5 @@ namespace Server.Reawakened.Entities.AbstractComponents;
 
 public interface IDamageable
 {
-    public int GetDamageType(int damage, Elemental damageType);
+    public int GetDamageAmount(int damage, Elemental damageType);
 }

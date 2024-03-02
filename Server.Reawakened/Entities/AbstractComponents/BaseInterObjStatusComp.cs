@@ -25,7 +25,7 @@ public abstract class BaseInterObjStatusComp<T> : Component<T>, IDamageable wher
     public int SlowStatusEffectResistSecs => ComponentData.SlowStatusEffectResistSecs;
     public int FreezeStatusEffectResistSecs => ComponentData.FreezeStatusEffectResistSecs;
 
-    public int GetDamageType(int damage, Elemental damageType)
+    public int GetDamageAmount(int damage, Elemental damageType)
     {
         switch (damageType)
         {
