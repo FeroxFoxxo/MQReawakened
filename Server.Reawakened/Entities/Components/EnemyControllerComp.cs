@@ -48,8 +48,6 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
         if (EnemyHealth <= 0)
             Destroy(origin, Room, Id);
-
-        Room.RemoveEntity(Id);
     }
 
     public void Destroy(Player player, Room room, string id)
@@ -63,5 +61,6 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
+        Room.RemoveEntity(Id);
     }
 }
