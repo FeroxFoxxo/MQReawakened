@@ -134,7 +134,7 @@ public class ServerRConfig : IRConfig
         [
             394,  // glider
             395,  // grappling hook
-            240181867,  // snowboard
+            9701,  // snowboard
             397,  // wooden slingshot
             423,  // golden slingshot
             453,  // kernel blaster
@@ -255,14 +255,17 @@ public class ServerRConfig : IRConfig
         {
             { GameVersion.v2014, "boBegnopS_4102_TVE" },
             { GameVersion.vLate2013, "10TNMT_3102_TVE" },
-            { GameVersion.vEarly2013, "TNMT_2102_ORP" }
+            { GameVersion.vEarly2013, "TNMT_2102_ORP" },
+            { GameVersion.vLate2012, "regnaRrewoP_2102_ORP" }
         };
 
         CurrentTimedEvent = new Dictionary<GameVersion, string>
         {
             { GameVersion.v2014, "tnevEytraPboBegnopS" },
             { GameVersion.vLate2013, string.Empty },
-            { GameVersion.vEarly2013, string.Empty }
+            { GameVersion.vEarly2013, string.Empty },
+            { GameVersion.vLate2012, string.Empty },
+            { GameVersion.vEarly2012, string.Empty }
         };
     }
 }
