@@ -24,7 +24,8 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
     {
         ChestState = DailiesState.Active;
 
-        if (player.Character.CurrentCollectedDailies != null && PrefabName.Contains(ServerRConfig.DailyBoxName))
+        if (player.Character.CurrentCollectedDailies != null &&
+            PrefabName.Contains(ServerRConfig.DailyBoxName) || IsLoyaltyChest == true)
             if (!CanActivateDailies(player, Id))
                 ChestState = DailiesState.Collected;
 
@@ -49,7 +50,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
             triggerEvent.EventDataList[0] = bananaReward;
         }
 
-        if (PrefabName.Contains(ServerRConfig.DailyBoxName))
+        if (PrefabName.Contains(ServerRConfig.DailyBoxName) || IsLoyaltyChest == true)
         {
             player.SendSyncEventToPlayer(triggerEvent);
             player.SendSyncEventToPlayer(triggerReceiver);
