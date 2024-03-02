@@ -557,31 +557,31 @@ public partial class ChatCommands(
             return false;
         }
 
-        if (args.Length == 2)
+        if (args.Length != 2)
+            return false;
+
+        if (!int.TryParse(args[1], out var questId))
         {
-            if (!int.TryParse(args[1], out var questId))
-            {
-                Log("Please provide a valid quest id.", player);
-                return false;
-            }
-
-            var questData = questCatalog.GetQuestData(questId);
-
-            if (questData == null)
-            {
-                Log("Please provide a valid quest id.", player);
-                return false;
-            }
-
-            if (player.Character.Data.CompletedQuests.Contains(questData.Id))
-            {
-                Log($"Quest {questData.Name} with id {questData.Id} has been completed already.", player);
-                return false;
-            }
-
-            player.Character.Data.CompletedQuests.Add(questData.Id);
-            Log($"Added quest {questData.Name} with id {questData.Id} to completed quests.", player);
+            Log("Please provide a valid quest id.", player);
+            return false;
         }
+
+        var questData = questCatalog.GetQuestData(questId);
+
+        if (questData == null)
+        {
+            Log("Please provide a valid quest id.", player);
+            return false;
+        }
+
+        if (player.Character.Data.CompletedQuests.Contains(questData.Id))
+        {
+            Log($"Quest {questData.Name} with id {questData.Id} has been completed already.", player);
+            return false;
+        }
+
+        player.Character.Data.CompletedQuests.Add(questData.Id);
+        Log($"Added quest {questData.Name} with id {questData.Id} to completed quests.", player);
 
         return true;
     }
