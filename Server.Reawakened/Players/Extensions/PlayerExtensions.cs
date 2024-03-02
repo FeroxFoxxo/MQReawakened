@@ -61,17 +61,17 @@ public static class PlayerExtensions
     public static void AddReputation(this Player player, int reputation)
     {
         var charData = player.Character.Data;
+
+        if (player.TempData.ReputationBoostsElixir)
+            reputation = Convert.ToInt32(reputation * 0.1);
+
         reputation += charData.Reputation;
 
         while (reputation > charData.ReputationForNextLevel)
         {
-            reputation -= charData.ReputationForNextLevel;
-            player.Character.SetLevelXp(charData.GlobalLevel + 1, reputation);
+            player.Character.SetLevelXp(charData.GlobalLevel + 1);
             player.SendLevelUp();
         }
-
-        if (player.TempData.ReputationBoostsElixir)
-            reputation = Convert.ToInt32(reputation * 0.1);
 
         charData.Reputation = reputation;
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
