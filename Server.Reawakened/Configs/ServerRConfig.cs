@@ -6,6 +6,9 @@ namespace Server.Reawakened.Configs;
 
 public class ServerRConfig : IRConfig
 {
+    public Dictionary<GameVersion, string> CurrentEvent { get; set; }
+    public Dictionary<GameVersion, string> CurrentTimedEvent { get; set; }
+
     public int DefaultChatLevel { get; }
     public bool DefaultMemberStatus { get; }
 
@@ -19,8 +22,9 @@ public class ServerRConfig : IRConfig
 
     public int HealingStaff { get; }
     public double HealingStaffHealValue { get; }
-    public int DefaultDamage { get; }
-
+    public int DefaultMeleeDamage { get; }
+    public int DefaultRangedDamage { get; }
+    public int DefaultDropDamage { get; }
 
     public int MaxLevel { get; }
 
@@ -80,7 +84,7 @@ public class ServerRConfig : IRConfig
     public float MeleeHeight { get; set; }
     public float PlayerWidth { get; set; }
     public float PlayerHeight { get; set; }
-    public List<string> Planes { get; }
+    public Dictionary<bool, string> IsBackPlane { get; set; }
     public Dictionary<int, string> TrainingGear { get; set; }
 
     public List<string> LoadedAssets { get; set; }
@@ -130,7 +134,7 @@ public class ServerRConfig : IRConfig
         [
             394,  // glider
             395,  // grappling hook
-            240181867,  // snowboard
+            9701,  // snowboard
             397,  // wooden slingshot
             423,  // golden slingshot
             453,  // kernel blaster
@@ -178,11 +182,11 @@ public class ServerRConfig : IRConfig
             { TribeType.Bone,   969 }, // OOTU
         };
 
-        GameVersion = GameVersion.v2013;
-        Planes = new List<string>()
+        GameVersion = GameVersion.vLate2013;
+        IsBackPlane = new Dictionary<bool, string>()
         {
-            "Plane0",
-            "Plane1"
+            { true, "Plane0" },
+            { false, "Plane1" }
         };
 
         MaxLevel = 65;
@@ -194,7 +198,9 @@ public class ServerRConfig : IRConfig
 
         HealingStaff = 396;
         HealingStaffHealValue = 3.527f;
-        DefaultDamage = 10;
+        DefaultMeleeDamage = 22;
+        DefaultRangedDamage = 18;
+        DefaultDropDamage = 35;
 
         EnemyComponentName = "EnemyController";
         BreakableComponentName = "BreakableEventController";
@@ -244,5 +250,22 @@ public class ServerRConfig : IRConfig
         };
 
         LoadedAssets = [];
+
+        CurrentEvent = new Dictionary<GameVersion, string>
+        {
+            { GameVersion.v2014, "boBegnopS_4102_TVE" },
+            { GameVersion.vLate2013, "10TNMT_3102_TVE" },
+            { GameVersion.vEarly2013, "TNMT_2102_ORP" },
+            { GameVersion.vLate2012, "regnaRrewoP_2102_ORP" }
+        };
+
+        CurrentTimedEvent = new Dictionary<GameVersion, string>
+        {
+            { GameVersion.v2014, "tnevEytraPboBegnopS" },
+            { GameVersion.vLate2013, string.Empty },
+            { GameVersion.vEarly2013, string.Empty },
+            { GameVersion.vLate2012, string.Empty },
+            { GameVersion.vEarly2012, string.Empty }
+        };
     }
 }

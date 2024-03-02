@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Rooms.Models.Planes;
-using System.Drawing;
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities;

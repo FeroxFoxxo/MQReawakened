@@ -110,12 +110,12 @@ public static class PlayerItemExtensions
             return;
 
         if (bData.Component is BreakableEventControllerComp breakableObjEntity)
-            breakableObjEntity.Damage(5, bData.DamageType, bData.Player);
+            breakableObjEntity.Damage(bData.Damage, bData.DamageType, bData.Player);
     }
 
     public static int GetDamageAmount(this ItemDescription usedItem, Microsoft.Extensions.Logging.ILogger logger, ServerRConfig config)
     {
-        var damage = config.DefaultDamage;
+        var damage = config.DefaultDropDamage;
 
         if (usedItem.ItemEffects.Count == 0)
         {

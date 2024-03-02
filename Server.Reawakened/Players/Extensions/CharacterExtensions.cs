@@ -10,13 +10,15 @@ public static class CharacterExtensions
 
     public static int GetReputationForLevel(int level) => (Convert.ToInt32(Math.Pow(level, 2)) - (level - 1)) * 500;
 
-    public static void SetLevelXp(this CharacterModel characterData, int level, int reputation = 0)
+    public static void SetLevelXp(this CharacterModel characterData, int level)
     {
         characterData.Data.GlobalLevel = level;
 
-        characterData.Data.ReputationForCurrentLevel = GetReputationForLevel(level - 1);
-        characterData.Data.ReputationForNextLevel = GetReputationForLevel(level);
-        characterData.Data.Reputation = reputation;
+        if (characterData.Data.Reputation < characterData.Data.ReputationForCurrentLevel)
+            characterData.Data.Reputation = characterData.Data.ReputationForCurrentLevel;
+
+        characterData.Data.ReputationForCurrentLevel = GetReputationForLevel(level);
+        characterData.Data.ReputationForNextLevel = GetReputationForLevel(level + 1);
 
         characterData.Data.MaxLife = GetHealthForLevel(level);
         characterData.Data.CurrentLife = characterData.Data.MaxLife;

@@ -7,7 +7,6 @@ namespace Server.Reawakened.Entities.Entity;
 public class AIProjectileEntity : TicklyEntity
 {
     private readonly string _ownerId;
-    private readonly float SpeedY;
     private readonly Room _room;
 
     public AIProjectileEntity(Room room, string ownerId, string id, Vector3Model position, float speedX, float speedY, float lifeTime)

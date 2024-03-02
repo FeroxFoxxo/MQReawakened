@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Server.Base.Logging;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Entities.Interfaces;
@@ -16,7 +15,7 @@ using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T : TriggerCoopController
+public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp where T : TriggerCoopController
 {
     private List<string> _currentPhysicalInteractors;
     public int CurrentInteractions;
@@ -322,7 +321,10 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
             if (StayTriggeredOnReceiverActivated && triggerRecieverActivated)
                 return;
 
-            if (StayTriggeredOnUnpressed && (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time || ActivationTimeAfterFirstInteraction <= 0))
+            if (StayTriggeredOnUnpressed)
+                return;
+
+            if (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time && ActivationTimeAfterFirstInteraction > 0)
                 return;
 
             Trigger(player, false);

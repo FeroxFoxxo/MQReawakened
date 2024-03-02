@@ -121,8 +121,8 @@ public class UseSlot : ExternalProtocol
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next()).ToString();
 
-        // Magic number 15 is damage for now, until we add a server side stat handler
-        var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem, 15, usedItem.Elemental, ServerRConfig);
+        // Needs stat handler.
+        var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem, ServerRConfig.DefaultRangedDamage, usedItem.Elemental, ServerRConfig);
         Player.Room.Projectiles.Add(prjId, prj);
     }
 
@@ -134,7 +134,7 @@ public class UseSlot : ExternalProtocol
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next()).ToString();
 
-        // Magic number 10 is damage for now, until we add a server side stat handler
+        // Needs stat handler.
         var prj = new MeleeEntity(Player, prjId, position, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig);
 
         Player.Room.Projectiles.Add(prjId, prj);

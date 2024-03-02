@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Players;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
@@ -62,5 +61,5 @@ public class CameraScriptComp : Component<CameraScript>
         CamZoneDuration14 +
         CamZoneDuration15;
 
-    public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => Room.SendSyncEvent(syncEvent);
+    public override void RunSyncedEvent(SyncEvent syncEvent, Player player) { }
 }

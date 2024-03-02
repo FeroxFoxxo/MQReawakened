@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -19,33 +20,28 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public InternalLoot LootCatalog { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
 
+    private int _numberOfHits;
     private int _health;
-    private BreakableObjStatusComp _status;
     private BaseSpawnerControllerComp _spawner;
-    private bool _isSpawner;
 
     public override void InitializeComponent()
     {
         base.InitializeComponent();
+
         _health = 1;
-        _isSpawner = false;
+        _numberOfHits = 0;
+
         Room.Colliders.Add(Id, new BreakableCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
     }
 
     public void PostInit()
     {
-        var status = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
-
-        if (status != null)
-            _status = status;
-
         var spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
 
         if (spawner != null)
         {
             _spawner = spawner;
             _health = _spawner.Health;
-            _isSpawner = true;
         }
     }
 
@@ -55,53 +51,28 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public void Damage(int damage, Elemental damageType, Player origin)
     {
-        damage = GetDamageType(damage, damageType);
+        var damagable = Room.GetEntityFromId<IDamageable>(Id);
+        
+        _health -= damagable.GetDamageAmount(damage, damageType);
+        _numberOfHits--;
 
-        _health -= damage;
         Logger.LogInformation("Object name: {args1} Object Id: {args2}", PrefabName, Id);
 
         var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true);
         origin.Room.SendSyncEvent(breakEvent);
 
-        if (_health <= 0)
+        var broken = _health <= 0;
+
+        if (damagable is IBreakable breakable)
+            if (breakable.NumberOfHitsToBreak > 0)
+                broken = _numberOfHits >= breakable.NumberOfHitsToBreak;
+
+        if (broken)
         {
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
             origin.SendUpdatedInventory(false);
             Destroy(origin, Room, Id);
         }
-    }
-
-    public int GetDamageType(int damage, Elemental damageType)
-    {
-        var status = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
-
-        if (status != null)
-        {
-            if (damageType == Elemental.Air) damage -= status.ComponentData.AirDamageResistPoints;
-            if (damageType == Elemental.Fire) damage -= status.ComponentData.FireDamageResistPoints;
-            if (damageType == Elemental.Ice) damage -= status.ComponentData.IceDamageResistPoints;
-            if (damageType == Elemental.Earth) damage -= status.ComponentData.EarthDamageResistPoints;
-            if (damageType == Elemental.Poison) damage -= status.ComponentData.PoisonDamageResistPoints;
-            if (damageType is Elemental.Standard or Elemental.Invalid or Elemental.Unknown)
-                damage -= status.ComponentData.AirDamageResistPoints;
-        }
-
-        else
-        {
-            var intrenalStatus = Room.GetEntityFromId<InterObjStatusComp>(Id);
-
-            if (damageType == Elemental.Air) damage -= intrenalStatus.AirDamageResistPoints;
-            if (damageType == Elemental.Fire) damage -= intrenalStatus.FireDamageResistPoints;
-            if (damageType == Elemental.Ice) damage -= intrenalStatus.IceDamageResistPoints;
-            if (damageType == Elemental.Earth) damage -= intrenalStatus.EarthDamageResistPoints;
-            if (damageType == Elemental.Poison) damage -= intrenalStatus.PoisonDamageResistPoints;
-            if (damageType is Elemental.Standard or Elemental.Invalid or Elemental.Unknown)
-                damage -= intrenalStatus.AirDamageResistPoints;
-        }
-
-        if (damage < 0) damage = 0;
-
-        return damage;
     }
 
     public void Destroy(Player player, Room room, string id)

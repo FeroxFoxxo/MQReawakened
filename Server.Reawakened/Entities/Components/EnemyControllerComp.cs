@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -29,7 +28,8 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public bool CanAutoScaleResistance => ComponentData.CanAutoScaleResistance;
     public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
 
-    public int EnemyHealth = 50; //Make method to generate health later.
+    //Make method to generate health later.
+    public int EnemyHealth = 50;
 
     public InternalDefaultEnemies EnemyInfoXml { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
@@ -38,7 +38,8 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
     public int Level;
 
-    public override void InitializeComponent() => Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
+    public override void InitializeComponent() =>
+        Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
 
     public void Damage(int damage, Player origin)
     {
@@ -48,9 +49,12 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         origin.Room.SendSyncEvent(breakEvent);
 
         if (EnemyHealth <= 0)
-            Destroy(origin, Room, Id);
+        {
+            foreach (var destructable in Room.GetEntitiesFromId<IDestructible>(Id))
+                destructable.Destroy(origin, Room, Id);
 
-        Room.RemoveEntity(Id);
+            Room.RemoveEntity(Id);
+        }
     }
 
     public void Destroy(Player player, Room room, string id)

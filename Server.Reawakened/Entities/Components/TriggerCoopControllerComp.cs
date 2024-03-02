@@ -5,7 +5,7 @@ using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class TriggerCoopControllerComp : TriggerCoopControllerComp<TriggerCoopController>
+public class TriggerCoopControllerComp : BaseTriggerCoopController<TriggerCoopController>
 {
     public void SendTriggerEvent(Player player)
     {

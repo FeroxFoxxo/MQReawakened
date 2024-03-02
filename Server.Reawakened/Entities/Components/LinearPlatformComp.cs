@@ -2,7 +2,7 @@
 
 namespace Server.Reawakened.Entities.Components;
 
-public class LinearPlatformComp : MovingObjectControllerComp<LinearPlatform>
+public class LinearPlatformComp : BaseMovingObjectControllerComp<LinearPlatform>
 {
     public float WaitTime => ComponentData.WaitTime;
     public float DistanceX => ComponentData.DistanceX;

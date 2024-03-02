@@ -86,7 +86,7 @@ public abstract class Enemy : IDestructible
 
         if (status != null)
             Status = status;
-
+        
         //Position Info
         ParentPlane = Entity.ParentPlane;
         Position = new Vector3(Entity.Position.X, Entity.Position.Y, Entity.Position.Z);
@@ -455,39 +455,6 @@ public abstract class Enemy : IDestructible
         aiDo.EventDataList.Add(0);
 
         player.SendSyncEventToPlayer(aiDo);
-    }
-
-    public int GetDamageType(int damage, Elemental damageType)
-    {
-        var status = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
-
-        if (status != null)
-        {
-            if (damageType == Elemental.Air) damage -= status.ComponentData.AirDamageResistPoints;
-            if (damageType == Elemental.Fire) damage -= status.ComponentData.FireDamageResistPoints;
-            if (damageType == Elemental.Ice) damage -= status.ComponentData.IceDamageResistPoints;
-            if (damageType == Elemental.Earth) damage -= status.ComponentData.EarthDamageResistPoints;
-            if (damageType == Elemental.Poison) damage -= status.ComponentData.PoisonDamageResistPoints;
-            if (damageType is Elemental.Standard or Elemental.Invalid or Elemental.Unknown)
-                damage -= status.ComponentData.StandardDamageResistPoints;
-        }
-
-        else
-        {
-            var intrenalStatus = Room.GetEntityFromId<InterObjStatusComp>(Id);
-
-            if (damageType == Elemental.Air) damage -= intrenalStatus.AirDamageResistPoints;
-            if (damageType == Elemental.Fire) damage -= intrenalStatus.FireDamageResistPoints;
-            if (damageType == Elemental.Ice) damage -= intrenalStatus.IceDamageResistPoints;
-            if (damageType == Elemental.Earth) damage -= intrenalStatus.EarthDamageResistPoints;
-            if (damageType == Elemental.Poison) damage -= intrenalStatus.PoisonDamageResistPoints;
-            if (damageType is Elemental.Standard or Elemental.Invalid or Elemental.Unknown)
-                damage -= intrenalStatus.StandardDamageResistPoints;
-        }
-
-        if (damage < 0) damage = 0;
-
-        return damage;
     }
 
     public void Destroy(Player player, Room room, string id)

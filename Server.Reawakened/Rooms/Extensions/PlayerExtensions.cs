@@ -37,7 +37,7 @@ public static class PlayerExtensions
     }
 
     public static string GetPlayersPlaneString(this Player player, ServerRConfig serverRConfig)
-        => player.TempData.Position.Z > 0 ? serverRConfig.Planes[1] : (serverRConfig?.Planes[0]);
+        => player.TempData.Position.Z > 0 ? serverRConfig.IsBackPlane[false] : serverRConfig.IsBackPlane[true];
 
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelData.LevelId ?? -1;
