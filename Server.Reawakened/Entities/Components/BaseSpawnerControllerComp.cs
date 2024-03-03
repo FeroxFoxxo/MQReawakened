@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Players.Helpers;
+﻿using Server.Base.Core.Extensions;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using UnityEngine;
@@ -42,7 +43,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         //Everything here is temporary until I add that world statistics xml thingy
         Level = 1;
-        Health = 30;
+        Health = (int)ComponentData.GetField("_currentHealth");
 
         Room.SendSyncEvent(InitializeAIInit());
         Room.SendSyncEvent(InitializeAIDo());
