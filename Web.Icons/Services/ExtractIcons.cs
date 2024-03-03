@@ -179,6 +179,10 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
                 logger.LogError(e, "Texture DLL files did not initialise! This is a known bug for linux users.");
                 return;
             }
+            catch (IOException e)
+            {
+                logger.LogError(e, "Could not extract icon for path {Path}.", path);
+            }
         }
     }
 }

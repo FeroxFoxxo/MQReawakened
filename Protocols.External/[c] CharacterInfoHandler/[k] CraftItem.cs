@@ -16,6 +16,7 @@ public class CraftItem : ExternalProtocol
     public InternalRecipe RecipeCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public ILogger<CraftItem> Logger { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public override void Run(string[] message)
     {
@@ -39,18 +40,18 @@ public class CraftItem : ExternalProtocol
             return;
         }
 
-        Player.AddItem(item, amount, ServerRConfig);
+        Player.AddItem(item, amount, ItemCatalog);
 
         foreach (var ingredient in recipe.Ingredients)
         {
             var ingredientItem = ItemCatalog.GetItemFromId(ingredient.ItemId);
-            Player.RemoveItem(ingredientItem, ingredient.Count * amount);
+            Player.RemoveItem(ingredientItem, ingredient.Count * amount, ItemCatalog);
         }
 
         var itemDesc = ItemCatalog.GetItemFromId(recipe.ItemId);
 
         if (itemDesc != null)
-            Player.CheckAchievement(AchConditionType.CraftItem, itemDesc.PrefabName, Logger);
+            Player.CheckAchievement(AchConditionType.CraftItem, itemDesc.PrefabName, InternalAchievement, Logger);
 
         Player.SendUpdatedInventory(false);
 

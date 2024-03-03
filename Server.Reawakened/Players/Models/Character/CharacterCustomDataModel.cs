@@ -8,7 +8,6 @@ public class CharacterCustomDataModel
     public int CharacterId { get; set; }
     public Dictionary<CustomDataProperties, int> Properties { get; set; }
     public Dictionary<CustomDataProperties, ColorModel> Colors { get; set; }
-
     public CharacterCustomDataModel()
     {
         Properties = [];

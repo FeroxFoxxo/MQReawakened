@@ -17,7 +17,7 @@ public class ShardController(AccountHandler accHandler, UserInfoHandler userInfo
     [HttpPost]
     public IActionResult GetShardInfo([FromForm] string username, [FromForm] string authToken, [FromForm] int uuid)
     {
-        if (!accHandler.Data.TryGetValue(uuid, out var account) || !userInfoHandler.Data.TryGetValue(uuid, out var user))
+        if (!accHandler.GetInternal().TryGetValue(uuid, out var account) || !userInfoHandler.GetInternal().TryGetValue(uuid, out var user))
             return Unauthorized();
 
         if (account.Username != username || user.AuthToken != authToken)

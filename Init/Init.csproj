@@ -27,6 +27,7 @@
         <ProjectReference Include="..\Web.Icons\Web.Icons.csproj" />
         <ProjectReference Include="..\Web.Launcher\Web.Launcher.csproj" />
         <ProjectReference Include="..\Web.Razor\Web.Razor.csproj" />
+        <ProjectReference Include="..\Web.WebPlayer\Web.WebPlayer.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,0 +1,20 @@
+﻿@page
+@model Web.Razor.Pages.Account.AccessDeniedModel
+
+@section Stylesheets {
+    <link href="~/_content/Web.Razor/SignUp/style.css" rel="stylesheet" />
+}
+
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<body class="align">
+    <div class="grid align_item">
+        <div class="register">
+            <img class="site_logo" src="~/_content/Web.Razor/SignUp/logo.png" , alt="Site Logo" />
+            <h2 style="color:darkred">Unable to sign up</h2>
+            <h4>An account likely already exists with either that username or password.</h4>
+        </div>
+    </div>
+</body>

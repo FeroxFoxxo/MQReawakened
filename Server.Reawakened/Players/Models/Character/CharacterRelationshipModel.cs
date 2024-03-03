@@ -15,8 +15,8 @@ public class CharacterRelationshipModel
 
     public CharacterRelationshipModel(int characterId, Player currentPlayer)
     {
-        var otherCharacter = currentPlayer.DatabaseContainer.CharacterHandler.Get(characterId);
-        var otherPlayer = currentPlayer.DatabaseContainer.GetPlayersByCharacterId(characterId)
+        var otherCharacter = currentPlayer.CharacterHandler.Get(characterId);
+        var otherPlayer = currentPlayer.PlayerContainer.GetPlayersByCharacterId(characterId)
             .FirstOrDefault(p => p.Character.Id == characterId);
 
         CharacterName = otherCharacter.Data.CharacterName;

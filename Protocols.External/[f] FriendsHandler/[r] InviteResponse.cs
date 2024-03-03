@@ -8,7 +8,7 @@ public class InviteResponse : ExternalProtocol
 {
     public override string ProtocolName => "fr";
 
-    public DatabaseContainer DatabaseContainer { get; set; }
+    public PlayerContainer PlayerContainer { get; set; }
 
     public override void Run(string[] message)
     {
@@ -16,7 +16,7 @@ public class InviteResponse : ExternalProtocol
         var status = int.Parse(message[7]);
 
         var frienderName = message[5];
-        var friender = DatabaseContainer.GetPlayerByName(frienderName);
+        var friender = PlayerContainer.GetPlayerByName(frienderName);
 
         if (friender == null)
             return;

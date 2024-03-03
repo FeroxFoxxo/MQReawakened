@@ -40,4 +40,6 @@
             <EditAttribute key="price" value="1"/>
         </Item>
     </GameVersion>
+    <GameVersion version="v2012">
+    </GameVersion>
 </EditedItems>

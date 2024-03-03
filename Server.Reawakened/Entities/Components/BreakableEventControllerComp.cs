@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -67,8 +68,11 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             Destroy(origin, Room, Id);
         }
     }
+
     public void Destroy(Player player, Room room, string id)
     {
+        player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
+
         room.RemoveEntity(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);

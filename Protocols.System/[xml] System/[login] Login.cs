@@ -16,7 +16,7 @@ public class Login : SystemProtocol
 
     public AccountHandler AccountHandler { get; set; }
     public UserInfoHandler UserInfoHandler { get; set; }
-    public DatabaseContainer DatabaseContainer { get; set; }
+    public PlayerContainer PlayerContainer { get; set; }
     public ILogger<Login> Logger { get; set; }
 
     public override void Run(XmlDocument xmlDoc)
@@ -28,14 +28,14 @@ public class Login : SystemProtocol
 
         if (reason == AlrReason.Accepted)
         {
-            lock (DatabaseContainer.Lock)
+            lock (PlayerContainer.Lock)
             {
                 var account = NetState.Get<Account>();
 
-                foreach (var player in DatabaseContainer.GetPlayersByUserId(account.Id))
+                foreach (var player in PlayerContainer.GetPlayersByUserId(account.Id))
                     player.Remove(Logger);
 
-                if (!DatabaseContainer.AnyPlayersByUserId(account.Id))
+                if (!PlayerContainer.AnyPlayersByUserId(account.Id))
                 {
                     UserInfoHandler.InitializeUser(NetState);
                     SendXml(
