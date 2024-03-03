@@ -43,7 +43,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         //Everything here is temporary until I add that world statistics xml thingy
         Level = 1;
-        Health = (int)ComponentData.GetField("_currentHealth");
+        Health = 30;
 
         Room.SendSyncEvent(InitializeAIInit());
         Room.SendSyncEvent(InitializeAIDo());
