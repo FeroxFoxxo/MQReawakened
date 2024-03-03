@@ -61,6 +61,7 @@
         </NPC>
         <NPC objectId="788" name="Flit" descriptionId="0">
             <Dialog dialogId="1416" conversationId="3582" minimumReputation="1" />
+            <Dialog dialogId="650" conversationId="1900" minimumReputation="1" />
             <Dialog dialogId="651" conversationId="1901" minimumReputation="1" />
             <Dialog dialogId="652" conversationId="1902" minimumReputation="1" />
         </NPC>
