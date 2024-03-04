@@ -84,7 +84,6 @@ public class ServerRConfig : IRConfig
     public float MeleeHeight { get; set; }
     public float PlayerWidth { get; set; }
     public float PlayerHeight { get; set; }
-    public Dictionary<bool, string> IsBackPlane { get; set; }
     public Dictionary<int, string> TrainingGear { get; set; }
 
     public List<string> LoadedAssets { get; set; }
@@ -183,11 +182,6 @@ public class ServerRConfig : IRConfig
         };
 
         GameVersion = GameVersion.vLate2013;
-        IsBackPlane = new Dictionary<bool, string>()
-        {
-            { true, "Plane0" },
-            { false, "Plane1" }
-        };
 
         MaxLevel = 65;
         HealAmount = 100000;
