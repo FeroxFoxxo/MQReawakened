@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Rooms;
+﻿using Server.Base.Timers.Services;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -9,13 +10,13 @@ public class AIProjectileEntity : TicklyEntity
     private readonly string _ownerId;
     private readonly Room _room;
 
-    public AIProjectileEntity(Room room, string ownerId, string id, Vector3Model position, float speedX, float speedY, float lifeTime)
+    public AIProjectileEntity(Room room, string ownerId, string projectileId, Vector3Model position, float speedX, float speedY, float lifeTime, TimerThread timerThread)
     {
         // Initialize projectile location info
         _room = room;
         _ownerId = ownerId;
 
-        ProjectileID = id;
+        ProjectileID = projectileId;
         Position = position;
         PrjPlane = Position.Z > 10 ? "Plane1" : "Plane0";
         SpawnPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
@@ -27,7 +28,7 @@ public class AIProjectileEntity : TicklyEntity
         LifeTime = StartTime + lifeTime;
 
         // Send all information to room
-        Collider = new AIProjectileCollider(id, room, ProjectileID, Position, 0.5f, 0.5f, PrjPlane, LifeTime);
+        Collider = new AIProjectileCollider(projectileId, ownerId, room, ProjectileID, Position, 0.5f, 0.5f, PrjPlane, LifeTime, timerThread);
     }
 
     public override void Update()

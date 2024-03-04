@@ -34,6 +34,8 @@ public static class PlayerDamageExtensions
 
     public static void ApplyCharacterDamage(this Player player, Room room, int damage)
     {
+        if (player.TempData.Invincible) return;
+
         player.Character.Data.CurrentLife -= damage;
 
         if (player.Character.Data.CurrentLife < 0)

@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -34,6 +35,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public InternalDefaultEnemies EnemyInfoXml { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
+    public TimerThread TimerThread { get; set; }
     public ILogger<EnemyControllerComp> Logger { get; set; }
 
     public int Level;
