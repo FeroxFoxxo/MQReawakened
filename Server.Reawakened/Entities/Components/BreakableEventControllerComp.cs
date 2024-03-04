@@ -37,11 +37,16 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public void PostInit()
     {
         var spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
+        var damagable = Room.GetEntityFromId<IDamageable>(Id);
 
         if (spawner != null)
         {
             _spawner = spawner;
             _health = _spawner.Health;
+        }
+        else if (damagable != null)
+        {
+            _health = damagable.MaxHealth;
         }
     }
 
@@ -53,8 +58,12 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     {
         var damagable = Room.GetEntityFromId<IDamageable>(Id);
         
-        _health -= damagable.GetDamageAmount(damage, damageType);
-        _numberOfHits--;
+        if (damagable != null)
+            _health -= damagable.GetDamageAmount(damage, damageType);
+        else
+            _health -= damage;
+
+        _numberOfHits++;
 
         Logger.LogInformation("Object name: {args1} Object Id: {args2}", PrefabName, Id);
 
