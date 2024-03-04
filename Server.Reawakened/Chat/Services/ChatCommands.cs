@@ -19,6 +19,7 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using System.Text.RegularExpressions;
+using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -579,6 +580,11 @@ public partial class ChatCommands(
             Log($"Quest {questData.Name} with id {questData.Id} has been completed already.", player);
             return false;
         }
+
+        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == questId);
+
+        if (player.Character.Data.QuestLog.Contains(questModel))
+            player.Character.Data.QuestLog.Remove(questModel);
 
         player.Character.Data.CompletedQuests.Add(questData.Id);
         Log($"Added quest {questData.Name} with id {questData.Id} to completed quests.", player);
