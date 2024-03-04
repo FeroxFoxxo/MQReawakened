@@ -105,7 +105,8 @@
             <Item prefabName="WPN_PRJ_FistOfTerra01" />
             <Item prefabName="ABIL_PoisonBomb03" />
             <Item prefabName="ABIL_Grenade03b" />
-            <Item prefabName="Add_COM_Armor01_LS01" />
+            <Item prefabName="WPN_PRJ_XmasSlingshot01" />
+            <Item prefabName="WPN_PRJ_EarthBow01" />
         </Vendor>
         <Vendor objectId="244" name="Jitter" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="765" greetingConversationId="2069" leavingConversationId="2068">
             <Item prefabName="COL_BUFF_Bandage01" />

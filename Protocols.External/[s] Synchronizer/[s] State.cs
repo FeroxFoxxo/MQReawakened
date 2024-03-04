@@ -104,10 +104,10 @@ public class State : ExternalProtocol
 
                     newPlayer.TempData.OnGround = physicsBasicEvent.OnGround;
 
-                    newPlayer.TempData.PlayerCollider = new PlayerCollider(newPlayer);
+                    var playerCollider = new PlayerCollider(newPlayer);
 
-                    newPlayer.Room.Colliders.TryAdd(newPlayer.GameObjectId, newPlayer.TempData.PlayerCollider);
-                    newPlayer.Room.Colliders[newPlayer.GameObjectId] = newPlayer.TempData.PlayerCollider;
+                    if (newPlayer.Room.Colliders.ContainsKey(newPlayer.GameObjectId))
+                        newPlayer.Room.Colliders[newPlayer.GameObjectId] = playerCollider;
                     break;
                 case SyncEvent.EventType.Direction:
                     var directionEvent = new Direction_SyncEvent(syncEvent);
