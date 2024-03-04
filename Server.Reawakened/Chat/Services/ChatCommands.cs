@@ -583,7 +583,7 @@ public partial class ChatCommands(
 
         var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == questId);
 
-        if (player.Character.Data.QuestLog.Contains(questModel))
+        if (questModel != null)
             player.Character.Data.QuestLog.Remove(questModel);
 
         player.Character.Data.CompletedQuests.Add(questData.Id);
