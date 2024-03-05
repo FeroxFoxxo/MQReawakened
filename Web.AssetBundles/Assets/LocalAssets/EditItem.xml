@@ -53,8 +53,28 @@
         </Item>
     </GameVersion>
     <GameVersion version="vLate2012">
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="price" value="50"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vEarly2012">
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="price" value="50"/>
+        </Item>
     </GameVersion>
     <GameVersion version="v2011">
     </GameVersion>
