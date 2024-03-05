@@ -36,25 +36,29 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public QuestCatalog QuestCatalog { get; set; }
     public ILogger<EnemyControllerComp> Logger { get; set; }
 
+    public bool IsBroken { get; set; }
+
     public int Level;
 
-    public override void InitializeComponent() =>
+    public override void InitializeComponent()
+    {
         Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
+        IsBroken = false;
+    }
 
     public void Damage(int damage, Player origin)
     {
+        if (IsBroken)
+            return;
+
         EnemyHealth -= damage;
 
         var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, EnemyHealth, damage, 0, 0, origin.CharacterName, false, true);
         origin.Room.SendSyncEvent(breakEvent);
 
         if (EnemyHealth <= 0)
-        {
             foreach (var destructable in Room.GetEntitiesFromId<IDestructible>(Id))
                 destructable.Destroy(origin, Room, Id);
-
-            Room.RemoveEntity(Id);
-        }
     }
 
     public void Destroy(Player player, Room room, string id)
@@ -68,5 +72,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
+
+        IsBroken = true;
     }
 }

@@ -20,12 +20,15 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
 
     public ILogger<SpiderBossControllerComp> Logger { get; set; }
     public TimerThread TimerThread { get; set; }
+    public bool IsBroken { get; set; }
 
     public GameObjectComponents PreviousState = [];
 
+    public override void InitializeComponent() => IsBroken = false;
+
     public void RecievedTrigger(bool triggered)
     {
-        if (Room == null)
+        if (Room == null || IsBroken)
             return;
 
         if (triggered)
@@ -65,7 +68,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
 
     private void RunDrop(object _)
     {
-        if (Room == null)
+        if (Room == null || IsBroken)
             return;
 
         var drop = Room.GetEntityFromId<AIStateSpiderDropComp>(Id);
@@ -83,8 +86,10 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
 
     public void Destroy(Player player, Room room, string id)
     {
-        if (room == null)
+        if (room == null || IsBroken)
             return;
+
+        IsBroken = true;
 
         var delay = 0f;
         var doorId = 0;
@@ -126,7 +131,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
     {
         var doorId = (int)door;
 
-        if (Room == null)
+        if (Room == null || IsBroken)
             return;
 
         foreach (var trigReciev in Room.GetEntitiesFromId<TriggerReceiverComp>(doorId.ToString()))
@@ -135,7 +140,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
 
     public void GoToNextState(GameObjectComponents NewState)
     {
-        if (Room == null)
+        if (Room == null || IsBroken)
             return;
 
         var syncEvent2 = new AiStateSyncEvent()
