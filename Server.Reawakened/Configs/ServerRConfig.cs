@@ -255,7 +255,7 @@ public class ServerRConfig : IRConfig
         {
             { GameVersion.v2014, "boBegnopS_4102_TVE" },
             { GameVersion.vLate2013, "10TNMT_3102_TVE" },
-            { GameVersion.vEarly2013, "TNMT_2102_ORP" },
+            { GameVersion.vEarly2013, "regnaRrewoP_3102_ORP" },
             { GameVersion.vLate2012, "TNMT_2102_ORP" },
             { GameVersion.vEarly2012, "regnaRrewoP_2102_ORP" },
             { GameVersion.v2011, string.Empty }
