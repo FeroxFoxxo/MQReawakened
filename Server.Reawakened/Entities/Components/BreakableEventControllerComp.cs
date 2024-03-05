@@ -57,7 +57,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public void Damage(int damage, Elemental damageType, Player origin)
     {
         var damagable = Room.GetEntityFromId<IDamageable>(Id);
-        
+
         if (damagable != null)
             _health -= damagable.GetDamageAmount(damage, damageType);
         else
@@ -67,20 +67,29 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         Logger.LogInformation("Object name: {args1} Object Id: {args2}", PrefabName, Id);
 
-        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true);
-        origin.Room.SendSyncEvent(breakEvent);
-
         var broken = _health <= 0;
 
         if (damagable is IBreakable breakable)
             if (breakable.NumberOfHitsToBreak > 0)
+            {
+                if (_numberOfHits < breakable.NumberOfHitsToBreak)
+                    origin.Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true));
+                else
+                    origin.Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, 0, damage, 0, 0, origin.CharacterName, false, true));
                 broken = _numberOfHits >= breakable.NumberOfHitsToBreak;
+            }
+            else
+                origin.Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true));
 
         if (broken)
         {
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
             origin.SendUpdatedInventory(false);
-            Destroy(origin, Room, Id);
+
+            foreach (var destructable in Room.GetEntitiesFromId<IDestructible>(Id))
+                destructable.Destroy(origin, Room, Id);
+
+            Room.RemoveEntity(Id);
         }
     }
 
@@ -88,7 +97,6 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     {
         player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
 
-        room.RemoveEntity(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
     }
