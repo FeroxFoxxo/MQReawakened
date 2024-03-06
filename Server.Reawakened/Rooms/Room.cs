@@ -19,8 +19,6 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
-using System.Linq;
 using WorldGraphDefines;
 using Timer = Server.Base.Timers.Timer;
 
@@ -55,8 +53,6 @@ public class Room : Timer
 
     public ItemCatalog ItemCatalog;
     public InternalColliders ColliderCatalog;
-    public InternalAchievement InternalAchievement;
-    public QuestCatalog QuestCatalog;
 
     public CheckpointControllerComp LastCheckpoint { get; set; }
 
@@ -75,8 +71,6 @@ public class Room : Timer
         ColliderCatalog = services.GetRequiredService<InternalColliders>();
         ItemCatalog = services.GetRequiredService<ItemCatalog>();
         Logger = services.GetRequiredService<ILogger<Room>>();
-        QuestCatalog = services.GetRequiredService<QuestCatalog>();
-        InternalAchievement = services.GetRequiredService<InternalAchievement>();
 
         _level = level;
 
