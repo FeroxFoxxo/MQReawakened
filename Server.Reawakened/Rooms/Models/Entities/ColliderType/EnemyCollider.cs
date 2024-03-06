@@ -10,7 +10,7 @@ public class EnemyCollider(string id, Vector3Model position, float sizeX, float 
         {
             if (Room.Enemies.TryGetValue(Id, out var enemy))
             {
-                if (enemy.IsBroken)
+                if (Room.IsObjectKilled(Id))
                     return;
 
                 var damage = Room.GetEntityFromId<IDamageable>(Id);

@@ -79,7 +79,8 @@ public class State : ExternalProtocol
 
                     if (newPlayer.Room.ContainsEntity(collisionTarget))
                         foreach (var component in Player.Room.GetEntitiesFromId<BaseComponent>(collisionTarget))
-                            component.NotifyCollision(notifyCollisionEvent, newPlayer);
+                            if (!Player.Room.IsObjectKilled(component.Id))
+                                component.NotifyCollision(notifyCollisionEvent, newPlayer);
                     else
                         Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
                             collisionTarget, newPlayer.Room.GetUnknownComponentTypes(collisionTarget));
