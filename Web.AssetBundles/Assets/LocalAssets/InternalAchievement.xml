@@ -95,7 +95,7 @@
                 <Reward type="Bananas" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 50 Enemies" type="Defeat" value="" goal="50" visible="true" />
+                <Condition id="1" title="Defeat 50 Enemies" type="DefeatEnemy" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="13" title="Unknown Achievement 13" description="Unknown Description. Hint: the icon is named Daily_ClowinAround!" iconName="Daily_ClowinAround" points="1" sortOrder="13" repeatable="true">
@@ -1837,7 +1837,7 @@
                 <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 25 Enemies in Rachnok’s Lair" type="Defeat" value="lv_crs_dungeon00" goal="25" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Rachnok’s Lair" type="DefeatEnemy" value="lv_crs_dungeon00" goal="25" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="228" title="Unknown Achievement 228" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_SoggyCreek!" iconName="Combat_Defender_Crossroads_SoggyCreek" points="1" sortOrder="131" repeatable="false">
