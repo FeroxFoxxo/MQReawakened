@@ -21,7 +21,6 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
 
     public int MaxHealth { get; set; }
-    public bool IsBroken { get; set; }
     public int NumberOfHits;
 
     private int _health;
@@ -30,7 +29,6 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public override void InitializeComponent()
     {
-        IsBroken = false;
         NumberOfHits = 0;
 
         MaxHealth = 1;
@@ -63,9 +61,6 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public void Damage(int damage, Elemental damageType, Player origin)
     {
-        if (IsBroken)
-            return;
-
         var damagable = Room.GetEntityFromId<IDamageable>(Id);
 
         if (damagable != null)
@@ -92,8 +87,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
             origin.SendUpdatedInventory(false);
 
-            foreach (var destructable in Room.GetEntitiesFromId<IDestructible>(Id))
-                destructable.Destroy(origin, Room, Id);
+            Room.KillEntity(origin, Id);
         }
     }
 
@@ -103,7 +97,5 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
-
-        IsBroken = true;
     }
 }

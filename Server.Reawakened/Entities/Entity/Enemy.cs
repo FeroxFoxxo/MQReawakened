@@ -54,8 +54,6 @@ public abstract class Enemy : IDestructible
 
     public AISyncEventHelper SyncBuilder;
 
-    public bool IsBroken { get; set; }
-
     public Enemy(Room room, string entityId, BaseComponent baseEntity, IServiceProvider services)
     {
         //Basic Stats
@@ -65,7 +63,6 @@ public abstract class Enemy : IDestructible
         IsFromSpawner = false;
         MinBehaviorTime = 0;
         SyncBuilder = new AISyncEventHelper();
-        IsBroken = false;
 
         _logger = services.GetRequiredService<ILogger<Enemy>>();
         _internalAchievement = services.GetRequiredService<InternalAchievement>();
@@ -145,9 +142,6 @@ public abstract class Enemy : IDestructible
         if (!Init)
             Initialize();
 
-        if (IsBroken)
-            return;
-
         switch (AiBehavior)
         {
             //All commented lines are behaviors that have not been added yet
@@ -208,9 +202,6 @@ public abstract class Enemy : IDestructible
 
     public virtual void Damage(int damage, Player origin)
     {
-        if (IsBroken)
-            return;
-
         Health -= damage;
 
         var damageEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true);
@@ -225,8 +216,7 @@ public abstract class Enemy : IDestructible
             //Temp values for now
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
 
-            foreach (var destructable in Room.GetEntitiesFromId<IDestructible>(Id))
-                destructable.Destroy(origin, Room, Id);
+            Room.KillEntity(origin, Id);
         }
     }
 
@@ -470,7 +460,6 @@ public abstract class Enemy : IDestructible
 
     public void Destroy(Player player, Room room, string id)
     {
-        room.RemoveEntity(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
 
@@ -480,7 +469,5 @@ public abstract class Enemy : IDestructible
         player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, _internalAchievement, _logger);
         player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, _internalAchievement, _logger);
         player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, _internalAchievement, _logger);
-
-        IsBroken = true;
     }
 }
