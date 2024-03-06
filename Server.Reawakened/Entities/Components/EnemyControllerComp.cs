@@ -40,8 +40,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
     public int Level;
 
-    public override void InitializeComponent() =>
-        Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
+    public override void InitializeComponent() => Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
 
     public void Damage(int damage, Player origin)
     {
@@ -51,12 +50,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         origin.Room.SendSyncEvent(breakEvent);
 
         if (EnemyHealth <= 0)
-        {
-            foreach (var destructable in Room.GetEntitiesFromId<IDestructible>(Id))
-                destructable.Destroy(origin, Room, Id);
-
-            Room.RemoveEntity(Id);
-        }
+            Room.KillEntity(origin, Id);
     }
 
     public void Destroy(Player player, Room room, string id)

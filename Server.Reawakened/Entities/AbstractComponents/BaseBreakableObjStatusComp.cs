@@ -1,4 +1,6 @@
-﻿namespace Server.Reawakened.Entities.AbstractComponents;
+﻿using Server.Reawakened.Players;
+
+namespace Server.Reawakened.Entities.AbstractComponents;
 
 public abstract class BaseBreakableObjStatusComp<T> : BaseInterObjStatusComp<T>, IBreakable where T : BreakableObjStatus
 {
@@ -8,4 +10,6 @@ public abstract class BaseBreakableObjStatusComp<T> : BaseInterObjStatusComp<T>,
     public bool LocalCollision => ComponentData.LocalCollision;
 
     public int NumberOfHitsToBreak => NbOfHitToBreak;
+
+    public override object[] GetInitData(Player player) => [ CurrentHealth, MaxHealth, GenericLevel ];
 }

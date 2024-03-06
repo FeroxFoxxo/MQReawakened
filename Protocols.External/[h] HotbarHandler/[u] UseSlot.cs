@@ -215,6 +215,9 @@ public class UseSlot : ExternalProtocol
 
                 if (isColliding)
                 {
+                    if (Player.Room.KilledObjects.Contains(obj.ObjectInfo.ObjectId)) 
+                        continue;
+
                     foreach (var triggerCoopEntity in Player.Room.GetEntitiesFromId<TriggerCoopControllerComp>(obj.ObjectInfo.ObjectId))
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
 

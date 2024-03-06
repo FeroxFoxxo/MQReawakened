@@ -7,6 +7,7 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Entity.Enemies;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -31,6 +32,7 @@ public class Room : Timer
     private readonly Level _level;
 
     public HashSet<string> GameObjectIds;
+    public HashSet<string> KilledObjects;
 
     public Dictionary<string, Player> Players;
     public Dictionary<string, TicklyEntity> Projectiles;
@@ -75,6 +77,7 @@ public class Room : Timer
         Players = [];
         GameObjectIds = [];
         DuplicateEntities = [];
+        KilledObjects = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
             return;
@@ -171,10 +174,8 @@ public class Room : Timer
         var enemiesCopy = Enemies.Values.ToList();
 
         foreach (var entityComponent in entitiesCopy)
-        {
-            //if (!IsObjectKilled(entityComponent.Id))
-            entityComponent.Update();
-        }
+            if (!IsObjectKilled(entityComponent.Id))
+                entityComponent.Update();
 
         foreach (var projectile in projectilesCopy)
             projectile.Update();
@@ -400,13 +401,37 @@ public class Room : Timer
 
     // Entity Code
 
+    public bool IsObjectKilled(string id)
+    {
+        lock (_roomLock)
+            return KilledObjects.Contains(id);
+    }
+
     public bool ContainsEntity(string id) =>
         _entities.ContainsKey(id);
 
-    public void RemoveEntity(string id)
+    public void KillEntity(Player player, string id)
     {
         lock (_roomLock)
-            _entities.Remove(id);
+            if (KilledObjects.Contains(id))
+                return;
+
+        Logger.LogInformation("Killing object {id}...", id);
+
+        var roomEntities = _entities.Values.SelectMany(s => s).ToList();
+        foreach (var component in roomEntities.Where(c => c is IDestructible))
+            if (component.Id == id)
+            {
+                var kbComp = component as IDestructible;
+
+                kbComp.Destroy(player, player.Room, component.Id);
+
+                Logger.LogDebug("Killed component {component} from GameObject {prefabname} with Id {id}",
+                    component.GetType().Name, component.PrefabName, component.Id);
+            }
+
+        lock (_roomLock)
+            KilledObjects.Add(id);
     }
 
     public Dictionary<string, List<BaseComponent>> GetEntities() => _entities;

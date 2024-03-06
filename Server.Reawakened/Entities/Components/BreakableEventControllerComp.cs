@@ -20,16 +20,19 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public InternalLoot LootCatalog { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
 
-    private int _numberOfHits;
+    public int MaxHealth { get; set; }
+    public int NumberOfHits;
+
     private int _health;
     private BaseSpawnerControllerComp _spawner;
+    private IDamageable _damageable;
 
     public override void InitializeComponent()
     {
-        base.InitializeComponent();
+        NumberOfHits = 0;
 
-        _health = 1;
-        _numberOfHits = 0;
+        MaxHealth = 1;
+        _health = MaxHealth;
 
         Room.Colliders.Add(Id, new BreakableCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
     }
@@ -37,41 +40,54 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public void PostInit()
     {
         var spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
+        var damagable = Room.GetEntityFromId<IDamageable>(Id);
 
         if (spawner != null)
         {
             _spawner = spawner;
-            _health = _spawner.Health;
+            MaxHealth = _spawner.Health;
         }
-    }
 
-    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
-    {
+        if (damagable != null)
+        {
+            _damageable = damagable;
+
+            MaxHealth = damagable.MaxHealth;
+            _damageable.CurrentHealth = MaxHealth;
+        }
+
+        _health = MaxHealth;
     }
 
     public void Damage(int damage, Elemental damageType, Player origin)
     {
         var damagable = Room.GetEntityFromId<IDamageable>(Id);
-        
-        _health -= damagable.GetDamageAmount(damage, damageType);
-        _numberOfHits--;
+
+        if (damagable != null)
+            _health -= damagable.GetDamageAmount(damage, damageType);
+        else
+            _health -= damage;
+
+        NumberOfHits++;
 
         Logger.LogInformation("Object name: {args1} Object Id: {args2}", PrefabName, Id);
 
-        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true);
-        origin.Room.SendSyncEvent(breakEvent);
-
-        var broken = _health <= 0;
-
         if (damagable is IBreakable breakable)
             if (breakable.NumberOfHitsToBreak > 0)
-                broken = _numberOfHits >= breakable.NumberOfHitsToBreak;
+                if (NumberOfHits >= breakable.NumberOfHitsToBreak)
+                    _health = 0;
 
-        if (broken)
+        if (_damageable != null)
+            _damageable.CurrentHealth = _health;
+
+        origin.Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true));
+
+        if (_health <= 0)
         {
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
             origin.SendUpdatedInventory(false);
-            Destroy(origin, Room, Id);
+
+            Room.KillEntity(origin, Id);
         }
     }
 
@@ -79,7 +95,6 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     {
         player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
 
-        room.RemoveEntity(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
     }

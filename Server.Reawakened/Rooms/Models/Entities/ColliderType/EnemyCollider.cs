@@ -8,14 +8,17 @@ public class EnemyCollider(string id, Vector3Model position, float sizeX, float 
     {
         if (received is AttackCollider attack)
         {
-            Room.Enemies.TryGetValue(Id, out var enemy);
-            if (enemy != null)
+            if (Room.Enemies.TryGetValue(Id, out var enemy))
             {
+                if (Room.IsObjectKilled(Id))
+                    return;
+
                 var damage = Room.GetEntityFromId<IDamageable>(Id);
 
                 if (damage != null)
                 {
                     var amountToDamage = damage.GetDamageAmount(attack.Damage, attack.DamageType);
+
                     enemy.Damage(amountToDamage, attack.Owner);
                 }
             }

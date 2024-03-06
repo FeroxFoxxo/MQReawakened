@@ -215,7 +215,8 @@ public abstract class Enemy : IDestructible
 
             //Temp values for now
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
-            Destroy(origin, Room, Id);
+
+            Room.KillEntity(origin, Id);
         }
     }
 
@@ -460,7 +461,6 @@ public abstract class Enemy : IDestructible
 
     public void Destroy(Player player, Room room, string id)
     {
-        room.RemoveEntity(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
 

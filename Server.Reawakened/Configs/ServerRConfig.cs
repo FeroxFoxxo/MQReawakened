@@ -249,8 +249,10 @@ public class ServerRConfig : IRConfig
         {
             { GameVersion.v2014, "boBegnopS_4102_TVE" },
             { GameVersion.vLate2013, "10TNMT_3102_TVE" },
-            { GameVersion.vEarly2013, "TNMT_2102_ORP" },
-            { GameVersion.vLate2012, "regnaRrewoP_2102_ORP" }
+            { GameVersion.vEarly2013, "regnaRrewoP_3102_ORP" },
+            { GameVersion.vLate2012, "TNMT_2102_ORP" },
+            { GameVersion.vEarly2012, "regnaRrewoP_2102_ORP" },
+            { GameVersion.v2011, string.Empty }
         };
 
         CurrentTimedEvent = new Dictionary<GameVersion, string>
@@ -259,7 +261,8 @@ public class ServerRConfig : IRConfig
             { GameVersion.vLate2013, string.Empty },
             { GameVersion.vEarly2013, string.Empty },
             { GameVersion.vLate2012, string.Empty },
-            { GameVersion.vEarly2012, string.Empty }
+            { GameVersion.vEarly2012, string.Empty },
+            { GameVersion.v2011, string.Empty }
         };
     }
 }
