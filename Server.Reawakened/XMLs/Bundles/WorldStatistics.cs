@@ -44,9 +44,9 @@ public class WorldStatistics : StatisticDataXML, IBundledXml<WorldStatistics>
 
     public void FinalizeBundle()
     {
-        this.SetField<StatisticDataXML>("_statisticStructure", Statistics);
-        this.SetField<StatisticDataXML>("_globalAttribute", GlobalStats);
-        this.SetField<StatisticDataXML>("_vulnerabilityTable", VulnerabilityTable);
+        Statistics = (Dictionary<ItemEffectType, Dictionary<WorldStatisticsGroup, Dictionary<int, int>>>)this.GetField<StatisticDataXML>("_statisticStructure");
+        GlobalStats = (Dictionary<Globals, float>)this.GetField<StatisticDataXML>("_globalAttribute");
+        VulnerabilityTable = (Dictionary<ItemEffectType, Dictionary<ItemEffectType, int>>)this.GetField<StatisticDataXML>("_vulnerabilityTable");
     }
 
     public new int GetValue(ItemEffectType effect, WorldStatisticsGroup group, int level)
