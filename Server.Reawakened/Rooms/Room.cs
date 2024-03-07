@@ -419,16 +419,17 @@ public class Room : Timer
         Logger.LogInformation("Killing object {id}...", id);
 
         var roomEntities = _entities.Values.SelectMany(s => s).ToList();
-        foreach (var component in roomEntities.Where(c => c is IDestructible))
-            if (component.Id == id)
+
+        foreach (var destructible in GetEntitiesFromId<IDestructible>(id))
+        {
+            if (destructible is BaseComponent component)
             {
-                var kbComp = component as IDestructible;
+                destructible.Destroy(player, player.Room, component.Id);
 
-                kbComp.Destroy(player, player.Room, component.Id);
-
-                Logger.LogDebug("Killed component {component} from GameObject {prefabname} with Id {id}",
-                    component.GetType().Name, component.PrefabName, component.Id);
+                Logger.LogDebug("Killed destructible {destructible} from GameObject {prefabname} with Id {id}",
+                    destructible.GetType().Name, component.PrefabName, component.Id);
             }
+        }
 
         lock (_roomLock)
             KilledObjects.Add(id);
@@ -438,16 +439,16 @@ public class Room : Timer
 
     public T GetEntityFromId<T>(string id) where T : class =>
         _entities.TryGetValue(id, out var entities) ?
-            entities.FirstOrDefault(x => x is T) as T :
+            entities.FirstOrDefault(x => x is T and not null) as T :
             null;
 
     public T[] GetEntitiesFromId<T>(string id) where T : class =>
         _entities.TryGetValue(id, out var entities) ?
-            entities.Where(x => x is T).Select(x => x as T).ToArray() :
+            entities.Where(x => x is T and not null).Select(x => x as T).ToArray() :
             [];
 
     public T[] GetEntitiesFromType<T>() where T : class =>
         typeof(T) == typeof(BaseComponent)
             ? _entities.Values.SelectMany(x => x).ToArray() as T[]
-            : _entities.SelectMany(x => x.Value).Where(x => x is T).Select(x => x as T).ToArray();
+            : _entities.SelectMany(x => x.Value).Where(x => x is T and not null).Select(x => x as T).ToArray();
 }
