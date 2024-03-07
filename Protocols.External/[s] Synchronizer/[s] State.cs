@@ -8,6 +8,7 @@ using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -175,17 +176,17 @@ public class State : ExternalProtocol
 
     private void RequestRespawn(string entityId, float triggerTime)
     {
-        Player.Room.SendSyncEvent(new RequestRespawn_SyncEvent(entityId.ToString(), triggerTime));
+        Player.SendSyncEventToPlayer(new RequestRespawn_SyncEvent(entityId.ToString(), triggerTime));
 
         Player.TempData.Invincible = true;
         Player.Character.Data.CurrentLife = Player.Character.Data.MaxLife;
 
-        Player.Room.SendSyncEvent(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+        Player.SendSyncEventToPlayer(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
             Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
 
         BaseComponent respawnPosition = Player.Room.LastCheckpoint != null ? Player.Room.LastCheckpoint : Player.Room.DefaultSpawn;
 
-        Player.Room.SendSyncEvent(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+        Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                  respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
 
         TimerThread.DelayCall(DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);

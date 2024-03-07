@@ -86,6 +86,9 @@ public static class PlayerExtensions
             IncPowerJewel = player.Character.Data.BadgePoints,
         };
 
+        player.SendSyncEventToPlayer(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+            player.Character.Data.MaxLife, player.Character.Data.MaxLife, player.GameObjectId.ToString()));
+
         foreach (var currentPlayer in player.Room.Players.Values)
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
     }
