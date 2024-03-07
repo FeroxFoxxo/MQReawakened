@@ -61,6 +61,9 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public void Damage(int damage, Elemental damageType, Player origin)
     {
+        if (Room.IsObjectKilled(Id))
+            return;
+
         var damagable = Room.GetEntityFromId<IDamageable>(Id);
 
         if (damagable != null)
