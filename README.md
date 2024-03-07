@@ -68,7 +68,7 @@ MQ consists of the following components:
 
 Both the login and shard server run on the same Asp.Net application, as seen in this git repository.
 
-The original game used the player's actual web browser to launch the game. Still, since then, the NPAPI plugin interface the game relied on has been deprecated and is no longer available in most modern browsers. MQ gets around this issue by distributing an older version of Electron, a specialised web browser software package.
+The original game used the player's actual web browser to launch the game. Still, since then, the NPAPI plugin interface the game relied on has been deprecated and is no longer available in most modern browsers. MQR gets around this issue by distributing an older version of Electron, a specialised web browser software package.
 
 The browser/Electron client opens a web page with an `<embed>` tag of the appropriate MIME type, where the `src` param is the address of the game's `.unity3d` entry point. This triggers the browser to load an NPAPI plugin that handles said MIME type, in this case, the Unity Web Player.
 
