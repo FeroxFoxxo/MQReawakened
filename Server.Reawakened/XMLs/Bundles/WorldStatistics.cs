@@ -44,6 +44,8 @@ public class WorldStatistics : StatisticDataXML, IBundledXml<WorldStatistics>
 
     public void FinalizeBundle()
     {
+        GameFlow.StatisticData = this;
+
         Statistics = (Dictionary<ItemEffectType, Dictionary<WorldStatisticsGroup, Dictionary<int, int>>>)this.GetField<StatisticDataXML>("_statisticStructure");
         GlobalStats = (Dictionary<Globals, float>)this.GetField<StatisticDataXML>("_globalAttribute");
         VulnerabilityTable = (Dictionary<ItemEffectType, Dictionary<ItemEffectType, int>>)this.GetField<StatisticDataXML>("_vulnerabilityTable");
