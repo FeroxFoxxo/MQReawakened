@@ -28,7 +28,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
     public override void Update()
     {
         if (_hasStarted)
-            if (Room.Time >= _timer || !ArenaEntities.Any(Room.ContainsEntity) && Room.Time >= _minClearTime)
+            if (Room.Time >= _timer || ArenaEntities.All(Room.IsObjectKilled) && Room.Time >= _minClearTime)
                 Trigger(Room.Players.FirstOrDefault().Value, false);
     }
 
@@ -61,7 +61,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
         else
         {
             //Trigger rewarded entities on win and shut down Arena
-            if (!ArenaEntities.Any(Room.ContainsEntity) && Room.Time >= _minClearTime)
+            if (ArenaEntities.All(Room.IsObjectKilled) && Room.Time >= _minClearTime)
             {
                 foreach (var entity in TriggeredRewards)
                     foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(entity.ToString()))
