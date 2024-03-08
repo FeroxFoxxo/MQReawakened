@@ -236,11 +236,10 @@ public class ServerRConfig : IRConfig
 
         TrainingGear = new Dictionary<int, string>
         {
-            { 465, "ABIL_GrapplingHook01" }, // lv_shd_teaser01
+            { 48, "ABIL_GrapplingHook01" }, // lv_shd_highway01
             { 466, "ABIL_Glider01" }, // lv_out_teaser01
-            { 467, "ABIL_MysticCharm01" }, // lv_bon_teaser01
-            { 497, "ABIL_SnowBoard01" }, // lv_wld_teaser01
-            { 498, "ABIL_SnowBoard02" }, // lv_wld_teaser01
+            { 46, "ABIL_MysticCharm01" }, // lv_bon_highway01
+            { 498, "ABIL_SnowBoard02" }, // lv_wld_highway01
         };
 
         LoadedAssets = [];
