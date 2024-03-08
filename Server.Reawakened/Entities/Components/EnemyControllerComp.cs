@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -34,6 +35,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public InternalDefaultEnemies EnemyInfoXml { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
+    public TimerThread TimerThread { get; set; }
     public ILogger<EnemyControllerComp> Logger { get; set; }
 
     public int Level;
@@ -51,7 +53,16 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         origin.Room.SendSyncEvent(breakEvent);
 
         if (EnemyHealth <= 0)
+        {
             Room.KillEntity(origin, Id);
+
+            //Temporary way to earn XP from enemies until enemy xp stat system is implemented.
+            //(Added for gameplay improvements to enhance users motivation to defeat enemies)
+            var randomXp = new System.Random();
+
+            var tempEnemyXpReward = origin.Character.Data.ReputationForNextLevel / randomXp.Next(100, 160);
+            origin.AddReputation(tempEnemyXpReward);
+        }
     }
 
     public void Destroy(Player player, Room room, string id)

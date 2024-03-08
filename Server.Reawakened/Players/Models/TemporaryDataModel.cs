@@ -1,5 +1,6 @@
 ﻿using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Players.Models.Trade;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Players.Models;
@@ -8,6 +9,7 @@ public class TemporaryDataModel
 {
     public string GameObjectId { get; set; } = "0";
     public int Direction { get; set; } = 0;
+    public PlayerCollider PlayerCollider { get; set; }
 
     public bool Invincible { get; set; } = false;
     public bool OnGround { get; set; } = false;

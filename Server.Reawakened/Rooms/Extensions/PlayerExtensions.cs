@@ -36,8 +36,8 @@ public static class PlayerExtensions
         player.JoinRoom(room, useOriginalRoom, out reason);
     }
 
-    public static string GetPlayersPlaneString(this Player player, ServerRConfig serverRConfig)
-        => player.TempData.Position.Z > 0 ? serverRConfig.IsBackPlane[false] : serverRConfig.IsBackPlane[true];
+    public static string GetPlayersPlaneString(this Player player)
+        => player.TempData.Position.Z > 0 ? "Plane1" : "Plane0";
 
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelData.LevelId ?? -1;
@@ -89,6 +89,10 @@ public static class PlayerExtensions
         foreach (var currentPlayer in player.Room.Players.Values)
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
 
+        //Temporary way to earn NC upon level up.
+        //(Needed for gameplay improvements as NC is currently unobtainable)
+        player.AddNCash(100);
+      
         player.SendSyncEventToPlayer(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
             player.Character.Data.MaxLife, player.Character.Data.MaxLife, player.GameObjectId.ToString()));
     }

@@ -12,6 +12,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using System.Text;
@@ -104,6 +105,11 @@ public class State : ExternalProtocol
                     };
 
                     newPlayer.TempData.OnGround = physicsBasicEvent.OnGround;
+
+                    var playerCollider = new PlayerCollider(newPlayer);
+
+                    if (newPlayer.Room.Colliders.ContainsKey(newPlayer.GameObjectId))
+                        newPlayer.Room.Colliders[newPlayer.GameObjectId] = playerCollider;
                     break;
                 case SyncEvent.EventType.Direction:
                     var directionEvent = new Direction_SyncEvent(syncEvent);

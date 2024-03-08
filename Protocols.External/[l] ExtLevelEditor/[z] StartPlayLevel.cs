@@ -1,6 +1,7 @@
 ﻿using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Services;
 
 namespace Protocols.External._l__ExtLevelEditor;
@@ -19,5 +20,7 @@ public class StartPlayRoom : ExternalProtocol
 
         var tribe = Player.Room.LevelInfo.Tribe;
         Player.DiscoverTribe(tribe);
+
+        Player.Room.Colliders.Add(Player.GameObjectId, new PlayerCollider(Player));
     }
 }
