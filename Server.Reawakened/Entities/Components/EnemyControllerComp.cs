@@ -57,7 +57,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
             //(Added for gameplay improvements to enhance users motivation to defeat enemies)
             var randomXp = new System.Random();
 
-            var tempEnemyXpReward = origin.Character.Data.Reputation / randomXp.Next(100, 175);
+            var tempEnemyXpReward = origin.Character.Data.Reputation / randomXp.Next(100, 160);
             origin.AddReputation(tempEnemyXpReward);
         }
     }

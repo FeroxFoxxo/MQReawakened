@@ -88,6 +88,9 @@ public static class PlayerExtensions
 
         foreach (var currentPlayer in player.Room.Players.Values)
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
+
+        player.AddNCash(100); //Temporary way to earn NC upon level up.
+        //(Needed for gameplay improvements as NC is currently unobtainable)
     }
 
     public static void SendStartPlay(this Player player, CharacterModel character,
