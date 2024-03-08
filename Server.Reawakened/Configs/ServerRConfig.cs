@@ -85,6 +85,7 @@ public class ServerRConfig : IRConfig
     public float PlayerWidth { get; set; }
     public float PlayerHeight { get; set; }
     public Dictionary<int, string> TrainingGear { get; set; }
+    public Dictionary<int, string> TrainingGear2011 { get; set; }
 
     public List<string> LoadedAssets { get; set; }
 
@@ -238,6 +239,15 @@ public class ServerRConfig : IRConfig
         {
             { 465, "ABIL_GrapplingHook01" }, // lv_shd_teaser01
             { 466, "ABIL_Glider01" }, // lv_out_teaser01
+            { 467, "ABIL_MysticCharm01" }, // lv_bon_teaser01
+            { 497, "ABIL_SnowBoard01" }, // lv_wld_teaser01
+            { 498, "ABIL_SnowBoard02" }, // lv_wld_highway01
+        };
+
+        TrainingGear2011 = new Dictionary<int, string>
+        {
+            { 48, "ABIL_GrapplingHook01" }, // lv_shd_highway01
+            { 54, "ABIL_Glider01" }, // lv_out_highway01
             { 46, "ABIL_MysticCharm01" }, // lv_bon_highway01
             { 498, "ABIL_SnowBoard02" }, // lv_wld_highway01
         };
