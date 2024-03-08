@@ -30,7 +30,7 @@
             <Dialog dialogId="817" conversationId="2291" minimumReputation="1" />
         </NPC>
         <NPC objectId="153" name="Wijit" descriptionId="0">
-            <Dialog dialogId="841" conversationId="2351" minimumReputation="1" />
+            <Dialog dialogId="660" conversationId="1910" minimumReputation="1" />
             <Dialog dialogId="661" conversationId="1911" minimumReputation="5" />
             <Dialog dialogId="662" conversationId="1912" minimumReputation="10" />
         </NPC>
@@ -297,7 +297,7 @@
             <Dialog dialogId="667" conversationId="1917" minimumReputation="20" />
         </NPC>
         <NPC objectId="153" name="Wijit" descriptionId="0">
-            <Dialog dialogId="841" conversationId="2351" minimumReputation="1" />
+            <Dialog dialogId="660" conversationId="1910" minimumReputation="1" />
             <Dialog dialogId="661" conversationId="1911" minimumReputation="5" />
             <Dialog dialogId="662" conversationId="1912" minimumReputation="10" />
         </NPC>
