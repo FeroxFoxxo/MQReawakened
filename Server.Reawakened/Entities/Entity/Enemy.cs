@@ -142,6 +142,9 @@ public abstract class Enemy : IDestructible
         if (!Init)
             Initialize();
 
+        if (Room.IsObjectKilled(Id))
+            return;
+
         switch (AiBehavior)
         {
             //All commented lines are behaviors that have not been added yet
@@ -202,6 +205,9 @@ public abstract class Enemy : IDestructible
 
     public virtual void Damage(int damage, Player origin)
     {
+        if (Room.IsObjectKilled(Id))
+            return;
+
         Health -= damage;
 
         var damageEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true);
