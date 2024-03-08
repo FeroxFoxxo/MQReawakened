@@ -228,8 +228,8 @@ public class ServerRConfig : IRConfig
 
         MeleeXOffset = 0f;
         MeleeYOffset = 0f;
-        MeleeHeight = 1f;
-        MeleeWidth = 3f;
+        MeleeHeight = 1.35f;
+        MeleeWidth = 4.25f;
 
         PlayerHeight = 1f;
         PlayerWidth = 1f;
