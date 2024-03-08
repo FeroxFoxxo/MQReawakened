@@ -53,6 +53,8 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         {
             Room.KillEntity(origin, Id);
 
+            //Temporary way to earn XP from enemies until enemy xp stat system is implemented.
+            //(Added for gameplay improvements to enhance users motivation to defeat enemies)
             var randomXp = new System.Random();
 
             var tempEnemyXpReward = origin.Character.Data.Reputation / randomXp.Next(100, 175);
