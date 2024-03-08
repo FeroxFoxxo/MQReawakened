@@ -245,9 +245,22 @@ public class Room : Timer
                 }
             }
 
-            if (_config.TrainingGear.TryGetValue(LevelInfo.LevelId, out var trainingGear))
+            if (_config.TrainingGear.TryGetValue(LevelInfo.LevelId, out var trainingGear) && _config.GameVersion == GameVersion.v2014)
             {
                 var item = ItemCatalog.GetItemFromPrefabName(trainingGear);
+
+                if (item != null)
+                {
+                    if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+                    {
+                        currentPlayer.AddItem(item, 1, ItemCatalog);
+                        currentPlayer.SendUpdatedInventory(false);
+                    }
+                }
+            } 
+            else if (_config.TrainingGear2011.TryGetValue(LevelInfo.LevelId, out var gear) && _config.GameVersion >= GameVersion.v2011)
+            {
+                var item = ItemCatalog.GetItemFromPrefabName(gear);
 
                 if (item != null)
                 {
