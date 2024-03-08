@@ -30,18 +30,18 @@
             <Dialog dialogId="817" conversationId="2291" minimumReputation="1" />
         </NPC>
         <NPC objectId="153" name="Wijit" descriptionId="0">
-            <Dialog dialogId="660" conversationId="1910" minimumReputation="1" />
+            <Dialog dialogId="841" conversationId="2351" minimumReputation="1" />
             <Dialog dialogId="661" conversationId="1911" minimumReputation="5" />
             <Dialog dialogId="662" conversationId="1912" minimumReputation="10" />
         </NPC>
         <NPC objectId="145" name="Jeet" descriptionId="0">
-            <Dialog dialogId="653" conversationId="1903" minimumReputation="1" />
+            <Dialog dialogId="839" conversationId="2349" minimumReputation="1" />
             <Dialog dialogId="654" conversationId="1904" minimumReputation="5" />
             <Dialog dialogId="655" conversationId="1905" minimumReputation="10" />
         </NPC>
         <NPC objectId="102097" name="Argus" descriptionId="0">
             <!-- Apparently should be 5? -->
-            <Dialog dialogId="1340" conversationId="3280" minimumReputation="5" />
+            <Dialog dialogId="1340" conversationId="3280" minimumReputation="1" />
         </NPC>
         <NPC objectId="684" name="Mayor Bumbee" descriptionId="0">
             <Dialog dialogId="837" conversationId="2347" minimumReputation="1" />
@@ -49,13 +49,13 @@
             <Dialog dialogId="649" conversationId="1899" minimumReputation="10" />
         </NPC>
         <NPC objectId="193" name="Kama" descriptionId="0">
-            <Dialog dialogId="656" conversationId="1906" minimumReputation="1" />
+            <Dialog dialogId="840" conversationId="2350" minimumReputation="1" />
             <Dialog dialogId="657" conversationId="1907" minimumReputation="5" />
             <Dialog dialogId="658" conversationId="1908" minimumReputation="10" />
             <Dialog dialogId="659" conversationId="1909" minimumReputation="15" />
         </NPC>
         <NPC objectId="788" name="Flit" descriptionId="0">
-            <Dialog dialogId="838" conversationId="2348" minimumReputation="1" />
+            <Dialog dialogId="1416" conversationId="3582" minimumReputation="1" />
             <Dialog dialogId="650" conversationId="1900" minimumReputation="5" />
             <Dialog dialogId="651" conversationId="1901" minimumReputation="15" />
             <Dialog dialogId="652" conversationId="1902" minimumReputation="40" />
@@ -67,7 +67,7 @@
             <Dialog dialogId="667" conversationId="1917" minimumReputation="20" />
         </NPC>
         <NPC objectId="741" name="Hardtack" descriptionId="0">
-            <Dialog dialogId="642" conversationId="1892" minimumReputation="1" />
+            <Dialog dialogId="835" conversationId="2345" minimumReputation="1" />
             <Dialog dialogId="643" conversationId="1893" minimumReputation="5" />
             <Dialog dialogId="644" conversationId="1894" minimumReputation="10" />
             <Dialog dialogId="645" conversationId="1895" minimumReputation="15" />
@@ -118,12 +118,12 @@
             <Dialog dialogId="1310" conversationId="3036" minimumReputation="1" />
         </NPC>
         <NPC objectId="145" name="Jeet" descriptionId="0">
-            <Dialog dialogId="653" conversationId="1903" minimumReputation="1" />
+            <Dialog dialogId="839" conversationId="2349" minimumReputation="1" />
             <Dialog dialogId="654" conversationId="1904" minimumReputation="5" />
             <Dialog dialogId="655" conversationId="1905" minimumReputation="10" />
         </NPC>
         <NPC objectId="193" name="Kama" descriptionId="0">
-            <Dialog dialogId="656" conversationId="1906" minimumReputation="1" />
+            <Dialog dialogId="840" conversationId="2350" minimumReputation="1" />
             <Dialog dialogId="657" conversationId="1907" minimumReputation="5" />
             <Dialog dialogId="658" conversationId="1908" minimumReputation="10" />
             <Dialog dialogId="659" conversationId="1909" minimumReputation="15" />
@@ -297,7 +297,7 @@
             <Dialog dialogId="667" conversationId="1917" minimumReputation="20" />
         </NPC>
         <NPC objectId="153" name="Wijit" descriptionId="0">
-            <Dialog dialogId="660" conversationId="1910" minimumReputation="1" />
+            <Dialog dialogId="841" conversationId="2351" minimumReputation="1" />
             <Dialog dialogId="661" conversationId="1911" minimumReputation="5" />
             <Dialog dialogId="662" conversationId="1912" minimumReputation="10" />
         </NPC>
