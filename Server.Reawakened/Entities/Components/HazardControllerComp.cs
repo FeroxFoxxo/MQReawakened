@@ -57,8 +57,6 @@ public class HazardControllerComp : Component<HazardController>
                 effectType);
         }
 
-        player.SetTemporaryInvincibility(TimerThread, 1.5);
-
         switch (effectType)
         {
             case ItemEffectType.Unknown:
@@ -71,5 +69,7 @@ public class HazardControllerComp : Component<HazardController>
                 player.ApplyDamageByPercent(Room, .10);
                 break;
         }
+
+        player.SetTemporaryInvincibility(TimerThread, 1.3);
     }
 }

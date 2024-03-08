@@ -17,7 +17,7 @@ public static class PlayerItemExtensions
         var isLeft = direction > 0;
         var dropDirection = isLeft ? 1 : -1;
         var platform = new GameObjectModel();
-        var planeName = player.GetPlayersPlaneString(config);
+        var planeName = player.GetPlayersPlaneString();
 
         var dropItemData = new DroppedItemData()
         {

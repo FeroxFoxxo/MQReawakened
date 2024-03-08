@@ -26,7 +26,7 @@ public class ChargeAttackEntity : TicklyEntity
         TimerThread = timerThread;
 
         // Send all information to room
-        Collider = new AttackCollider(Player.GameObjectId, startPosition, 0.5f, 0.5f, PrjPlane, player, damage, type, 15f);
+        Collider = new AttackCollider(Player.GameObjectId, startPosition, 1, 1, PrjPlane, player, damage, type, 15f);
         Player.Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                         endPosition.X, endPosition.Y, speed.X, speed.Y, itemId, zoneId));
     }
