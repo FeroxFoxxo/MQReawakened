@@ -31,6 +31,9 @@ public static class PlayerHealExtensions
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities) //If healing staff, convert heal value.
             healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealAmount);
 
+        healValue *= 3; //Temporary buff to healing items until healing stats are implemented.
+                        //(This is really needed in the games current state or else healing items aren't worth buying or using)
+
         var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
 
         if (hpUntilMaxHp < healValue)
@@ -99,6 +102,9 @@ public static class PlayerHealExtensions
 
         if (player.Room == null || player.Character == null)
             return;
+
+        tickHealValue *= 3; //Temporary buff to healing items until healing stats are implemented.
+                            //(This is really needed in the games current state or else healing items aren't worth buying or using)
 
         var healEvent = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
            player.Character.Data.CurrentLife += tickHealValue, player.Character.Data.MaxLife, string.Empty);
