@@ -142,6 +142,9 @@ public abstract class Enemy : IDestructible
         if (!Init)
             Initialize();
 
+        if (Room.IsObjectKilled(Id))
+            return;
+
         switch (AiBehavior)
         {
             //All commented lines are behaviors that have not been added yet
