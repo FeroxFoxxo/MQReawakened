@@ -50,7 +50,14 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         origin.Room.SendSyncEvent(breakEvent);
 
         if (EnemyHealth <= 0)
+        {
             Room.KillEntity(origin, Id);
+
+            var randomXp = new System.Random();
+
+            var tempEnemyXpReward = origin.Character.Data.Reputation / randomXp.Next(100, 175);
+            origin.AddReputation(tempEnemyXpReward);
+        }
     }
 
     public void Destroy(Player player, Room room, string id)
