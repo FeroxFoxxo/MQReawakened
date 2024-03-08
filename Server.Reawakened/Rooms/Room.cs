@@ -257,7 +257,7 @@ public class Room : Timer
                         currentPlayer.SendUpdatedInventory(false);
                     }
                 }
-            } 
+            }
             else if (_config.TrainingGear2011.TryGetValue(LevelInfo.LevelId, out var gear) && _config.GameVersion >= GameVersion.v2011)
             {
                 var item = ItemCatalog.GetItemFromPrefabName(gear);
@@ -423,7 +423,7 @@ public class Room : Timer
     public bool ContainsEntity(string id) =>
         _entities.ContainsKey(id);
 
-    public void KillEntity(Player player, string id)
+    public void KillEntity(Player player, string id, bool isEnemy)
     {
         lock (_roomLock)
             if (KilledObjects.Contains(id))
@@ -446,6 +446,18 @@ public class Room : Timer
 
         lock (_roomLock)
             KilledObjects.Add(id);
+
+        if (isEnemy)
+        {
+            //Temporary way to earn XP from enemies until enemy xp stat system is implemented.
+            //(Added for gameplay improvements to enhance users motivation to defeat enemies)
+            var randomXp = new System.Random();
+
+            var tempEnemyXpReward = (player.Character.Data.ReputationForNextLevel - player.Character.Data.Reputation) /
+                randomXp.Next(125, 150);
+
+            player.AddReputation(tempEnemyXpReward);
+        }
     }
 
     public Dictionary<string, List<BaseComponent>> GetEntities() => _entities;

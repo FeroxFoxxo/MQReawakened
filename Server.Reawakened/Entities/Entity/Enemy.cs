@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity.Utils;
@@ -53,6 +54,7 @@ public abstract class Enemy : IDestructible
     public BehaviorModel BehaviorList;
 
     public AISyncEventHelper SyncBuilder;
+    public TimerThread TimerThread { get; set; }
 
     public Enemy(Room room, string entityId, BaseComponent baseEntity, IServiceProvider services)
     {
@@ -222,7 +224,7 @@ public abstract class Enemy : IDestructible
             //Temp values for now
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
 
-            Room.KillEntity(origin, Id);
+            Room.KillEntity(origin, Id, true);
         }
     }
 
@@ -386,19 +388,19 @@ public abstract class Enemy : IDestructible
             var pos = new Vector3Model { X = Position.x + EnemyGlobalProps.Global_ShootOffsetX, Y = Position.y + EnemyGlobalProps.Global_ShootOffsetY, Z = Position.z };
 
             var rand = new System.Random();
-            var prjId = Math.Abs(rand.Next()).ToString();
+            var projectileId = Math.Abs(rand.Next()).ToString();
 
-            while (Room.GameObjectIds.Contains(prjId))
-                prjId = Math.Abs(rand.Next()).ToString();
+            while (Room.GameObjectIds.Contains(projectileId))
+                projectileId = Math.Abs(rand.Next()).ToString();
 
             // Magic numbers here are temporary
-            Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Entity, pos.X, pos.Y, pos.Z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, int.Parse(prjId), 0));
+            Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Entity, pos.X, pos.Y, pos.Z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, int.Parse(projectileId), 0));
 
             AiData.Intern_FireProjectile = false;
 
-            var prj = new AIProjectileEntity(Room, Id, prjId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
-                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, Room.Enemies[Id].EnemyController.TimerThread);
-            Room.Projectiles.Add(prjId, prj);
+            var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
+                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, Room.GetEntityFromId<IDestructible>(Id).TimerThread);
+            Room.Projectiles.Add(projectileId, aiProjectile);
         }
     }
 

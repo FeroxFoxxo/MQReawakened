@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
@@ -18,6 +19,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 {
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
+    public TimerThread TimerThread { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
 
     public int MaxHealth { get; set; }
@@ -90,7 +92,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
             origin.SendUpdatedInventory(false);
 
-            Room.KillEntity(origin, Id);
+            Room.KillEntity(origin, Id, false);
         }
     }
 
