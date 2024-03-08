@@ -403,13 +403,15 @@ public class NPCControllerComp : Component<NPCController>
             foreach (var requiredQuest in requiredQuests)
             {
                 if (player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
+                {
                     foreach (var previousQuest in previousQuests)
                         if (player.Character.Data.CompletedQuests.Contains(previousQuest.Id))
                         {
                             canStartQuest = true;
                             break;
                         }
-                break;
+                    break;
+                }
             }
         }
 
@@ -421,7 +423,7 @@ public class NPCControllerComp : Component<NPCController>
         else
         {
             Logger.LogTrace(
-                "[{QuestName} ({QuestId})] [DOES NOT MEET PREVIOUS QUESTS] {Quests}",
+                "[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS] {Quests}",
                 questData.Name, questData.Id,
                 string.Join(", ", previousQuests.Select(x => $"{x.Name} ({x.Id})"))
             );
