@@ -88,6 +88,8 @@ public class ServerRConfig : IRConfig
     public float MeleeArialHeight { get; set; }
     public float PlayerWidth { get; set; }
     public float PlayerHeight { get; set; }
+    public int FrontPlaneZ { get; set; }
+    public int BackPlaneZ { get; set; }
     public Dictionary<int, string> TrainingGear { get; set; }
     public Dictionary<int, string> TrainingGear2011 { get; set; }
 
@@ -282,5 +284,8 @@ public class ServerRConfig : IRConfig
             { GameVersion.vEarly2012, string.Empty },
             { GameVersion.v2011, string.Empty }
         };
+
+        FrontPlaneZ = 0;
+        BackPlaneZ = 20;
     }
 }
