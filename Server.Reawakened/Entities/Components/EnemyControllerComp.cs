@@ -42,29 +42,6 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
     public override void InitializeComponent() => Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
 
-    public void Damage(int damage, Player origin)
-    {
-        if (Room.IsObjectKilled(Id)) 
-            return;
-
-        EnemyHealth -= damage;
-
-        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, EnemyHealth, damage, 0, 0, origin.CharacterName, false, true);
-        origin.Room.SendSyncEvent(breakEvent);
-
-        if (EnemyHealth <= 0)
-        {
-            Room.KillEntity(origin, Id);
-
-            //Temporary way to earn XP from enemies until enemy xp stat system is implemented.
-            //(Added for gameplay improvements to enhance users motivation to defeat enemies)
-            var randomXp = new System.Random();
-
-            var tempEnemyXpReward = origin.Character.Data.ReputationForNextLevel / randomXp.Next(100, 160);
-            origin.AddReputation(tempEnemyXpReward);
-        }
-    }
-
     public void Destroy(Player player, Room room, string id)
     {
         player.CheckObjective(ObjectiveEnum.Score, id, PrefabName, 1, QuestCatalog);
@@ -76,5 +53,15 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
+    }
+
+    public void GetRewards(Player player, string enemyId)
+    {
+        //Implement XML data with enemyId for reward stats.
+        //Below is temporary reward code for now.
+        var tempEnemyXpReward = (player.Character.Data.ReputationForNextLevel - player.Character.Data.Reputation) /
+            new System.Random().Next(130, 145);
+
+        player.AddReputation(tempEnemyXpReward);
     }
 }

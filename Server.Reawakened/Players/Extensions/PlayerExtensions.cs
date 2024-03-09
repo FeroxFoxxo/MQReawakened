@@ -223,7 +223,7 @@ public static class PlayerExtensions
         player.Character.SetLevelXp(level);
         player.SendLevelUp();
 
-        player.AddNCash(100); //Temporary way to earn NC upon level up.
+        player.AddNCash(125); //Temporary way to earn NC upon level up.
         //(Needed for gameplay improvements as NC is currently unobtainable)
 
         logger.LogTrace("{Name} leveled up to {Level}", player.CharacterName, level);

@@ -82,6 +82,10 @@ public class ServerRConfig : IRConfig
     public float MeleeYOffset { get; set; }
     public float MeleeWidth { get; set; }
     public float MeleeHeight { get; set; }
+    public float MeleeArialXOffset { get; set; }
+    public float MeleeArialYOffset { get; set; }
+    public float MeleeArialWidth { get; set; }
+    public float MeleeArialHeight { get; set; }
     public float PlayerWidth { get; set; }
     public float PlayerHeight { get; set; }
     public Dictionary<int, string> TrainingGear { get; set; }
@@ -220,17 +224,22 @@ public class ServerRConfig : IRConfig
         HealingStaffID = 396;
         MysticCharmID = 398;
 
-        ProjectileSpeed = 10;
+        ProjectileSpeed = 10f;
 
         ProjectileXOffset = 0.25f;
         ProjectileYOffset = 0.8f;
         ProjectileHeight = 0.5f;
         ProjectileWidth = 0.5f;
 
-        MeleeXOffset = 0f;
-        MeleeYOffset = 0f;
+        MeleeXOffset = 4f;
+        MeleeYOffset = 1f;
+        MeleeWidth = 4f;
         MeleeHeight = 1f;
-        MeleeWidth = 4.25f;
+
+        MeleeArialXOffset = 3f;
+        MeleeArialYOffset = 2.6f;
+        MeleeArialWidth = 6f;
+        MeleeArialHeight = 5.2f;
 
         PlayerHeight = 1f;
         PlayerWidth = 1f;

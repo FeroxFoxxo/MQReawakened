@@ -14,9 +14,7 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
             Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage,
             0, 1, true, aIProjectileCollider.OwnderId, false));
 
-            player.ApplyDamageByObject(Room, int.Parse(aIProjectileCollider.OwnderId));
-
-            player.SetTemporaryInvincibility(aIProjectileCollider.TimerThread, 1.3);
+            player.ApplyDamageByObject(Room, int.Parse(aIProjectileCollider.OwnderId), aIProjectileCollider.TimerThread);
 
             Room.Colliders.Remove(aIProjectileCollider.PrjId);
         }
