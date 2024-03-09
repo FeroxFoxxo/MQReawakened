@@ -60,7 +60,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         //Implement XML data with enemyId for reward stats.
         //Below is temporary reward code for now.
         var tempEnemyXpReward = (player.Character.Data.ReputationForNextLevel - player.Character.Data.Reputation) /
-            new System.Random().Next(125, 160);
+            new System.Random().Next(130, 145);
 
         player.AddReputation(tempEnemyXpReward);
     }
