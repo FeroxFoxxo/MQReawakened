@@ -121,9 +121,8 @@ public class UseSlot : ExternalProtocol
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next()).ToString();
 
-        // Magic number 10 is damage for now, until we add a server side stat handler
-        var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig);
-
+        // Needs stat handler.
+        var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem, ServerRConfig.DefaultRangedDamage, usedItem.Elemental, ServerRConfig);
         Player.Room.Projectiles.Add(prjId, prj);
     }
 
@@ -135,7 +134,7 @@ public class UseSlot : ExternalProtocol
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next()).ToString();
 
-        // Magic number 10 is damage for now, until we add a server side stat handler
+        // Needs stat handler.
         var prj = new MeleeEntity(Player, prjId, position, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig);
 
         Player.Room.Projectiles.Add(prjId, prj);
@@ -145,7 +144,7 @@ public class UseSlot : ExternalProtocol
 
     private void HandleOldMelee(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var planeName = position.Z < 10 ? ServerRConfig.IsBackPlane[false] : ServerRConfig.IsBackPlane[true];
+        var planeName = Player.GetPlayersPlaneString();
 
         var rand = new Random();
         var meleeId = Math.Abs(rand.Next());
@@ -216,6 +215,9 @@ public class UseSlot : ExternalProtocol
 
                 if (isColliding)
                 {
+                    if (Player.Room.KilledObjects.Contains(obj.ObjectInfo.ObjectId)) 
+                        continue;
+
                     foreach (var triggerCoopEntity in Player.Room.GetEntitiesFromId<TriggerCoopControllerComp>(obj.ObjectInfo.ObjectId))
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
 

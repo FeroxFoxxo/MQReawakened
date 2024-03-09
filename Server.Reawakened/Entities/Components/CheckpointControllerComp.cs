@@ -4,7 +4,7 @@ using Server.Reawakened.Players;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class CheckpointControllerComp : TriggerCoopControllerComp<CheckpointController>
+public class CheckpointControllerComp : BaseTriggerCoopController<CheckpointController>
 {
     public int SpawnPoint => ComponentData.SpawnpointID;
 

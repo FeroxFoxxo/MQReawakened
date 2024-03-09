@@ -1,12 +1,24 @@
-﻿using Server.Reawakened.Players;
+﻿using A2m.Server;
+using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
-public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameObjectId, player.TempData.Position, 1, 1, player.TempData.Position.Z > 10 ? "Plane1" : "Plane0", player.Room, "player")
+public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameObjectId, player.TempData.Position, 1, 1, player.GetPlayersPlaneString(), player.Room, "player")
 {
     public override void SendCollisionEvent(BaseCollider received)
     {
-        if (received is AIProjectileCollider)
+        if (received is AIProjectileCollider aIProjectileCollider &&
+            received.ColliderType != "player" && received.ColliderType != "attack")
         {
+            Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage,
+            0, 1, true, aIProjectileCollider.OwnderId, false));
+
+            player.ApplyDamageByObject(Room, int.Parse(aIProjectileCollider.OwnderId));
+
+            player.SetTemporaryInvincibility(aIProjectileCollider.TimerThread, 1.3);
+
+            Room.Colliders.Remove(aIProjectileCollider.PrjId);
         }
     }
 }

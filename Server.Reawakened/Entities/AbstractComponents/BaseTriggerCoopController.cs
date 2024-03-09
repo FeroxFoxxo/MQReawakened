@@ -7,13 +7,15 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text;
 using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T : TriggerCoopController
+public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp where T : TriggerCoopController
 {
     private List<string> _currentPhysicalInteractors;
     public int CurrentInteractions;
@@ -152,6 +154,21 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         if (TriggerOnNormalDamage) Activations.Add(ActivationType.NormalDamage);
         if (TriggerOnGrapplingHook) Activations.Add(ActivationType.NormalDamage);
         if (!string.IsNullOrEmpty(TriggeredByItemInInventory)) Activations.Add(ActivationType.ItemInInventory);
+
+        if (TriggerOnNormalDamage || TriggerOnAirDamage || TriggerOnEarthDamage
+            || TriggerOnFireDamage || TriggerOnIceDamage || TriggerOnLightningDamage)
+                Room.Colliders.Add(Id, new TriggerableTargetCollider
+                    (Id, AdjustColliderPositionX(Position), Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+    }
+
+    public Vector3Model AdjustColliderPositionX(Vector3Model position)
+    {
+        if (Rectangle.X > 0)
+            position.X += Rectangle.Width;
+        else
+            position.X -= Rectangle.Width;
+
+        return position;
     }
 
     public override void DelayedComponentInitialization() => RunTrigger(null);
@@ -305,7 +322,10 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
             if (StayTriggeredOnReceiverActivated && triggerRecieverActivated)
                 return;
 
-            if (StayTriggeredOnUnpressed && (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time || ActivationTimeAfterFirstInteraction <= 0))
+            if (StayTriggeredOnUnpressed)
+                return;
+
+            if (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time && ActivationTimeAfterFirstInteraction > 0)
                 return;
 
             Trigger(player, false);
@@ -333,7 +353,7 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
         sb.AppendLine($"Enabled: {IsEnabled}");
 
         if (DisabledAfterActivation)
-            sb.AppendLine($"Disabled After Activation : {DisabledAfterActivation}");
+            sb.AppendLine($"Disabled After Activation: {DisabledAfterActivation}");
 
         if (NbInteractionsNeeded > 0)
             sb.AppendLine($"Interactions: {Interactions}/{NbInteractionsNeeded}");
@@ -358,34 +378,34 @@ public class TriggerCoopControllerComp<T> : Component<T>, ITriggerComp where T :
             sb.AppendLine($"Triggered By Item In Inventory: {TriggeredByItemInInventory}");
 
         if (StayTriggeredOnUnpressed)
-            sb.AppendLine($"Stay Triggered On Unpressed : {StayTriggeredOnUnpressed}");
+            sb.AppendLine($"Stay Triggered On Unpressed: {StayTriggeredOnUnpressed}");
 
         if (StayTriggeredOnReceiverActivated)
-            sb.AppendLine($"Stay Triggered Receiver Activated : {StayTriggeredOnReceiverActivated}");
+            sb.AppendLine($"Stay Triggered Receiver Activated: {StayTriggeredOnReceiverActivated}");
 
         if (Flip)
-            sb.AppendLine($"Flip : {Flip}");
+            sb.AppendLine($"Flip: {Flip}");
 
         if (!string.IsNullOrEmpty(ActiveMessage))
-            sb.AppendLine($"Active Message : {ActiveMessage}");
+            sb.AppendLine($"Active Message: {ActiveMessage}");
 
         if (SendActiveMessageToObjectId > 0)
-            sb.AppendLine($"Send Active Message To Object Id : {SendActiveMessageToObjectId}");
+            sb.AppendLine($"Send Active Message To Object Id: {SendActiveMessageToObjectId}");
 
         if (!string.IsNullOrEmpty(DeactiveMessage))
-            sb.AppendLine($"Deactive Message : {DeactiveMessage}");
+            sb.AppendLine($"Deactive Message: {DeactiveMessage}");
 
         if (!string.IsNullOrEmpty(TimerSound) && TimerSound != "PF_FX_Timer")
-            sb.AppendLine($"Timer Sound : {TimerSound}");
+            sb.AppendLine($"Timer Sound: {TimerSound}");
 
         if (!string.IsNullOrEmpty(TimerEndSound) && TimerEndSound != "PF_FX_Timer_End")
-            sb.AppendLine($"Timer End Sound : {TimerEndSound}");
+            sb.AppendLine($"Timer End Sound: {TimerEndSound}");
 
         if (!string.IsNullOrEmpty(QuestCompletedRequired))
-            sb.AppendLine($"Quest Completed Required : {QuestCompletedRequired}");
+            sb.AppendLine($"Quest Completed Required: {QuestCompletedRequired}");
 
         if (!string.IsNullOrEmpty(QuestInProgressRequired))
-            sb.AppendLine($"Quest In Progress Required : {QuestInProgressRequired}");
+            sb.AppendLine($"Quest In Progress Required: {QuestInProgressRequired}");
 
         if (TriggerRepeatDelay > 0)
             sb.AppendLine($"Repeat Delay: {TriggerRepeatDelay}");

@@ -61,17 +61,17 @@ public static class PlayerExtensions
     public static void AddReputation(this Player player, int reputation)
     {
         var charData = player.Character.Data;
+
+        if (player.TempData.ReputationBoostsElixir)
+            reputation = Convert.ToInt32(reputation * 0.1);
+
         reputation += charData.Reputation;
 
         while (reputation > charData.ReputationForNextLevel)
         {
-            reputation -= charData.ReputationForNextLevel;
-            player.Character.SetLevelXp(charData.GlobalLevel + 1, reputation);
+            player.Character.SetLevelXp(charData.GlobalLevel + 1);
             player.SendLevelUp();
         }
-
-        if (player.TempData.ReputationBoostsElixir)
-            reputation = Convert.ToInt32(reputation * 0.1);
 
         charData.Reputation = reputation;
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
@@ -223,6 +223,9 @@ public static class PlayerExtensions
         player.Character.SetLevelXp(level);
         player.SendLevelUp();
 
+        player.AddNCash(100); //Temporary way to earn NC upon level up.
+        //(Needed for gameplay improvements as NC is currently unobtainable)
+
         logger.LogTrace("{Name} leveled up to {Level}", player.CharacterName, level);
     }
 
@@ -323,7 +326,7 @@ public static class PlayerExtensions
                         objective.LevelId == player.Character.LevelData.LevelId)
                         meetsRequirement = true;
 
-                if (objective.GameObjectId <= 0 && objective.ItemId > 0 && !meetsRequirement)
+                if (objective.ItemId > 0 && !meetsRequirement)
                 {
                     var item = itemCatalog.GetItemFromPrefabName(prefabName);
 

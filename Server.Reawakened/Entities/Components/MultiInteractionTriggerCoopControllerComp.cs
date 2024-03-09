@@ -2,6 +2,6 @@
 
 namespace Server.Reawakened.Entities.Components;
 
-public class MultiInteractionTriggerCoopControllerComp : TriggerCoopControllerComp<MultiInteractionTriggerCoopController>
+public class MultiInteractionTriggerCoopControllerComp : BaseTriggerCoopController<MultiInteractionTriggerCoopController>
 {
 }

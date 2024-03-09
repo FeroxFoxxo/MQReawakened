@@ -86,7 +86,7 @@ public abstract class Enemy : IDestructible
 
         if (status != null)
             Status = status;
-        
+
         //Position Info
         ParentPlane = Entity.ParentPlane;
         Position = new Vector3(Entity.Position.X, Entity.Position.Y, Entity.Position.Z);
@@ -141,6 +141,9 @@ public abstract class Enemy : IDestructible
     {
         if (!Init)
             Initialize();
+
+        if (Room.IsObjectKilled(Id))
+            return;
 
         switch (AiBehavior)
         {
@@ -202,6 +205,9 @@ public abstract class Enemy : IDestructible
 
     public virtual void Damage(int damage, Player origin)
     {
+        if (Room.IsObjectKilled(Id))
+            return;
+
         Health -= damage;
 
         var damageEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true);
@@ -215,7 +221,8 @@ public abstract class Enemy : IDestructible
 
             //Temp values for now
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
-            Destroy(origin, Room, Id);
+
+            Room.KillEntity(origin, Id);
         }
     }
 
@@ -389,7 +396,8 @@ public abstract class Enemy : IDestructible
 
             AiData.Intern_FireProjectile = false;
 
-            var prj = new AIProjectileEntity(Room, Id, prjId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3);
+            var prj = new AIProjectileEntity(Room, Id, prjId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
+                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, Room.Enemies[Id].EnemyController.TimerThread);
             Room.Projectiles.Add(prjId, prj);
         }
     }
@@ -459,7 +467,6 @@ public abstract class Enemy : IDestructible
 
     public void Destroy(Player player, Room room, string id)
     {
-        room.RemoveEntity(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
 
