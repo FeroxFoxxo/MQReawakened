@@ -9,7 +9,10 @@ namespace Server.Reawakened.Players.Extensions;
 public static class PlayerHealExtensions
 {
     public static void HealCharacter(this Player player, ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, ItemEffectType effectType)
-    {
+    { 
+        usedItem.ItemEffects[(int)ItemFilterCategory.Consumables].Value *= 8; //Temporary buff to healing items until healing stats are implemented.
+        //(This is really needed in the games current state or else healing items aren't worth buying or using)
+
         switch (effectType)
         {
             case ItemEffectType.Healing:
@@ -26,13 +29,14 @@ public static class PlayerHealExtensions
         if (player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
             return;
 
-        var healValue = usedItem.ItemEffects.Count > 1 ? usedItem.ItemEffects.LastOrDefault().Value : usedItem.ItemEffects.FirstOrDefault().Value; ; //Rejuvenation Potion's initial heal value is stored as the second element in the ItemEffects list.
+        //Rejuvenation Potion's initial heal value is stored as the second element in the ItemEffects list.
+        var healValue = usedItem.ItemEffects.Count == 1 ?
+            usedItem.ItemEffects.FirstOrDefault().Value :
+            usedItem.ItemEffects.LastOrDefault().Value;
 
-        if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities) //If healing staff, convert heal value.
+        //If healing staff, convert heal value.
+        if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities)
             healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealAmount);
-
-        healValue *= 3; //Temporary buff to healing items until healing stats are implemented.
-                        //(This is really needed in the games current state or else healing items aren't worth buying or using)
 
         var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
 
@@ -102,9 +106,6 @@ public static class PlayerHealExtensions
 
         if (player.Room == null || player.Character == null)
             return;
-
-        tickHealValue *= 3; //Temporary buff to healing items until healing stats are implemented.
-                            //(This is really needed in the games current state or else healing items aren't worth buying or using)
 
         var healEvent = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
            player.Character.Data.CurrentLife += tickHealValue, player.Character.Data.MaxLife, string.Empty);
