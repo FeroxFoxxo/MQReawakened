@@ -42,23 +42,6 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
     public override void InitializeComponent() => Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
 
-    public void Damage(int damage, Player origin)
-    {
-        if (Room.IsObjectKilled(Id)) 
-            return;
-
-        EnemyHealth -= damage;
-
-        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, EnemyHealth, damage, 0, 0, origin.CharacterName, false, true);
-        origin.Room.SendSyncEvent(breakEvent);
-
-        if (EnemyHealth <= 0)
-        {
-            Room.KillEntity(origin, Id);
-            GetRewards(origin, Id);
-        }
-    }
-
     public void Destroy(Player player, Room room, string id)
     {
         player.CheckObjective(ObjectiveEnum.Score, id, PrefabName, 1, QuestCatalog);
