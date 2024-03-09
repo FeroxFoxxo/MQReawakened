@@ -224,7 +224,8 @@ public abstract class Enemy : IDestructible
             //Temp values for now
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
 
-            Room.KillEntity(origin, Id, true);
+            Room.KillEntity(origin, Id);
+            GetRewards(origin, Id);
         }
     }
 
@@ -399,7 +400,7 @@ public abstract class Enemy : IDestructible
             AiData.Intern_FireProjectile = false;
 
             var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
-                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, Room.GetEntityFromId<IDestructible>(Id).TimerThread);
+                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, TimerThread);
             Room.Projectiles.Add(projectileId, aiProjectile);
         }
     }
@@ -478,5 +479,15 @@ public abstract class Enemy : IDestructible
         player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, _internalAchievement, _logger);
         player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, _internalAchievement, _logger);
         player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, _internalAchievement, _logger);
+    }
+
+    public void GetRewards(Player player, string enemyId)
+    {
+        //Implement XML data with enemyId for reward stats.
+        //Below is temporary reward code for now.
+        var tempEnemyXpReward = (player.Character.Data.ReputationForNextLevel - player.Character.Data.Reputation) /
+            new System.Random().Next(125, 160);
+
+        player.AddReputation(tempEnemyXpReward);
     }
 }

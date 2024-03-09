@@ -53,7 +53,10 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         origin.Room.SendSyncEvent(breakEvent);
 
         if (EnemyHealth <= 0)
-            Room.KillEntity(origin, Id, true);
+        {
+            Room.KillEntity(origin, Id);
+            GetRewards(origin, Id);
+        }
     }
 
     public void Destroy(Player player, Room room, string id)
@@ -67,5 +70,15 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
+    }
+
+    public void GetRewards(Player player, string enemyId)
+    {
+        //Implement XML data with enemyId for reward stats.
+        //Below is temporary reward code for now.
+        var tempEnemyXpReward = (player.Character.Data.ReputationForNextLevel - player.Character.Data.Reputation) /
+            new System.Random().Next(125, 160);
+
+        player.AddReputation(tempEnemyXpReward);
     }
 }

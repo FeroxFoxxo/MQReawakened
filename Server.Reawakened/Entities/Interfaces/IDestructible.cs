@@ -6,6 +6,6 @@ namespace Server.Reawakened.Entities.Interfaces;
 
 public interface IDestructible
 {
-    public TimerThread TimerThread { get; set; }
+    public void GetRewards(Player player, string id);
     public void Destroy(Player player, Room room, string id);
 }

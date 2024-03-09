@@ -92,7 +92,8 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
             origin.SendUpdatedInventory(false);
 
-            Room.KillEntity(origin, Id, false);
+            Room.KillEntity(origin, Id);
+            GetRewards(origin, Id);
         }
     }
 
@@ -102,5 +103,11 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
+    }
+
+    public void GetRewards(Player player, string enemyId)
+    {
+        //Implement XML data with enemyId for reward stats.
+        //Below is temporary reward code for now.
     }
 }
