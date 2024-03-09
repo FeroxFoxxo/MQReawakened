@@ -61,3 +61,8 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+###############################################################################
+
+*.xml text working-tree-encoding=UTF-16LE eol=CRLF
+
