@@ -248,7 +248,7 @@ public class InternalItem : IBundledXml<InternalItem>
                             continue;
                         }
 
-                        Descriptions.Add(nameId.Key, nameId.Value);
+                        Descriptions.TryAdd(nameId.Key, nameId.Value);
 
                         if (!string.IsNullOrEmpty(prefabName))
                             if (Items.TryGetValue(itemId, out var itemDesc))
