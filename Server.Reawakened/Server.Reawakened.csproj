@@ -59,6 +59,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="Dependencies\_Place Dependencies Here_">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Licences\LICENSE_THRIFT">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
