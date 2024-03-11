@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Server.Base.Core.Extensions;
 using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
@@ -17,9 +16,8 @@ public class InternalItem : IBundledXml<InternalItem>
     public string BundleName => "InternalItem";
     public BundlePriority Priority => BundlePriority.High;
 
-    public ServerRConfig ServerRConfig { get; set; }
-    public ILogger<InternalItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
+    public ILogger<InternalItem> Logger { get; set; }
 
     public Dictionary<int, ItemDescription> Items;
     public Dictionary<int, string> Descriptions;
@@ -41,6 +39,10 @@ public class InternalItem : IBundledXml<InternalItem>
     public void ReadDescription(string xml)
     {
         var miscDict = Services.GetRequiredService<MiscTextDictionary>();
+        var editItem = Services.GetRequiredService<EditItem>();
+        var config = Services.GetRequiredService<ServerRConfig>();
+
+        var editedItems = editItem.EditedItemAttributes[config.GameVersion];
 
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
@@ -236,17 +238,12 @@ public class InternalItem : IBundledXml<InternalItem>
                             }
                         }
 
-                        var editItem = Services.GetRequiredService<EditItem>();
-                        var config = Services.GetRequiredService<ServerRConfig>();
-
-                        var editedItems = editItem.EditedItemAttributes[config.GameVersion];
-
                         if (!miscDict.LocalizationDict.TryGetValue(descriptionId, out var description))
                         {
                             if (!editedItems.ContainsKey(prefabName))
                                 continue;
 
-                            var editedItem = editedItems[prefabName].First();
+                            var editedItem = editedItems[prefabName].Where(x => x.Key == "descriptionId").First();
 
                             if (miscDict.LocalizationDict.TryGetValue(int.Parse(editedItem.Value), out var editedDescription))
                             {
