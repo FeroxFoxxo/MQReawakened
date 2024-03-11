@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesEdit;
@@ -16,6 +17,7 @@ public class InternalItem : IBundledXml<InternalItem>
     public string BundleName => "InternalItem";
     public BundlePriority Priority => BundlePriority.High;
 
+    public ServerRConfig ServerRConfig { get; set; }
     public ILogger<InternalItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
@@ -235,7 +237,9 @@ public class InternalItem : IBundledXml<InternalItem>
                         }
 
                         var editItem = Services.GetRequiredService<EditItem>();
-                        var editedItems = editItem.EditedItemAttributes[Configs.GameVersion.vLate2012];
+                        var config = Services.GetRequiredService<ServerRConfig>();
+
+                        var editedItems = editItem.EditedItemAttributes[config.GameVersion];
 
                         if (!miscDict.LocalizationDict.TryGetValue(descriptionId, out var description))
                         {
