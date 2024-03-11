@@ -4,7 +4,6 @@ using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -86,9 +85,9 @@ public class State : ExternalProtocol
                         foreach (var component in Player.Room.GetEntitiesFromId<BaseComponent>(collisionTarget))
                             if (!Player.Room.IsObjectKilled(component.Id))
                                 component.NotifyCollision(notifyCollisionEvent, newPlayer);
-                    else
-                        Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
-                            collisionTarget, newPlayer.Room.GetUnknownComponentTypes(collisionTarget));
+                            else
+                                Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
+                                    collisionTarget, newPlayer.Room.GetUnknownComponentTypes(collisionTarget));
                     break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
@@ -109,10 +108,7 @@ public class State : ExternalProtocol
 
                     newPlayer.TempData.OnGround = physicsBasicEvent.OnGround;
 
-                    var playerCollider = new PlayerCollider(newPlayer);
-
-                    if (newPlayer.Room.Colliders.ContainsKey(newPlayer.GameObjectId))
-                        newPlayer.Room.Colliders[newPlayer.GameObjectId] = playerCollider;
+                    UpdatePlayerCollider(newPlayer);
                     break;
                 case SyncEvent.EventType.Direction:
                     var directionEvent = new Direction_SyncEvent(syncEvent);
@@ -122,38 +118,7 @@ public class State : ExternalProtocol
                     RequestRespawn(entityId, syncEvent.TriggerTime);
                     break;
                 case SyncEvent.EventType.PhysicStatus:
-                    foreach (var hazard in Player.Room.GetEntitiesFromType<HazardControllerComp>())
-                    {
-                        Enum.TryParse(hazard.HurtEffect, true, out ItemEffectType effectType);
-
-                        if (effectType == ItemEffectType.SlowStatusEffect)
-                        {
-                            var distanceXThreshold = 4.0f;
-                            var distanceYThreshold = 1f;
-                            var distanceX = Math.Abs(Player.TempData.Position.X - hazard.Entity.GameObject.ObjectInfo.Position.X + -4.0f);
-                            var distanceY = Math.Abs(Player.TempData.Position.Y - hazard.Entity.GameObject.ObjectInfo.Position.Y + 4);
-
-                            if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold)
-                            {
-                                var slowStatusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                                    (int)ItemEffectType.SlowStatusEffect, 1, 1, true, hazard.PrefabName, false);
-
-                                Player.Room.SendSyncEvent(slowStatusEffect);
-                            }
-                        }
-                    }
-
-                    foreach (var platform in Player.Room.GetEntitiesFromType<CollapsingPlatformComp>())
-                    {
-                        var distanceXThreshold = 1.0f;
-                        var distanceYThreshold = 1f;
-                        var distanceX = Math.Abs(Player.TempData.Position.X - platform.Entity.GameObject.ObjectInfo.Position.X);
-                        var distanceY = Math.Abs(Player.TempData.Position.Y - platform.Entity.GameObject.ObjectInfo.Position.Y + -1.0f);
-
-                        if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold && !platform.IsBroken)
-                            platform.Collapse(false);
-                    }
-
+                    var physicStatusEvent = new PhysicStatus_SyncEvent(syncEvent);
                     break;
             }
 
@@ -181,6 +146,13 @@ public class State : ExternalProtocol
         if (entityId != Player.GameObjectId)
             if (ServerConfig.LogAllSyncEvents)
                 LogEvent(syncEvent, entityId, Player.Room);
+    }
+
+    private void UpdatePlayerCollider(Player player)
+    {
+        var playerCollider = new PlayerCollider(player);
+        player.Room.Colliders[player.GameObjectId] = playerCollider;
+        playerCollider.IsColliding(false);
     }
 
     private void RequestRespawn(string entityId, float triggerTime)

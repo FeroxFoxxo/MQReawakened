@@ -10,14 +10,15 @@ public static class PlayerHealExtensions
 {
     public static void HealCharacter(this Player player, ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, ItemEffectType effectType)
     { 
-        usedItem.ItemEffects[(int)ItemFilterCategory.Consumables].Value *= 8; //Temporary buff to healing items until healing stats are implemented.
+        usedItem.ItemEffects[(int)ItemFilterCategory.Consumables].Value *= 18; //Original healing value >2011.
         //(This is really needed in the games current state or else healing items aren't worth buying or using)
+        //Worth noting; Item descriptions in-game display 2011 stats because items load from ItemCatalogDict instead of MiscTextDisc.
 
         switch (effectType)
         {
             case ItemEffectType.Healing:
                 HealOnce(player, usedItem, serverRConfig);
-                break;
+                break; 
             case ItemEffectType.Regeneration:
                 HealOverTimeType(player, usedItem, timerThread, serverRConfig);
                 break;

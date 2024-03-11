@@ -93,12 +93,20 @@ public class HazardControllerComp : Component<HazardController>
                 break;
             default:
                 if (_damage > 0)
-                    player.ApplyCharacterDamage(Room, _damage - defense);
+                    player.ApplyCharacterDamage(Room, _damage - defense, TimerThread);
                 else
-                    player.ApplyDamageByPercent(Room, .10);
+                    player.ApplyDamageByPercent(Room, .10, TimerThread);
                 break;
         }
 
         player.SetTemporaryInvincibility(TimerThread, 1);
     }
+
+    public void SlowStatusEffect(string playerId) => 
+        Room.SendSyncEvent(new StatusEffect_SyncEvent(playerId, Room.Time,
+            (int)ItemEffectType.SlowStatusEffect, 1, 1, true, Id, false));
+
+    public void NullifySlowStatusEffect(string playerId) =>
+        Room.SendSyncEvent(new StatusEffect_SyncEvent(playerId, Room.Time,
+            (int)ItemEffectType.NullifySlowStatusEffect, 1, 1, true, Id, false));
 }

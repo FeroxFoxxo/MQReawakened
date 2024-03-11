@@ -88,8 +88,9 @@ public class ServerRConfig : IRConfig
     public float MeleeArialHeight { get; set; }
     public float PlayerWidth { get; set; }
     public float PlayerHeight { get; set; }
-    public int FrontPlaneZ { get; set; }
-    public int BackPlaneZ { get; set; }
+    public string FrontPlane { get; set; }
+    public string BackPlane { get; set; }
+    public Dictionary<string, int> Planes { get; set; }
     public Dictionary<int, string> TrainingGear { get; set; }
     public Dictionary<int, string> TrainingGear2011 { get; set; }
 
@@ -234,7 +235,7 @@ public class ServerRConfig : IRConfig
         ProjectileWidth = 0.5f;
 
         MeleeXOffset = 4f;
-        MeleeYOffset = 1f;
+        MeleeYOffset = 0f;
         MeleeWidth = 4f;
         MeleeHeight = 1f;
 
@@ -285,7 +286,13 @@ public class ServerRConfig : IRConfig
             { GameVersion.v2011, string.Empty }
         };
 
-        FrontPlaneZ = 0;
-        BackPlaneZ = 20;
+        FrontPlane = "Plane1";
+        BackPlane = "Plane0";
+
+        Planes = new Dictionary<string, int>()
+        {
+            { FrontPlane, 0 },
+            { BackPlane, 20 }
+        };
     }
 }

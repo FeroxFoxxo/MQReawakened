@@ -4,26 +4,20 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.AIStates.SyncEvents;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Entity.Utils;
+using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using static A2m.Server.ExtLevelEditor;
+using System.Runtime.CompilerServices;
 
 namespace Server.Reawakened.Entities.AIStates;
 public class AIStatePatrolComp : Component<AIStatePatrol>
 {
-    public Vector2Model Patrol1 => new()
-    {
-        X = ComponentData.Patrol1.x,
-        Y = ComponentData.Patrol1.y,
-    };
 
-    public Vector2Model Patrol2 => new()
-    {
-        X = ComponentData.Patrol2.x,
-        Y = ComponentData.Patrol2.y,
-    };
     public int SinusPathNbHalfPeriod => ComponentData.SinusPathNbHalfPeriod;
 
     public float MovementSpeed => ComponentData.MovementSpeed;
@@ -43,68 +37,171 @@ public class AIStatePatrolComp : Component<AIStatePatrol>
     public bool DetectOnlyInPatrolZone => ComponentData.DetectOnlyInPatrolZone;
 
     public float PatrolZoneSizeOffset => ComponentData.PatrolZoneSizeOffset;
-    public AI_State_Patrol AIState => ComponentData.State;
+    public string IdOfAttackingEnemy;
+    public bool IsAttacking;
 
+    public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
-    public GameObjectComponents PreviousState = [];
-    public ServerRConfig ServerRConfig {  get; set; }
     public ILogger<AIStatePatrolComp> Logger { get; set; }
-
+    public GameObjectComponents PreviousState = [];
     public override void InitializeComponent()
     {
-        Logger.LogInformation($"AIData: \n1) Patrol1 x:{Patrol1.X} y:{Patrol1.Y}\n2) Patrol2 x:{Patrol2.X} y:{Patrol2.Y}\n" +
-            $"3) SinusPathNbHalfPeriod:{SinusPathNbHalfPeriod}\n4) MovementSpeed:{MovementSpeed}\n" +
-            $"5) IdleDurationAtTurnAround:{IdleDurationAtTurnAround}\n6) DetectionRange:{DetectionRange}\n" +
-            $"7) MinRange:{MinimumRange}\n8) MinTimeBeforeDetection:{MinimumTimeBeforeDetection}\n" +
-            $"9) MaxYDifferenceOnDetecion:{MaximumYDifferenceOnDetection}\n10) RayCastDetection:{RayCastDetection}\n" +
-            $"11) DetectionOnlyInPatrolZone:{DetectOnlyInPatrolZone}\n12) PatrolZoneSizeOffset:{PatrolZoneSizeOffset}\n" +
-            $"State:{AIState}");
-
         RunPlacement();
+        //TimerThread.DelayCall(SpikerTest, null, TimeSpan.FromSeconds(15), TimeSpan.Zero, 1);
     }
-    //TimerThread.DelayCall(SpikerTest, null, TimeSpan.FromSeconds(15), TimeSpan.Zero, 1);
-
-    public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => base.RunSyncedEvent(syncEvent, player);
 
     public void RunPlacement()
     {
         var nextState = new GameObjectComponents() {
-                        {"AIStateDrakePlacement", new ComponentSettings()
-                            {
-                                Position.X.ToString(),
-                                Position.Y.ToString(),
-                                Position.Z.ToString(),
-                                Position.X.ToString(),
-                                Position.Y.ToString(),
-                                Position.Z.ToString()
-                            }
-                        }
-                    };
+            {"AIStateDrakePlacement", new ComponentSettings()
+                {
+                 Position.X.ToString(),
+                 Position.Y.ToString(),
+                 Position.Z.ToString(),
+                 Position.X.ToString(),
+                 Position.Y.ToString(),
+                 Position.Z.ToString()
+                }
+            }
+        };
 
         GoToNextState(nextState);
 
         TimerThread.DelayCall(RunPatrol, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
     }
 
+    public override void Update()
+    {
+        var closestPlayer = GetClosestTarget();
+
+        if (closestPlayer == null) return;
+
+        var detectionRangeCollider = new EnemyCollider(Id, Position, 8, 4, ParentPlane, Room);
+        var isColliding = detectionRangeCollider.CheckCollision(new PlayerCollider(closestPlayer));
+
+        if (isColliding)
+        {
+            IdOfAttackingEnemy = Id;
+
+            foreach (var drake in Room.GetEntitiesFromType<DrakeEnemyControllerComp>()
+                .Where(x => x.Id == IdOfAttackingEnemy))
+                RunDragonAttackState(null);
+
+            foreach (var spiker in Room.GetEntitiesFromType<AIStatePatrolComp>()
+                .Where(x => x.Id == IdOfAttackingEnemy))
+                RunSpikerAttackState(null);
+        }
+    }
+
+    public Player GetClosestTarget()
+    {
+        var distancesFromEnemy = new Dictionary<double, Player>();
+
+        foreach (var player in Room.Players.Values)
+        {
+            var playerParentPlane = player.GetPlayersPlaneString();
+            if (ParentPlane != playerParentPlane)
+                return null;
+
+            var playerPos = player.TempData.Position;
+            var enemyPos = Position;
+
+            var closestDistance = Math.Sqrt(Math.Pow(enemyPos.X - playerPos.X, 2) +
+                                            Math.Pow(enemyPos.Y - playerPos.Y, 2));
+
+            distancesFromEnemy.Add(closestDistance, player);
+        }
+
+        var closestPlayer = distancesFromEnemy.Keys.Min();
+
+        return distancesFromEnemy[closestPlayer];
+    }
+
     public void RunPatrol(object _)
     {
-        Room.GetEntitiesFromId<DrakeEnemyControllerComp>(Id).First().IsAttacking = false;
+        IsAttacking = false;
 
-        var statePatrol = Room.GetEntitiesFromId<AIStatePatrolComp>(Id).First();
-        var backPlaneZValue = statePatrol.ParentPlane == "Plane0" ? ServerRConfig.FrontPlaneZ : ServerRConfig.BackPlaneZ;
+        var backPlaneZValue = ParentPlane == ServerRConfig.BackPlane ?
+                       ServerRConfig.Planes[ServerRConfig.FrontPlane] :
+                         ServerRConfig.Planes[ServerRConfig.BackPlane];
 
         //if (statePatrol.ParentPlane == ServerRConfig.IsBackPlane[false])
-        //    statePatrol.Position.X -= 3; Enemies on front plane need to be slightly adjusted on X axis due to random bug.
+        //    statePatrol.Position.X -= 3; //Enemies on front plane need to be slightly adjusted on X axis due to random bug.
 
         var nextState = new GameObjectComponents() {
             {"AIStatePatrol", new ComponentSettings()
-                {statePatrol.Position.X.ToString(),
-                statePatrol.Position.Y.ToString(),
-                backPlaneZValue.ToString()}
+                {Position.X.ToString(),
+                 Position.Y.ToString(),
+                 backPlaneZValue.ToString()}
             }
         };
 
         GoToNextState(nextState);
+    }
+
+    public void RunDragonAttackState(object _)
+    {
+        if (IsAttacking || Id != IdOfAttackingEnemy.ToString())
+            return;
+
+        IsAttacking = true;
+        var distancesFromEnemy = new Dictionary<Player, double>();
+
+        var closestPlayerPos = GetClosestTarget().TempData.Position;
+
+        var nextState = new GameObjectComponents()
+            {
+                {"AIStateDrakeAttack", new ComponentSettings()
+                {Position.X.ToString(), Position.Y.ToString(), closestPlayerPos.Z.ToString(),
+                 Position.X.ToString(), Position.Y.ToString(), closestPlayerPos.Z.ToString(),
+                 closestPlayerPos.X.ToString(), closestPlayerPos.Y.ToString(), closestPlayerPos.Z.ToString()}}
+            };
+
+        var stateChange = Room.GetEntitiesFromId<AIStatePatrolComp>(IdOfAttackingEnemy).First();
+
+        stateChange.GoToNextState(nextState);
+
+        //Needs method to determine the proper delay time before changing states.
+        TimerThread.DelayCall(stateChange.RunPatrol, null, TimeSpan.FromSeconds(10), TimeSpan.Zero, 1);
+    }
+
+    public void RunSpikerAttackState(object _)
+    {
+        if (IsAttacking || Id != IdOfAttackingEnemy) return;
+
+        IsAttacking = true;
+
+        var closestPlayer = GetClosestTarget();
+        var nextState = new GameObjectComponents()
+                    {
+                        {"AIStateSpikerAttack", new ComponentSettings()
+                            {
+                                closestPlayer.TempData.Position.X.ToString(),
+                            }
+                        }
+                    };
+
+        //Needs projectile implementation.
+
+        var rand = new System.Random();
+        var projectileId = Math.Abs(rand.Next()).ToString();
+
+        while (Room.GameObjectIds.Contains(projectileId))
+            projectileId = Math.Abs(rand.Next()).ToString();
+
+        // Magic numbers here are temporary
+
+        var direction = closestPlayer.TempData.Position.X < Position.X ? 5 : -5;
+
+        Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Room.GetEntityFromId<AIStatePatrolComp>(Id),
+            Position.X, Position.Y, Position.Z, direction, 0, 3, int.Parse(projectileId), 0));
+
+        var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, Position, 5, 1, 3, TimerThread);
+        Room.Projectiles.Add(projectileId, aiProjectile);
+
+        GoToNextState(nextState);
+
+        TimerThread.DelayCall(RunPatrol, null, TimeSpan.FromSeconds(2), TimeSpan.Zero, 1);
     }
 
     public void GoToNextState(GameObjectComponents NewState)
@@ -118,26 +215,5 @@ public class AIStatePatrolComp : Component<AIStatePatrol>
         PreviousState = NewState;
 
         Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, Room));
-    }
-
-    public void SpikerTest(object _)
-    {
-        var player = Room.Players.FirstOrDefault().Value;
-        var drake = Room.GetEntitiesFromId<DrakeEnemyControllerComp>(Id).First();
-
-        var nextState = new GameObjectComponents()
-                    {
-                        {"AIStateSpikerAttack", new ComponentSettings()
-                            {
-                                player.TempData.Position.X.ToString()
-                            }
-                        }
-                    };
-
-        //Needs projectile implementation.
-
-        GoToNextState(nextState);
-
-        TimerThread.DelayCall(RunPatrol, null, TimeSpan.FromSeconds(5), TimeSpan.Zero, 1);
     }
 }
