@@ -309,6 +309,25 @@
             <EditAttribute key="global_level" value="1"/>
             <EditAttribute key="item_level" value="1"/>
         </Item>
+        <Item name="Add_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="10"/>
+        </Item>
+        <Item name="COL_RECIP_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="3"/>
+            <EditAttribute key="recipe_parent_item_id" value="859"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vLate2013">
         <Item name="Add_COM_Armor01_S01">
@@ -617,6 +636,25 @@
             <EditAttribute key="global_level" value="1"/>
             <EditAttribute key="item_level" value="1"/>
         </Item>
+        <Item name="Add_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="10"/>
+        </Item>
+        <Item name="COL_RECIP_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="3"/>
+            <EditAttribute key="recipe_parent_item_id" value="859"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vEarly2013">
         <Item name="Add_COM_Armor01_S01">
@@ -919,6 +957,25 @@
             <EditAttribute key="currency" value="Banana"/>
             <EditAttribute key="global_level" value="1"/>
             <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="10"/>
+        </Item>
+        <Item name="COL_RECIP_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="3"/>
+            <EditAttribute key="recipe_parent_item_id" value="859"/>
         </Item>
     </GameVersion>
     <GameVersion version="vLate2012">
