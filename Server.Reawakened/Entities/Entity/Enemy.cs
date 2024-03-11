@@ -227,7 +227,6 @@ public abstract class Enemy : IDestructible
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "", 10, true, origin == null ? "0" : origin.GameObjectId, false));
             origin.AddReputation(EnemyController.OnKillExp);
             Room.KillEntity(origin, Id);
-            GetRewards(origin, Id);
         }
     }
 
@@ -481,15 +480,5 @@ public abstract class Enemy : IDestructible
         player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, _internalAchievement, _logger);
         player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, _internalAchievement, _logger);
         player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, _internalAchievement, _logger);
-    }
-
-    public void GetRewards(Player player, string enemyId)
-    {
-        //Implement XML data with enemyId for reward stats.
-        //Below is temporary reward code for now.
-        var tempEnemyXpReward = (player.Character.Data.ReputationForNextLevel - player.Character.Data.Reputation) /
-            new System.Random().Next(125, 160);
-
-        player.AddReputation(tempEnemyXpReward);
     }
 }

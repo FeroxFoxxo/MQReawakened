@@ -148,10 +148,4 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
         
         Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, Room));
     }
-
-    public void GetRewards(Player player, string enemyId)
-    {
-        //Implement XML data with enemyId for reward stats.
-        //Below is temporary reward code for now.
-    }
 }

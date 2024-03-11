@@ -82,14 +82,4 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
     }
-
-    public void GetRewards(Player player, string enemyId)
-    {
-        //Implement XML data with enemyId for reward stats.
-        //Below is temporary reward code for now.
-        var tempEnemyXpReward = (player.Character.Data.ReputationForNextLevel - player.Character.Data.Reputation) /
-            new System.Random().Next(130, 145);
-
-        player.AddReputation(tempEnemyXpReward);
-    }
 }
