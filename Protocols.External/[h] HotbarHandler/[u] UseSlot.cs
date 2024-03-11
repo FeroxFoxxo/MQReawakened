@@ -2,16 +2,12 @@ using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
-using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -58,7 +54,7 @@ public class UseSlot : ExternalProtocol
                 HandleConsumable(usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
-                HandleMeleeWeapon(usedItem, position, direction);
+                HandleMeleeWeapon(usedItem, Player.TempData.Position, direction);
                 break;
             case ItemActionType.Pet:
                 HandlePet(usedItem);
@@ -143,94 +139,6 @@ public class UseSlot : ExternalProtocol
             usedItem.Elemental, ServerRConfig);
 
         Player.Room.Projectiles.Add(prjId, prj);
-
-        HandleOldMelee(usedItem, position, direction);
-    }
-
-    private void HandleOldMelee(ItemDescription usedItem, Vector3Model position, int direction)
-    {
-        var planeName = Player.GetPlayersPlaneString();
-
-        var rand = new Random();
-        var meleeId = Math.Abs(rand.Next());
-
-        var hitEvent = new Melee_SyncEvent(
-            Player.GameObjectId.ToString(),
-            Player.Room.Time,
-            position.X,
-            position.Y,
-            position.Z,
-            direction,
-            1,
-            1,
-            meleeId,
-            usedItem.PrefabName
-        );
-
-        Player.Room.SendSyncEvent(hitEvent);
-        var hitboxWidth = 3f;
-        var hitboxHeight = 4f;
-
-        var isLeft = direction > 0;
-
-        var meleeHitbox = new DefaultCollider(
-            meleeId.ToString(),
-            new Vector3Model()
-            {
-                X = isLeft ? Player.TempData.Position.X : Player.TempData.Position.X - hitboxWidth,
-                Y = Player.TempData.Position.Y,
-                Z = Player.TempData.Position.Z
-            },
-            hitboxWidth,
-            hitboxHeight,
-            planeName,
-            Player.Room
-        );
-
-        var weaponDamage = usedItem.GetDamageAmount(Logger, ServerRConfig);
-
-        foreach (var objects in Player.Room.Planes[planeName].GameObjects.Values)
-        {
-            foreach (var obj in objects)
-            {
-                var objectId = obj.ObjectInfo.ObjectId;
-                var prefabName = obj.ObjectInfo.PrefabName;
-
-                var objCollider = new DefaultCollider(
-                    objectId,
-                    obj.ObjectInfo.Position,
-                    obj.ObjectInfo.Rectangle.Width,
-                    obj.ObjectInfo.Rectangle.Height,
-                    planeName,
-                    Player.Room
-                );
-
-                if (isLeft)
-                {
-                    if (obj.ObjectInfo.Position.X < position.X)
-                        continue;
-                }
-                else
-                {
-                    if (obj.ObjectInfo.Position.X > position.X)
-                        continue;
-                }
-
-                var isColliding = meleeHitbox.CheckCollision(objCollider);
-
-                if (isColliding)
-                {
-                    if (Player.Room.KilledObjects.Contains(obj.ObjectInfo.ObjectId)) 
-                        continue;
-
-                    foreach (var triggerCoopEntity in Player.Room.GetEntitiesFromId<TriggerCoopControllerComp>(obj.ObjectInfo.ObjectId))
-                        triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
-
-                    foreach (var enemyEntity in Player.Room.GetEntitiesFromId<EnemyControllerComp>(obj.ObjectInfo.ObjectId))
-                        enemyEntity.Damage(weaponDamage, Player);
-                }
-            }
-        }
     }
 
     private void RemoveFromHotBar(CharacterModel character, ItemDescription item, int hotbarSlotId)

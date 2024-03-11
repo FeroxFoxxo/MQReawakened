@@ -28,6 +28,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public bool CanAutoScale => ComponentData.CanAutoScale;
     public bool CanAutoScaleResistance => ComponentData.CanAutoScaleResistance;
     public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
+
     public InternalDefaultEnemies EnemyInfoXml { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
     public QuestCatalog QuestCatalog { get; set; }

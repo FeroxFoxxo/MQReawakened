@@ -2,6 +2,7 @@
 using Server.Reawakened.Rooms.Extensions;
 using Server.Base.Timers.Services;
 using Server.Base.Timers.Extensions;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using A2m.Server;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -33,7 +34,7 @@ public static class PlayerDamageExtensions
         invinsibleData.Player.TempData.Invincible = invinsibleData.IsInvincible;
     }
 
-    public static void ApplyCharacterDamage(this Player player, Room room, int damage)
+    public static void ApplyCharacterDamage(this Player player, Room room, int damage, TimerThread timerThread)
     {
         if (player.TempData.Invincible) return;
 
@@ -47,17 +48,19 @@ public static class PlayerDamageExtensions
 
         var health = new Health_SyncEvent(player.GameObjectId.ToString(), room.Time, player.Character.Data.CurrentLife, player.Character.Data.MaxLife, "Hurt");
         room.SendSyncEvent(health);
+
+        player.SetTemporaryInvincibility(timerThread, 1.3);
     }
-    public static void ApplyDamageByPercent(this Player player, Room room, double percentage)
+    public static void ApplyDamageByPercent(this Player player, Room room, double percentage, TimerThread timerThread)
     {
         var health = (double)player.Character.Data.MaxLife;
 
         var damage = Convert.ToInt32(Math.Ceiling(health * percentage));
 
-        ApplyCharacterDamage(player, room, damage);
+        ApplyCharacterDamage(player, room, damage, timerThread);
     }
 
-    public static void ApplyDamageByObject(this Player player, Room room, int objectId) =>
+    public static void ApplyDamageByObject(this Player player, Room room, int objectId, TimerThread timerThread) =>
         //temporary code until enemy/hazard system is implemented
-        ApplyDamageByPercent(player, room, .10);
+        ApplyDamageByPercent(player, room, .10, timerThread);
 }
