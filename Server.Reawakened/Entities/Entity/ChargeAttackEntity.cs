@@ -10,6 +10,10 @@ namespace Server.Reawakened.Entities.Entity;
 public class ChargeAttackEntity : TicklyEntity
 {
     public TimerThread TimerThread;
+
+    public int ItemId;
+    public int ZoneId;
+
     public ChargeAttackEntity(Player player, Vector3Model startPosition, Vector3Model endPosition, Vector2Model speed, float lifeTime, int itemId, int zoneId, int damage, Elemental type, TimerThread timerThread)
     {
         // Initialize charge attack location info
@@ -25,6 +29,9 @@ public class ChargeAttackEntity : TicklyEntity
         LifeTime = StartTime + lifeTime;
         TimerThread = timerThread;
 
+        ZoneId = zoneId;
+        ItemId = itemId;
+
         // Send all information to room
         Collider = new AttackCollider(Player.GameObjectId, startPosition, 1, 1, PrjPlane, player, damage, type, 15f);
         Player.Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
@@ -38,7 +45,8 @@ public class ChargeAttackEntity : TicklyEntity
         Player.SetTemporaryInvincibility(TimerThread, 1.5);
 
         Player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-           Player.TempData.Position.X, Player.TempData.Position.Y, -1, -1, "1"));
+           Player.TempData.Position.X, Player.TempData.Position.Y, ItemId, ZoneId, hitGoID));
+
         Player.Room.Projectiles.Remove(Player.GameObjectId);
     }
 }
