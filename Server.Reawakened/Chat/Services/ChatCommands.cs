@@ -5,6 +5,7 @@ using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
+using Server.Base.Logging;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
@@ -19,6 +20,7 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using System.Text.RegularExpressions;
+using static A2m.Server.ConnectionManager;
 using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Chat.Services;
@@ -59,7 +61,6 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
         AddCommand(new ChatCommand("playerCount", "[detailed]", PlayerCount));
         AddCommand(new ChatCommand("completeQuest", "[id]", CompleteQuest));
-        AddCommand(new ChatCommand("unlockUI", "", UnlockAllUI));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -104,10 +105,6 @@ public partial class ChatCommands(
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
-    public bool UnlockAllUI(Player player, string[] args)
-    {  //Finish before PR.
-        return true;
-    }
 
     public bool Hotbar(Player player, string[] args)
     {
