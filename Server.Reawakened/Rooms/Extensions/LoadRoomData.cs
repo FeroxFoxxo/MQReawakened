@@ -212,6 +212,12 @@ public static class LoadRoomData
                         var translatedArray = translateComponent.Split(",");
                         field.SetValue(dataObj, new Vector3(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2])));
                     }
+                    else if (field.FieldType == typeof(Vector2))
+                    {
+                        var translateComponent = componentValue.Value.Replace("(", "").Replace(")", "");
+                        var translatedArray = translateComponent.Split(",");
+                        field.SetValue(dataObj, new Vector2(float.Parse(translatedArray[0]), float.Parse(translatedArray[1])));
+                    }
                     else if (field.FieldType == typeof(Color))
                     {
                         var translateComponent = componentValue.Value.Replace("RGBA(", "").Replace(")", "");
