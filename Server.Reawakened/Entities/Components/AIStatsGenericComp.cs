@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Players;
+using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 public class AIStatsGenericComp : Component<AI_Stats_Generic>
@@ -9,7 +10,8 @@ public class AIStatsGenericComp : Component<AI_Stats_Generic>
     public int Patrol_ForceDirectionX => ComponentData.Patrol_ForceDirectionX;
     public bool Aggro_UseAttackBeyondPatrolLine => ComponentData.Aggro_UseAttackBeyondPatrolLine;
 
-    public override void InitializeComponent()
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
+        return;
     }
 }

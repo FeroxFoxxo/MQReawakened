@@ -46,6 +46,7 @@
             }
         }
 
+        //Returning anything other than a valid prefab for ProjectilePrefabName causes a serverwide crash
         return property.Equals("ProjectilePrefabName") ? "COL_PRJ_DamageProjectile" : 0;
     }
 }
