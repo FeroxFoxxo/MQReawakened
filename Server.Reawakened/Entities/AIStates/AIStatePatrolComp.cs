@@ -11,10 +11,15 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using static A2m.Server.ExtLevelEditor;
+using UnityEngine;
+using Server.Reawakened.Entities.AbstractComponents;
+using A2m.Server;
 
 namespace Server.Reawakened.Entities.AIStates;
-public class AIStatePatrolComp : Component<AIStatePatrol>
+public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
 {
+    public Vector2 Patrol1 => ComponentData.Patrol1;
+    public Vector2 Patrol2 => ComponentData.Patrol2;
     public int SinusPathNbHalfPeriod => ComponentData.SinusPathNbHalfPeriod;
     public float MovementSpeed => ComponentData.MovementSpeed;
     public float IdleDurationAtTurnAround => ComponentData.IdleDurationAtTurnAround;
@@ -28,6 +33,8 @@ public class AIStatePatrolComp : Component<AIStatePatrol>
 
     public string IdOfAttackingEnemy;
     public bool IsAttacking;
+    public int MaxHealth { get; set; }
+    public int CurrentHealth { get; set; }
 
     public GameObjectComponents PreviousState = [];
     public ServerRConfig ServerRConfig { get; set; }
@@ -35,6 +42,7 @@ public class AIStatePatrolComp : Component<AIStatePatrol>
     public ILogger<AIStatePatrolComp> Logger { get; set; }
     public override void InitializeComponent()
     {
+        Room.Colliders.Add(Id, new EnemyCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
         RunPlacement();
         //TimerThread.DelayCall(SpikerTest, null, TimeSpan.FromSeconds(15), TimeSpan.Zero, 1);
     }
@@ -56,7 +64,8 @@ public class AIStatePatrolComp : Component<AIStatePatrol>
 
         GoToNextState(nextState);
 
-        TimerThread.DelayCall(RunPatrol, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
+        //Not using enemy patrol code yet.
+        //TimerThread.DelayCall(RunPatrol, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
     }
 
     public void RunPatrol(object _)
@@ -72,7 +81,7 @@ public class AIStatePatrolComp : Component<AIStatePatrol>
 
         var nextState = new GameObjectComponents() {
             {"AIStatePatrol", new ComponentSettings()
-                {Position.X.ToString(),
+                {Position.X + Patrol1.x.ToString(),
                  Position.Y.ToString(),
                  backPlaneZValue.ToString()}
             }
@@ -205,5 +214,12 @@ public class AIStatePatrolComp : Component<AIStatePatrol>
         PreviousState = NewState;
 
         Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, Room));
+    }
+
+    public int GetDamageAmount(int damage, Elemental damageType)
+    {
+
+
+        return damage;
     }
 }

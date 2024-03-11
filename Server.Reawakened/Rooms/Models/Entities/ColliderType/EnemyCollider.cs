@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
@@ -8,19 +9,23 @@ public class EnemyCollider(string id, Vector3Model position, float sizeX, float 
     {
         if (received is AttackCollider attack)
         {
-            if (Room.Enemies.TryGetValue(Id, out var enemy))
+            Room.Enemies.TryGetValue(Id, out var enemy);
+
+            var damage = Room.GetEntityFromId<IDamageable>(id)
+                .GetDamageAmount(attack.Damage, attack.DamageType);
+
+            if (enemy != null)
             {
                 if (Room.IsObjectKilled(Id))
                     return;
 
-                var damage = Room.GetEntityFromId<IDamageable>(Id);
+                enemy.Damage(damage, attack.Owner);
+            }
 
-                if (damage != null)
-                {
-                    var amountToDamage = damage.GetDamageAmount(attack.Damage, attack.DamageType);
-
-                    enemy.Damage(amountToDamage, attack.Owner);
-                }
+            else
+            {
+                var enemyController = Room.GetEntitiesFromId<EnemyControllerComp>(id).First();
+                enemyController.Damage(damage, attack.Owner);
             }
         }
     }
