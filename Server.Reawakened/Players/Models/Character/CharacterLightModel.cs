@@ -52,7 +52,7 @@ public class CharacterLightModel
         sb.Append(Customization);
         sb.Append(Equipment);
 
-        if (_version >= GameVersion.vLate2012)
+        if (_version >= GameVersion.vPets2012)
             sb.Append(PetItemId);
 
         sb.Append(Registered ? 1 : 0);

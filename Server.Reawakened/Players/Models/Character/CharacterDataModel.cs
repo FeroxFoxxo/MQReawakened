@@ -106,7 +106,7 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(BlockModels);
         sb.Append(Equipment);
 
-        if (_version >= GameVersion.vLate2012)
+        if (_version >= GameVersion.vPets2012)
         {
             sb.Append(PetItemId);
             sb.Append(PetAutonomous ? 1 : 0);

@@ -56,7 +56,8 @@ public class LauncherRConfig : IRConfig
         {
             { GameVersion.v2011, "2011-03-17_12-00-00" },
             { GameVersion.vEarly2012, "2012-01-01_12-00-00" },
-            { GameVersion.vLate2012, "2012-07-01_12-00-00" },
+            { GameVersion.vPets2012, "2012-07-01_12-00-00" },
+            { GameVersion.vLate2012, "2012-09-01_12-00-00" },
             { GameVersion.vEarly2013, "2013-01-01_12-00-00" },
             { GameVersion.vLate2013, "2013-04-01_12-00-00" },
             { GameVersion.v2014, "2013-11-22_12-00-00" }
