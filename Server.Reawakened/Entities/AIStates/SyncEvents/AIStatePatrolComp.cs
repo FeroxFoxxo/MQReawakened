@@ -82,13 +82,14 @@ public class AIStatePatrolComp : Component<AIStatePatrol>
         if (isColliding)
         {
             IdOfAttackingEnemy = Id;
-            foreach (var drake in Room.GetEntitiesFromType<DrakeEnemyControllerComp>())
-                if (drake.Id == IdOfAttackingEnemy)
-                    RunDragonAttackState(null);
 
-            foreach (var spiker in Room.GetEntitiesFromType<AIStatePatrolComp>())
-                if (spiker.Id == IdOfAttackingEnemy)
-                    RunSpikerAttackState(null);
+            foreach (var drake in Room.GetEntitiesFromType<DrakeEnemyControllerComp>()
+                .Where(x => x.Id == IdOfAttackingEnemy))
+                RunDragonAttackState(null);
+
+            foreach (var spiker in Room.GetEntitiesFromType<AIStatePatrolComp>()
+                .Where(x => x.Id == IdOfAttackingEnemy))
+                RunSpikerAttackState(null);
         }
     }
 
@@ -171,12 +172,11 @@ public class AIStatePatrolComp : Component<AIStatePatrol>
         IsAttacking = true;
 
         var closestPlayer = GetClosestTarget();
-
         var nextState = new GameObjectComponents()
                     {
                         {"AIStateSpikerAttack", new ComponentSettings()
                             {
-                                closestPlayer.TempData.Position.X.ToString()
+                                closestPlayer.TempData.Position.X.ToString(),
                             }
                         }
                     };
@@ -191,8 +191,10 @@ public class AIStatePatrolComp : Component<AIStatePatrol>
 
         // Magic numbers here are temporary
 
+        var direction = closestPlayer.TempData.Position.X < Position.X ? 5 : -5;
+
         Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Room.GetEntityFromId<AIStatePatrolComp>(Id),
-            Position.X, Position.Y, Position.Z, 5, 0, 3, int.Parse(projectileId), 0));
+            Position.X, Position.Y, Position.Z, direction, 0, 3, int.Parse(projectileId), 0));
 
         var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, Position, 5, 1, 3, TimerThread);
         Room.Projectiles.Add(projectileId, aiProjectile);
