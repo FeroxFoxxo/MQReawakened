@@ -78,15 +78,21 @@ public class Room : Timer
         GameObjectIds = [];
         DuplicateEntities = [];
         KilledObjects = [];
+        Projectiles = [];
+        Enemies = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
+        {
+            Planes = [];
+            _entities = [];
+            Colliders = [];
+
             return;
+        }
 
         Planes = LevelInfo.LoadPlanes(_config);
         _entities = this.LoadEntities(services);
-        Projectiles = [];
         Colliders = this.LoadTerrainColliders();
-        Enemies = [];
 
         foreach (var type in UnknownEntities.Values.SelectMany(x => x).Distinct().Order())
             Logger.LogWarning("Could not find synced entity for {EntityType}", type);

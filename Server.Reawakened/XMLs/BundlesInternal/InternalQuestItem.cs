@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
@@ -17,7 +19,7 @@ public class InternalQuestItem : IBundledXml<InternalQuestItem>
     public ILogger<InternalQuestItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<int, List<ItemModel>> QuestItemList;
+    public Dictionary<GameVersion, Dictionary<int, List<ItemModel>>> QuestItemList;
 
     public InternalQuestItem()
     {
@@ -41,23 +43,40 @@ public class InternalQuestItem : IBundledXml<InternalQuestItem>
         {
             if (!(questItemXml.Name == "QuestItems")) continue;
 
-            foreach (XmlNode quest in questItemXml.ChildNodes)
+            foreach (XmlNode gVXml in questItemXml.ChildNodes)
             {
-                if (!(quest.Name == "Quest")) continue;
+                if (!(gVXml.Name == "GameVersion")) continue;
 
-                var questId = -1;
+                var gameVersion = GameVersion.Unknown;
 
-                foreach (XmlAttribute questAttribute in quest.Attributes)
-                    switch (questAttribute.Name)
+                foreach (XmlAttribute gVAttribute in gVXml.Attributes)
+                    switch (gVAttribute.Name)
                     {
-                        case "questId":
-                            questId = int.Parse(questAttribute.Value);
+                        case "version":
+                            gameVersion = gameVersion.GetEnumValue(gVAttribute.Value, Logger);
                             break;
                     }
 
-                var itemList = quest.GetXmlItems(itemCatalog, Logger);
+                QuestItemList.TryAdd(gameVersion, []);
 
-                QuestItemList.TryAdd(questId, itemList);
+                foreach (XmlNode quest in gVXml.ChildNodes)
+                {
+                    if (!(quest.Name == "Quest")) continue;
+
+                    var questId = -1;
+
+                    foreach (XmlAttribute questAttribute in quest.Attributes)
+                        switch (questAttribute.Name)
+                        {
+                            case "questId":
+                                questId = int.Parse(questAttribute.Value);
+                                break;
+                        }
+
+                    var itemList = quest.GetXmlItems(itemCatalog, Logger);
+
+                    QuestItemList[gameVersion].TryAdd(questId, itemList);
+                }
             }
         }
     }
