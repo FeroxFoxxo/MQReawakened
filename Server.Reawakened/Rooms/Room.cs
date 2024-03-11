@@ -263,7 +263,7 @@ public class Room : Timer
                         currentPlayer.SendUpdatedInventory(false);
                     }
                 }
-            } 
+            }
             else if (_config.TrainingGear2011.TryGetValue(LevelInfo.LevelId, out var gear) && _config.GameVersion >= GameVersion.v2011)
             {
                 var item = ItemCatalog.GetItemFromPrefabName(gear);
