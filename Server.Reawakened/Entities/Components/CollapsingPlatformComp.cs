@@ -31,6 +31,8 @@ public class CollapsingPlatformComp : Component<CollapsingPlatform>
 
     public void Collapse(bool regen)
     {
+        if (IsBroken) return;
+        
         IsBroken = false;
         var syncEvent = new SyncEvent(Id.ToString(), SyncEvent.EventType.CollapsingPlatform, Room.Time);
         if (regen)
