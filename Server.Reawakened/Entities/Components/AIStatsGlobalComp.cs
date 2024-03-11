@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Players;
+using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components;
 public class AIStatsGlobalComp : Component<AI_Stats_Global>
@@ -52,4 +53,9 @@ public class AIStatsGlobalComp : Component<AI_Stats_Global>
     public float GenericScript_AwareBehaviorDuration => ComponentData.GenericScript_AwareBehaviorDuration;
     public int GenericScript_HealthRegenerationAmount => ComponentData.GenericScript_HealthRegenerationAmount;
     public int GenericScript_HealthRegenerationFrequency => ComponentData.GenericScript_HealthRegenerationFrequency;
+
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
+    {
+        return;
+    }
 }

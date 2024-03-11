@@ -2,6 +2,7 @@
 using Server.Reawakened.Rooms.Extensions;
 using Server.Base.Timers.Services;
 using Server.Base.Timers.Extensions;
+using A2m.Server;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -35,6 +36,9 @@ public static class PlayerDamageExtensions
     public static void ApplyCharacterDamage(this Player player, Room room, int damage)
     {
         if (player.TempData.Invincible) return;
+
+        if (damage <= 0)
+            damage = 1;
 
         player.Character.Data.CurrentLife -= damage;
 

@@ -15,6 +15,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 using System.Text;
 using WorldGraphDefines;
 
@@ -26,6 +27,7 @@ public class State : ExternalProtocol
 
     public SyncEventManager SyncEventManager { get; set; }
     public ServerRConfig ServerConfig { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
     public FileLogger FileLogger { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<State> Logger { get; set; }
@@ -63,7 +65,8 @@ public class State : ExternalProtocol
                         new Vector3Model() { X = startChargeAttack.MaxPosX, Y = startChargeAttack.MaxPosY, Z = Player.TempData.Position.Z },
                         new Vector2Model() { X = startChargeAttack.SpeedX, Y = startChargeAttack.SpeedY },
                         15, startChargeAttack.ItemId, startChargeAttack.ZoneId,
-                        26, Elemental.Standard, TimerThread);
+                        WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
+                        Elemental.Standard, TimerThread);
 
                     Player.Room.Projectiles.TryAdd(Player.GameObjectId, chargeAttackCollider);
                     break;

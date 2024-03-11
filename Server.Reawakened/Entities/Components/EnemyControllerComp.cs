@@ -28,19 +28,30 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public bool CanAutoScale => ComponentData.CanAutoScale;
     public bool CanAutoScaleResistance => ComponentData.CanAutoScaleResistance;
     public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
-
-    //Make method to generate health later.
-    public int EnemyHealth = 50;
-
     public InternalDefaultEnemies EnemyInfoXml { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public TimerThread TimerThread { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
     public ILogger<EnemyControllerComp> Logger { get; set; }
 
     public int Level;
+    public int EnemyHealth;
+    public int MaxHealth;
+    public int OnKillExp;
 
-    public override void InitializeComponent() => Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
+    public override void InitializeComponent()
+    {
+        Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
+        MaxHealth = WorldStatistics.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Enemy, Level);
+        EnemyHealth = MaxHealth;
+        OnKillExp = WorldStatistics.GetValue(ItemEffectType.IncreaseExperience, WorldStatisticsGroup.Enemy, Level);
+    }
+
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
+    {
+        return;
+    }
 
     public void Damage(int damage, Player origin)
     {
@@ -54,14 +65,8 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
         if (EnemyHealth <= 0)
         {
+            origin.AddReputation(OnKillExp);
             Room.KillEntity(origin, Id);
-
-            //Temporary way to earn XP from enemies until enemy xp stat system is implemented.
-            //(Added for gameplay improvements to enhance users motivation to defeat enemies)
-            var randomXp = new System.Random();
-
-            var tempEnemyXpReward = origin.Character.Data.ReputationForNextLevel / randomXp.Next(100, 160);
-            origin.AddReputation(tempEnemyXpReward);
         }
     }
 

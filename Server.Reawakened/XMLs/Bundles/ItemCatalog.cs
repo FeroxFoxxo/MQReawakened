@@ -328,4 +328,10 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
 
         Items = (Dictionary<int, ItemDescription>)this.GetField<ItemHandler>("_itemDescriptionCache");
     }
+
+    public new ItemDescription GetItemFromId(int id)
+    {
+        Items.TryGetValue(id, out var outItem);
+        return outItem;
+    }
 }
