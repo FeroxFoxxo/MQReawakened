@@ -59,7 +59,6 @@ public abstract class Enemy : IDestructible
         //Basic Stats
         Room = room;
         Id = entityId;
-        Health = 50;
         IsFromSpawner = false;
         MinBehaviorTime = 0;
         SyncBuilder = new AISyncEventHelper();
@@ -86,6 +85,9 @@ public abstract class Enemy : IDestructible
 
         if (status != null)
             Status = status;
+
+        //Stats
+        Health = EnemyController.EnemyHealth;
 
         //Position Info
         ParentPlane = Entity.ParentPlane;
@@ -220,8 +222,8 @@ public abstract class Enemy : IDestructible
                     trigger.Trigger(true);
 
             //Temp values for now
-            Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
-
+            Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "", 10, true, origin == null ? "0" : origin.GameObjectId, false));
+            origin.AddReputation(EnemyController.OnKillExp);
             Room.KillEntity(origin, Id);
         }
     }
@@ -429,7 +431,7 @@ public abstract class Enemy : IDestructible
     public AIInit_SyncEvent AIInit(float healthMod, float sclMod, float resMod)
     {
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, Position.x, Position.y, Position.z, Position.x, Position.y, Generic.Patrol_InitialProgressRatio,
-        Status.MaxHealth, Status.MaxHealth, healthMod, sclMod, resMod, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
+        EnemyController.EnemyHealth, EnemyController.MaxHealth, healthMod, sclMod, resMod, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
 
         aiInit.EventDataList[2] = Position.x;
         aiInit.EventDataList[3] = Position.y;
@@ -441,7 +443,7 @@ public abstract class Enemy : IDestructible
     public void GetInitEnemyData(Player player)
     {
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ, Position.z, AiData.Intern_SpawnPosY, Generic.Patrol_InitialProgressRatio,
-        Health, Status.MaxHealth, 1f, 1f, 1f, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
+        Health, EnemyController.MaxHealth, 1f, 1f, 1f, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
 
         aiInit.EventDataList[2] = AiData.Intern_SpawnPosX;
         aiInit.EventDataList[3] = AiData.Intern_SpawnPosY;

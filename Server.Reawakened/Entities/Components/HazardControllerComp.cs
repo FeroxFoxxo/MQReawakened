@@ -6,6 +6,9 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Bundles;
+using System.ComponentModel.Design;
+using UnityEngine.SocialPlatforms;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -26,8 +29,19 @@ public class HazardControllerComp : Component<HazardController>
 
     public TimerThread TimerThread { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
     public ILogger<HazardControllerComp> Logger { get; set; }
 
+    private EnemyControllerComp _enemyController;
+    private int _damage;
+
+    public override void InitializeComponent()
+    {
+        var controller = Room.GetEntityFromId<EnemyControllerComp>(Id);
+
+        if (controller != null)
+            _enemyController = controller;
+    }
     public override object[] GetInitData(Player player) => [0];
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
@@ -37,11 +51,21 @@ public class HazardControllerComp : Component<HazardController>
 
         var character = player.Character;
 
-        Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
+        ItemEffectType effectType;
+        if (_enemyController != null)
+        {
+            Enum.TryParse(_enemyController.ComponentData.EnemyEffectType.ToString(), true, out effectType);
+            _damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, _enemyController.Level);
+        }
+        else
+        {
+            Enum.TryParse(HurtEffect, true, out effectType);
+            _damage = -1;
+        }
 
         if (effectType == default)
         {
-            var noEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.ArmorPiercingDamage,
+            var noEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage,
             0, 1, true, Entity.GameObject.ObjectInfo.ObjectId, false);
 
             Room.SendSyncEvent(noEffect);
@@ -57,6 +81,8 @@ public class HazardControllerComp : Component<HazardController>
                 effectType);
         }
 
+        var defense = WorldStatistics.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Player, player.Character.Data.GlobalLevel);
+
         switch (effectType)
         {
             case ItemEffectType.Unknown:
@@ -66,10 +92,13 @@ public class HazardControllerComp : Component<HazardController>
             case ItemEffectType.WaterBreathing:
                 break;
             default:
-                player.ApplyDamageByPercent(Room, .10);
+                if (_damage > 0)
+                    player.ApplyCharacterDamage(Room, _damage - defense);
+                else
+                    player.ApplyDamageByPercent(Room, .10);
                 break;
         }
 
-        player.SetTemporaryInvincibility(TimerThread, 1.3);
+        player.SetTemporaryInvincibility(TimerThread, 1);
     }
 }
