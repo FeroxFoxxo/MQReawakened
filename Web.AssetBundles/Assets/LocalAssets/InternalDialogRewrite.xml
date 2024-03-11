@@ -1,4 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <DialogRewrites>
     <Dialog oldDialogName="CRS_Hoop01" newDialogName="CTS_Hoop01" />
+    <Dialog oldDialogName="DAY_CRS_TS01" newDialogName="Daily_CRS_TS01" />
+    <Dialog oldDialogName="DAY_CRS_IND01" newDialogName="Daily_CRS_IND01" />
+    <Dialog oldDialogName="DAY_SHD01_1" newDialogName="Daily_SHD01" />
+    <Dialog oldDialogName="DAY_CRS03_1" newDialogName="Daily_CRS03" />
+    <Dialog oldDialogName="DAY_CRS01_1" newDialogName="Daily_CRS01" />
 </DialogRewrites>

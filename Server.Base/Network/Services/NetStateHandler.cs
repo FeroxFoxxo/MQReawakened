@@ -31,12 +31,13 @@ public class NetStateHandler(FileLogger fileLogger,
             .DelayCall(CheckAllAlive, null, TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(1.5), 0);
 
     public NetState FindUser(int userId) =>
-        (from state in Instances
-         let account = state.Get<Account>()
-         where account != null
-         where account.Id == userId
-         select state
-    ).FirstOrDefault();
+        (
+            from state in Instances
+                 let account = state.Get<Account>()
+                 where account != null
+                 where account.Id == userId
+                 select state
+        ).FirstOrDefault();
 
     public void ProcessDisposedQueue()
     {

@@ -1,5 +1,4 @@
-﻿using A2m.Server;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
@@ -140,9 +139,6 @@ public class InternalVendor : IBundledXml<InternalVendor>
 
                     if (!string.IsNullOrEmpty(nameModel.Value))
                     {
-                        if (VendorCatalog.ContainsKey(objectId))
-                            continue;
-
                         var greetingConversation = new ConversationInfo(dialogId, greetingConversationId);
                         var leavingConversation = new ConversationInfo(dialogId, leavingConversationId);
 

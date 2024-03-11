@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Server.Reawakened.Entities.AIBehavior;
+﻿namespace Server.Reawakened.Entities.AIBehavior;
 public class AIBaseBehavior
 {
     public virtual void Start(ref AIProcessData aiData, float startTime, string[] args)

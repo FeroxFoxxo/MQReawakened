@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
@@ -19,7 +20,9 @@ public class CharacterLightModel
     public CharacterLightData.InteractionStatus InteractionStatus { get; set; }
     public TribeType Allegiance { get; set; }
     public bool ForceTribeSelection { get; set; }
-    public HashSet<int> DiscoveredStats { get; set; }
+    public List<int> DiscoveredStats { get; set; }
+
+    private GameVersion _version = GameVersion.Unknown;
 
     public CharacterLightModel() => InitializeLiteLists();
 
@@ -61,14 +64,19 @@ public class CharacterLightModel
 
         sb.Append(CharacterId);
         sb.Append(CharacterName);
-        sb.Append(UserUuid);
+
+        if (_version >= GameVersion.vLate2013)
+            sb.Append(UserUuid);
+
         sb.Append(Gender);
         sb.Append(MaxLife);
         sb.Append(CurrentLife);
         sb.Append(GlobalLevel);
         sb.Append((int)InteractionStatus);
         sb.Append((int)Allegiance);
-        sb.Append(ForceTribeSelection ? 1 : 0);
+
+        if (_version >= GameVersion.v2014)
+            sb.Append(ForceTribeSelection ? 1 : 0);
 
         return sb.ToString();
     }
@@ -82,4 +90,7 @@ public class CharacterLightModel
 
         return sb.ToString();
     }
+
+    public void SetVersion(GameVersion version) =>
+        _version = version;
 }

@@ -1,4 +1,5 @@
 ﻿using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
@@ -25,7 +26,7 @@ public class Web(ILogger<Web> logger) : WebModule(logger)
         services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-        services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+        services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();;
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
@@ -37,6 +38,11 @@ public class Web(ILogger<Web> logger) : WebModule(logger)
     {
         services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));
         services.Configure<IpRateLimitPolicies>(configuration.GetSection("IpRateLimitPolicies"));
+
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+                options => configuration.Bind("CookieSettings", options)
+        );
     }
 
     public override void InitializeWeb(WebApplicationBuilder builder)
@@ -71,7 +77,10 @@ public class Web(ILogger<Web> logger) : WebModule(logger)
         }
 
         app.UseDefaultFiles();
-        app.UseStaticFiles();
+        app.UseStaticFiles(new StaticFileOptions()
+        {
+            ServeUnknownFileTypes = true
+        });
 
         app.UseIpRateLimiting();
 

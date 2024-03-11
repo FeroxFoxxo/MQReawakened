@@ -1,6 +1,8 @@
-﻿using A2m.Server;
+using A2m.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Enums;
+using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
 using Server.Base.Worlds.Services;
@@ -12,14 +14,19 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using System.Text.RegularExpressions;
+using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Chat.Services;
 
-public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
-    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves) : IService
+public partial class ChatCommands(
+    ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
+    WorldHandler worldHandler, InternalAchievement internalAchievement,
+    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
 
@@ -33,8 +40,8 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         logger.LogDebug("Setting up chat commands");
 
         AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
-        AddCommand(new ChatCommand("unlockHotBar", "[petSlot 1 (true) / 0 (false)]", AddHotBar));
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
+        AddCommand(new ChatCommand("hotbar", "[hotbarNum] [itemId]", Hotbar));
         AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
         AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
@@ -45,12 +52,14 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         AddCommand(new ChatCommand("openDoors", "", OpenDoors));
         AddCommand(new ChatCommand("getAllItems", "[categoryValue]", GetAllItems));
         AddCommand(new ChatCommand("godmode", "", GodMode));
-        AddCommand(new ChatCommand("save", "", SaveLevel));
+        AddCommand(new ChatCommand("save", "[owner only]", SaveLevel));
         AddCommand(new ChatCommand("openVines", "", OpenVines));
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
         AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
-        AddCommand(new ChatCommand("endAllArenas", "", EndAllArenas));
+        AddCommand(new ChatCommand("playerCount", "[detailed]", PlayerCount));
+        AddCommand(new ChatCommand("completeQuest", "[id]", CompleteQuest));
+        AddCommand(new ChatCommand("unlockUI", "", UnlockAllUI));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -95,6 +104,62 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
+    public bool UnlockAllUI(Player player, string[] args)
+    {  //Finish before PR.
+        return true;
+    }
+
+    public bool Hotbar(Player player, string[] args)
+    {
+        player.AddSlots(true);
+
+        if (args.Length <= 2)
+            return true;
+
+        if (!int.TryParse(args[1], out var hotbarId) || !int.TryParse(args[2], out var itemId) || hotbarId is < 1 or > 5)
+        {
+            Log("Please enter a hotbar number from 1-5 and an item Id.", player);
+            return false;
+        }
+
+        var item = itemCatalog.GetItemFromId(itemId);
+
+        if (item == null)
+        {
+            Log($"No item with id '{itemId}' could be found.", player);
+            return false;
+        }
+
+        if (hotbarId == 5 && item.InventoryCategoryID != ItemFilterCategory.Pets)
+        {
+            Log("Please enter the item Id of a pet for the 5th hotbar slot.", player);
+            return false;
+        }
+
+        if (item.InventoryCategoryID is
+            ItemFilterCategory.WeaponAndAbilities or
+            ItemFilterCategory.Consumables or
+            ItemFilterCategory.NestedSuperPack)
+        {
+            player.Character.Data.Hotbar.HotbarButtons[hotbarId - 1] = new Players.Models.Character.ItemModel()
+            {
+                ItemId = itemId,
+                BindingCount = 1,
+                Count = 1,
+                DelayUseExpiry = DateTime.Now
+            };
+            player.SendXt("hs", player.Character.Data.Hotbar);
+
+            return true;
+        }
+
+        else
+        {
+            Log("Please enter the item Id of a weapon, consumable, or pack.", player);
+            return false;
+        }
+    }
+
     public bool GetAllItems(Player player, string[] args)
     {
         if (args.Length > 1)
@@ -110,7 +175,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
             var chosenCategory = itemCatalog.GetItemsDescription((ItemFilterCategory)categoryValue);
 
             foreach (var item in chosenCategory)
-                player.AddItem(item, 1);
+                player.AddItem(item, 1, itemCatalog);
         }
 
         else
@@ -121,7 +186,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
             foreach (var category in categoryList)
                 foreach (var item in category)
-                    player.AddItem(item, 1);
+                    player.AddItem(item, 1, itemCatalog);
         }
 
         player.SendUpdatedInventory(false);
@@ -180,15 +245,12 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool OpenDoors(Player player, string[] args)
     {
-        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+        foreach (var triggerEntity in player.Room.GetEntitiesFromType<TriggerReceiverComp>())
         {
-            if (entityComponent is TriggerReceiverComp triggerEntity)
-            {
-                if (config.IgnoredDoors.Contains(entityComponent.PrefabName))
-                    continue;
+            if (config.IgnoredDoors.Contains(triggerEntity.PrefabName))
+                continue;
 
-                triggerEntity.Trigger(true);
-            }
+            triggerEntity.Trigger(true);
         }
 
         return true;
@@ -196,27 +258,10 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool ForceSpawners(Player player, string[] args)
     {
-        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
+        foreach (var spawner in player.Room.GetEntitiesFromType<BaseSpawnerControllerComp>())
         {
-            if (entityComponent is BaseSpawnerControllerComp spawner)
-            {
-                var spawn = new Spawn_SyncEvent(spawner.Id.ToString(), player.Room.Time, 1);
-
-                player.Room.SendSyncEvent(spawn);
-            }
-        }
-
-        return true;
-    }
-
-    private bool EndAllArenas(Player player, string[] args)
-    {
-        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
-        {
-            if (entityComponent is TriggerArenaComp arena)
-            {
-                arena.StopArena(true);
-            }
+            var spawn = new Spawn_SyncEvent(spawner.Id.ToString(), player.Room.Time, 1);
+            player.Room.SendSyncEvent(spawn);
         }
 
         return true;
@@ -224,9 +269,8 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool OpenVines(Player player, string[] args)
     {
-        foreach (var entityComponent in player.Room.Entities.Values.SelectMany(s => s))
-            if (entityComponent is MysticCharmTargetComp vineEntity)
-                vineEntity.Charm(player);
+        foreach (var vineEntity in player.Room.GetEntitiesFromType<MysticCharmTargetComp>())
+            vineEntity.Charm(player);
 
         return true;
     }
@@ -239,8 +283,14 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
             return false;
         }
 
-        var zPos = args.Length > 3 && int.TryParse(args[3], out var z) ? z : 0;
-        player.TeleportPlayer(xPos, yPos, zPos);
+        var currentZPosition = player.TempData.Position.Z == 0 ? 0 : 1;
+
+        var zPos = args.Length > 3 ? int.Parse(args[3]) : currentZPosition;
+
+        if (zPos is < 0 or > 1)
+            zPos = currentZPosition;
+
+        player.TeleportPlayer(xPos, yPos, Convert.ToInt32(zPos));
 
         return true;
     }
@@ -252,30 +302,6 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         player.DiscoverAllTribes();
 
         Log($"{character.Data.CharacterName} has discovered all tribes!", player);
-
-        return true;
-    }
-
-    private bool AddHotBar(Player player, string[] args)
-    {
-        var hasPet = false;
-
-        if (args.Length == 2)
-        {
-            if (!int.TryParse(args[1], out var petSlot))
-                Log("Unknown pet slot value, defaulting to 0 (false)", player);
-
-            if (petSlot is < 0 or > 1)
-                Log("Pet slot value out of range, defaulting to 0 (false)", player);
-
-            hasPet = petSlot == 1;
-
-            Log($"Adding slots ({(hasPet ? string.Empty : "no ")}pet slot)", player);
-        }
-
-        player.AddSlots(hasPet);
-
-        Log("HotBar has been setup! Equip an item or logout to see result.", player);
 
         return true;
     }
@@ -375,7 +401,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         var levelInfo = worldGraph.GetInfoLevel(levelId);
 
-        if (string.IsNullOrEmpty(levelInfo.Name))
+        if (string.IsNullOrEmpty(levelInfo.Name) || !config.LoadedAssets.Contains(levelInfo.Name))
         {
             Log($"Please specify a valid level.", player);
             return false;
@@ -383,13 +409,13 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         character.SetLevel(levelId, logger);
 
-        player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, logger);
-        player.CheckAchievement(AchConditionType.ExploreTrail, player.Room.LevelInfo.Name, logger);
+        player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, internalAchievement, logger);
+        player.CheckAchievement(AchConditionType.ExploreTrail, player.Room.LevelInfo.Name, internalAchievement, logger);
 
         var tribe = levelInfo.Tribe;
 
         player.DiscoverTribe(tribe);
-        player.SendLevelChange();
+        player.SendLevelChange(worldHandler);
 
         Log(
             $"Successfully set character {character.Id}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
@@ -422,6 +448,9 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
     private bool SaveLevel(Player player, string[] args)
     {
+        if (player.NetState.Get<Account>().AccessLevel < AccessLevel.Owner)
+            return false;
+
         saves.Save();
         return true;
     }
@@ -455,7 +484,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
             return false;
         }
 
-        player.AddItem(item, amount);
+        player.AddItem(item, amount, itemCatalog);
 
         player.SendUpdatedInventory(false);
 
@@ -469,9 +498,6 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
         Log($"{player.CharacterName} has id of {player.GameObjectId}", player);
         return true;
     }
-
-    [GeneratedRegex("[^A-Za-z0-9]+")]
-    private static partial Regex AlphanumericRegex();
 
     private bool ClosestEntity(Player player, string[] args)
     {
@@ -497,7 +523,7 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
         var count = 0;
 
-        if (closestGameObjects.Count() > config.MaximumEntitiesToReturnLog)
+        if (closestGameObjects.Count > config.MaximumEntitiesToReturnLog)
             closestGameObjects = closestGameObjects.Take(config.MaximumEntitiesToReturnLog).ToList();
 
         closestGameObjects.Reverse();
@@ -514,6 +540,60 @@ public partial class ChatCommands(ItemCatalog itemCatalog, ServerRConfig config,
 
             count++;
         }
+
+        return true;
+    }
+
+    private bool PlayerCount(Player player, string[] args)
+    {
+        if (args.Length == 1)
+            Log($"Currently online players: {player.PlayerContainer.GetAllPlayers().Count}", player);
+
+        if (args.Length == 2)
+            foreach (var item in player.PlayerContainer.GetAllPlayers())
+                Log($"{item.CharacterName} - {item.Room.LevelInfo.InGameName} / {item.Room.LevelInfo.LevelId}", player);
+
+        return true;
+    }
+
+    private bool CompleteQuest(Player player, string[] args)
+    {
+        if (args.Length == 1)
+        {
+            Log("Please provide a quest id.", player);
+            return false;
+        }
+
+        if (args.Length != 2)
+            return false;
+
+        if (!int.TryParse(args[1], out var questId))
+        {
+            Log("Please provide a valid quest id.", player);
+            return false;
+        }
+
+        var questData = questCatalog.GetQuestData(questId);
+
+        if (questData == null)
+        {
+            Log("Please provide a valid quest id.", player);
+            return false;
+        }
+
+        if (player.Character.Data.CompletedQuests.Contains(questData.Id))
+        {
+            Log($"Quest {questData.Name} with id {questData.Id} has been completed already.", player);
+            return false;
+        }
+
+        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == questId);
+
+        if (questModel != null)
+            player.Character.Data.QuestLog.Remove(questModel);
+
+        player.Character.Data.CompletedQuests.Add(questData.Id);
+        Log($"Added quest {questData.Name} with id {questData.Id} to completed quests.", player);
 
         return true;
     }

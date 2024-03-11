@@ -1,14 +1,14 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using SmartFoxClientAPI.Data;
+using Server.Reawakened.XMLs.Enums;
 using UnityEngine;
 using Room = Server.Reawakened.Rooms.Room;
 
@@ -28,36 +28,68 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public bool CanAutoScale => ComponentData.CanAutoScale;
     public bool CanAutoScaleResistance => ComponentData.CanAutoScaleResistance;
     public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
-
-    public ILogger<EnemyControllerComp> Logger { get; set; }
     public InternalDefaultEnemies EnemyInfoXml { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
+    public TimerThread TimerThread { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
+    public ILogger<EnemyControllerComp> Logger { get; set; }
 
     public int Level;
+    public int EnemyHealth;
+    public int MaxHealth;
+    public int OnKillExp;
+
     public override void InitializeComponent()
     {
         Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
+        MaxHealth = WorldStatistics.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Enemy, Level);
+        EnemyHealth = MaxHealth;
+        OnKillExp = WorldStatistics.GetValue(ItemEffectType.IncreaseExperience, WorldStatisticsGroup.Enemy, Level);
     }
-    public override void RunSyncedEvent(SyncEvent syncEvent, Player player) => base.RunSyncedEvent(syncEvent, player);
+
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
+    {
+        return;
+    }
 
     public void Damage(int damage, Player origin)
     {
-        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, 0, damage, 0, 0, origin.CharacterName, false, true);
+        if (Room.IsObjectKilled(Id)) 
+            return;
+
+        EnemyHealth -= damage;
+
+        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, EnemyHealth, damage, 0, 0, origin.CharacterName, false, true);
         origin.Room.SendSyncEvent(breakEvent);
 
-        origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1);
-        origin.CheckObjective(ObjectiveEnum.Scoremultiple, Id, PrefabName, 1);
-
-        if (Room.Entities.TryGetValue(Id, out var comps))
-            foreach (var comp in comps)
-                if (comp is IDestructible dest)
-                    dest.Destroy(Room, Id);
-
-        Room.Entities.Remove(Id);
+        if (EnemyHealth <= 0)
+        {
+            origin.AddReputation(OnKillExp);
+            Room.KillEntity(origin, Id);
+        }
     }
 
-    public void Destroy(Room room, string id)
+    public void Destroy(Player player, Room room, string id)
     {
+        player.CheckObjective(ObjectiveEnum.Score, id, PrefabName, 1, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.Scoremultiple, id, PrefabName, 1, QuestCatalog);
+
+        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, InternalAchievement, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, PrefabName, InternalAchievement, Logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, InternalAchievement, Logger);
+        
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
+    }
+
+    public void GetRewards(Player player, string enemyId)
+    {
+        //Implement XML data with enemyId for reward stats.
+        //Below is temporary reward code for now.
+        var tempEnemyXpReward = (player.Character.Data.ReputationForNextLevel - player.Character.Data.Reputation) /
+            new System.Random().Next(130, 145);
+
+        player.AddReputation(tempEnemyXpReward);
     }
 }

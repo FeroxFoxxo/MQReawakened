@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using Server.Reawakened.XMLs.Models.LootRewards;
@@ -16,8 +18,13 @@ public class InternalLoot : IBundledXml<InternalLoot>
     public IServiceProvider Services { get; set; }
 
     public Dictionary<string, LootModel> LootCatalog;
+    public Dictionary<string, List<string>> LevelList;
 
-    public void InitializeVariables() => LootCatalog = [];
+    public void InitializeVariables()
+    {
+        LootCatalog = [];
+        LevelList = [];
+    }
 
     public void EditDescription(XmlDocument xml)
     {
@@ -25,6 +32,8 @@ public class InternalLoot : IBundledXml<InternalLoot>
 
     public void ReadDescription(string xml)
     {
+        var itemCatalog = Services.GetRequiredService<ItemCatalog>();
+
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
@@ -35,6 +44,17 @@ public class InternalLoot : IBundledXml<InternalLoot>
             foreach (XmlNode lootLevel in lootXml.ChildNodes)
             {
                 if (lootLevel.Name != "Level") continue;
+
+                var name = string.Empty;
+                var lootList = new List<string>();
+
+                foreach (XmlAttribute levelAttribute in lootLevel.Attributes)
+                    switch (levelAttribute.Name)
+                    {
+                        case "name":
+                            name = levelAttribute.Value;
+                            continue;
+                    }
 
                 foreach (XmlNode lootInfo in lootLevel.ChildNodes)
                 {
@@ -87,12 +107,10 @@ public class InternalLoot : IBundledXml<InternalLoot>
                                             continue;
                                     }
 
-                                var itemList = reward.GetXmlLootItems();
+                                var itemList = reward.GetXmlLootItems(itemCatalog, Logger);
 
                                 foreach (var item in itemList)
-                                {
                                     weightRange += item.Key;
-                                }
 
                                 itemRewards.Add(new ItemReward(itemList, rewardAmount));
                                 break;
@@ -102,7 +120,10 @@ public class InternalLoot : IBundledXml<InternalLoot>
                         }
 
                     LootCatalog.TryAdd(objectId, new LootModel(objectId, bananaRewards, itemRewards, doWheel, weightRange));
+                    lootList.Add(objectId);
                 }
+
+                LevelList.TryAdd(name, lootList);
             }
         }
     }

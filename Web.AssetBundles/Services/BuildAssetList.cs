@@ -107,6 +107,8 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
 
         logger.LogInformation("Generated default dictionaries.");
 
+        sRConfig.LoadedAssets = [.. InternalAssets.Keys];
+
         assetSink.InvokeAssetBundlesLoaded(new AssetBundleLoadEventArgs(InternalAssets));
     }
 

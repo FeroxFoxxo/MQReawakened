@@ -1,11 +1,7 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Server.Reawakened.Players;
+using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Stats;
+namespace Server.Reawakened.Entities.Components;
 public class AIStatsGlobalComp : Component<AI_Stats_Global>
 {
     public float Global_viewOffsetY => ComponentData.Global_viewOffsetY;
@@ -57,4 +53,9 @@ public class AIStatsGlobalComp : Component<AI_Stats_Global>
     public float GenericScript_AwareBehaviorDuration => ComponentData.GenericScript_AwareBehaviorDuration;
     public int GenericScript_HealthRegenerationAmount => ComponentData.GenericScript_HealthRegenerationAmount;
     public int GenericScript_HealthRegenerationFrequency => ComponentData.GenericScript_HealthRegenerationFrequency;
+
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
+    {
+        return;
+    }
 }

@@ -8,7 +8,7 @@ public class AcceptTrade : ExternalProtocol
 {
     public override string ProtocolName => "ta";
 
-    public DatabaseContainer DatabaseContainer { get; set; }
+    public PlayerContainer PlayerContainer { get; set; }
 
     public override void Run(string[] message)
     {
@@ -18,7 +18,7 @@ public class AcceptTrade : ExternalProtocol
             return;
 
         var traderName = message[5];
-        var tradedPlayer = DatabaseContainer.GetPlayerByName(traderName);
+        var tradedPlayer = PlayerContainer.GetPlayerByName(traderName);
 
         if (tradedPlayer == null)
             return;

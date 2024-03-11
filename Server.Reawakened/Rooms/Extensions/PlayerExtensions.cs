@@ -1,4 +1,5 @@
 ﻿using Server.Base.Accounts.Extensions;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -6,6 +7,8 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Extensions;
@@ -19,7 +22,7 @@ public static class PlayerExtensions
         player.Room.AddClient(player, out reason);
     }
 
-    public static void QuickJoinRoom(this Player player, int id, out JoinReason reason)
+    public static void QuickJoinRoom(this Player player, int id, WorldHandler worldHandler, out JoinReason reason)
     {
         var useOriginalRoom = false;
 
@@ -28,10 +31,13 @@ public static class PlayerExtensions
                 useOriginalRoom = true;
 
         var room = useOriginalRoom ? player.Room :
-            player.DatabaseContainer.WorldHandler.GetRoomFromLevelId(id, player);
+            worldHandler.GetRoomFromLevelId(id, player);
 
         player.JoinRoom(room, useOriginalRoom, out reason);
     }
+
+    public static string GetPlayersPlaneString(this Player player)
+        => player.TempData.Position.Z > 0 ? "Plane1" : "Plane0";
 
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelData.LevelId ?? -1;
@@ -82,17 +88,25 @@ public static class PlayerExtensions
 
         foreach (var currentPlayer in player.Room.Players.Values)
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
+
+        //Temporary way to earn NC upon level up.
+        //(Needed for gameplay improvements as NC is currently unobtainable)
+        player.AddNCash(100);
+      
+        player.SendSyncEventToPlayer(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+            player.Character.Data.MaxLife, player.Character.Data.MaxLife, player.GameObjectId.ToString()));
     }
 
-    public static void SendStartPlay(this Player player, CharacterModel character, LevelInfo levelInfo)
+    public static void SendStartPlay(this Player player, CharacterModel character,
+        LevelInfo levelInfo, EventPrefabs eventPrefabs, ServerRConfig config)
     {
-        character.Data.SetPlayerData(player);
+        character.Data.SetDynamicData(player, config);
         player.SetCharacterSelected(character);
-        player.DatabaseContainer.AddPlayer(player);
+        player.PlayerContainer.AddPlayer(player);
         player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
-        player.SendXt("de", player.DatabaseContainer.EventPrefabs.EventInfo.ToString());
+        player.SendXt("de", eventPrefabs.EventInfo.ToString());
 
-        foreach (var friend in player.DatabaseContainer.GetPlayersByFriend(player.CharacterId)
+        foreach (var friend in player.PlayerContainer.GetPlayersByFriend(player.CharacterId)
                      .Where(p =>
                          player.Character.Data.Friends
                              .Any(x => x == p.Character.Id)
@@ -100,8 +114,9 @@ public static class PlayerExtensions
                 )
             friend.SendXt("fy", player.CharacterName);
     }
-    
-    public static void DumpToLobby(this Player player) => player.QuickJoinRoom(-1, out var _);
+
+    public static void DumpToLobby(this Player player, WorldHandler worldHandler) =>
+        player.QuickJoinRoom(-1, worldHandler, out var _);
 
     public static List<GameObjectModel> GetPlaneEntities(this Player player)
     {

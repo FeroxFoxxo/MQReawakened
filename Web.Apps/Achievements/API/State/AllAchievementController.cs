@@ -16,7 +16,9 @@ public class AllAchievementController(CharacterHandler characterHandler,
         var _uuid = int.Parse(uuid);
         var _characterId = int.Parse(characterId);
 
-        if (!characterHandler.Data.TryGetValue(_characterId, out var character))
+        var character = characterHandler.Get(_characterId);
+
+        if (character == null)
             return NotFound();
 
         if (character.Data.UserUuid != _uuid)

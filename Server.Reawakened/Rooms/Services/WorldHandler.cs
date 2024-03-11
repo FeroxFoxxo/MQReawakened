@@ -7,14 +7,12 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Services;
 
 public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph,
-    TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> handlerLogger,
-    ILogger<Room> roomLogger, InternalColliders internalCollider) : IService
+    TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> handlerLogger) : IService
 {
     private readonly Dictionary<int, Level> _levels = [];
     private readonly object Lock = new();
@@ -28,7 +26,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         foreach (var room in _levels
                      .Where(level => level.Key > 0)
                      .SelectMany(level => level.Value.Rooms))
-            room.Value.DumpPlayersToLobby();
+            room.Value.DumpPlayersToLobby(this);
 
         _levels.Clear();
     }
@@ -39,6 +37,9 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             try
             {
                 var levelInfo = worldGraph!.GetInfoLevel(levelId);
+
+                if (string.IsNullOrEmpty(levelInfo.Name))
+                    levelInfo = worldGraph!.GetInfoLevel(worldGraph.DefaultLevel);
 
                 return string.IsNullOrEmpty(levelInfo.Name)
                     ? throw new MissingFieldException($"Room '{levelId}' does not have a valid name!")
@@ -102,7 +103,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
             var roomId = level.Rooms.Keys.Count > 0 ? level.Rooms.Keys.Max() + 1 : 1;
 
-            room = new Room(roomId, level, config, timerThread, services, roomLogger, internalCollider);
+            room = new Room(roomId, level, timerThread, services, config);
 
             level.Rooms.Add(roomId, room);
         }
@@ -110,10 +111,16 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         return room;
     }
 
-    public List<string> GetSurroundingLevels(LevelInfo levelInfo) =>
-        worldGraph.GetLevelWorldGraphNodes(levelInfo.LevelId)
+    public List<string> GetSurroundingLevels(LevelInfo levelInfo)
+    {
+        var nodes = worldGraph.GetLevelWorldGraphNodes(levelInfo.LevelId);
+
+        return nodes == null
+            ? []
+            : nodes
             .Where(x => x.ToLevelID != x.LevelID)
             .Select(x => worldGraph.GetInfoLevel(x.ToLevelID).Name)
             .Distinct()
             .ToList();
+    }
 }

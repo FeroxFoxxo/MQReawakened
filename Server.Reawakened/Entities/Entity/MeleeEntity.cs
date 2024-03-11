@@ -1,21 +1,15 @@
 ﻿using A2m.Server;
-using agsXMPP;
-using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
-using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity;
+
 public class MeleeEntity : TicklyEntity
 {
-    private Vector3Model _hitboxPosition;
-    public ILogger<TicklyEntity> Logger { get; set; }
+    private readonly Vector3Model _hitboxPosition;
 
     public MeleeEntity(Player player, string id, Vector3Model position, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig config)
     {
@@ -26,20 +20,37 @@ public class MeleeEntity : TicklyEntity
         PrjPlane = Position.Z > 10 ? "Plane1" : "Plane0";
 
         // Initialize projectile info
-        var isRight = direction > 0;
-        Position.X += isRight ? 0 : 0;
-        Position.Y += config.MeleeYOffset;
-        SpawnPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
-
-        _hitboxPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
-        _hitboxPosition.X -= isRight ? 0 : config.MeleeWidth;
-        Speed = 0;
+        SpeedX = 0f;
+        SpeedY = 0f;
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
 
+        var meleeWidth = config.MeleeWidth;
+        var meleeHeight = config.MeleeHeight;
+        var isRight = direction > 0;
+
+        _hitboxPosition = new Vector3Model { X = position.X, Y = position.Y, Z = position.Z };
+
+        var onGround = Player.TempData.OnGround;
+
+        if (onGround && !isRight)
+        {
+            _hitboxPosition.X -= config.MeleeXOffset;
+            _hitboxPosition.Y += config.MeleeYOffset;
+        }
+
+        if (!onGround)
+        {
+            meleeWidth = config.MeleeArialWidth;
+            meleeHeight = config.MeleeArialHeight;
+
+            _hitboxPosition.X -= config.MeleeArialXOffset;
+            _hitboxPosition.Y -= config.MeleeArialYOffset;
+        }
+
         // Send all information to room
-        Collider = new AttackCollider(id, _hitboxPosition, config.MeleeWidth, config.MeleeHeight, PrjPlane, player, damage, type, LifeTime);
-        var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time, Position.X, Position.Y, Position.Z, direction, 1, 1, int.Parse(ProjectileID), item.PrefabName);
+        Collider = new AttackCollider(id, _hitboxPosition, meleeWidth, meleeHeight, PrjPlane, player, damage, type, LifeTime);
+        var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time, Position.X, Position.Y, Position.Z, direction, SpeedY, LifeTime, int.Parse(ProjectileID), item.PrefabName);
         Player.Room.SendSyncEvent(hitEvent);
     }
 

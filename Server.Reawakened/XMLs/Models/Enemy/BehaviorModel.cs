@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class BehaviorModel(Dictionary<string, BehaviorDataModel> behaviorData, Dictionary<string, object> global)
+﻿public class BehaviorModel(Dictionary<string, BehaviorDataModel> behaviorData, Dictionary<string, object> global)
 {
     public Dictionary<string, BehaviorDataModel> BehaviorData { get; } = behaviorData;
 
@@ -48,6 +46,7 @@ public class BehaviorModel(Dictionary<string, BehaviorDataModel> behaviorData, D
             }
         }
 
+        //Returning anything other than a valid prefab for ProjectilePrefabName causes a serverwide crash
         return property.Equals("ProjectilePrefabName") ? "COL_PRJ_DamageProjectile" : 0;
     }
 }

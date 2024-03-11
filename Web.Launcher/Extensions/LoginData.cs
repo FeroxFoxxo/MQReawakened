@@ -9,7 +9,7 @@ public static class LoginData
 {
     public static JObject GetLoginData(this Account account, UserInfo userInfo,
         StartGame startGame, LauncherRwConfig config, LauncherRConfig rConfig) =>
-        new ()
+        new()
         {
             { "status", true },
             {

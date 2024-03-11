@@ -1,14 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
+﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Extensions;
-using Server.Reawakened.XMLs.Models.Npcs;
 using System.Xml;
-using UnityEngine;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
@@ -42,7 +35,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                 if (enemy.Name != "Enemy") continue;
 
                 var enemyType = string.Empty;
-                var behaviorModel = new BehaviorModel(new Dictionary<string, BehaviorDataModel>(), new Dictionary<string, object>());
+                var behaviorModel = new BehaviorModel([], []);
 
                 foreach (XmlAttribute enemyName in enemy.Attributes)
                     if (enemyName.Name == "name")
@@ -52,7 +45,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                     }
                 foreach (XmlNode behavior in enemy.ChildNodes)
                 {
-                    var behaviorDataModel = new BehaviorDataModel(new Dictionary<string, object>(), new List<EnemyResourceModel>());
+                    var behaviorDataModel = new BehaviorDataModel([], []);
 
                     foreach (XmlNode enemyResource in behavior.ChildNodes)
                     {
@@ -69,7 +62,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                             behaviorDataModel.Resources.Add(new EnemyResourceModel(resourceType, resourceName));
                     }
 
-                        switch (behavior.Name)
+                    switch (behavior.Name)
                     {
 
                         // Patrol Behavior
@@ -430,5 +423,5 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
     }
 
     public BehaviorModel GetBehaviorsByName(string enemyName) =>
-        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel(new Dictionary<string, BehaviorDataModel>(), new Dictionary<string, object>());
+        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel([], []);
 }

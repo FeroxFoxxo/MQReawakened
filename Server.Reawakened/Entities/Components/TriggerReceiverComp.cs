@@ -27,7 +27,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
     public ILogger<TriggerReceiverComp> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
 
-    public override void InitializeComponent()
+    public override void DelayedComponentInitialization()
     {
         base.InitializeComponent();
         Trigger(ActiveByDefault);
@@ -127,11 +127,8 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 
         LogTriggerRecieved();
 
-        var entityComponents = Room.Entities[Id];
-
-        foreach (var component in entityComponents)
-            if (component is IRecieverTriggered recieveable)
-                recieveable.RecievedTrigger(activated);
+        foreach (var recieveable in Room.GetEntitiesFromId<IRecieverTriggered>(Id))
+            recieveable.RecievedTrigger(activated);
 
         SendTriggerState(activated);
     }

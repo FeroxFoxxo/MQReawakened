@@ -1,16 +1,11 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Utils;
 public class AISyncEventHelper
 {
 
-    public AIDo_SyncEvent AIDo(BaseComponent entity, Vector3 position, float speedFactor, int behaviorId, string args, float targetPosX, float targetPosY, int direction, bool awareBool)
+    public static AIDo_SyncEvent AIDo(BaseComponent entity, Vector3 position, float speedFactor, int behaviorId, string args, float targetPosX, float targetPosY, int direction, bool awareBool)
     {
         var aiDo = new AIDo_SyncEvent(new SyncEvent(entity.Id, SyncEvent.EventType.AIDo, entity.Room.Time));
         aiDo.EventDataList.Clear();
@@ -27,7 +22,7 @@ public class AISyncEventHelper
         return aiDo;
     }
 
-    public AILaunchItem_SyncEvent AILaunchItem(BaseComponent entity, float posX, float posY, float posZ, float speedX, float speedY, float lifeTime, int prjId, int isGrenade)
+    public static AILaunchItem_SyncEvent AILaunchItem(BaseComponent entity, float posX, float posY, float posZ, float speedX, float speedY, float lifeTime, int prjId, int isGrenade)
     {
         var launch = new AILaunchItem_SyncEvent(new SyncEvent(entity.Id, SyncEvent.EventType.AILaunchItem, entity.Room.Time));
         launch.EventDataList.Clear();
@@ -43,7 +38,7 @@ public class AISyncEventHelper
         return launch;
     }
 
-    public AIDie_SyncEvent AIDie(BaseComponent entity, string spawnItemPrefabName, int spawnItemQuantity, bool spawnLoot, string killedById, bool suicide)
+    public static AIDie_SyncEvent AIDie(BaseComponent entity, string spawnItemPrefabName, int spawnItemQuantity, bool spawnLoot, string killedById, bool suicide)
     {
         var die = new AIDie_SyncEvent(new SyncEvent(entity.Id, SyncEvent.EventType.AIDie, entity.Room.Time));
         die.EventDataList.Add(spawnItemPrefabName);

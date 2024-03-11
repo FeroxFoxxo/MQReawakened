@@ -1,6 +1,5 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
-using SmartFoxClientAPI.Data;
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
@@ -40,11 +39,8 @@ public abstract class BaseCollider
     {
     }
 
-    public virtual bool CheckCollision(BaseCollider collided) => Position.x < collided.Position.x + collided.ColliderBox.Width && collided.Position.x < Position.x + ColliderBox.Width &&
-            Position.y < collided.Position.y + collided.ColliderBox.Height && collided.Position.y < Position.y + ColliderBox.Height &&
-            Plane == collided.Plane;
-
-    public bool CheckPlayerCollision(DefaultCollider collided) => collided.ColliderBox.X < ColliderBox.X + ColliderBox.Width && collided.ColliderBox.X > ColliderBox.X - ColliderBox.Width &&
-                   collided.ColliderBox.Y > ColliderBox.Y - ColliderBox.Height && collided.ColliderBox.Y < ColliderBox.Y + ColliderBox.Height &&
-                   collided.Plane == Plane;
+    public virtual bool CheckCollision(BaseCollider collided) =>
+        Position.x < collided.Position.x + collided.ColliderBox.Width && collided.Position.x < Position.x + ColliderBox.Width &&
+        Position.y < collided.Position.y + collided.ColliderBox.Height && collided.Position.y < Position.y + ColliderBox.Height &&
+        Plane == collided.Plane;
 }

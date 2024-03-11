@@ -1,10 +1,23 @@
-﻿using Server.Reawakened.Network.Protocols;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Protocols.External._M__MinigameHandler;
 
 public class HoopGroup : ExternalProtocol
 {
     public override string ProtocolName => "MH";
+
+    public ILogger<HoopGroup> Logger { get; set; }
+
+    public QuestCatalog QuestCatalog { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public override void Run(string[] message)
     {
@@ -16,6 +29,24 @@ public class HoopGroup : ExternalProtocol
             if (!string.IsNullOrEmpty(message[7]))
                 hoopGroupName = message[7];
 
-        Console.WriteLine("HIT HOOP");
+        Player.CheckAchievement(AchConditionType.Hoop, string.Empty, InternalAchievement, Logger, numberOfHoops);
+        Player.CheckAchievement(AchConditionType.HoopInLevel, Player.Room.LevelInfo.Name, InternalAchievement, Logger, numberOfHoops);
+
+        if (completed)
+        {
+            Player.CheckAchievement(AchConditionType.HoopGroup, string.Empty, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.HoopGroupInLevel, Player.Room.LevelInfo.Name, InternalAchievement, Logger);
+
+            var hoops = Player.Room.GetEntitiesFromType<HoopControllerComp>();
+
+            var masterHoop = hoops.FirstOrDefault(x => x.HoopGroupStringId == hoopGroupName && x.IsMasterController);
+
+            var hitHoops = masterHoop != null
+                ? hoops.Where(x => x.HoopGroupId == masterHoop.HoopGroupId)
+                : hoops.Where(x => x.HoopGroupStringId == hoopGroupName);
+
+            foreach (var hoop in hitHoops)
+                Player.CheckObjective(ObjectiveEnum.Invalid, hoop.Id, hoop.PrefabName, 1, QuestCatalog);
+        }
     }
 }

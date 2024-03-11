@@ -1,11 +1,7 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Server.Reawakened.Players;
+using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Stats;
+namespace Server.Reawakened.Entities.Components;
 public class AIStatsGenericComp : Component<AI_Stats_Generic>
 {
     public float Patrol_DistanceX => ComponentData.Patrol_DistanceX;
@@ -14,7 +10,8 @@ public class AIStatsGenericComp : Component<AI_Stats_Generic>
     public int Patrol_ForceDirectionX => ComponentData.Patrol_ForceDirectionX;
     public bool Aggro_UseAttackBeyondPatrolLine => ComponentData.Aggro_UseAttackBeyondPatrolLine;
 
-    public override void InitializeComponent()
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
+        return;
     }
 }

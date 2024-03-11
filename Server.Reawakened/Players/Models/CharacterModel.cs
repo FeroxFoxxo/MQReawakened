@@ -13,6 +13,9 @@ public class CharacterModel : PersistantData
     public List<EmailMessageModel> EmailMessages { get; set; }
     public List<int> Events { get; set; }
     public Dictionary<int, Dictionary<string, int>> AchievementObjectives { get; set; }
+    public Dictionary<string, float> BestMinigameTimes { get; set; }
+    public Dictionary<string, DailiesModel> CurrentCollectedDailies { get; set; }
+    public Dictionary<string, DailiesModel> CurrentQuestDailies { get; set; }
 
     public CharacterModel()
     {
@@ -21,10 +24,13 @@ public class CharacterModel : PersistantData
         EmailMessages = [];
         Events = [];
         AchievementObjectives = [];
+        BestMinigameTimes = [];
+        CurrentCollectedDailies = [];
+        CurrentQuestDailies = [];
 
         Data = new CharacterDataModel();
         LevelData = new LevelData();
-    }
+    } 
 
     public override string ToString() => throw new InvalidOperationException();
 }

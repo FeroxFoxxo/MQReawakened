@@ -8,9 +8,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.BundlesInternal;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Xml;
 using UnityEngine;
@@ -99,7 +97,9 @@ public static class LoadRoomData
         var entityComponents = typeof(BaseComponent).Assembly.GetServices<BaseComponent>()
             .Where(t => t.BaseType != null)
             .Where(t => t.BaseType.GenericTypeArguments.Length > 0)
-            .ToDictionary(t => t.BaseType.GenericTypeArguments.First().FullName, t => t);
+            .Select(t => new Tuple<string, Type>(t.BaseType.GenericTypeArguments.FirstOrDefault(x => !string.IsNullOrEmpty(x.FullName))?.FullName, t))
+            .Where(t => !string.IsNullOrEmpty(t.Item1))
+            .ToDictionary(t => t.Item1, t => t.Item2);
 
         var processable = typeof(DataComponentAccessor).Assembly.GetServices<DataComponentAccessor>()
             .ToDictionary(x => x.Name, x => x);
@@ -156,7 +156,7 @@ public static class LoadRoomData
         return entities;
     }
 
-    private class EntityTransfer (ReflectionUtils reflectionUtils, ClassCopier classCopier,
+    private class EntityTransfer(ReflectionUtils reflectionUtils, ClassCopier classCopier,
         Room room, FileLogger fileLogger, Dictionary<string, Type> knownComps,
         IServiceProvider serviceProvider, Dictionary<string, Type> processableComps)
     {
@@ -258,21 +258,6 @@ public static class LoadRoomData
         }
 
         return componentList;
-    }
-
-    public static Dictionary<string, T> GetComponentsOfType<T>(this Room room) where T : class
-    {
-        var type = typeof(T);
-
-        var components = room.Entities.Values.SelectMany(t => t).Where(t => t is T).ToArray();
-
-        if (components.Length > 0)
-            return components.ToDictionary(x => x.Id, x => x as T);
-
-        room.Logger.LogError("Could not find components with type {TypeName}. Returning empty. " +
-                             "Possible types: {Types}", type.Name, string.Join(", ", room.Entities.Keys));
-
-        return [];
     }
 
     public static string GetUnknownComponentTypes(this Room room, string id)

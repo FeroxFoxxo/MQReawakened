@@ -1,38 +1,36 @@
 ﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Models;
 using Server.Base.Worlds.EventArguments;
+using System.Text.Json;
 
 namespace Server.Base.Core.Services;
 
-public abstract class DataHandler<T> : IService where T : PersistantData
+public abstract class DataHandler<T>(EventSink sink, ILogger<T> logger, InternalRConfig rConfig, InternalRwConfig rwConfig) : IService where T : PersistantData
 {
-    public readonly ILogger<T> Logger;
-    public readonly EventSink Sink;
-    public readonly InternalRConfig RConfig;
-    public readonly InternalRwConfig RwConfig;
+    public readonly ILogger<T> Logger = logger;
+    public readonly EventSink Sink = sink;
+    public readonly InternalRConfig RConfig = rConfig;
+    public readonly InternalRwConfig RwConfig = rwConfig;
 
-    public Dictionary<int, T> Data;
+    private Dictionary<int, T> _data = [];
+
+    private JsonSerializerOptions jsonSerializerOptions;
 
     public abstract bool HasDefault { get; }
-
-    protected DataHandler(EventSink sink, ILogger<T> logger, InternalRConfig rConfig, InternalRwConfig rwConfig)
-    {
-        Sink = sink;
-        Logger = logger;
-        RConfig = rConfig;
-        RwConfig = rwConfig;
-        Data = [];
-    }
 
     public virtual void Initialize()
     {
         Sink.WorldLoad += Load;
         Sink.WorldSave += Save;
         Sink.CreateData += () => CreateInternal($"new {typeof(T).Name.ToLower()}");
+
+        jsonSerializerOptions = new JsonSerializerOptions()
+        {
+            WriteIndented = RwConfig.IndentSaves
+        };
     }
 
     public string GetFileName() =>
@@ -49,10 +47,10 @@ public abstract class DataHandler<T> : IService where T : PersistantData
                 using StreamReader streamReader = new(filePath, false);
                 var contents = streamReader.ReadToEnd();
 
-                Data = JsonConvert.DeserializeObject<Dictionary<int, T>>(contents) ??
+                _data = JsonSerializer.Deserialize<Dictionary<int, T>>(contents, jsonSerializerOptions) ??
                        throw new InvalidOperationException();
 
-                var count = Data.Count;
+                var count = _data.Count;
 
                 Logger.LogInformation("Loaded {Count} {Name}{Plural} to memory from {Directory}", count,
                     typeof(T).Name.ToLower(), count != 1 ? "s" : string.Empty, filePath);
@@ -69,7 +67,7 @@ public abstract class DataHandler<T> : IService where T : PersistantData
             Logger.LogError(ex, "Could not deserialize save for {Type}.", typeof(T).Name);
         }
 
-        if (Data.Count <= 0)
+        if (_data.Count <= 0)
             CreateInternal("server owner");
 
         OnAfterLoad();
@@ -110,28 +108,34 @@ public abstract class DataHandler<T> : IService where T : PersistantData
 
         using StreamWriter streamWriter = new(filePath, false);
 
-        streamWriter.Write(
-            JsonConvert.SerializeObject(Data, RwConfig.IndentSaves ? Formatting.Indented : Formatting.None)
-        );
+        var json = JsonSerializer.Serialize(_data, jsonSerializerOptions);
+
+        streamWriter.Write(json);
 
         streamWriter.Close();
     }
 
-    public T Get(int userId)
+    public virtual T Get(int id)
     {
-        Data.TryGetValue(userId, out var type);
+        _data.TryGetValue(id, out var type);
 
         return type;
     }
 
-    public int CreateNewId() => Data.Count == 0 ? 1 : Data.Max(x => x.Key) + 1;
+    public Dictionary<int, T> GetInternal() => _data;
+
+    public int CreateNewId() => _data.Count == 0 ? 1 : _data.Max(x => x.Key) + 1;
 
     public void Add(T entity, int id = -1)
     {
         if (id == -1)
             id = CreateNewId();
-        Data.Add(id, entity);
+
+        _data.Add(id, entity);
+
         if (entity is PersistantData pd)
             pd.Id = id;
     }
+
+    public void Remove(int id) => _data.Remove(id);
 }

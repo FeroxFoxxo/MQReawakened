@@ -3,7 +3,6 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using System.Xml;
-using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Rooms.Extensions;
 

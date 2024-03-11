@@ -93,7 +93,18 @@ public class NetState : IDisposable
     public void CheckAlive(double curTicks)
     {
         if (Socket == null)
+        {
+            lock (_handler.Disposed)
+            {
+                if (!_handler.Disposed.Contains(this) && _handler.Instances.Contains(this))
+                {
+                    _logger.LogError("{NetState}: Disconnecting due to socket being null...", this);
+                    _handler.Disposed.Enqueue(this);
+                }
+            }
+
             return;
+        }
 
         if (_nextCheckActivity - curTicks >= 0)
             return;
@@ -227,50 +238,23 @@ public class NetState : IDisposable
                     if (string.IsNullOrEmpty(packet))
                         continue;
 
-                    NetStateHandler.GetProtocol getProtocolData = null;
-                    var protocolType = packet[0];
+                    const string PolicyFileRequest = "<policy-file-request/>";
 
-                    lock (_handler.Disposed)
+                    const string AllPolicy =
+                        @"<?xml version=""1.0""?>
+                        <!DOCTYPE cross-domain-policy SYSTEM ""/xml/dtds/cross-domain-policy.dtd"">
+                        <cross-domain-policy>
+                            <site-control permitted-cross-domain-policies=""all""/>
+                            <allow-access-from domain=""*"" to-ports=""*""/>
+                        </cross-domain-policy>";
+
+                    if (packet == PolicyFileRequest)
                     {
-                        if (_handler.ProtocolLookup.TryGetValue(protocolType, out var handlerProtocol))
-                            getProtocolData = handlerProtocol;
-                    }
-
-                    if (getProtocolData != null)
-                    {
-                        var protocolData = getProtocolData(packet);
-
-                        if (string.IsNullOrEmpty(protocolData.ProtocolId))
-                            continue;
-
-                        if (protocolData.IsUnhandled)
-                        {
-                            AddUnhandledPacket(protocolData.ProtocolId);
-
-                            TracePacketError(protocolData.ProtocolId, packet);
-                        }
-                        else
-                        {
-                            RemoveUnhandledPacket(protocolData.ProtocolId);
-
-                            if (!_rwConfig.IgnoreProtocolType.Contains(protocolData.ProtocolId))
-                                WriteClient(packet);
-
-                            NetStateHandler.SendProtocol sendProtocolData = null;
-
-                            lock (_handler.Disposed)
-                            {
-                                if (_handler.ProtocolSend.TryGetValue(protocolType, out var handlerProtocol))
-                                    sendProtocolData = handlerProtocol;
-                            }
-
-                            sendProtocolData?.Invoke(this, protocolData.ProtocolId, protocolData.PacketData);
-                        }
+                        var policy = Encoding.UTF8.GetBytes(AllPolicy);
+                        socket.BeginSend(policy, 0, policy.Length, SocketFlags.None, new AsyncCallback(OnSend), socket);
                     }
                     else
-                    {
-                        TracePacketError(protocolType.ToString(), packet);
-                    }
+                        Task.Factory.StartNew(() => RunPacket(packet));
                 }
 
                 lock (AsyncLock)
@@ -300,6 +284,54 @@ public class NetState : IDisposable
             lock (_handler.Disposed)
                 _handler.TraceNetworkError(ex, this);
             Dispose();
+        }
+    }
+
+    public void RunPacket(string packet)
+    {
+        NetStateHandler.GetProtocol getProtocolData = null;
+        var protocolType = packet[0];
+
+        lock (_handler.Disposed)
+        {
+            if (_handler.ProtocolLookup.TryGetValue(protocolType, out var handlerProtocol))
+                getProtocolData = handlerProtocol;
+        }
+
+        if (getProtocolData != null)
+        {
+            var protocolData = getProtocolData(packet);
+
+            if (string.IsNullOrEmpty(protocolData.ProtocolId))
+                return;
+
+            if (protocolData.IsUnhandled)
+            {
+                AddUnhandledPacket(protocolData.ProtocolId);
+
+                TracePacketError(protocolData.ProtocolId, packet);
+            }
+            else
+            {
+                RemoveUnhandledPacket(protocolData.ProtocolId);
+
+                if (!_rwConfig.IgnoreProtocolType.Contains(protocolData.ProtocolId))
+                    WriteClient(packet);
+
+                NetStateHandler.SendProtocol sendProtocolData = null;
+
+                lock (_handler.Disposed)
+                {
+                    if (_handler.ProtocolSend.TryGetValue(protocolType, out var handlerProtocol))
+                        sendProtocolData = handlerProtocol;
+                }
+
+                sendProtocolData?.Invoke(this, protocolData.ProtocolId, protocolData.PacketData);
+            }
+        }
+        else
+        {
+            TracePacketError(protocolType.ToString(), packet);
         }
     }
 
@@ -397,6 +429,8 @@ public class NetState : IDisposable
         _data.Clear();
 
         Running = false;
+
+        _logger.LogError("{NetState}: Dumping net state...", this);
 
         lock (_handler.Disposed)
             _handler.Disposed.Enqueue(this);

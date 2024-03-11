@@ -218,17 +218,30 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
         var rwConfig = Services.GetRequiredService<ServerRwConfig>();
         var rConfig = Services.GetRequiredService<ServerRConfig>();
 
-        var defaultEventName = new string(rwConfig.CurrentEvent[rConfig.GameVersion].Reverse().ToArray());
-        var defaultTimedEvent = new string(rwConfig.CurrentTimedEvent[rConfig.GameVersion].Reverse().ToArray());
+        var defaultEventName = string.Empty;
+        var defaultTimedEvent = string.Empty;
+
+        if (!string.IsNullOrEmpty(rwConfig.CurrentEventOverride))
+            defaultEventName = rwConfig.CurrentEventOverride;
+        else if (rConfig.CurrentEvent.TryGetValue(rConfig.GameVersion, out var defaultEventString))
+            defaultEventName = new string(defaultEventString.Reverse().ToArray());
+
+
+        if (!string.IsNullOrEmpty(rwConfig.CurrentTimedEventOverride))
+            defaultTimedEvent = rwConfig.CurrentTimedEventOverride;
+        else if (rConfig.CurrentTimedEvent.TryGetValue(rConfig.GameVersion, out var defaultTimedString))
+            defaultTimedEvent = new string(defaultTimedString.Reverse().ToArray());
 
         var reversedDict = EventIdToNameDict.ToDictionary(
             x => x.Value,
-            x => {
+            x =>
+            {
                 var hasEventAd = PrefabMap[x.Value].ContainsKey("Event_Ads");
                 var hasEventPopupIcon = PrefabMap[x.Value].ContainsKey("EventPopupIcon");
                 var hasEventPopupMenu = PrefabMap[x.Value].ContainsKey("EventPopupMenu");
 
-                return new Event() {
+                return new Event()
+                {
                     EventId = x.Key,
                     EventName = x.Value,
                     HasEventAd = hasEventAd,
@@ -259,7 +272,8 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
 
             SecondaryEvents = reversedDict.Values
                 .Where(x => x.EventId != defaultEvent.EventId)
-                .Select(x => new SecondaryEventInfo() {
+                .Select(x => new SecondaryEventInfo()
+                {
                     EventId = x.EventId,
                     DisplayAd = x.HasEventAd,
                     DisplayIcon = x.HasEventPopupIcon

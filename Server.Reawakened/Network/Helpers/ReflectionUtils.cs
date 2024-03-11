@@ -21,12 +21,16 @@ public class ReflectionUtils
         return services =>
         {
             var args = new object[parameters.Length];
+
             for (var i = 0; i < parameters.Length; i++)
                 args[i] = GetMember(services, parameters[i].ParameterType, typeInfo);
+
             var obj = InvokeConstructor<T>(constructor, args, typeInfo);
 
             foreach (var property in properties)
-                property.SetValue(obj, GetMember(services, property.PropertyType, typeInfo));
+                if (!property.PropertyType.IsPrimitive)
+                    property.SetValue(obj, GetMember(services, property.PropertyType, typeInfo));
+
             return obj;
         };
     }

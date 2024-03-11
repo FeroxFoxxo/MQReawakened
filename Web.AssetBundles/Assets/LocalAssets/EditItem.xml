@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <EditedItems>
     <GameVersion version="v2014">
         <Item name="Add_COM_Armor01_LS01">
@@ -22,8 +22,61 @@
         <Item name="QI_CRS_Marshmallow01_Marshmallow">
             <EditAttribute key="prefab" value="Col_CRS_Marshmallow01"/>
         </Item>
+        <Item name="Add_COM_Explorator01_LF01">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Samurai01_LF04">
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Explorator01_UF01">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_BON_Shaman01_FH01">
+            <EditAttribute key="ingamedescription" value="1692851070"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Clown01_UF02">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Clown01_UF01">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
     </GameVersion>
-    <GameVersion version="v2013">
+    <GameVersion version="vLate2013">
         <Item name="Add_COM_Armor01_S01">
             <EditAttribute key="global_level" value="1"/>
         </Item>
@@ -39,5 +92,168 @@
             <EditAttribute key="currency" value="NickCash"/>
             <EditAttribute key="price" value="1"/>
         </Item>
+        <Item name="WPN_1H_SwordKnight01">
+            <EditAttribute key="id" value="3351"/>
+        </Item>
+        <Item name="Add_COM_Explorator01_LF01">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Samurai01_LF04">
+            <EditAttribute key="ingamedescription" value="870015675"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Explorator01_UF01">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_BON_Shaman01_FH01">
+            <EditAttribute key="ingamedescription" value="1692851070"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Clown01_UF02">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Clown01_UF01">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+    </GameVersion>
+    <GameVersion version="vEarly2013">
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="price" value="50"/>
+        </Item>
+        <Item name="WPN_1H_SwordKnight01">
+            <EditAttribute key="id" value="3351"/>
+        </Item>
+        <Item name="Add_COM_Explorator01_LF01">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Samurai01_LF04">
+            <EditAttribute key="ingamedescription" value="870015675"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Explorator01_UF01">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_BON_Shaman01_FH01">
+            <EditAttribute key="ingamedescription" value="1692851070"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Clown01_UF02">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Clown01_UF01">
+            <EditAttribute key="ingamedescription" value="1716051670"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+    </GameVersion>
+    <GameVersion version="vLate2012">
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="price" value="50"/>
+        </Item>
+        <Item name="WPN_1H_SwordKnight01">
+            <EditAttribute key="id" value="3351"/>
+        </Item>
+        <Item name="WPN_PRJ_XmasSlingshot01">
+            <EditAttribute key="descriptionId" value="1000578"/>
+        </Item>
+    </GameVersion>
+    <GameVersion version="vEarly2012">
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="price" value="50"/>
+        </Item>
+        <Item name="WPN_1H_SwordKnight01">
+            <EditAttribute key="id" value="3351"/>
+        </Item>
+    </GameVersion>
+    <GameVersion version="v2011">
+    </GameVersion>
+    <GameVersion version="Unknown">
     </GameVersion>
 </EditedItems>

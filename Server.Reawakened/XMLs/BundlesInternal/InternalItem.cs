@@ -1,8 +1,11 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
+using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
@@ -14,6 +17,7 @@ public class InternalItem : IBundledXml<InternalItem>
     public string BundleName => "InternalItem";
     public BundlePriority Priority => BundlePriority.High;
 
+    public ServerRConfig ServerRConfig { get; set; }
     public ILogger<InternalItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
@@ -232,10 +236,28 @@ public class InternalItem : IBundledXml<InternalItem>
                             }
                         }
 
+                        var editItem = Services.GetRequiredService<EditItem>();
+                        var config = Services.GetRequiredService<ServerRConfig>();
+
+                        var editedItems = editItem.EditedItemAttributes[config.GameVersion];
+
                         if (!miscDict.LocalizationDict.TryGetValue(descriptionId, out var description))
                         {
-                            Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
-                            continue;
+                            if (!editedItems.ContainsKey(prefabName))
+                                continue;
+
+                            var editedItem = editedItems[prefabName].First();
+
+                            if (miscDict.LocalizationDict.TryGetValue(int.Parse(editedItem.Value), out var editedDescription))
+                            {
+                                descriptionId = int.Parse(editedItem.Value);
+                                description = editedDescription;
+                            }
+                            else
+                            {
+                                Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
+                                continue;
+                            }
                         }
 
                         Descriptions.TryAdd(descriptionId, description);
@@ -248,7 +270,7 @@ public class InternalItem : IBundledXml<InternalItem>
                             continue;
                         }
 
-                        Descriptions.Add(nameId.Key, nameId.Value);
+                        Descriptions.TryAdd(nameId.Key, nameId.Value);
 
                         if (!string.IsNullOrEmpty(prefabName))
                             if (Items.TryGetValue(itemId, out var itemDesc))
@@ -275,7 +297,7 @@ public class InternalItem : IBundledXml<InternalItem>
         {
             maxDesc++;
 
-            if (!Items.ContainsKey(obj.Key) )
+            if (!Items.ContainsKey(obj.Key))
             {
                 Descriptions.Add(maxDesc, obj.Value);
 

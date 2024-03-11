@@ -9,11 +9,8 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.Rooms.Extensions;
-using Server.Base.Timers.Extensions;
 
 namespace Protocols.External._i__InventoryHandler;
 
@@ -27,6 +24,7 @@ public class UseItem : ExternalProtocol
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public override void Run(string[] message)
     {
@@ -39,47 +37,29 @@ public class UseItem : ExternalProtocol
             return;
         }
 
-        Player.RemoveItem(usedItem, 1);
-
         var position = Player.TempData.Position;
         var direction = Player.TempData.Direction;
 
         var subCategoryId = usedItem.SubCategoryId;
-        
-        // Causes compile error due to missing removeFromHotbar variable
-        //if (item.UniqueInInventory)
-        //    removeFromHotbar = false;
 
         switch (subCategoryId)
         {
             case ItemSubCategory.Bomb:
-                HandleDrop(usedItem, position, direction);
+                HandleBomb(usedItem, position, direction);
                 break;
             case ItemSubCategory.Nut:
             case ItemSubCategory.Usable:
             case ItemSubCategory.Liquid:
             case ItemSubCategory.Elixir:
             case ItemSubCategory.Potion:
-                HandleConsumable(usedItem, TimerThread, ServerRConfig, Logger);
+                HandleConsumable(usedItem);
                 break;
             case ItemSubCategory.Tailoring:
             case ItemSubCategory.Alchemy:
-                var recipe = RecipeCatalog.GetRecipeById(itemId);
-
-                Player.Character.Data.RecipeList.RecipeList.Add(recipe);
-
-                Player.SendXt("cz", recipe);
+                HandleRecipe(usedItem);
                 break;
             case ItemSubCategory.SuperPack:
-                foreach (var pair in VendorCatalog.GetSuperPacksItemQuantityMap(itemId))
-                {
-                    var packItem = ItemCatalog.GetItemFromId(pair.Key);
-
-                    if (packItem == null)
-                        continue;
-
-                    Player.AddItem(packItem, pair.Value);
-                }
+                HandleSuperPack(usedItem);
                 break;
             default:
                 Logger.LogWarning("Could not find use for item {ItemId}, type {ItemType}.",
@@ -90,8 +70,13 @@ public class UseItem : ExternalProtocol
         Player.SendUpdatedInventory(false);
     }
 
-    private void HandleConsumable(ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, ILogger<PlayerStatus> logger)
+    private void HandleBomb(ItemDescription usedItem, Vector3Model position, int direction)
     {
+        Player.CheckAchievement(AchConditionType.Bomb, string.Empty, InternalAchievement, Logger);
+        Player.CheckAchievement(AchConditionType.Bomb, usedItem.PrefabName, InternalAchievement, Logger);
+
+        Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
+
         var removeFromHotbar = true;
 
         if (usedItem.InventoryCategoryID is
@@ -103,112 +88,64 @@ public class UseItem : ExternalProtocol
             RemoveFromHotbar(Player.Character, usedItem);
     }
 
-    private void HandleDrop(ItemDescription usedItem, Vector3Model position, int direction)
+    private void HandleConsumable(ItemDescription usedItem)
     {
-        var isLeft = direction > 0;
-
-        var dropDirection = isLeft ? 1 : -1;
-
-        var platform = new GameObjectModel();
-
-        var planeName = position.Z > 10 ? ServerRConfig.IsBackPlane[false] : ServerRConfig.IsBackPlane[true];
-        position.Z = 0;
-
-        var dropItemData = new DroppedItemData()
+        if (usedItem.ItemActionType == ItemActionType.Eat)
         {
-            DropDirection = dropDirection,
-            Position = position,
-            UsedItem = usedItem
-        };
-
-        TimerThread.DelayCall(DropItem, dropItemData, TimeSpan.FromMilliseconds(1000), TimeSpan.Zero, 1);
-    }
-
-    private class DroppedItemData()
-    {
-        public int DropDirection { get; set; }
-        public ItemDescription UsedItem { get; set; }
-        public Vector3Model Position { get; set; }
-    }
-
-    private void DropItem(object data)
-    {
-        var dropData = (DroppedItemData)data;
-
-        var dropItem = new LaunchItem_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            Player.TempData.Position.X + dropData.DropDirection, Player.TempData.Position.Y, Player.TempData.Position.Z,
-            0, 0, 3, 0, dropData.UsedItem.PrefabName);
-
-        Player.Room.SendSyncEvent(dropItem);
-
-        foreach (var entity in Player.Room.Entities)
-        {
-            foreach (var component in entity.Value
-                .Where(comp => Vector3Model.Distance(dropData.Position, comp.Position) <= 5.4f))
-            {
-                var prefabName = component.PrefabName;
-                var objectId = component.Id;
-
-                if (component is HazardControllerComp or BreakableEventControllerComp)
-                {
-                    var bombData = new BombData()
-                    {
-                        PrefabName = prefabName,
-                        Component = component,
-                        ObjectId = int.Parse(objectId),
-                        Damage = GetDamageType(dropData.UsedItem)
-                    };
-
-                    TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2850), TimeSpan.Zero, 1);
-                }
-            }
+            Player.CheckAchievement(AchConditionType.Consumable, string.Empty, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, InternalAchievement, Logger);
         }
-    }
-    
-    private int GetDamageType(ItemDescription usedItem)
-    {
-        var damage = ServerRConfig.DefaultDamage;
-        if (usedItem.ItemEffects.Count == 0)
+        else if (usedItem.ItemActionType == ItemActionType.Drink)
         {
-            Logger.LogWarning("Item ({usedItemName}) has 0 ItemEffects! Are you sure this item was set up correctly?", usedItem.PrefabName);
-            return damage;
+            Player.CheckAchievement(AchConditionType.Drink, string.Empty, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, InternalAchievement, Logger);
         }
 
-        foreach (var effect in usedItem.ItemEffects)
+        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
+
+        var removeFromHotbar = true;
+
+        if (usedItem.InventoryCategoryID is
+            ItemFilterCategory.WeaponAndAbilities or
+            ItemFilterCategory.Pets)
+            removeFromHotbar = false;
+
+        if (removeFromHotbar)
+            RemoveFromHotbar(Player.Character, usedItem);
+    }
+
+    private void HandleRecipe(ItemDescription usedItem)
+    {
+        Player.RemoveItem(usedItem, 1, ItemCatalog);
+
+        var recipe = RecipeCatalog.GetRecipeById(usedItem.RecipeParentItemID);
+
+        Player.Character.Data.RecipeList.RecipeList.Add(recipe);
+
+        Player.SendXt("cz", recipe);
+    }
+
+    private void HandleSuperPack(ItemDescription usedItem)
+    {
+        foreach (var pair in VendorCatalog.GetSuperPacksItemQuantityMap(usedItem.ItemId))
         {
-            switch (effect.Type)
-            {    
-                case ItemEffectType.FireDamage:
-                case ItemEffectType.PoisonDamage:
-                case ItemEffectType.IceDamage:
-                case ItemEffectType.AirDamage:
-                    damage = effect.Value;
-                    break;
-                default:
-                    break;
-            }
+            var packItem = ItemCatalog.GetItemFromId(pair.Key);
+
+            if (packItem == null)
+                continue;
+
+            Player.AddItem(packItem, pair.Value, ItemCatalog);
         }
-        return damage;
-    }
-    
-    private class BombData()
-    {
-        public string PrefabName { get; set; }
-        public int ObjectId { get; set; }
-        public BaseComponent Component { get; set; }
-        public int Damage { get; set; }
-    }
 
-    private void ExplodeBomb(object data)
-    {
-        var bData = (BombData)data;
+        var removeFromHotbar = true;
 
-        Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", bData.PrefabName, bData.ObjectId);
+        if (usedItem.InventoryCategoryID is
+            ItemFilterCategory.WeaponAndAbilities or
+            ItemFilterCategory.Pets)
+            removeFromHotbar = false;
 
-        if (bData.Component is BreakableEventControllerComp breakableObjEntity)
-            breakableObjEntity.Damage(10, Player);
-        else if (bData.Component is EnemyControllerComp enemyEntity)
-            enemyEntity.Damage(bData.Damage, Player);
+        if (removeFromHotbar)
+            RemoveFromHotbar(Player.Character, usedItem);
     }
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item)

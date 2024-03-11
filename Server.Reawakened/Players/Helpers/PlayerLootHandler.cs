@@ -14,6 +14,7 @@ public static class PlayerLootHandler
         ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
         var loot = lootCatalog.GetLootById(gameObjectId);
+
         if (string.IsNullOrEmpty(loot.ObjectId))
             logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);
 
@@ -21,7 +22,7 @@ public static class PlayerLootHandler
             loot.BananaRewards.GrantLootBananas(player);
 
         if (loot.ItemRewards.Count > 0)
-            loot.ItemRewards.GrantLootItems(gameObjectId, player, itemCatalog, loot.DoWheel, loot.WeightRange);
+            loot.GrantLootItems(gameObjectId, player, itemCatalog);
     }
 
     private static void GrantLootBananas(this List<BananaReward> bananas, Player player)
@@ -36,7 +37,8 @@ public static class PlayerLootHandler
         player.AddBananas(totalBananas);
     }
 
-    private static void GrantLootItems(this List<ItemReward> items, string objectId, Player player, ItemCatalog itemCatalog, bool doWheel, int weightRange)
+    private static void GrantLootItems(this LootModel lootModel, string objectId, Player player,
+        ItemCatalog itemCatalog)
     {
         var random = new Random();
 
@@ -45,7 +47,7 @@ public static class PlayerLootHandler
 
         var gottenItems = new List<ItemModel>();
 
-        foreach (var itemReward in items)
+        foreach (var itemReward in lootModel.ItemRewards)
         {
             foreach (var item in itemReward.Items)
                 lootableItems.Append(item.Value.ItemId);
@@ -55,7 +57,7 @@ public static class PlayerLootHandler
             while (count > 0)
             {
 
-                var randomWeight = random.NextInt64(1, weightRange);
+                var randomWeight = random.NextInt64(1, lootModel.WeightRange);
                 var selector = 0;
                 foreach (var item in itemReward.Items)
                 {
@@ -75,11 +77,12 @@ public static class PlayerLootHandler
         {
             itemsLooted.Append(item.ToString());
             if (item.ItemId > 0)
-                player.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count);
+                player.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count, itemCatalog);
         }
 
-        if (doWheel)
+        if (lootModel.DoWheel)
             SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
+
         player.SendUpdatedInventory(false);
     }
 

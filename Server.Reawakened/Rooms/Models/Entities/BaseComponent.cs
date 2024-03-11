@@ -25,6 +25,10 @@ public abstract class BaseComponent
     {
     }
 
+    public virtual void DelayedComponentInitialization()
+    {
+    }
+
     public virtual object[] GetInitData(Player player) => [];
 
     public virtual void SendDelayedData(Player player)
@@ -41,7 +45,7 @@ public abstract class BaseComponent
 
     public virtual void RunSyncedEvent(SyncEvent syncEvent, Player player) =>
         SendComponentMethodUnknown("unrun-synced-events", "Failed Sync Event", "RunSyncedEvent",
-            $"Sync Data: {syncEvent.EncodeData()}\nType:{syncEvent.Type}");
+            $"Sync Data: {syncEvent.EncodeData()}\nType: {syncEvent.Type}");
 
     public void SendComponentMethodUnknown(string file, string title, string method, string data = "")
     {

@@ -1,9 +1,11 @@
-﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.Configs;
+﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity.Utils;
-using Server.Reawakened.Entities.Stats;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -13,24 +15,22 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.Marshalling;
-using System.Text;
-using System.Threading.Tasks;
+using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 using UnityEngine;
-using static System.Net.Mime.MediaTypeNames;
-using static UIBase;
 
 namespace Server.Reawakened.Entities.Entity;
 
 public abstract class Enemy : IDestructible
 {
+    public readonly Room Room;
+    public readonly string Id;
+
+    private readonly ILogger<Enemy> _logger;
+    private readonly InternalAchievement _internalAchievement;
+    private readonly QuestCatalog _questCatalog;
+
     public bool Init;
-    public Room Room;
-    public string Id;
 
     public Vector3 Position;
     public Rect DetectionRange;
@@ -40,7 +40,7 @@ public abstract class Enemy : IDestructible
     public bool IsFromSpawner;
     public float MinBehaviorTime;
 
-    private float _negativeHeight;
+    private readonly float _negativeHeight;
 
     public BaseComponent Entity;
     public AIStatsGlobalComp Global;
@@ -53,41 +53,57 @@ public abstract class Enemy : IDestructible
     public AIBaseBehavior AiBehavior;
     public BehaviorModel BehaviorList;
 
-    public AISyncEventHelper SyncBuilder = new AISyncEventHelper();
+    public AISyncEventHelper SyncBuilder;
+    public TimerThread TimerThread { get; set; }
 
-    public Enemy(Room room, string entityId, BaseComponent baseEntity)
+    public Enemy(Room room, string entityId, BaseComponent baseEntity, IServiceProvider services)
     {
         //Basic Stats
         Room = room;
         Id = entityId;
-        Health = 50;
         IsFromSpawner = false;
         MinBehaviorTime = 0;
+        SyncBuilder = new AISyncEventHelper();
+
+        _logger = services.GetRequiredService<ILogger<Enemy>>();
+        _internalAchievement = services.GetRequiredService<InternalAchievement>();
+        _questCatalog = services.GetRequiredService<QuestCatalog>();
 
         //Component Info
         Entity = baseEntity;
         EnemyController = (EnemyControllerComp)baseEntity;
-        var entityList = room.Entities.Values.SelectMany(s => s);
-        foreach (var entity in entityList.Where(x => x.Id == Id))
-        {
-            if (entity is AIStatsGlobalComp global)
-                Global = global;
-            else if (entity is AIStatsGenericComp generic)
-                Generic = generic;
-            else if (entity is InterObjStatusComp status)
-                Status = status;
-        }
+
+        var global = room.GetEntityFromId<AIStatsGlobalComp>(Id);
+
+        if (global != null)
+            Global = global;
+
+        var generic = room.GetEntityFromId<AIStatsGenericComp>(Id);
+
+        if (generic != null)
+            Generic = generic;
+
+        var status = room.GetEntityFromId<InterObjStatusComp>(Id);
+
+        if (status != null)
+            Status = status;
+
+        //Stats
+        Health = EnemyController.EnemyHealth;
 
         //Position Info
         ParentPlane = Entity.ParentPlane;
         Position = new Vector3(Entity.Position.X, Entity.Position.Y, Entity.Position.Z);
+
         if (ParentPlane == "Plane1")
             Position.z = 20;
 
         //Hitbox Info
         _negativeHeight = 0;
+
         if (Entity.Scale.Y < 0)
             _negativeHeight = Entity.Rectangle.Height;
+
         Hitbox = new EnemyCollider(Id, new Vector3Model { X = Position.x, Y = Position.y - _negativeHeight, Z = Position.z },
             Entity.Rectangle.Width, Entity.Rectangle.Height, Entity.ParentPlane, Room);
         Room.Colliders.Add(Id, Hitbox);
@@ -121,77 +137,70 @@ public abstract class Enemy : IDestructible
         AiData.Sync_PosY = Position.y;
         AiData.SyncInit_Dir = Generic.Patrol_ForceDirectionX;
         AiData.SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio;
-
-
     }
 
-    public virtual void Initialize()
-    {
-        Init = true;
-    }
+    public virtual void Initialize() => Init = true;
 
     public virtual void Update()
     {
         if (!Init)
             Initialize();
 
+        if (Room.IsObjectKilled(Id))
+            return;
+
         switch (AiBehavior)
         {
             //All commented lines are behaviors that have not been added yet
 
             //AIBehavior_Acting
-            case AIBehavior_LookAround:
+            case AIBehaviorLookAround:
                 HandleLookAround();
                 break;
-            case AIBehavior_Patrol:
+            case AIBehaviorPatrol:
                 HandlePatrol();
                 break;
-            case AIBehavior_Aggro:
+            case AIBehaviorAggro:
                 HandleAggro();
                 break;
-            case AIBehavior_ComeBack:
+            case AIBehaviorComeBack:
                 HandleComeBack();
                 break;
-            case AIBehavior_Shooting:
+            case AIBehaviorShooting:
                 HandleShooting();
                 break;
             //AIBehavior_Projectile
-            case AIBehavior_Bomber:
+            case AIBehaviorBomber:
                 HandleBomber();
                 break;
-            case AIBehavior_Grenadier:
+            case AIBehaviorGrenadier:
                 HandleGrenadier();
                 break;
-            case AIBehavior_Stomper:
+            case AIBehaviorStomper:
                 HandleStomper();
                 break;
-            case AIBehavior_Stinger:
+            case AIBehaviorStinger:
                 HandleStinger();
                 break;
                 //AIBehavior_Spike
         }
 
-        //if (Id.Equals("28489"))
-        //    Console.WriteLine(AiData.Intern_Dir);
-
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
         Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - _negativeHeight, Position.z);
-
     }
 
     public string WriteBehaviorList()
     {
-        var compiler = new AIPropertiesCompiler();
-
         var bList = new SeparatedStringBuilder('`');
+
         SeparatedStringBuilder bDefinesList;
 
         foreach (var behavior in BehaviorList.BehaviorData)
         {
             bDefinesList = new SeparatedStringBuilder('|');
             bDefinesList.Append(behavior.Key);
-            bDefinesList.Append(compiler.CreateBehaviorString(this, behavior.Key));
-            bDefinesList.Append(compiler.CreateResources(behavior.Value.Resources));
+            bDefinesList.Append(this.CreateBehaviorString(behavior.Key));
+            bDefinesList.Append(behavior.Value.Resources.CreateResources());
             bList.Append(bDefinesList.ToString());
         }
 
@@ -200,6 +209,9 @@ public abstract class Enemy : IDestructible
 
     public virtual void Damage(int damage, Player origin)
     {
+        if (Room.IsObjectKilled(Id))
+            return;
+
         Health -= damage;
 
         var damageEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true);
@@ -207,18 +219,15 @@ public abstract class Enemy : IDestructible
 
         if (Health <= 0)
         {
-            if (EnemyController.OnDeathTargetID != null && Room.Entities.TryGetValue(EnemyController.OnDeathTargetID, out var foundTrigger) && EnemyController.OnDeathTargetID != "0")
-            {
-                foreach (var component in foundTrigger)
-                {
-                    if (component is TriggerReceiverComp trigger)
-                        trigger.Trigger(true);
-                }
-            }
+            if (EnemyController.OnDeathTargetID is not null and not "0")
+                foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(EnemyController.OnDeathTargetID))
+                    trigger.Trigger(true);
 
             //Temp values for now
-            Room.SendSyncEvent(SyncBuilder.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
-            Destroy(Room, Id);
+            Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "", 10, true, origin == null ? "0" : origin.GameObjectId, false));
+            origin.AddReputation(EnemyController.OnKillExp);
+            Room.KillEntity(origin, Id);
+            GetRewards(origin, Id);
         }
     }
 
@@ -229,7 +238,7 @@ public abstract class Enemy : IDestructible
         switch (behaviorName)
         {
             case "Patrol":
-                AiBehavior = new AIBehavior_Patrol(
+                AiBehavior = new AIBehaviorPatrol(
                     Generic.Patrol_DistanceX,
                     Generic.Patrol_DistanceY,
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Patrol", "speed")),
@@ -240,7 +249,7 @@ public abstract class Enemy : IDestructible
                 break;
 
             case "Aggro":
-                AiBehavior = new AIBehavior_Aggro(
+                AiBehavior = new AIBehaviorAggro(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "speed")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Aggro", "moveBeyondTargetDistance")),
                     Convert.ToBoolean(BehaviorList.GetBehaviorStat("Aggro", "stayOnPatrolPath")),
@@ -251,7 +260,7 @@ public abstract class Enemy : IDestructible
                 break;
 
             case "LookAround":
-                AiBehavior = new AIBehavior_LookAround(
+                AiBehavior = new AIBehaviorLookAround(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "initialProgressRatio")),
                     Convert.ToBoolean(BehaviorList.GetBehaviorStat("LookAround", "snapOnGround"))
@@ -259,14 +268,14 @@ public abstract class Enemy : IDestructible
                 break;
 
             case "ComeBack":
-                AiBehavior = new AIBehavior_ComeBack(
+                AiBehavior = new AIBehaviorComeBack(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("ComeBack", "speed"))
                     );
                 AiBehavior.Start(ref AiData, Room.Time, [Position.x.ToString(), AiData.Intern_SpawnPosY.ToString()]);
                 return AiBehavior;
 
             case "Shooting":
-                AiBehavior = new AIBehavior_Shooting(
+                AiBehavior = new AIBehaviorShooting(
                     Convert.ToInt32(BehaviorList.GetBehaviorStat("Shooting", "nbBulletsPerRound")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "fireSpreadAngle")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Shooting", "delayBetweenBullet")),
@@ -282,14 +291,14 @@ public abstract class Enemy : IDestructible
                 break;
 
             case "Bomber":
-                AiBehavior = new AIBehavior_Bomber(
+                AiBehavior = new AIBehaviorBomber(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Bomber", "inTime")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Bomber", "loopTime"))
                     );
                 break;
 
             case "Grenadier":
-                AiBehavior = new AIBehavior_Grenadier(
+                AiBehavior = new AIBehaviorGrenadier(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Grenadier", "inTime")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Grenadier", "loopTime")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Grenadier", "outTime")),
@@ -301,14 +310,14 @@ public abstract class Enemy : IDestructible
                 break;
 
             case "Stomper":
-                AiBehavior = new AIBehavior_Stomper(
+                AiBehavior = new AIBehaviorStomper(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Stomper", "attackTime")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Stomper", "impactTime"))
                     );
                 break;
 
             case "Stinger":
-                AiBehavior = new AIBehavior_Stinger(
+                AiBehavior = new AIBehaviorStinger(
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "speedForward")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "speedBackward")),
                     Convert.ToSingle(BehaviorList.GetBehaviorStat("Stinger", "inDurationForward")),
@@ -342,27 +351,23 @@ public abstract class Enemy : IDestructible
     {
         if (AiData.Intern_Dir < 0)
         {
-            if (!limitedByPatrolLine)
-            {
-                return AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
+            return !limitedByPatrolLine
+                ? AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z == pos.Z;
-            }
-            return AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY && 
+                   Position.z == pos.Z
+                : AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
                    Position.z == pos.Z &&
                    pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
         }
         else if (AiData.Intern_Dir >= 0)
         {
-            if (!limitedByPatrolLine)
-            {
-                return AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
+            return !limitedByPatrolLine
+                ? AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z == pos.Z;
-            }
-            return AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY && 
+                   Position.z == pos.Z
+                : AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
                    Position.z == pos.Z &&
                    pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
         }
@@ -373,33 +378,32 @@ public abstract class Enemy : IDestructible
 
     public virtual void HandleLookAround() { }
 
-    public virtual void HandlePatrol() 
-    {
-        AiBehavior.Update(ref AiData, Room.Time);
-    }
+    public virtual void HandlePatrol() => AiBehavior.Update(ref AiData, Room.Time);
 
     public virtual void HandleComeBack() { }
 
     public virtual void HandleAggro() { }
 
-    public virtual void HandleShooting() 
+    public virtual void HandleShooting()
     {
         if (AiData.Intern_FireProjectile)
         {
             var pos = new Vector3Model { X = Position.x + EnemyGlobalProps.Global_ShootOffsetX, Y = Position.y + EnemyGlobalProps.Global_ShootOffsetY, Z = Position.z };
 
             var rand = new System.Random();
-            var prjId = Math.Abs(rand.Next()).ToString();
-            while (Room.GameObjectIds.Contains(prjId))
-                prjId = Math.Abs(rand.Next()).ToString();
+            var projectileId = Math.Abs(rand.Next()).ToString();
+
+            while (Room.GameObjectIds.Contains(projectileId))
+                projectileId = Math.Abs(rand.Next()).ToString();
 
             // Magic numbers here are temporary
-            Room.SendSyncEvent(SyncBuilder.AILaunchItem(Entity, pos.X, pos.Y, pos.Z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, int.Parse(prjId), 0));
+            Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Entity, pos.X, pos.Y, pos.Z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, int.Parse(projectileId), 0));
 
             AiData.Intern_FireProjectile = false;
 
-            var prj = new AIProjectileEntity(Room, Id, prjId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3);
-            Room.Projectiles.Add(prjId, prj);
+            var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
+                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, TimerThread);
+            Room.Projectiles.Add(projectileId, aiProjectile);
         }
     }
 
@@ -412,7 +416,7 @@ public abstract class Enemy : IDestructible
         if (AiData.Intern_FireProjectile)
         {
             // Magic numbers here are temporary
-            Room.SendSyncEvent(SyncBuilder.AILaunchItem(Entity, Position.x + EnemyGlobalProps.Global_ShootOffsetX, Position.y + EnemyGlobalProps.Global_ShootOffsetY, Position.z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, 0, 1));
+            Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Entity, Position.x + EnemyGlobalProps.Global_ShootOffsetX, Position.y + EnemyGlobalProps.Global_ShootOffsetY, Position.z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, 0, 1));
 
             AiData.Intern_FireProjectile = false;
         }
@@ -430,23 +434,28 @@ public abstract class Enemy : IDestructible
     public AIInit_SyncEvent AIInit(float healthMod, float sclMod, float resMod)
     {
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, Position.x, Position.y, Position.z, Position.x, Position.y, Generic.Patrol_InitialProgressRatio,
-        Status.MaxHealth, Status.MaxHealth, healthMod, sclMod, resMod, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
+        EnemyController.EnemyHealth, EnemyController.MaxHealth, healthMod, sclMod, resMod, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
+
         aiInit.EventDataList[2] = Position.x;
         aiInit.EventDataList[3] = Position.y;
         aiInit.EventDataList[4] = Position.z;
+
         return aiInit;
     }
 
     public void GetInitEnemyData(Player player)
     {
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ, Position.z, AiData.Intern_SpawnPosY, Generic.Patrol_InitialProgressRatio,
-        Health, Status.MaxHealth, 1f, 1f, 1f, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
+        Health, EnemyController.MaxHealth, 1f, 1f, 1f, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
+
         aiInit.EventDataList[2] = AiData.Intern_SpawnPosX;
         aiInit.EventDataList[3] = AiData.Intern_SpawnPosY;
         aiInit.EventDataList[4] = Position.z;
+
         player.SendSyncEventToPlayer(aiInit);
 
         var aiDo = new AIDo_SyncEvent(new SyncEvent(Id, SyncEvent.EventType.AIDo, Room.Time));
+
         aiDo.EventDataList.Clear();
         aiDo.EventDataList.Add(AiData.Sync_PosX);
         aiDo.EventDataList.Add(AiData.Sync_PosY);
@@ -457,13 +466,30 @@ public abstract class Enemy : IDestructible
         aiDo.EventDataList.Add(AiData.Sync_TargetPosY);
         aiDo.EventDataList.Add(AiData.Intern_Dir);
         aiDo.EventDataList.Add(0);
+
         player.SendSyncEventToPlayer(aiDo);
     }
 
-    public void Destroy(Room room, string id)
+    public void Destroy(Player player, Room room, string id)
     {
-        room.Entities.Remove(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
+
+        player.CheckObjective(ObjectiveEnum.Score, id, Entity.PrefabName, 1, _questCatalog);
+        player.CheckObjective(ObjectiveEnum.Scoremultiple, id, Entity.PrefabName, 1, _questCatalog);
+
+        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, _internalAchievement, _logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemy, Entity.PrefabName, _internalAchievement, _logger);
+        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, _internalAchievement, _logger);
+    }
+
+    public void GetRewards(Player player, string enemyId)
+    {
+        //Implement XML data with enemyId for reward stats.
+        //Below is temporary reward code for now.
+        var tempEnemyXpReward = (player.Character.Data.ReputationForNextLevel - player.Character.Data.Reputation) /
+            new System.Random().Next(125, 160);
+
+        player.AddReputation(tempEnemyXpReward);
     }
 }

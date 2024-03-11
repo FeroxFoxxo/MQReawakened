@@ -1,13 +1,15 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Server.Base.Logging;
-using Server.Base.Timers.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
+using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -59,26 +61,25 @@ public static class PlayerExtensions
     public static void AddReputation(this Player player, int reputation)
     {
         var charData = player.Character.Data;
+
+        if (player.TempData.ReputationBoostsElixir)
+            reputation = Convert.ToInt32(reputation * 0.1);
+
         reputation += charData.Reputation;
 
         while (reputation > charData.ReputationForNextLevel)
         {
-            reputation -= charData.ReputationForNextLevel;
-            player.Character.SetLevelXp(charData.GlobalLevel + 1, reputation);
+            player.Character.SetLevelXp(charData.GlobalLevel + 1);
             player.SendLevelUp();
         }
-
-        if (player.TempData.ReputationBoostsElixir)
-            reputation = Convert.ToInt32(reputation * 0.1);
 
         charData.Reputation = reputation;
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
     }
 
-    public static void TradeWithPlayer(this Player origin)
+    public static void TradeWithPlayer(this Player origin, ItemCatalog itemCatalog)
     {
         var tradeModel = origin.TempData.TradeModel;
-        var catalog = origin.DatabaseContainer.ItemCatalog;
 
         if (tradeModel == null)
             return;
@@ -87,10 +88,10 @@ public static class PlayerExtensions
 
         foreach (var item in tradeModel.ItemsInTrade)
         {
-            var itemDesc = catalog.GetItemFromId(item.Key);
+            var itemDesc = itemCatalog.GetItemFromId(item.Key);
 
-            tradeModel.TradingPlayer.AddItem(itemDesc, item.Value);
-            origin.RemoveItem(itemDesc, item.Value);
+            tradeModel.TradingPlayer.AddItem(itemDesc, item.Value, itemCatalog);
+            origin.RemoveItem(itemDesc, item.Value, itemCatalog);
         }
 
         tradingPlayer.Character.Data.Cash += tradeModel.BananasInTrade;
@@ -169,10 +170,8 @@ public static class PlayerExtensions
         player.SendXt("ca", charData.Cash, charData.NCash);
     }
 
-    public static void SendLevelChange(this Player player)
+    public static void SendLevelChange(this Player player, WorldHandler worldHandler)
     {
-        var worldHandler = player.DatabaseContainer.WorldHandler;
-
         var error = string.Empty;
         var levelName = string.Empty;
         var surroundingLevels = string.Empty;
@@ -208,13 +207,11 @@ public static class PlayerExtensions
     public static void AddCharacter(this Player player, CharacterModel character) =>
         player.UserInfo.CharacterIds.Add(character.Id);
 
-    public static void DeleteCharacter(this Player player, int id)
+    public static void DeleteCharacter(this Player player, int id, CharacterHandler characterHandler)
     {
-        var characterHandler = player.DatabaseContainer.CharacterHandler;
-
         player.UserInfo.CharacterIds.Remove(id);
 
-        characterHandler.Data.Remove(id);
+        characterHandler.Remove(id);
 
         player.UserInfo.LastCharacterSelected = player.UserInfo.CharacterIds.Count > 0
             ? characterHandler.Get(player.UserInfo.CharacterIds.First()).Data.CharacterName
@@ -225,6 +222,10 @@ public static class PlayerExtensions
     {
         player.Character.SetLevelXp(level);
         player.SendLevelUp();
+
+        player.AddNCash(125); //Temporary way to earn NC upon level up.
+        player.SendCashUpdate();
+        //(Needed for gameplay improvements as NC is currently unobtainable)
 
         logger.LogTrace("{Name} leveled up to {Level}", player.CharacterName, level);
     }
@@ -261,12 +262,44 @@ public static class PlayerExtensions
         }
     }
 
-    public static void SetObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName, int count) =>
-        player.CheckObjective(type, gameObjectId, prefabName, count, true);
+    public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
+        int count, QuestCatalog questCatalog)
+    {
+        var itemCatalog = questCatalog.Services.GetRequiredService<ItemCatalog>();
+        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog);
+    }
 
-    public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName, int count, bool setObjective = false)
+    public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
+        int count, ItemCatalog itemCatalog)
+    {
+        var questCatalog = itemCatalog.Services.GetRequiredService<QuestCatalog>();
+        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog);
+    }
+
+    public static void SetObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
+        int count, QuestCatalog questCatalog)
+    {
+        var itemCatalog = questCatalog.Services.GetRequiredService<ItemCatalog>();
+        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog, true);
+    }
+
+    public static void SetObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
+        int count, ItemCatalog itemCatalog)
+    {
+        var questCatalog = itemCatalog.Services.GetRequiredService<QuestCatalog>();
+        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog, true);
+    }
+
+    private static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
+        int count, QuestCatalog questCatalog, ItemCatalog itemCatalog, bool setObjective = false)
     {
         if (count <= 0)
+            return;
+
+        if (player == null)
+            return;
+
+        if (player.Character == null || player.Room == null)
             return;
 
         var character = player.Character.Data;
@@ -280,39 +313,41 @@ public static class PlayerExtensions
             foreach (var objectiveKVP in quest.Objectives)
             {
                 var objective = objectiveKVP.Value;
-                bool isItem;
 
-                if (objective.ObjectiveType != type ||
-                    objective.Completed)
+                if (objective == null)
                     continue;
 
+                if (objective.ObjectiveType != type || objective.Completed)
+                    continue;
+
+                var meetsRequirement = false;
+
                 if (objective.GameObjectId > 0)
+                    if (objective.GameObjectId.ToString() == gameObjectId &&
+                        objective.LevelId == player.Character.LevelData.LevelId)
+                        meetsRequirement = true;
+
+                if (objective.ItemId > 0 && !meetsRequirement)
                 {
-                    if (objective.GameObjectId.ToString() != gameObjectId)
-                        continue;
+                    var item = itemCatalog.GetItemFromPrefabName(prefabName);
 
-                    isItem = false;
-                }
-                else
-                {
-                    var item = player.DatabaseContainer.ItemCatalog.GetItemFromPrefabName(prefabName);
-
-                    if (item == null)
-                        continue;
-
-                    if (item.ItemId != objective.ItemId)
-                        continue;
-
-                    isItem = item.InventoryCategoryID is
-                        ItemFilterCategory.Accessories or
-                        ItemFilterCategory.Clothing or
-                        ItemFilterCategory.Consumables or
-                        ItemFilterCategory.Pets or
-                        ItemFilterCategory.RecipesAndCraftingIngredients or
-                        ItemFilterCategory.WeaponAndAbilities;
+                    if (item != null)
+                        if (item.ItemId == objective.ItemId)
+                            meetsRequirement = item.InventoryCategoryID is not ItemFilterCategory.None
+                                                                        and not ItemFilterCategory.QuestItems
+                                               || objective.LevelId == player.Character.LevelData.LevelId;
                 }
 
-                if (objective.LevelId != player.Character.LevelData.LevelId && !isItem)
+                if (objective.MultiScorePrefabs != null)
+                    if (objective.MultiScorePrefabs.Count > 0 && !meetsRequirement)
+                        if (objective.MultiScorePrefabs.Contains(prefabName))
+                            if (objective.LevelId > 0 && objective.LevelId == player.Room.LevelInfo.LevelId)
+                                meetsRequirement = true;
+
+                if (!meetsRequirement && objective.LevelId == player.Character.LevelData.LevelId && type == ObjectiveEnum.MinigameMedal)
+                    meetsRequirement = true;
+
+                if (!meetsRequirement)
                     continue;
 
                 if (setObjective)
@@ -346,12 +381,13 @@ public static class PlayerExtensions
                 if (!quest.Objectives.Any(o => !o.Value.Completed))
                 {
                     player.SendXt("nQ", quest.Id);
-                    quest.QuestStatus = QuestStatus.QuestState.TO_BE_VALIDATED;
+                    quest.QuestStatus = QuestState.TO_BE_VALIDATED;
                 }
-                player.UpdateNpcsInLevel(quest);
+                player.UpdateNpcsInLevel(quest, questCatalog);
             }
         }
     }
+
 
     public static void UpdateEquipment(this Player sentPlayer)
     {

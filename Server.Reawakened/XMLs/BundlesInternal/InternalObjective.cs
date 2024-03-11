@@ -1,7 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 

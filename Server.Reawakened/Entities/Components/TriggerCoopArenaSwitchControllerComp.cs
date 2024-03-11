@@ -4,88 +4,56 @@ using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class TriggerCoopArenaSwitchControllerComp : TriggerCoopControllerComp<TriggerCoopArenaSwitchController>
+public class TriggerCoopArenaSwitchControllerComp : BaseTriggerCoopController<TriggerCoopArenaSwitchController>
 {
     public string ArenaObjectId => ComponentData.ArenaObjectID;
-    public DatabaseContainer DatabaseContainer { get; set; }
-    public new ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
+    public PlayerContainer PlayerContainer { get; set; }
+    public ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
 
-    public TriggerArenaComp Arena = null;
+    public ITriggerComp triggerable;
 
-    public override object[] GetInitData(Player player) => base.GetInitData(player);
+    public override void InitializeComponent()
+    {
+        base.InitializeComponent();
+
+        foreach (var triggerableComp in Room.GetEntitiesFromId<ITriggerComp>(ArenaObjectId))
+            triggerable = triggerableComp;
+
+        if (!IsEnabled)
+            IsEnabled = triggerable != null;
+    }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        base.RunSyncedEvent(syncEvent, player);
-
-        if (Id == "5664") // Temporary while blue arenas are in progress
+        if (triggerable == null)
         {
-            player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1);
+            Logger.LogError("Could not find trigger with id {Id}!", ArenaObjectId);
+
+            // Temporary while blue arenas are in progress
+            player.CheckObjective(ObjectiveEnum.Score, ArenaObjectId, PrefabName, 1, QuestCatalog);
+
             return;
         }
 
-        if (player.TempData.ArenaModel.HasStarted)
+        if (triggerable.IsActive())
         {
-            Logger.LogInformation("Arena has already started, stopping syncEvent.");
-            player.TempData.ArenaModel.ShouldStartArena = true;
+            Logger.LogError("Trigger {Id} is already running!", ArenaObjectId);
             return;
-        }
-
-        player.Room.SendSyncEvent(syncEvent);
-
-        if (Arena == null)
-        {
-            Room.Entities.TryGetValue(ArenaObjectId, out var foundEntity);
-            foreach (var component in foundEntity)
-            {
-                if (component is TriggerArenaComp arenaComponent)
-                    Arena = arenaComponent;
-            }
-        }
-
-        var playersInRoom = DatabaseContainer.GetAllPlayers();
-        var arenaActivation = Convert.ToInt32(syncEvent.EventDataList[2]);
-
-        //Method to determine if arena trigger event is minigame. if minigame, proceed with code below.
-
-        player.TempData.ArenaModel.ShouldStartArena = arenaActivation > 0;
-
-        if (playersInRoom.Count > 1)
-        {
-            if (playersInRoom.All(p => p.TempData.ArenaModel.ShouldStartArena))
-            {
-                foreach (var member in playersInRoom)
-                {
-                    player.TempData.ArenaModel.SetCharacterIds(playersInRoom);
-                    member.TempData.ArenaModel.HasStarted = true;
-                    StartArena(member);
-
-                    Arena?.StartArena(member);
-                }
-
-            }
-        }
-        else
-        {
-            if (player.TempData.ArenaModel.ShouldStartArena)
-            {
-                StartArena(player);
-                player.TempData.ArenaModel.SetCharacterIds([player]);
-
-                Arena?.StartArena(player);
-            }
         }
 
         base.RunSyncedEvent(syncEvent, player);
     }
 
-    public void StartArena(Player player)
+    // Should be redone to connect to ArenaSwitchBase
+    public override void Triggered(Player player, bool isSuccess, bool isActive)
     {
-        var startRace = new Trigger_SyncEvent(ArenaObjectId, Room.Time, true, player.GameObjectId.ToString(), Room.LevelInfo.LevelId, true, true);
-        player.SendSyncEventToPlayer(startRace);
+        if (isActive)
+        {
+            triggerable.AddPhysicalInteractor(player.GameObjectId);
+            triggerable.RunTrigger(player);
+        }
     }
 }

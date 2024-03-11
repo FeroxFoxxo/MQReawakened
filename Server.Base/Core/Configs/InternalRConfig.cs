@@ -40,6 +40,8 @@ public class InternalRConfig : IRConfig
     public TimeSpan ExpireAge { get; }
     public MergeType Merge { get; }
 
+    public string ServerShutdownMessage { get; }
+
     public double DisconnectionTimeout { get; }
 
     public InternalRConfig()
@@ -85,6 +87,8 @@ public class InternalRConfig : IRConfig
         ExpireAge = TimeSpan.FromDays(30);
         Merge = MergeType.Minutes;
 
-        DisconnectionTimeout = 900000000;
+        DisconnectionTimeout = 100000;
+
+        ServerShutdownMessage = "Server is shutting down!";
     }
 }

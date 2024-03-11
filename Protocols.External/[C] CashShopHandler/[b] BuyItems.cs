@@ -5,7 +5,6 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Protocols.External._C__CashShopHandler;
 
@@ -13,8 +12,6 @@ public class BuyItems : ExternalProtocol
 {
     public override string ProtocolName => "Cb";
 
-    public InternalObjective ObjectiveCatalog { get; set; }
-    public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<BuyItems> Logger { get; set; }
 
@@ -44,7 +41,7 @@ public class BuyItems : ExternalProtocol
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
             price += itemDescription.RegularPrice * amount;
-            bought.Add(new (itemDescription, amount));
+            bought.Add(new(itemDescription, amount));
         }
 
         if (price > Player.Character.Data.NCash && price > 1)
@@ -53,10 +50,10 @@ public class BuyItems : ExternalProtocol
             return;
         }
 
-        foreach(var item in bought)
+        foreach (var item in bought)
         {
             Player.RemoveNCash(item.Item1.RegularPrice * item.Item2);
-            Player.AddItem(item.Item1, item.Item2);
+            Player.AddItem(item.Item1, item.Item2, ItemCatalog);
         }
 
         Player.SendCashUpdate();

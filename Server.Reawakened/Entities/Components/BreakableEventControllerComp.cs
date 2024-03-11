@@ -1,18 +1,17 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
+using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.Rooms;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
-using Server.Reawakened.Entities.Stats;
-using SmartFoxClientAPI.Data;
 using Room = Server.Reawakened.Rooms.Room;
-using Server.Base.Core.Abstractions;
-using Server.Reawakened.Entities.Entity.Enemies;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -20,59 +19,95 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 {
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
+    public TimerThread TimerThread { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
+
+    public int MaxHealth { get; set; }
+    public int NumberOfHits;
+
     private int _health;
-    private BreakableObjStatusComp _status;
     private BaseSpawnerControllerComp _spawner;
-    private bool _isSpawner;
+    private IDamageable _damageable;
 
     public override void InitializeComponent()
     {
-        base.InitializeComponent();
-        _health = 1;
-        _isSpawner = false;
+        NumberOfHits = 0;
+
+        MaxHealth = 1;
+        _health = MaxHealth;
+
         Room.Colliders.Add(Id, new BreakableCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
     }
 
     public void PostInit()
     {
-        var entityList = Room.Entities.Values.SelectMany(s => s);
-        foreach (var entity in entityList)
+        var spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
+        var damagable = Room.GetEntityFromId<IDamageable>(Id);
+
+        if (spawner != null)
         {
-            if (entity.Id == Id && entity is BreakableObjStatusComp status)
-                _status = status;
-            if (entity.Id == Id && entity is BaseSpawnerControllerComp spawner)
-            {
-                _spawner = spawner;
-                _health = _spawner.Health;
-                _isSpawner = true;
-            }
+            _spawner = spawner;
+            MaxHealth = _spawner.Health;
         }
+
+        if (damagable != null)
+        {
+            _damageable = damagable;
+
+            MaxHealth = damagable.MaxHealth;
+            _damageable.CurrentHealth = MaxHealth;
+        }
+
+        _health = MaxHealth;
     }
 
-    public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
+    public void Damage(int damage, Elemental damageType, Player origin)
     {
-    }
+        if (Room.IsObjectKilled(Id))
+            return;
 
-    public void Damage(int damage, Player origin)
-    {
-        _health -= damage;
+        var damagable = Room.GetEntityFromId<IDamageable>(Id);
+
+        if (damagable != null)
+            _health -= damagable.GetDamageAmount(damage, damageType);
+        else
+            _health -= damage;
+
+        NumberOfHits++;
+
         Logger.LogInformation("Object name: {args1} Object Id: {args2}", PrefabName, Id);
 
-        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true);
-        origin.Room.SendSyncEvent(breakEvent);
+        if (damagable is IBreakable breakable)
+            if (breakable.NumberOfHitsToBreak > 0)
+                if (NumberOfHits >= breakable.NumberOfHitsToBreak)
+                    _health = 0;
+
+        if (_damageable != null)
+            _damageable.CurrentHealth = _health;
+
+        origin.Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true));
 
         if (_health <= 0)
         {
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
             origin.SendUpdatedInventory(false);
-            Destroy(Room, Id);
+
+            Room.KillEntity(origin, Id);
+            GetRewards(origin, Id);
         }
     }
-    public void Destroy(Room room, string id)
+
+    public void Destroy(Player player, Room room, string id)
     {
-        room.Entities.Remove(id);
+        player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
+
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
+    }
+
+    public void GetRewards(Player player, string enemyId)
+    {
+        //Implement XML data with enemyId for reward stats.
+        //Below is temporary reward code for now.
     }
 }

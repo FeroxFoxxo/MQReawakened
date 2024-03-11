@@ -1,248 +1,274 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <RecipeCatalog>
     <RecipeType name="Alchemy">
         <!--Healing Potion-->
-        <RecipeInfo recipeId="1704">
-            <Item itemId="404" count="2"/>
+        <RecipeInfo recipeName="COL_RECIP_POT_Healing02">
+            <Item itemName="COL_POT_Healing01" count="2" />
         </RecipeInfo>
         <!--Major Healing Potion-->
-        <RecipeInfo recipeId="1705">
-            <Item itemId="405" count="2"/>
+        <RecipeInfo recipeName="COL_RECIP_POT_Healing03">
+            <Item itemName="COL_POT_Healing02" count="2" />
         </RecipeInfo>
         <!--Ultimate Healing Potion-->
-        <RecipeInfo recipeId="1708">
-            <Item itemId="406" count="1"/>
-            <Item itemId="418" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_POT_Healing06">
+            <Item itemName="COL_POT_Healing03" count="1" />
+            <Item itemName="COL_POT_Healing04" count="1" />
         </RecipeInfo>
         <!--Water Breathing Potion-->
-        <RecipeInfo recipeId="284">
-            <Item itemId="483" count="2"/>
-            <Item itemId="556" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_POT_WaterBreath01">
+            <Item itemName="COL_ING_G_Dandelions01" count="2" />
+            <Item itemName="COL_ING_C_PureWater01" count="1" />
         </RecipeInfo>
         <!--Major Water Breathing Potion-->
-        <RecipeInfo recipeId="285">
-            <Item itemId="220" count="2"/>
+        <RecipeInfo recipeName="COL_RECIP_POT_WaterBreath02">
+            <Item itemName="Col_POT_WaterBreath01" count="2" />
         </RecipeInfo>
         <!--Super Water Breathing Potion-->
-        <RecipeInfo recipeId="286">
-            <Item itemId="221" count="2"/>
+        <RecipeInfo recipeName="COL_RECIP_POT_WaterBreath03">
+            <Item itemName="Col_POT_WaterBreath02" count="2" />
         </RecipeInfo>
         <!--Refined Garlic-->
-        <RecipeInfo recipeId="875">
-            <Item itemId="485" count="10"/>
-            <Item itemId="560" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_RefinedGarlic01">
+            <Item itemName="COL_ING_G_Garlic01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
         </RecipeInfo>
         <!--Purified Garlic-->
-        <RecipeInfo recipeId="872">
-            <Item itemId="486" count="10"/>
-            <Item itemId="561" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_PurifiedGarlic01">
+            <Item itemName="COL_ING_G_Garlic02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
         </RecipeInfo>
         <!--Oak Log-->
-        <RecipeInfo recipeId="895">
-            <Item itemId="510" count="10"/>
-            <Item itemId="560" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_RefinedOak01">
+            <Item itemName="COL_ING_G_Oak01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
         </RecipeInfo>
         <!--Oak Plank-->
-        <RecipeInfo recipeId="892">
-            <Item itemId="509" count="10"/>
-            <Item itemId="561" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_PurifiedOak01">
+            <Item itemName="COL_ING_G_Oak02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
         </RecipeInfo>
         <!--Refined Dandelions-->
-        <RecipeInfo recipeId="884">
-            <Item itemId="483" count="10"/>
-            <Item itemId="560" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_RefinedDandelions01">
+            <Item itemName="COL_ING_G_Dandelions01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
         </RecipeInfo>
         <!--Purified Dandelions-->
-        <RecipeInfo recipeId="881">
-            <Item itemId="484" count="10"/>
-            <Item itemId="561" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_PurifiedDandelions01">
+            <Item itemName="COL_ING_G_Dandelions02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
         </RecipeInfo>
         <!--Iron Pebble-->
-        <RecipeInfo recipeId="181">
-            <Item itemId="110" count="10"/>
-            <Item itemId="560" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_RefinedGoldNugget01">
+            <Item itemName="COL_ING_G_GoldPebble01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
         </RecipeInfo>
         <!--Gold Pebble-->
-        <RecipeInfo recipeId="180">
-            <Item itemId="136" count="10"/>
-            <Item itemId="561" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_PurifiedGoldNugget01">
+            <Item itemName="COL_ING_G_GoldPebble02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
         </RecipeInfo>
         <!--Linen Cloth-->
-        <RecipeInfo recipeId="876">
-            <Item itemId="523" count="10"/>
-            <Item itemId="560" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_RefinedLinen01">
+            <Item itemName="COL_ING_G_Linen01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
         </RecipeInfo>
         <!--Bolt of Linen-->
-        <RecipeInfo recipeId="873">
-            <Item itemId="524" count="10"/>
-            <Item itemId="561" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_PurifiedLinen01">
+            <Item itemName="COL_ING_G_Linen02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
         </RecipeInfo>
         <!--Leather Hide-->
-        <RecipeInfo recipeId="1712">
-            <Item itemId="532" count="10"/>
-            <Item itemId="560" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_RefinedLeather01">
+            <Item itemName="COL_ING_G_Leather01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
         </RecipeInfo>
         <!--Bolt of Leather-->
-        <RecipeInfo recipeId="1713">
-            <Item itemId="533" count="10"/>
-            <Item itemId="561" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_PurifiedLeather01">
+            <Item itemName="COL_ING_G_Leather02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
         </RecipeInfo>
         <!--Refined Aloe-->
-        <RecipeInfo recipeId="888">
-            <Item itemId="488" count="10"/>
-            <Item itemId="560" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_RefinedAloe01">
+            <Item itemName="COL_ING_G_Aloe01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
         </RecipeInfo>
         <!--Purified Aloe-->
-        <RecipeInfo recipeId="885">
-            <Item itemId="482" count="10"/>
-            <Item itemId="561" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_PurifiedAloe01">
+            <Item itemName="COL_ING_G_Aloe02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
         </RecipeInfo>
         <!--Refined Ginger-->
-        <RecipeInfo recipeId="894">
-            <Item itemId="490" count="10"/>
-            <Item itemId="560" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_RefinedGinger01">
+            <Item itemName="COL_ING_G_Ginger01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
         </RecipeInfo>
         <!--Purified Ginger-->
-        <RecipeInfo recipeId="891">
-            <Item itemId="491" count="10"/>
-            <Item itemId="561" count="1"/>
+        <RecipeInfo recipeName="COL_RECIP_PurifiedGinger01">
+            <Item itemName="COL_ING_G_Ginger02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
         </RecipeInfo>
     </RecipeType>
-    <!--Leafy Jungle Helmet-->
     <RecipeType name="Tailoring">
-        <RecipeInfo recipeId="1663">
-            <Item itemId="544" count="1"/>
+        <!--Leafy Jungle Helmet-->
+        <RecipeInfo recipeName="COL_RECIP_BON_Ritualist01_S01">
+            <Item itemName="COL_ING_C_WeakThread01" count="1" />
         </RecipeInfo>
-        <RecipeInfo recipeId="3035">
-            <Item itemId="510" count="4"/>
-            <Item itemId="511" count="3"/>
+        <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight01_TS01">
+            <Item itemName="COL_ING_G_Oak01" count="4" />
+            <Item itemName="COL_ING_G_Oak03" count="3" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2627">  <!--Dread Plate Helmet-->
-            <Item itemId="12814" count="15"/>
-            <Item itemId="13407" count="12"/>
-            <Item itemId="12800" count="8"/>
+        <!--Dread Plate Helmet-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_S01">
+            <Item itemName="COL_ING_G_ShadowShard04" count="15" />
+            <Item itemName="COL_ING_M_DragonScale01" count="12" />
+            <Item itemName="COL_ING_G_Amethyst" count="8" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2638">  <!--Dread Plate Armor-->
-            <Item itemId="12814" count="8"/>
-            <Item itemId="13407" count="6"/>
-            <Item itemId="12800" count="4"/>
+        <!--Dread Plate Armor-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_TS01">
+            <Item itemName="COL_ING_G_ShadowShard04" count="8" />
+            <Item itemName="COL_ING_M_DragonScale01" count="6" />
+            <Item itemName="COL_ING_G_Amethyst" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2619">  <!--Dread Plate Leg Armor-->
-            <Item itemId="12814" count="6"/>
-            <Item itemId="13407" count="6"/>
-            <Item itemId="12800" count="4"/>
+        <!--Dread Plate Leg Armor-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_LS01">
+            <Item itemName="COL_ING_G_ShadowShard04" count="6" />
+            <Item itemName="COL_ING_M_DragonScale01" count="6" />
+            <Item itemName="COL_ING_G_Amethyst" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2643">  <!--Dread Plate Bracers-->
-            <Item itemId="12814" count="8"/>
-            <Item itemId="13407" count="6"/>
-            <Item itemId="12800" count="4"/>
+        <!--Dread Plate Bracers-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_W01">
+            <Item itemName="COL_ING_G_ShadowShard04" count="8" />
+            <Item itemName="COL_ING_M_DragonScale01" count="6" />
+            <Item itemName="COL_ING_G_Amethyst" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2613">  <!--Dread Plate Shield-->
-            <Item itemId="12814" count="12"/>
-            <Item itemId="13407" count="10"/>
-            <Item itemId="12800" count="6"/>
+        <!--Dread Plate Shield-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_BP01">
+            <Item itemName="COL_ING_G_ShadowShard04" count="12" />
+            <Item itemName="COL_ING_M_DragonScale01" count="10" />
+            <Item itemName="COL_ING_G_Amethyst" count="6" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2632">  <!--Dread Plate Tailguard-->
-            <Item itemId="12814" count="8"/>
-            <Item itemId="13407" count="6"/>
-            <Item itemId="12800" count="4"/>
+        <!--Dread Plate Tailguard-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_T01">
+            <Item itemName="COL_ING_G_ShadowShard04" count="8" />
+            <Item itemName="COL_ING_M_DragonScale01" count="6" />
+            <Item itemName="COL_ING_G_Amethyst" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2629">  <!--Boom Plate Helmet-->
-            <Item itemId="160" count="15"/>
-            <Item itemId="108" count="12"/>
-            <Item itemId="12805" count="8"/>
+        <!--Boom Plate Helmet-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_S03">
+            <Item itemName="COL_ING_G_GoldPebble03" count="15" />
+            <Item itemName="COL_ING_G_VolcanicRock01" count="12" />
+            <Item itemName="COL_ING_G_Ruby02" count="8" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2641">  <!--Boom Plate Armor-->
-            <Item itemId="160" count="8"/>
-            <Item itemId="108" count="6"/>
-            <Item itemId="12805" count="4"/>
+        <!--Boom Plate Armor-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_TS03">
+            <Item itemName="COL_ING_G_GoldPebble03" count="8" />
+            <Item itemName="COL_ING_G_VolcanicRock01" count="6" />
+            <Item itemName="COL_ING_G_Ruby02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2623">  <!--Boom Plate Leg Armor-->
-            <Item itemId="160" count="6"/>
-            <Item itemId="108" count="6"/>
-            <Item itemId="12805" count="4"/>
+        <!--Boom Plate Leg Armor-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_LS03">
+            <Item itemName="COL_ING_G_GoldPebble03" count="6" />
+            <Item itemName="COL_ING_G_VolcanicRock01" count="6" />
+            <Item itemName="COL_ING_G_Ruby02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2646">  <!--Boom Plate Bracers-->
-            <Item itemId="160" count="8"/>
-            <Item itemId="108" count="6"/>
-            <Item itemId="12805" count="4"/>
+        <!--Boom Plate Bracers-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_W03">
+            <Item itemName="COL_ING_G_GoldPebble03" count="8" />
+            <Item itemName="COL_ING_G_VolcanicRock01" count="6" />
+            <Item itemName="COL_ING_G_Ruby02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2617">  <!--Boom Plate Shield-->
-            <Item itemId="160" count="12"/>
-            <Item itemId="108" count="10"/>
-            <Item itemId="12805" count="6"/>
+        <!--Boom Plate Shield-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_BP03">
+            <Item itemName="COL_ING_G_GoldPebble03" count="12" />
+            <Item itemName="COL_ING_G_VolcanicRock01" count="10" />
+            <Item itemName="COL_ING_G_Ruby02" count="6" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2635">  <!--Boom Plate Tailguard-->
-            <Item itemId="160" count="8"/>
-            <Item itemId="108" count="6"/>
-            <Item itemId="12805" count="4"/>
+        <!--Boom Plate Tailguard-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_T03">
+            <Item itemName="COL_ING_G_GoldPebble03" count="8" />
+            <Item itemName="COL_ING_G_VolcanicRock01" count="6" />
+            <Item itemName="COL_ING_G_Ruby02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2626">  <!--Venom Plate Helmet-->
-            <Item itemId="137" count="15"/>
-            <Item itemId="1599" count="12"/>
-            <Item itemId="12808" count="8"/>
+        <!--Venom Plate Helmet-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_S02">
+            <Item itemName="COL_ING_G_PlainStone02" count="15" />
+            <Item itemName="COL_ING_M_RachnoidLeg01" count="12" />
+            <Item itemName="COL_ING_G_Emerald02" count="8" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2639">  <!--Venom Plate Armor-->
-            <Item itemId="137" count="8"/>
-            <Item itemId="1599" count="6"/>
-            <Item itemId="12808" count="4"/>
+        <!--Venom Plate Armor-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_TS02">
+            <Item itemName="COL_ING_G_PlainStone02" count="8" />
+            <Item itemName="COL_ING_M_RachnoidLeg01" count="6" />
+            <Item itemName="COL_ING_G_Emerald02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2622">  <!--Venom Plate Leg Armor-->
-            <Item itemId="137" count="6"/>
-            <Item itemId="1599" count="6"/>
-            <Item itemId="12808" count="4"/>
+        <!--Venom Plate Leg Armor-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_LS02">
+            <Item itemName="COL_ING_G_PlainStone02" count="6" />
+            <Item itemName="COL_ING_M_RachnoidLeg01" count="6" />
+            <Item itemName="COL_ING_G_Emerald02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2647">  <!--Venom Plate Bracers-->
-            <Item itemId="137" count="8"/>
-            <Item itemId="1599" count="6"/>
-            <Item itemId="12808" count="4"/>
+        <!--Venom Plate Bracers-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_W02">
+            <Item itemName="COL_ING_G_PlainStone02" count="8" />
+            <Item itemName="COL_ING_M_RachnoidLeg01" count="6" />
+            <Item itemName="COL_ING_G_Emerald02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2615">  <!--Venom Plate Shield-->
-            <Item itemId="137" count="12"/>
-            <Item itemId="1599" count="10"/>
-            <Item itemId="12808" count="6"/>
+        <!--Venom Plate Shield-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_BP02">
+            <Item itemName="COL_ING_G_PlainStone02" count="12" />
+            <Item itemName="COL_ING_M_RachnoidLeg01" count="10" />
+            <Item itemName="COL_ING_G_Emerald02" count="6" />
         </RecipeInfo>
-        <RecipeInfo recipeId="2633">  <!--Venom Plate Tailguard-->
-            <Item itemId="137" count="8"/>
-            <Item itemId="1599" count="6"/>
-            <Item itemId="12808" count="4"/>
+        <!--Venom Plate Tailguard-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_T02">
+            <Item itemName="COL_ING_G_PlainStone02" count="8" />
+            <Item itemName="COL_ING_M_RachnoidLeg01" count="6" />
+            <Item itemName="COL_ING_G_Emerald02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="11203">  <!--Frost Plate Helmet-->
-            <Item itemId="12817" count="15"/>
-            <Item itemId="13401" count="12"/>
-            <Item itemId="12811" count="8"/>
+        <!--Frost Plate Helmet-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_S04">
+            <Item itemName="COL_ING_G_IceShard02" count="15" />
+            <Item itemName="COL_ING_M_SpikedTongue01" count="12" />
+            <Item itemName="COL_ING_G_Diamond02" count="8" />
         </RecipeInfo>
-        <RecipeInfo recipeId="11204">  <!--Frost Plate Armor-->
-            <Item itemId="12817" count="8"/>
-            <Item itemId="13401" count="6"/>
-            <Item itemId="12811" count="4"/>
+        <!--Frost Plate Armor-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_TS04">
+            <Item itemName="COL_ING_G_IceShard02" count="8" />
+            <Item itemName="COL_ING_M_SpikedTongue01" count="6" />
+            <Item itemName="COL_ING_G_Diamond02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="11205">  <!--Frost Plate Leg Armor-->
-            <Item itemId="12817" count="6"/>
-            <Item itemId="13401" count="6"/>
-            <Item itemId="12811" count="4"/>
+        <!--Frost Plate Leg Armor-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_LS04">
+            <Item itemName="COL_ING_G_IceShard02" count="6" />
+            <Item itemName="COL_ING_M_SpikedTongue01" count="6" />
+            <Item itemName="COL_ING_G_Diamond02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="11206">  <!--Frost Plate Bracers-->
-            <Item itemId="12817" count="8"/>
-            <Item itemId="13401" count="6"/>
-            <Item itemId="12811" count="4"/>
+        <!--Frost Plate Bracers-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_W04">
+            <Item itemName="COL_ING_G_IceShard02" count="8" />
+            <Item itemName="COL_ING_M_SpikedTongue01" count="6" />
+            <Item itemName="COL_ING_G_Diamond02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="11207">  <!--Frost Plate Shield-->
-            <Item itemId="12817" count="12"/>
-            <Item itemId="13401" count="10"/>
-            <Item itemId="12811" count="6"/>
+        <!--Frost Plate Shield-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_BP04">
+            <Item itemName="COL_ING_G_IceShard02" count="12" />
+            <Item itemName="COL_ING_M_SpikedTongue01" count="10" />
+            <Item itemName="COL_ING_G_Diamond02" count="6" />
         </RecipeInfo>
-        <RecipeInfo recipeId="11208">  <!--Frost Plate Tailguard-->
-            <Item itemId="12817" count="8"/>
-            <Item itemId="13401" count="6"/>
-            <Item itemId="12811" count="4"/>
-        </RecipeInfo>    
-        <RecipeInfo recipeId="1798086388">  <!--Bubble Blower-->
-            <Item itemId="12814" count="4"/>
-            <Item itemId="13200" count="4"/>
+        <!--Frost Plate Tailguard-->
+        <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_T04">
+            <Item itemName="COL_ING_G_IceShard02" count="8" />
+            <Item itemName="COL_ING_M_SpikedTongue01" count="6" />
+            <Item itemName="COL_ING_G_Diamond02" count="4" />
         </RecipeInfo>
-        <RecipeInfo recipeId="11216">  <!--Krusty Krab Spatula-->
-            <Item itemId="13201" count="5"/>
+        <!--Bubble Blower-->
+        <RecipeInfo recipeName="COL_RECIP_WPN_PRJ_SpongeBob_Bubble01">
+            <Item itemName="COL_ING_G_ShadowShard04" count="4" />
+            <Item itemName="COL_ING_SpongeBob01" count="4" />
+        </RecipeInfo>
+        <!--Krusty Krab Spatula-->
+        <RecipeInfo recipeName="COL_RECIP_WPN_MEL_SpongeBob_Spatula01">
+            <Item itemName="COL_ING_SpongeBob02" count="5" />
         </RecipeInfo>
     </RecipeType>
 </RecipeCatalog>

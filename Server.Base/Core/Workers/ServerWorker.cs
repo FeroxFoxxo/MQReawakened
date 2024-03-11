@@ -26,6 +26,7 @@ public class ServerWorker : IHostedService
     private readonly EventSink _sink;
     private readonly TimerThread _timerThread;
     private readonly World _world;
+    private readonly InternalRConfig _config;
 
     public readonly MultiTextWriter MultiConsoleOut;
 
@@ -40,6 +41,7 @@ public class ServerWorker : IHostedService
         _timerThread = timerThread;
         _world = world;
         _sink = sink;
+        _config = config;
 
         var fileHandler = new ConsoleFileLogger("console.log", config);
         MultiConsoleOut = new MultiTextWriter(Console.Out, fileHandler);
@@ -123,7 +125,7 @@ public class ServerWorker : IHostedService
     public void OnClose()
     {
         _world.Save(false);
-        _world.Broadcast("Server is shutting down!");
+        _world.Broadcast(_config.ServerShutdownMessage);
 
         try
         {

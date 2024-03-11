@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Extensions;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -27,6 +27,9 @@ public class SwapSlot : ExternalProtocol
         {
             if (hotbarKVP.Value.ItemId == itemId)
             {
+                if (!character.Data.Hotbar.HotbarButtons.ContainsKey(hotbarSlotId))
+                    continue;
+
                 character.Data.Hotbar.HotbarButtons[hotbarKVP.Key] = character.Data.Hotbar.HotbarButtons[hotbarSlotId];
                 character.Data.Hotbar.HotbarButtons[hotbarSlotId] = item;
             }

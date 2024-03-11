@@ -3,7 +3,7 @@ using static Stomper_Movement;
 
 namespace Server.Reawakened.Entities.Components;
 
-public class StomperControllerComp : MovingObjectControllerComp<StomperController>
+public class StomperControllerComp : BaseMovingObjectControllerComp<StomperController>
 {
     public float WaitTimeUp => ComponentData.WaitTimeUp;
     public float WaitTimeDown => ComponentData.WaitTimeDown;

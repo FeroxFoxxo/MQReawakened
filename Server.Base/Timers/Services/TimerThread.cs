@@ -3,6 +3,8 @@ using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
+using Server.Base.Logging;
+using Server.Base.Network;
 using Server.Base.Timers.Helpers;
 using Server.Base.Worlds;
 using System.Globalization;
@@ -22,8 +24,9 @@ public class TimerThread : IService
     private readonly List<Timer>[] _timers;
     private readonly Thread _timerThread;
     private readonly World _world;
+    private readonly FileLogger _fileLogger;
 
-    public TimerThread(InternalRConfig config, TimerChangePool pool, EventSink sink, ServerHandler handler, World world)
+    public TimerThread(InternalRConfig config, TimerChangePool pool, EventSink sink, ServerHandler handler, World world, FileLogger fileLogger)
     {
         _config = config;
         _pool = pool;
@@ -33,6 +36,7 @@ public class TimerThread : IService
         _queue = new Queue<Timer>();
         _signal = new AutoResetEvent(false);
         _world = world;
+        _fileLogger = fileLogger;
 
         _nextPriorities = Enumerable.Repeat(default(double), config.Delays.Length).ToArray();
         _timers = Enumerable.Repeat(new List<Timer>(), config.Delays.Length).ToArray();
@@ -108,7 +112,15 @@ public class TimerThread : IService
             {
                 var timer = _queue.Dequeue();
 
-                timer.OnTick();
+                try
+                {
+                    timer.OnTick();
+                }
+                catch (Exception ex)
+                {
+                    _fileLogger.WriteGenericLog<NetState>("timer-errors", $"Timer {timer.Index}", ex.ToString(), LoggerType.Error);
+                }
+
                 timer.Queued = false;
                 index++;
             }

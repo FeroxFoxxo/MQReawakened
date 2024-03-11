@@ -1,5 +1,5 @@
-﻿using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Network.Protocols;
+﻿using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._i__InventoryHandler;
@@ -17,7 +17,7 @@ public class RemoveItem : ExternalProtocol
 
         var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
-        Player.RemoveItem(itemDescription, removeCount);
+        Player.RemoveItem(itemDescription, removeCount, ItemCatalog);
 
         Player.SendUpdatedInventory(false);
     }

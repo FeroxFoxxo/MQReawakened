@@ -178,7 +178,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
                                 case "id":
                                     id = int.Parse(itemAttributes.Value);
                                     break;
-                                case "name":
+                                case "prefab":
                                     name = itemAttributes.Value;
                                     break;
                             }
@@ -264,7 +264,9 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
                 itemElement.SetAttribute("ingamename", _itemNameDict[item.ItemName].ToString());
                 itemElement.SetAttribute("item_level", item.Level.ToString());
                 // name
-                itemElement.SetAttribute("prefab", item.PrefabName.ToString());
+                var itemPrefabName = item.PrefabName.ToString();
+                itemElement.SetAttribute("name", itemPrefabName);
+                itemElement.SetAttribute("prefab", itemPrefabName);
                 // prefab type
                 itemElement.SetAttribute("price", item.RegularPrice.ToString());
                 itemElement.SetAttribute("price_discount", item.DiscountPrice.ToString());
@@ -284,6 +286,11 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
                 itemElement.SetAttribute("delay_use_duration", item.DelayUseDuration.ToString());
                 itemElement.SetAttribute("loot_id", item.LootId.ToString());
                 itemElement.SetAttribute("release_date", item.ReleaseDate == DateTime.UnixEpoch ? "None" : item.ReleaseDate.ToString());
+
+                if (editCatalog.EditedItemAttributes[config.GameVersion].TryGetValue(itemPrefabName, out var editedAttributes))
+                    foreach (XmlAttribute itemAttributes in itemElement.Attributes)
+                        if (editedAttributes.TryGetValue(itemAttributes.Name, out var value))
+                            itemAttributes.Value = value;
 
                 if (item.ItemEffects.Count > 0)
                 {
@@ -320,5 +327,11 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
         field.SetValue(null, this);
 
         Items = (Dictionary<int, ItemDescription>)this.GetField<ItemHandler>("_itemDescriptionCache");
+    }
+
+    public new ItemDescription GetItemFromId(int id)
+    {
+        Items.TryGetValue(id, out var outItem);
+        return outItem;
     }
 }
