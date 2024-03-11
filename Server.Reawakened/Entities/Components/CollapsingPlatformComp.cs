@@ -1,5 +1,6 @@
 ﻿using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -10,6 +11,13 @@ public class CollapsingPlatformComp : Component<CollapsingPlatform>
 
     private float _timer;
     public bool IsBroken = false;
+
+    public override void InitializeComponent()
+    {
+        Position.X += Rectangle.X;
+        Position.Y += Rectangle.Y;
+        Room.Colliders.Add(Id, new BreakableCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+    }
 
     public override void Update()
     {
@@ -23,6 +31,8 @@ public class CollapsingPlatformComp : Component<CollapsingPlatform>
 
     public void Collapse(bool regen)
     {
+        if (IsBroken) return;
+        
         IsBroken = false;
         var syncEvent = new SyncEvent(Id.ToString(), SyncEvent.EventType.CollapsingPlatform, Room.Time);
         if (regen)

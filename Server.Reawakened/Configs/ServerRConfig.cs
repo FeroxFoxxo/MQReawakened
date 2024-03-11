@@ -82,8 +82,15 @@ public class ServerRConfig : IRConfig
     public float MeleeYOffset { get; set; }
     public float MeleeWidth { get; set; }
     public float MeleeHeight { get; set; }
+    public float MeleeArialXOffset { get; set; }
+    public float MeleeArialYOffset { get; set; }
+    public float MeleeArialWidth { get; set; }
+    public float MeleeArialHeight { get; set; }
     public float PlayerWidth { get; set; }
     public float PlayerHeight { get; set; }
+    public string FrontPlane { get; set; }
+    public string BackPlane { get; set; }
+    public Dictionary<string, int> Planes { get; set; }
     public Dictionary<int, string> TrainingGear { get; set; }
     public Dictionary<int, string> TrainingGear2011 { get; set; }
 
@@ -220,17 +227,22 @@ public class ServerRConfig : IRConfig
         HealingStaffID = 396;
         MysticCharmID = 398;
 
-        ProjectileSpeed = 10;
+        ProjectileSpeed = 10f;
 
         ProjectileXOffset = 0.25f;
         ProjectileYOffset = 0.8f;
         ProjectileHeight = 0.5f;
         ProjectileWidth = 0.5f;
 
-        MeleeXOffset = 0f;
+        MeleeXOffset = 4f;
         MeleeYOffset = 0f;
+        MeleeWidth = 4f;
         MeleeHeight = 1f;
-        MeleeWidth = 4.25f;
+
+        MeleeArialXOffset = 3f;
+        MeleeArialYOffset = 2.6f;
+        MeleeArialWidth = 6f;
+        MeleeArialHeight = 5.2f;
 
         PlayerHeight = 1f;
         PlayerWidth = 1f;
@@ -272,6 +284,15 @@ public class ServerRConfig : IRConfig
             { GameVersion.vLate2012, string.Empty },
             { GameVersion.vEarly2012, string.Empty },
             { GameVersion.v2011, string.Empty }
+        };
+
+        FrontPlane = "Plane1";
+        BackPlane = "Plane0";
+
+        Planes = new Dictionary<string, int>()
+        {
+            { FrontPlane, 0 },
+            { BackPlane, 20 }
         };
     }
 }
