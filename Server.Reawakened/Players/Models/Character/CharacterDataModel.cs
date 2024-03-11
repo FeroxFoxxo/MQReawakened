@@ -51,6 +51,8 @@ public class CharacterDataModel : CharacterLightModel
 
     private int ChatLevel => _player?.UserInfo.ChatLevel ?? 0;
 
+    private GameVersion _version = GameVersion.Unknown;
+
     public CharacterDataModel() => InitializeDetailedLists();
 
     public CharacterDataModel(string serverData) : base(serverData)
@@ -71,6 +73,7 @@ public class CharacterDataModel : CharacterLightModel
 
     public void SetDynamicData(Player player, ServerRConfig config)
     {
+        _version = config.GameVersion;
         _player = player;
         _player.NetState.Identifier = CharacterName;
         SetVersion(config.GameVersion);
@@ -102,8 +105,13 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(FriendModels);
         sb.Append(BlockModels);
         sb.Append(Equipment);
-        sb.Append(PetItemId);
-        sb.Append(PetAutonomous ? 1 : 0);
+
+        if (_version >= GameVersion.vLate2012)
+        {
+            sb.Append(PetItemId);
+            sb.Append(PetAutonomous ? 1 : 0);
+        }
+
         sb.Append(GuestPassExpiry);
         sb.Append(ShouldExpireGuestPass ? 1 : 0);
         sb.Append(Registered ? 1 : 0);
