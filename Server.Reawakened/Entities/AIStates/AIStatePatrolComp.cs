@@ -11,15 +11,25 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using static A2m.Server.ExtLevelEditor;
-using UnityEngine;
 using Server.Reawakened.Entities.AbstractComponents;
 using A2m.Server;
+using Server.Reawakened.Rooms.Models.Planes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Server.Reawakened.Entities.AIStates;
 public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
 {
-    public Vector2 Patrol1 => ComponentData.Patrol1;
-    public Vector2 Patrol2 => ComponentData.Patrol2;
+    public Vector2Model Patrol1 => new()
+    {
+        X = ComponentData.Patrol1.x,
+        Y = ComponentData.Patrol1.y
+    };
+
+    public Vector2Model Patrol2 => new()
+    {
+        X = ComponentData.Patrol2.x,
+        Y = ComponentData.Patrol2.y
+    };
     public int SinusPathNbHalfPeriod => ComponentData.SinusPathNbHalfPeriod;
     public float MovementSpeed => ComponentData.MovementSpeed;
     public float IdleDurationAtTurnAround => ComponentData.IdleDurationAtTurnAround;
@@ -33,22 +43,58 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
 
     public string IdOfAttackingEnemy;
     public bool IsAttacking;
+
     public int MaxHealth { get; set; }
     public int CurrentHealth { get; set; }
+    public Vector3Model StartingPostion = new();
 
     public GameObjectComponents PreviousState = [];
+
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
+    public IServiceProvider Service { get; set; }
     public ILogger<AIStatePatrolComp> Logger { get; set; }
-    public override void InitializeComponent()
+
+    public override void InitializeComponent() => RunPlacement();
+
+    public override void Update()
     {
-        Room.Colliders.Add(Id, new EnemyCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
-        RunPlacement();
-        //TimerThread.DelayCall(SpikerTest, null, TimeSpan.FromSeconds(15), TimeSpan.Zero, 1);
+        var closestPlayer = GetClosestTarget();
+        if (closestPlayer == null) return;
+
+        //Magic numbers here are used to store the width and height of the enemy colliders.
+        var detectionRangeCollider = new EnemyCollider(Id, Position, 8, 4, ParentPlane, Room);
+        var isColliding = detectionRangeCollider.CheckCollision(new PlayerCollider(closestPlayer));
+
+        if (isColliding)
+        {
+            IdOfAttackingEnemy = Id;
+
+            foreach (var drake in Room.GetEntitiesFromType<DrakeEnemyControllerComp>()
+                .Where(x => x.Id == IdOfAttackingEnemy))
+                RunMeleeAttackState(null);
+
+            //Not using spiker attack code yet.
+            foreach (var spiker in Room.GetEntitiesFromType<AIStatePatrolComp>()
+                .Where(x => x.Id == IdOfAttackingEnemy))
+                RunProjectileAttackState(null);
+        }
     }
 
     public void RunPlacement()
     {
+        StartingPostion = Position;
+
+        var editedPosition = new Vector3Model()
+        {
+            X = Position.X += Rectangle.X,
+            Y = Position.Y += Rectangle.Y,
+            Z = Position.Z
+        };
+
+        Room.Colliders.Add(Id, new EnemyCollider(Id, editedPosition,
+            Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+
         var nextState = new GameObjectComponents() {
             {"AIStateDrakePlacement", new ComponentSettings()
                 {
@@ -64,8 +110,8 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
 
         GoToNextState(nextState);
 
-        //Not using enemy patrol code yet.
-        //TimerThread.DelayCall(RunPatrol, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
+        //Wait 1 second before running RunPatrol.
+        TimerThread.DelayCall(RunPatrol, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
     }
 
     public void RunPatrol(object _)
@@ -73,45 +119,20 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
         IsAttacking = false;
 
         var backPlaneZValue = ParentPlane == ServerRConfig.BackPlane ?
-                       ServerRConfig.Planes[ServerRConfig.FrontPlane] :
-                         ServerRConfig.Planes[ServerRConfig.BackPlane];
+                      ServerRConfig.Planes[ServerRConfig.FrontPlane] :
+                       ServerRConfig.Planes[ServerRConfig.BackPlane] ;
 
-        //if (statePatrol.ParentPlane == ServerRConfig.IsBackPlane[false])
-        //    statePatrol.Position.X -= 3; //Enemies on front plane need to be slightly adjusted on X axis due to random bug.
-
-        var nextState = new GameObjectComponents() {
+        var nextState = new GameObjectComponents() 
+        {
             {"AIStatePatrol", new ComponentSettings()
-                {Position.X + Patrol1.x.ToString(),
-                 Position.Y.ToString(),
+                //Use Patrol1/Patrol2 values to adjust patrol positions. Else some enemies will phase through terrain.
+                {Convert.ToString(StartingPostion.X + Patrol2.X),
+                 StartingPostion.Y.ToString(),
                  backPlaneZValue.ToString()}
             }
         };
 
         GoToNextState(nextState);
-    }
-
-    public override void Update()
-    {
-        var closestPlayer = GetClosestTarget();
-
-        if (closestPlayer == null) return;
-
-        var detectionRangeCollider = new EnemyCollider(Id, Position, 8, 4, ParentPlane, Room);
-        var isColliding = detectionRangeCollider.CheckCollision(new PlayerCollider(closestPlayer));
-
-        if (isColliding)
-        {
-            IdOfAttackingEnemy = Id;
-            
-            //Not using enemy attack code yet.
-            foreach (var drake in Room.GetEntitiesFromType<DrakeEnemyControllerComp>()
-                .Where(x => x.Id == IdOfAttackingEnemy));
-               //RunDragonAttackState(null);
-
-            foreach (var spiker in Room.GetEntitiesFromType<AIStatePatrolComp>()
-                .Where(x => x.Id == IdOfAttackingEnemy));
-                //RunSpikerAttackState(null);
-        }
     }
 
     public Player GetClosestTarget()
@@ -138,13 +159,12 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
         return distancesFromEnemy[closestPlayer];
     }
 
-    public void RunDragonAttackState(object _)
+    public void RunMeleeAttackState(object _)
     {
         if (IsAttacking || Id != IdOfAttackingEnemy.ToString())
             return;
 
         IsAttacking = true;
-        var distancesFromEnemy = new Dictionary<Player, double>();
 
         var closestPlayerPos = GetClosestTarget().TempData.Position;
 
@@ -156,16 +176,16 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
                  closestPlayerPos.X.ToString(), closestPlayerPos.Y.ToString(), closestPlayerPos.Z.ToString()}}
             };
 
-        var stateChange = Room.GetEntitiesFromId<AIStatePatrolComp>(IdOfAttackingEnemy).First();
+        GoToNextState(nextState);
 
-        stateChange.GoToNextState(nextState);
-
-        //Needs method to determine the proper delay time before changing states.
-        TimerThread.DelayCall(stateChange.RunPatrol, null, TimeSpan.FromSeconds(10), TimeSpan.Zero, 1);
+        //Run patrol state after attack state/animation.
+        TimerThread.DelayCall(RunPatrol, null, TimeSpan.FromSeconds(9), TimeSpan.Zero, 1);
     }
 
-    public void RunSpikerAttackState(object _)
+    public void RunProjectileAttackState(object _)
     {
+        // this method is VERY buggy.
+
         if (IsAttacking || Id != IdOfAttackingEnemy) return;
 
         IsAttacking = true;
@@ -180,18 +200,16 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
                         }
                     };
 
-        //Needs projectile implementation.
-
-        var rand = new System.Random();
+        var rand = new Random();
         var projectileId = Math.Abs(rand.Next()).ToString();
 
         while (Room.GameObjectIds.Contains(projectileId))
             projectileId = Math.Abs(rand.Next()).ToString();
 
-        // Magic numbers here are temporary
+        //Determines direction and speed of enemy projectile.
+        var direction = closestPlayer.TempData.Position.X > Position.X ? 5 : -5;
 
-        var direction = closestPlayer.TempData.Position.X < Position.X ? 5 : -5;
-
+        //Successfully sends enemy projectiles, however needs position placement adjustments based off of synced movement.
         Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Room.GetEntityFromId<AIStatePatrolComp>(Id),
             Position.X, Position.Y, Position.Z, direction, 0, 3, int.Parse(projectileId), 0));
 
@@ -200,7 +218,8 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
 
         GoToNextState(nextState);
 
-        TimerThread.DelayCall(RunPatrol, null, TimeSpan.FromSeconds(2), TimeSpan.Zero, 1);
+        //This method also seemingly creates position placement issues on running the patrol state afterwards.
+        TimerThread.DelayCall(RunPatrol, null, TimeSpan.FromSeconds(3), TimeSpan.Zero, 1);
     }
 
     public void GoToNextState(GameObjectComponents NewState)
@@ -218,7 +237,34 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
 
     public int GetDamageAmount(int damage, Elemental damageType)
     {
+        var interObjStatus = Service.GetRequiredService<InterObjStatusComp>();
 
+        switch (damageType)
+        {
+            case Elemental.Air:
+                damage -= interObjStatus.AirDamageResistPoints;
+                break;
+            case Elemental.Fire:
+                damage -= interObjStatus.FireDamageResistPoints;
+                break;
+            case Elemental.Ice:
+                damage -= interObjStatus.IceDamageResistPoints;
+                break;
+            case Elemental.Earth:
+                damage -= interObjStatus.EarthDamageResistPoints;
+                break;
+            case Elemental.Poison:
+                damage -= interObjStatus.PoisonDamageResistPoints;
+                break;
+            case Elemental.Standard:
+            case Elemental.Unknown:
+            case Elemental.Invalid:
+                damage -= interObjStatus.StandardDamageResistPoints;
+                break;
+        }
+
+        if (damage < 0)
+            damage = 0;
 
         return damage;
     }

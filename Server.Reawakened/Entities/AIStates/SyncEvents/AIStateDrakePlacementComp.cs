@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.AIStates;
 public class AIStateDrakePlacementComp : Component<AIStateDrakePlacement>
@@ -9,5 +8,4 @@ public class AIStateDrakePlacementComp : Component<AIStateDrakePlacement>
     public float AttackLoopAnimDuration => ComponentData.AttackLoopAnimDuration;
     public float AttackRange => ComponentData.AttackRange;
     public float AttackRangeMaximum => ComponentData.AttackRangeMaximum;
-    public ILogger<AIStatePatrolComp> Logger { get; set; }
 }
