@@ -233,6 +233,9 @@
         <Item name="WPN_1H_SwordKnight01">
             <EditAttribute key="id" value="3351"/>
         </Item>
+        <Item name="WPN_PRJ_XmasSlingshot01">
+            <EditAttribute key="descriptionId" value="1000578"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vEarly2012">
         <Item name="Add_COM_Armor01_S01">

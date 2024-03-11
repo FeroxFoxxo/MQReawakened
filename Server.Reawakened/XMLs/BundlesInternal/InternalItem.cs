@@ -1,8 +1,10 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
@@ -232,10 +234,26 @@ public class InternalItem : IBundledXml<InternalItem>
                             }
                         }
 
+                        var editItem = Services.GetRequiredService<EditItem>();
+                        var editedItems = editItem.EditedItemAttributes[Configs.GameVersion.vLate2012];
+
                         if (!miscDict.LocalizationDict.TryGetValue(descriptionId, out var description))
                         {
-                            Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
-                            continue;
+                            if (!editedItems.ContainsKey(prefabName))
+                                continue;
+
+                            var editedItem = editedItems[prefabName].First();
+
+                            if (miscDict.LocalizationDict.TryGetValue(int.Parse(editedItem.Value), out var editedDescription))
+                            {
+                                descriptionId = int.Parse(editedItem.Value);
+                                description = editedDescription;
+                            }
+                            else
+                            {
+                                Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
+                                continue;
+                            }
                         }
 
                         Descriptions.TryAdd(descriptionId, description);
