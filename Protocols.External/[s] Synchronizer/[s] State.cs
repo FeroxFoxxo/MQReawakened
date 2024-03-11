@@ -15,7 +15,9 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 using System.Text;
+using UnityEngine;
 using WorldGraphDefines;
 
 namespace Protocols.External._s__Synchronizer;
@@ -26,6 +28,7 @@ public class State : ExternalProtocol
 
     public SyncEventManager SyncEventManager { get; set; }
     public ServerRConfig ServerConfig { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
     public FileLogger FileLogger { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<State> Logger { get; set; }
@@ -56,24 +59,28 @@ public class State : ExternalProtocol
                     Player.TempData.IsSuperStomping = true;
                     Player.TempData.Invincible = true;
 
-                    var startChargeAttack = new ChargeAttack_SyncEvent(syncEvent);
+                    var attack = new ChargeAttack_SyncEvent(syncEvent);
+
+                    Logger.LogDebug("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
+                        "at speed ({X}, {Y}) with max pos ({X}, {Y}) for item id: '{Id}' and zone: {Zone}",
+                        attack.IsCharging, attack.PosX, attack.PosY, attack.StartDelay,
+                        attack.SpeedX, attack.SpeedY, attack.MaxPosX, attack.MaxPosY, attack.ItemId, attack.ZoneId);
 
                     var chargeAttackCollider = new ChargeAttackEntity(Player,
-                        new Vector3Model() { X = startChargeAttack.PosX, Y = startChargeAttack.PosY, Z = Player.TempData.Position.Z },
-                        new Vector3Model() { X = startChargeAttack.MaxPosX, Y = startChargeAttack.MaxPosY, Z = Player.TempData.Position.Z },
-                        new Vector2Model() { X = startChargeAttack.SpeedX, Y = startChargeAttack.SpeedY },
-                        15, startChargeAttack.ItemId, startChargeAttack.ZoneId,
-                        26, Elemental.Standard, TimerThread);
+                                        new Vector3Model() { X = attack.PosX, Y = attack.PosY, Z = Player.TempData.Position.Z },
+                                        new Vector3Model() { X = attack.MaxPosX, Y = attack.MaxPosY, Z = Player.TempData.Position.Z },
+                                        new Vector2Model() { X = attack.SpeedX, Y = attack.SpeedY },
+                                        15, attack.ItemId, attack.ZoneId,
+                                        WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
+                                        Elemental.Standard, TimerThread);
 
                     Player.Room.Projectiles.TryAdd(Player.GameObjectId, chargeAttackCollider);
                     break;
-
                 case SyncEvent.EventType.ChargeAttackStop:
                     Player.TempData.IsSuperStomping = false;
                     Player.TempData.Invincible = false;
 
-                    if (Player.Room.Projectiles.ContainsKey(Player.GameObjectId))
-                        Player.Room.Projectiles.Remove(Player.GameObjectId);
+                    Player.Room.Projectiles.Remove(Player.GameObjectId);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);

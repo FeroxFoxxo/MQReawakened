@@ -23,6 +23,7 @@ public class UseSlot : ExternalProtocol
     public override string ProtocolName => "hu";
 
     public ItemCatalog ItemCatalog { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
@@ -121,8 +122,10 @@ public class UseSlot : ExternalProtocol
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next()).ToString();
 
-        // Needs stat handler.
-        var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem, ServerRConfig.DefaultRangedDamage, usedItem.Elemental, ServerRConfig);
+        // Add weapon stats later
+        var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem,
+            WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
+            usedItem.Elemental, ServerRConfig);
         Player.Room.Projectiles.Add(prjId, prj);
     }
 
@@ -134,8 +137,10 @@ public class UseSlot : ExternalProtocol
         while (Player.Room.GameObjectIds.Contains(prjId))
             prjId = Math.Abs(rand.Next()).ToString();
 
-        // Needs stat handler.
-        var prj = new MeleeEntity(Player, prjId, position, direction, 3, usedItem, 10, usedItem.Elemental, ServerRConfig);
+        // Add weapon stats later
+        var prj = new MeleeEntity(Player, prjId, position, direction, 3, usedItem,
+            WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
+            usedItem.Elemental, ServerRConfig);
 
         Player.Room.Projectiles.Add(prjId, prj);
 
