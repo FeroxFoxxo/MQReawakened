@@ -25,7 +25,7 @@ public class EnemyCollider(string id, Vector3Model position, float sizeX, float 
             else
             {
                 var enemyController = Room.GetEntitiesFromId<EnemyControllerComp>(id).First();
-                enemyController.Damage(damage, attack.Owner);
+                enemyController?.Damage(damage, attack.Owner);
             }
         }
     }
