@@ -9,5 +9,9 @@ public class BreakableCollider(string breakableId, Vector3Model position, float 
         if (received is AttackCollider attack)
             foreach (var breakable in Room.GetEntitiesFromId<BreakableEventControllerComp>(breakableId))
                 breakable.Damage(attack.Damage, attack.DamageType, attack.Owner);
+
+        if (received is PlayerCollider)
+            foreach (var collapsingPlatform in Room.GetEntitiesFromId<CollapsingPlatformComp>(breakableId))
+                collapsingPlatform.Collapse(false);
     }
 }
