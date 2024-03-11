@@ -243,13 +243,14 @@ public class InternalItem : IBundledXml<InternalItem>
                             if (!editedItems.ContainsKey(prefabName))
                                 continue;
 
-                            var editedItem = editedItems[prefabName].Where(x => x.Key == "descriptionId").First();
+                            var editedItem = editedItems[prefabName].Where(x => x.Key == "ingamedescription").First();
 
                             if (miscDict.LocalizationDict.TryGetValue(int.Parse(editedItem.Value), out var editedDescription))
                             {
                                 descriptionId = int.Parse(editedItem.Value);
                                 description = editedDescription;
                             }
+
                             else
                             {
                                 Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
