@@ -996,6 +996,21 @@
             <EditAttribute key="descriptionId" value="1000578"/>
         </Item>
     </GameVersion>
+    <GameVersion version="vMinigames2012">
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="price" value="50"/>
+        </Item>
+        <Item name="WPN_1H_SwordKnight01">
+            <EditAttribute key="id" value="3351"/>
+        </Item>
+    </GameVersion>
     <GameVersion version="vPets2012">
         <Item name="Add_COM_Armor01_S01">
             <EditAttribute key="global_level" value="1"/>

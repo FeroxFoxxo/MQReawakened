@@ -107,10 +107,10 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(Equipment);
 
         if (_version >= GameVersion.vPets2012)
-        {
             sb.Append(PetItemId);
+
+        if (_version >= GameVersion.vLate2012)
             sb.Append(PetAutonomous ? 1 : 0);
-        }
 
         sb.Append(GuestPassExpiry);
         sb.Append(ShouldExpireGuestPass ? 1 : 0);
