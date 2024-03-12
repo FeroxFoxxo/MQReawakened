@@ -1,4 +1,6 @@
-﻿using Server.Reawakened.Rooms.Models.Planes;
+﻿using A2m.Server;
+using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles;
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
@@ -10,6 +12,9 @@ public abstract class BaseCollider
     public string Plane;
     public string ColliderType;
     public RectModel ColliderBox;
+    public int Damage;
+    public ItemEffectType Effect;
+    public ItemCatalog ItemCatalog;
 
     public BaseCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, string colliderType)
     {
@@ -21,6 +26,22 @@ public abstract class BaseCollider
 
         ColliderType = colliderType.ToLower();
         ColliderBox = new RectModel(position.X, position.Y, sizeX, sizeY);
+    }
+
+    public BaseCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, string colliderType, int damage, ItemEffectType effect, ItemCatalog itemCatalog)
+    {
+        // Builder for AI projectiles
+        Id = id;
+        Position = new Vector3(position.X, position.Y, position.Z);
+        Plane = plane;
+        Room = room;
+
+        ColliderType = colliderType.ToLower();
+        ColliderBox = new RectModel(position.X, position.Y, sizeX, sizeY);
+
+        Damage = damage;
+        Effect = effect;
+        ItemCatalog = itemCatalog;
     }
     public BaseCollider(ColliderModel collider, Room room)
     {
