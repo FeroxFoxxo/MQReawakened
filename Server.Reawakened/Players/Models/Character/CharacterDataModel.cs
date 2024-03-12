@@ -1,6 +1,9 @@
 ﻿using A2m.Server;
+using EffectDefines;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.XMLs.Bundles;
+using System;
 
 namespace Server.Reawakened.Players.Models.Character;
 
@@ -216,6 +219,44 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(SpawnOnBackPlane ? 1 : 0);
 
         return sb.ToString();
+    }
+
+    public int CalculateDefense(ItemEffectType effect, ItemCatalog itemCatalog, WorldStatistics worldStats)
+    {
+        var defense = worldStats.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Player, _player.Character.Data.GlobalLevel);
+        var itemList = new List<ItemDescription>();
+        var statManager = new CharacterStatsManager(CharacterName);
+
+        var defenseType = ItemEffectType.Defence;
+
+        switch (effect)
+        {
+            case ItemEffectType.FireDamage:
+                defenseType = ItemEffectType.ResistFire;
+                break;
+            case ItemEffectType.EarthDamage:
+                defenseType = ItemEffectType.ResistEarth;
+                break;
+            case ItemEffectType.AirDamage:
+                defenseType = ItemEffectType.ResistAir;
+                break;
+            case ItemEffectType.IceDamage:
+                defenseType = ItemEffectType.ResistIce;
+                break;
+            case ItemEffectType.LightningDamage:
+                defenseType = ItemEffectType.ResistLightning;
+                break;
+            case ItemEffectType.PoisonDamage:
+                defenseType = ItemEffectType.ResistEarth;
+                break;
+        }
+
+        foreach (var item in Equipment.EquippedItems)
+            itemList.Add(itemCatalog.GetItemFromId(item.Value));
+
+        defense += statManager.ComputeEquimentBoost(defenseType, itemList);
+
+        return defense;
     }
 
     public PlayerListModel GetFriends() => FriendModels;
