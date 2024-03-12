@@ -115,8 +115,12 @@ public class CharacterDataModel : CharacterLightModel
         if (_version >= GameVersion.vLate2012)
             sb.Append(PetAutonomous ? 1 : 0);
 
-        sb.Append(GuestPassExpiry);
-        sb.Append(ShouldExpireGuestPass ? 1 : 0);
+        if (_version >= GameVersion.vMinigames2012)
+        {
+            sb.Append(GuestPassExpiry);
+            sb.Append(ShouldExpireGuestPass ? 1 : 0);
+        }
+        
         sb.Append(Registered ? 1 : 0);
         sb.Append(Resistances);
         sb.Append(RecipeList);
