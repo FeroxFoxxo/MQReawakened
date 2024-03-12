@@ -62,21 +62,24 @@ public class RoomUpdate : ExternalProtocol
                 if (entityComponents == null)
                     continue;
 
-                if (entityComponents.Count <= 0)
+                var componentData = entityComponents.Select(x => x.GetInitData(Player))
+                    .Where(x => x != null)
+                    .Where(x => x.Length > 0)
+                    .ToArray();
+
+                if (componentData.Length <= 0)
                     continue;
 
-                if (entityComponents.Count > 1)
-                {
+                if (componentData.Length > 1)
                     Logger.LogError("Too many components for {EntityId}!", entityId);
-                }
 
                 var sbEntity = new SeparatedStringBuilder('|');
 
                 sbEntity.Append(entityId);
 
-                var component = entityComponents.FirstOrDefault();
+                var component = componentData.FirstOrDefault();
 
-                sbEntity.Append(string.Join('!', component.GetInitData(Player).Select(x => x.ToString())));
+                sbEntity.Append(string.Join('!', component.Select(x => x.ToString())));
             }
         }
 
