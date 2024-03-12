@@ -80,6 +80,8 @@ public class RoomUpdate : ExternalProtocol
                 var component = componentData.FirstOrDefault();
 
                 sbEntity.Append(string.Join('!', component.Select(x => x.ToString())));
+
+                sb.Append(sbEntity.ToString());
             }
         }
 
