@@ -7,7 +7,6 @@ namespace Server.Reawakened.XMLs.Bundles;
 public class PetBattlePets : PetBattlePetsXML, IBundledXml<PetBattlePets>
 {
     public string BundleName => "PetBattlePets";
-
     public BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<PetBattlePets> Logger { get; set; }
@@ -17,9 +16,6 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml<PetBattlePets>
     {
         _rootXmlName = BundleName;
         _hasLocalizationDict = false;
-
-        PetBattlePetsDictionary = [];
-        PetBattlePetList = [];
     }
 
     public void EditDescription(XmlDocument xml)
@@ -93,9 +89,7 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml<PetBattlePets>
                                 var separator = new string[1] { "ICO" };
                                 var array = petBattlePetAbility.abilityIcon.Split(separator, StringSplitOptions.None);
                                 if (array.Length > 0)
-                                {
                                     petBattlePetAbility.abilityIcon = "PF" + array[1];
-                                }
                             }
                             break;
                         case "index":
@@ -160,9 +154,7 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml<PetBattlePets>
             var itemId2 = PetBattlePetList[i].itemId;
             var petBattlePet2 = PetBattlePetsDictionary[itemId2];
             if (petBattlePet2.species == petBattlePet.species)
-            {
                 list.Add(petBattlePet2);
-            }
         }
         return list;
     }
