@@ -280,7 +280,8 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
                 })
                 .ToList(),
 
-            TimedEventName = defaultTimedEvent
+            TimedEventName = defaultTimedEvent,
+            GameVersion = rConfig.GameVersion
         };
     }
 }

@@ -10,6 +10,16 @@
             <Item itemName="WPN_1H_SwordBasic01" count="1" />
         </Quest>
     </GameVersion>
+    <GameVersion version="vMinigames2012">
+        <Quest questId="803">
+            <Item itemName="WPN_1H_SwordBasic01" count="1" />
+        </Quest>
+    </GameVersion>
+    <GameVersion version="vPets2012">
+        <Quest questId="803">
+            <Item itemName="WPN_1H_SwordBasic01" count="1" />
+        </Quest>
+    </GameVersion>
     <GameVersion version="vEarly2012">
         <Quest questId="803">
             <Item itemName="WPN_1H_SwordBasic01" count="1" />
