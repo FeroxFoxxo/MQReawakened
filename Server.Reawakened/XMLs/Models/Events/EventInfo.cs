@@ -20,7 +20,7 @@ public class EventInfo
     {
         var sb = new SeparatedStringBuilder('%');
 
-        if (GameVersion >= GameVersion.vEarly2013)
+        if (GameVersion >= GameVersion.vLate2012)
         {
             sb.Append(EventId);
             sb.Append(DisplayAd ? 1 : 0);
@@ -38,8 +38,11 @@ public class EventInfo
 
             sb.Append(secEventSb.ToString());
 
-            sb.Append(DisplayAutoPopup ? 1 : 0);
-            sb.Append(TimedEventName);
+            if (GameVersion >= GameVersion.vEarly2013)
+            {
+                sb.Append(DisplayAutoPopup ? 1 : 0);
+                sb.Append(TimedEventName);
+            }
         }
         else
         {
