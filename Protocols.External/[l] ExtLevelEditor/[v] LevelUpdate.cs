@@ -62,13 +62,13 @@ public class RoomUpdate : ExternalProtocol
                 if (entityComponents == null)
                     continue;
 
-                if (entityComponents.Count <= 0)
-                    continue;
-
                 var componentData = entityComponents.Select(x => x.GetInitData(Player))
                     .Where(x => x != null)
                     .Where(x => x.Length > 0)
                     .ToArray();
+
+                if (componentData.Length <= 0)
+                    continue;
 
                 if (componentData.Length > 1)
                     Logger.LogError("Too many components for {EntityId}!", entityId);
