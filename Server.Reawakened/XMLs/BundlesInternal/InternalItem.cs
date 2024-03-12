@@ -1,8 +1,10 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
@@ -14,8 +16,8 @@ public class InternalItem : IBundledXml<InternalItem>
     public string BundleName => "InternalItem";
     public BundlePriority Priority => BundlePriority.High;
 
-    public ILogger<InternalItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
+    public ILogger<InternalItem> Logger { get; set; }
 
     public Dictionary<int, ItemDescription> Items;
     public Dictionary<int, string> Descriptions;
@@ -37,6 +39,10 @@ public class InternalItem : IBundledXml<InternalItem>
     public void ReadDescription(string xml)
     {
         var miscDict = Services.GetRequiredService<MiscTextDictionary>();
+        var editItem = Services.GetRequiredService<EditItem>();
+        var config = Services.GetRequiredService<ServerRConfig>();
+
+        var editedItems = editItem.EditedItemAttributes[config.GameVersion];
 
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
@@ -234,8 +240,22 @@ public class InternalItem : IBundledXml<InternalItem>
 
                         if (!miscDict.LocalizationDict.TryGetValue(descriptionId, out var description))
                         {
-                            Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
-                            continue;
+                            if (!editedItems.ContainsKey(prefabName))
+                                continue;
+
+                            var editedItem = editedItems[prefabName].Where(x => x.Key == "ingamedescription").First();
+
+                            if (miscDict.LocalizationDict.TryGetValue(int.Parse(editedItem.Value), out var editedDescription))
+                            {
+                                descriptionId = int.Parse(editedItem.Value);
+                                description = editedDescription;
+                            }
+
+                            else
+                            {
+                                Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
+                                continue;
+                            }
                         }
 
                         Descriptions.TryAdd(descriptionId, description);

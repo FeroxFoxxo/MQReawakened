@@ -126,11 +126,11 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
     {
         var doorId = (int)door;
 
-        if (Room == null || Room.IsObjectKilled(Id))
+        if (Room == null)
             return;
 
-        foreach (var trigReciev in Room.GetEntitiesFromId<TriggerReceiverComp>(doorId.ToString()))
-            trigReciev.Trigger(true);
+        foreach (var trigReceiver in Room.GetEntitiesFromId<TriggerReceiverComp>(doorId.ToString()))
+            trigReceiver.Trigger(true);
     }
 
     public void GoToNextState(GameObjectComponents NewState)

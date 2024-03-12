@@ -78,15 +78,21 @@ public class Room : Timer
         GameObjectIds = [];
         DuplicateEntities = [];
         KilledObjects = [];
+        Projectiles = [];
+        Enemies = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
+        {
+            Planes = [];
+            _entities = [];
+            Colliders = [];
+
             return;
+        }
 
         Planes = LevelInfo.LoadPlanes(_config);
         _entities = this.LoadEntities(services);
-        Projectiles = [];
         Colliders = this.LoadTerrainColliders();
-        Enemies = [];
 
         foreach (var type in UnknownEntities.Values.SelectMany(x => x).Distinct().Order())
             Logger.LogWarning("Could not find synced entity for {EntityType}", type);
@@ -257,7 +263,7 @@ public class Room : Timer
                         currentPlayer.SendUpdatedInventory(false);
                     }
                 }
-            } 
+            }
             else if (_config.TrainingGear2011.TryGetValue(LevelInfo.LevelId, out var gear) && _config.GameVersion >= GameVersion.v2011)
             {
                 var item = ItemCatalog.GetItemFromPrefabName(gear);
