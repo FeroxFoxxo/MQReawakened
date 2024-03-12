@@ -30,11 +30,11 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml<PetBattlePets>
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
-        foreach (XmlElement item in xmlDocument.GetElementsByTagName("petBattlePet"))
+        foreach (XmlElement petBattlePetXml in xmlDocument.GetElementsByTagName("petBattlePet"))
         {
             var petBattlePet = new PetBattlePet();
 
-            foreach (XmlAttribute attribute in item.Attributes) 
+            foreach (XmlAttribute attribute in petBattlePetXml.Attributes) 
             {
                 switch (attribute.Name)
                 {
@@ -63,78 +63,80 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml<PetBattlePets>
                         petBattlePet.nextTierBattlePointsNeeded = int.Parse(attribute.Value);
                         break;
                     case "speed":
-                        petBattlePet.speed = (PetBattlePetSpeed)(int)Enum.Parse(typeof(PetBattlePetSpeed), attribute.Value);
+                        petBattlePet.speed = Enum.Parse<PetBattlePetSpeed>(attribute.Value);
                         break;
                 }
             }
 
-            var list = new List<PetBattlePetAbility>();
+            var abilities = new List<PetBattlePetAbility>();
 
-            foreach (XmlElement item2 in item.GetElementsByTagName("abilities"))
+            foreach (XmlElement petAbilities in petBattlePetXml.GetElementsByTagName("abilities"))
             {
                 var petBattlePetAbility = new PetBattlePetAbility();
 
-                foreach (XmlAttribute attribute2 in item2.Attributes)
+                foreach (XmlAttribute attribute in petAbilities.Attributes)
                 {
-                    switch (attribute2.Name)
+                    switch (attribute.Name)
                     {
                         case "id":
-                            petBattlePetAbility.abilityId = int.Parse(attribute2.Value);
+                            petBattlePetAbility.abilityId = int.Parse(attribute.Value);
                             break;
                         case "description":
-                            petBattlePetAbility.description = attribute2.Value;
+                            petBattlePetAbility.description = attribute.Value;
                             break;
                         case "abilityIcon":
-                            petBattlePetAbility.abilityIcon = attribute2.Value;
+                            petBattlePetAbility.abilityIcon = attribute.Value;
 
                             if (!string.IsNullOrEmpty(petBattlePetAbility.abilityIcon))
                             {
                                 var separator = new string[1] { "ICO" };
                                 var array = petBattlePetAbility.abilityIcon.Split(separator, StringSplitOptions.None);
+
                                 if (array.Length > 0)
                                     petBattlePetAbility.abilityIcon = "PF" + array[1];
                             }
                             break;
                         case "index":
-                            petBattlePetAbility.index = int.Parse(attribute2.Value);
+                            petBattlePetAbility.index = int.Parse(attribute.Value);
                             break;
                         case "cooldownRounds":
-                            petBattlePetAbility.cooldownRounds = int.Parse(attribute2.Value);
+                            petBattlePetAbility.cooldownRounds = int.Parse(attribute.Value);
                             break;
                         case "damageValue":
-                            petBattlePetAbility.damageValue = int.Parse(attribute2.Value);
+                            petBattlePetAbility.damageValue = int.Parse(attribute.Value);
                             break;
                         case "durationRounds":
-                            petBattlePetAbility.durationRounds = int.Parse(attribute2.Value);
+                            petBattlePetAbility.durationRounds = int.Parse(attribute.Value);
                             break;
                         case "healthValue":
-                            petBattlePetAbility.healthValue = int.Parse(attribute2.Value);
+                            petBattlePetAbility.healthValue = int.Parse(attribute.Value);
                             break;
                         case "displayName":
-                            petBattlePetAbility.abilityDisplayName = attribute2.Value;
+                            petBattlePetAbility.abilityDisplayName = attribute.Value;
                             break;
                         case "abilityTarget":
-                            petBattlePetAbility.abilityTarget = attribute2.Value;
+                            petBattlePetAbility.abilityTarget = attribute.Value;
                             break;
                         case "abilityTargetId":
-                            petBattlePetAbility.abilityTargetId = int.Parse(attribute2.Value);
+                            petBattlePetAbility.abilityTargetId = int.Parse(attribute.Value);
                             break;
                         case "abilityType":
-                            petBattlePetAbility.abilityType = attribute2.Value;
+                            petBattlePetAbility.abilityType = attribute.Value;
                             break;
                         case "abilityTypeId":
-                            petBattlePetAbility.abilityTypeId = int.Parse(attribute2.Value);
+                            petBattlePetAbility.abilityTypeId = int.Parse(attribute.Value);
                             break;
                         case "healthMitigation":
-                            petBattlePetAbility.healthMitigation = int.Parse(attribute2.Value);
+                            petBattlePetAbility.healthMitigation = int.Parse(attribute.Value);
                             break;
                     }
                 }
 
-                list.Add(petBattlePetAbility);
+                abilities.Add(petBattlePetAbility);
             }
 
-            petBattlePet.abilities = list;
+            petBattlePet.abilities = abilities;
+
             PetBattlePetList.Add(petBattlePet);
             PetBattlePetsDictionary.TryAdd(petBattlePet.itemId, petBattlePet);
         }
@@ -147,18 +149,22 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml<PetBattlePets>
     {
         if (!PetBattlePetsDictionary.TryGetValue(itemId, out var value))
         {
-            Logger.LogWarning($"Item with id {itemId} does not exist in the PetBattlePetsDictionary");
+            Logger.LogWarning("Item with id {ItemId} does not exist in the PetBattlePetsDictionary", itemId);
             return null;
         }
+
         var list = new List<PetBattlePet>();
         var petBattlePet = value;
+
         for (var i = 0; i < PetBattlePetList.Count; i++)
         {
-            var itemId2 = PetBattlePetList[i].itemId;
-            var petBattlePet2 = PetBattlePetsDictionary[itemId2];
-            if (petBattlePet2.species == petBattlePet.species)
-                list.Add(petBattlePet2);
+            var petId = PetBattlePetList[i].itemId;
+            var pet = PetBattlePetsDictionary[petId];
+
+            if (pet.species == petBattlePet.species)
+                list.Add(pet);
         }
+
         return list;
     }
 }
