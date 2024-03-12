@@ -16,6 +16,9 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml<PetBattlePets>
     {
         _rootXmlName = BundleName;
         _hasLocalizationDict = false;
+
+        PetBattlePetsDictionary = [];
+        PetBattlePetList = [];
     }
 
     public void EditDescription(XmlDocument xml)
