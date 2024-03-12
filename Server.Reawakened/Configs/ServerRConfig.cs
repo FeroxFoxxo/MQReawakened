@@ -271,9 +271,9 @@ public class ServerRConfig : IRConfig
             { GameVersion.v2014, "boBegnopS_4102_TVE" },
             { GameVersion.vLate2013, "10TNMT_3102_TVE" },
             { GameVersion.vEarly2013, "TNMT_2102_ORP" },
-            { GameVersion.vLate2012, "TNMT_2102_ORP" },
-            { GameVersion.vPets2012, "TNMT_2102_ORP" },
-            { GameVersion.vEarly2012, "regnaRrewoP_2102_ORP" },
+            { GameVersion.vLate2012, "regnaRrewoP_2102_ORP" },
+            { GameVersion.vPets2012, "regnaRrewoP_2102_ORP" },
+            { GameVersion.vEarly2012, "retsaE_2102_TVE" },
             { GameVersion.v2011, string.Empty }
         };
 
@@ -281,7 +281,11 @@ public class ServerRConfig : IRConfig
         {
             { GameVersion.v2014, "tnevEytraPboBegnopS" },
             { GameVersion.vLate2013, string.Empty },
-            { GameVersion.vEarly2013, string.Empty }
+            { GameVersion.vEarly2013, string.Empty },
+            { GameVersion.vLate2012, string.Empty },
+            { GameVersion.vPets2012, string.Empty },
+            { GameVersion.vEarly2012, string.Empty },
+            { GameVersion.v2011, string.Empty }
         };
 
         FrontPlane = "Plane1";
