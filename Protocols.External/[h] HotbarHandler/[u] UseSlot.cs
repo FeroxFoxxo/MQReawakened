@@ -124,7 +124,7 @@ public class UseSlot : ExternalProtocol
 
         // Add weapon stats later
         var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem,
-            WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
+            Player.Character.Data.CalculateDamage(usedItem, ItemCatalog, WorldStatistics),
             usedItem.Elemental, ServerRConfig);
         Player.Room.Projectiles.Add(prjId, prj);
     }
@@ -139,7 +139,7 @@ public class UseSlot : ExternalProtocol
 
         // Add weapon stats later
         var prj = new MeleeEntity(Player, prjId, position, direction, 3, usedItem,
-            WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
+            Player.Character.Data.CalculateDamage(usedItem, ItemCatalog, WorldStatistics),
             usedItem.Elemental, ServerRConfig);
 
         Player.Room.Projectiles.Add(prjId, prj);

@@ -223,12 +223,11 @@ public class CharacterDataModel : CharacterLightModel
 
     public int CalculateDefense(ItemEffectType effect, ItemCatalog itemCatalog, WorldStatistics worldStats)
     {
+        var statManager = new CharacterStatsManager(CharacterName);
         var defense = worldStats.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Player, _player.Character.Data.GlobalLevel);
         var itemList = new List<ItemDescription>();
-        var statManager = new CharacterStatsManager(CharacterName);
 
         var defenseType = ItemEffectType.Defence;
-
         switch (effect)
         {
             case ItemEffectType.FireDamage:
@@ -257,6 +256,43 @@ public class CharacterDataModel : CharacterLightModel
         defense += statManager.ComputeEquimentBoost(defenseType, itemList);
 
         return defense;
+    }
+
+    public int CalculateDamage(ItemDescription usedItem, ItemCatalog itemCatalog, WorldStatistics worldStats)
+    {
+        var statManager = new CharacterStatsManager(CharacterName);
+        var damage = worldStats.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, _player.Character.Data.GlobalLevel);
+        var itemList = new List<ItemDescription> { usedItem };
+
+        var effect = ItemEffectType.BluntDamage;
+        switch (usedItem.Elemental)
+        {
+            case Elemental.Fire:
+                effect = ItemEffectType.FireDamage;
+                break;
+            case Elemental.Earth:
+                effect = ItemEffectType.EarthDamage;
+                break;
+            case Elemental.Air:
+                effect = ItemEffectType.AirDamage;
+                break;
+            case Elemental.Ice:
+                effect = ItemEffectType.IceDamage;
+                break;
+            case Elemental.Lightning:
+                effect = ItemEffectType.LightningDamage;
+                break;
+            case Elemental.Poison:
+                effect = ItemEffectType.EarthDamage;
+                break;
+        }
+
+        foreach (var item in Equipment.EquippedItems)
+            itemList.Add(itemCatalog.GetItemFromId(item.Value));
+
+        damage += + statManager.ComputeEquimentBoost(effect, itemList);
+
+        return damage;
     }
 
     public PlayerListModel GetFriends() => FriendModels;
