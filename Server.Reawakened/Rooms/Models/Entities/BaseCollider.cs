@@ -1,6 +1,5 @@
-﻿using A2m.Server;
+﻿using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Bundles;
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
@@ -10,13 +9,10 @@ public abstract class BaseCollider
     public Vector3 Position;
     public string Id;
     public string Plane;
-    public string ColliderType;
+    public ColliderClass Type;
     public RectModel ColliderBox;
-    public int Damage;
-    public ItemEffectType Effect;
-    public ItemCatalog ItemCatalog;
 
-    public BaseCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, string colliderType)
+    public BaseCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, ColliderClass colliderType)
     {
         // Builder for projectiles
         Id = id;
@@ -24,32 +20,17 @@ public abstract class BaseCollider
         Plane = plane;
         Room = room;
 
-        ColliderType = colliderType.ToLower();
+        Type = colliderType;
         ColliderBox = new RectModel(position.X, position.Y, sizeX, sizeY);
     }
 
-    public BaseCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, string colliderType, int damage, ItemEffectType effect, ItemCatalog itemCatalog)
-    {
-        // Builder for AI projectiles
-        Id = id;
-        Position = new Vector3(position.X, position.Y, position.Z);
-        Plane = plane;
-        Room = room;
-
-        ColliderType = colliderType.ToLower();
-        ColliderBox = new RectModel(position.X, position.Y, sizeX, sizeY);
-
-        Damage = damage;
-        Effect = effect;
-        ItemCatalog = itemCatalog;
-    }
     public BaseCollider(ColliderModel collider, Room room)
     {
         Id = string.Empty;
         Position = new Vector3(collider.Position.x, collider.Position.y, 0);
         Plane = collider.Plane;
         Room = room;
-        ColliderType = "terrain";
+        Type = ColliderClass.TerrainCube;
         ColliderBox = new RectModel(Position.x, Position.y + 0.1f, collider.Width, collider.Height);
     }
 
