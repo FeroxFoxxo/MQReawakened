@@ -8,6 +8,7 @@ using Server.Reawakened.XMLs.Bundles;
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
 public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameObjectId, player.TempData.Position, 1, 1, player.GetPlayersPlaneString(), player.Room, ColliderClass.Player)
 {
+    public Player Player = player;
     public override void SendCollisionEvent(BaseCollider received)
     {
         if (received is AIProjectileCollider aiProjectileCollider &&
@@ -18,7 +19,7 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
 
             var damage = aiProjectileCollider.Damage - player.Character.Data.CalculateDefense(aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
 
-            player.ApplyCharacterDamage(Room, damage);
+            player.ApplyCharacterDamage(Room, damage, aiProjectileCollider.TimerThread);
 
             player.SetTemporaryInvincibility(aiProjectileCollider.TimerThread, 1.3);
 

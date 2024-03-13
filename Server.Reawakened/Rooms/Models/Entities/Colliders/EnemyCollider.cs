@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
 

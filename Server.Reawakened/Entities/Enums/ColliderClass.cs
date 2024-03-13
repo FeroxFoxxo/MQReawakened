@@ -9,5 +9,6 @@ public enum ColliderClass
     Enemy,
     Player,
     AiAttack,
-    Mesh
+    Mesh,
+    Hazard
 }

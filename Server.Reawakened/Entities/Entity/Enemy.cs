@@ -417,9 +417,12 @@ public abstract class Enemy : IDestructible
 
             AiData.Intern_FireProjectile = false;
 
-            var prj = new AIProjectileEntity(Room, Id, prjId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
-                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, Room.Enemies[Id].EnemyController.TimerThread);
-            Room.Projectiles.Add(prjId, prj);
+            var prj = new AIProjectileEntity(Room, Id, projectileId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
+                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, Room.Enemies[Id].EnemyController.TimerThread,
+                GameFlow.StatisticData.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, EnemyController.Level),
+                EnemyController.ComponentData.EnemyEffectType,
+                _itemCatalog);
+            Room.Projectiles.Add(projectileId, prj);
         }
     }
 
