@@ -4,7 +4,6 @@ using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -17,6 +16,7 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text;
+using UnityEngine;
 using WorldGraphDefines;
 
 namespace Protocols.External._s__Synchronizer;
@@ -58,25 +58,28 @@ public class State : ExternalProtocol
                     Player.TempData.IsSuperStomping = true;
                     Player.TempData.Invincible = true;
 
-                    var startChargeAttack = new ChargeAttack_SyncEvent(syncEvent);
+                    var attack = new ChargeAttack_SyncEvent(syncEvent);
+
+                    Logger.LogDebug("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
+                        "at speed ({X}, {Y}) with max pos ({X}, {Y}) for item id: '{Id}' and zone: {Zone}",
+                        attack.IsCharging, attack.PosX, attack.PosY, attack.StartDelay,
+                        attack.SpeedX, attack.SpeedY, attack.MaxPosX, attack.MaxPosY, attack.ItemId, attack.ZoneId);
 
                     var chargeAttackCollider = new ChargeAttackEntity(Player,
-                        new Vector3Model() { X = startChargeAttack.PosX, Y = startChargeAttack.PosY, Z = Player.TempData.Position.Z },
-                        new Vector3Model() { X = startChargeAttack.MaxPosX, Y = startChargeAttack.MaxPosY, Z = Player.TempData.Position.Z },
-                        new Vector2Model() { X = startChargeAttack.SpeedX, Y = startChargeAttack.SpeedY },
-                        15, startChargeAttack.ItemId, startChargeAttack.ZoneId,
-                        WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
-                        Elemental.Standard, TimerThread);
+                                        new Vector3Model() { X = attack.PosX, Y = attack.PosY, Z = Player.TempData.Position.Z },
+                                        new Vector3Model() { X = attack.MaxPosX, Y = attack.MaxPosY, Z = Player.TempData.Position.Z },
+                                        new Vector2Model() { X = attack.SpeedX, Y = attack.SpeedY },
+                                        15, attack.ItemId, attack.ZoneId,
+                                        WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
+                                        Elemental.Standard, TimerThread);
 
                     Player.Room.Projectiles.TryAdd(Player.GameObjectId, chargeAttackCollider);
                     break;
-
                 case SyncEvent.EventType.ChargeAttackStop:
                     Player.TempData.IsSuperStomping = false;
                     Player.TempData.Invincible = false;
 
-                    if (Player.Room.Projectiles.ContainsKey(Player.GameObjectId))
-                        Player.Room.Projectiles.Remove(Player.GameObjectId);
+                    Player.Room.Projectiles.Remove(Player.GameObjectId);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
@@ -86,9 +89,9 @@ public class State : ExternalProtocol
                         foreach (var component in Player.Room.GetEntitiesFromId<BaseComponent>(collisionTarget))
                             if (!Player.Room.IsObjectKilled(component.Id))
                                 component.NotifyCollision(notifyCollisionEvent, newPlayer);
-                    else
-                        Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
-                            collisionTarget, newPlayer.Room.GetUnknownComponentTypes(collisionTarget));
+                            else
+                                Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
+                                    collisionTarget, newPlayer.Room.GetUnknownComponentTypes(collisionTarget));
                     break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
@@ -109,10 +112,7 @@ public class State : ExternalProtocol
 
                     newPlayer.TempData.OnGround = physicsBasicEvent.OnGround;
 
-                    var playerCollider = new PlayerCollider(newPlayer);
-
-                    if (newPlayer.Room.Colliders.ContainsKey(newPlayer.GameObjectId))
-                        newPlayer.Room.Colliders[newPlayer.GameObjectId] = playerCollider;
+                    UpdatePlayerCollider(newPlayer);
                     break;
                 case SyncEvent.EventType.Direction:
                     var directionEvent = new Direction_SyncEvent(syncEvent);
@@ -122,38 +122,7 @@ public class State : ExternalProtocol
                     RequestRespawn(entityId, syncEvent.TriggerTime);
                     break;
                 case SyncEvent.EventType.PhysicStatus:
-                    foreach (var hazard in Player.Room.GetEntitiesFromType<HazardControllerComp>())
-                    {
-                        Enum.TryParse(hazard.HurtEffect, true, out ItemEffectType effectType);
-
-                        if (effectType == ItemEffectType.SlowStatusEffect)
-                        {
-                            var distanceXThreshold = 4.0f;
-                            var distanceYThreshold = 1f;
-                            var distanceX = Math.Abs(Player.TempData.Position.X - hazard.Entity.GameObject.ObjectInfo.Position.X + -4.0f);
-                            var distanceY = Math.Abs(Player.TempData.Position.Y - hazard.Entity.GameObject.ObjectInfo.Position.Y + 4);
-
-                            if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold)
-                            {
-                                var slowStatusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                                    (int)ItemEffectType.SlowStatusEffect, 1, 1, true, hazard.PrefabName, false);
-
-                                Player.Room.SendSyncEvent(slowStatusEffect);
-                            }
-                        }
-                    }
-
-                    foreach (var platform in Player.Room.GetEntitiesFromType<CollapsingPlatformComp>())
-                    {
-                        var distanceXThreshold = 1.0f;
-                        var distanceYThreshold = 1f;
-                        var distanceX = Math.Abs(Player.TempData.Position.X - platform.Entity.GameObject.ObjectInfo.Position.X);
-                        var distanceY = Math.Abs(Player.TempData.Position.Y - platform.Entity.GameObject.ObjectInfo.Position.Y + -1.0f);
-
-                        if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold && !platform.IsBroken)
-                            platform.Collapse(false);
-                    }
-
+                    var physicStatusEvent = new PhysicStatus_SyncEvent(syncEvent);
                     break;
             }
 
@@ -181,6 +150,13 @@ public class State : ExternalProtocol
         if (entityId != Player.GameObjectId)
             if (ServerConfig.LogAllSyncEvents)
                 LogEvent(syncEvent, entityId, Player.Room);
+    }
+
+    private void UpdatePlayerCollider(Player player)
+    {
+        var playerCollider = new PlayerCollider(player);
+        player.Room.Colliders[player.GameObjectId] = playerCollider;
+        playerCollider.IsColliding(false);
     }
 
     private void RequestRespawn(string entityId, float triggerTime)

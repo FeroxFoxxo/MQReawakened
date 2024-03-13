@@ -91,7 +91,7 @@ public static class PlayerExtensions
 
         //Temporary way to earn NC upon level up.
         //(Needed for gameplay improvements as NC is currently unobtainable)
-        player.AddNCash(100);
+        player.AddNCash(125);
       
         player.SendSyncEventToPlayer(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
             player.Character.Data.MaxLife, player.Character.Data.MaxLife, player.GameObjectId.ToString()));
