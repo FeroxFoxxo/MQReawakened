@@ -48,7 +48,7 @@ public class DeleteMessage : ExternalProtocol
             return;
 
         player.AddItem(gData.Item, gData.Item.ItemNumber, gData.ItemCatalog);
-        player.SendUpdatedInventory(false);
+        player.SendUpdatedInventory();
 
         var mailMessage = player.Character.EmailMessages[gData.MessageId];
         var mail = player.Character.Emails[gData.MessageId];

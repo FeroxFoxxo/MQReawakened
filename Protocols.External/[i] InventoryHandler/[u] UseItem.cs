@@ -67,7 +67,7 @@ public class UseItem : ExternalProtocol
                 return;
         }
 
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
     }
 
     private void HandleBomb(ItemDescription usedItem, Vector3Model position, int direction)
@@ -156,6 +156,6 @@ public class UseItem : ExternalProtocol
             if (character.Data.Inventory.Items[item.ItemId] != null)
                 character.Data.Inventory.Items.Remove(item.ItemId);
 
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
     }
 }

@@ -83,7 +83,7 @@ public static class PlayerLootHandler
         if (lootModel.DoWheel)
             SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
 
-        player.SendUpdatedInventory(false);
+        player.SendUpdatedInventory();
     }
 
     private static void SendLootWheel(Player player, string itemsLooted, string lootableItems, string gameObjectId)

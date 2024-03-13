@@ -241,6 +241,6 @@ public class UseSlot : ExternalProtocol
             character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
             SendXt("hu", character.Data.Hotbar);
         }
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
     }
 }
