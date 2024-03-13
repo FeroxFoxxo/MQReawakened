@@ -119,9 +119,9 @@ public class CharacterDataModel : CharacterLightModel
         {
             sb.Append(GuestPassExpiry);
             sb.Append(ShouldExpireGuestPass ? 1 : 0);
+            sb.Append(Registered ? 1 : 0);
         }
         
-        sb.Append(Registered ? 1 : 0);
         sb.Append(Resistances);
         sb.Append(RecipeList);
         sb.Append(BuildTribesDiscoveredString());
