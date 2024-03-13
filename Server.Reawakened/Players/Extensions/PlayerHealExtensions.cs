@@ -36,12 +36,7 @@ public static class PlayerHealExtensions
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities)
             healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealAmount);
 
-        healValue = GetBuffedHealValue(healValue);
-
-        var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
-
-        if (hpUntilMaxHp < healValue)
-            healValue = hpUntilMaxHp;
+        healValue = GetBuffedHealValue(player, healValue);
 
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
                 player.Character.Data.CurrentLife += healValue, player.Character.Data.MaxLife, string.Empty));
@@ -105,12 +100,7 @@ public static class PlayerHealExtensions
             player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
             return;
 
-        tickHealValue = GetBuffedHealValue(tickHealValue);
-
-        var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
-
-        if (hpUntilMaxHp < tickHealValue)
-            tickHealValue = hpUntilMaxHp;
+        tickHealValue = GetBuffedHealValue(player, tickHealValue);
 
         var healEvent = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
            player.Character.Data.CurrentLife += tickHealValue, player.Character.Data.MaxLife, string.Empty);
@@ -119,8 +109,17 @@ public static class PlayerHealExtensions
     }
 
     //Original healing value >2011.
-    private static int GetBuffedHealValue(int outOfDateHealvalue) =>
-        outOfDateHealvalue * 18;
+    private static int GetBuffedHealValue(Player player, int outOfDateHealvalue)
+    {
+        var healValue = outOfDateHealvalue * 18;
+
+        var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
+
+        if (hpUntilMaxHp < healValue)
+            healValue = hpUntilMaxHp;
+
+        return healValue;
+    }
     //(This is really needed in the games current state or else healing items aren't worth buying or using)
     //Worth noting; Item descriptions in-game display 2011 stats because items load from ItemCatalogDict instead of MiscTextDisc.
 }
