@@ -187,8 +187,6 @@ public class UseSlot : ExternalProtocol
             Player.Room
         );
 
-        var weaponDamage = usedItem.GetDamageAmount(Logger, ServerRConfig);
-
         foreach (var objects in Player.Room.Planes[planeName].GameObjects.Values)
         {
             foreach (var obj in objects)
@@ -227,7 +225,7 @@ public class UseSlot : ExternalProtocol
                         triggerCoopEntity.TriggerInteraction(ActivationType.NormalDamage, Player);
 
                     foreach (var enemyEntity in Player.Room.GetEntitiesFromId<EnemyControllerComp>(obj.ObjectInfo.ObjectId))
-                        enemyEntity.Damage(weaponDamage, Player);
+                        enemyEntity.Damage(Player.Character.Data.CalculateDamage(usedItem, ItemCatalog), Player);
                 }
             }
         }
