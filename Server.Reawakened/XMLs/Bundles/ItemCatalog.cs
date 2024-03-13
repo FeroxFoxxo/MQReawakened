@@ -334,4 +334,22 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
         Items.TryGetValue(id, out var outItem);
         return outItem;
     }
+
+    public List<ItemDescription> GetItemsFromLevel(int minLevel, int maxLevel, ItemCategory category)
+    {
+        var itemList = new List<ItemDescription>();
+        foreach(var item in Items)
+        {
+            //Replace this in the future with xmls detailing all the items that are capable of dropping
+            if (item.Value.CategoryId == category && 
+                item.Value.LevelRequired >= minLevel && item.Value.LevelRequired <= maxLevel && 
+                (item.Value.Binding == ItemBinding.Unbound || item.Value.Binding == ItemBinding.OnEquip) &&
+                item.Value.SubCategoryId != ItemSubCategory.SlotHead &&
+                item.Value.Currency == CurrencyType.Banana &&
+                item.Value.ProductionStatus == ProductionStatus.Ingame &&
+                item.Value.Tribe == TribeType.Crossroads)
+                itemList.Add(item.Value);
+        }
+        return itemList;
+    }
 }

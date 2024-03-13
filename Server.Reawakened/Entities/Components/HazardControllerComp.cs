@@ -82,7 +82,7 @@ public class HazardControllerComp : Component<HazardController>
                 effectType);
         }
 
-        var defense = player.Character.Data.CalculateDefense(effectType, ItemCatalog, WorldStatistics);
+        var defense = player.Character.Data.CalculateDefense(effectType, ItemCatalog);
 
         switch (effectType)
         {

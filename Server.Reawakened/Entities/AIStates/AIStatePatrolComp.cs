@@ -15,6 +15,7 @@ using Server.Reawakened.Entities.AbstractComponents;
 using A2m.Server;
 using Server.Reawakened.Rooms.Models.Planes;
 using Microsoft.Extensions.DependencyInjection;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Entities.AIStates;
 public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
@@ -49,7 +50,7 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
     public Vector3Model StartingPostion = new();
 
     public GameObjectComponents PreviousState = [];
-
+    public ItemCatalog ItemCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public IServiceProvider Service { get; set; }
@@ -213,7 +214,8 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
         Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Room.GetEntityFromId<AIStatePatrolComp>(Id),
             Position.X, Position.Y, Position.Z, direction, 0, 3, int.Parse(projectileId), 0));
 
-        var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, Position, 5, 1, 3, TimerThread);
+        //Magic numbers here and everywhere else will be fixed when AIState gets merged with default enemies
+        var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, Position, 5, 1, 3, TimerThread, 1, ItemEffectType.BluntDamage, ItemCatalog);
         Room.Projectiles.Add(projectileId, aiProjectile);
 
         GoToNextState(nextState);

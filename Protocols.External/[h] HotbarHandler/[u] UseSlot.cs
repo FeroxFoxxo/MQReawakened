@@ -2,12 +2,16 @@ using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
+using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -54,7 +58,7 @@ public class UseSlot : ExternalProtocol
                 HandleConsumable(usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
-                HandleMeleeWeapon(usedItem, Player.TempData.Position, direction);
+                HandleMeleeWeapon(usedItem, position, direction);
                 break;
             case ItemActionType.Pet:
                 HandlePet(usedItem);
@@ -120,7 +124,7 @@ public class UseSlot : ExternalProtocol
 
         // Add weapon stats later
         var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem,
-            Player.Character.Data.CalculateDamage(usedItem, ItemCatalog, WorldStatistics),
+            Player.Character.Data.CalculateDamage(usedItem, ItemCatalog),
             usedItem.Elemental, ServerRConfig);
         Player.Room.Projectiles.Add(prjId, prj);
     }
@@ -135,7 +139,7 @@ public class UseSlot : ExternalProtocol
 
         // Add weapon stats later
         var prj = new MeleeEntity(Player, prjId, position, direction, 3, usedItem,
-            Player.Character.Data.CalculateDamage(usedItem, ItemCatalog, WorldStatistics),
+            Player.Character.Data.CalculateDamage(usedItem, ItemCatalog),
             usedItem.Elemental, ServerRConfig);
 
         Player.Room.Projectiles.Add(prjId, prj);
