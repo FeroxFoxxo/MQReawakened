@@ -246,10 +246,10 @@ public class InternalItem : IBundledXml<InternalItem>
 
                             foreach (var editedItem in editedItems[prefabName])
                             {
-                                if (miscDict.LocalizationDict.TryGetValue(int.Parse(editedItem.Value), out var editedDescription))
+                                if (miscDict.LocalizationDict.ContainsKey(int.Parse(editedItem.Value)))
                                 {
                                     descriptionId = int.Parse(editedItem.Value);
-                                    description = editedDescription;
+                                    description = miscDict.LocalizationDict[descriptionId];
                                 }
 
                                 else
