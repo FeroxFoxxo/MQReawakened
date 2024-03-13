@@ -239,28 +239,29 @@ public class InternalItem : IBundledXml<InternalItem>
                             }
                         }
 
-                        if (!miscDict.LocalizationDict.TryGetValue(descriptionId, out var description))
+                        var description = string.Empty;
+                        if (miscDict.LocalizationDict.ContainsKey(descriptionId))
                         {
-                            if (!editedItems.ContainsKey(prefabName))
-                                continue;
+                            description = miscDict.LocalizationDict[descriptionId];
+                            Descriptions.TryAdd(descriptionId, description);
+                        }
 
-                            foreach (var editedItem in editedItems[prefabName])
+                        else
+                        {
+                            foreach (var editedItem in editItem.EditedItemAttributes.Values)
                             {
-                                if (miscDict.LocalizationDict.ContainsKey(int.Parse(editedItem.Value)))
+                                if (editedItem.TryGetValue(prefabName, out var attributes) &&
+                                    attributes.TryGetValue("ingamedescription", out var attributeValue))
                                 {
-                                    descriptionId = int.Parse(editedItem.Value);
-                                    description = miscDict.LocalizationDict[descriptionId];
-                                }
-
-                                else
-                                {
-                                    Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
-                                    continue;
+                                    var editedDescriptionId = int.Parse(attributeValue);
+                                    if (miscDict.LocalizationDict.TryGetValue(editedDescriptionId, out var editedDescription))
+                                    {
+                                        Descriptions.TryAdd(editedDescriptionId, editedDescription);
+                                        break;
+                                    }
                                 }
                             }
                         }
-
-                        Descriptions.TryAdd(descriptionId, description);
 
                         var nameId = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == itemName);
 
