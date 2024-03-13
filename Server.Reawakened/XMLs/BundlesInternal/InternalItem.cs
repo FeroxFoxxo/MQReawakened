@@ -7,6 +7,7 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
+using System.Linq;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
@@ -243,18 +244,19 @@ public class InternalItem : IBundledXml<InternalItem>
                             if (!editedItems.ContainsKey(prefabName))
                                 continue;
 
-                            var editedItem = editedItems[prefabName].Where(x => x.Key == "ingamedescription").First();
-
-                            if (miscDict.LocalizationDict.TryGetValue(int.Parse(editedItem.Value), out var editedDescription))
+                            foreach (var editedItem in editedItems[prefabName])
                             {
-                                descriptionId = int.Parse(editedItem.Value);
-                                description = editedDescription;
-                            }
+                                if (miscDict.LocalizationDict.TryGetValue(int.Parse(editedItem.Value), out var editedDescription))
+                                {
+                                    descriptionId = int.Parse(editedItem.Value);
+                                    description = editedDescription;
+                                }
 
-                            else
-                            {
-                                Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
-                                continue;
+                                else
+                                {
+                                    Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
+                                    continue;
+                                }
                             }
                         }
 
