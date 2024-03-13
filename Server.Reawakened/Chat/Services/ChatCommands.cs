@@ -13,6 +13,7 @@ using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
@@ -114,6 +115,7 @@ public partial class ChatCommands(
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
+
     public bool Hotbar(Player player, string[] args)
     {
         player.AddSlots(true);
@@ -146,6 +148,20 @@ public partial class ChatCommands(
             ItemFilterCategory.Consumables or
             ItemFilterCategory.NestedSuperPack)
         {
+            //Item must be in inventory to use in hotbar
+            if (!player.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+            {
+                var itemModel = new ItemModel()
+                {
+                    ItemId = item.ItemId,
+                    Count = 1,
+                    BindingCount = 1,
+                    DelayUseExpiry = DateTime.Now
+                };
+
+                player.Character.Data.Inventory.Items.Add(item.ItemId, itemModel);
+            }
+
             player.Character.Data.Hotbar.HotbarButtons[hotbarId - 1] = new Players.Models.Character.ItemModel()
             {
                 ItemId = itemId,

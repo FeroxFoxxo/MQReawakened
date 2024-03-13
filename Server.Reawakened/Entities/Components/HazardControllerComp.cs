@@ -30,6 +30,7 @@ public class HazardControllerComp : Component<HazardController>
     public TimerThread TimerThread { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
     public ILogger<HazardControllerComp> Logger { get; set; }
 
     private EnemyControllerComp _enemyController;
@@ -81,7 +82,7 @@ public class HazardControllerComp : Component<HazardController>
                 effectType);
         }
 
-        var defense = WorldStatistics.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Player, player.Character.Data.GlobalLevel);
+        var defense = player.Character.Data.CalculateDefense(effectType, ItemCatalog, WorldStatistics);
 
         switch (effectType)
         {
@@ -93,12 +94,20 @@ public class HazardControllerComp : Component<HazardController>
                 break;
             default:
                 if (_damage > 0)
-                    player.ApplyCharacterDamage(Room, _damage - defense);
+                    player.ApplyCharacterDamage(Room, _damage - defense, TimerThread);
                 else
-                    player.ApplyDamageByPercent(Room, .10);
+                    player.ApplyDamageByPercent(Room, .10, TimerThread);
                 break;
         }
 
         player.SetTemporaryInvincibility(TimerThread, 1);
     }
+
+    public void SlowStatusEffect(string playerId) => 
+        Room.SendSyncEvent(new StatusEffect_SyncEvent(playerId, Room.Time,
+            (int)ItemEffectType.SlowStatusEffect, 1, 1, true, Id, false));
+
+    public void NullifySlowStatusEffect(string playerId) =>
+        Room.SendSyncEvent(new StatusEffect_SyncEvent(playerId, Room.Time,
+            (int)ItemEffectType.NullifySlowStatusEffect, 1, 1, true, Id, false));
 }
