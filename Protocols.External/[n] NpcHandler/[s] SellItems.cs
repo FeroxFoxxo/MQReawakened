@@ -29,7 +29,7 @@ public class SellItems : ExternalProtocol
 
             Player.AddBananas(itemDescription.SellPrice * amount);
 
-            Player.SendUpdatedInventory(false);
+            Player.SendUpdatedInventory();
         }
     }
 }

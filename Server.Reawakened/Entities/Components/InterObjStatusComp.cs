@@ -1,29 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Players;
 
 namespace Server.Reawakened.Entities.Components;
-
-public class InterObjStatusComp : Component<InterObjStatus>
+public class InterObjStatusComp : BaseInterObjStatusComp<InterObjStatus>
 {
-    public int DifficultyLevel => ComponentData.DifficultyLevel;
-    public int GenericLevel => ComponentData.GenericLevel;
-    public int Stars => ComponentData.Stars;
-    public int MaxHealth => ComponentData.MaxHealth;
-    public float LifebarOffsetX => ComponentData.LifeBarOffsetX;
-    public float LifebarOffsetY => ComponentData.LifeBarOffsetY;
-    public string EnemyLifeBar => ComponentData.EnemyLifeBar;
-
-    public int StandardDamageResistPoints => ComponentData.StandardDamageResistPoints;
-    public int FireDamageResistPoints => ComponentData.FireDamageResistPoints;
-    public int IceDamageResistPoints => ComponentData.IceDamageResistPoints;
-    public int PoisonDamageResistPoints => ComponentData.PoisonDamageResistPoints;
-    public int LightningDamageResistPoints => ComponentData.LightningDamageResistPoints;
-
-    public int AirDamageResistPoints => ComponentData.AirDamageResistPoints;
-    public int EarthDamageResistPoints => ComponentData.EarthDamageResistPoints;
-    public int StunStatusEffectResistSecs => ComponentData.StunStatusEffectResistSecs;
-    public int SlowStatusEffectResistSecs => ComponentData.SlowStatusEffectResistSecs;
-    public int FreezeStatusEffectResistSecs => ComponentData.FreezeStatusEffectResistSecs;
-
-    public ILogger<InterObjStatusComp> Logger { get; set; }
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) => base.NotifyCollision(notifyCollisionEvent, player);
 }

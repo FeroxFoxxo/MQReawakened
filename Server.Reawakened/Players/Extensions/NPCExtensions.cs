@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
@@ -15,11 +16,19 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class NpcExtensions
 {
-    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest, InternalQuestItem questItem,
+    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest, InternalQuestItem questItem, GameVersion version,
         ItemCatalog itemCatalog, FileLogger fileLogger, string identifier, Microsoft.Extensions.Logging.ILogger logger)
     {
         var character = player.Character;
         var questId = quest.Id;
+
+        var questTest = character.Data.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
+
+        if (questTest != null)
+            return questTest;
+
+        if (character.Data.CompletedQuests.Contains(quest.Id))
+            return null;
 
         character.Data.ActiveQuestId = questId;
 
@@ -61,6 +70,16 @@ public static class NpcExtensions
                             objective.Value.Completed = true;
                     }
                 }
+                else if (objective.Value.ObjectiveType == ObjectiveEnum.Inventorycheck)
+                {
+                    if (player.Character.Data.Inventory.Items.TryGetValue(objective.Value.ItemId, out var item))
+                    {
+                        objective.Value.CountLeft = objective.Value.Total - item.Count;
+
+                        if (objective.Value.CountLeft <= 0)
+                            objective.Value.Completed = true;
+                    }
+                }
             }
 
             character.Data.QuestLog.Add(questModel);
@@ -88,7 +107,7 @@ public static class NpcExtensions
             QuestState.IN_PROCESSING :
             QuestState.TO_BE_VALIDATED;
 
-        player.SendXt("na", questModel, true);
+        player.SendXt("na", questModel, true ? 1 : 0);
 
         player.UpdateNpcsInLevel(quest);
 
@@ -98,19 +117,22 @@ public static class NpcExtensions
 
         UpdateActiveObjectives(player, itemCatalog);
 
-        if (questItem.QuestItemList.TryGetValue(questId, out var itemList))
+        if (questItem.QuestItemList.TryGetValue(version, out var questList))
         {
-            foreach (var itemModel in itemList)
+            if (questList.TryGetValue(questId, out var itemList))
             {
-                var item = itemCatalog.GetItemFromId(itemModel.ItemId);
+                foreach (var itemModel in itemList)
+                {
+                    var item = itemCatalog.GetItemFromId(itemModel.ItemId);
 
-                if (item == null)
-                    continue;
+                    if (item == null)
+                        continue;
 
-                player.AddItem(item, itemModel.Count, itemCatalog);
+                    player.AddItem(item, itemModel.Count, itemCatalog);
+                }
+
+                player.SendUpdatedInventory();
             }
-
-            player.SendUpdatedInventory(false);
         }
 
         return questModel;

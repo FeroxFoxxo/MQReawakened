@@ -52,11 +52,15 @@ public class LauncherRConfig : IRConfig
 
         TimeFilter = "yyyy-MM-dd_HH-mm-ss";
 
-        // Likely occured between Nov 20 - Nov 24
         ClientUpdates = new Dictionary<GameVersion, string>
         {
-            { GameVersion.v2012, "2009-01-01_12-00-00" },
-            { GameVersion.v2013, "2013-01-27_12-00-00" },
+            { GameVersion.v2011, "2011-03-17_12-00-00" },
+            { GameVersion.vEarly2012, "2012-01-01_12-00-00" },
+            { GameVersion.vPets2012, "2012-07-01_12-00-00" },
+            { GameVersion.vMinigames2012, "2012-08-01_12-00-00" },
+            { GameVersion.vLate2012, "2012-10-01_12-00-00" },
+            { GameVersion.vEarly2013, "2013-01-01_12-00-00" },
+            { GameVersion.vLate2013, "2013-04-01_12-00-00" },
             { GameVersion.v2014, "2013-11-22_12-00-00" }
         };
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -18,6 +19,7 @@ public class ChooseQuestReward : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public FileLogger FileLogger { get; set; }
     public InternalQuestItem QuestItems { get; set; }
+    public ServerRConfig Config { get; set; }
 
     public override void Run(string[] message)
     {
@@ -43,7 +45,7 @@ public class ChooseQuestReward : ExternalProtocol
             var newQuest = QuestCatalog.GetQuestData(questRewardId);
 
             if (newQuest != null)
-                Player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {npcId}", Logger);
+                Player.AddQuest(newQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, $"Quest reward from {npcId}", Logger);
 
             Player.UpdateAllNpcsInLevel();
         }
@@ -56,6 +58,6 @@ public class ChooseQuestReward : ExternalProtocol
         foreach (var item in quest.RewardItems)
             Player.AddItem(item.Key, item.Value, ItemCatalog);
 
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
     }
 }

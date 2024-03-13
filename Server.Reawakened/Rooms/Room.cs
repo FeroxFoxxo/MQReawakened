@@ -7,6 +7,7 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Entity.Enemies;
+using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -31,6 +32,7 @@ public class Room : Timer
     private readonly Level _level;
 
     public HashSet<string> GameObjectIds;
+    public HashSet<string> KilledObjects;
 
     public Dictionary<string, Player> Players;
     public Dictionary<string, TicklyEntity> Projectiles;
@@ -75,15 +77,22 @@ public class Room : Timer
         Players = [];
         GameObjectIds = [];
         DuplicateEntities = [];
+        KilledObjects = [];
+        Projectiles = [];
+        Enemies = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
+        {
+            Planes = [];
+            _entities = [];
+            Colliders = [];
+
             return;
+        }
 
         Planes = LevelInfo.LoadPlanes(_config);
         _entities = this.LoadEntities(services);
-        Projectiles = [];
         Colliders = this.LoadTerrainColliders();
-        Enemies = [];
 
         foreach (var type in UnknownEntities.Values.SelectMany(x => x).Distinct().Order())
             Logger.LogWarning("Could not find synced entity for {EntityType}", type);
@@ -171,10 +180,8 @@ public class Room : Timer
         var enemiesCopy = Enemies.Values.ToList();
 
         foreach (var entityComponent in entitiesCopy)
-        {
-            //if (!IsObjectKilled(entityComponent.Id))
-            entityComponent.Update();
-        }
+            if (!IsObjectKilled(entityComponent.Id))
+                entityComponent.Update();
 
         foreach (var projectile in projectilesCopy)
             projectile.Update();
@@ -244,7 +251,7 @@ public class Room : Timer
                 }
             }
 
-            if (_config.TrainingGear.TryGetValue(LevelInfo.LevelId, out var trainingGear))
+            if (_config.TrainingGear.TryGetValue(LevelInfo.LevelId, out var trainingGear) && _config.GameVersion == GameVersion.v2014)
             {
                 var item = ItemCatalog.GetItemFromPrefabName(trainingGear);
 
@@ -253,7 +260,20 @@ public class Room : Timer
                     if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
                     {
                         currentPlayer.AddItem(item, 1, ItemCatalog);
-                        currentPlayer.SendUpdatedInventory(false);
+                        currentPlayer.SendUpdatedInventory();
+                    }
+                }
+            }
+            else if (_config.TrainingGear2011.TryGetValue(LevelInfo.LevelId, out var gear) && _config.GameVersion >= GameVersion.v2011)
+            {
+                var item = ItemCatalog.GetItemFromPrefabName(gear);
+
+                if (item != null)
+                {
+                    if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+                    {
+                        currentPlayer.AddItem(item, 1, ItemCatalog);
+                        currentPlayer.SendUpdatedInventory();
                     }
                 }
             }
@@ -400,29 +420,57 @@ public class Room : Timer
 
     // Entity Code
 
+    public bool IsObjectKilled(string id)
+    {
+        lock (_roomLock)
+            return KilledObjects.Contains(id);
+    }
+
     public bool ContainsEntity(string id) =>
         _entities.ContainsKey(id);
 
-    public void RemoveEntity(string id)
+    public void KillEntity(Player player, string id)
     {
+        if (player == null)
+            return;
+
         lock (_roomLock)
-            _entities.Remove(id);
+            if (KilledObjects.Contains(id))
+                return;
+
+        Logger.LogInformation("Killing object {id}...", id);
+
+        var roomEntities = _entities.Values.SelectMany(s => s).ToList();
+
+        foreach (var destructible in GetEntitiesFromId<IDestructible>(id))
+        {
+            if (destructible is BaseComponent component)
+            {
+                destructible.Destroy(player, player.Room, component.Id);
+
+                Logger.LogDebug("Killed destructible {destructible} from GameObject {prefabname} with Id {id}",
+                    destructible.GetType().Name, component.PrefabName, component.Id);
+            }
+        }
+
+        lock (_roomLock)
+            KilledObjects.Add(id);
     }
 
     public Dictionary<string, List<BaseComponent>> GetEntities() => _entities;
 
     public T GetEntityFromId<T>(string id) where T : class =>
         _entities.TryGetValue(id, out var entities) ?
-            entities.FirstOrDefault(x => x is T) as T :
+            entities.FirstOrDefault(x => x is T and not null) as T :
             null;
 
     public T[] GetEntitiesFromId<T>(string id) where T : class =>
         _entities.TryGetValue(id, out var entities) ?
-            entities.Where(x => x is T).Select(x => x as T).ToArray() :
+            entities.Where(x => x is T and not null).Select(x => x as T).ToArray() :
             [];
 
     public T[] GetEntitiesFromType<T>() where T : class =>
         typeof(T) == typeof(BaseComponent)
             ? _entities.Values.SelectMany(x => x).ToArray() as T[]
-            : _entities.SelectMany(x => x.Value).Where(x => x is T).Select(x => x as T).ToArray();
+            : _entities.SelectMany(x => x.Value).Where(x => x is T and not null).Select(x => x as T).ToArray();
 }

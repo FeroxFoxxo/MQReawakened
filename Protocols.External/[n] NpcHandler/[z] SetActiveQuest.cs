@@ -44,6 +44,6 @@ public class SetActiveQuest : ExternalProtocol
         var newQuest = QuestCatalog.GetQuestData(activeQuest);
 
         if (newQuest != null)
-            Player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Active quest protocol", Logger);
+            Player.AddQuest(newQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, $"Active quest protocol", Logger);
     }
 }

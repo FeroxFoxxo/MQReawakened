@@ -67,7 +67,7 @@ public class UseItem : ExternalProtocol
                 return;
         }
 
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
     }
 
     private void HandleBomb(ItemDescription usedItem, Vector3Model position, int direction)
@@ -116,21 +116,13 @@ public class UseItem : ExternalProtocol
 
     private void HandleRecipe(ItemDescription usedItem)
     {
+        Player.RemoveItem(usedItem, 1, ItemCatalog);
+
         var recipe = RecipeCatalog.GetRecipeById(usedItem.RecipeParentItemID);
 
         Player.Character.Data.RecipeList.RecipeList.Add(recipe);
 
         Player.SendXt("cz", recipe);
-
-        var removeFromHotbar = true;
-
-        if (usedItem.InventoryCategoryID is
-            ItemFilterCategory.WeaponAndAbilities or
-            ItemFilterCategory.Pets)
-            removeFromHotbar = false;
-
-        if (removeFromHotbar)
-            RemoveFromHotbar(Player.Character, usedItem);
     }
 
     private void HandleSuperPack(ItemDescription usedItem)
@@ -164,6 +156,6 @@ public class UseItem : ExternalProtocol
             if (character.Data.Inventory.Items[item.ItemId] != null)
                 character.Data.Inventory.Items.Remove(item.ItemId);
 
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
     }
 }

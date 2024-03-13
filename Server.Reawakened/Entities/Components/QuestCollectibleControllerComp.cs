@@ -15,14 +15,16 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
     public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
 
+    private ItemDescription _questItem;
+
     public override object[] GetInitData(Player player)
     {
         CollectedState = CollectibleState.NotActive;
 
-        var questItem = ItemCatalog.GetItemFromPrefabName(PrefabName);
+        _questItem = ItemCatalog.GetItemFromPrefabName(PrefabName);
 
         foreach (var objective in player.Character.Data.QuestLog.SelectMany(x => x.Objectives.Values).Where
-            (x => x.GameObjectId.ToString() == Id || questItem != null && x.ItemId == questItem.ItemId))
+            (x => x.GameObjectId.ToString() == Id || _questItem != null && x.ItemId == _questItem.ItemId))
             CollectedState = CollectibleState.Active;
 
         return [UpdateActiveObjectives(player, CollectedState)];
@@ -30,12 +32,24 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        player.CheckObjective(ObjectiveEnum.Receiveitem, Id, PrefabName, 1, QuestCatalog);
-        player.CheckObjective(ObjectiveEnum.Collect, Id, PrefabName, 1, QuestCatalog);
-        player.CheckObjective(ObjectiveEnum.AlterandReceiveitem, Id, PrefabName, 1, QuestCatalog);
-        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1, QuestCatalog);
-        player.CheckObjective(ObjectiveEnum.Deliver, Id, PrefabName, 1, QuestCatalog);
-        player.CheckObjective(ObjectiveEnum.Alter, Id, PrefabName, 1, QuestCatalog);
+        var count = 1;
+
+        if (_questItem != null)
+        {
+            player.AddItem(_questItem, count, ItemCatalog);
+            player.SendUpdatedInventory();
+        }
+
+        player.CheckObjective(ObjectiveEnum.Collect, Id, PrefabName, count, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, count, QuestCatalog);
+
+        player.CheckObjective(ObjectiveEnum.Deliver, Id, PrefabName, count, QuestCatalog);
+
+        player.CheckObjective(ObjectiveEnum.Alter, Id, PrefabName, count, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.AlterandReceiveitem, Id, PrefabName, count, QuestCatalog);
+
+        player.CheckObjective(ObjectiveEnum.Receiveitem, Id, PrefabName, count, QuestCatalog);
+        player.CheckObjective(ObjectiveEnum.Giveitem, Id, PrefabName, count, QuestCatalog);
 
         player.SendSyncEventToPlayer(new Trigger_SyncEvent(syncEvent));
 

@@ -248,6 +248,6 @@ public static class GetInternalXml
             }
 
         if (hasUpdatedItems)
-            player.SendUpdatedInventory(false);
+            player.SendUpdatedInventory();
     }
 }

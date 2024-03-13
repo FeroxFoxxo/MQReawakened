@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8</TargetFramework>
@@ -13,7 +13,6 @@
         <Folder Include="[u] GuildHandler\" />
         <Folder Include="[H] HousingHandler\" />
         <Folder Include="[x] ItemHandler\" />
-        <Folder Include="[b] LocalizationHandler\" />
         <Folder Include="[j] LootHandler\" />
         <Folder Include="[w] WarningMessageHandler\" />
         <Folder Include="[r] RoomHandler\" />

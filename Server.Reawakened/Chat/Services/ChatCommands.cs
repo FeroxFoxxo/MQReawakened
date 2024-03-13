@@ -5,6 +5,7 @@ using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
+using Server.Base.Logging;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
@@ -12,6 +13,7 @@ using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
@@ -23,9 +25,9 @@ using System.Text.RegularExpressions;
 namespace Server.Reawakened.Chat.Services;
 
 public partial class ChatCommands(
-    ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
-    WorldHandler worldHandler, InternalAchievement internalAchievement,
-    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves) : IService
+    ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger, FileLogger fileLogger,
+    WorldHandler worldHandler, InternalAchievement internalAchievement, InternalQuestItem questItem,
+    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
 
@@ -38,25 +40,37 @@ public partial class ChatCommands(
     {
         logger.LogDebug("Setting up chat commands");
 
-        AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
-        AddCommand(new ChatCommand("unlockHotBar", "[petSlot 1 (true) / 0 (false)]", AddHotBar));
+        AddCommand(new ChatCommand("save", "[owner only]", SaveLevel));
+
+        AddCommand(new ChatCommand("godMode", "", GodMode));
+
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
-        AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
-        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
-        AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
+        AddCommand(new ChatCommand("hotbar", "[hotbarNum] [itemId]", Hotbar));
+        AddCommand(new ChatCommand("getAllItems", "[categoryValue]", GetAllItems));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
-        AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
+
+        AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
         AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
-        AddCommand(new ChatCommand("openDoors", "", OpenDoors));
-        AddCommand(new ChatCommand("getAllItems", "[categoryValue]", GetAllItems));
-        AddCommand(new ChatCommand("godmode", "", GodMode));
-        AddCommand(new ChatCommand("save", "[owner only]", SaveLevel));
-        AddCommand(new ChatCommand("openVines", "", OpenVines));
-        AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
+
+        AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
+        AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
+        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
+        AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
+
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
         AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
+        AddCommand(new ChatCommand("openVines", "", OpenVines));
+        AddCommand(new ChatCommand("openDoors", "", OpenDoors));
+
+        AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("playerCount", "[detailed]", PlayerCount));
+
+        AddCommand(new ChatCommand("completeQuest", "[id]", CompleteQuest));
+        AddCommand(new ChatCommand("addQuest", "[id]", AddQuest));
+        AddCommand(new ChatCommand("findQuest", "[name]", GetQuestByName));
+
+        AddCommand(new ChatCommand("updateNpcs", "", UpdateLevelNpcs));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -101,6 +115,70 @@ public partial class ChatCommands(
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
+
+    public bool Hotbar(Player player, string[] args)
+    {
+        player.AddSlots(true);
+
+        if (args.Length <= 2)
+            return true;
+
+        if (!int.TryParse(args[1], out var hotbarId) || !int.TryParse(args[2], out var itemId) || hotbarId is < 1 or > 5)
+        {
+            Log("Please enter a hotbar number from 1-5 and an item Id.", player);
+            return false;
+        }
+
+        var item = itemCatalog.GetItemFromId(itemId);
+
+        if (item == null)
+        {
+            Log($"No item with id '{itemId}' could be found.", player);
+            return false;
+        }
+
+        if (hotbarId == 5 && item.InventoryCategoryID != ItemFilterCategory.Pets)
+        {
+            Log("Please enter the item Id of a pet for the 5th hotbar slot.", player);
+            return false;
+        }
+
+        if (item.InventoryCategoryID is
+            ItemFilterCategory.WeaponAndAbilities or
+            ItemFilterCategory.Consumables or
+            ItemFilterCategory.NestedSuperPack)
+        {
+            //Item must be in inventory to use in hotbar
+            if (!player.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+            {
+                var itemModel = new ItemModel()
+                {
+                    ItemId = item.ItemId,
+                    Count = 1,
+                    BindingCount = 1,
+                    DelayUseExpiry = DateTime.Now
+                };
+
+                player.Character.Data.Inventory.Items.Add(item.ItemId, itemModel);
+            }
+
+            player.Character.Data.Hotbar.HotbarButtons[hotbarId - 1] = new Players.Models.Character.ItemModel()
+            {
+                ItemId = itemId,
+                Count = 1
+            };
+            player.SendXt("hs", player.Character.Data.Hotbar);
+
+            return true;
+        }
+
+        else
+        {
+            Log("Please enter the item Id of a weapon, consumable, or pack.", player);
+            return false;
+        }
+    }
+
     public bool GetAllItems(Player player, string[] args)
     {
         if (args.Length > 1)
@@ -130,7 +208,7 @@ public partial class ChatCommands(
                     player.AddItem(item, 1, itemCatalog);
         }
 
-        player.SendUpdatedInventory(false);
+        player.SendUpdatedInventory();
 
         return true;
     }
@@ -181,7 +259,7 @@ public partial class ChatCommands(
 
         player.Character.AddKit(items, amount);
 
-        player.SendUpdatedInventory(false);
+        player.SendUpdatedInventory();
     }
 
     private bool OpenDoors(Player player, string[] args)
@@ -243,30 +321,6 @@ public partial class ChatCommands(
         player.DiscoverAllTribes();
 
         Log($"{character.Data.CharacterName} has discovered all tribes!", player);
-
-        return true;
-    }
-
-    private bool AddHotBar(Player player, string[] args)
-    {
-        var hasPet = false;
-
-        if (args.Length == 2)
-        {
-            if (!int.TryParse(args[1], out var petSlot))
-                Log("Unknown pet slot value, defaulting to 0 (false)", player);
-
-            if (petSlot is < 0 or > 1)
-                Log("Pet slot value out of range, defaulting to 0 (false)", player);
-
-            hasPet = petSlot == 1;
-
-            Log($"Adding slots ({(hasPet ? string.Empty : "no ")}pet slot)", player);
-        }
-
-        player.AddSlots(hasPet);
-
-        Log("HotBar has been setup! Equip an item or logout to see result.", player);
 
         return true;
     }
@@ -451,10 +505,17 @@ public partial class ChatCommands(
 
         player.AddItem(item, amount, itemCatalog);
 
-        player.SendUpdatedInventory(false);
+        player.SendUpdatedInventory();
 
         Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", player);
 
+        return true;
+    }
+
+    private bool UpdateLevelNpcs(Player player, string[] args)
+    {
+        player.UpdateAllNpcsInLevel();
+        Log($"All NPCs updated for {player.CharacterName}.", player);
         return true;
     }
 
@@ -518,6 +579,95 @@ public partial class ChatCommands(
             foreach (var item in player.PlayerContainer.GetAllPlayers())
                 Log($"{item.CharacterName} - {item.Room.LevelInfo.InGameName} / {item.Room.LevelInfo.LevelId}", player);
 
+        return true;
+    }
+
+    public QuestDescription GetQuest(Player player, string[] args)
+    {
+        if (args.Length == 1)
+        {
+            Log("Please provide a quest id.", player);
+            return null;
+        }
+
+        if (args.Length != 2)
+            return null;
+
+        if (!int.TryParse(args[1], out var questId))
+        {
+            Log("Please provide a valid quest id.", player);
+            return null;
+        }
+
+        var questData = questCatalog.GetQuestData(questId);
+
+        if (questData == null)
+        {
+            Log("Please provide a valid quest id.", player);
+            return null;
+        }
+
+        if (player.Character.Data.CompletedQuests.Contains(questData.Id))
+        {
+            Log($"Quest {questData.Name} with id {questData.Id} has been completed already.", player);
+            return null;
+        }
+
+        return questData;
+    }
+
+    private bool CompleteQuest(Player player, string[] args)
+    {
+        var questData = GetQuest(player, args);
+
+        if (questData == null)
+            return false;
+
+        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == questData.Id);
+
+        if (questModel != null)
+            player.Character.Data.QuestLog.Remove(questModel);
+
+        player.Character.Data.CompletedQuests.Add(questData.Id);
+        Log($"Added quest {questData.Name} with id {questData.Id} to completed quests.", player);
+
+        return true;
+    }
+
+    private bool AddQuest(Player player, string[] args)
+    {
+        var questData = GetQuest(player, args);
+
+        if (questData == null)
+            return false;
+
+        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == questData.Id);
+
+        if (questModel != null)
+        {
+            Log("Quest is already in progress.", player);
+            return false;
+        }
+
+        player.AddQuest(questData, questItem, config.GameVersion, itemCatalog, fileLogger, "Chat command", logger);
+        Log($"Added quest {questData.Name} with id {questData.Id}.", player);
+
+        return true;
+    }
+
+    private bool GetQuestByName(Player player, string[] args)
+    {
+        var name = string.Join(" ", args.Skip(1)).ToLower();
+
+        var closestQuest = questCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Title.Equals(name, StringComparison.OrdinalIgnoreCase)).Value;
+
+        if (closestQuest == null)
+        {
+            Log($"Could not find quest with name '{name}'.", player);
+            return false;
+        }
+
+        Log($"Found quest: '{name}' with ID: '{closestQuest.Id}'.", player);
         return true;
     }
 }

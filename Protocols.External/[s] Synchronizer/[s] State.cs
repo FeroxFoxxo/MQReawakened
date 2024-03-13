@@ -4,15 +4,19 @@ using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 using System.Text;
+using UnityEngine;
 using WorldGraphDefines;
 
 namespace Protocols.External._s__Synchronizer;
@@ -23,6 +27,7 @@ public class State : ExternalProtocol
 
     public SyncEventManager SyncEventManager { get; set; }
     public ServerRConfig ServerConfig { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
     public FileLogger FileLogger { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<State> Logger { get; set; }
@@ -50,37 +55,43 @@ public class State : ExternalProtocol
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.ChargeAttack:
-                    var chargeAttackEvent = new ChargeAttack_SyncEvent(syncEvent);
+                    Player.TempData.IsSuperStomping = true;
+                    Player.TempData.Invincible = true;
 
-                    var startPosition = chargeAttackEvent.EventDataList[2].ToString();
-                    var endPosition = chargeAttackEvent.EventDataList[7].ToString();
+                    var attack = new ChargeAttack_SyncEvent(syncEvent);
 
-                    var totalDistance = Convert.ToInt32(Math.Floor(Convert.ToDouble(startPosition)) - Math.Floor(Convert.ToDouble(endPosition)));
+                    Logger.LogDebug("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
+                        "at speed ({X}, {Y}) with max pos ({X}, {Y}) for item id: '{Id}' and zone: {Zone}",
+                        attack.IsCharging, attack.PosX, attack.PosY, attack.StartDelay,
+                        attack.SpeedX, attack.SpeedY, attack.MaxPosX, attack.MaxPosY, attack.ItemId, attack.ZoneId);
 
-                    Player.Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(entityId.ToString(), chargeAttackEvent.TriggerTime,
-                        chargeAttackEvent.PosX, chargeAttackEvent.PosY - totalDistance, chargeAttackEvent.SpeedX,
-                        chargeAttackEvent.SpeedY, chargeAttackEvent.ItemId, chargeAttackEvent.ZoneId));
+                    var chargeAttackCollider = new ChargeAttackEntity(Player,
+                                        new Vector3Model() { X = attack.PosX, Y = attack.PosY, Z = Player.TempData.Position.Z },
+                                        new Vector3Model() { X = attack.MaxPosX, Y = attack.MaxPosY, Z = Player.TempData.Position.Z },
+                                        new Vector2Model() { X = attack.SpeedX, Y = attack.SpeedY },
+                                        15, attack.ItemId, attack.ZoneId,
+                                        WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
+                                        Elemental.Standard, TimerThread);
+
+                    Player.Room.Projectiles.TryAdd(Player.GameObjectId, chargeAttackCollider);
                     break;
                 case SyncEvent.EventType.ChargeAttackStop:
-                    var chargeAttackStopSyncEvent = new ChargeAttackStop_SyncEvent(syncEvent);
+                    Player.TempData.IsSuperStomping = false;
+                    Player.TempData.Invincible = false;
 
-                    Player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(chargeAttackStopSyncEvent.TargetID, chargeAttackStopSyncEvent.TriggerTime,
-                        chargeAttackStopSyncEvent.PosX, chargeAttackStopSyncEvent.PosY, chargeAttackStopSyncEvent.ItemId,
-                        chargeAttackStopSyncEvent.ZoneId, chargeAttackStopSyncEvent.HitId));
-
-                    Logger.LogWarning("Collision system not yet written and implemented for {Type}.", chargeAttackStopSyncEvent.Type);
+                    Player.Room.Projectiles.Remove(Player.GameObjectId);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
-
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
                     var collisionTarget = notifyCollisionEvent.CollisionTarget;
 
-                    if (Player.Room.ContainsEntity(collisionTarget))
+                    if (newPlayer.Room.ContainsEntity(collisionTarget))
                         foreach (var component in Player.Room.GetEntitiesFromId<BaseComponent>(collisionTarget))
-                            component.NotifyCollision(notifyCollisionEvent, newPlayer);
-                    else
-                        Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
-                            collisionTarget, Player.Room.GetUnknownComponentTypes(collisionTarget));
+                            if (!Player.Room.IsObjectKilled(component.Id))
+                                component.NotifyCollision(notifyCollisionEvent, newPlayer);
+                            else
+                                Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
+                                    collisionTarget, newPlayer.Room.GetUnknownComponentTypes(collisionTarget));
                     break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
@@ -100,6 +111,8 @@ public class State : ExternalProtocol
                     };
 
                     newPlayer.TempData.OnGround = physicsBasicEvent.OnGround;
+
+                    UpdatePlayerCollider(newPlayer);
                     break;
                 case SyncEvent.EventType.Direction:
                     var directionEvent = new Direction_SyncEvent(syncEvent);
@@ -109,38 +122,7 @@ public class State : ExternalProtocol
                     RequestRespawn(entityId, syncEvent.TriggerTime);
                     break;
                 case SyncEvent.EventType.PhysicStatus:
-                    foreach (var hazard in Player.Room.GetEntitiesFromType<HazardControllerComp>())
-                    {
-                        Enum.TryParse(hazard.HurtEffect, true, out ItemEffectType effectType);
-
-                        if (effectType == ItemEffectType.SlowStatusEffect)
-                        {
-                            var distanceXThreshold = 4.0f;
-                            var distanceYThreshold = 1f;
-                            var distanceX = Math.Abs(Player.TempData.Position.X - hazard.Entity.GameObject.ObjectInfo.Position.X + -4.0f);
-                            var distanceY = Math.Abs(Player.TempData.Position.Y - hazard.Entity.GameObject.ObjectInfo.Position.Y + 4);
-
-                            if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold)
-                            {
-                                var slowStatusEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                                    (int)ItemEffectType.SlowStatusEffect, 1, 1, true, hazard.PrefabName, false);
-
-                                Player.Room.SendSyncEvent(slowStatusEffect);
-                            }
-                        }
-                    }
-
-                    foreach (var platform in Player.Room.GetEntitiesFromType<CollapsingPlatformComp>())
-                    {
-                        var distanceXThreshold = 1.0f;
-                        var distanceYThreshold = 1f;
-                        var distanceX = Math.Abs(Player.TempData.Position.X - platform.Entity.GameObject.ObjectInfo.Position.X);
-                        var distanceY = Math.Abs(Player.TempData.Position.Y - platform.Entity.GameObject.ObjectInfo.Position.Y + -1.0f);
-
-                        if (distanceX <= distanceXThreshold && distanceY <= distanceYThreshold && !platform.IsBroken)
-                            platform.Collapse(false);
-                    }
-
+                    var physicStatusEvent = new PhysicStatus_SyncEvent(syncEvent);
                     break;
             }
 
@@ -170,19 +152,26 @@ public class State : ExternalProtocol
                 LogEvent(syncEvent, entityId, Player.Room);
     }
 
+    private void UpdatePlayerCollider(Player player)
+    {
+        var playerCollider = new PlayerCollider(player);
+        player.Room.Colliders[player.GameObjectId] = playerCollider;
+        playerCollider.IsColliding(false);
+    }
+
     private void RequestRespawn(string entityId, float triggerTime)
     {
-        Player.Room.SendSyncEvent(new RequestRespawn_SyncEvent(entityId.ToString(), triggerTime));
+        Player.SendSyncEventToPlayer(new RequestRespawn_SyncEvent(entityId.ToString(), triggerTime));
 
         Player.TempData.Invincible = true;
         Player.Character.Data.CurrentLife = Player.Character.Data.MaxLife;
 
-        Player.Room.SendSyncEvent(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+        Player.SendSyncEventToPlayer(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
             Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
 
         BaseComponent respawnPosition = Player.Room.LastCheckpoint != null ? Player.Room.LastCheckpoint : Player.Room.DefaultSpawn;
 
-        Player.Room.SendSyncEvent(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+        Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                  respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
 
         TimerThread.DelayCall(DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);

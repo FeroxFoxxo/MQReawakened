@@ -9,6 +9,7 @@ using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
+using System.Linq;
 using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -60,18 +61,21 @@ public static class PlayerExtensions
 
     public static void AddReputation(this Player player, int reputation)
     {
+        if (player == null)
+            return;
+
         var charData = player.Character.Data;
+
+        if (player.TempData.ReputationBoostsElixir)
+            reputation = Convert.ToInt32(reputation * 0.1);
+
         reputation += charData.Reputation;
 
         while (reputation > charData.ReputationForNextLevel)
         {
-            reputation -= charData.ReputationForNextLevel;
-            player.Character.SetLevelXp(charData.GlobalLevel + 1, reputation);
+            player.Character.SetLevelXp(charData.GlobalLevel + 1);
             player.SendLevelUp();
         }
-
-        if (player.TempData.ReputationBoostsElixir)
-            reputation = Convert.ToInt32(reputation * 0.1);
 
         charData.Reputation = reputation;
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
@@ -223,6 +227,10 @@ public static class PlayerExtensions
         player.Character.SetLevelXp(level);
         player.SendLevelUp();
 
+        player.AddNCash(125); //Temporary way to earn NC upon level up.
+        player.SendCashUpdate();
+        //(Needed for gameplay improvements as NC is currently unobtainable)
+
         logger.LogTrace("{Name} leveled up to {Level}", player.CharacterName, level);
     }
 
@@ -351,8 +359,18 @@ public static class PlayerExtensions
                 else
                     objective.CountLeft -= count;
 
-                if (objective.ObjectiveType == ObjectiveEnum.AlterandReceiveitem)
+                if (objective.ObjectiveType is ObjectiveEnum.AlterandReceiveitem or ObjectiveEnum.Receiveitem or ObjectiveEnum.Giveitem)
+                {
                     objective.CountLeft = 0;
+                }
+                else if (objective.ObjectiveType is ObjectiveEnum.Deliver)
+                {
+                    var item = itemCatalog.GetItemFromId(objective.ItemId);
+
+                    objective.CountLeft = player.Character.Data.Inventory.Items.TryGetValue(objective.ItemId, out var itemModel) && item != null
+                        ? objective.Total - itemModel.Count
+                        : 0;
+                }
 
                 if (objective.CountLeft <= 0)
                 {
@@ -367,6 +385,44 @@ public static class PlayerExtensions
                     player.SendXt("no", quest.Id, objectiveKVP.Key);
 
                     hasObjComplete = true;
+
+                    switch (objective.ObjectiveType)
+                    {
+                        case ObjectiveEnum.Talkto:
+                            foreach (var obj in quest.Objectives.Values
+                                .Where(obj => obj.Order == objective.Order &&
+                                    obj.ObjectiveType == ObjectiveEnum.Deliver &&
+                                    obj.ItemId > 0
+                                )
+                            )
+                            {
+                                var item = itemCatalog.GetItemFromId(obj.ItemId);
+
+                                if (player.Character.Data.Inventory.Items.TryGetValue(obj.ItemId, out var itemModel) && item != null)
+                                    player.CheckObjective(ObjectiveEnum.Deliver, gameObjectId, item.PrefabName, itemModel.Count, questCatalog);
+                            }
+                            break;
+                        case ObjectiveEnum.Deliver:
+                            var deliveredItem = itemCatalog.GetItemFromId(objective.ItemId);
+
+                            if (deliveredItem != null)
+                            {
+                                player.RemoveItem(deliveredItem, objective.Total, itemCatalog);
+                                player.SendUpdatedInventory();
+                            }
+                            break;
+                        case ObjectiveEnum.Receiveitem:
+                        case ObjectiveEnum.Giveitem:
+                        case ObjectiveEnum.AlterandReceiveitem:
+                            var givenItem = itemCatalog.GetItemFromId(objective.ItemId);
+
+                            if (givenItem != null)
+                            {
+                                player.AddItem(givenItem, objective.Total, itemCatalog);
+                                player.SendUpdatedInventory();
+                            }
+                            break;
+                    }
                 }
                 else
                     player.SendXt("nu", quest.Id, objectiveKVP.Key, objective.CountLeft);

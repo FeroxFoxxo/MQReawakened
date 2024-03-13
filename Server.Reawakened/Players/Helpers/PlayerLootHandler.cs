@@ -5,6 +5,7 @@ using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Models.LootRewards;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Server.Reawakened.Players.Helpers;
 
@@ -82,6 +83,34 @@ public static class PlayerLootHandler
 
         if (lootModel.DoWheel)
             SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
+
+        player.SendUpdatedInventory();
+    }
+
+    public static void GrantDynamicLoot(this Player player, int level, EnemyDropModel drop, ItemCatalog itemCatalog)
+    {
+        var random = new Random();
+        float chance;
+        var finalItemId = 0;
+
+        chance = (float)random.NextDouble();
+        if (chance <= drop.Chance)
+        {
+            switch (drop.Type)
+            {
+                case Entities.Enums.DynamicDropType.Item:
+                    finalItemId = drop.Id;
+                    break;
+                case Entities.Enums.DynamicDropType.RandomArmor:
+                    //Magic number 4 here will be changed and sent to config once I get more info on clothing drops
+                    var armorList = itemCatalog.GetItemsFromLevel(level - 4, level + 4, A2m.Server.ItemCategory.Wearable);
+                    finalItemId = armorList[random.Next(armorList.Count)].ItemId;
+                    break;
+            }
+        }
+
+        if (finalItemId > 0)
+            player.AddItem(itemCatalog.GetItemFromId(finalItemId), 1, itemCatalog);
 
         player.SendUpdatedInventory(false);
     }

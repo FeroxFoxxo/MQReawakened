@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-16"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <RecipeCatalog>
     <RecipeType name="Alchemy">
         <!--Healing Potion-->
@@ -269,6 +269,11 @@
         <!--Krusty Krab Spatula-->
         <RecipeInfo recipeName="COL_RECIP_WPN_MEL_SpongeBob_Spatula01">
             <Item itemName="COL_ING_SpongeBob02" count="5" />
+        </RecipeInfo>
+        <!--Treasure Hunter Tricorn-->
+        <RecipeInfo recipeName="COL_RECIP_OUT_FortuneHunter01_S02">
+            <Item itemName="Add_OUT_FortuneHunter01_S01" count="1" />
+            <Item itemName="COL_ING_G_Cotton02" count="3" />
         </RecipeInfo>
     </RecipeType>
 </RecipeCatalog>

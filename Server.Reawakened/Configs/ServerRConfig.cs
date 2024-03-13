@@ -6,6 +6,9 @@ namespace Server.Reawakened.Configs;
 
 public class ServerRConfig : IRConfig
 {
+    public Dictionary<GameVersion, string> CurrentEvent { get; set; }
+    public Dictionary<GameVersion, string> CurrentTimedEvent { get; set; }
+
     public int DefaultChatLevel { get; }
     public bool DefaultMemberStatus { get; }
 
@@ -19,9 +22,9 @@ public class ServerRConfig : IRConfig
 
     public int HealingStaff { get; }
     public double HealingStaffHealValue { get; }
-    public int DefaultDamage { get; }
-
-    public Dictionary<bool, string> IsBackPlane { get; }
+    public int DefaultMeleeDamage { get; }
+    public int DefaultRangedDamage { get; }
+    public int DefaultDropDamage { get; }
 
     public int MaxLevel { get; }
 
@@ -79,9 +82,17 @@ public class ServerRConfig : IRConfig
     public float MeleeYOffset { get; set; }
     public float MeleeWidth { get; set; }
     public float MeleeHeight { get; set; }
+    public float MeleeArialXOffset { get; set; }
+    public float MeleeArialYOffset { get; set; }
+    public float MeleeArialWidth { get; set; }
+    public float MeleeArialHeight { get; set; }
     public float PlayerWidth { get; set; }
     public float PlayerHeight { get; set; }
+    public string FrontPlane { get; set; }
+    public string BackPlane { get; set; }
+    public Dictionary<string, int> Planes { get; set; }
     public Dictionary<int, string> TrainingGear { get; set; }
+    public Dictionary<int, string> TrainingGear2011 { get; set; }
 
     public List<string> LoadedAssets { get; set; }
 
@@ -130,7 +141,7 @@ public class ServerRConfig : IRConfig
         [
             394,  // glider
             395,  // grappling hook
-            240181867,  // snowboard
+            9701,  // snowboard
             397,  // wooden slingshot
             423,  // golden slingshot
             453,  // kernel blaster
@@ -178,12 +189,7 @@ public class ServerRConfig : IRConfig
             { TribeType.Bone,   969 }, // OOTU
         };
 
-        GameVersion = GameVersion.v2013;
-        IsBackPlane = new Dictionary<bool, string>()
-        {
-            { true, "Plane1" },
-            { false, "Plane0" }
-        };
+        GameVersion = GameVersion.vLate2013;
 
         MaxLevel = 65;
         HealAmount = 100000;
@@ -194,7 +200,9 @@ public class ServerRConfig : IRConfig
 
         HealingStaff = 396;
         HealingStaffHealValue = 3.527f;
-        DefaultDamage = 10;
+        DefaultMeleeDamage = 22;
+        DefaultRangedDamage = 18;
+        DefaultDropDamage = 35;
 
         EnemyComponentName = "EnemyController";
         BreakableComponentName = "BreakableEventController";
@@ -219,17 +227,22 @@ public class ServerRConfig : IRConfig
         HealingStaffID = 396;
         MysticCharmID = 398;
 
-        ProjectileSpeed = 10;
+        ProjectileSpeed = 10f;
 
         ProjectileXOffset = 0.25f;
         ProjectileYOffset = 0.8f;
         ProjectileHeight = 0.5f;
         ProjectileWidth = 0.5f;
 
-        MeleeXOffset = 0f;
+        MeleeXOffset = 4f;
         MeleeYOffset = 0f;
+        MeleeWidth = 4f;
         MeleeHeight = 1f;
-        MeleeWidth = 3f;
+
+        MeleeArialXOffset = 3f;
+        MeleeArialYOffset = 2.6f;
+        MeleeArialWidth = 6f;
+        MeleeArialHeight = 5.2f;
 
         PlayerHeight = 1f;
         PlayerWidth = 1f;
@@ -240,9 +253,50 @@ public class ServerRConfig : IRConfig
             { 466, "ABIL_Glider01" }, // lv_out_teaser01
             { 467, "ABIL_MysticCharm01" }, // lv_bon_teaser01
             { 497, "ABIL_SnowBoard01" }, // lv_wld_teaser01
-            { 498, "ABIL_SnowBoard02" }, // lv_wld_teaser01
+            { 498, "ABIL_SnowBoard02" }, // lv_wld_highway01
+        };
+
+        TrainingGear2011 = new Dictionary<int, string>
+        {
+            { 48, "ABIL_GrapplingHook01" }, // lv_shd_highway01
+            { 54, "ABIL_Glider01" }, // lv_out_highway01
+            { 46, "ABIL_MysticCharm01" }, // lv_bon_highway01
+            { 498, "ABIL_SnowBoard02" }, // lv_wld_highway01
         };
 
         LoadedAssets = [];
+
+        CurrentEvent = new Dictionary<GameVersion, string>
+        {
+            { GameVersion.v2014, "boBegnopS_4102_TVE" },
+            { GameVersion.vLate2013, "10TNMT_3102_TVE" },
+            { GameVersion.vEarly2013, "TNMT_2102_ORP" },
+            { GameVersion.vLate2012, "TNMT_2102_ORP" },
+            { GameVersion.vMinigames2012, "regnaRrewoP_2102_ORP" },
+            { GameVersion.vPets2012, "regnaRrewoP_2102_ORP" },
+            { GameVersion.vEarly2012, "adnaPuFgnuK_2102_ORP" },
+            { GameVersion.v2011, string.Empty }
+        };
+
+        CurrentTimedEvent = new Dictionary<GameVersion, string>
+        {
+            { GameVersion.v2014, "tnevEytraPboBegnopS" },
+            { GameVersion.vLate2013, string.Empty },
+            { GameVersion.vEarly2013, string.Empty },
+            { GameVersion.vLate2012, string.Empty },
+            { GameVersion.vMinigames2012, string.Empty },
+            { GameVersion.vPets2012, string.Empty },
+            { GameVersion.vEarly2012, string.Empty },
+            { GameVersion.v2011, string.Empty }
+        };
+
+        FrontPlane = "Plane1";
+        BackPlane = "Plane0";
+
+        Planes = new Dictionary<string, int>()
+        {
+            { FrontPlane, 0 },
+            { BackPlane, 20 }
+        };
     }
 }

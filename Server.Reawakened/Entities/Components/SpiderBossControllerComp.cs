@@ -25,7 +25,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
 
     public void RecievedTrigger(bool triggered)
     {
-        if (Room == null)
+        if (Room == null || Room.IsObjectKilled(Id))
             return;
 
         if (triggered)
@@ -65,7 +65,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
 
     private void RunDrop(object _)
     {
-        if (Room == null)
+        if (Room == null || Room.IsObjectKilled(Id))
             return;
 
         var drop = Room.GetEntityFromId<AIStateSpiderDropComp>(Id);
@@ -83,7 +83,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
 
     public void Destroy(Player player, Room room, string id)
     {
-        if (room == null)
+        if (room == null || room.IsObjectKilled(Id))
             return;
 
         var delay = 0f;
@@ -129,13 +129,13 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
         if (Room == null)
             return;
 
-        foreach (var trigReciev in Room.GetEntitiesFromId<TriggerReceiverComp>(doorId.ToString()))
-            trigReciev.Trigger(true);
+        foreach (var trigReceiver in Room.GetEntitiesFromId<TriggerReceiverComp>(doorId.ToString()))
+            trigReceiver.Trigger(true);
     }
 
     public void GoToNextState(GameObjectComponents NewState)
     {
-        if (Room == null)
+        if (Room == null || Room.IsObjectKilled(Id))
             return;
 
         var syncEvent2 = new AiStateSyncEvent()

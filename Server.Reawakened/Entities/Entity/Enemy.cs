@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity.Utils;
@@ -28,6 +29,7 @@ public abstract class Enemy : IDestructible
     private readonly ILogger<Enemy> _logger;
     private readonly InternalAchievement _internalAchievement;
     private readonly QuestCatalog _questCatalog;
+    private readonly ItemCatalog _itemCatalog;
 
     public bool Init;
 
@@ -53,13 +55,13 @@ public abstract class Enemy : IDestructible
     public BehaviorModel BehaviorList;
 
     public AISyncEventHelper SyncBuilder;
+    public TimerThread TimerThread { get; set; }
 
     public Enemy(Room room, string entityId, BaseComponent baseEntity, IServiceProvider services)
     {
         //Basic Stats
         Room = room;
         Id = entityId;
-        Health = 50;
         IsFromSpawner = false;
         MinBehaviorTime = 0;
         SyncBuilder = new AISyncEventHelper();
@@ -67,6 +69,7 @@ public abstract class Enemy : IDestructible
         _logger = services.GetRequiredService<ILogger<Enemy>>();
         _internalAchievement = services.GetRequiredService<InternalAchievement>();
         _questCatalog = services.GetRequiredService<QuestCatalog>();
+        _itemCatalog = services.GetRequiredService<ItemCatalog>();
 
         //Component Info
         Entity = baseEntity;
@@ -86,7 +89,10 @@ public abstract class Enemy : IDestructible
 
         if (status != null)
             Status = status;
-        
+
+        //Stats
+        Health = EnemyController.EnemyHealth;
+
         //Position Info
         ParentPlane = Entity.ParentPlane;
         Position = new Vector3(Entity.Position.X, Entity.Position.Y, Entity.Position.Z);
@@ -141,6 +147,9 @@ public abstract class Enemy : IDestructible
     {
         if (!Init)
             Initialize();
+
+        if (Room.IsObjectKilled(Id))
+            return;
 
         switch (AiBehavior)
         {
@@ -202,9 +211,16 @@ public abstract class Enemy : IDestructible
 
     public virtual void Damage(int damage, Player origin)
     {
-        Health -= damage;
+        if (Room.IsObjectKilled(Id))
+            return;
 
-        var damageEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true);
+        var trueDamage = damage - GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Enemy, EnemyController.Level);
+        if (trueDamage <= 0)
+            trueDamage = 1;
+
+        Health -= trueDamage;
+
+        var damageEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, trueDamage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true);
         Room.SendSyncEvent(damageEvent);
 
         if (Health <= 0)
@@ -213,9 +229,21 @@ public abstract class Enemy : IDestructible
                 foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(EnemyController.OnDeathTargetID))
                     trigger.Trigger(true);
 
+            //Dynamic Loot Drop
+            var chance = new System.Random();
+            foreach (var drop in BehaviorList.EnemyLootTable)
+            {
+                chance.NextDouble();
+                if (EnemyController.Level <= drop.MaxLevel && EnemyController.Level >= drop.MinLevel)
+                {
+                    origin.GrantDynamicLoot(EnemyController.Level, drop, _itemCatalog);
+                }
+            }
+
             //Temp values for now
-            Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "PF_SFX_UI_Buy", 10, true, origin == null ? "0" : origin.GameObjectId, false));
-            Destroy(origin, Room, Id);
+            Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "", 10, true, origin == null ? "0" : origin.GameObjectId, false));
+            origin.AddReputation(EnemyController.OnKillExp);
+            Room.KillEntity(origin, Id);
         }
     }
 
@@ -379,18 +407,22 @@ public abstract class Enemy : IDestructible
             var pos = new Vector3Model { X = Position.x + EnemyGlobalProps.Global_ShootOffsetX, Y = Position.y + EnemyGlobalProps.Global_ShootOffsetY, Z = Position.z };
 
             var rand = new System.Random();
-            var prjId = Math.Abs(rand.Next()).ToString();
+            var projectileId = Math.Abs(rand.Next()).ToString();
 
-            while (Room.GameObjectIds.Contains(prjId))
-                prjId = Math.Abs(rand.Next()).ToString();
+            while (Room.GameObjectIds.Contains(projectileId))
+                projectileId = Math.Abs(rand.Next()).ToString();
 
             // Magic numbers here are temporary
-            Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Entity, pos.X, pos.Y, pos.Z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, int.Parse(prjId), 0));
+            Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Entity, pos.X, pos.Y, pos.Z, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, int.Parse(projectileId), 0));
 
             AiData.Intern_FireProjectile = false;
 
-            var prj = new AIProjectileEntity(Room, Id, prjId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3);
-            Room.Projectiles.Add(prjId, prj);
+            var prj = new AIProjectileEntity(Room, Id, projectileId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
+                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, Room.Enemies[Id].EnemyController.TimerThread,
+                GameFlow.StatisticData.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, EnemyController.Level),
+                EnemyController.ComponentData.EnemyEffectType,
+                _itemCatalog);
+            Room.Projectiles.Add(projectileId, prj);
         }
     }
 
@@ -421,7 +453,7 @@ public abstract class Enemy : IDestructible
     public AIInit_SyncEvent AIInit(float healthMod, float sclMod, float resMod)
     {
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, Position.x, Position.y, Position.z, Position.x, Position.y, Generic.Patrol_InitialProgressRatio,
-        Status.MaxHealth, Status.MaxHealth, healthMod, sclMod, resMod, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
+        EnemyController.EnemyHealth, EnemyController.MaxHealth, healthMod, sclMod, resMod, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
 
         aiInit.EventDataList[2] = Position.x;
         aiInit.EventDataList[3] = Position.y;
@@ -433,7 +465,7 @@ public abstract class Enemy : IDestructible
     public void GetInitEnemyData(Player player)
     {
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ, Position.z, AiData.Intern_SpawnPosY, Generic.Patrol_InitialProgressRatio,
-        Health, Status.MaxHealth, 1f, 1f, 1f, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
+        Health, EnemyController.MaxHealth, 1f, 1f, 1f, Status.Stars, EnemyController.Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
 
         aiInit.EventDataList[2] = AiData.Intern_SpawnPosX;
         aiInit.EventDataList[3] = AiData.Intern_SpawnPosY;
@@ -459,7 +491,6 @@ public abstract class Enemy : IDestructible
 
     public void Destroy(Player player, Room room, string id)
     {
-        room.RemoveEntity(id);
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
 

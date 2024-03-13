@@ -51,7 +51,10 @@ public class CharacterLightModel
         sb.Append(GetCharacterInformation());
         sb.Append(Customization);
         sb.Append(Equipment);
-        sb.Append(PetItemId);
+
+        if (_version >= GameVersion.vPets2012)
+            sb.Append(PetItemId);
+
         sb.Append(Registered ? 1 : 0);
         sb.Append(BuildDiscoveredStats());
 
@@ -65,7 +68,7 @@ public class CharacterLightModel
         sb.Append(CharacterId);
         sb.Append(CharacterName);
 
-        if (_version >= GameVersion.v2013)
+        if (_version >= GameVersion.vLate2013)
             sb.Append(UserUuid);
 
         sb.Append(Gender);
