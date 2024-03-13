@@ -9,16 +9,12 @@ namespace Server.Reawakened.Players.Extensions;
 public static class PlayerHealExtensions
 {
     public static void HealCharacter(this Player player, ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, ItemEffectType effectType)
-    { 
-        usedItem.ItemEffects[(int)ItemFilterCategory.Consumables].Value *= 18; //Original healing value >2011.
-        //(This is really needed in the games current state or else healing items aren't worth buying or using)
-        //Worth noting; Item descriptions in-game display 2011 stats because items load from ItemCatalogDict instead of MiscTextDisc.
-
+    {
         switch (effectType)
         {
             case ItemEffectType.Healing:
                 HealOnce(player, usedItem, serverRConfig);
-                break; 
+                break;
             case ItemEffectType.Regeneration:
                 HealOverTimeType(player, usedItem, timerThread, serverRConfig);
                 break;
@@ -27,7 +23,8 @@ public static class PlayerHealExtensions
 
     public static void HealOnce(Player player, ItemDescription usedItem, ServerRConfig serverRConfig)
     {
-        if (player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
+        if (player == null || player.Room == null ||
+            player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
             return;
 
         //Rejuvenation Potion's initial heal value is stored as the second element in the ItemEffects list.
@@ -38,6 +35,8 @@ public static class PlayerHealExtensions
         //If healing staff, convert heal value.
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities)
             healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealAmount);
+
+        healValue = GetBuffedHealValue(healValue);
 
         var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
 
@@ -102,15 +101,26 @@ public static class PlayerHealExtensions
         var player = itemHealData.Player;
         var tickHealValue = itemHealData.OverTimeHealValue / itemHealData.TotalTicks;
 
-        if (player == null)
+        if (player == null || player.Room == null ||
+            player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
             return;
 
-        if (player.Room == null || player.Character == null)
-            return;
+        tickHealValue = GetBuffedHealValue(tickHealValue);
+
+        var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
+
+        if (hpUntilMaxHp < tickHealValue)
+            tickHealValue = hpUntilMaxHp;
 
         var healEvent = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
            player.Character.Data.CurrentLife += tickHealValue, player.Character.Data.MaxLife, string.Empty);
 
         player.Room.SendSyncEvent(healEvent);
     }
+
+    //Original healing value >2011.
+    private static int GetBuffedHealValue(int outOfDateHealvalue) =>
+        outOfDateHealvalue * 18;
+    //(This is really needed in the games current state or else healing items aren't worth buying or using)
+    //Worth noting; Item descriptions in-game display 2011 stats because items load from ItemCatalogDict instead of MiscTextDisc.
 }
