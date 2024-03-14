@@ -507,7 +507,6 @@
             <Item prefabName="COL_FOOD_Pinapple01" />
         </Vendor>
         <Vendor objectId="576" name="Mikith" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="793" greetingConversationId="2232" leavingConversationId="2231">
-            <Item prefabName="Add_COM_Lara01_S04" />
             <Item prefabName="Add_BON_Ritualist01_TS01" />
             <Item prefabName="Add_BON_SkullFighter01_LS01" />
             <Item prefabName="Add_BON_SkullFighter01_S01" />
@@ -520,13 +519,10 @@
             <Item prefabName="Add_COM_Emo01_S04" />
             <Item prefabName="Add_COM_Emo01_TS04" />
             <Item prefabName="Add_COM_HawaiTiki01_S02" />
-            <Item prefabName="Add_COM_HawaiTiki01_S03" />
             <Item prefabName="Add_COM_Army01_LS02" />
             <Item prefabName="Add_COM_Army01_TS02" />
             <Item prefabName="Add_COM_Baseball01_S06" />
-            <Item prefabName="Add_COM_Clown01_S02" />
             <Item prefabName="Add_BON_WitchDoctor01_FH01" />
-            <Item prefabName="Add_COM_Army01_S02" />
         </Vendor>
         <Vendor objectId="578" name="Rhea" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1316" greetingConversationId="3071" leavingConversationId="3326">
             <Item prefabName="Add_COM_Sheep01_TS02" />
@@ -536,9 +532,7 @@
             <Item prefabName="Add_BON_Cruella01_S05" />
             <Item prefabName="Add_BON_Seer01_LS01" />
             <Item prefabName="Add_COM_Lion01_LS02" />
-            <Item prefabName="Add_COM_Mafia01_LS02" />
             <Item prefabName="Add_COM_Lion01_TS02" />
-            <Item prefabName="Add_COM_Mafia01_TS02" />
             <Item prefabName="Add_COM_Lion01_S02" />
             <Item prefabName="Add_COM_Mafia01_S02" />
             <Item prefabName="Add_BON_Cruella01_BP01" />
@@ -566,10 +560,8 @@
             <Item prefabName="Add_COM_Tiger01_TS01" />
             <Item prefabName="Add_COM_LadyBug01_S01" />
             <Item prefabName="Add_COM_LadyBug01_TS01" />
-            <Item prefabName="Add_COM_Egg01_S01" />
             <Item prefabName="Add_BON_BogHunter01_S02" />
             <Item prefabName="Add_BON_BogHunter01_TS02" />
-            <Item prefabName="Add_COM_BackPack01_BP02" />
             <Item prefabName="Add_COM_Army01_S01" />
             <Item prefabName="Add_BON_Ritualist01_TS01" />
             <Item prefabName="Add_BON_Voodoo01_LS01" />
@@ -584,7 +576,6 @@
             <Item prefabName="Add_BON_WitchDoctor01_FH01" />
             <Item prefabName="Add_OUT_PirateChef01_LS02" />
             <Item prefabName="Add_OUT_PirateChef01_TS02" />
-            <Item prefabName="Add_OUT_PirateChef01_S02" />
             <Item prefabName="Add_COM_Mummy01_LS01" />
             <Item prefabName="Add_COM_Mummy01_FH01" />
             <Item prefabName="Add_COM_Army01_TS03" />
