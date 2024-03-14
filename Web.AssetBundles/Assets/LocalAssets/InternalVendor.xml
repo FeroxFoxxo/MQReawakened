@@ -481,7 +481,7 @@
             <Item prefabName="COL_FOOD_Cookie02" />
             <Item prefabName="COL_FOOD_Pinapple01" />
         </Vendor>
-        <Vendor objectId="579" name="Yod" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Potions" dialogId="1331" greetingConversationId="3337" leavingConversationId="3336">
+        <Vendor objectId="579" name="Yod" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1331" greetingConversationId="3337" leavingConversationId="3336">
             <Item prefabName="COL_POT_Healing01" />
             <Item prefabName="COL_POT_Healing02" />
             <Item prefabName="COL_POT_Healing03" />
@@ -505,6 +505,92 @@
             <Item prefabName="COL_FOOD_Orange01" />
             <Item prefabName="COL_FOOD_Mango01" />
             <Item prefabName="COL_FOOD_Pinapple01" />
+        </Vendor>
+        <Vendor objectId="576" name="Mikith" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="793" greetingConversationId="2232" leavingConversationId="2231">
+            <Item prefabName="Add_COM_Lara01_S04" />
+            <Item prefabName="Add_BON_Ritualist01_TS01" />
+            <Item prefabName="Add_BON_SkullFighter01_LS01" />
+            <Item prefabName="Add_BON_SkullFighter01_S01" />
+            <Item prefabName="Add_BON_SkullFighter01_W01" />
+            <Item prefabName="Add_BON_Voodoo01_LS01" />
+            <Item prefabName="Add_BON_Voodoo01_TS01" />
+            <Item prefabName="Add_BON_Voodoo01_S01" />
+            <Item prefabName="Add_BON_SkullFighter01_TS01" />
+            <Item prefabName="Add_COM_Emo01_LS04" />
+            <Item prefabName="Add_COM_Emo01_S04" />
+            <Item prefabName="Add_COM_Emo01_TS04" />
+            <Item prefabName="Add_COM_HawaiTiki01_S02" />
+            <Item prefabName="Add_COM_HawaiTiki01_S03" />
+            <Item prefabName="Add_COM_Army01_LS02" />
+            <Item prefabName="Add_COM_Army01_TS02" />
+            <Item prefabName="Add_COM_Baseball01_S06" />
+            <Item prefabName="Add_COM_Clown01_S02" />
+            <Item prefabName="Add_BON_WitchDoctor01_FH01" />
+            <Item prefabName="Add_COM_Army01_S02" />
+        </Vendor>
+        <Vendor objectId="578" name="Rhea" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1316" greetingConversationId="3071" leavingConversationId="3326">
+            <Item prefabName="Add_COM_Sheep01_TS02" />
+            <Item prefabName="Add_COM_Army01_LS03" />
+            <Item prefabName="Add_BON_Cruella01_S03" />
+            <Item prefabName="Add_BON_Cruella01_S04" />
+            <Item prefabName="Add_BON_Cruella01_S05" />
+            <Item prefabName="Add_BON_Seer01_LS01" />
+            <Item prefabName="Add_COM_Lion01_LS02" />
+            <Item prefabName="Add_COM_Mafia01_LS02" />
+            <Item prefabName="Add_COM_Lion01_TS02" />
+            <Item prefabName="Add_COM_Mafia01_TS02" />
+            <Item prefabName="Add_COM_Lion01_S02" />
+            <Item prefabName="Add_COM_Mafia01_S02" />
+            <Item prefabName="Add_BON_Cruella01_BP01" />
+            <Item prefabName="Add_BON_Cruella01_BP02" />
+            <Item prefabName="Add_BON_Cruella01_BP03" />
+            <Item prefabName="Add_BON_Cruella01_LS02" />
+            <Item prefabName="Add_BON_Voodoo01_LS03" />
+            <Item prefabName="Add_BON_Cruella01_TS02" />
+            <Item prefabName="Add_BON_Voodoo01_TS03" />
+            <Item prefabName="Add_BON_Cruella01_S02" />
+            <Item prefabName="Add_BON_Seer01_S02" />
+            <Item prefabName="Add_BON_Seer01_S03" />
+            <Item prefabName="Add_BON_TailRing01_T06" />
+            <Item prefabName="Add_BON_Voodoo01_S03" />
+        </Vendor>
+        <Vendor objectId="575" name="Zeeta" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="794" greetingConversationId="2238" leavingConversationId="2237">
+            <Item prefabName="Add_COM_Adventurer01_BP01" />
+            <Item prefabName="Add_COM_SpaceSuit01_LS01" />
+            <Item prefabName="Add_COM_AnimalWood01_S03" />
+            <Item prefabName="Add_COM_SpaceSuit01_S01" />
+            <Item prefabName="Add_COM_Dragon01_S01" />
+            <Item prefabName="Add_COM_Dragon01_TS01" />
+            <Item prefabName="Add_COM_Tiger01_S01" />
+            <Item prefabName="Add_COM_Tiger01_LS01" />
+            <Item prefabName="Add_COM_Tiger01_TS01" />
+            <Item prefabName="Add_COM_LadyBug01_S01" />
+            <Item prefabName="Add_COM_LadyBug01_TS01" />
+            <Item prefabName="Add_COM_Egg01_S01" />
+            <Item prefabName="Add_BON_BogHunter01_S02" />
+            <Item prefabName="Add_BON_BogHunter01_TS02" />
+            <Item prefabName="Add_COM_BackPack01_BP02" />
+            <Item prefabName="Add_COM_Army01_S01" />
+            <Item prefabName="Add_BON_Ritualist01_TS01" />
+            <Item prefabName="Add_BON_Voodoo01_LS01" />
+            <Item prefabName="Add_BON_SkullFighter01_S01" />
+            <Item prefabName="Add_BON_SkullFighter01_LS01" />
+            <Item prefabName="Add_BON_Voodoo01_TS01" />
+            <Item prefabName="Add_COM_Dragon01_S02" />
+            <Item prefabName="Add_COM_SuperMonkey01_BP01" />
+            <Item prefabName="Add_COM_BoomBug01_S01" />
+            <Item prefabName="Add_COM_BoomBug01_LS01" />
+            <Item prefabName="Add_SHD_ShadowFighter01_TS01" />
+            <Item prefabName="Add_BON_WitchDoctor01_FH01" />
+            <Item prefabName="Add_OUT_PirateChef01_LS02" />
+            <Item prefabName="Add_OUT_PirateChef01_TS02" />
+            <Item prefabName="Add_OUT_PirateChef01_S02" />
+            <Item prefabName="Add_COM_Mummy01_LS01" />
+            <Item prefabName="Add_COM_Mummy01_FH01" />
+            <Item prefabName="Add_COM_Army01_TS03" />
+            <Item prefabName="Add_BON_Cruella01_BP01" />
+            <Item prefabName="Add_BON_Voodoo01_TS03" />
+            <Item prefabName="Add_BON_Seer01_S02" />
         </Vendor>
         <Vendor objectId="628" name="Kalfu" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1349" greetingConversationId="3332" leavingConversationId="3331">
             <Item prefabName="WPN_PRJ_BeetleLauncher01" />
