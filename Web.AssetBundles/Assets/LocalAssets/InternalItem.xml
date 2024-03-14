@@ -309,6 +309,7 @@
             <Item itemId="15751" itemName="Ootu Holiday Hood" descriptionId="1812972760" prefabName="Add_BON_BogHunter01_S04" specialDisplayPrefab="" tribe="Bone" rarity="Rare" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1" discountPrice="-1" sellPrice="1" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="Unbound" level="15" levelRequirement="15" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
             <Item itemId="15752" itemName="Red Mohawk Ponytail" descriptionId="1442250296" prefabName="Add_COM_HairPremium01_S04" specialDisplayPrefab="" tribe="Crossroads" rarity="Rare" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="Unbound" level="56" levelRequirement="56" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
             <Item itemId="15753" itemName="Rachnok Helmet" descriptionId="1199397112" prefabName="Add_COM_Spider01_S01" specialDisplayPrefab="" tribe="Crossroads" rarity="Rare" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="Unbound" level="1" levelRequirement="7" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
+            <Item itemId="3384" itemName="Apprentice Mystic Top Hat" descriptionId="1084545118" prefabName="Add_BON_OotuMystic01_S01" specialDisplayPrefab="" tribe="Bone" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="None" cooldownTime="0" delayUseDuration="0" binding="Unbound" level="8" levelRequirement="8" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" />
         </ItemSubCategory>
         <ItemSubCategory name="Slot Body">
             <!--4200 / 4699-->
@@ -671,6 +672,11 @@
             <Item itemId="9251" itemName="Wooden Stick" descriptionId="0" prefabName="WPN_1H_SwordBasic01" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.5" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" >
                 <ItemEffects>
                     <Effect duration="5" type="BluntDamage" value="1"/>
+                </ItemEffects>
+            </Item>
+            <Item itemId="3373" itemName="Mystic Flytrap Staff" descriptionId="510375350" prefabName="WPN_PRJ_PoisonousFlower01" specialDisplayPrefab="" tribe="Bone" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="1.2" delayUseDuration="0" binding="On Equip" level="3" levelRequirement="7" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+                <ItemEffects>
+                    <Effect duration="12" type="PoisonDamage" value="0" />
                 </ItemEffects>
             </Item>
         </ItemSubCategory>
