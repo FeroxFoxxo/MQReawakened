@@ -29,6 +29,7 @@ public abstract class Enemy : IDestructible
     private readonly ILogger<Enemy> _logger;
     private readonly InternalAchievement _internalAchievement;
     private readonly QuestCatalog _questCatalog;
+    private readonly ItemCatalog _itemCatalog;
 
     public bool Init;
 
@@ -68,6 +69,7 @@ public abstract class Enemy : IDestructible
         _logger = services.GetRequiredService<ILogger<Enemy>>();
         _internalAchievement = services.GetRequiredService<InternalAchievement>();
         _questCatalog = services.GetRequiredService<QuestCatalog>();
+        _itemCatalog = services.GetRequiredService<ItemCatalog>();
 
         //Component Info
         Entity = baseEntity;
@@ -212,9 +214,13 @@ public abstract class Enemy : IDestructible
         if (Room.IsObjectKilled(Id))
             return;
 
-        Health -= damage;
+        var trueDamage = damage - GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Enemy, EnemyController.Level);
+        if (trueDamage <= 0)
+            trueDamage = 1;
 
-        var damageEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true);
+        Health -= trueDamage;
+
+        var damageEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, trueDamage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true);
         Room.SendSyncEvent(damageEvent);
 
         if (Health <= 0)
@@ -222,6 +228,17 @@ public abstract class Enemy : IDestructible
             if (EnemyController.OnDeathTargetID is not null and not "0")
                 foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(EnemyController.OnDeathTargetID))
                     trigger.Trigger(true);
+
+            //Dynamic Loot Drop
+            var chance = new System.Random();
+            foreach (var drop in BehaviorList.EnemyLootTable)
+            {
+                chance.NextDouble();
+                if (EnemyController.Level <= drop.MaxLevel && EnemyController.Level >= drop.MinLevel)
+                {
+                    origin.GrantDynamicLoot(EnemyController.Level, drop, _itemCatalog);
+                }
+            }
 
             //Temp values for now
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Entity, "", 10, true, origin == null ? "0" : origin.GameObjectId, false));
@@ -400,9 +417,12 @@ public abstract class Enemy : IDestructible
 
             AiData.Intern_FireProjectile = false;
 
-            var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
-                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, TimerThread);
-            Room.Projectiles.Add(projectileId, aiProjectile);
+            var prj = new AIProjectileEntity(Room, Id, projectileId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
+                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, Room.Enemies[Id].EnemyController.TimerThread,
+                GameFlow.StatisticData.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, EnemyController.Level),
+                EnemyController.ComponentData.EnemyEffectType,
+                _itemCatalog);
+            Room.Projectiles.Add(projectileId, prj);
         }
     }
 

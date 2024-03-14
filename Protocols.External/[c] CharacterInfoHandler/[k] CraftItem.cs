@@ -55,7 +55,7 @@ public class CraftItem : ExternalProtocol
             Player.CheckAchievement(AchConditionType.CraftItem, itemDesc.PrefabName, InternalAchievement, Logger);
         }
 
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
 
         SendXt("ck", recipeId, amount);
     }

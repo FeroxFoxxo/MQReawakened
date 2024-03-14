@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using System.Xml;
@@ -35,7 +36,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                 if (enemy.Name != "Enemy") continue;
 
                 var enemyType = string.Empty;
-                var behaviorModel = new BehaviorModel([], []);
+                var behaviorModel = new BehaviorModel([], [], []);
 
                 foreach (XmlAttribute enemyName in enemy.Attributes)
                     if (enemyName.Name == "name")
@@ -409,6 +410,50 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                                 behaviorModel.GlobalProperties.Add(gDataName, gDataValue);
                             }
                             break;
+
+                        case "LootTable":
+                            foreach (XmlNode dynamicDrop in behavior.ChildNodes)
+                            {
+                                var dropType = DynamicDropType.Unknown;
+                                var dropId = 0;
+                                var dropChance = 0f;
+                                var dropMinLevel = 1;
+                                var dropMaxLevel = 65;
+                                foreach (XmlAttribute dynamicDropAttributes in dynamicDrop.Attributes)
+                                {
+                                    switch (dynamicDropAttributes.Name)
+                                    {
+                                        case "type":
+                                            switch (dynamicDropAttributes.Value)
+                                            {
+                                                case "item":
+                                                    dropType = DynamicDropType.Item;
+                                                    continue;
+                                                case "randomArmor":
+                                                    dropType = DynamicDropType.RandomArmor;
+                                                    continue;
+                                                case "randomIngredient":
+                                                    dropType = DynamicDropType.RandomIngredient;
+                                                    continue;
+                                            }
+                                            continue;
+                                        case "id":
+                                            dropId = int.Parse(dynamicDropAttributes.Value);
+                                            continue;
+                                        case "chance":
+                                            dropChance = float.Parse(dynamicDropAttributes.Value);
+                                            continue;
+                                        case "minLevel":
+                                            dropMinLevel = int.Parse(dynamicDropAttributes.Value);
+                                            continue;
+                                        case "maxLevel":
+                                            dropMaxLevel = int.Parse(dynamicDropAttributes.Value);
+                                            continue;
+                                    }
+                                }
+                                behaviorModel.EnemyLootTable.Add(new EnemyDropModel(dropType, dropId, dropChance, dropMinLevel, dropMaxLevel));
+                            }
+                            break;
                     }
                     if (behaviorDataModel.DataList.ToList().Count > 0)
                         behaviorModel.BehaviorData.Add(behavior.Name, behaviorDataModel);
@@ -423,5 +468,5 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
     }
 
     public BehaviorModel GetBehaviorsByName(string enemyName) =>
-        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel([], []);
+        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel([], [], []);
 }

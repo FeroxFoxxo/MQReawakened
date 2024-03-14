@@ -30,6 +30,7 @@ public class HazardControllerComp : Component<HazardController>
     public TimerThread TimerThread { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
     public ILogger<HazardControllerComp> Logger { get; set; }
 
     private EnemyControllerComp _enemyController;
@@ -81,7 +82,7 @@ public class HazardControllerComp : Component<HazardController>
                 effectType);
         }
 
-        var defense = WorldStatistics.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Player, player.Character.Data.GlobalLevel);
+        var defense = player.Character.Data.CalculateDefense(effectType, ItemCatalog);
 
         switch (effectType)
         {

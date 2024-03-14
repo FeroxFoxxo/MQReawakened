@@ -44,10 +44,10 @@ public class TradeDeal : ExternalProtocol
             Player.TradeWithPlayer(ItemCatalog);
 
             tradingPlayer.SendCashUpdate();
-            tradingPlayer.SendUpdatedInventory(false);
+            tradingPlayer.SendUpdatedInventory();
 
             Player.SendCashUpdate();
-            Player.SendUpdatedInventory(false);
+            Player.SendUpdatedInventory();
 
             tradingPlayer.SendXt("tt", string.Empty);
             Player.SendXt("tt", string.Empty);

@@ -10,6 +10,7 @@ public class TemporaryDataModel
     public string GameObjectId { get; set; } = "0";
     public int Direction { get; set; } = 0;
     public PlayerCollider PlayerCollider { get; set; }
+    public int Locale { get; set; }
 
     public bool Invincible { get; set; } = false;
     public bool OnGround { get; set; } = false;

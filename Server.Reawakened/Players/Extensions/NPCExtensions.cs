@@ -22,6 +22,14 @@ public static class NpcExtensions
         var character = player.Character;
         var questId = quest.Id;
 
+        var questTest = character.Data.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
+
+        if (questTest != null)
+            return questTest;
+
+        if (character.Data.CompletedQuests.Contains(quest.Id))
+            return null;
+
         character.Data.ActiveQuestId = questId;
 
         var questModel = character.Data.QuestLog.FirstOrDefault(x => x.Id == questId);
@@ -62,6 +70,16 @@ public static class NpcExtensions
                             objective.Value.Completed = true;
                     }
                 }
+                else if (objective.Value.ObjectiveType == ObjectiveEnum.Inventorycheck)
+                {
+                    if (player.Character.Data.Inventory.Items.TryGetValue(objective.Value.ItemId, out var item))
+                    {
+                        objective.Value.CountLeft = objective.Value.Total - item.Count;
+
+                        if (objective.Value.CountLeft <= 0)
+                            objective.Value.Completed = true;
+                    }
+                }
             }
 
             character.Data.QuestLog.Add(questModel);
@@ -89,7 +107,7 @@ public static class NpcExtensions
             QuestState.IN_PROCESSING :
             QuestState.TO_BE_VALIDATED;
 
-        player.SendXt("na", questModel, true);
+        player.SendXt("na", questModel, true ? 1 : 0);
 
         player.UpdateNpcsInLevel(quest);
 
@@ -113,7 +131,7 @@ public static class NpcExtensions
                     player.AddItem(item, itemModel.Count, itemCatalog);
                 }
 
-                player.SendUpdatedInventory(false);
+                player.SendUpdatedInventory();
             }
         }
 

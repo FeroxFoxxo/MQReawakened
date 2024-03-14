@@ -1,8 +1,10 @@
-﻿using Server.Base.Timers.Services;
+﻿using A2m.Server;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Entities.Entity;
 public class AIProjectileEntity : TicklyEntity
@@ -10,7 +12,7 @@ public class AIProjectileEntity : TicklyEntity
     private readonly string _ownerId;
     private readonly Room _room;
 
-    public AIProjectileEntity(Room room, string ownerId, string projectileId, Vector3Model position, float speedX, float speedY, float lifeTime, TimerThread timerThread)
+    public AIProjectileEntity(Room room, string ownerId, string projectileId, Vector3Model position, float speedX, float speedY, float lifeTime, TimerThread timerThread, int baseDamage, ItemEffectType effect, ItemCatalog itemCatalog)
     {
         // Initialize projectile location info
         _room = room;
@@ -28,7 +30,7 @@ public class AIProjectileEntity : TicklyEntity
         LifeTime = StartTime + lifeTime;
 
         // Send all information to room
-        Collider = new AIProjectileCollider(projectileId, ownerId, room, ProjectileID, Position, 0.5f, 0.5f, PrjPlane, LifeTime, timerThread);
+        Collider = new AIProjectileCollider(projectileId, ownerId, room, ProjectileID, Position, 0.5f, 0.5f, PrjPlane, LifeTime, timerThread, baseDamage, effect, itemCatalog);
     }
 
     public override void Update()

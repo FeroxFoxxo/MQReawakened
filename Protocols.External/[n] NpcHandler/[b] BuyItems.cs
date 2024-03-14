@@ -40,6 +40,6 @@ public class BuyItems : ExternalProtocol
             Player.CheckObjective(ObjectiveEnum.Buyitem, vendorGoId.ToString(), itemDescription.PrefabName, amount, ItemCatalog);
         }
 
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
     }
 }

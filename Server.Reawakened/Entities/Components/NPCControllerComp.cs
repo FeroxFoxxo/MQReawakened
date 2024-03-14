@@ -270,6 +270,7 @@ public class NPCControllerComp : Component<NPCController>
 
     public NPCStatus GetQuestStatus(Player player)
     {
+        Logger.LogDebug("Looping through VALIDATOR quests for {NpcName} ({Id})", NpcName, Id);
         foreach (var validatorQuest in ValidatorQuests)
         {
             var questStatus = GetQuestType(player, validatorQuest.Id);
@@ -282,6 +283,8 @@ public class NPCControllerComp : Component<NPCController>
                 return NPCStatus.QuestCompleted;
             }
         }
+
+        Logger.LogDebug("Looping through GIVER quests for {NpcName} ({Id})", NpcName, Id);
 
         foreach (var givenQuest in GiverQuests)
         {
@@ -304,6 +307,8 @@ public class NPCControllerComp : Component<NPCController>
             }
         }
 
+        Logger.LogDebug("Finished looping quests for {NpcName} ({Id}), found none", NpcName, Id);
+
         return NPCStatus.QuestUnavailable;
     }
 
@@ -324,10 +329,19 @@ public class NPCControllerComp : Component<NPCController>
             if (currentQuest.QuestStatus == QuestState.IN_PROCESSING)
             {
                 var incompleteQuestObjs = currentQuest.Objectives.Values.Where(o => !o.Completed);
+                var incompleteObjectives = incompleteQuestObjs.Count();
 
-                if (incompleteQuestObjs.Count() == 1)
+                var minOrder = 0;
+
+                if (incompleteObjectives > 0)
+                    minOrder = incompleteQuestObjs.Min(x => x.Order);
+
+                foreach (var incompleteQuestObj in incompleteQuestObjs.Where(x => x.Order == minOrder))
                 {
-                    var incompleteQuestObj = incompleteQuestObjs.FirstOrDefault();
+                    if (incompleteQuestObj.ObjectiveType == ObjectiveEnum.Deliver)
+                        if (player.Character.Data.Inventory.Items.TryGetValue(incompleteQuestObj.ItemId, out var item))
+                            if (item.Count >= incompleteQuestObj.CountLeft)
+                                incompleteObjectives--;
 
                     if (incompleteQuestObj.GameObjectId.ToString() == Id &&
                         incompleteQuestObj.GameObjectLevelId == Room.LevelInfo.LevelId &&
@@ -335,9 +349,12 @@ public class NPCControllerComp : Component<NPCController>
                     {
                         incompleteQuestObj.Completed = true;
                         incompleteQuestObj.CountLeft = 0;
-                        currentQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
+                        return GetQuestType(player, questId);
                     }
                 }
+
+                if (incompleteObjectives <= 0)
+                    currentQuest.QuestStatus = QuestState.TO_BE_VALIDATED;
             }
 
             if (currentQuest.QuestStatus == QuestState.IN_PROCESSING)
@@ -422,8 +439,11 @@ public class NPCControllerComp : Component<NPCController>
         }
         else
         {
+            if (Config.GameVersion < GameVersion.v2014)
+                previousQuests = [.. previousQuests, .. requiredQuests];
+
             Logger.LogTrace(
-                "[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS] {Quests}",
+                "[{QuestName} ({QuestId})] [DOES NOT MEET REQUIRED QUESTS] Previous Quests: {PrevQuests}",
                 questData.Name, questData.Id,
                 string.Join(", ", previousQuests.Select(x => $"{x.Name} ({x.Id})"))
             );

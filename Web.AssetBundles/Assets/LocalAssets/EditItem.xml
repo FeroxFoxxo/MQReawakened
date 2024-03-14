@@ -75,6 +75,259 @@
             <EditAttribute key="global_level" value="1"/>
             <EditAttribute key="item_level" value="1"/>
         </Item>
+        <Item name="Add_BON_Shaman01_FH03">
+            <EditAttribute key="ingamedescription" value="1692851070"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="NickCash"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_FortuneHunter01_UF02">
+            <EditAttribute key="ingamedescription" value="797104615"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_FortuneHunter01_UF03">
+            <EditAttribute key="ingamedescription" value="409160831"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF02">
+            <EditAttribute key="ingamedescription" value="1845013564"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF03">
+            <EditAttribute key="ingamedescription" value="765774544"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF04">
+            <EditAttribute key="ingamedescription" value="1268547769"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF01">
+            <EditAttribute key="ingamedescription" value="1019061661"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Moustache01_UF01">
+            <EditAttribute key="ingamedescription" value="13651159"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Moustache02_UF01">
+            <EditAttribute key="ingamedescription" value="2118690991"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Moustache02_UF02">
+            <EditAttribute key="ingamedescription" value="493931405"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_VeteranChef01_UF03">
+            <EditAttribute key="ingamedescription" value="554322993"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_VeteranChef01_UF04">
+            <EditAttribute key="ingamedescription" value="362994866"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF01">
+            <EditAttribute key="ingamedescription" value="1258423857"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_PirateChef01_LF01">
+            <EditAttribute key="ingamedescription" value="1368741408"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Pharaon01_LF01">
+            <EditAttribute key="ingamedescription" value="708084777"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_AviatorPunk01_LF02">
+            <EditAttribute key="ingamedescription" value="1003418"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="NickCash"/>
+            <EditAttribute key="global_level" value="7"/>
+            <EditAttribute key="item_level" value="7"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF02">
+            <EditAttribute key="ingamedescription" value="298143825"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF03">
+            <EditAttribute key="ingamedescription" value="1031714411"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_Bluebeard01_LF01">
+            <EditAttribute key="ingamedescription" value="83692689"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Assassin01_LF02">
+            <EditAttribute key="ingamedescription" value="1077224970"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Ninja01_LF01">
+            <EditAttribute key="ingamedescription" value="1003272"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Samurai01_LF02">
+            <EditAttribute key="ingamedescription" value="933823266"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF04">
+            <EditAttribute key="ingamedescription" value="933685728"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_CaptainBoy01_LF01">
+            <EditAttribute key="ingamedescription" value="1493073657"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_CaptainBoy01_LF02">
+            <EditAttribute key="ingamedescription" value="1468215186"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_CaptainBoy01_LF03">
+            <EditAttribute key="ingamedescription" value="584401276"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="10"/>
+        </Item>
+        <Item name="COL_RECIP_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="3"/>
+            <EditAttribute key="recipe_parent_item_id" value="859"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vLate2013">
         <Item name="Add_COM_Armor01_S01">
@@ -149,6 +402,259 @@
             <EditAttribute key="global_level" value="1"/>
             <EditAttribute key="item_level" value="1"/>
         </Item>
+        <Item name="Add_BON_Shaman01_FH03">
+            <EditAttribute key="ingamedescription" value="1692851070"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="NickCash"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_FortuneHunter01_UF02">
+            <EditAttribute key="ingamedescription" value="797104615"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_FortuneHunter01_UF03">
+            <EditAttribute key="ingamedescription" value="409160831"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF02">
+            <EditAttribute key="ingamedescription" value="1845013564"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF03">
+            <EditAttribute key="ingamedescription" value="765774544"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF04">
+            <EditAttribute key="ingamedescription" value="1268547769"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF01">
+            <EditAttribute key="ingamedescription" value="1019061661"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Moustache01_UF01">
+            <EditAttribute key="ingamedescription" value="13651159"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Moustache02_UF01">
+            <EditAttribute key="ingamedescription" value="2118690991"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Moustache02_UF02">
+            <EditAttribute key="ingamedescription" value="493931405"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_VeteranChef01_UF03">
+            <EditAttribute key="ingamedescription" value="554322993"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_VeteranChef01_UF04">
+            <EditAttribute key="ingamedescription" value="362994866"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF01">
+            <EditAttribute key="ingamedescription" value="1258423857"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_PirateChef01_LF01">
+            <EditAttribute key="ingamedescription" value="1368741408"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Pharaon01_LF01">
+            <EditAttribute key="ingamedescription" value="708084777"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_AviatorPunk01_LF02">
+            <EditAttribute key="ingamedescription" value="1003418"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="NickCash"/>
+            <EditAttribute key="global_level" value="7"/>
+            <EditAttribute key="item_level" value="7"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF02">
+            <EditAttribute key="ingamedescription" value="298143825"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF03">
+            <EditAttribute key="ingamedescription" value="1031714411"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_Bluebeard01_LF01">
+            <EditAttribute key="ingamedescription" value="83692689"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Assassin01_LF02">
+            <EditAttribute key="ingamedescription" value="1077224970"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Ninja01_LF01">
+            <EditAttribute key="ingamedescription" value="1003272"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Samurai01_LF02">
+            <EditAttribute key="ingamedescription" value="933823266"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF04">
+            <EditAttribute key="ingamedescription" value="933685728"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_CaptainBoy01_LF01">
+            <EditAttribute key="ingamedescription" value="1493073657"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_CaptainBoy01_LF02">
+            <EditAttribute key="ingamedescription" value="1468215186"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_CaptainBoy01_LF03">
+            <EditAttribute key="ingamedescription" value="584401276"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="10"/>
+        </Item>
+        <Item name="COL_RECIP_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="3"/>
+            <EditAttribute key="recipe_parent_item_id" value="859"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vEarly2013">
         <Item name="Add_COM_Armor01_S01">
@@ -218,6 +724,259 @@
             <EditAttribute key="global_level" value="1"/>
             <EditAttribute key="item_level" value="1"/>
         </Item>
+        <Item name="Add_BON_Shaman01_FH03">
+            <EditAttribute key="ingamedescription" value="1692851070"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="NickCash"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_FortuneHunter01_UF02">
+            <EditAttribute key="ingamedescription" value="797104615"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_FortuneHunter01_UF03">
+            <EditAttribute key="ingamedescription" value="409160831"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF02">
+            <EditAttribute key="ingamedescription" value="1845013564"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF03">
+            <EditAttribute key="ingamedescription" value="765774544"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF04">
+            <EditAttribute key="ingamedescription" value="1268547769"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Burglar01_UF01">
+            <EditAttribute key="ingamedescription" value="1019061661"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Moustache01_UF01">
+            <EditAttribute key="ingamedescription" value="13651159"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Moustache02_UF01">
+            <EditAttribute key="ingamedescription" value="2118690991"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Moustache02_UF02">
+            <EditAttribute key="ingamedescription" value="493931405"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_VeteranChef01_UF03">
+            <EditAttribute key="ingamedescription" value="554322993"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_VeteranChef01_UF04">
+            <EditAttribute key="ingamedescription" value="362994866"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF01">
+            <EditAttribute key="ingamedescription" value="1258423857"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_PirateChef01_LF01">
+            <EditAttribute key="ingamedescription" value="1368741408"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Pharaon01_LF01">
+            <EditAttribute key="ingamedescription" value="708084777"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_AviatorPunk01_LF02">
+            <EditAttribute key="ingamedescription" value="1003418"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="NickCash"/>
+            <EditAttribute key="global_level" value="7"/>
+            <EditAttribute key="item_level" value="7"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF02">
+            <EditAttribute key="ingamedescription" value="298143825"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF03">
+            <EditAttribute key="ingamedescription" value="1031714411"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_Bluebeard01_LF01">
+            <EditAttribute key="ingamedescription" value="83692689"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Assassin01_LF02">
+            <EditAttribute key="ingamedescription" value="1077224970"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Ninja01_LF01">
+            <EditAttribute key="ingamedescription" value="1003272"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_SHD_Samurai01_LF02">
+            <EditAttribute key="ingamedescription" value="933823266"/>
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Viking01_LF04">
+            <EditAttribute key="ingamedescription" value="933685728"/>
+            <EditAttribute key="tribe" value="Wild"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="true"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_CaptainBoy01_LF01">
+            <EditAttribute key="ingamedescription" value="1493073657"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_CaptainBoy01_LF02">
+            <EditAttribute key="ingamedescription" value="1468215186"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_CaptainBoy01_LF03">
+            <EditAttribute key="ingamedescription" value="584401276"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="Add_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="10"/>
+        </Item>
+        <Item name="COL_RECIP_OUT_FortuneHunter01_S02">
+            <EditAttribute key="ingamedescription" value="1976346559"/>
+            <EditAttribute key="tribe" value="Outlaw"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="3"/>
+            <EditAttribute key="item_level" value="3"/>
+            <EditAttribute key="recipe_parent_item_id" value="859"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vLate2012">
         <Item name="Add_COM_Armor01_S01">
@@ -235,6 +994,36 @@
         </Item>
         <Item name="WPN_PRJ_XmasSlingshot01">
             <EditAttribute key="descriptionId" value="1000578"/>
+        </Item>
+    </GameVersion>
+    <GameVersion version="vMinigames2012">
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="price" value="50"/>
+        </Item>
+        <Item name="WPN_1H_SwordKnight01">
+            <EditAttribute key="id" value="3351"/>
+        </Item>
+    </GameVersion>
+    <GameVersion version="vPets2012">
+        <Item name="Add_COM_Armor01_S01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_TS01">
+            <EditAttribute key="global_level" value="1"/>
+        </Item>
+        <Item name="Add_COM_Armor01_LS01">
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="price" value="50"/>
+        </Item>
+        <Item name="WPN_1H_SwordKnight01">
+            <EditAttribute key="id" value="3351"/>
         </Item>
     </GameVersion>
     <GameVersion version="vEarly2012">

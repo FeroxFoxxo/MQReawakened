@@ -15,9 +15,6 @@ public static class PlayerAchievementExtensions
     public static void CheckAchievement(this Player player, AchConditionType achType, string achValue,
         InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger, int count = 1)
     {
-        if (string.IsNullOrEmpty(achValue))
-            achValue = "unknown";
-
         if (player == null)
             return;
 
@@ -153,7 +150,6 @@ public static class PlayerAchievementExtensions
     public static List<CharacterAchievement> GetAllAchievements(this CharacterModel character, InternalAchievement internalAchievement)
     {
         var _characterId = character.Id;
-        var obs = character.AchievementObjectives;
 
         return internalAchievement.Definitions.achievements
             .Select(x => GetAchievement(character, x)).ToList();

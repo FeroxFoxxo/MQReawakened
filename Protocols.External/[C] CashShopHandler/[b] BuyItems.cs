@@ -57,7 +57,7 @@ public class BuyItems : ExternalProtocol
         }
 
         Player.SendCashUpdate();
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
         Player.SendXt("Cb", 1);
     }
 }

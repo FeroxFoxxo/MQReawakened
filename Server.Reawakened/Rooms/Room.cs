@@ -260,7 +260,7 @@ public class Room : Timer
                     if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
                     {
                         currentPlayer.AddItem(item, 1, ItemCatalog);
-                        currentPlayer.SendUpdatedInventory(false);
+                        currentPlayer.SendUpdatedInventory();
                     }
                 }
             }
@@ -273,7 +273,7 @@ public class Room : Timer
                     if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
                     {
                         currentPlayer.AddItem(item, 1, ItemCatalog);
-                        currentPlayer.SendUpdatedInventory(false);
+                        currentPlayer.SendUpdatedInventory();
                     }
                 }
             }
@@ -431,6 +431,9 @@ public class Room : Timer
 
     public void KillEntity(Player player, string id)
     {
+        if (player == null)
+            return;
+
         lock (_roomLock)
             if (KilledObjects.Contains(id))
                 return;
