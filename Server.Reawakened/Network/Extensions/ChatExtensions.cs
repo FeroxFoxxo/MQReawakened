@@ -18,4 +18,15 @@ public static class ChatExtensions
         )
             client.Chat(channelId, sender, message);
     }
+
+    public static void Chat(this Player player, CannedChatChannel channelId, string sender, string message, string recipientName)
+    {
+        var recipient = player.PlayerContainer.GetPlayerByName(recipientName);
+
+        if (recipient != null)
+        {
+            player.Chat(channelId, sender, message);
+            recipient.Chat(channelId, sender, message);
+        }
+    }
 }
