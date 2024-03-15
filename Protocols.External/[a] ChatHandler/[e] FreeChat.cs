@@ -32,6 +32,27 @@ public class FreeChat : ExternalProtocol
             var character = Player.Character;
             Player.Room.Chat(channelType, character.Data.CharacterName, chatMessage);
         }
+        else if (channelType == CannedChatChannel.Group)
+        {
+            var character = Player.Character;
+
+            if (Player.TempData.Group != null)
+                Player.TempData.Group.Chat(Player, channelType, character.Data.CharacterName, chatMessage);
+        }
+        else if (channelType == CannedChatChannel.Trade)
+        {
+            var character = Player.Character;
+
+            if (Player.Room.LevelInfo.Type == LevelType.City)
+                Player.Room.Chat(channelType, character.Data.CharacterName, chatMessage);
+        }
+        else if (channelType is CannedChatChannel.Tell or CannedChatChannel.Reply)
+        {
+            var character = Player.Character;
+
+            if (!string.IsNullOrEmpty(recipientName))
+                Player.Chat(channelType, character.Data.CharacterName, chatMessage, recipientName);
+        }
         else
         {
             Logger.LogError("No chat handler found for {ChannelType} to '{Recipient}' for '{Message}'",
