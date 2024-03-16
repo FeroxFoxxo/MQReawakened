@@ -117,6 +117,36 @@
             <Item itemName="COL_ING_G_MudGlobule02" count="10" />
             <Item itemName="COL_ING_C_Quartz01" count="1" />
         </RecipeInfo>
+        <!--Refined Gloom Cap-->
+        <RecipeInfo recipeName="COL_RECIP_RefinedGloomCap01">
+            <Item itemName="COL_ING_G_GloomCap01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
+        </RecipeInfo>
+        <!--Purified Gloom Cap-->
+        <RecipeInfo recipeName="COL_RECIP_PurifiedGloomCap01">
+            <Item itemName="COL_ING_G_GloomCap02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
+        </RecipeInfo>
+        <!--Quality Shadow Shard-->
+        <RecipeInfo recipeName="COL_RECIP_RefinedShadowShard01">
+            <Item itemName="COL_ING_G_ShadowShard01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
+        </RecipeInfo>
+        <!--Perfect Shadow Shard-->
+        <RecipeInfo recipeName="COL_RECIP_PurifiedShadowShard02">
+            <Item itemName="COL_ING_G_ShadowShard02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
+        </RecipeInfo>
+        <!--Refined Bamboo-->
+        <RecipeInfo recipeName="COL_RECIP_RefinedBamboo01">
+            <Item itemName="COL_ING_G_Bamboo01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
+        </RecipeInfo>
+        <!--Purified Bamboo-->
+        <RecipeInfo recipeName="COL_RECIP_PurifiedBamboo01">
+            <Item itemName="COL_ING_G_Bamboo02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
+        </RecipeInfo>
     </RecipeType>
     <RecipeType name="Tailoring">
         <!--Leafy Jungle Helmet-->
