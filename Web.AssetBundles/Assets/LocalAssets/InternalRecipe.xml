@@ -107,6 +107,16 @@
             <Item itemName="COL_ING_G_Ginger02" count="10" />
             <Item itemName="COL_ING_C_Quartz01" count="1" />
         </RecipeInfo>
+        <!--Refined Mud Pie-->
+        <RecipeInfo recipeName="COL_RECIP_RefinedMudPie01">
+            <Item itemName="COL_ING_G_MudGlobule01" count="10" />
+            <Item itemName="COL_ING_C_Sulphur01" count="1" />
+        </RecipeInfo>
+        <!--Purified Mud Pie-->
+        <RecipeInfo recipeName="COL_RECIP_PurifiedMudPie01">
+            <Item itemName="COL_ING_G_MudGlobule02" count="10" />
+            <Item itemName="COL_ING_C_Quartz01" count="1" />
+        </RecipeInfo>
     </RecipeType>
     <RecipeType name="Tailoring">
         <!--Leafy Jungle Helmet-->
