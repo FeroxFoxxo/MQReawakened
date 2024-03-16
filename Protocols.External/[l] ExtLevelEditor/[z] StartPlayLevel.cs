@@ -21,7 +21,6 @@ public class StartPlayRoom : ExternalProtocol
         var tribe = Player.Room.LevelInfo.Tribe;
         Player.DiscoverTribe(tribe);
 
-        if (!Player.Room.LevelInfo.Equals(Player.GetLevelId()))
-            Player.Room.Colliders.Add(Player.GameObjectId, new PlayerCollider(Player));
+        Player.Room.Colliders.TryAdd(Player.GameObjectId, new PlayerCollider(Player));
     }
 }
