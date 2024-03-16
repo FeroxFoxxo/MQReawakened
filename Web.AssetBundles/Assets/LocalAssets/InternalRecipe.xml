@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RecipeCatalog>
     <RecipeType name="Alchemy">
+        <!--Minor Healing Potion-->
+        <RecipeInfo recipeName="COL_RECIP_POT_Healing01">
+            <Item itemName="COL_ING_G_Dandelions01" count="2" />
+            <Item itemName="COL_ING_C_PureWater01" count="1" />
+        </RecipeInfo>
         <!--Healing Potion-->
         <RecipeInfo recipeName="COL_RECIP_POT_Healing02">
             <Item itemName="COL_POT_Healing01" count="2" />
@@ -26,6 +31,39 @@
         <!--Super Water Breathing Potion-->
         <RecipeInfo recipeName="COL_RECIP_POT_WaterBreath03">
             <Item itemName="Col_POT_WaterBreath02" count="2" />
+        </RecipeInfo>
+        <!--Elixir of Shadow-->
+        <RecipeInfo recipeName="COL_RECIP_POT_ElixirOfShadow01">
+            <Item itemName="COL_ING_C_PureWater01" count="1" />
+            <Item itemName="COL_ING_M_DragonScale01" count="4" />
+        </RecipeInfo>
+        <!--Minor Elixir of Fire-->
+        <RecipeInfo recipeName="COL_RECIP_POT_FireElixer00">
+            <Item itemName="COL_ING_C_PureWater01" count="1" />
+            <Item itemName="COL_ING_M_PincerClaw01" count="1" />
+        </RecipeInfo>
+        <!--Super Elixir of Fire-->
+        <RecipeInfo recipeName="COL_RECIP_POT_FireElixer03">
+            <Item itemName="COL_POT_FireElixer01" count="2" />
+        </RecipeInfo>
+        <!--Minor Fire Resistance Potion-->
+        <RecipeInfo recipeName="COL_RECIP_POT_FireResist00">
+            <Item itemName="COL_ING_C_PureWater01" count="1" />
+            <Item itemName="COL_ING_G_VolcanicRock01" count="1" />
+        </RecipeInfo>
+        <!--Minor Elixir of Air-->
+        <RecipeInfo recipeName="COL_RECIP_POT_AirElixir00">
+            <Item itemName="COL_ING_C_PureWater01" count="1" />
+            <Item itemName="COL_ING_G_ShadowShard02" count="1" />
+        </RecipeInfo>
+        <!--Air Resistance Potion-->
+        <RecipeInfo recipeName="COL_RECIP_POT_AirResist01">
+            <Item itemName="COL_POT_AirResist00" count="2" />
+        </RecipeInfo>
+        <!--Minor Earth Resistance Potion-->
+        <RecipeInfo recipeName="COL_RECIP_POT_EarthResist00">
+            <Item itemName="COL_ING_C_PureWater01" count="1" />
+            <Item itemName="COL_ING_G_PlainStone02" count="1" />
         </RecipeInfo>
         <!--Refined Garlic-->
         <RecipeInfo recipeName="COL_RECIP_RefinedGarlic01">
