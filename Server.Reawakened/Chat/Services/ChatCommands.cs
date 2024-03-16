@@ -43,6 +43,7 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("save", "[owner only]", SaveLevel));
 
         AddCommand(new ChatCommand("godMode", "", GodMode));
+        AddCommand(new ChatCommand("maxHP", "", MaxHealth));
 
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("hotbar", "[hotbarNum] [itemId]", Hotbar));
@@ -59,9 +60,6 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
 
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
-        AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
-        AddCommand(new ChatCommand("openVines", "", OpenVines));
-        AddCommand(new ChatCommand("openDoors", "", OpenDoors));
 
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("playerCount", "[detailed]", PlayerCount));
@@ -115,6 +113,14 @@ public partial class ChatCommands(
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
+
+    public bool MaxHealth(Player player, string[] args)
+    {
+        player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId, player.Room.Time,
+            player.Character.Data.CurrentLife = player.Character.Data.MaxLife, player.Character.Data.MaxLife, player.GameObjectId));
+
+        return true;
+    }
 
     public bool Hotbar(Player player, string[] args)
     {
@@ -260,38 +266,6 @@ public partial class ChatCommands(
         player.Character.AddKit(items, amount);
 
         player.SendUpdatedInventory();
-    }
-
-    private bool OpenDoors(Player player, string[] args)
-    {
-        foreach (var triggerEntity in player.Room.GetEntitiesFromType<TriggerReceiverComp>())
-        {
-            if (config.IgnoredDoors.Contains(triggerEntity.PrefabName))
-                continue;
-
-            triggerEntity.Trigger(true);
-        }
-
-        return true;
-    }
-
-    private bool ForceSpawners(Player player, string[] args)
-    {
-        foreach (var spawner in player.Room.GetEntitiesFromType<BaseSpawnerControllerComp>())
-        {
-            var spawn = new Spawn_SyncEvent(spawner.Id.ToString(), player.Room.Time, 1);
-            player.Room.SendSyncEvent(spawn);
-        }
-
-        return true;
-    }
-
-    private bool OpenVines(Player player, string[] args)
-    {
-        foreach (var vineEntity in player.Room.GetEntitiesFromType<MysticCharmTargetComp>())
-            vineEntity.Charm(player);
-
-        return true;
     }
 
     private bool Teleport(Player player, string[] args)
