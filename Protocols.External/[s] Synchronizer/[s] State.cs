@@ -16,7 +16,6 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text;
-using UnityEngine;
 using WorldGraphDefines;
 
 namespace Protocols.External._s__Synchronizer;
@@ -157,7 +156,7 @@ public class State : ExternalProtocol
         var playerCollider = new PlayerCollider(player);
         player.Room.Colliders[player.GameObjectId] = playerCollider;
         playerCollider.IsColliding(false);
-    }
+    }  
 
     private void RequestRespawn(string entityId, float triggerTime)
     {
