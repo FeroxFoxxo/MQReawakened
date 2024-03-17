@@ -5,14 +5,11 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
-public class AIProjectileCollider(string projectileId, Room room, Vector3Model position, float sizeX, float sizeY, string plane, float lifeTime, TimerThread timerThread) : BaseCollider(projectileId, position, sizeX, sizeY, plane, room, "aiattack")
+public class AIProjectileCollider(string projectileId, Room room, Vector3Model position, float sizeX, float sizeY, string plane, float lifeTime, TimerThread timerThread) : BaseCollider(projectileId, position, sizeX, sizeY, plane, room, ColliderClass.AiAttack)
 {
     public float LifeTime = lifeTime + room.Time;
     public string PrjId = projectileId;
     public TimerThread TimerThread = timerThread;
-    public int Damage = damage;
-    public ItemEffectType Effect = effect;
-    public ItemCatalog ItemCatalog = itemCatalog;
 
     public override string[] IsColliding(bool isAttack)
     {

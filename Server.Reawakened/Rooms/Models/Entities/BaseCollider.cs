@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Rooms.Models.Planes;
+﻿using Server.Reawakened.Entities.Enums;
+using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities;

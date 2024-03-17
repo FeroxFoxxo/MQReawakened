@@ -1,16 +1,17 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
-public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameObjectId, player.TempData.Position, 1, 1, player.GetPlayersPlaneString(), player.Room, "player")
+public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameObjectId, player.TempData.Position, 1, 1, player.GetPlayersPlaneString(), player.Room, ColliderClass.Player)
 {
     public Player Player => player;
 
     public override void SendCollisionEvent(BaseCollider received)
     {
-        if (received.ColliderType is "player" or "attack")
+        if (received.Type is ColliderClass.Player or ColliderClass.Attack)
             return;
 
         if (received is AIProjectileCollider aIProjectileCollider)
@@ -42,7 +43,7 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
         foreach (var collider in roomList)
         {
             if (CheckCollision(collider) &&
-                collider.ColliderType != "player" && collider.ColliderType != "attack")
+                collider.Type is not ColliderClass.Player or not ColliderClass.Attack)
             {
                 collidedWith.Add(collider.Id);
                 collider.SendCollisionEvent(this);
