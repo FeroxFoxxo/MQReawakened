@@ -26,7 +26,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public float HealthRatioDamage => ComponentData.HealthRatioDamage;
     public int HurtSelfOnDamage => ComponentData.HurtSelfOnDamage;
 
-    public Player EffectedPlayer;
     public string HazardId;
     public ItemEffectType EffectType;
     public bool IsActive = true;
@@ -105,8 +104,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             TimedHazard && !IsActive || HitOnlyVisible && player.TempData.Invisible)
             return;
 
-        EffectedPlayer = player;
-
         Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
 
         Damage = (int)Math.Ceiling(player.Character.Data.MaxLife * HealthRatioDamage);
@@ -128,7 +125,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 player.TempData.IsPoisoned = true;
                 var ticksTillDeath = (int)Math.Ceiling((double)player.Character.Data.MaxLife / Damage);
 
-                TimerThread.DelayCall(StartPoisonEffect, null,
+                TimerThread.DelayCall(StartPoisonEffect, player,
                     TimeSpan.FromSeconds(InitialDamageDelay), TimeSpan.FromSeconds(DamageDelay), ticksTillDeath);
                 break;
 
@@ -145,11 +142,19 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, player.CharacterName);
     }
 
-    public void StartPoisonEffect(object _) =>
-        EffectedPlayer.StartPoisonDamage(HazardId, Damage, (int)HurtLength, TimerThread);
+    public void StartPoisonEffect(object playerObject)
+    {
+        if (playerObject == null)
+            return;
 
-    public void ApplySlowEffect(object _) =>
-        EffectedPlayer.ApplySlowEffect(HazardId, Damage);
+        if (playerObject is not Player player)
+            return;
+
+        player.StartPoisonDamage(HazardId, Damage, (int)HurtLength, TimerThread);
+    }
+
+    public void ApplySlowEffect(Player player) =>
+        player.ApplySlowEffect(HazardId, Damage);
 
     public void DisableHazardEffects(Player player)
     {

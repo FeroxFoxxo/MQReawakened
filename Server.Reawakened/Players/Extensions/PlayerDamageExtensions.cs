@@ -33,7 +33,7 @@ public static class PlayerDamageExtensions
         ApplyCharacterDamage(player, room, damage, timerThread);
     }
 
-    //temporary code until enemy/hazard system is implemented
+    // Temporary code until enemy/hazard system is implemented
     public static void ApplyDamageByObject(this Player player, Room room, string objectId, TimerThread timerThread) =>
         ApplyDamageByPercent(player, room, .10, timerThread);
 }
