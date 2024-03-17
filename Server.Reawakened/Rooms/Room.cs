@@ -473,4 +473,15 @@ public class Room : Timer
         typeof(T) == typeof(BaseComponent)
             ? _entities.Values.SelectMany(x => x).ToArray() as T[]
             : _entities.SelectMany(x => x.Value).Where(x => x is T and not null).Select(x => x as T).ToArray();
+
+    public string SetProjectileId()
+    {
+        var rand = new Random();
+        var projectileId = Math.Abs(rand.Next()).ToString();
+
+        while (GameObjectIds.Contains(projectileId))
+            projectileId = Math.Abs(rand.Next()).ToString();
+
+        return projectileId;
+    }
 }
