@@ -36,7 +36,7 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                 if (enemy.Name != "Enemy") continue;
 
                 var enemyType = string.Empty;
-                var behaviorModel = new BehaviorModel([], [], []);
+                var behaviorModel = new BehaviorModel([], [], [], new HitboxModel(0, 0, 0, 0));
 
                 foreach (XmlAttribute enemyName in enemy.Attributes)
                     if (enemyName.Name == "name")
@@ -454,6 +454,27 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
                                 behaviorModel.EnemyLootTable.Add(new EnemyDropModel(dropType, dropId, dropChance, dropMinLevel, dropMaxLevel));
                             }
                             break;
+
+                        case "Hitbox":
+                            foreach (XmlAttribute hitboxData in behavior.Attributes)
+                            {
+                                switch (hitboxData.Name)
+                                {
+                                    case "width":
+                                        behaviorModel.Hitbox.Width = float.Parse(hitboxData.Value);
+                                        continue;
+                                    case "height":
+                                        behaviorModel.Hitbox.Height = float.Parse(hitboxData.Value);
+                                        continue;
+                                    case "offsetX":
+                                        behaviorModel.Hitbox.XOffset = float.Parse(hitboxData.Value);
+                                        continue;
+                                    case "offsetY":
+                                        behaviorModel.Hitbox.YOffset = float.Parse(hitboxData.Value);
+                                        continue;
+                                }
+                            }
+                            break;
                     }
                     if (behaviorDataModel.DataList.ToList().Count > 0)
                         behaviorModel.BehaviorData.Add(behavior.Name, behaviorDataModel);
@@ -468,5 +489,5 @@ public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
     }
 
     public BehaviorModel GetBehaviorsByName(string enemyName) =>
-        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel([], [], []);
+        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel([], [], [], new HitboxModel(0, 0, 0, 0));
 }

@@ -16,8 +16,6 @@ public class EnemyStomper(Room room, string entityId, string prefabName, EnemyCo
     {
         base.Initialize();
 
-        BehaviorList = InternalEnemy.GetBehaviorsByName(prefabName);
-
         MinBehaviorTime = Convert.ToSingle(BehaviorList.GetGlobalProperty("MinBehaviorTime"));
         _offensiveBehavior = Convert.ToString(BehaviorList.GetGlobalProperty("OffensiveBehavior"));
         EnemyGlobalProps.Global_DetectionLimitedByPatrolLine = Convert.ToBoolean(BehaviorList.GetGlobalProperty("DetectionLimitedByPatrolLine"));

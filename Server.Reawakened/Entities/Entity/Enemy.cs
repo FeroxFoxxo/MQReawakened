@@ -42,8 +42,6 @@ public abstract class Enemy : IDestructible
     public bool IsFromSpawner;
     public float MinBehaviorTime;
 
-    private readonly float _negativeHeight;
-
     public BaseComponent Entity;
     public AIStatsGlobalComp Global;
     public AIStatsGenericComp Generic;
@@ -61,6 +59,7 @@ public abstract class Enemy : IDestructible
     private readonly int _maxHealth;
     private readonly int _onDeathXp;
     private readonly int _level;
+    private float _negativeHeight;
     private BaseSpawnerControllerComp _linkedSpawner;
 
     public Enemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services)
@@ -106,6 +105,7 @@ public abstract class Enemy : IDestructible
             Position.z = 20;
 
         //Stats
+        BehaviorList = InternalEnemy.GetBehaviorsByName(prefabName);
         _onDeathTargetId = EnemyController.OnDeathTargetID;
         _health = EnemyController.EnemyHealth;
         _maxHealth = EnemyController.MaxHealth;
@@ -113,14 +113,7 @@ public abstract class Enemy : IDestructible
         _level = EnemyController.Level;
 
         //Hitbox Info
-        _negativeHeight = 0;
-
-        if (EnemyController.Scale.Y < 0)
-            _negativeHeight = EnemyController.Rectangle.Height;
-
-        Hitbox = new EnemyCollider(Id, new Vector3Model { X = Position.x, Y = Position.y - _negativeHeight, Z = Position.z },
-             EnemyController.Rectangle.Width, EnemyController.Rectangle.Height, ParentPlane, Room);
-        Room.Colliders.Add(Id, Hitbox);
+        GenerateHitbox(BehaviorList.Hitbox);
 
         //This is just a dummy. AI_Stats_Global has no data, so these fields are populated in the specific Enemy classes
         EnemyGlobalProps = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", "", false, false, 0);
@@ -149,6 +142,22 @@ public abstract class Enemy : IDestructible
         Global = _linkedSpawner.Global;
         Generic = _linkedSpawner.Generic;
         Status = _linkedSpawner.Status;
+    }
+
+    public void GenerateHitbox(HitboxModel box)
+    {
+        var width = box.Width * EnemyController.Scale.X;
+        var height = box.Height * EnemyController.Scale.Y;
+        var offsetX = box.XOffset * EnemyController.Scale.X - width / 2;
+        var offsetY = box.YOffset * EnemyController.Scale.Y - height / 2;
+
+        _negativeHeight = 0;
+        if (EnemyController.Scale.Y < 0)
+            _negativeHeight = height;
+
+        Hitbox = new EnemyCollider(Id, new Vector3Model { X = offsetX, Y = offsetY - _negativeHeight, Z = Position.z },
+             width, height, ParentPlane, Room);
+        Room.Colliders.Add(Id, Hitbox);
     }
 
     public virtual void Initialize() => Init = true;
@@ -261,6 +270,8 @@ public abstract class Enemy : IDestructible
             {
                 var spawnCount = Id.Split("_");
                 _linkedSpawner.NotifyEnemyDefeat(int.Parse(spawnCount[1]));
+                Room.Enemies.Remove(Id);
+                Room.Colliders.Remove(Id);
             }
 
             //Achievements

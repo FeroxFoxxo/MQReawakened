@@ -16,8 +16,6 @@ public class EnemyBird(Room room, string entityId, string prefabName, EnemyContr
     {
         base.Initialize();
 
-        BehaviorList = InternalEnemy.GetBehaviorsByName(prefabName);
-
         MinBehaviorTime = Convert.ToSingle(BehaviorList.GetGlobalProperty("MinBehaviorTime"));
         _offensiveBehavior = Convert.ToString(BehaviorList.GetGlobalProperty("OffensiveBehavior"));
         EnemyGlobalProps.Global_DetectionLimitedByPatrolLine = Convert.ToBoolean(BehaviorList.GetGlobalProperty("DetectionLimitedByPatrolLine"));
