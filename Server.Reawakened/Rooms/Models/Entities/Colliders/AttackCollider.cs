@@ -1,9 +1,10 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
-public class AttackCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Player player, int damage, Elemental type, float lifeTime) : BaseCollider(id, position, sizeX, sizeY, plane, player.Room, "attack")
+public class AttackCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Player player, int damage, Elemental type, float lifeTime) : BaseCollider(id, position, sizeX, sizeY, plane, player.Room, ColliderClass.Attack)
 {
     public float LifeTime = lifeTime + player.Room.Time;
     public Player Owner = player;
@@ -26,8 +27,7 @@ public class AttackCollider(string id, Vector3Model position, float sizeX, float
             foreach (var collider in roomList)
             {
                 if (CheckCollision(collider) &&
-                    collider.ColliderType != "attack" && collider.ColliderType != "aiattack" && 
-                    collider.ColliderType != "hazard" && collider.ColliderType != "player")
+                    collider.Type != ColliderClass.Attack && collider.Type != ColliderClass.Player)
                 {
                     collidedWith.Add(collider.Id);
                     collider.SendCollisionEvent(this);

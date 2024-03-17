@@ -34,6 +34,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public InternalAchievement InternalAchievement { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public TimerThread TimerThread { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public ILogger<EnemyControllerComp> Logger { get; set; }
 

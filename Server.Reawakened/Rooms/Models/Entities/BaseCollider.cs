@@ -8,10 +8,10 @@ public abstract class BaseCollider
     public Vector3 Position;
     public string Id;
     public string Plane;
-    public string ColliderType;
+    public ColliderClass Type;
     public RectModel ColliderBox;
 
-    public BaseCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, string colliderType)
+    public BaseCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, ColliderClass colliderType)
     {
         // Builder for projectiles
         Id = id;
@@ -19,16 +19,17 @@ public abstract class BaseCollider
         Plane = plane;
         Room = room;
 
-        ColliderType = colliderType.ToLower();
+        Type = colliderType;
         ColliderBox = new RectModel(position.X, position.Y, sizeX, sizeY);
     }
+
     public BaseCollider(ColliderModel collider, Room room)
     {
         Id = string.Empty;
         Position = new Vector3(collider.Position.x, collider.Position.y, 0);
         Plane = collider.Plane;
         Room = room;
-        ColliderType = "terrain";
+        Type = ColliderClass.TerrainCube;
         ColliderBox = new RectModel(Position.x, Position.y + 0.1f, collider.Width, collider.Height);
     }
 

@@ -1,5 +1,8 @@
-﻿using Server.Base.Timers.Services;
+﻿using A2m.Server;
+using Server.Base.Timers.Services;
+using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
 public class AIProjectileCollider(string projectileId, Room room, Vector3Model position, float sizeX, float sizeY, string plane, float lifeTime, TimerThread timerThread) : BaseCollider(projectileId, position, sizeX, sizeY, plane, room, "aiattack")
@@ -7,6 +10,9 @@ public class AIProjectileCollider(string projectileId, Room room, Vector3Model p
     public float LifeTime = lifeTime + room.Time;
     public string PrjId = projectileId;
     public TimerThread TimerThread = timerThread;
+    public int Damage = damage;
+    public ItemEffectType Effect = effect;
+    public ItemCatalog ItemCatalog = itemCatalog;
 
     public override string[] IsColliding(bool isAttack)
     {
@@ -21,9 +27,8 @@ public class AIProjectileCollider(string projectileId, Room room, Vector3Model p
 
         foreach (var collider in roomList)
         {
-            if (CheckCollision(collider) &&
-                collider.ColliderType != "attack" && collider.ColliderType != "aiattack" &&
-                collider.ColliderType != "enemy" && collider.ColliderType != "breakable")
+            if (CheckCollision(collider) && collider.Type != ColliderClass.Attack &&
+                collider.Type != ColliderClass.AiAttack && collider.Type != ColliderClass.Enemy)
             {
                 collidedWith.Add(collider.Id);
                 collider.SendCollisionEvent(this);

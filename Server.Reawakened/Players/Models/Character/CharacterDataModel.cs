@@ -231,10 +231,10 @@ public class CharacterDataModel : CharacterLightModel
         return sb.ToString();
     }
 
-    public int CalculateDefense(ItemEffectType effect, ItemCatalog itemCatalog, WorldStatistics worldStats)
+    public int CalculateDefense(ItemEffectType effect, ItemCatalog itemCatalog)
     {
         var statManager = new CharacterStatsManager(CharacterName);
-        var defense = worldStats.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Player, _player.Character.Data.GlobalLevel);
+        var defense = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Player, _player.Character.Data.GlobalLevel);
         var itemList = new List<ItemDescription>();
 
         var defenseType = ItemEffectType.Defence;
@@ -268,10 +268,10 @@ public class CharacterDataModel : CharacterLightModel
         return defense;
     }
 
-    public int CalculateDamage(ItemDescription usedItem, ItemCatalog itemCatalog, WorldStatistics worldStats)
+    public int CalculateDamage(ItemDescription usedItem, ItemCatalog itemCatalog)
     {
         var statManager = new CharacterStatsManager(CharacterName);
-        var damage = worldStats.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, _player.Character.Data.GlobalLevel);
+        var damage = GameFlow.StatisticData.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, _player.Character.Data.GlobalLevel);
         var itemList = new List<ItemDescription> { usedItem };
 
         var effect = ItemEffectType.BluntDamage;
