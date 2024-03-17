@@ -11,4 +11,6 @@ public class AIBehaviorComeBack(float speed) : AIBaseBehavior
     public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => ComeBackBehavior.GetBehaviorRatio(aiData, roomTime);
 
     public override bool MustDoComeback(AIProcessData aiData) => ComeBackBehavior.MustDoComeback(aiData, ComeBackBehavior);
+
+    public override string GetBehavior() => "ComeBack";
 }

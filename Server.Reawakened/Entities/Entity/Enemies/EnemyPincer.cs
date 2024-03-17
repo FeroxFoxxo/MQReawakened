@@ -1,11 +1,12 @@
 ﻿using Server.Reawakened.Entities.AIBehavior;
+using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity, IServiceProvider services) : Enemy(room, entityId, baseEntity, services)
+public class EnemyPincer(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : Enemy(room, entityId, prefabName, enemyController, services)
 {
 
     private float _behaviorEndTime;
@@ -15,7 +16,7 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity, I
     {
         base.Initialize();
 
-        BehaviorList = EnemyController.EnemyInfoXml.GetBehaviorsByName(Entity.PrefabName);
+        BehaviorList = InternalEnemy.GetBehaviorsByName(prefabName);
 
         MinBehaviorTime = Convert.ToSingle(BehaviorList.GetGlobalProperty("MinBehaviorTime"));
         _offensiveBehavior = Convert.ToString(BehaviorList.GetGlobalProperty("OffensiveBehavior"));
@@ -27,11 +28,9 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity, I
         EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
         EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
 
-        AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
-
         // Address magic numbers when we get to adding enemy effect mods
         Room.SendSyncEvent(AIInit(1, 1, 1));
-        Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
+        Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, 1, false));
 
         // Set these calls to the xml later. Instead of using hardcoded "Patrol", "Aggro", etc.
         // the XML can just specify which behaviors to use when attacked, when moving, etc.
@@ -44,7 +43,7 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity, I
 
         if (AiBehavior is not AIBehaviorShooting)
         {
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, player.TempData.Position.X,
+            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, player.TempData.Position.X,
                     player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
 
             // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
@@ -70,10 +69,11 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity, I
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
-            AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("LookAround");
+            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
+            AiData.Intern_Dir, false));
+
             _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
         }
     }
@@ -86,9 +86,8 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity, I
 
         if (Room.Time >= _behaviorEndTime)
         {
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
-
             AiBehavior = ChangeBehavior("Patrol");
+            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, Generic.Patrol_ForceDirectionX, false));
         }
     }
 
@@ -98,7 +97,9 @@ public class EnemyPincer(Room room, string entityId, BaseComponent baseEntity, I
         {
             if (PlayerInRange(player.Value.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
-                Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Entity, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
+                AiBehavior.Stop(ref AiData);
+
+                Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
                     Position.y, AiData.Intern_Dir, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here

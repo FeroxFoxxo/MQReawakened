@@ -211,7 +211,7 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
         var direction = closestPlayer.TempData.Position.X > Position.X ? 5 : -5;
 
         //Successfully sends enemy projectiles, however needs position placement adjustments based off of synced movement.
-        Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Room.GetEntityFromId<AIStatePatrolComp>(Id),
+        Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Id, Room.Time,
             Position.X, Position.Y, Position.Z, direction, 0, 3, int.Parse(projectileId), 0));
 
         //Magic numbers here and everywhere else will be fixed when AIState gets merged with default enemies

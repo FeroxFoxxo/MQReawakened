@@ -27,7 +27,7 @@ public class ProjectileEntity : TicklyEntity
         SpeedX = isRight ? config.ProjectileSpeed : -config.ProjectileSpeed;
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
-        _hitboxPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
+        _hitboxPosition = new Vector3Model { X = Position.X, Y = Position.Y - config.ProjectileHeight, Z = Position.Z };
         _hitboxPosition.X -= isRight ? 0 : config.ProjectileWidth;
 
         // Send all information to room

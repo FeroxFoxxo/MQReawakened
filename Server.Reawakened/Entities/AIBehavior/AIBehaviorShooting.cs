@@ -9,4 +9,6 @@ public class AIBehaviorShooting(int nbBullets, float fireSpreadAngle, float dela
     public override bool Update(ref AIProcessData aiData, float roomTime) => ShootingBehavior.Update(aiData, roomTime);
 
     public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => ShootingBehavior.GetBehaviorRatio(aiData, roomTime);
+
+    public override string GetBehavior() => "Shooting";
 }

@@ -111,46 +111,46 @@ public class Room : Timer
 
         foreach (var component in _entities.Values.SelectMany(x => x))
         {
-            if (component.Name == config.EnemyComponentName)
+            if (component.Name == config.EnemyComponentName && !component.ParentPlane.Equals("TemplatePlane"))
             {
                 // Move the name switcher out of ServerRConfig when the enemy xml is made.
                 switch (component.PrefabName)
                 {
                     case string bird when bird.Contains(config.EnemyNameSearch[0]):
-                        Enemies.Add(component.Id, new EnemyBird(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyBird(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string fish when fish.Contains(config.EnemyNameSearch[1]):
-                        Enemies.Add(component.Id, new EnemyFish(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyFish(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string spider when spider.Contains(config.EnemyNameSearch[2]):
-                        Enemies.Add(component.Id, new EnemySpider(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemySpider(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string bathog when bathog.Contains(config.EnemyNameSearch[3]):
-                        Enemies.Add(component.Id, new EnemyBathog(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyBathog(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string bomber when bomber.Contains(config.EnemyNameSearch[4]):
-                        Enemies.Add(component.Id, new EnemyBomber(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyBomber(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string crawler when crawler.Contains(config.EnemyNameSearch[5]):
-                        Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string dragon when dragon.Contains(config.EnemyNameSearch[6]):
-                        Enemies.Add(component.Id, new EnemyDragon(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyDragon(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string grenadier when grenadier.Contains(config.EnemyNameSearch[7]):
-                        Enemies.Add(component.Id, new EnemyGrenadier(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyGrenadier(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
-                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string pincer when pincer.Contains(config.EnemyNameSearch[9]):
-                        Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string stomper when stomper.Contains(config.EnemyNameSearch[10]):
-                        Enemies.Add(component.Id, new EnemyStomper(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyStomper(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string vespid when vespid.Contains(config.EnemyNameSearch[11]):
-                        Enemies.Add(component.Id, new EnemyVespid(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyVespid(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                 }
             }
@@ -194,6 +194,10 @@ public class Room : Timer
                  ))
             player.Remove(Logger);
     }
+
+    public bool AddEntity(string id, List<BaseComponent> entity) => _entities.TryAdd(id, entity);
+
+    public bool RemoveEntity(string id) => _entities.Remove(id);
 
     public void GroupMemberRoomChanged(Player player)
     {

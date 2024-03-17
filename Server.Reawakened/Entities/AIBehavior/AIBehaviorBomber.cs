@@ -9,4 +9,6 @@ public class AIBehaviorBomber(float inTime, float loopTime) : AIBaseBehavior
     public override bool Update(ref AIProcessData aiData, float roomTime) => BomberBehavior.Update(aiData, roomTime);
 
     public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => BomberBehavior.GetBehaviorRatio(aiData, roomTime);
+
+    public override string GetBehavior() => "Bomber";
 }

@@ -9,4 +9,6 @@ public class AIBehaviorStomper(float attackTime, float impactTime) : AIBaseBehav
     public override bool Update(ref AIProcessData aiData, float roomTime) => StomperBehavior.Update(aiData, roomTime);
 
     public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => StomperBehavior.GetBehaviorRatio(aiData, roomTime);
+
+    public override string GetBehavior() => "Stomper";
 }

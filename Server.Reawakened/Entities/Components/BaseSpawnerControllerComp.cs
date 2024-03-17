@@ -1,7 +1,20 @@
-﻿using Server.Base.Core.Extensions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
+using Server.Base.Core.Extensions;
+using Server.Base.Logging;
+using Server.Base.Timers.Extensions;
+using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
+using Server.Reawakened.Entities.Entity;
+using Server.Reawakened.Entities.Entity.Enemies;
+using Server.Reawakened.Entities.Entity.Utils;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.BundlesInternal;
+using System;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components;
@@ -31,102 +44,189 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public float DetectionRadius => ComponentData.DetectionRadius;
     public Vector3 PatrolDistance => ComponentData.PatrolDistance;
     public string OnDeathTargetID => ComponentData.OnDeathTargetID;
+    public ILogger<BaseSpawnerControllerComp> Logger { get; set; }
+    public InternalDefaultEnemies EnemyInfoXml { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
+    public IServiceProvider Services { get; set; }
+    public TimerThread TimerThread { get; set; }
 
     public int Health;
     public int Level;
-    private GlobalProperties _globalProps;
+    public AIStatsGlobalComp Global;
+    public AIStatsGenericComp Generic;
+    public InterObjStatusComp Status;
+    public EnemyControllerComp EnemyController;
+    public HazardControllerComp Hazard;
+    public GlobalProperties GlobalProperties;
+    public BehaviorModel BehaviorList;
+
+    public Dictionary<int, Enemy> LinkedEnemies;
+    private int _spawnedEntityCount;
+    private float _nextSpawnRequestTime;
+    private bool _spawnRequested;
+    private bool _activated;
+    private float _activeDetectionRadius;
 
     public override void InitializeComponent()
     {
-        //For global properties, make a per-enemy initializer for this in the enemy resource (or add a generic GlobalProperties to SeverRConfig)
-        _globalProps = new GlobalProperties(false, 0, 2, 0, 0, 0, 1.5f, 8, 0, 0, "Generic", string.Empty, false, false, 0);
-
         //Everything here is temporary until I add that world statistics xml thingy
-        Level = 1;
-        Health = 30;
+        Level = Room.LevelInfo.Difficulty + LevelOffset;
+        Health = 9999;
+        _spawnedEntityCount = 0;
+        _nextSpawnRequestTime = 0;
+        _spawnRequested = false;
+        _activated = false;
+        _activeDetectionRadius = DetectionRadius;
 
-        Room.SendSyncEvent(InitializeAIInit());
-        Room.SendSyncEvent(InitializeAIDo());
+        Global = Room.GetEntityFromId<AIStatsGlobalComp>(TemplatePrefabNameToSpawn1);
+        Generic = Room.GetEntityFromId<AIStatsGenericComp>(TemplatePrefabNameToSpawn1);
+        Status = Room.GetEntityFromId<InterObjStatusComp>(TemplatePrefabNameToSpawn1);
+        EnemyController = Room.GetEntityFromId<EnemyControllerComp>(TemplatePrefabNameToSpawn1);
+        Hazard = Room.GetEntityFromId<HazardControllerComp>(TemplatePrefabNameToSpawn1);
+
+        //This is just a dummy, it gets assigned properly later in Enemy
+        GlobalProperties = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", "", false, false, 0);
+
+        BehaviorList = EnemyInfoXml.GetBehaviorsByName(PrefabNameToSpawn1);
+        LinkedEnemies = new Dictionary<int, Enemy>();
+
+        if (ComponentData.SpawnOnDetection)
+            _activated = true;
     }
 
     public override void Update()
     {
-    }
-
-    public AIInit_SyncEvent InitializeAIInit()
-    {
-        //Add way to consult InternalEnemyResources.xml here
-        var behavior = GetBehaviour();
-
-        var aiInit = new AIInit_SyncEvent(Id + "_1", Room.Time, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY, Position.Z, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
-            0, Health, Health, 1, 1, 1, 0, Level, _globalProps.ToString(), behavior);
-
-        aiInit.EventDataList[2] = Position.X + SpawningOffsetX;
-        aiInit.EventDataList[3] = Position.Y + SpawningOffsetY;
-        aiInit.EventDataList[4] = Position.Z;
-
-        return aiInit;
-    }
-
-    public AIDo_SyncEvent InitializeAIDo()
-    {
-        //Add way to consult InternalEnemyResources.xml here
-        var aiDo = new AIDo_SyncEvent(new SyncEvent(Id + "_1", SyncEvent.EventType.AIDo, Room.Time));
-
-        aiDo.EventDataList.Clear();
-        aiDo.EventDataList.Add(Position.X + SpawningOffsetX);
-        aiDo.EventDataList.Add(Position.Y + SpawningOffsetY);
-        aiDo.EventDataList.Add(1.0);
-        aiDo.EventDataList.Add(1);
-        aiDo.EventDataList.Add(string.Empty);
-        aiDo.EventDataList.Add(PatrolDistance.x);
-        aiDo.EventDataList.Add(PatrolDistance.y);
-        aiDo.EventDataList.Add(0);
-        // 0 for false, 1 for true.
-        aiDo.EventDataList.Add(0);
-
-        return aiDo;
+        if (_activated && IsPlayerNearby(_activeDetectionRadius) && LinkedEnemies.Count < 1 && _nextSpawnRequestTime == 0)
+            Spawn();
+        if (_activated && _spawnRequested && _nextSpawnRequestTime <= Room.Time)
+            //NOT A MAGIC NUMBER. This is a constant defined in BaseSpawnerController
+            SpawnEventCalled(4);
     }
 
     public void Spawn()
     {
-        var spawn = new Spawn_SyncEvent(Id.ToString(), Room.Time, 1);
+        _activated = true;
+        _activeDetectionRadius = 20;
+        _nextSpawnRequestTime = _spawnedEntityCount == 0 ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
 
+        if (_spawnedEntityCount < SpawnCycleCount)
+            _spawnRequested = true;
+    }
+
+    private void SpawnEventCalled(int delay)
+    {
+        _spawnedEntityCount++;
+        _spawnRequested = false;
+
+        //Spawn the enemy and set it in the room enemy list
+        var spawn = new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount);
         Room.SendSyncEvent(spawn);
 
-        //Add way to consult InternalEnemyResources.xml here
-        var behavior = GetBehaviour();
+        Room.SendSyncEvent(new AIInit_SyncEvent(Id, Room.Time, 0, 0, 0, 0, 0, Generic.Patrol_InitialProgressRatio,
+        Health, Health, 1f, 1f, 1f, 0, Level, GlobalProperties.ToString(), "Idle||"));
 
-        var aiInit = new AIInit_SyncEvent(Id + "_1", Room.Time, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY, Position.Z, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
-            0, Health, Health, 1, 1, 1, 0, Level, _globalProps.ToString(), behavior);
-        
-        aiInit.EventDataList[2] = Position.X + SpawningOffsetX;
-        aiInit.EventDataList[3] = Position.Y + SpawningOffsetY;
-        aiInit.EventDataList[4] = Position.Z;
+        var aiDo = new AIDo_SyncEvent(new SyncEvent(Id, SyncEvent.EventType.AIDo, Room.Time));
 
-        Room.SendSyncEvent(aiInit);
+        aiDo.EventDataList.Add(0);
+        aiDo.EventDataList.Add(0);
+        aiDo.EventDataList.Add(1f);
+        aiDo.EventDataList.Add(0);
+        aiDo.EventDataList.Add("");
+        aiDo.EventDataList.Add(0);
+        aiDo.EventDataList.Add(0);
+        aiDo.EventDataList.Add(0);
+        aiDo.EventDataList.Add(0);
+
+        Room.SendSyncEvent(aiDo);
+
+        TimerThread.DelayCall(DelayedSpawnData, "", TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
     }
 
-    public string GetBehaviour()
+    private void DelayedSpawnData(object _)
     {
-        var sSb = new SeparatedStringBuilder('|');
+        //Set all component data
+        var newEntity = new List<BaseComponent>
+        {
+            Global,
+            Generic,
+            Status,
+            EnemyController,
+            Hazard
 
-        sSb.Append("Idle");
-        sSb.Append(string.Empty);
+        };
+        Room.AddEntity(Id + "_" + _spawnedEntityCount, newEntity);
+        foreach (var component in newEntity)
+        {
+            component.InitializeComponent();
+            Room.KilledObjects.Remove(component.Id);
+        }
 
-        sSb.Append("Patrol");
-        var pSb = new SeparatedStringBuilder(';');
-        pSb.Append(1.8);
-        pSb.Append(0);
-        pSb.Append(3);
-        pSb.Append(PatrolDistance.x);
-        pSb.Append(PatrolDistance.y);
-        pSb.Append(0);
-        pSb.Append(0);
-        sSb.Append(pSb.ToString());
+        //Fix some things before setting the enemy
+        Hazard.SetId(Id + "_" + _spawnedEntityCount);
+        Generic.SetPatrolRange(PatrolDistance);
 
-        sSb.Append(string.Empty);
-
-        return sSb.ToString();
+        Room.Enemies.Add(Id + "_" + _spawnedEntityCount, SetEnemy(_spawnedEntityCount));
+        _nextSpawnRequestTime = 0;
     }
+
+    private Enemy SetEnemy(int index)
+    {
+        switch (PrefabNameToSpawn1)
+        {
+            case string bird when bird.Contains(ServerRConfig.EnemyNameSearch[0]):
+                LinkedEnemies.Add(index, new EnemyBird(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+            case string fish when fish.Contains(ServerRConfig.EnemyNameSearch[1]):
+                LinkedEnemies.Add(index, new EnemyFish(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+            case string spider when spider.Contains(ServerRConfig.EnemyNameSearch[2]):
+                LinkedEnemies.Add(index, new EnemySpider(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+            case string bathog when bathog.Contains(ServerRConfig.EnemyNameSearch[3]):
+                LinkedEnemies.Add(index, new EnemyBathog(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+            case string bomber when bomber.Contains(ServerRConfig.EnemyNameSearch[4]):
+                LinkedEnemies.Add(index, new EnemyBomber(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+            case string crawler when crawler.Contains(ServerRConfig.EnemyNameSearch[5]):
+                LinkedEnemies.Add(index, new EnemyCrawler(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+            case string dragon when dragon.Contains(ServerRConfig.EnemyNameSearch[6]):
+                LinkedEnemies.Add(index, new EnemyDragon(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+            case string grenadier when grenadier.Contains(ServerRConfig.EnemyNameSearch[7]):
+                LinkedEnemies.Add(index, new EnemyGrenadier(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+            case string orchid when orchid.Contains(ServerRConfig.EnemyNameSearch[8]):
+                LinkedEnemies.Add(index, new EnemyOrchid(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+            case string pincer when pincer.Contains(ServerRConfig.EnemyNameSearch[9]):
+                LinkedEnemies.Add(index, new EnemyPincer(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+            case string stomper when stomper.Contains(ServerRConfig.EnemyNameSearch[10]):
+                LinkedEnemies.Add(index, new EnemyStomper(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+            case string vespid when vespid.Contains(ServerRConfig.EnemyNameSearch[11]):
+                LinkedEnemies.Add(index, new EnemyVespid(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                break;
+        }
+
+        LinkedEnemies.TryGetValue(index, out var enemy);
+        enemy.Initialize();
+        return enemy;
+    }
+
+    private bool IsPlayerNearby(float radius)
+    {
+        foreach (var player in Room.Players)
+        {
+            var pos = player.Value.TempData.Position;
+            if (Position.X - radius < pos.X && pos.X < Position.X + radius &&
+                   Position.Y - radius < pos.Y && pos.Y < Position.Y + radius)
+                return true;
+        }
+        return false;
+    }
+
+    public void NotifyEnemyDefeat(int id) => LinkedEnemies.Remove(id);
 }

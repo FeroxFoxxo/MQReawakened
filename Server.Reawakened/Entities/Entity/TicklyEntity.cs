@@ -31,10 +31,10 @@ public class TicklyEntity : Component<ProjectileController>
         if (SpeedX != 0 || SpeedY != 0)
         {
             Position.X = SpawnPosition.X + (Player.Room.Time - StartTime) * SpeedX;
-            Collider.Position.x = Position.X;
+            Collider.Position.x = Collider.SpawnPosition.x + (Player.Room.Time - StartTime) * SpeedX;
 
             Position.Y = SpawnPosition.Y + (Player.Room.Time - StartTime) * SpeedY;
-            Collider.Position.y = Position.Y;
+            Collider.Position.y = Collider.SpawnPosition.y + (Player.Room.Time - StartTime) * SpeedY;
         }
 
         var Collisions = Collider.IsColliding(true);

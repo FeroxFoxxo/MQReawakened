@@ -67,6 +67,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
         if (EnemyHealth <= 0)
         {
+            Console.WriteLine(ComponentData.OnKillFXPrefab);
             origin.AddReputation(OnKillExp);
             Room.KillEntity(origin, Id);
         }

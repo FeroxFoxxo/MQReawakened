@@ -35,6 +35,7 @@ public class HazardControllerComp : Component<HazardController>
 
     private EnemyControllerComp _enemyController;
     private int _damage;
+    private string _id;
 
     public override void InitializeComponent()
     {
@@ -42,8 +43,16 @@ public class HazardControllerComp : Component<HazardController>
 
         if (controller != null)
             _enemyController = controller;
+
+        _id = Id;
     }
     public override object[] GetInitData(Player player) => [0];
+
+    public void SetId(string id)
+    {
+        _id = id;
+        _enemyController = Room.GetEntityFromId<EnemyControllerComp>(id);
+    }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
@@ -52,29 +61,23 @@ public class HazardControllerComp : Component<HazardController>
 
         var character = player.Character;
 
-        ItemEffectType effectType;
-        if (_enemyController != null)
-        {
-            Enum.TryParse(_enemyController.ComponentData.EnemyEffectType.ToString(), true, out effectType);
-            _damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, _enemyController.Level);
-        }
-        else
-        {
-            Enum.TryParse(HurtEffect, true, out effectType);
-            _damage = -1;
-        }
+        Enum.TryParse(HurtEffect, true, out
+        ItemEffectType effectType);
+        _damage = _enemyController != null
+            ? WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, _enemyController.Level)
+            : -1;
 
         if (effectType == default)
         {
             var noEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage,
-            0, 1, true, Entity.GameObject.ObjectInfo.ObjectId, false);
+            0, 1, true, _id, false);
 
             Room.SendSyncEvent(noEffect);
         }
         else
         {
             var statusEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)effectType,
-                0, 1, true, Entity.GameObject.ObjectInfo.ObjectId, false);
+                0, 1, true, _id, false);
 
             Room.SendSyncEvent(statusEffect);
 

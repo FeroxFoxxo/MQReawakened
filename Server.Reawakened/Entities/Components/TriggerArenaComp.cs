@@ -48,8 +48,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
                         ArenaEntities.Add(entity.ToString());
 
                     // A special surprise tool that'll help us later!
-                    //var spawn = new Spawn_SyncEvent(spawner.Id, player.Room.Time, 1);
-                    //player.Room.SendSyncEvent(spawn);
+                    spawner.Spawn();
                 }
             }
 

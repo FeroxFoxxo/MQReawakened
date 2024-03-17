@@ -5,9 +5,9 @@ namespace Server.Reawakened.Entities.Entity.Utils;
 public class AISyncEventHelper
 {
 
-    public static AIDo_SyncEvent AIDo(BaseComponent entity, Vector3 position, float speedFactor, int behaviorId, string args, float targetPosX, float targetPosY, int direction, bool awareBool)
+    public static AIDo_SyncEvent AIDo(string id, float time, Vector3 position, float speedFactor, int behaviorId, string args, float targetPosX, float targetPosY, int direction, bool awareBool)
     {
-        var aiDo = new AIDo_SyncEvent(new SyncEvent(entity.Id, SyncEvent.EventType.AIDo, entity.Room.Time));
+        var aiDo = new AIDo_SyncEvent(new SyncEvent(id, SyncEvent.EventType.AIDo, time));
         aiDo.EventDataList.Clear();
         aiDo.EventDataList.Add(position.x);
         aiDo.EventDataList.Add(position.y);
@@ -22,9 +22,9 @@ public class AISyncEventHelper
         return aiDo;
     }
 
-    public static AILaunchItem_SyncEvent AILaunchItem(BaseComponent entity, float posX, float posY, float posZ, float speedX, float speedY, float lifeTime, int prjId, int isGrenade)
+    public static AILaunchItem_SyncEvent AILaunchItem(string id, float time, float posX, float posY, float posZ, float speedX, float speedY, float lifeTime, int prjId, int isGrenade)
     {
-        var launch = new AILaunchItem_SyncEvent(new SyncEvent(entity.Id, SyncEvent.EventType.AILaunchItem, entity.Room.Time));
+        var launch = new AILaunchItem_SyncEvent(new SyncEvent(id, SyncEvent.EventType.AILaunchItem, time));
         launch.EventDataList.Clear();
         launch.EventDataList.Add(posX);
         launch.EventDataList.Add(posY);
@@ -38,9 +38,9 @@ public class AISyncEventHelper
         return launch;
     }
 
-    public static AIDie_SyncEvent AIDie(BaseComponent entity, string spawnItemPrefabName, int spawnItemQuantity, bool spawnLoot, string killedById, bool suicide)
+    public static AIDie_SyncEvent AIDie(string id, float time, string spawnItemPrefabName, int spawnItemQuantity, bool spawnLoot, string killedById, bool suicide)
     {
-        var die = new AIDie_SyncEvent(new SyncEvent(entity.Id, SyncEvent.EventType.AIDie, entity.Room.Time));
+        var die = new AIDie_SyncEvent(new SyncEvent(id, SyncEvent.EventType.AIDie, time));
         die.EventDataList.Add(spawnItemPrefabName);
         die.EventDataList.Add(spawnItemQuantity);
         die.EventDataList.Add(spawnLoot ? 1 : 0);

@@ -1,4 +1,5 @@
 using A2m.Server;
+using A2m.Server.LocalRequest;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Enums;
@@ -20,6 +21,8 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using System.Text.RegularExpressions;
+using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -269,10 +272,8 @@ public partial class ChatCommands(
     {
         foreach (var spawner in player.Room.GetEntitiesFromType<BaseSpawnerControllerComp>())
         {
-            var spawn = new Spawn_SyncEvent(spawner.Id.ToString(), player.Room.Time, 1);
-            player.Room.SendSyncEvent(spawn);
+            spawner.Spawn();
         }
-
         return true;
     }
 
