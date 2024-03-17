@@ -6,7 +6,7 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterExtensions
 {
-    public static int GetHealthForLevel(int level) => (level - 1) * 270 + 81;
+    public static int GetHealthForLevel(int level) => GameFlow.StatisticData.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Player, level);
 
     public static int GetReputationForLevel(int level) => (Convert.ToInt32(Math.Pow(level, 2)) - (level - 1)) * 500;
 

@@ -213,7 +213,7 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
         Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Room.GetEntityFromId<AIStatePatrolComp>(Id),
             Position.X, Position.Y, Position.Z, direction, 0, 3, int.Parse(projectileId), 0));
 
-        var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, Position, 5, 1, 3, TimerThread);
+        var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, Position, 5, 1, 3, false, TimerThread);
         Room.Projectiles.Add(projectileId, aiProjectile);
 
         GoToNextState(nextState);

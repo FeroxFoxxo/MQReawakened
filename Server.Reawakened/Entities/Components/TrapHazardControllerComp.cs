@@ -2,7 +2,7 @@
 
 namespace Server.Reawakened.Entities.Components;
 
-public class HazardControllerComp : BaseHazardControllerComp<HazardController>
+public class TrapHazardControllerComp : BaseHazardControllerComp<TrapHazardController>
 {
 
 }

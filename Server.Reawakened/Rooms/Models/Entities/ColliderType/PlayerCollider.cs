@@ -1,24 +1,38 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
-public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameObjectId, player.TempData.Position, 1, 1, player.GetPlayersPlaneString(), player.Room, "player")
+public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameObjectId, player.TempData.Position, 1, 1, player.GetPlayersPlaneString(), player.Room, ColliderClass.Player)
 {
-    public Player Player = player;
+    public Player Player => player;
+
     public override void SendCollisionEvent(BaseCollider received)
     {
-        if (received is AIProjectileCollider aIProjectileCollider &&
-            received.ColliderType != "player" && received.ColliderType != "attack")
+        if (received.Type is ColliderClass.Player or ColliderClass.Attack)
+            return;
+
+        if (received is AIProjectileCollider aIProjectileCollider)
         {
             Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage,
-            0, 1, true, aIProjectileCollider.OwnderId, false));
+            0, 1, true, received.Id, false));
 
-            player.ApplyDamageByObject(Room, int.Parse(aIProjectileCollider.OwnderId), aIProjectileCollider.TimerThread);
-
-            Room.Colliders.Remove(aIProjectileCollider.PrjId);
+            player.ApplyDamageByObject(Room, received.Id, aIProjectileCollider.TimerThread);
         }
+
+        if (received is HazardEffectCollider hazard)
+            hazard.ApplyEffectBasedOffHazardType(hazard.Id, player);
+
+    }
+
+    public override void SendNonCollisionEvent(BaseCollider received)
+    {
+        if (received is not HazardEffectCollider HazardCollider)
+            return;
+
+        HazardCollider.DisableEffectBasedOffHazardType(HazardCollider.Id, player);
     }
 
     public override string[] IsColliding(bool isAttack)
@@ -29,11 +43,14 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
         foreach (var collider in roomList)
         {
             if (CheckCollision(collider) &&
-                collider.ColliderType != "player" && collider.ColliderType != "attack")
+                collider.Type is not ColliderClass.Player or not ColliderClass.Attack)
             {
                 collidedWith.Add(collider.Id);
                 collider.SendCollisionEvent(this);
             }
+
+            else if (!CheckCollision(collider))
+                collider.SendNonCollisionEvent(this);
         }
 
         return [.. collidedWith];

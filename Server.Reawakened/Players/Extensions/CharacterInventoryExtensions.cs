@@ -49,6 +49,10 @@ public static class CharacterInventoryExtensions
                 break;
             case ItemEffectType.Defence:
                 break;
+            case ItemEffectType.Invisibility:
+                player.TempData.Invisible = true;
+                player.TemporaryInvisibility(usedItem.ItemEffects[(int)ItemFilterCategory.Consumables].Duration, timerThread);
+                break;
             case ItemEffectType.Invalid:
             case ItemEffectType.Unknown:
             case ItemEffectType.Unknown_61:

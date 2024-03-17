@@ -4,7 +4,6 @@ using UnityEngine;
 namespace Server.Reawakened.Entities.Entity.Utils;
 public class AISyncEventHelper
 {
-
     public static AIDo_SyncEvent AIDo(BaseComponent entity, Vector3 position, float speedFactor, int behaviorId, string args, float targetPosX, float targetPosY, int direction, bool awareBool)
     {
         var aiDo = new AIDo_SyncEvent(new SyncEvent(entity.Id, SyncEvent.EventType.AIDo, entity.Room.Time));
