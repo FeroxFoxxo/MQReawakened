@@ -69,6 +69,7 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("findQuest", "[name]", GetQuestByName));
 
         AddCommand(new ChatCommand("updateNpcs", "", UpdateLevelNpcs));
+        AddCommand(new ChatCommand("playerPos", "", GetPlayerPos));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -113,7 +114,14 @@ public partial class ChatCommands(
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
+    public bool GetPlayerPos(Player player, string[] args)
+    {
+        Log($"X: {player.TempData.Position.X}" +
+            $" | Y:{player.TempData.Position.Y}" +
+            $" | Z:{player.TempData.Position.Z}", player);
 
+        return true;
+    }
     public bool MaxHealth(Player player, string[] args)
     {
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId, player.Room.Time,
