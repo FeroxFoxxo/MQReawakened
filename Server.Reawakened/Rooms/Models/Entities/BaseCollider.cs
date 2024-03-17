@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Rooms.Models.Entities.ColliderType;
-using Server.Reawakened.Rooms.Models.Planes;
+﻿using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
@@ -36,6 +35,10 @@ public abstract class BaseCollider
     public virtual string[] IsColliding(bool isAttack) => [];
 
     public virtual void SendCollisionEvent(BaseCollider received)
+    {
+    }
+
+    public virtual void SendNonCollisionEvent(BaseCollider received)
     {
     }
 

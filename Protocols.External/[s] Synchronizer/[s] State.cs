@@ -155,7 +155,6 @@ public class State : ExternalProtocol
     {
         var playerCollider = new PlayerCollider(player);
         player.Room.Colliders[player.GameObjectId] = playerCollider;
-        playerCollider.IsColliding(false);
     }  
 
     private void RequestRespawn(string entityId, float triggerTime)

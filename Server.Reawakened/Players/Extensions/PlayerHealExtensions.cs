@@ -97,7 +97,8 @@ public static class PlayerHealExtensions
         var tickHealValue = itemHealData.OverTimeHealValue / itemHealData.TotalTicks;
 
         if (player == null || player.Room == null ||
-            player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
+            player.Character.Data.CurrentLife >= player.Character.Data.MaxLife ||
+            player.Character.Data.CurrentLife <= 0)
             return;
 
         tickHealValue = GetBuffedHealValue(player, tickHealValue);

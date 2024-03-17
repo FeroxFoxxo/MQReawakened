@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity.Utils;
@@ -54,7 +53,6 @@ public abstract class Enemy : IDestructible
     public BehaviorModel BehaviorList;
 
     public AISyncEventHelper SyncBuilder;
-    public TimerThread TimerThread { get; set; }
 
     public Enemy(Room room, string entityId, BaseComponent baseEntity, IServiceProvider services)
     {
@@ -346,29 +344,33 @@ public abstract class Enemy : IDestructible
     {
     }
 
-    public bool PlayerInRange(Vector3Model pos, bool limitedByPatrolLine)
+    public bool PlayerInRange(Player player, bool limitedByPatrolLine)
     {
+        if (player.TempData.Invisible) return false;
+
+        var playerPos = player.TempData.Position;
+
         if (AiData.Intern_Dir < 0)
         {
             return !limitedByPatrolLine
-                ? AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z == pos.Z
-                : AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z == pos.Z &&
-                   pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
+                ? AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < playerPos.X && playerPos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < playerPos.Y && playerPos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
+                   Position.z == playerPos.Z
+                : AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < playerPos.X && playerPos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < playerPos.Y && playerPos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
+                   Position.z == playerPos.Z &&
+                   playerPos.X > AiData.Intern_MinPointX - 1.5 && playerPos.X < AiData.Intern_MaxPointX + 1.5;
         }
         else if (AiData.Intern_Dir >= 0)
         {
             return !limitedByPatrolLine
-                ? AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z == pos.Z
-                : AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z == pos.Z &&
-                   pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
+                ? AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < playerPos.X && playerPos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < playerPos.Y && playerPos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
+                   Position.z == playerPos.Z
+                : AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < playerPos.X && playerPos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < playerPos.Y && playerPos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
+                   Position.z == playerPos.Z &&
+                   playerPos.X > AiData.Intern_MinPointX - 1.5 && playerPos.X < AiData.Intern_MaxPointX + 1.5;
         }
         return false;
     }
@@ -401,7 +403,7 @@ public abstract class Enemy : IDestructible
             AiData.Intern_FireProjectile = false;
 
             var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
-                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, TimerThread);
+                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, AiData.Intern_FireLobTrajectory, EnemyController.TimerThread);
             Room.Projectiles.Add(projectileId, aiProjectile);
         }
     }

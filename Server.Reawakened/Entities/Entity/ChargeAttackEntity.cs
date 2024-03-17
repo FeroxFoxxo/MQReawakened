@@ -23,7 +23,7 @@ public class ChargeAttackEntity : TicklyEntity
 
         // Initialize charge attack info
         SpawnPosition = new Vector3Model { X = Position.X, Y = Position.Y, Z = Position.Z };
-        EndPosition = endPosition;
+        ChargeEndPosition = endPosition;
         SpeedY = speed.Y;
         StartTime = player.Room.Time;
         LifeTime = StartTime + lifeTime;
@@ -42,7 +42,7 @@ public class ChargeAttackEntity : TicklyEntity
     {
         //Logger.LogInformation("ChargeAttackStooped at position ({args1}, {args2}, {args3})", Position.X, Position.Y, Position.Z);
         Player.TempData.IsSuperStomping = false;
-        Player.SetTemporaryInvincibility(TimerThread, 1.5);
+        Player.TemporaryInvincibility(TimerThread, 1);
 
         Player.Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
            Player.TempData.Position.X, Player.TempData.Position.Y, ItemId, ZoneId, hitGoID));
