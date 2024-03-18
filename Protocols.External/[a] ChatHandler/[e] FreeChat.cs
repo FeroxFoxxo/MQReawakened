@@ -36,8 +36,7 @@ public class FreeChat : ExternalProtocol
         {
             var character = Player.Character;
 
-            if (Player.TempData.Group != null)
-                Player.TempData.Group.Chat(Player, channelType, character.Data.CharacterName, chatMessage);
+            Player.TempData.Group?.Chat(Player, channelType, character.Data.CharacterName, chatMessage);
         }
         else if (channelType == CannedChatChannel.Trade)
         {

@@ -40,6 +40,10 @@ public abstract class BaseCollider
     {
     }
 
+    public virtual void SendNonCollisionEvent(BaseCollider received)
+    {
+    }
+
     public virtual bool CheckCollision(BaseCollider collided) =>
         Position.x < collided.Position.x + collided.ColliderBox.Width && collided.Position.x < Position.x + ColliderBox.Width &&
         Position.y < collided.Position.y + collided.ColliderBox.Height && collided.Position.y < Position.y + ColliderBox.Height &&
