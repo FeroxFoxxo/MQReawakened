@@ -14,12 +14,19 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
         if (received.Type is ColliderClass.Player or ColliderClass.Attack)
             return;
 
-        if (received is AIProjectileCollider aIProjectileCollider)
+        if (received is AIProjectileCollider aiProjectileCollider &&
+            received.Type == ColliderClass.AiAttack)
         {
-            Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage,
-            0, 1, true, received.Id, false));
+            Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)aiProjectileCollider.Effect,
+            0, 1, true, aiProjectileCollider.OwnderId, false));
 
-            player.ApplyDamageByObject(Room, received.Id, aIProjectileCollider.TimerThread);
+            var damage = aiProjectileCollider.Damage - player.Character.Data.CalculateDefense(aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
+
+            player.ApplyCharacterDamage(Room, damage, aiProjectileCollider.TimerThread);
+
+            player.TemporaryInvincibility(aiProjectileCollider.TimerThread, 1);
+
+            Room.Colliders.Remove(aiProjectileCollider.PrjId);
         }
 
         if (received is HazardEffectCollider hazard)

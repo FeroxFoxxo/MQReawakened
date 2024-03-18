@@ -15,6 +15,7 @@ using Server.Reawakened.Entities.AbstractComponents;
 using A2m.Server;
 using Server.Reawakened.Rooms.Models.Planes;
 using Microsoft.Extensions.DependencyInjection;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Entities.AIStates;
 public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
@@ -53,6 +54,7 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public IServiceProvider Service { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
     public ILogger<AIStatePatrolComp> Logger { get; set; }
 
     public override void InitializeComponent() => RunPlacement();
@@ -92,8 +94,8 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
             Z = Position.Z
         };
 
-        Room.Colliders.Add(Id, new EnemyCollider(Id, editedPosition,
-            Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+        //Room.Colliders.Add(Id, new EnemyCollider(Id, editedPosition,
+        //    Rectangle.Width, Rectangle.Height, ParentPlane, Room));
 
         var nextState = new GameObjectComponents() {
             {"AIStateDrakePlacement", new ComponentSettings()
@@ -213,10 +215,10 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
         var direction = closestPlayer.TempData.Position.X > Position.X ? 5 : -5;
 
         //Successfully sends enemy projectiles, however needs position placement adjustments based off of synced movement.
-        Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Room.GetEntityFromId<AIStatePatrolComp>(Id),
+        Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Id, Room.Time,
             Position.X, Position.Y, Position.Z, direction, 0, 3, int.Parse(projectileId), 0));
 
-        var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, Position, 5, 1, 3, false, TimerThread);
+        var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, Position, 5, 1, 3, TimerThread, 1, ItemEffectType.BluntDamage, ItemCatalog);
         Room.Projectiles.Add(projectileId, aiProjectile);
 
         GoToNextState(nextState);

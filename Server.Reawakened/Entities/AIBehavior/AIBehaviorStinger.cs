@@ -9,4 +9,6 @@ public class AIBehaviorStinger(float speedForward, float speedBackward, float in
     public override bool Update(ref AIProcessData aiData, float roomTime) => StingerBehavior.Update(aiData, roomTime);
 
     public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => StingerBehavior.GetBehaviorRatio(aiData, roomTime);
+
+    public override string GetBehavior() => "Stinger";
 }

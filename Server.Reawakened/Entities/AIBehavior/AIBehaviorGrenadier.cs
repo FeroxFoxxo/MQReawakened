@@ -9,4 +9,6 @@ public class AIBehaviorGrenadier(float inDuration, float loopDuration, float out
     public override bool Update(ref AIProcessData aiData, float roomTime) => GrenadierBehavior.Update(aiData, roomTime);
 
     public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => GrenadierBehavior.GetBehaviorRatio(aiData, roomTime);
+
+    public override string GetBehavior() => "Grenadier";
 }

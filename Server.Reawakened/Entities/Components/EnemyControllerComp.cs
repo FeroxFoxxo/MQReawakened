@@ -43,8 +43,6 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public int MaxHealth;
     public int OnKillExp;
 
-    private int _damage;
-
     public override void InitializeComponent()
     {
         Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
@@ -77,6 +75,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
         if (EnemyHealth <= 0)
         {
+            Console.WriteLine(ComponentData.OnKillFXPrefab);
             origin.AddReputation(OnKillExp);
             Room.KillEntity(origin, Id);
         }
