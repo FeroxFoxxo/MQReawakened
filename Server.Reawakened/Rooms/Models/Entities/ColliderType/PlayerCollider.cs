@@ -22,7 +22,7 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
 
             var damage = aiProjectileCollider.Damage - player.Character.Data.CalculateDefense(aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
 
-            player.ApplyCharacterDamage(Room, damage, aiProjectileCollider.TimerThread);
+            player.ApplyCharacterDamage(Room, damage, 1, aiProjectileCollider.TimerThread);
 
             player.TemporaryInvincibility(aiProjectileCollider.TimerThread, 1);
 
@@ -31,7 +31,6 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
 
         if (received is HazardEffectCollider hazard)
             hazard.ApplyEffectBasedOffHazardType(hazard.Id, player);
-
     }
 
     public override void SendNonCollisionEvent(BaseCollider received)

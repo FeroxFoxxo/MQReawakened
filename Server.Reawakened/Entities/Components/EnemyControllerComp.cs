@@ -43,6 +43,8 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public int MaxHealth;
     public int OnKillExp;
 
+    private int _damage;
+
     public override void InitializeComponent()
     {
         Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;

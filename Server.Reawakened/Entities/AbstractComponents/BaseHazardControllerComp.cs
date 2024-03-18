@@ -32,7 +32,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
     public string HazardId;
     public ItemEffectType EffectType = ItemEffectType.Unknown;
-    public Base.Timers.Timer PoisonTimer = null;
     public bool IsActive = true;
     public bool TimedHazard = false;
 
@@ -146,7 +145,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
             default:
                 if (Damage > 0)
-                    player.ApplyCharacterDamage(Room, Damage - defense, TimerThread);
+                    player.ApplyCharacterDamage(Room, Damage - defense, DamageDelay, TimerThread);
                 else
                     player.ApplyDamageByPercent(Room, .10, TimerThread);
                 break;

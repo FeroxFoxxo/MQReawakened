@@ -400,29 +400,33 @@ public abstract class Enemy : IDestructible
     {
     }
 
-    public bool PlayerInRange(Vector3Model pos, bool limitedByPatrolLine)
+    public bool PlayerInRange(Player player, bool limitedByPatrolLine)
     {
+        if (player.TempData.Invisible) return false;
+
+        var playerPos = player.TempData.Position;
+
         if (AiData.Intern_Dir < 0)
         {
             return !limitedByPatrolLine
-                ? AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z < pos.Z + 1 && Position.z > pos.Z - 1
-                : AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z < pos.Z + 1 && Position.z > pos.Z - 1 &&
-                   pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
+                ? AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < playerPos.X && playerPos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < playerPos.Y && playerPos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
+                   Position.z < playerPos.Z + 1 && Position.z > playerPos.Z - 1
+                : AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < playerPos.X && playerPos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < playerPos.Y && playerPos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
+                   Position.z < playerPos.Z + 1 && Position.z > playerPos.Z - 1 &&
+                   playerPos.X > AiData.Intern_MinPointX - 1.5 && playerPos.X < AiData.Intern_MaxPointX + 1.5;
         }
         else if (AiData.Intern_Dir >= 0)
         {
             return !limitedByPatrolLine
-                ? AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z < pos.Z + 1 && Position.z > pos.Z - 1
-                : AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
-                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
-                   Position.z < pos.Z + 1 && Position.z > pos.Z - 1 &&
-                   pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
+                ? AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < playerPos.X && playerPos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < playerPos.Y && playerPos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
+                   Position.z < playerPos.Z + 1 && Position.z > playerPos.Z - 1
+                : AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < playerPos.X && playerPos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
+                   AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < playerPos.Y && playerPos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
+                   Position.z < playerPos.Z + 1 && Position.z > playerPos.Z - 1 &&
+                   playerPos.X > AiData.Intern_MinPointX - 1.5 && playerPos.X < AiData.Intern_MaxPointX + 1.5;
         }
         return false;
     }

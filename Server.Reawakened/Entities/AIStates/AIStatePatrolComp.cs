@@ -141,7 +141,7 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
     {
         var distancesFromEnemy = new Dictionary<double, Player>();
 
-        foreach (var player in Room.Players.Values)
+        foreach (var player in Room?.Players?.Values)
         {
             var playerParentPlane = player.GetPlayersPlaneString();
             if (ParentPlane != playerParentPlane)
@@ -153,7 +153,7 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
             var closestDistance = Math.Sqrt(Math.Pow(enemyPos.X - playerPos.X, 2) +
                                             Math.Pow(enemyPos.Y - playerPos.Y, 2));
 
-            distancesFromEnemy.Add(closestDistance, player);
+            distancesFromEnemy.TryAdd(closestDistance, player);
         }
 
         if (distancesFromEnemy == null)

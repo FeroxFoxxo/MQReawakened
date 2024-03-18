@@ -48,13 +48,13 @@ public class DroppingsControllerComp : Component<DroppingsController>
     public void FreezePlayer(Player player)
     {
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-            (int)ItemEffectType.IceDamage, 1, 5, true, Id, false));
+            (int)ItemEffectType.IceDamage, 3, 5, true, Id, false));
 
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-            (int)ItemEffectType.Freezing, 1, 5, true, Id, false));
+            (int)ItemEffectType.Freezing, 3, 5, true, Id, false));
 
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-           (int)ItemEffectType.FreezingStatusEffect, 1, 5, true, Id, false));
+           (int)ItemEffectType.FreezingStatusEffect, 3, 5, true, Id, false));
     }
 
     public void SetStartPosition(Vector3Model position)
