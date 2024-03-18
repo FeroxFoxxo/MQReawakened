@@ -268,7 +268,8 @@
                 <Item itemName="Add_COM_Explorator01_TS01" count="1" />
                 <Item itemName="Add_COM_HoopEarrings01_E01" count="1" />
             </Items>
-        </LootInfo> <!--Two Player Puzzle Blue Chest-->
+        </LootInfo> 
+        <!--Two Player Puzzle Blue Chest-->
         <LootInfo objectId="12824" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_HawaiGirl01_LS01" count="1" />
