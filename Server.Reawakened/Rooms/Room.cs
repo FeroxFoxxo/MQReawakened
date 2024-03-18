@@ -264,7 +264,7 @@ public class Room : Timer
                     if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
                     {
                         currentPlayer.AddItem(item, 1, ItemCatalog);
-                        currentPlayer.SendUpdatedInventory(false);
+                        currentPlayer.SendUpdatedInventory();
                     }
                 }
             }
@@ -277,7 +277,7 @@ public class Room : Timer
                     if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
                     {
                         currentPlayer.AddItem(item, 1, ItemCatalog);
-                        currentPlayer.SendUpdatedInventory(false);
+                        currentPlayer.SendUpdatedInventory();
                     }
                 }
             }
@@ -435,6 +435,9 @@ public class Room : Timer
 
     public void KillEntity(Player player, string id)
     {
+        if (player == null)
+            return;
+
         lock (_roomLock)
             if (KilledObjects.Contains(id))
                 return;
@@ -474,4 +477,15 @@ public class Room : Timer
         typeof(T) == typeof(BaseComponent)
             ? _entities.Values.SelectMany(x => x).ToArray() as T[]
             : _entities.SelectMany(x => x.Value).Where(x => x is T and not null).Select(x => x as T).ToArray();
+
+    public string SetProjectileId()
+    {
+        var rand = new Random();
+        var projectileId = Math.Abs(rand.Next()).ToString();
+
+        while (GameObjectIds.Contains(projectileId))
+            projectileId = Math.Abs(rand.Next()).ToString();
+
+        return projectileId;
+    }
 }

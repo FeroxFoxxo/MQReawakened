@@ -25,7 +25,7 @@ public class HarvestControllerComp : BaseChestControllerComp<HarvestController>
         player.SendSyncEventToPlayer(new Dailies_SyncEvent(syncEvent));
 
         player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
-        player.SendUpdatedInventory(false);
+        player.SendUpdatedInventory();
         player.CheckObjective(ObjectiveEnum.Collect, Id, PrefabName, 1, QuestCatalog);
 
         player.Character.CurrentCollectedDailies.TryAdd(Id, SetDailyHarvest(Id, Room.LevelInfo.LevelId, DateTime.Now));

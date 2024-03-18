@@ -46,7 +46,7 @@ public class EventInfo
         }
         else
         {
-            sb.Append((int)FrequencyType.Always); // AdFrequency
+            sb.Append((int)FrequencyType.OncePerSession); // AdFrequency
             sb.Append(DisplayAd ? 1 : 0);
             sb.Append((int)FrequencyType.OncePerSession); // PopupFrequency
             sb.Append(DisplayPopupMenu ? 1 : 0);

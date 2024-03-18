@@ -8,9 +8,10 @@ public class TicklyEntity : Component<ProjectileController>
 {
     public new Vector3Model Position;
     public Vector3Model SpawnPosition;
-    public Vector3Model EndPosition;
+    public Vector3Model ChargeEndPosition;
 
     public float SpeedX, SpeedY, LifeTime, StartTime;
+    public bool IsGrenade;
 
     public Player Player;
 
@@ -25,7 +26,7 @@ public class TicklyEntity : Component<ProjectileController>
         if (Player == null) return;
         if (Player.Room == null) return;
 
-        if (Position.Y <= EndPosition?.Y)
+        if (Position.Y <= ChargeEndPosition?.Y)
             Hit("-1");
 
         if (SpeedX != 0 || SpeedY != 0)

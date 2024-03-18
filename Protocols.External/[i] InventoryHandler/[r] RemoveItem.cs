@@ -19,6 +19,6 @@ public class RemoveItem : ExternalProtocol
 
         Player.RemoveItem(itemDescription, removeCount, ItemCatalog);
 
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
     }
 }

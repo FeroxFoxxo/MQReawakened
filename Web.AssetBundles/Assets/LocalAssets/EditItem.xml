@@ -328,6 +328,10 @@
             <EditAttribute key="item_level" value="3"/>
             <EditAttribute key="recipe_parent_item_id" value="859"/>
         </Item>
+        <Item name="ABIL_Gun01">
+            <EditAttribute key="global_level" value="10"/>
+            <EditAttribute key="item_level" value="7"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vLate2013">
         <Item name="Add_COM_Armor01_S01">
@@ -655,6 +659,10 @@
             <EditAttribute key="item_level" value="3"/>
             <EditAttribute key="recipe_parent_item_id" value="859"/>
         </Item>
+        <Item name="ABIL_Gun01">
+            <EditAttribute key="global_level" value="10"/>
+            <EditAttribute key="item_level" value="7"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vEarly2013">
         <Item name="Add_COM_Armor01_S01">
@@ -976,6 +984,10 @@
             <EditAttribute key="global_level" value="3"/>
             <EditAttribute key="item_level" value="3"/>
             <EditAttribute key="recipe_parent_item_id" value="859"/>
+        </Item>
+        <Item name="ABIL_Gun01">
+            <EditAttribute key="global_level" value="10"/>
+            <EditAttribute key="item_level" value="7"/>
         </Item>
     </GameVersion>
     <GameVersion version="vLate2012">

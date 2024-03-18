@@ -58,6 +58,6 @@ public class ChooseQuestReward : ExternalProtocol
         foreach (var item in quest.RewardItems)
             Player.AddItem(item.Key, item.Value, ItemCatalog);
 
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
     }
 }

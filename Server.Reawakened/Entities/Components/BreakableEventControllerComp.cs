@@ -92,7 +92,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         if (_health <= 0)
         {
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
-            origin.SendUpdatedInventory(false);
+            origin.SendUpdatedInventory();
 
             Room.KillEntity(origin, Id);
         }
