@@ -7,6 +7,7 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
+using System.Linq;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
@@ -238,27 +239,29 @@ public class InternalItem : IBundledXml<InternalItem>
                             }
                         }
 
-                        if (!miscDict.LocalizationDict.TryGetValue(descriptionId, out var description))
+                        var description = string.Empty;
+                        if (miscDict.LocalizationDict.ContainsKey(descriptionId))
                         {
-                            if (!editedItems.ContainsKey(prefabName))
-                                continue;
-
-                            var editedItem = editedItems[prefabName].Where(x => x.Key == "ingamedescription").First();
-
-                            if (miscDict.LocalizationDict.TryGetValue(int.Parse(editedItem.Value), out var editedDescription))
-                            {
-                                descriptionId = int.Parse(editedItem.Value);
-                                description = editedDescription;
-                            }
-
-                            else
-                            {
-                                Logger.LogError("Could not find description of id {DescId} for item {ItemName}", descriptionId, itemName);
-                                continue;
-                            }
+                            description = miscDict.LocalizationDict[descriptionId];
+                            Descriptions.TryAdd(descriptionId, description);
                         }
 
-                        Descriptions.TryAdd(descriptionId, description);
+                        else
+                        {
+                            foreach (var editedItem in editItem.EditedItemAttributes.Values)
+                            {
+                                if (editedItem.TryGetValue(prefabName, out var attributes) &&
+                                    attributes.TryGetValue("ingamedescription", out var attributeValue))
+                                {
+                                    var editedDescriptionId = int.Parse(attributeValue);
+                                    if (miscDict.LocalizationDict.TryGetValue(editedDescriptionId, out var editedDescription))
+                                    {
+                                        Descriptions.TryAdd(editedDescriptionId, editedDescription);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
 
                         var nameId = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == itemName);
 
