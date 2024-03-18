@@ -24,13 +24,13 @@ public static class PlayerStatusEffectExtensions
 
     public static void StartPoisonDamage(this Player player, string hazardId, int damage, int hurtLength, TimerThread timerThread)
     {
-        if (player == null || player.TempData.Invincible || !player.TempData.IsPoisoned)
+        if (player == null || player.TempData.Invincible)
             return;
 
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
         (int)ItemEffectType.PoisonDamage, damage, hurtLength, true, hazardId, false));
 
-        player.ApplyCharacterDamage(player.Room, damage, timerThread);
+        player.ApplyCharacterDamage(player.Room, damage, hurtLength, timerThread);
     }
 
     public class InvisibiltyData()

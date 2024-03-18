@@ -43,7 +43,7 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
         foreach (var collider in roomList)
         {
             if (CheckCollision(collider) &&
-                collider.Type is not ColliderClass.Player or not ColliderClass.Attack)
+                collider.Type != ColliderClass.Player && collider.Type != ColliderClass.Attack)
             {
                 collidedWith.Add(collider.Id);
                 collider.SendCollisionEvent(this);

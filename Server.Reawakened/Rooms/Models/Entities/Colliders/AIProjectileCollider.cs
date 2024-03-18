@@ -25,7 +25,8 @@ public class AIProjectileCollider(string projectileId, Room room, Vector3Model p
         foreach (var collider in roomList)
         {
             if (CheckCollision(collider) && collider.Type != ColliderClass.Attack &&
-                collider.Type != ColliderClass.AiAttack && collider.Type != ColliderClass.Enemy)
+                collider.Type != ColliderClass.AiAttack && collider.Type != ColliderClass.Enemy &&
+                collider.Type != ColliderClass.Breakable && collider.Type != ColliderClass.Hazard)
             {
                 collidedWith.Add(collider.Id);
                 collider.SendCollisionEvent(this);

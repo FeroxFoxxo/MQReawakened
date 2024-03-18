@@ -6,8 +6,7 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerDamageExtensions
 {
-
-    public static void ApplyCharacterDamage(this Player player, Room room, int damage, TimerThread timerThread)
+    public static void ApplyCharacterDamage(this Player player, Room room, int damage, double invincibilityDuration, TimerThread timerThread)
     {
         if (player.TempData.Invincible) return;
 
@@ -22,7 +21,10 @@ public static class PlayerDamageExtensions
         room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), room.Time,
             player.Character.Data.CurrentLife, player.Character.Data.MaxLife, "Hurt"));
 
-        player.TemporaryInvincibility(timerThread, 1);
+        if (invincibilityDuration <= 0)
+            invincibilityDuration = 1;
+
+        player.TemporaryInvincibility(timerThread, invincibilityDuration);
     }
     public static void ApplyDamageByPercent(this Player player, Room room, double percentage, TimerThread timerThread)
     {
@@ -30,7 +32,7 @@ public static class PlayerDamageExtensions
 
         var damage = Convert.ToInt32(Math.Ceiling(health * percentage));
 
-        ApplyCharacterDamage(player, room, damage, timerThread);
+        ApplyCharacterDamage(player, room, damage, 1, timerThread);
     }
 
     //temporary code until enemy/hazard system is implemented
