@@ -28,8 +28,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public float HealthRatioDamage => ComponentData.HealthRatioDamage;
     public int HurtSelfOnDamage => ComponentData.HurtSelfOnDamage;
 
-    public Player EffectedPlayer = null;
-
     public string HazardId;
     public ItemEffectType EffectType = ItemEffectType.Unknown;
     public bool IsActive = true;
@@ -79,7 +77,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (!Room.Enemies.ContainsKey(Id))
         {
             //Hazards with the LinearPlatform component already have colliders and do not need a new one created. They have NoEffect.
-            if (HurtEffect != ServerRConfig.NoEffect 
+            if (HurtEffect != ServerRConfig.NoEffect
                 //Many Toxic Clouds seem to have no components. So we use prefab name. (Seek Moss Temple for example)
                 || PrefabName.Contains(ServerRConfig.ToxicCloud))
                 TimerThread.DelayCall(ColliderCreationDelay, null, TimeSpan.FromSeconds(3), TimeSpan.Zero, 1);
@@ -168,11 +166,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             TimedHazard && !IsActive || HitOnlyVisible && player.TempData.Invisible)
             return;
 
-        EffectedPlayer = player;
-
         Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
 
-        Damage = (int)Math.Ceiling(EffectedPlayer.Character.Data.MaxLife * HealthRatioDamage);
+        Damage = (int)Math.Ceiling(player.Character.Data.MaxLife * HealthRatioDamage);
 
         //For toxic purple cloud hazards with no components
         if (PrefabName.Contains(ServerRConfig.ToxicCloud))
@@ -181,14 +177,14 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         switch (effectType)
         {
             case ItemEffectType.SlowStatusEffect:
-                ApplySlowEffect(null);
+                ApplySlowEffect(player);
                 break;
 
             case ItemEffectType.BluntDamage:
-                Room.SendSyncEvent(new StatusEffect_SyncEvent(EffectedPlayer.GameObjectId, Room.Time,
+                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                 (int)ItemEffectType.BluntDamage, 1, 1, true, HazardId, false));
 
-                EffectedPlayer.ApplyCharacterDamage(Room, Damage, DamageDelay, TimerThread);
+                player.ApplyCharacterDamage(Room, Damage, DamageDelay, TimerThread);
                 break;
 
             case ItemEffectType.PoisonDamage:
@@ -197,25 +193,30 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             default:
-                Room.SendSyncEvent(new StatusEffect_SyncEvent(EffectedPlayer.GameObjectId, Room.Time,
+                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                 (int)EffectType, 1, 1, true, _id, false));
 
-                EffectedPlayer.ApplyCharacterDamage(Room, Damage, DamageDelay, TimerThread);
+                player.ApplyCharacterDamage(Room, Damage, DamageDelay, TimerThread);
 
-                EffectedPlayer.TemporaryInvincibility(TimerThread, 1);
+                player.TemporaryInvincibility(TimerThread, 1);
                 break;
         }
 
-        Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, EffectedPlayer.CharacterName);
+        Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, player.CharacterName);
     }
 
-    public void ApplyPoisonEffect(object _)
+    public void ApplyPoisonEffect(object playerData)
     {
-        //Checks collision after InitialDamageDelay
-        if (!Room.Colliders[HazardId].CheckCollision(new PlayerCollider(EffectedPlayer)))
+        if (playerData == null) return;
+
+        if (playerData is not Player player)
             return;
 
-        EffectedPlayer.StartPoisonDamage(HazardId, Damage, (int)HurtLength, TimerThread);
+        //Checks collision after InitialDamageDelay
+        if (!Room.Colliders[HazardId].CheckCollision(new PlayerCollider(player)))
+            return;
+
+        player.StartPoisonDamage(HazardId, Damage, (int)HurtLength, TimerThread);
     }
 
     public void ApplySlowEffect(Player player) =>
