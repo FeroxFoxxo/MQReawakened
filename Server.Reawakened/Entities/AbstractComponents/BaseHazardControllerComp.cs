@@ -188,7 +188,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             case ItemEffectType.PoisonDamage:
-                TimerThread.DelayCall(ApplyPoisonEffect, null,
+                TimerThread.DelayCall(ApplyPoisonEffect, player,
                     TimeSpan.FromSeconds(InitialDamageDelay), TimeSpan.FromSeconds(DamageDelay), 1);
                 break;
 
