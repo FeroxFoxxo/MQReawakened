@@ -193,8 +193,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             default:
+                //Used by Flamer and Dragon Statues which emit fire damage.
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-                (int)EffectType, 1, 1, true, _id, false));
+                (int)ItemEffectType.FireDamage, 1, 1, true, _id, false));
 
                 player.ApplyCharacterDamage(Room, Damage, DamageDelay, TimerThread);
 
