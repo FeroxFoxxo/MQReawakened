@@ -8,6 +8,8 @@ using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Base.Timers.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Entities.Components;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
@@ -26,29 +28,28 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public float HealthRatioDamage => ComponentData.HealthRatioDamage;
     public int HurtSelfOnDamage => ComponentData.HurtSelfOnDamage;
 
-    public string HazardId;
     public ItemEffectType EffectType;
     public bool IsActive = true;
     public bool TimedHazard = false;
     public int Damage;
+    private EnemyControllerComp _enemyController;
+    private string _id;
 
-    public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
     public ILogger<BaseHazardControllerComp<HazardController>> Logger { get; set; }
 
     public override object[] GetInitData(Player player) => [0];
 
-    public override void Update()
-    {
-        foreach (var player in Room.Players?.Values)
-        {
-            var playerCollider = new PlayerCollider(player);
-            playerCollider.IsColliding(false);
-        }
-    }
-
     public override void InitializeComponent()
     {
+        var controller = Room.GetEntityFromId<EnemyControllerComp>(Id);
+        if (controller != null)
+            _enemyController = controller;
+        _id = Id;
+
         Enum.TryParse(HurtEffect, true, out EffectType);
 
         //Activate timed hazards.
@@ -62,13 +63,17 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         CanCreateColliderCheck();
     }
 
+    public void SetId(string id)
+    {
+        _id = id;
+        _enemyController = Room.GetEntityFromId<EnemyControllerComp>(id);
+    }
+
     public void CanCreateColliderCheck()
     {
         //Prevents enemies and hazards sharing same collider Ids.
         if (!Room.Enemies.ContainsKey(Id))
         {
-            HazardId = Id;
-
             //Hazards with the LinearPlatform component already have colliders and do not need a new one created.
             if (HurtEffect != ServerRConfig.NoEffect)
                 TimerThread.DelayCall(ColliderCreationDelay, null, TimeSpan.FromSeconds(3), TimeSpan.Zero, 1);
@@ -78,8 +83,8 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     //Creates hazard colliders after enemy colliders are created to prevent duplicated collider ID bugs.
     public void ColliderCreationDelay(object _)
     {
-        var hazardCollider = new HazardEffectCollider(HazardId, Position, Rectangle, ParentPlane, Room);
-        Room.Colliders.TryAdd(HazardId, hazardCollider);
+        var hazardCollider = new HazardEffectCollider(_id, Position, Rectangle, ParentPlane, Room);
+        Room.Colliders.TryAdd(_id, hazardCollider);
     }
 
     public void DeactivateHazard(object _)
@@ -88,6 +93,58 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         TimerThread.DelayCall(ActivateHazard, null,
                 TimeSpan.FromSeconds(DeactivationDuration), TimeSpan.Zero, 1);
+    }
+
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
+    {
+        if (!notifyCollisionEvent.Colliding || player.TempData.Invincible)
+            return;
+
+        var character = player.Character;
+
+        Enum.TryParse(HurtEffect, true, out
+        ItemEffectType effectType);
+        Damage = _enemyController != null
+            ? WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, _enemyController.Level)
+            : -1;
+
+        if (effectType == default)
+        {
+            var noEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage,
+            0, 1, true, _id, false);
+
+            Room.SendSyncEvent(noEffect);
+        }
+        else
+        {
+            var statusEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)effectType,
+                0, 1, true, _id, false);
+
+            Room.SendSyncEvent(statusEffect);
+
+            Logger.LogTrace("Triggered status effect for {Character} of {HurtType}", character.Data.CharacterName,
+                effectType);
+        }
+
+        var defense = player.Character.Data.CalculateDefense(effectType, ItemCatalog);
+
+        switch (effectType)
+        {
+            case ItemEffectType.Unknown:
+                SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
+                $"Effect Type: {effectType}");
+                break;
+            case ItemEffectType.WaterBreathing:
+                break;
+            default:
+                if (Damage > 0)
+                    player.ApplyCharacterDamage(Room, Damage - defense, TimerThread);
+                else
+                    player.ApplyDamageByPercent(Room, .10, TimerThread);
+                break;
+        }
+
+        player.TemporaryInvincibility(TimerThread, 1);
     }
 
     public void ActivateHazard(object _)
@@ -104,11 +161,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             TimedHazard && !IsActive || HitOnlyVisible && player.TempData.Invisible)
             return;
 
-        Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
-
         Damage = (int)Math.Ceiling(player.Character.Data.MaxLife * HealthRatioDamage);
 
-        switch (effectType)
+        switch (EffectType)
         {
             case ItemEffectType.SlowStatusEffect:
                 ApplySlowEffect(null);
@@ -116,8 +171,8 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
             case ItemEffectType.BluntDamage:
                 player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-                (int)ItemEffectType.BluntDamage, 1, 1, true, HazardId, false));
-
+                (int)ItemEffectType.BluntDamage, 1, 1, true, _id, false));
+            
                 player.ApplyCharacterDamage(Room, Damage, TimerThread);
                 break;
 
@@ -130,8 +185,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             default:
+                Console.WriteLine(_id);
                 player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-                (int)ItemEffectType.FireDamage, 1, 1, true, HazardId, false));
+                (int)EffectType, 1, 1, true, _id, false));
 
                 player.ApplyCharacterDamage(Room, Damage, TimerThread);
 
@@ -150,18 +206,18 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (playerObject is not Player player)
             return;
 
-        player.StartPoisonDamage(HazardId, Damage, (int)HurtLength, TimerThread);
+        player.StartPoisonDamage(_id, Damage, (int)HurtLength, TimerThread);
     }
 
     public void ApplySlowEffect(Player player) =>
-        player.ApplySlowEffect(HazardId, Damage);
+        player.ApplySlowEffect(_id, Damage);
 
     public void DisableHazardEffects(Player player)
     {
         switch (EffectType)
         {
             case ItemEffectType.SlowStatusEffect:
-                player.NullifySlowStatusEffect(HazardId);
+                player.NullifySlowStatusEffect(_id);
                 break;
             case ItemEffectType.PoisonDamage:
                 player.TempData.IsPoisoned = false;

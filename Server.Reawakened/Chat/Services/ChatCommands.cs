@@ -1,5 +1,4 @@
 using A2m.Server;
-using A2m.Server.LocalRequest;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Enums;
@@ -22,8 +21,6 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using System.Text.RegularExpressions;
-using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
 namespace Server.Reawakened.Chat.Services;
 
@@ -276,39 +273,7 @@ public partial class ChatCommands(
 
         player.Character.AddKit(items, amount);
 
-        player.SendUpdatedInventory(false);
-    }
-
-    private bool OpenDoors(Player player, string[] args)
-    {
-        foreach (var triggerEntity in player.Room.GetEntitiesFromType<TriggerReceiverComp>())
-        {
-            if (config.IgnoredDoors.Contains(triggerEntity.PrefabName))
-                continue;
-
-            triggerEntity.Trigger(true);
-        }
-
-        return true;
-    }
-
-    private bool ForceSpawners(Player player, string[] args)
-    {
-        foreach (var spawner in player.Room.GetEntitiesFromType<BaseSpawnerControllerComp>())
-        {
-            var spawn = new Spawn_SyncEvent(spawner.Id.ToString(), player.Room.Time, 1);
-            player.Room.SendSyncEvent(spawn);
-        }
-
-        return true;
-    }
-
-    private bool OpenVines(Player player, string[] args)
-    {
-        foreach (var vineEntity in player.Room.GetEntitiesFromType<MysticCharmTargetComp>())
-            vineEntity.Charm(player);
-
-        return true;
+        player.SendUpdatedInventory();
     }
 
     private bool Teleport(Player player, string[] args)

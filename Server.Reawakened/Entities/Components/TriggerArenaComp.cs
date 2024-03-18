@@ -47,8 +47,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
                     if (spawner.PrefabName != "PF_CRS_SpawnerBoss01")
                         ArenaEntities.Add(entity.ToString());
 
-                    // A special surprise tool that'll help us later!
-                    spawner.Spawn();
+                    spawner.Spawn(this);
                 }
             }
 

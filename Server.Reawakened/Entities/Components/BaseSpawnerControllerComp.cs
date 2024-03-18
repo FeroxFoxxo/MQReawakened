@@ -66,6 +66,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     private bool _spawnRequested;
     private bool _activated;
     private float _activeDetectionRadius;
+    private TriggerArenaComp _arena;
 
     public override void InitializeComponent()
     {
@@ -105,12 +106,19 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public void Spawn()
     {
-        _activated = true;
-        _activeDetectionRadius = 20;
         _nextSpawnRequestTime = _spawnedEntityCount == 0 ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
 
         if (_spawnedEntityCount < SpawnCycleCount)
             _spawnRequested = true;
+    }
+
+    public void Spawn(TriggerArenaComp arena)
+    {
+        _activated = true;
+        _activeDetectionRadius = 20;
+        Spawn();
+
+        _arena = arena;
     }
 
     private void SpawnEventCalled(int delay)
@@ -167,6 +175,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         Room.Enemies.Add(Id + "_" + _spawnedEntityCount, SetEnemy(_spawnedEntityCount));
         _nextSpawnRequestTime = 0;
+
+        _arena?.ArenaEntities.Add(Id + "_" + _spawnedEntityCount);
     }
 
     private Enemy SetEnemy(int index)
