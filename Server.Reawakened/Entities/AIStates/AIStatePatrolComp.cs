@@ -50,10 +50,11 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
     public Vector3Model StartingPostion = new();
 
     public GameObjectComponents PreviousState = [];
-    public ItemCatalog ItemCatalog { get; set; }
+
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public IServiceProvider Service { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
     public ILogger<AIStatePatrolComp> Logger { get; set; }
 
     public override void InitializeComponent() => RunPlacement();
@@ -93,8 +94,8 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
             Z = Position.Z
         };
 
-        Room.Colliders.Add(Id, new EnemyCollider(Id, editedPosition,
-            Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+        //Room.Colliders.Add(Id, new EnemyCollider(Id, editedPosition,
+        //    Rectangle.Width, Rectangle.Height, ParentPlane, Room));
 
         var nextState = new GameObjectComponents() {
             {"AIStateDrakePlacement", new ComponentSettings()
@@ -121,9 +122,9 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
 
         var backPlaneZValue = ParentPlane == ServerRConfig.BackPlane ?
                       ServerRConfig.Planes[ServerRConfig.FrontPlane] :
-                       ServerRConfig.Planes[ServerRConfig.BackPlane] ;
+                       ServerRConfig.Planes[ServerRConfig.BackPlane];
 
-        var nextState = new GameObjectComponents() 
+        var nextState = new GameObjectComponents()
         {
             {"AIStatePatrol", new ComponentSettings()
                 //Use Patrol1/Patrol2 values to adjust patrol positions. Else some enemies will phase through terrain.
@@ -140,7 +141,7 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
     {
         var distancesFromEnemy = new Dictionary<double, Player>();
 
-        foreach (var player in Room.Players.Values)
+        foreach (var player in Room?.Players?.Values)
         {
             var playerParentPlane = player.GetPlayersPlaneString();
             if (ParentPlane != playerParentPlane)
@@ -152,8 +153,11 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
             var closestDistance = Math.Sqrt(Math.Pow(enemyPos.X - playerPos.X, 2) +
                                             Math.Pow(enemyPos.Y - playerPos.Y, 2));
 
-            distancesFromEnemy.Add(closestDistance, player);
+            distancesFromEnemy.TryAdd(closestDistance, player);
         }
+
+        if (distancesFromEnemy == null)
+            return null;
 
         var closestPlayer = distancesFromEnemy.Keys.Min();
 
@@ -211,10 +215,9 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
         var direction = closestPlayer.TempData.Position.X > Position.X ? 5 : -5;
 
         //Successfully sends enemy projectiles, however needs position placement adjustments based off of synced movement.
-        Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Room.GetEntityFromId<AIStatePatrolComp>(Id),
+        Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Id, Room.Time,
             Position.X, Position.Y, Position.Z, direction, 0, 3, int.Parse(projectileId), 0));
 
-        //Magic numbers here and everywhere else will be fixed when AIState gets merged with default enemies
         var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, Position, 5, 1, 3, TimerThread, 1, ItemEffectType.BluntDamage, ItemCatalog);
         Room.Projectiles.Add(projectileId, aiProjectile);
 

@@ -28,6 +28,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public bool CanAutoScale => ComponentData.CanAutoScale;
     public bool CanAutoScaleResistance => ComponentData.CanAutoScaleResistance;
     public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
+    public ItemEffectType EnemyEffectType => ComponentData.EnemyEffectType;
 
     public InternalDefaultEnemies EnemyInfoXml { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
@@ -42,6 +43,8 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public int MaxHealth;
     public int OnKillExp;
 
+    private int _damage;
+
     public override void InitializeComponent()
     {
         Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
@@ -52,12 +55,19 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
+        _damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level);
+
+        if (_damage < 0)
+            _damage = 1;
+
+        player.ApplyCharacterDamage(Room, _damage, 1, TimerThread);
+
         return;
     }
 
     public void Damage(int damage, Player origin)
     {
-        if (Room.IsObjectKilled(Id)) 
+        if (Room.IsObjectKilled(Id))
             return;
 
         EnemyHealth -= damage;
@@ -67,6 +77,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
         if (EnemyHealth <= 0)
         {
+            Console.WriteLine(ComponentData.OnKillFXPrefab);
             origin.AddReputation(OnKillExp);
             Room.KillEntity(origin, Id);
         }
@@ -80,7 +91,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, InternalAchievement, Logger);
         player.CheckAchievement(AchConditionType.DefeatEnemy, PrefabName, InternalAchievement, Logger);
         player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, InternalAchievement, Logger);
-        
+
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
     }

@@ -11,12 +11,14 @@ public abstract class BaseCollider
     public string Plane;
     public ColliderClass Type;
     public RectModel ColliderBox;
+    public Vector3 SpawnPosition;
 
     public BaseCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, ColliderClass colliderType)
     {
         // Builder for projectiles
         Id = id;
         Position = new Vector3(position.X, position.Y, position.Z);
+        SpawnPosition = new Vector3(position.X, position.Y, position.Z);
         Plane = plane;
         Room = room;
 
@@ -37,6 +39,10 @@ public abstract class BaseCollider
     public virtual string[] IsColliding(bool isAttack) => [];
 
     public virtual void SendCollisionEvent(BaseCollider received)
+    {
+    }
+
+    public virtual void SendNonCollisionEvent(BaseCollider received)
     {
     }
 

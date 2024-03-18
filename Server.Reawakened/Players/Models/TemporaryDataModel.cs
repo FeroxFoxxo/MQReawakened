@@ -13,6 +13,7 @@ public class TemporaryDataModel
     public int Locale { get; set; }
 
     public bool Invincible { get; set; } = false;
+    public bool Invisible { get; set; } = false;
     public bool OnGround { get; set; } = false;
     public bool BananaBoostsElixir { get; set; }
     public bool ReputationBoostsElixir { get; set; }

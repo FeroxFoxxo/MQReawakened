@@ -500,6 +500,7 @@ public class NPCControllerComp : Component<NPCController>
                 var questLine = QuestCatalog.GetQuestLineData(quest.QuestLineId);
 
                 player.Character.Data.QuestLog.Remove(completedQuest);
+
                 if (questLine.QuestType == QuestType.Daily)
                     player.Character.CurrentQuestDailies.TryAdd(completedQuest.Id.ToString(), new DailiesModel()
                     {
@@ -509,6 +510,7 @@ public class NPCControllerComp : Component<NPCController>
                     });
                 else
                     player.Character.Data.CompletedQuests.Add(completedQuest.Id);
+
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
 
                 if (quest.QuestRewards.Count > 0)

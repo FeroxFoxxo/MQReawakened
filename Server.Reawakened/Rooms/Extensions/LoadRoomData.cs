@@ -82,6 +82,7 @@ public static class LoadRoomData
 
         return planes;
     }
+
     public static Dictionary<string, List<BaseComponent>> LoadEntities(this Room room, IServiceProvider services)
     {
         var reflectionUtils = services.GetRequiredService<ReflectionUtils>();
