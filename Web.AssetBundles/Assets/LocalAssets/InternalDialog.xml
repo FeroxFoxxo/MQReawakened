@@ -336,7 +336,7 @@
         </NPC>
     </Level>
     <Level id="144">
-        <!-- Ancient Foo Archibe -->
+        <!-- Ancient Foo Archive -->
         <NPC objectId="598" name="Chim Foo Guard" descriptionId="0">
             <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
         </NPC>
