@@ -48,7 +48,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
                         ArenaEntities.Add(entity.ToString());
 
                     // A special surprise tool that'll help us later!
-                    spawner.Spawn();
+                    spawner.Spawn(this);
                 }
             }
 
