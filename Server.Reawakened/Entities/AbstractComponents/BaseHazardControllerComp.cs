@@ -28,9 +28,11 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public float HealthRatioDamage => ComponentData.HealthRatioDamage;
     public int HurtSelfOnDamage => ComponentData.HurtSelfOnDamage;
 
-    public ItemEffectType EffectType;
+    public string HazardId;
+    public ItemEffectType EffectType = ItemEffectType.Unknown;
     public bool IsActive = true;
     public bool TimedHazard = false;
+
     public int Damage;
     private EnemyControllerComp _enemyController;
     private string _id;
@@ -74,8 +76,10 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         //Prevents enemies and hazards sharing same collider Ids.
         if (!Room.Enemies.ContainsKey(Id))
         {
-            //Hazards with the LinearPlatform component already have colliders and do not need a new one created.
-            if (HurtEffect != ServerRConfig.NoEffect)
+            //Hazards with the LinearPlatform component already have colliders and do not need a new one created. They have NoEffect.
+            if (HurtEffect != ServerRConfig.NoEffect
+                //Many Toxic Clouds seem to have no components. So we use prefab name. (Seek Moss Temple for example)
+                || PrefabName.Contains(ServerRConfig.ToxicCloud))
                 TimerThread.DelayCall(ColliderCreationDelay, null, TimeSpan.FromSeconds(3), TimeSpan.Zero, 1);
         }
     }
@@ -83,8 +87,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     //Creates hazard colliders after enemy colliders are created to prevent duplicated collider ID bugs.
     public void ColliderCreationDelay(object _)
     {
-        var hazardCollider = new HazardEffectCollider(_id, Position, Rectangle, ParentPlane, Room);
-        Room.Colliders.TryAdd(_id, hazardCollider);
+        HazardId = Id;
+        var hazardCollider = new HazardEffectCollider(HazardId, Position, Rectangle, ParentPlane, Room);
+        Room.Colliders.TryAdd(HazardId, hazardCollider);
     }
 
     public void DeactivateHazard(object _)
@@ -138,7 +143,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
             default:
                 if (Damage > 0)
-                    player.ApplyCharacterDamage(Room, Damage - defense, TimerThread);
+                    player.ApplyCharacterDamage(Room, Damage - defense, DamageDelay, TimerThread);
                 else
                     player.ApplyDamageByPercent(Room, .10, TimerThread);
                 break;
@@ -161,35 +166,38 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             TimedHazard && !IsActive || HitOnlyVisible && player.TempData.Invisible)
             return;
 
+        Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
+
         Damage = (int)Math.Ceiling(player.Character.Data.MaxLife * HealthRatioDamage);
 
-        switch (EffectType)
+        //For toxic purple cloud hazards with no components
+        if (PrefabName.Contains(ServerRConfig.ToxicCloud))
+            effectType = ItemEffectType.PoisonDamage;
+
+        switch (effectType)
         {
             case ItemEffectType.SlowStatusEffect:
-                ApplySlowEffect(null);
+                ApplySlowEffect(player);
                 break;
 
             case ItemEffectType.BluntDamage:
-                player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-                (int)ItemEffectType.BluntDamage, 1, 1, true, _id, false));
-            
-                player.ApplyCharacterDamage(Room, Damage, TimerThread);
+                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
+                (int)ItemEffectType.BluntDamage, 1, 1, true, HazardId, false));
+
+                player.ApplyCharacterDamage(Room, Damage, DamageDelay, TimerThread);
                 break;
 
             case ItemEffectType.PoisonDamage:
-                player.TempData.IsPoisoned = true;
-                var ticksTillDeath = (int)Math.Ceiling((double)player.Character.Data.MaxLife / Damage);
-
-                TimerThread.DelayCall(StartPoisonEffect, player,
-                    TimeSpan.FromSeconds(InitialDamageDelay), TimeSpan.FromSeconds(DamageDelay), ticksTillDeath);
+                TimerThread.DelayCall(ApplyPoisonEffect, player,
+                    TimeSpan.FromSeconds(InitialDamageDelay), TimeSpan.FromSeconds(DamageDelay), 1);
                 break;
 
             default:
-                Console.WriteLine(_id);
-                player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-                (int)EffectType, 1, 1, true, _id, false));
+                //Used by Flamer and Dragon Statues which emit fire damage.
+                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
+                (int)ItemEffectType.FireDamage, 1, 1, true, _id, false));
 
-                player.ApplyCharacterDamage(Room, Damage, TimerThread);
+                player.ApplyCharacterDamage(Room, Damage, DamageDelay, TimerThread);
 
                 player.TemporaryInvincibility(TimerThread, 1);
                 break;
@@ -198,29 +206,34 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, player.CharacterName);
     }
 
-    public void StartPoisonEffect(object playerObject)
+    public void ApplyPoisonEffect(object playerData)
     {
-        if (playerObject == null)
+        if (playerData == null) return;
+
+        if (playerData is not Player player)
             return;
 
-        if (playerObject is not Player player)
+        //Checks collision after InitialDamageDelay
+        if (!Room.Colliders[HazardId].CheckCollision(new PlayerCollider(player)))
             return;
 
-        player.StartPoisonDamage(_id, Damage, (int)HurtLength, TimerThread);
+        player.StartPoisonDamage(HazardId, Damage, (int)HurtLength, TimerThread);
     }
 
     public void ApplySlowEffect(Player player) =>
-        player.ApplySlowEffect(_id, Damage);
+        player.ApplySlowEffect(HazardId, Damage);
 
     public void DisableHazardEffects(Player player)
     {
         switch (EffectType)
         {
             case ItemEffectType.SlowStatusEffect:
-                player.NullifySlowStatusEffect(_id);
+                player.NullifySlowStatusEffect(HazardId);
                 break;
             case ItemEffectType.PoisonDamage:
-                player.TempData.IsPoisoned = false;
+                //Poison damage FX don't stop animating after exiting poison colliders.
+                Room.SendSyncEvent(new FX_SyncEvent(player.GameObjectId, Room.Time,
+                    player.GameObjectId, player.TempData.Position.X, player.TempData.Position.Y, FX_SyncEvent.FXState.Stop));
                 break;
         }
     }

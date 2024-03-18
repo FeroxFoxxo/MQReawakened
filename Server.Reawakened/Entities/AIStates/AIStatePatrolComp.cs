@@ -122,9 +122,9 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
 
         var backPlaneZValue = ParentPlane == ServerRConfig.BackPlane ?
                       ServerRConfig.Planes[ServerRConfig.FrontPlane] :
-                       ServerRConfig.Planes[ServerRConfig.BackPlane] ;
+                       ServerRConfig.Planes[ServerRConfig.BackPlane];
 
-        var nextState = new GameObjectComponents() 
+        var nextState = new GameObjectComponents()
         {
             {"AIStatePatrol", new ComponentSettings()
                 //Use Patrol1/Patrol2 values to adjust patrol positions. Else some enemies will phase through terrain.
@@ -141,7 +141,7 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
     {
         var distancesFromEnemy = new Dictionary<double, Player>();
 
-        foreach (var player in Room.Players.Values)
+        foreach (var player in Room?.Players?.Values)
         {
             var playerParentPlane = player.GetPlayersPlaneString();
             if (ParentPlane != playerParentPlane)
@@ -153,8 +153,11 @@ public class AIStatePatrolComp : Component<AIStatePatrol>, IDamageable
             var closestDistance = Math.Sqrt(Math.Pow(enemyPos.X - playerPos.X, 2) +
                                             Math.Pow(enemyPos.Y - playerPos.Y, 2));
 
-            distancesFromEnemy.Add(closestDistance, player);
+            distancesFromEnemy.TryAdd(closestDistance, player);
         }
+
+        if (distancesFromEnemy == null)
+            return null;
 
         var closestPlayer = distancesFromEnemy.Keys.Min();
 

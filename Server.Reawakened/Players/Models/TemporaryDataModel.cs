@@ -15,7 +15,6 @@ public class TemporaryDataModel
     public bool Invincible { get; set; } = false;
     public bool Invisible { get; set; } = false;
     public bool OnGround { get; set; } = false;
-    public bool IsPoisoned { get; set; } = false;
     public bool BananaBoostsElixir { get; set; }
     public bool ReputationBoostsElixir { get; set; }
     public bool IsSuperStomping { get; set; } = false;

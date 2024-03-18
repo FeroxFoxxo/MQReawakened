@@ -117,8 +117,8 @@ public partial class ChatCommands(
     public bool GetPlayerPos(Player player, string[] args)
     {
         Log($"X: {player.TempData.Position.X}" +
-            $" | Y:{player.TempData.Position.Y}" +
-            $" | Z:{player.TempData.Position.Z}", player);
+            $" | Y: {player.TempData.Position.Y}" +
+            $" | Z: {player.TempData.Position.Z}", player);
 
         return true;
     }

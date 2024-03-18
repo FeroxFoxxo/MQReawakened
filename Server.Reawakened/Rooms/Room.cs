@@ -15,6 +15,7 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
@@ -189,10 +190,17 @@ public class Room : Timer
         foreach (var enemy in enemiesCopy)
             enemy.Update();
 
-        foreach (var player in Players.Values.Where(
-                     player => GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime
-                 ))
-            player.Remove(Logger);
+        foreach (var player in Players?.Values)
+        {
+            if (GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime)
+            {
+                player.Remove(Logger);
+                return;
+            }
+
+            var playerCollider = new PlayerCollider(player);
+            playerCollider.IsColliding(false);
+        }
     }
 
     public bool AddEntity(string id, List<BaseComponent> entity) => _entities.TryAdd(id, entity);

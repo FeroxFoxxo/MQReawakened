@@ -71,6 +71,7 @@ public class ServerRConfig : IRConfig
     public string EnemyComponentName { get; set; }
     public string DailyBoxName { get; set; }
     public string NoEffect { get; }
+    public string ToxicCloud { get; }
 
     public int MaximumEntitiesToReturnLog { get; set; }
     public int HealingStaffID { get; set; }
@@ -210,6 +211,7 @@ public class ServerRConfig : IRConfig
         BreakableComponentName = "BreakableEventController";
         DailyBoxName = "Daily";
         NoEffect = "NoEffect";
+        ToxicCloud = "ToxicCloud";
 
         EnemyNameSearch = [
             "PF_Critter_Bird",
