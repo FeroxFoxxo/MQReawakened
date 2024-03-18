@@ -8,14 +8,9 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerStatusEffectExtensions
 {
-    public static void ApplySlowEffect(this Player player, string hazardId, int damage)
-    {
-        if (player == null || player.TempData.Invincible)
-            return;
-
+    public static void ApplySlowEffect(this Player player, string hazardId, int damage) => 
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
         (int)ItemEffectType.SlowStatusEffect, damage, 1, true, hazardId, false));
-    }
 
     //Doesn't seem to apply fast enough.
     public static void NullifySlowStatusEffect(this Player player, string hazardId) =>

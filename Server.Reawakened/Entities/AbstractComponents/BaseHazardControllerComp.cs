@@ -219,14 +219,14 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     }
 
     public void ApplySlowEffect(Player player) =>
-        player.ApplySlowEffect(_id, Damage);
+        player.ApplySlowEffect(HazardId, Damage);
 
     public void DisableHazardEffects(Player player)
     {
         switch (EffectType)
         {
             case ItemEffectType.SlowStatusEffect:
-                player.NullifySlowStatusEffect(_id);
+                player.NullifySlowStatusEffect(HazardId);
                 break;
             case ItemEffectType.PoisonDamage:
                 //Poison damage FX don't stop animating after exiting poison colliders.
