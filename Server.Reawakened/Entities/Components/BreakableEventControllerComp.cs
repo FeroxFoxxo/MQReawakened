@@ -24,6 +24,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public int MaxHealth { get; set; }
     public int NumberOfHits;
+    public bool OverrideDeath;
 
     private int _health;
     private BaseSpawnerControllerComp _spawner;
@@ -48,6 +49,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         {
             _spawner = spawner;
             MaxHealth = _spawner.Health;
+            OverrideDeath = true;
         }
 
         if (damagable != null)

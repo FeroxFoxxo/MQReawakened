@@ -154,6 +154,7 @@ public class State : ExternalProtocol
     private void UpdatePlayerCollider(Player player)
     {
         var playerCollider = new PlayerCollider(player);
+        playerCollider.IsColliding(false);
         player.Room.Colliders[player.GameObjectId] = playerCollider;
     }  
 

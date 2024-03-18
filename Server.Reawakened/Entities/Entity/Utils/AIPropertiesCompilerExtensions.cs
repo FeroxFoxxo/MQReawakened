@@ -51,8 +51,8 @@ public static class AIPropertiesCompilerExtensions
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Patrol", "speed"));
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Patrol", "smoothMove"));
         sb.Append(enemy.BehaviorList.GetBehaviorStat("Patrol", "endPathWaitTime"));
-        sb.Append(enemy.Generic.Patrol_DistanceX);
-        sb.Append(enemy.Generic.Patrol_DistanceY);
+        sb.Append(enemy.Generic.PatrolX);
+        sb.Append(enemy.Generic.PatrolY);
         sb.Append(enemy.Generic.Patrol_ForceDirectionX);
         sb.Append(enemy.Generic.Patrol_InitialProgressRatio);
 

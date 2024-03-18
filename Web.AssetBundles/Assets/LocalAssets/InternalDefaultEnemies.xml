@@ -25,6 +25,7 @@
             <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1581" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
     <Enemy name="PF_Critter_Bird02">
         <GlobalProperties>
@@ -49,8 +50,9 @@
             <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1581" chance="0.05" minLevel="7" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
     <Enemy name="PF_Critter_Bird03">
         <GlobalProperties>
@@ -76,6 +78,7 @@
             <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1581" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
     <Enemy name="PF_Critter_Bird04">
         <GlobalProperties>
@@ -100,8 +103,9 @@
             <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1581" chance="0.05" minLevel="7" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
     <Enemy name="PF_Critter_Bird_Boss">
         <GlobalProperties>
@@ -127,8 +131,9 @@
             <Drop type="item" id="1582" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1581" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
     
     <!--Spinefish-->
@@ -155,6 +160,7 @@
             <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
 	</Enemy>
     <Enemy name="PF_Critter_Fish02">
         <GlobalProperties>
@@ -179,6 +185,7 @@
             <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
     </Enemy>
     <Enemy name="PF_Critter_Fish03">
         <GlobalProperties>
@@ -203,6 +210,7 @@
             <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1603" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
     </Enemy>
     <Enemy name="PF_Critter_Fish04">
         <GlobalProperties>
@@ -226,8 +234,9 @@
             <Drop type="item" id="868" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1602" chance="0.2" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1603" chance="0.05" minLevel="7" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
     </Enemy>
     <Enemy name="PF_Critter_Fish_Boss">
         <GlobalProperties>
@@ -252,8 +261,9 @@
             <Drop type="item" id="1602" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1603" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
     </Enemy>
     
     <!--Rachnoids-->
@@ -282,8 +292,9 @@
             <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider_Boss_Ceiling_Shoot">
         <GlobalProperties>
@@ -311,8 +322,9 @@
             <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider_Boss_Shoot">
         <GlobalProperties>
@@ -340,8 +352,9 @@
             <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
 	<Enemy name="PF_Critter_Spider01">
         <GlobalProperties>
@@ -368,6 +381,7 @@
             <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
 	</Enemy>
     <Enemy name="PF_Critter_Spider01_Ceiling_Shoot">
         <GlobalProperties>
@@ -395,6 +409,7 @@
             <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider01_Shoot">
         <GlobalProperties>
@@ -422,6 +437,7 @@
             <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider02">
         <GlobalProperties>
@@ -447,8 +463,9 @@
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider02_Ceiling_Shoot">
         <GlobalProperties>
@@ -475,8 +492,9 @@
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider02_Shoot">
         <GlobalProperties>
@@ -503,8 +521,9 @@
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider03">
         <GlobalProperties>
@@ -531,6 +550,7 @@
             <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider03_Ceiling_Shoot">
         <GlobalProperties>
@@ -558,6 +578,7 @@
             <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider03_Shoot">
         <GlobalProperties>
@@ -585,6 +606,7 @@
             <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider04">
         <GlobalProperties>
@@ -610,8 +632,9 @@
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider04_Ceiling_Shoot">
         <GlobalProperties>
@@ -638,8 +661,9 @@
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider04_Shoot">
         <GlobalProperties>
@@ -666,8 +690,9 @@
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1600" chance="0.05" minLevel="7" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     
     <!--Bathogs-->
@@ -678,10 +703,10 @@
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
-            <FrontDetectionRangeDownY value="5"/>
+            <FrontDetectionRangeDownY value="6"/>
             <BackDetectionRangeX value="2"/>
             <BackDetectionRangeUpY value="2"/>
-            <BackDetectionRangeDownY value="2"/>
+            <BackDetectionRangeDownY value="6"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
@@ -694,6 +719,7 @@
             <Drop type="item" id="866" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="865" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
     <Enemy name="PF_Spite_Bathog_Shoot_Rock">
         <GlobalProperties>
@@ -702,10 +728,10 @@
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
-            <FrontDetectionRangeDownY value="5"/>
+            <FrontDetectionRangeDownY value="6"/>
             <BackDetectionRangeX value="2"/>
             <BackDetectionRangeUpY value="2"/>
-            <BackDetectionRangeDownY value="2"/>
+            <BackDetectionRangeDownY value="6"/>
             <ViewOffsetY value="0"/>
             <ShootOffsetY value="0.5"/>
             <ProjectilePrefabName value="COL_PRJ_DamageProjectile"/>
@@ -722,6 +748,7 @@
             <Drop type="item" id="866" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="865" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
     <Enemy name="PF_Spite_Bathog_Lava">
         <GlobalProperties>
@@ -730,10 +757,10 @@
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
-            <FrontDetectionRangeDownY value="5"/>
+            <FrontDetectionRangeDownY value="6"/>
             <BackDetectionRangeX value="2"/>
             <BackDetectionRangeUpY value="2"/>
-            <BackDetectionRangeDownY value="2"/>
+            <BackDetectionRangeDownY value="6"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
@@ -747,8 +774,9 @@
             <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
     <Enemy name="PF_Spite_Bathog_Shoot_Lava">
         <GlobalProperties>
@@ -757,10 +785,10 @@
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
-            <FrontDetectionRangeDownY value="5"/>
+            <FrontDetectionRangeDownY value="6"/>
             <BackDetectionRangeX value="2"/>
             <BackDetectionRangeUpY value="2"/>
-            <BackDetectionRangeDownY value="2"/>
+            <BackDetectionRangeDownY value="6"/>
             <ViewOffsetY value="0"/>
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
@@ -778,8 +806,9 @@
             <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
     <Enemy name="PF_Spite_Bathog_Invis">
         <GlobalProperties>
@@ -788,10 +817,10 @@
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
-            <FrontDetectionRangeDownY value="5"/>
+            <FrontDetectionRangeDownY value="6"/>
             <BackDetectionRangeX value="2"/>
             <BackDetectionRangeUpY value="2"/>
-            <BackDetectionRangeDownY value="2"/>
+            <BackDetectionRangeDownY value="6"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
@@ -805,8 +834,9 @@
             <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
     <Enemy name="PF_Spite_Bathog_Shoot_Invis">
         <GlobalProperties>
@@ -815,10 +845,10 @@
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
-            <FrontDetectionRangeDownY value="5"/>
+            <FrontDetectionRangeDownY value="6"/>
             <BackDetectionRangeX value="2"/>
             <BackDetectionRangeUpY value="2"/>
-            <BackDetectionRangeDownY value="2"/>
+            <BackDetectionRangeDownY value="6"/>
             <ViewOffsetY value="0"/>
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_DamageProjectile"/>
@@ -836,8 +866,9 @@
             <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
     <Enemy name="PF_Spite_Bathog_Swamp">
         <GlobalProperties>
@@ -846,10 +877,10 @@
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
-            <FrontDetectionRangeDownY value="5"/>
+            <FrontDetectionRangeDownY value="6"/>
             <BackDetectionRangeX value="2"/>
             <BackDetectionRangeUpY value="2"/>
-            <BackDetectionRangeDownY value="2"/>
+            <BackDetectionRangeDownY value="6"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
@@ -863,8 +894,9 @@
             <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
     <Enemy name="PF_Spite_Bathog_Shoot_Swamp">
         <GlobalProperties>
@@ -873,10 +905,10 @@
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
-            <FrontDetectionRangeDownY value="5"/>
+            <FrontDetectionRangeDownY value="6"/>
             <BackDetectionRangeX value="2"/>
             <BackDetectionRangeUpY value="2"/>
-            <BackDetectionRangeDownY value="2"/>
+            <BackDetectionRangeDownY value="6"/>
             <ViewOffsetY value="0"/>
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
@@ -894,8 +926,9 @@
             <Drop type="item" id="865" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
     <Enemy name="PF_Spite_Bathog_Boss">
         <GlobalProperties>
@@ -904,10 +937,10 @@
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
-            <FrontDetectionRangeDownY value="5"/>
+            <FrontDetectionRangeDownY value="6"/>
             <BackDetectionRangeX value="2"/>
             <BackDetectionRangeUpY value="2"/>
-            <BackDetectionRangeDownY value="2"/>
+            <BackDetectionRangeDownY value="6"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
@@ -920,8 +953,9 @@
             <Drop type="item" id="866" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="865" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
     <Enemy name="PF_Spite_Bathog_Shoot_Boss">
         <GlobalProperties>
@@ -930,10 +964,10 @@
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
-            <FrontDetectionRangeDownY value="5"/>
+            <FrontDetectionRangeDownY value="6"/>
             <BackDetectionRangeX value="2"/>
             <BackDetectionRangeUpY value="2"/>
-            <BackDetectionRangeDownY value="2"/>
+            <BackDetectionRangeDownY value="6"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value="COL_PRJ_DamageSuperProjectile"/>
         </GlobalProperties>
@@ -949,8 +983,9 @@
             <Drop type="item" id="866" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="865" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
     
     <!--Boombugs-->
@@ -977,6 +1012,7 @@
         <LootTable>
             <Drop type="item" id="3052" chance="0.2" minLevel="5" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="0.25" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
     <Enemy name="PF_Spite_Bomber_Lava">
         <GlobalProperties>
@@ -1001,6 +1037,7 @@
         <LootTable>
             <Drop type="item" id="3052" chance="0.5" minLevel="5" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="0.25" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
     
     <!--Cragcrawlers-->
@@ -1019,15 +1056,16 @@
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
         <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
-        <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+        <Aggro speed="4.8" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
         <LootTable>
             <Drop type="item" id="1585" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1586" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1584" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Crawler_Invis">
         <GlobalProperties>
@@ -1052,8 +1090,9 @@
             <Drop type="item" id="1584" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Crawler_Lava">
         <GlobalProperties>
@@ -1078,8 +1117,9 @@
             <Drop type="item" id="1584" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
 	<Enemy name="PF_Spite_Crawler_Rock">
         <GlobalProperties>
@@ -1095,7 +1135,7 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-		<Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
+		<Patrol speed="1.6" smoothMove="false" endPathWaitTime="3"/>
 		<Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
         <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
         <LootTable>
@@ -1103,6 +1143,7 @@
             <Drop type="item" id="1586" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1584" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
 	</Enemy>
     <Enemy name="PF_Spite_Crawler_Swamp">
         <GlobalProperties>
@@ -1127,8 +1168,9 @@
             <Drop type="item" id="1584" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
     
     <!--Dragons-->
@@ -1138,10 +1180,10 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="6"/>
-            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="1"/>
             <BackDetectionRangeX value="3"/>
-            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeUpY value="3"/>
             <BackDetectionRangeDownY value="1"/>
             <ShootOffsetX value="1"/>
             <ShootOffsetY value="0.5"/>
@@ -1157,6 +1199,7 @@
             <Drop type="item" id="1587" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1588" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
     <Enemy name="PF_Spite_Dragon_Lava">
         <GlobalProperties>
@@ -1164,10 +1207,10 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="7"/>
-            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="1"/>
             <BackDetectionRangeX value="4"/>
-            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeUpY value="3"/>
             <BackDetectionRangeDownY value="1"/>
             <ShootOffsetX value="2.0"/>
             <ShootOffsetY value="0.6"/>
@@ -1184,8 +1227,9 @@
             <Drop type="item" id="1588" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
     <Enemy name="PF_Spite_Dragon_Invis">
         <GlobalProperties>
@@ -1193,10 +1237,10 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="7"/>
-            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="1"/>
             <BackDetectionRangeX value="4"/>
-            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeUpY value="3"/>
             <BackDetectionRangeDownY value="1"/>
             <ShootOffsetX value="2.0"/>
             <ShootOffsetY value="0.6"/>
@@ -1213,8 +1257,9 @@
             <Drop type="item" id="1588" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
     <Enemy name="PF_Spite_Dragon_Boss">
         <GlobalProperties>
@@ -1222,10 +1267,10 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="7"/>
-            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="1"/>
             <BackDetectionRangeX value="4"/>
-            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeUpY value="3"/>
             <BackDetectionRangeDownY value="1"/>
             <ShootOffsetX value="3.0"/>
             <ShootOffsetY value="0.7"/>
@@ -1241,8 +1286,9 @@
             <Drop type="item" id="1587" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1588" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
     <Enemy name="PF_Spite_Dragon_Swamp">
         <GlobalProperties>
@@ -1250,10 +1296,10 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="7"/>
-            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="1"/>
             <BackDetectionRangeX value="4"/>
-            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeUpY value="3"/>
             <BackDetectionRangeDownY value="1"/>
             <ShootOffsetX value="2.0"/>
             <ShootOffsetY value="0.6"/>
@@ -1270,8 +1316,9 @@
             <Drop type="item" id="1588" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
     
     <!--Rumblers-->
@@ -1294,6 +1341,7 @@
             <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier"/>
             <Resource type="PROJ" name="COL_PRJ_GrenadierRock"/>
         </Grenadier>
+        <Hitbox width="1" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
     <Enemy name="PF_Spite_Grenadier_Lava">
         <GlobalProperties>
@@ -1314,6 +1362,7 @@
             <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier_Fire"/>
             <Resource type="PROJ" name="COL_PRJ_GrenadierLava"/>
         </Grenadier>
+        <Hitbox width="1" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
     <Enemy name="PF_Spite_Grenadier_Swamp">
         <GlobalProperties>
@@ -1334,6 +1383,7 @@
             <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier_Poison"/>
             <Resource type="PROJ" name="COL_PRJ_GrenadierSwamp"/>
         </Grenadier>
+        <Hitbox width="1" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
     
     <!--Orchids-->
@@ -1361,6 +1411,7 @@
             <Drop type="item" id="1595" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1594" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Ceiling_Rock">
         <GlobalProperties>
@@ -1386,6 +1437,7 @@
             <Drop type="item" id="1595" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1594" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Lava">
         <GlobalProperties>
@@ -1412,8 +1464,9 @@
             <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Ceiling_Lava">
         <GlobalProperties>
@@ -1440,8 +1493,9 @@
             <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Swamp">
         <GlobalProperties>
@@ -1468,8 +1522,9 @@
             <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Ceiling_Swamp">
         <GlobalProperties>
@@ -1496,8 +1551,9 @@
             <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Invis">
         <GlobalProperties>
@@ -1524,8 +1580,9 @@
             <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Ceiling_Invis">
         <GlobalProperties>
@@ -1552,8 +1609,9 @@
             <Drop type="item" id="1594" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Boss">
         <GlobalProperties>
@@ -1579,8 +1637,9 @@
             <Drop type="item" id="1595" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1594" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Ceiling_Boss">
         <GlobalProperties>
@@ -1606,8 +1665,9 @@
             <Drop type="item" id="1595" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1594" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     
     <!--Pincers-->
@@ -1617,10 +1677,10 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
-            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="0.25"/>
             <BackDetectionRangeX value="6"/>
-            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeUpY value="3"/>
             <BackDetectionRangeDownY value="0"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
@@ -1633,8 +1693,9 @@
             <Drop type="item" id="1596" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1597" chance="0.2" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="1" offsetX="0.3" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Invis">
         <GlobalProperties>
@@ -1659,8 +1720,9 @@
             <Drop type="item" id="1597" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1598" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="1" offsetX="0.3" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Lava">
         <GlobalProperties>
@@ -1668,7 +1730,7 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
-            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="0.25"/>
             <BackDetectionRangeX value="6"/>
             <BackDetectionRangeUpY value="2"/>
@@ -1685,8 +1747,9 @@
             <Drop type="item" id="1597" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1591" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="1" offsetX="0.3" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Rock">
         <GlobalProperties>
@@ -1694,7 +1757,7 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
-            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeUpY value="2"/>
             <FrontDetectionRangeDownY value="0.25"/>
             <BackDetectionRangeX value="6"/>
             <BackDetectionRangeUpY value="2"/>
@@ -1710,6 +1773,7 @@
             <Drop type="item" id="1596" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1597" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
+        <Hitbox width="2" height="1" offsetX="0.3" offsetY="0.5"/>
     </Enemy>
 	<Enemy name="PF_Spite_Pincer_Swamp">
         <GlobalProperties>
@@ -1717,10 +1781,10 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
-            <FrontDetectionRangeUpY value="1"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="0.25"/>
             <BackDetectionRangeX value="6"/>
-            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeUpY value="3"/>
             <BackDetectionRangeDownY value="0"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
@@ -1734,8 +1798,9 @@
             <Drop type="item" id="1597" chance="0.05" minLevel="7" maxLevel="65"/>
             <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
-            <Drop type="randomArmor" chance="0.02" minLevel="5" maxLevel="50"/>
+            <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
+        <Hitbox width="2" height="1" offsetX="0.3" offsetY="0.5"/>
 	</Enemy>
     <!--Ograks-->
 	<Enemy name="PF_Spite_Stomper_Rock">
@@ -1744,10 +1809,10 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
-            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="0.25"/>
             <BackDetectionRangeX value="3"/>
-            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeUpY value="3"/>
             <BackDetectionRangeDownY value="0"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
@@ -1758,6 +1823,7 @@
         <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
             <Resource type="EABIL" name="PF_EABIL_Spite_Stomper"/>
         </Stomper>
+        <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
 	</Enemy>
     <Enemy name="PF_Spite_Stomper_Lava">
         <GlobalProperties>
@@ -1765,10 +1831,10 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
-            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="0.25"/>
             <BackDetectionRangeX value="3"/>
-            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeUpY value="3"/>
             <BackDetectionRangeDownY value="0"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
@@ -1779,6 +1845,7 @@
         <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
             <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Fire"/>
         </Stomper>
+        <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Stomper_Swamp">
         <GlobalProperties>
@@ -1786,10 +1853,10 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
-            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="0.25"/>
             <BackDetectionRangeX value="3"/>
-            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeUpY value="3"/>
             <BackDetectionRangeDownY value="0"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
@@ -1800,6 +1867,7 @@
         <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
             <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Poison"/>
         </Stomper>
+        <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Stomper_Boss">
         <GlobalProperties>
@@ -1807,10 +1875,10 @@
             <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
-            <FrontDetectionRangeUpY value="2"/>
+            <FrontDetectionRangeUpY value="3"/>
             <FrontDetectionRangeDownY value="0.25"/>
             <BackDetectionRangeX value="3"/>
-            <BackDetectionRangeUpY value="2"/>
+            <BackDetectionRangeUpY value="3"/>
             <BackDetectionRangeDownY value="0"/>
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
@@ -1821,6 +1889,7 @@
         <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
             <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Miniboss"/>
         </Stomper>
+        <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
     </Enemy>
 
     <!--Vespid-->
