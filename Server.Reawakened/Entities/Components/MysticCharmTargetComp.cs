@@ -17,19 +17,12 @@ public class MysticCharmTargetComp : Component<MysticCharmTarget>
     {
         if (!IsOpened)
             Charm(player);
-
-        base.RunSyncedEvent(syncEvent, player);
     }
 
     public void Charm(Player player)
     {
         IsOpened = true;
-
-        var syncEvent = new SyncEvent(Id.ToString(), SyncEvent.EventType.Charm, Room.Time);
-        syncEvent.EventDataList.Add(1);
-        syncEvent.EventDataList.Add(398);
-
-        var charmEvent = new Charm_SyncEvent(syncEvent);
+        var charmEvent = new Charm_SyncEvent(Id.ToString(), Room.Time, true, 398);
         player.SendSyncEventToPlayer(charmEvent);
     }
 }
