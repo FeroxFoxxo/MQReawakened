@@ -607,4 +607,68 @@
             <Item prefabName="Add_COM_Armor01_LS01" />
         </Vendor>
     </Level>
+    <Level id="134">
+        <!-- Cauldron Keep -->
+        <Vendor objectId="413" name="Brewee" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="784" greetingConversationId="2178" leavingConversationId="2177">
+            <Item prefabName="COL_ING_C_CocoShell01" />
+            <Item prefabName="COL_ING_C_GlacialWater01" />
+            <Item prefabName="COL_ING_C_MountainWater01" />
+            <Item prefabName="COL_ING_C_PureWater01" />
+            <Item prefabName="COL_ING_C_Quartz01" />
+            <Item prefabName="COL_ING_C_Sodium01" />
+            <Item prefabName="COL_ING_C_Sulphur01" />
+            <Item prefabName="COL_ING_G_GloomCap01" />
+            <Item prefabName="COL_RECIP_POT_Healing01" />
+            <Item prefabName="COL_RECIP_ABIL_PoisonBomb01" />
+            <Item prefabName="COL_RECIP_POT_Healing02" />
+            <Item prefabName="COL_RECIP_RefinedGloomCap01" />
+            <Item prefabName="COL_RECIP_RefinedMudPie01" />
+            <Item prefabName="COL_RECIP_POT_ElixerOfLife01" />
+            <Item prefabName="COL_RECIP_POT_Healing03" />
+            <Item prefabName="COL_RECIP_POT_PotionOfShielding01" />
+            <Item prefabName="COL_RECIP_RefinedAloe01" />
+            <Item prefabName="COL_RECIP_RefinedDandelions01" />
+            <Item prefabName="COL_RECIP_RefinedGarlic01" />
+            <Item prefabName="COL_RECIP_RefinedGoldNugget01" />
+            <Item prefabName="COL_RECIP_RefinedLeather01" />
+            <Item prefabName="COL_RECIP_RefinedLinen01" />
+            <Item prefabName="COL_RECIP_RefinedOak01" />
+            <Item prefabName="COL_RECIP_ABIL_PoisonBomb02" />
+            <Item prefabName="COL_RECIP_POT_Healing04" />
+            <Item prefabName="COL_RECIP_POT_ElixerOfLife02" />
+            <Item prefabName="COL_RECIP_POT_PotionOfShielding02" />
+            <Item prefabName="COL_RECIP_POT_Healing05" />
+        </Vendor>
+        <Vendor objectId="415" name="Stitch" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Tailor" dialogId="783" greetingConversationId="2172" leavingConversationId="2171">
+            <Item prefabName="COL_ING_C_MediumThread01" />
+            <Item prefabName="COL_ING_C_StrongThread01" />
+            <Item prefabName="COL_ING_C_WeakThread01" />
+            <Item prefabName="COL_RECIP_OUT_CaptBoy01_E05" />
+            <Item prefabName="COL_RECIP_BON_TailRing01_T03" />
+            <Item prefabName="COL_RECIP_BON_Mystic01_E03" />
+            <Item prefabName="COL_RECIP_BON_Spiritualist01_W02" />
+            <Item prefabName="COL_RECIP_BON_Spiritualist01_S02" />
+            <Item prefabName="COL_RECIP_BON_Spiritualist01_LS02" />
+            <Item prefabName="COL_RECIP_BON_Spiritualist01_TS02" />
+            <Item prefabName="COL_RECIP_COM_Indonesian01_W02" />
+            <Item prefabName="COL_RECIP_COM_Indonesian01_LS02" />
+            <Item prefabName="COL_RECIP_COM_Indonesian01_S02" />
+            <Item prefabName="COL_RECIP_COM_Indonesian01_TS02" />
+        </Vendor>
+        <Vendor objectId="429" name="Hawk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="BlackSmith" dialogId="1332" greetingConversationId="3347" leavingConversationId="3346">
+            <Item prefabName="COL_RECIP_BUFF_Bandage01" />
+            <Item prefabName="COL_RECIP_BUFF_GlyphProtection01" />
+            <Item prefabName="COL_RECIP_BUFF_RubberBand01" />
+            <Item prefabName="COL_RECIP_BUFF_Bandage02" />
+            <Item prefabName="COL_RECIP_BUFF_GlyphProtection02" />
+            <Item prefabName="COL_RECIP_BUFF_RubberBand02" />
+            <Item prefabName="COL_RECIP_BUFF_Bandage03" />
+            <Item prefabName="COL_RECIP_BUFF_GlyphProtection03" />
+            <Item prefabName="COL_RECIP_BUFF_RubberBand03" />
+            <Item prefabName="COL_RECIP_BUFF_Bandage04" />
+            <Item prefabName="COL_RECIP_BUFF_GlyphProtection04" />
+            <Item prefabName="COL_RECIP_BUFF_RubberBand04" />
+            <Item prefabName="COL_RECIP_BUFF_Bandage05" />
+        </Vendor>
+    </Level>
 </VendorCatalog>

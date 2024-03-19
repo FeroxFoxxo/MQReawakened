@@ -200,12 +200,24 @@
                 <Item itemName="Add_COM_Explorator01_TS01" count="1" />
             </Items>
         </LootInfo>
-        <!--Monkey King's Golden Statue Chest-->
+        <!--Guardian Knight Monument-->
         <LootInfo objectId="97238" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_POT_Healing02" count="1" />
+                <Item itemName="COL_POT_Healing04" count="1" />
                 <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" />
                 <Item itemName="WPN_SPC_DoomGrenade01" count="3" />
+                <Item itemName="WPN_SPC_WaterBalloon01" count="3" />
+                <Item itemName="WPN_SPC_BeastBomb01" count="5" />
+                <Item itemName="WPN_SPC_StormyPopper01" count="3" />
+                <Item itemName="Add_COM_Beckett01_S01" count="1" />
+                <Item itemName="Add_COM_Beckett01_TS01" count="1" />
+                <Item itemName="Add_COM_Beckett01_LS01" count="1" />
+                <Item itemName="Add_COM_Beckett01_W01" count="1" />
+                <Item itemName="Add_COM_Beckett01_T01" count="1" />
+                <Item itemName="Add_COM_Beckett01_BP01" count="1" />
             </Items>
         </LootInfo>
     </Level>
@@ -1771,6 +1783,19 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Jade Mountain">
+        <!--Jack in the Box-->
+        <LootInfo objectId="659" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Tiger01_T05" count="1" />
+                <Item itemName="WPN_SPC_StormyPopper01" count="1" />
+                <Item itemName="Add_COM_Tiger01_S05" count="1" />
+                <Item itemName="Add_COM_Tiger01_TS05" count="1" />
+                <Item itemName="Add_COM_Tiger01_LS05" count="1" />
+                <Item itemName="COL_ING_G_Silk02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
     <Level name="The Chim Foo Rooftops">
         <!--Blue Chest-->
         <LootInfo objectId="4249" doLootWheel="true">
@@ -1782,6 +1807,17 @@
                 <Item itemName="Add_COM_RibbonTail01_T01" count="1" />
                 <Item itemName="Add_COM_Armor01_S02" count="1" />
                 <Item itemName="Add_SHD_Guard01_T03 " count="1" />
+            </Items>
+        </LootInfo>
+        <!--Jack in the Box (speculation)-->
+        <LootInfo objectId="4242" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Tiger01_T05" count="1" />
+                <Item itemName="WPN_SPC_StormyPopper01" count="1" />
+                <Item itemName="Add_COM_Tiger01_S05" count="1" />
+                <Item itemName="Add_COM_Tiger01_TS05" count="1" />
+                <Item itemName="Add_COM_Tiger01_LS05" count="1" />
+                <Item itemName="COL_ING_G_Silk02" count="1" />
             </Items>
         </LootInfo>
         <!--Green Chest 1-->
@@ -2087,32 +2123,41 @@
         </LootInfo>
     </Level>
     <Level name="Chim Foo Square">
-        <!--Mist's Golden Statue Chest-->
+        <!--Monument of Mist-->
         <LootInfo objectId="4874" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_AirResist01" count="1" />
+                <Item itemName="COL_POT_AirResist03" count="1" />
                 <Item itemName="COL_POT_AirElixir01" count="1" />
+                <Item itemName="COL_POT_AirElixir03" count="1" />
                 <Item itemName="WPN_SPC_DragonBomb01" count="3" />
+                <Item itemName="WPN_SPC_StormyPopper01" count="3" />
             </Items>
         </LootInfo>
     </Level>
     <Level name="Mystic Plaza">
-        <!--Mama Ootu's Golden Statue Chest-->
+        <!--Monument of Mama Ootu (speculation)-->
         <LootInfo objectId="631" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_EarthResist01" count="1" />
+                <Item itemName="COL_POT_EarthResist03" count="1" />
                 <Item itemName="COL_POT_EarthElixir01" count="1" />
+                <Item itemName="COL_POT_EarthElixir03" count="1" />
                 <Item itemName="ABIL_PoisonBomb01" count="3" />
+                <Item itemName="ABIL_PoisonBomb03" count="3" />
             </Items>
         </LootInfo>
     </Level>
     <Level name="Dragontail Square">
-        <!--Dragontail's Golden Statue Chest-->
+        <!--Monument of Dragontail-->
         <LootInfo objectId="1614" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_FireResist01" count="1" />
+                <Item itemName="COL_POT_FireResist03" count="1" />
                 <Item itemName="COL_POT_FireElixer01" count="1" />
-                <Item itemName="COL_BOMB_FireBomb01" count="3" />
+                <Item itemName="COL_POT_FireElixer03" count="1" />
+                <Item itemName="ABIL_Grenade01" count="3" />
+                <Item itemName="ABIL_Grenade03" count="3" />
             </Items>
         </LootInfo>
     </Level>

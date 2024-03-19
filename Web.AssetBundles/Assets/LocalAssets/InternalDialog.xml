@@ -257,6 +257,10 @@
         <NPC objectId="1028" name="Armond" descriptionId="0">
             <Dialog dialogId="1413" conversationId="3579" minimumReputation="1" />
         </NPC>
+        <NPC objectId="767" name="Pelican Bill" descriptionId="0">
+            <Dialog dialogId="637" conversationId="1887" minimumReputation="1" />
+            <Dialog dialogId="638" conversationId="1888" minimumReputation="5" />
+        </NPC>
     </Level>
     <Level id="564">
         <!-- SpongeBob's Amusement Park -->
@@ -334,6 +338,9 @@
         <NPC objectId="647" name="Chim Foo Guard" descriptionId="0">
             <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
         </NPC>
+        <NPC objectId="629" name="Miko" descriptionId="0">
+            <Dialog dialogId="451" conversationId="1379" minimumReputation="1" />
+        </NPC>
     </Level>
     <Level id="144">
         <!-- Ancient Foo Archive -->
@@ -352,6 +359,10 @@
         <NPC objectId="1142" name="Chim Foo Guard" descriptionId="0">
             <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
         </NPC>
+        <NPC objectId="300" name="Master Shade" descriptionId="0">
+            <Dialog dialogId="705" conversationId="1955" minimumReputation="1" />
+            <Dialog dialogId="706" conversationId="1956" minimumReputation="5" />
+        </NPC>
     </Level>
     <Level id="146">
         <!-- Chim Foo Square -->
@@ -364,11 +375,38 @@
         <NPC objectId="1098" name="Chim Foo Guard" descriptionId="0">
             <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
         </NPC>
+        <NPC objectId="615" name="Grand Master Whisper" descriptionId="0">
+            <Dialog dialogId="453" conversationId="1381" minimumReputation="1" />
+            <Dialog dialogId="454" conversationId="1382" minimumReputation="5" />
+            <Dialog dialogId="455" conversationId="1383" minimumReputation="10" />
+        </NPC>
+        <NPC objectId="533" name="Wisp" descriptionId="0">
+            <Dialog dialogId="702" conversationId="1952" minimumReputation="1" />
+        </NPC>
     </Level>
     <Level id="92">
         <!-- Blimp Ridge -->
         <NPC objectId="658" name="Samez" descriptionId="0">
             <Dialog dialogId="859" conversationId="2375" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level id="280">
+        <!-- Dragontail Square -->
+        <NPC objectId="1613" name="Sandrig" descriptionId="0">
+            <Dialog dialogId="1345" conversationId="3295" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level id="133">
+        <!-- Mystic Plaza -->
+        <NPC objectId="629" name="Mooni" descriptionId="0">
+            <Dialog dialogId="1346" conversationId="3296" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level id="437">
+        <!-- The Forgotten Temple (Not the tutorial level) -->
+        <NPC objectId="31517" name="Mysterious Warrior" descriptionId="0">
+            <Dialog dialogId="902" conversationId="2501" minimumReputation="1" />
+            <Dialog dialogId="909" conversationId="2508" minimumReputation="5" />
         </NPC>
     </Level>
 </DialogCatalog>
