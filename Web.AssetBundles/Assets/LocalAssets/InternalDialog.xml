@@ -371,4 +371,16 @@
             <Dialog dialogId="859" conversationId="2375" minimumReputation="1" />
         </NPC>
     </Level>
+    <Level id="280">
+        <!-- Dragontail Square -->
+        <NPC objectId="1613" name="Sandrig" descriptionId="0">
+            <Dialog dialogId="1345" conversationId="3295" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level id="133">
+        <!-- Mystic Plaza -->
+        <NPC objectId="629" name="Mooni" descriptionId="0">
+            <Dialog dialogId="1346" conversationId="3296" minimumReputation="1" />
+        </NPC>
+    </Level>
 </DialogCatalog>
