@@ -7,7 +7,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
-public class EnemyRachnok(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : AIStateEnemy(room, entityId, prefabName, enemyController, services)
+public class EnemySpiderBoss(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : AIStateEnemy(room, entityId, prefabName, enemyController, services)
 {
     public override void Initialize()
     {
