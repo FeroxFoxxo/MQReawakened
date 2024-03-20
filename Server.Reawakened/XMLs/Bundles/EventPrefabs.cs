@@ -217,7 +217,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
 
         var rwConfig = Services.GetRequiredService<ServerRwConfig>();
         var rConfig = Services.GetRequiredService<ServerRConfig>();
-        var eventDisplay = Services.GetRequiredService<EventDisplayPopup>();
 
         var defaultEventName = string.Empty;
         var defaultTimedEvent = string.Empty;
@@ -282,8 +281,7 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
                 .ToList(),
 
             TimedEventName = defaultTimedEvent,
-            GameVersion = rConfig.GameVersion,
-            EventDisplay = eventDisplay
+            GameVersion = rConfig.GameVersion
         };
     }
 }
