@@ -179,7 +179,7 @@ public abstract class Enemy : IDestructible
             //The XP Reward here is not accurate, but pretty close
             var xpAward = DeathXp - (origin.Character.Data.GlobalLevel - 1) * 5;
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, origin == null ? "0" : origin.GameObjectId, false));
-            origin.AddReputation(xpAward > 0 ? xpAward : 1);
+            origin.AddReputation(xpAward > 0 ? xpAward : 1, EnemyController.ServerRConfig);
             Room.KillEntity(origin, Id);
 
             //For spawners

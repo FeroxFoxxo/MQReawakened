@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -34,6 +35,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public InternalAchievement InternalAchievement { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public TimerThread TimerThread { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }    
     public ItemCatalog ItemCatalog { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public ILogger<EnemyControllerComp> Logger { get; set; }
@@ -78,7 +80,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         if (EnemyHealth <= 0)
         {
             Console.WriteLine(ComponentData.OnKillFXPrefab);
-            origin.AddReputation(OnKillExp);
+            origin.AddReputation(OnKillExp, ServerRConfig);
             Room.KillEntity(origin, Id);
         }
     }
