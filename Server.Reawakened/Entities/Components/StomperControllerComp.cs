@@ -1,9 +1,5 @@
-﻿using A2m.Server;
-using Server.Base.Timers.Extensions;
-using Server.Base.Timers.Services;
+﻿using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.AbstractComponents;
-using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using static Stomper_Movement;
 
 namespace Server.Reawakened.Entities.Components;
