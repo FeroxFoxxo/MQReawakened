@@ -95,14 +95,14 @@ public class EnemyGrenadier(Room room, string entityId, string prefabName, Enemy
 
     public override void DetectPlayers(string behaviorToRun)
     {
-        foreach (var player in Room.Players)
-            if (PlayerInRange(player.Value.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
+        foreach (var player in Room.Players.Values)
+            if (PlayerInRange(player.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
-                Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
+                Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.TempData.Position.X,
                     Position.y, Generic.Patrol_ForceDirectionX, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
-                AiData.Sync_TargetPosX = player.Value.TempData.Position.X;
+                AiData.Sync_TargetPosX = player.TempData.Position.X;
                 AiData.Sync_TargetPosY = Position.y;
 
                 AiBehavior = ChangeBehavior(behaviorToRun);
