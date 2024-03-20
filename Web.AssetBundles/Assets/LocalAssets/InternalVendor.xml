@@ -672,7 +672,7 @@
         </Vendor>
     </Level>
     <Level id="274">
-        <!-- Plunder Alley (ALL custom vendors) -->
+        <!-- Plunder Alley (Custom vendors, change if source is known) -->
         <Vendor objectId="639" name="Cutlass" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1309" greetingConversationId="3307" leavingConversationId="3306">
             <Item prefabName="WPN_PRJ_SpearGun01" />
             <Item prefabName="WPN_MEL_SwordFish01" />
@@ -741,4 +741,43 @@
             <Item prefabName="COL_FOOD_Melon01" />
         </Vendor>
     </Level>
+    <Level id="275">
+        <!-- Shipwreck Yards (Custom vendors, change if source is known) -->
+        <Vendor objectId="507" name="Huck" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Blacksmith" dialogId="1308" greetingConversationId="3322" leavingConversationId="3321">
+            <Item prefabName="COL_RECIP_ABIL_Grenade01" />
+            <Item prefabName="COL_RECIP_ABIL_Grenade02" />
+            <Item prefabName="COL_RECIP_ABIL_Grenade03" />
+            <Item prefabName="COL_RECIP_BOMB_FireBomb01" />
+            <Item prefabName="COL_RECIP_BOMB_FireBomb02" />
+            <Item prefabName="COL_RECIP_BOMB_FireBomb03" />
+            <Item prefabName="COL_ING_C_Quartz01" />
+            <Item prefabName="COL_ING_C_Sodium01" />
+            <Item prefabName="COL_ING_C_Sulphur01" />
+        </Vendor>
+        <Vendor objectId="503" name="Salve" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="782" greetingConversationId="2166" leavingConversationId="2165">
+            <Item prefabName="COL_RECIP_PurifiedGoldNugget01" />
+            <Item prefabName="COL_RECIP_RefinedGoldNugget01" />
+            <Item prefabName="COL_RECIP_POT_WaterBreath02" />
+            <Item prefabName="COL_RECIP_POT_WaterBreath03" />
+            <Item prefabName="COL_ING_C_PureWater01" />
+            <Item prefabName="COL_ING_C_MountainWater01" />
+            <Item prefabName="COL_ING_C_GlacialWater01" />
+        </Vendor>
+        <Vendor objectId="504" name="Knit" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Tailor" dialogId="781" greetingConversationId="2160" leavingConversationId="2159">
+            <Item prefabName="COL_ING_C_WeakThread01" />
+            <Item prefabName="COL_ING_C_MediumThread01" />
+            <Item prefabName="COL_ING_C_StrongThread01" />
+            <Item prefabName="COL_RECIP_OUT_Bluebeard01_S02" />
+            <Item prefabName="COL_RECIP_COM_WaterSport01_S01" />
+            <Item prefabName="COL_RECIP_COM_WaterSport01_LS01" />
+            <Item prefabName="COL_RECIP_COM_WaterSport01_TS01" />
+            <Item prefabName="COL_RECIP_COM_AnimalWood01_T03" />
+            <Item prefabName="COL_RECIP_OUT_SeaExplorer01_TS04" />
+            <Item prefabName="COL_RECIP_OUT_SeaExplorer01_S04" />
+            <Item prefabName="COL_RECIP_OUT_CrookedCook01_S04" />
+            <Item prefabName="COL_RECIP_COM_DreadPlate01_BP03" />
+            <Item prefabName="COL_RECIP_COM_DreadPlate01_T03" />
+            <Item prefabName="COL_RECIP_COM_DreadPlate01_W03" />
+        </Vendor>    
+    </Level>    
 </VendorCatalog>
