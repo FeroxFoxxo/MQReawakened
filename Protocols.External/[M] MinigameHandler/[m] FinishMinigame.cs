@@ -24,7 +24,6 @@ public class FinishedMinigame : ExternalProtocol
 
         Logger.LogInformation("Minigame with ID ({minigameId}) has completed.", arenaObjectId);
 
-
         foreach (var player in Player.Room.Players.Values)
             player.SendXt("Mt", arenaObjectId, Player.CharacterId, finishedRaceTime);
 
