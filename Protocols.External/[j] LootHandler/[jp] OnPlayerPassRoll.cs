@@ -11,20 +11,20 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Protocols.External._j__LootHandler;
-public class OnPlayerWantToRoll : ExternalProtocol
+public class OnPlayerPassRoll : ExternalProtocol
 {
-    public override string ProtocolName => "jr";
+    public override string ProtocolName => "jp";
 
     public override void Run(string[] message)
     {
         var objectId = int.Parse(message[5]);
 
-        Player.TempData.VotedForItem.Add(objectId, true);
+        Player.TempData.VotedForItem.Add(objectId, false);
 
         var playersInRoom = Player.Room.Players.Values;
 
         foreach (var player in playersInRoom)
-            player.SendXt("jr", Player.UserId, objectId);
+            player.SendXt("jp", Player.UserId, objectId);
 
         if (playersInRoom.All(x => x.TempData.VotedForItem.ContainsKey(objectId)))
         {
@@ -36,7 +36,6 @@ public class OnPlayerWantToRoll : ExternalProtocol
                 var rewardedData = new SeparatedStringBuilder('|');
 
                 rewardedData.Append(objectId);
-                Console.WriteLine("Win: " + winningPlayer.CharacterName);
                 rewardedData.Append(winningPlayer.UserId);
 
                 player.SendXt("jl", rewardedData.ToString());
