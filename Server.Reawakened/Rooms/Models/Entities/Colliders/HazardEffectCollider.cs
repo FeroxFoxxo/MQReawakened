@@ -33,12 +33,6 @@ public class HazardEffectCollider(string hazardId, Vector3Model position, RectMo
         Room.GetEntityFromId<DroppingsControllerComp>(hazardId)?.FreezePlayer(player);
     }
 
-    public void DelayStompDamage(object stompControllerData)
-    {
-        var stompData = (StomperControllerComp)stompControllerData;
-        stompData.ApplyStompDamage = true;
-    }
-
     public void DisableEffectBasedOffHazardType(string hazardId, Player player)
     {
         Room.GetEntityFromId<BaseHazardControllerComp<HazardController>>(hazardId)?.DisableHazardEffects(player);
