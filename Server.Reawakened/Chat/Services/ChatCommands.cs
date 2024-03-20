@@ -6,7 +6,6 @@ using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
 using Server.Base.Logging;
-using Server.Base.Worlds;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
