@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -34,6 +35,10 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
+        if (player.TempData.Group != null)
+            foreach (var groupMember in player.TempData.Group.GetMembers())
+                groupMember.SendXt("js", $"{Id}|{1232}|{1232}|{1870}|{1872}|{1874}|{1876}");
+
         player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
 
         player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1, QuestCatalog);

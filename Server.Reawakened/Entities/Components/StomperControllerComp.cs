@@ -1,4 +1,9 @@
-﻿using Server.Reawakened.Entities.AbstractComponents;
+﻿using A2m.Server;
+using Server.Base.Timers.Extensions;
+using Server.Base.Timers.Services;
+using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using static Stomper_Movement;
 
 namespace Server.Reawakened.Entities.Components;
@@ -17,6 +22,11 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
     private float _thirdStep;
     private float _fullBehaviorTime;
 
+    public StomperState State;
+    public bool ApplyStompDamage = true;
+
+    public TimerThread TimerThread { get; set; }
+
     public override void InitializeComponent()
     {
         _firstStep = WaitTimeUp;
@@ -31,15 +41,20 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
             Movement.Activated, Room.Time, InitialProgressRatio
         );
 
-        base.InitializeComponent();
+        Room.Colliders.Add(Id, new HazardEffectCollider(Id, Position, Rectangle, ParentPlane, Room));
     }
 
     public override void Update()
     {
         base.Update();
-
+        
         var movement = (Stomper_Movement)Movement;
         movement.GetBehaviorRatio(Room.Time);
+
+        State = GetState(Room.Time);
+
+        if (Id == "538")
+            Console.WriteLine("St: " + Room.GetEntitiesFromType<StomperControllerComp>().First().State);
     }
 
     public StomperState GetState(float time)
