@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Players.Helpers;
+﻿using Server.Reawakened.Entities.Entity.Enemies;
+using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Entities.Entity.Utils;
 public static class AIPropertiesCompilerExtensions

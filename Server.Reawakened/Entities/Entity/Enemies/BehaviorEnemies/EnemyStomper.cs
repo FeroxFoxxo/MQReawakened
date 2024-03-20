@@ -5,8 +5,8 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyPincer(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
+namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
+public class EnemyStomper(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
 {
 
     private float _behaviorEndTime;
@@ -67,20 +67,19 @@ public class EnemyPincer(Room room, string entityId, string prefabName, EnemyCon
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-
-            AiBehavior = ChangeBehavior("LookAround");
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
+            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Stomper"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
             AiData.Intern_Dir, false));
 
-            _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
+            AiBehavior = ChangeBehavior("Stomper");
+            _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("Stomper", "attackTime")));
         }
     }
 
-    public override void HandleLookAround()
+    public override void HandleStomper()
     {
-        base.HandleLookAround();
+        base.HandleStomper();
 
-        DetectPlayers("Aggro");
+        //DetectPlayers("Aggro");
 
         if (Room.Time >= _behaviorEndTime)
         {
@@ -92,13 +91,10 @@ public class EnemyPincer(Room room, string entityId, string prefabName, EnemyCon
     public override void DetectPlayers(string behaviorToRun)
     {
         foreach (var player in Room.Players)
-        {
             if (PlayerInRange(player.Value.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
-                AiBehavior.Stop(ref AiData);
-
                 Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
-                    Position.y, AiData.Intern_Dir, false));
+                    Position.y, Generic.Patrol_ForceDirectionX, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
                 AiData.Sync_TargetPosX = player.Value.TempData.Position.X;
@@ -108,6 +104,5 @@ public class EnemyPincer(Room room, string entityId, string prefabName, EnemyCon
 
                 _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
             }
-        }
     }
 }

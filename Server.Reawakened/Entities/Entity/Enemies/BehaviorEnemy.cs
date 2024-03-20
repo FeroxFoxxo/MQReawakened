@@ -20,45 +20,17 @@ using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.Entity;
+namespace Server.Reawakened.Entities.Entity.Enemies;
 
-public abstract class BehaviorEnemy : Enemy, IDestructible
+public abstract class BehaviorEnemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : Enemy(room, entityId, prefabName, enemyController, services), IDestructible
 {
-    private readonly ILogger<BehaviorEnemy> _logger;
-    private readonly InternalAchievement _internalAchievement;
-    private readonly QuestCatalog _questCatalog;
-    private readonly ItemCatalog _itemCatalog;
-    public readonly InternalDefaultEnemies InternalEnemy;
-
     public AIStatsGlobalComp Global;
     public AIStatsGenericComp Generic;
     public AIBaseBehavior AiBehavior;
-    public BehaviorModel BehaviorList;
 
-    private float _negativeHeight;
-    private BaseSpawnerControllerComp _linkedSpawner;
-
-    public BehaviorEnemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services)
+    public override void Initialize()
     {
-        //Basic Stats
-        Room = room;
-        Id = entityId;
-        IsFromSpawner = false;
-        MinBehaviorTime = 0;
-        SyncBuilder = new AISyncEventHelper();
-
-        _logger = services.GetRequiredService<ILogger<BehaviorEnemy>>();
-        _internalAchievement = services.GetRequiredService<InternalAchievement>();
-        _questCatalog = services.GetRequiredService<QuestCatalog>();
-        _itemCatalog = services.GetRequiredService<ItemCatalog>();
-        InternalEnemy = services.GetRequiredService<InternalDefaultEnemies>();
-
-        //Component Info
-        EnemyController = enemyController;
-
-        //Position Info
-        ParentPlane = EnemyController.ParentPlane;
-        Position = new Vector3(EnemyController.Position.X, EnemyController.Position.Y, EnemyController.Position.Z);
+        base.Initialize();
 
         //External Component Info
         var global = room.GetEntityFromId<AIStatsGlobalComp>(Id);
@@ -68,31 +40,6 @@ public abstract class BehaviorEnemy : Enemy, IDestructible
         var generic = room.GetEntityFromId<AIStatsGenericComp>(Id);
         if (generic != null)
             Generic = generic;
-
-        var status = room.GetEntityFromId<InterObjStatusComp>(Id);
-        if (status != null)
-            Status = status;
-
-        //Plane Wrapup
-        if (ParentPlane.Equals("TemplatePlane"))
-            CheckForSpawner();
-
-        if (ParentPlane.Equals("Plane1"))
-            Position.z = 20;
-
-        //Stats
-        BehaviorList = InternalEnemy.GetBehaviorsByName(prefabName);
-        OnDeathTargetId = EnemyController.OnDeathTargetID;
-        Health = EnemyController.EnemyHealth;
-        MaxHealth = EnemyController.MaxHealth;
-        DeathXp = EnemyController.OnKillExp;
-        Level = EnemyController.Level;
-
-        //Hitbox Info
-        GenerateHitbox(BehaviorList.Hitbox);
-
-        //This is just a dummy. AI_Stats_Global has no data, so these fields are populated in the specific Enemy classes
-        EnemyGlobalProps = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", "", false, false, 0);
 
         //AIProcessData assignment, used for AI_Behavior
         AiData = new AIProcessData();
@@ -106,45 +53,18 @@ public abstract class BehaviorEnemy : Enemy, IDestructible
         AiData.SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio;
     }
 
-    public void CheckForSpawner()
+    public override void CheckForSpawner()
     {
-        IsFromSpawner = true;
-        var spawnerId = Id.Split("_");
-        _linkedSpawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(spawnerId[0]);
+        base.CheckForSpawner();
 
-        Position = new Vector3(_linkedSpawner.Position.X + _linkedSpawner.SpawningOffsetX, _linkedSpawner.Position.Y + _linkedSpawner.SpawningOffsetY, _linkedSpawner.Position.Z);
-        ParentPlane = _linkedSpawner.ParentPlane;
-
-        Global = _linkedSpawner.Global;
-        Generic = _linkedSpawner.Generic;
-        Status = _linkedSpawner.Status;
+        Global = LinkedSpawner.Global;
+        Generic = LinkedSpawner.Generic;
+        Status = LinkedSpawner.Status;
     }
 
-    public void GenerateHitbox(HitboxModel box)
+    public override void Update()
     {
-        var width = box.Width * EnemyController.Scale.X;
-        var height = box.Height * EnemyController.Scale.Y;
-        var offsetX = box.XOffset * EnemyController.Scale.X - width / 2;
-        var offsetY = box.YOffset * EnemyController.Scale.Y - height / 2;
-
-        _negativeHeight = 0;
-        if (EnemyController.Scale.Y < 0)
-            _negativeHeight = height;
-
-        Hitbox = new EnemyCollider(Id, new Vector3Model { X = offsetX, Y = offsetY - _negativeHeight, Z = Position.z },
-             width, height, ParentPlane, Room);
-        Room.Colliders.Add(Id, Hitbox);
-    }
-
-    public virtual void Initialize() => Init = true;
-
-    public virtual void Update()
-    {
-        if (!Init)
-            Initialize();
-
-        if (Room.IsObjectKilled(Id))
-            return;
+        base.Update();
 
         switch (AiBehavior)
         {
@@ -183,7 +103,7 @@ public abstract class BehaviorEnemy : Enemy, IDestructible
         }
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
-        Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - _negativeHeight, Position.z);
+        Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - EnemyController.Scale.Y > 0 ? Hitbox.ColliderBox.Height : 0, Position.z);
     }
 
     private string WriteBehaviorList()
@@ -202,62 +122,6 @@ public abstract class BehaviorEnemy : Enemy, IDestructible
         }
 
         return bList.ToString();
-    }
-
-    public virtual void Damage(int damage, Player origin)
-    {
-        if (Room.IsObjectKilled(Id))
-            return;
-
-        var trueDamage = damage - GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Enemy, Level);
-        if (trueDamage <= 0)
-            trueDamage = 1;
-
-        Health -= trueDamage;
-
-        var damageEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, trueDamage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true);
-        Room.SendSyncEvent(damageEvent);
-
-        if (Health <= 0)
-        {
-            if (OnDeathTargetId is not null and not "0")
-                foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(OnDeathTargetId))
-                    trigger.Trigger(true);
-
-            //Dynamic Loot Drop
-            var chance = new System.Random();
-            foreach (var drop in BehaviorList.EnemyLootTable)
-            {
-                chance.NextDouble();
-                if (Level <= drop.MaxLevel && Level >= drop.MinLevel)
-                {
-                    origin.GrantDynamicLoot(Level, drop, _itemCatalog);
-                }
-            }
-
-            //The XP Reward here is not accurate, but pretty close
-            var xpAward = DeathXp - (origin.Character.Data.GlobalLevel - 1) * 5;
-            Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, "", xpAward > 0 ? xpAward : 1, true, origin == null ? "0" : origin.GameObjectId, false));
-            origin.AddReputation(xpAward > 0 ? xpAward : 1);
-            Room.KillEntity(origin, Id);
-
-            //For spawners
-            if (IsFromSpawner)
-            {
-                var spawnCount = Id.Split("_");
-                _linkedSpawner.NotifyEnemyDefeat(int.Parse(spawnCount[1]));
-                Room.Enemies.Remove(Id);
-                Room.Colliders.Remove(Id);
-            }
-
-            //Achievements
-            origin.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, _questCatalog);
-            origin.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, _questCatalog);
-
-            origin.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, _internalAchievement, _logger);
-            origin.CheckAchievement(AchConditionType.DefeatEnemy, EnemyController.PrefabName, _internalAchievement, _logger);
-            origin.CheckAchievement(AchConditionType.DefeatEnemyInLevel, origin.Room.LevelInfo.Name, _internalAchievement, _logger);
-        }
     }
 
     public virtual AIBaseBehavior ChangeBehavior(string behaviorName)
@@ -379,7 +243,6 @@ public abstract class BehaviorEnemy : Enemy, IDestructible
     public bool PlayerInRange(Vector3Model pos, bool limitedByPatrolLine)
     {
         if (AiData.Intern_Dir < 0)
-        {
             return !limitedByPatrolLine
                 ? AiData.Sync_PosX - EnemyGlobalProps.Global_FrontDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_BackDetectionRangeX &&
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
@@ -388,9 +251,7 @@ public abstract class BehaviorEnemy : Enemy, IDestructible
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
                    Position.z < pos.Z + 1 && Position.z > pos.Z - 1 &&
                    pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
-        }
         else if (AiData.Intern_Dir >= 0)
-        {
             return !limitedByPatrolLine
                 ? AiData.Sync_PosX - EnemyGlobalProps.Global_BackDetectionRangeX < pos.X && pos.X < AiData.Sync_PosX + EnemyGlobalProps.Global_FrontDetectionRangeX &&
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
@@ -399,7 +260,6 @@ public abstract class BehaviorEnemy : Enemy, IDestructible
                    AiData.Sync_PosY - EnemyGlobalProps.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + EnemyGlobalProps.Global_FrontDetectionRangeUpY &&
                    Position.z < pos.Z + 1 && Position.z > pos.Z - 1 &&
                    pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5;
-        }
         return false;
     }
 
@@ -434,7 +294,7 @@ public abstract class BehaviorEnemy : Enemy, IDestructible
                 (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, Room.Enemies[Id].EnemyController.TimerThread,
                 GameFlow.StatisticData.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level),
                 EnemyController.ComponentData.EnemyEffectType,
-                _itemCatalog);
+                ItemCatalog);
             Room.Projectiles.Add(projectileId, prj);
         }
     }
@@ -475,7 +335,7 @@ public abstract class BehaviorEnemy : Enemy, IDestructible
         return aiInit;
     }
 
-    public void GetInitEnemyData(Player player)
+    public override void GetInitData(Player player)
     {
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ, AiData.Intern_SpawnPosX, AiData.Intern_SpawnPosY, AiBehavior.GetBehaviorRatio(ref AiData, Room.Time),
         Health, MaxHealth, 1f, 1f, 1f, Status.Stars, Level, EnemyGlobalProps.ToString(), WriteBehaviorList());
@@ -503,10 +363,4 @@ public abstract class BehaviorEnemy : Enemy, IDestructible
     }
 
     public int GetIndexOfCurrentBehavior() => BehaviorList.IndexOf(AiBehavior.GetBehavior());
-
-    public void Destroy(Player player, Room room, string id)
-    {
-        room.Enemies.Remove(id);
-        room.Colliders.Remove(id);
-    }
 }

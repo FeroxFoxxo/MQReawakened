@@ -5,7 +5,7 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Entity.Enemies;
+namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
 public class EnemyBomber(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
 {
 
@@ -86,7 +86,6 @@ public class EnemyBomber(Room room, string entityId, string prefabName, EnemyCon
     public override void DetectPlayers(string behaviorToRun)
     {
         foreach (var player in Room.Players)
-        {
             if (PlayerInRange(player.Value.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
                 Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
@@ -100,6 +99,5 @@ public class EnemyBomber(Room room, string entityId, string prefabName, EnemyCon
 
                 _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
             }
-        }
     }
 }

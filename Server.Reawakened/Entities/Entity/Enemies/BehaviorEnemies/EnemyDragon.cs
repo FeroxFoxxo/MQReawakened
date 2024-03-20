@@ -5,8 +5,8 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemySpider(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
+namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
+public class EnemyDragon(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
 {
 
     private float _behaviorEndTime;
@@ -23,8 +23,6 @@ public class EnemySpider(Room room, string entityId, string prefabName, EnemyCon
         EnemyGlobalProps.Global_FrontDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeUpY"));
         EnemyGlobalProps.Global_FrontDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeDownY"));
         EnemyGlobalProps.Global_BackDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeX"));
-        EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
-        EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
         EnemyGlobalProps.Global_ShootOffsetX = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetX"));
         EnemyGlobalProps.Global_ShootOffsetY = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetY"));
         EnemyGlobalProps.Global_ShootingProjectilePrefabName = BehaviorList.GetGlobalProperty("ProjectilePrefabName").ToString();
@@ -61,34 +59,7 @@ public class EnemySpider(Room room, string entityId, string prefabName, EnemyCon
     {
         base.HandlePatrol();
 
-        DetectPlayers(_offensiveBehavior);
-    }
-
-    public override void HandleAggro()
-    {
-        base.HandleAggro();
-
-        if (!AiBehavior.Update(ref AiData, Room.Time))
-        {
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
-            AiData.Intern_Dir, false));
-
-            AiBehavior = ChangeBehavior("LookAround");
-            _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
-        }
-    }
-
-    public override void HandleLookAround()
-    {
-        base.HandleLookAround();
-
-        DetectPlayers(_offensiveBehavior);
-
-        if (Room.Time >= _behaviorEndTime)
-        {
-            AiBehavior = ChangeBehavior("Patrol");
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, Generic.Patrol_ForceDirectionX, false));
-        }
+        DetectPlayers("Shooting");
     }
 
     public override void HandleShooting()
@@ -105,23 +76,34 @@ public class EnemySpider(Room room, string entityId, string prefabName, EnemyCon
         }
     }
 
+    public override void HandleLookAround()
+    {
+        base.HandleLookAround();
+
+        DetectPlayers("Shooting");
+
+        if (Room.Time >= _behaviorEndTime)
+        {
+            AiBehavior = ChangeBehavior("Patrol");
+            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, Generic.Patrol_ForceDirectionX, false));
+        }
+    }
+
     public override void DetectPlayers(string behaviorToRun)
     {
         foreach (var player in Room.Players)
-        {
             if (PlayerInRange(player.Value.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
                 Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
-                    Position.y, Generic.Patrol_ForceDirectionX, false));
+                    player.Value.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
                 AiData.Sync_TargetPosX = player.Value.TempData.Position.X;
-                AiData.Sync_TargetPosY = Position.y;
+                AiData.Sync_TargetPosY = player.Value.TempData.Position.Y;
 
                 AiBehavior = ChangeBehavior(behaviorToRun);
 
                 _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
             }
-        }
     }
 }
