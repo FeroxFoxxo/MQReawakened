@@ -24,20 +24,17 @@ public class InviteResponse : ExternalProtocol
         if (accepted)
         {
             friender.Character.Data.Friends.Add(Player.CharacterId);
-            Player.Character.Data.Friends.Add(Player.CharacterId);
+            Player.Character.Data.Friends.Add(friender.CharacterId);
 
-            friender.SendXt("fr",
-                friender.CharacterName,
-                Player.CharacterName,
-                friender.Character.Data.GetFriends()
-            );
+            var playerData = friender.Character.Data.GetFriends().PlayerList.First(x => x.CharacterId == Player.CharacterId);
+
+            friender.SendXt("fr", friender.CharacterName, Player.CharacterName, playerData);
 
             const bool isSuccess = true;
 
-            Player.SendXt("fa",
-                Player.Character.Data.GetFriends(),
-                isSuccess ? "1" : "0"
-            );
+            var friendData = Player.Character.Data.GetFriends().PlayerList.First(x => x.CharacterId == friender.CharacterId);
+
+            Player.SendXt("fa", friendData, isSuccess ? "1" : "0");
         }
         else
         {

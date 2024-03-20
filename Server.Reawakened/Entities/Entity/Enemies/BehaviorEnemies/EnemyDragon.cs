@@ -5,8 +5,8 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyOrchid(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : Enemy(room, entityId, prefabName, enemyController, services)
+namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
+public class EnemyDragon(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
 {
 
     private float _behaviorEndTime;
@@ -52,9 +52,6 @@ public class EnemyOrchid(Room room, string entityId, string prefabName, EnemyCon
             AiBehavior = ChangeBehavior(_offensiveBehavior);
 
             _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
-
-            if (Id.Equals("7651"))
-                Console.WriteLine("You pissed me off.");
         }
     }
 
@@ -87,17 +84,15 @@ public class EnemyOrchid(Room room, string entityId, string prefabName, EnemyCon
 
         if (Room.Time >= _behaviorEndTime)
         {
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
-
             AiBehavior = ChangeBehavior("Patrol");
+            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, Generic.Patrol_ForceDirectionX, false));
         }
     }
 
     public override void DetectPlayers(string behaviorToRun)
     {
         foreach (var player in Room.Players.Values)
-        {
-            if (PlayerInRange(player, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
+            if (PlayerInRange(player.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
                 Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.TempData.Position.X,
                     player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
@@ -110,6 +105,5 @@ public class EnemyOrchid(Room room, string entityId, string prefabName, EnemyCon
 
                 _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
             }
-        }
     }
 }

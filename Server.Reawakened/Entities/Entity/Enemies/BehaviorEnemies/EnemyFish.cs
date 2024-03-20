@@ -1,12 +1,13 @@
 ﻿using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyPincer(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : Enemy(room, entityId, prefabName, enemyController, services)
+namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
+public class EnemyFish(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
 {
 
     private float _behaviorEndTime;
@@ -25,6 +26,7 @@ public class EnemyPincer(Room room, string entityId, string prefabName, EnemyCon
         EnemyGlobalProps.Global_BackDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeX"));
         EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
         EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
+        EnemyGlobalProps.Aggro_AttackBeyondPatrolLine = Convert.ToSingle(BehaviorList.GetGlobalProperty("AttackBeyondPatrolLine"));
 
         // Address magic numbers when we get to adding enemy effect mods
         Room.SendSyncEvent(AIInit(1, 1, 1));
@@ -67,11 +69,10 @@ public class EnemyPincer(Room room, string entityId, string prefabName, EnemyCon
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-
-            AiBehavior = ChangeBehavior("LookAround");
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
+            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, Position.x, Position.y,
             AiData.Intern_Dir, false));
 
+            AiBehavior = ChangeBehavior("LookAround");
             _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
         }
     }
@@ -84,6 +85,23 @@ public class EnemyPincer(Room room, string entityId, string prefabName, EnemyCon
 
         if (Room.Time >= _behaviorEndTime)
         {
+            var argBuilder = new SeparatedStringBuilder('`');
+            argBuilder.Append(Position.x);
+            argBuilder.Append(AiData.Intern_SpawnPosY);
+
+            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("ComeBack"), argBuilder.ToString(), Position.x, AiData.Intern_SpawnPosY, AiData.Intern_Dir, false));
+
+            AiBehavior = ChangeBehavior("ComeBack");
+            AiBehavior.MustDoComeback(AiData);
+        }
+    }
+
+    public override void HandleComeBack()
+    {
+        base.HandleComeBack();
+
+        if (!AiBehavior.Update(ref AiData, Room.Time))
+        {
             AiBehavior = ChangeBehavior("Patrol");
             Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, Generic.Patrol_ForceDirectionX, false));
         }
@@ -92,22 +110,18 @@ public class EnemyPincer(Room room, string entityId, string prefabName, EnemyCon
     public override void DetectPlayers(string behaviorToRun)
     {
         foreach (var player in Room.Players.Values)
-        {
-            if (PlayerInRange(player, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
+            if (PlayerInRange(player.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
-                AiBehavior.Stop(ref AiData);
-
                 Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.TempData.Position.X,
-                    Position.y, AiData.Intern_Dir, false));
+                    player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
                 AiData.Sync_TargetPosX = player.TempData.Position.X;
-                AiData.Sync_TargetPosY = Position.y;
+                AiData.Sync_TargetPosY = player.TempData.Position.Y;
 
                 AiBehavior = ChangeBehavior(behaviorToRun);
 
                 _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
             }
-        }
     }
 }

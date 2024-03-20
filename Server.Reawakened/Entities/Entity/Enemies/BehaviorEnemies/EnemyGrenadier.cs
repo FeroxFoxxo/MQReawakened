@@ -5,8 +5,8 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemySpider(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : Enemy(room, entityId, prefabName, enemyController, services)
+namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
+public class EnemyGrenadier(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
 {
 
     private float _behaviorEndTime;
@@ -15,6 +15,12 @@ public class EnemySpider(Room room, string entityId, string prefabName, EnemyCon
     public override void Initialize()
     {
         base.Initialize();
+        AiData.services = new AIServices
+        {
+            _shoot = new IShoot(),
+            _bomber = new IBomber(),
+            _scan = new IScan()
+        };
 
         MinBehaviorTime = Convert.ToSingle(BehaviorList.GetGlobalProperty("MinBehaviorTime"));
         _offensiveBehavior = Convert.ToString(BehaviorList.GetGlobalProperty("OffensiveBehavior"));
@@ -25,9 +31,6 @@ public class EnemySpider(Room room, string entityId, string prefabName, EnemyCon
         EnemyGlobalProps.Global_BackDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeX"));
         EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
         EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
-        EnemyGlobalProps.Global_ShootOffsetX = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetX"));
-        EnemyGlobalProps.Global_ShootOffsetY = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetY"));
-        EnemyGlobalProps.Global_ShootingProjectilePrefabName = BehaviorList.GetGlobalProperty("ProjectilePrefabName").ToString();
 
         // Address magic numbers when we get to adding enemy effect mods
         Room.SendSyncEvent(AIInit(1, 1, 1));
@@ -61,17 +64,16 @@ public class EnemySpider(Room room, string entityId, string prefabName, EnemyCon
     {
         base.HandlePatrol();
 
-        DetectPlayers(_offensiveBehavior);
+        DetectPlayers("Grenadier");
     }
 
-    public override void HandleAggro()
+    public override void HandleGrenadier()
     {
-        base.HandleAggro();
+        base.HandleGrenadier();
 
-        if (!AiBehavior.Update(ref AiData, Room.Time))
+        if (Room.Time >= _behaviorEndTime)
         {
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
-            AiData.Intern_Dir, false));
+            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("LookAround");
             _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
@@ -82,7 +84,7 @@ public class EnemySpider(Room room, string entityId, string prefabName, EnemyCon
     {
         base.HandleLookAround();
 
-        DetectPlayers(_offensiveBehavior);
+        DetectPlayers("Grenadier");
 
         if (Room.Time >= _behaviorEndTime)
         {
@@ -91,25 +93,10 @@ public class EnemySpider(Room room, string entityId, string prefabName, EnemyCon
         }
     }
 
-    public override void HandleShooting()
-    {
-        base.HandleShooting();
-
-        if (!AiBehavior.Update(ref AiData, Room.Time))
-        {
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("LookAround"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
-            AiData.Intern_Dir, false));
-
-            AiBehavior = ChangeBehavior("LookAround");
-            _behaviorEndTime = ResetBehaviorTime(Convert.ToSingle(BehaviorList.GetBehaviorStat("LookAround", "lookTime")));
-        }
-    }
-
     public override void DetectPlayers(string behaviorToRun)
     {
         foreach (var player in Room.Players.Values)
-        {
-            if (PlayerInRange(player, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
+            if (PlayerInRange(player.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
                 Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.TempData.Position.X,
                     Position.y, Generic.Patrol_ForceDirectionX, false));
@@ -120,8 +107,10 @@ public class EnemySpider(Room room, string entityId, string prefabName, EnemyCon
 
                 AiBehavior = ChangeBehavior(behaviorToRun);
 
-                _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
+                _behaviorEndTime = ResetBehaviorTime(
+                Convert.ToSingle(BehaviorList.GetBehaviorStat("Grenadier", "inTime")) +
+                Convert.ToSingle(BehaviorList.GetBehaviorStat("Grenadier", "loopTime")) +
+                Convert.ToSingle(BehaviorList.GetBehaviorStat("Grenadier", "outTime")));
             }
-        }
     }
 }

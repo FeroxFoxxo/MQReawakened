@@ -39,10 +39,10 @@ public class EventInfo
             sb.Append(secEventSb.ToString());
 
             if (GameVersion >= GameVersion.vEarly2013)
-            {
                 sb.Append(DisplayAutoPopup ? 1 : 0);
+
+            if (GameVersion >= GameVersion.vLate2013)
                 sb.Append(TimedEventName);
-            }
         }
         else
         {
