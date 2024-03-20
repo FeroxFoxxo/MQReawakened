@@ -1,14 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.AbstractComponents;
-using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Arenas;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Protocols.External._M__MinigameHandler;
@@ -18,7 +15,6 @@ public class FinishedMinigame : ExternalProtocol
     public override string ProtocolName => "Mm";
 
     public InternalLoot LootCatalog { get; set; }
-    public IServiceProvider ServiceProvider { get; set; }
     public ILogger<FinishedMinigame> Logger { get; set; }
 
     public override void Run(string[] message)
