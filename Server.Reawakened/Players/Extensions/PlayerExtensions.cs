@@ -78,7 +78,7 @@ public static class PlayerExtensions
 
         charData.Reputation = reputation;
 
-        player.SendXt("cp", charData.Reputation - charData.ReputationForCurrentLevel, charData.ReputationForNextLevel - charData.Reputation);
+        player.SendXt("cp", charData.Reputation - charData.ReputationForCurrentLevel, charData.ReputationForNextLevel - charData.ReputationForCurrentLevel);
     }
 
     public static void TradeWithPlayer(this Player origin, ItemCatalog itemCatalog)
