@@ -31,17 +31,6 @@ public class HazardEffectCollider(string hazardId, Vector3Model position, RectMo
         Room.GetEntityFromId<BaseHazardControllerComp<HazardController>>(hazardId)?.ApplyHazardEffect(player);
         Room.GetEntityFromId<BaseHazardControllerComp<TrapHazardController>>(hazardId)?.ApplyHazardEffect(player);
         Room.GetEntityFromId<DroppingsControllerComp>(hazardId)?.FreezePlayer(player);
-
-        if (Room.GetEntityFromId<StomperControllerComp>(hazardId)?.State == Stomper_Movement.StomperState.WaitDown &&
-            Room.GetEntityFromId<StomperControllerComp>(hazardId).ApplyStompDamage)
-        {
-            Room.GetEntityFromId<StomperControllerComp>(hazardId).ApplyStompDamage = false;
-            Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-                (int)ItemEffectType.StompDamage, 1, 1, true, hazardId, false));
-
-            Room.GetEntityFromId<StomperControllerComp>(hazardId).TimerThread.DelayCall(DelayStompDamage, Room.GetEntityFromId<StomperControllerComp>(hazardId),
-                TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
-        }
     }
 
     public void DelayStompDamage(object stompControllerData)
