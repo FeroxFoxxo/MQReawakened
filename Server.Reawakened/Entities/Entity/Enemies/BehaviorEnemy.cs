@@ -103,7 +103,7 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         }
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
-        Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - EnemyController.Scale.Y > 0 ? Hitbox.ColliderBox.Height : 0, Position.z);
+        Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
     }
 
     private string WriteBehaviorList()
