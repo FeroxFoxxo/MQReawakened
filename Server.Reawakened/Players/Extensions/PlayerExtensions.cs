@@ -9,7 +9,6 @@ using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
-using System.Linq;
 using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -78,7 +77,8 @@ public static class PlayerExtensions
         }
 
         charData.Reputation = reputation;
-        player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
+
+        player.SendXt("cp", charData.Reputation - charData.ReputationForCurrentLevel, charData.ReputationForNextLevel - charData.Reputation);
     }
 
     public static void TradeWithPlayer(this Player origin, ItemCatalog itemCatalog)
