@@ -102,6 +102,18 @@
             <Dialog dialogId="817" conversationId="2291" minimumReputation="1" />
         </NPC>
     </Level>
+    <Level id="514">
+        <!-- Crossroads Path (Tutorial) -->
+        <NPC objectId="13161310" name="Michelangelo" descriptionId="0">
+            <Dialog dialogId="1481" conversationId="3746" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="939" name="Crossroads Guard" descriptionId="0"><!-- speculation -->
+            <Dialog dialogId="1474" conversationId="3734" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="98585" name="Crossroads Guard" descriptionId="0"><!-- speculation -->
+            <Dialog dialogId="1477" conversationId="3737" minimumReputation="1" />
+        </NPC>
+    </Level>
     <Level id="89">
         <!-- The Floating Isles -->
         <NPC objectId="2466702" name="Dragonfly Scout" descriptionId="0">

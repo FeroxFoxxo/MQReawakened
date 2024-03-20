@@ -66,6 +66,477 @@
                 <Item itemName="COL_BUFF_GlyphProtection01" count="1" />
             </Items>
         </LootInfo>
+        <LootInfo objectId="4550" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="2" />
+                <Item itemName="COL_FOOD_Apple01" count="3" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="9580" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="2" />
+                <Item itemName="COL_FOOD_Apple01" count="3" />
+            </Items>
+        </LootInfo>
+        <!-- Barrels -->
+        <LootInfo objectId="3497391" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4587" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4173" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4622" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="9101" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="9181" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4584" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4582" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Blimp Ridge">
+        <!--Blue Arena-->
+        <LootInfo objectId="3286474" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="Add_COM_DropEarring01_E02" count="1" />
+                <Item itemName="WPN_SPC_BeastBomb01" count="1" />
+                <Item itemName="Add_EVT_Yeti01_W01" count="1" />
+                <Item itemName="COL_RECIP_SHD_Snake01_S01" count="1" />
+                <Item itemName="COL_RECIP_SHD_Snake01_TS01" count="1" />
+                <Item itemName="COL_ING_G_Fur02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Green Chest-->
+        <LootInfo objectId="7145" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10420" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BUFF_GlyphProtection01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10422" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10235" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Lara01_TS01" count="1" />
+                <Item itemName="Add_COM_Moustache02_UF02" count="1" />
+                <Item itemName="Add_COM_Lara01_TS02" count="1" />
+                <Item itemName="Add_COM_KidBoy01_S01" count="1" />
+                <Item itemName="Add_COM_PlainClothes01_LS02" count="1" />
+                <Item itemName="Add_OUT_CaptainBoy01_LF04" count="1" />
+                <Item itemName="Add_OUT_FortuneHunter01_UF04" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="11413" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Dandelions01" count="2" weight="9" />
+                <Item itemName="COL_ING_G_Dandelions02" count="3" />
+            </Items>
+        </LootInfo>
+        <!-- Barrels -->
+        <LootInfo objectId="10941" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10918" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10917" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10935" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10901" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6580167" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10921" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6580169" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Rachnok's Lair">
+        <!--Rachnok Boss Battle Purple Chest-->
+        <LootInfo objectId="2466335" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Spider01_S01" count="1" />
+                <Item itemName="Add_COM_Spider01_TS01" count="1" />
+                <Item itemName="Add_COM_Spider01_W01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Blue Chest-->
+        <LootInfo objectId="2466894" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Knight01_S01" count="1" />
+                <Item itemName="Unknown Pattern: 1star" count="1" />
+                <Item itemName="Add_COM_Jungle01_S01" count="1" />
+                <Item itemName="Add_COM_AnimalWood01_T02" count="1" />
+                <Item itemName="Add_COM_ScaleTail01_T01" count="1" />
+                <Item itemName="Unknown Recipe: 0stars" count="1" />
+                <Item itemName="Unknown Recipe: 0stars" count="1" />
+                <Item itemName="Unknown Pattern: 1star" count="1" />
+                <Item itemName="Add_COM_Explorator01_S02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Green Chest 1-->
+        <LootInfo objectId="2466893" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_BUFF_RubberBand01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Green Chest 2-->
+        <LootInfo objectId="2466891" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_BUFF_RubberBand01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Green Chest 3-->
+        <LootInfo objectId="2466892" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_BUFF_RubberBand01" count="1" />
+            </Items>
+        </LootInfo>
+        <!-- Barrels -->
+        <LootInfo objectId="2467491" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="2467492" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="2467337" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="2467338" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="2467493" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="2467124" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="2467495" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="2467494" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="2466324" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="2467125" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="2467126" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="2467496" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
     </Level>
     <Level name="Forgotten Temple">
         <LootInfo objectId="30938" doLootWheel="True">
@@ -1624,57 +2095,6 @@
                 <Item itemName="COL_RECIP_SHD_Guard01_TS01" count="1" />
                 <Item itemName="COL_RECIP_PRJ_WindstormStar01" count="1" />
                 <Item itemName="Add_COM_ShardEarrings01_E02" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Blimp Ridge">
-        <!--Blue Arena-->
-        <LootInfo objectId="3286474" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Diamond02" count="1" />
-                <Item itemName="Add_COM_DropEarring01_E02" count="1" />
-                <Item itemName="WPN_SPC_BeastBomb01" count="1" />
-                <Item itemName="Add_EVT_Yeti01_W01" count="1" />
-                <Item itemName="COL_RECIP_SHD_Snake01_S01" count="1" />
-                <Item itemName="COL_RECIP_SHD_Snake01_TS01" count="1" />
-                <Item itemName="COL_ING_G_Fur02" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Normal Arena-->
-        <LootInfo objectId="7145" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_POT_Healing01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="10420" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_BUFF_GlyphProtection01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="10422" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_POT_Healing01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="10235" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_Lara01_TS01" count="1" />
-                <Item itemName="Add_COM_Moustache02_UF02" count="1" />
-                <Item itemName="Add_COM_Lara01_TS02" count="1" />
-                <Item itemName="Add_COM_KidBoy01_S01" count="1" />
-                <Item itemName="Add_COM_PlainClothes01_LS02" count="1" />
-                <Item itemName="Add_OUT_CaptainBoy01_LF04" count="1" />
-                <Item itemName="Add_OUT_FortuneHunter01_UF04" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Rachnok's Lair">
-        <!--Rachnok Boss Battle Purple Chest-->
-        <LootInfo objectId="2466335" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_Spider01_S01" count="1" />
-                <Item itemName="Add_COM_Spider01_TS01" count="1" />
-                <Item itemName="Add_COM_Spider01_W01" count="1" />
             </Items>
         </LootInfo>
     </Level>
