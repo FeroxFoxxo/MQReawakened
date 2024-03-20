@@ -5,8 +5,8 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyBomber(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : Enemy(room, entityId, prefabName, enemyController, services)
+namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
+public class EnemyBomber(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
 {
 
     private float _behaviorEndTime;
@@ -86,20 +86,18 @@ public class EnemyBomber(Room room, string entityId, string prefabName, EnemyCon
     public override void DetectPlayers(string behaviorToRun)
     {
         foreach (var player in Room.Players.Values)
-        {
-            if (PlayerInRange(player, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
+            if (PlayerInRange(player.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
                 Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.TempData.Position.X,
-                    Position.y, Generic.Patrol_ForceDirectionX, false));
+                    player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
                 AiData.Sync_TargetPosX = player.TempData.Position.X;
-                AiData.Sync_TargetPosY = Position.y;
+                AiData.Sync_TargetPosY = player.TempData.Position.Y;
 
                 AiBehavior = ChangeBehavior(behaviorToRun);
 
                 _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
             }
-        }
     }
 }
