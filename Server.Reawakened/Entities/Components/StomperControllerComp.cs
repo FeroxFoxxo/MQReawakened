@@ -23,8 +23,6 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
     private float _fullBehaviorTime;
 
     public StomperState State;
-    public bool ApplyStompDamage = true;
-
     public TimerThread TimerThread { get; set; }
 
     public override void InitializeComponent()
@@ -40,8 +38,6 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
             new vector3(Position.X, Position.Y, Position.Z),
             Movement.Activated, Room.Time, InitialProgressRatio
         );
-
-        Room.Colliders.Add(Id, new HazardEffectCollider(Id, Position, Rectangle, ParentPlane, Room));
     }
 
     public override void Update()
@@ -52,9 +48,6 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
         movement.GetBehaviorRatio(Room.Time);
 
         State = GetState(Room.Time);
-
-        if (Id == "538")
-            Console.WriteLine("St: " + Room.GetEntitiesFromType<StomperControllerComp>().First().State);
     }
 
     public StomperState GetState(float time)
