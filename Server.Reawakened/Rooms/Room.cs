@@ -42,7 +42,7 @@ public class Room : Timer
 
     public Dictionary<string, PlaneModel> Planes;
     public Dictionary<string, List<string>> UnknownEntities;
-    public Dictionary<string, Enemy> Enemies;
+    public Dictionary<string, BehaviorEnemy> Enemies;
     public Dictionary<string, List<List<BaseComponent>>> DuplicateEntities;
 
     private readonly Dictionary<string, List<BaseComponent>> _entities;

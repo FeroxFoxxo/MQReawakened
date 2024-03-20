@@ -60,7 +60,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public GlobalProperties GlobalProperties;
     public BehaviorModel BehaviorList;
 
-    public Dictionary<int, Enemy> LinkedEnemies;
+    public Dictionary<int, BehaviorEnemy> LinkedEnemies;
     private int _spawnedEntityCount;
     private float _nextSpawnRequestTime;
     private bool _spawnRequested;
@@ -90,7 +90,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         GlobalProperties = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", "", false, false, 0);
 
         BehaviorList = EnemyInfoXml.GetBehaviorsByName(PrefabNameToSpawn1);
-        LinkedEnemies = new Dictionary<int, Enemy>();
+        LinkedEnemies = new Dictionary<int, BehaviorEnemy>();
 
         if (ComponentData.SpawnOnDetection)
             _activated = true;
@@ -128,9 +128,6 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         _spawnRequested = false;
 
         //Spawn the enemy and set it in the room enemy list
-        var spawn = new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount);
-        Room.SendSyncEvent(spawn);
-
         Room.SendSyncEvent(new AIInit_SyncEvent(Id, Room.Time, 0, 0, 0, 0, 0, Generic.Patrol_InitialProgressRatio,
         Health, Health, 1f, 1f, 1f, 0, Level, GlobalProperties.ToString(), "Idle||"));
 
@@ -148,7 +145,12 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         Room.SendSyncEvent(aiDo);
 
+        var spawn = new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount);
+        Room.SendSyncEvent(spawn);
+
         _spawnedEntityId = $"{Id}_{_spawnedEntityCount}";
+
+        _arena?.ArenaEntities.Add(_spawnedEntityId);
 
         TimerThread.DelayCall(DelayedSpawnData, "", TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
     }
@@ -178,11 +180,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         Room.Enemies.Add(_spawnedEntityId, SetEnemy(_spawnedEntityCount));
         _nextSpawnRequestTime = 0;
-
-        _arena?.ArenaEntities.Add(_spawnedEntityId);
     }
 
-    private Enemy SetEnemy(int index)
+    private BehaviorEnemy SetEnemy(int index)
     {
         switch (PrefabNameToSpawn1)
         {

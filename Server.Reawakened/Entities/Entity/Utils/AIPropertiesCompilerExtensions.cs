@@ -3,7 +3,7 @@
 namespace Server.Reawakened.Entities.Entity.Utils;
 public static class AIPropertiesCompilerExtensions
 {
-    public static string CreateBehaviorString(this Enemy enemy, string name)
+    public static string CreateBehaviorString(this BehaviorEnemy enemy, string name)
     {
         switch (name)
         {
@@ -31,7 +31,7 @@ public static class AIPropertiesCompilerExtensions
         return string.Empty;
     }
 
-    private static string CreateLookAround(Enemy enemy)
+    private static string CreateLookAround(BehaviorEnemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -44,7 +44,7 @@ public static class AIPropertiesCompilerExtensions
         return sb.ToString();
     }
 
-    private static string CreatePatrol(Enemy enemy)
+    private static string CreatePatrol(BehaviorEnemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -59,7 +59,7 @@ public static class AIPropertiesCompilerExtensions
         return sb.ToString();
     }
 
-    private static string CreateComeBack(Enemy enemy)
+    private static string CreateComeBack(BehaviorEnemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -68,7 +68,7 @@ public static class AIPropertiesCompilerExtensions
         return sb.ToString();
     }
 
-    private static string CreateAggro(Enemy enemy)
+    private static string CreateAggro(BehaviorEnemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -83,7 +83,7 @@ public static class AIPropertiesCompilerExtensions
         return sb.ToString();
     }
 
-    private static string CreateShooting(Enemy enemy)
+    private static string CreateShooting(BehaviorEnemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -102,7 +102,7 @@ public static class AIPropertiesCompilerExtensions
         return sb.ToString();
     }
 
-    private static string CreateBomber(Enemy enemy)
+    private static string CreateBomber(BehaviorEnemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -113,7 +113,7 @@ public static class AIPropertiesCompilerExtensions
         return sb.ToString();
     }
 
-    private static string CreateGrenadier(Enemy enemy)
+    private static string CreateGrenadier(BehaviorEnemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -128,7 +128,7 @@ public static class AIPropertiesCompilerExtensions
         return sb.ToString();
     }
 
-    private static string CreateStomper(Enemy enemy)
+    private static string CreateStomper(BehaviorEnemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 
@@ -140,7 +140,7 @@ public static class AIPropertiesCompilerExtensions
         return sb.ToString();
     }
 
-    private static string CreateStinger(Enemy enemy)
+    private static string CreateStinger(BehaviorEnemy enemy)
     {
         var sb = new SeparatedStringBuilder(';');
 

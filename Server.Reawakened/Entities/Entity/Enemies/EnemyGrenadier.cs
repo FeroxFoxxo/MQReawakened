@@ -6,7 +6,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Entity.Enemies;
-public class EnemyGrenadier(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : Enemy(room, entityId, prefabName, enemyController, services)
+public class EnemyGrenadier(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
 {
 
     private float _behaviorEndTime;
@@ -15,6 +15,12 @@ public class EnemyGrenadier(Room room, string entityId, string prefabName, Enemy
     public override void Initialize()
     {
         base.Initialize();
+        AiData.services = new AIServices
+        {
+            _shoot = new IShoot(),
+            _bomber = new IBomber(),
+            _scan = new IScan()
+        };
 
         MinBehaviorTime = Convert.ToSingle(BehaviorList.GetGlobalProperty("MinBehaviorTime"));
         _offensiveBehavior = Convert.ToString(BehaviorList.GetGlobalProperty("OffensiveBehavior"));
