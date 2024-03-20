@@ -443,6 +443,10 @@ public partial class ChatCommands(
 
         player.LevelUp(newLevel, logger);
 
+        //If players wanted to level down, it would level them back up to the highest level they've ever hit upon recieving xp.
+        //Now their level will stay at the level they set it to.
+        character.Data.Reputation = character.Data.ReputationForCurrentLevel;
+
         Log($"{character.Data.CharacterName} has leveled up to level {newLevel}!", player);
 
         return true;
