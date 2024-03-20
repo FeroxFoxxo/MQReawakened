@@ -58,6 +58,7 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
         AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
+        AddCommand(new ChatCommand("openDoors", "", OpenDoors));
 
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
 
@@ -490,6 +491,22 @@ public partial class ChatCommands(
         player.SendUpdatedInventory();
 
         Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", player);
+
+        return true;
+    }
+
+    private bool OpenDoors(Player player, string[] args)
+    {
+        foreach (var triggerEntity in player.Room.GetEntitiesFromType<TriggerReceiverComp>())
+        {
+            if (config.IgnoredDoors.Contains(triggerEntity.PrefabName))
+                continue;
+
+            triggerEntity.Trigger(true);
+        }
+
+        foreach (var vineEntity in player.Room.GetEntitiesFromType<MysticCharmTargetComp>())
+            vineEntity.Charm(player);
 
         return true;
     }
