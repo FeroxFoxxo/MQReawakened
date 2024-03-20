@@ -27,7 +27,8 @@ public class AttackCollider(string id, Vector3Model position, float sizeX, float
             foreach (var collider in roomList)
             {
                 if (CheckCollision(collider) &&
-                    collider.Type != ColliderClass.Attack && collider.Type != ColliderClass.Player)
+                    collider.Type != ColliderClass.Attack && collider.Type != ColliderClass.Player &&
+                    collider.Type != ColliderClass.Hazard && collider.Type != ColliderClass.AiAttack)
                 {
                     collidedWith.Add(collider.Id);
                     collider.SendCollisionEvent(this);

@@ -117,10 +117,7 @@ public class UseSlot : ExternalProtocol
 
     private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var rand = new Random();
-        var prjId = Math.Abs(rand.Next()).ToString();
-        while (Player.Room.GameObjectIds.Contains(prjId))
-            prjId = Math.Abs(rand.Next()).ToString();
+        var prjId = Player.Room.SetProjectileId();
 
         // Add weapon stats later
         var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem,
@@ -131,11 +128,7 @@ public class UseSlot : ExternalProtocol
 
     private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var rand = new Random();
-        var prjId = Math.Abs(rand.Next()).ToString();
-
-        while (Player.Room.GameObjectIds.Contains(prjId))
-            prjId = Math.Abs(rand.Next()).ToString();
+        var prjId = Player.Room.SetProjectileId();
 
         // Add weapon stats later
         var prj = new MeleeEntity(Player, prjId, position, direction, 3, usedItem,
@@ -153,6 +146,6 @@ public class UseSlot : ExternalProtocol
             character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
             SendXt("hu", character.Data.Hotbar);
         }
-        Player.SendUpdatedInventory(false);
+        Player.SendUpdatedInventory();
     }
 }

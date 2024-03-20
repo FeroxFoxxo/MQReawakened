@@ -220,12 +220,12 @@ public class EditCharacter(ServerConsole console, EventSink sink,
             {
                 ItemId = itemDescription.ItemId,
                 Count = count,
-                BindingCount = 0,
-                DelayUseExpiry = DateTime.MinValue
+                BindingCount = itemDescription.BindingCount,
+                DelayUseExpiry = itemDescription.DelayUseExpiry
             });
 
             if (handler.IsPlayerOnline(user.Id, out var player))
-                player.SendUpdatedInventory(false);
+                player.SendUpdatedInventory();
         }
         else
         {

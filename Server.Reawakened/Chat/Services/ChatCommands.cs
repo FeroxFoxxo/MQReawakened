@@ -1,11 +1,11 @@
 using A2m.Server;
-using A2m.Server.LocalRequest;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
+using Server.Base.Logging;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
@@ -21,14 +21,12 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using System.Text.RegularExpressions;
-using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
 namespace Server.Reawakened.Chat.Services;
 
 public partial class ChatCommands(
-    ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger,
-    WorldHandler worldHandler, InternalAchievement internalAchievement,
+    ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger, FileLogger fileLogger,
+    WorldHandler worldHandler, InternalAchievement internalAchievement, InternalQuestItem questItem,
     WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
@@ -42,26 +40,36 @@ public partial class ChatCommands(
     {
         logger.LogDebug("Setting up chat commands");
 
-        AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
+        AddCommand(new ChatCommand("save", "[owner only]", SaveLevel));
+
+        AddCommand(new ChatCommand("godMode", "", GodMode));
+        AddCommand(new ChatCommand("maxHP", "", MaxHealth));
+
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("hotbar", "[hotbarNum] [itemId]", Hotbar));
-        AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
-        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
-        AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
+        AddCommand(new ChatCommand("getAllItems", "[categoryValue]", GetAllItems));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
-        AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
+
+        AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
         AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
-        AddCommand(new ChatCommand("openDoors", "", OpenDoors));
-        AddCommand(new ChatCommand("getAllItems", "[categoryValue]", GetAllItems));
-        AddCommand(new ChatCommand("godmode", "", GodMode));
-        AddCommand(new ChatCommand("save", "[owner only]", SaveLevel));
-        AddCommand(new ChatCommand("openVines", "", OpenVines));
-        AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
+
+        AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
+        AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
+        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
+        AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
+
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
-        AddCommand(new ChatCommand("forceSpawners", "", ForceSpawners));
+
+        AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("playerCount", "[detailed]", PlayerCount));
+
         AddCommand(new ChatCommand("completeQuest", "[id]", CompleteQuest));
+        AddCommand(new ChatCommand("addQuest", "[id]", AddQuest));
+        AddCommand(new ChatCommand("findQuest", "[name]", GetQuestByName));
+
+        AddCommand(new ChatCommand("updateNpcs", "", UpdateLevelNpcs));
+        AddCommand(new ChatCommand("playerPos", "", GetPlayerPos));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -106,6 +114,21 @@ public partial class ChatCommands(
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
+    public bool GetPlayerPos(Player player, string[] args)
+    {
+        Log($"X: {player.TempData.Position.X}" +
+            $" | Y: {player.TempData.Position.Y}" +
+            $" | Z: {player.TempData.Position.Z}", player);
+
+        return true;
+    }
+    public bool MaxHealth(Player player, string[] args)
+    {
+        player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId, player.Room.Time,
+            player.Character.Data.CurrentLife = player.Character.Data.MaxLife, player.Character.Data.MaxLife, player.GameObjectId));
+
+        return true;
+    }
 
     public bool Hotbar(Player player, string[] args)
     {
@@ -156,9 +179,7 @@ public partial class ChatCommands(
             player.Character.Data.Hotbar.HotbarButtons[hotbarId - 1] = new Players.Models.Character.ItemModel()
             {
                 ItemId = itemId,
-                BindingCount = 1,
-                Count = 1,
-                DelayUseExpiry = DateTime.Now
+                Count = 1
             };
             player.SendXt("hs", player.Character.Data.Hotbar);
 
@@ -201,7 +222,7 @@ public partial class ChatCommands(
                     player.AddItem(item, 1, itemCatalog);
         }
 
-        player.SendUpdatedInventory(false);
+        player.SendUpdatedInventory();
 
         return true;
     }
@@ -252,37 +273,7 @@ public partial class ChatCommands(
 
         player.Character.AddKit(items, amount);
 
-        player.SendUpdatedInventory(false);
-    }
-
-    private bool OpenDoors(Player player, string[] args)
-    {
-        foreach (var triggerEntity in player.Room.GetEntitiesFromType<TriggerReceiverComp>())
-        {
-            if (config.IgnoredDoors.Contains(triggerEntity.PrefabName))
-                continue;
-
-            triggerEntity.Trigger(true);
-        }
-
-        return true;
-    }
-
-    private bool ForceSpawners(Player player, string[] args)
-    {
-        foreach (var spawner in player.Room.GetEntitiesFromType<BaseSpawnerControllerComp>())
-        {
-            spawner.Spawn();
-        }
-        return true;
-    }
-
-    private bool OpenVines(Player player, string[] args)
-    {
-        foreach (var vineEntity in player.Room.GetEntitiesFromType<MysticCharmTargetComp>())
-            vineEntity.Charm(player);
-
-        return true;
+        player.SendUpdatedInventory();
     }
 
     private bool Teleport(Player player, string[] args)
@@ -496,10 +487,17 @@ public partial class ChatCommands(
 
         player.AddItem(item, amount, itemCatalog);
 
-        player.SendUpdatedInventory(false);
+        player.SendUpdatedInventory();
 
         Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", player);
 
+        return true;
+    }
+
+    private bool UpdateLevelNpcs(Player player, string[] args)
+    {
+        player.UpdateAllNpcsInLevel();
+        Log($"All NPCs updated for {player.CharacterName}.", player);
         return true;
     }
 
@@ -566,21 +564,21 @@ public partial class ChatCommands(
         return true;
     }
 
-    private bool CompleteQuest(Player player, string[] args)
+    public QuestDescription GetQuest(Player player, string[] args)
     {
         if (args.Length == 1)
         {
             Log("Please provide a quest id.", player);
-            return false;
+            return null;
         }
 
         if (args.Length != 2)
-            return false;
+            return null;
 
         if (!int.TryParse(args[1], out var questId))
         {
             Log("Please provide a valid quest id.", player);
-            return false;
+            return null;
         }
 
         var questData = questCatalog.GetQuestData(questId);
@@ -588,16 +586,26 @@ public partial class ChatCommands(
         if (questData == null)
         {
             Log("Please provide a valid quest id.", player);
-            return false;
+            return null;
         }
 
         if (player.Character.Data.CompletedQuests.Contains(questData.Id))
         {
             Log($"Quest {questData.Name} with id {questData.Id} has been completed already.", player);
-            return false;
+            return null;
         }
 
-        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == questId);
+        return questData;
+    }
+
+    private bool CompleteQuest(Player player, string[] args)
+    {
+        var questData = GetQuest(player, args);
+
+        if (questData == null)
+            return false;
+
+        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == questData.Id);
 
         if (questModel != null)
             player.Character.Data.QuestLog.Remove(questModel);
@@ -605,6 +613,43 @@ public partial class ChatCommands(
         player.Character.Data.CompletedQuests.Add(questData.Id);
         Log($"Added quest {questData.Name} with id {questData.Id} to completed quests.", player);
 
+        return true;
+    }
+
+    private bool AddQuest(Player player, string[] args)
+    {
+        var questData = GetQuest(player, args);
+
+        if (questData == null)
+            return false;
+
+        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == questData.Id);
+
+        if (questModel != null)
+        {
+            Log("Quest is already in progress.", player);
+            return false;
+        }
+
+        player.AddQuest(questData, questItem, config.GameVersion, itemCatalog, fileLogger, "Chat command", logger);
+        Log($"Added quest {questData.Name} with id {questData.Id}.", player);
+
+        return true;
+    }
+
+    private bool GetQuestByName(Player player, string[] args)
+    {
+        var name = string.Join(" ", args.Skip(1)).ToLower();
+
+        var closestQuest = questCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Title.Equals(name, StringComparison.OrdinalIgnoreCase)).Value;
+
+        if (closestQuest == null)
+        {
+            Log($"Could not find quest with name '{name}'.", player);
+            return false;
+        }
+
+        Log($"Found quest: '{name}' with ID: '{closestQuest.Id}'.", player);
         return true;
     }
 }

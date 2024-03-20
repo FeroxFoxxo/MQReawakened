@@ -16,6 +16,7 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
@@ -196,10 +197,17 @@ public class Room : Timer
         foreach (var enemy in enemiesCopy)
             enemy.Update();
 
-        foreach (var player in Players.Values.Where(
-                     player => GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime
-                 ))
-            player.Remove(Logger);
+        foreach (var player in Players?.Values)
+        {
+            if (GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime)
+            {
+                player.Remove(Logger);
+                return;
+            }
+
+            var playerCollider = new PlayerCollider(player);
+            playerCollider.IsColliding(false);
+        }
     }
 
     public bool AddEntity(string id, List<BaseComponent> entity) => _entities.TryAdd(id, entity);
@@ -271,7 +279,7 @@ public class Room : Timer
                     if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
                     {
                         currentPlayer.AddItem(item, 1, ItemCatalog);
-                        currentPlayer.SendUpdatedInventory(false);
+                        currentPlayer.SendUpdatedInventory();
                     }
                 }
             }
@@ -284,7 +292,7 @@ public class Room : Timer
                     if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
                     {
                         currentPlayer.AddItem(item, 1, ItemCatalog);
-                        currentPlayer.SendUpdatedInventory(false);
+                        currentPlayer.SendUpdatedInventory();
                     }
                 }
             }
@@ -442,6 +450,9 @@ public class Room : Timer
 
     public void KillEntity(Player player, string id)
     {
+        if (player == null)
+            return;
+
         lock (_roomLock)
             if (KilledObjects.Contains(id))
                 return;
@@ -481,4 +492,15 @@ public class Room : Timer
         typeof(T) == typeof(BaseComponent)
             ? _entities.Values.SelectMany(x => x).ToArray() as T[]
             : _entities.SelectMany(x => x.Value).Where(x => x is T and not null).Select(x => x as T).ToArray();
+
+    public string SetProjectileId()
+    {
+        var rand = new Random();
+        var projectileId = Math.Abs(rand.Next()).ToString();
+
+        while (GameObjectIds.Contains(projectileId))
+            projectileId = Math.Abs(rand.Next()).ToString();
+
+        return projectileId;
+    }
 }

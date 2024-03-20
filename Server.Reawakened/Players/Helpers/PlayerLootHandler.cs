@@ -84,7 +84,7 @@ public static class PlayerLootHandler
         if (lootModel.DoWheel)
             SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
 
-        player.SendUpdatedInventory(false);
+        player.SendUpdatedInventory();
     }
 
     public static void GrantDynamicLoot(this Player player, int level, EnemyDropModel drop, ItemCatalog itemCatalog)

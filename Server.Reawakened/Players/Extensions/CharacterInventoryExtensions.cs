@@ -49,6 +49,10 @@ public static class CharacterInventoryExtensions
                 break;
             case ItemEffectType.Defence:
                 break;
+            case ItemEffectType.Invisibility:
+                player.TempData.Invisible = true;
+                player.TemporaryInvisibility(usedItem.ItemEffects[(int)ItemFilterCategory.Consumables].Duration, timerThread);
+                break;
             case ItemEffectType.Invalid:
             case ItemEffectType.Unknown:
             case ItemEffectType.Unknown_61:
@@ -108,12 +112,20 @@ public static class CharacterInventoryExtensions
 
         var config = itemCatalog.Services.GetRequiredService<ServerRConfig>();
 
-        if (!config.LoadedAssets.Contains(item.PrefabName) && item.InventoryCategoryID != ItemFilterCategory.RecipesAndCraftingIngredients)
+        if (!config.LoadedAssets.Contains(item.PrefabName) &&
+            item.InventoryCategoryID is not ItemFilterCategory.RecipesAndCraftingIngredients and not ItemFilterCategory.QuestItems)
             return;
 
-        if (item.InventoryCategoryID is ItemFilterCategory.Housing or ItemFilterCategory.QuestItems or 
+        // NB: Including quests in this filter breaks the stealth scroll quest!
+        if (item.InventoryCategoryID is ItemFilterCategory.Housing or 
             ItemFilterCategory.Keys or ItemFilterCategory.None)
             return;
+
+        // We should create a way to filter out quest items with placeholder icons from visibility.
+
+        if (item.InventoryCategoryID == ItemFilterCategory.QuestItems)
+            if (item.ProductionStatus != ProductionStatus.Ingame)
+                return;
 
         if (!characterData.Data.Inventory.Items.ContainsKey(item.ItemId))
             characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel
@@ -121,7 +133,7 @@ public static class CharacterInventoryExtensions
                 ItemId = item.ItemId,
                 Count = 0,
                 BindingCount = item.BindingCount,
-                DelayUseExpiry = DateTime.MinValue
+                DelayUseExpiry = item.DelayUseExpiry
             });
 
         if (!characterData.TryGetItem(item.ItemId, out var gottenItem))
@@ -145,7 +157,7 @@ public static class CharacterInventoryExtensions
                         ItemId = item.ItemId,
                         Count = count,
                         BindingCount = item.BindingCount,
-                        DelayUseExpiry = DateTime.MinValue
+                        DelayUseExpiry = item.DelayUseExpiry
                     });
         }
     }
@@ -160,7 +172,7 @@ public static class CharacterInventoryExtensions
         return sb.ToString();
     }
 
-    public static void SendUpdatedInventory(this Player player, bool fromEquippedUpdate)
+    public static void SendUpdatedInventory(this Player player, bool fromEquippedUpdate = false)
     {
         player.SendXt(
             "ip",
