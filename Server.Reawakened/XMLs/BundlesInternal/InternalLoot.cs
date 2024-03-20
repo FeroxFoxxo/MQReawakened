@@ -62,8 +62,6 @@ public class InternalLoot : IBundledXml<InternalLoot>
 
                     var objectId = string.Empty;
                     var doWheel = true;
-                    var doMultiplayerWheel = true;
-                    var multiplayerWheelChance = 0;
                     var bananaRewards = new List<BananaReward>();
                     var itemRewards = new List<ItemReward>();
                     var weightRange = 1;
@@ -76,12 +74,6 @@ public class InternalLoot : IBundledXml<InternalLoot>
                                 continue;
                             case "doLootWheel":
                                 doWheel = doWheel.GetBoolValue(lootAttribute.Value, Logger);
-                                continue;
-                            case "doMultiplayerWheel":
-                                doMultiplayerWheel = doMultiplayerWheel.GetBoolValue(lootAttribute.Value, Logger);
-                                continue;
-                            case "multiplayerWheelChance":
-                                multiplayerWheelChance = int.Parse(lootAttribute.Value);
                                 continue;
                         }
 
@@ -127,7 +119,7 @@ public class InternalLoot : IBundledXml<InternalLoot>
                                 break;
                         }
 
-                    LootCatalog.TryAdd(objectId, new LootModel(objectId, bananaRewards, itemRewards, doWheel, multiplayerWheelChance, weightRange));
+                    LootCatalog.TryAdd(objectId, new LootModel(objectId, bananaRewards, itemRewards, doWheel, weightRange));
                     lootList.Add(objectId);
                 }
 
@@ -141,5 +133,5 @@ public class InternalLoot : IBundledXml<InternalLoot>
     }
 
     public LootModel GetLootById(string objectId) =>
-        LootCatalog.TryGetValue(objectId, out var lootInfo) ? lootInfo : new LootModel(string.Empty, [], [], false, 0, 1);
+        LootCatalog.TryGetValue(objectId, out var lootInfo) ? lootInfo : new LootModel(string.Empty, [], [], false, 1);
 }

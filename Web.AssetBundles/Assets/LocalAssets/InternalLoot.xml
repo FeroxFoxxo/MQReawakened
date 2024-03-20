@@ -146,7 +146,7 @@
                 <Item itemName="Add_COM_HawaiGirl01_S02" count="1" />
             </Items>
         </LootInfo>
-        <LootInfo objectId="7140" doLootWheel="True" multiplayerWheelChance="100">
+        <LootInfo objectId="7140" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_Lara01_LS04" count="1" />
                 <Item itemName="Add_COM_Explorator01_S03" count="1" />

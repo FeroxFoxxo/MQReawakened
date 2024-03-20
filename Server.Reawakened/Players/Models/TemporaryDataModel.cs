@@ -9,6 +9,7 @@ public class TemporaryDataModel
 {
     public string GameObjectId { get; set; } = "0";
     public int Direction { get; set; } = 0;
+    public PlayerCollider PlayerCollider { get; set; }
     public int Locale { get; set; }
 
     public bool Invincible { get; set; } = false;
@@ -17,7 +18,6 @@ public class TemporaryDataModel
     public bool BananaBoostsElixir { get; set; }
     public bool ReputationBoostsElixir { get; set; }
     public bool IsSuperStomping { get; set; } = false;
-    public Dictionary<int, bool> VotedForItem { get; set; } = new Dictionary<int, bool>();
 
     public Vector3Model Position { get; set; } = new Vector3Model();
     public Vector3Model Velocity { get; set; } = new Vector3Model();
