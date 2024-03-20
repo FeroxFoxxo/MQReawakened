@@ -1,14 +1,8 @@
-﻿using A2m.Server;
-using Server.Reawakened.Network.Extensions;
+﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Protocols.External._j__LootHandler;
 public class OnPlayerWantToRoll : ExternalProtocol

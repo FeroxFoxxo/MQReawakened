@@ -1,9 +1,7 @@
 ﻿using A2m.Server;
-using EffectDefines;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Bundles;
-using System;
 
 namespace Server.Reawakened.Players.Models.Character;
 

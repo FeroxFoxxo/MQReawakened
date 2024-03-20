@@ -7,7 +7,6 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
-using System.Linq;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;

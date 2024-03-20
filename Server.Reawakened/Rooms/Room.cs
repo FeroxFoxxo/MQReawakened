@@ -6,7 +6,6 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
-using Server.Reawakened.Entities.Entity.Enemies;
 using Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
