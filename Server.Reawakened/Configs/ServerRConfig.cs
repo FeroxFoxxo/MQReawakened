@@ -228,6 +228,7 @@ public class ServerRConfig : IRConfig
             "Spite_Wasp_Boss01",
             "PF_Spite_Spiderling",
             "Spite_TeaserSpider_Boss",
+            "Spite_Spider_Boss",
             "PF_Spite_Hamster",
             "PF_Spite_Squirrel"
         ];

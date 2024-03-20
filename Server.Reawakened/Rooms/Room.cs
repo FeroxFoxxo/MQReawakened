@@ -157,8 +157,11 @@ public class Room : Timer
                     case string spiderling when spiderling.Contains(config.EnemyNameSearch[12]):
                         Enemies.Add(component.Id, new EnemySpiderling(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
-                    case string rachnok when rachnok.Contains(config.EnemyNameSearch[13]):
-                        Enemies.Add(component.Id, new EnemyRachnok(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
+                    case string teaserSpiderBoss when teaserSpiderBoss.Contains(config.EnemyNameSearch[13]):
+                        Enemies.Add(component.Id, new EnemyTeaserSpiderBoss(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
+                        break;
+                    case string spiderBoss when spiderBoss.Contains(config.EnemyNameSearch[14]):
+                        Enemies.Add(component.Id, new EnemySpiderBoss(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                 }
             }
