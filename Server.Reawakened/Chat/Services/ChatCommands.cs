@@ -6,10 +6,10 @@ using Server.Base.Accounts.Models;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
 using Server.Base.Logging;
+using Server.Base.Worlds;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -441,6 +441,9 @@ public partial class ChatCommands(
         var newLevel = level;
 
         player.LevelUp(newLevel, logger);
+        //If players wanted to level down, it would level them back up to the highest level they've ever hit upon recieving xp.
+        //Now their level will stay at the level they set it to.
+        character.Data.Reputation = character.Data.ReputationForCurrentLevel;
 
         Log($"{character.Data.CharacterName} has leveled up to level {newLevel}!", player);
 
