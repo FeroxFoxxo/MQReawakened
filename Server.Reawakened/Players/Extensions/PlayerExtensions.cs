@@ -199,6 +199,10 @@ public static class PlayerExtensions
             error = e.Message;
         }
 
+        // this allows early 2012 to load 
+        // the empty string is displayLevelName in ILSpy
+        // player.SendXt("lw", error, levelName, string.Empty, surroundingLevels);
+
         player.SendXt("lw", error, levelName, surroundingLevels);
     }
 
