@@ -28,8 +28,8 @@ public class OnPlayerPassRoll : ExternalProtocol
 
         if (playersInRoom.All(x => x.TempData.VotedForItem.ContainsKey(objectId)))
         {
-            var playerList = Player.Room.Players.Values.ToList();
-            var winningPlayer = playerList[new Random().Next(playerList.Count)];
+            var participants = Player.Room.Players.Values.Where(x => x.TempData.VotedForItem[objectId] == true).ToList();
+            var winningPlayer = participants[new Random().Next(participants.Count)];
 
             foreach (var player in playersInRoom)
             {
