@@ -203,7 +203,8 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
         }
 
-        Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, player.CharacterName);
+        if (!player.TempData.Invincible && !player.TempData.Invisible)
+            Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, player.CharacterName);
     }
 
     public void ApplyPoisonEffect(object playerData)

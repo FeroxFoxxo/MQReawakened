@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -58,7 +59,7 @@ public static class PlayerExtensions
         }
     }
 
-    public static void AddReputation(this Player player, int reputation)
+    public static void AddReputation(this Player player, int reputation, ServerRConfig config)
     {
         if (player == null)
             return;
@@ -78,7 +79,12 @@ public static class PlayerExtensions
 
         charData.Reputation = reputation;
 
-        player.SendXt("cp", charData.Reputation - charData.ReputationForCurrentLevel, charData.ReputationForNextLevel - charData.Reputation);
+        if (config.GameVersion == GameVersion.v2014)
+            player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
+
+        else
+            player.SendXt("cp", charData.Reputation - charData.ReputationForCurrentLevel,
+                charData.ReputationForNextLevel - charData.ReputationForCurrentLevel);
     }
 
     public static void TradeWithPlayer(this Player origin, ItemCatalog itemCatalog)

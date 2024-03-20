@@ -24,7 +24,6 @@ public class FinishedMinigame : ExternalProtocol
 
         Logger.LogInformation("Minigame with ID ({minigameId}) has completed.", arenaObjectId);
 
-
         foreach (var player in Player.Room.Players.Values)
             player.SendXt("Mt", arenaObjectId, Player.CharacterId, finishedRaceTime);
 
@@ -56,12 +55,8 @@ public class FinishedMinigame : ExternalProtocol
         if (trigger.GetPhysicalInteractorCount() <= 0)
         {
             var players = Player.Room.Players;
-            var playerCount = players.Count;
             foreach (var player in players.Values)
-            {
-                FinishMinigame(player, arenaObjectId, playerCount);
-                playerCount--;
-            }
+                FinishMinigame(player, arenaObjectId, players.Count);
 
             trigger.RunTrigger(Player);
             trigger.ResetTrigger();
@@ -73,7 +68,7 @@ public class FinishedMinigame : ExternalProtocol
         player.SendSyncEventToPlayer(new TriggerUpdate_SyncEvent(minigameId, player.Room.Time, membersInRoom));
 
         var rdmBananaReward = new Random().Next(7, 11 * player.Character.Data.GlobalLevel);
-        var xpReward = player.Character.Data.ReputationForNextLevel / 25;
+        var xpReward = player.Character.Data.ReputationForNextLevel / 30;
 
         var lootedItems = ArenaModel.GrantLootedItems(LootCatalog, minigameId);
         var lootableItems = ArenaModel.GrantLootableItems(LootCatalog, minigameId);
