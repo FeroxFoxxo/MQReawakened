@@ -51,6 +51,8 @@ Please read the [developer guide here on how to set up MQReawakened](https://git
 
 If you want to play 2012 or earlier (NOT RECOMMENDED), please use the *new and improved!* [MQClient found here](https://github.com/FeroxFoxxo/MQClient).
 
+Otherwise, simply edit the `settings.txt` and `LocalBuildConfig.xml` files to point to the MQReawakened server you are trying to connect to, instead of the default one supplied.
+
 ## Gameplay
 
 The project's goal is to faithfully recreate the game as it was at the time of the targeted build.
