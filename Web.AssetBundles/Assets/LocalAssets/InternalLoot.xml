@@ -666,6 +666,17 @@
                 <Item itemName="Add_COM_Beckett01_BP01" count="1" />
             </Items>
         </LootInfo>
+        <!--Jack in the Box-->
+        <LootInfo objectId="657" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+                <Item itemName="Add_COM_Clown01_UF01" count="1" />
+                <Item itemName="COL_ING_G_Oak01" count="1" />
+                <Item itemName="COL_BOMB_FireBomb04" count="1" />
+                <Item itemName="Add_COM_Clown01_LS01" count="1" />
+            </Items>
+        </LootInfo>
     </Level>
     <Level name="Monkey Run">
         <LootInfo objectId="102017" doLootWheel="True">
@@ -975,6 +986,87 @@
             </Items>
         </LootInfo>
     </Level>
+
+    <!-- Event Levels -->
+    <Level name="Power Rangers Megaforce Arena">
+        <!-- Samurai Chest -->
+        <LootInfo objectId="5816" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_EVT_PowerRanger_LS02" count="1" />
+                <Item itemName="WPN_MEL_PowerRangerSword01" count="1" />
+                <Item itemName="Add_EVT_PowerRanger_FH01" count="1" />
+                <Item itemName="Add_EVT_PowerRanger_TS03" count="1" />
+                <Item itemName="Add_EVT_PowerRanger_FH03" count="1" />
+                <Item itemName="Add_EVT_PowerRanger_TS01" count="1" />
+                <Item itemName="Add_EVT_PowerRanger_LS01" count="1" />
+                <Item itemName="Add_EVT_PowerRanger_LS03" count="1" />
+                <Item itemName="Add_EVT_PowerRanger_TS02" count="1" />
+                <Item itemName="Add_EVT_PowerRanger_FH02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Power Rangers Megaforce Arena">
+        <!-- Megaforce Chest -->
+        <LootInfo objectId="27918" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_EVT_PowerRanger02_FH01" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_FH02" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_FH03" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_FH04" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_FH05" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_LS01" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_LS02" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_LS03" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_LS04" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_LS05" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_TS01" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_TS02" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_TS03" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_TS04" count="1" />
+                <Item itemName="Add_EVT_PowerRanger02_TS05" count="1" />
+                <Item itemName="WPN_MEL_PowerRangerSword02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Turtles Party!">
+        <!-- TMNT Chest -->
+        <LootInfo objectId="13160668" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_EVT_TMNT_Pizza01" count="1" />
+                <Item itemName="WPN_PRJ_TMNT_Sai01" count="1" />
+                <Item itemName="Add_EVT_TMNT01_W01" count="1" />
+                <Item itemName="Add_EVT_TMNT01_FH02" count="1" />
+                <Item itemName="Add_EVT_TMNT01_FH01" count="1" />
+                <Item itemName="WPN_MEL_TMNT_Sword01" count="1" />
+                <Item itemName="WPN_PRJ_TMNT_Nunchuck01" count="1" />
+                <Item itemName="Add_EVT_TMNT01_FH04" count="1" />
+                <Item itemName="Add_EVT_TMNT01_TS01" count="1" />
+                <Item itemName="WPN_MEL_TMNT_Bow01" count="1" />
+                <Item itemName="Add_EVT_TMNT01_LS01" count="1" />
+                <Item itemName="Add_EVT_TMNT01_FH03" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Turtles Party!">
+        <!-- Shredder's Lair Chest -->
+        <LootInfo objectId="213218" doLootWheel="True">
+            <!-- Why does it have the same id with cts starter purple chest???? -->
+            <Items rewardAmount="1">
+                <Item itemName="Add_EVT_TMNT_Shredder01_BP01" count="1" />
+                <Item itemName="Add_EVT_TMNT_Shredder01_LS01" count="1" />
+                <Item itemName="Add_EVT_TMNT_Shredder01_S01" count="1" />
+                <Item itemName="Add_EVT_TMNT_Shredder01_TS01" count="1" />
+                <Item itemName="Add_EVT_TMNT_Shredder01_W01" count="1" />
+                <Item itemName="Add_EVT_TMNT_Splinter01_LF01" count="1" />
+                <Item itemName="Add_EVT_TMNT_Splinter01_LS01" count="1" />
+                <Item itemName="Add_EVT_TMNT_Splinter01_TS01" count="1" />
+                <Item itemName="WPN_MEL_TMNT_Bow02" count="1" />
+                <Item itemName="WPN_MEL_TMNT_Shredder01" count="1" />
+                <Item itemName="WPN_PRJ_TMNTShuriken01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+
 
     <!-- Ootu Mystics Tribe -->
     <Level name="Swamp of Misery">

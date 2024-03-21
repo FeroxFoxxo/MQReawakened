@@ -317,13 +317,18 @@
     <Level id="437">
         <!-- The Forgotten Temple -->
         <Vendor objectId="31529" name="Zolin" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="774" greetingConversationId="2118" leavingConversationId="2117">
+            <!-- speculation -->
             <Item prefabName="COL_PACK_NC_BoomBug01" />
-            <!-- speculation-->
+            <Item prefabName="COL_PACK_NC_SuperMonkey01" />
             <Item prefabName="Add_COM_BoomBug01_LS01" />
             <Item prefabName="Add_COM_BoomBug01_S01" />
-            <Item prefabName="Add_COM_BoomBug01_T01" />
             <Item prefabName="Add_COM_BoomBug01_TS01" />
             <Item prefabName="Add_COM_BoomBug01_W01" />
+            <Item prefabName="Add_COM_SuperMonkey01_S01" />
+            <Item prefabName="Add_COM_SuperMonkey01_TS01" />
+            <Item prefabName="Add_COM_SuperMonkey01_LS01" />
+            <Item prefabName="Add_COM_SuperMonkey01_W01" />
+            <Item prefabName="Add_COM_SuperMonkey01_BP01" />
         </Vendor>
     </Level>
     <Level id="209">

@@ -289,6 +289,15 @@
             <Dialog dialogId="1561" conversationId="3956" minimumReputation="1" />
         </NPC>
     </Level>
+    <Level id="522">
+        <!-- Turtles Party! -->
+        <NPC objectId="13161599" name="Leonardo" descriptionId="0">
+            <Dialog dialogId="1479" conversationId="3744" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="13161600" name="Donatello" descriptionId="0">
+            <Dialog dialogId="1480" conversationId="3745" minimumReputation="1" />
+        </NPC>
+    </Level>
 
     <!-- Ootu Mystics Tribe -->
     <Level id="133">
