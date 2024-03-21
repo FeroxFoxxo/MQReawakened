@@ -15,9 +15,10 @@ public class FriendInvite : ExternalProtocol
         var characterName = message[5];
         var invitedCharacter = PlayerContainer.GetPlayerByName(characterName);
 
-        invitedCharacter?.SendXt("fv",
-            Player.CharacterName,
-            Player.Room.LevelInfo.InGameName
-        );
+        if (!invitedCharacter.Character.Data.Blocked.Contains(Player.CharacterId))
+            invitedCharacter?.SendXt("fv",
+                Player.CharacterName,
+                Player.Room.LevelInfo.InGameName
+            );
     }
 }
