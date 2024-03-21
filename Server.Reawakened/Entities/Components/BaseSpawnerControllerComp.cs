@@ -1,20 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Core.Abstractions;
-using Server.Base.Core.Extensions;
-using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Entities.Entity.Enemies;
-using Server.Reawakened.Entities.Entity.Utils;
-using Server.Reawakened.Players;
-using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.BundlesInternal;
-using System;
-using System.ComponentModel;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components;
@@ -60,13 +52,14 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public GlobalProperties GlobalProperties;
     public BehaviorModel BehaviorList;
 
-    public Dictionary<int, Enemy> LinkedEnemies;
+    public Dictionary<int, BehaviorEnemy> LinkedEnemies;
     private int _spawnedEntityCount;
     private float _nextSpawnRequestTime;
     private bool _spawnRequested;
     private bool _activated;
     private float _activeDetectionRadius;
     private TriggerArenaComp _arena;
+    private string _spawnedEntityId;
 
     public override void InitializeComponent()
     {
@@ -89,7 +82,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         GlobalProperties = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", "", false, false, 0);
 
         BehaviorList = EnemyInfoXml.GetBehaviorsByName(PrefabNameToSpawn1);
-        LinkedEnemies = new Dictionary<int, Enemy>();
+        LinkedEnemies = new Dictionary<int, BehaviorEnemy>();
 
         if (ComponentData.SpawnOnDetection)
             _activated = true;
@@ -127,9 +120,6 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         _spawnRequested = false;
 
         //Spawn the enemy and set it in the room enemy list
-        var spawn = new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount);
-        Room.SendSyncEvent(spawn);
-
         Room.SendSyncEvent(new AIInit_SyncEvent(Id, Room.Time, 0, 0, 0, 0, 0, Generic.Patrol_InitialProgressRatio,
         Health, Health, 1f, 1f, 1f, 0, Level, GlobalProperties.ToString(), "Idle||"));
 
@@ -147,6 +137,13 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         Room.SendSyncEvent(aiDo);
 
+        var spawn = new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount);
+        Room.SendSyncEvent(spawn);
+
+        _spawnedEntityId = $"{Id}_{_spawnedEntityCount}";
+
+        _arena?.ArenaEntities.Add(_spawnedEntityId);
+
         TimerThread.DelayCall(DelayedSpawnData, "", TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
     }
 
@@ -162,7 +159,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             Hazard
 
         };
-        Room.AddEntity(Id + "_" + _spawnedEntityCount, newEntity);
+        Room.AddEntity(_spawnedEntityId, newEntity);
         foreach (var component in newEntity)
         {
             component.InitializeComponent();
@@ -170,54 +167,52 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         }
 
         //Fix some things before setting the enemy
-        Hazard.SetId(Id + "_" + _spawnedEntityCount);
+        Hazard.SetId(_spawnedEntityId);
         Generic.SetPatrolRange(PatrolDistance);
 
-        Room.Enemies.Add(Id + "_" + _spawnedEntityCount, SetEnemy(_spawnedEntityCount));
+        Room.Enemies.Add(_spawnedEntityId, SetEnemy(_spawnedEntityCount));
         _nextSpawnRequestTime = 0;
-
-        _arena?.ArenaEntities.Add(Id + "_" + _spawnedEntityCount);
     }
 
-    private Enemy SetEnemy(int index)
+    private BehaviorEnemy SetEnemy(int index)
     {
         switch (PrefabNameToSpawn1)
         {
             case string bird when bird.Contains(ServerRConfig.EnemyNameSearch[0]):
-                LinkedEnemies.Add(index, new EnemyBird(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemyBird(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
             case string fish when fish.Contains(ServerRConfig.EnemyNameSearch[1]):
-                LinkedEnemies.Add(index, new EnemyFish(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemyFish(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
             case string spider when spider.Contains(ServerRConfig.EnemyNameSearch[2]):
-                LinkedEnemies.Add(index, new EnemySpider(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemySpider(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
             case string bathog when bathog.Contains(ServerRConfig.EnemyNameSearch[3]):
-                LinkedEnemies.Add(index, new EnemyBathog(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemyBathog(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
             case string bomber when bomber.Contains(ServerRConfig.EnemyNameSearch[4]):
-                LinkedEnemies.Add(index, new EnemyBomber(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemyBomber(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
             case string crawler when crawler.Contains(ServerRConfig.EnemyNameSearch[5]):
-                LinkedEnemies.Add(index, new EnemyCrawler(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemyCrawler(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
             case string dragon when dragon.Contains(ServerRConfig.EnemyNameSearch[6]):
-                LinkedEnemies.Add(index, new EnemyDragon(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemyDragon(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
             case string grenadier when grenadier.Contains(ServerRConfig.EnemyNameSearch[7]):
-                LinkedEnemies.Add(index, new EnemyGrenadier(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemyGrenadier(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
             case string orchid when orchid.Contains(ServerRConfig.EnemyNameSearch[8]):
-                LinkedEnemies.Add(index, new EnemyOrchid(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemyOrchid(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
             case string pincer when pincer.Contains(ServerRConfig.EnemyNameSearch[9]):
-                LinkedEnemies.Add(index, new EnemyPincer(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemyPincer(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
             case string stomper when stomper.Contains(ServerRConfig.EnemyNameSearch[10]):
-                LinkedEnemies.Add(index, new EnemyStomper(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemyStomper(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
             case string vespid when vespid.Contains(ServerRConfig.EnemyNameSearch[11]):
-                LinkedEnemies.Add(index, new EnemyVespid(Room, Id + "_" + index, PrefabNameToSpawn1, EnemyController, Services));
+                LinkedEnemies.Add(index, new EnemyVespid(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
                 break;
         }
 

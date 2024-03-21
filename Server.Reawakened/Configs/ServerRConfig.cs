@@ -225,7 +225,12 @@ public class ServerRConfig : IRConfig
             "PF_Spite_Orchid",
             "PF_Spite_Pincer",
             "PF_Spite_Stomper",
-            "Spite_Wasp_Boss01"
+            "Spite_Wasp_Boss01",
+            "PF_Spite_Spiderling",
+            "Spite_TeaserSpider_Boss",
+            "Spite_Spider_Boss",
+            "PF_Spite_Hamster",
+            "PF_Spite_Squirrel"
         ];
 
         MaximumEntitiesToReturnLog = 15;

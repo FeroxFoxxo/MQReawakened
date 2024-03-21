@@ -55,7 +55,9 @@ public class CharacterLightModel
         if (_version >= GameVersion.vPets2012)
             sb.Append(PetItemId);
 
-        sb.Append(Registered ? 1 : 0);
+        if (_version >= GameVersion.vMinigames2012)
+            sb.Append(Registered ? 1 : 0);
+
         sb.Append(BuildDiscoveredStats());
 
         return sb.ToString();

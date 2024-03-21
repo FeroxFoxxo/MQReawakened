@@ -53,7 +53,7 @@ public class ChooseQuestReward : ExternalProtocol
         var quest = QuestCatalog.QuestCatalogs[questId];
 
         Player.AddBananas(quest.BananaReward);
-        Player.AddReputation(quest.ReputationReward);
+        Player.AddReputation(quest.ReputationReward, Config);
 
         foreach (var item in quest.RewardItems)
             Player.AddItem(item.Key, item.Value, ItemCatalog);
