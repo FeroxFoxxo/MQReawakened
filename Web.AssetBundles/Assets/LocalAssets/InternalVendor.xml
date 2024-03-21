@@ -681,8 +681,9 @@
             <Item prefabName="WPN_SPC_DoomGrenade01" />
             <Item prefabName="ABIL_Grenade03b" />
             <Item prefabName="WPN_PRJ_Thunderbow01" />
+            <Item prefabName="WPN_MEL_FireSword01" />
         </Vendor>
-        <Vendor objectId="551" name="Clunk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="1307" greetingConversationId="3312" leavingConversationId="3311">
+        <Vendor objectId="551" name="Clunk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1307" greetingConversationId="3312" leavingConversationId="3311">
             <Item prefabName="COL_POT_FireResist00" />
             <Item prefabName="COL_POT_FireElixer00" />
             <Item prefabName="COL_POT_FireResist01" />
