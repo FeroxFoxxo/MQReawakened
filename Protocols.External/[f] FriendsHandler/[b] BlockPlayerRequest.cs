@@ -22,16 +22,20 @@ public class BlockPlayerRequest : ExternalProtocol
             if (friendData == null)
                 return;
 
-            Player.Character.Data.Friends.Remove(friend.Id);
-            friend.Data.Friends.Remove(Player.CharacterId);
-            Player.Character.Data.Blocked.Add(friend.Id);
-
-            if (Player.PlayerContainer.GetPlayerByName(characterName) != null)
+            if (Player.PlayerContainer.GetPlayerByName(characterName) != null
+                && Player.Character.Data.Friends.Contains(friend.Id))
             {
                 var blockedPlayer = Player.PlayerContainer.GetPlayerByName(characterName);
 
                 blockedPlayer.SendXt("fd", Player.CharacterName, "1");
             }
+            else if (Player.Character.Data.Friends.Contains(friend.Id))
+            {
+                Player.Character.Data.Friends.Remove(friend.Id);
+                friend.Data.Friends.Remove(Player.CharacterId);
+            }
+            
+            Player.Character.Data.Blocked.Add(friend.Id);
 
             Player.SendXt("fb", friendData.ToString());
         }
