@@ -50,7 +50,12 @@ public class FreeChat : ExternalProtocol
             var character = Player.Character;
 
             if (!string.IsNullOrEmpty(recipientName))
-                Player.Chat(channelType, character.Data.CharacterName, chatMessage, recipientName);
+            {
+                var recipient = Player.PlayerContainer.GetPlayerByName(recipientName);
+
+                if (recipient != null && !recipient.Character.Data.Blocked.Contains(Player.CharacterId))
+                    Player.Chat(channelType, character.Data.CharacterName, chatMessage, recipientName);
+            }
         }
         else
         {
