@@ -45,7 +45,7 @@ If you'd like to contribute to this project, please read [CONTRIBUTING.md](CONTR
 - You **must** have your *own* copy of the game and its associated asset bundles.
 - You **must** have the associated DLL for the game added to your server project to ensure it doesn't contain any copywritten code.
 
-## How to: Set Uo
+## How to set up MQReawakened
 
 Please read the [developer guide here on how to set up MQReawakened/](https://github.com/FeroxFoxxo/MQReawakened/wiki/Setting-Up-The-Development-Environment).
 
