@@ -1,15 +1,18 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Services;
 
 namespace Protocols.External._f__FriendsHandler;
 public class DeleteResponse : ExternalProtocol
 {
     public override string ProtocolName => "fd";
 
+    public CharacterHandler CharacterHandler { get; set; }
+
     public override void Run(string[] message)
     {
         var characterName = message[5];
-        var friend = Player.CharacterHandler.GetCharacterFromName(characterName);
+        var friend = CharacterHandler.GetCharacterFromName(characterName);
 
         if (friend != null)
         {
