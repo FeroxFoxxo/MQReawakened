@@ -51,7 +51,7 @@ Please read the [developer guide here on how to set up MQReawakened](https://git
 
 If you want to play 2012 or earlier (NOT RECOMMENDED), please use the *new and improved!* [MQClient found here](https://github.com/FeroxFoxxo/MQClient).
 
-Otherwise, simply edit the `settings.txt` and `LocalBuildConfig.xml` files to point to the MQReawakened server you are trying to connect to, instead of the default one supplied.
+Otherwise, simply edit the `settings.txt` and `game/LocalBuildConfig.xml` files from the original game client to point to the MQReawakened server you are trying to connect to, replacing the default supplied.
 
 ## Gameplay
 
