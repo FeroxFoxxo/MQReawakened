@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Network.Protocols;
+﻿using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Network.Protocols;
 
 namespace Protocols.External._b__LocalizationHandler;
 public class SetLocale : ExternalProtocol
@@ -11,6 +12,6 @@ public class SetLocale : ExternalProtocol
 
         Player.TempData.Locale = locale;
 
-        SendXt("bs", locale);
+        Player.SendXt("bs", locale);
     }
 }

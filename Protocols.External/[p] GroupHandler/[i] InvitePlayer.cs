@@ -18,6 +18,7 @@ public class InvitePlayer : ExternalProtocol
         var characterName = message[5];
         var invitedCharacter = PlayerContainer.GetPlayerByName(characterName);
 
-        invitedCharacter?.SendXt("pi", Player.TempData.Group.GetLeaderName());
+        if (!invitedCharacter.Character.Data.Blocked.Contains(Player.CharacterId))
+            invitedCharacter?.SendXt("pi", Player.TempData.Group.GetLeaderName());
     }
 }
