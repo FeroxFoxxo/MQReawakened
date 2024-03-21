@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VendorCatalog>
     <!-- Crossroads Tribe -->
-    <Level id="514">
-        <!-- Crossroads Path (Tutorial)-->
+    <Level name="Crossroads Path (Tutorial)" id="514">
         <Vendor objectId="615" name="Altak" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1180" greetingConversationId="3173" leavingConversationId="3372">
             <Item prefabName="Add_COM_Armor01_LS01" />
         </Vendor>
@@ -24,8 +23,7 @@
             <Item prefabName="PF_PET_Rig02_Tiger02" />
         </Vendor>
     </Level>
-    <Level id="99">
-        <!-- Crossroads Path -->
+    <Level name="Crossroads Path" id="99">
         <Vendor objectId="1167" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
             <Item prefabName="PF_PET_Rig01_Pheonix01" />
             <Item prefabName="PF_PET_Rig02_Tiger01" />
@@ -64,8 +62,8 @@
             <Item prefabName="COL_POT_Healing02" />
         </Vendor>
     </Level>
-    <Level id="47">
-        <!-- Clock Tower Square (2014) -->
+    <Level name="Clock Tower Square" id="47">
+        <!-- 2014 -->
         <Vendor objectId="98648" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
             <Item prefabName="PF_PET_Rig02_Enzo01" />
             <Item prefabName="PF_PET_Rig01_Pheonix01" />
@@ -183,8 +181,7 @@
             <Item prefabName="COL_POT_Healing02" />
         </Vendor>
     </Level>
-    <Level id="301">
-        <!-- The Hovering Markets -->
+    <Level name="The Hovering Markets" id="301">
         <Vendor objectId="243" name="Xaken" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1017" greetingConversationId="2789" leavingConversationId="2788">
             <Item prefabName="Add_COM_Ace01_TS01" />
             <Item prefabName="Add_COM_KidBoy01_TS01" />
@@ -290,8 +287,7 @@
             <Item prefabName="COL_FOOD_Cookie01" />
         </Vendor>
     </Level>
-    <Level id="302">
-        <!-- The Underbelly -->
+    <Level name="The Underbelly" id="302">
         <Vendor objectId="166" name="Yarn" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Tailor" dialogId="1081" greetingConversationId="2990" leavingConversationId="2989">
             <Item prefabName="COL_PACK_NC_Tailoring01" />
             <Item prefabName="COL_PACK_NC_Tailoring02" />
@@ -314,8 +310,7 @@
             <Item prefabName="" />
         </Vendor>
     </Level>
-    <Level id="437">
-        <!-- The Forgotten Temple -->
+    <Level name="The Forgotten Temple" id="437">
         <Vendor objectId="31529" name="Zolin" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="774" greetingConversationId="2118" leavingConversationId="2117">
             <!-- speculation -->
             <Item prefabName="COL_PACK_NC_BoomBug01" />
@@ -331,8 +326,7 @@
             <Item prefabName="Add_COM_SuperMonkey01_BP01" />
         </Vendor>
     </Level>
-    <Level id="209">
-        <!-- The Volcano Lair -->
+    <Level name="The Volcano Lair" id="209">
         <Vendor objectId="7524" name="Aodh" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="891" greetingConversationId="2467" leavingConversationId="2466">
             <Item prefabName="COL_ING_C_PureWater01" />
             <Item prefabName="COL_ING_C_MountainWater01" />
@@ -343,8 +337,7 @@
     </Level>
     
     <!-- Event Levels -->
-    <Level id="448">
-        <!-- Papa Matu's Haunted Graveyard -->
+    <Level name="Papa Matu's Haunted Graveyard" id="448">
         <Vendor objectId="3008" name="Jacko" descriptionId="1" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="10460" greetingConversationId="2651" leavingConversationId="3027">
             <Item prefabName="Add_EVT_PumpkinHead01_FH01" />
             <Item prefabName="Add_EVT_PumpkinHead01_FH02" />
@@ -377,8 +370,7 @@
             <Item prefabName="PF_PET_Rig01_Skull01_03" />
         </Vendor>
     </Level>
-    <Level id="546">
-        <!-- Frostbeards Forest -->
+    <Level name="Frostbeards Forest" id="546">
         <Vendor objectId="32790" name="Starshine" descriptionId="1" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1022" greetingConversationId="2819" leavingConversationId="2818">
             <Item prefabName="Add_EVT_Winter01_T01" />
             <Item prefabName="Add_EVT_Holiday01_BP01" />
@@ -392,8 +384,7 @@
             <Item prefabName="COL_FOOD_HolidayFruitcake01" />
         </Vendor>
     </Level>
-    <Level id="522">
-        <!-- Turtle's Party -->
+    <Level name="Turtle's Party" id="522">
         <Vendor objectId="13160924" name="Raphael" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1478" greetingConversationId="3741" leavingConversationId="3740">
             <Item prefabName="WPN_PRJ_ChimFooAmulet01" />
             <Item prefabName="ABIL_ColorTonic10" />
@@ -406,8 +397,7 @@
             <Item prefabName="Add_EVT_TMNT_Casey01_LS01" />
         </Vendor>
     </Level>
-    <Level id="564">
-        <!-- SpongeBob's Amusement Park -->
+    <Level name="SB's Amusement Park" id="564">
         <Vendor objectId="26294092" name="Finn" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1606" greetingConversationId="4082" leavingConversationId="4081">
             <Item prefabName="PF_PET_Rig03_GaryBot01_02" />
             <Item prefabName="PF_PET_Rig03_GaryBot01_03" />
@@ -436,8 +426,7 @@
     </Level>
     
     <!-- Ootu Mystics Tribe -->
-    <Level id="46">
-        <!-- Swamp of Misery -->
+    <Level name="Swamp of Misery" id="46">
         <Vendor objectId="945" name="Etok" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1318" greetingConversationId="3073" leavingConversationId="3399">
                 <Item prefabName="Add_BON_SkullFighter01_TS01" />
                 <Item prefabName="Add_BON_Ritualist01_S01" />
@@ -478,8 +467,7 @@
                 <Item prefabName="ABIL_PoisonBomb01" />
             </Vendor>
     </Level>
-    <Level id="136">
-        <!-- Bog Bazaar -->
+    <Level name="Bog Bazaar" id="136">
         <Vendor objectId="574" name="Koopu" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1108" greetingConversationId="3342" leavingConversationId="3079">
             <Item prefabName="COL_FOOD_Apple01" />
             <Item prefabName="COL_FOOD_Cookie01" />
@@ -617,8 +605,7 @@
             <Item prefabName="ABIL_PoisonBomb03" />
         </Vendor>
     </Level>
-    <Level id="134">
-        <!-- Cauldron Keep -->
+    <Level name="Cauldron Keep" id="134">
         <Vendor objectId="413" name="Brewee" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="784" greetingConversationId="2178" leavingConversationId="2177">
             <Item prefabName="COL_ING_C_CocoShell01" />
             <Item prefabName="COL_ING_C_GlacialWater01" />
@@ -682,8 +669,7 @@
             <Item prefabName="COL_RECIP_BUFF_Bandage05" />
         </Vendor>
     </Level>
-    <Level id="86">
-        <!-- Moss Temple -->
+    <Level name="Moss Temple" id="86">
         <Vendor objectId="6251" name="Hilia" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Potions" dialogId="419" greetingConversationId="1242" leavingConversationId="1247">
             <Item prefabName="COL_ING_C_VoodooDice01" />
             <Item prefabName="COL_ING_C_PureWater01" />
@@ -691,8 +677,7 @@
     </Level>
     
     <!-- Sea Dragons Tribe -->
-    <Level id="54">
-        <!-- Razor Bay -->
+    <Level name="Razor Bay" id="54">
         <Vendor objectId="2611" name="Shivers" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="419" greetingConversationId="1242" leavingConversationId="1247">
             <Item prefabName="Add_COM_Fish01_S01" />
             <Item prefabName="Add_COM_Fish01_LS01" />
@@ -747,8 +732,7 @@
     </Level>
 
     <!-- Ice Raiders Tribe -->
-    <Level id="500">
-        <!-- Raiders Village -->
+    <Level name="Raiders Village" id="500">
         <Vendor objectId="16911" name="Jarl" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1417" greetingConversationId="3586" leavingConversationId="3585">
             <Item prefabName="Add_COM_Viking01_S10" />
             <Item prefabName="Add_COM_Viking01_LS10" />

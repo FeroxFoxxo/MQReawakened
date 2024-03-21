@@ -1,144 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Default weight is 1 -->
 <LootCatalog>
-    <Level name="Default">
-        <LootInfo objectId="0" doLootWheel="False">
-            <Bananas bananaMin="50" bananaMax="100" />
+    <!-- Crossroads Tribe -->
+    <Level name="Clock Tower Square" id="47">
+        <!--Starter Purple Chest-->
+        <LootInfo objectId="213218" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Explorator01_LS01" count="1" />
+                <Item itemName="Add_COM_Explorator01_S01" count="1" />
+                <Item itemName="Add_COM_Explorator01_TS01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Guardian Knight Monument-->
+        <LootInfo objectId="97238" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing01" count="1" />
-                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_POT_Healing02" count="1" />
+                <Item itemName="COL_POT_Healing04" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" />
+                <Item itemName="WPN_SPC_DoomGrenade01" count="3" />
+                <Item itemName="WPN_SPC_WaterBalloon01" count="3" />
+                <Item itemName="WPN_SPC_BeastBomb01" count="1" />
+                <Item itemName="WPN_SPC_StormyPopper01" count="3" />
+                <Item itemName="Add_COM_Beckett01_S01" count="1" />
+                <Item itemName="Add_COM_Beckett01_TS01" count="1" />
+                <Item itemName="Add_COM_Beckett01_LS01" count="1" />
+                <Item itemName="Add_COM_Beckett01_W01" count="1" />
+                <Item itemName="Add_COM_Beckett01_T01" count="1" />
+                <Item itemName="Add_COM_Beckett01_BP01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Jack in the Box-->
+        <LootInfo objectId="657" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+                <Item itemName="Add_COM_Clown01_UF01" count="1" />
                 <Item itemName="COL_ING_G_Oak01" count="1" />
+                <Item itemName="COL_BOMB_FireBomb04" count="1" />
+                <Item itemName="Add_COM_Clown01_LS01" count="1" />
             </Items>
         </LootInfo>
     </Level>
-    
-    <!-- Crossroads Tribe -->
-    <Level name="Forgotten Temple"><!-- The Tutorial -->
-        <!-- Green Chest -->
-        <LootInfo objectId="30938" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_Armor01_TS01" count="1" />
-            </Items>
-        </LootInfo>
-        <!-- Barrels -->
-        <LootInfo objectId="31458" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="31460" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="31461" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="31462" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="31464" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="397706" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="397697" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Noogo Village">
-        <!-- Green Chest -->
-        <LootInfo objectId="30938" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_Armor01_TS01" count="1" />
-            </Items>
-        </LootInfo>
-        <!-- Barrels -->
-        <LootInfo objectId="34614" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="397706" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="397697" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="397743" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="397738" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="397741" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="397742" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="397751" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Crossroads Path">
-        <LootInfo objectId="857" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Oak01" count="1" weight="9" />
-                <Item itemName="COL_ING_G_Oak02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="858" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Oak01" count="1" weight="9" />
-                <Item itemName="COL_ING_G_Oak02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="861" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="2" />
-                <Item itemName="COL_FOOD_Apple01" count="3" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="862" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_FOOD_Apple01" count="2" />
-                <Item itemName="COL_FOOD_Apple01" count="3" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="871" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" weight="9" />
-                <Item itemName="COL_ING_G_GoldPebble02" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="The Floating Isles">
+    <Level name="The Floating Isles" id="89">
         <LootInfo objectId="4807" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_OakEarring01_E01" count="1" />
@@ -303,7 +208,36 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Blimp Ridge">
+    <Level name="Soggy Creek" id="91">
+        <LootInfo objectId="19738" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Oak01" count="1" weight="9" />
+                <Item itemName="COL_ING_G_Oak02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="19739" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Oak01" count="1" weight="9" />
+                <Item itemName="COL_ING_G_Oak02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="19740" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Oak01" count="1" weight="9" />
+                <Item itemName="COL_ING_G_Oak02" count="1" />
+            </Items>
+        </LootInfo>
+        <!-- Arena Blue Chest-->
+        <LootInfo objectId="12825" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_HawaiGirl01_LS01" count="1" />
+                <Item itemName="Add_COM_Explorator01_S01" count="1" />
+                <Item itemName="Add_COM_Explorator01_TS01" count="1" />
+                <Item itemName="Add_COM_HoopEarrings01_E01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Blimp Ridge" id="92">
         <!--Blue Arena-->
         <LootInfo objectId="3286474" doLootWheel="True">
             <Items rewardAmount="1">
@@ -447,7 +381,412 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Rachnok's Lair">
+    <Level name="The Crumbling Gates" id="93">
+        <!--1st Arena Blue Chest-->
+        <LootInfo objectId="6213" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_OUT_LightItems01_E01" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T03" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_T02" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_LS02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--2nd Arena Purple Chest-->
+        <LootInfo objectId="6130" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_OUT_CaptainBoy01_E01" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="WPN_PRJ_Thunderbow01" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6131" doLootWheel="true">
+            <!--Puzzle Blue Chest-->
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_OUT_LightItems01_E01" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T03" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Forest Ruins" id="95">
+        <!--Arena Blue Chest-->
+        <LootInfo objectId="6040" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_COM_StudEarring01_E05" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Cindertop Highland" id="96">
+        <!--1st Blue Chest-->
+        <LootInfo objectId="9373" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--1st Arena Purple Chest-->
+        <LootInfo objectId="9501" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="Add_OUT_CaptainBoy01_E01" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T03" count="1" />
+                <Item itemName="WPN_PRJ_Thunderbow01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--2nd Arena Purple Chest-->
+        <LootInfo objectId="9372" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="Add_COM_HoopEarrings01_E05" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="Add_COM_ScaleTail01_T03" count="1" />
+                <Item itemName="WPN_MEL_GreatAxe01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Crossroads Path" id="99">
+        <LootInfo objectId="857" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Oak01" count="1" weight="9" />
+                <Item itemName="COL_ING_G_Oak02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="858" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Oak01" count="1" weight="9" />
+                <Item itemName="COL_ING_G_Oak02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="861" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="2" />
+                <Item itemName="COL_FOOD_Apple01" count="3" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="862" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="2" />
+                <Item itemName="COL_FOOD_Apple01" count="3" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="871" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" weight="9" />
+                <Item itemName="COL_ING_G_GoldPebble02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="The Volcano Lair" id="209">
+        <LootInfo objectId="7431" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7429" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7432" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7434" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_FOOD_BananaBits01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7139" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Knight01_S01" count="1" />
+                <Item itemName="Add_COM_Explorator01_TS02" count="1" />
+                <Item itemName="Add_COM_Explorator01_S02" count="1" />
+                <Item itemName="Add_COM_Lara01_LS01" count="1" />
+                <Item itemName="Add_COM_HoopEarrings01_E01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7180" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Lara01_LS03" count="1" />
+                <Item itemName="Add_COM_Knight01_S01" count="1" />
+                <Item itemName="Add_COM_RibbonTail01_T02" count="1" />
+                <Item itemName="Add_COM_AnimalWood01_T02" count="1" />
+                <Item itemName="Add_COM_Ace01_LS01" count="1" />
+                <Item itemName="Add_COM_HawaiGirl01_S02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7140" doLootWheel="True" multiplayerWheelChance="100">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Lara01_LS04" count="1" />
+                <Item itemName="Add_COM_Explorator01_S03" count="1" />
+                <Item itemName="Add_COM_AnimalWood01_T02" count="1" />
+                <Item itemName="Add_COM_Explorator01_S02" count="1" />
+                <Item itemName="Add_COM_Jungle01_S01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7177" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7537" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Dandelions01" count="2" weight="9" />
+                <Item itemName="COL_ING_G_Dandelions02" count="3" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7538" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Dandelions01" count="2" weight="9" />
+                <Item itemName="COL_ING_G_Dandelions02" count="3" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7536" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" weight="9" />
+                <Item itemName="COL_ING_G_GoldPebble02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7535" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" weight="9" />
+                <Item itemName="COL_ING_G_GoldPebble02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="7534" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" weight="9" />
+                <Item itemName="COL_ING_G_GoldPebble02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Noogo Village" id="452">
+        <!-- Green Chest -->
+        <LootInfo objectId="30938" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Armor01_TS01" count="1" />
+            </Items>
+        </LootInfo>
+        <!-- Barrels -->
+        <LootInfo objectId="34614" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="397706" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="397697" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="397743" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="397738" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="397741" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="397742" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="397751" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Forgotten Temple" id="453">
+        <!-- The Tutorial -->
+        <!-- Green Chest -->
+        <LootInfo objectId="30938" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Armor01_TS01" count="1" />
+            </Items>
+        </LootInfo>
+        <!-- Barrels -->
+        <LootInfo objectId="31458" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="31460" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="31461" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="31462" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="31464" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="397706" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="397697" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_FOOD_Apple01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Monkey Run" id="472">
+        <LootInfo objectId="102017" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Warrior01_S04" count="1" />
+                <Item itemName="Add_EVT_Squelette01_FH01" count="1" />
+                <Item itemName="Add_COM_HairPremium04_S03" count="1" />
+                <Item itemName="Add_COM_GemBracelet01_W02" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" />
+                <Item itemName="Add_COM_Jungle02_S01" count="1" />
+                <Item itemName="Add_OUT_PirateChef01_LF01" count="1" />
+                <Item itemName="Add_COM_Cowboy01_LS02" count="1" />
+                <Item itemName="Add_COM_KidBoy01_S01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Midnight Monkey Run" id="474">
+        <LootInfo objectId="2466201" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_RECIP_COM_ScaleTail01_T02" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_S01" count="1" />
+                <Item itemName="Add_COM_Sheep01_TS01" count="1" />
+                <Item itemName="Add_COM_KidBoy01_S02" count="1" />
+                <Item itemName="Add_COM_KidBoy01_TS02" count="1" />
+                <Item itemName="Add_COM_RibbonTail01_T01" count="1" />
+                <Item itemName="Add_COM_RibbonTail01_T04" count="1" />
+                <Item itemName="Add_COM_RibbonTail01_T06" count="1" />
+                <Item itemName="Add_COM_Explorator01_LS02" count="1" />
+                <Item itemName="Add_COM_Indonesian01_E03" count="1" />
+                <Item itemName="Add_COM_Armor01_LS02" count="1" />
+                <Item itemName="Add_COM_Armor01_S02" count="1" />
+                <Item itemName="Add_COM_Armor01_TS02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Torch Frenzy" id="483">
+        <LootInfo objectId="182530" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_SpaceSuit01_S01" count="1" />
+                <Item itemName="Add_BON_Seer01_S01" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_S01" count="1" />
+                <Item itemName="Col_POT_BananaPotion01" count="1" />
+                <Item itemName="Add_SHD_Samurai01_TS03" count="1" />
+                <Item itemName="Add_SHD_Samurai01_S03" count="1" />
+                <Item itemName="Add_SHD_Ninja01_LF01" count="1" />
+                <Item itemName="Add_COM_Burglar01_UF04" count="1" />
+                <Item itemName="COL_POT_Rejuvenation04" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Torch Mania" id="485">
+        <LootInfo objectId="1583" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_BON_Shaman01_LS01" count="1" />
+                <Item itemName="Add_BON_Cruella01_LS03" count="1" />
+                <Item itemName="Add_BON_Mystic01_W03" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_S03" count="1" />
+                <Item itemName="Unknown" count="1" />
+                <Item itemName="Add_COM_Fish01_LS01" count="1" />
+                <Item itemName="Add_COM_Fish01_TS01" count="1" />
+                <Item itemName="Add_COM_Clown01_T01" count="1" />
+                <Item itemName="Add_COM_Clown01_W01" count="1" />
+                <Item itemName="Add_COM_HawaiGirl01_LS02" count="1" />
+                <Item itemName="Add_COM_HawaiGirl01_TS02" count="1" />
+                <Item itemName="Add_COM_Burglar01_T01" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Rachnok's Lair" id="508">
         <!--Rachnok Boss Battle Purple Chest-->
         <LootInfo objectId="2466335" doLootWheel="true">
             <Items rewardAmount="1">
@@ -637,358 +976,9 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Clock Tower Square">
-        <!--Starter Purple Chest-->
-        <LootInfo objectId="213218" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_Explorator01_LS01" count="1" />
-                <Item itemName="Add_COM_Explorator01_S01" count="1" />
-                <Item itemName="Add_COM_Explorator01_TS01" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Guardian Knight Monument-->
-        <LootInfo objectId="97238" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_POT_Healing01" count="1" />
-                <Item itemName="COL_POT_Healing02" count="1" />
-                <Item itemName="COL_POT_Healing04" count="1" />
-                <Item itemName="COL_FOOD_BananaBits01" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" />
-                <Item itemName="WPN_SPC_DoomGrenade01" count="3" />
-                <Item itemName="WPN_SPC_WaterBalloon01" count="3" />
-                <Item itemName="WPN_SPC_BeastBomb01" count="1" />
-                <Item itemName="WPN_SPC_StormyPopper01" count="3" />
-                <Item itemName="Add_COM_Beckett01_S01" count="1" />
-                <Item itemName="Add_COM_Beckett01_TS01" count="1" />
-                <Item itemName="Add_COM_Beckett01_LS01" count="1" />
-                <Item itemName="Add_COM_Beckett01_W01" count="1" />
-                <Item itemName="Add_COM_Beckett01_T01" count="1" />
-                <Item itemName="Add_COM_Beckett01_BP01" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Jack in the Box-->
-        <LootInfo objectId="657" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" />
-                <Item itemName="Add_COM_Clown01_UF01" count="1" />
-                <Item itemName="COL_ING_G_Oak01" count="1" />
-                <Item itemName="COL_BOMB_FireBomb04" count="1" />
-                <Item itemName="Add_COM_Clown01_LS01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Monkey Run">
-        <LootInfo objectId="102017" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_Warrior01_S04" count="1" />
-                <Item itemName="Add_EVT_Squelette01_FH01" count="1" />
-                <Item itemName="Add_COM_HairPremium04_S03" count="1" />
-                <Item itemName="Add_COM_GemBracelet01_W02" count="1" />
-                <Item itemName="COL_ING_C_CocoShell01" count="1" />
-                <Item itemName="Add_COM_Jungle02_S01" count="1" />
-                <Item itemName="Add_OUT_PirateChef01_LF01" count="1" />
-                <Item itemName="Add_COM_Cowboy01_LS02" count="1" />
-                <Item itemName="Add_COM_KidBoy01_S01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Midnight Monkey Run">
-        <LootInfo objectId="2466201" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_RECIP_COM_ScaleTail01_T02" count="1" />
-                <Item itemName="Add_BON_SkullFighter01_S01" count="1" />
-                <Item itemName="Add_COM_Sheep01_TS01" count="1" />
-                <Item itemName="Add_COM_KidBoy01_S02" count="1" />
-                <Item itemName="Add_COM_KidBoy01_TS02" count="1" />
-                <Item itemName="Add_COM_RibbonTail01_T01" count="1" />
-                <Item itemName="Add_COM_RibbonTail01_T04" count="1" />
-                <Item itemName="Add_COM_RibbonTail01_T06" count="1" />
-                <Item itemName="Add_COM_Explorator01_LS02" count="1" />
-                <Item itemName="Add_COM_Indonesian01_E03" count="1" />
-                <Item itemName="Add_COM_Armor01_LS02" count="1" />
-                <Item itemName="Add_COM_Armor01_S02" count="1" />
-                <Item itemName="Add_COM_Armor01_TS02" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Torch Mania">
-        <LootInfo objectId="1583" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="Add_BON_Shaman01_LS01" count="1" />
-                <Item itemName="Add_BON_Cruella01_LS03" count="1" />
-                <Item itemName="Add_BON_Mystic01_W03" count="1" />
-                <Item itemName="Add_BON_SkullFighter01_S03" count="1" />
-                <Item itemName="Unknown" count="1" />
-                <Item itemName="Add_COM_Fish01_LS01" count="1" />
-                <Item itemName="Add_COM_Fish01_TS01" count="1" />
-                <Item itemName="Add_COM_Clown01_T01" count="1" />
-                <Item itemName="Add_COM_Clown01_W01" count="1" />
-                <Item itemName="Add_COM_HawaiGirl01_LS02" count="1" />
-                <Item itemName="Add_COM_HawaiGirl01_TS02" count="1" />
-                <Item itemName="Add_COM_Burglar01_T01" count="1" />
-                <Item itemName="COL_RECIP_POT_Healing02" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Torch Frenzy">
-        <LootInfo objectId="182530" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_SpaceSuit01_S01" count="1" />
-                <Item itemName="Add_BON_Seer01_S01" count="1" />
-                <Item itemName="Add_BON_Spiritualist01_S01" count="1" />
-                <Item itemName="Col_POT_BananaPotion01" count="1" />
-                <Item itemName="Add_SHD_Samurai01_TS03" count="1" />
-                <Item itemName="Add_SHD_Samurai01_S03" count="1" />
-                <Item itemName="Add_SHD_Ninja01_LF01" count="1" />
-                <Item itemName="Add_COM_Burglar01_UF04" count="1" />
-                <Item itemName="COL_POT_Rejuvenation04" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="The Volcano Lair">
-        <LootInfo objectId="7431" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_POT_Healing01" count="1" />
-                <Item itemName="COL_FOOD_BananaBits01" count="1" />
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
-                <Item itemName="COL_ING_C_CocoShell01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7429" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_POT_Healing01" count="1" />
-                <Item itemName="COL_FOOD_BananaBits01" count="1" />
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
-                <Item itemName="COL_ING_C_CocoShell01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7432" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_POT_Healing01" count="1" />
-                <Item itemName="COL_FOOD_BananaBits01" count="1" />
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
-                <Item itemName="COL_ING_C_CocoShell01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7434" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_POT_Healing01" count="1" />
-                <Item itemName="COL_FOOD_BananaBits01" count="1" />
-                <Item itemName="COL_FOOD_Apple01" count="1" />
-                <Item itemName="COL_ING_C_ShadowDust01" count="1" />
-                <Item itemName="COL_ING_C_CocoShell01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7139" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_Knight01_S01" count="1" />
-                <Item itemName="Add_COM_Explorator01_TS02" count="1" />
-                <Item itemName="Add_COM_Explorator01_S02" count="1" />
-                <Item itemName="Add_COM_Lara01_LS01" count="1" />
-                <Item itemName="Add_COM_HoopEarrings01_E01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7180" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_Lara01_LS03" count="1" />
-                <Item itemName="Add_COM_Knight01_S01" count="1" />
-                <Item itemName="Add_COM_RibbonTail01_T02" count="1" />
-                <Item itemName="Add_COM_AnimalWood01_T02" count="1" />
-                <Item itemName="Add_COM_Ace01_LS01" count="1" />
-                <Item itemName="Add_COM_HawaiGirl01_S02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7140" doLootWheel="True" multiplayerWheelChance="100">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_Lara01_LS04" count="1" />
-                <Item itemName="Add_COM_Explorator01_S03" count="1" />
-                <Item itemName="Add_COM_AnimalWood01_T02" count="1" />
-                <Item itemName="Add_COM_Explorator01_S02" count="1" />
-                <Item itemName="Add_COM_Jungle01_S01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7177" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_POT_Healing01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7537" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Dandelions01" count="2" weight="9" />
-                <Item itemName="COL_ING_G_Dandelions02" count="3" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7538" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Dandelions01" count="2" weight="9" />
-                <Item itemName="COL_ING_G_Dandelions02" count="3" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7536" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" weight="9" />
-                <Item itemName="COL_ING_G_GoldPebble02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7535" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" weight="9" />
-                <Item itemName="COL_ING_G_GoldPebble02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="7534" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" weight="9" />
-                <Item itemName="COL_ING_G_GoldPebble02" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Soggy Creek">
-        <LootInfo objectId="19738" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Oak01" count="1" weight="9" />
-                <Item itemName="COL_ING_G_Oak02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="19739" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Oak01" count="1" weight="9" />
-                <Item itemName="COL_ING_G_Oak02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="19740" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Oak01" count="1" weight="9" />
-                <Item itemName="COL_ING_G_Oak02" count="1" />
-            </Items>
-        </LootInfo>
-        <!-- Arena Blue Chest-->
-        <LootInfo objectId="12825" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_HawaiGirl01_LS01" count="1" />
-                <Item itemName="Add_COM_Explorator01_S01" count="1" />
-                <Item itemName="Add_COM_Explorator01_TS01" count="1" />
-                <Item itemName="Add_COM_HoopEarrings01_E01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Forest Ruins">
-        <!--Arena Blue Chest-->
-        <LootInfo objectId="6040" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Emerald02" count="1" />
-                <Item itemName="COL_ING_G_Ruby02" count="1" />
-                <Item itemName="Add_COM_StudEarring01_E05" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="The Crumbling Gates">
-        <!--1st Arena Blue Chest-->
-        <LootInfo objectId="6213" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Amethyst" count="1" />
-                <Item itemName="COL_ING_G_Diamond02" count="1" />
-                <Item itemName="COL_ING_G_Emerald02" count="1" />
-                <Item itemName="COL_ING_G_Ruby02" count="1" />
-                <Item itemName="Add_OUT_LightItems01_E01" count="1" />
-                <Item itemName="Add_COM_SkullTail01_T03" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_RECIP_COM_Warrior01_T02" count="1" />
-                <Item itemName="COL_RECIP_COM_Warrior01_TS02" count="1" />
-                <Item itemName="COL_RECIP_COM_Warrior01_LS02" count="1" />
-            </Items>
-        </LootInfo>
-        <!--2nd Arena Purple Chest-->
-        <LootInfo objectId="6130" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="Add_OUT_CaptainBoy01_E01" count="1" />
-                <Item itemName="COL_ING_G_Amethyst" count="1" />
-                <Item itemName="WPN_PRJ_Thunderbow01" count="1" />
-                <Item itemName="COL_ING_G_Ruby02" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6131" doLootWheel="true">
-            <!--Puzzle Blue Chest-->
-            <Items rewardAmount="1">
-                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Amethyst" count="1" />
-                <Item itemName="COL_ING_G_Diamond02" count="1" />
-                <Item itemName="COL_ING_G_Ruby02" count="1" />
-                <Item itemName="Add_OUT_LightItems01_E01" count="1" />
-                <Item itemName="Add_COM_SkullTail01_T03" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Cindertop Highland">
-        <!--1st Blue Chest-->
-        <LootInfo objectId="9373" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Amethyst" count="1" />
-                <Item itemName="COL_ING_G_Diamond02" count="1" />
-                <Item itemName="COL_ING_G_Emerald02" count="1" />
-                <Item itemName="COL_ING_G_Ruby02" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-            </Items>
-        </LootInfo>
-        <!--1st Arena Purple Chest-->
-        <LootInfo objectId="9501" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
-                <Item itemName="Add_OUT_CaptainBoy01_E01" count="1" />
-                <Item itemName="COL_ING_G_Amethyst" count="1" />
-                <Item itemName="COL_ING_G_Diamond02" count="1" />
-                <Item itemName="Add_COM_SkullTail01_T03" count="1" />
-                <Item itemName="WPN_PRJ_Thunderbow01" count="1" />
-            </Items>
-        </LootInfo>
-        <!--2nd Arena Purple Chest-->
-        <LootInfo objectId="9372" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
-                <Item itemName="Add_COM_HoopEarrings01_E05" count="1" />
-                <Item itemName="COL_ING_G_Amethyst" count="1" />
-                <Item itemName="COL_ING_G_Ruby02" count="1" />
-                <Item itemName="COL_ING_G_Diamond02" count="1" />
-                <Item itemName="Add_COM_ScaleTail01_T03" count="1" />
-                <Item itemName="WPN_MEL_GreatAxe01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
 
     <!-- Event Levels -->
-    <Level name="Power Rangers Megaforce Arena">
+    <Level name="PR's Megaforce Arena" id="471">
         <!-- Samurai Chest -->
         <LootInfo objectId="5816" doLootWheel="True">
             <Items rewardAmount="1">
@@ -1005,7 +995,7 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Power Rangers Megaforce Arena">
+    <Level name="PR's Megaforce Arena" id="512">
         <!-- Megaforce Chest -->
         <LootInfo objectId="27918" doLootWheel="True">
             <Items rewardAmount="1">
@@ -1028,7 +1018,7 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Turtles Party!">
+    <Level name="Turtles Party!" id="522">
         <!-- TMNT Chest -->
         <LootInfo objectId="13160668" doLootWheel="True">
             <Items rewardAmount="1">
@@ -1047,7 +1037,7 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Turtles Party!">
+    <Level name="Turtles Party!" id="526">
         <!-- Shredder's Lair Chest -->
         <LootInfo objectId="213218" doLootWheel="True">
             <!-- Why does it have the same id with cts starter purple chest???? -->
@@ -1067,9 +1057,8 @@
         </LootInfo>
     </Level>
 
-
     <!-- Ootu Mystics Tribe -->
-    <Level name="Swamp of Misery">
+    <Level name="Swamp of Misery" id="46">
         <LootInfo objectId="953" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="Add_BON_SkullFighter01_S01" count="1" />
@@ -1083,20 +1072,469 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Mystic Plaza">
-        <!--Monument of Mama Ootu (speculation)-->
-        <LootInfo objectId="631" doLootWheel="true">
+    <Level name="Mushroom Hollow" id="85">
+        <LootInfo objectId="11249" doLootWheel="False">
             <Items rewardAmount="1">
-                <Item itemName="COL_POT_EarthResist01" count="1" />
-                <Item itemName="COL_POT_EarthResist03" count="1" />
-                <Item itemName="COL_POT_EarthElixir01" count="1" />
-                <Item itemName="COL_POT_EarthElixir03" count="1" />
-                <Item itemName="ABIL_PoisonBomb01" count="3" />
-                <Item itemName="ABIL_PoisonBomb03" count="3" />
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_G_Oak01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="11267" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_G_Oak01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="11171" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_G_Oak01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="11296" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_G_Oak01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="11178" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_G_Oak01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="11271" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
+                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_C_WeakThread01" count="1" />
+                <Item itemName="COL_ING_G_Oak01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_PureWater01" count="1" />
+                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="10264" doLootWheel="True">
+            <!--Blue Arena Chest-->
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Velvet02" count="1" />
+                <Item itemName="ABIL_PoisonBomb01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="Add_BON_OotuMystic01_T01" count="1" />
+                <Item itemName="Add_COM_AnimalWood01_W01" count="1" />
             </Items>
         </LootInfo>
     </Level>
-    <Level name="The Deep Swamps">
+    <Level name="Moss Temple" id="86">
+        <LootInfo objectId="6808" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6811" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6802" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6809" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6805" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6810" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6801" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6804" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6806" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6812" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6798" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6803" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6799" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6800" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="None" count="1" weight="20" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Aloe01" count="1" />
+                <Item itemName="COL_ING_C_MediumThread01" count="1" />
+                <Item itemName="COL_ING_C_StrongThread01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
+                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_C_MountainWater01" count="1" />
+                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
+                <Item itemName="COL_ING_G_PlainStone01" count="1" />
+                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
+                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
+                <Item itemName="COL_ING_C_Sulphur01" count="1" />
+                <Item itemName="COL_ING_C_Quartz01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="The Deep Swamps" id="88">
         <LootInfo objectId="17427" doLootWheel="False">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing02" count="1" />
@@ -1437,471 +1875,35 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Mushroom Hollow">
-        <LootInfo objectId="11249" doLootWheel="False">
+    <Level name="Mystic Plaza" id="133">
+        <!--Monument of Mama Ootu (speculation)-->
+        <LootInfo objectId="631" doLootWheel="true">
             <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_C_WeakThread01" count="1" />
-                <Item itemName="COL_ING_G_Oak01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_PureWater01" count="1" />
-                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="11267" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_C_WeakThread01" count="1" />
-                <Item itemName="COL_ING_G_Oak01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_PureWater01" count="1" />
-                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="11171" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_C_WeakThread01" count="1" />
-                <Item itemName="COL_ING_G_Oak01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_PureWater01" count="1" />
-                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="11296" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_C_WeakThread01" count="1" />
-                <Item itemName="COL_ING_G_Oak01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_PureWater01" count="1" />
-                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="11178" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_C_WeakThread01" count="1" />
-                <Item itemName="COL_ING_G_Oak01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_PureWater01" count="1" />
-                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="11271" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_GuardianFragment01" count="1" />
-                <Item itemName="COL_ING_G_GuardianFragment02" count="1" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_C_WeakThread01" count="1" />
-                <Item itemName="COL_ING_G_Oak01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_CocoShell01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_PureWater01" count="1" />
-                <Item itemName="COL_FOOD_Apple01" count="1" weight="2" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="10264" doLootWheel="True">
-            <!--Blue Arena Chest-->
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Velvet02" count="1" />
-                <Item itemName="ABIL_PoisonBomb01" count="1" />
-                <Item itemName="COL_ING_G_Emerald02" count="1" />
-                <Item itemName="Add_BON_OotuMystic01_T01" count="1" />
-                <Item itemName="Add_COM_AnimalWood01_W01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Moss Temple">
-        <LootInfo objectId="6808" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6811" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6802" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6809" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6805" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6810" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6801" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6804" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6806" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6812" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6798" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6803" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6799" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="6800" doLootWheel="False">
-            <Items rewardAmount="1">
-                <Item itemName="None" count="1" weight="20" />
-                <Item itemName="COL_ING_G_Garlic01" count="1" weight="2" />
-                <Item itemName="COL_ING_G_Ginger01" count="1" />
-                <Item itemName="COL_ING_G_Aloe01" count="1" />
-                <Item itemName="COL_ING_C_MediumThread01" count="1" />
-                <Item itemName="COL_ING_C_StrongThread01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule01" count="1" />
-                <Item itemName="COL_ING_G_GoldPebble01" count="1" />
-                <Item itemName="COL_ING_G_GloomCap01" count="1" />
-                <Item itemName="COL_ING_G_ShadowShard01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_C_MountainWater01" count="1" />
-                <Item itemName="COL_ING_C_GlacialWater01" count="1" />
-                <Item itemName="COL_ING_G_PlainStone01" count="1" />
-                <Item itemName="COL_ING_G_MudGlobule02" count="1" />
-                <Item itemName="COL_FOOD_Orange01" count="1" weight="2" />
-                <Item itemName="COL_ING_C_Sulphur01" count="1" />
-                <Item itemName="COL_ING_C_Quartz01" count="1" />
+                <Item itemName="COL_POT_EarthResist01" count="1" />
+                <Item itemName="COL_POT_EarthResist03" count="1" />
+                <Item itemName="COL_POT_EarthElixir01" count="1" />
+                <Item itemName="COL_POT_EarthElixir03" count="1" />
+                <Item itemName="ABIL_PoisonBomb01" count="3" />
+                <Item itemName="ABIL_PoisonBomb03" count="3" />
             </Items>
         </LootInfo>
     </Level>
 
     <!-- Chim Foo Tribe -->
-    <Level name="Bonsai Peaks">
+    <Level name="Jade Mountain" id="48">
+        <!--Jack in the Box-->
+        <LootInfo objectId="659" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Tiger01_T05" count="1" />
+                <Item itemName="WPN_SPC_StormyPopper01" count="1" />
+                <Item itemName="Add_COM_Tiger01_S05" count="1" />
+                <Item itemName="Add_COM_Tiger01_TS05" count="1" />
+                <Item itemName="Add_COM_Tiger01_LS05" count="1" />
+                <Item itemName="COL_ING_G_Silk02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Bonsai Peaks" id="100">
         <!--Blue Chest 4-->
         <LootInfo objectId="3996" doLootWheel="True">
             <Items rewardAmount="1">
@@ -1967,69 +1969,7 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Lost Fortress">
-        <LootInfo objectId="3114" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Silk02" count="1" />
-                <Item itemName="COL_RECIP_PRJ_WindstormStar01" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
-                <Item itemName="COL_RECIP_SHD_Snake01_LS01" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
-                <Item itemName="Add_COM_Goat01_W02" count="1" />
-                <Item itemName="Add_COM_SerpentEarring01_E01" count="1" />
-                <Item itemName="WPN_SPC_StormyPopper01" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Vine Blue Chest-->
-        <LootInfo objectId="3199" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Silk02" count="1" />
-                <Item itemName="COL_RECIP_PRJ_WindstormStar01" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
-                <Item itemName="COL_RECIP_SHD_Snake01_LS01" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
-                <Item itemName="Add_COM_Goat01_W02" count="1" />
-                <Item itemName="Add_COM_SerpentEarring01_E01" count="1" />
-                <Item itemName="WPN_SPC_StormyPopper01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="3285" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Silk02" count="1" />
-                <Item itemName="COL_RECIP_PRJ_WindstormStar01" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
-                <Item itemName="COL_RECIP_SHD_Snake01_LS01" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
-                <Item itemName="Add_COM_Goat01_W02" count="1" />
-                <Item itemName="Add_COM_SerpentEarring01_E01" count="1" />
-                <Item itemName="WPN_SPC_StormyPopper01" count="1" />
-            </Items>
-        </LootInfo>
-        <LootInfo objectId="4259" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Amethyst" count="1" />
-                <Item itemName="WPN_MEL_CrimsonSword01" count="1" />
-                <Item itemName="Add_COM_Goat01_W02" count="1" />
-                <Item itemName="Add_COM_Spike01_T01" count="1" />
-                <Item itemName="COL_RECIP_SHD_Snake01_LS01" count="1" />
-                <Item itemName="COL_RECIP_SHD_Snake01_S01" count="1" />
-                <Item itemName="Add_COM_SerpentEarring01_E01" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Arena Purple Chest-->
-        <LootInfo objectId="4258" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Amethyst" count="1" />
-                <Item itemName="WPN_MEL_CrimsonSword01" count="1" />
-                <Item itemName="Add_COM_Goat01_W02" count="1" />
-                <Item itemName="Add_COM_Spike01_T01" count="1" />
-                <Item itemName="COL_RECIP_SHD_Snake01_LS01" count="1" />
-                <Item itemName="COL_RECIP_SHD_Snake01_S01" count="1" />
-                <Item itemName="Add_COM_SerpentEarring01_E01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Stone Gardens">
+    <Level name="Stone Gardens" id="101">
         <!--Platform Blue Chest-->
         <LootInfo objectId="5028" doLootWheel="True">
             <Items rewardAmount="1">
@@ -2128,20 +2068,201 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Jade Mountain">
-        <!--Jack in the Box-->
-        <LootInfo objectId="659" doLootWheel="true">
+    <Level name="Lantern Ridge" id="102">
+        <!--Arena Blue Chest-->
+        <LootInfo objectId="7089" doLootWheel="true">
             <Items rewardAmount="1">
-                <Item itemName="Add_COM_Tiger01_T05" count="1" />
+                <Item itemName="Add_SHD_Guard01_LS01" count="1" />
+                <Item itemName="Add_COM_Burglar01_UF01" count="1" />
+                <Item itemName="Add_COM_Panda01_S03" count="1" />
+                <Item itemName="Add_SHD_Geisha01_LS01" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T04" count="1" />
+                <Item itemName="Add_SHD_Shinto01_LS02" count="1" />
+                <Item itemName="Add_SHD_Shinto01_S01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Lost Fortress" id="103">
+        <LootInfo objectId="3114" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Silk02" count="1" />
+                <Item itemName="COL_RECIP_PRJ_WindstormStar01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
+                <Item itemName="COL_RECIP_SHD_Snake01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
+                <Item itemName="Add_COM_Goat01_W02" count="1" />
+                <Item itemName="Add_COM_SerpentEarring01_E01" count="1" />
                 <Item itemName="WPN_SPC_StormyPopper01" count="1" />
-                <Item itemName="Add_COM_Tiger01_S05" count="1" />
-                <Item itemName="Add_COM_Tiger01_TS05" count="1" />
-                <Item itemName="Add_COM_Tiger01_LS05" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Vine Blue Chest-->
+        <LootInfo objectId="3199" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Silk02" count="1" />
+                <Item itemName="COL_RECIP_PRJ_WindstormStar01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
+                <Item itemName="COL_RECIP_SHD_Snake01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
+                <Item itemName="Add_COM_Goat01_W02" count="1" />
+                <Item itemName="Add_COM_SerpentEarring01_E01" count="1" />
+                <Item itemName="WPN_SPC_StormyPopper01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="3285" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Silk02" count="1" />
+                <Item itemName="COL_RECIP_PRJ_WindstormStar01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
+                <Item itemName="COL_RECIP_SHD_Snake01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
+                <Item itemName="Add_COM_Goat01_W02" count="1" />
+                <Item itemName="Add_COM_SerpentEarring01_E01" count="1" />
+                <Item itemName="WPN_SPC_StormyPopper01" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="4259" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="WPN_MEL_CrimsonSword01" count="1" />
+                <Item itemName="Add_COM_Goat01_W02" count="1" />
+                <Item itemName="Add_COM_Spike01_T01" count="1" />
+                <Item itemName="COL_RECIP_SHD_Snake01_LS01" count="1" />
+                <Item itemName="COL_RECIP_SHD_Snake01_S01" count="1" />
+                <Item itemName="Add_COM_SerpentEarring01_E01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Purple Chest-->
+        <LootInfo objectId="4258" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="WPN_MEL_CrimsonSword01" count="1" />
+                <Item itemName="Add_COM_Goat01_W02" count="1" />
+                <Item itemName="Add_COM_Spike01_T01" count="1" />
+                <Item itemName="COL_RECIP_SHD_Snake01_LS01" count="1" />
+                <Item itemName="COL_RECIP_SHD_Snake01_S01" count="1" />
+                <Item itemName="Add_COM_SerpentEarring01_E01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Magnolia Lake" id="104">
+        <!--Arena Blue Chest-->
+        <LootInfo objectId="10057" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_RibbonTail01_T07" count="1" />
+                <Item itemName="Add_COM_Panda01_LS02" count="1" />
+                <Item itemName="Add_SHD_ImpGirl01_LS01" count="1" />
+                <Item itemName="Add_SHD_ImpGirl01_T02" count="1" />
+                <Item itemName="Add_SHD_ImpGirl01_TS01" count="1" />
+                <Item itemName="Add_SHD_Monk01_TS01" count="1" />
+                <Item itemName="Add_SHD_Monk01_LS03" count="1" />
+                <Item itemName="Add_SHD_Monk01_TS03" count="1" />
+                <Item itemName="Add_COM_Knight01_LS01" count="1" />
+                <Item itemName="Add_COM_Knight01_TS01" count="1" />
+                <Item itemName="Add_COM_Fish01_S01" count="1" />
+                <Item itemName="Add_COM_Clown01_LS01" count="1" />
+                <Item itemName="Add_OUT_Bluebeard01_LS01" count="1" />
+                <Item itemName="Add_OUT_Bluebeard01_TS01" count="1" />
+                <Item itemName="Add_COM_Burglar01_LS01" count="1" />
+                <Item itemName="Add_COM_Knight01_T01" count="1" />
+                <Item itemName="Add_SHD_Monk01_S01" count="1" />
+                <Item itemName="COL_RECIP_COM_ScaleTail01_T02" count="1" />
+                <Item itemName="COL_RECIP_BUFF_Bandage02" count="1" />
+                <Item itemName="COL_RECIP_BUFF_RubberBand02" count="1" />
+                <Item itemName="COL_RECIP_BUFF_GlyphProtection01" count="1" />
+                <Item itemName="COL_RECIP_RefinedGloomCap01" count="1" />
+                <Item itemName="COL_RECIP_BUFF_RubberBand04" count="1" />
+                <Item itemName="COL_RECIP_COM_ScaleTail01_T02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Purple Chest-->
+        <LootInfo objectId="10283" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_RECIP_COM_Goat01_W02" count="1" />
+                <Item itemName="COL_RECIP_COM_ScaleTail01_T02" count="1" />
+                <Item itemName="Add_COM_Tiger01_T02" count="1" />
+                <Item itemName="Add_COM_King01_S01" count="1" />
+                <Item itemName="ADD_SHD_Shinto01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_ScaleTail01_T02" count="1" />
+                <Item itemName="Add_COM_Panda01_LS02" count="1" />
+                <Item itemName="Add_SHD_ImpGirl01_LS01" count="1" />
+                <Item itemName="Add_SHD_ImpGirl01_T02" count="1" />
+                <Item itemName="Add_SHD_ImpGirl01_TS01" count="1" />
+                <Item itemName="Add_SHD_Monk01_TS01" count="1" />
+                <Item itemName="Add_SHD_Monk01_LS03" count="1" />
+                <Item itemName="Add_SHD_Monk01_TS03" count="1" />
+                <Item itemName="Add_COM_RibbonTail01_T07" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Forbidden Keep" id="105">
+        <!--Arena Purple Chest-->
+        <LootInfo objectId="6177" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="Add_COM_SerpentEarring01_E03" count="1" />
+                <Item itemName="Add_SHD_Guard01_T03" count="1" />
+                <Item itemName="Add_SHD_Guard01_W03" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Green Chest 1-->
+        <LootInfo objectId="6186" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_AirResist01" count="1" />
+                <Item itemName="COL_POT_Healing02" count="1" />
+                <Item itemName="COL_POT_AirElixir01" count="1" />
+                <Item itemName="COL_ING_G_Silk02" count="1" />
+                <Item itemName="Add_SHD_Shinto01_S02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Green Chest 2-->
+        <LootInfo objectId="7013" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing02" count="1" />
+                <Item itemName="COL_POT_AirResist01" count="1" />
+                <Item itemName="Add_SHD_Shinto01_T02" count="1" />
+                <Item itemName="Add_SHD_Shinto01_S02" count="1" />
+                <Item itemName="COL_ING_G_Silk02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Blue Chest 1-->
+        <LootInfo objectId="6194" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="Add_COM_SerpentEarring01_E03" count="1" />
+                <Item itemName="Add_SHD_Guard01_T03" count="1" />
+                <Item itemName="Add_SHD_Guard01_W03" count="1" />
                 <Item itemName="COL_ING_G_Silk02" count="1" />
             </Items>
         </LootInfo>
     </Level>
-    <Level name="The Chim Foo Rooftops">
+    <Level name="Mountain Shrine" id="106">
+        <!--Purple Chest-->
+        <LootInfo objectId="4207" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_SHD_Monk01_T01" count="1" />
+                <Item itemName="Add_COM_Indonesian01_E01" count="1" />
+                <Item itemName="Add_COM_HawaiGirl01_W02" count="1" />
+                <Item itemName="Add_SHD_Guard01_T03" count="1" />
+                <Item itemName="Add_COM_KidBoy01_S02" count="1" />
+                <Item itemName="Add_SHD_Ninja01_TS02" count="1" />
+                <Item itemName="Add_COM_Knight01_T02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Blue Chest-->
+        <LootInfo objectId="3946" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_RibbonTail01_T06" count="1" />
+                <Item itemName="Add_SHD_ImpGirl01_T03" count="1" />
+                <Item itemName="Add_COM_Armor01_TS02" count="1" />
+                <Item itemName="Add_COM_Explorator01_LS02" count="1" />
+                <Item itemName="Add_COM_Clown01_W01" count="1" />
+                <Item itemName="Add_SHD_Monk01_LS01" count="1" />
+                <Item itemName="Add_SHD_Monk01_S01" count="1" />
+                <Item itemName="Add_SHD_ImpGirl01_LS03" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="The Chim Foo Rooftops" id="107">
         <!--Blue Chest-->
         <LootInfo objectId="4249" doLootWheel="true">
             <Items rewardAmount="1">
@@ -2335,139 +2456,7 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Mountain Shrine">
-        <!--Purple Chest-->
-        <LootInfo objectId="4207" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="Add_SHD_Monk01_T01" count="1" />
-                <Item itemName="Add_COM_Indonesian01_E01" count="1" />
-                <Item itemName="Add_COM_HawaiGirl01_W02" count="1" />
-                <Item itemName="Add_SHD_Guard01_T03" count="1" />
-                <Item itemName="Add_COM_KidBoy01_S02" count="1" />
-                <Item itemName="Add_SHD_Ninja01_TS02" count="1" />
-                <Item itemName="Add_COM_Knight01_T02" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Arena Blue Chest-->
-        <LootInfo objectId="3946" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_RibbonTail01_T06" count="1" />
-                <Item itemName="Add_SHD_ImpGirl01_T03" count="1" />
-                <Item itemName="Add_COM_Armor01_TS02" count="1" />
-                <Item itemName="Add_COM_Explorator01_LS02" count="1" />
-                <Item itemName="Add_COM_Clown01_W01" count="1" />
-                <Item itemName="Add_SHD_Monk01_LS01" count="1" />
-                <Item itemName="Add_SHD_Monk01_S01" count="1" />
-                <Item itemName="Add_SHD_ImpGirl01_LS03" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Magnolia Lake">
-        <!--Arena Blue Chest-->
-        <LootInfo objectId="10057" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="Add_COM_RibbonTail01_T07" count="1" />
-                <Item itemName="Add_COM_Panda01_LS02" count="1" />
-                <Item itemName="Add_SHD_ImpGirl01_LS01" count="1" />
-                <Item itemName="Add_SHD_ImpGirl01_T02" count="1" />
-                <Item itemName="Add_SHD_ImpGirl01_TS01" count="1" />
-                <Item itemName="Add_SHD_Monk01_TS01" count="1" />
-                <Item itemName="Add_SHD_Monk01_LS03" count="1" />
-                <Item itemName="Add_SHD_Monk01_TS03" count="1" />
-                <Item itemName="Add_COM_Knight01_LS01" count="1" />
-                <Item itemName="Add_COM_Knight01_TS01" count="1" />
-                <Item itemName="Add_COM_Fish01_S01" count="1" />
-                <Item itemName="Add_COM_Clown01_LS01" count="1" />
-                <Item itemName="Add_OUT_Bluebeard01_LS01" count="1" />
-                <Item itemName="Add_OUT_Bluebeard01_TS01" count="1" />
-                <Item itemName="Add_COM_Burglar01_LS01" count="1" />
-                <Item itemName="Add_COM_Knight01_T01" count="1" />
-                <Item itemName="Add_SHD_Monk01_S01" count="1" />
-                <Item itemName="COL_RECIP_COM_ScaleTail01_T02" count="1" />
-                <Item itemName="COL_RECIP_BUFF_Bandage02" count="1" />
-                <Item itemName="COL_RECIP_BUFF_RubberBand02" count="1" />
-                <Item itemName="COL_RECIP_BUFF_GlyphProtection01" count="1" />
-                <Item itemName="COL_RECIP_RefinedGloomCap01" count="1" />
-                <Item itemName="COL_RECIP_BUFF_RubberBand04" count="1" />
-                <Item itemName="COL_RECIP_COM_ScaleTail01_T02" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Arena Purple Chest-->
-        <LootInfo objectId="10283" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="COL_RECIP_COM_Goat01_W02" count="1" />
-                <Item itemName="COL_RECIP_COM_ScaleTail01_T02" count="1" />
-                <Item itemName="Add_COM_Tiger01_T02" count="1" />
-                <Item itemName="Add_COM_King01_S01" count="1" />
-                <Item itemName="ADD_SHD_Shinto01_S02" count="1" />
-                <Item itemName="COL_RECIP_COM_ScaleTail01_T02" count="1" />
-                <Item itemName="Add_COM_Panda01_LS02" count="1" />
-                <Item itemName="Add_SHD_ImpGirl01_LS01" count="1" />
-                <Item itemName="Add_SHD_ImpGirl01_T02" count="1" />
-                <Item itemName="Add_SHD_ImpGirl01_TS01" count="1" />
-                <Item itemName="Add_SHD_Monk01_TS01" count="1" />
-                <Item itemName="Add_SHD_Monk01_LS03" count="1" />
-                <Item itemName="Add_SHD_Monk01_TS03" count="1" />
-                <Item itemName="Add_COM_RibbonTail01_T07" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Lantern Ridge">
-        <!--Arena Blue Chest-->
-        <LootInfo objectId="7089" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="Add_SHD_Guard01_LS01" count="1" />
-                <Item itemName="Add_COM_Burglar01_UF01" count="1" />
-                <Item itemName="Add_COM_Panda01_S03" count="1" />
-                <Item itemName="Add_SHD_Geisha01_LS01" count="1" />
-                <Item itemName="Add_COM_SkullTail01_T04" count="1" />
-                <Item itemName="Add_SHD_Shinto01_LS02" count="1" />
-                <Item itemName="Add_SHD_Shinto01_S01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Forbidden Keep">
-        <!--Arena Purple Chest-->
-        <LootInfo objectId="6177" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Amethyst" count="1" />
-                <Item itemName="Add_COM_SerpentEarring01_E03" count="1" />
-                <Item itemName="Add_SHD_Guard01_T03" count="1" />
-                <Item itemName="Add_SHD_Guard01_W03" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Green Chest 1-->
-        <LootInfo objectId="6186" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="COL_POT_AirResist01" count="1" />
-                <Item itemName="COL_POT_Healing02" count="1" />
-                <Item itemName="COL_POT_AirElixir01" count="1" />
-                <Item itemName="COL_ING_G_Silk02" count="1" />
-                <Item itemName="Add_SHD_Shinto01_S02" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Green Chest 2-->
-        <LootInfo objectId="7013" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="COL_POT_Healing02" count="1" />
-                <Item itemName="COL_POT_AirResist01" count="1" />
-                <Item itemName="Add_SHD_Shinto01_T02" count="1" />
-                <Item itemName="Add_SHD_Shinto01_S02" count="1" />
-                <Item itemName="COL_ING_G_Silk02" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Blue Chest 1-->
-        <LootInfo objectId="6194" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Amethyst" count="1" />
-                <Item itemName="Add_COM_SerpentEarring01_E03" count="1" />
-                <Item itemName="Add_SHD_Guard01_T03" count="1" />
-                <Item itemName="Add_SHD_Guard01_W03" count="1" />
-                <Item itemName="COL_ING_G_Silk02" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Chim Foo Square">
+    <Level name="Chim Foo Square" id="146">
         <!--Monument of Mist-->
         <LootInfo objectId="4874" doLootWheel="true">
             <Items rewardAmount="1">
@@ -2482,7 +2471,7 @@
     </Level>
 
     <!-- Sea Dragons Tribe -->
-    <Level name="Dragontail Square">
+    <Level name="Dragontail Square" id="280">
         <!--Monument of Dragontail-->
         <LootInfo objectId="1614" doLootWheel="true">
             <Items rewardAmount="1">
@@ -2497,7 +2486,82 @@
     </Level>
 
     <!-- Ice Raiders Tribe -->
-    <Level name="Snowstorm Summit">
+    <Level name="Tempest Chasm" id="499">
+        <!--Tunnel Green Chest-->
+        <LootInfo objectId="3286864" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Fur02" count="1" />
+                <Item itemName="Add_COM_Panda01_S04" count="1" />
+                <Item itemName="Add_COM_Panda01_TS04" count="1" />
+                <Item itemName="Add_COM_Panda01_LS04" count="1" />
+                <Item itemName="COL_RECIP_POT_IceElixir00" count="1" />
+                <Item itemName="COL_RECIP_POT_IceResist00" count="1" />
+                <Item itemName="COL_POT_IceElixir00" count="1" />
+                <Item itemName="COL_POT_IceResist00" count="1" />
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Frozen Green Chest-->
+        <LootInfo objectId="3286476" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_IceResist01" count="1" />
+                <Item itemName="COL_RECIP_POT_IceElixir01" count="1" />
+                <Item itemName="COL_POT_Healing02" count="1" />
+                <Item itemName="Add_COM_Tiger01_T04" count="1" />
+                <Item itemName="Add_COM_Tiger01_TS04" count="1" />
+                <Item itemName="COL_ING_G_Fur02" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing03" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Dingy Arena Chest-->
+        <LootInfo objectId="3286868" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="Add_WLD_IceRaider01_T01" count="1" />
+                <Item itemName="Add_COM_Indonesian01_E05" count="1" />
+                <Item itemName="COL_RECIP_COM_Viking01_LS03" count="1" />
+                <Item itemName="COL_RECIP_COM_Viking01_TS03" count="1" />
+                <Item itemName="WPN_SPC_IceRaiderPopper01" count="1" />
+                <Item itemName="COL_ING_G_Fur02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Siv Arena Chest-->
+        <LootInfo objectId="3286474" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="Add_COM_DropEarring01_E02" count="1" />
+                <Item itemName="WPN_SPC_BeastBomb01" count="1" />
+                <Item itemName="Add_EVT_Yeti01_W01" count="1" />
+                <Item itemName="COL_RECIP_SHD_Snake01_S01" count="1" />
+                <Item itemName="COL_RECIP_SHD_Snake01_TS01" count="1" />
+                <Item itemName="COL_ING_G_Fur02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Misc. Purple Chest-->
+        <LootInfo objectId="3289044" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="WPN_PRJ_IceLauncher01" count="1" />
+                <Item itemName="Add_COM_DropEarring01_E02" count="1" />
+                <Item itemName="Add_EVT_Yeti01_W01" count="1" />
+                <Item itemName="COL_RECIP_WLD_Frozen01_TS01" count="1" />
+                <Item itemName="COL_RECIP_WLD_Frozen01_LS01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Foulbreath Chest-->
+        <LootInfo objectId="3286869" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="COL_RECIP_WLD_Frozen01_TS01" count="1" />
+                <Item itemName="COL_RECIP_WLD_Frozen01_LS01" count="1" />
+                <Item itemName="Add_WLD_MiniBoss01_S01" count="1" />
+                <Item itemName="Add_WLD_MiniBoss01_TS01" count="1" />
+                <Item itemName="Add_WLD_MiniBoss01_W01" count="1" />
+                <Item itemName="COL_RECIP_PRJ_BossBurp01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Snowstorm Summit" id="501">
         <!--Green Chest 1-->
         <LootInfo objectId="3286866" doLootWheel="True">
             <Items rewardAmount="1">
@@ -2565,7 +2629,7 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Icewind Caverns">
+    <Level name="Icewind Caverns" id="502">
         <!--1st Green Chest -->
         <LootInfo objectId="3287776" doLootWheel="True">
             <Items rewardAmount="1">
@@ -2655,80 +2719,4 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Tempest Chasm">
-        <!--Tunnel Green Chest-->
-        <LootInfo objectId="3286864" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Fur02" count="1" />
-                <Item itemName="Add_COM_Panda01_S04" count="1" />
-                <Item itemName="Add_COM_Panda01_TS04" count="1" />
-                <Item itemName="Add_COM_Panda01_LS04" count="1" />
-                <Item itemName="COL_RECIP_POT_IceElixir00" count="1" />
-                <Item itemName="COL_RECIP_POT_IceResist00" count="1" />
-                <Item itemName="COL_POT_IceElixir00" count="1" />
-                <Item itemName="COL_POT_IceResist00" count="1" />
-                <Item itemName="COL_POT_Healing01" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Frozen Green Chest-->
-        <LootInfo objectId="3286476" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_POT_IceResist01" count="1" />
-                <Item itemName="COL_RECIP_POT_IceElixir01" count="1" />
-                <Item itemName="COL_POT_Healing02" count="1" />
-                <Item itemName="Add_COM_Tiger01_T04" count="1" />
-                <Item itemName="Add_COM_Tiger01_TS04" count="1" />
-                <Item itemName="COL_ING_G_Fur02" count="1" />
-                <Item itemName="COL_RECIP_POT_Healing03" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Dingy Arena Chest-->
-        <LootInfo objectId="3286868" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Diamond02" count="1" />
-                <Item itemName="Add_WLD_IceRaider01_T01" count="1" />
-                <Item itemName="Add_COM_Indonesian01_E05" count="1" />
-                <Item itemName="COL_RECIP_COM_Viking01_LS03" count="1" />
-                <Item itemName="COL_RECIP_COM_Viking01_TS03" count="1" />
-                <Item itemName="WPN_SPC_IceRaiderPopper01" count="1" />
-                <Item itemName="COL_ING_G_Fur02" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Siv Arena Chest-->
-        <LootInfo objectId="3286474" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Diamond02" count="1" />
-                <Item itemName="Add_COM_DropEarring01_E02" count="1" />
-                <Item itemName="WPN_SPC_BeastBomb01" count="1" />
-                <Item itemName="Add_EVT_Yeti01_W01" count="1" />
-                <Item itemName="COL_RECIP_SHD_Snake01_S01" count="1" />
-                <Item itemName="COL_RECIP_SHD_Snake01_TS01" count="1" />
-                <Item itemName="COL_ING_G_Fur02" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Misc. Purple Chest-->
-        <LootInfo objectId="3289044" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Diamond02" count="1" />
-                <Item itemName="WPN_PRJ_IceLauncher01" count="1" />
-                <Item itemName="Add_COM_DropEarring01_E02" count="1" />
-                <Item itemName="Add_EVT_Yeti01_W01" count="1" />
-                <Item itemName="COL_RECIP_WLD_Frozen01_TS01" count="1" />
-                <Item itemName="COL_RECIP_WLD_Frozen01_LS01" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Foulbreath Chest-->
-        <LootInfo objectId="3286869" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="COL_ING_G_Diamond02" count="1" />
-                <Item itemName="COL_RECIP_WLD_Frozen01_TS01" count="1" />
-                <Item itemName="COL_RECIP_WLD_Frozen01_LS01" count="1" />
-                <Item itemName="Add_WLD_MiniBoss01_S01" count="1" />
-                <Item itemName="Add_WLD_MiniBoss01_TS01" count="1" />
-                <Item itemName="Add_WLD_MiniBoss01_W01" count="1" />
-                <Item itemName="COL_RECIP_PRJ_BossBurp01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-
 </LootCatalog>
