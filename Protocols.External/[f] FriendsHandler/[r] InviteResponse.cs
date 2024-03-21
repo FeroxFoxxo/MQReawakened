@@ -1,6 +1,5 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Helpers;
 
 namespace Protocols.External._f__FriendsHandler;
 
