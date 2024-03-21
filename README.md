@@ -47,7 +47,7 @@ If you'd like to contribute to this project, please read [CONTRIBUTING.md](CONTR
 
 ## How to set up MQReawakened
 
-Please read the [developer guide here on how to set up MQReawakened/](https://github.com/FeroxFoxxo/MQReawakened/wiki/Setting-Up-The-Development-Environment).
+Please read the [developer guide here on how to set up MQReawakened](https://github.com/FeroxFoxxo/MQReawakened/wiki/Setting-Up-The-Development-Environment).
 
 ## Gameplay
 
