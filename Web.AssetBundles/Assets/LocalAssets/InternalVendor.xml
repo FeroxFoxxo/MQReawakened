@@ -159,6 +159,26 @@
             <Item prefabName="COL_POT_Healing02" />
         </Vendor>
     </Level>
+    <Level id="514">
+        <!-- Crossroads Path (Tutorial)-->
+        <Vendor objectId="615" name="Altak" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1180" greetingConversationId="3173" leavingConversationId="3372">
+            <Item prefabName="Add_COM_Armor01_LS01" />
+        </Vendor>
+        <!-- speculation -->
+        <Vendor objectId="98648" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
+            <Item prefabName="PF_PET_Rig01_Pheonix01" />
+            <Item prefabName="PF_PET_Rig02_Tiger01" />
+            <Item prefabName="PF_PET_Rig01_Dragon01" />
+            <Item prefabName="PF_PET_Rig02_Panda01" />
+            <Item prefabName="PF_PET_Rig03_Squid01" />
+            <Item prefabName="PF_PET_Rig03_Shark01" />
+            <Item prefabName="PF_PET_Rig02_Fox01" />
+            <Item prefabName="PF_PET_Rig01_Toad01" />
+            <Item prefabName="PF_PET_Rig01_Owl01" />
+            <Item prefabName="PF_PET_Rig02_Bear01" />
+            <Item prefabName="PF_PET_Rig02_Tiger02" />
+        </Vendor>
+    </Level>
     <Level id="448">
         <!-- Papa Matu's Haunted Graveyard -->
         <Vendor objectId="3008" name="Jacko" descriptionId="1" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="10460" greetingConversationId="2651" leavingConversationId="3027">
@@ -618,12 +638,6 @@
             <Item prefabName="ABIL_PoisonBomb03" />
         </Vendor>
     </Level>
-    <Level id="514">
-        <!-- Crossroads Path Update -->
-        <Vendor objectId="615" name="Altak" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1180" greetingConversationId="3173" leavingConversationId="3372">
-            <Item prefabName="Add_COM_Armor01_LS01" />
-        </Vendor>
-    </Level>
     <Level id="134">
         <!-- Cauldron Keep -->
         <Vendor objectId="413" name="Brewee" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="784" greetingConversationId="2178" leavingConversationId="2177">
@@ -768,7 +782,6 @@
             <Item prefabName="Add_OUT_WaterBandit01_S01" />
             <Item prefabName="Add_OUT_WaterBandit01_TS01" />
             <Item prefabName="Add_OUT_WaterBandit01_LS01" />
-            <Item prefabName="WPN_MEL_DragonMace01" />
             <Item prefabName="COL_BOMB_FireBomb02A" />
             <Item prefabName="COL_RECIP_BOMB_FireBomb02" />
             <Item prefabName="COL_RECIP_OUT_SeaExplorer01_W04" />
