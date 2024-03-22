@@ -66,6 +66,7 @@ public static class PlayerItemExtensions
         components.AddRange(player.Room.GetEntitiesFromType<HazardControllerComp>());
         components.AddRange(player.Room.GetEntitiesFromType<BreakableEventControllerComp>());
 
+        //Needs collider-based rework.
         foreach (var component in components.Where(comp => Vector3Model.Distance(dropData.Position, comp.Position) <= 5.4f))
         {
             var prefabName = component.PrefabName;
