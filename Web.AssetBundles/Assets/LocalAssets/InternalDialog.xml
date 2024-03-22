@@ -288,6 +288,11 @@
             <Dialog dialogId="1346" conversationId="3296" minimumReputation="1" />
         </NPC>
     </Level>
+    <Level name="Whispering Spirits" id="467">
+        <NPC objectId="29247" name="Cravenfoot" descriptionId="0">
+            <Dialog dialogId="1032" conversationId="2845" minimumReputation="1" />
+        </NPC>
+    </Level>
 
     <!-- Chim Foo Tribe -->
     <Level name="Jade Mountain" id="48">

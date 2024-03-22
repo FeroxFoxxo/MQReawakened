@@ -1052,7 +1052,6 @@
                 <Item itemName="Add_EVT_TMNT_Splinter01_TS01" count="1" />
                 <Item itemName="WPN_MEL_TMNT_Bow02" count="1" />
                 <Item itemName="WPN_MEL_TMNT_Shredder01" count="1" />
-                <Item itemName="WPN_PRJ_TMNTShuriken01" count="1" />
             </Items>
         </LootInfo>
     </Level>
