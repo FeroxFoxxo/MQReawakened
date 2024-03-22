@@ -73,6 +73,10 @@ public class EditItem : IBundledXml<EditItem>
                                 break;
                         }
 
+                    //Doesn't work for vLate2013 for some reason.
+                    if (gameVersion == GameVersion.Universal)
+                        gameVersion = Services.GetRequiredService<ServerRConfig>().GameVersion;
+
                     _editedItemAttributes[gameVersion].Add(name, []);
 
                     foreach (XmlNode itemAttribute in item.ChildNodes)
@@ -104,7 +108,7 @@ public class EditItem : IBundledXml<EditItem>
 
     public void EditItemAttributes(string prefabName, XmlNode xmlElement)
     {
-        foreach(var version in _possibleVersions)
+        foreach (var version in _possibleVersions)
             if (_editedItemAttributes[version].TryGetValue(prefabName, out var editedAttributes))
                 foreach (XmlAttribute itemAttributes in xmlElement.Attributes)
                     if (editedAttributes.TryGetValue(itemAttributes.Name, out var value))
@@ -117,7 +121,7 @@ public class EditItem : IBundledXml<EditItem>
 
         foreach (var version in _possibleVersions)
             if (_editedItemAttributes[version].TryGetValue(prefabName, out var editedAttributes))
-                foreach(var attribute in editedAttributes)
+                foreach (var attribute in editedAttributes)
                 {
                     if (attributes.ContainsKey(attribute.Key))
                         attributes[attribute.Key] = attribute.Value;

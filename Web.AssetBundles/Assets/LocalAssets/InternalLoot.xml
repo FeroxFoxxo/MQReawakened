@@ -44,6 +44,19 @@
         </LootInfo>
     </Level>
     <Level name="The Floating Isles" id="89">
+        <!--(2012) 1st Blue Chest-->
+        <LootInfo objectId="9446" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Unknown Recipe" count="1" />
+                <Item itemName="Unknown Recipe" count="1" />
+                <Item itemName="Add_COM_KidBoy01_LS01" count="1" />
+                <Item itemName="Add_COM_Clown01_UF01" count="1" />
+                <Item itemName="Add_OUT_CaptainBoy01_LF02" count="1" />
+                <Item itemName="Add_COM_PlainClothes01_TS02" count="1" />
+                <Item itemName="Add_COM_Turtle01_LS02" count="1" />
+                <Item itemName="Unknown Recipe" count="1" />
+            </Items>
+        </LootInfo>
         <LootInfo objectId="4807" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_OakEarring01_E01" count="1" />
