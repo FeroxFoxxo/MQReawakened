@@ -1,6 +1,5 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Helpers;
 
 namespace Protocols.External._f__FriendsHandler;
 
@@ -8,15 +7,13 @@ public class InviteResponse : ExternalProtocol
 {
     public override string ProtocolName => "fr";
 
-    public PlayerContainer PlayerContainer { get; set; }
-
     public override void Run(string[] message)
     {
         var accepted = message[6] == "1";
         var status = int.Parse(message[7]);
 
         var frienderName = message[5];
-        var friender = PlayerContainer.GetPlayerByName(frienderName);
+        var friender = Player.PlayerContainer.GetPlayerByName(frienderName);
 
         if (friender == null)
             return;

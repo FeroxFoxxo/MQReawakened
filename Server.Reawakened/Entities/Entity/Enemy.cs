@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Entities.AIBehavior;
-using Server.Reawakened.Entities.Components;
+﻿using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity.Utils;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -18,6 +17,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.Configs;
 
 namespace Server.Reawakened.Entities.Entity;
 
@@ -29,6 +29,7 @@ public abstract class Enemy : IDestructible
     public readonly QuestCatalog QuestCatalog;
     public readonly ItemCatalog ItemCatalog;
     public readonly InternalDefaultEnemies InternalEnemy;
+    public readonly ServerRConfig ServerRConfig;
 
     public bool Init;
 
@@ -59,7 +60,6 @@ public abstract class Enemy : IDestructible
 
     public Enemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services)
     {
-        Console.WriteLine("Enemy found with name " + prefabName);
         //Basic Stats
         Room = room;
         Id = entityId;
@@ -72,6 +72,7 @@ public abstract class Enemy : IDestructible
         QuestCatalog = services.GetRequiredService<QuestCatalog>();
         ItemCatalog = services.GetRequiredService<ItemCatalog>();
         InternalEnemy = services.GetRequiredService<InternalDefaultEnemies>();
+        ServerRConfig = services.GetRequiredService<ServerRConfig>();
 
         //Component Info
         EnemyController = enemyController;
@@ -129,7 +130,6 @@ public abstract class Enemy : IDestructible
 
     public void GenerateHitbox(HitboxModel box)
     {
-        Console.WriteLine("Hitbox generated for " + EnemyController.PrefabName);
         var width = box.Width * EnemyController.Scale.X;
         var height = box.Height * EnemyController.Scale.Y;
         var offsetX = box.XOffset * EnemyController.Scale.X - width / 2;
@@ -179,7 +179,7 @@ public abstract class Enemy : IDestructible
             //The XP Reward here is not accurate, but pretty close
             var xpAward = DeathXp - (origin.Character.Data.GlobalLevel - 1) * 5;
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, origin == null ? "0" : origin.GameObjectId, false));
-            origin.AddReputation(xpAward > 0 ? xpAward : 1, EnemyController.ServerRConfig);
+            origin.AddReputation(xpAward > 0 ? xpAward : 1, ServerRConfig);
             Room.KillEntity(origin, Id);
 
             //For spawners

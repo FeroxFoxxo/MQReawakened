@@ -1,4 +1,5 @@
 ﻿using Achievement.StaticData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
@@ -213,7 +214,7 @@ public static class GetInternalXml
     }
 
     public static void RewardPlayer(this List<AchievementDefinitionRewards> rewards, Player player,
-        ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger, ServerRConfig serverRConfig)
+        ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
         var hasUpdatedItems = false;
 
@@ -239,7 +240,7 @@ public static class GetInternalXml
                     break;
                 case RewardType.Xp:
                     var xp = int.Parse(reward.value.ToString());
-                    player.AddReputation(xp, serverRConfig);
+                    player.AddReputation(xp, itemCatalog.Services.GetRequiredService<ServerRConfig>());
                     break;
                 case RewardType.Title:
                     break;

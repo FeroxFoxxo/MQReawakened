@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Server.Reawakened.Entities.Entity.Utils;
 public class AISyncEventHelper

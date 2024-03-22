@@ -14,7 +14,7 @@ public static class PlayerLootHandler
     public static void GrantLoot(this Player player, string gameObjectId, InternalLoot lootCatalog,
         ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
-        var loot = lootCatalog.GetLootById(gameObjectId);
+        var loot = lootCatalog.GetLootById(player.Room.LevelInfo.LevelId, gameObjectId);
 
         if (string.IsNullOrEmpty(loot.ObjectId))
             logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);

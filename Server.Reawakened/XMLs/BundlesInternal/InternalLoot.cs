@@ -17,14 +17,10 @@ public class InternalLoot : IBundledXml<InternalLoot>
     public ILogger<InternalLoot> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<string, LootModel> LootCatalog;
-    public Dictionary<string, List<string>> LevelList;
+    // LEVEL ID, OBJECT ID, LOOT MODEL
+    public Dictionary<int, Dictionary<string, LootModel>> LootCatalog;
 
-    public void InitializeVariables()
-    {
-        LootCatalog = [];
-        LevelList = [];
-    }
+    public void InitializeVariables() => LootCatalog = [];
 
     public void EditDescription(XmlDocument xml)
     {
@@ -45,16 +41,19 @@ public class InternalLoot : IBundledXml<InternalLoot>
             {
                 if (lootLevel.Name != "Level") continue;
 
-                var name = string.Empty;
                 var lootList = new List<string>();
 
-                foreach (XmlAttribute levelAttribute in lootLevel.Attributes)
-                    switch (levelAttribute.Name)
+                var levelId = -1;
+
+                foreach (XmlAttribute vendorAttribute in lootLevel.Attributes)
+                    switch (vendorAttribute.Name)
                     {
-                        case "name":
-                            name = levelAttribute.Value;
+                        case "id":
+                            levelId = int.Parse(vendorAttribute.Value);
                             continue;
                     }
+
+                LootCatalog.Add(levelId, []);
 
                 foreach (XmlNode lootInfo in lootLevel.ChildNodes)
                 {
@@ -127,11 +126,9 @@ public class InternalLoot : IBundledXml<InternalLoot>
                                 break;
                         }
 
-                    LootCatalog.TryAdd(objectId, new LootModel(objectId, bananaRewards, itemRewards, doWheel, multiplayerWheelChance, weightRange));
+                    LootCatalog[levelId].Add(objectId, new LootModel(objectId, bananaRewards, itemRewards, doWheel, multiplayerWheelChance, weightRange));
                     lootList.Add(objectId);
                 }
-
-                LevelList.TryAdd(name, lootList);
             }
         }
     }
@@ -140,6 +137,10 @@ public class InternalLoot : IBundledXml<InternalLoot>
     {
     }
 
-    public LootModel GetLootById(string objectId) =>
-        LootCatalog.TryGetValue(objectId, out var lootInfo) ? lootInfo : new LootModel(string.Empty, [], [], false, 0, 1);
+    public LootModel GetLootById(int levelId, string objectId) =>
+        LootCatalog.TryGetValue(levelId, out var level) ?
+            level.TryGetValue(objectId, out var lootInfo) ?
+                lootInfo :
+                new LootModel(string.Empty, [], [], false, 0, 1) :
+            new LootModel(string.Empty, [], [], false, 0, 1);
 }

@@ -27,6 +27,7 @@ public class InviteToTrade : ExternalProtocol
 
         Player.TempData.TradeModel.InvitedPlayer = invitedPlayer;
 
-        invitedPlayer?.SendXt("ti", Player.CharacterName);
+        if (!invitedPlayer.Character.Data.Blocked.Contains(Player.CharacterId))
+            invitedPlayer?.SendXt("ti", Player.CharacterName);
     }
 }

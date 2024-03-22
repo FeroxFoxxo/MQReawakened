@@ -35,10 +35,10 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public InternalAchievement InternalAchievement { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public TimerThread TimerThread { get; set; }
-    public ServerRConfig ServerRConfig { get; set; }    
     public ItemCatalog ItemCatalog { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public ILogger<EnemyControllerComp> Logger { get; set; }
+    public ServerRConfig Config { get; set; }
 
     public int Level;
     public int EnemyHealth;
@@ -79,8 +79,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
         if (EnemyHealth <= 0)
         {
-            Console.WriteLine(ComponentData.OnKillFXPrefab);
-            origin.AddReputation(OnKillExp, ServerRConfig);
+            origin.AddReputation(OnKillExp, Config);
             Room.KillEntity(origin, Id);
         }
     }

@@ -1939,8 +1939,13 @@
         <Hitbox width="1.3" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
 
-    <!--Rachnok-->
+    <!--Tutorial Rachnok-->
     <Enemy name="Spite_TeaserSpider_Boss">
+        <Hitbox width="15" height="9" offsetX="0" offsetY="5.2"/>
+    </Enemy>
+
+    <!--Rachnok-->
+    <Enemy name="Spite_Spider_Boss">
         <Hitbox width="15" height="9" offsetX="0" offsetY="5.2"/>
     </Enemy>
 </InternalDefaultEnemies>
