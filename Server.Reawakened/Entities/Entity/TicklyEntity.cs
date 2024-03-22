@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -19,6 +20,8 @@ public class TicklyEntity : Component<ProjectileController>
     public string PrjPlane;
 
     public BaseCollider Collider;
+
+    public ServerRConfig ServerRConfig;
     public ILogger<TicklyEntity> Logger { get; set; }
 
     public override void Update()
@@ -28,6 +31,9 @@ public class TicklyEntity : Component<ProjectileController>
 
         if (Position.Y <= ChargeEndPosition?.Y)
             Hit("-1");
+
+        if (IsGrenade)
+            SpeedY -= ServerRConfig.GrenadeGravityFactor;
 
         if (SpeedX != 0 || SpeedY != 0)
         {
