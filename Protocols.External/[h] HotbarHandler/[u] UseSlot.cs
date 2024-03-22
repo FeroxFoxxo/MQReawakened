@@ -29,17 +29,21 @@ public class UseSlot : ExternalProtocol
     {
         var hotbarSlotId = int.Parse(message[5]);
         var targetUserId = int.Parse(message[6]);
+
+        var direction = Player.TempData.Direction;
         var position = new Vector3Model()
         {
             X = Convert.ToSingle(message[7]),
             Y = Convert.ToSingle(message[8]),
             Z = Convert.ToSingle(message[9])
         };
-        Logger.LogDebug("Player used hotbar slot {hotbarId} on {userId} at coordinates {position}",
-            hotbarSlotId, targetUserId, position);
-        var direction = Player.TempData.Direction;
+
         var slotItem = Player.Character.Data.Hotbar.HotbarButtons[hotbarSlotId];
         var usedItem = ItemCatalog.GetItemFromId(slotItem.ItemId);
+
+        Logger.LogDebug("Player used hotbar slot {hotbarId} on {userId} at coordinates {position}",
+            hotbarSlotId, targetUserId, position);
+
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drop:
