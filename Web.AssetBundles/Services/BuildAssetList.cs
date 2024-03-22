@@ -211,7 +211,7 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
         if (!string.IsNullOrEmpty(gameObj))
         {
             asset.Name = gameObj;
-            if (asset.Name.StartsWith("LV"))
+            if (asset.Name.StartsWith("LV") || asset.Name.EndsWith("Level"))
                 if (!asset.Name.Contains("mesh") && !asset.Name.Contains("plane"))
                 {
                     asset.Type = AssetInfo.TypeAsset.Level;
