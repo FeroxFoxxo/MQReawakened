@@ -48,10 +48,11 @@ public class UseSlot : ExternalProtocol
         {
             case ItemActionType.Drop:
                 Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
+                RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Grenade:
             case ItemActionType.Throw:
-                HandleRangedWeapon(usedItem, position, direction);
+                HandleRangedWeapon(usedItem, position, direction, hotbarSlotId);
                 break;
             case ItemActionType.Genericusing:
             case ItemActionType.Drink:
@@ -124,7 +125,7 @@ public class UseSlot : ExternalProtocol
         public bool IsGrenade;
     }
 
-    private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
+    private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction, int hotbarSlotId)
     {
         var isGrenade = usedItem.SubCategoryId is ItemSubCategory.Grenade or ItemSubCategory.Bomb;
 
@@ -138,7 +139,10 @@ public class UseSlot : ExternalProtocol
         };
 
         if (isGrenade)
+        {
             TimerThread.DelayCall(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ServerRConfig.GrenadeSpawnDelay), TimeSpan.Zero, 1);
+            RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
+        }
 
         else
             LaunchProjectile(projectileData);
