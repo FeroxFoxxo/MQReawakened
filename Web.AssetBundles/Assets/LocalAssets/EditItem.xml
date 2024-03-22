@@ -331,6 +331,33 @@
             <EditAttribute key="global_level" value="10"/>
             <EditAttribute key="item_level" value="7"/>
         </Item>
+        <Item name="Add_BON_Cruella01_LS03">
+            <EditAttribute key="name" value="Skeleton Skirt"/>
+            <EditAttribute key="ingamedescription" value="1846793431"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="9"/>
+            <EditAttribute key="item_level" value="9"/>
+        </Item>
+        <Item name="Add_COM_HoopEarrings02_E02">
+            <EditAttribute key="ingamedescription" value="1426394078"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="5"/>
+            <EditAttribute key="item_level" value="5"/>
+        </Item>
+        <Item name="Add_SHD_ImpGirl01_T01">
+            <EditAttribute key="tribe" value="Shadow"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="8"/>
+            <EditAttribute key="item_level" value="8"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vLate2012">
         <Item name="WPN_PRJ_XmasSlingshot01">

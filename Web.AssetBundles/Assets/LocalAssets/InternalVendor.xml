@@ -387,15 +387,15 @@
     <Level name="Turtle's Party" id="522">
         <Vendor objectId="13160924" name="Raphael" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1478" greetingConversationId="3741" leavingConversationId="3740">
             <Item prefabName="WPN_PRJ_ChimFooAmulet01" />
-            <Item prefabName="ABIL_ColorTonic10" />
-            <Item prefabName="COL_PACK_NC_ColorTonic10" />
+            <Item prefabName="ABIL_ColorTonicRandom_01-06" />
+            <Item prefabName="COL_PACK_NC_ColorTonicRand" />
             <Item prefabName="WPN_PRJ_Shuriken01" />
             <Item prefabName="WPN_SPC_ChimFooPopper01" />
             <Item prefabName="WPN_PRJ_TMNTShuriken01" />
             <Item prefabName="Add_EVT_TMNT_Casey01_S01" />
             <Item prefabName="Add_EVT_TMNT_Casey01_TS01" />
             <Item prefabName="Add_EVT_TMNT_Casey01_LS01" />
-        </Vendor>
+        </Vendor> 
     </Level>
     <Level name="SB's Amusement Park" id="564">
         <Vendor objectId="26294092" name="Finn" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1606" greetingConversationId="4082" leavingConversationId="4081">
@@ -406,12 +406,12 @@
             <Item prefabName="Add_COM_SpongeBob02_TS01" />
             <Item prefabName="Add_COM_SpongeBob02_T01" />
             <Item prefabName="ABIL_ColorTonic07" />
-            <Item prefabName="COL_PACK_NC_ColorTonic07" />
-            <Item prefabName="Add_COM_SpongeBob01_BP01" />
-            <Item prefabName="WPN_PRJ_SpongeBobPartyGun01" />
-            <Item prefabName="WPN_PRJ_SpongeBob02" />
-            <Item prefabName="Add_COM_SpongeBob01_S01" />
-        </Vendor>
+            <Item prefabName="COL_PACK_NC_ColorTonic07" /> 
+            <Item prefabName="Add_COM_SpongeBob01_BP01" /> 
+            <Item prefabName="WPN_PRJ_SpongeBobPartyGun01" /> 
+            <Item prefabName="WPN_PRJ_SpongeBob02" /> 
+            <Item prefabName="Add_COM_SpongeBob01_S01" /> 
+        </Vendor> 
         <Vendor objectId="554" name="Karrp" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1607" greetingConversationId="4088" leavingConversationId="4087">
             <Item prefabName="COL_FOOD_SpongeBob01" />
             <Item prefabName="ABIL_ColorTonic07" />
