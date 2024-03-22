@@ -131,7 +131,6 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
 
         var internalCatalog = Services.GetRequiredService<InternalItem>();
         var editCatalog = Services.GetRequiredService<EditItem>();
-        var config = Services.GetRequiredService<ServerRConfig>();
 
         var items = new Dictionary<int, string>();
 
