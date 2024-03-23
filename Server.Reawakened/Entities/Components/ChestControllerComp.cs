@@ -42,7 +42,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
         var triggerReceiver = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);
 
         //Temp way for adding bananas to empty chests to create a better user experience.
-        if (string.IsNullOrEmpty(LootCatalog.GetLootById(Id).ObjectId))
+        if (string.IsNullOrEmpty(LootCatalog.GetLootById(player.Room.LevelInfo.LevelId, Id).ObjectId))
         {
             var bananaReward = new Random().Next(30, 55);
 

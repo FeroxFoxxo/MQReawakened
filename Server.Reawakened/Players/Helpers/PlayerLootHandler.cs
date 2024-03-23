@@ -14,7 +14,7 @@ public static class PlayerLootHandler
     public static void GrantLoot(this Player player, string gameObjectId, InternalLoot lootCatalog,
         ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {
-        var loot = lootCatalog.GetLootById(gameObjectId);
+        var loot = lootCatalog.GetLootById(player.Room.LevelInfo.LevelId, gameObjectId);
 
         if (string.IsNullOrEmpty(loot.ObjectId))
             logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);
@@ -98,10 +98,9 @@ public static class PlayerLootHandler
         }
 
         if (lootModel.DoWheel && player.Room.Players.Count <= 1)
-        {
             SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
-            player.SendUpdatedInventory();
-        }
+
+        player.SendUpdatedInventory();
     }
 
     public static void GrantDynamicLoot(this Player player, int level, EnemyDropModel drop, ItemCatalog itemCatalog)

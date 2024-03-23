@@ -49,7 +49,7 @@ public class MeleeEntity : TicklyEntity
         }
 
         // Send all information to room
-        Collider = new AttackCollider(id, _hitboxPosition, meleeWidth, meleeHeight, PrjPlane, player, damage, type, LifeTime);
+        Collider = new AttackCollider(id, _hitboxPosition, meleeWidth, meleeHeight, PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f);
         var hitEvent = new Melee_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time, Position.X, Position.Y, Position.Z, direction, SpeedY, LifeTime, int.Parse(ProjectileID), item.PrefabName);
         Player.Room.SendSyncEvent(hitEvent);
     }

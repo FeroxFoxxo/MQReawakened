@@ -525,8 +525,7 @@
                 <Reward type="Xp" value="30" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Rachnok’s Lair" type="CollectIdol" value="lv_crs_dungeon00
-" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Rachnok’s Lair" type="CollectIdol" value="lv_crs_dungeon00" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="65" title="Unknown Achievement 65" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_SoggyCreek!" iconName="Collecting_IdolCrossroads_SoggyCreek" points="1" sortOrder="49" repeatable="false">
@@ -614,8 +613,7 @@
                 <Reward type="Xp" value="230" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Lantern Ridge" type="CollectIdol" value="lv_shd_trail04
-" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Lantern Ridge" type="CollectIdol" value="lv_shd_trail04" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="76" title="Unknown Achievement 76" description="Unknown Description. Hint: the icon is named Collecting_IdolChimFoo_BonsaiPeak!" iconName="Collecting_IdolChimFoo_BonsaiPeak" points="1" sortOrder="60" repeatable="false">

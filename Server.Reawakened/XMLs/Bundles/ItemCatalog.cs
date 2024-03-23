@@ -131,7 +131,6 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
 
         var internalCatalog = Services.GetRequiredService<InternalItem>();
         var editCatalog = Services.GetRequiredService<EditItem>();
-        var config = Services.GetRequiredService<ServerRConfig>();
 
         var items = new Dictionary<int, string>();
 
@@ -186,10 +185,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
 
                         items.Add(id, name);
 
-                        if (editCatalog.EditedItemAttributes[config.GameVersion].TryGetValue(name, out var editedAttributes))
-                            foreach (XmlAttribute itemAttributes in item.Attributes)
-                                if (editedAttributes.TryGetValue(itemAttributes.Name, out var value))
-                                    itemAttributes.Value = value;
+                        editCatalog.EditItemAttributes(name, item);
                     }
                 }
             }
@@ -287,10 +283,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
                 itemElement.SetAttribute("loot_id", item.LootId.ToString());
                 itemElement.SetAttribute("release_date", item.ReleaseDate == DateTime.UnixEpoch ? "None" : item.ReleaseDate.ToString());
 
-                if (editCatalog.EditedItemAttributes[config.GameVersion].TryGetValue(itemPrefabName, out var editedAttributes))
-                    foreach (XmlAttribute itemAttributes in itemElement.Attributes)
-                        if (editedAttributes.TryGetValue(itemAttributes.Name, out var value))
-                            itemAttributes.Value = value;
+                editCatalog.EditItemAttributes(itemPrefabName, itemElement);
 
                 if (item.ItemEffects.Count > 0)
                 {

@@ -360,7 +360,7 @@ public partial class ChatCommands(
         return true;
     }
 
-    private static bool ChangeName(Player player, string[] args)
+    private bool ChangeName(Player player, string[] args)
     {
         var character = player.Character;
 
@@ -384,6 +384,14 @@ public partial class ChatCommands(
 
         if (secondName.Length > 0)
             secondName = char.ToUpper(secondName[0]) + secondName[1..];
+
+        var newName = $"{firstName} {secondName}{thirdName}";
+
+        if (characterHandler.GetCharacterFromName(newName) != null)
+        {
+            Log("Please specify a name that is not in use by another player.", player);
+            return false;
+        }
 
         character.Data.CharacterName = $"{firstName} {secondName}{thirdName}";
 

@@ -76,7 +76,14 @@ public class ServerRConfig : IRConfig
     public int MaximumEntitiesToReturnLog { get; set; }
     public int HealingStaffID { get; set; }
     public int MysticCharmID { get; set; }
-    public float ProjectileSpeed { get; set; }
+    public float ProjectileSpeedX { get; set; }
+    public float ProjectileSpeedY { get; set; }
+    public float ProjectileGravityFactor { get; set; }
+    public float GrenadeSpeedX { get; set; }
+    public float GrenadeSpeedY { get; set; }
+    public float GrenadeGravityFactor { get; set; }
+    public float GrenadeSpawnDelay { get; set; }
+    public float GrenadeLifeTime { get; set; }
     public float ProjectileXOffset { get; set; }
     public float ProjectileYOffset { get; set; }
     public float ProjectileWidth { get; set; }
@@ -237,7 +244,14 @@ public class ServerRConfig : IRConfig
         HealingStaffID = 396;
         MysticCharmID = 398;
 
-        ProjectileSpeed = 10f;
+        GrenadeSpeedX = 7f;
+        GrenadeSpeedY = 7f;
+        GrenadeGravityFactor = 0.25f;
+        GrenadeSpawnDelay = 0.5f;
+        GrenadeLifeTime = 3f;
+
+        ProjectileSpeedX = 10f;
+        ProjectileSpeedY = 0f;
 
         ProjectileXOffset = 0.25f;
         ProjectileYOffset = 0.8f;
