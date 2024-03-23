@@ -2481,6 +2481,21 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Hidden Hollow" id="465">
+        <!--Green Chest-->
+        <LootInfo objectId="5503" doLootWheel="true">           
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_AirResist00" count="1" />
+                <Item itemName="Add_COM_Tiger01_TS05" count="1" />
+                <Item itemName="Add_COM_Tiger01_S05" count="1" />
+                <Item itemName="Unknown Potion Recipe (0stars)" count="1" />
+                <Item itemName="COL_ING_G_Silk02" count="1" />
+                <Item itemName="Add_COM_Tiger01_LS05" count="1" />
+                <Item itemName="COL_POT_AirElixir00" count="1" />
+                <Item itemName="Add_COM_Tiger01_T05" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
 
     <!-- Sea Dragons Tribe -->
     <Level name="Dragontail Square" id="280">

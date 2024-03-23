@@ -363,9 +363,26 @@
         </Item>
         <Item name="ABIL_GoldenSlingShot01">
             <EditAttribute key="cooldown_time" value="1"/>
+            <EditAttribute key="rarity" value="Rare"/>
+            <EditAttribute key="global_level" value="4"/>
+            <EditAttribute key="item_level" value="2"/>
+            <EditAttribute key="price" value="0"/>
         </Item>
         <Item name="ABIL_HealingStaff01">
             <EditAttribute key="cooldown_time" value="60"/>
+        </Item>
+        <Item name="WPN_1H_SwordBasic01">
+            <EditAttribute key="ingamedescription" value="1000730"/>
+            <EditAttribute key="price" value="100"/>
+        </Item>
+        <Item name="WPN_1H_SwordGKnight01">
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="10"/>
+            <EditAttribute key="item_level" value="10"/>
+            <EditAttribute key="unique_in_inventory" value="false"/>
         </Item>
     </GameVersion>
     <GameVersion version="vLate2012">
