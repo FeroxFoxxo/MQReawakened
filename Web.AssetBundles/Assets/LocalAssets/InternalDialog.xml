@@ -384,13 +384,13 @@
     </Level>
     <Level id="274">
         <!-- Plunder Alley -->
-        <NPC objectId="451" name="Grog" descriptionId="0">
+        <NPC objectId="451" name="Cog" descriptionId="0">
             <Dialog dialogId="460" conversationId="1388" minimumReputation="1" />
         </NPC>
         <NPC objectId="449" name="Fluke" descriptionId="0">
             <Dialog dialogId="626" conversationId="1871" minimumReputation="1" />
         </NPC>
-        <NPC objectId="452" name="Bluck" descriptionId="0">
+        <NPC objectId="452" name="Grog" descriptionId="0">
             <!-- Monkey associated with objectId 452 does not accept dialog for some reason. -->
             <Dialog dialogId="627" conversationId="1872" minimumReputation="1" />
         </NPC>
