@@ -358,6 +358,15 @@
             <EditAttribute key="global_level" value="8"/>
             <EditAttribute key="item_level" value="8"/>
         </Item>
+        <Item name="ABIL_SlingShot01">
+            <EditAttribute key="cooldown_time" value="1"/>
+        </Item>
+        <Item name="ABIL_GoldenSlingShot01">
+            <EditAttribute key="cooldown_time" value="1"/>
+        </Item>
+        <Item name="ABIL_HealingStaff01">
+            <EditAttribute key="cooldown_time" value="60"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vLate2012">
         <Item name="WPN_PRJ_XmasSlingshot01">
@@ -384,17 +393,6 @@
         </Item>
     </GameVersion>
     <GameVersion version="v2011">
-    </GameVersion>
-    <GameVersion version="Universal">
-        <Item name="ABIL_SlingShot01">
-            <EditAttribute key="cooldown_time" value="1"/>
-        </Item>
-        <Item name="ABIL_GoldenSlingShot01">
-            <EditAttribute key="cooldown_time" value="1"/>
-        </Item>
-        <Item name="ABIL_HealingStaff01">
-            <EditAttribute key="cooldown_time" value="60"/>
-        </Item>
     </GameVersion>
     <GameVersion version="Unknown">
     </GameVersion>
