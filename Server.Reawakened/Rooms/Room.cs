@@ -342,6 +342,10 @@ public class Room : Timer
             lock (_level.Lock)
             {
                 _level.Rooms.Remove(_roomId);
+            }
+
+            lock (_roomLock)
+            {
                 CleanData();
             }
 
