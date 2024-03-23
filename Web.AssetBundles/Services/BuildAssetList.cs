@@ -211,7 +211,7 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
         if (!string.IsNullOrEmpty(gameObj))
         {
             asset.Name = gameObj;
-            if (asset.Name.StartsWith("LV"))
+            if (asset.Name.StartsWith("LV") || asset.Name.EndsWith("Level"))
                 if (!asset.Name.Contains("mesh") && !asset.Name.Contains("plane"))
                 {
                     asset.Type = AssetInfo.TypeAsset.Level;
@@ -231,6 +231,8 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
         {
             asset.Name = textObj;
 
+            // Adding a game version check of vMinigames2012 or deleting this
+            // allows early 2012 to load could be a missing cache issue
             if (asset.Name.StartsWith("NavMesh"))
             {
                 asset.Type = AssetInfo.TypeAsset.NavMesh;

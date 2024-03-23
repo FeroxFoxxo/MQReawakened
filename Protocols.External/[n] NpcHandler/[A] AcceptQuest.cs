@@ -1,0 +1,40 @@
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Logging;
+using Server.Reawakened.Configs;
+using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
+
+namespace Protocols.External._n__NpcHandler;
+public class AcceptQuest : ExternalProtocol
+{
+    public override string ProtocolName => "nA";
+
+    public ServerRConfig Config { get; set; }
+    public ILogger<ChooseQuestReward> Logger { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
+    public FileLogger FileLogger { get; set; }
+    public InternalQuestItem QuestItems { get; set; }
+
+    public override void Run(string[] message)
+    {
+        var character = Player.Character;
+
+        if (character == null)
+            return;
+
+        var quest = int.Parse(message[5]);
+        var setActive = message[6] == "1";
+
+        if (character.Data.ActiveQuestId == quest || character.Data.CompletedQuests.Contains(quest))
+            return;
+
+        var newQuest = QuestCatalog.GetQuestData(quest);
+
+        if (newQuest != null)
+            Player.AddQuest(newQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, $"Accept quest protocol", Logger, setActive);
+    }
+}

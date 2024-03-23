@@ -25,12 +25,12 @@ public class ArenaModel
         FourthPlayerId = playersInGroup.Length > 3 ? playersInGroup[3].CharacterId : 0;
     }
 
-    public static string GrantLootedItems(InternalLoot LootCatalog, string arenaId)
+    public static string GrantLootedItems(InternalLoot lootCatalog, int levelId, string arenaId)
     {
         var random = new Random();
         var itemsGotten = new List<ItemModel>();
 
-        foreach (var reward in LootCatalog.LootCatalog[arenaId].ItemRewards)
+        foreach (var reward in lootCatalog.LootCatalog[levelId][arenaId].ItemRewards)
             foreach (var item in reward.Items)
                 itemsGotten.Add(item.Value);
 
@@ -41,12 +41,11 @@ public class ArenaModel
         return itemsLooted.ToString();
     }
 
-    public static string GrantLootableItems(InternalLoot LootCatalog, string arenaId)
+    public static string GrantLootableItems(InternalLoot lootCatalog, int levelId, string arenaId)
     {
         var lootableItems = new SeparatedStringBuilder('|');
 
-        if (LootCatalog.LootCatalog.TryGetValue(arenaId, out var value))
-            foreach (var reward in value.ItemRewards)
+        foreach (var reward in lootCatalog.LootCatalog[levelId][arenaId].ItemRewards)
                 foreach (var itemReward in reward.Items)
                     lootableItems.Append(itemReward.Value.ItemId);
 

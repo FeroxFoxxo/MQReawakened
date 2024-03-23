@@ -3,7 +3,6 @@ using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
 public class EnemyOrchid(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
@@ -52,9 +51,6 @@ public class EnemyOrchid(Room room, string entityId, string prefabName, EnemyCon
             AiBehavior = ChangeBehavior(_offensiveBehavior);
 
             _behaviorEndTime = ResetBehaviorTime(MinBehaviorTime);
-
-            if (Id.Equals("7651"))
-                Console.WriteLine("You pissed me off.");
         }
     }
 

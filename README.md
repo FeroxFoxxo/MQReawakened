@@ -45,6 +45,14 @@ If you'd like to contribute to this project, please read [CONTRIBUTING.md](CONTR
 - You **must** have your *own* copy of the game and its associated asset bundles.
 - You **must** have the associated DLL for the game added to your server project to ensure it doesn't contain any copywritten code.
 
+## How to set up MQReawakened
+
+Please read the [developer guide here on how to set up MQReawakened](https://github.com/FeroxFoxxo/MQReawakened/wiki/Setting-Up-The-Development-Environment).
+
+If you want to play 2012 or earlier (NOT RECOMMENDED), please use the *new and improved!* [MQClient found here](https://github.com/FeroxFoxxo/MQClient).
+
+Otherwise, simply edit the `settings.txt` and `game/LocalBuildConfig.xml` files from the original game client to point to the MQReawakened server you are trying to connect to, replacing the default supplied.
+
 ## Gameplay
 
 The project's goal is to faithfully recreate the game as it was at the time of the targeted build.

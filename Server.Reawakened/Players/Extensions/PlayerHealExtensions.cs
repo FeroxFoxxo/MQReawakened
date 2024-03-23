@@ -32,11 +32,11 @@ public static class PlayerHealExtensions
             usedItem.ItemEffects.FirstOrDefault().Value :
             usedItem.ItemEffects.LastOrDefault().Value;
 
+        healValue = GetBuffedHealValue(player, healValue);
+
         //If healing staff, convert heal value.
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities)
-            healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealAmount);
-
-        healValue = GetBuffedHealValue(player, healValue);
+            healValue = Convert.ToInt32(player.Character.Data.MaxLife / serverRConfig.HealingStaffHealValue);
 
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
                 player.Character.Data.CurrentLife += healValue, player.Character.Data.MaxLife, string.Empty));
@@ -122,5 +122,5 @@ public static class PlayerHealExtensions
         return healValue;
     }
     //(This is really needed in the games current state or else healing items aren't worth buying or using)
-    //Worth noting; Item descriptions in-game display 2011 stats because items load from ItemCatalogDict instead of MiscTextDisc.
+    //Worth noting; Item descriptions in-game display 2011 stats because items load from an out of date ItemCatalogDict, instead of MiscTextDisc.
 }

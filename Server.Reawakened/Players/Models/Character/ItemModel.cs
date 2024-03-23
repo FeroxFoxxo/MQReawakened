@@ -7,7 +7,8 @@ public class ItemModel
     public int ItemId { get; set; }
     public int Count { get; set; }
     public int BindingCount { get; set; }
-    public DateTime DelayUseExpiry { get; set; }
+
+    public DateTime DelayUseExpiry = DateTime.Now;
 
     public override string ToString()
     {

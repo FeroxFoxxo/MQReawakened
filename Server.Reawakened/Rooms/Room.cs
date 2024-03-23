@@ -6,7 +6,6 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity;
-using Server.Reawakened.Entities.Entity.Enemies;
 using Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Network.Extensions;
@@ -345,6 +344,11 @@ public class Room : Timer
                 _level.Rooms.Remove(_roomId);
             }
 
+            lock (_roomLock)
+            {
+                CleanData();
+            }
+
             Stop();
         }
     }
@@ -505,5 +509,22 @@ public class Room : Timer
             projectileId = Math.Abs(rand.Next()).ToString();
 
         return projectileId;
+    }
+
+    private void CleanData()
+    {
+        GameObjectIds.Clear();
+        KilledObjects.Clear();
+
+        Players.Clear();
+        Projectiles.Clear();
+        Colliders.Clear();
+
+        Planes.Clear();
+        UnknownEntities.Clear();
+        Enemies.Clear();
+        DuplicateEntities.Clear();
+
+        _entities.Clear();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Entities.AbstractComponents;
+﻿using Server.Base.Timers.Services;
+using Server.Reawakened.Entities.AbstractComponents;
 using static Stomper_Movement;
 
 namespace Server.Reawakened.Entities.Components;
@@ -17,6 +18,9 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
     private float _thirdStep;
     private float _fullBehaviorTime;
 
+    public StomperState State;
+    public TimerThread TimerThread { get; set; }
+
     public override void InitializeComponent()
     {
         _firstStep = WaitTimeUp;
@@ -30,16 +34,16 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
             new vector3(Position.X, Position.Y, Position.Z),
             Movement.Activated, Room.Time, InitialProgressRatio
         );
-
-        base.InitializeComponent();
     }
 
     public override void Update()
     {
         base.Update();
-
+        
         var movement = (Stomper_Movement)Movement;
         movement.GetBehaviorRatio(Room.Time);
+
+        State = GetState(Room.Time);
     }
 
     public StomperState GetState(float time)

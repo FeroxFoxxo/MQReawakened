@@ -13,7 +13,6 @@
         <Folder Include="[u] GuildHandler\" />
         <Folder Include="[H] HousingHandler\" />
         <Folder Include="[x] ItemHandler\" />
-        <Folder Include="[j] LootHandler\" />
         <Folder Include="[w] WarningMessageHandler\" />
         <Folder Include="[r] RoomHandler\" />
         <Folder Include="[o] ReportMessageHandler\" />

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
@@ -14,14 +16,18 @@ public class EditItem : IBundledXml<EditItem>
     public ILogger<EditItem> Logger { get; set; }
     public IServiceProvider Services { get; set; }
 
-    public Dictionary<GameVersion, Dictionary<string, Dictionary<string, string>>> EditedItemAttributes;
+    private Dictionary<GameVersion, Dictionary<string, Dictionary<string, string>>> _editedItemAttributes;
+    private GameVersion[] _possibleVersions;
 
     public EditItem()
     {
     }
 
-    public void InitializeVariables() =>
-        EditedItemAttributes = [];
+    public void InitializeVariables()
+    {
+        _editedItemAttributes = [];
+        _possibleVersions = [];
+    }
 
     public void EditDescription(XmlDocument xml)
     {
@@ -50,7 +56,7 @@ public class EditItem : IBundledXml<EditItem>
                             break;
                     }
 
-                EditedItemAttributes.Add(gameVersion, []);
+                _editedItemAttributes.Add(gameVersion, []);
 
                 foreach (XmlNode item in gVXml.ChildNodes)
                 {
@@ -67,7 +73,7 @@ public class EditItem : IBundledXml<EditItem>
                                 break;
                         }
 
-                    EditedItemAttributes[gameVersion].Add(name, []);
+                    _editedItemAttributes[gameVersion].Add(name, []);
 
                     foreach (XmlNode itemAttribute in item.ChildNodes)
                     {
@@ -87,14 +93,46 @@ public class EditItem : IBundledXml<EditItem>
                                     break;
                             }
 
-                        EditedItemAttributes[gameVersion][name].Add(key, value);
+                        _editedItemAttributes[gameVersion][name].Add(key, value);
                     }
                 }
             }
         }
+
+        _possibleVersions = GetPossibleVersions();
     }
 
-    public void FinalizeBundle()
+    public void EditItemAttributes(string prefabName, XmlNode xmlElement)
     {
+        foreach (var version in _possibleVersions)
+            if (_editedItemAttributes[version].TryGetValue(prefabName, out var editedAttributes))
+                foreach (XmlAttribute itemAttributes in xmlElement.Attributes)
+                    if (editedAttributes.TryGetValue(itemAttributes.Name, out var value))
+                        itemAttributes.Value = value;
     }
+
+    public Dictionary<string, string> GetItemAttributes(string prefabName)
+    {
+        Dictionary<string, string> attributes = [];
+
+        foreach (var version in _possibleVersions)
+            if (_editedItemAttributes[version].TryGetValue(prefabName, out var editedAttributes))
+                foreach (var attribute in editedAttributes)
+                {
+                    if (attributes.ContainsKey(attribute.Key))
+                        attributes[attribute.Key] = attribute.Value;
+                    else
+                        attributes.Add(attribute.Key, attribute.Value);
+                }
+
+        return attributes;
+    }
+
+    public GameVersion[] GetPossibleVersions()
+    {
+        var config = Services.GetRequiredService<ServerRConfig>();
+        return [.. _editedItemAttributes.Keys.Where(v => v <= config.GameVersion).OrderBy(v => v)];
+    }
+
+    public void FinalizeBundle() { }
 }

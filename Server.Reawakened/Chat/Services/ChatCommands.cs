@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Models;
+using Server.Base.Accounts.Services;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Services;
 using Server.Base.Logging;
@@ -14,6 +15,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
@@ -27,7 +29,8 @@ namespace Server.Reawakened.Chat.Services;
 public partial class ChatCommands(
     ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger, FileLogger fileLogger,
     WorldHandler worldHandler, InternalAchievement internalAchievement, InternalQuestItem questItem,
-    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog) : IService
+    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog, 
+    CharacterHandler characterHandler, AccountHandler accountHandler) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
 
@@ -40,6 +43,7 @@ public partial class ChatCommands(
     {
         logger.LogDebug("Setting up chat commands");
 
+        AddCommand(new ChatCommand("setAccess", "[owner only]", SetAccessLevel));
         AddCommand(new ChatCommand("save", "[owner only]", SaveLevel));
 
         AddCommand(new ChatCommand("godMode", "", GodMode));
@@ -58,6 +62,7 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
         AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
+        AddCommand(new ChatCommand("openDoors", "", OpenDoors));
 
         AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
 
@@ -70,6 +75,8 @@ public partial class ChatCommands(
 
         AddCommand(new ChatCommand("updateNpcs", "", UpdateLevelNpcs));
         AddCommand(new ChatCommand("playerPos", "", GetPlayerPos));
+
+        AddCommand(new ChatCommand("resetArmor", "[id]", ResetArmor));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
     }
@@ -353,7 +360,7 @@ public partial class ChatCommands(
         return true;
     }
 
-    private static bool ChangeName(Player player, string[] args)
+    private bool ChangeName(Player player, string[] args)
     {
         var character = player.Character;
 
@@ -377,6 +384,14 @@ public partial class ChatCommands(
 
         if (secondName.Length > 0)
             secondName = char.ToUpper(secondName[0]) + secondName[1..];
+
+        var newName = $"{firstName} {secondName}{thirdName}";
+
+        if (characterHandler.GetCharacterFromName(newName) != null)
+        {
+            Log("Please specify a name that is not in use by another player.", player);
+            return false;
+        }
 
         character.Data.CharacterName = $"{firstName} {secondName}{thirdName}";
 
@@ -442,6 +457,10 @@ public partial class ChatCommands(
 
         player.LevelUp(newLevel, logger);
 
+        //If players wanted to level down, it would level them back up to the highest level they've ever hit upon recieving xp.
+        //Now their level will stay at the level they set it to.
+        character.Data.Reputation = character.Data.ReputationForCurrentLevel;
+
         Log($"{character.Data.CharacterName} has leveled up to level {newLevel}!", player);
 
         return true;
@@ -490,6 +509,22 @@ public partial class ChatCommands(
         player.SendUpdatedInventory();
 
         Log($"{character.Data.CharacterName} received {item.ItemName} x{amount}", player);
+
+        return true;
+    }
+
+    private bool OpenDoors(Player player, string[] args)
+    {
+        foreach (var triggerEntity in player.Room.GetEntitiesFromType<TriggerReceiverComp>())
+        {
+            if (config.IgnoredDoors.Contains(triggerEntity.PrefabName))
+                continue;
+
+            triggerEntity.Trigger(true);
+        }
+
+        foreach (var vineEntity in player.Room.GetEntitiesFromType<MysticCharmTargetComp>())
+            vineEntity.Charm(player);
 
         return true;
     }
@@ -650,6 +685,53 @@ public partial class ChatCommands(
         }
 
         Log($"Found quest: '{name}' with ID: '{closestQuest.Id}'.", player);
+        return true;
+    }
+
+    private bool SetAccessLevel(Player player, string[] args)
+    {
+        if (args.Length != 3)
+            return false;
+
+        if (player.NetState.Get<Account>().AccessLevel < AccessLevel.Owner)
+            return false;
+
+        var target = accountHandler.Get(int.Parse(args[1]));
+
+        if (target == null)
+        {
+            Log("Please provide a valid character id.", player);
+            return false;
+        }
+
+        target.AccessLevel = (AccessLevel)int.Parse(args[2]);
+
+        Log($"Set {target.Username}'s access level to {target.AccessLevel}", player);
+
+        return true;
+    }
+
+    private bool ResetArmor(Player player, string[] args)
+    {
+        if (args.Length != 2)
+            return false;
+
+        if (player.NetState.Get<Account>().AccessLevel < AccessLevel.Moderator)
+            return false;
+
+        var target = characterHandler.Get(int.Parse(args[1]));
+
+        if (target == null)
+        {
+            Log("Please provide a valid character id.", player);
+            return false;
+        }
+
+        target.Data.Equipment.EquippedItems.Clear();
+        target.Data.Equipment.EquippedBinding.Clear();
+
+        Log($"Cleared {target.Data.CharacterName}'s equipped items.", player);
+
         return true;
     }
 }

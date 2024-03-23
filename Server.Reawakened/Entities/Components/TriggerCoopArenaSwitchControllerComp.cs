@@ -3,14 +3,12 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Entities.Components;
 
 public class TriggerCoopArenaSwitchControllerComp : BaseTriggerCoopController<TriggerCoopArenaSwitchController>
 {
     public string ArenaObjectId => ComponentData.ArenaObjectID;
-    public PlayerContainer PlayerContainer { get; set; }
     public ILogger<TriggerCoopArenaSwitchControllerComp> Logger { get; set; }
 
     public ITriggerComp triggerable;
