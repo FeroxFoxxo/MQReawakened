@@ -31,7 +31,7 @@ public class ProjectileEntity : TicklyEntity
         _hitboxPosition.X -= isRight ? 0 : config.ProjectileWidth;
 
         // Send all information to room
-        Collider = new AttackCollider(id, _hitboxPosition, config.ProjectileWidth, config.ProjectileHeight, PrjPlane, player, damage, damageType, LifeTime);
+        Collider = new AttackCollider(id, _hitboxPosition, config.ProjectileWidth, config.ProjectileHeight, PrjPlane, player, damage, damageType, LifeTime, 0);
         var prj = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), StartTime, Position.X, Position.Y, Position.Z, SpeedX, 0, LifeTime, int.Parse(ProjectileID), item.PrefabName);
         player.Room.SendSyncEvent(prj);
     }
