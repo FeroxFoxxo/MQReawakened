@@ -743,12 +743,12 @@
                     <Effect duration="5" type="BluntDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9219" itemName="Dragon Mace" descriptionId="1000749" prefabName="WPN_MEL_DragonMace01" specialDisplayPrefab="" tribe="Outlaw" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="24" levelRequirement="24" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="3257" itemName="Dragon Mace" descriptionId="1000749" prefabName="WPN_MEL_DragonMace01" specialDisplayPrefab="" tribe="Outlaw" rarity="Rare" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="45" levelRequirement="45" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="FireDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9220" itemName="Swirling Crystal Staff" descriptionId="233172873" prefabName="WPN_PRJ_TornadoStaff01" specialDisplayPrefab="" tribe="Shadow" rarity="Rare" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="1400" discountPrice="-1" sellPrice="140" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="Unbound" level="38" levelRequirement="38" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9220" itemName="Swirling Crystal Staff" descriptionId="233172873" prefabName="WPN_PRJ_TornadoStaff01" specialDisplayPrefab="" tribe="Shadow" rarity="Uncommon" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="64000" discountPrice="-1" sellPrice="6400" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="Unbound" level="55" levelRequirement="49" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="AirDamage" value="0" />
                 </ItemEffects>

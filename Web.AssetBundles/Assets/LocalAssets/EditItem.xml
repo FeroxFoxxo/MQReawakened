@@ -367,6 +367,7 @@
             <EditAttribute key="global_level" value="4"/>
             <EditAttribute key="item_level" value="2"/>
             <EditAttribute key="price" value="0"/>
+            <EditAttribute key="unique_in_inventory" value="false"/>
         </Item>
         <Item name="ABIL_HealingStaff01">
             <EditAttribute key="cooldown_time" value="60"/>
