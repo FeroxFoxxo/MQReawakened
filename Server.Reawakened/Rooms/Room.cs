@@ -342,6 +342,7 @@ public class Room : Timer
             lock (_level.Lock)
             {
                 _level.Rooms.Remove(_roomId);
+                CleanData();
             }
 
             Stop();
@@ -504,5 +505,22 @@ public class Room : Timer
             projectileId = Math.Abs(rand.Next()).ToString();
 
         return projectileId;
+    }
+
+    private void CleanData()
+    {
+        GameObjectIds.Clear();
+        KilledObjects.Clear();
+
+        Players.Clear();
+        Projectiles.Clear();
+        Colliders.Clear();
+
+        Planes.Clear();
+        UnknownEntities.Clear();
+        Enemies.Clear();
+        DuplicateEntities.Clear();
+
+        _entities.Clear();
     }
 }
