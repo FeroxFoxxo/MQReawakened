@@ -309,7 +309,7 @@
             <Dialog dialogId="451" conversationId="1379" minimumReputation="1" />
         </NPC>
     </Level>
-    <Level name="Ancient Foo Archibe" id="144">
+    <Level name="Ancient Foo Archive" id="144">
         <NPC objectId="598" name="Chim Foo Guard" descriptionId="0">
             <Dialog dialogId="890" conversationId="2463" minimumReputation="1" />
         </NPC>
@@ -353,6 +353,37 @@
     <Level name="Dragontail Square" id="280">
         <NPC objectId="1613" name="Sandrig" descriptionId="0">
             <Dialog dialogId="1345" conversationId="3295" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="1509" name="Plank" descriptionId="0">
+            <Dialog dialogId="461" conversationId="1389" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="1431" name="Scuttlebutt" descriptionId="0">
+            <Dialog dialogId="681" conversationId="1931" minimumReputation="5" />
+        </NPC>
+    </Level>
+    <Level name="Shipwreck Yards" id="275">
+        <NPC objectId="495" name="Ebbins" descriptionId="0">
+            <Dialog dialogId="1119" conversationId="3038" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="457" name="First Mate Stern" descriptionId="0">
+            <Dialog dialogId="850" conversationId="2360" minimumReputation="1" />
+            <Dialog dialogId="686" conversationId="1936" minimumReputation="5" />
+            <Dialog dialogId="687" conversationId="1937" minimumReputation="10" />
+        </NPC>
+        <NPC objectId="512" name="Ploch" descriptionId="0">
+            <Dialog dialogId="685" conversationId="1935" minimumReputation="1" />
+        </NPC>
+    </Level>
+    <Level name="Plunder Alley" id="274">
+        <NPC objectId="451" name="Cog" descriptionId="0">
+            <Dialog dialogId="460" conversationId="1388" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="449" name="Fluke" descriptionId="0">
+            <Dialog dialogId="626" conversationId="1871" minimumReputation="1" />
+        </NPC>
+        <NPC objectId="452" name="Grog" descriptionId="0">
+            <!-- Monkey associated with objectId 452 does not accept dialog for some reason. -->
+            <Dialog dialogId="627" conversationId="1872" minimumReputation="1" />
         </NPC>
     </Level>
 

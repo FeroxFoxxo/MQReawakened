@@ -249,6 +249,17 @@
                 <Item itemName="Add_COM_HoopEarrings01_E01" count="1" />
             </Items>
         </LootInfo>
+        <!--Two Player Puzzle Blue Chest-->
+        <LootInfo objectId="12824" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_HawaiGirl01_LS01" count="1" />
+                <Item itemName="Add_COM_Explorator01_S01" count="1" />
+                <Item itemName="Add_COM_Warrior01_S01" count="1" />
+                <Item itemName="Add_COM_RibbonTail01_T02" count="1" />
+                <Item itemName="Add_COM_Lara01_LS01" count="1" />
+                <Item itemName="Add_COM_AnimalWood01_T03" count="1" />
+            </Items>
+        </LootInfo>
     </Level>
     <Level name="Blimp Ridge" id="92">
         <!--Blue Arena-->
