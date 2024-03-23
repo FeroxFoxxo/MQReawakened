@@ -381,6 +381,14 @@
         <NPC objectId="495" name="Ebbins" descriptionId="0">
             <Dialog dialogId="1119" conversationId="3038" minimumReputation="1" />
         </NPC>
+        <NPC objectId="457" name="First Mate Stern" descriptionId="0">
+            <Dialog dialogId="850" conversationId="2360" minimumReputation="1" />
+            <Dialog dialogId="686" conversationId="1936" minimumReputation="5" />
+            <Dialog dialogId="687" conversationId="1937" minimumReputation="10" />
+        </NPC>
+        <NPC objectId="512" name="Ploch" descriptionId="0">
+            <Dialog dialogId="685" conversationId="1935" minimumReputation="1" />
+        </NPC>
     </Level>
     <Level id="274">
         <!-- Plunder Alley -->
