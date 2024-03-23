@@ -149,6 +149,9 @@
             <Dialog dialogId="666" conversationId="1916" minimumReputation="15" />
             <Dialog dialogId="667" conversationId="1917" minimumReputation="20" />
         </NPC>
+        <NPC objectId="150" name="Isota" descriptionId="0">
+            <Dialog dialogId="613" conversationId="1858" minimumReputation="1" /><!--Speculation-->
+        </NPC>
         <NPC objectId="153" name="Wijit" descriptionId="0">
             <Dialog dialogId="841" conversationId="2351" minimumReputation="1" />
             <Dialog dialogId="661" conversationId="1911" minimumReputation="5" />

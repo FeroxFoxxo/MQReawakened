@@ -218,7 +218,7 @@
         </Vendor>
         <Vendor objectId="343" name="Brokk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1020" greetingConversationId="2807" leavingConversationId="2806">
             <Item prefabName="WPN_PRJ_ChimFooAmulet01" />
-            <Item prefabName="ABIL_SlingShot02" />
+            <Item prefabName="ABIL_GoldenSlingShot01" />
             <Item prefabName="WPN_SPC_DoomGrenade01" />
             <Item prefabName="WPN_PRJ_VoodooDoll01" />
             <Item prefabName="WPN_SPC_IceRaiderPopper01" />
@@ -238,7 +238,7 @@
             <Item prefabName="WPN_PRJ_XmasSlingshot01" />
             <Item prefabName="WPN_PRJ_EarthBow01" />
         </Vendor>
-        <Vendor objectId="244" name="Jitter" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="765" greetingConversationId="2069" leavingConversationId="2068">
+        <Vendor objectId="244" name="Jitter" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Potions" dialogId="765" greetingConversationId="2069" leavingConversationId="2068">
             <Item prefabName="COL_BUFF_Bandage01" />
             <Item prefabName="COL_POT_ExperiencePotion01" />
             <Item prefabName="COL_POT_ExperiencePotion02" />
@@ -277,7 +277,7 @@
             <Item prefabName="Add_COM_AviatorPunk01_S01" />
             <Item prefabName="Add_COM_SuperMonkey01_S01" />
         </Vendor>
-        <Vendor objectId="242" name="Dyzoc" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="1016" greetingConversationId="2783" leavingConversationId="2782">
+        <Vendor objectId="242" name="Dyzoc" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Chef" dialogId="1016" greetingConversationId="2783" leavingConversationId="2782">
             <Item prefabName="COL_FOOD_Candy01" />
             <Item prefabName="COL_FOOD_Melon01" />
             <Item prefabName="COL_FOOD_Orange01" />
@@ -305,9 +305,11 @@
         </Vendor>
         <Vendor objectId="167" name="Peddle" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="BlackSmith" dialogId="1082" greetingConversationId="2996" leavingConversationId="2995">
             <Item prefabName="WPN_SPC_WaterBalloon01" />
+            <Item prefabName="WPN_SPC_DoomGrenade01" /><!--Speculation-->
+            <Item prefabName="WPN_SPC_StormyPopper01" /><!--Speculation-->
         </Vendor>
         <Vendor objectId="170" name="Tonic" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="777" greetingConversationId="2136" leavingConversationId="2135">
-            <Item prefabName="" />
+            <Item prefabName="WPN_1H_SwordBasic01" />
         </Vendor>
     </Level>
     <Level name="The Forgotten Temple" id="437">
