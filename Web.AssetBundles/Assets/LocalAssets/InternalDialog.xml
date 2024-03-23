@@ -377,7 +377,7 @@
         </NPC>
     </Level>
     <Level id="275">
-        <!-- Shipwreck Yards -->
+        <!-- Shipwreck Yards (Custom dialogs) -->
         <NPC objectId="495" name="Ebbins" descriptionId="0">
             <Dialog dialogId="1119" conversationId="3038" minimumReputation="1" />
         </NPC>
@@ -391,7 +391,7 @@
         </NPC>
     </Level>
     <Level id="274">
-        <!-- Plunder Alley -->
+        <!-- Plunder Alley (Custom dialogs) -->
         <NPC objectId="451" name="Cog" descriptionId="0">
             <Dialog dialogId="460" conversationId="1388" minimumReputation="1" />
         </NPC>
