@@ -193,6 +193,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             default:
+                if (!player.TempData.Invincible)
+                    Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, player.CharacterName);
+
                 //Used by Flamer and Dragon Statues which emit fire damage.
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                 (int)ItemEffectType.FireDamage, 1, 1, true, _id, false));
@@ -200,11 +203,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 player.ApplyCharacterDamage(Room, Damage, DamageDelay, TimerThread);
 
                 player.TemporaryInvincibility(TimerThread, 1);
+
                 break;
         }
-
-        if (!player.TempData.Invincible && !player.TempData.Invisible)
-            Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, player.CharacterName);
     }
 
     public void ApplyPoisonEffect(object playerData)
