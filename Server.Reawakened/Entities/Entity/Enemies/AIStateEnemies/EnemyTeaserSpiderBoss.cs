@@ -4,7 +4,7 @@ using Server.Reawakened.Rooms;
 namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
 public class EnemyTeaserSpiderBoss(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : AIStateEnemy(room, entityId, prefabName, enemyController, services)
 {
-    public override void Initialize()
+    public override void Initialize() 
     {
         base.Initialize();
 

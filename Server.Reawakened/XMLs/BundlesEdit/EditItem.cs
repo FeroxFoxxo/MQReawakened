@@ -73,10 +73,6 @@ public class EditItem : IBundledXml<EditItem>
                                 break;
                         }
 
-                    //Doesn't work for vLate2013 for some reason.
-                    if (gameVersion == GameVersion.Universal)
-                        gameVersion = Services.GetRequiredService<ServerRConfig>().GameVersion;
-
                     _editedItemAttributes[gameVersion].Add(name, []);
 
                     foreach (XmlNode itemAttribute in item.ChildNodes)
@@ -135,7 +131,7 @@ public class EditItem : IBundledXml<EditItem>
     public GameVersion[] GetPossibleVersions()
     {
         var config = Services.GetRequiredService<ServerRConfig>();
-        return [.. _editedItemAttributes.Keys.Where(v => v >= config.GameVersion).OrderBy(v => v)];
+        return [.. _editedItemAttributes.Keys.Where(v => v <= config.GameVersion).OrderBy(v => v)];
     }
 
     public void FinalizeBundle() { }

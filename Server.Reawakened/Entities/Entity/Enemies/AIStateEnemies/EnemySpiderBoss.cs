@@ -7,8 +7,5 @@ public class EnemySpiderBoss(Room room, string entityId, string prefabName, Enem
     public override void Initialize()
     {
         base.Initialize();
-
-        //This is here for now, but will be removed when state position syncing is added
-        Hitbox.Position.y -= 21;
     }
 }

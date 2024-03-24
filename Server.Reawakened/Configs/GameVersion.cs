@@ -10,6 +10,5 @@ public enum GameVersion
     vLate2012,
     vEarly2013,
     vLate2013,
-    v2014,
-    Universal
+    v2014
 }

@@ -17,7 +17,7 @@ namespace Server.Reawakened.Players.Extensions;
 public static class NpcExtensions
 {
     public static QuestStatusModel AddQuest(this Player player, QuestDescription quest, InternalQuestItem questItem, GameVersion version,
-        ItemCatalog itemCatalog, FileLogger fileLogger, string identifier, Microsoft.Extensions.Logging.ILogger logger)
+        ItemCatalog itemCatalog, FileLogger fileLogger, string identifier, Microsoft.Extensions.Logging.ILogger logger, bool setActive = true)
     {
         var character = player.Character;
         var questId = quest.Id;
@@ -30,7 +30,8 @@ public static class NpcExtensions
         if (character.Data.CompletedQuests.Contains(quest.Id))
             return null;
 
-        character.Data.ActiveQuestId = questId;
+        if (setActive)
+            character.Data.ActiveQuestId = questId;
 
         var questModel = character.Data.QuestLog.FirstOrDefault(x => x.Id == questId);
 
@@ -107,7 +108,7 @@ public static class NpcExtensions
             QuestState.IN_PROCESSING :
             QuestState.TO_BE_VALIDATED;
 
-        player.SendXt("na", questModel, true ? 1 : 0);
+        player.SendXt("na", questModel, setActive ? 1 : 0);
 
         player.UpdateNpcsInLevel(quest);
 
