@@ -16,6 +16,26 @@
             <EditAttribute key="currency" value="NickCash"/>
             <EditAttribute key="price" value="1"/>
         </Item>
+        <Item name="Add_COM_Burglar01_UF01">
+            <EditAttribute key="ingamedescription" value="1019061661"/>
+            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+        </Item>
+        <Item name="ABIL_SlingShot02">
+            <EditAttribute key="ingamedescription" value="194877086"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Uncommon"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+            <EditAttribute key="price" value="0"/>
+            <EditAttribute key="sell_price" value="0"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vLate2013">
     </GameVersion>
@@ -130,12 +150,12 @@
         </Item>
         <Item name="Add_COM_Burglar01_UF01">
             <EditAttribute key="ingamedescription" value="1019061661"/>
-            <EditAttribute key="tribe" value="Bone"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
             <EditAttribute key="rarity" value="Common"/>
             <EditAttribute key="member_only" value="false"/>
             <EditAttribute key="currency" value="Banana"/>
-            <EditAttribute key="global_level" value="1"/>
-            <EditAttribute key="item_level" value="1"/>
+            <EditAttribute key="global_level" value="11"/>
+            <EditAttribute key="item_level" value="11"/>
         </Item>
         <Item name="Add_COM_Moustache01_UF01">
             <EditAttribute key="ingamedescription" value="13651159"/>
@@ -384,6 +404,17 @@
             <EditAttribute key="global_level" value="10"/>
             <EditAttribute key="item_level" value="10"/>
             <EditAttribute key="unique_in_inventory" value="false"/>
+        </Item>
+        <Item name="ABIL_SlingShot02">
+            <EditAttribute key="ingamedescription" value="194877086"/>
+            <EditAttribute key="tribe" value="Crossroads"/>
+            <EditAttribute key="rarity" value="Common"/>
+            <EditAttribute key="member_only" value="false"/>
+            <EditAttribute key="currency" value="Banana"/>
+            <EditAttribute key="global_level" value="1"/>
+            <EditAttribute key="item_level" value="1"/>
+            <EditAttribute key="price" value="0"/>
+            <EditAttribute key="sell_price" value="0"/>
         </Item>
     </GameVersion>
     <GameVersion version="vLate2012">
