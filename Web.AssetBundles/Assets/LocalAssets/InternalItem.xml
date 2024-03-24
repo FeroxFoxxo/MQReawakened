@@ -628,6 +628,11 @@
         <ItemSubCategory name="Defensive" />
         <ItemSubCategory name="Offensive">
             <!--9200 / 9699-->
+            <Item itemId="304422821" itemName="Confetti Cannon" descriptionId="1102923091" prefabName="WPN_PRJ_ConfettiGun01" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+                <ItemEffects>
+                    <Effect duration="5" type="BluntDamage" value="0" />
+                </ItemEffects>
+            </Item>
             <Item itemId="745480506" itemName="Trainer Staff" descriptionId="124057893" prefabName="WPN_MEL_StarterStaff01" specialDisplayPrefab="" tribe="Bone" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.5" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="PoisonDamage" value="0" />
@@ -651,6 +656,36 @@
             <Item itemId="223229231" itemName="Polished Slingshot" descriptionId="194877086" prefabName="ABIL_SlingShot02" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="1" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="BluntDamage" value="0" />
+                </ItemEffects>
+            </Item>
+            <Item itemId="2118770549" itemName="Frostbite Battle Axe" descriptionId="1558410139" prefabName="WPN_MEL_IceRaiderAxe01" specialDisplayPrefab="WPN_MEL_IceRaiderAxe01_SpecialDisplay" tribe="Wild" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="10" levelRequirement="8" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+                <ItemEffects>
+                    <Effect duration="5" type="IceDamage" value="0" />
+                </ItemEffects>
+            </Item>
+            <Item itemId="3373" itemName="Mystic Flytrap Staff" descriptionId="1000854" prefabName="WPN_PRJ_PoisonousFlower01" specialDisplayPrefab="WPN_PRJ_PoisonousFlower01_SpecialDisplay" tribe="Bone" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="1.2" delayUseDuration="0" binding="On Equip" level="6" levelRequirement="7" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+                <ItemEffects>
+                    <Effect duration="5" type="PoisonDamage" value="0" />
+                </ItemEffects>
+            </Item>
+            <Item itemId="3387" itemName="Foo Warrior Throwing Stars" descriptionId="1000855" prefabName="WPN_PRJ_Shuriken01" specialDisplayPrefab="WPN_PRJ_Shuriken01_SpecialDisplay" tribe="Shadow" rarity="Uncommon" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="875" discountPrice="-1" sellPrice="85" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="3" levelRequirement="7" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+                <ItemEffects>
+                    <Effect duration="5" type="AirDamage" value="0" />
+                </ItemEffects>
+            </Item>
+            <Item itemId="3388" itemName="Dragon Flame Sword" descriptionId="1000856" prefabName="WPN_MEL_FireSword01" specialDisplayPrefab="WPN_MEL_FireSword01_SpecialDisplay" tribe="Outlaw" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.5" delayUseDuration="0" binding="On Equip" level="8" levelRequirement="8" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+                <ItemEffects>
+                    <Effect duration="5" type="FireDamage" value="0" />
+                </ItemEffects>
+            </Item>
+            <Item itemId="3351" itemName="Sturdy Oak Sword" descriptionId="1000671" prefabName="WPN_1H_SwordGKnight01" specialDisplayPrefab="" tribe="Crossroads" rarity="Uncommon" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="8" levelRequirement="8" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+                <ItemEffects>
+                    <Effect duration="5" type="BluntDamage" value="0" />
+                </ItemEffects>
+            </Item>
+            <Item itemId="3257" itemName="Dragon Mace" descriptionId="1000749" prefabName="WPN_MEL_DragonMace01" specialDisplayPrefab="" tribe="Outlaw" rarity="Rare" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="43" levelRequirement="45" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+                <ItemEffects>
+                    <Effect duration="5" type="FireDamage" value="0" />
                 </ItemEffects>
             </Item>
             <Item itemId="9201" itemName="Amulet of the Ninja" descriptionId="1765829215" prefabName="WPN_PRJ_ChimFooAmulet01" specialDisplayPrefab="" tribe="Shadow" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="200" discountPrice="-1" sellPrice="20" sellCount="0" discountedFrom="None" discountedTo="None" actionType="DamageZone" cooldownTime="15" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
@@ -693,12 +728,12 @@
                     <Effect duration="5" type="BluntDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9209" itemName="Fists of Gaia" descriptionId="681707692" prefabName="WPN_PRJ_FistOfTerra01" specialDisplayPrefab="" tribe="Bone" rarity="Uncommon" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="22000" discountPrice="-1" sellPrice="2200" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="41" levelRequirement="41" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9209" itemName="Fists of Terra" descriptionId="681707692" prefabName="WPN_PRJ_FistOfTerra01" specialDisplayPrefab="" tribe="Bone" rarity="Uncommon" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="22000" discountPrice="-1" sellPrice="2200" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="41" levelRequirement="41" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="PoisonDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9210" itemName="Typhoon Stars" descriptionId="1842747245" prefabName="WPN_PRJ_ShootingStar01" specialDisplayPrefab="" tribe="Shadow" rarity="Legendary" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="350" discountPrice="-1" sellPrice="18260" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="55" levelRequirement="55" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9210" itemName="Typhoon Stars" descriptionId="1842747245" prefabName="WPN_PRJ_ShootingStar01" specialDisplayPrefab="" tribe="Shadow" rarity="Legendary" memberOnly="true" currency="NickCash" storeType="Front Store" stockPriority="0" regularPrice="350" discountPrice="-1" sellPrice="18260" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="50" levelRequirement="55" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="AirDamage" value="0" />
                 </ItemEffects>
@@ -743,12 +778,7 @@
                     <Effect duration="5" type="BluntDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="3257" itemName="Dragon Mace" descriptionId="1000749" prefabName="WPN_MEL_DragonMace01" specialDisplayPrefab="" tribe="Outlaw" rarity="Rare" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="45" levelRequirement="45" uniqueInInventory="true" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
-                <ItemEffects>
-                    <Effect duration="5" type="FireDamage" value="0" />
-                </ItemEffects>
-            </Item>
-            <Item itemId="9220" itemName="Swirling Crystal Staff" descriptionId="233172873" prefabName="WPN_PRJ_TornadoStaff01" specialDisplayPrefab="" tribe="Shadow" rarity="Uncommon" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="64000" discountPrice="-1" sellPrice="6400" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="Unbound" level="55" levelRequirement="49" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9220" itemName="Swirling Crystal Staff" descriptionId="233172873" prefabName="WPN_PRJ_TornadoStaff01" specialDisplayPrefab="" tribe="Shadow" rarity="Uncommon" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="64000" discountPrice="-1" sellPrice="6400" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="Unbound" level="65" levelRequirement="49" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="AirDamage" value="0" />
                 </ItemEffects>
@@ -873,11 +903,6 @@
                     <Effect duration="5" type="BluntDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="304422821" itemName="Confetti Cannon" descriptionId="1102923091" prefabName="WPN_PRJ_ConfettiGun01" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
-                <ItemEffects>
-                    <Effect duration="5" type="BluntDamage" value="0" />
-                </ItemEffects>
-            </Item>
             <Item itemId="9246" itemName="Can of Foul Breath" descriptionId="761770840" prefabName="WPN_PRJ_BossBurp01" specialDisplayPrefab="" tribe="Wild" rarity="Rare" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="11150" discountPrice="-1" sellPrice="115" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="2.5" delayUseDuration="0" binding="On Equip" level="30" levelRequirement="30" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="IceDamage" value="0" />
@@ -888,12 +913,12 @@
                     <Effect duration="5" type="BluntDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9248" itemName="Swamp Menace Mace" descriptionId="1541871252" prefabName="WPN_MEL_TitanMace01" specialDisplayPrefab="" tribe="Bone" rarity="Rare" memberOnly="false" currency="NickCash" storeType="Front Store" stockPriority="0" regularPrice="300" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.5" delayUseDuration="0" binding="On Equip" level="51" levelRequirement="51" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9248" itemName="Swamp Menace Mace" descriptionId="1541871252" prefabName="WPN_MEL_TitanMace01" specialDisplayPrefab="" tribe="Bone" rarity="Rare" memberOnly="false" currency="NickCash" storeType="Front Store" stockPriority="0" regularPrice="300" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.5" delayUseDuration="0" binding="On Equip" level="55" levelRequirement="51" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="PoisonDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9249" itemName="Rotten Wood Stick" descriptionId="1003323" prefabName="WPN_MEL_RottenStick01" specialDisplayPrefab="" tribe="Bone" rarity="Uncommon" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="15300" discountPrice="-1" sellPrice="1530" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.5" delayUseDuration="0" binding="On Equip" level="33" levelRequirement="33" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9249" itemName="Rotten Wood Stick" descriptionId="1003323" prefabName="WPN_MEL_RottenStick01" specialDisplayPrefab="" tribe="Bone" rarity="Uncommon" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="33000" discountPrice="-1" sellPrice="3300" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.5" delayUseDuration="0" binding="On Equip" level="41" levelRequirement="41" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="PoisonDamage" value="0" />
                 </ItemEffects>
@@ -918,12 +943,12 @@
                     <Effect duration="5" type="AirDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9254" itemName="Great Axe" descriptionId="1000808" prefabName="WPN_MEL_GreatAxe01" specialDisplayPrefab="" tribe="Crossroads" rarity="Uncommon" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="8450" discountPrice="-1" sellPrice="845" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.5" delayUseDuration="0" binding="On Equip" level="23" levelRequirement="21" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9254" itemName="Great Axe" descriptionId="1000808" prefabName="WPN_MEL_GreatAxe01" specialDisplayPrefab="" tribe="Crossroads" rarity="Uncommon" memberOnly="false" currency="NickCash" storeType="Front Store" stockPriority="0" regularPrice="250" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.5" delayUseDuration="0" binding="On Equip" level="46" levelRequirement="46" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="BluntDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9255" itemName="Fists of Terra" descriptionId="1659956054" prefabName="WPN_PRJ_FistOfTerra01" specialDisplayPrefab="" tribe="Bone" rarity="Epic" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="8450" discountPrice="-1" sellPrice="845" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="45" levelRequirement="45" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9255" itemName="Fists of Terra" descriptionId="1659956054" prefabName="WPN_PRJ_FistOfTerra01" specialDisplayPrefab="" tribe="Bone" rarity="Epic" memberOnly="false" currency="NickCash" storeType="Front Store" stockPriority="0" regularPrice="275" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="45" levelRequirement="45" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="PoisonDamage" value="0" />
                 </ItemEffects>
@@ -956,26 +981,6 @@
             <Item itemId="9261" itemName="Wooden Stick" descriptionId="0" prefabName="WPN_1H_SwordBasic01" specialDisplayPrefab="WPN_1H_SwordBasic01_SpecialDisplay" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.5" delayUseDuration="0" binding="On Equip" level="1" levelRequirement="1" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None" >
                 <ItemEffects>
                     <Effect duration="5" type="BluntDamage" value="0"/>
-                </ItemEffects>
-            </Item>
-            <Item itemId="3373" itemName="Mystic Flytrap Staff" descriptionId="1000854" prefabName="WPN_PRJ_PoisonousFlower01" specialDisplayPrefab="WPN_PRJ_PoisonousFlower01_SpecialDisplay" tribe="Bone" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="1.2" delayUseDuration="0" binding="On Equip" level="6" levelRequirement="7" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
-                <ItemEffects>
-                    <Effect duration="5" type="PoisonDamage" value="0" />
-                </ItemEffects>
-            </Item>
-            <Item itemId="3387" itemName="Foo Warrior Throwing Stars" descriptionId="1000855" prefabName="WPN_PRJ_Shuriken01" specialDisplayPrefab="WPN_PRJ_Shuriken01_SpecialDisplay" tribe="Shadow" rarity="Uncommon" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="875" discountPrice="-1" sellPrice="85" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="3" levelRequirement="7" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
-                <ItemEffects>
-                    <Effect duration="5" type="AirDamage" value="0" />
-                </ItemEffects>
-            </Item>
-            <Item itemId="3388" itemName="Dragon Flame Sword" descriptionId="1000856" prefabName="WPN_MEL_FireSword01" specialDisplayPrefab="WPN_MEL_FireSword01_SpecialDisplay" tribe="Outlaw" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.5" delayUseDuration="0" binding="On Equip" level="8" levelRequirement="8" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
-                <ItemEffects>
-                    <Effect duration="5" type="FireDamage" value="0" />
-                </ItemEffects>
-            </Item>
-            <Item itemId="2118770549" itemName="Frostbite Battle Axe" descriptionId="1558410139" prefabName="WPN_MEL_IceRaiderAxe01" specialDisplayPrefab="WPN_MEL_IceRaiderAxe01_SpecialDisplay" tribe="Wild" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="10" levelRequirement="8" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
-                <ItemEffects>
-                    <Effect duration="5" type="IceDamage" value="0" />
                 </ItemEffects>
             </Item>
             <Item itemId="9262" itemName="Megaforce Dragon Sword" descriptionId="694235977" prefabName="WPN_MEL_PowerRangerSword02" specialDisplayPrefab="" tribe="Crossroads" rarity="Common" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="5" levelRequirement="5" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
@@ -1033,12 +1038,12 @@
                     <Effect duration="5" type="PoisonDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9273" itemName="Fists of Air" descriptionId="1418759842" prefabName="WPN_PRJ_AirFist01" specialDisplayPrefab="" tribe="Shadow" rarity="Epic" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="3500" discountPrice="-1" sellPrice="350" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="43" levelRequirement="43" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9273" itemName="Fists of Air" descriptionId="1418759842" prefabName="WPN_PRJ_AirFist01" specialDisplayPrefab="" tribe="Shadow" rarity="Epic" memberOnly="false" currency="NickCash" storeType="Front Store" stockPriority="0" regularPrice="250" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="43" levelRequirement="43" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="AirDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9274" itemName="Fists of Flame" descriptionId="1310934114" prefabName="WPN_PRJ_ZotanFist01" specialDisplayPrefab="" tribe="Outlaw" rarity="Uncommon" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="3500" discountPrice="-1" sellPrice="350" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="42" levelRequirement="42" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9274" itemName="Fists of Flame" descriptionId="1310934114" prefabName="WPN_PRJ_ZotanFist01" specialDisplayPrefab="" tribe="Outlaw" rarity="Uncommon" memberOnly="false" currency="NickCash" storeType="Front Store" stockPriority="0" regularPrice="275" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="44" levelRequirement="44" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="FireDamage" value="0" />
                 </ItemEffects>
@@ -1048,9 +1053,9 @@
                     <Effect duration="5" type="BluntDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="3351" itemName="Sturdy Oak Sword" descriptionId="1000671" prefabName="WPN_1H_SwordGKnight01" specialDisplayPrefab="" tribe="Crossroads" rarity="Uncommon" memberOnly="false" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Melee" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="8" levelRequirement="8" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9276" itemName="Fiery Meteor Slingshot" descriptionId="636574891" prefabName="WPN_PRJ_MeteorSlingshot01" specialDisplayPrefab="" tribe="Outlaw" rarity="Rare" memberOnly="false" currency="NickCash" storeType="Front Store" stockPriority="0" regularPrice="300" discountPrice="-1" sellPrice="350" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="50" levelRequirement="50" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
-                    <Effect duration="5" type="BluntDamage" value="0" />
+                    <Effect duration="5" type="FireDamage" value="0" />
                 </ItemEffects>
             </Item>
         </ItemSubCategory>

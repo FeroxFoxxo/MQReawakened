@@ -95,7 +95,6 @@
             <Item prefabName="WPN_SPC_IceRaiderPopper01" />
             <Item prefabName="WPN_PRJ_SpearGun01" />
             <Item prefabName="WPN_SPC_DragonBomb01" />
-            <Item prefabName="WPN_PRJ_TornadoStaff01" />
             <Item prefabName="WPN_SPC_WaterBalloon01" />
             <Item prefabName="WPN_PRJ_Spitball01" />
             <Item prefabName="WPN_MEL_CrimsonSword01" />
@@ -225,6 +224,8 @@
             <Item prefabName="ABIL_Grenade03b" />
             <Item prefabName="WPN_PRJ_XmasSlingshot01" />
             <Item prefabName="WPN_PRJ_EarthBow01" />
+            <Item prefabName="WPN_PRJ_TornadoStaff01" />
+            <Item prefabName="WPN_MEL_RottenStick01" />
         </Vendor>
         <Vendor objectId="244" name="Jitter" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Potions" dialogId="765" greetingConversationId="2069" leavingConversationId="2068">
             <Item prefabName="COL_BUFF_Bandage01" />

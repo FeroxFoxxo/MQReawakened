@@ -350,15 +350,16 @@
     </Level>
 
     <!-- Sea Dragons Tribe -->
-    <Level name="Dragontail Square" id="280">
-        <NPC objectId="1613" name="Sandrig" descriptionId="0">
-            <Dialog dialogId="1345" conversationId="3295" minimumReputation="1" />
+    <Level name="Plunder Alley" id="274">
+        <NPC objectId="451" name="Cog" descriptionId="0">
+            <Dialog dialogId="460" conversationId="1388" minimumReputation="1" />
         </NPC>
-        <NPC objectId="1509" name="Plank" descriptionId="0">
-            <Dialog dialogId="461" conversationId="1389" minimumReputation="1" />
+        <NPC objectId="449" name="Fluke" descriptionId="0">
+            <Dialog dialogId="626" conversationId="1871" minimumReputation="1" />
         </NPC>
-        <NPC objectId="1431" name="Scuttlebutt" descriptionId="0">
-            <Dialog dialogId="681" conversationId="1931" minimumReputation="5" />
+        <NPC objectId="452" name="Grog" descriptionId="0">
+            <!-- Monkey associated with objectId 452 does not accept dialog for some reason. -->
+            <Dialog dialogId="627" conversationId="1872" minimumReputation="1" />
         </NPC>
     </Level>
     <Level name="Shipwreck Yards" id="275">
@@ -374,18 +375,18 @@
             <Dialog dialogId="685" conversationId="1935" minimumReputation="1" />
         </NPC>
     </Level>
-    <Level name="Plunder Alley" id="274">
-        <NPC objectId="451" name="Cog" descriptionId="0">
-            <Dialog dialogId="460" conversationId="1388" minimumReputation="1" />
+    <Level name="Dragontail Square" id="280">
+        <NPC objectId="1613" name="Sandrig" descriptionId="0">
+            <Dialog dialogId="1345" conversationId="3295" minimumReputation="1" />
         </NPC>
-        <NPC objectId="449" name="Fluke" descriptionId="0">
-            <Dialog dialogId="626" conversationId="1871" minimumReputation="1" />
+        <NPC objectId="1509" name="Plank" descriptionId="0">
+            <Dialog dialogId="461" conversationId="1389" minimumReputation="1" />
         </NPC>
-        <NPC objectId="452" name="Grog" descriptionId="0">
-            <!-- Monkey associated with objectId 452 does not accept dialog for some reason. -->
-            <Dialog dialogId="627" conversationId="1872" minimumReputation="1" />
+        <NPC objectId="1431" name="Scuttlebutt" descriptionId="0">
+            <Dialog dialogId="681" conversationId="1931" minimumReputation="5" />
         </NPC>
     </Level>
+
 
     <!-- Ice Raiders Tribe -->
     <Level name="Snowdrift Hills" id="497">
