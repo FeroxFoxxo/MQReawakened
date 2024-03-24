@@ -18,6 +18,8 @@ public class TemporaryDataModel
     public bool BananaBoostsElixir { get; set; }
     public bool ReputationBoostsElixir { get; set; }
     public bool IsSuperStomping { get; set; } = false;
+
+    public List<string> CollidingHazards { get; set; } = [];
     public Dictionary<int, bool> VotedForItem { get; set; } = [];
 
     public Vector3Model Position { get; set; } = new Vector3Model();

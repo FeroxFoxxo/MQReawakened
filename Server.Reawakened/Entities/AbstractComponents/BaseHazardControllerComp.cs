@@ -76,9 +76,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         //Prevents enemies and hazards sharing same collider Ids.
         if (!Room.Enemies.ContainsKey(Id))
         {
-            //Hazards with the LinearPlatform component already have colliders and do not need a new one created. They have NoEffect.
+            //Hazards which also contain the LinearPlatform component already have colliders and do not need a new one created. They have NoEffect.
             if (HurtEffect != ServerRConfig.NoEffect
-                //Many Toxic Clouds seem to have no components. So we use prefab name. (Seek Moss Temple for example)
+                //Many Toxic Clouds seem to have no components, so we find the object with PrefabName to create its colliders. (Seek Moss Temple for example)
                 || PrefabName.Contains(ServerRConfig.ToxicCloud))
                 TimerThread.DelayCall(ColliderCreationDelay, null, TimeSpan.FromSeconds(3), TimeSpan.Zero, 1);
         }
@@ -88,7 +88,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public void ColliderCreationDelay(object _)
     {
         HazardId = Id;
-        var hazardCollider = new HazardEffectCollider(HazardId, Position, Rectangle, ParentPlane, Room);
+        var hazardCollider = new HazardEffectCollider(HazardId, Position, Rectangle, ParentPlane, Room, Logger);
         Room.Colliders.TryAdd(HazardId, hazardCollider);
     }
 
@@ -202,9 +202,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 player.TemporaryInvincibility(TimerThread, 1);
                 break;
         }
-
-        if (!player.TempData.Invincible && !player.TempData.Invisible)
-            Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, player.CharacterName);
     }
 
     public void ApplyPoisonEffect(object playerData)
