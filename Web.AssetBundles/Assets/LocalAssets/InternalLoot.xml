@@ -249,6 +249,17 @@
                 <Item itemName="Add_COM_HoopEarrings01_E01" count="1" />
             </Items>
         </LootInfo>
+        <!--Two Player Puzzle Blue Chest-->
+        <LootInfo objectId="12824" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_HawaiGirl01_LS01" count="1" />
+                <Item itemName="Add_COM_Explorator01_S01" count="1" />
+                <Item itemName="Add_COM_Warrior01_S01" count="1" />
+                <Item itemName="Add_COM_RibbonTail01_T02" count="1" />
+                <Item itemName="Add_COM_Lara01_LS01" count="1" />
+                <Item itemName="Add_COM_AnimalWood01_T03" count="1" />
+            </Items>
+        </LootInfo>
     </Level>
     <Level name="Blimp Ridge" id="92">
         <!--Blue Arena-->
@@ -1093,7 +1104,6 @@
                 <Item itemName="Add_EVT_TMNT_Splinter01_TS01" count="1" />
                 <Item itemName="WPN_MEL_TMNT_Bow02" count="1" />
                 <Item itemName="WPN_MEL_TMNT_Shredder01" count="1" />
-                <Item itemName="WPN_PRJ_TMNTShuriken01" count="1" />
             </Items>
         </LootInfo>
     </Level>
@@ -2507,6 +2517,21 @@
                 <Item itemName="COL_POT_AirElixir03" count="1" />
                 <Item itemName="WPN_SPC_DragonBomb01" count="3" />
                 <Item itemName="WPN_SPC_StormyPopper01" count="3" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Hidden Hollow" id="465">
+        <!--Green Chest-->
+        <LootInfo objectId="5503" doLootWheel="true">           
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_AirResist00" count="1" />
+                <Item itemName="Add_COM_Tiger01_TS05" count="1" />
+                <Item itemName="Add_COM_Tiger01_S05" count="1" />
+                <Item itemName="Unknown Potion Recipe (0stars)" count="1" />
+                <Item itemName="COL_ING_G_Silk02" count="1" />
+                <Item itemName="Add_COM_Tiger01_LS05" count="1" />
+                <Item itemName="COL_POT_AirElixir00" count="1" />
+                <Item itemName="Add_COM_Tiger01_T05" count="1" />
             </Items>
         </LootInfo>
     </Level>

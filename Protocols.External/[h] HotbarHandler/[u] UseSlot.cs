@@ -165,7 +165,7 @@ public class UseSlot : ExternalProtocol
         var prjId = Player.Room.SetProjectileId();
 
         // Add weapon stats later
-        var prj = new MeleeEntity(Player, prjId, position, direction, 3, usedItem,
+        var prj = new MeleeEntity(Player, prjId, position, direction, 0.51f, usedItem,
             Player.Character.Data.CalculateDamage(usedItem, ItemCatalog),
             usedItem.Elemental, ServerRConfig);
 
