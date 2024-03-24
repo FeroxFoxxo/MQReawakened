@@ -1030,7 +1030,7 @@
     </Level>
 
     <!-- Event Levels -->
-    <Level name="PR's Megaforce Arena" id="471">
+    <Level name="PR's Samurai Arena" id="471">
         <!-- Samurai Chest -->
         <LootInfo objectId="5816" doLootWheel="True">
             <Items rewardAmount="1">
@@ -1089,7 +1089,7 @@
             </Items>
         </LootInfo>
     </Level>
-    <Level name="Turtles Party!" id="526">
+    <Level name="Shredder's Lair" id="526">
         <!-- Shredder's Lair Chest -->
         <LootInfo objectId="213218" doLootWheel="True">
             <!-- Why does it have the same id with cts starter purple chest???? -->
@@ -1110,6 +1110,7 @@
 
     <!-- Ootu Mystics Tribe -->
     <Level name="Swamp of Misery" id="46">
+        <!--Jack in the Box-->
         <LootInfo objectId="953" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="Add_BON_SkullFighter01_S01" count="1" />
@@ -1122,6 +1123,69 @@
                 <Item itemName="COL_ING_G_GloomCap01" count="1" />
             </Items>
         </LootInfo>
+    </Level>
+    <Level name="Driftwood Village" id="83">
+        <!--Green Chest-->
+        <LootInfo objectId="28578" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_EarthElixir01[]" count="1" />
+                <Item itemName="Unknown Alchemy Recipe (0 stars)" count="1" />
+                <Item itemName="COL_POT_EarthResist01" count="1" />
+                <Item itemName="Add_COM_AnimalWood01_S01" count="1" /><!--speculation-->
+                <Item itemName="Unknown Alchemy Recipe (0 stars)" count="1" />
+                <Item itemName="Unknown Alchemy Recipe (0 stars)" count="1" />
+                <Item itemName="COL_ING_G_Velvet02" count="1" />
+                <Item itemName="COL_POT_Healing03" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Blue Chest 1-->
+        <LootInfo objectId="28173" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="ABIL_PoisonBomb01" count="1" />
+                <Item itemName="Bananas" count="1" /><!--missing feature-->
+                <Item itemName="Add_BON_Spiritualist01_W01" count="1" />
+                <Item itemName="COL_ING_G_Jade" count="1" />
+                <Item itemName="COL_ING_G_Velvet02" count="1" />
+                <Item itemName="Unknown Pattern: (2 stars)" count="1" />
+                <Item itemName="Add_BON_TailRing01_T01" count="1" />
+                <Item itemName="Add_BON_Seer01_E01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Blue Chest-->
+        <LootInfo objectId="28174" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Bananas" count="1" /><!--missing feature-->
+                <Item itemName="Add_BON_Seer01_E01" count="1" />
+                <Item itemName="Add_BON_TailRing01_T01" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_W01" count="1" />
+                <Item itemName="COL_ING_G_Jade" count="1" />
+                <Item itemName="ABIL_PoisonBomb01" count="1" />
+                <Item itemName="Unknown Pattern: (2 stars)" count="1" />
+                <Item itemName="Unknown Pattern: (2 stars)" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Purple Chest-->
+        <LootInfo objectId="28175" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Blue Chest 2-->
     </Level>
     <Level name="Mushroom Hollow" id="85">
         <LootInfo objectId="11249" doLootWheel="False">
