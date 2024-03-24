@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VendorCatalog>
     <!-- Crossroads Tribe -->
-    <Level name="2014 Clock Tower Square" id="47">
+    <Level name="Clock Tower Square" id="47">
         <Vendor objectId="98648" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
             <Item prefabName="PF_PET_Rig02_Enzo01" />
             <Item prefabName="PF_PET_Rig01_Pheonix01" />
