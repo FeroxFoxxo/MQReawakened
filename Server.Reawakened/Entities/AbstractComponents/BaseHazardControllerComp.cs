@@ -203,7 +203,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
         }
 
-        if (!player.TempData.Invincible && !player.TempData.Invisible)
+        if (!player.TempData.Invincible && EffectType != ItemEffectType.SlowStatusEffect)
             Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, player.CharacterName);
     }
 

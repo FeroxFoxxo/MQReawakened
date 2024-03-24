@@ -11,18 +11,21 @@ public class MysticCharmTargetComp : Component<MysticCharmTarget>
     public Vector3 CollisionCenter => ComponentData.CollisionCenter;
     public float CollisionRemovalDelay => ComponentData.CollisionRemovalDelay;
 
-    public bool IsOpened = false;
-
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        if (!IsOpened)
+        var trigger = new Trigger_SyncEvent(syncEvent);
+
+        if (trigger.Activate)
             Charm(player);
     }
 
     public void Charm(Player player)
     {
-        IsOpened = true;
-        var charmEvent = new Charm_SyncEvent(Id.ToString(), Room.Time, true, 398);
+        var syncEvent = new SyncEvent(Id.ToString(), SyncEvent.EventType.Charm, Room.Time);
+        syncEvent.EventDataList.Add(1);
+        syncEvent.EventDataList.Add(398);
+
+        var charmEvent = new Charm_SyncEvent(syncEvent);
         player.SendSyncEventToPlayer(charmEvent);
     }
 }
