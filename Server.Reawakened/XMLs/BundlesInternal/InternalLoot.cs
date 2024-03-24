@@ -61,7 +61,6 @@ public class InternalLoot : IBundledXml<InternalLoot>
 
                     var objectId = string.Empty;
                     var doWheel = true;
-                    var doMultiplayerWheel = true;
                     var multiplayerWheelChance = 0;
                     var bananaRewards = new List<BananaReward>();
                     var itemRewards = new List<ItemReward>();
@@ -75,9 +74,6 @@ public class InternalLoot : IBundledXml<InternalLoot>
                                 continue;
                             case "doLootWheel":
                                 doWheel = doWheel.GetBoolValue(lootAttribute.Value, Logger);
-                                continue;
-                            case "doMultiplayerWheel":
-                                doMultiplayerWheel = doMultiplayerWheel.GetBoolValue(lootAttribute.Value, Logger);
                                 continue;
                             case "multiplayerWheelChance":
                                 multiplayerWheelChance = int.Parse(lootAttribute.Value);

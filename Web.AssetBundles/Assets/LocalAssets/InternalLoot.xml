@@ -47,16 +47,16 @@
         <!--(2012) 1st Blue Chest-->
         <LootInfo objectId="9446" doLootWheel="True">
             <Items rewardAmount="1">
-                <Item itemName="Unknown Recipe" count="1" />
-                <Item itemName="Unknown Recipe" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing01" count="1" />
+                <Item itemName="COL_RECIP_POT_PotionOfShielding01" count="1" />
                 <Item itemName="Add_COM_KidBoy01_LS01" count="1" />
                 <Item itemName="Add_COM_Clown01_UF01" count="1" />
                 <Item itemName="Add_OUT_CaptainBoy01_LF02" count="1" />
                 <Item itemName="Add_COM_PlainClothes01_TS02" count="1" />
                 <Item itemName="Add_COM_Turtle01_LS02" count="1" />
-                <Item itemName="Unknown Recipe" count="1" />
+                <Item itemName="COL_RECIP_COM_AnimalWood01_S03" count="1" />
             </Items>
-        </LootInfo>
+        </LootInfo>       
         <LootInfo objectId="4807" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_OakEarring01_E01" count="1" />
@@ -288,6 +288,34 @@
         <LootInfo objectId="10422" doLootWheel="False">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--(2012) Last Green Chest-->
+        <LootInfo objectId="11281" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="COL_BUFF_GlyphProtection01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--(2012) 2nd Blue Chest-->
+        <LootInfo objectId="11434" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Explorator01_UF01" count="1" />
+                <Item itemName="Add_COM_OakEarring01_E01" count="1" />
+                <Item itemName="Add_COM_PlainClothes01_TS03" count="1" />
+                <Item itemName="Add_COM_HawaiGirl01_S01" count="1" />
+                <Item itemName="Add_COM_Explorator01_LS03" count="1" />
+                <Item itemName="Add_COM_PlainClothes01_TS02" count="1" />
+                <Item itemName="Add_COM_Turtle01_LS02" count="1" />
+                <Item itemName="Add_OUT_FortuneHunter01_UF03" count="1" />
+                <Item itemName="Add_COM_Turtle01_LS02" count="1" />
+                <Item itemName="Add_COM_Lara01_LS02" count="1" />
+                <Item itemName="Add_OUT_CaptainBoy01_LF04" count="1" />
+                <Item itemName="Add_EVT_Reindeer01_UF01" count="1" />
+                <Item itemName="Add_COM_AnimalWood01_W01" count="1" />
+                <Item itemName="COL_RECIP_POT_FireElixer00" count="1" />
+                <Item itemName="Add_COM_Ace01_TS01" count="1" />
+                <Item itemName="COL_RECIP_COM_Burglar01_UF01" count="1"/>
             </Items>
         </LootInfo>
         <LootInfo objectId="10235" doLootWheel="true">

@@ -1,11 +1,12 @@
-﻿using Server.Reawakened.Entities.AbstractComponents;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
-public class HazardEffectCollider(string hazardId, Vector3Model position, RectModel rect, string plane, Room room) : BaseCollider(hazardId, AdjustPosition(position, rect), rect.Width, rect.Height, plane, room, ColliderClass.Hazard)
+public class HazardEffectCollider(string hazardId, Vector3Model position, RectModel rect, string plane, Room room, ILogger<BaseHazardControllerComp<HazardController>> logger) : BaseCollider(hazardId, AdjustPosition(position, rect), rect.Width, rect.Height, plane, room, ColliderClass.Hazard)
 {
     public override void SendCollisionEvent(BaseCollider received)
     {
@@ -13,6 +14,12 @@ public class HazardEffectCollider(string hazardId, Vector3Model position, RectMo
             return;
 
         ApplyEffectBasedOffHazardType(hazardId, playerCollider.Player);
+
+        if (!playerCollider.Player.TempData.CollidingHazards.Contains(hazardId))
+        {
+            logger.LogInformation("{characterName} collided with hazard ({Id}).", playerCollider.Player.CharacterName, hazardId);
+            playerCollider.Player.TempData.CollidingHazards.Add(hazardId);
+        }
     }
 
     public override void SendNonCollisionEvent(BaseCollider received)
@@ -21,6 +28,8 @@ public class HazardEffectCollider(string hazardId, Vector3Model position, RectMo
             return;
 
         DisableEffectBasedOffHazardType(hazardId, playerCollider.Player);
+
+        playerCollider.Player.TempData.CollidingHazards.Remove(hazardId);
     }
 
     public void ApplyEffectBasedOffHazardType(string hazardId, Player player)
