@@ -4025,12 +4025,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="499" title="Unknown Achievement 499" description="Unknown Description. Hint: the icon is named Social_Friends_1!" iconName="Social_Friends_1" points="1" sortOrder="9" repeatable="false">
+        <Achievement id="499" title="I Shall Have a Pal" description="Add your First Friend" iconName="Social_Friends_1" points="3" sortOrder="9" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Add your First Friend" type="Unknown" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="500" title="Unknown Achievement 500" description="Unknown Description. Hint: the icon is named Social_Friends_5!" iconName="Social_Friends_5" points="1" sortOrder="10" repeatable="false">
