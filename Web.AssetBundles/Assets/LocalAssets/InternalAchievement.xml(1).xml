@@ -430,36 +430,36 @@ were made comments, awaiting a differentiation between versions in the file if p
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>-->
-        <Achievement id="51" title="Unknown Achievement 51" description="Unknown Description. Hint: the icon is named Collecting_Idol_5!" iconName="Collecting_Idol_5" points="1" sortOrder="35" repeatable="false">
+        <Achievement id="51" title="Unknown Achievement 51" description="Collect 5 Idols" iconName="Collecting_Idol_5" points="1" sortOrder="35" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 5 Idols" type="CollectIdol" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="52" title="Unknown Achievement 52" description="Unknown Description. Hint: the icon is named Collecting_Idol_10!" iconName="Collecting_Idol_10" points="1" sortOrder="36" repeatable="false">
+        <Achievement id="52" title="Idol-Izer" description="Collect 10 Idols" iconName="Collecting_Idol_10" points="1" sortOrder="36" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols" type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="53" title="Unknown Achievement 53" description="Unknown Description. Hint: the icon is named Collecting_Idol_25!" iconName="Collecting_Idol_25" points="1" sortOrder="37" repeatable="false">
+        <Achievement id="53" title="Unknown Achievement 53" description="Collect 25 Idols" iconName="Collecting_Idol_25" points="1" sortOrder="37" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 25 Idols" type="CollectIdol" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="54" title="Unknown Achievement 54" description="Unknown Description. Hint: the icon is named Collecting_Idol_50!" iconName="Collecting_Idol_50" points="1" sortOrder="38" repeatable="false">
+        <Achievement id="54" title="Unknown Achievement 54" description="Collect 50 Idols" iconName="Collecting_Idol_50" points="1" sortOrder="38" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 50 Idols" type="CollectIdol" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="55" title="Unknown Achievement 55" description="Unknown Description. Hint: the icon is named Collecting_Idol_100!" iconName="Collecting_Idol_100" points="1" sortOrder="39" repeatable="false">
