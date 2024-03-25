@@ -2555,12 +2555,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="317" title="Unknown Achievement 317" description="Unknown Description. Hint: the icon is named Exploration_SpongeBob_AdventurePark!" iconName="Exploration_SpongeBob_AdventurePark" points="1" sortOrder="57" repeatable="false">
+        <Achievement id="317" title="Stroll in the Park" description="Enter SpongeBob's Amusement Park (2014 SpongeBob Event)" iconName="Exploration_SpongeBob_AdventurePark" points="5" sortOrder="57" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Enter SpongeBob's Amusement Park (2014 SpongeBob Event)" type="ExploreTrail" value="lv_evt_spongebobhub01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="318" title="Unknown Achievement 318" description="Unknown Description. Hint: the icon is named Exploration_Jack_JackintheBox!" iconName="Exploration_Jack_JackintheBox" points="1" sortOrder="58" repeatable="false">
