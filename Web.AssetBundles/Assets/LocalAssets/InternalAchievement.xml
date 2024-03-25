@@ -741,12 +741,12 @@
                 <Condition id="1" title="Collect 10 Idols in The Spider Cave" type="CollectIdol" value="lv_bon_trail03" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="90" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolOotu_GiantTree" points="25" sortOrder="74" repeatable="false">
+        <Achievement id="90" title="The Giant Tree Collector" description="Collect all The Giant Tree Idols" iconName="Collecting_IdolOotu_GiantTree" points="25" sortOrder="74" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in The Giant Tree" type="CollectIdol" value="lv_bon_dungeon01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="91" title="Driftwood Village Collector" description="Collect all Driftwood Village Idols" iconName="Collecting_IdolOotu_DriftwoodVillage" points="25" sortOrder="75" repeatable="false">
