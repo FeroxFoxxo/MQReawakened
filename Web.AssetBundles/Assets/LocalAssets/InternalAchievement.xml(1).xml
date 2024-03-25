@@ -478,7 +478,7 @@ were made comments, awaiting a differentiation between versions in the file if p
                 <Condition id="1" title="Collect 200 Idols" type="CollectIdol" value="" goal="200" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="57" title="Unknown Achievement 57" description="Collect 300 Idols" iconName="Collecting_Idol_300" points="1" sortOrder="41" repeatable="false">
+        <Achievement id="57" title="Idol Master" description="Collect 300 Idols" iconName="Collecting_Idol_300" points="1" sortOrder="41" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
