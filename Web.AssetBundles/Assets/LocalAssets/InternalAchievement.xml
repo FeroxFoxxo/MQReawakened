@@ -684,12 +684,12 @@
                 <Condition id="1" title="Collect 10 Idols in Skull Cove" type="CollectIdol" value="lv_out_trail05" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="83" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolSeaDragons_OutlawBeach" points="25" sortOrder="67" repeatable="false">
+        <Achievement id="83" title="Outlaw Beach Collector" description="Collect all Outlaw Beach Idols" iconName="Collecting_IdolSeaDragons_OutlawBeach" points="25" sortOrder="67" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Outlaw Beach" type="CollectIdol" value="lv_out_trail03" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="84" title="Rosy’s Reef Collector" description="Collect all Rosy’s Reef Idols" iconName="Collecting_IdolSeaDragons_RosysReef" points="25" sortOrder="68" repeatable="false">
