@@ -4275,12 +4275,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="530" title="Unknown Achievement 530" description="Unknown Description. Hint: the icon is named Fun_Food_ChompChamp_100!" iconName="Fun_Food_ChompChamp_100" points="1" sortOrder="4" repeatable="false">
+        <Achievement id="530" title="Chomp Champ" description="Eat 100 Food Items" iconName="Fun_Food_ChompChamp_100" points="20" sortOrder="4" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Eat 100 Food Items" type="Unknown" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="531" title="Gourmet Grubber" description="Eat 1000 Food Items" iconName="Fun_Food_GourmetGrubber_1000" points="100" sortOrder="5" repeatable="false">
