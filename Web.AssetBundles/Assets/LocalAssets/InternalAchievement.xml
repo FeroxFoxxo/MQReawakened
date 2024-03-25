@@ -676,12 +676,12 @@
                 <Condition id="1" title="Collect 10 Idols in The Goon Cave" type="CollectIdol" value="lv_out_dungeon01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="82" title="Collector" description="Unknown Description. Hint: the icon is named Collecting_IdolSeaDragons_SkullCave!" iconName="Collecting_IdolSeaDragons_SkullCave" points="25" sortOrder="66" repeatable="false">
+        <Achievement id="82" title="Skull Cove Collector" description="Collect all Skull Cove Idols" iconName="Collecting_IdolSeaDragons_SkullCave" points="25" sortOrder="66" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Skull Cove" type="CollectIdol" value="lv_out_trail05" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="83" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolSeaDragons_OutlawBeach" points="25" sortOrder="67" repeatable="false">
