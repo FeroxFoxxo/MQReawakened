@@ -758,12 +758,12 @@
 " goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="92" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolOotu_MarshSanctuary" points="25" sortOrder="76" repeatable="false">
+        <Achievement id="92" title="Marsh Sanctuary Collector" description="Collect all Marsh Sanctuary Idols" iconName="Collecting_IdolOotu_MarshSanctuary" points="25" sortOrder="76" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Marsh Sanctuary" type="CollectIdol" value="lv_bon_trail05" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="93" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolOotu_UndergroundRiver" points="25" sortOrder="77" repeatable="false">
