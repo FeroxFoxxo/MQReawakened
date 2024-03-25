@@ -612,12 +612,12 @@
                 <Condition id="1" title="Collect 10 Idols in Magnolia Lake" type="CollectIdol" value="lv_shd_trail03" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="74" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_ForbiddenKeep" points="25" sortOrder="58" repeatable="false">
+        <Achievement id="74" title="Forbidden Keep Collector" description="Collect all Forbidden Keep Idols" iconName="Collecting_IdolChimFoo_ForbiddenKeep" points="25" sortOrder="58" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Forbidden Keep" type="CollectIdol" value="lv_shd_dungeon01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="75" title="Lantern Ridge Collector" description="Collect all Lantern Ridge Idols" iconName="Collecting_IdolChimFoo_LanternRidge" points="25" sortOrder="59" repeatable="false">
