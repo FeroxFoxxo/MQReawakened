@@ -4065,12 +4065,12 @@
                 <Condition id="1" title="Unknown Condition" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="504" title="Unknown Achievement 504" description="Unknown Description. Hint: the icon is named Social_Grouping_TroopGroup!" iconName="Social_Grouping_TroopGroup" points="1" sortOrder="14" repeatable="false">
+        <Achievement id="504" title="Group Groovin'" description="Join 10 Groups" iconName="Social_Grouping_TroopGroup" points="10" sortOrder="14" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Join 10 Groups" type="Unknown" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="505" title="Group Groovin’" description="Join 5 Groups" iconName="Social_Grouping_GrouGroovin" points="10" sortOrder="15" repeatable="false">
@@ -4431,7 +4431,7 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="549" title="Party Warrior" description="Equip a Weapon Usable in Cities & Highways" iconName="Fun_Equip_PartyWarrior" points="3" sortOrder="23" repeatable="false">
+        <Achievement id="549" title="Party Warrior" description="Equip a Weapon Usable in Cities and Highways" iconName="Fun_Equip_PartyWarrior" points="3" sortOrder="23" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
