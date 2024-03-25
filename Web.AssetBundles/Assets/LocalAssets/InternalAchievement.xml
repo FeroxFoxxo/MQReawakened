@@ -524,12 +524,12 @@
                 <Condition id="1" title="Collect 10 Idols in The Floating Isles" type="CollectIdol" value="lv_crs_trail01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="63" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_BlimpRidge" points="25" sortOrder="47" repeatable="false">
+        <Achievement id="63" title="Blimp Ridge Collector" description="Collect all Blimp Ridge Idols" iconName="Collecting_IdolCrossroads_BlimpRidge" points="25" sortOrder="47" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Blimp Ridge" type="CollectIdol" value="lv_crs_trail02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="64" title="Rachnok’s Lair Collector" description="Collect all Rachnok’s Lair Idols" iconName="Collecting_IdolCrossroads_RachnoksLair" points="25" sortOrder="48" repeatable="false">
