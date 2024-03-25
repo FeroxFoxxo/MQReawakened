@@ -604,12 +604,12 @@
                 <Condition id="1" title="Collect 10 Idols in Mountain Shrine" type="CollectIdol" value="lv_shd_trail02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="73" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_MagnoliaLake" points="25" sortOrder="57" repeatable="false">
+        <Achievement id="73" title="Magnolia Lake Collector" description="Collect all Magnolia Lake Idols" iconName="Collecting_IdolChimFoo_MagnoliaLake" points="25" sortOrder="57" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Magnolia Lake" type="CollectIdol" value="lv_shd_trail03" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="74" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_ForbiddenKeep" points="25" sortOrder="58" repeatable="false">
