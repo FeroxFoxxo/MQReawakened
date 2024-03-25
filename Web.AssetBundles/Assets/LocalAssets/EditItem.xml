@@ -239,6 +239,7 @@
             <EditAttribute key="item_level" value="7"/>
         </Item>
         <Item name="Add_COM_Viking01_LF02">
+            <EditAttribute key="id" value="1428853663"/>
             <EditAttribute key="ingamedescription" value="298143825"/>
             <EditAttribute key="tribe" value="Wild"/>
             <EditAttribute key="rarity" value="Common"/>
@@ -415,6 +416,9 @@
             <EditAttribute key="item_level" value="1"/>
             <EditAttribute key="price" value="0"/>
             <EditAttribute key="sell_price" value="0"/>
+        </Item>
+        <Item name="COL_RECIP_COM_Viking01_S03">
+            <EditAttribute key="id" value="179090063"/>
         </Item>
     </GameVersion>
     <GameVersion version="vLate2012">
