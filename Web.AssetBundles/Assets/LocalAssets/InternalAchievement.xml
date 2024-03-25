@@ -564,12 +564,12 @@
                 <Condition id="1" title="Collect 10 Idols in Forest Ruins" type="CollectIdol" value="lv_crs_trail04" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="68" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_CrumblingGate" points="25" sortOrder="52" repeatable="false">
+        <Achievement id="68" title="The Crumbling Gates Collector" description="Collect all The Crumbling Gates Idols" iconName="Collecting_IdolCrossroads_CrumblingGate" points="25" sortOrder="52" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in The Crumbling Gates" type="CollectIdol" value="lv_crs_trail05" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="69" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_MagmaCitadel" points="25" sortOrder="53" repeatable="false">
