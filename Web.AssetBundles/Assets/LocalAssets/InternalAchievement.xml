@@ -588,12 +588,12 @@
                 <Condition id="1" title="Collect 10 Idols in Cindertop Highland" type="CollectIdol" value="lv_crs_trail06" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="71" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_Rooftops" points="25" sortOrder="55" repeatable="false">
+        <Achievement id="71" title="The Chim Foo Rooftops Collector" description="Collect all The Chim Foo Rooftops Idols" iconName="Collecting_IdolChimFoo_Rooftops" points="25" sortOrder="55" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in The Chim Foo Rooftops" type="CollectIdol" value="lv_shd_trail01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="72" title="Mountain Shrine Collector" description="Collect all Mountain Shrine Idols" iconName="Collecting_IdolChimFoo_MountainShrine" points="25" sortOrder="56" repeatable="false">
