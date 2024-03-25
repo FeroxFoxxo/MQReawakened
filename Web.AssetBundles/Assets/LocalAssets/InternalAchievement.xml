@@ -572,12 +572,12 @@
                 <Condition id="1" title="Collect 10 Idols in The Crumbling Gates" type="CollectIdol" value="lv_crs_trail05" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="69" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_MagmaCitadel" points="25" sortOrder="53" repeatable="false">
+        <Achievement id="69" title="Magma Citadel Collector" description="Collect all Magma Citadel Idols" iconName="Collecting_IdolCrossroads_MagmaCitadel" points="25" sortOrder="53" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Magma Citadel" type="CollectIdol" value="lv_crs_dungeon02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="70" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_CinderTop" points="25" sortOrder="54" repeatable="false">
