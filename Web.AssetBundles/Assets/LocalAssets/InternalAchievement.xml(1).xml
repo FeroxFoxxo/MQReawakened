@@ -2616,7 +2616,7 @@ were made comments, awaiting a differentiation between versions in the file if p
         </Achievement>-->
     </Category>
     <Category id="6" title="Questing" iconName="Category_Questing" sortOrder="4">
-        <Achievement id="323" title="Unknown Achievement 323" description="Unknown Description. Hint: the icon is named Questing_CompleteQuest_10!" iconName="Questing_CompleteQuest_10" points="1" sortOrder="1" repeatable="false">
+        <Achievement id="323" title="" description="Unknown Description. Hint: the icon is named Questing_CompleteQuest_10!" iconName="Questing_CompleteQuest_10" points="1" sortOrder="1" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
@@ -4076,12 +4076,12 @@ were made comments, awaiting a differentiation between versions in the file if p
                 <Condition id="1" title="Unknown Condition" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="504" title="Group Groovin'" description="Join 10 Groups" iconName="Social_Grouping_TroopGroup" points="10" sortOrder="14" repeatable="false">
+        <Achievement id="504" title="Troop Group'" description="Be in a Full Group" iconName="Social_Grouping_TroopGroup" points="5" sortOrder="14" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="50" quantity="0" />
+                <Reward type="Banana" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Join 10 Groups" type="Unknown" value="" goal="10" visible="true" />
+                <Condition id="1" title="Be in a Full Group" type="Unknown" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="505" title="Group Groovin’" description="Join 5 Groups" iconName="Social_Grouping_GrouGroovin" points="10" sortOrder="15" repeatable="false">
