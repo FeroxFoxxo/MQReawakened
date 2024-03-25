@@ -4386,12 +4386,12 @@ were made comments, awaiting a differentiation between versions in the file if p
                 <Condition id="5" title="Equip Shredder's Bracers" type="EquipItem" value="Add_EVT_TMNT_Shredder01_W01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="542" title="Unknown Achievement 542" description="Unknown Description. Hint: the icon is named Fun_Participate_HalfShell!" iconName="Fun_Participate_HalfShell" points="1" sortOrder="16" repeatable="false">
+        <Achievement id="542" title="Heroes in a Half Shell" description="Participate in a Turtle's Party" iconName="Fun_Participate_HalfShell" points="5" sortOrder="16" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Participate in a Turtle's Party" type="Unknown" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
     <!--<Achievement id="543" title="Booger Eater" description="Eat 10 Sour Bathog Boogers (2013 Halloween Event Item!)" iconName="Silly_BoogerEater" points="5" sortOrder="17" repeatable="false">
