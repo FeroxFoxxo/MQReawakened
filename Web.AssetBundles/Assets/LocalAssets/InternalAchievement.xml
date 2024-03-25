@@ -2541,7 +2541,10 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="4" visible="true" />
+                <Condition id="1" title="Cannon Corral" type="ExploreTrail" value="lv_out_teaser01" goal="1" visible="true" />
+                <Condition id="2" title="Forgotten Lighthouse" type="ExploreTrail" value="lv_out_trail01" goal="1" visible="true" />
+                <Condition id="3" title="Overlook Cliff" type="ExploreTrail" value="lv_out_trail02" goal="1" visible="true" />
+                <Condition id="4" title="Outlaw Beach" type="ExploreTrail" value="lv_out_trail03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="316" title="Unknown Achievement 316" description="Unknown Description. Hint: the icon is named Exploration_TeaserTrails_HiddenHollow!" iconName="Exploration_TeaserTrails_HiddenHollow" points="1" sortOrder="56" repeatable="false">
