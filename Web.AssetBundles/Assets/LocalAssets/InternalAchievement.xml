@@ -156,44 +156,44 @@
                 <Condition id="1" title="Collect 10,000 Bananas" type="CollectBanana" goal="10000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="21" title="Unknown Achievement 21" description="Unknown Description. Hint: the icon is named Collecting_Bananas_50k!" iconName="Collecting_Bananas_50k" points="1" sortOrder="5" repeatable="false">
+        <Achievement id="21" title="Unknown Achievement 21" description="Collect 50,000 Bananas" iconName="Collecting_Bananas_50k" points="1" sortOrder="5" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="50000" visible="true" />
+                <Condition id="1" title="Collect 50,000 Bananas" type="CollectBanana" goal="50000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="22" title="Unknown Achievement 22" description="Unknown Description. Hint: the icon is named Collecting_Bananas_100k!" iconName="Collecting_Bananas_100k" points="1" sortOrder="6" repeatable="false">
+        <Achievement id="22" title="Unknown Achievement 22" description="Collect 100,000 Bananas" iconName="Collecting_Bananas_100k" points="1" sortOrder="6" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="100000" visible="true" />
+                <Condition id="1" title="Collect 100,000 Bananas" type="CollectBanana" goal="100000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="23" title="Unknown Achievement 23" description="Unknown Description. Hint: the icon is named Collecting_Bananas_250k!" iconName="Collecting_Bananas_250k" points="1" sortOrder="7" repeatable="false">
+        <Achievement id="23" title="Unknown Achievement 23" description="Collect 250,000 Bananas" iconName="Collecting_Bananas_250k" points="1" sortOrder="7" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="250000" visible="true" />
+                <Condition id="1" title="Collect 250,000 Bananas" type="CollectBanana" goal="250000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="24" title="Unknown Achievement 24" description="Unknown Description. Hint: the icon is named Collecting_Bananas_500k!" iconName="Collecting_Bananas_500k" points="1" sortOrder="8" repeatable="false">
+        <Achievement id="24" title="Unknown Achievement 24" description="Collect 500,000 Bananas" iconName="Collecting_Bananas_500k" points="1" sortOrder="8" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="500000" visible="true" />
+                <Condition id="1" title="Collect 500,000 Bananas" type="CollectBanana" goal="500000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="25" title="Unknown Achievement 25" description="Unknown Description. Hint: the icon is named Collecting_Bananas_1mil!" iconName="Collecting_Bananas_1mil" points="1" sortOrder="9" repeatable="false">
+        <Achievement id="25" title="BANANA MILLIONAIRE!" description="Collect 1,000,000 Bananas" iconName="Collecting_Bananas_1mil" points="1" sortOrder="9" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="1000000" visible="true" />
+                <Condition id="1" title="Collect 1,000,000 Bananas" type="CollectBanana" goal="1000000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="26" title="I got Braaaaiins" description="Equip the ‘Zombie’ Outfit (2013 Halloween Event Items)" iconName="Collecting_Zombieset" points="10" sortOrder="10" repeatable="false">
