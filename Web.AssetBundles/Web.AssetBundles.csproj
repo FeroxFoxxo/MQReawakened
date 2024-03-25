@@ -75,7 +75,7 @@
         <None Update="Assets\LocalAssets\EditVendor.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Assets\LocalAssets\InternalAchievement.xml">
+        <None Update="Assets\LocalAssets\InternalAchievement.xml(1).xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Assets\LocalAssets\InternalColliders.xml">

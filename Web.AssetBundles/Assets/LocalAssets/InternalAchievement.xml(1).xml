@@ -1,4 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Achievement in 2013 that are missing Icons and pressumably can't be completed
+were made comments, awaiting a differentiation between versions in the file if possible-->
 <Achievements>
     <Category id="1" title="All" iconName="Category_All" sortOrder="9" />
     <Category id="2" title="Daily" iconName="Category_Daily" sortOrder="8">
@@ -18,14 +20,14 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="3" title="Around The World" description="Explore 5 Different Trails in a Day" iconName="Daily_AroundTheWorld" points="5" sortOrder="3" repeatable="true">
+    <!--<Achievement id="3" title="Around The World" description="Explore 5 Different Trails in a Day" iconName="Daily_AroundTheWorld" points="5" sortOrder="3" repeatable="true">
             <Rewards>
                 <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Explore 5 Different Trails in a Day" type="ExploreTrail" value="" goal="5" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="4" title="Daily Dynamo" description="Complete 10 Quests" iconName="Daily_EveryDayHustlin" points="10" sortOrder="4" repeatable="true">
             <Rewards>
                 <Reward type="Bananas" value="50" quantity="0" />
@@ -58,14 +60,14 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="8" title="C'Mon!" description="Challenge a Player to a Game of Pet Masters" iconName="Daily_Cmon" points="1" sortOrder="8" repeatable="true">
+    <!--<Achievement id="8" title="C'Mon!" description="Challenge a Player to a Game of Pet Masters" iconName="Daily_Cmon" points="1" sortOrder="8" repeatable="true">
             <Rewards>
                 <Reward type="Xp" value="5" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Unknown Condition" goal="1" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="9" title="Social Animal" description="Add 3 Friends" iconName="Daily_IMadeAFriend" points="3" sortOrder="9" repeatable="true">
             <Rewards>
                 <Reward type="Xp" value="10" quantity="0" />
@@ -74,14 +76,14 @@
                 <Condition id="1" title="Add 3 Friends" type="Invalid" value="" goal="3" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="10" title="Ready to Rumble" description="Accept an Invite to Play Pet Masters" iconName="Daily_Ready_to_Rumble" points="3" sortOrder="10" repeatable="true">
+    <!--<Achievement id="10" title="Ready to Rumble" description="Accept an Invite to Play Pet Masters" iconName="Daily_Ready_to_Rumble" points="3" sortOrder="10" repeatable="true">
             <Rewards>
                 <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Accept an Invite to Play Pet Masters" type="Invalid" value="" goal="1" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="11" title="Unknown Achievement 11" description="Unknown Description. Hint: the icon is named Daily_SocialAnimal!" iconName="Daily_SocialAnimal" points="1" sortOrder="11" repeatable="true">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -106,7 +108,7 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="14" title="Yolk's on Me" description="Transform Yourself into a Chicken" iconName="Daily_ChickenZapSelf" points="1" sortOrder="14" repeatable="true">
+    <!--<Achievement id="14" title="Yolk's on Me" description="Transform Yourself into a Chicken" iconName="Daily_ChickenZapSelf" points="1" sortOrder="14" repeatable="true">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
@@ -121,7 +123,7 @@
             <Conditions>
                 <Condition id="1" title="Open a Pet Egg" type="Invalid" value="" goal="1" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
     </Category>
     <Category id="3" title="Collecting" iconName="Category_Collecting" sortOrder="7">
         <Achievement id="17" title="Banana Collector" description="Collect 100 Bananas" iconName="Collecting_Bananas_100" points="1" sortOrder="1" repeatable="false">
@@ -196,7 +198,7 @@
                 <Condition id="1" title="Collect 1,000,000 Bananas" type="CollectBanana" goal="1000000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="26" title="I got Braaaaiins" description="Equip the ‘Zombie’ Outfit (2013 Halloween Event Items)" iconName="Collecting_Zombieset" points="10" sortOrder="10" repeatable="false">
+    <!--<Achievement id="26" title="I got Braaaaiins" description="Equip the ‘Zombie’ Outfit (2013 Halloween Event Items)" iconName="Collecting_Zombieset" points="10" sortOrder="10" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
@@ -214,7 +216,7 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="28" title="Oh Deer!" description="Equip the 'Reindeer' Outfit (2013 Holiday Event Items)" iconName="Equip_Reindeer" points="10" sortOrder="12" repeatable="false">
+        Achievement id="28" title="Oh Deer!" description="Equip the 'Reindeer' Outfit (2013 Holiday Event Items)" iconName="Equip_Reindeer" points="10" sortOrder="12" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
@@ -387,7 +389,7 @@
                 <Condition id="3" title="Equip Splinter Robe Bottom" type="EquipItem" value="4730" goal="1" visible="true" />
                 <Condition id="4" title="Equip Splinter Beard" type="EquipItem" value="6203" goal="1" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="46" title="Unknown Achievement 46" description="Unknown Description. Hint: the icon is named Collecting_Pets_1!" iconName="Collecting_Pets_1" points="1" sortOrder="30" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -412,7 +414,7 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="49" title="Unknown Achievement 49" description="Unknown Description. Hint: the icon is named Pet_Gravewing!" iconName="Pet_Gravewing" points="1" sortOrder="33" repeatable="false">
+    <!--<Achievement id="49" title="Unknown Achievement 49" description="Unknown Description. Hint: the icon is named Pet_Gravewing!" iconName="Pet_Gravewing" points="1" sortOrder="33" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
@@ -427,7 +429,7 @@
             <Conditions>
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="51" title="Unknown Achievement 51" description="Unknown Description. Hint: the icon is named Collecting_Idol_5!" iconName="Collecting_Idol_5" points="1" sortOrder="35" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -697,8 +699,7 @@
                 <Reward type="Xp" value="230" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Rosy’s Reef" type="CollectIdol" value="lv_out_dungeon02
-" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Rosy’s Reef" type="CollectIdol" value="lv_out_dungeon02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="85" title="Anchor Falls Collector" description="Collect all Anchor Falls Idols" iconName="Collecting_IdolSeaDragons_AnchorFalls" points="25" sortOrder="69" repeatable="false">
@@ -754,8 +755,7 @@
                 <Reward type="Xp" value="280" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Driftwood Village" type="CollectIdol" value="lv_bon_trail04
-" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Driftwood Village" type="CollectIdol" value="lv_bon_trail04" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="92" title="Marsh Sanctuary Collector" description="Collect all Marsh Sanctuary Idols" iconName="Collecting_IdolOotu_MarshSanctuary" points="25" sortOrder="76" repeatable="false">
@@ -795,8 +795,7 @@
                 <Reward type="Xp" value="90" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Icewind Caverns" type="CollectIdol" value="lv_wld_trail02
-" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Icewind Caverns" type="CollectIdol" value="lv_wld_trail02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="97" title="Tempest Chasm Collector" description="Collect all Tempest Chasm Idols" iconName="Collecting_IdolIceRaiders_TempestCaverns" points="25" sortOrder="81" repeatable="false">
@@ -1674,14 +1673,14 @@
                 <Condition id="1" title="Defeat 1,000 Spinefish" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="206" title="Unknown Achievement 206" description="Unknown Description. Hint: the icon is named Combat_zombiebat!" iconName="Combat_zombiebat" points="1" sortOrder="109" repeatable="false">
+    <!--<Achievement id="206" title="Unknown Achievement 206" description="Unknown Description. Hint: the icon is named Combat_zombiebat!" iconName="Combat_zombiebat" points="1" sortOrder="109" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="207" title="Unknown Achievement 207" description="Unknown Description. Hint: the icon is named Combat_Smasher_Spiderling_3!" iconName="Combat_Smasher_Spiderling_3" points="1" sortOrder="110" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -1690,7 +1689,7 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="208" title="Unknown Achievement 208" description="Unknown Description. Hint: the icon is named Combat_TMNT_Shredder_3!" iconName="Combat_TMNT_Shredder_3" points="1" sortOrder="111" repeatable="false">
+    <!--<Achievement id="208" title="Unknown Achievement 208" description="Unknown Description. Hint: the icon is named Combat_TMNT_Shredder_3!" iconName="Combat_TMNT_Shredder_3" points="1" sortOrder="111" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
@@ -1713,15 +1712,15 @@
             <Conditions>
                 <Condition id="1" title="Defeat 300 Mini Robo-Plankton Enemies" goal="300" visible="true" />
             </Conditions>
-        </Achievement>
-        <Achievement id="211" title="Walk The Plankton" description="Defeat Plankton 10 Times (2014 SpongeBob Event)" iconName="Combat_SpongeBob_BossPlankton_10" points="50" sortOrder="114" repeatable="false">
+        </Achievement>-->
+    <!--<Achievement id="211" title="Walk The Plankton" description="Defeat Plankton 10 Times (2014 SpongeBob Event)" iconName="Combat_SpongeBob_BossPlankton_10" points="50" sortOrder="114" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="200" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat Plankton 10 Times" goal="10" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="212" title="BOOM go the Baddies" description="Use 10 Bombs or Poppers" iconName="Defeat_10_Bombs" points="5" sortOrder="115" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
@@ -1754,7 +1753,7 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="216" title="X-Borg Battler" description="Defeat 100 X-Borgs in the Power Rangers Arena (2014 Power Rangers Event)" iconName="Combat_Defeat100XBorgs" points="25" sortOrder="119" repeatable="false">
+    <!--<Achievement id="216" title="X-Borg Battler" description="Defeat 100 X-Borgs in the Power Rangers Arena (2014 Power Rangers Event)" iconName="Combat_Defeat100XBorgs" points="25" sortOrder="119" repeatable="false">
             <Rewards>
                 <Reward type="Item" value="COL_RECIP_BON_Mystic01_E01" quantity="1" />
             </Rewards>
@@ -1769,7 +1768,7 @@
             <Conditions>
                 <Condition id="1" title="Defeat 500 X-Borgs in the Power Rangers Arena" type="Invalid" value="" goal="500" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="218" title="Unknown Achievement 218" description="Unknown Description. Hint: the icon is named Defeat_10k!" iconName="Defeat_10k" points="1" sortOrder="121" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -2567,14 +2566,14 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="317" title="Stroll in the Park" description="Enter SpongeBob's Amusement Park (2014 SpongeBob Event)" iconName="Exploration_SpongeBob_AdventurePark" points="5" sortOrder="57" repeatable="false">
+    <!--<Achievement id="317" title="Stroll in the Park" description="Enter SpongeBob's Amusement Park (2014 SpongeBob Event)" iconName="Exploration_SpongeBob_AdventurePark" points="5" sortOrder="57" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Enter SpongeBob's Amusement Park (2014 SpongeBob Event)" type="ExploreTrail" value="lv_evt_spongebobhub01" goal="1" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="318" title="Unknown Achievement 318" description="Unknown Description. Hint: the icon is named Exploration_Jack_JackintheBox!" iconName="Exploration_Jack_JackintheBox" points="1" sortOrder="58" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -2591,7 +2590,7 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="320" title="Shredder Seeker" description="Enter Shredder's Lair (2014 TMNT Event)" iconName="Exploration_TMNT_ShredderLair" points="5" sortOrder="60" repeatable="false">
+    <!--<Achievement id="320" title="Shredder Seeker" description="Enter Shredder's Lair (2014 TMNT Event)" iconName="Exploration_TMNT_ShredderLair" points="5" sortOrder="60" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
@@ -2614,7 +2613,7 @@
             <Conditions>
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
     </Category>
     <Category id="6" title="Questing" iconName="Category_Questing" sortOrder="4">
         <Achievement id="323" title="Unknown Achievement 323" description="Unknown Description. Hint: the icon is named Questing_CompleteQuest_10!" iconName="Questing_CompleteQuest_10" points="1" sortOrder="1" repeatable="false">
@@ -2689,7 +2688,7 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="332" title="Radical Raider" description="Complete the Nest Raider Quest 1 Time (2014 Easter Event)" iconName="Questing_RaidNests_1" points="5" sortOrder="10" repeatable="false">
+    <!--<Achievement id="332" title="Radical Raider" description="Complete the Nest Raider Quest 1 Time (2014 Easter Event)" iconName="Questing_RaidNests_1" points="5" sortOrder="10" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
@@ -2728,7 +2727,7 @@
             <Conditions>
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="337" title="Unknown Achievement 337" description="Unknown Description. Hint: the icon is named Questing_Crossroads_AKnightIsBorn!" iconName="Questing_Crossroads_AKnightIsBorn" points="1" sortOrder="15" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -3441,14 +3440,14 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="426" title="Unknown Achievement 426" description="Unknown Description. Hint: the icon is named Questing_SpongeBob!" iconName="Questing_SpongeBob" points="1" sortOrder="104" repeatable="false">
+    <!--<Achievement id="426" title="Unknown Achievement 426" description="Unknown Description. Hint: the icon is named Questing_SpongeBob!" iconName="Questing_SpongeBob" points="1" sortOrder="104" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
     </Category>
    <!--<Category id="7" title="Games" iconName="Category_Games" sortOrder="3">
         <Achievement id="427" title="Unknown Achievement 427" description="Unknown Description. Hint: the icon is named Games_1st_Win!" iconName="Games_1st_Win" points="1" sortOrder="1" repeatable="false">
@@ -3973,14 +3972,14 @@
         </Achievement>
     </Category>-->
     <Category id="8" title="Social" iconName="Category_Social" sortOrder="2">
-        <Achievement id="491" title="t-Hen What Happened?" description="Transform 50 Players into Chickens" iconName="Friends_ChickenZapOthers" points="10" sortOrder="1" repeatable="false">
+    <!--<Achievement id="491" title="t-Hen What Happened?" description="Transform 50 Players into Chickens" iconName="Friends_ChickenZapOthers" points="10" sortOrder="1" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Unknown Condition" goal="50" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="492" title="Emote-tional" description="Use Your First Emote" iconName="Social_Emotes_HelloWorld" points="3" sortOrder="2" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -4395,7 +4394,7 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="543" title="Booger Eater" description="Eat 10 Sour Bathog Boogers (2013 Halloween Event Item!)" iconName="Silly_BoogerEater" points="5" sortOrder="17" repeatable="false">
+    <!--<Achievement id="543" title="Booger Eater" description="Eat 10 Sour Bathog Boogers (2013 Halloween Event Item!)" iconName="Silly_BoogerEater" points="5" sortOrder="17" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
@@ -4410,7 +4409,7 @@
             <Conditions>
                 <Condition id="1" title="Use 3 Different Chicken Emotes" type="Unknown" value="" goal="3" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
         <Achievement id="545" title="Unknown Achievement 545" description="Unknown Description. Hint: the icon is named Fun_Equip_AxeMeaQuestion!" iconName="Fun_Equip_AxeMeaQuestion" points="1" sortOrder="19" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -4491,7 +4490,7 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="555" title="Unknown Achievement 555" description="Unknown Description. Hint: the icon is named Fun_Participate_SpongeBob_Tier1!" iconName="Fun_Participate_SpongeBob_Tier1" points="1" sortOrder="29" repeatable="false">
+    <!--<Achievement id="555" title="Unknown Achievement 555" description="Unknown Description. Hint: the icon is named Fun_Participate_SpongeBob_Tier1!" iconName="Fun_Participate_SpongeBob_Tier1" points="1" sortOrder="29" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
@@ -4506,7 +4505,7 @@
             <Conditions>
                 <Condition id="1" title="Participate in 25 SpongeBob Parties" goal="25" visible="true" />
             </Conditions>
-        </Achievement>
+        </Achievement>-->
     </Category>
     <Category id="10" title="Monthly" iconName="Category_Monthly" sortOrder="0">
         <Achievement id="557" title="Unknown Achievement 557" description="Unknown Description. Hint: the icon is named Monthly_BananaoftheMonthClub!" iconName="Monthly_BananaoftheMonthClub" points="1" sortOrder="1" repeatable="true">
