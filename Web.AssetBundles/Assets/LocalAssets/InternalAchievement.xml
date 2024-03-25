@@ -124,12 +124,12 @@
         </Achievement>
     </Category>
     <Category id="3" title="Collecting" iconName="Category_Collecting" sortOrder="7">
-        <Achievement id="17" title="Unknown Achievement 17" description="Unknown Description. Hint: the icon is named Collecting_Bananas_100!" iconName="Collecting_Bananas_100" points="1" sortOrder="1" repeatable="false">
+        <Achievement id="17" title="Banana Collector" description="Collect 100 Bananas" iconName="Collecting_Bananas_100" points="1" sortOrder="1" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="100" visible="true" />
+                <Condition id="1" title="Collect 100 Bananas" type="CollectBanana" goal="100" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="18" title="" description="Collect 1,000 Bananas" iconName="Collecting_Bananas_1000" points="1" sortOrder="2" repeatable="false">
@@ -137,7 +137,7 @@
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 1000 Bananas" type="CollectBanana" goal="5000" visible="true" />
+                <Condition id="1" title="Collect 1000 Bananas" type="CollectBanana" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="19" title="Unknown Achievement 19" description="Collect 5,000 Bananas" iconName="Collecting_Bananas_5000" points="1" sortOrder="3" repeatable="false">
