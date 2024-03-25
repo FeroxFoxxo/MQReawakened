@@ -462,28 +462,28 @@ were made comments, awaiting a differentiation between versions in the file if p
                 <Condition id="1" title="Collect 50 Idols" type="CollectIdol" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="55" title="Unknown Achievement 55" description="Unknown Description. Hint: the icon is named Collecting_Idol_100!" iconName="Collecting_Idol_100" points="1" sortOrder="39" repeatable="false">
+        <Achievement id="55" title="Idol-ana Jones" description="Collect 100 Idols" iconName="Collecting_Idol_100" points="1" sortOrder="39" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 100 Idols" type="CollectIdol" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="56" title="Unknown Achievement 56" description="Unknown Description. Hint: the icon is named Collecting_Idol_200!" iconName="Collecting_Idol_200" points="1" sortOrder="40" repeatable="false">
+        <Achievement id="56" title="Unknown Achievement 56" description="Collect 200 Idols" iconName="Collecting_Idol_200" points="1" sortOrder="40" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 200 Idols" type="CollectIdol" value="" goal="200" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="57" title="Unknown Achievement 57" description="Unknown Description. Hint: the icon is named Collecting_Idol_300!" iconName="Collecting_Idol_300" points="1" sortOrder="41" repeatable="false">
+        <Achievement id="57" title="Unknown Achievement 57" description="Collect 300 Idols" iconName="Collecting_Idol_300" points="1" sortOrder="41" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 300 Idols" type="CollectIdol" value="" goal="300" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="58" title="Shard Cavern Collector" description="Collect all Shard Cavern Idols" iconName="Collecting_IdolCrossroads_ShardCavern" points="25" sortOrder="42" repeatable="false">
