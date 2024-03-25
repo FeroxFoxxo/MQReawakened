@@ -3993,12 +3993,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="495" title="Unknown Achievement 495" description="Unknown Description. Hint: the icon is named Social_Emotes_FunkyMonkey!" iconName="Social_Emotes_FunkyMonkey" points="1" sortOrder="5" repeatable="false">
+        <Achievement id="495" title="Funky Monkey" description="Use Dance Emotes 10 Times" iconName="Social_Emotes_FunkyMonkey" points="5" sortOrder="5" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Use Dance Emotes 10 Times" type="Unknown" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="496" title="Unknown Achievement 496" description="Unknown Description. Hint: the icon is named Social_Emotes_SpunkyMonkey!" iconName="Social_Emotes_SpunkyMonkey" points="1" sortOrder="6" repeatable="false">
