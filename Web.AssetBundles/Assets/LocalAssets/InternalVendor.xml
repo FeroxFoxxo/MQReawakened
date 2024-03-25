@@ -600,7 +600,7 @@
             <Item prefabName="Add_COM_Baseball01_S06" />
             <Item prefabName="Add_BON_WitchDoctor01_FH01" />
         </Vendor>
-        <Vendor objectId="578" name="Rhea" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1316" greetingConversationId="3071" leavingConversationId="3326">
+        <Vendor objectId="578" name="Zeeta" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1316" greetingConversationId="3071" leavingConversationId="3326">
             <Item prefabName="Add_COM_Sheep01_TS02" />
             <Item prefabName="Add_COM_Army01_LS03" />
             <Item prefabName="Add_BON_Cruella01_S03" />
@@ -624,7 +624,7 @@
             <Item prefabName="Add_BON_TailRing01_T06" />
             <Item prefabName="Add_BON_Voodoo01_S03" />
         </Vendor>
-        <Vendor objectId="575" name="Zeeta" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="794" greetingConversationId="2238" leavingConversationId="2237">
+        <Vendor objectId="575" name="Rhea" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="794" greetingConversationId="2238" leavingConversationId="2237">
             <Item prefabName="Add_COM_Adventurer01_BP01" />
             <Item prefabName="Add_COM_SpaceSuit01_LS01" />
             <Item prefabName="Add_COM_AnimalWood01_S03" />
