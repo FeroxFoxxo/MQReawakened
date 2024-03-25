@@ -4391,12 +4391,12 @@
                 <Condition id="1" title="Eat 10 Sour Bathog Boogers" type="Consumable" value="COL_FOOD_SourBathogBoogers01"  goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="544" title="Unknown Achievement 544" description="Unknown Description. Hint: the icon is named Silly_ChickenEmote!" iconName="Silly_ChickenEmote" points="1" sortOrder="18" repeatable="false">
+        <Achievement id="544" title="Funky Chicken" description="Use 3 Different Chicken Emotes" iconName="Silly_ChickenEmote" points="3" sortOrder="18" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Use 3 Different Chicken Emotes" type="Unknown" value="" goal="3" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="545" title="Unknown Achievement 545" description="Unknown Description. Hint: the icon is named Fun_Equip_AxeMeaQuestion!" iconName="Fun_Equip_AxeMeaQuestion" points="1" sortOrder="19" repeatable="false">
