@@ -390,12 +390,12 @@ were made comments, awaiting a differentiation between versions in the file if p
                 <Condition id="4" title="Equip Splinter Beard" type="EquipItem" value="6203" goal="1" visible="true" />
             </Conditions>
         </Achievement>-->
-        <Achievement id="46" title="Unknown Achievement 46" description="Unknown Description. Hint: the icon is named Collecting_Pets_1!" iconName="Collecting_Pets_1" points="1" sortOrder="30" repeatable="false">
+        <Achievement id="46" title="First Pet" description="Obtain a Pet" iconName="Collecting_Pets_1" points="1" sortOrder="30" repeatable="false"><!--costum description-->
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Obtain a Pet" type="Unknown" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="47" title="Unknown Achievement 47" description="Unknown Description. Hint: the icon is named Collecting_Pets_5!" iconName="Collecting_Pets_5" points="1" sortOrder="31" repeatable="false">
