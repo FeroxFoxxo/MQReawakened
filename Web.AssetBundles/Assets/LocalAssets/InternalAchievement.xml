@@ -269,20 +269,24 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="34" title="Unknown Achievement 34" description="Unknown Description. Hint: the icon is named Collecting_BlueRanger_SuperMegaforce_Outfit!" iconName="Collecting_BlueRanger_SuperMegaforce_Outfit" points="1" sortOrder="18" repeatable="false">
+        <Achievement id="34" title="Super Megaforce Blue Power Ranger!" description="Equip the Super Megaforce Blue Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_BlueRanger_SuperMegaforce_Outfit" points="15" sortOrder="18" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Blue Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger02_LS03" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Blue Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger02_TS03" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Blue Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger02_FH03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="35" title="Unknown Achievement 35" description="Unknown Description. Hint: the icon is named Collecting_YellowRanger_SuperMegaforce_Outfit!" iconName="Collecting_YellowRanger_SuperMegaforce_Outfit" points="1" sortOrder="19" repeatable="false">
+        <Achievement id="35" title="Super Megaforce Yellow Power Ranger!" description="Equip the Super Megaforce Yellow Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_YellowRanger_SuperMegaforce_Outfit" points="15" sortOrder="19" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Yellow Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger02_FH04" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Yellow Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger02_TS04" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Yellow Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger02_LS04" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="36" title="Super Megaforce Red Power Ranger!" description="Equip the Super Megaforce Red Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_RedRanger_SuperMegaforce_Outfit" points="15" sortOrder="20" repeatable="false">
@@ -290,15 +294,19 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Red Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger02_LS01" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Red Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger02_TS01" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Red Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger02_FH01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="37" title="Unknown Achievement 37" description="Unknown Description. Hint: the icon is named Collecting_GreenRanger_SuperMegaforce_Outfit!" iconName="Collecting_GreenRanger_SuperMegaforce_Outfit" points="1" sortOrder="21" repeatable="false">
+        <Achievement id="37" title="Super Megaforce Green Power Ranger!" description="Equip the Super Megaforce Green Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_GreenRanger_SuperMegaforce_Outfit" points="15" sortOrder="21" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Green Ranger Pants" type="EquipItem" value="" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Green Ranger Armour" type="EquipItem" value="" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Green Ranger Mask" type="EquipItem" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="38" title="Super Megaforce Pink Power Ranger!" description="Equip the Super Megaforce Pink Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_PinkRanger_SuperMegaforce_Outfit" points="15" sortOrder="22" repeatable="false">
@@ -306,7 +314,9 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Pink Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger02_LS05" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Pink Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger02_TS05" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Pink Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger02_FH05" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="39" title="Super Megaforce Silver Power Ranger!" description="Equip the Super Megaforce Silver Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_SilverRanger_SuperMegaforce_Outfit" points="50" sortOrder="23" repeatable="false">
@@ -314,7 +324,9 @@
                 <Reward type="Xp" value="200" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Silver Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger02_LS02" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Silver Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger02_TS02" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Silver Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger02_FH02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="40" title="Patty Whacker" description="Craft the Spatula (2014 SpongeBob Event Item)" iconName="Collecting_SpongeBob_Spatula" points="10" sortOrder="24" repeatable="false">
