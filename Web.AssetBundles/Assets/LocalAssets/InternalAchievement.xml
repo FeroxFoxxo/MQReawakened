@@ -644,12 +644,12 @@
                 <Condition id="1" title="Collect 10 Idols in Stone Gardens" type="CollectIdol" value="lv_shd_dungeon02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="78" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_LostFortress" points="25" sortOrder="62" repeatable="false">
+        <Achievement id="78" title="Lost Fortress Collector" description="Collect all Lost Fortress Idols" iconName="Collecting_IdolChimFoo_LostFortress" points="25" sortOrder="62" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Lost Fortress" type="CollectIdol" value="lv_shd_trail06" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="79" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolSeaDragons_ForgottenLighthouse" points="25" sortOrder="63" repeatable="false">
