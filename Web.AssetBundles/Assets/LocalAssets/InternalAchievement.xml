@@ -717,12 +717,12 @@
                 <Condition id="1" title="Collect 10 Idols in Sunken City" type="CollectIdol" value="lv_out_trail06" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="87" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolOotu_MushroomHollow" points="25" sortOrder="71" repeatable="false">
+        <Achievement id="87" title="Mushroom Hollow Collector" description="Collect all Mushroom Hollow Idols" iconName="Collecting_IdolOotu_MushroomHollow" points="25" sortOrder="71" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Mushroom Hollow" type="CollectIdol" value="lv_bon_trail01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="88" title="The Deep Swamps Collector" description="Collect all Deep Swamp Idols" iconName="Collecting_IdolOotu_DeepSwamps" points="25" sortOrder="72" repeatable="false">
