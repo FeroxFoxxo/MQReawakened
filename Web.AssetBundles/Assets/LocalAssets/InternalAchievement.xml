@@ -2579,12 +2579,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="320" title="Unknown Achievement 320" description="Unknown Description. Hint: the icon is named Exploration_TMNT_ShredderLair!" iconName="Exploration_TMNT_ShredderLair" points="1" sortOrder="60" repeatable="false">
+        <Achievement id="320" title="Shredder Seeker" description="Enter Shredder's Lair (2014 TMNT Event)" iconName="Exploration_TMNT_ShredderLair" points="5" sortOrder="60" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Enter Shredder's Lair (2014 TMNT Event)" type="ExploreTrail" value="lv_evt_tmnt02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="321" title="Frostbeard’s Helper" description="Talk to Frostbeard in Winter Wonder Maze (2013 Holiday Event)" iconName="Exploration_WinterMaze" points="5" sortOrder="61" repeatable="false">
