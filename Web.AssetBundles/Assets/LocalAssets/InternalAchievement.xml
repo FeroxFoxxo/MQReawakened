@@ -4431,12 +4431,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="549" title="Unknown Achievement 549" description="Unknown Description. Hint: the icon is named Fun_Equip_PartyWarrior!" iconName="Fun_Equip_PartyWarrior" points="1" sortOrder="23" repeatable="false">
+        <Achievement id="549" title="Party Warrior" description="Equip a Weapon Usable in Cities & Highways" iconName="Fun_Equip_PartyWarrior" points="3" sortOrder="23" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Equip Confetti Cannon" type="EquipItem" value="WPN_PRJ_ConfettiGun01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="550" title="Unknown Achievement 550" description="Unknown Description. Hint: the icon is named Fun_Equip_RagingTornado!" iconName="Fun_Equip_RagingTornado" points="1" sortOrder="24" repeatable="false">
