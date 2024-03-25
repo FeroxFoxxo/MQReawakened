@@ -4458,12 +4458,12 @@ were made comments, awaiting a differentiation between versions in the file if p
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="551" title="Unknown Achievement 551" description="Unknown Description. Hint: the icon is named Fun_Participate_PartyAnimal!" iconName="Fun_Participate_PartyAnimal" points="1" sortOrder="25" repeatable="false">
+        <Achievement id="551" title="Party Animal" description="Participate in a Banana Bash" iconName="Fun_Participate_PartyAnimal" points="5" sortOrder="25" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Participate in a Banana Bash" type="Unknown" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="552" title="Unknown Achievement 552" description="Unknown Description. Hint: the icon is named Fun_Equip_MaceoftheGuardian!" iconName="Fun_Equip_MaceoftheGuardian" points="1" sortOrder="26" repeatable="false">
