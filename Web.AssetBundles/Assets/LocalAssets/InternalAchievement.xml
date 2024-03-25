@@ -508,28 +508,28 @@
                 <Condition id="1" title="Collect 10 Idols in Guardian's Keep" type="CollectIdol" value="lv_r01_dungeon01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="61" title="Unknown Achievement 61" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_ForgottenTemple!" iconName="Collecting_IdolCrossroads_ForgottenTemple" points="1" sortOrder="45" repeatable="false">
+        <Achievement id="61" title="The Forgotten Temple Collector" description="Collect all The Forgotten Temple Idols" iconName="Collecting_IdolCrossroads_ForgottenTemple" points="25" sortOrder="45" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="lv_r01_temple" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="62" title="Unknown Achievement 62" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_FloatingIsles!" iconName="Collecting_IdolCrossroads_FloatingIsles" points="1" sortOrder="46" repeatable="false">
+        <Achievement id="62" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_FloatingIsles" points="25" sortOrder="46" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="63" title="Unknown Achievement 63" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_BlimpRidge!" iconName="Collecting_IdolCrossroads_BlimpRidge" points="1" sortOrder="47" repeatable="false">
+        <Achievement id="63" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_BlimpRidge" points="25" sortOrder="47" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="64" title="Rachnok’s Lair Collector" description="Collect all Rachnok’s Lair Idols" iconName="Collecting_IdolCrossroads_RachnoksLair" points="25" sortOrder="48" repeatable="false">
@@ -540,60 +540,60 @@
                 <Condition id="1" title="Collect 10 Idols in Rachnok’s Lair" type="CollectIdol" value="lv_crs_dungeon00" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="65" title="Unknown Achievement 65" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_SoggyCreek!" iconName="Collecting_IdolCrossroads_SoggyCreek" points="1" sortOrder="49" repeatable="false">
+        <Achievement id="65" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_SoggyCreek" points="25" sortOrder="49" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="66" title="Unknown Achievement 66" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_VolcanoLair!" iconName="Collecting_IdolCrossroads_VolcanoLair" points="1" sortOrder="50" repeatable="false">
+        <Achievement id="66" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_VolcanoLair" points="25" sortOrder="50" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="67" title="Unknown Achievement 67" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_ForestRuin!" iconName="Collecting_IdolCrossroads_ForestRuin" points="1" sortOrder="51" repeatable="false">
+        <Achievement id="67" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_ForestRuin" points="25" sortOrder="51" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="68" title="Unknown Achievement 68" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_CrumblingGate!" iconName="Collecting_IdolCrossroads_CrumblingGate" points="1" sortOrder="52" repeatable="false">
+        <Achievement id="68" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_CrumblingGate" points="25" sortOrder="52" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="69" title="Unknown Achievement 69" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_MagmaCitadel!" iconName="Collecting_IdolCrossroads_MagmaCitadel" points="1" sortOrder="53" repeatable="false">
+        <Achievement id="69" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_MagmaCitadel" points="25" sortOrder="53" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="70" title="Unknown Achievement 70" description="Unknown Description. Hint: the icon is named Collecting_IdolCrossroads_CinderTop!" iconName="Collecting_IdolCrossroads_CinderTop" points="1" sortOrder="54" repeatable="false">
+        <Achievement id="70" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_CinderTop" points="25" sortOrder="54" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="71" title="Unknown Achievement 71" description="Unknown Description. Hint: the icon is named Collecting_IdolChimFoo_Rooftops!" iconName="Collecting_IdolChimFoo_Rooftops" points="1" sortOrder="55" repeatable="false">
+        <Achievement id="71" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_Rooftops" points="25" sortOrder="55" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="72" title="Mountain Shrine Collector" description="Collect all Mountain Shrine Idols" iconName="Collecting_IdolChimFoo_MountainShrine" points="25" sortOrder="56" repeatable="false">
@@ -604,20 +604,20 @@
                 <Condition id="1" title="Collect 10 Idols in Mountain Shrine" type="CollectIdol" value="lv_shd_trail02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="73" title="Unknown Achievement 73" description="Unknown Description. Hint: the icon is named Collecting_IdolChimFoo_MagnoliaLake!" iconName="Collecting_IdolChimFoo_MagnoliaLake" points="1" sortOrder="57" repeatable="false">
+        <Achievement id="73" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_MagnoliaLake" points="25" sortOrder="57" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="74" title="Unknown Achievement 74" description="Unknown Description. Hint: the icon is named Collecting_IdolChimFoo_ForbiddenKeep!" iconName="Collecting_IdolChimFoo_ForbiddenKeep" points="1" sortOrder="58" repeatable="false">
+        <Achievement id="74" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_ForbiddenKeep" points="25" sortOrder="58" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="75" title="Lantern Ridge Collector" description="Collect all Lantern Ridge Idols" iconName="Collecting_IdolChimFoo_LanternRidge" points="25" sortOrder="59" repeatable="false">
@@ -628,36 +628,36 @@
                 <Condition id="1" title="Collect 10 Idols in Lantern Ridge" type="CollectIdol" value="lv_shd_trail04" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="76" title="Unknown Achievement 76" description="Unknown Description. Hint: the icon is named Collecting_IdolChimFoo_BonsaiPeak!" iconName="Collecting_IdolChimFoo_BonsaiPeak" points="1" sortOrder="60" repeatable="false">
+        <Achievement id="76" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_BonsaiPeak" points="25" sortOrder="60" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="77" title="Unknown Achievement 77" description="Unknown Description. Hint: the icon is named Collecting_IdolChimFoo_StoneGarden!" iconName="Collecting_IdolChimFoo_StoneGarden" points="1" sortOrder="61" repeatable="false">
+        <Achievement id="77" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_StoneGarden" points="25" sortOrder="61" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="78" title="Unknown Achievement 78" description="Unknown Description. Hint: the icon is named Collecting_IdolChimFoo_LostFortress!" iconName="Collecting_IdolChimFoo_LostFortress" points="1" sortOrder="62" repeatable="false">
+        <Achievement id="78" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_LostFortress" points="25" sortOrder="62" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="79" title="Unknown Achievement 79" description="Unknown Description. Hint: the icon is named Collecting_IdolSeaDragons_ForgottenLighthouse!" iconName="Collecting_IdolSeaDragons_ForgottenLighthouse" points="1" sortOrder="63" repeatable="false">
+        <Achievement id="79" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolSeaDragons_ForgottenLighthouse" points="25" sortOrder="63" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="80" title="Overlook Cliff Collector" description="Collect all Overlook Cliff Idols" iconName="Collecting_IdolSeaDragons_OverLookCliff" points="25" sortOrder="64" repeatable="false">
@@ -676,20 +676,20 @@
                 <Condition id="1" title="Collect 10 Idols in The Goon Cave" type="CollectIdol" value="lv_out_dungeon01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="82" title="Unknown Achievement 82" description="Unknown Description. Hint: the icon is named Collecting_IdolSeaDragons_SkullCave!" iconName="Collecting_IdolSeaDragons_SkullCave" points="1" sortOrder="66" repeatable="false">
+        <Achievement id="82" title="Collector" description="Unknown Description. Hint: the icon is named Collecting_IdolSeaDragons_SkullCave!" iconName="Collecting_IdolSeaDragons_SkullCave" points="25" sortOrder="66" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="83" title="Unknown Achievement 83" description="Unknown Description. Hint: the icon is named Collecting_IdolSeaDragons_OutlawBeach!" iconName="Collecting_IdolSeaDragons_OutlawBeach" points="1" sortOrder="67" repeatable="false">
+        <Achievement id="83" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolSeaDragons_OutlawBeach" points="25" sortOrder="67" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="84" title="Rosy’s Reef Collector" description="Collect all Rosy’s Reef Idols" iconName="Collecting_IdolSeaDragons_RosysReef" points="25" sortOrder="68" repeatable="false">
@@ -701,12 +701,12 @@
 " goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="85" title="Unknown Achievement 85" description="Unknown Description. Hint: the icon is named Collecting_IdolSeaDragons_AnchorFalls!" iconName="Collecting_IdolSeaDragons_AnchorFalls" points="1" sortOrder="69" repeatable="false">
+        <Achievement id="85" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolSeaDragons_AnchorFalls" points="25" sortOrder="69" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="86" title="Sunken City Collector" description="Collect all Sunken City Idols" iconName="Collecting_IdolSeaDragons_SunkenCity" points="25" sortOrder="70" repeatable="false">
@@ -717,12 +717,12 @@
                 <Condition id="1" title="Collect 10 Idols in Sunken City" type="CollectIdol" value="lv_out_trail06" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="87" title="Unknown Achievement 87" description="Unknown Description. Hint: the icon is named Collecting_IdolOotu_MushroomHollow!" iconName="Collecting_IdolOotu_MushroomHollow" points="1" sortOrder="71" repeatable="false">
+        <Achievement id="87" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolOotu_MushroomHollow" points="25" sortOrder="71" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="88" title="The Deep Swamps Collector" description="Collect all Deep Swamp Idols" iconName="Collecting_IdolOotu_DeepSwamps" points="25" sortOrder="72" repeatable="false">
@@ -741,12 +741,12 @@
                 <Condition id="1" title="Collect 10 Idols in The Spider Cave" type="CollectIdol" value="lv_bon_trail03" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="90" title="Unknown Achievement 90" description="Unknown Description. Hint: the icon is named Collecting_IdolOotu_GiantTree!" iconName="Collecting_IdolOotu_GiantTree" points="1" sortOrder="74" repeatable="false">
+        <Achievement id="90" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolOotu_GiantTree" points="25" sortOrder="74" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="91" title="Driftwood Village Collector" description="Collect all Driftwood Village Idols" iconName="Collecting_IdolOotu_DriftwoodVillage" points="25" sortOrder="75" repeatable="false">
@@ -758,20 +758,20 @@
 " goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="92" title="Unknown Achievement 92" description="Unknown Description. Hint: the icon is named Collecting_IdolOotu_MarshSanctuary!" iconName="Collecting_IdolOotu_MarshSanctuary" points="1" sortOrder="76" repeatable="false">
+        <Achievement id="92" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolOotu_MarshSanctuary" points="25" sortOrder="76" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="93" title="Unknown Achievement 93" description="Unknown Description. Hint: the icon is named Collecting_IdolOotu_UndergroundRiver!" iconName="Collecting_IdolOotu_UndergroundRiver" points="1" sortOrder="77" repeatable="false">
+        <Achievement id="93" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolOotu_UndergroundRiver" points="25" sortOrder="77" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="94" title="Moss Temple Collector" description="Collect all Moss Temple Idols" iconName="Collecting_IdolOotu_MossTemple" points="25" sortOrder="78" repeatable="false">
@@ -782,12 +782,12 @@
                 <Condition id="1" title="Collect 10 Idols in Moss Temple" type="CollectIdol" value="lv_bon_trail06" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="95" title="Unknown Achievement 95" description="Unknown Description. Hint: the icon is named Collecting_IdolIceRaiders_SnowSummit!" iconName="Collecting_IdolIceRaiders_SnowSummit" points="1" sortOrder="79" repeatable="false">
+        <Achievement id="95" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolIceRaiders_SnowSummit" points="25" sortOrder="79" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="96" title="Icewind Caverns Collector" description="Collect all Icewind Cavern Idols" iconName="Collecting_IdolIceRaiders_IcewindCaverns" points="25" sortOrder="80" repeatable="false">
@@ -799,12 +799,12 @@
 " goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="97" title="Unknown Achievement 97" description="Unknown Description. Hint: the icon is named Collecting_IdolIceRaiders_TempestCaverns!" iconName="Collecting_IdolIceRaiders_TempestCaverns" points="1" sortOrder="81" repeatable="false">
+        <Achievement id="97" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolIceRaiders_TempestCaverns" points="25" sortOrder="81" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
     </Category>
