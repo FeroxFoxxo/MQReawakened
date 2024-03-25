@@ -652,12 +652,12 @@
                 <Condition id="1" title="Collect 10 Idols in Lost Fortress" type="CollectIdol" value="lv_shd_trail06" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="79" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolSeaDragons_ForgottenLighthouse" points="25" sortOrder="63" repeatable="false">
+        <Achievement id="79" title="Forgotten Lighthouse Collector" description="Collect all Forgotten Lighthouse Idols" iconName="Collecting_IdolSeaDragons_ForgottenLighthouse" points="25" sortOrder="63" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Forgotten Lighthouse" type="CollectIdol" value="lv_out_trail01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="80" title="Overlook Cliff Collector" description="Collect all Overlook Cliff Idols" iconName="Collecting_IdolSeaDragons_OverLookCliff" points="25" sortOrder="64" repeatable="false">
