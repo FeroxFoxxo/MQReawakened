@@ -548,12 +548,12 @@
                 <Condition id="1" title="Collect 10 Idols in Soggy Creek" type="CollectIdol" value="lv_crs_trail03" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="66" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_VolcanoLair" points="25" sortOrder="50" repeatable="false">
+        <Achievement id="66" title="The Volcano Lair Collector" description="Collect all The Volcano Lair Idols" iconName="Collecting_IdolCrossroads_VolcanoLair" points="25" sortOrder="50" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in The Volcano Lair" type="CollectIdol" value="lv_crs_dungeon01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="67" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_ForestRuin" points="25" sortOrder="51" repeatable="false">
