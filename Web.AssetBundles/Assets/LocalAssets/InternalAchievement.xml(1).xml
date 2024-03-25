@@ -4052,12 +4052,12 @@ were made comments, awaiting a differentiation between versions in the file if p
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="501" title="Unknown Achievement 501" description="Unknown Description. Hint: the icon is named Social_Friends_10!" iconName="Social_Friends_10" points="1" sortOrder="11" repeatable="false">
+        <Achievement id="501" title="Tribe Vibe" description="Add 10 Friends" iconName="Social_Friends_10" points="10" sortOrder="11" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Add 10 Friends" type="Unknown" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="502" title="Unknown Achievement 502" description="Unknown Description. Hint: the icon is named Social_Friends_25!" iconName="Social_Friends_25" points="1" sortOrder="12" repeatable="false">
