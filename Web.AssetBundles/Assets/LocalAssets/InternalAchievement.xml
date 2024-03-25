@@ -164,7 +164,7 @@
                 <Condition id="1" title="Collect 50,000 Bananas" type="CollectBanana" goal="50000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="22" title="Unknown Achievement 22" description="Collect 100,000 Bananas" iconName="Collecting_Bananas_100k" points="1" sortOrder="6" repeatable="false">
+        <Achievement id="22" title="Banana Bonanza" description="Collect 100,000 Bananas" iconName="Collecting_Bananas_100k" points="1" sortOrder="6" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
