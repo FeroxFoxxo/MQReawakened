@@ -2677,12 +2677,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="332" title="Unknown Achievement 332" description="Unknown Description. Hint: the icon is named Questing_RaidNests_1!" iconName="Questing_RaidNests_1" points="1" sortOrder="10" repeatable="false">
+        <Achievement id="332" title="Radical Raider" description="Complete the Nest Raider Quest 1 Time (2014 Easter Event)" iconName="Questing_RaidNests_1" points="5" sortOrder="10" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete the Nest Raider Quest 1 Time (2014 Easter Event)" type="CompleteQuest" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="333" title="Unknown Achievement 333" description="Unknown Description. Hint: the icon is named Questing_RaidNests_5!" iconName="Questing_RaidNests_5" points="1" sortOrder="11" repeatable="false">
