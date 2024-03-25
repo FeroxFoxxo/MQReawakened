@@ -766,12 +766,12 @@
                 <Condition id="1" title="Collect 10 Idols in Marsh Sanctuary" type="CollectIdol" value="lv_bon_trail05" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="93" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolOotu_UndergroundRiver" points="25" sortOrder="77" repeatable="false">
+        <Achievement id="93" title="The Underground River Collector" description="Collect all The Underground River Idols" iconName="Collecting_IdolOotu_UndergroundRiver" points="25" sortOrder="77" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in The Underground River" type="CollectIdol" value="lv_bon_dungeon02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="94" title="Moss Temple Collector" description="Collect all Moss Temple Idols" iconName="Collecting_IdolOotu_MossTemple" points="25" sortOrder="78" repeatable="false">
