@@ -628,12 +628,12 @@
                 <Condition id="1" title="Collect 10 Idols in Lantern Ridge" type="CollectIdol" value="lv_shd_trail04" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="76" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_BonsaiPeak" points="25" sortOrder="60" repeatable="false">
+        <Achievement id="76" title="Bonsai Peaks Collector" description="Collect all Bonsai Peaks Idols" iconName="Collecting_IdolChimFoo_BonsaiPeak" points="25" sortOrder="60" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Bonsai Peaks" type="CollectIdol" value="lv_shd_trail05" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="77" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolChimFoo_StoneGarden" points="25" sortOrder="61" repeatable="false">
