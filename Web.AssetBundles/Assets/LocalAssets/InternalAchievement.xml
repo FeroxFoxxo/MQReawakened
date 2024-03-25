@@ -132,7 +132,7 @@
                 <Condition id="1" title="Collect 100 Bananas" type="CollectBanana" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="18" title="" description="Collect 1,000 Bananas" iconName="Collecting_Bananas_1000" points="1" sortOrder="2" repeatable="false">
+        <Achievement id="18" title="Goin' Bananas" description="Collect 1,000 Bananas" iconName="Collecting_Bananas_1000" points="1" sortOrder="2" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
