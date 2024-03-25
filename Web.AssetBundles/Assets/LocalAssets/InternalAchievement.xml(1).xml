@@ -398,20 +398,20 @@ were made comments, awaiting a differentiation between versions in the file if p
                 <Condition id="1" title="Obtain a Pet" type="Unknown" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="47" title="Unknown Achievement 47" description="Unknown Description. Hint: the icon is named Collecting_Pets_5!" iconName="Collecting_Pets_5" points="1" sortOrder="31" repeatable="false">
+        <Achievement id="47" title="Unknown Achievement 47" description="Obtain 5 Pets" iconName="Collecting_Pets_5" points="1" sortOrder="31" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Obtain 5 Pets" type="Unknown" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="48" title="Unknown Achievement 48" description="Unknown Description. Hint: the icon is named Collecting_Pets_10!" iconName="Collecting_Pets_10" points="1" sortOrder="32" repeatable="false">
+        <Achievement id="48" title="The Zookeeper" description="Obtain 10 Pets" iconName="Collecting_Pets_10" points="1" sortOrder="32" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Obtain 10 Pets" type="Unknown" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
     <!--<Achievement id="49" title="Unknown Achievement 49" description="Unknown Description. Hint: the icon is named Pet_Gravewing!" iconName="Pet_Gravewing" points="1" sortOrder="33" repeatable="false">
