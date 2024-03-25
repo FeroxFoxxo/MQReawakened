@@ -132,28 +132,28 @@
                 <Condition id="1" title="Unknown Condition" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="18" title="Unknown Achievement 18" description="Unknown Description. Hint: the icon is named Collecting_Bananas_1000!" iconName="Collecting_Bananas_1000" points="1" sortOrder="2" repeatable="false">
+        <Achievement id="18" title="" description="Collect 1,000 Bananas" iconName="Collecting_Bananas_1000" points="1" sortOrder="2" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="1000" visible="true" />
+                <Condition id="1" title="Collect 1000 Bananas" type="CollectBanana" goal="5000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="19" title="Unknown Achievement 19" description="Unknown Description. Hint: the icon is named Collecting_Bananas_5000!" iconName="Collecting_Bananas_5000" points="1" sortOrder="3" repeatable="false">
+        <Achievement id="19" title="Unknown Achievement 19" description="Collect 5,000 Bananas" iconName="Collecting_Bananas_5000" points="1" sortOrder="3" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="5000" visible="true" />
+                <Condition id="1" title="Collect 5000 Bananas" type="CollectBanana" goal="5000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="20" title="Unknown Achievement 20" description="Unknown Description. Hint: the icon is named Collecting_Bananas_10k!" iconName="Collecting_Bananas_10k" points="1" sortOrder="4" repeatable="false">
+        <Achievement id="20" title="Bonkers for Bananas" description="Collect 10,000 Bananas" iconName="Collecting_Bananas_10k" points="1" sortOrder="4" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="10000" visible="true" />
+                <Condition id="1" title="Collect 10,000 Bananas" type="CollectBanana" goal="10000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="21" title="Unknown Achievement 21" description="Unknown Description. Hint: the icon is named Collecting_Bananas_50k!" iconName="Collecting_Bananas_50k" points="1" sortOrder="5" repeatable="false">
