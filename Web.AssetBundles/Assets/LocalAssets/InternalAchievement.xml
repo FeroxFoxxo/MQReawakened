@@ -782,12 +782,12 @@
                 <Condition id="1" title="Collect 10 Idols in Moss Temple" type="CollectIdol" value="lv_bon_trail06" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="95" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolIceRaiders_SnowSummit" points="25" sortOrder="79" repeatable="false">
+        <Achievement id="95" title="Snowstorm Summit Collector" description="Collect all Snowstorm Summit Idols" iconName="Collecting_IdolIceRaiders_SnowSummit" points="25" sortOrder="79" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Snowstorm Summit" type="CollectIdol" value="lv_wld_trail01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="96" title="Icewind Caverns Collector" description="Collect all Icewind Cavern Idols" iconName="Collecting_IdolIceRaiders_IcewindCaverns" points="25" sortOrder="80" repeatable="false">
