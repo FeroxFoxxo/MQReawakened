@@ -2536,12 +2536,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="315" title="Unknown Achievement 315" description="Unknown Description. Hint: the icon is named Exploration_TeaserTrails_CannonCorral!" iconName="Exploration_TeaserTrails_CannonCorral" points="1" sortOrder="55" repeatable="false">
+        <Achievement id="315" title="Tribe Traveler" description="Discover Starter Tribe Trails - Click for List!" iconName="Exploration_TeaserTrails_CannonCorral" points="10" sortOrder="55" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="4" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="316" title="Unknown Achievement 316" description="Unknown Description. Hint: the icon is named Exploration_TeaserTrails_HiddenHollow!" iconName="Exploration_TeaserTrails_HiddenHollow" points="1" sortOrder="56" repeatable="false">
@@ -3958,7 +3958,7 @@
         </Achievement>
     </Category>
     <Category id="8" title="Social" iconName="Category_Social" sortOrder="2">
-        <Achievement id="491" title="t-Hen What Happened?" description="Transform 50 Players into Chickens" iconName="Friends_ChickenZapOthers" points="1" sortOrder="1" repeatable="false">
+        <Achievement id="491" title="t-Hen What Happened?" description="Transform 50 Players into Chickens" iconName="Friends_ChickenZapOthers" points="10" sortOrder="1" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
