@@ -423,6 +423,12 @@
         <Item name="COL_BUFF_GlyphProtection02">
             <EditAttribute key="id" value="1005968124"/>
         </Item>
+        <Item name="COL_ING_C_PureWater01">
+            <EditAttribute key="id" value="77298297"/>
+        </Item>
+        <Item name="COL_RECIP_BUFF_GlyphProtection02">
+            <EditAttribute key="id" value="665120673"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vLate2012">
         <Item name="WPN_PRJ_XmasSlingshot01">
