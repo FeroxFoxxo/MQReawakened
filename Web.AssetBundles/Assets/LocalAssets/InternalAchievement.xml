@@ -799,12 +799,12 @@
 " goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="97" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolIceRaiders_TempestCaverns" points="25" sortOrder="81" repeatable="false">
+        <Achievement id="97" title="Tempest Chasm Collector" description="Collect all Tempest Chasm Idols" iconName="Collecting_IdolIceRaiders_TempestCaverns" points="25" sortOrder="81" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Tempest Chasm" type="CollectIdol" value="lv_wld_dungeon01" goal="10" visible="true" />
             </Conditions>
         </Achievement>
     </Category>
