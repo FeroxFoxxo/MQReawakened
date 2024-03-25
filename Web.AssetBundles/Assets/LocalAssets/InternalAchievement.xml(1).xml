@@ -2616,12 +2616,12 @@ were made comments, awaiting a differentiation between versions in the file if p
         </Achievement>-->
     </Category>
     <Category id="6" title="Questing" iconName="Category_Questing" sortOrder="4">
-        <Achievement id="323" title="" description="Unknown Description. Hint: the icon is named Questing_CompleteQuest_10!" iconName="Questing_CompleteQuest_10" points="1" sortOrder="1" repeatable="false">
+        <Achievement id="323" title="Monkey on a Mission" description="Complete 10 Quests" iconName="Questing_CompleteQuest_10" points="20" sortOrder="1" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="WPN_SPC_DoomGrenade01" quantity="3" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete 10 Quests" type="CompleteQuest" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="324" title="Unknown Achievement 324" description="Unknown Description. Hint: the icon is named Questing_CompleteQuest_50!" iconName="Questing_CompleteQuest_50" points="1" sortOrder="2" repeatable="false">
