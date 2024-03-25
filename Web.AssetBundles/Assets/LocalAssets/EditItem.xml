@@ -239,6 +239,7 @@
             <EditAttribute key="item_level" value="7"/>
         </Item>
         <Item name="Add_COM_Viking01_LF02">
+            <EditAttribute key="id" value="1428853663"/>
             <EditAttribute key="ingamedescription" value="298143825"/>
             <EditAttribute key="tribe" value="Wild"/>
             <EditAttribute key="rarity" value="Common"/>
