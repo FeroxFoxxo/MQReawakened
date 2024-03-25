@@ -540,12 +540,12 @@
                 <Condition id="1" title="Collect 10 Idols in Rachnok’s Lair" type="CollectIdol" value="lv_crs_dungeon00" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="65" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_SoggyCreek" points="25" sortOrder="49" repeatable="false">
+        <Achievement id="65" title="Soggy Creek Collector" description="Collect all Soggy Creek Idols" iconName="Collecting_IdolCrossroads_SoggyCreek" points="25" sortOrder="49" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in " type="CollectIdol" value="" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Soggy Creek" type="CollectIdol" value="lv_crs_trail03" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="66" title="Collector" description="Collect all  Idols" iconName="Collecting_IdolCrossroads_VolcanoLair" points="25" sortOrder="50" repeatable="false">
