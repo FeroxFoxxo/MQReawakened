@@ -3969,12 +3969,12 @@
                 <Condition id="1" title="Unknown Condition" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="492" title="Unknown Achievement 492" description="Unknown Description. Hint: the icon is named Social_Emotes_HelloWorld!" iconName="Social_Emotes_HelloWorld" points="1" sortOrder="2" repeatable="false">
+        <Achievement id="492" title="Emote-tional" description="Use Your First Emote" iconName="Social_Emotes_HelloWorld" points="3" sortOrder="2" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Use Your First Emote" type="Unknown" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="493" title="Unknown Achievement 493" description="Unknown Description. Hint: the icon is named Social_Emotes_GetToDaChoppa!" iconName="Social_Emotes_GetToDaChoppa" points="1" sortOrder="3" repeatable="false">
