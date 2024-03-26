@@ -1056,7 +1056,7 @@
                 <Item itemName="COL_ING_C_PureWater01" count="1" />
             </Items>
         </LootInfo>
-    </Level>
+    </Level>  
     <Level name="Iron Mountain Highway" id="310">
         <!--Jack-in-the-Box-->
         <LootInfo objectId="657" doLootWheel="True">

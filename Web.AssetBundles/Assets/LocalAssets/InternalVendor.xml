@@ -677,7 +677,49 @@
             <Item prefabName="ABIL_PoisonBomb03" />
         </Vendor>
     </Level>
-    
+
+    <!-- Chim Foo Tribe -->
+    <Level name="Jade Mountain" id="48">
+        <Vendor objectId="639" name="Miya" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1318" greetingConversationId="3073" leavingConversationId="3399">
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+        </Vendor>
+    </Level>
     <!-- Sea Dragons Tribe -->
     <Level name="Razor Bay" id="54">
         <Vendor objectId="2611" name="Shivers" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="419" greetingConversationId="1242" leavingConversationId="1247">
