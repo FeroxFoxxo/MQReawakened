@@ -1072,7 +1072,7 @@
     </Level>
     <Level name="Fire Canyon Highway" id="309">
         <!--Jack-in-the-Box-->
-        <LootInfo objectId="546" doLootWheel="True">
+        <LootInfo objectId="859" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Ginger01" count="1" />
                 <Item itemName="COL_ING_G_Garlic01" count="1" />
