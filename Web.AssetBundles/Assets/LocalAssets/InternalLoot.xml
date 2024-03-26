@@ -240,7 +240,7 @@
                 <Item itemName="COL_ING_G_Oak02" count="1" />
             </Items>
         </LootInfo>
-        <!-- Arena Blue Chest-->
+        <!--Arena Blue Chest-->
         <LootInfo objectId="12825" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_HawaiGirl01_LS01" count="1" />
@@ -258,6 +258,12 @@
                 <Item itemName="Add_COM_RibbonTail01_T02" count="1" />
                 <Item itemName="Add_COM_Lara01_LS01" count="1" />
                 <Item itemName="Add_COM_AnimalWood01_T03" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Green Chest-->
+        <LootInfo objectId="12825" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
             </Items>
         </LootInfo>
     </Level>
