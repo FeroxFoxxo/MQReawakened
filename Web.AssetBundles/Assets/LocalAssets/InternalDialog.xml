@@ -351,10 +351,10 @@
 
     <!-- Sea Dragons Tribe -->
     <Level name="Plunder Alley" id="274">
-        <NPC objectId="451" name="Cog" descriptionId="0">
+        <NPC objectId="451" name="Fluke" descriptionId="0">
             <Dialog dialogId="460" conversationId="1388" minimumReputation="1" />
         </NPC>
-        <NPC objectId="449" name="Fluke" descriptionId="0">
+        <NPC objectId="449" name="Bluck" descriptionId="0">
             <Dialog dialogId="626" conversationId="1871" minimumReputation="1" />
         </NPC>
         <NPC objectId="452" name="Grog" descriptionId="0">

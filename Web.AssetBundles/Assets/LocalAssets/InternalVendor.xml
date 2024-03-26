@@ -2,7 +2,6 @@
 <VendorCatalog>
     <!-- Crossroads Tribe -->
     <Level name="Clock Tower Square" id="47">
-        <!-- 2014 -->
         <Vendor objectId="98648" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
             <Item prefabName="PF_PET_Rig02_Enzo01" />
             <Item prefabName="PF_PET_Rig01_Pheonix01" />
@@ -325,7 +324,6 @@
             <Item prefabName="Add_COM_Armor01_LS01" />
         </Vendor>
         <Vendor objectId="98648" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
-            <!-- speculation -->
             <Item prefabName="PF_PET_Rig01_Pheonix01" />
             <Item prefabName="PF_PET_Rig02_Tiger01" />
             <Item prefabName="PF_PET_Rig01_Dragon01" />
@@ -746,7 +744,7 @@
             <Item prefabName="WPN_PRJ_CannonGun01" />
             <Item prefabName="WPN_PRJ_FireStaff01" />
         </Vendor>
-        <Vendor objectId="551" name="Clunk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Consumable" dialogId="1307" greetingConversationId="3312" leavingConversationId="3311">
+        <Vendor objectId="551" name="Cog" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Potions" dialogId="1307" greetingConversationId="3312" leavingConversationId="3311">
             <Item prefabName="COL_POT_FireResist00" />
             <Item prefabName="COL_POT_FireElixer00" />
             <Item prefabName="COL_POT_FireResist01" />
@@ -761,7 +759,7 @@
             <Item prefabName="COL_RECIP_POT_FireElixer00" />
             <Item prefabName="COL_RECIP_POT_FireResist00" />
         </Vendor>
-        <Vendor objectId="558" name="Trink" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Accessories" dialogId="1301" greetingConversationId="3301" leavingConversationId="3300">
+        <Vendor objectId="558" name="Jolly" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Decorations" dialogId="1301" greetingConversationId="3301" leavingConversationId="3300">
             <Item prefabName="Add_OUT_VeteranChef01_UF03" />
             <Item prefabName="Add_OUT_PirateChef01_E01" />
             <Item prefabName="Add_OUT_WaterBandit01_E04" />
@@ -779,7 +777,7 @@
             <Item prefabName="Add_OUT_CaptainGirl01_T04" />
             <Item prefabName="Add_OUT_CaptainGirl01_T01" />
         </Vendor>
-        <Vendor objectId="554" name="Jolly" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Decorations" dialogId="792" greetingConversationId="2226" leavingConversationId="2225">
+        <Vendor objectId="554" name="Scatterfoot" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Accessories" dialogId="792" greetingConversationId="2226" leavingConversationId="2225">
             <Item prefabName="Add_OUT_SeaExplorer01_BP01" />
             <Item prefabName="Add_OUT_SeaExplorer01_BP03" />
             <Item prefabName="Add_OUT_SeaExplorer01_W02" />
@@ -791,7 +789,7 @@
             <Item prefabName="Add_OUT_CaptainBoy01_LF02" />
             <Item prefabName="Add_OUT_PirateChef01_LF01" />
         </Vendor>
-        <Vendor objectId="557" name="Scatterfoot" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1303" greetingConversationId="3389" leavingConversationId="3388">
+        <Vendor objectId="557" name="Clunk" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1303" greetingConversationId="3389" leavingConversationId="3388">
             <Item prefabName="Add_OUT_FortuneHunter01_S03" />
             <Item prefabName="Add_OUT_FortuneHunter01_TS03" />
             <Item prefabName="Add_OUT_FortuneHunter01_LS03" />
@@ -802,13 +800,26 @@
             <Item prefabName="Add_OUT_VeteranChef01_TS01" />
             <Item prefabName="Add_OUT_VeteranChef01_LS01" />
         </Vendor>
-        <Vendor objectId="553" name="Bumbeef" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="1270" greetingConversationId="3139" leavingConversationId="3316">
+        <Vendor objectId="553" name="Bumbeef" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Chef" dialogId="1270" greetingConversationId="3139" leavingConversationId="3316">
             <Item prefabName="COL_PACK_NC_Pie01" />
             <Item prefabName="COL_FOOD_LollyPop01" />
             <Item prefabName="COL_FOOD_Pinapple01" />
             <Item prefabName="COL_PACK_NC_Sundae01" />
             <Item prefabName="COL_FOOD_Orange01" />
             <Item prefabName="COL_FOOD_Melon01" />
+            <Item prefabName="COL_PACK_NC_BananaShake01" />
+        </Vendor>
+        <Vendor objectId="552" name="Trink" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="790" greetingConversationId="2214" leavingConversationId="2213">
+            <Item prefabName="COL_FOOD_Cookie01" />
+            <Item prefabName="COL_FOOD_Apple01" />
+            <Item prefabName="COL_FOOD_BananaBits01" />
+            <Item prefabName="COL_FOOD_IceCream01" />
+            <Item prefabName="COL_FOOD_Coconut01" />
+            <Item prefabName="COL_FOOD_Pie01" />
+            <Item prefabName="COL_FOOD_Nuts01" />
+            <Item prefabName="COL_FOOD_Candy01" />
+            <Item prefabName="COL_FOOD_Sundae01" />
+            <Item prefabName="COL_FOOD_Cookie02" />
         </Vendor>
     </Level>
     <Level name="Shipwreck Yards" id="275">
