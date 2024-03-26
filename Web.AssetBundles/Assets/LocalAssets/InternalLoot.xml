@@ -1057,6 +1057,32 @@
             </Items>
         </LootInfo>
     </Level>  
+    <Level name="Smuggler's Highway" id="308">
+        <!--Jack-in-the-Box-->
+        <LootInfo objectId="657" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+                <Item itemName="Add_COM_Clown01_UF01" count="1" />
+                <Item itemName="COL_ING_G_Oak01" count="1" />
+                <Item itemName="COL_BOMB_FireBomb04" count="1" />
+                <Item itemName="Add_COM_Clown01_LS01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Fire Canyon Highway" id="309">
+        <!--Jack-in-the-Box-->
+        <LootInfo objectId="546" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Ginger01" count="1" />
+                <Item itemName="COL_ING_G_Garlic01" count="1" />
+                <Item itemName="Add_COM_Clown01_UF01" count="1" />
+                <Item itemName="COL_ING_G_Oak01" count="1" />
+                <Item itemName="COL_BOMB_FireBomb04" count="1" />
+                <Item itemName="Add_COM_Clown01_LS01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
     <Level name="Iron Mountain Highway" id="310">
         <!--Jack-in-the-Box-->
         <LootInfo objectId="657" doLootWheel="True">
@@ -2661,6 +2687,14 @@
                 <Item itemName="COL_POT_FireElixer03" count="1" />
                 <Item itemName="ABIL_Grenade01" count="3" />
                 <Item itemName="ABIL_Grenade03" count="3" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Cannon Corral" id="466">
+        <!--Green Chest-->
+        <LootInfo objectId="33614" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
             </Items>
         </LootInfo>
     </Level>
