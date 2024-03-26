@@ -436,9 +436,9 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="52" title="Unknown Achievement 52" description="Unknown Description. Hint: the icon is named Collecting_Idol_10!" iconName="Collecting_Idol_10" points="1" sortOrder="36" repeatable="false">
+        <Achievement id="52" title="Idol-Izer" description="Collect 10 Idols" iconName="Collecting_Idol_10" points="10" sortOrder="36" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="1" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
@@ -697,8 +697,7 @@
                 <Reward type="Xp" value="230" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Rosy’s Reef" type="CollectIdol" value="lv_out_dungeon02
-" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Rosy’s Reef" type="CollectIdol" value="lv_out_dungeon02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="85" title="Anchor Falls Collector" description="Collect all Anchor Falls Idols" iconName="Collecting_IdolSeaDragons_AnchorFalls" points="25" sortOrder="69" repeatable="false">
@@ -754,8 +753,7 @@
                 <Reward type="Xp" value="280" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Driftwood Village" type="CollectIdol" value="lv_bon_trail04
-" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Driftwood Village" type="CollectIdol" value="lv_bon_trail04" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="92" title="Marsh Sanctuary Collector" description="Collect all Marsh Sanctuary Idols" iconName="Collecting_IdolOotu_MarshSanctuary" points="25" sortOrder="76" repeatable="false">
@@ -795,8 +793,7 @@
                 <Reward type="Xp" value="90" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Collect 10 Idols in Icewind Caverns" type="CollectIdol" value="lv_wld_trail02
-" goal="10" visible="true" />
+                <Condition id="1" title="Collect 10 Idols in Icewind Caverns" type="CollectIdol" value="lv_wld_trail02" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="97" title="Tempest Chasm Collector" description="Collect all Tempest Chasm Idols" iconName="Collecting_IdolIceRaiders_TempestCaverns" points="25" sortOrder="81" repeatable="false">
@@ -977,36 +974,36 @@
                 <Condition id="1" title="Use 10 Potions" type="Drink" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="119" title="Unknown Achievement 119" description="Unknown Description. Hint: the icon is named Combat_Potions_25!" iconName="Combat_Potions_25" points="1" sortOrder="22" repeatable="false">
+        <Achievement id="119" title="Unknown Achievement 119" description="Use 25 Potions" iconName="Combat_Potions_25" points="5" sortOrder="22" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Use 25 Potions" type="Drink" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="120" title="Unknown Achievement 120" description="Unknown Description. Hint: the icon is named Combat_Potions_100!" iconName="Combat_Potions_100" points="1" sortOrder="23" repeatable="false">
+        <Achievement id="120" title="Liquid Tactics" description="Use 100 Potions" iconName="Combat_Potions_100" points="20" sortOrder="23" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Use 100 Potions" type="Drink" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="121" title="Unknown Achievement 121" description="Unknown Description. Hint: the icon is named Combat_Potions_250!" iconName="Combat_Potions_250" points="1" sortOrder="24" repeatable="false">
+        <Achievement id="121" title="Unknown Achievement 121" description="Use 250 Potions" iconName="Combat_Potions_250" points="20" sortOrder="24" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Use 250 Potions" type="Drink" value="" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="122" title="Unknown Achievement 122" description="Unknown Description. Hint: the icon is named Defeat_1000_Potions!" iconName="Defeat_1000_Potions" points="1" sortOrder="25" repeatable="false">
+        <Achievement id="122" title="Unknown Achievement 122" description="Use 1000 Potions" iconName="Defeat_1000_Potions" points="20" sortOrder="25" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Use 1000 Potions" type="Drink" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="123" title="Unknown Achievement 123" description="Unknown Description. Hint: the icon is named Combat_DefeaterBathog_10!" iconName="Combat_DefeaterBathog_10" points="1" sortOrder="26" repeatable="false">
@@ -2268,12 +2265,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="280" title="Unknown Achievement 280" description="Unknown Description. Hint: the icon is named Exploration_Chimfoo_ChimFooSquare!" iconName="Exploration_Chimfoo_ChimFooSquare" points="1" sortOrder="20" repeatable="false">
+        <Achievement id="280" title="Chim Foo Square Unraveler" description="Discover Chim Foo Square" iconName="Exploration_Chimfoo_ChimFooSquare" points="15" sortOrder="20" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="4" title="Discover Chim Foo Square" type="ExploreTrail" value="lv_shd_townsquare01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="281" title="Unknown Achievement 281" description="Unknown Description. Hint: the icon is named Exploration_Chimfoo_ChimFooRooftops!" iconName="Exploration_Chimfoo_ChimFooRooftops" points="1" sortOrder="21" repeatable="false">
@@ -3450,7 +3447,7 @@
             </Conditions>
         </Achievement>
     </Category>
-   <!--<Category id="7" title="Games" iconName="Category_Games" sortOrder="3">
+    <Category id="7" title="Games" iconName="Category_Games" sortOrder="3">
         <Achievement id="427" title="Unknown Achievement 427" description="Unknown Description. Hint: the icon is named Games_1st_Win!" iconName="Games_1st_Win" points="1" sortOrder="1" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -3971,7 +3968,7 @@
                 <Condition id="1" title="Light up the Holiday Tree 50 Times" type="Invalid" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-    </Category>-->
+    </Category>
     <Category id="8" title="Social" iconName="Category_Social" sortOrder="2">
         <Achievement id="491" title="t-Hen What Happened?" description="Transform 50 Players into Chickens" iconName="Friends_ChickenZapOthers" points="10" sortOrder="1" repeatable="false">
             <Rewards>
@@ -4263,36 +4260,36 @@
         </Achievement>
     </Category>
     <Category id="9" title="Silly" iconName="Category_Crazy&amp;Fun" sortOrder="1">
-        <Achievement id="527" title="Unknown Achievement 527" description="Unknown Description. Hint: the icon is named Fun_Food_Nom_10!" iconName="Fun_Food_Nom_10" points="1" sortOrder="1" repeatable="false">
+        <Achievement id="527" title="Unknown Achievement 527" description="Eat 10 Food Items" iconName="Fun_Food_Nom_10" points="1" sortOrder="1" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Eat 10 Food Items" type="Consumable" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="528" title="Unknown Achievement 528" description="Unknown Description. Hint: the icon is named Fun_Food_NomNom_25!" iconName="Fun_Food_NomNom_25" points="1" sortOrder="2" repeatable="false">
+        <Achievement id="528" title="Unknown Achievement 528" description="Eat 25 Food Items" iconName="Fun_Food_NomNom_25" points="1" sortOrder="2" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Eat 25 Food Items" type="Consumable" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="529" title="Unknown Achievement 529" description="Unknown Description. Hint: the icon is named Fun_Food_OmNomNomNom_50!" iconName="Fun_Food_OmNomNomNom_50" points="1" sortOrder="3" repeatable="false">
+        <Achievement id="529" title="Unknown Achievement 529" description="Eat 50 Food Items" iconName="Fun_Food_OmNomNomNom_50" points="1" sortOrder="3" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Eat 50 Food Items" type="Consumable" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="530" title="Chomp Champ" description="Eat 100 Food Items" iconName="Fun_Food_ChompChamp_100" points="20" sortOrder="4" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Eat 100 Food Items" type="Unknown" value="" goal="100" visible="true" />
+                <Condition id="1" title="Eat 100 Food Items" type="Consumable" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="531" title="Gourmet Grubber" description="Eat 1000 Food Items" iconName="Fun_Food_GourmetGrubber_1000" points="100" sortOrder="5" repeatable="false">
