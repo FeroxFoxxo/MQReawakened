@@ -944,7 +944,7 @@
 
     <!-- Chim Foo Tribe -->
     <Level name="Ancient Foo Archive" id="144">
-        <!--Speculated items-->
+        <!--Custom inventories-->
         <Vendor objectId="533" name="Miasma" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="1259" greetingConversationId="3352" leavingConversationId="3351">
             <Item prefabName="COL_ING_C_PureWater01" />
             <Item prefabName="COL_ING_C_MountainWater01" />
