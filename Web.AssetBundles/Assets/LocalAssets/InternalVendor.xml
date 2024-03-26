@@ -743,6 +743,8 @@
             <Item prefabName="WPN_PRJ_Thunderbow01" />
             <Item prefabName="WPN_PRJ_CannonGun01" />
             <Item prefabName="WPN_PRJ_FireStaff01" />
+            <Item prefabName="WPN_PRJ_MeteorSlingshot01" />
+            <Item prefabName="WPN_PRJ_ZotanFist01" />
         </Vendor>
         <Vendor objectId="551" name="Cog" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Potions" dialogId="1307" greetingConversationId="3312" leavingConversationId="3311">
             <Item prefabName="COL_POT_FireResist00" />
