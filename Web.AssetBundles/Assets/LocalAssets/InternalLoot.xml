@@ -2003,6 +2003,14 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Whispering Spirits" id="467">
+        <!--Green Chest-->
+        <LootInfo objectId="4144" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
 
     <!-- Chim Foo Tribe -->
     <Level name="Jade Mountain" id="48">
