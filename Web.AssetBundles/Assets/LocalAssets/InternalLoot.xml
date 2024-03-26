@@ -640,11 +640,17 @@
                 <Item itemName="Add_COM_Jungle01_S01" count="1" />
             </Items>
         </LootInfo>
+        <LootInfo objectId="7464" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
         <LootInfo objectId="7177" doLootWheel="False">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing01" count="1" />
             </Items>
         </LootInfo>
+        <!--Green Chest-->
         <LootInfo objectId="7537" doLootWheel="False">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Dandelions01" count="2" weight="9" />
