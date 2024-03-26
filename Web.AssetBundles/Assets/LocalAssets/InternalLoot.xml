@@ -2721,6 +2721,26 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Razor Bay" id="54">
+        <!--Jack-in-the-Box-->
+        <LootInfo objectId="2540" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
 
     <!-- Ice Raiders Tribe -->
     <Level name="Tempest Chasm" id="499">

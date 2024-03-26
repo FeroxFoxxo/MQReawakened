@@ -1199,12 +1199,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="147" title="Unknown Achievement 147" description="Unknown Description. Hint: the icon is named Combat_DefeaterDragon_10!" iconName="Combat_DefeaterDragon_10" points="1" sortOrder="50" repeatable="false">
+        <Achievement id="147" title="Dragon Defeater" description="Defeat 10 Dragons" iconName="Combat_DefeaterDragon_10" points="5" sortOrder="50" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Dragons" type="DefeatEnemy" value="PF_Spite_Dragon_Rock" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="148" title="Unknown Achievement 148" description="Unknown Description. Hint: the icon is named Combat_CrusherDragon_50!" iconName="Combat_CrusherDragon_50" points="1" sortOrder="51" repeatable="false">
