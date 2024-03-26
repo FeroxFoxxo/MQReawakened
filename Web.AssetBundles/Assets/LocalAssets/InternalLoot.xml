@@ -663,6 +663,13 @@
                 <Item itemName="COL_ING_G_Dandelions02" count="3" />
             </Items>
         </LootInfo>
+        <!--Green Chest-->
+        <LootInfo objectId="7176" doLootWheel="False">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Dandelions01" count="2" weight="9" />
+                <Item itemName="COL_ING_G_Dandelions02" count="3" />
+            </Items>
+        </LootInfo>
         <LootInfo objectId="7538" doLootWheel="False">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Dandelions01" count="2" weight="9" />
