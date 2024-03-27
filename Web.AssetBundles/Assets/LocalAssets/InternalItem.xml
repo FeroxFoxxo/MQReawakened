@@ -1046,7 +1046,7 @@
                     <Effect duration="5" type="AirDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9274" itemName="Fists of Flame" descriptionId="1310934114" prefabName="WPN_PRJ_ZotanFist01" specialDisplayPrefab="" tribe="Outlaw" rarity="Uncommon" memberOnly="false" currency="NickCash" storeType="Front Store" stockPriority="0" regularPrice="275" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="44" levelRequirement="44" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9274" itemName="Fists of Flame" descriptionId="1310934114" prefabName="WPN_PRJ_ZotanFist01" specialDisplayPrefab="" tribe="Outlaw" rarity="Uncommon" memberOnly="false" currency="NickCash" storeType="Front Store" stockPriority="0" regularPrice="275" discountPrice="-1" sellPrice="275" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="44" levelRequirement="44" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="FireDamage" value="0" />
                 </ItemEffects>
