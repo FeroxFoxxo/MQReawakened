@@ -212,6 +212,18 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                 if (!PossibleConditions[cond.typeId].Contains(cond.description))
                     PossibleConditions[cond.typeId].Add(cond.description);
             }
+
+        var currentCount = 0;
+
+        foreach (var category in Definitions.categories.OrderBy(x => x.sortOrder))
+        {
+            var loopedAchievements = Definitions.achievements.Where(x => x.categoryId == category.id);
+
+            foreach (var achievement in loopedAchievements)
+                achievement.sortOrder += currentCount;
+
+            currentCount += loopedAchievements.Count();
+        }
     }
 
     public void FinalizeBundle()
