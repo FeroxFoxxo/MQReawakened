@@ -677,7 +677,7 @@
             <Item prefabName="ABIL_PoisonBomb03" />
         </Vendor>
     </Level>
-    
+
     <!-- Sea Dragons Tribe -->
     <Level name="Razor Bay" id="54">
         <Vendor objectId="2611" name="Shivers" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="419" greetingConversationId="1242" leavingConversationId="1247">
