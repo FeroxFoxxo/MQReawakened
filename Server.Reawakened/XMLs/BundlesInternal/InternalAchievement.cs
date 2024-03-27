@@ -198,21 +198,6 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
             }
         }
 
-        foreach (var achievement in Definitions.achievements)
-            foreach (var cond in achievement.conditions)
-            {
-                var type = (AchConditionType)cond.typeId;
-
-                if (type is AchConditionType.Unknown or AchConditionType.Invalid)
-                    continue;
-
-                if (!PossibleConditions.ContainsKey(cond.typeId))
-                    PossibleConditions.Add(cond.typeId, []);
-
-                if (!PossibleConditions[cond.typeId].Contains(cond.description))
-                    PossibleConditions[cond.typeId].Add(cond.description);
-            }
-
         var currentCount = 0;
 
         foreach (var category in Definitions.categories.OrderBy(x => x.sortOrder))
@@ -220,7 +205,23 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
             var loopedAchievements = Definitions.achievements.Where(x => x.categoryId == category.id);
 
             foreach (var achievement in loopedAchievements)
+            {
                 achievement.sortOrder += currentCount;
+
+                foreach (var cond in achievement.conditions)
+                {
+                    var type = (AchConditionType)cond.typeId;
+
+                    if (type is AchConditionType.Unknown or AchConditionType.Invalid)
+                        continue;
+
+                    if (!PossibleConditions.ContainsKey(cond.typeId))
+                        PossibleConditions.Add(cond.typeId, []);
+
+                    if (!PossibleConditions[cond.typeId].Contains(cond.description))
+                        PossibleConditions[cond.typeId].Add(cond.description);
+                }
+            }
 
             currentCount += loopedAchievements.Count();
         }
