@@ -32,14 +32,6 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
             hazard.ApplyEffectBasedOffHazardType(hazard.Id, player);
     }
 
-    public override void SendNonCollisionEvent(BaseCollider received)
-    {
-        if (received is not HazardEffectCollider HazardCollider)
-            return;
-
-        HazardCollider.DisableEffectBasedOffHazardType(HazardCollider.Id, player);
-    }
-
     public override string[] IsColliding(bool isAttack)
     {
         var roomList = Room.Colliders.Values.ToList();
@@ -53,9 +45,6 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
                 collidedWith.Add(collider.Id);
                 collider.SendCollisionEvent(this);
             }
-
-            else if (!CheckCollision(collider))
-                collider.SendNonCollisionEvent(this);
         }
 
         return [.. collidedWith];
