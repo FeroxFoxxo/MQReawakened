@@ -89,7 +89,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     {
         HazardId = Id;
 
-        //Prevents spider webs from incorrectly adjusting collider positioning.
+        //Prevents spider webs from inaccurately adjusting collider positioning.
         if (EffectType == ItemEffectType.SlowStatusEffect)
             Rectangle.X = 0;
 
