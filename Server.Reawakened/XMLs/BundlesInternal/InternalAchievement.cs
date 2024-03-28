@@ -117,7 +117,7 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                     sortOrder = categorySortOrder
                 };
 
-                Definitions.categories.Add(categoryType);
+                var categoryCount = 0;
 
                 foreach (XmlNode achievement in category.ChildNodes)
                 {
@@ -172,7 +172,7 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                         }
                     }
 
-                    var comparedName = $"{achIconName.ToLower()}_on";
+                    var comparedName = $"ach_{achIconName.ToLower()}_on";
 
                     if (!icons.KnownIconNames.Contains(comparedName))
                         continue;
@@ -201,7 +201,11 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                     };
 
                     Definitions.achievements.Add(achievementStatic);
+                    categoryCount++;
                 }
+
+                if (categoryCount > 0 || categoryId <= 1)
+                    Definitions.categories.Add(categoryType);
             }
         }
 

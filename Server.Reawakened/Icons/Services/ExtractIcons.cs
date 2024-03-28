@@ -4,7 +4,6 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Reawakened.BundleHost.Events;
-using Server.Reawakened.BundleHost.Events.Arguments;
 using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.Icons.Configs;
 using Server.Reawakened.XMLs.Bundles;
@@ -14,13 +13,11 @@ using System.Collections.Specialized;
 namespace Server.Reawakened.Icons.Services;
 
 public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBundleRwConfig aRwConfig,
-    ILogger<ExtractIcons> logger, IServiceProvider services, ServerHandler serverHandler, ItemCatalog itemCatalog) : IService
+    ILogger<ExtractIcons> logger, IServiceProvider services, ServerHandler serverHandler, ItemCatalog itemCatalog)
 {
     public string[] KnownIconNames = [];
 
-    public void Initialize() => sink.AssetBundlesLoaded += ExtractAllIcons;
-
-    private void ExtractAllIcons(AssetBundleLoadEventArgs bundleEvent)
+    public void ExtractAllIcons(Dictionary<string, InternalAssetInfo> internalAssets)
     {
         var outOfDateCache = 0;
         var assets = new List<InternalAssetInfo>();
@@ -29,7 +26,7 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
 
         foreach (var iconBankName in rConfig.IconBanks)
         {
-            var iconBank = bundleEvent.InternalAssets.FirstOrDefault(x =>
+            var iconBank = internalAssets.FirstOrDefault(x =>
                 x.Key.Equals(iconBankName, StringComparison.CurrentCultureIgnoreCase)
             ).Value;
 
@@ -91,7 +88,7 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
 
         KnownIconNames = [.. iconNames.OrderBy(a => a)];
 
-        logger.LogDebug("Read icons from file.");
+        logger.LogDebug("Read {Count} icons from file.", KnownIconNames.Length);
     }
 
     public Dictionary<string, Texture2D> GetIcons(InternalAssetInfo asset)

@@ -207,7 +207,7 @@ public class ServerRConfig : IRConfig
             { BackPlane, 20 }
         };
 
-        LastClientUpdate = DateTime.Now.ToUnixTimestamp();
-        CutOffFor2014 = DateTime.Now.ToUnixTimestamp();
+        LastClientUpdate = 0;
+        CutOffFor2014 = 0;
     }
 }

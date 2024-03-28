@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.BundleHost.Events;
+using Server.Reawakened.Icons.Services;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Thrift.Abstractions;
@@ -34,7 +35,8 @@ public class Reawakened(ILogger<Reawakened> logger) : Module(logger)
             .AddSingleton<PlayerContainer>()
             .AddSingleton<NameGenSyllables>();
 
-        services.AddSingleton<AssetEventSink>();
+        services.AddSingleton<AssetEventSink>()
+            .AddSingleton<ExtractIcons>();
 
         Logger.LogDebug("Loading bundles");
 

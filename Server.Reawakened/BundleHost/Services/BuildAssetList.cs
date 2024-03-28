@@ -11,12 +11,13 @@ using Server.Reawakened.BundleHost.Extensions;
 using Server.Reawakened.BundleHost.Helpers;
 using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Icons.Services;
 using System.Xml;
 
 namespace Server.Reawakened.BundleHost.Services;
 
 public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, AssetEventSink assetSink, ServerConsole console,
-    AssetBundleRwConfig rwConfig, AssetBundleRConfig rConfig, ServerRConfig sRConfig) : IService
+    AssetBundleRwConfig rwConfig, AssetBundleRConfig rConfig, ServerRConfig sRConfig, ExtractIcons iconExtract) : IService
 {
     public readonly Dictionary<string, string> AssetDict = [];
 
@@ -47,7 +48,10 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
                 GenerateDefaultAssetList(true);
             }
         );
+    }
 
+    public void LoadAssets() 
+    { 
         rwConfig.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", rwConfig.CacheInfoFile, logger);
 
         if (!string.IsNullOrEmpty(rwConfig.WebPlayerInfoFile))
@@ -107,6 +111,7 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
         logger.LogInformation("Generated default dictionaries.");
 
         sRConfig.LoadedAssets = [.. InternalAssets.Keys];
+        iconExtract.ExtractAllIcons(InternalAssets);
 
         assetSink.InvokeAssetBundlesLoaded(new AssetBundleLoadEventArgs(InternalAssets));
     }
