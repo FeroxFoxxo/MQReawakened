@@ -17,11 +17,7 @@ public static class PlayerDamageExtensions
 
     public static void StartUnderwaterTimer(this Player player, int damage, TimerThread timerThread, ServerRConfig config)
     {
-        if (player.TempData.UnderwaterTimer != null)
-        {
-            player.TempData.UnderwaterTimer.Stop();
-            player.TempData.UnderwaterTimer = null;
-        }
+        player.StopUnderwaterTimer();
 
         var underwaterData = new UnderwaterData()
         {
