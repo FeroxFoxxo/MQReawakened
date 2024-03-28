@@ -3,6 +3,7 @@ using Achievement.StaticData;
 using Achievement.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Icons.Services;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
@@ -50,6 +51,7 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
         xmlDocument.LoadXml(xml);
 
         var catalog = Services.GetRequiredService<ItemCatalog>();
+        var icons = Services.GetRequiredService<ExtractIcons>();
 
         var enumValues = Enum.GetValues<RewardType>();
 
@@ -169,6 +171,11 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                                 break;
                         }
                     }
+
+                    var comparedName = $"{achIconName.ToLower()}_on";
+
+                    if (!icons.KnownIconNames.Contains(comparedName))
+                        continue;
 
                     if (aIds.Contains(achId))
                     {

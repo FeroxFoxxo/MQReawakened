@@ -16,6 +16,8 @@ namespace Server.Reawakened.Icons.Services;
 public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBundleRwConfig aRwConfig,
     ILogger<ExtractIcons> logger, IServiceProvider services, ServerHandler serverHandler, ItemCatalog itemCatalog) : IService
 {
+    public string[] KnownIconNames = [];
+
     public void Initialize() => sink.AssetBundlesLoaded += ExtractAllIcons;
 
     private void ExtractAllIcons(AssetBundleLoadEventArgs bundleEvent)
@@ -75,6 +77,19 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
                 File.Copy(icon, Path.Combine(rConfig.UnknownItemsDirectory, nameWExten));
             }
         }
+
+        var iconNames = new List<string>();
+
+        foreach (var icons in knownIcons.Values)
+            foreach (var icon in icons.Keys)
+            {
+                var newIconName = icon.ToLower();
+
+                if (!iconNames.Contains(newIconName))
+                    iconNames.Add(newIconName);
+            }
+
+        KnownIconNames = [.. iconNames.OrderBy(a => a)];
 
         logger.LogDebug("Read icons from file.");
     }
