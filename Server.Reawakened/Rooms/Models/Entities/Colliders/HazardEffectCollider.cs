@@ -22,27 +22,11 @@ public class HazardEffectCollider(string hazardId, Vector3Model position, RectMo
         }
     }
 
-    public override void SendNonCollisionEvent(BaseCollider received)
-    {
-        if (received is not PlayerCollider playerCollider)
-            return;
-
-        DisableEffectBasedOffHazardType(hazardId, playerCollider.Player);
-
-        playerCollider.Player.TempData.CollidingHazards.Remove(hazardId);
-    }
-
     public void ApplyEffectBasedOffHazardType(string hazardId, Player player)
     {
         Room.GetEntityFromId<BaseHazardControllerComp<HazardController>>(hazardId)?.ApplyHazardEffect(player);
         Room.GetEntityFromId<BaseHazardControllerComp<TrapHazardController>>(hazardId)?.ApplyHazardEffect(player);
         Room.GetEntityFromId<DroppingsControllerComp>(hazardId)?.FreezePlayer(player);
-    }
-
-    public void DisableEffectBasedOffHazardType(string hazardId, Player player)
-    {
-        Room.GetEntityFromId<BaseHazardControllerComp<HazardController>>(hazardId)?.DisableHazardEffects(player);
-        Room.GetEntityFromId<BaseHazardControllerComp<TrapHazardController>>(hazardId)?.DisableHazardEffects(player);
     }
 
     public static Vector3Model AdjustPosition(Vector3Model originalPosition, RectModel rect)

@@ -122,6 +122,22 @@ public class State : ExternalProtocol
                     break;
                 case SyncEvent.EventType.PhysicStatus:
                     var physicStatusEvent = new PhysicStatus_SyncEvent(syncEvent);
+
+                    if (!physicStatusEvent.GravityEnabled)
+                    {
+                        if (Player.TempData.UnderwaterTimer != null)
+                            return;
+
+                        Player.TempData.Underwater = true;
+                        Player.StartUnderwaterTimer(Player.Character.Data.MaxLife / 10, TimerThread, ServerConfig);
+                    }
+
+                    else
+                    {
+                        Player.TempData.Underwater = false;
+                        Player.StopUnderwaterTimer();
+                    }
+                   
                     break;
             }
 
@@ -156,7 +172,7 @@ public class State : ExternalProtocol
         var playerCollider = new PlayerCollider(player);
         playerCollider.IsColliding(false);
         player.Room.Colliders[player.GameObjectId] = playerCollider;
-    }  
+    }
 
     private void RequestRespawn(string entityId, float triggerTime)
     {

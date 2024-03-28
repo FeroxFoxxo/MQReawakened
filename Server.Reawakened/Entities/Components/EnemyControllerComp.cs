@@ -62,7 +62,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         if (_damage < 0)
             _damage = 1;
 
-        player.ApplyCharacterDamage(Room, _damage, 1, TimerThread);
+        player.ApplyCharacterDamage(_damage, 1, TimerThread);
 
         return;
     }

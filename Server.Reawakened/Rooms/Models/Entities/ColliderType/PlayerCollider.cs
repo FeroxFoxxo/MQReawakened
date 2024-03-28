@@ -21,7 +21,7 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
 
             var damage = aiProjectileCollider.Damage - player.Character.Data.CalculateDefense(aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
 
-            player.ApplyCharacterDamage(Room, damage, 1, aiProjectileCollider.TimerThread);
+            player.ApplyCharacterDamage(damage, 1, aiProjectileCollider.TimerThread);
 
             player.TemporaryInvincibility(aiProjectileCollider.TimerThread, 1);
 
@@ -30,14 +30,6 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
 
         if (received is HazardEffectCollider hazard)
             hazard.ApplyEffectBasedOffHazardType(hazard.Id, player);
-    }
-
-    public override void SendNonCollisionEvent(BaseCollider received)
-    {
-        if (received is not HazardEffectCollider HazardCollider)
-            return;
-
-        HazardCollider.DisableEffectBasedOffHazardType(HazardCollider.Id, player);
     }
 
     public override string[] IsColliding(bool isAttack)
@@ -53,9 +45,6 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
                 collidedWith.Add(collider.Id);
                 collider.SendCollisionEvent(this);
             }
-
-            else if (!CheckCollision(collider))
-                collider.SendNonCollisionEvent(this);
         }
 
         return [.. collidedWith];
