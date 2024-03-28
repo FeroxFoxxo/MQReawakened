@@ -1,6 +1,6 @@
 ﻿using Server.Base.Core.Abstractions;
 
-namespace Web.Icons.Configs;
+namespace Server.Reawakened.Icons.Configs;
 
 public class IconsRwConfig : IRwConfig
 {

@@ -3,9 +3,10 @@ using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Players;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 
-namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
+namespace Server.Reawakened.Rooms.Models.Entities.Colliders;
 public class HazardEffectCollider(string hazardId, Vector3Model position, RectModel rect, string plane, Room room, ILogger<BaseHazardControllerComp<HazardController>> logger) : BaseCollider(hazardId, AdjustPosition(position, rect), rect.Width, rect.Height, plane, room, ColliderClass.Hazard)
 {
     public override void SendCollisionEvent(BaseCollider received)

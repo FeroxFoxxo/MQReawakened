@@ -1,9 +1,9 @@
 ﻿using AssetStudio;
+using Server.Reawakened.BundleHost.Models;
 using System.Text;
 using System.Xml;
-using Web.AssetBundles.Models;
 
-namespace Web.AssetBundles.Extensions;
+namespace Server.Reawakened.BundleHost.Extensions;
 
 public static class GetData
 {

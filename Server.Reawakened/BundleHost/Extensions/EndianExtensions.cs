@@ -1,7 +1,7 @@
 ﻿using AssetRipper.IO.Endian;
-using Web.AssetBundles.BundleFix.Header.Models;
+using Server.Reawakened.BundleHost.BundleFix.Header.Models;
 
-namespace Web.AssetBundles.Extensions;
+namespace Server.Reawakened.BundleHost.Extensions;
 
 public static class EndianExtensions
 {

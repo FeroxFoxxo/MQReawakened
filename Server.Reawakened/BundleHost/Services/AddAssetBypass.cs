@@ -1,7 +1,7 @@
 ﻿using Server.Base.Core.Abstractions;
 using Server.Web.Models;
 
-namespace Web.AssetBundles.Services;
+namespace Server.Reawakened.BundleHost.Services;
 
 public class AddAssetBypass(WebRConfig _config) : IService
 {

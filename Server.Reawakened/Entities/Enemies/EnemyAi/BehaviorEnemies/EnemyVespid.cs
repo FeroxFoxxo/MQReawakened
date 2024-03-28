@@ -1,11 +1,11 @@
 ﻿using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Entity.Utils;
+using Server.Reawakened.Entities.Enemies.Utils;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 
-namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
+namespace Server.Reawakened.Entities.Enemies.EnemyAI.BehaviorEnemies;
 public class EnemyVespid(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
 {
 

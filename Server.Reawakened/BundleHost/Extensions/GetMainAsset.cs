@@ -1,8 +1,8 @@
 ﻿using AssetStudio;
+using Server.Reawakened.BundleHost.Models;
 using System.Collections.Specialized;
-using Web.AssetBundles.Models;
 
-namespace Web.AssetBundles.Extensions;
+namespace Server.Reawakened.BundleHost.Extensions;
 
 public static class GetMainAsset
 {

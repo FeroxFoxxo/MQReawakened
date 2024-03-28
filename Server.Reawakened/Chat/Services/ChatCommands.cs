@@ -43,15 +43,15 @@ public partial class ChatCommands(
     {
         logger.LogDebug("Setting up chat commands");
 
-        AddCommand(new ChatCommand("setAccess", "[owner only]", SetAccessLevel));
-        AddCommand(new ChatCommand("save", "[owner only]", SaveLevel));
+        AddCommand(new ChatCommand("setAccess", "owner only", SetAccessLevel));
+        AddCommand(new ChatCommand("save", "owner only", SaveLevel));
+        AddCommand(new ChatCommand("getAllItems", "[categoryValue] - owner only", GetAllItems));
 
         AddCommand(new ChatCommand("godMode", "", GodMode));
         AddCommand(new ChatCommand("maxHP", "", MaxHealth));
 
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("hotbar", "[hotbarNum] [itemId]", Hotbar));
-        AddCommand(new ChatCommand("getAllItems", "[categoryValue]", GetAllItems));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
 
@@ -202,6 +202,9 @@ public partial class ChatCommands(
 
     public bool GetAllItems(Player player, string[] args)
     {
+        if (player.NetState.Get<Account>().AccessLevel < AccessLevel.Owner)
+            return false;
+
         if (args.Length > 1)
         {
             if (!int.TryParse(args[1], out var categoryValue))

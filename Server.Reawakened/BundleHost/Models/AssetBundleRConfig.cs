@@ -1,7 +1,7 @@
 ﻿using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 
-namespace Web.AssetBundles.Models;
+namespace Server.Reawakened.BundleHost.Models;
 
 public class AssetBundleRConfig : IRConfig
 {

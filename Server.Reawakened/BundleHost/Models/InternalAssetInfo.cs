@@ -1,4 +1,4 @@
-﻿namespace Web.AssetBundles.Models;
+﻿namespace Server.Reawakened.BundleHost.Models;
 
 public class InternalAssetInfo
 {

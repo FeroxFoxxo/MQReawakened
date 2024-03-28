@@ -4,11 +4,10 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
-using Web.AssetBundles.Extensions;
-using Web.AssetBundles.Models;
-using Web.Launcher.Services;
+using Server.Reawakened.BundleHost.Extensions;
+using Server.Reawakened.BundleHost.Models;
 
-namespace Web.AssetBundles.Services;
+namespace Web.Launcher.Services;
 
 public class ClearWebCaches(ILogger<ClearWebCaches> logger, AssetBundleRConfig rConfig,
     ServerConsole console, EventSink sink, StartGame game,

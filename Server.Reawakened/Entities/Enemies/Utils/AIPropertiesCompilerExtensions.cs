@@ -1,7 +1,7 @@
-﻿using Server.Reawakened.Entities.Entity.Enemies;
+﻿using Server.Reawakened.Entities.Enemies.EnemyAI;
 using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Entities.Entity.Utils;
+namespace Server.Reawakened.Entities.Enemies.Utils;
 public static class AIPropertiesCompilerExtensions
 {
     public static string CreateBehaviorString(this BehaviorEnemy enemy, string name)

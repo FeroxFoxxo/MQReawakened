@@ -2,7 +2,7 @@
 using Server.Base.Core.Extensions;
 using ShellProgressBar;
 
-namespace Web.AssetBundles.Models;
+namespace Server.Reawakened.BundleHost.Models;
 
 public class DefaultProgressBar : IDisposable
 {

@@ -1,7 +1,7 @@
 ﻿using AssetStudio;
 using Microsoft.Extensions.Logging;
 
-namespace Web.AssetBundles.Helpers;
+namespace Server.Reawakened.BundleHost.Helpers;
 
 public class AssetBundleLogger(Microsoft.Extensions.Logging.ILogger logger) : AssetStudio.ILogger
 {

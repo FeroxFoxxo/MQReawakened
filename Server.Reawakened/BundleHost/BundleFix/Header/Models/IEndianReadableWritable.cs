@@ -1,6 +1,6 @@
 ﻿using AssetRipper.IO.Endian;
 
-namespace Web.AssetBundles.BundleFix.Header.Models;
+namespace Server.Reawakened.BundleHost.BundleFix.Header.Models;
 
 public interface IEndianReadableWritable : IEndianWritable, IEndianReadable
 {

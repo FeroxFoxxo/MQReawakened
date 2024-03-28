@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.BundleHost.Events;
+using Server.Reawakened.BundleHost.Events.Arguments;
+using Server.Reawakened.BundleHost.Extensions;
+using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.XMLs.Abstractions;
 using System.Xml;
-using Web.AssetBundles.Events;
-using Web.AssetBundles.Events.Arguments;
-using Web.AssetBundles.Extensions;
-using Web.AssetBundles.Models;
 
-namespace Web.AssetBundles.Services;
+namespace Server.Reawakened.BundleHost.Services;
 
 public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
     ILogger<BuildXmlFiles> logger, AssetBundleRConfig rConfig) : IService, IInjectModules

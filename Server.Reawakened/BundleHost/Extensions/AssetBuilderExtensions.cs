@@ -1,7 +1,7 @@
-﻿using Server.Reawakened.Configs;
-using Web.AssetBundles.Models;
+﻿using Server.Reawakened.BundleHost.Models;
+using Server.Reawakened.Configs;
 
-namespace Web.AssetBundles.Extensions;
+namespace Server.Reawakened.BundleHost.Extensions;
 
 public static class AssetBuilderExtensions
 {
@@ -32,11 +32,8 @@ public static class AssetBuilderExtensions
         var filteredAssets = new Dictionary<string, InternalAssetInfo>();
 
         foreach (var newAsset in assets)
-        {
             if (!filteredAssets.TryGetValue(newAsset.Name, out var value))
-            {
                 filteredAssets.Add(newAsset.Name, newAsset);
-            }
             else
             {
                 var oldAssetTime = value.CacheTime - sConfig.CutOffFor2014;
@@ -49,7 +46,6 @@ public static class AssetBuilderExtensions
                 }
 
                 if (newAssetTime >= 0)
-                {
                     if (oldAssetTime >= 0)
                     {
                         var oldAdjusted = Math.Abs(value.CacheTime - sConfig.LastClientUpdate);
@@ -59,16 +55,10 @@ public static class AssetBuilderExtensions
                             filteredAssets[newAsset.Name] = newAsset;
                     }
                     else
-                    {
                         filteredAssets[newAsset.Name] = newAsset;
-                    }
-                }
                 else if (oldAssetTime < 0 && newAssetTime > oldAssetTime)
-                {
                     filteredAssets[newAsset.Name] = newAsset;
-                }
             }
-        }
 
         return filteredAssets;
     }

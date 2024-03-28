@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Entity.Utils;
+using Server.Reawakened.Entities.Enemies.Utils;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Players;
@@ -12,7 +12,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.Entity.Enemies;
+namespace Server.Reawakened.Entities.Enemies.EnemyAI;
 
 public abstract class BehaviorEnemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : Enemy(room, entityId, prefabName, enemyController, services), IDestructible
 {

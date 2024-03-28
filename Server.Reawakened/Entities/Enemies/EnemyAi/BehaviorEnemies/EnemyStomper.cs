@@ -1,10 +1,11 @@
 ﻿using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Enemies.Utils;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 
-namespace Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
+namespace Server.Reawakened.Entities.Enemies.EnemyAI.BehaviorEnemies;
 public class EnemyStomper(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
 {
 
@@ -27,7 +28,7 @@ public class EnemyStomper(Room room, string entityId, string prefabName, EnemyCo
 
         // Address magic numbers when we get to adding enemy effect mods
         Room.SendSyncEvent(AIInit(1, 1, 1));
-        Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, 1, false));
+        Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, 1, false));
 
         // Set these calls to the xml later. Instead of using hardcoded "Patrol", "Aggro", etc.
         // the XML can just specify which behaviors to use when attacked, when moving, etc.
@@ -40,7 +41,7 @@ public class EnemyStomper(Room room, string entityId, string prefabName, EnemyCo
 
         if (AiBehavior is not AIBehaviorShooting)
         {
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, player.TempData.Position.X,
+            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(_offensiveBehavior), string.Empty, player.TempData.Position.X,
                     player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
 
             // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
@@ -66,7 +67,7 @@ public class EnemyStomper(Room room, string entityId, string prefabName, EnemyCo
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Stomper"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
+            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Stomper"), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
             AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior("Stomper");
@@ -83,7 +84,7 @@ public class EnemyStomper(Room room, string entityId, string prefabName, EnemyCo
         if (Room.Time >= _behaviorEndTime)
         {
             AiBehavior = ChangeBehavior("Patrol");
-            Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, Generic.Patrol_ForceDirectionX, false));
+            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf("Patrol"), string.Empty, Position.x, Position.y, Generic.Patrol_ForceDirectionX, false));
         }
     }
 
@@ -92,7 +93,7 @@ public class EnemyStomper(Room room, string entityId, string prefabName, EnemyCo
         foreach (var player in Room.Players.Values)
             if (PlayerInRange(player.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
             {
-                Room.SendSyncEvent(Utils.AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.TempData.Position.X,
+                Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.TempData.Position.X,
                     player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here

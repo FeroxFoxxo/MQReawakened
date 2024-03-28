@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
-using Web.AssetBundles.Models;
-using Web.AssetBundles.Services;
+using Server.Reawakened.BundleHost.Models;
+using Server.Reawakened.BundleHost.Services;
 
-namespace Web.AssetBundles.Extensions;
+namespace Server.Reawakened.BundleHost.Extensions;
 
 public static class AssetDictionaryExtensions
 {

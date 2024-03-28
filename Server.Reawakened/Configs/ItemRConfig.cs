@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Server.Base.Core.Abstractions;
 
 namespace Server.Reawakened.Configs;
-public class ItemRConfig
+public class ItemRConfig : IRConfig
 {
     public int HealingStaff { get; }
     public double HealingStaffHealValue { get; }

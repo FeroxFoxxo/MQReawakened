@@ -1,7 +1,7 @@
-﻿using System.Xml;
-using Web.AssetBundles.Models;
+﻿using Server.Reawakened.BundleHost.Models;
+using System.Xml;
 
-namespace Web.AssetBundles.Extensions;
+namespace Server.Reawakened.BundleHost.Extensions;
 
 public static class ConvertAssetInfo
 {

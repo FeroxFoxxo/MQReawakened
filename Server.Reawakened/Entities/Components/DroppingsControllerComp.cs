@@ -1,7 +1,5 @@
 ﻿using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Entities.Entity.Utils;
-using Server.Reawakened.Entities.Entity;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -10,6 +8,7 @@ using A2m.Server;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Entities.Enemies.Utils;
 
 namespace Server.Reawakened.Entities.Components;
 public class DroppingsControllerComp : Component<DroppingsController>

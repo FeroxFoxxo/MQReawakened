@@ -1,6 +1,6 @@
-﻿using Web.AssetBundles.Services;
+﻿using Server.Reawakened.BundleHost.Services;
 
-namespace Web.AssetBundles.Models;
+namespace Server.Reawakened.BundleHost.Models;
 
 public class CacheModel
 {
@@ -27,7 +27,6 @@ public class CacheModel
             .Where(c => c.Key != "__info").ToArray();
 
         foreach (var cache in caches)
-        {
             if (_assetDictionary.ContainsKey(cache.Key!))
             {
                 if (!FoundCaches.ContainsKey(cache.Key))
@@ -36,11 +35,8 @@ public class CacheModel
                 FoundCaches[cache.Key].Add(cache.Value);
             }
             else
-            {
                 if (!UnknownCaches.ContainsKey(cache.Key))
-                    UnknownCaches.Add(cache.Key, cache.Value);
-            }
-        }
+                UnknownCaches.Add(cache.Key, cache.Value);
 
         TotalAssetDictionaryFiles = _assetDictionary.Count;
         TotalCachedAssetFiles = caches.Length;

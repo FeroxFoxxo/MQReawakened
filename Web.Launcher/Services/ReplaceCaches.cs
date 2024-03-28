@@ -4,11 +4,11 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
-using Web.AssetBundles.Extensions;
-using Web.AssetBundles.Models;
-using Web.Launcher.Services;
+using Server.Reawakened.BundleHost.Extensions;
+using Server.Reawakened.BundleHost.Models;
+using Server.Reawakened.BundleHost.Services;
 
-namespace Web.AssetBundles.Services;
+namespace Web.Launcher.Services;
 
 public class ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList buildAssetList,
     AssetBundleRConfig rConfig, ILogger<ReplaceCaches> logger, StartGame game,
@@ -42,11 +42,9 @@ public class ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList
             return;
 
         lock (_lock)
-        {
             if (rwConfig.FlushCacheOnStart)
                 if (logger.Ask("Flushing the cache on start is enabled, would you like to disable this?", true))
                     rwConfig.FlushCacheOnStart = false;
-        }
 
         var cacheModel = new CacheModel(buildAssetList, rwConfig);
 
@@ -57,13 +55,11 @@ public class ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList
         );
 
         using (var bar = new DefaultProgressBar(cacheModel.TotalFoundCaches, "Replacing Caches", logger, rwConfig))
-        {
             foreach (var cache in cacheModel.FoundCaches)
             {
                 var asset = cacheModel.GetAssetInfoFromCacheName(cache.Key);
 
                 lock (_lock)
-                {
                     foreach (var cachePath in cache.Value.Where(cachePath => !ReplacedBundles.Contains(cachePath))
                                  .Where(File.Exists))
                     {
@@ -72,11 +68,9 @@ public class ReplaceCaches(ServerConsole console, EventSink sink, BuildAssetList
 
                         bar.SetMessage($"Overwriting {cache.Key} ({asset.Name})");
                     }
-                }
 
                 bar.TickBar();
             }
-        }
 
         if (startAfterReplace)
             game.AskIfRestart();

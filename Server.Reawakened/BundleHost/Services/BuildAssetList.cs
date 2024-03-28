@@ -5,15 +5,15 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
+using Server.Reawakened.BundleHost.Events;
+using Server.Reawakened.BundleHost.Events.Arguments;
+using Server.Reawakened.BundleHost.Extensions;
+using Server.Reawakened.BundleHost.Helpers;
+using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.Configs;
 using System.Xml;
-using Web.AssetBundles.Events;
-using Web.AssetBundles.Events.Arguments;
-using Web.AssetBundles.Extensions;
-using Web.AssetBundles.Helpers;
-using Web.AssetBundles.Models;
 
-namespace Web.AssetBundles.Services;
+namespace Server.Reawakened.BundleHost.Services;
 
 public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, AssetEventSink assetSink, ServerConsole console,
     AssetBundleRwConfig rwConfig, AssetBundleRConfig rConfig, ServerRConfig sRConfig) : IService
@@ -233,9 +233,7 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
             // Adding a game version check of vMinigames2012 or deleting this
             // allows early 2012 to load could be a missing cache issue
             if (asset.Name.StartsWith("NavMesh"))
-            {
                 asset.Type = AssetInfo.TypeAsset.NavMesh;
-            }
             else
             {
                 bar.SetMessage(

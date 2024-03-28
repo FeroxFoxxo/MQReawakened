@@ -3,15 +3,15 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
+using Server.Reawakened.BundleHost.Events;
+using Server.Reawakened.BundleHost.Events.Arguments;
+using Server.Reawakened.BundleHost.Models;
+using Server.Reawakened.Icons.Configs;
 using Server.Reawakened.XMLs.Bundles;
 using System.Collections;
 using System.Collections.Specialized;
-using Web.AssetBundles.Events;
-using Web.AssetBundles.Events.Arguments;
-using Web.AssetBundles.Models;
-using Web.Icons.Configs;
 
-namespace Web.Icons.Services;
+namespace Server.Reawakened.Icons.Services;
 
 public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBundleRwConfig aRwConfig,
     ILogger<ExtractIcons> logger, IServiceProvider services, ServerHandler serverHandler, ItemCatalog itemCatalog) : IService
@@ -36,16 +36,12 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
                 assets.Add(iconBank);
 
                 if (rwConfig.Configs.TryGetValue(iconBank.Name, out var time))
-                {
                     if (time == iconBank.CacheTime)
                         continue;
                     else
                         rwConfig.Configs[iconBank.Name] = iconBank.CacheTime;
-                }
                 else
-                {
                     rwConfig.Configs.Add(iconBank.Name, iconBank.CacheTime);
-                }
 
                 outOfDateCache++;
             }
@@ -120,12 +116,10 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
             var texturePath = -1;
 
             foreach (DictionaryEntry entry2 in entry)
-            {
                 if ((string)entry2.Key == "Name")
                     name = (string)entry2.Value;
                 else if ((string)entry2.Key == "Texture")
                     texturePath = (int)((OrderedDictionary)entry2.Value)["m_PathID"];
-            }
 
             texturePaths.TryAdd(name, texturePath);
         }

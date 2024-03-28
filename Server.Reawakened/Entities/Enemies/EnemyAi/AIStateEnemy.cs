@@ -2,7 +2,7 @@
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Rooms;
 
-namespace Server.Reawakened.Entities.Entity.Enemies;
+namespace Server.Reawakened.Entities.Enemies.EnemyAI;
 
 public abstract class AIStateEnemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : Enemy(room, entityId, prefabName, enemyController, services), IDestructible
 {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Server.Reawakened.Entities.Entity.Utils;
+namespace Server.Reawakened.Entities.Enemies.Utils;
 public class AISyncEventHelper
 {
 

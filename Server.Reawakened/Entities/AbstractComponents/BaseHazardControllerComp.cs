@@ -10,6 +10,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.Rooms.Models.Entities.Colliders;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 

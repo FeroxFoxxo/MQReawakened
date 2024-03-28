@@ -1,7 +1,7 @@
 ﻿using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.Entities.Entity.Utils;
+namespace Server.Reawakened.Entities.Enemies.Utils;
 public static class AIPropertiesSpawnerExtensions
 {
     public static string CreateBehaviorString(this BaseSpawnerControllerComp spawner, string name)

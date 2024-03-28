@@ -1,6 +1,6 @@
-﻿using Web.AssetBundles.Models;
+﻿using Server.Reawakened.BundleHost.Models;
 
-namespace Web.AssetBundles.Events.Arguments;
+namespace Server.Reawakened.BundleHost.Events.Arguments;
 
 public class AssetBundleLoadEventArgs(Dictionary<string, InternalAssetInfo> internalAssets)
 {

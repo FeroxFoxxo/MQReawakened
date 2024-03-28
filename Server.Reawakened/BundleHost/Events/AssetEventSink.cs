@@ -1,7 +1,7 @@
 ﻿using Server.Base.Core.Abstractions;
-using Web.AssetBundles.Events.Arguments;
+using Server.Reawakened.BundleHost.Events.Arguments;
 
-namespace Web.AssetBundles.Events;
+namespace Server.Reawakened.BundleHost.Events;
 
 public class AssetEventSink : IEventSink
 {

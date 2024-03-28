@@ -4,7 +4,7 @@ using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 
-namespace Server.Reawakened.Rooms.Models.Entities.ColliderType;
+namespace Server.Reawakened.Rooms.Models.Entities.Colliders;
 public class AIProjectileCollider(string projectileId, string ownerId, Room room, string id, Vector3Model position, float sizeX, float sizeY, string plane, float lifeTime, TimerThread timerThread, int damage, ItemEffectType effect, ItemCatalog itemCatalog) : BaseCollider(id, position, sizeX, sizeY, plane, room, ColliderClass.AiAttack)
 {
     public float LifeTime = lifeTime + room.Time;
@@ -27,7 +27,6 @@ public class AIProjectileCollider(string projectileId, string ownerId, Room room
         }
 
         foreach (var collider in roomList)
-        {
             if (CheckCollision(collider) && collider.Type != ColliderClass.Attack &&
                 collider.Type != ColliderClass.AiAttack && collider.Type != ColliderClass.Enemy &&
                 collider.Type != ColliderClass.Breakable && collider.Type != ColliderClass.Hazard)
@@ -35,7 +34,6 @@ public class AIProjectileCollider(string projectileId, string ownerId, Room room
                 collidedWith.Add(collider.Id);
                 collider.SendCollisionEvent(this);
             }
-        }
 
         return [.. collidedWith];
     }

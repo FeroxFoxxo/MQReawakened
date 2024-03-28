@@ -6,7 +6,7 @@ using Server.Base.Network.Enums;
 using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Bundles;
 
-namespace Web.AssetBundles.Services;
+namespace Server.Reawakened.BundleHost.Services;
 
 public class GetXmlData(ServerConsole serverConsole, ILogger<GetXmlData> logger,
     ServerRConfig config, WorldGraph worldGraph, ItemCatalog itemCatalog,

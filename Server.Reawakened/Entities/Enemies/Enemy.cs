@@ -1,6 +1,4 @@
 ﻿using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Entity.Utils;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Entities;
 using UnityEngine;
 using Server.Reawakened.Rooms;
@@ -11,15 +9,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
-using Server.Reawakened.Entities.Entity.Enemies;
 using A2m.Server;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Rooms.Models.Entities.Colliders;
+using Server.Reawakened.Entities.Enemies.Utils;
+using Server.Reawakened.Entities.Enemies.EnemyAI;
 
-namespace Server.Reawakened.Entities.Entity;
+namespace Server.Reawakened.Entities.Enemies;
 
 public abstract class Enemy : IDestructible
 {
@@ -167,14 +167,12 @@ public abstract class Enemy : IDestructible
             //Dynamic Loot Drop
             var chance = new System.Random();
             if (BehaviorList.EnemyLootTable != null)
-            {
                 foreach (var drop in BehaviorList.EnemyLootTable)
                 {
                     chance.NextDouble();
                     if (Level <= drop.MaxLevel && Level >= drop.MinLevel)
                         origin.GrantDynamicLoot(Level, drop, ItemCatalog);
                 }
-            }
 
             //The XP Reward here is not accurate, but pretty close
             var xpAward = DeathXp - (origin.Character.Data.GlobalLevel - 1) * 5;

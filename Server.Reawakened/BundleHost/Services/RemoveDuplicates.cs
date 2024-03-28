@@ -4,10 +4,10 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
+using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.Configs;
-using Web.AssetBundles.Models;
 
-namespace Web.AssetBundles.Services;
+namespace Server.Reawakened.BundleHost.Services;
 
 public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
     ServerConsole console, ServerRConfig config, BuildAssetList buildAssetList,
@@ -49,7 +49,6 @@ public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
                 rwConfig
             )
         )
-        {
             foreach (var asset in allAssets)
             {
                 var assetName = asset.Name.Trim().ToLower();
@@ -86,7 +85,6 @@ public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
 
                 bar.TickBar();
             }
-        }
 
         var replacedCount = assetList.Sum(s => s.Value.Count);
 
@@ -109,9 +107,7 @@ public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
                 rwConfig
             )
         )
-        {
             foreach (var assets in assetList)
-            {
                 for (var i = 0; i < assets.Value.Count; i++)
                 {
                     var targetDirectory = Path.Combine(rConfig.RemovedDuplicateDirectory, assets.Key, i.ToString());
@@ -127,8 +123,6 @@ public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
 
                     bar.TickBar();
                 }
-            }
-        }
 
         logger.LogInformation("Written all assets to directory: {Path}", rConfig.RemovedDuplicateDirectory);
     }

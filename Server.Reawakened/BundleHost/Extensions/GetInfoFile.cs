@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Helpers;
-using Web.AssetBundles.Models;
+using Server.Reawakened.BundleHost.Models;
 
-namespace Web.AssetBundles.Extensions;
+namespace Server.Reawakened.BundleHost.Extensions;
 
 public static class GetInfoFile
 {

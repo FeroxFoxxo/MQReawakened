@@ -1,10 +1,10 @@
 ﻿#nullable enable
 using AssetRipper.IO.Endian;
+using Server.Reawakened.BundleHost.BundleFix.Header.Enums;
+using Server.Reawakened.BundleHost.BundleFix.Header.Models;
 using System.Diagnostics;
-using Web.AssetBundles.BundleFix.Header.Enums;
-using Web.AssetBundles.BundleFix.Header.Models;
 
-namespace Web.AssetBundles.BundleFix.Header;
+namespace Server.Reawakened.BundleHost.BundleFix.Header;
 
 /**
  * Structure for Unity asset bundles.

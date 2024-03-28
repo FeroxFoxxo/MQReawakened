@@ -5,8 +5,8 @@ using Server.Base.Logging;
 using System.Text;
 using Web.Apps.Analytics.Models;
 using Web.Apps.Configs;
-using Web.AssetBundles.Services;
 using Web.Launcher.Models;
+using Web.Launcher.Services;
 
 // ReSharper disable RouteTemplates.ControllerRouteParameterIsNotPassedToMethods
 // ReSharper disable RouteTemplates.MethodMissingRouteParameters

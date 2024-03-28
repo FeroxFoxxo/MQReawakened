@@ -1,7 +1,7 @@
 ﻿using AssetStudio;
 using Object = AssetStudio.Object;
 
-namespace Web.AssetBundles.Extensions;
+namespace Server.Reawakened.BundleHost.Extensions;
 
 public static class GetNamedObjectFromBundle
 {
