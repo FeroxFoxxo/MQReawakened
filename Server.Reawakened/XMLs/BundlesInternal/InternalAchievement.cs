@@ -204,9 +204,7 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
         {
             var loopedAchievements = Definitions.achievements.Where(x => x.categoryId == category.id);
 
-            var maxAchievement = loopedAchievements.Any() ? loopedAchievements.Max(x => x.id) : 0;
-
-            currentCount += maxAchievement;
+            currentCount += loopedAchievements.Any() ? loopedAchievements.Max(x => x.id) : 0;
 
             foreach (var achievement in loopedAchievements)
             {
