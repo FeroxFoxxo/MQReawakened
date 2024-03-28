@@ -27,5 +27,6 @@ public enum AchConditionType
     AddFriend,
     JoinGroup,
     InviteGroup,
-    OpenPetEgg
+    OpenPetEgg,
+    DefeatEnemyStomp
 }

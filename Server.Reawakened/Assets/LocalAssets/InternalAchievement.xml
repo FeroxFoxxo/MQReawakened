@@ -50,12 +50,12 @@
                 <Condition id="1" title="Unknown Condition" type="BuyItem" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="7" title="Daily Exercise" description="Unknown Description. Hint: the icon is named Daily_DailyExercise!" iconName="Daily_DailyExercise" points="1" sortOrder="7" repeatable="true">
+        <Achievement id="7" title="Daily Exercise" description="Explore 5 Different Trails" iconName="Daily_DailyExercise" points="5" sortOrder="7" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Explore 5 Different Trails" type="ExploreTrail" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="8" title="C'Mon!" description="Challenge a Player to a Game of Pet Masters" iconName="Daily_Cmon" points="1" sortOrder="8" repeatable="true">
@@ -82,7 +82,7 @@
                 <Condition id="1" title="Accept an Invite to Play Pet Masters" type="Invalid" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="11" title="Social Animal" description="Add 3 Friends" iconName="Daily_SocialAnimal" points="10" sortOrder="11" repeatable="true">
+        <Achievement id="11" title="Social Animal" description="Add 3 Friends" iconName="Daily_SocialAnimal" points="3" sortOrder="11" repeatable="true">
             <Rewards>
                 <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
@@ -806,148 +806,156 @@
         </Achievement>
     </Category>
     <Category id="4" title="Battling" iconName="Category_Combat" sortOrder="6">
-        <Achievement id="98" title="Unknown Achievement 98" description="Unknown Description. Hint: the icon is named Combat_Enemies_1!" iconName="Combat_Enemies_1" points="1" sortOrder="1" repeatable="false">
+        <Achievement id="98" title="Unknown Achievement 98" description="Defeat 1 Enemy" iconName="Combat_Enemies_1" points="1" sortOrder="1" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1 Enemy" type="DefeatEnemy" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="99" title="Unknown Achievement 99" description="Unknown Description. Hint: the icon is named Combat_Enemies_10!" iconName="Combat_Enemies_10" points="1" sortOrder="2" repeatable="false">
+        <Achievement id="99" title="Battle Tested" description="Defeat 10 Enemies" iconName="Combat_Enemies_10" points="1" sortOrder="2" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Enemies" type="DefeatEnemy" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="100" title="Unknown Achievement 100" description="Unknown Description. Hint: the icon is named Combat_Enemies_25!" iconName="Combat_Enemies_25" points="1" sortOrder="3" repeatable="false">
+        <Achievement id="100" title="Unknown Achievement 100" description="Defeat 25 Enemies" iconName="Combat_Enemies_25" points="1" sortOrder="3" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies" type="DefeatEnemy" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="101" title="Unknown Achievement 101" description="Unknown Description. Hint: the icon is named Combat_Enemies_50!" iconName="Combat_Enemies_50" points="1" sortOrder="4" repeatable="false">
+        <Achievement id="101" title="Unknown Achievement 101" description="Defeat 50 Enemies" iconName="Combat_Enemies_50" points="1" sortOrder="4" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Enemies" type="DefeatEnemy" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="102" title="Unknown Achievement 102" description="Unknown Description. Hint: the icon is named Combat_Enemies_100!" iconName="Combat_Enemies_100" points="1" sortOrder="5" repeatable="false">
+        <Achievement id="102" title="Rumble in the Jungle" description="Defeat 100 Enemies" iconName="Combat_Enemies_100" points="1" sortOrder="5" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Enemies" type="DefeatEnemy" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="103" title="Unknown Achievement 103" description="Unknown Description. Hint: the icon is named Combat_Enemies_250!" iconName="Combat_Enemies_250" points="1" sortOrder="6" repeatable="false">
+        <Achievement id="103" title="Unknown Achievement 103" description="Defeat 250 Enemies" iconName="Combat_Enemies_250" points="1" sortOrder="6" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Enemies" type="DefeatEnemy" value="" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="104" title="Unknown Achievement 104" description="Unknown Description. Hint: the icon is named Combat_Enemies_500!" iconName="Combat_Enemies_500" points="1" sortOrder="7" repeatable="false">
+        <Achievement id="104" title="Unknown Achievement 104" description="Defeat 500 Enemies" iconName="Combat_Enemies_500" points="1" sortOrder="7" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Enemies" type="DefeatEnemy" value="" goal="500" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="105" title="Unknown Achievement 105" description="Unknown Description. Hint: the icon is named Combat_Enemies_1000!" iconName="Combat_Enemies_1000" points="1" sortOrder="8" repeatable="false">
+        <Achievement id="105" title="Brutal Battler" description="Defeat 1000 Enemies" iconName="Combat_Enemies_1000" points="1" sortOrder="8" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1000 Enemies" type="DefeatEnemy" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="106" title="Unknown Achievement 106" description="Unknown Description. Hint: the icon is named Combat_Enemies_2500!" iconName="Combat_Enemies_2500" points="1" sortOrder="9" repeatable="false">
+        <Achievement id="106" title="Unknown Achievement 106" description="Defeat 2500 Enemies" iconName="Combat_Enemies_2500" points="1" sortOrder="9" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 2500 Enemies" type="DefeatEnemy" value="" goal="2500" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="107" title="Unknown Achievement 107" description="Unknown Description. Hint: the icon is named Combat_Enemies_5000!" iconName="Combat_Enemies_5000" points="1" sortOrder="10" repeatable="false">
+        <Achievement id="107" title="Unknown Achievement 107" description="Defeat 5000 Enemies" iconName="Combat_Enemies_5000" points="1" sortOrder="10" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 5000 Enemies" type="DefeatEnemy" value="" goal="5000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="108" title="Unknown Achievement 108" description="Unknown Description. Hint: the icon is named Combat_Superstomp_1!" iconName="Combat_Superstomp_1" points="1" sortOrder="11" repeatable="false">
+        <Achievement id="218" title="Hero of Ook" description="Defeat 10000 Enemies" iconName="Defeat_10k" points="1" sortOrder="11" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10000 Enemies" type="DefeatEnemy" value="" goal="10000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="109" title="Unknown Achievement 109" description="Unknown Description. Hint: the icon is named Combat_Superstomp_5!" iconName="Combat_Superstomp_5" points="1" sortOrder="12" repeatable="false">
+        <Achievement id="108" title="SUPER Stomp!" description="Defeat 1 Enemy with a Super Stomp" iconName="Combat_Superstomp_1" points="1" sortOrder="12" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1 Enemy with a Super Stomp" type="DefeatEnemyStomp" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="110" title="Unknown Achievement 110" description="Unknown Description. Hint: the icon is named Combat_Superstomp_10!" iconName="Combat_Superstomp_10" points="1" sortOrder="13" repeatable="false">
+        <Achievement id="109" title="Unknown Achievement 109" description="Defeat 5 Enemies with a Super Stomp" iconName="Combat_Superstomp_5" points="1" sortOrder="12" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 5 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="111" title="Unknown Achievement 111" description="Unknown Description. Hint: the icon is named Combat_Superstomp_25!" iconName="Combat_Superstomp_25" points="1" sortOrder="14" repeatable="false">
+        <Achievement id="110" title="Stomptastic!" description="Defeat 10 Enemies with a Super Stomp" iconName="Combat_Superstomp_10" points="1" sortOrder="13" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="112" title="Unknown Achievement 112" description="Unknown Description. Hint: the icon is named Combat_Superstomp_50!" iconName="Combat_Superstomp_50" points="1" sortOrder="15" repeatable="false">
+        <Achievement id="111" title="Unknown Achievement 111" description="Defeat 25 Enemies with a Super Stomp" iconName="Combat_Superstomp_25" points="1" sortOrder="14" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="113" title="Unknown Achievement 113" description="Unknown Description. Hint: the icon is named Combat_Superstomp_100!" iconName="Combat_Superstomp_100" points="1" sortOrder="16" repeatable="false">
+        <Achievement id="112" title="Unknown Achievement 112" description="Defeat 50 Enemies with a Super Stomp" iconName="Combat_Superstomp_50" points="1" sortOrder="15" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="114" title="Unknown Achievement 114" description="Unknown Description. Hint: the icon is named Combat_Superstomp_250!" iconName="Combat_Superstomp_250" points="1" sortOrder="17" repeatable="false">
+        <Achievement id="113" title="Super SUPER Stomp" description="Defeat 100 Enemies with a Super Stomp" iconName="Combat_Superstomp_100" points="1" sortOrder="16" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="115" title="Unknown Achievement 115" description="Unknown Description. Hint: the icon is named Combat_Superstomp_500!" iconName="Combat_Superstomp_500" points="1" sortOrder="18" repeatable="false">
+        <Achievement id="114" title="Unknown Achievement 114" description="Defeat 250 Enemies with a Super Stomp" iconName="Combat_Superstomp_250" points="1" sortOrder="17" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="250" visible="true" />
+            </Conditions>
+        </Achievement>
+        <Achievement id="115" title="Unknown Achievement 115" description="Defeat 500 Enemies with a Super Stomp" iconName="Combat_Superstomp_500" points="1" sortOrder="18" repeatable="false">
+            <Rewards>
+                <Reward type="Bananas" value="1" quantity="0" />
+            </Rewards>
+            <Conditions>
+                <Condition id="1" title="Defeat 500 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="500" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="116" title="Stompasaurus Wrecks!" description="Defeat 1,000 Enemies with a Super Stomp" iconName="Combat_Superstomp_1000" points="350" sortOrder="19" repeatable="false">
@@ -955,15 +963,15 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Enemies with a Super Stomp" type="Invalid" value="" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="117" title="Unknown Achievement 117" description="Unknown Description. Hint: the icon is named Combat_Potions_5!" iconName="Combat_Potions_5" points="1" sortOrder="20" repeatable="false">
+        <Achievement id="117" title="Unknown Achievement 117" description="Use 5 Potions" iconName="Combat_Potions_5" points="1" sortOrder="20" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Use 5 Potions" type="Drink" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="118" title="Potion Gulper" description="Use 10 Potions" iconName="Defeat_10_Potions" points="5" sortOrder="21" repeatable="false">
@@ -984,7 +992,7 @@
         </Achievement>
         <Achievement id="120" title="Liquid Tactics" description="Use 100 Potions" iconName="Combat_Potions_100" points="20" sortOrder="23" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="40" quantity="0" />
+                <Reward type="Xp" value="180" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Use 100 Potions" type="Drink" value="" goal="100" visible="true" />
@@ -1719,7 +1727,7 @@
                 <Condition id="1" title="Defeat Plankton 10 Times" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="212" title="BOOM go the Baddies" description="Use 10 Bombs or Poppers" iconName="Defeat_10_Bombs" points="5" sortOrder="115" repeatable="false">
+        <Achievement id="212" title="BOOM go the Baddies!" description="Use 10 Bombs or Poppers" iconName="Defeat_10_Bombs" points="5" sortOrder="115" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
@@ -1765,14 +1773,6 @@
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 500 X-Borgs in the Power Rangers Arena" type="Invalid" value="" goal="500" visible="true" />
-            </Conditions>
-        </Achievement>
-        <Achievement id="218" title="Unknown Achievement 218" description="Unknown Description. Hint: the icon is named Defeat_10k!" iconName="Defeat_10k" points="1" sortOrder="121" repeatable="false">
-            <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
-            </Rewards>
-            <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="219" title="Unknown Achievement 219" description="Unknown Description. Hint: the icon is named Defeat_100_Friends!" iconName="Defeat_100_Friends" points="1" sortOrder="122" repeatable="false">
@@ -2614,28 +2614,28 @@
         </Achievement>
     </Category>
     <Category id="6" title="Questing" iconName="Category_Questing" sortOrder="4">
-        <Achievement id="323" title="Unknown Achievement 323" description="Unknown Description. Hint: the icon is named Questing_CompleteQuest_10!" iconName="Questing_CompleteQuest_10" points="1" sortOrder="1" repeatable="false">
+        <Achievement id="323" title="Monkey on a Mission" description="Complete 10 Quests" iconName="Questing_CompleteQuest_10" points="20" sortOrder="1" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="WPN_SPC_DoomGrenade01" quantity="3" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete 10 Quests" type="Unknown" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="324" title="Unknown Achievement 324" description="Unknown Description. Hint: the icon is named Questing_CompleteQuest_50!" iconName="Questing_CompleteQuest_50" points="1" sortOrder="2" repeatable="false">
+        <Achievement id="324" title="Unknown Achievement 324" description="Complete 50 Quests" iconName="Questing_CompleteQuest_50" points="1" sortOrder="2" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete 50 Quests" type="Unknown" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="325" title="Unknown Achievement 325" description="Unknown Description. Hint: the icon is named Questing_CompleteQuest_100!" iconName="Questing_CompleteQuest_100" points="1" sortOrder="3" repeatable="false">
+        <Achievement id="325" title="Monkey Quest" description="Complete 100 Quests" iconName="Questing_CompleteQuest_100" points="1" sortOrder="3" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete 100 Quests" type="Unknown" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="326" title="Unknown Achievement 326" description="Unknown Description. Hint: the icon is named Questing_Level_10!" iconName="Questing_Level_10" points="1" sortOrder="4" repeatable="false">
@@ -4058,9 +4058,9 @@
                 <Condition id="1" title="Add 10 Friends" type="AddFriend" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="502" title="Unknown Achievement 502" description="Add 25 Friends" iconName="Social_Friends_25" points="1" sortOrder="12" repeatable="false">
+        <Achievement id="502" title="Barrel of Friends" description="Add 25 Friends" iconName="Social_Friends_25" points="25" sortOrder="12" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="250" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Add 25 Friends" type="AddFriend" value="" goal="25" visible="true" />
@@ -4079,7 +4079,7 @@
                 <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Join 10 Groups" type="Invalid" value="" goal="10" visible="true" />
+                <Condition id="1" title="Be in a Full Group" type="Invalid" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="505" title="Group Groovin’" description="Join 5 Groups" iconName="Social_Grouping_GrouGroovin" points="10" sortOrder="15" repeatable="false">
@@ -4286,7 +4286,7 @@
         </Achievement>
         <Achievement id="530" title="Chomp Champ" description="Eat 100 Food Items" iconName="Fun_Food_ChompChamp_100" points="20" sortOrder="4" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="1" quantity="0" />
+                <Reward type="Xp" value="180" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Eat 100 Food Items" type="Consumable" value="" goal="100" visible="true" />
@@ -4374,7 +4374,7 @@
         </Achievement>
         <Achievement id="541" title="Shreddin'!" description="Equip Shredder's Outfit" iconName="Fun_Equip_Shreddin" points="20" sortOrder="15" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="100" quantity="0" />
+                <Reward type="Xp" value="180" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Shredder's Cape" type="EquipItem" value="Add_EVT_TMNT_Shredder01_BP01" goal="1" visible="true" />
@@ -4384,12 +4384,12 @@
                 <Condition id="5" title="Equip Shredder's Bracers" type="EquipItem" value="Add_EVT_TMNT_Shredder01_W01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="542" title="Unknown Achievement 542" description="Unknown Description. Hint: the icon is named Fun_Participate_HalfShell!" iconName="Fun_Participate_HalfShell" points="1" sortOrder="16" repeatable="false">
+        <Achievement id="542" title="Heroes in a Half Shell" description="Participate in a Turtle's Party" iconName="Fun_Participate_HalfShell" points="5" sortOrder="16" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="" value="" goal="2" visible="true" />
+                <Condition id="1" title="Participate in a Turtle's Party" type="ExploreTrail" value="lv_evt_tmnt01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="543" title="Booger Eater" description="Eat 10 Sour Bathog Boogers (2013 Halloween Event Item!)" iconName="Silly_BoogerEater" points="5" sortOrder="17" repeatable="false">
@@ -4456,12 +4456,12 @@
                 <Condition id="1" title="Equip Golden Tornado Stars" type="EquipItem" value="WPN_PRJ_Shuriken02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="551" title="Party Animal" description="Unknown Description. Hint: the icon is named Fun_Participate_PartyAnimal!" iconName="Fun_Participate_PartyAnimal" points="1" sortOrder="25" repeatable="false">
+        <Achievement id="551" title="Party Animal" description="Participate in a Banana Bash" iconName="Fun_Participate_PartyAnimal" points="5" sortOrder="25" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Equip" type="" value="" goal="2" visible="true" />
+                <Condition id="1" title="Participate in a Banana Bash" type="ExploreTrail" value="lv_evt_bananabash" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="552" title="Mace of the Guardian" description="Equip Guardian Mace" iconName="Fun_Equip_MaceoftheGuardian" points="1" sortOrder="26" repeatable="false">
