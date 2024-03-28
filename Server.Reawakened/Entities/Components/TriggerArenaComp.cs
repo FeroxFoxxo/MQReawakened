@@ -54,7 +54,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 
             _timer = Room.Time + ActiveDuration;
 
-            //Add to ServerRConfig eventually. This exists to stop the arena from regenerating if the spawners are defeated before it has finished initializing
+            //Add to config eventually. This exists to stop the arena from regenerating if the spawners are defeated before it has finished initializing
             _minClearTime = Room.Time + 12;
         }
         else

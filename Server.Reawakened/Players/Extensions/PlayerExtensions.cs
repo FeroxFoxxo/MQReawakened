@@ -207,7 +207,7 @@ public static class PlayerExtensions
 
         // this allows early 2012 to load 
         // the empty string is displayLevelName in ILSpy
-        // player.SendXt("lw", error, levelName, string.Empty, surroundingLevels);
+        // _player.SendXt("lw", error, levelName, string.Empty, surroundingLevels);
 
         player.SendXt("lw", error, levelName, surroundingLevels);
     }

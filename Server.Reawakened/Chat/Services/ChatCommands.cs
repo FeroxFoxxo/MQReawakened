@@ -27,7 +27,7 @@ using System.Text.RegularExpressions;
 namespace Server.Reawakened.Chat.Services;
 
 public partial class ChatCommands(
-    ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger, FileLogger fileLogger,
+    ItemCatalog itemCatalog, ServerRConfig config, ItemRConfig itemConfig, ILogger<ServerConsole> logger, FileLogger fileLogger,
     WorldHandler worldHandler, InternalAchievement internalAchievement, InternalQuestItem questItem,
     WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog, 
     CharacterHandler characterHandler, AccountHandler accountHandler) : IService
@@ -121,7 +121,7 @@ public partial class ChatCommands(
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
-    public bool GetPlayerPos(Player player, string[] args)
+    public static bool GetPlayerPos(Player player, string[] args)
     {
         Log($"X: {player.TempData.Position.X}" +
             $" | Y: {player.TempData.Position.Y}" +
@@ -129,7 +129,7 @@ public partial class ChatCommands(
 
         return true;
     }
-    public bool MaxHealth(Player player, string[] args)
+    public static bool MaxHealth(Player player, string[] args)
     {
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId, player.Room.Time,
             player.Character.Data.CurrentLife = player.Character.Data.MaxLife, player.Character.Data.MaxLife, player.GameObjectId));
@@ -252,7 +252,7 @@ public partial class ChatCommands(
         var health = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, player.Character.Data.MaxLife, player.Character.Data.MaxLife, "now");
         player.Room.SendSyncEvent(health);
 
-        var heal = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, (int)ItemEffectType.Healing, config.HealAmount, 1, true, player.GameObjectId.ToString(), true);
+        var heal = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, (int)ItemEffectType.Healing, itemConfig.HealAmount, 1, true, player.GameObjectId.ToString(), true);
         player.Room.SendSyncEvent(heal);
 
         return true;
@@ -260,11 +260,11 @@ public partial class ChatCommands(
 
     private void AddKit(Player player, int amount)
     {
-        var items = config.SingleItemKit
+        var items = itemConfig.SingleItemKit
             .Select(itemCatalog.GetItemFromId)
             .ToList();
 
-        foreach (var itemId in config.StackedItemKit)
+        foreach (var itemId in itemConfig.StackedItemKit)
         {
             var stackedItem = itemCatalog.GetItemFromId(itemId);
 
@@ -274,7 +274,7 @@ public partial class ChatCommands(
                 continue;
             }
 
-            for (var i = 0; i < config.AmountToStack; i++)
+            for (var i = 0; i < itemConfig.AmountToStack; i++)
                 items.Add(stackedItem);
         }
 
@@ -389,7 +389,7 @@ public partial class ChatCommands(
 
         if (characterHandler.GetCharacterFromName(newName) != null)
         {
-            Log("Please specify a name that is not in use by another player.", player);
+            Log("Please specify a name that is not in use by another _player.", player);
             return false;
         }
 
@@ -558,7 +558,7 @@ public partial class ChatCommands(
 
         if (closestGameObjects.Count == 0)
         {
-            Log("No game objects found close to player!", player);
+            Log("No game objects found close to _player!", player);
             return false;
         }
 

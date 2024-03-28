@@ -87,7 +87,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
 
                     if (!string.IsNullOrEmpty(tryGetDict.Key))
                     {
-                        Logger.LogError("Item already exists: {Name} (desc key: {ItemId})", tryGetDict.Key, item.Key);
+                        Logger.LogError("Item already exists: {Name} (desc key: {_itemId})", tryGetDict.Key, item.Key);
                         continue;
                     }
 

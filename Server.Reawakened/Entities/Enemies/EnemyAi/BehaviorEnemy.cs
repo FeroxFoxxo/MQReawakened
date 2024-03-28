@@ -3,6 +3,7 @@ using Server.Reawakened.Entities.AIBehavior;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Entity.Utils;
 using Server.Reawakened.Entities.Interfaces;
+using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -281,12 +282,12 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
 
             AiData.Intern_FireProjectile = false;
 
-            var prj = new AIProjectileEntity(Room, Id, projectileId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
+            var prj = new AIProjectile(Room, Id, projectileId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
                 (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, Room.Enemies[Id].EnemyController.TimerThread,
                 GameFlow.StatisticData.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level),
-                EnemyController.ComponentData.EnemyEffectType,
-                ItemCatalog);
-            Room.Projectiles.Add(projectileId, prj);
+                EnemyController.ComponentData.EnemyEffectType, ServerRConfig, ItemCatalog);
+
+            Room.AddProjectile(prj);
         }
     }
 

@@ -6,7 +6,6 @@ namespace Server.Reawakened.Entities.Components;
 
 public class DrakeEnemyControllerComp : Component<DrakeEnemyController>
 {
-    private readonly bool _isImmune;
     public TimerThread TimerThread { get; set; }
     public ILogger<DrakeEnemyControllerComp> Logger { get; set; }
 

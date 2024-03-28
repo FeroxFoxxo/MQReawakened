@@ -28,9 +28,7 @@ public static class ImportModules
             typeof(XtProtocol),
             typeof(Launcher),
             typeof(Apps),
-            typeof(AssetBundles),
             typeof(Razor),
-            typeof(Icons),
             typeof(WebPlayer)
         };
 

@@ -8,6 +8,8 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Players;
 using A2m.Server;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.Entities.Projectiles;
+using Server.Reawakened.Configs;
 
 namespace Server.Reawakened.Entities.Components;
 public class DroppingsControllerComp : Component<DroppingsController>
@@ -17,6 +19,7 @@ public class DroppingsControllerComp : Component<DroppingsController>
     public Vector3Model StartPosition { get; } = new Vector3Model();
     public TimerThread TimerThread { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
 
     public override void InitializeComponent()
     {
@@ -35,9 +38,10 @@ public class DroppingsControllerComp : Component<DroppingsController>
 
         var projectileId = Room.SetProjectileId();
 
-        var aiProjectile = new AIProjectileEntity(Room, Id, projectileId, Position, 0, -5, 3, TimerThread,
-            0, ItemEffectType.Freezing, ItemCatalog);
-        Room.Projectiles.Add(projectileId, aiProjectile);
+        var aiProjectile = new AIProjectile(Room, Id, projectileId, Position, 0, -5, 3, TimerThread,
+            0, ItemEffectType.Freezing, ServerRConfig, ItemCatalog);
+
+        Room.AddProjectile(aiProjectile);
 
         Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Id, Room.Time,
             Position.X, Position.Y, Position.Z, 0, 0, 3, int.Parse(projectileId), 0));

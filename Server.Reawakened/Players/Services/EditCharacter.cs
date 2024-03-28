@@ -44,7 +44,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
 
         console.AddCommand(
             "levelUp",
-            "Changes a player's XP level.",
+            "Changes a _player's XP level.",
             NetworkType.Server,
             _ => LevelUp()
         );
@@ -58,7 +58,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
 
         console.AddCommand(
             "runCommand",
-            "Runs a command for a given player.",
+            "Runs a command for a given _player.",
             NetworkType.Server,
             _ => RunPlayerCommand()
         );
@@ -229,7 +229,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
         }
         else
         {
-            logger.LogError("Could not find item with id: '{ItemId}'", itemId);
+            logger.LogError("Could not find item with id: '{_itemId}'", itemId);
         }
     }
 }

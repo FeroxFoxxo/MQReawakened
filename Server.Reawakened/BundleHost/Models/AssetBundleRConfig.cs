@@ -34,7 +34,6 @@ public class AssetBundleRConfig : IRConfig
     public string[] AssetModifiers { get; }
     public Dictionary<string, string> AssetRenames { get; }
 
-    public bool KillOnBundleRetry { get; }
     public bool LogAssetLoadInfo { get; }
 
     public AssetBundleRConfig()
@@ -49,7 +48,6 @@ public class AssetBundleRConfig : IRConfig
         AlwaysRecreateBundle = false;
         DebugInfo = false;
         ShouldLogAssets = false;
-        KillOnBundleRetry = false;
 
         SaveBundleExtension = "bundleGen";
         StoredAssetDict = "StoredAssets.xml";

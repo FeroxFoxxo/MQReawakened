@@ -108,10 +108,11 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
 
         var lastUpdate = DateTime.ParseExact(CurrentVersion.game.lastUpdate, lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
-        lWConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
+
+        sConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
 
         sConfig.GameVersion = GameVersion.Unknown;
-        lWConfig.v2014Timestamp = DateTime.ParseExact(lConfig.ClientUpdates[GameVersion.v2014], lConfig.TimeFilter, CultureInfo.InvariantCulture).ToUnixTimestamp();
+        sConfig.CutOffFor2014 = DateTime.ParseExact(lConfig.ClientUpdates[GameVersion.v2014], lConfig.TimeFilter, CultureInfo.InvariantCulture).ToUnixTimestamp();
 
         foreach (var updateDate in lConfig.ClientUpdates
             .ToDictionary(x => x.Key, x => DateTime.ParseExact(x.Value, lConfig.TimeFilter, CultureInfo.InvariantCulture))

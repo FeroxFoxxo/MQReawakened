@@ -11,7 +11,7 @@ public class AttackCollider(string id, Vector3Model position, float sizeX, float
     public int Damage = damage;
     public Elemental DamageType = type;
 
-    private float _offset = player.Room.Time + offset;
+    private readonly float _offset = player.Room.Time + offset;
 
     public override string[] IsColliding(bool isAttack)
     {

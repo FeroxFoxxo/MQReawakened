@@ -4,12 +4,8 @@ using Server.Base.Core.Abstractions;
 
 namespace Server.Web.Abstractions;
 
-public abstract class WebModule : Module
+public abstract class WebModule(ILogger logger) : Module(logger)
 {
-    protected WebModule(ILogger logger) : base(logger)
-    {
-    }
-
     public virtual void InitializeWeb(WebApplicationBuilder builder)
     {
     }

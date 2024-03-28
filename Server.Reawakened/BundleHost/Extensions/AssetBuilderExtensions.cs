@@ -1,6 +1,5 @@
 ﻿using Server.Reawakened.Configs;
 using Web.AssetBundles.Models;
-using Web.Launcher.Models;
 
 namespace Web.AssetBundles.Extensions;
 
@@ -28,7 +27,7 @@ public static class AssetBuilderExtensions
         assets.GroupBy(x => x.Type)
             .SelectMany(g => g.OrderBy(x => x.Name).ToArray());
 
-    public static Dictionary<string, InternalAssetInfo> GetClosestBundles(this IEnumerable<InternalAssetInfo> assets, LauncherRwConfig config, ServerRConfig sConfig)
+    public static Dictionary<string, InternalAssetInfo> GetClosestBundles(this IEnumerable<InternalAssetInfo> assets, ServerRConfig sConfig)
     {
         var filteredAssets = new Dictionary<string, InternalAssetInfo>();
 
@@ -40,8 +39,8 @@ public static class AssetBuilderExtensions
             }
             else
             {
-                var oldAssetTime = value.CacheTime - config.v2014Timestamp;
-                var newAssetTime = newAsset.CacheTime - config.v2014Timestamp;
+                var oldAssetTime = value.CacheTime - sConfig.CutOffFor2014;
+                var newAssetTime = newAsset.CacheTime - sConfig.CutOffFor2014;
 
                 if (sConfig.GameVersion <= GameVersion.vLate2013)
                 {
@@ -53,8 +52,8 @@ public static class AssetBuilderExtensions
                 {
                     if (oldAssetTime >= 0)
                     {
-                        var oldAdjusted = Math.Abs(value.CacheTime - config.LastClientUpdate);
-                        var newAdjusted = Math.Abs(newAsset.CacheTime - config.LastClientUpdate);
+                        var oldAdjusted = Math.Abs(value.CacheTime - sConfig.LastClientUpdate);
+                        var newAdjusted = Math.Abs(newAsset.CacheTime - sConfig.LastClientUpdate);
 
                         if (newAdjusted < oldAdjusted)
                             filteredAssets[newAsset.Name] = newAsset;

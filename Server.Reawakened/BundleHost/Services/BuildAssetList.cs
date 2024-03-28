@@ -12,12 +12,11 @@ using Web.AssetBundles.Events.Arguments;
 using Web.AssetBundles.Extensions;
 using Web.AssetBundles.Helpers;
 using Web.AssetBundles.Models;
-using Web.Launcher.Models;
 
 namespace Web.AssetBundles.Services;
 
 public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, AssetEventSink assetSink, ServerConsole console,
-    LauncherRwConfig lWConfig, AssetBundleRwConfig rwConfig, AssetBundleRConfig rConfig, ServerRConfig sRConfig) : IService
+    AssetBundleRwConfig rwConfig, AssetBundleRConfig rConfig, ServerRConfig sRConfig) : IService
 {
     public readonly Dictionary<string, string> AssetDict = [];
 
@@ -72,7 +71,7 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
             ? GetAssetsFromCache(Path.GetDirectoryName(rwConfig.CacheInfoFile))
             : GetAssetsFromDictionary(File.ReadAllText(AssetDictLocation));
 
-        InternalAssets = assets.GetClosestBundles(lWConfig, sRConfig);
+        InternalAssets = assets.GetClosestBundles(sRConfig);
 
         InternalAssets.AddModifiedAssets(rConfig);
         InternalAssets.AddLocalXmlFiles(logger, rConfig);

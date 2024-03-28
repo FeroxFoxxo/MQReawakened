@@ -16,15 +16,14 @@ namespace Web.Icons.Services;
 public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBundleRwConfig aRwConfig,
     ILogger<ExtractIcons> logger, IServiceProvider services, ServerHandler serverHandler, ItemCatalog itemCatalog) : IService
 {
-    public List<string> FoundIcons { get; private set; }
-
     public void Initialize() => sink.AssetBundlesLoaded += ExtractAllIcons;
 
     private void ExtractAllIcons(AssetBundleLoadEventArgs bundleEvent)
     {
-        var count = 0;
+        var outOfDateCache = 0;
         var assets = new List<InternalAssetInfo>();
-        FoundIcons = [];
+
+        logger.LogInformation("Reading icons from file");
 
         foreach (var iconBankName in rConfig.IconBanks)
         {
@@ -48,17 +47,22 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
                     rwConfig.Configs.Add(iconBank.Name, iconBank.CacheTime);
                 }
 
-                count++;
+                outOfDateCache++;
             }
         }
 
-        if (count > 0)
+        var knownIcons = new Dictionary<string, Dictionary<string, Texture2D>>();
+
+        foreach (var asset in assets)
+            knownIcons.TryAdd(asset.Name, GetIcons(asset));
+
+        if (outOfDateCache > 0)
         {
             Directory.CreateDirectory(rConfig.IconDirectory).Empty();
             Directory.CreateDirectory(rConfig.UnknownItemsDirectory).Empty();
 
-            foreach (var asset in assets)
-                ExtractIconsFrom(asset, bundleEvent);
+            foreach (var asset in knownIcons)
+                ExtractIconsFrom(asset.Value, asset.Key);
 
             services.SaveConfigs(serverHandler.Modules, logger);
 
@@ -76,14 +80,10 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
             }
         }
 
-        foreach (var icon in Directory.GetFiles(rConfig.IconDirectory))
-        {
-            var iconName = Path.GetFileNameWithoutExtension(icon);
-            FoundIcons.Add(iconName);
-        }
+        logger.LogDebug("Read icons from file.");
     }
 
-    public void ExtractIconsFrom(InternalAssetInfo asset, AssetBundleLoadEventArgs _)
+    public Dictionary<string, Texture2D> GetIcons(InternalAssetInfo asset)
     {
         var manager = new AssetsManager();
         var assemblyLoader = new AssemblyLoader();
@@ -112,7 +112,7 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
                     .Select(x => (OrderedDictionary)x)
                 .ToList();
 
-        var textureCount = new Dictionary<string, int>();
+        var texturePaths = new Dictionary<string, int>();
 
         foreach (var entry in icons)
         {
@@ -127,22 +127,17 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
                     texturePath = (int)((OrderedDictionary)entry2.Value)["m_PathID"];
             }
 
-            textureCount.TryAdd(name, texturePath);
+            texturePaths.TryAdd(name, texturePath);
         }
 
-        var textures = manager.assetsFileList
+        var textureDictionary = new Dictionary<string, Texture2D>();
+
+        foreach (var texture in manager.assetsFileList
             .First().ObjectsDic.Values
             .Where(x => x.type == ClassIDType.Texture2D)
-            .Select(x => x as Texture2D)
-            .ToArray();
-
-        using var defaultBar = new DefaultProgressBar(textures.Length, $"Extracting icons for {asset.Name}...", logger, aRwConfig);
-
-        foreach (var texture in textures)
+            .Select(x => x as Texture2D))
         {
-            defaultBar.TickBar();
-
-            var name = textureCount.FirstOrDefault(x => x.Value == texture.m_PathID).Key;
+            var name = texturePaths.FirstOrDefault(x => x.Value == texture.m_PathID).Key;
 
             if (string.IsNullOrEmpty(name))
             {
@@ -150,16 +145,33 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
                 continue;
             }
 
-            var shouldBreak = false;
+            textureDictionary.TryAdd(name, texture);
+        }
+
+        return textureDictionary;
+    }
+
+    public void ExtractIconsFrom(Dictionary<string, Texture2D> textures, string assetName)
+    {
+        using var defaultBar = new DefaultProgressBar(textures.Count, $"Extracting icons for {assetName}...", logger, aRwConfig);
+
+        foreach (var kvp in textures)
+        {
+            var name = kvp.Key;
+            var texture = kvp.Value;
+
+            defaultBar.TickBar();
+
+            var shouldSkip = false;
 
             foreach (var invalidStart in rConfig.IgnoreStarting)
                 if (name.StartsWith(invalidStart))
                 {
-                    shouldBreak = true;
-                    continue;
+                    shouldSkip = true;
+                    break;
                 }
 
-            if (shouldBreak)
+            if (shouldSkip)
                 continue;
 
             var path = Path.Join(rConfig.IconDirectory, $"{name}.png");

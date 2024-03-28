@@ -13,26 +13,15 @@ using Web.AssetBundles.Models;
 using Web.AssetBundles.Services;
 using FileIO = System.IO.File;
 
-namespace Web.AssetBundles.BundleFix.Controllers;
+namespace Server.Reawakened.BundleHost.Controllers;
 
 [Route("/Client/{folder}/{file}")]
 public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHostController> logger,
-    AssetBundleRConfig config, BuildXmlFiles buildXmlList, ReplaceCaches replaceCaches) : Controller
+    AssetBundleRConfig config, BuildXmlFiles buildXmlList) : Controller
 {
     [HttpGet]
     public IActionResult GetAsset([FromRoute] string folder, [FromRoute] string file)
     {
-        if (config.KillOnBundleRetry && !file.EndsWith(".xml"))
-        {
-            var uriPath = $"{folder}/{file}";
-
-            // Don't log to console.
-            if (replaceCaches.CurrentlyLoadedAssets.Contains(uriPath))
-                return new StatusCodeResult(StatusCodes.Status418ImATeapot);
-
-            replaceCaches.CurrentlyLoadedAssets.Add(uriPath);
-        }
-
         var publishConfig = config.PublishConfigs.FirstOrDefault(a => string.Equals(a.Value, file));
 
         if (!publishConfig.IsDefault())
