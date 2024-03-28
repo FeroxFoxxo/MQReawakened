@@ -1714,7 +1714,7 @@
             <Drop type="item" id="1601" chance="0.5" minLevel="6" maxLevel="65"/>
             <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
-        <Hitbox width="2" height="1" offsetX="0.3" offsetY="0.5"/>
+        <Hitbox width="2" height="2" offsetX="0.3" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Invis">
         <GlobalProperties>
@@ -1741,7 +1741,7 @@
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
             <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
-        <Hitbox width="2" height="1" offsetX="0.3" offsetY="0.5"/>
+        <Hitbox width="2" height="2" offsetX="0.3" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Lava">
         <GlobalProperties>
@@ -1768,7 +1768,7 @@
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
             <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
-        <Hitbox width="2" height="1" offsetX="0.3" offsetY="0.5"/>
+        <Hitbox width="2" height="2" offsetX="0.3" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Rock">
         <GlobalProperties>
@@ -1792,7 +1792,7 @@
             <Drop type="item" id="1596" chance="0.1" minLevel="6" maxLevel="65"/>
             <Drop type="item" id="1597" chance="0.02" minLevel="7" maxLevel="65"/>
         </LootTable>
-        <Hitbox width="2" height="1" offsetX="0.3" offsetY="0.5"/>
+        <Hitbox width="2" height="2" offsetX="0.3" offsetY="0.5"/>
     </Enemy>
 	<Enemy name="PF_Spite_Pincer_Swamp">
         <GlobalProperties>
@@ -1819,7 +1819,7 @@
             <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65"/>
             <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50"/>
         </LootTable>
-        <Hitbox width="2" height="1" offsetX="0.3" offsetY="0.5"/>
+        <Hitbox width="2" height="2" offsetX="0.3" offsetY="0.5"/>
 	</Enemy>
     <!--Ograks-->
 	<Enemy name="PF_Spite_Stomper_Rock">
