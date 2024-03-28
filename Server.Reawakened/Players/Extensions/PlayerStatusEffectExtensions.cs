@@ -25,7 +25,7 @@ public static class PlayerStatusEffectExtensions
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
         (int)ItemEffectType.PoisonDamage, damage, hurtLength, true, hazardId, false));
 
-        player.ApplyCharacterDamage(player.Room, damage, hurtLength, timerThread);
+        player.ApplyCharacterDamage(damage, hurtLength, timerThread);
     }
 
     public class InvisibiltyData()

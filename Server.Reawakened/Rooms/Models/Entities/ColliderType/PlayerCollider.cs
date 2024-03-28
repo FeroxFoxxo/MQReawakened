@@ -21,7 +21,7 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
 
             var damage = aiProjectileCollider.Damage - player.Character.Data.CalculateDefense(aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
 
-            player.ApplyCharacterDamage(Room, damage, 1, aiProjectileCollider.TimerThread);
+            player.ApplyCharacterDamage(damage, 1, aiProjectileCollider.TimerThread);
 
             player.TemporaryInvincibility(aiProjectileCollider.TimerThread, 1);
 

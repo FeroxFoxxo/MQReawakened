@@ -105,64 +105,25 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 TimeSpan.FromSeconds(DeactivationDuration), TimeSpan.Zero, 1);
     }
 
-    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
-    {
-        if (!notifyCollisionEvent.Colliding || player.TempData.Invincible)
-            return;
-
-        var character = player.Character;
-
-        Enum.TryParse(HurtEffect, true, out
-        ItemEffectType effectType);
-        Damage = _enemyController != null
-            ? WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, _enemyController.Level)
-            : -1;
-
-        if (effectType == default)
-        {
-            var noEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage,
-            0, 1, true, _id, false);
-
-            Room.SendSyncEvent(noEffect);
-        }
-        else
-        {
-            var statusEffect = new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)effectType,
-                0, 1, true, _id, false);
-
-            Room.SendSyncEvent(statusEffect);
-
-            Logger.LogTrace("Triggered status effect for {Character} of {HurtType}", character.Data.CharacterName,
-                effectType);
-        }
-
-        var defense = player.Character.Data.CalculateDefense(effectType, ItemCatalog);
-
-        switch (effectType)
-        {
-            case ItemEffectType.Unknown:
-                SendComponentMethodUnknown("unran-hazards", "Failed Hazard Event", "Hazard Type Switch",
-                $"Effect Type: {effectType}");
-                break;
-            case ItemEffectType.WaterBreathing:
-                break;
-            default:
-                if (Damage > 0)
-                    player.ApplyCharacterDamage(Room, Damage - defense, DamageDelay, TimerThread);
-                else
-                    player.ApplyDamageByPercent(Room, .10, TimerThread);
-                break;
-        }
-
-        player.TemporaryInvincibility(TimerThread, 1);
-    }
-
     public void ActivateHazard(object _)
     {
         IsActive = true;
 
         TimerThread.DelayCall(DeactivateHazard, null,
                 TimeSpan.FromSeconds(ActiveDuration), TimeSpan.Zero, 1);
+    }
+
+    //Moving hazards
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
+    {
+        if (!notifyCollisionEvent.Colliding || player.TempData.Invincible ||
+            HurtEffect != ServerRConfig.NoEffect || HurtLength < 0)
+            return;
+
+        Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
+            (int)ItemEffectType.BluntDamage, 0, 1, true, _id, false));
+
+        player.ApplyDamageByPercent(HealthRatioDamage, TimerThread);
     }
 
     public void ApplyHazardEffect(Player player)
@@ -189,7 +150,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                 (int)ItemEffectType.BluntDamage, 1, 1, true, HazardId, false));
 
-                player.ApplyCharacterDamage(Room, Damage, DamageDelay, TimerThread);
+                player.ApplyCharacterDamage(Damage, DamageDelay, TimerThread);
                 break;
 
             case ItemEffectType.PoisonDamage:
@@ -198,6 +159,17 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             default:
+                //Waterbreathing.
+                if (HurtLength < 0)
+                {
+                    if (IsActive)
+                    {
+                        ApplyWaterBreathing(player);
+                        IsActive = false;
+                    }
+                    return;
+                }
+
                 if (!player.TempData.Invincible)
                     Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, player.CharacterName);
 
@@ -205,7 +177,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                 (int)ItemEffectType.FireDamage, 1, 1, true, _id, false));
 
-                player.ApplyCharacterDamage(Room, Damage, DamageDelay, TimerThread);
+                player.ApplyCharacterDamage(Damage, DamageDelay, TimerThread);
 
                 player.TemporaryInvincibility(TimerThread, 1);
 
@@ -226,6 +198,23 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         player.StartPoisonDamage(HazardId, Damage, (int)HurtLength, TimerThread);
     }
+
+    public void ApplyWaterBreathing(object playerData)
+    {
+        if (playerData == null || playerData is not Player player)
+            return;
+
+        Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
+                    (int)ItemEffectType.WaterBreathing, 1, 1, true, _id, false));
+
+        player.StopUnderwaterTimer();
+        player.StartUnderwaterTimer(player.Character.Data.MaxLife / 10, TimerThread, ServerRConfig);
+
+        TimerThread.DelayCall(RestartTimerDelay, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
+        Logger.LogInformation("Reset underwater timer for {characterName}", player.CharacterName);
+    }
+
+    public void RestartTimerDelay(object data) => IsActive = true;
 
     public void ApplySlowEffect(Player player) =>
         player.ApplySlowEffect(HazardId, Damage);

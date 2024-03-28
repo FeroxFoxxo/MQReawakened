@@ -76,6 +76,8 @@ public class ServerRConfig : IRConfig
     public int MaximumEntitiesToReturnLog { get; set; }
     public int HealingStaffID { get; set; }
     public int MysticCharmID { get; set; }
+    public int BreathTimerDuration { get; set; }
+    public int UnderwaterDamageInterval { get; set; }
     public float ProjectileSpeedX { get; set; }
     public float ProjectileSpeedY { get; set; }
     public float ProjectileGravityFactor { get; set; }
@@ -213,6 +215,8 @@ public class ServerRConfig : IRConfig
         DefaultMeleeDamage = 22;
         DefaultRangedDamage = 18;
         DefaultDropDamage = 35;
+        BreathTimerDuration = 30;
+        UnderwaterDamageInterval = 2;
 
         EnemyComponentName = "EnemyController";
         BreakableComponentName = "BreakableEventController";
