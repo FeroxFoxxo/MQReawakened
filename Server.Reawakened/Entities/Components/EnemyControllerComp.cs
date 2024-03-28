@@ -45,8 +45,6 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public int MaxHealth;
     public int OnKillExp;
 
-    private int _damage;
-
     public override void InitializeComponent()
     {
         Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
@@ -57,14 +55,6 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
-        _damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level);
-
-        if (_damage < 0)
-            _damage = 1;
-
-        player.ApplyCharacterDamage(_damage, 1, TimerThread);
-
-        return;
     }
 
     public void Damage(int damage, Player origin)
