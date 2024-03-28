@@ -14,8 +14,8 @@ public class RequestPortalInfo : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var levelId = int.Parse(message[4]);
         var portalId = int.Parse(message[5]);
+        var levelId = int.Parse(message[6]);
 
         var newLevelId = WorldGraph.GetLevelFromPortal(levelId, portalId);
         var newLevelName = WorldGraph.GetInfoLevel(newLevelId).InGameName;
