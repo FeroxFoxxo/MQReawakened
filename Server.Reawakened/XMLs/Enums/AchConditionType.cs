@@ -11,6 +11,7 @@ public enum AchConditionType
     Drink,
     Consumable,
     DefeatEnemy,
+    DefeatEnemyStomp,
     DefeatEnemyInLevel,
     CompleteQuest,
     CompleteQuestInLevel,
@@ -27,6 +28,5 @@ public enum AchConditionType
     AddFriend,
     JoinGroup,
     InviteGroup,
-    OpenPetEgg,
-    DefeatEnemyStomp
+    OpenPetEgg
 }

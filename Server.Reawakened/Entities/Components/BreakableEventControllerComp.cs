@@ -20,6 +20,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
     public TimerThread TimerThread { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
 
     public int MaxHealth { get; set; }
@@ -91,7 +92,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         if (_health <= 0)
         {
-            origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
+            origin.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
             origin.SendUpdatedInventory();
 
             Room.KillEntity(origin, Id);

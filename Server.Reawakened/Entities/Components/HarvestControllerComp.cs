@@ -14,6 +14,7 @@ public class HarvestControllerComp : BaseChestControllerComp<HarvestController>
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
     public ILogger<HarvestControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) => [CanActivateDailies(player, Id)
@@ -24,7 +25,7 @@ public class HarvestControllerComp : BaseChestControllerComp<HarvestController>
         base.RunSyncedEvent(syncEvent, player);
         player.SendSyncEventToPlayer(new Dailies_SyncEvent(syncEvent));
 
-        player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
+        player.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
         player.SendUpdatedInventory();
         player.CheckObjective(ObjectiveEnum.Collect, Id, PrefabName, 1, QuestCatalog);
 

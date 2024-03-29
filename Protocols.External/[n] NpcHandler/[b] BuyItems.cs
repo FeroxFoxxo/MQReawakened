@@ -1,8 +1,11 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -12,6 +15,8 @@ public class BuyItems : ExternalProtocol
 
     public ServerRConfig ServerConfig { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
+    public ILogger<BuyItems> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -38,6 +43,9 @@ public class BuyItems : ExternalProtocol
                 Player.RemoveNCash(itemDescription.RegularPrice * amount);
 
             Player.CheckObjective(ObjectiveEnum.Buyitem, vendorGoId.ToString(), itemDescription.PrefabName, amount, ItemCatalog);
+
+            Player.CheckAchievement(AchConditionType.BuyItem, itemDescription.PrefabName, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.BuyPet, itemDescription.PrefabName, InternalAchievement, Logger);
         }
 
         Player.SendUpdatedInventory();

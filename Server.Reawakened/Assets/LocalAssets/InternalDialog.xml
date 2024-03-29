@@ -89,6 +89,9 @@
         <NPC objectId="905" name="Mondy" descriptionId="0">
             <Dialog dialogId="859" conversationId="2375" minimumReputation="1" />
         </NPC>
+        <NPC objectId="150" name="Isota" descriptionId="0">
+            <Dialog dialogId="613" conversationId="1858" minimumReputation="1" /><!--Speculation-->
+        </NPC>
     </Level>
     <Level name="The Floating Isles" id="89">
         <NPC objectId="2466702" name="Dragonfly Scout" descriptionId="0">

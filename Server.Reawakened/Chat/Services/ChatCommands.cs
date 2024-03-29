@@ -242,7 +242,7 @@ public partial class ChatCommands(
         AddKit(player, 1);
         player.AddSlots(true);
 
-        player.AddBananas(config.CashKitAmount);
+        player.AddBananas(config.CashKitAmount, internalAchievement, logger);
         player.AddNCash(config.CashKitAmount);
         player.SendCashUpdate();
 
@@ -354,7 +354,7 @@ public partial class ChatCommands(
     {
         var character = player.Character;
 
-        player.AddBananas(config.CashKitAmount);
+        player.AddBananas(config.CashKitAmount, internalAchievement, logger);
         player.AddNCash(config.CashKitAmount);
 
         Log($"{character.Data.CharacterName} received {config.CashKitAmount} " +
