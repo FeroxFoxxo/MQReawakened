@@ -95,7 +95,7 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         }
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
-        Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
+        Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.ColliderBox.Height : 0), Position.z);
     }
 
     private string WriteBehaviorList()
@@ -340,7 +340,6 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
 
         var aiDo = new AIDo_SyncEvent(new SyncEvent(Id, SyncEvent.EventType.AIDo, Room.Time));
 
-        aiDo.EventDataList.Clear();
         aiDo.EventDataList.Add(AiData.Sync_PosX);
         aiDo.EventDataList.Add(AiData.Sync_PosY);
         aiDo.EventDataList.Add(1f);
@@ -348,7 +347,7 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         aiDo.EventDataList.Add("");
         aiDo.EventDataList.Add(AiData.Sync_TargetPosX);
         aiDo.EventDataList.Add(AiData.Sync_TargetPosY);
-        aiDo.EventDataList.Add(0);
+        aiDo.EventDataList.Add(AiData.Intern_Dir);
         aiDo.EventDataList.Add(0);
 
         player.SendSyncEventToPlayer(aiDo);
