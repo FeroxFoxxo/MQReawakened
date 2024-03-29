@@ -842,12 +842,12 @@
         </Achievement>
     </Category>
     <Category id="4" title="Battling" iconName="Category_Combat" sortOrder="6">
-        <Achievement id="98" title="Unknown Achievement 98" description="Defeat 1 Enemy" iconName="Combat_Enemies_1" points="1" sortOrder="1" repeatable="false">
+        <Achievement id="98" title="First Test" description="Defeat Your First Enemy" iconName="Combat_Enemies_1" points="1" sortOrder="1" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1 Enemy" type="DefeatEnemy" value="" goal="1" visible="true" />
+                <Condition id="1" title="Defeat Your First Enemy" type="DefeatEnemy" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="99" title="Battle Tested" description="Defeat 10 Enemies" iconName="Combat_Enemies_10" points="1" sortOrder="2" repeatable="false">
@@ -930,9 +930,10 @@
                 <Condition id="1" title="Defeat 10000 Enemies" type="DefeatEnemy" value="" goal="10000" visible="true" />
             </Conditions>
         </Achievement>
+        <!--All custom except 108,110,113,116-->
         <Achievement id="108" title="SUPER Stomp!" description="Defeat 1 Enemy with a Super Stomp" iconName="Combat_Superstomp_1" points="1" sortOrder="12" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="5" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 1 Enemy with a Super Stomp" type="DefeatEnemyStomp" value="" goal="1" visible="true" />
@@ -940,7 +941,7 @@
         </Achievement>
         <Achievement id="109" title="Unknown Achievement 109" description="Defeat 5 Enemies with a Super Stomp" iconName="Combat_Superstomp_5" points="1" sortOrder="12" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 5 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="5" visible="true" />
@@ -948,7 +949,7 @@
         </Achievement>
         <Achievement id="110" title="Stomptastic!" description="Defeat 10 Enemies with a Super Stomp" iconName="Combat_Superstomp_10" points="1" sortOrder="13" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 10 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="10" visible="true" />
@@ -956,7 +957,7 @@
         </Achievement>
         <Achievement id="111" title="Unknown Achievement 111" description="Defeat 25 Enemies with a Super Stomp" iconName="Combat_Superstomp_25" points="1" sortOrder="14" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 25 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="25" visible="true" />
@@ -964,7 +965,7 @@
         </Achievement>
         <Achievement id="112" title="Unknown Achievement 112" description="Defeat 50 Enemies with a Super Stomp" iconName="Combat_Superstomp_50" points="1" sortOrder="15" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 50 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="50" visible="true" />
@@ -972,7 +973,7 @@
         </Achievement>
         <Achievement id="113" title="Super SUPER Stomp" description="Defeat 100 Enemies with a Super Stomp" iconName="Combat_Superstomp_100" points="1" sortOrder="16" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 100 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="100" visible="true" />
@@ -980,7 +981,7 @@
         </Achievement>
         <Achievement id="114" title="Unknown Achievement 114" description="Defeat 250 Enemies with a Super Stomp" iconName="Combat_Superstomp_250" points="1" sortOrder="17" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="250" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 250 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="250" visible="true" />
@@ -988,7 +989,7 @@
         </Achievement>
         <Achievement id="115" title="Unknown Achievement 115" description="Defeat 500 Enemies with a Super Stomp" iconName="Combat_Superstomp_500" points="1" sortOrder="18" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="500" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 500 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="500" visible="true" />
@@ -996,15 +997,16 @@
         </Achievement>
         <Achievement id="116" title="Stompasaurus Wrecks!" description="Defeat 1,000 Enemies with a Super Stomp" iconName="Combat_Superstomp_1000" points="350" sortOrder="19" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="100" quantity="0" />
+                <Reward type="Bananas" value="1000" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 1,000 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
+        <!--All custom except 118, 120-->
         <Achievement id="117" title="Unknown Achievement 117" description="Use 5 Potions" iconName="Combat_Potions_5" points="1" sortOrder="20" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Use 5 Potions" type="Drink" value="" goal="5" visible="true" />
@@ -1020,7 +1022,7 @@
         </Achievement>
         <Achievement id="119" title="Unknown Achievement 119" description="Use 25 Potions" iconName="Combat_Potions_25" points="5" sortOrder="22" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="40" quantity="0" />
+                <Reward type="Xp" value="100" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Use 25 Potions" type="Drink" value="" goal="25" visible="true" />
@@ -1036,7 +1038,7 @@
         </Achievement>
         <Achievement id="121" title="Unknown Achievement 121" description="Use 250 Potions" iconName="Combat_Potions_250" points="20" sortOrder="24" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="40" quantity="0" />
+                <Reward type="Xp" value="350" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Use 250 Potions" type="Drink" value="" goal="250" visible="true" />
@@ -1044,7 +1046,7 @@
         </Achievement>
         <Achievement id="122" title="Unknown Achievement 122" description="Use 1000 Potions" iconName="Defeat_1000_Potions" points="20" sortOrder="25" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="40" quantity="0" />
+                <Reward type="Xp" value="2000" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Use 1000 Potions" type="Drink" value="" goal="1000" visible="true" />
@@ -1768,15 +1770,16 @@
                 <Reward type="Xp" value="60" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Use 10 Bombs or Poppers" type="Invalid" value="" goal="10" visible="true" />
+                <Condition id="1" title="Use 10 Bombs or Poppers" type="Bomb" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="213" title="Unknown Achievement 213" description="Unknown Description. Hint: the icon is named Combat_Bombs_25!" iconName="Combat_Bombs_25" points="1" sortOrder="116" repeatable="false">
+        <!--Custom-->
+        <Achievement id="213" title="Ka-Boom" description="Use 25 Bombs or Poppers" iconName="Combat_Bombs_25" points="10" sortOrder="116" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="80" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Use 25 Bombs or Poppers" type="Bomb" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="214" title="Explosive Monkey" description="Use 100 Bombs or Poppers" iconName="Combat_Bombs_100" points="20" sortOrder="117" repeatable="false">
@@ -1784,15 +1787,20 @@
                 <Reward type="Xp" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Use 100 Bombs or Poppers" goal="100" visible="true" />
+                <Condition id="1" title="Use 100 Bombs or Poppers" type="Bomb" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="215" title="Unknown Achievement 215" description="Unknown Description. Hint: the icon is named Combat_BombsMad_5!" iconName="Combat_BombsMad_5" points="1" sortOrder="118" repeatable="false">
+        <!--Custom-->
+        <Achievement id="215" title="Bomb Expert" description="Use 5 Different Bombs or Poppers" iconName="Combat_BombsMad_5" points="10" sortOrder="118" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="80" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Doom Popper" type="Bomb" value="WPN_SPC_DoomGrenade01" goal="1" visible="true" />
+                <Condition id="1" title="Boom Bomb" type="Bomb" value="WPN_SPC_StormyPopper01" goal="1" visible="true" />
+                <Condition id="1" title="Stink Bomb" type="Bomb" value="ABIL_PoisonBomb01" goal="1" visible="true" />
+                <Condition id="1" title="Stormy Popper" type="Bomb" value="WPN_SPC_StormyPopper01" goal="1" visible="true" />
+                <Condition id="1" title="Smoke Bomb" type="Bomb" value="ABIL_SmokeBomb01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="216" title="X-Borg Battler" description="Defeat 100 X-Borgs in the Power Rangers Arena (2014 Power Rangers Event)" iconName="Combat_Defeat100XBorgs" points="25" sortOrder="119" repeatable="false">
@@ -1810,341 +1818,325 @@
             <Conditions>
                 <Condition id="1" title="Defeat 500 X-Borgs in the Power Rangers Arena" type="Invalid" value="" goal="500" visible="true" />
             </Conditions>
-        </Achievement>
-        <Achievement id="219" title="Unknown Achievement 219" description="Unknown Description. Hint: the icon is named Defeat_100_Friends!" iconName="Defeat_100_Friends" points="1" sortOrder="122" repeatable="false">
-            <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
-            </Rewards>
-            <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
-            </Conditions>
-        </Achievement>
-        <Achievement id="220" title="Unknown Achievement 220" description="Unknown Description. Hint: the icon is named Defeat_10_Groups!" iconName="Defeat_10_Groups" points="1" sortOrder="123" repeatable="false">
-            <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
-            </Rewards>
-            <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
-            </Conditions>
-        </Achievement>
-        <Achievement id="221" title="Unknown Achievement 221" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_ShardCavern!" iconName="Combat_Defender_Crossroads_ShardCavern" points="1" sortOrder="124" repeatable="false">
-            <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
-            </Rewards>
-            <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
-            </Conditions>
-        </Achievement>
-        <Achievement id="222" title="Unknown Achievement 222" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_KnightsGate!" iconName="Combat_Defender_Crossroads_KnightsGate" points="1" sortOrder="125" repeatable="false">
-            <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
-            </Rewards>
-            <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
-            </Conditions>
-        </Achievement>
-        <Achievement id="223" title="Unknown Achievement 223" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_GuardiansKeep!" iconName="Combat_Defender_Crossroads_GuardiansKeep" points="1" sortOrder="126" repeatable="false">
-            <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
-            </Rewards>
-            <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
-            </Conditions>
-        </Achievement>
-        <Achievement id="224" title="Unknown Achievement 224" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_ForgottenTemple!" iconName="Combat_Defender_Crossroads_ForgottenTemple" points="1" sortOrder="127" repeatable="false">
-            <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
-            </Rewards>
-            <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
-            </Conditions>
-        </Achievement>
-        <Achievement id="225" title="Floating Isles Defender" description="Defeat 25 Enemies in The Floating Isles" iconName="Combat_Defender_Crossroads_FloatingIsles" points="10" sortOrder="128" repeatable="false">
+        </Achievement>  
+        <Achievement id="221" title="Floating Isles Defender" description="Defeat 25 Enemies in The Floating Isles" iconName="Combat_Defender_Crossroads_FloatingIsles" points="10" sortOrder="124" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 25 Enemies in The Floating Isles" type="DefeatEnemy" value="lv_crs_trail01"  goal="25" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in The Floating Isles" type="DefeatEnemyInLevel" value="lv_crs_trail01"  goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="226" title="Unknown Achievement 226" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_BlimpRidge!" iconName="Combat_Defender_Crossroads_BlimpRidge" points="1" sortOrder="129" repeatable="false">
-            <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
-            </Rewards>
-            <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
-            </Conditions>
-        </Achievement>
-        <Achievement id="227" title="Rachnok’s Lair Defender" description="Defeat 25 Enemies in Rachnok’s Lair" iconName="Combat_Defender_Crossroads_Rachnoks" points="10" sortOrder="130" repeatable="false">
+        <Achievement id="222" title="Blimp Ridge Defender" description="Defeat 25 Enemies in Blimp Ridge" iconName="Combat_Defender_Crossroads_BlimpRidge" points="10" sortOrder="125" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 25 Enemies in Rachnok’s Lair" type="DefeatEnemy" value="lv_crs_dungeon00" goal="25" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Blimp Ridge" type="DefeatEnemyInLevel" value="lv_crs_trail02" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="228" title="Unknown Achievement 228" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_SoggyCreek!" iconName="Combat_Defender_Crossroads_SoggyCreek" points="1" sortOrder="131" repeatable="false">
+        <Achievement id="223" title="Rachnok’s Lair Defender" description="Defeat 25 Enemies in Rachnok’s Lair" iconName="Combat_Defender_Crossroads_Rachnoks" points="10" sortOrder="126" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Rachnok’s Lair" type="DefeatEnemyInLevel" value="lv_crs_dungeon00" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="229" title="Unknown Achievement 229" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_VolcanoLair!" iconName="Combat_Defender_Crossroads_VolcanoLair" points="1" sortOrder="132" repeatable="false">
+        <Achievement id="224" title="Soggy Creek Defender" description="Defeat 25 Enemies in Soggy Creek" iconName="Combat_Defender_Crossroads_SoggyCreek" points="10" sortOrder="127" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Soggy Creek" type="DefeatEnemyInLevel" value="lv_crs_trail03" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="230" title="Unknown Achievement 230" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_ForestRuin!" iconName="Combat_Defender_Crossroads_ForestRuin" points="1" sortOrder="133" repeatable="false">
+        <Achievement id="225" title="Volcano Lair Defender" description="Defeat 25 Enemies in Volcano Lair" iconName="Combat_Defender_Crossroads_VolcanoLair" points="10" sortOrder="128" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Volcano Lair" type="DefeatEnemyInLevel" value="lv_crs_dungeon01" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="231" title="Unknown Achievement 231" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_CrumblingGates!" iconName="Combat_Defender_Crossroads_CrumblingGates" points="1" sortOrder="134" repeatable="false">
+        <!--<Achievement id="226" title="The Forgotten Temple Defender" description="Defeat 25 Enemies in The Forgotten Temple" iconName="Combat_Defender_Crossroads_ForgottenTemple" points="10" sortOrder="129" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in The Forgotten Temple" type="DefeatEnemyInLevel" value="" goal="25" visible="true" />
+            </Conditions>
+        </Achievement>-->
+        <Achievement id="227" title="Guardian's Keep Defender" description="Defeat 25 Enemies in Guardian's Keep" iconName="Combat_Defender_Crossroads_GuardiansKeep" points="10" sortOrder="130" repeatable="false">
+            <Rewards>
+                <Reward type="Bananas" value="15" quantity="0" />
+            </Rewards>
+            <Conditions>
+                <Condition id="1" title="Defeat 25 Enemies in Guardian's Keep" type="DefeatEnemyInLevel" value="lv_r01_trail01" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="232" title="Unknown Achievement 232" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_MagmaCitadel!" iconName="Combat_Defender_Crossroads_MagmaCitadel" points="1" sortOrder="135" repeatable="false">
+        <Achievement id="228" title="Knight's Gate Defender" description="Defeat 25 Enemies in Knight's Gate" iconName="Combat_Defender_Crossroads_KnightsGate" points="10" sortOrder="131" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Knight's Gate" type="DefeatEnemyInLevel" value="lv_r01_trail02" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="233" title="Unknown Achievement 233" description="Unknown Description. Hint: the icon is named Combat_Defender_Crossroads_CindertopHwy!" iconName="Combat_Defender_Crossroads_CindertopHwy" points="1" sortOrder="136" repeatable="false">
+        <Achievement id="229" title="Shard Cavern Defender" description="Defeat 25 Enemies in Shard Cavern" iconName="Combat_Defender_Crossroads_ShardCavern" points="10" sortOrder="132" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Shard Cavern" type="DefeatEnemyInLevel" value="v_r01_dungeon01" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="234" title="Unknown Achievement 234" description="Unknown Description. Hint: the icon is named Combat_Defender_Chimfoo_ChimFooRooftops!" iconName="Combat_Defender_Chimfoo_ChimFooRooftops" points="1" sortOrder="137" repeatable="false">
+        <Achievement id="230" title="Forest Ruin Defender" description="Defeat 25 Enemies in Forest Ruin" iconName="Combat_Defender_Crossroads_ForestRuin" points="10" sortOrder="133" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Forest Ruin" type="DefeatEnemyInLevel" value="lv_crs_trail04" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="235" title="Unknown Achievement 235" description="Unknown Description. Hint: the icon is named Combat_Defender_Chimfoo_MountainShrine!" iconName="Combat_Defender_Chimfoo_MountainShrine" points="1" sortOrder="138" repeatable="false">
+        <Achievement id="231" title="Crumbling Gates Defender" description="Defeat 25 Enemies in Crumbling Gates" iconName="Combat_Defender_Crossroads_CrumblingGates" points="10" sortOrder="134" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Crumbling Gates" type="DefeatEnemyInLevel" value="lv_crs_trail05" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="236" title="Unknown Achievement 236" description="Unknown Description. Hint: the icon is named Combat_Defender_Chimfoo_MagnoliaLake!" iconName="Combat_Defender_Chimfoo_MagnoliaLake" points="1" sortOrder="139" repeatable="false">
+        <Achievement id="232" title="Magma Citadel Defender" description="Defeat 25 Enemies in Magma Citadel" iconName="Combat_Defender_Crossroads_MagmaCitadel" points="10" sortOrder="135" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Magma Citadel" type="DefeatEnemyInLevel" value="lv_crs_dungeon02" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="237" title="Unknown Achievement 237" description="Unknown Description. Hint: the icon is named Combat_Defender_Chimfoo_ForbiddenKeep!" iconName="Combat_Defender_Chimfoo_ForbiddenKeep" points="1" sortOrder="140" repeatable="false">
+        <Achievement id="233" title="Cindertop Highland Defender" description="Defeat 25 Enemies in Cindertop Highland" iconName="Combat_Defender_Crossroads_CindertopHwy" points="10" sortOrder="136" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Cindertop Highland" type="DefeatEnemyInLevel" value="lv_crs_trail06" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="238" title="Unknown Achievement 238" description="Unknown Description. Hint: the icon is named Combat_Defender_Chimfoo_LanternRidge!" iconName="Combat_Defender_Chimfoo_LanternRidge" points="1" sortOrder="141" repeatable="false">
+        <Achievement id="234" title="The Chim Foo Rooftops Defender" description="Defeat 25 Enemies in The Chim Foo Rooftops" iconName="Combat_Defender_Chimfoo_ChimFooRooftops" points="10" sortOrder="137" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in The Chim Foo Rooftops" type="DefeatEnemyInLevel" value="lv_shd_trail01" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="239" title="Unknown Achievement 239" description="Unknown Description. Hint: the icon is named Combat_Defender_Chimfoo_BonsaiPeak!" iconName="Combat_Defender_Chimfoo_BonsaiPeak" points="1" sortOrder="142" repeatable="false">
+        <Achievement id="235" title="Mountain Shrine Defender" description="Defeat 25 Enemies in Mountain Shrine" iconName="Combat_Defender_Chimfoo_MountainShrine" points="10" sortOrder="138" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Mountain Shrine" type="DefeatEnemyInLevel" value="lv_shd_trail02" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="240" title="Unknown Achievement 240" description="Unknown Description. Hint: the icon is named Combat_Defender_Chimfoo_StoneGarden!" iconName="Combat_Defender_Chimfoo_StoneGarden" points="1" sortOrder="143" repeatable="false">
+        <Achievement id="236" title="Magnolia Lake Defender" description="Defeat 25 Enemies in Magnolia Lake" iconName="Combat_Defender_Chimfoo_MagnoliaLake" points="10" sortOrder="139" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Magnolia Lake" type="DefeatEnemyInLevel" value="lv_shd_trail03" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="241" title="Unknown Achievement 241" description="Unknown Description. Hint: the icon is named Combat_Defender_Chimfoo_LostFortress!" iconName="Combat_Defender_Chimfoo_LostFortress" points="1" sortOrder="144" repeatable="false">
+        <Achievement id="237" title="Forbidden Keep Defender" description="Defeat 25 Enemies in Forbidden Keep" iconName="Combat_Defender_Chimfoo_ForbiddenKeep" points="10" sortOrder="140" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Forbidden Keep" type="DefeatEnemyInLevel" value="lv_shd_dungeon01" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="242" title="Unknown Achievement 242" description="Unknown Description. Hint: the icon is named Combat_Defender_SeaDragons_ForgottenLighthouse!" iconName="Combat_Defender_SeaDragons_ForgottenLighthouse" points="1" sortOrder="145" repeatable="false">
+        <Achievement id="238" title="Lantern Ridge Defender" description="Defeat 25 Enemies in Lantern Ridge" iconName="Combat_Defender_Chimfoo_LanternRidge" points="10" sortOrder="141" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in" type="DefeatEnemyInLevel" value="lv_shd_trail04" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="243" title="Unknown Achievement 243" description="Unknown Description. Hint: the icon is named Combat_Defender_SeaDragons_OverlookCliff!" iconName="Combat_Defender_SeaDragons_OverlookCliff" points="1" sortOrder="146" repeatable="false">
+        <Achievement id="239" title="Bonsai Peaks Defender" description="Defeat 25 Enemies in Bonsai Peaks" iconName="Combat_Defender_Chimfoo_BonsaiPeak" points="10" sortOrder="142" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Bonsai Peaks" type="DefeatEnemyInLevel" value="lv_shd_trail05" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="244" title="Unknown Achievement 244" description="Unknown Description. Hint: the icon is named Combat_Defender_SeaDragons_GoonCave!" iconName="Combat_Defender_SeaDragons_GoonCave" points="1" sortOrder="147" repeatable="false">
+        <Achievement id="240" title="Stone Gardens Defender" description="Defeat 25 Enemies in Stone Gardens" iconName="Combat_Defender_Chimfoo_StoneGarden" points="10" sortOrder="143" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Stone Gardens" type="DefeatEnemyInLevel" value="lv_shd_dungeon02" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="245" title="Unknown Achievement 245" description="Unknown Description. Hint: the icon is named Combat_Defender_SeaDragons_SkullCave!" iconName="Combat_Defender_SeaDragons_SkullCave" points="1" sortOrder="148" repeatable="false">
+        <Achievement id="241" title="Lost Fortress Defender" description="Defeat 25 Enemies in Lost Fortress" iconName="Combat_Defender_Chimfoo_LostFortress" points="10" sortOrder="144" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Lost Fortress" type="DefeatEnemyInLevel" value="lv_shd_trail06" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="246" title="Unknown Achievement 246" description="Unknown Description. Hint: the icon is named Combat_Defender_SeaDragons_OutlawBeach!" iconName="Combat_Defender_SeaDragons_OutlawBeach" points="1" sortOrder="149" repeatable="false">
+        <Achievement id="242" title="Forgotten Lighthouse Defender" description="Defeat 25 Enemies in Forgotten Lighthouse" iconName="Combat_Defender_SeaDragons_ForgottenLighthouse" points="10" sortOrder="145" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Forgotten Lighthouse" type="DefeatEnemyInLevel" value="lv_out_trail01" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="247" title="Unknown Achievement 247" description="Unknown Description. Hint: the icon is named Combat_Defender_SeaDragons_RosysReef!" iconName="Combat_Defender_SeaDragons_RosysReef" points="1" sortOrder="150" repeatable="false">
+        <Achievement id="243" title="Overlook Cliff Defender" description="Defeat 25 Enemies in Overlook Cliff" iconName="Combat_Defender_SeaDragons_OverlookCliff" points="10" sortOrder="146" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Overlook Cliff" type="DefeatEnemyInLevel" value="lv_out_trail02" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="248" title="Unknown Achievement 248" description="Unknown Description. Hint: the icon is named Combat_Defender_SeaDragons_AnchorFall!" iconName="Combat_Defender_SeaDragons_AnchorFall" points="1" sortOrder="151" repeatable="false">
+        <Achievement id="244" title="Goon Cave Defender" description="Defeat 25 Enemies in Goon Cave" iconName="Combat_Defender_SeaDragons_GoonCave" points="10" sortOrder="147" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Goon Cave" type="DefeatEnemyInLevel" value="lv_out_dungeon01" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="249" title="Unknown Achievement 249" description="Unknown Description. Hint: the icon is named Combat_Defender_SeaDragons_SunkenCity!" iconName="Combat_Defender_SeaDragons_SunkenCity" points="1" sortOrder="152" repeatable="false">
+        <Achievement id="245" title="Skull Cove Defender" description="Defeat 25 Enemies in Skull Cove" iconName="Combat_Defender_SeaDragons_SkullCave" points="10" sortOrder="148" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Skull Cove" type="DefeatEnemyInLevel" value="lv_out_trail05" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="250" title="Unknown Achievement 250" description="Unknown Description. Hint: the icon is named Combat_Defender_Ootu_MushroomHollow!" iconName="Combat_Defender_Ootu_MushroomHollow" points="1" sortOrder="153" repeatable="false">
+        <Achievement id="246" title="Outlaw Beach Defender" description="Defeat 25 Enemies in Outlaw Beach" iconName="Combat_Defender_SeaDragons_OutlawBeach" points="10" sortOrder="149" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Outlaw Beach" type="DefeatEnemyInLevel" value="lv_out_trail03" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="251" title="Unknown Achievement 251" description="Unknown Description. Hint: the icon is named Combat_Defender_Ootu_DeepSwamps!" iconName="Combat_Defender_Ootu_DeepSwamps" points="1" sortOrder="154" repeatable="false">
+        <Achievement id="247" title="Rosy's Reef Defender" description="Defeat 25 Enemies in Rosy's Reef" iconName="Combat_Defender_SeaDragons_RosysReef" points="10" sortOrder="150" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Rosy's Reef" type="DefeatEnemyInLevel" value="lv_out_dungeon02" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="252" title="Unknown Achievement 252" description="Unknown Description. Hint: the icon is named Combat_Defender_Ootu_SpiderCaves!" iconName="Combat_Defender_Ootu_SpiderCaves" points="1" sortOrder="155" repeatable="false">
+        <Achievement id="248" title="Anchor Falls Defender" description="Defeat 25 Enemies in Anchor Falls" iconName="Combat_Defender_SeaDragons_AnchorFall" points="10" sortOrder="151" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Anchor Falls" type="DefeatEnemyInLevel" value="lv_out_trail04" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="253" title="Unknown Achievement 253" description="Unknown Description. Hint: the icon is named Combat_Defender_Ootu_GiantTree!" iconName="Combat_Defender_Ootu_GiantTree" points="1" sortOrder="156" repeatable="false">
+        <Achievement id="249" title="Sunken City Defender" description="Defeat 25 Enemies in Sunken City" iconName="Combat_Defender_SeaDragons_SunkenCity" points="10" sortOrder="152" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Sunken City" type="DefeatEnemyInLevel" value="lv_out_trail06" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="254" title="Unknown Achievement 254" description="Unknown Description. Hint: the icon is named Combat_Defender_Ootu_DriftwoodVillage!" iconName="Combat_Defender_Ootu_DriftwoodVillage" points="1" sortOrder="157" repeatable="false">
+        <Achievement id="250" title="Mushroom Hollow Defender" description="Defeat 25 Enemies in Mushroom Hollow" iconName="Combat_Defender_Ootu_MushroomHollow" points="10" sortOrder="153" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Mushroom Hollow" type="DefeatEnemyInLevel" value="lv_bon_trail01" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="255" title="Unknown Achievement 255" description="Unknown Description. Hint: the icon is named Combat_Defender_Ootu_MarshSanctuary!" iconName="Combat_Defender_Ootu_MarshSanctuary" points="1" sortOrder="158" repeatable="false">
+        <Achievement id="251" title="Deep Swamps Defender" description="Defeat 25 Enemies in Deep Swamps" iconName="Combat_Defender_Ootu_DeepSwamps" points="10" sortOrder="154" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Deep Swamps" type="DefeatEnemyInLevel" value="lv_bon_trail02" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="256" title="Unknown Achievement 256" description="Unknown Description. Hint: the icon is named Combat_Defender_Ootu_UndergroundRiver!" iconName="Combat_Defender_Ootu_UndergroundRiver" points="1" sortOrder="159" repeatable="false">
+        <Achievement id="252" title="Spider Cave Defender" description="Defeat 25 Enemies in Spider Cave" iconName="Combat_Defender_Ootu_SpiderCaves" points="10" sortOrder="155" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Spider Cave" type="DefeatEnemyInLevel" value="lv_bon_trail03" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="257" title="Unknown Achievement 257" description="Unknown Description. Hint: the icon is named Combat_Defender_Ootu_MossTemple!" iconName="Combat_Defender_Ootu_MossTemple" points="1" sortOrder="160" repeatable="false">
+        <Achievement id="253" title="The Giant Tree Defender" description="Defeat 25 Enemies in The Giant Tree" iconName="Combat_Defender_Ootu_GiantTree" points="10" sortOrder="156" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in The Giant Tree" type="DefeatEnemyInLevel" value="lv_bon_dungeon01" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="258" title="Unknown Achievement 258" description="Unknown Description. Hint: the icon is named Combat_Defender_IceRaiders_SnowstormSummit!" iconName="Combat_Defender_IceRaiders_SnowstormSummit" points="1" sortOrder="161" repeatable="false">
+        <Achievement id="254" title="Driftwood Village Defender" description="Defeat 25 Enemies in Driftwood Village" iconName="Combat_Defender_Ootu_DriftwoodVillage" points="10" sortOrder="157" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Driftwood Village" type="DefeatEnemyInLevel" value="lv_bon_trail04" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="259" title="Unknown Achievement 259" description="Unknown Description. Hint: the icon is named Combat_Defender_IceRaiders_IcewindCavern!" iconName="Combat_Defender_IceRaiders_IcewindCavern" points="1" sortOrder="162" repeatable="false">
+        <Achievement id="255" title="Marsh Sanctuary Defender" description="Defeat 25 Enemies in Marsh Sanctuary" iconName="Combat_Defender_Ootu_MarshSanctuary" points="10" sortOrder="158" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in Marsh Sanctuary" type="DefeatEnemyInLevel" value="lv_bon_trail05" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="260" title="Unknown Achievement 260" description="Unknown Description. Hint: the icon is named Combat_Defender_IceRaiders_TempestChasm!" iconName="Combat_Defender_IceRaiders_TempestChasm" points="1" sortOrder="163" repeatable="false">
+        <Achievement id="256" title="The Underground River Defender" description="Defeat 25 Enemies in The Underground River" iconName="Combat_Defender_Ootu_UndergroundRiver" points="10" sortOrder="159" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in The Underground River" type="DefeatEnemyInLevel" value="lv_bon_dungeon02" goal="25" visible="true" />
+            </Conditions>
+        </Achievement>
+        <Achievement id="257" title="Moss Temple Defender" description="Defeat 25 Enemies in Moss Temple" iconName="Combat_Defender_Ootu_MossTemple" points="10" sortOrder="160" repeatable="false">
+            <Rewards>
+                <Reward type="Bananas" value="15" quantity="0" />
+            </Rewards>
+            <Conditions>
+                <Condition id="1" title="Defeat 25 Enemies in" type="DefeatEnemyInLevel" value="lv_bon_trail06" goal="25" visible="true" />
+            </Conditions>
+        </Achievement>
+        <Achievement id="258" title="Snowstorm Summit Defender" description="Defeat 25 Enemies in Snowstorm Summit" iconName="Combat_Defender_IceRaiders_SnowstormSummit" points="10" sortOrder="161" repeatable="false">
+            <Rewards>
+                <Reward type="Bananas" value="15" quantity="0" />
+            </Rewards>
+            <Conditions>
+                <Condition id="1" title="Defeat 25 Enemies in Snowstorm Summit" type="DefeatEnemyInLevel" value="lv_wld_trail01" goal="25" visible="true" />
+            </Conditions>
+        </Achievement>
+        <Achievement id="259" title="Icewind Cavern Defender" description="Defeat 25 Enemies in Icewind Cavern" iconName="Combat_Defender_IceRaiders_IcewindCavern" points="10" sortOrder="162" repeatable="false">
+            <Rewards>
+                <Reward type="Bananas" value="15" quantity="0" />
+            </Rewards>
+            <Conditions>
+                <Condition id="1" title="Defeat 25 Enemies in Icewind Cavern" type="DefeatEnemyInLevel" value="lv_wld_trail02" goal="25" visible="true" />
+            </Conditions>
+        </Achievement>
+        <Achievement id="260" title="Tempest Chasm Defender" description="Defeat 25 Enemies in Tempest Chasm" iconName="Combat_Defender_IceRaiders_TempestChasm" points="10" sortOrder="163" repeatable="false">
+            <Rewards>
+                <Reward type="Bananas" value="15" quantity="0" />
+            </Rewards>
+            <Conditions>
+                <Condition id="1" title="Defeat 25 Enemies in Tempest Chasm" type="DefeatEnemyInLevel" value="lv_wld_dungeon01" goal="25" visible="true" />
             </Conditions>
         </Achievement>
     </Category>
@@ -4102,7 +4094,7 @@
                 <Condition id="1" title="Add 10 Friends" type="AddFriend" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="502" title="Barrel of Friends" description="Add 25 Friends" iconName="Social_Friends_25" points="25" sortOrder="12" repeatable="false">
+        <Achievement id="502" title="Unknown Achievement 502" description="Add 25 Friends" iconName="Social_Friends_25" points="25" sortOrder="12" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="250" quantity="0" />
             </Rewards>
@@ -4110,7 +4102,15 @@
                 <Condition id="1" title="Add 25 Friends" type="AddFriend" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="503" title="Friendly Monkey" description="Invite a Monkey to Join Your Group" iconName="Social_Grouping_FriendlyMonkey" points="3" sortOrder="13" repeatable="false">
+        <Achievement id="219" title="Barrel of Friends" description="Add 100 Friends" iconName="Defeat_100_Friends" points="1" sortOrder="13" repeatable="false">
+            <Rewards>
+                <Reward type="Xp" value="1000" quantity="0" />
+            </Rewards>
+            <Conditions>
+                <Condition id="1" title="Add 100 Friends" type="AddFriend" value="" goal="100" visible="true" />
+            </Conditions>
+        </Achievement>
+        <Achievement id="503" title="Friendly Monkey" description="Invite a Monkey to Join Your Group" iconName="Social_Grouping_FriendlyMonkey" points="3" sortOrder="14" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
@@ -4124,6 +4124,14 @@
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Be in a Full Group" type="Invalid" value="" goal="10" visible="true" />
+            </Conditions>
+        </Achievement>
+        <Achievement id="220" title="Unknown Achievement 220" description="Join 10 Groups" iconName="Defeat_10_Groups" points="20" sortOrder="15" repeatable="false">
+            <Rewards>
+                <Reward type="Bananas" value="1" quantity="0" />
+            </Rewards>
+            <Conditions>
+                <Condition id="1" title="Join 10 Groups" type="JoinGroup" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="505" title="Group Groovin’" description="Join 5 Groups" iconName="Social_Grouping_GrouGroovin" points="10" sortOrder="15" repeatable="false">
