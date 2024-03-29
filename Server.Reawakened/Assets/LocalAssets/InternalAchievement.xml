@@ -842,7 +842,8 @@
         </Achievement>
     </Category>
     <Category id="4" title="Battling" iconName="Category_Combat" sortOrder="6">
-        <Achievement id="98" title="First Test" description="Defeat Your First Enemy" iconName="Combat_Enemies_1" points="1" sortOrder="1" repeatable="false">
+        <!--Custom-->
+        <Achievement id="98" title="One Down" description="Defeat Your First Enemy" iconName="Combat_Enemies_1" points="1" sortOrder="1" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
@@ -2645,81 +2646,77 @@
                 <Reward type="Item" value="WPN_SPC_DoomGrenade01" quantity="3" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete 10 Quests" type="Unknown" value="" goal="10" visible="true" />
+                <Condition id="1" title="Complete 10 Quests" type="CompleteQuest" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <!--Custom Name & Rewards-->
-        <Achievement id="324" title="Unknown Achievement 324" description="Complete 50 Quests" iconName="Questing_CompleteQuest_50" points="1" sortOrder="2" repeatable="false">
+        <Achievement id="324" title="Unknown Achievement 324" description="Complete 50 Quests" iconName="Questing_CompleteQuest_50" points="20" sortOrder="2" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete 50 Quests" type="Unknown" value="" goal="50" visible="true" />
+                <Condition id="1" title="Complete 50 Quests" type="CompleteQuest" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <!--Custom Name & Rewards-->
-        <Achievement id="325" title="Monkey Quest" description="Complete 100 Quests" iconName="Questing_CompleteQuest_100" points="1" sortOrder="3" repeatable="false">
+        <Achievement id="325" title="Monkey Quest" description="Complete 100 Quests" iconName="Questing_CompleteQuest_100" points="20" sortOrder="3" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete 100 Quests" type="Unknown" value="" goal="100" visible="true" />
+                <Condition id="1" title="Complete 100 Quests" type="CompleteQuest" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
-        <Achievement id="326" title="Unknown Achievement 326" description="Unknown Description. Hint: the icon is named Questing_Level_10!" iconName="Questing_Level_10" points="1" sortOrder="4" repeatable="false">
+        <!--All Level__ are Custom-->
+        <Achievement id="326" title="Level 10!" description="Reach Level 10" iconName="Questing_Level_10" points="20" sortOrder="4" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Reach Level 10" type="ReachLevel" value="10" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
-        <Achievement id="327" title="Unknown Achievement 327" description="Unknown Description. Hint: the icon is named Questing_Level_20!" iconName="Questing_Level_20" points="1" sortOrder="5" repeatable="false">
+        <Achievement id="327" title="Level 20!" description="Reach Level 20" iconName="Questing_Level_20" points="20" sortOrder="5" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="200" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Reach Level 20" type="ReachLevel" value="20" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
-        <Achievement id="328" title="Unknown Achievement 328" description="Unknown Description. Hint: the icon is named Questing_Level_30!" iconName="Questing_Level_30" points="1" sortOrder="6" repeatable="false">
+        <Achievement id="328" title="Level 30!" description="Reach Level 30" iconName="Questing_Level_30" points="20" sortOrder="6" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="300" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Reach Level 30" type="ReachLevel" value="30" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
-        <Achievement id="329" title="Unknown Achievement 329" description="Unknown Description. Hint: the icon is named Questing_Level_40!" iconName="Questing_Level_40" points="1" sortOrder="7" repeatable="false">
+        <Achievement id="329" title="Level 40!" description="Reach Level 40" iconName="Questing_Level_40" points="20" sortOrder="7" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="400" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Reach Level 40" type="ReachLevel" value="40" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
-        <Achievement id="330" title="Unknown Achievement 330" description="Unknown Description. Hint: the icon is named Questing_Level_50!" iconName="Questing_Level_50" points="1" sortOrder="8" repeatable="false">
+        <Achievement id="330" title="Level 50!" description="Reach Level 50" iconName="Questing_Level_50" points="20" sortOrder="8" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="500" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Reach Level 50" type="ReachLevel" value="50" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
-        <Achievement id="331" title="Unknown Achievement 331" description="Unknown Description. Hint: the icon is named Questing_Level_60!" iconName="Questing_Level_60" points="1" sortOrder="9" repeatable="false">
+        <Achievement id="331" title="Level 60!" description="Reach Level 60" iconName="Questing_Level_60" points="20" sortOrder="9" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="600" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Reach Level 60" type="ReachLevel" value="60" goal="1" visible="true" />
             </Conditions>
         </Achievement>
+        <!--All costum except 332, 334, 335-->
         <Achievement id="332" title="Radical Raider" description="Complete the Nest Raider Quest 1 Time (2014 Easter Event)" iconName="Questing_RaidNests_1" points="5" sortOrder="10" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -2728,7 +2725,6 @@
                 <Condition id="1" title="Complete the Nest Raider Quest 1 Time (2014 Easter Event)" type="CompleteQuest" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
         <Achievement id="333" title="Unknown Achievement 333" description="Unknown Description. Hint: the icon is named Questing_RaidNests_5!" iconName="Questing_RaidNests_5" points="1" sortOrder="11" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -2753,7 +2749,6 @@
                 <Condition id="1" title="Complete the Nest Raider Quest 25 Times" type="Invalid" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
         <Achievement id="336" title="Unknown Achievement 336" description="Unknown Description. Hint: the icon is named Questing_RaidNests_50!" iconName="Questing_RaidNests_50" points="1" sortOrder="14" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -4150,7 +4145,7 @@
                 <Condition id="1" title="Join a Group" type="JoinGroup" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
+        <!--All npc medals custom-->
         <Achievement id="507" title="Chim Foo Ninja" description="Join The Chim Foo" iconName="Social_JoinTribes_ChimFoo" points="1" sortOrder="17" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -4159,7 +4154,6 @@
                 <Condition id="1" title="Join the Chim Foo" type="ExploreTrail" value="lv_shd_highway01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
         <Achievement id="508" title="Ice Viking" description="Join The Ice Raiders" iconName="Social_JoinTribes_IceRaiders" points="1" sortOrder="18" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -4168,7 +4162,6 @@
                 <Condition id="1" title="Join The Ice Raiders" type="ExploreTrail" value="lv_wld_highway01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
         <Achievement id="509" title="Earth Wizard" description="Join The Ootu Mystics" iconName="Social_JoinTribes_Ootu" points="1" sortOrder="19" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -4177,7 +4170,6 @@
                 <Condition id="1" title="Join The Ootu Mystics" type="ExploreTrail" value="lv_bon_highway01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
         <Achievement id="510" title="Fiery Pirate" description="Join the SeaDragons" iconName="Social_JoinTribes_SeaDragons" points="1" sortOrder="20" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -4186,7 +4178,6 @@
                 <Condition id="1" title="Join the SeaDragons" type="ExploreTrail" value="lv_out_highway01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
         <Achievement id="511" title="Clock Tower" description="Meet Mayor Bumbee" iconName="Social_NPC_ClockTower" points="1" sortOrder="21" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
@@ -4227,7 +4218,7 @@
                 <Condition id="1" title="Meet Grand Master Whisper" type="Talkto" value="NPC_SHD_GrandMasterWhisper01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards for all Pets-->
+        <!--All pet medals custom-->
         <Achievement id="516" title="Croaker" description="Obtain a Croaker Pet" iconName="Social_Pets_Croaker" points="1" sortOrder="26" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="1" quantity="0" />
