@@ -1,6 +1,8 @@
-﻿using Server.Reawakened.Network.Protocols;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -8,7 +10,9 @@ public class SellItems : ExternalProtocol
 {
     public override string ProtocolName => "ns";
 
+    public ILogger<SellItems> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public override void Run(string[] message)
     {
@@ -27,7 +31,7 @@ public class SellItems : ExternalProtocol
 
             Player.RemoveItem(itemDescription, amount, ItemCatalog);
 
-            Player.AddBananas(itemDescription.SellPrice * amount);
+            Player.AddBananas(itemDescription.SellPrice * amount, InternalAchievement, Logger);
 
             Player.SendUpdatedInventory();
         }

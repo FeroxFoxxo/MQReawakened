@@ -20,6 +20,7 @@ public class ChooseQuestReward : ExternalProtocol
     public FileLogger FileLogger { get; set; }
     public InternalQuestItem QuestItems { get; set; }
     public ServerRConfig Config { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public override void Run(string[] message)
     {
@@ -52,7 +53,7 @@ public class ChooseQuestReward : ExternalProtocol
 
         var quest = QuestCatalog.QuestCatalogs[questId];
 
-        Player.AddBananas(quest.BananaReward);
+        Player.AddBananas(quest.BananaReward, InternalAchievement, Logger);
         Player.AddReputation(quest.ReputationReward, Config);
 
         foreach (var item in quest.RewardItems)

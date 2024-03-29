@@ -76,13 +76,6 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
 
     public void Destroy(Player player, Room room, string id)
     {
-        player.CheckObjective(ObjectiveEnum.Score, id, PrefabName, 1, QuestCatalog);
-        player.CheckObjective(ObjectiveEnum.Scoremultiple, id, PrefabName, 1, QuestCatalog);
-
-        player.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, InternalAchievement, Logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemy, PrefabName, InternalAchievement, Logger);
-        player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, player.Room.LevelInfo.Name, InternalAchievement, Logger);
-
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);
     }
