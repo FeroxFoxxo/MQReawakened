@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.Configs;
+using Server.Reawakened.Icons.Services;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -27,6 +29,9 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
 
     public Dictionary<int, ItemDescription> Items;
 
+    public ServerRConfig Config;
+    public ExtractIcons IconBank;
+
     public ItemCatalog() : base(null)
     {
     }
@@ -46,6 +51,9 @@ public class ItemCatalog : ItemHandler, ILocalizationXml<ItemCatalog>
         _itemSubCategories = [];
 
         Items = [];
+
+        Config = Services.GetRequiredService<ServerRConfig>();
+        IconBank = Services.GetRequiredService<ExtractIcons>();
     }
 
     public void EditLocalization(XmlDocument xml)

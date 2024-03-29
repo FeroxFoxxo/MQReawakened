@@ -1,9 +1,7 @@
 ﻿using AssetStudio;
 using Microsoft.Extensions.Logging;
-using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
-using Server.Reawakened.BundleHost.Events;
 using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.Icons.Configs;
 using Server.Reawakened.XMLs.Bundles;
@@ -12,10 +10,12 @@ using System.Collections.Specialized;
 
 namespace Server.Reawakened.Icons.Services;
 
-public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBundleRwConfig aRwConfig,
+public class ExtractIcons(IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBundleRwConfig aRwConfig,
     ILogger<ExtractIcons> logger, IServiceProvider services, ServerHandler serverHandler, ItemCatalog itemCatalog)
 {
-    public string[] KnownIconNames = [];
+    private string[] _knownIconNames = [];
+
+    public bool HasIcon(string name) => _knownIconNames.Contains(name.ToUpper());
 
     public void ExtractAllIcons(Dictionary<string, InternalAssetInfo> internalAssets)
     {
@@ -80,18 +80,18 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
         foreach (var icons in knownIcons.Values)
             foreach (var icon in icons.Keys)
             {
-                var newIconName = icon.ToLower();
+                var newIconName = icon.ToUpper();
 
                 if (!iconNames.Contains(newIconName))
                     iconNames.Add(newIconName);
             }
 
-        KnownIconNames = [.. iconNames.OrderBy(a => a)];
+        _knownIconNames = [.. iconNames.OrderBy(a => a)];
 
-        logger.LogDebug("Read {Count} icons from file.", KnownIconNames.Length);
+        logger.LogDebug("Read {Count} icons from file.", _knownIconNames.Length);
     }
 
-    public Dictionary<string, Texture2D> GetIcons(InternalAssetInfo asset)
+    private Dictionary<string, Texture2D> GetIcons(InternalAssetInfo asset)
     {
         var manager = new AssetsManager();
         var assemblyLoader = new AssemblyLoader();
@@ -157,7 +157,7 @@ public class ExtractIcons(AssetEventSink sink, IconsRConfig rConfig, IconsRwConf
         return textureDictionary;
     }
 
-    public void ExtractIconsFrom(Dictionary<string, Texture2D> textures, string assetName)
+    private void ExtractIconsFrom(Dictionary<string, Texture2D> textures, string assetName)
     {
         using var defaultBar = new DefaultProgressBar(textures.Count, $"Extracting icons for {assetName}...", logger, aRwConfig);
 

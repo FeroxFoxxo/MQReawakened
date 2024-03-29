@@ -110,22 +110,12 @@ public static class CharacterInventoryExtensions
     {
         var characterData = player.Character;
 
-        var config = itemCatalog.Services.GetRequiredService<ServerRConfig>();
-
-        if (!config.LoadedAssets.Contains(item.PrefabName) &&
-            item.InventoryCategoryID is not ItemFilterCategory.RecipesAndCraftingIngredients and not ItemFilterCategory.QuestItems)
-            return;
-
-        // NB: Including quests in this filter breaks the stealth scroll quest!
-        if (item.InventoryCategoryID is ItemFilterCategory.Housing or 
-            ItemFilterCategory.Keys or ItemFilterCategory.None)
-            return;
-
-        // We should create a way to filter out quest items with placeholder icons from visibility.
-
-        if (item.InventoryCategoryID == ItemFilterCategory.QuestItems)
-            if (item.ProductionStatus != ProductionStatus.Ingame)
+        if (item.InventoryCategoryID is not ItemFilterCategory.RecipesAndCraftingIngredients and not ItemFilterCategory.QuestItems)
+            if (!itemCatalog.Config.LoadedAssets.Contains(item.PrefabName))
                 return;
+
+        if (!itemCatalog.IconBank.HasIcon(item.PrefabName))
+            return;
 
         if (!characterData.Data.Inventory.Items.ContainsKey(item.ItemId))
             characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel

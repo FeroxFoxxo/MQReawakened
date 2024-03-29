@@ -172,9 +172,7 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                         }
                     }
 
-                    var comparedName = $"ach_{achIconName.ToLower()}_on";
-
-                    if (!icons.KnownIconNames.Contains(comparedName))
+                    if (!icons.HasIcon($"ACH_{achIconName}_ON"))
                         continue;
 
                     if (aIds.Contains(achId))
