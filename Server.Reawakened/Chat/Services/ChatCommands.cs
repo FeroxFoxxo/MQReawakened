@@ -215,12 +215,12 @@ public partial class ChatCommands(
                 Log($"Please enter a category value between 0-12!", player);
                 return false;
             }
+
             var chosenCategory = itemCatalog.GetItemsDescription((ItemFilterCategory)categoryValue);
 
             foreach (var item in chosenCategory)
                 player.AddItem(item, 1, itemCatalog);
         }
-
         else
         {
             var categoryList = new List<List<ItemDescription>>();
