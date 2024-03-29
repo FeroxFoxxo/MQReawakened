@@ -116,17 +116,24 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 TimeSpan.FromSeconds(ActiveDuration), TimeSpan.Zero, 1);
     }
 
-    //Moving hazards
+    //Standard Hazards
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
-        if (!notifyCollisionEvent.Colliding || player.TempData.Invincible ||
-            HurtEffect != ItemRConfig.NoEffect || HurtLength < 0)
+        if (!notifyCollisionEvent.Colliding || player.TempData.Invincible)
             return;
 
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
             (int)ItemEffectType.BluntDamage, 0, 1, true, _id, false));
 
-        player.ApplyDamageByPercent(HealthRatioDamage, TimerThread);
+        if (_enemyController != null)
+        {
+            var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, _enemyController.Level) - player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
+
+            player.ApplyCharacterDamage(damage > 0 ? damage : 1, 1, TimerThread);
+        }
+
+        else
+            player.ApplyDamageByPercent(HealthRatioDamage, TimerThread);
     }
 
     public void ApplyHazardEffect(Player player)

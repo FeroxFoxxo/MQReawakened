@@ -15,9 +15,10 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Entities.Enemies.Utils;
 using Server.Reawakened.Entities.Enemies.EnemyAI;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
+using Server.Reawakened.Rooms.Models.Entities.Colliders;
 
 namespace Server.Reawakened.Entities.Enemies;
 
@@ -132,8 +133,26 @@ public abstract class Enemy : IDestructible
     {
         var width = box.Width * EnemyController.Scale.X;
         var height = box.Height * EnemyController.Scale.Y;
-        var offsetX = box.XOffset * EnemyController.Scale.X - width / 2;
-        var offsetY = box.YOffset * EnemyController.Scale.Y - height / 2;
+        float offsetX;
+        float offsetY;
+
+
+        if (EnemyController.Scale.X >= 0)
+            offsetX = box.XOffset * EnemyController.Scale.X - width / 2;
+        else
+        {
+            width *= -1;
+            offsetX = box.XOffset * -1 * EnemyController.Scale.X - width / 2;
+        }
+
+        if (EnemyController.Scale.Y >= 0)
+            offsetY = box.YOffset * EnemyController.Scale.Y - height / 2;
+        else
+        {
+            height *= -1;
+            offsetY = box.YOffset * -1 * EnemyController.Scale.Y - height / 2;
+        }
+
 
         Hitbox = new EnemyCollider(Id, new Vector3Model { X = offsetX, Y = offsetY, Z = Position.z },
              width, height, ParentPlane, Room)
@@ -178,7 +197,6 @@ public abstract class Enemy : IDestructible
             var xpAward = DeathXp - (origin.Character.Data.GlobalLevel - 1) * 5;
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, origin == null ? "0" : origin.GameObjectId, false));
             origin.AddReputation(xpAward > 0 ? xpAward : 1, ServerRConfig);
-            Room.KillEntity(origin, Id);
 
             //For spawners
             if (IsFromSpawner)
@@ -196,6 +214,8 @@ public abstract class Enemy : IDestructible
             origin.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, InternalAchievement, Logger);
             origin.CheckAchievement(AchConditionType.DefeatEnemy, EnemyController.PrefabName, InternalAchievement, Logger);
             origin.CheckAchievement(AchConditionType.DefeatEnemyInLevel, origin.Room.LevelInfo.Name, InternalAchievement, Logger);
+
+            Room.KillEntity(origin, Id);
         }
     }
 

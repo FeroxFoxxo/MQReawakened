@@ -20,5 +20,13 @@ public enum AchConditionType
     HoopGroup,
     HoopInLevel,
     HoopGroupInLevel,
-    Bomb
+    Bomb,
+    BuyItem,
+    BuyPet,
+    Emote,
+    AddFriend,
+    JoinGroup,
+    InviteGroup,
+    OpenPetEgg,
+    DefeatEnemyStomp
 }
