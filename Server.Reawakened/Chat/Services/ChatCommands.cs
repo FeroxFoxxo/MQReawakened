@@ -60,7 +60,7 @@ public partial class ChatCommands(
 
         AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
-        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
+        AddCommand(new ChatCommand("tp", "[X] [Y]", Teleport));
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
         AddCommand(new ChatCommand("openDoors", "", OpenDoors));
 
