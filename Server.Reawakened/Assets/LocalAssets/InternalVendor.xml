@@ -1129,48 +1129,19 @@
     </Level>
     <Level name="Stone Gardens" id="101">
         <Vendor objectId="5151" name="Chinzee" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="1350" greetingConversationId="3420" leavingConversationId="3419">
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
-            <Item prefabName="" />
+            <Item prefabName="COL_PACK_NC_InvincibilityPotion01" />
+            <Item prefabName="COL_FOOD_Orange01" />
+            <Item prefabName="Pattern: Iron Viper Tunic" />
+            <Item prefabName="Pattern: Swirling Crystal Staff" />
+            <Item prefabName="COL_POT_Healing04" />
+            <Item prefabName="WPN_PRJ_Thunderbow01" />
+            <Item prefabName="Add_COM_Warrior01_W01" />
+            <Item prefabName="Add_SHD_Snake01_TS02" />
+            <Item prefabName="Add_COM_Warrior01_T01" />
+            <Item prefabName="Add_SHD_Snake01_S02" />
+            <Item prefabName="WPN_PRJ_AirFist01" />
+            <Item prefabName="Add_SHD_Snake01_LS02" />
+            <Item prefabName="Panda Costume Pack" />
         </Vendor>
     </Level>
 </VendorCatalog>
