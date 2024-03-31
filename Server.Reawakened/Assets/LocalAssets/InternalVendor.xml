@@ -1109,8 +1109,17 @@
         </Vendor>
     </Level>
     <Level name="Jade Mountain" id="48">
-        <!--Custom inventory-->
         <Vendor objectId="639" name="Miya" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1260" greetingConversationId="3404" leavingConversationId="3403">
+            <!--<Item prefabName="Add_COM_Tiger01_S05" />
+            <Item prefabName="Add_COM_Tiger01_LS05" />
+            <Item prefabName="Add_COM_Tiger01_TS05" />-->
+            <Item prefabName="Add_COM_Tiger01_T05" />
+            <Item prefabName="Add_SHD_Monk01_T01" />
+            <Item prefabName="WPN_PRJ_Shuriken01" />
+            <Item prefabName="COL_RECIP_SHD_Monk01_TS03" />
+            <Item prefabName="COL_RECIP_PRJ_Shuriken02" />
+            <Item prefabName="WPN_SPC_StormyPopper01" />
+            <!--Rest are custom-->
             <Item prefabName="COL_POT_Healing01" />
             <Item prefabName="Add_COM_Baseball01_TS02" />
             <Item prefabName="COL_FOOD_Apple01" />
