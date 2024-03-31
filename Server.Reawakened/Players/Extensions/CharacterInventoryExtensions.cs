@@ -10,6 +10,7 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -173,5 +174,40 @@ public static class CharacterInventoryExtensions
         foreach (var item in player.Character.Data.Inventory.Items)
             if (item.Value.Count <= 0)
                 player.Character.Data.Inventory.Items.Remove(item.Key);
+    }
+
+    public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel, ItemCatalog catalog)
+    {
+        var hotbar = player.Character.Data.Hotbar;
+
+        if (!hotbar.HotbarButtons.TryAdd(slotId, itemModel))
+            hotbar.HotbarButtons[slotId] = itemModel;
+
+        CheckPetEquip(player, itemModel.ItemId, true, catalog);
+    }
+
+    public static void RemoveHotbarSlot(this Player player, int slotId, ItemCatalog catalog)
+    {
+        var hotbar = player.Character.Data.Hotbar;
+
+        if (!hotbar.HotbarButtons.TryGetValue(slotId, out var itemModel))
+            return;
+
+        hotbar.HotbarButtons.Remove(slotId);
+
+        CheckPetEquip(player, itemModel.ItemId, false, catalog);
+    }
+
+    private static void CheckPetEquip(Player player, int itemId, bool equiped, ItemCatalog catalog)
+    {
+        var item = catalog.GetItemFromId(itemId);
+
+        if (item.CategoryId != ItemCategory.Pet)
+            return;
+
+        foreach (var roomPlayer in player.Room.Players)
+            roomPlayer.Value.SendXt("ZE", player.UserId, item.ItemId, equiped ? 1 : 0);
+
+        player.Character.Data.PetItemId = equiped ? item.ItemId : 0;
     }
 }

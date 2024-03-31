@@ -18,37 +18,38 @@ public class ItemRConfig : IRConfig
     public string NoEffect { get; }
     public string ToxicCloud { get; }
 
-    public int HealingStaffID { get; set; }
-    public int MysticCharmID { get; set; }
+    public int HealingStaffID { get; }
+    public int MysticCharmID { get; }
 
-    public int BreathTimerDuration { get; set; }
-    public int UnderwaterDamageInterval { get; set; }
+    public int BreathTimerDuration { get; }
+    public int UnderwaterDamageInterval { get; }
 
-    public float ProjectileSpeedX { get; set; }
-    public float ProjectileSpeedY { get; set; }
-    public float ProjectileGravityFactor { get; set; }
-    public float ProjectileXOffset { get; set; }
-    public float ProjectileYOffset { get; set; }
-    public float ProjectileWidth { get; set; }
-    public float ProjectileHeight { get; set; }
+    public float ProjectileSpeedX { get; }
+    public float ProjectileSpeedY { get; }
+    public float ProjectileGravityFactor { get; }
+    public float ProjectileXOffset { get; }
+    public float ProjectileYOffset { get; }
+    public float ProjectileWidth { get; }
+    public float ProjectileHeight { get; }
 
-    public float GrenadeSpeedX { get; set; }
-    public float GrenadeSpeedY { get; set; }
-    public float GrenadeGravityFactor { get; set; }
-    public float GrenadeSpawnDelay { get; set; }
-    public float GrenadeLifeTime { get; set; }
+    public float GrenadeSpeedX { get; }
+    public float GrenadeSpeedY { get; }
+    public float GrenadeGravityFactor { get; }
+    public float GrenadeSpawnDelay { get; }
+    public float GrenadeLifeTime { get; }
 
-    public float MeleeXOffset { get; set; }
-    public float MeleeYOffset { get; set; }
-    public float MeleeWidth { get; set; }
-    public float MeleeHeight { get; set; }
-    public float MeleeArialXOffset { get; set; }
-    public float MeleeArialYOffset { get; set; }
-    public float MeleeArialWidth { get; set; }
-    public float MeleeArialHeight { get; set; }
+    public float MeleeXOffset { get; }
+    public float MeleeYOffset { get; }
+    public float MeleeWidth { get; }
+    public float MeleeHeight { get; }
+    public float MeleeArialXOffset { get; }
+    public float MeleeArialYOffset { get; }
+    public float MeleeArialWidth { get; }
+    public float MeleeArialHeight { get; }
 
-    public Dictionary<int, string> TrainingGear { get; set; }
-    public Dictionary<int, string> TrainingGear2011 { get; set; }
+    public Dictionary<int, string> TrainingGear { get; }
+    public Dictionary<int, string> TrainingGear2011 { get; }
+    public int PetSlotId { get; }
 
     public ItemRConfig()
     {
@@ -143,5 +144,7 @@ public class ItemRConfig : IRConfig
             { 46, "ABIL_MysticCharm01" }, // lv_bon_highway01
             { 498, "ABIL_SnowBoard02" }, // lv_wld_highway01
         };
+
+        PetSlotId = 4;
     }
 }

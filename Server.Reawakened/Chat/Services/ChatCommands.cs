@@ -169,33 +169,25 @@ public partial class ChatCommands(
             ItemFilterCategory.Consumables or
             ItemFilterCategory.NestedSuperPack)
         {
-            //Item must be in inventory to use in hotbar
-            if (!player.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+            var itemModel = new ItemModel()
             {
-                var itemModel = new ItemModel()
-                {
-                    ItemId = item.ItemId,
-                    Count = 1,
-                    BindingCount = 1,
-                    DelayUseExpiry = DateTime.Now
-                };
-
-                player.Character.Data.Inventory.Items.Add(item.ItemId, itemModel);
-            }
-
-            player.Character.Data.Hotbar.HotbarButtons[hotbarId - 1] = new Players.Models.Character.ItemModel()
-            {
-                ItemId = itemId,
-                Count = 1
+                ItemId = item.ItemId,
+                Count = 1,
+                BindingCount = 1,
+                DelayUseExpiry = DateTime.Now
             };
+
+            player.Character.Data.Inventory.Items.TryAdd(item.ItemId, itemModel);
+
+            player.SetHotbarSlot(hotbarId - 1, itemModel, itemCatalog);
+
             player.SendXt("hs", player.Character.Data.Hotbar);
 
             return true;
         }
-
         else
         {
-            Log("Please enter the item Id of a weapon, consumable, or pack.", player);
+            Log("Please enter the item id of a weapon, consumable, or pack.", player);
             return false;
         }
     }

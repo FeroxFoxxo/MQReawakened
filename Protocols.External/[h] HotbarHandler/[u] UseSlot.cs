@@ -63,9 +63,6 @@ public class UseSlot : ExternalProtocol
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
                 break;
-            case ItemActionType.Pet:
-                HandlePet(usedItem);
-                break;
             case ItemActionType.Relic:
                 HandleRelic(usedItem);
                 break;
@@ -76,17 +73,14 @@ public class UseSlot : ExternalProtocol
         }
     }
 
-    private void HandlePet(ItemDescription usedItem)
-    {
-        Player.SendXt("ZE", Player.UserId, usedItem.ItemId, 1);
-        Player.Character.Data.PetItemId = usedItem.ItemId;
-    }
     private void HandleRelic(ItemDescription usedItem) //Needs rework.
     {
         StatusEffect_SyncEvent itemEffect = null;
+
         foreach (var effect in usedItem.ItemEffects)
             itemEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                     (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
+
         Player.SendSyncEventToPlayer(itemEffect);
     }
 
@@ -177,11 +171,14 @@ public class UseSlot : ExternalProtocol
     private void RemoveFromHotBar(CharacterModel character, ItemDescription item, int hotbarSlotId)
     {
         character.Data.Inventory.Items[item.ItemId].Count--;
+
         if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
         {
-            character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
+            Player.RemoveHotbarSlot(hotbarSlotId, ItemCatalog);
+
             SendXt("hu", character.Data.Hotbar);
         }
+
         Player.SendUpdatedInventory();
     }
 }
