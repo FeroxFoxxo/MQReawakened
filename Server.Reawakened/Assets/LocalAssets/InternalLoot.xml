@@ -530,7 +530,7 @@
                 <Item itemName="COL_ING_G_Ruby02" count="1" />
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_COM_ScaleTail01_T03" count="1" />
-                <Item itemName="WPN_MEL_GreatAxe01" count="1" />
+                <!--<Item itemName="WPN_MEL_GreatAxe01" count="1" />-->
             </Items>
         </LootInfo>
     </Level>
@@ -2124,9 +2124,9 @@
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_Tiger01_T05" count="1" />
                 <Item itemName="WPN_SPC_StormyPopper01" count="1" />
-                <Item itemName="Add_COM_Tiger01_S05" count="1" />
+                <!--<Item itemName="Add_COM_Tiger01_S05" count="1" />
                 <Item itemName="Add_COM_Tiger01_TS05" count="1" />
-                <Item itemName="Add_COM_Tiger01_LS05" count="1" />
+                <Item itemName="Add_COM_Tiger01_LS05" count="1" />-->
                 <Item itemName="COL_ING_G_Silk02" count="1" />
             </Items>
         </LootInfo>
@@ -2152,7 +2152,7 @@
                 <Item itemName="COL_RECIP_POT_AirElixir00" count="1" />
                 <Item itemName="COL_RECIP_POT_AirResist00" count="1" />
                 <Item itemName="Add_BON_Spiritualist01_S01" count="1" />
-                <Item itemName="Add_COM_Tiger01_T03" count="1" />
+                <!--<Item itemName="Add_COM_Tiger01_T03" count="1" />-->
                 <Item itemName="ADD_SHD_Shinto01_LS01" count="1" />
                 <Item itemName="Add_SHD_Guard01_LS01" count="1" />
                 <Item itemName="COL_RECIP_POT_AirResist01" count="1" />
@@ -2508,9 +2508,9 @@
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_Tiger01_T05" count="1" />
                 <Item itemName="WPN_SPC_StormyPopper01" count="1" />
-                <Item itemName="Add_COM_Tiger01_S05" count="1" />
+                <!--<Item itemName="Add_COM_Tiger01_S05" count="1" />
                 <Item itemName="Add_COM_Tiger01_TS05" count="1" />
-                <Item itemName="Add_COM_Tiger01_LS05" count="1" />
+                <Item itemName="Add_COM_Tiger01_LS05" count="1" />-->
                 <Item itemName="COL_ING_G_Silk02" count="1" />
             </Items>
         </LootInfo>
@@ -2519,8 +2519,8 @@
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Silk02" count="1" />
                 <Item itemName="COL_POT_Healing01" count="1" />
-                <Item itemName="Add_COM_Tiger01_TS05" count="1" />
-                <Item itemName="Add_COM_Tiger01_S05" count="1" />
+                <!--<Item itemName="Add_COM_Tiger01_TS05" count="1" />
+                <Item itemName="Add_COM_Tiger01_S05" count="1" />-->
                 <Item itemName="Add_COM_Tiger01_T05" count="1" />
             </Items>
         </LootInfo>
@@ -2531,7 +2531,7 @@
                 <Item itemName="COL_POT_Healing01" count="1" />
                 <Item itemName="COL_POT_AirResist00" count="1" />
                 <Item itemName="Add_COM_Tiger01_T05" count="1" />
-                <Item itemName="Add_COM_Tiger01_TS05" count="1" />
+               <!--<Item itemName="Add_COM_Tiger01_TS05" count="1" />-->
                 <Item itemName="COL_POT_AirElixir00" count="1" />
             </Items>
         </LootInfo>
@@ -2539,22 +2539,22 @@
         <LootInfo objectId="4064" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_Tiger01_T05" count="1" />
-                <Item itemName="Add_COM_Tiger01_TS05" count="1" />
+                <!--<Item itemName="Add_COM_Tiger01_TS05" count="1" />-->
                 <Item itemName="COL_POT_AirResist00" count="1" />
                 <Item itemName="COL_POT_AirElixir00" count="1" />
-                <Item itemName="Add_COM_Tiger01_LS05" count="1" />
+               <!-- <Item itemName="Add_COM_Tiger01_LS05" count="1" />-->
                 <Item itemName="COL_ING_G_Silk02" count="1" />
-                <Item itemName="Add_COM_Tiger01_S05" count="1" />
+                <!--<Item itemName="Add_COM_Tiger01_S05" count="1" />-->
             </Items>
         </LootInfo>
         <!--Green Chest 4-->
         <LootInfo objectId="4254" doLootWheel="true">
             <Items rewardAmount="1">
-                <Item itemName="Add_COM_Tiger01_LS05" count="1" />
+                <!--<Item itemName="Add_COM_Tiger01_LS05" count="1" />-->
                 <Item itemName="COL_POT_AirElixir00" count="1" />
                 <Item itemName="Add_COM_Tiger01_T05" count="1" />
                 <Item itemName="COL_ING_G_Silk02" count="1" />
-                <Item itemName="Add_COM_Tiger01_S05" count="1" />
+                <!--<Item itemName="Add_COM_Tiger01_S05" count="1" />-->
             </Items>
         </LootInfo>
         <!--Purple Chest-->
@@ -2582,7 +2582,7 @@
                 <Item itemName="Add_COM_HawaiGirl01_LS02" count="1" />
             </Items>
         </LootInfo>
-        <!--Vases-->
+        <!--Barrels-->
         <LootInfo objectId="4109" doLootWheel="false">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_ShadowShard02" count="1" />
@@ -2702,11 +2702,11 @@
         <LootInfo objectId="5503" doLootWheel="true">           
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_AirResist00" count="1" />
-                <Item itemName="Add_COM_Tiger01_TS05" count="1" />
-                <Item itemName="Add_COM_Tiger01_S05" count="1" />
+                <!--<Item itemName="Add_COM_Tiger01_TS05" count="1" />
+                <Item itemName="Add_COM_Tiger01_S05" count="1" />-->
                 <Item itemName="Unknown Potion Recipe (0stars)" count="1" />
                 <Item itemName="COL_ING_G_Silk02" count="1" />
-                <Item itemName="Add_COM_Tiger01_LS05" count="1" />
+                <!--<Item itemName="Add_COM_Tiger01_LS05" count="1" />-->
                 <Item itemName="COL_POT_AirElixir00" count="1" />
                 <Item itemName="Add_COM_Tiger01_T05" count="1" />
             </Items>

@@ -101,7 +101,7 @@
             <Item prefabName="WPN_PRJ_Thunderbow01" />
             <Item prefabName="WPN_MEL_IceRaiderHammer01" />
             <Item prefabName="WPN_SPC_PoisonGrenade01" />
-            <Item prefabName="WPN_MEL_GreatAxe01" />
+            <!--<Item prefabName="WPN_MEL_GreatAxe01" />-->
             <Item prefabName="WPN_PRJ_FistOfTerra01" />
             <Item prefabName="ABIL_PoisonBomb03" />
             <Item prefabName="ABIL_Grenade03b" />
@@ -148,7 +148,7 @@
             <Item prefabName="Add_COM_Explorator01_UF01" />
             <Item prefabName="COL_FOOD_Apple01" />
             <Item prefabName="Add_COM_AnimalWood01_S01" />
-            <Item prefabName="WPN_1H_SwordGKnight02" />
+            <!--<Item prefabName="WPN_1H_SwordGKnight02" />-->
             <Item prefabName="Add_OUT_WaterBandit01_E03" />
             <Item prefabName="Add_COM_Cocohelm01_S02" />
             <Item prefabName="COL_FOOD_IceCream01" />
@@ -226,7 +226,7 @@
             <Item prefabName="WPN_PRJ_Thunderbow01" />
             <Item prefabName="WPN_MEL_IceRaiderHammer01" />
             <Item prefabName="WPN_SPC_PoisonGrenade01" />
-            <Item prefabName="WPN_MEL_GreatAxe01" />
+            <!--<Item prefabName="WPN_MEL_GreatAxe01" />-->
             <Item prefabName="WPN_PRJ_FistOfTerra01" />
             <Item prefabName="ABIL_PoisonBomb03" />
             <Item prefabName="ABIL_Grenade03b" />
@@ -680,7 +680,7 @@
             <Item prefabName="WPN_PRJ_Thunderbow01" />
             <Item prefabName="WPN_MEL_RottenStick01" />
             <Item prefabName="WPN_SPC_PoisonGrenade01" />
-            <Item prefabName="WPN_MEL_GreatAxe01" />
+            <!--<Item prefabName="WPN_MEL_GreatAxe01" />-->
             <Item prefabName="WPN_PRJ_FistOfTerra01" />
             <Item prefabName="WPN_MEL_ScorpionSword01" />
             <Item prefabName="ABIL_PoisonBomb03" />
@@ -943,7 +943,7 @@
             <Item prefabName="COL_FOOD_Cookie02" />
         </Vendor>
         <Vendor objectId="16906" name="Anora" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1420" greetingConversationId="3604" leavingConversationId="3603">
-            <Item prefabName="WPN_1H_SwordGKnight02" />
+            <!--<Item prefabName="WPN_1H_SwordGKnight02" />-->
             <Item prefabName="WPN_SPC_DoomGrenade01" />
             <Item prefabName="COL_PACK_NC_DoomGrenade01" />
             <Item prefabName="WPN_MEL_IceRaiderHammer01" />
@@ -1015,7 +1015,7 @@
             <Item prefabName="WPN_MEL_CrimsonSword01" />
             <Item prefabName="WPN_SPC_ChimFooPopper01" />
             <Item prefabName="WPN_MEL_GargoyleSword01" />
-            <Item prefabName="WPN_MEL_GreatAxe01" />
+            <!--<Item prefabName="WPN_MEL_GreatAxe01" />-->
         </Vendor>
         <Vendor objectId="1092" name="Dimsum" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="787" greetingConversationId="2196" leavingConversationId="2195">
             <Item prefabName="COL_RECIP_POT_Healing05" />
