@@ -5,9 +5,11 @@ using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Entity;
-using Server.Reawakened.Entities.Entity.Enemies.BehaviorEnemies;
+using Server.Reawakened.Entities.Enemies;
+using Server.Reawakened.Entities.Enemies.EnemyAI.AIStateEnemies;
+using Server.Reawakened.Entities.Enemies.EnemyAI.BehaviorEnemies;
 using Server.Reawakened.Entities.Interfaces;
+using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -36,7 +38,6 @@ public class Room : Timer
     public HashSet<string> KilledObjects;
 
     public Dictionary<string, Player> Players;
-    public Dictionary<string, TicklyEntity> Projectiles;
     public Dictionary<string, BaseCollider> Colliders;
 
     public ILogger<Room> Logger;
@@ -47,10 +48,12 @@ public class Room : Timer
     public Dictionary<string, List<List<BaseComponent>>> DuplicateEntities;
 
     private readonly Dictionary<string, List<BaseComponent>> _entities;
+    private readonly Dictionary<string, BaseProjectile> _projectiles;
 
     public SpawnPointComp DefaultSpawn { get; set; }
 
     private readonly ServerRConfig _config;
+    private readonly ItemRConfig _itemConfig;
 
     public ItemCatalog ItemCatalog;
     public InternalColliders ColliderCatalog;
@@ -68,6 +71,7 @@ public class Room : Timer
 
         _roomId = roomId;
         _config = config;
+        _itemConfig = services.GetRequiredService<ItemRConfig>();
 
         ColliderCatalog = services.GetRequiredService<InternalColliders>();
         ItemCatalog = services.GetRequiredService<ItemCatalog>();
@@ -75,11 +79,12 @@ public class Room : Timer
 
         _level = level;
 
+        _projectiles = [];
+
         Players = [];
         GameObjectIds = [];
         DuplicateEntities = [];
         KilledObjects = [];
-        Projectiles = [];
         Enemies = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
@@ -114,7 +119,7 @@ public class Room : Timer
         {
             if (component.Name == config.EnemyComponentName && !component.ParentPlane.Equals("TemplatePlane"))
             {
-                // Move the name switcher out of ServerRConfig when the enemy xml is made.
+                // Move the name switcher out of ItemRConfig when the enemy xml is made.
                 switch (component.PrefabName)
                 {
                     case string bird when bird.Contains(config.EnemyNameSearch[0]):
@@ -186,7 +191,7 @@ public class Room : Timer
     public override void OnTick()
     {
         var entitiesCopy = _entities.Values.SelectMany(s => s).ToList();
-        var projectilesCopy = Projectiles.Values.ToList();
+        var projectilesCopy = _projectiles.Values.ToList();
         var enemiesCopy = Enemies.Values.ToList();
 
         foreach (var entityComponent in entitiesCopy)
@@ -272,36 +277,28 @@ public class Room : Timer
                 }
             }
 
-            if (_config.TrainingGear.TryGetValue(LevelInfo.LevelId, out var trainingGear) && _config.GameVersion == GameVersion.v2014)
-            {
-                var item = ItemCatalog.GetItemFromPrefabName(trainingGear);
-
-                if (item != null)
-                {
-                    if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
-                    {
-                        currentPlayer.AddItem(item, 1, ItemCatalog);
-                        currentPlayer.SendUpdatedInventory();
-                    }
-                }
-            }
-            else if (_config.TrainingGear2011.TryGetValue(LevelInfo.LevelId, out var gear) && _config.GameVersion >= GameVersion.v2011)
-            {
-                var item = ItemCatalog.GetItemFromPrefabName(gear);
-
-                if (item != null)
-                {
-                    if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
-                    {
-                        currentPlayer.AddItem(item, 1, ItemCatalog);
-                        currentPlayer.SendUpdatedInventory();
-                    }
-                }
-            }
+            if (_itemConfig.TrainingGear.TryGetValue(LevelInfo.LevelId, out var trainingGear) && _config.GameVersion == GameVersion.v2014)
+                AddGear(trainingGear, currentPlayer);
+            else if (_itemConfig.TrainingGear2011.TryGetValue(LevelInfo.LevelId, out var gear) && _config.GameVersion >= GameVersion.v2011)
+                AddGear(gear, currentPlayer);
         }
         else
         {
             currentPlayer.NetState.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
+        }
+    }
+
+    private void AddGear(string gear, Player currentPlayer)
+    {
+        var item = ItemCatalog.GetItemFromPrefabName(gear);
+
+        if (item != null)
+        {
+            if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+            {
+                currentPlayer.AddItem(item, 1, ItemCatalog);
+                currentPlayer.SendUpdatedInventory();
+            }
         }
     }
 
@@ -511,13 +508,28 @@ public class Room : Timer
         return projectileId;
     }
 
+    public void AddProjectile(BaseProjectile projectile)
+    {
+        lock (_roomLock)
+        {
+            _projectiles.Add(projectile.ProjectileId, projectile);
+        }
+    }
+
+    public void RemoveProjectile(string projectileId)
+    {
+        lock (_roomLock)
+        {
+            _projectiles.Remove(projectileId);
+        }
+    }
+
     private void CleanData()
     {
         GameObjectIds.Clear();
         KilledObjects.Clear();
 
         Players.Clear();
-        Projectiles.Clear();
         Colliders.Clear();
 
         Planes.Clear();
@@ -526,5 +538,6 @@ public class Room : Timer
         DuplicateEntities.Clear();
 
         _entities.Clear();
+        _projectiles.Clear();
     }
 }

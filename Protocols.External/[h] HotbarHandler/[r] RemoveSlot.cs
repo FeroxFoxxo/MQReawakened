@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -7,7 +9,7 @@ public class RemoveSlot : ExternalProtocol
 {
     public override string ProtocolName => "hr";
 
-    public ILogger<RemoveSlot> Logger { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     public override void Run(string[] message)
     {
@@ -15,7 +17,7 @@ public class RemoveSlot : ExternalProtocol
 
         var hotbarSlotId = int.Parse(message[5]);
 
-        character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
+        Player.RemoveHotbarSlot(hotbarSlotId, ItemCatalog);
 
         SendXt("hr", character.Data.Hotbar);
     }

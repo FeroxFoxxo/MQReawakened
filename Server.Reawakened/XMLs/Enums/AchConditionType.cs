@@ -11,6 +11,7 @@ public enum AchConditionType
     Drink,
     Consumable,
     DefeatEnemy,
+    DefeatEnemyStomp,
     DefeatEnemyInLevel,
     CompleteQuest,
     CompleteQuestInLevel,
@@ -20,5 +21,15 @@ public enum AchConditionType
     HoopGroup,
     HoopInLevel,
     HoopGroupInLevel,
-    Bomb
+    Bomb,
+    BuyItem,
+    BuyPet,
+    Emote,
+    AddFriend,
+    JoinGroup,
+    InviteGroup,
+    OpenPetEgg,
+    ReachLevel,
+    CompleteDailyQuest,
+    OpenJackinTheBox
 }

@@ -10,6 +10,8 @@ using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -124,12 +126,14 @@ public static class PlayerExtensions
             trade.TempData.TradeModel = null;
     }
 
-    public static void AddBananas(this Player player, int collectedBananas)
+    public static void AddBananas(this Player player, int collectedBananas, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
         var charData = player.Character.Data;
 
         if (player.TempData.BananaBoostsElixir)
             collectedBananas = Convert.ToInt32(collectedBananas * 0.1);
+
+        player.CheckAchievement(AchConditionType.CollectBanana, string.Empty, internalAchievement, logger, collectedBananas);
 
         charData.Cash += collectedBananas;
         player.SendCashUpdate();
@@ -207,7 +211,7 @@ public static class PlayerExtensions
 
         // this allows early 2012 to load 
         // the empty string is displayLevelName in ILSpy
-        // player.SendXt("lw", error, levelName, string.Empty, surroundingLevels);
+        // _player.SendXt("lw", error, levelName, string.Empty, surroundingLevels);
 
         player.SendXt("lw", error, levelName, surroundingLevels);
     }

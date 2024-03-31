@@ -51,7 +51,6 @@ public class GlobalInteractionControllerComp : Component<GlobalInteractionContro
             _nextPollTime = Room.Time + PollInterval;
         }
     }
-    //public override void RunSyncedEvent(SyncEvent syncEvent, Player player) { }
 
     public void GoToNextState(GameObjectComponents NewState)
     {

@@ -12,7 +12,7 @@ namespace Server.Reawakened.Players.Helpers;
 public static class PlayerLootHandler
 {
     public static void GrantLoot(this Player player, string gameObjectId, InternalLoot lootCatalog,
-        ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
+        ItemCatalog itemCatalog, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
         var loot = lootCatalog.GetLootById(player.Room.LevelInfo.LevelId, gameObjectId);
 
@@ -20,13 +20,13 @@ public static class PlayerLootHandler
             logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);
 
         if (loot.BananaRewards.Count > 0)
-            loot.BananaRewards.GrantLootBananas(player);
+            loot.BananaRewards.GrantLootBananas(player, internalAchievement, logger);
 
         if (loot.ItemRewards.Count > 0)
             loot.GrantLootItems(gameObjectId, player, itemCatalog);
     }
 
-    private static void GrantLootBananas(this List<BananaReward> bananas, Player player)
+    private static void GrantLootBananas(this List<BananaReward> bananas, Player player, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
         var random = new Random();
 
@@ -35,7 +35,7 @@ public static class PlayerLootHandler
         foreach (var banana in bananas)
             totalBananas += random.Next(banana.BananaMin, banana.BananaMax + 1);
 
-        player.AddBananas(totalBananas);
+        player.AddBananas(totalBananas, internalAchievement, logger);
     }
 
     private static void GrantLootItems(this LootModel lootModel, string objectId, Player player,

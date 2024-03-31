@@ -40,7 +40,6 @@ public class GenericCollectibleComp : Component<GenericCollectible>
     {
         Collected = true;
 
-        player.CheckAchievement(AchConditionType.CollectBanana, string.Empty, Achievement, Logger, Value);
         var collectedValue = Value * Room.Players.Count;
 
         Room.SentEntityTriggered(Id, player, true, true);
@@ -69,6 +68,6 @@ public class GenericCollectibleComp : Component<GenericCollectible>
             return;
 
         foreach (var currentPlayer in Room.Players.Values)
-            currentPlayer.AddBananas(collectedValue);
+            currentPlayer.AddBananas(collectedValue, Achievement, Logger);
     }
 }

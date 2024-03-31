@@ -4,6 +4,7 @@ using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players;
 
 namespace Protocols.External._a__ChatHandler;
 
@@ -36,7 +37,12 @@ public class FreeChat : ExternalProtocol
         {
             var character = Player.Character;
 
-            Player.TempData.Group?.Chat(Player, channelType, character.Data.CharacterName, chatMessage);
+            foreach (
+                var client in
+                    from client in Player.TempData.Group.GetMembers()
+                    select client
+                )
+                client.Chat(channelType, character.Data.CharacterName, chatMessage);
         }
         else if (channelType == CannedChatChannel.Trade)
         {

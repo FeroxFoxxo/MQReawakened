@@ -11,6 +11,7 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
+using static LeaderBoardTopScoresJson;
 
 namespace Protocols.External._i__InventoryHandler;
 
@@ -21,7 +22,7 @@ public class UseItem : ExternalProtocol
     public VendorCatalog VendorCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public InternalRecipe RecipeCatalog { get; set; }
-    public ServerRConfig ServerRConfig { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
@@ -61,6 +62,9 @@ public class UseItem : ExternalProtocol
             case ItemSubCategory.SuperPack:
                 HandleSuperPack(usedItem);
                 break;
+            case ItemSubCategory.Pets:
+                HandlePet(usedItem);
+                break;
             default:
                 Logger.LogWarning("Could not find use for item {ItemId}, type {ItemType}.",
                     itemId, usedItem.SubCategoryId);
@@ -70,12 +74,19 @@ public class UseItem : ExternalProtocol
         Player.SendUpdatedInventory();
     }
 
+    private void HandlePet(ItemDescription usedItem)
+    {
+        var itemModel = Player.Character.Data.Inventory.Items[usedItem.ItemId];
+        Player.SetHotbarSlot(ItemRConfig.PetSlotId, itemModel, ItemCatalog);
+        SendXt("hs", Player.Character.Data.Hotbar);
+    }
+
     private void HandleBomb(ItemDescription usedItem, Vector3Model position, int direction)
     {
         Player.CheckAchievement(AchConditionType.Bomb, string.Empty, InternalAchievement, Logger);
         Player.CheckAchievement(AchConditionType.Bomb, usedItem.PrefabName, InternalAchievement, Logger);
 
-        Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
+        Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
 
         var removeFromHotbar = true;
 
@@ -101,7 +112,7 @@ public class UseItem : ExternalProtocol
             Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, InternalAchievement, Logger);
         }
 
-        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
+        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, Logger);
 
         var removeFromHotbar = true;
 

@@ -62,11 +62,11 @@ public class InternalEventReward : IBundledXml<InternalEventReward>
     {
     }
 
-    public void CheckEventReward(int eventId, ItemCatalog itemCatalog, Player player)
+    public void CheckEventReward(int eventId, ItemCatalog itemCatalog, Player player, InternalAchievement internalAchievement)
     {
         if (!EventRewards.TryGetValue(eventId, out var eventRewards))
             return;
 
-        eventRewards.RewardPlayer(player, itemCatalog, Logger);
+        eventRewards.RewardPlayer(player, itemCatalog, internalAchievement, Logger);
     }
 }

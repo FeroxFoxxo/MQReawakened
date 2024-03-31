@@ -8,10 +8,12 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 
 namespace Server.Reawakened.Players;
 
@@ -71,7 +73,7 @@ public class Player(Account account, UserInfo userInfo, NetState state, WorldHan
             var roomName = Room.LevelInfo.Name;
 
             if (!string.IsNullOrEmpty(roomName))
-                logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
+                logger.LogDebug("Dumped _player with ID '{User}' from room '{Room}'", UserId, roomName);
         }
 
         this.DumpToLobby(worldHandler);

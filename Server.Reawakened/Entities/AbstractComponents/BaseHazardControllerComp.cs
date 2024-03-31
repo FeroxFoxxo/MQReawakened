@@ -10,6 +10,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.Rooms.Models.Entities.Colliders;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
@@ -38,7 +39,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     private string _id;
 
     public TimerThread TimerThread { get; set; }
-    public ServerRConfig ServerRConfig { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<BaseHazardControllerComp<HazardController>> Logger { get; set; }
@@ -48,8 +49,10 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public override void InitializeComponent()
     {
         var controller = Room.GetEntityFromId<EnemyControllerComp>(Id);
+
         if (controller != null)
             _enemyController = controller;
+
         _id = Id;
 
         Enum.TryParse(HurtEffect, true, out EffectType);
@@ -77,9 +80,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (!Room.Enemies.ContainsKey(Id))
         {
             //Hazards which also contain the LinearPlatform component already have colliders and do not need a new one created. They have NoEffect.
-            if (HurtEffect != ServerRConfig.NoEffect ||
+            if (HurtEffect != ItemRConfig.NoEffect ||
                 //Many Toxic Clouds seem to have no components, so we find the object with PrefabName to create its colliders. (Seek Moss Temple for example)
-                PrefabName.Contains(ServerRConfig.ToxicCloud))
+                PrefabName.Contains(ItemRConfig.ToxicCloud))
                 TimerThread.DelayCall(ColliderCreationDelay, null, TimeSpan.FromSeconds(3), TimeSpan.Zero, 1);
         }
     }
@@ -113,17 +116,24 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 TimeSpan.FromSeconds(ActiveDuration), TimeSpan.Zero, 1);
     }
 
-    //Moving hazards
+    //Standard Hazards
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
-        if (!notifyCollisionEvent.Colliding || player.TempData.Invincible ||
-            HurtEffect != ServerRConfig.NoEffect || HurtLength < 0)
+        if (!notifyCollisionEvent.Colliding || player.TempData.Invincible)
             return;
 
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
             (int)ItemEffectType.BluntDamage, 0, 1, true, _id, false));
 
-        player.ApplyDamageByPercent(HealthRatioDamage, TimerThread);
+        if (_enemyController != null)
+        {
+            var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, _enemyController.Level) - player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
+
+            player.ApplyCharacterDamage(damage > 0 ? damage : 1, 1, TimerThread);
+        }
+
+        else
+            player.ApplyDamageByPercent(HealthRatioDamage, TimerThread);
     }
 
     public void ApplyHazardEffect(Player player)
@@ -137,7 +147,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         Damage = (int)Math.Ceiling(player.Character.Data.MaxLife * HealthRatioDamage);
 
         //For toxic purple cloud hazards with no components
-        if (PrefabName.Contains(ServerRConfig.ToxicCloud))
+        if (PrefabName.Contains(ItemRConfig.ToxicCloud))
             effectType = ItemEffectType.PoisonDamage;
 
         switch (effectType)
@@ -207,7 +217,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                     (int)ItemEffectType.WaterBreathing, 1, 1, true, _id, false));
 
-        player.StartUnderwaterTimer(player.Character.Data.MaxLife / 10, TimerThread, ServerRConfig);
+        player.StartUnderwaterTimer(player.Character.Data.MaxLife / 10, TimerThread, ItemRConfig);
 
         TimerThread.DelayCall(RestartTimerDelay, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
         Logger.LogInformation("Reset underwater timer for {characterName}", player.CharacterName);

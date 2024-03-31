@@ -23,8 +23,6 @@
         <ProjectReference Include="..\Server.Reawakened\Server.Reawakened.csproj" />
         <ProjectReference Include="..\Server.Web\Server.Web.csproj" />
         <ProjectReference Include="..\Web.Apps\Web.Apps.csproj" />
-        <ProjectReference Include="..\Web.AssetBundles\Web.AssetBundles.csproj" />
-        <ProjectReference Include="..\Web.Icons\Web.Icons.csproj" />
         <ProjectReference Include="..\Web.Launcher\Web.Launcher.csproj" />
         <ProjectReference Include="..\Web.Razor\Web.Razor.csproj" />
         <ProjectReference Include="..\Web.WebPlayer\Web.WebPlayer.csproj" />

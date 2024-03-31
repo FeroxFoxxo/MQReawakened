@@ -11,7 +11,7 @@ using Server.Reawakened.Rooms.Models.Planes;
 namespace Server.Reawakened.Players.Extensions;
 public static class PlayerItemExtensions
 {
-    public static void HandleDrop(this Player player, ServerRConfig config, TimerThread timerThread,
+    public static void HandleDrop(this Player player, ItemRConfig config, TimerThread timerThread,
         Microsoft.Extensions.Logging.ILogger logger, ItemDescription usedItem, Vector3Model position, int direction)
     {
         var isLeft = direction > 0;
@@ -26,7 +26,7 @@ public static class PlayerItemExtensions
             UsedItem = usedItem,
             Player = player,
             Logger = logger,
-            ServerRConfig = config,
+            ItemRConfig = config,
             TimerThread = timerThread
         };
 
@@ -40,7 +40,7 @@ public static class PlayerItemExtensions
         public Vector3Model Position { get; set; }
         public Player Player { get; set; }
         public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
-        public ServerRConfig ServerRConfig { get; set; }
+        public ItemRConfig ItemRConfig { get; set; }
         public TimerThread TimerThread { get; set; }
     }
 
@@ -79,7 +79,7 @@ public static class PlayerItemExtensions
                     PrefabName = prefabName,
                     Component = component,
                     ObjectId = objectId,
-                    Damage = dropData.UsedItem.GetDamageAmount(dropData.Logger, dropData.ServerRConfig),
+                    Damage = dropData.UsedItem.GetDamageAmount(dropData.Logger, dropData.ItemRConfig),
                     DamageType = dropData.UsedItem.Elemental,
                     Player = player,
                     Logger = dropData.Logger
@@ -114,7 +114,7 @@ public static class PlayerItemExtensions
             breakableObjEntity.Damage(bData.Damage, bData.DamageType, bData.Player);
     }
 
-    public static int GetDamageAmount(this ItemDescription usedItem, Microsoft.Extensions.Logging.ILogger logger, ServerRConfig config)
+    public static int GetDamageAmount(this ItemDescription usedItem, Microsoft.Extensions.Logging.ILogger logger, ItemRConfig config)
     {
         var damage = config.DefaultDropDamage;
 

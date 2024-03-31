@@ -14,7 +14,7 @@ public class PlayerCount(ServerConsole serverConsole,
     public void Load() => 
         serverConsole.AddCommand(
             "playerCount", 
-            "Sends the current online player count in console.", 
+            "Sends the current online _player count in console.", 
             NetworkType.Server, 
             SendPlayerCount);
 

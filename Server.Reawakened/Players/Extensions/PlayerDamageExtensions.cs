@@ -15,7 +15,7 @@ public static class PlayerDamageExtensions
         public TimerThread TimerThread;
     }
 
-    public static void StartUnderwaterTimer(this Player player, int damage, TimerThread timerThread, ServerRConfig config)
+    public static void StartUnderwaterTimer(this Player player, int damage, TimerThread timerThread, ItemRConfig config)
     {
         player.StopUnderwaterTimer();
 
@@ -87,6 +87,6 @@ public static class PlayerDamageExtensions
     }
 
     // Temporary code until enemy/hazard system is implemented
-    public static void ApplyDamageByObject(this Player player, string objectId, TimerThread timerThread) =>
+    public static void ApplyDamageByObject(this Player player, TimerThread timerThread) =>
         ApplyDamageByPercent(player, .10, timerThread);
 }

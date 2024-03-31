@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Entity;
+using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -20,6 +20,7 @@ public class UseSlot : ExternalProtocol
     public override string ProtocolName => "hu";
 
     public ItemCatalog ItemCatalog { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
@@ -47,7 +48,7 @@ public class UseSlot : ExternalProtocol
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drop:
-                Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
+                Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
                 RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Grenade:
@@ -62,9 +63,6 @@ public class UseSlot : ExternalProtocol
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
                 break;
-            case ItemActionType.Pet:
-                HandlePet(usedItem);
-                break;
             case ItemActionType.Relic:
                 HandleRelic(usedItem);
                 break;
@@ -75,23 +73,20 @@ public class UseSlot : ExternalProtocol
         }
     }
 
-    private void HandlePet(ItemDescription usedItem)
-    {
-        Player.SendXt("ZE", Player.UserId, usedItem.ItemId, 1);
-        Player.Character.Data.PetItemId = usedItem.ItemId;
-    }
     private void HandleRelic(ItemDescription usedItem) //Needs rework.
     {
         StatusEffect_SyncEvent itemEffect = null;
+
         foreach (var effect in usedItem.ItemEffects)
             itemEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                     (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
+
         Player.SendSyncEventToPlayer(itemEffect);
     }
 
     private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
     {
-        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
+        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, Logger);
         var removeFromHotBar = true;
 
         if (usedItem.InventoryCategoryID is
@@ -140,7 +135,7 @@ public class UseSlot : ExternalProtocol
 
         if (isGrenade)
         {
-            TimerThread.DelayCall(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ServerRConfig.GrenadeSpawnDelay), TimeSpan.Zero, 1);
+            TimerThread.DelayCall(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ItemRConfig.GrenadeSpawnDelay), TimeSpan.Zero, 1);
             RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
         }
 
@@ -153,11 +148,12 @@ public class UseSlot : ExternalProtocol
         var prjData = (ProjectileData)projectileData;
 
         // Add weapon stats later
-        var prj = new ProjectileEntity(Player, prjData.ProjectileId,
-            prjData.Position, prjData.Direction, ServerRConfig.GrenadeLifeTime, prjData.UsedItem,
+        var prj = new GenericProjectile(prjData.ProjectileId, Player, ItemRConfig.GrenadeLifeTime,
+            prjData.Position, ItemRConfig, ServerRConfig, prjData.Direction, prjData.UsedItem,
             Player.Character.Data.CalculateDamage(prjData.UsedItem, ItemCatalog),
-            prjData.UsedItem.Elemental, prjData.IsGrenade, ServerRConfig);
-        Player.Room.Projectiles.Add(prjData.ProjectileId, prj);
+            prjData.UsedItem.Elemental, prjData.IsGrenade);
+
+        Player.Room.AddProjectile(prj);
     }
 
     private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
@@ -165,21 +161,24 @@ public class UseSlot : ExternalProtocol
         var prjId = Player.Room.SetProjectileId();
 
         // Add weapon stats later
-        var prj = new MeleeEntity(Player, prjId, position, direction, 0.51f, usedItem,
+        var prj = new MeleeEntity(prjId, position, Player, direction, 0.51f, usedItem,
             Player.Character.Data.CalculateDamage(usedItem, ItemCatalog),
-            usedItem.Elemental, ServerRConfig);
+            usedItem.Elemental, ServerRConfig, ItemRConfig);
 
-        Player.Room.Projectiles.Add(prjId, prj);
+        Player.Room.AddProjectile(prj);
     }
 
     private void RemoveFromHotBar(CharacterModel character, ItemDescription item, int hotbarSlotId)
     {
         character.Data.Inventory.Items[item.ItemId].Count--;
+
         if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
         {
-            character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
+            Player.RemoveHotbarSlot(hotbarSlotId, ItemCatalog);
+
             SendXt("hu", character.Data.Hotbar);
         }
+
         Player.SendUpdatedInventory();
     }
 }

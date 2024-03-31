@@ -179,12 +179,6 @@ public class NPCControllerComp : Component<NPCController>
                     default:
                         break;
                 }
-
-                var newStatus = GetQuestStatus(player);
-
-                if (newStatus is NPCStatus.QuestCompleted or NPCStatus.QuestAvailable)
-                    TalkToNpc(player);
-
                 break;
             case NpcType.Dialog:
                 SendDialog(player);
@@ -514,6 +508,8 @@ public class NPCControllerComp : Component<NPCController>
 
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
 
+                player.UpdateAllNpcsInLevel();
+
                 if (quest.QuestRewards.Count > 0)
                 {
                     foreach (var item in quest.QuestRewards)
@@ -524,8 +520,6 @@ public class NPCControllerComp : Component<NPCController>
                             player.AddQuest(newQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}", Logger);
                     }
                 }
-
-                player.UpdateAllNpcsInLevel();
             }
 
             break;

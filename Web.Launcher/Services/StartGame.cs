@@ -12,6 +12,7 @@ using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Network.Enums;
 using Server.Base.Worlds;
+using Server.Reawakened.BundleHost.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Events;
@@ -26,7 +27,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 namespace Web.Launcher.Services;
 
 public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole _console,
-    World world, PlayerEventSink playerEventSink, RandomKeyGenerator generator, IServer server,
+    World world, PlayerEventSink playerEventSink, RandomKeyGenerator generator, IServer server, BuildAssetList assetList,
     LauncherRConfig lConfig, LauncherRwConfig lWConfig, InternalRwConfig ilWConfig, ServerRConfig sConfig) : IService
 {
     private string _directory;
@@ -108,10 +109,11 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
 
         var lastUpdate = DateTime.ParseExact(CurrentVersion.game.lastUpdate, lConfig.TimeFilter,
             CultureInfo.InvariantCulture);
-        lWConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
+
+        sConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
 
         sConfig.GameVersion = GameVersion.Unknown;
-        lWConfig.v2014Timestamp = DateTime.ParseExact(lConfig.ClientUpdates[GameVersion.v2014], lConfig.TimeFilter, CultureInfo.InvariantCulture).ToUnixTimestamp();
+        sConfig.CutOffFor2014 = DateTime.ParseExact(lConfig.ClientUpdates[GameVersion.v2014], lConfig.TimeFilter, CultureInfo.InvariantCulture).ToUnixTimestamp();
 
         foreach (var updateDate in lConfig.ClientUpdates
             .ToDictionary(x => x.Key, x => DateTime.ParseExact(x.Value, lConfig.TimeFilter, CultureInfo.InvariantCulture))
@@ -129,7 +131,9 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
             logger.LogDebug("Set API key to: {ApiKey}", lWConfig.AnalyticsApiKey);
         }
 
-        logger.LogDebug("Set version to: {Version}", Enum.GetName(sConfig.GameVersion));
+        logger.LogInformation("Set version to: {Version}", Enum.GetName(sConfig.GameVersion));
+
+        assetList.LoadAssets();
 
         _dirSet = true;
 

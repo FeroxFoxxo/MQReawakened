@@ -8,7 +8,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
+using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Room = Server.Reawakened.Rooms.Room;
@@ -20,6 +20,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public ItemCatalog ItemCatalog { get; set; }
     public InternalLoot LootCatalog { get; set; }
     public TimerThread TimerThread { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
 
     public int MaxHealth { get; set; }
@@ -91,7 +92,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         if (_health <= 0)
         {
-            origin.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
+            origin.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
             origin.SendUpdatedInventory();
 
             Room.KillEntity(origin, Id);
