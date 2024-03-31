@@ -1127,4 +1127,50 @@
             <Item prefabName="Add_SHD_Snake01_S02" />
         </Vendor>
     </Level>
+    <Level name="Stone Gardens" id="101">
+        <Vendor objectId="5151" name="Chinzee" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="1350" greetingConversationId="3420" leavingConversationId="3419">
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+            <Item prefabName="" />
+        </Vendor>
+    </Level>
 </VendorCatalog>
