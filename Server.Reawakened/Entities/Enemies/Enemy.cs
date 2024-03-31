@@ -18,7 +18,6 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Enemies.Utils;
 using Server.Reawakened.Entities.Enemies.EnemyAI;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
 
 namespace Server.Reawakened.Entities.Enemies;
 

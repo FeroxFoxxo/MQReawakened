@@ -48,7 +48,7 @@ public class UseSlot : ExternalProtocol
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drop:
-                Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
+                Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
                 RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Grenade:
@@ -86,7 +86,7 @@ public class UseSlot : ExternalProtocol
 
     private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
     {
-        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, Logger);
+        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
         var removeFromHotBar = true;
 
         if (usedItem.InventoryCategoryID is
@@ -174,7 +174,7 @@ public class UseSlot : ExternalProtocol
 
         if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
         {
-            Player.RemoveHotbarSlot(hotbarSlotId, ItemCatalog);
+            character.Data.Hotbar.HotbarButtons.Remove(item.ItemId);
 
             SendXt("hu", character.Data.Hotbar);
         }

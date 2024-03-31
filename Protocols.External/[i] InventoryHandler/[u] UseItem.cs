@@ -19,6 +19,7 @@ public class UseItem : ExternalProtocol
 {
     public override string ProtocolName => "iu";
 
+    public ServerRConfig ServerRConfig { get; set; }
     public VendorCatalog VendorCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public InternalRecipe RecipeCatalog { get; set; }
@@ -76,8 +77,7 @@ public class UseItem : ExternalProtocol
 
     private void HandlePet(ItemDescription usedItem)
     {
-        var itemModel = Player.Character.Data.Inventory.Items[usedItem.ItemId];
-        Player.SetHotbarSlot(ItemRConfig.PetSlotId, itemModel, ItemCatalog);
+        Player.SetHotbarSlot(ItemRConfig.PetSlotId, usedItem, 1);
         SendXt("hs", Player.Character.Data.Hotbar);
     }
 
@@ -86,7 +86,7 @@ public class UseItem : ExternalProtocol
         Player.CheckAchievement(AchConditionType.Bomb, string.Empty, InternalAchievement, Logger);
         Player.CheckAchievement(AchConditionType.Bomb, usedItem.PrefabName, InternalAchievement, Logger);
 
-        Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
+        Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
 
         var removeFromHotbar = true;
 
@@ -112,7 +112,7 @@ public class UseItem : ExternalProtocol
             Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, InternalAchievement, Logger);
         }
 
-        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, Logger);
+        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
 
         var removeFromHotbar = true;
 
