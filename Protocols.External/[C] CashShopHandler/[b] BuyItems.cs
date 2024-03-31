@@ -5,6 +5,8 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Protocols.External._C__CashShopHandler;
 
@@ -12,6 +14,7 @@ public class BuyItems : ExternalProtocol
 {
     public override string ProtocolName => "Cb";
 
+    public InternalAchievement InternalAchievement { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<BuyItems> Logger { get; set; }
 
@@ -39,6 +42,9 @@ public class BuyItems : ExternalProtocol
             var amount = int.Parse(args[1]);
 
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
+
+            Player.CheckAchievement(AchConditionType.BuyItem, itemDescription.PrefabName, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.BuyPet, itemDescription.PrefabName, InternalAchievement, Logger);
 
             price += itemDescription.RegularPrice * amount;
             bought.Add(new(itemDescription, amount));

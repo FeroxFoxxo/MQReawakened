@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Server.Web\Server.Web.csproj" />
-      <ProjectReference Include="..\Web.AssetBundles\Web.AssetBundles.csproj" />
       <ProjectReference Include="..\Web.Launcher\Web.Launcher.csproj" />
     </ItemGroup>
 

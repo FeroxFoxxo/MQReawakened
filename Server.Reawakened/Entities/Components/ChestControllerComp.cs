@@ -18,6 +18,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
     public InternalLoot LootCatalog { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
     public ILogger<ChestControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player)
@@ -34,7 +35,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        player.GrantLoot(Id, LootCatalog, ItemCatalog, Logger);
+        player.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
 
         player.CheckObjective(ObjectiveEnum.InteractWith, Id, PrefabName, 1, QuestCatalog);
 
@@ -42,11 +43,11 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
         var triggerReceiver = new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, player.GameObjectId.ToString(), true, 1f);
 
         //Temp way for adding bananas to empty chests to create a better user experience.
-        if (string.IsNullOrEmpty(LootCatalog.GetLootById(Id).ObjectId))
+        if (string.IsNullOrEmpty(LootCatalog.GetLootById(player.Room.LevelInfo.LevelId, Id).ObjectId))
         {
             var bananaReward = new Random().Next(30, 55);
 
-            player.AddBananas(bananaReward);
+            player.AddBananas(bananaReward, InternalAchievement, Logger);
             triggerEvent.EventDataList[0] = bananaReward;
         }
 

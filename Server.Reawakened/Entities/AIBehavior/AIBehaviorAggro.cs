@@ -9,4 +9,6 @@ public class AIBehaviorAggro(float attackSpeed, float moveBeyondTargetDistance, 
     public override bool Update(ref AIProcessData aiData, float roomTime) => AggroBehavior.Update(aiData, roomTime);
 
     public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => AggroBehavior.GetBehaviorRatio(aiData, roomTime);
+
+    public override string GetBehavior() => "Aggro";
 }

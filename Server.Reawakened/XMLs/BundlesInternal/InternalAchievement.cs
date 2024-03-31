@@ -3,6 +3,7 @@ using Achievement.StaticData;
 using Achievement.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Icons.Services;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
@@ -50,6 +51,7 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
         xmlDocument.LoadXml(xml);
 
         var catalog = Services.GetRequiredService<ItemCatalog>();
+        var icons = Services.GetRequiredService<ExtractIcons>();
 
         var enumValues = Enum.GetValues<RewardType>();
 
@@ -115,7 +117,7 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                     sortOrder = categorySortOrder
                 };
 
-                Definitions.categories.Add(categoryType);
+                var categoryCount = 0;
 
                 foreach (XmlNode achievement in category.ChildNodes)
                 {
@@ -170,6 +172,9 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                         }
                     }
 
+                    if (!icons.HasIcon($"ACH_{achIconName}_ON"))
+                        continue;
+
                     if (aIds.Contains(achId))
                     {
                         Logger.LogError("Achievement with id of {achId} already exists!", achId);
@@ -194,24 +199,41 @@ public class InternalAchievement : IBundledXml<InternalAchievement>
                     };
 
                     Definitions.achievements.Add(achievementStatic);
+                    categoryCount++;
                 }
+
+                if (categoryCount > 0 || categoryId <= 1)
+                    Definitions.categories.Add(categoryType);
             }
         }
 
-        foreach (var achievement in Definitions.achievements)
-            foreach (var cond in achievement.conditions)
+        var currentCount = 0;
+
+        foreach (var category in Definitions.categories.OrderBy(x => x.sortOrder))
+        {
+            var loopedAchievements = Definitions.achievements.Where(x => x.categoryId == category.id);
+
+            currentCount += loopedAchievements.Any() ? loopedAchievements.Max(x => x.id) : 0;
+
+            foreach (var achievement in loopedAchievements)
             {
-                var type = (AchConditionType)cond.typeId;
+                achievement.sortOrder = currentCount - achievement.sortOrder;
 
-                if (type is AchConditionType.Unknown or AchConditionType.Invalid)
-                    continue;
+                foreach (var cond in achievement.conditions)
+                {
+                    var type = (AchConditionType)cond.typeId;
 
-                if (!PossibleConditions.ContainsKey(cond.typeId))
-                    PossibleConditions.Add(cond.typeId, []);
+                    if (type is AchConditionType.Unknown or AchConditionType.Invalid)
+                        continue;
 
-                if (!PossibleConditions[cond.typeId].Contains(cond.description))
-                    PossibleConditions[cond.typeId].Add(cond.description);
+                    if (!PossibleConditions.ContainsKey(cond.typeId))
+                        PossibleConditions.Add(cond.typeId, []);
+
+                    if (!PossibleConditions[cond.typeId].Contains(cond.description))
+                        PossibleConditions[cond.typeId].Add(cond.description);
+                }
             }
+        }
     }
 
     public void FinalizeBundle()

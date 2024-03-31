@@ -1,5 +1,6 @@
 ﻿using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components;
 public class AIStatsGenericComp : Component<AI_Stats_Generic>
@@ -10,8 +11,23 @@ public class AIStatsGenericComp : Component<AI_Stats_Generic>
     public int Patrol_ForceDirectionX => ComponentData.Patrol_ForceDirectionX;
     public bool Aggro_UseAttackBeyondPatrolLine => ComponentData.Aggro_UseAttackBeyondPatrolLine;
 
+    public float PatrolX;
+    public float PatrolY;
+
+    public override void InitializeComponent()
+    {
+        PatrolX = Patrol_DistanceX;
+        PatrolY = Patrol_DistanceY;
+    }
+
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
         return;
+    }
+
+    public void SetPatrolRange(Vector3 patrol)
+    {
+        PatrolX = patrol.x;
+        PatrolY = patrol.y;
     }
 }

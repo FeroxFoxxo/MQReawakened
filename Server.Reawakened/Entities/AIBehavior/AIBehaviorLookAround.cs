@@ -9,4 +9,6 @@ public class AIBehaviorLookAround(float lookTime, float initialProgressRatio, bo
     public override bool Update(ref AIProcessData aiData, float roomTime) => LookAroundBehavior.Update(aiData, roomTime);
 
     public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => LookAroundBehavior.GetBehaviorRatio(aiData, roomTime);
+
+    public override string GetBehavior() => "LookAround";
 }

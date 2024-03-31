@@ -13,7 +13,7 @@ public class Coords(ServerConsole serverConsole,
 
     public void Load() => serverConsole.AddCommand(
             "coords",
-            "Sends the current online player positions in console.",
+            "Sends the current online _player positions in console.",
             NetworkType.Server,
             GetPlayerCoords);
 

@@ -1,6 +1,9 @@
-﻿using Server.Reawakened.Network.Extensions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 
 namespace Protocols.External._f__FriendsHandler;
 
@@ -8,7 +11,8 @@ public class InviteResponse : ExternalProtocol
 {
     public override string ProtocolName => "fr";
 
-    public PlayerContainer PlayerContainer { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
+    public ILogger<InviteResponse> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -16,28 +20,28 @@ public class InviteResponse : ExternalProtocol
         var status = int.Parse(message[7]);
 
         var frienderName = message[5];
-        var friender = PlayerContainer.GetPlayerByName(frienderName);
+        var friender = Player.PlayerContainer.GetPlayerByName(frienderName);
 
         if (friender == null)
             return;
 
         if (accepted)
         {
-            friender.Character.Data.Friends.Add(Player.CharacterId);
-            Player.Character.Data.Friends.Add(Player.CharacterId);
+            friender.CheckAchievement(AchConditionType.AddFriend, string.Empty, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.AddFriend, string.Empty, InternalAchievement, Logger);
 
-            friender.SendXt("fr",
-                friender.CharacterName,
-                Player.CharacterName,
-                friender.Character.Data.GetFriends()
-            );
+            friender.Character.Data.Friends.Add(Player.CharacterId);
+            Player.Character.Data.Friends.Add(friender.CharacterId);
+
+            var playerData = friender.Character.Data.GetFriends().PlayerList.First(x => x.CharacterId == Player.CharacterId);
+
+            friender.SendXt("fr", friender.CharacterName, Player.CharacterName, playerData);
 
             const bool isSuccess = true;
 
-            Player.SendXt("fa",
-                Player.Character.Data.GetFriends(),
-                isSuccess ? "1" : "0"
-            );
+            var friendData = Player.Character.Data.GetFriends().PlayerList.First(x => x.CharacterId == friender.CharacterId);
+
+            Player.SendXt("fa", friendData, isSuccess ? "1" : "0");
         }
         else
         {

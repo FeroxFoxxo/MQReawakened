@@ -15,6 +15,9 @@ public static class PlayerAchievementExtensions
     public static void CheckAchievement(this Player player, AchConditionType achType, string achValue,
         InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger, int count = 1)
     {
+        if (string.IsNullOrEmpty(achValue))
+            achValue = "any";
+
         if (player == null)
             return;
 
@@ -93,7 +96,7 @@ public static class PlayerAchievementExtensions
             var itemCatalog = internalAchievement.Services.GetRequiredService<ItemCatalog>();
 
             if (amountLeft <= 0)
-                achievement.Key.rewards.RewardPlayer(player, itemCatalog, logger);
+                achievement.Key.rewards.RewardPlayer(player, itemCatalog, internalAchievement, logger);
         }
     }
 

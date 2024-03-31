@@ -4,13 +4,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Server.Base.Core.Abstractions;
 
-public abstract class Module
+public abstract class Module(ILogger logger)
 {
-    public readonly ILogger Logger;
+    public readonly ILogger Logger = logger;
 
     public abstract string[] Contributors { get; }
-
-    protected Module(ILogger logger) => Logger = logger;
 
     public virtual string GetModuleInformation() => GetType().Namespace;
 

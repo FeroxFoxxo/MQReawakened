@@ -7,8 +7,6 @@ using Server.Base.Logging;
 using Server.Reawakened;
 using System.Linq;
 using Web.Apps;
-using Web.AssetBundles;
-using Web.Icons;
 using Web.Launcher;
 using Web.Razor;
 using Web.WebPlayer;
@@ -28,9 +26,7 @@ public static class ImportModules
             typeof(XtProtocol),
             typeof(Launcher),
             typeof(Apps),
-            typeof(AssetBundles),
             typeof(Razor),
-            typeof(Icons),
             typeof(WebPlayer)
         };
 

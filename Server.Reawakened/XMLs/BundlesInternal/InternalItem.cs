@@ -7,7 +7,6 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesEdit;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Extensions;
-using System.Linq;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
@@ -42,8 +41,6 @@ public class InternalItem : IBundledXml<InternalItem>
         var miscDict = Services.GetRequiredService<MiscTextDictionary>();
         var editItem = Services.GetRequiredService<EditItem>();
         var config = Services.GetRequiredService<ServerRConfig>();
-
-        var editedItems = editItem.EditedItemAttributes[config.GameVersion];
 
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
@@ -240,25 +237,24 @@ public class InternalItem : IBundledXml<InternalItem>
                         }
 
                         var description = string.Empty;
-                        if (miscDict.LocalizationDict.ContainsKey(descriptionId))
+
+                        if (miscDict.LocalizationDict.TryGetValue(descriptionId, out var miscDescription))
                         {
-                            description = miscDict.LocalizationDict[descriptionId];
+                            description = miscDescription;
                             Descriptions.TryAdd(descriptionId, description);
                         }
-
                         else
                         {
-                            foreach (var editedItem in editItem.EditedItemAttributes.Values)
+                            var attributes = editItem.GetItemAttributes(prefabName);
+
+                            if (attributes.TryGetValue("ingamedescription", out var attributeValue))
                             {
-                                if (editedItem.TryGetValue(prefabName, out var attributes) &&
-                                    attributes.TryGetValue("ingamedescription", out var attributeValue))
+                                var editedDescriptionId = int.Parse(attributeValue);
+
+                                if (miscDict.LocalizationDict.TryGetValue(editedDescriptionId, out var editedDescription))
                                 {
-                                    var editedDescriptionId = int.Parse(attributeValue);
-                                    if (miscDict.LocalizationDict.TryGetValue(editedDescriptionId, out var editedDescription))
-                                    {
-                                        Descriptions.TryAdd(editedDescriptionId, editedDescription);
-                                        break;
-                                    }
+                                    Descriptions.TryAdd(editedDescriptionId, editedDescription);
+                                    break;
                                 }
                             }
                         }

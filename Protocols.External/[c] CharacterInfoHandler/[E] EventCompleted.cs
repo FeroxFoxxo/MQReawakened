@@ -12,6 +12,7 @@ public class EventCompleted : ExternalProtocol
 
     public ItemCatalog ItemCatalog { get; set; }
     public InternalEventReward EventReward { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public override void Run(string[] message)
     {
@@ -25,7 +26,7 @@ public class EventCompleted : ExternalProtocol
             if (!Player.Character.Events.Contains(e))
             {
                 Player.Character.Events.Add(e);
-                EventReward.CheckEventReward(e, ItemCatalog, Player);
+                EventReward.CheckEventReward(e, ItemCatalog, Player, InternalAchievement);
             }
 
         var eventList = EventList(Player.Character.Events);

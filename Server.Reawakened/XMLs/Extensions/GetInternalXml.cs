@@ -1,9 +1,12 @@
 ﻿using Achievement.StaticData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
@@ -193,7 +196,7 @@ public static class GetInternalXml
             }
 
             if (string.IsNullOrEmpty(value))
-                value = "unknown";
+                value = "any";
 
             conditionList.Add(new AchievementDefinitionConditions()
             {
@@ -212,7 +215,7 @@ public static class GetInternalXml
     }
 
     public static void RewardPlayer(this List<AchievementDefinitionRewards> rewards, Player player,
-        ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
+        ItemCatalog itemCatalog, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
         var hasUpdatedItems = false;
 
@@ -225,7 +228,7 @@ public static class GetInternalXml
                     break;
                 case RewardType.Bananas:
                     var bananaCount = int.Parse(reward.value.ToString());
-                    player.AddBananas(bananaCount);
+                    player.AddBananas(bananaCount, internalAchievement, logger);
                     break;
                 case RewardType.Item:
                     var itemId = int.Parse(reward.value.ToString());
@@ -238,7 +241,7 @@ public static class GetInternalXml
                     break;
                 case RewardType.Xp:
                     var xp = int.Parse(reward.value.ToString());
-                    player.AddReputation(xp);
+                    player.AddReputation(xp, itemCatalog.Services.GetRequiredService<ServerRConfig>());
                     break;
                 case RewardType.Title:
                     break;

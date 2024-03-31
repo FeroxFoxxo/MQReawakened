@@ -1,32 +1,32 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Models.LootRewards;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Server.Reawakened.Players.Helpers;
 
 public static class PlayerLootHandler
 {
     public static void GrantLoot(this Player player, string gameObjectId, InternalLoot lootCatalog,
-        ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
+        ItemCatalog itemCatalog, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
-        var loot = lootCatalog.GetLootById(gameObjectId);
+        var loot = lootCatalog.GetLootById(player.Room.LevelInfo.LevelId, gameObjectId);
 
         if (string.IsNullOrEmpty(loot.ObjectId))
             logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);
 
         if (loot.BananaRewards.Count > 0)
-            loot.BananaRewards.GrantLootBananas(player);
+            loot.BananaRewards.GrantLootBananas(player, internalAchievement, logger);
 
         if (loot.ItemRewards.Count > 0)
             loot.GrantLootItems(gameObjectId, player, itemCatalog);
     }
 
-    private static void GrantLootBananas(this List<BananaReward> bananas, Player player)
+    private static void GrantLootBananas(this List<BananaReward> bananas, Player player, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
         var random = new Random();
 
@@ -35,7 +35,7 @@ public static class PlayerLootHandler
         foreach (var banana in bananas)
             totalBananas += random.Next(banana.BananaMin, banana.BananaMax + 1);
 
-        player.AddBananas(totalBananas);
+        player.AddBananas(totalBananas, internalAchievement, logger);
     }
 
     private static void GrantLootItems(this LootModel lootModel, string objectId, Player player,
@@ -57,7 +57,6 @@ public static class PlayerLootHandler
 
             while (count > 0)
             {
-
                 var randomWeight = random.NextInt64(1, lootModel.WeightRange);
                 var selector = 0;
                 foreach (var item in itemReward.Items)
@@ -81,7 +80,24 @@ public static class PlayerLootHandler
                 player.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count, itemCatalog);
         }
 
-        if (lootModel.DoWheel)
+        if (lootModel.MultiplayerWheelChance > 0 && player.Room.Players.Count > 1 && player.Room.LevelInfo.Type == LevelType.Trail)
+        {
+            var randomChance = new Random().Next(100);
+
+            if (randomChance < lootModel.MultiplayerWheelChance)
+            {
+                var multiplayerWheelData = new SeparatedStringBuilder('|');
+
+                multiplayerWheelData.Append(objectId);
+                multiplayerWheelData.Append(gottenItems[new Random().Next(gottenItems.Count)].ItemId);
+                multiplayerWheelData.Append(lootableItems);
+
+                foreach (var groupMember in player.Room.Players.Values)
+                    SendMultiplayerLootWheel(groupMember, multiplayerWheelData.ToString());
+            }
+        }
+
+        if (lootModel.DoWheel && player.Room.Players.Count <= 1)
             SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
 
         player.SendUpdatedInventory();
@@ -118,4 +134,6 @@ public static class PlayerLootHandler
     private static void SendLootWheel(Player player, string itemsLooted, string lootableItems, string gameObjectId)
         => player.SendXt("iW", itemsLooted, lootableItems, gameObjectId, 0);
 
+    private static void SendMultiplayerLootWheel(Player player, string lootData)
+        => player.SendXt("js", lootData);
 }

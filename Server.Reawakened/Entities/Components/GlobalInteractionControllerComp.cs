@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Players;
-using Server.Reawakened.Rooms.Extensions;
+﻿using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Entities.AIStates.SyncEvents;
 using static A2m.Server.ExtLevelEditor;
@@ -35,8 +34,6 @@ public class GlobalInteractionControllerComp : Component<GlobalInteractionContro
         GoToNextState(new GameObjectComponents() {
                     {"AIStateGlobalInteractionActive", new ComponentSettings() {"ST", "0"}}
                 });
-
-        //Console.WriteLine(ComponentData.GetActiveStateForController());
     }
 
     public override void Update()
@@ -54,7 +51,6 @@ public class GlobalInteractionControllerComp : Component<GlobalInteractionContro
             _nextPollTime = Room.Time + PollInterval;
         }
     }
-    //public override void RunSyncedEvent(SyncEvent syncEvent, Player player) { }
 
     public void GoToNextState(GameObjectComponents NewState)
     {

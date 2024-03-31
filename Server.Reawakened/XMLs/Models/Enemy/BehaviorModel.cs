@@ -1,10 +1,9 @@
-﻿public class BehaviorModel(Dictionary<string, BehaviorDataModel> behaviorData, Dictionary<string, object> global, List<EnemyDropModel> drops)
+﻿public class BehaviorModel(Dictionary<string, BehaviorDataModel> behaviorData, Dictionary<string, object> global, List<EnemyDropModel> drops, HitboxModel hitbox)
 {
     public Dictionary<string, BehaviorDataModel> BehaviorData { get; } = behaviorData;
-
     public Dictionary<string, object> GlobalProperties { get; } = global;
-
     public List<EnemyDropModel> EnemyLootTable { get; } = drops;
+    public HitboxModel Hitbox { get; } = hitbox;
 
     public int IndexOf(string behaviorName)
     {

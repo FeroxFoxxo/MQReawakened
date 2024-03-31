@@ -8,6 +8,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Server.Base\Server.Base.csproj" />
+        <ProjectReference Include="..\Server.Web\Server.Web.csproj" />
+
+        <PackageReference Include="ShellProgressBar" Version="5.2.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -26,6 +29,21 @@
       <Reference Include="Assembly-UnityScript-firstpass">
         <HintPath>Dependencies\Assembly-UnityScript-firstpass.dll</HintPath>
       </Reference>
+      <Reference Include="AssetRipper.IO.Endian">
+        <HintPath>BundleHost\Dependencies\AssetRipper.IO.Endian.dll</HintPath>
+      </Reference>
+      <Reference Include="AssetStudio">
+        <HintPath>BundleHost\Dependencies\AssetStudio\AssetStudio.dll</HintPath>
+      </Reference>
+      <Reference Include="AssetStudio.PInvoke">
+        <HintPath>BundleHost\Dependencies\AssetStudio\AssetStudio.PInvoke.dll</HintPath>
+      </Reference>
+      <Reference Include="AssetStudioFBXWrapper">
+        <HintPath>BundleHost\Dependencies\AssetStudio\AssetStudioFBXWrapper.dll</HintPath>
+      </Reference>
+      <Reference Include="AssetStudioUtility">
+        <HintPath>BundleHost\Dependencies\AssetStudio\AssetStudioUtility.dll</HintPath>
+      </Reference>
       <Reference Include="Boo.Lang">
         <HintPath>Dependencies\Boo.Lang.dll</HintPath>
       </Reference>
@@ -38,8 +56,23 @@
       <Reference Include="ICSharpCode.SharpZipLib">
         <HintPath>Dependencies\ICSharpCode.SharpZipLib.dll</HintPath>
       </Reference>
+      <Reference Include="K4os.Compression.LZ4">
+        <HintPath>BundleHost\Dependencies\AssetStudio\K4os.Compression.LZ4.dll</HintPath>
+      </Reference>
       <Reference Include="LitJson">
         <HintPath>Dependencies\LitJson.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Cecil">
+        <HintPath>BundleHost\Dependencies\AssetStudio\Mono.Cecil.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Cecil.Mdb">
+        <HintPath>BundleHost\Dependencies\AssetStudio\Mono.Cecil.Mdb.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Cecil.Pdb">
+        <HintPath>BundleHost\Dependencies\AssetStudio\Mono.Cecil.Pdb.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Cecil.Rocks">
+        <HintPath>BundleHost\Dependencies\AssetStudio\Mono.Cecil.Rocks.dll</HintPath>
       </Reference>
       <Reference Include="MQXMPP">
         <HintPath>Dependencies\MQXMPP.dll</HintPath>
@@ -47,8 +80,20 @@
       <Reference Include="NGGManager">
         <HintPath>Dependencies\NGGManager.dll</HintPath>
       </Reference>
+      <Reference Include="SixLabors.Fonts">
+        <HintPath>BundleHost\Dependencies\AssetStudio\SixLabors.Fonts.dll</HintPath>
+      </Reference>
+      <Reference Include="SixLabors.ImageSharp">
+        <HintPath>BundleHost\Dependencies\AssetStudio\SixLabors.ImageSharp.dll</HintPath>
+      </Reference>
+      <Reference Include="SixLabors.ImageSharp.Drawing">
+        <HintPath>BundleHost\Dependencies\AssetStudio\SixLabors.ImageSharp.Drawing.dll</HintPath>
+      </Reference>
       <Reference Include="SmartFoxClient">
         <HintPath>Dependencies\SmartFoxClient.dll</HintPath>
+      </Reference>
+      <Reference Include="Texture2DDecoderWrapper">
+        <HintPath>BundleHost\Dependencies\AssetStudio\Texture2DDecoderWrapper.dll</HintPath>
       </Reference>
       <Reference Include="Thrift">
         <HintPath>Thrift\Thrift.dll</HintPath>
@@ -59,6 +104,63 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="BundleHost\DLLs\X64\Texture2DDecoderNative.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="BundleHost\DLLs\X86\Texture2DDecoderNative.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="BundleHost\Licences\LICENSE_ASSETRIPPER">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="BundleHost\Licences\LICENSE_ASSETSTUDIO">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\EditItem.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\EditVendor.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalAchievement.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalColliders.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalDefaultEnemies.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalDialog.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalDialogRewrite.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalEventReward.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalItem.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalLoot.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalObjective.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalQuestItem.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalRecipe.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\InternalVendor.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\LocalAssets\PetAbilities.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Dependencies\_Place Dependencies Here_">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

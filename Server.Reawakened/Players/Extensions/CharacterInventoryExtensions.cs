@@ -15,7 +15,7 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterInventoryExtensions
 {
-    public static void HandleItemEffect(this Player player, ItemDescription usedItem, TimerThread timerThread, ServerRConfig serverRConfig, ILogger<PlayerStatus> logger)
+    public static void HandleItemEffect(this Player player, ItemDescription usedItem, TimerThread timerThread, ItemRConfig config, ILogger<PlayerStatus> logger)
     {
         var effect = usedItem.ItemEffects.FirstOrDefault();
         if (usedItem.ItemEffects.Count > 0)
@@ -31,7 +31,7 @@ public static class CharacterInventoryExtensions
                 if (player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
                     return;
 
-                player.HealCharacter(usedItem, timerThread, serverRConfig, effect.Type);
+                player.HealCharacter(usedItem, timerThread, config, effect.Type);
                 break;
             case ItemEffectType.IncreaseAirDamage:
             case ItemEffectType.IncreaseAllResist:
@@ -62,7 +62,7 @@ public static class CharacterInventoryExtensions
                 logger.LogError("Unknown ItemEffectType of ({effectType}) for item {usedItemName}", effect.Type, usedItem.PrefabName);
                 return;
         }
-        logger.LogError("Applied ItemEffectType of ({effectType}) from item {usedItemName} for player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
+        logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for _player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
     }
 
     public static void SetBananaElixirTimer(object playerObj)
@@ -110,22 +110,12 @@ public static class CharacterInventoryExtensions
     {
         var characterData = player.Character;
 
-        var config = itemCatalog.Services.GetRequiredService<ServerRConfig>();
-
-        if (!config.LoadedAssets.Contains(item.PrefabName) &&
-            item.InventoryCategoryID is not ItemFilterCategory.RecipesAndCraftingIngredients and not ItemFilterCategory.QuestItems)
-            return;
-
-        // NB: Including quests in this filter breaks the stealth scroll quest!
-        if (item.InventoryCategoryID is ItemFilterCategory.Housing or 
-            ItemFilterCategory.Keys or ItemFilterCategory.None)
-            return;
-
-        // We should create a way to filter out quest items with placeholder icons from visibility.
-
-        if (item.InventoryCategoryID == ItemFilterCategory.QuestItems)
-            if (item.ProductionStatus != ProductionStatus.Ingame)
+        if (item.InventoryCategoryID is not ItemFilterCategory.RecipesAndCraftingIngredients and not ItemFilterCategory.QuestItems)
+            if (!itemCatalog.Config.LoadedAssets.Contains(item.PrefabName))
                 return;
+
+        if (!itemCatalog.IconBank.HasIcon(item.PrefabName))
+            return;
 
         if (!characterData.Data.Inventory.Items.ContainsKey(item.ItemId))
             characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel

@@ -149,7 +149,7 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml<PetBattlePets>
     {
         if (!PetBattlePetsDictionary.TryGetValue(itemId, out var value))
         {
-            Logger.LogWarning("Item with id {ItemId} does not exist in the PetBattlePetsDictionary", itemId);
+            Logger.LogWarning("Item with id {_itemId} does not exist in the PetBattlePetsDictionary", itemId);
             return null;
         }
 

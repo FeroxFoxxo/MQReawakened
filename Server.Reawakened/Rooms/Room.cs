@@ -5,9 +5,11 @@ using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Entity;
-using Server.Reawakened.Entities.Entity.Enemies;
+using Server.Reawakened.Entities.Enemies;
+using Server.Reawakened.Entities.Enemies.EnemyAI.AIStateEnemies;
+using Server.Reawakened.Entities.Enemies.EnemyAI.BehaviorEnemies;
 using Server.Reawakened.Entities.Interfaces;
+using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -15,6 +17,7 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
@@ -35,7 +38,6 @@ public class Room : Timer
     public HashSet<string> KilledObjects;
 
     public Dictionary<string, Player> Players;
-    public Dictionary<string, TicklyEntity> Projectiles;
     public Dictionary<string, BaseCollider> Colliders;
 
     public ILogger<Room> Logger;
@@ -46,10 +48,12 @@ public class Room : Timer
     public Dictionary<string, List<List<BaseComponent>>> DuplicateEntities;
 
     private readonly Dictionary<string, List<BaseComponent>> _entities;
+    private readonly Dictionary<string, BaseProjectile> _projectiles;
 
     public SpawnPointComp DefaultSpawn { get; set; }
 
     private readonly ServerRConfig _config;
+    private readonly ItemRConfig _itemConfig;
 
     public ItemCatalog ItemCatalog;
     public InternalColliders ColliderCatalog;
@@ -67,6 +71,7 @@ public class Room : Timer
 
         _roomId = roomId;
         _config = config;
+        _itemConfig = services.GetRequiredService<ItemRConfig>();
 
         ColliderCatalog = services.GetRequiredService<InternalColliders>();
         ItemCatalog = services.GetRequiredService<ItemCatalog>();
@@ -74,11 +79,12 @@ public class Room : Timer
 
         _level = level;
 
+        _projectiles = [];
+
         Players = [];
         GameObjectIds = [];
         DuplicateEntities = [];
         KilledObjects = [];
-        Projectiles = [];
         Enemies = [];
 
         if (LevelInfo.Type == LevelType.Unknown)
@@ -111,46 +117,55 @@ public class Room : Timer
 
         foreach (var component in _entities.Values.SelectMany(x => x))
         {
-            if (component.Name == config.EnemyComponentName)
+            if (component.Name == config.EnemyComponentName && !component.ParentPlane.Equals("TemplatePlane"))
             {
-                // Move the name switcher out of ServerRConfig when the enemy xml is made.
+                // Move the name switcher out of ItemRConfig when the enemy xml is made.
                 switch (component.PrefabName)
                 {
                     case string bird when bird.Contains(config.EnemyNameSearch[0]):
-                        Enemies.Add(component.Id, new EnemyBird(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyBird(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string fish when fish.Contains(config.EnemyNameSearch[1]):
-                        Enemies.Add(component.Id, new EnemyFish(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyFish(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string spider when spider.Contains(config.EnemyNameSearch[2]):
-                        Enemies.Add(component.Id, new EnemySpider(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemySpider(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string bathog when bathog.Contains(config.EnemyNameSearch[3]):
-                        Enemies.Add(component.Id, new EnemyBathog(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyBathog(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string bomber when bomber.Contains(config.EnemyNameSearch[4]):
-                        Enemies.Add(component.Id, new EnemyBomber(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyBomber(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string crawler when crawler.Contains(config.EnemyNameSearch[5]):
-                        Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyCrawler(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string dragon when dragon.Contains(config.EnemyNameSearch[6]):
-                        Enemies.Add(component.Id, new EnemyDragon(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyDragon(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string grenadier when grenadier.Contains(config.EnemyNameSearch[7]):
-                        Enemies.Add(component.Id, new EnemyGrenadier(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyGrenadier(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string orchid when orchid.Contains(config.EnemyNameSearch[8]):
-                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyOrchid(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string pincer when pincer.Contains(config.EnemyNameSearch[9]):
-                        Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyPincer(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string stomper when stomper.Contains(config.EnemyNameSearch[10]):
-                        Enemies.Add(component.Id, new EnemyStomper(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyStomper(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                     case string vespid when vespid.Contains(config.EnemyNameSearch[11]):
-                        Enemies.Add(component.Id, new EnemyVespid(this, component.Id, component, services));
+                        Enemies.Add(component.Id, new EnemyVespid(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
+                        break;
+                    case string spiderling when spiderling.Contains(config.EnemyNameSearch[12]):
+                        Enemies.Add(component.Id, new EnemySpiderling(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
+                        break;
+                    case string teaserSpiderBoss when teaserSpiderBoss.Contains(config.EnemyNameSearch[13]):
+                        Enemies.Add(component.Id, new EnemyTeaserSpiderBoss(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
+                        break;
+                    case string spiderBoss when spiderBoss.Contains(config.EnemyNameSearch[14]):
+                        Enemies.Add(component.Id, new EnemySpiderBoss(this, component.Id, component.PrefabName, (EnemyControllerComp)component, services));
                         break;
                 }
             }
@@ -176,7 +191,7 @@ public class Room : Timer
     public override void OnTick()
     {
         var entitiesCopy = _entities.Values.SelectMany(s => s).ToList();
-        var projectilesCopy = Projectiles.Values.ToList();
+        var projectilesCopy = _projectiles.Values.ToList();
         var enemiesCopy = Enemies.Values.ToList();
 
         foreach (var entityComponent in entitiesCopy)
@@ -189,11 +204,22 @@ public class Room : Timer
         foreach (var enemy in enemiesCopy)
             enemy.Update();
 
-        foreach (var player in Players.Values.Where(
-                     player => GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime
-                 ))
-            player.Remove(Logger);
+        foreach (var player in Players?.Values)
+        {
+            if (GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime)
+            {
+                player.Remove(Logger);
+                return;
+            }
+
+            var playerCollider = new PlayerCollider(player);
+            playerCollider.IsColliding(false);
+        }
     }
+
+    public bool AddEntity(string id, List<BaseComponent> entity) => _entities.TryAdd(id, entity);
+
+    public bool RemoveEntity(string id) => _entities.Remove(id);
 
     public void GroupMemberRoomChanged(Player player)
     {
@@ -251,36 +277,28 @@ public class Room : Timer
                 }
             }
 
-            if (_config.TrainingGear.TryGetValue(LevelInfo.LevelId, out var trainingGear) && _config.GameVersion == GameVersion.v2014)
-            {
-                var item = ItemCatalog.GetItemFromPrefabName(trainingGear);
-
-                if (item != null)
-                {
-                    if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
-                    {
-                        currentPlayer.AddItem(item, 1, ItemCatalog);
-                        currentPlayer.SendUpdatedInventory();
-                    }
-                }
-            }
-            else if (_config.TrainingGear2011.TryGetValue(LevelInfo.LevelId, out var gear) && _config.GameVersion >= GameVersion.v2011)
-            {
-                var item = ItemCatalog.GetItemFromPrefabName(gear);
-
-                if (item != null)
-                {
-                    if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
-                    {
-                        currentPlayer.AddItem(item, 1, ItemCatalog);
-                        currentPlayer.SendUpdatedInventory();
-                    }
-                }
-            }
+            if (_itemConfig.TrainingGear.TryGetValue(LevelInfo.LevelId, out var trainingGear) && _config.GameVersion == GameVersion.v2014)
+                AddGear(trainingGear, currentPlayer);
+            else if (_itemConfig.TrainingGear2011.TryGetValue(LevelInfo.LevelId, out var gear) && _config.GameVersion >= GameVersion.v2011)
+                AddGear(gear, currentPlayer);
         }
         else
         {
             currentPlayer.NetState.SendXml("joinKO", $"<error>{reason.GetJoinReasonError()}</error>");
+        }
+    }
+
+    private void AddGear(string gear, Player currentPlayer)
+    {
+        var item = ItemCatalog.GetItemFromPrefabName(gear);
+
+        if (item != null)
+        {
+            if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+            {
+                currentPlayer.AddItem(item, 1, ItemCatalog);
+                currentPlayer.SendUpdatedInventory();
+            }
         }
     }
 
@@ -321,6 +339,11 @@ public class Room : Timer
             lock (_level.Lock)
             {
                 _level.Rooms.Remove(_roomId);
+            }
+
+            lock (_roomLock)
+            {
+                CleanData();
             }
 
             Stop();
@@ -483,5 +506,38 @@ public class Room : Timer
             projectileId = Math.Abs(rand.Next()).ToString();
 
         return projectileId;
+    }
+
+    public void AddProjectile(BaseProjectile projectile)
+    {
+        lock (_roomLock)
+        {
+            _projectiles.Add(projectile.ProjectileId, projectile);
+        }
+    }
+
+    public void RemoveProjectile(string projectileId)
+    {
+        lock (_roomLock)
+        {
+            _projectiles.Remove(projectileId);
+        }
+    }
+
+    private void CleanData()
+    {
+        GameObjectIds.Clear();
+        KilledObjects.Clear();
+
+        Players.Clear();
+        Colliders.Clear();
+
+        Planes.Clear();
+        UnknownEntities.Clear();
+        Enemies.Clear();
+        DuplicateEntities.Clear();
+
+        _entities.Clear();
+        _projectiles.Clear();
     }
 }

@@ -71,7 +71,7 @@ public class Player(Account account, UserInfo userInfo, NetState state, WorldHan
             var roomName = Room.LevelInfo.Name;
 
             if (!string.IsNullOrEmpty(roomName))
-                logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
+                logger.LogDebug("Dumped _player with ID '{User}' from room '{Room}'", UserId, roomName);
         }
 
         this.DumpToLobby(worldHandler);

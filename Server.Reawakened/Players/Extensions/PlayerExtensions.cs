@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -9,7 +10,8 @@ using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
-using System.Linq;
+using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -59,7 +61,7 @@ public static class PlayerExtensions
         }
     }
 
-    public static void AddReputation(this Player player, int reputation)
+    public static void AddReputation(this Player player, int reputation, ServerRConfig config)
     {
         if (player == null)
             return;
@@ -78,7 +80,13 @@ public static class PlayerExtensions
         }
 
         charData.Reputation = reputation;
-        player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
+
+        if (config.GameVersion == GameVersion.v2014)
+            player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
+
+        else
+            player.SendXt("cp", charData.Reputation - charData.ReputationForCurrentLevel,
+                charData.ReputationForNextLevel - charData.ReputationForCurrentLevel);
     }
 
     public static void TradeWithPlayer(this Player origin, ItemCatalog itemCatalog)
@@ -118,12 +126,14 @@ public static class PlayerExtensions
             trade.TempData.TradeModel = null;
     }
 
-    public static void AddBananas(this Player player, int collectedBananas)
+    public static void AddBananas(this Player player, int collectedBananas, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
         var charData = player.Character.Data;
 
         if (player.TempData.BananaBoostsElixir)
             collectedBananas = Convert.ToInt32(collectedBananas * 0.1);
+
+        player.CheckAchievement(AchConditionType.CollectBanana, string.Empty, internalAchievement, logger, collectedBananas);
 
         charData.Cash += collectedBananas;
         player.SendCashUpdate();
@@ -198,6 +208,10 @@ public static class PlayerExtensions
         {
             error = e.Message;
         }
+
+        // this allows early 2012 to load 
+        // the empty string is displayLevelName in ILSpy
+        // _player.SendXt("lw", error, levelName, string.Empty, surroundingLevels);
 
         player.SendXt("lw", error, levelName, surroundingLevels);
     }

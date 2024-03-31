@@ -2,6 +2,7 @@
 using Server.Reawakened.Players.Models.Trade;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
+using Timer = Server.Base.Timers.Timer;
 
 namespace Server.Reawakened.Players.Models;
 
@@ -15,10 +16,14 @@ public class TemporaryDataModel
     public bool Invincible { get; set; } = false;
     public bool Invisible { get; set; } = false;
     public bool OnGround { get; set; } = false;
-    public bool IsPoisoned { get; set; } = false;
+    public bool Underwater { get; set; } = false;
+    public Timer UnderwaterTimer { get; set; } = null;
     public bool BananaBoostsElixir { get; set; }
     public bool ReputationBoostsElixir { get; set; }
     public bool IsSuperStomping { get; set; } = false;
+
+    public List<string> CollidingHazards { get; set; } = [];
+    public Dictionary<int, bool> VotedForItem { get; set; } = [];
 
     public Vector3Model Position { get; set; } = new Vector3Model();
     public Vector3Model Velocity { get; set; } = new Vector3Model();
@@ -28,6 +33,6 @@ public class TemporaryDataModel
 
     public Dictionary<int, List<string>> CurrentAchievements { get; set; } = [];
 
-    //Make the player size and such a config option down the line
+    //Make the _player size and such a config option down the line
     public ColliderModel DrawPlayerRect() => new(Position.Z > 10 ? "Plane1" : "Plane0", Position.X - 0.5f, Position.Y - 0.5f, 1, 1);   
 }

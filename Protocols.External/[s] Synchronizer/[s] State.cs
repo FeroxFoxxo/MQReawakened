@@ -4,7 +4,7 @@ using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Entity;
+using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -26,6 +26,7 @@ public class State : ExternalProtocol
 
     public SyncEventManager SyncEventManager { get; set; }
     public ServerRConfig ServerConfig { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public FileLogger FileLogger { get; set; }
     public TimerThread TimerThread { get; set; }
@@ -64,21 +65,21 @@ public class State : ExternalProtocol
                         attack.IsCharging, attack.PosX, attack.PosY, attack.StartDelay,
                         attack.SpeedX, attack.SpeedY, attack.MaxPosX, attack.MaxPosY, attack.ItemId, attack.ZoneId);
 
-                    var chargeAttackCollider = new ChargeAttackEntity(Player,
+                    var chargeAttackProjectile = new ChargeAttackProjectile(Player.GameObjectId, Player,
                                         new Vector3Model() { X = attack.PosX, Y = attack.PosY, Z = Player.TempData.Position.Z },
                                         new Vector3Model() { X = attack.MaxPosX, Y = attack.MaxPosY, Z = Player.TempData.Position.Z },
                                         new Vector2Model() { X = attack.SpeedX, Y = attack.SpeedY },
                                         15, attack.ItemId, attack.ZoneId,
                                         WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
-                                        Elemental.Standard, TimerThread);
+                                        Elemental.Standard, ServerConfig, TimerThread);
 
-                    Player.Room.Projectiles.TryAdd(Player.GameObjectId, chargeAttackCollider);
+                    Player.Room.AddProjectile(chargeAttackProjectile);
                     break;
                 case SyncEvent.EventType.ChargeAttackStop:
                     Player.TempData.IsSuperStomping = false;
                     Player.TempData.Invincible = false;
 
-                    Player.Room.Projectiles.Remove(Player.GameObjectId);
+                    Player.Room.RemoveProjectile(Player.GameObjectId);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
@@ -122,6 +123,22 @@ public class State : ExternalProtocol
                     break;
                 case SyncEvent.EventType.PhysicStatus:
                     var physicStatusEvent = new PhysicStatus_SyncEvent(syncEvent);
+
+                    if (!physicStatusEvent.GravityEnabled)
+                    {
+                        if (Player.TempData.UnderwaterTimer != null)
+                            return;
+
+                        Player.TempData.Underwater = true;
+                        Player.StartUnderwaterTimer(Player.Character.Data.MaxLife / 10, TimerThread, ItemRConfig);
+                    }
+
+                    else
+                    {
+                        Player.TempData.Underwater = false;
+                        Player.StopUnderwaterTimer();
+                    }
+                   
                     break;
             }
 
@@ -151,11 +168,12 @@ public class State : ExternalProtocol
                 LogEvent(syncEvent, entityId, Player.Room);
     }
 
-    private void UpdatePlayerCollider(Player player)
+    private static void UpdatePlayerCollider(Player player)
     {
         var playerCollider = new PlayerCollider(player);
+        playerCollider.IsColliding(false);
         player.Room.Colliders[player.GameObjectId] = playerCollider;
-    }  
+    }
 
     private void RequestRespawn(string entityId, float triggerTime)
     {

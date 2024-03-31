@@ -333,7 +333,8 @@ public class NPCControllerComp : Component<NPCController>
         var questData = QuestCatalog.GetQuestData(questId);
 
         if (QuestCatalog.QuestLineCatalogs.TryGetValue(questData.QuestLineId, out var questLine))
-            if (GiverQuests.OrderBy(x => x.QuestgGiverName == questData.QuestgGiverName && questLine.ShowInJournal).All(y => player.Character.Data.CompletedQuests.Any(z => y.Id == z)))
+            if (GiverQuests.OrderBy(x => x.QuestgGiverName == questData.QuestgGiverName && questLine.ShowInJournal).All(y => player.Character.Data.CompletedQuests.Any(z => y.Id == z))
+                && ValidatorQuests.OrderBy(x => x.ValidatorName == NpcName && questLine.ShowInJournal).All(y => player.Character.Data.CompletedQuests.Any(z => y.Id == z)))
             {
                 Logger.LogDebug("[{QuestLineId}] [COMPLETED QUESTLINE] Completed {NpcName}'s questline.", questData.QuestLineId, NpcName);
                 return NPCStatus.Dialog;

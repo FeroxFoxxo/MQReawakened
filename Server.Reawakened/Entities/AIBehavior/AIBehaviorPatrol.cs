@@ -12,4 +12,6 @@ public class AIBehaviorPatrol(float patrolX, float patrolY, float patrolSpeed, f
 
     public override void Stop(ref AIProcessData aiData) => PatrolBehavior.Stop(aiData);
     public override void GetComebackPosition(AIProcessData aiData, ref float outPosX, ref float outPosY) => PatrolBehavior.GetComebackPosition(aiData, ref outPosX, ref outPosY);
+
+    public override string GetBehavior() => "Patrol";
 }

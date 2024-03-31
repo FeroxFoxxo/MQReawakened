@@ -1,17 +1,14 @@
 using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Entity;
-using Server.Reawakened.Entities.Enums;
+using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -23,7 +20,7 @@ public class UseSlot : ExternalProtocol
     public override string ProtocolName => "hu";
 
     public ItemCatalog ItemCatalog { get; set; }
-    public WorldStatistics WorldStatistics { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
@@ -33,24 +30,30 @@ public class UseSlot : ExternalProtocol
     {
         var hotbarSlotId = int.Parse(message[5]);
         var targetUserId = int.Parse(message[6]);
+
+        var direction = Player.TempData.Direction;
         var position = new Vector3Model()
         {
             X = Convert.ToSingle(message[7]),
             Y = Convert.ToSingle(message[8]),
             Z = Convert.ToSingle(message[9])
         };
-        Logger.LogDebug("Player used hotbar slot {hotbarId} on {userId} at coordinates {position}",
-            hotbarSlotId, targetUserId, position);
-        var direction = Player.TempData.Direction;
+
         var slotItem = Player.Character.Data.Hotbar.HotbarButtons[hotbarSlotId];
         var usedItem = ItemCatalog.GetItemFromId(slotItem.ItemId);
+
+        Logger.LogDebug("Player used hotbar slot {hotbarId} on {userId} at coordinates {position}",
+            hotbarSlotId, targetUserId, position);
+
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drop:
-                Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
+                Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
+                RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
                 break;
+            case ItemActionType.Grenade:
             case ItemActionType.Throw:
-                HandleRangedWeapon(usedItem, position, direction);
+                HandleRangedWeapon(usedItem, position, direction, hotbarSlotId);
                 break;
             case ItemActionType.Genericusing:
             case ItemActionType.Drink:
@@ -78,7 +81,6 @@ public class UseSlot : ExternalProtocol
         Player.SendXt("ZE", Player.UserId, usedItem.ItemId, 1);
         Player.Character.Data.PetItemId = usedItem.ItemId;
     }
-
     private void HandleRelic(ItemDescription usedItem) //Needs rework.
     {
         StatusEffect_SyncEvent itemEffect = null;
@@ -90,7 +92,7 @@ public class UseSlot : ExternalProtocol
 
     private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
     {
-        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
+        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, Logger);
         var removeFromHotBar = true;
 
         if (usedItem.InventoryCategoryID is
@@ -115,15 +117,49 @@ public class UseSlot : ExternalProtocol
         }
     }
 
-    private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction)
+    public class ProjectileData()
     {
-        var prjId = Player.Room.SetProjectileId();
+        public string ProjectileId;
+        public ItemDescription UsedItem;
+        public Vector3Model Position;
+        public int Direction;
+        public bool IsGrenade;
+    }
+
+    private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction, int hotbarSlotId)
+    {
+        var isGrenade = usedItem.SubCategoryId is ItemSubCategory.Grenade or ItemSubCategory.Bomb;
+
+        var projectileData = new ProjectileData()
+        {
+            ProjectileId = Player.Room.SetProjectileId(),
+            UsedItem = usedItem,
+            Position = position,
+            Direction = direction,
+            IsGrenade = isGrenade,
+        };
+
+        if (isGrenade)
+        {
+            TimerThread.DelayCall(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ItemRConfig.GrenadeSpawnDelay), TimeSpan.Zero, 1);
+            RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
+        }
+
+        else
+            LaunchProjectile(projectileData);
+    }
+
+    private void LaunchProjectile(object projectileData)
+    {
+        var prjData = (ProjectileData)projectileData;
 
         // Add weapon stats later
-        var prj = new ProjectileEntity(Player, prjId, position, direction, 3, usedItem,
-            Player.Character.Data.CalculateDamage(usedItem, ItemCatalog),
-            usedItem.Elemental, ServerRConfig);
-        Player.Room.Projectiles.Add(prjId, prj);
+        var prj = new GenericProjectile(prjData.ProjectileId, Player, ItemRConfig.GrenadeLifeTime,
+            prjData.Position, ItemRConfig, ServerRConfig, prjData.Direction, prjData.UsedItem,
+            Player.Character.Data.CalculateDamage(prjData.UsedItem, ItemCatalog),
+            prjData.UsedItem.Elemental, prjData.IsGrenade);
+
+        Player.Room.AddProjectile(prj);
     }
 
     private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
@@ -131,11 +167,11 @@ public class UseSlot : ExternalProtocol
         var prjId = Player.Room.SetProjectileId();
 
         // Add weapon stats later
-        var prj = new MeleeEntity(Player, prjId, position, direction, 3, usedItem,
+        var prj = new MeleeEntity(prjId, position, Player, direction, 0.51f, usedItem,
             Player.Character.Data.CalculateDamage(usedItem, ItemCatalog),
-            usedItem.Elemental, ServerRConfig);
+            usedItem.Elemental, ServerRConfig, ItemRConfig);
 
-        Player.Room.Projectiles.Add(prjId, prj);
+        Player.Room.AddProjectile(prj);
     }
 
     private void RemoveFromHotBar(CharacterModel character, ItemDescription item, int hotbarSlotId)
