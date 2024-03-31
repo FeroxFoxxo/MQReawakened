@@ -109,14 +109,23 @@
             <Item prefabName="WPN_PRJ_EarthBow01" />
         </Vendor>
         <Vendor objectId="244" name="Jitter" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Food" dialogId="765" greetingConversationId="2069" leavingConversationId="2068">
-            <Item prefabName="COL_BUFF_Bandage01" />
-            <Item prefabName="COL_POT_ExperiencePotion01" />
-            <Item prefabName="COL_POT_ExperiencePotion02" />
-            <Item prefabName="COL_BUFF_GlyphProtection01" />
+            <Item prefabName="COL_PACK_NC_BananaPotion01" />
+            <Item prefabName="COL_PACK_NC_BananaPotion02" />
+            <Item prefabName="COL_PACK_NC_BananaPotion03" />
+            <Item prefabName="COL_PACK_NC_BananaPotion04" />
             <Item prefabName="COL_POT_Healing01" />
-            <Item prefabName="COL_PACK_NC_Rejuvenation01" />
-            <Item prefabName="COL_BUFF_RubberBand01" />
             <Item prefabName="COL_POT_Healing02" />
+            <Item prefabName="COL_POT_Healing03" />
+            <Item prefabName="COL_POT_Healing04" />
+            <Item prefabName="COL_POT_Healing05" />
+            <Item prefabName="COL_POT_Healing06" />
+            <Item prefabName="COL_FOOD_BananaBits01" />
+            <Item prefabName="COL_FOOD_Coconut01" />
+            <Item prefabName="COL_FOOD_Nuts01" />
+            <Item prefabName="COL_FOOD_Melon01" />
+            <Item prefabName="COL_FOOD_Orange01" />
+            <Item prefabName="COL_FOOD_Mango01" />
+            <Item prefabName="COL_FOOD_Pinapple01" />
         </Vendor>
     </Level>
     <Level name="Crossroads Path" id="99">
