@@ -29,5 +29,7 @@ public enum AchConditionType
     JoinGroup,
     InviteGroup,
     OpenPetEgg,
-    ReachLevel
+    ReachLevel,
+    CompleteDailyQuest,
+    OpenJackinTheBox
 }

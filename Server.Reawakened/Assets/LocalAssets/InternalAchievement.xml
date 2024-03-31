@@ -10,14 +10,15 @@
                 <Condition id="1" title="Collect 1,000 Bananas" type="CollectBanana" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="2" title="Breakfast Lunch and Dinner" description="Unknown Description. Hint: the icon is named Daily_BreakfastLunchandDinner!" iconName="Daily_BreakfastLunchandDinner" points="1" sortOrder="2" repeatable="true">
+        <Achievement id="2" title="Breakfast Lunch and Dinner" description="Eat 3 Food Items" iconName="Daily_BreakfastLunchandDinner" points="3" sortOrder="2" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Eat 3 Food Items" type="Consumable" value="" goal="3" visible="true" />
             </Conditions>
         </Achievement>
+        <!--Custom-->
         <Achievement id="3" title="Around The World" description="Explore 5 Different Trails in a Day" iconName="Daily_AroundTheWorld" points="5" sortOrder="3" repeatable="true">
             <Rewards>
                 <Reward type="Xp" value="25" quantity="0" />
@@ -34,20 +35,20 @@
                 <Condition id="1" title="Complete 10 Quests" type="CompleteQuest" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="5" title="Daily Daillies" description="Unknown Description. Hint: the icon is named Daily_DailyDaillies!" iconName="Daily_DailyDaillies" points="1" sortOrder="5" repeatable="true">
+        <Achievement id="5" title="Daily Daillies" description="Complete 5 Daily Quests" iconName="Daily_DailyDaillies" points="5" sortOrder="5" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="25" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete 5 Daily Quests" type="CompleteDailyQuest" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="6" title="Daily Shopper" description="Unknown Description. Hint: the icon is named Daily_DailyShopper!" iconName="Daily_DailyShopper" points="1" sortOrder="6" repeatable="true">
+        <Achievement id="6" title="Daily Shopper" description="Buy 1 Time from Shops" iconName="Daily_DailyShopper" points="3" sortOrder="6" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="BuyItem" value="" goal="2" visible="true" />
+                <Condition id="1" title="Buy 1 Time from Shops" type="BuyItem" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <!--Custom-->
@@ -83,12 +84,13 @@
                 <Condition id="1" title="Accept an Invite to Play Pet Masters" type="Invalid" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="11" title="Social Animal" description="Add 3 Friends" iconName="Daily_SocialAnimal" points="3" sortOrder="11" repeatable="true">
+        <!--Custom-->
+        <Achievement id="11" title="Social Animal" description="Join a Group" iconName="Daily_SocialAnimal" points="3" sortOrder="11" repeatable="true">
             <Rewards>
                 <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Add 3 Friends" type="AddFriend" value="" goal="3" visible="true" />
+                <Condition id="1" title="Join a Group" type="JoinGroup" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="12" title="Feared Fighter" description="Defeat 50 Enemies" iconName="Daily_SlayEveryDay" points="5" sortOrder="12" repeatable="true">
@@ -105,7 +107,7 @@
                 <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Open 5 Jack-in-The-Box's" type="Invalid" value="" goal="5" visible="true" />
+                <Condition id="1" title="Open 5 Jack-in-The-Box's" type="OpenJackinTheBox" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="14" title="Yolk's on Me" description="Transform Yourself into a Chicken" iconName="Daily_ChickenZapSelf" points="1" sortOrder="14" repeatable="true">
@@ -126,73 +128,77 @@
         </Achievement>
     </Category>
     <Category id="3" title="Collecting" iconName="Category_Collecting" sortOrder="7">
-        <Achievement id="17" title="Banana Collector" description="Collect 100 Bananas" iconName="Collecting_Bananas_100" points="1" sortOrder="1" repeatable="false">
+        <Achievement id="17" title="Banana Collector" description="Collect 100 Bananas" iconName="Collecting_Bananas_100" points="5" sortOrder="1" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="5" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 100 Bananas" type="CollectBanana" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="18" title="Goin' Bananas" description="Collect 1,000 Bananas" iconName="Collecting_Bananas_1000" points="1" sortOrder="2" repeatable="false">
+        <Achievement id="18" title="Goin' Bananas" description="Collect 1,000 Bananas" iconName="Collecting_Bananas_1000" points="10" sortOrder="2" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 1000 Bananas" type="CollectBanana" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="19" title="Unknown Achievement 19" description="Collect 5,000 Bananas" iconName="Collecting_Bananas_5000" points="1" sortOrder="3" repeatable="false">
+        <!--Custom-->
+        <Achievement id="19" title="Spare Change" description="Collect 5,000 Bananas" iconName="Collecting_Bananas_5000" points="25" sortOrder="3" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 5000 Bananas" type="CollectBanana" goal="5000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="20" title="Bonkers for Bananas" description="Collect 10,000 Bananas" iconName="Collecting_Bananas_10k" points="1" sortOrder="4" repeatable="false">
+        <Achievement id="20" title="Bonkers for Bananas" description="Collect 10,000 Bananas" iconName="Collecting_Bananas_10k" points="50" sortOrder="4" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 10,000 Bananas" type="CollectBanana" goal="10000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="21" title="Unknown Achievement 21" description="Collect 50,000 Bananas" iconName="Collecting_Bananas_50k" points="1" sortOrder="5" repeatable="false">
+        <!--Custom-->
+        <Achievement id="21" title="Pockets Full of Bananas" description="Collect 50,000 Bananas" iconName="Collecting_Bananas_50k" points="75" sortOrder="5" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 50,000 Bananas" type="CollectBanana" goal="50000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="22" title="Banana Bonanza" description="Collect 100,000 Bananas" iconName="Collecting_Bananas_100k" points="1" sortOrder="6" repeatable="false">
+        <Achievement id="22" title="Banana Bonanza" description="Collect 100,000 Bananas" iconName="Collecting_Bananas_100k" points="100" sortOrder="6" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="100" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 100,000 Bananas" type="CollectBanana" goal="100000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="23" title="Unknown Achievement 23" description="Collect 250,000 Bananas" iconName="Collecting_Bananas_250k" points="1" sortOrder="7" repeatable="false">
+        <!--Custom-->
+        <Achievement id="23" title="Banana Fever" description="Collect 250,000 Bananas" iconName="Collecting_Bananas_250k" points="200" sortOrder="7" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="200" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 250,000 Bananas" type="CollectBanana" goal="250000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="24" title="Unknown Achievement 24" description="Collect 500,000 Bananas" iconName="Collecting_Bananas_500k" points="1" sortOrder="8" repeatable="false">
+        <!--Custom-->
+        <Achievement id="24" title="A Safe for my Bananas" description="Collect 500,000 Bananas" iconName="Collecting_Bananas_500k" points="350" sortOrder="8" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="350" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 500,000 Bananas" type="CollectBanana" goal="500000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="25" title="BANANA MILLIONAIRE!" description="Collect 1,000,000 Bananas" iconName="Collecting_Bananas_1mil" points="1" sortOrder="9" repeatable="false">
+        <Achievement id="25" title="BANANA MILLIONAIRE!" description="Collect 1,000,000 Bananas" iconName="Collecting_Bananas_1mil" points="500" sortOrder="9" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="500" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 1,000,000 Bananas" type="CollectBanana" goal="1000000" visible="true" />
@@ -391,27 +397,27 @@
             </Conditions>
         </Achievement>
         <!--Custom Rewards-->
-        <Achievement id="46" title="First Pet" description="Obtain Your First Pet" iconName="Collecting_Pets_1" points="1" sortOrder="30" repeatable="false">
+        <Achievement id="46" title="First Pet" description="Obtain Your First Pet" iconName="Collecting_Pets_1" points="10" sortOrder="30" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain Your First Pet" type="BuyPet" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <!--Custom Name & Rewards-->
-        <Achievement id="47" title="Animal Lover" description="Obtain 5 Pets" iconName="Collecting_Pets_5" points="1" sortOrder="31" repeatable="false">
+        <Achievement id="47" title="Animal Lover" description="Obtain 5 Pets" iconName="Collecting_Pets_5" points="25" sortOrder="31" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="500" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain 5 Pets" type="BuyPet" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
         <!--Custom Rewards-->
-        <Achievement id="48" title="The Zookeeper" description="Obtain 10 Pets" iconName="Collecting_Pets_10" points="1" sortOrder="32" repeatable="false">
+        <Achievement id="48" title="The Zookeeper" description="Obtain 10 Pets" iconName="Collecting_Pets_10" points="75" sortOrder="32" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="1000" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain 10 Pets" type="BuyPet" value="" goal="10" visible="true" />
@@ -434,9 +440,9 @@
             </Conditions>
         </Achievement>
         <!--Custom Name & Rewards-->
-        <Achievement id="51" title="Unknown Achievement 51" description="Collect 5 Idols" iconName="Collecting_Idol_5" points="1" sortOrder="35" repeatable="false">
+        <Achievement id="51" title="What are these for?" description="Collect 5 Idols" iconName="Collecting_Idol_5" points="10" sortOrder="35" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 5 Idols" type="CollectIdol" value="" goal="5" visible="true" />
@@ -445,25 +451,25 @@
         <!--Custom Rewards-->
         <Achievement id="52" title="Idol-Izer" description="Collect 10 Idols" iconName="Collecting_Idol_10" points="10" sortOrder="36" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 10 Idols" type="CollectIdol" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <!--Custom Name & Rewards-->
-        <Achievement id="53" title="Unknown Achievement 53" description="Collect 25 Idols" iconName="Collecting_Idol_25" points="10" sortOrder="37" repeatable="false">
+        <Achievement id="53" title="They're everywhere!" description="Collect 25 Idols" iconName="Collecting_Idol_25" points="10" sortOrder="37" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 25 Idols" type="CollectIdol" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
         <!--Custom Name & Rewards-->
-        <Achievement id="54" title="Unknown Achievement 54" description="Collect 50 Idols" iconName="Collecting_Idol_50" points="10" sortOrder="38" repeatable="false">
+        <Achievement id="54" title="Idol Collector" description="Collect 50 Idols" iconName="Collecting_Idol_50" points="10" sortOrder="38" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="90" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 50 Idols" type="CollectIdol" value="" goal="50" visible="true" />
@@ -472,16 +478,16 @@
         <!--Custom Rewards-->
         <Achievement id="55" title="Idol-ana Jones" description="Collect 100 Idols" iconName="Collecting_Idol_100" points="10" sortOrder="39" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="130" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 100 Idols" type="CollectIdol" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
         <!--Custom Name & Rewards-->
-        <Achievement id="56" title="Unknown Achievement 56" description="Collect 200 Idols" iconName="Collecting_Idol_200" points="10" sortOrder="40" repeatable="false">
+        <Achievement id="56" title="Closing in on the Secret" description="Collect 200 Idols" iconName="Collecting_Idol_200" points="10" sortOrder="40" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="260" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Collect 200 Idols" type="CollectIdol" value="" goal="200" visible="true" />
@@ -2604,7 +2610,7 @@
                 <Reward type="Xp" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Open 10 Jack-in-The-Box's" type="Invalid" value="" goal="10" visible="true" />
+                <Condition id="1" title="Open 10 Jack-in-The-Box's" type="OpenJackinTheBox" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="319" title="Pop Goes the Weasel" description="Open 25 Jack-in-The-Box's" iconName="Exploration_Jack_PopGoestheWeasel" points="25" sortOrder="59" repeatable="false">
@@ -2612,7 +2618,7 @@
                 <Reward type="Xp" value="250" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Open 25 Jack-in-The-Box's" type="Invalid" value="" goal="25" visible="true" />
+                <Condition id="1" title="Open 25 Jack-in-The-Box's" type="OpenJackinTheBox" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="320" title="Shredder Seeker" description="Enter Shredder's Lair (2014 TMNT Event)" iconName="Exploration_TMNT_ShredderLair" points="5" sortOrder="60" repeatable="false">
@@ -2641,6 +2647,7 @@
         </Achievement>
     </Category>
     <Category id="6" title="Questing" iconName="Category_Questing" sortOrder="4">
+        <!--All custom except 323-->
         <Achievement id="323" title="Monkey on a Mission" description="Complete 10 Quests" iconName="Questing_CompleteQuest_10" points="20" sortOrder="1" repeatable="false">
             <Rewards>
                 <Reward type="Item" value="WPN_SPC_DoomGrenade01" quantity="3" />
@@ -2649,25 +2656,23 @@
                 <Condition id="1" title="Complete 10 Quests" type="CompleteQuest" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
-        <Achievement id="324" title="Unknown Achievement 324" description="Complete 50 Quests" iconName="Questing_CompleteQuest_50" points="20" sortOrder="2" repeatable="false">
+        <Achievement id="324" title="Quest Compass" description="Complete 50 Quests" iconName="Questing_CompleteQuest_50" points="100" sortOrder="2" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Complete 50 Quests" type="CompleteQuest" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom Name & Rewards-->
-        <Achievement id="325" title="Monkey Quest" description="Complete 100 Quests" iconName="Questing_CompleteQuest_100" points="20" sortOrder="3" repeatable="false">
+        <Achievement id="325" title="Monkey Quest" description="Complete 100 Quests" iconName="Questing_CompleteQuest_100" points="200" sortOrder="3" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Complete 100 Quests" type="CompleteQuest" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <!--All Level__ are Custom-->
+        <!--All leveling medals are custom-->
         <Achievement id="326" title="Level 10!" description="Reach Level 10" iconName="Questing_Level_10" points="20" sortOrder="4" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="100" quantity="0" />
@@ -2719,18 +2724,18 @@
         <!--All costum except 332, 334, 335-->
         <Achievement id="332" title="Radical Raider" description="Complete the Nest Raider Quest 1 Time (2014 Easter Event)" iconName="Questing_RaidNests_1" points="5" sortOrder="10" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete the Nest Raider Quest 1 Time (2014 Easter Event)" type="CompleteQuest" value="" goal="1" visible="true" />
+                <Condition id="1" title="Complete the Nest Raider Quest 1 Time" type="CompleteQuest" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="333" title="Unknown Achievement 333" description="Unknown Description. Hint: the icon is named Questing_RaidNests_5!" iconName="Questing_RaidNests_5" points="1" sortOrder="11" repeatable="false">
+        <Achievement id="333" title="Unknown Achievement 333" description="Complete the Nest Raider Quest 5 Time (2014 Easter Event)" iconName="Questing_RaidNests_5" points="10" sortOrder="11" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete the Nest Raider Quest 5 Time" type="CompleteQuest" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="334" title="Repeat Raider" description="Complete the Nest Raider Quest 10 Times (2014 Easter Event)" iconName="Questing_RaidNests_10" points="15" sortOrder="12" repeatable="false">
@@ -2738,7 +2743,7 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="10" visible="true" />
+                <Condition id="1" title="Complete the Nest Raider Quest 10 Times" type="CompleteQuest" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="335" title="Rockin’ Raider!" description="Complete the Nest Raider Quest 25 Times (2014 Easter Event)" iconName="Questing_RaidNests_25" points="25" sortOrder="13" repeatable="false">
@@ -2746,735 +2751,736 @@
                 <Reward type="Item" value="Add_COM_Falcon01_S01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete the Nest Raider Quest 25 Times" type="Invalid" value="" goal="25" visible="true" />
+                <Condition id="1" title="Complete the Nest Raider Quest 25 Times" type="CompleteQuest" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="336" title="Unknown Achievement 336" description="Unknown Description. Hint: the icon is named Questing_RaidNests_50!" iconName="Questing_RaidNests_50" points="1" sortOrder="14" repeatable="false">
+        <Achievement id="336" title="Unknown Achievement 336" description="Complete the Nest Raider Quest 50 Time (2014 Easter Event)" iconName="Questing_RaidNests_50" points="50" sortOrder="14" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="300" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete the Nest Raider Quest 50 Time" type="CompleteQuest" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="337" title="Unknown Achievement 337" description="Unknown Description. Hint: the icon is named Questing_Crossroads_AKnightIsBorn!" iconName="Questing_Crossroads_AKnightIsBorn" points="1" sortOrder="15" repeatable="false">
+        <!--All questing medals are custom-->
+        <Achievement id="337" title="A Knight Is Born" description="Complete Quest A Knight Is Born" iconName="Questing_Crossroads_AKnightIsBorn" points="20" sortOrder="15" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest A Knight Is Born" type="CompleteQuest" value="R01_4_04" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="338" title="Unknown Achievement 338" description="Unknown Description. Hint: the icon is named Questing_Crossroads_BlowEmUp!" iconName="Questing_Crossroads_BlowEmUp" points="1" sortOrder="16" repeatable="false">
+        <Achievement id="338" title="Blow 'Em Up" description="Complete Quest Blow 'Em Up" iconName="Questing_Crossroads_BlowEmUp" points="20" sortOrder="16" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Blow 'Em Up" type="CompleteQuest" value="R01_3_08D" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="339" title="Unknown Achievement 339" description="Unknown Description. Hint: the icon is named Questing_Crossroads_CallToAction!" iconName="Questing_Crossroads_CallToAction" points="1" sortOrder="17" repeatable="false">
+        <Achievement id="339" title="A Call To Action" description="Complete Quest A Call To Action" iconName="Questing_Crossroads_CallToAction" points="20" sortOrder="17" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest A Call To Action" type="CompleteQuest" value="T0CR_02_01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="340" title="Unknown Achievement 340" description="Unknown Description. Hint: the icon is named Questing_Crossroads_RumbleNearTheJungle!" iconName="Questing_Crossroads_RumbleNearTheJungle" points="1" sortOrder="18" repeatable="false">
+        <Achievement id="340" title="Rumble Near The Jungle" description="Complete Quest Rumble Near The Jungle" iconName="Questing_Crossroads_RumbleNearTheJungle" points="20" sortOrder="18" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Rumble Near The Jungle" type="CompleteQuest" value="R01_2_06" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="341" title="Unknown Achievement 341" description="Unknown Description. Hint: the icon is named Questing_Crossroads_SafeAndSecure!" iconName="Questing_Crossroads_SafeAndSecure" points="1" sortOrder="19" repeatable="false">
+        <Achievement id="341" title="Safe And Secure" description="Complete Quest Safe And Secure" iconName="Questing_Crossroads_SafeAndSecure" points="20" sortOrder="19" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Safe And Secure" type="CompleteQuest" value="CRS_5_08" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="342" title="Unknown Achievement 342" description="Unknown Description. Hint: the icon is named Questing_Crossroads_TheLogBooks!" iconName="Questing_Crossroads_TheLogBooks" points="1" sortOrder="20" repeatable="false">
+        <Achievement id="342" title="The Log Books" description="Complete Quest The Log Books" iconName="Questing_Crossroads_TheLogBooks" points="20" sortOrder="20" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Log Books" type="CompleteQuest" value="CRS_1_11" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="343" title="Unknown Achievement 343" description="Unknown Description. Hint: the icon is named Questing_Crossroads_TheTraveller!" iconName="Questing_Crossroads_TheTraveller" points="1" sortOrder="21" repeatable="false">
+        <Achievement id="343" title="The Traveler" description="Complete Quest The Traveler" iconName="Questing_Crossroads_TheTraveller" points="20" sortOrder="21" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Traveler" type="CompleteQuest" value="T0CR_09_05" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="344" title="Unknown Achievement 344" description="Unknown Description. Hint: the icon is named Questing_Crossroads_TheTribeUrns!" iconName="Questing_Crossroads_TheTribeUrns" points="1" sortOrder="22" repeatable="false">
+        <Achievement id="344" title="The Tribe Urns" description="Complete Quest The Tribe Urns" iconName="Questing_Crossroads_TheTribeUrns" points="20" sortOrder="22" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Tribe Urns" type="CompleteQuest" value="T0CR_16_02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="345" title="Unknown Achievement 345" description="Unknown Description. Hint: the icon is named Questing_Crossroads_WhoTheBoss!" iconName="Questing_Crossroads_WhoTheBoss" points="1" sortOrder="23" repeatable="false">
+        <Achievement id="345" title="Who's The Boss" description="Complete Quest Who's The Boss" iconName="Questing_Crossroads_WhoTheBoss" points="20" sortOrder="23" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Who's The Boss" type="CompleteQuest" value="CRS_3_10" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="346" title="Unknown Achievement 346" description="Unknown Description. Hint: the icon is named Questing_Crossroads_WorkTheMace!" iconName="Questing_Crossroads_WorkTheMace" points="1" sortOrder="24" repeatable="false">
+        <Achievement id="346" title="Work The Mace" description="Complete Quest Work The Mace" iconName="Questing_Crossroads_WorkTheMace" points="20" sortOrder="24" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Work The Mace" type="CompleteQuest" value="R01_4_03D" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="347" title="Unknown Achievement 347" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_BombirdsRage!" iconName="Questing_Chimfoo_BombirdsRage" points="1" sortOrder="25" repeatable="false">
+        <Achievement id="347" title="The Bombirds Rage" description="Complete Quest The Bombirds Rage" iconName="Questing_Chimfoo_BombirdsRage" points="20" sortOrder="25" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Bombirds Rage" type="CompleteQuest" value="CHIM_4_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="348" title="Unknown Achievement 348" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_ChimFooWorld!" iconName="Questing_Chimfoo_ChimFooWorld" points="1" sortOrder="26" repeatable="false">
+        <Achievement id="348" title="Chim Foo World" description="Complete Quest Chim Foo World" iconName="Questing_Chimfoo_ChimFooWorld" points="20" sortOrder="26" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Chim Foo World" type="CompleteQuest" value="T1CF_02_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="349" title="Unknown Achievement 349" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_FixingWispsWeakness!" iconName="Questing_Chimfoo_FixingWispsWeakness" points="1" sortOrder="27" repeatable="false">
+        <Achievement id="349" title="Fixing Wisp's Weakness" description="Complete Quest The Chim Foo World" iconName="Questing_Chimfoo_FixingWispsWeakness" points="20" sortOrder="27" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Chim Foo World" type="CompleteQuest" value="CHIM_1_21" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="350" title="Unknown Achievement 350" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_HarusDailyQuest!" iconName="Questing_Chimfoo_HarusDailyQuest" points="1" sortOrder="28" repeatable="false">
+        <Achievement id="350" title="Haru's Daily Quest" description="Complete Haru's Daily Quest" iconName="Questing_Chimfoo_HarusDailyQuest" points="20" sortOrder="28" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Haru's Daily Quest" type="CompleteQuest" value="DAY_SHD01_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="351" title="Unknown Achievement 351" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_HealingTheGreatFoo!" iconName="Questing_Chimfoo_HealingTheGreatFoo" points="1" sortOrder="29" repeatable="false">
+        <Achievement id="351" title="Healing The Great Foo" description="Complete Quest Healing The Great Foo" iconName="Questing_Chimfoo_HealingTheGreatFoo" points="20" sortOrder="29" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Healing The Great Foo" type="CompleteQuest" value="OOTU_6_04" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="352" title="Unknown Achievement 352" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_HidingSecretmessages!" iconName="Questing_Chimfoo_HidingSecretmessages" points="1" sortOrder="30" repeatable="false">
+        <Achievement id="352" title="Hiding Secret Messages" description="Complete Quest Hiding Secret Messages" iconName="Questing_Chimfoo_HidingSecretmessages" points="20" sortOrder="30" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Hiding Secret Messages" type="CompleteQuest" value="CHIM_3_05" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="353" title="Unknown Achievement 353" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_KuchisDailyQuest!" iconName="Questing_Chimfoo_KuchisDailyQuest" points="1" sortOrder="31" repeatable="false">
+        <Achievement id="353" title="Kuchi's Daily Quest" description="Complete Kuchi's Daily Quest" iconName="Questing_Chimfoo_KuchisDailyQuest" points="20" sortOrder="31" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Kuchi's Daily Quest" type="CompleteQuest" value="DAY_SHD04_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="354" title="Unknown Achievement 354" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_KurusDailyQuest!" iconName="Questing_Chimfoo_KurusDailyQuest" points="1" sortOrder="32" repeatable="false">
+        <Achievement id="354" title="Kuro's Daily Quest" description="Complete Kuro's Daily Quest" iconName="Questing_Chimfoo_KurusDailyQuest" points="20" sortOrder="32" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Kuro's Daily Quest" type="CompleteQuest" value="DAY_SHD02_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="355" title="Unknown Achievement 355" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_MonsterInfestation!" iconName="Questing_Chimfoo_MonsterInfestation" points="1" sortOrder="33" repeatable="false">
+        <Achievement id="355" title="Monster Infestation" description="Complete Quest Monster Infestation" iconName="Questing_Chimfoo_MonsterInfestation" points="20" sortOrder="33" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Monster Infestation" type="CompleteQuest" value="CHIM_7_04" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="356" title="Unknown Achievement 356" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_PineappleDeliveries!" iconName="Questing_Chimfoo_PineappleDeliveries" points="1" sortOrder="34" repeatable="false">
+        <Achievement id="356" title="Pineapple Deliveries" description="Complete Quest Pineapple Deliveries" iconName="Questing_Chimfoo_PineappleDeliveries" points="20" sortOrder="34" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Pineapple Deliveries" type="CompleteQuest" value="CHIM_3_09B" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="357" title="Unknown Achievement 357" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_ShadesLoyalty!" iconName="Questing_Chimfoo_ShadesLoyalty" points="1" sortOrder="35" repeatable="false">
+        <Achievement id="357" title="Master Shade's Loyalty" description="Complete Quest Master Shade's Loyalty" iconName="Questing_Chimfoo_ShadesLoyalty" points="20" sortOrder="35" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Master Shade's Loyalty" type="CompleteQuest" value="CHIM_3_13" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="358" title="Unknown Achievement 358" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_ShadyShade!" iconName="Questing_Chimfoo_ShadyShade" points="1" sortOrder="36" repeatable="false">
+        <Achievement id="358" title="Shady Shade" description="Complete Quest Shady Shade" iconName="Questing_Chimfoo_ShadyShade" points="20" sortOrder="36" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Shady Shade" type="CompleteQuest" value="CHIM_1_12" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="359" title="Unknown Achievement 359" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_SmokeBomobs!" iconName="Questing_Chimfoo_SmokeBomobs" points="1" sortOrder="37" repeatable="false">
+        <Achievement id="359" title="The Smoke Bombs of Master Chi" description="Complete Quest The Smoke Bombs of Master Chi" iconName="Questing_Chimfoo_SmokeBomobs" points="20" sortOrder="37" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Smoke Bombs of Master Chi" type="CompleteQuest" value="CHIM_1_08" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="360" title="Unknown Achievement 360" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_SneeziePanda!" iconName="Questing_Chimfoo_SneeziePanda" points="1" sortOrder="38" repeatable="false">
+        <Achievement id="360" title="Sneezzie Panda" description="Complete Quest Sneezzie Panda" iconName="Questing_Chimfoo_SneeziePanda" points="20" sortOrder="38" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Sneezzie Panda" type="CompleteQuest" value="CHIM_3_08A" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="361" title="Unknown Achievement 361" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_SpiritsWithinTheOrbs!" iconName="Questing_Chimfoo_SpiritsWithinTheOrbs" points="1" sortOrder="39" repeatable="false">
+        <Achievement id="361" title="The Spirits Within The Orbs" description="Complete Quest The Spirits Within The Orbs" iconName="Questing_Chimfoo_SpiritsWithinTheOrbs" points="20" sortOrder="39" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Spirits Within The Orbs" type="CompleteQuest" value="CHIM_7_08" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="362" title="Unknown Achievement 362" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_The2ndRiddle!" iconName="Questing_Chimfoo_The2ndRiddle" points="1" sortOrder="40" repeatable="false">
+        <Achievement id="362" title="The Second Riddle" description="Complete Quest The Second Riddle" iconName="Questing_Chimfoo_The2ndRiddle" points="20" sortOrder="40" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Second Riddle" type="CompleteQuest" value="CHIM_2_04A" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="363" title="Unknown Achievement 363" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_TheGongStick!" iconName="Questing_Chimfoo_TheGongStick" points="1" sortOrder="41" repeatable="false">
+        <Achievement id="363" title="The Gong Stick" description="Complete Quest The Gong Stick" iconName="Questing_Chimfoo_TheGongStick" points="20" sortOrder="41" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Gong Stick" type="CompleteQuest" value="CHIM_1_17" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="364" title="Unknown Achievement 364" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_TheGranMaster!" iconName="Questing_Chimfoo_TheGranMaster" points="1" sortOrder="42" repeatable="false">
+        <Achievement id="364" title="The Grand Master" description="Complete Quest The Grand Master" iconName="Questing_Chimfoo_TheGranMaster" points="20" sortOrder="42" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Grand Master" type="CompleteQuest" value="CHIM_1_15" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="365" title="Unknown Achievement 365" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_TheScryingOrb!" iconName="Questing_Chimfoo_TheScryingOrb" points="1" sortOrder="43" repeatable="false">
+        <Achievement id="365" title="The Orb of Scrying" description="Complete Quest The Orb of Scrying" iconName="Questing_Chimfoo_TheScryingOrb" points="20" sortOrder="43" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Orb of Scrying" type="CompleteQuest" value="CHIM_2_05" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="366" title="Unknown Achievement 366" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_TheStealthScroll!" iconName="Questing_Chimfoo_TheStealthScroll" points="1" sortOrder="44" repeatable="false">
+        <Achievement id="366" title="The Stealth Scroll" description="Complete Quest The Stealth Scroll" iconName="Questing_Chimfoo_TheStealthScroll" points="20" sortOrder="44" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Stealth Scroll" type="CompleteQuest" value="CHIM_1_07" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="367" title="Unknown Achievement 367" description="Unknown Description. Hint: the icon is named Questing_Chimfoo_YorisDaily!" iconName="Questing_Chimfoo_YorisDaily" points="1" sortOrder="45" repeatable="false">
+        <Achievement id="367" title="Yori's Daily Quest" description="Complete Yori's Daily Quest" iconName="Questing_Chimfoo_YorisDaily" points="20" sortOrder="45" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Yori's Daily Quest" type="CompleteQuest" value="DAY_SHD06_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="368" title="Unknown Achievement 368" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_AFrightenedMonkey!" iconName="Questing_SeaDragon_AFrightenedMonkey" points="1" sortOrder="46" repeatable="false">
+        <Achievement id="368" title="A Frightened Monkey" description="Complete Quest A Frightened Monkey" iconName="Questing_SeaDragon_AFrightenedMonkey" points="20" sortOrder="46" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest A Frightened Monkey" type="CompleteQuest" value="OUT_1_02_A" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="369" title="Unknown Achievement 369" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_BringBackTheCure!" iconName="Questing_SeaDragon_BringBackTheCure" points="1" sortOrder="47" repeatable="false">
+        <Achievement id="369" title="Bring Back The Cure" description="Complete Quest Bring Back The Cure" iconName="Questing_SeaDragon_BringBackTheCure" points="20" sortOrder="47" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Bring Back The Cure" type="CompleteQuest" value="OUT_0_06" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="370" title="Unknown Achievement 370" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_BubblesAndEbullience!" iconName="Questing_SeaDragon_BubblesAndEbullience" points="1" sortOrder="48" repeatable="false">
+        <Achievement id="370" title="Bubbles And Ebullience" description="Complete Quest Bubbles And Ebullience" iconName="Questing_SeaDragon_BubblesAndEbullience" points="20" sortOrder="48" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Bubbles And Ebullience" type="CompleteQuest" value="OUT_4_02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="371" title="Unknown Achievement 371" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_ClippersDaily!" iconName="Questing_SeaDragon_ClippersDaily" points="1" sortOrder="49" repeatable="false">
+        <Achievement id="371" title="Clipper's Daily Quest" description="Complete Clipper's Daily Quest" iconName="Questing_SeaDragon_ClippersDaily" points="20" sortOrder="49" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Clipper's Daily Quest" type="CompleteQuest" value="OUT_DAY_01_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="372" title="Unknown Achievement 372" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_DifferentSourceLight!" iconName="Questing_SeaDragon_DifferentSourceLight" points="1" sortOrder="50" repeatable="false">
+        <Achievement id="372" title="A Different Source of Light" description="Complete Quest A Different Source of Light" iconName="Questing_SeaDragon_DifferentSourceLight" points="20" sortOrder="50" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest A Different Source of Light" type="CompleteQuest" value="OUT_2_08" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="373" title="Unknown Achievement 373" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_DisturbingReport!" iconName="Questing_SeaDragon_DisturbingReport" points="1" sortOrder="51" repeatable="false">
+        <Achievement id="373" title="A Disturbing Report" description="Complete Quest A Disturbing Report" iconName="Questing_SeaDragon_DisturbingReport" points="20" sortOrder="51" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest A Disturbing Report" type="CompleteQuest" value="OUT_1_08A" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="374" title="Unknown Achievement 374" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_FizzlesDaily!" iconName="Questing_SeaDragon_FizzlesDaily" points="1" sortOrder="52" repeatable="false">
+        <Achievement id="374" title="Fizzle's Daily Quest" description="Complete Fizzle's Daily Quest" iconName="Questing_SeaDragon_FizzlesDaily" points="20" sortOrder="52" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Fizzle's Daily Quest" type="CompleteQuest" value="DAY_OUT02_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="375" title="Unknown Achievement 375" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_InconstantList!" iconName="Questing_SeaDragon_InconstantList" points="1" sortOrder="53" repeatable="false">
+        <Achievement id="375" title="An Inconstant List" description="Complete Quest An Inconstant List" iconName="Questing_SeaDragon_InconstantList" points="20" sortOrder="53" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest An Inconstant List" type="CompleteQuest" value="OUT_4_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="376" title="Unknown Achievement 376" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_LightingTheCourage!" iconName="Questing_SeaDragon_LightingTheCourage" points="1" sortOrder="54" repeatable="false">
+        <Achievement id="376" title="Lighting The Courage" description="Complete Quest Lighting The Courage" iconName="Questing_SeaDragon_LightingTheCourage" points="20" sortOrder="54" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Lighting The Courage" type="CompleteQuest" value="OUT_1_13" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="377" title="Unknown Achievement 377" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_RallyOotu!" iconName="Questing_SeaDragon_RallyOotu" points="1" sortOrder="55" repeatable="false">
+        <Achievement id="377" title="Rally The Ootu" description="Complete Quest Rally The Ootu" iconName="Questing_SeaDragon_RallyOotu" points="20" sortOrder="55" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Rally The Ootu" type="CompleteQuest" value="OUT_3_08" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="378" title="Unknown Achievement 378" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_RallySeaDragons!" iconName="Questing_SeaDragon_RallySeaDragons" points="1" sortOrder="56" repeatable="false">
+        <Achievement id="378" title="Rally The Sea Dragons" description="Complete Quest Rally The Sea Dragons" iconName="Questing_SeaDragon_RallySeaDragons" points="20" sortOrder="56" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Rally The Sea Dragons" type="CompleteQuest" value="OUT_3_10" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="379" title="Unknown Achievement 379" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_ScoutsDifficulty!" iconName="Questing_SeaDragon_ScoutsDifficulty" points="1" sortOrder="57" repeatable="false">
+        <Achievement id="379" title="Scouts in Difficulty" description="Complete Quest Scouts in Difficulty" iconName="Questing_SeaDragon_ScoutsDifficulty" points="20" sortOrder="57" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Scouts in Difficulty" type="CompleteQuest" value="OUT_3_04" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="380" title="Unknown Achievement 380" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_ScuttlesPartner!" iconName="Questing_SeaDragon_ScuttlesPartner" points="1" sortOrder="58" repeatable="false">
+        <Achievement id="380" title="Scuttle's Partner" description="Complete Quest Scuttle's Partner" iconName="Questing_SeaDragon_ScuttlesPartner" points="20" sortOrder="58" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Scuttle's Partner" type="CompleteQuest" value="OUT_2_11" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="381" title="Unknown Achievement 381" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_SeaDragonHero!" iconName="Questing_SeaDragon_SeaDragonHero" points="1" sortOrder="59" repeatable="false">
+        <Achievement id="381" title="A Sea Dragon Hero" description="Complete Quest A Sea Dragon Hero" iconName="Questing_SeaDragon_SeaDragonHero" points="20" sortOrder="59" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest A Sea Dragon Hero" type="CompleteQuest" value="OUT_1_14" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="382" title="Unknown Achievement 382" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_SeaDragonWorld!" iconName="Questing_SeaDragon_SeaDragonWorld" points="1" sortOrder="60" repeatable="false">
+        <Achievement id="382" title="Sea Dragon World" description="Complete Quest Sea Dragon World" iconName="Questing_SeaDragon_SeaDragonWorld" points="20" sortOrder="60" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Sea Dragon World" type="CompleteQuest" value="T2SD_02_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="383" title="Unknown Achievement 383" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_SeekingTheUsual!" iconName="Questing_SeaDragon_SeekingTheUsual" points="1" sortOrder="61" repeatable="false">
+        <Achievement id="383" title="Seeking The Unusual" description="Complete Quest Seeking The Unusual" iconName="Questing_SeaDragon_SeekingTheUsual" points="20" sortOrder="61" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Seeking The Unusual" type="CompleteQuest" value="OUT_2_05" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="384" title="Unknown Achievement 384" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_SharkysDaily!" iconName="Questing_SeaDragon_SharkysDaily" points="1" sortOrder="62" repeatable="false">
+        <Achievement id="384" title="Sharky's Daily Quest" description="Complete Sharky's Daily Quest" iconName="Questing_SeaDragon_SharkysDaily" points="20" sortOrder="62" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Sharky's Daily Quest" type="CompleteQuest" value="DAY_OUT03_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="385" title="Unknown Achievement 385" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_TheKernelBlaster!" iconName="Questing_SeaDragon_TheKernelBlaster" points="1" sortOrder="63" repeatable="false">
+        <Achievement id="385" title="The Kernel Blaster" description="Complete Quest The Kernel Blaster" iconName="Questing_SeaDragon_TheKernelBlaster" points="20" sortOrder="63" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Kernel Blaster" type="CompleteQuest" value="OUT_1_02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="386" title="Unknown Achievement 386" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_TheShadowInside!" iconName="Questing_SeaDragon_TheShadowInside" points="1" sortOrder="64" repeatable="false">
+        <Achievement id="386" title="The Shadow Inside" description="Complete Quest The Shadow Inside" iconName="Questing_SeaDragon_TheShadowInside" points="20" sortOrder="64" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Shadow Inside" type="CompleteQuest" value="OUT_3_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="387" title="Unknown Achievement 387" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_TwiggsDaily!" iconName="Questing_SeaDragon_TwiggsDaily" points="1" sortOrder="65" repeatable="false">
+        <Achievement id="387" title="Twigg's Daily Quest" description="Complete Twigg's Daily Quest" iconName="Questing_SeaDragon_TwiggsDaily" points="20" sortOrder="65" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Twigg's Daily Quest" type="CompleteQuest" value="DAY_OUT05_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="388" title="Unknown Achievement 388" description="Unknown Description. Hint: the icon is named Questing_SeaDragon_WagsDaily!" iconName="Questing_SeaDragon_WagsDaily" points="1" sortOrder="66" repeatable="false">
+        <Achievement id="388" title="Wag's Daily Quest" description="Complete Wag's Daily Quest" iconName="Questing_SeaDragon_WagsDaily" points="20" sortOrder="66" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Wag's Daily Quest" type="CompleteQuest" value="DAY_OUT06_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="389" title="Unknown Achievement 389" description="Unknown Description. Hint: the icon is named Questing_Ootu_ADarkServant!" iconName="Questing_Ootu_ADarkServant" points="1" sortOrder="67" repeatable="false">
+        <Achievement id="389" title="A Dark Servant" description="Complete Quest A Dark Servant" iconName="Questing_Ootu_ADarkServant" points="20" sortOrder="67" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest A Dark Servant" type="CompleteQuest" value="OOTU_5_06" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="390" title="Unknown Achievement 390" description="Unknown Description. Hint: the icon is named Questing_Ootu_BathogGuano!" iconName="Questing_Ootu_BathogGuano" points="1" sortOrder="68" repeatable="false">
+        <Achievement id="390" title="Bathog Guano" description="Complete Quest Bathog Guano" iconName="Questing_Ootu_BathogGuano" points="20" sortOrder="68" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Bathog Guano" type="CompleteQuest" value="OOTU_4_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="391" title="Unknown Achievement 391" description="Unknown Description. Hint: the icon is named Questing_Ootu_CleansingTheRiver!" iconName="Questing_Ootu_CleansingTheRiver" points="1" sortOrder="69" repeatable="false">
+        <Achievement id="391" title="Cleansing The River" description="Complete Quest Cleansing The River" iconName="Questing_Ootu_CleansingTheRiver" points="20" sortOrder="69" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Cleansing The River" type="CompleteQuest" value="OOTU_3_12" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="392" title="Unknown Achievement 392" description="Unknown Description. Hint: the icon is named Questing_Ootu_ComeOutOfYourShell!" iconName="Questing_Ootu_ComeOutOfYourShell" points="1" sortOrder="70" repeatable="false">
+        <Achievement id="392" title="Come Out Of Your Shell" description="Complete Quest Come Out Of Your Shell" iconName="Questing_Ootu_ComeOutOfYourShell" points="20" sortOrder="70" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Come Out Of Your Shell" type="CompleteQuest" value="OOTU_2_05" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="393" title="Unknown Achievement 393" description="Unknown Description. Hint: the icon is named Questing_Ootu_GasInaBottle!" iconName="Questing_Ootu_GasInaBottle" points="1" sortOrder="71" repeatable="false">
+        <Achievement id="393" title="Gas In a Bottle" description="Complete Quest Gas In a Bottle" iconName="Questing_Ootu_GasInaBottle" points="20" sortOrder="71" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Gas In a Bottle" type="CompleteQuest" value="OOTU_3_05" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="394" title="Unknown Achievement 394" description="Unknown Description. Hint: the icon is named Questing_Ootu_GettingStrongAndStronger!" iconName="Questing_Ootu_GettingStrongAndStronger" points="1" sortOrder="72" repeatable="false">
+        <Achievement id="394" title="Getting Stronger And Stronger" description="Complete Quest Getting Stronger And Stronger" iconName="Questing_Ootu_GettingStrongAndStronger" points="20" sortOrder="72" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Getting Stronger And Stronger" type="CompleteQuest" value="OOTU_2_09" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="395" title="Unknown Achievement 395" description="Unknown Description. Hint: the icon is named Questing_Ootu_GoodRiddance!" iconName="Questing_Ootu_GoodRiddance" points="1" sortOrder="73" repeatable="false">
+        <Achievement id="395" title="Good Riddance" description="Complete Quest Good Riddance" iconName="Questing_Ootu_GoodRiddance" points="20" sortOrder="73" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Good Riddance" type="CompleteQuest" value="OOTU_3_02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="396" title="Unknown Achievement 396" description="Unknown Description. Hint: the icon is named Questing_Ootu_GwansDaily!" iconName="Questing_Ootu_GwansDaily" points="1" sortOrder="74" repeatable="false">
+        <Achievement id="396" title="Gwan's Daily Quest" description="Complete Gwan's Daily Quest" iconName="Questing_Ootu_GwansDaily" points="20" sortOrder="74" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Gwan's Daily Quest" type="CompleteQuest" value="DAY_BON04_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="397" title="Unknown Achievement 397" description="Unknown Description. Hint: the icon is named Questing_Ootu_KedelsDaily!" iconName="Questing_Ootu_KedelsDaily" points="1" sortOrder="75" repeatable="false">
+        <Achievement id="397" title="Kedel's Daily Quest" description="Complete Kedel's Daily Quest" iconName="Questing_Ootu_KedelsDaily" points="20" sortOrder="75" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Kedel's Daily Quest" type="CompleteQuest" value="DAY_BON05_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="398" title="Unknown Achievement 398" description="Unknown Description. Hint: the icon is named Questing_Ootu_KellsDaily!" iconName="Questing_Ootu_KellsDaily" points="1" sortOrder="76" repeatable="false">
+        <Achievement id="398" title="Keli's Daily Quest" description="Complete Keli's Daily Quest" iconName="Questing_Ootu_KellsDaily" points="20" sortOrder="76" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Keli's Daily Quest" type="CompleteQuest" value="DAY_BON01_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="399" title="Unknown Achievement 399" description="Unknown Description. Hint: the icon is named Questing_Ootu_LurksDaily!" iconName="Questing_Ootu_LurksDaily" points="1" sortOrder="77" repeatable="false">
+        <Achievement id="399" title="Lurk's Daily Quest" description="Complete Lurk's Daily Quest" iconName="Questing_Ootu_LurksDaily" points="20" sortOrder="77" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Lurk's Daily Quest" type="CompleteQuest" value="DAY_BON03_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="400" title="Unknown Achievement 400" description="Unknown Description. Hint: the icon is named Questing_Ootu_MamaBabusHelp!" iconName="Questing_Ootu_MamaBabusHelp" points="1" sortOrder="78" repeatable="false">
+        <Achievement id="400" title="Mama Babu's Help" description="Complete Quest Mama Babu's Help" iconName="Questing_Ootu_MamaBabusHelp" points="20" sortOrder="78" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Mama Babu's Help" type="CompleteQuest" value="OOTU_4_07" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="401" title="Unknown Achievement 401" description="Unknown Description. Hint: the icon is named Questing_Ootu_MamaOotuSpirit!" iconName="Questing_Ootu_MamaOotuSpirit" points="1" sortOrder="79" repeatable="false">
+        <Achievement id="401" title="Mama Ootu's Spirit" description="Complete Quest Mama Ootu's Spirit" iconName="Questing_Ootu_MamaOotuSpirit" points="20" sortOrder="79" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Mama Ootu's Spirit" type="CompleteQuest" value="OOTU_5_05" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="402" title="Unknown Achievement 402" description="Unknown Description. Hint: the icon is named Questing_Ootu_MokToksDaily!" iconName="Questing_Ootu_MokToksDaily" points="1" sortOrder="80" repeatable="false">
+        <Achievement id="402" title="MokTok's Daily Quest" description="Complete MokTok's Daily Quest" iconName="Questing_Ootu_MokToksDaily" points="20" sortOrder="80" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete MokTok's Daily Quest" type="CompleteQuest" value="DAY_BON02_1" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="403" title="Unknown Achievement 403" description="Unknown Description. Hint: the icon is named Questing_Ootu_MonarchalMugger!" iconName="Questing_Ootu_MonarchalMugger" points="1" sortOrder="81" repeatable="false">
+        <Achievement id="403" title="Monarchical Mugger" description="Complete Quest Monarchical Mugger" iconName="Questing_Ootu_MonarchalMugger" points="20" sortOrder="81" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Monarchical Mugger" type="CompleteQuest" value="OOTU_1_10" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="404" title="Unknown Achievement 404" description="Unknown Description. Hint: the icon is named Questing_Ootu_MuddyDelivery!" iconName="Questing_Ootu_MuddyDelivery" points="1" sortOrder="82" repeatable="false">
+        <Achievement id="404" title="A Muddy Delivery" description="Complete Quest A Muddy Delivery" iconName="Questing_Ootu_MuddyDelivery" points="20" sortOrder="82" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest A Muddy Delivery" type="CompleteQuest" value="OOTU_2_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="405" title="Unknown Achievement 405" description="Unknown Description. Hint: the icon is named Questing_Ootu_MysticsWorld!" iconName="Questing_Ootu_MysticsWorld" points="1" sortOrder="83" repeatable="false">
+        <Achievement id="405" title="Ootu Mystics World" description="Complete Quest Ootu Mystics World" iconName="Questing_Ootu_MysticsWorld" points="20" sortOrder="83" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Ootu Mystics World" type="CompleteQuest" value="T3OM_02_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="406" title="Unknown Achievement 406" description="Unknown Description. Hint: the icon is named Questing_Ootu_PowerofKa2!" iconName="Questing_Ootu_PowerofKa2" points="1" sortOrder="84" repeatable="false">
+        <Achievement id="406" title="The Power of Ka - Part 2" description="Complete Quest The Power of Ka - Part 2" iconName="Questing_Ootu_PowerofKa2" points="20" sortOrder="84" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Power of Ka - Part 2" type="CompleteQuest" value="OOTU_5_09" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="407" title="Unknown Achievement 407" description="Unknown Description. Hint: the icon is named Questing_Ootu_PowerOfKa!" iconName="Questing_Ootu_PowerOfKa" points="1" sortOrder="85" repeatable="false">
+        <Achievement id="407" title="The Power Of Ka" description="Complete Quest The Power Of Ka" iconName="Questing_Ootu_PowerOfKa" points="20" sortOrder="85" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Power Of Ka" type="CompleteQuest" value="OOTU_5_08" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="408" title="Unknown Achievement 408" description="Unknown Description. Hint: the icon is named Questing_Ootu_SearchingForAnnya!" iconName="Questing_Ootu_SearchingForAnnya" points="1" sortOrder="86" repeatable="false">
+        <Achievement id="408" title="Searching For Annya" description="Complete Quest Searching For Annya" iconName="Questing_Ootu_SearchingForAnnya" points="20" sortOrder="86" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Searching For Annya" type="CompleteQuest" value="OOTU_8_02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="409" title="Unknown Achievement 409" description="Unknown Description. Hint: the icon is named Questing_Ootu_StaffOfHealing!" iconName="Questing_Ootu_StaffOfHealing" points="1" sortOrder="87" repeatable="false">
+        <Achievement id="409" title="The Staff Of Healing" description="Complete Quest The Staff Of Healing" iconName="Questing_Ootu_StaffOfHealing" points="20" sortOrder="87" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Staff Of Healing" type="CompleteQuest" value="OOTU_5_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="410" title="Unknown Achievement 410" description="Unknown Description. Hint: the icon is named Questing_Ootu_StolenGoods!" iconName="Questing_Ootu_StolenGoods" points="1" sortOrder="88" repeatable="false">
+        <Achievement id="410" title="The Stolen Goods" description="Complete Quest The Stolen Goods" iconName="Questing_Ootu_StolenGoods" points="20" sortOrder="88" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Stolen Goods" type="CompleteQuest" value="OOTU_1_05" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="411" title="Unknown Achievement 411" description="Unknown Description. Hint: the icon is named Questing_Ootu_SuperShield!" iconName="Questing_Ootu_SuperShield" points="1" sortOrder="89" repeatable="false">
+        <Achievement id="411" title="Super Shield" description="Complete Quest Super Shield" iconName="Questing_Ootu_SuperShield" points="20" sortOrder="89" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Super Shield" type="CompleteQuest" value="OOTU_2_12" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="412" title="Unknown Achievement 412" description="Unknown Description. Hint: the icon is named Questing_Ootu_TheExterminator!" iconName="Questing_Ootu_TheExterminator" points="1" sortOrder="90" repeatable="false">
+        <Achievement id="412" title="The Exterminator" description="Complete Quest The Exterminator" iconName="Questing_Ootu_TheExterminator" points="20" sortOrder="90" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Exterminator" type="CompleteQuest" value="OOTU_1_07" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="413" title="Unknown Achievement 413" description="Unknown Description. Hint: the icon is named Questing_Ootu_TheImmortal!" iconName="Questing_Ootu_TheImmortal" points="1" sortOrder="91" repeatable="false">
+        <Achievement id="413" title="The Immortal" description="Complete Quest The Immortal" iconName="Questing_Ootu_TheImmortal" points="20" sortOrder="91" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Immortal" type="CompleteQuest" value="OOTU_4_12" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="414" title="Unknown Achievement 414" description="Unknown Description. Hint: the icon is named Questing_Ootu_TheSpiderNecklace!" iconName="Questing_Ootu_TheSpiderNecklace" points="1" sortOrder="92" repeatable="false">
+        <Achievement id="414" title="The Spider Necklace" description="Complete Quest Complete Quest The Spider Necklace" iconName="Questing_Ootu_TheSpiderNecklace" points="20" sortOrder="92" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Complete Quest The Spider Necklace" type="CompleteQuest" value="OOTU_8_05" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="415" title="Unknown Achievement 415" description="Unknown Description. Hint: the icon is named Questing_Ootu_TheThiefsDemise!" iconName="Questing_Ootu_TheThiefsDemise" points="1" sortOrder="93" repeatable="false">
+        <Achievement id="415" title="The Thief's Demise" description="Complete Quest The Thief's Demise" iconName="Questing_Ootu_TheThiefsDemise" points="20" sortOrder="93" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Thief's Demise" type="CompleteQuest" value="OOTU_1_15" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="416" title="Unknown Achievement 416" description="Unknown Description. Hint: the icon is named Questing_IceRaiders_AClearWay!" iconName="Questing_IceRaiders_AClearWay" points="1" sortOrder="94" repeatable="false">
+        <Achievement id="416" title="A Clear Way" description="Complete Quest A Clear Way" iconName="Questing_IceRaiders_AClearWay" points="20" sortOrder="94" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest A Clear Way" type="CompleteQuest" value="T4IR_00_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="417" title="Unknown Achievement 417" description="Unknown Description. Hint: the icon is named Questing_IceRaiders_ExtremeChasm!" iconName="Questing_IceRaiders_ExtremeChasm" points="1" sortOrder="95" repeatable="false">
+        <Achievement id="417" title="Extreme Chasm Diving" description="Complete Quest Extreme Chasm Diving" iconName="Questing_IceRaiders_ExtremeChasm" points="20" sortOrder="95" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Extreme Chasm Diving" type="CompleteQuest" value="T4IR_05_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="418" title="Unknown Achievement 418" description="Unknown Description. Hint: the icon is named Questing_IceRaiders_GateRepair!" iconName="Questing_IceRaiders_GateRepair" points="1" sortOrder="96" repeatable="false">
+        <Achievement id="418" title="Gate Repair" description="Complete Quest Gate Repair" iconName="Questing_IceRaiders_GateRepair" points="20" sortOrder="96" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Gate Repair" type="CompleteQuest" value="T4IR_04_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="419" title="Unknown Achievement 419" description="Unknown Description. Hint: the icon is named Questing_IceRaiders_HealingStar!" iconName="Questing_IceRaiders_HealingStar" points="1" sortOrder="97" repeatable="false">
+        <Achievement id="419" title="The Healing Star" description="Complete Quest The Healing Star" iconName="Questing_IceRaiders_HealingStar" points="20" sortOrder="97" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Healing Star" type="CompleteQuest" value="T4IR_06_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="420" title="Unknown Achievement 420" description="Unknown Description. Hint: the icon is named Questing_IceRaiders_MammothsRevenge!" iconName="Questing_IceRaiders_MammothsRevenge" points="1" sortOrder="98" repeatable="false">
+        <Achievement id="420" title="Mammoth's Revenge" description="Complete Quest Mammoth's Revenge" iconName="Questing_IceRaiders_MammothsRevenge" points="20" sortOrder="98" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Mammoth's Revenge" type="CompleteQuest" value="T4IR_01_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="421" title="Unknown Achievement 421" description="Unknown Description. Hint: the icon is named Questing_IceRaiders_SignalFireDaily!" iconName="Questing_IceRaiders_SignalFireDaily" points="1" sortOrder="99" repeatable="false">
+        <Achievement id="421" title="Signal Fire Daily" description="Complete Quest Signal Fire Daily" iconName="Questing_IceRaiders_SignalFireDaily" points="20" sortOrder="99" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Signal Fire Daily" type="CompleteQuest" value="DAY_IR_T2_01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="422" title="Unknown Achievement 422" description="Unknown Description. Hint: the icon is named Questing_IceRaiders_Snowboardingdaily!" iconName="Questing_IceRaiders_Snowboardingdaily" points="1" sortOrder="100" repeatable="false">
+        <Achievement id="422" title="Snowboarding Daily" description="Complete Quest Snowboarding Daily" iconName="Questing_IceRaiders_Snowboardingdaily" points="20" sortOrder="100" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Snowboarding Daily" type="CompleteQuest" value="DAY_IR_T1_01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="423" title="Unknown Achievement 423" description="Unknown Description. Hint: the icon is named Questing_IceRaiders_TheFinalSeal!" iconName="Questing_IceRaiders_TheFinalSeal" points="1" sortOrder="101" repeatable="false">
+        <Achievement id="423" title="The Final Seal" description="Complete Quest The Final Seal" iconName="Questing_IceRaiders_TheFinalSeal" points="20" sortOrder="101" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The Final Seal" type="CompleteQuest" value="T4IR_02_03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="424" title="Unknown Achievement 424" description="Unknown Description. Hint: the icon is named Questing_IceRaiders_TheFoulBreathTroll!" iconName="Questing_IceRaiders_TheFoulBreathTroll" points="1" sortOrder="102" repeatable="false">
+        <Achievement id="424" title="The FoulBreath Troll" description="Complete Quest The FoulBreath Troll" iconName="Questing_IceRaiders_TheFoulBreathTroll" points="20" sortOrder="102" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest The FoulBreath Troll" type="CompleteQuest" value="T4IR_03_04" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="425" title="Unknown Achievement 425" description="Unknown Description. Hint: the icon is named Questing_IceRaiders_TrollBattleDaily!" iconName="Questing_IceRaiders_TrollBattleDaily" points="1" sortOrder="103" repeatable="false">
+        <Achievement id="425" title="Troll Battle Daily" description="Complete Quest Troll Battle Daily" iconName="Questing_IceRaiders_TrollBattleDaily" points="20" sortOrder="103" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete Quest Troll Battle Daily" type="CompleteQuest" value="DAY_IR_D1_01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="426" title="Unknown Achievement 426" description="Unknown Description. Hint: the icon is named Questing_SpongeBob!" iconName="Questing_SpongeBob" points="1" sortOrder="104" repeatable="false">
+        <Achievement id="426" title="Unknown Achievement 426" description="Unknown Description. Hint: the icon is named Questing_SpongeBob!" iconName="Questing_SpongeBob" points="20" sortOrder="104" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="" type="CompleteQuest" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
     </Category>
@@ -4011,55 +4017,55 @@
         </Achievement>
         <Achievement id="492" title="Emote-tional" description="Use 1 Emote" iconName="Social_Emotes_HelloWorld" points="3" sortOrder="2" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Use 1 Emote" type="Unknown" value="" goal="1" visible="true" />
+                <Condition id="1" title="Use 1 Emote" type="Emote" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="493" title="Get To Da Choppa" description="Use Helicopter Emote" iconName="Social_Emotes_GetToDaChoppa" points="1" sortOrder="3" repeatable="false">
+        <Achievement id="493" title="Get To Da Choppa" description="Use Helicopter Emote" iconName="Social_Emotes_GetToDaChoppa" points="5" sortOrder="3" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Use Helicopter Emote" type="Emote" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="494" title="Thrilla" description="Use Zombie Dance Emote" iconName="Social_Emotes_Thrilla" points="1" sortOrder="4" repeatable="false">
+        <Achievement id="494" title="Thrilla" description="Use Zombie Dance Emote" iconName="Social_Emotes_Thrilla" points="5" sortOrder="4" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Use Zombie Dance Emote" type="Emote" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="495" title="Funky Monkey" description="Use Dance Emotes 10 Times" iconName="Social_Emotes_FunkyMonkey" points="5" sortOrder="5" repeatable="false">
+        <Achievement id="495" title="Funky Monkey" description="Use Dance Emotes 10 Times" iconName="Social_Emotes_FunkyMonkey" points="20" sortOrder="5" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Use Dance Emotes 10 Times" type="Unknown" value="" goal="10" visible="true" />
+                <Condition id="1" title="Use Dance Emotes 10 Times" type="Invalid" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="496" title="Spunky Monkey" description="Use Emotes 10 Times" iconName="Social_Emotes_SpunkyMonkey" points="1" sortOrder="6" repeatable="false">
+        <Achievement id="496" title="Spunky Monkey" description="Use Emotes 10 Times" iconName="Social_Emotes_SpunkyMonkey" points="10" sortOrder="6" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Use Emotes 10 Times" type="Emote" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="497" title="Bargain Hunter" description="Buy 5 Times from Shops" iconName="Social_NPC_BargainHunter" points="1" sortOrder="7" repeatable="false">
+        <Achievement id="497" title="Bargain Hunter" description="Buy 5 Times from Shops" iconName="Social_NPC_BargainHunter" points="10" sortOrder="7" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Buy 5 Times from Shops" type="BuyItem" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="498" title="Secret Shopper" description="Buy 20 Times from Shops" iconName="Social_NPC_SecretShopper" points="1" sortOrder="8" repeatable="false">
+        <Achievement id="498" title="Secret Shopper" description="Buy 20 Times from Shops" iconName="Social_NPC_SecretShopper" points="20" sortOrder="8" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="200" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Buy 20 Times from Shops" type="BuyItem" value="" goal="20" visible="true" />
@@ -4067,15 +4073,16 @@
         </Achievement>
         <Achievement id="499" title="I Shall Have a Pal" description="Add your First Friend" iconName="Social_Friends_1" points="3" sortOrder="9" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Add your First Friend" type="AddFriend" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="500" title="Unknown Achievement 500" description="Add 5 Friends" iconName="Social_Friends_5" points="1" sortOrder="10" repeatable="false">
+        <!--Custom-->
+        <Achievement id="500" title="Socializing" description="Add 5 Friends" iconName="Social_Friends_5" points="5" sortOrder="10" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Add 5 Friends" type="AddFriend" value="" goal="5" visible="true" />
@@ -4083,13 +4090,14 @@
         </Achievement>
         <Achievement id="501" title="Tribe Vibe" description="Add 10 Friends" iconName="Social_Friends_10" points="10" sortOrder="11" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="100" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Add 10 Friends" type="AddFriend" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="502" title="Unknown Achievement 502" description="Add 25 Friends" iconName="Social_Friends_25" points="25" sortOrder="12" repeatable="false">
+        <!--Custom-->
+        <Achievement id="502" title="Social Butterfly" description="Add 25 Friends" iconName="Social_Friends_25" points="25" sortOrder="12" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="250" quantity="0" />
             </Rewards>
@@ -4121,9 +4129,10 @@
                 <Condition id="1" title="Be in a Full Group" type="Invalid" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="220" title="Unknown Achievement 220" description="Join 10 Groups" iconName="Defeat_10_Groups" points="20" sortOrder="15" repeatable="false">
+        <!--Custom-->
+        <Achievement id="220" title="Monkey Gangsta" description="Join 10 Groups" iconName="Defeat_10_Groups" points="20" sortOrder="15" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="100" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Join 10 Groups" type="JoinGroup" value="" goal="10" visible="true" />
@@ -4139,169 +4148,169 @@
         </Achievement>
         <Achievement id="506" title="Team Player" description="Join a Group" iconName="Social_Grouping_TeamPlayer" points="5" sortOrder="16" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Join a Group" type="JoinGroup" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--All npc medals custom-->
-        <Achievement id="507" title="Chim Foo Ninja" description="Join The Chim Foo" iconName="Social_JoinTribes_ChimFoo" points="1" sortOrder="17" repeatable="false">
+        <!--All npc medals are custom-->
+        <Achievement id="507" title="Chim Foo Ninja" description="Join The Chim Foo" iconName="Social_JoinTribes_ChimFoo" points="10" sortOrder="17" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Join the Chim Foo" type="ExploreTrail" value="lv_shd_highway01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="508" title="Ice Viking" description="Join The Ice Raiders" iconName="Social_JoinTribes_IceRaiders" points="1" sortOrder="18" repeatable="false">
+        <Achievement id="508" title="Ice Viking" description="Join The Ice Raiders" iconName="Social_JoinTribes_IceRaiders" points="10" sortOrder="18" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Join The Ice Raiders" type="ExploreTrail" value="lv_wld_highway01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="509" title="Earth Wizard" description="Join The Ootu Mystics" iconName="Social_JoinTribes_Ootu" points="1" sortOrder="19" repeatable="false">
+        <Achievement id="509" title="Earth Wizard" description="Join The Ootu Mystics" iconName="Social_JoinTribes_Ootu" points="10" sortOrder="19" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Join The Ootu Mystics" type="ExploreTrail" value="lv_bon_highway01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="510" title="Fiery Pirate" description="Join the SeaDragons" iconName="Social_JoinTribes_SeaDragons" points="1" sortOrder="20" repeatable="false">
+        <Achievement id="510" title="Fiery Pirate" description="Join the SeaDragons" iconName="Social_JoinTribes_SeaDragons" points="10" sortOrder="20" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Join the SeaDragons" type="ExploreTrail" value="lv_out_highway01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="511" title="Clock Tower" description="Meet Mayor Bumbee" iconName="Social_NPC_ClockTower" points="1" sortOrder="21" repeatable="false">
+        <Achievement id="511" title="Clock Tower" description="Meet Mayor Bumbee" iconName="Social_NPC_ClockTower" points="5" sortOrder="21" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Meet Mayor Bumbee" type="Talkto" value="NPC_CRS_Bumbee01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="512" title="Join in The Crew" description="Meet Captain Blacktail" iconName="Social_NPC_JoininTheCrew" points="1" sortOrder="22" repeatable="false">
+        <Achievement id="512" title="Join in The Crew" description="Meet Captain Blacktail" iconName="Social_NPC_JoininTheCrew" points="5" sortOrder="22" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Meet Captain Blacktail" type="Talkto" value="NPC_OUT_CaptainBlackhand01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="513" title="Mystical Meeting" description="Meet Mama Babu" iconName="Social_NPC_MysticalMeeting" points="1" sortOrder="23" repeatable="false">
+        <Achievement id="513" title="Mystical Meeting" description="Meet Mama Babu" iconName="Social_NPC_MysticalMeeting" points="5" sortOrder="23" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Meet Mama Babu" type="Talkto" value="NPC_BON_Oleander01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="514" title="Striking Viking" description="Meet Sigthor" iconName="Social_NPC_StrikingViking" points="1" sortOrder="24" repeatable="false">
+        <Achievement id="514" title="Striking Viking" description="Meet Sigthor" iconName="Social_NPC_StrikingViking" points="5" sortOrder="24" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Meet Sigthor" type="Talkto" value="NPC_CRS_GenericMaleBrown01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="515" title="Way Of The Foo" description="Meet Grand Master Whisper" iconName="Social_NPC_WayOfTheFoo" points="1" sortOrder="25" repeatable="false">
+        <Achievement id="515" title="Way Of The Foo" description="Meet Grand Master Whisper" iconName="Social_NPC_WayOfTheFoo" points="5" sortOrder="25" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Meet Grand Master Whisper" type="Talkto" value="NPC_SHD_GrandMasterWhisper01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <!--All pet medals custom-->
-        <Achievement id="516" title="Croaker" description="Obtain a Croaker Pet" iconName="Social_Pets_Croaker" points="1" sortOrder="26" repeatable="false">
+        <!--All pet medals are custom-->
+        <Achievement id="516" title="Croaker" description="Obtain a Croaker Pet" iconName="Social_Pets_Croaker" points="20" sortOrder="26" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain a Croaker Pet" type="BuyItem" value="PF_PET_Rig01_Toad01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="517" title="Fireswoop" description="Obtain a Fireswoop Pet" iconName="Social_Pets_Fireswoop" points="1" sortOrder="27" repeatable="false">
+        <Achievement id="517" title="Fireswoop" description="Obtain a Fireswoop Pet" iconName="Social_Pets_Fireswoop" points="20" sortOrder="27" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain a Fireswoop Pet" type="BuyItem" value="PF_PET_Rig01_Pheonix01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="518" title="Jaws" description="Obtain a Ripfin Pet" iconName="Social_Pets_Jaws" points="1" sortOrder="28" repeatable="false">
+        <Achievement id="518" title="Jaws" description="Obtain a Ripfin Pet" iconName="Social_Pets_Jaws" points="20" sortOrder="28" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain a Ripfin Pet" type="BuyItem" value="PF_PET_Rig03_Shark01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="519" title="Kraklin" description="Obtain a Kraklin Pet" iconName="Social_Pets_Kraklin" points="1" sortOrder="29" repeatable="false">
+        <Achievement id="519" title="Kraklin" description="Obtain a Kraklin Pet" iconName="Social_Pets_Kraklin" points="20" sortOrder="29" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain a Kraklin Pet" type="BuyItem" value="PF_PET_Rig03_Squid01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="520" title="Pandril" description="Obtain a Pandril Pet" iconName="Social_Pets_Pandril" points="1" sortOrder="30" repeatable="false">
+        <Achievement id="520" title="Pandril" description="Obtain a Pandril Pet" iconName="Social_Pets_Pandril" points="20" sortOrder="30" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain a Pandril Pet" type="BuyItem" value="PF_PET_Rig02_Panda01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="521" title="Polarbite" description="Obtain a Polarbite Pet" iconName="Social_Pets_Polarbite" points="1" sortOrder="31" repeatable="false">
+        <Achievement id="521" title="Polarbite" description="Obtain a Polarbite Pet" iconName="Social_Pets_Polarbite" points="20" sortOrder="31" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain a Polarbite Pet" type="BuyItem" value="PF_PET_Rig02_Bear01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="522" title="Saberstrike" description="Obtain a Saberstrike Pet" iconName="Social_Pets_Saberstrike" points="1" sortOrder="32" repeatable="false">
+        <Achievement id="522" title="Saberstrike" description="Obtain a Saberstrike Pet" iconName="Social_Pets_Saberstrike" points="20" sortOrder="32" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain a Saberstrike Pet" type="BuyItem" value="PF_PET_Rig02_Tiger01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="523" title="Skyclaw" description="Obtain a Skyclaw Pet" iconName="Social_Pets_Skyclaw" points="1" sortOrder="33" repeatable="false">
+        <Achievement id="523" title="Skyclaw" description="Obtain a Skyclaw Pet" iconName="Social_Pets_Skyclaw" points="20" sortOrder="33" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain a Skyclaw Pet" type="BuyItem" value="PF_PET_Rig01_Dragon01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="524" title="Tifunefury" description="Obtain a Taifune Pet" iconName="Social_Pets_Tifunefury" points="1" sortOrder="34" repeatable="false">
+        <Achievement id="524" title="Tifunefury" description="Obtain a Taifune Pet" iconName="Social_Pets_Tifunefury" points="20" sortOrder="34" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain a Taifune Pet" type="BuyItem" value="PF_PET_Rig02_Fox01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="525" title="Timberbeak" description="Obtain a Timberbeak Pet" iconName="Social_Pets_Timberbeak" points="1" sortOrder="35" repeatable="false">
+        <Achievement id="525" title="Timberbeak" description="Obtain a Timberbeak Pet" iconName="Social_Pets_Timberbeak" points="20" sortOrder="35" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain a Timberbeak Pet" type="BuyItem" value="PF_PET_Rig01_Owl01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="526" title="Winsterstorm" description="Obtain a Winderstorm Pet" iconName="Social_Pets_Winsterstorm" points="1" sortOrder="36" repeatable="false">
+        <Achievement id="526" title="Winsterstorm" description="Obtain a Winderstorm Pet" iconName="Social_Pets_Winsterstorm" points="20" sortOrder="36" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Obtain a Winderstorm Pet" type="BuyItem" value="PF_PET_Rig02_Tiger02" goal="1" visible="true" />
@@ -4309,25 +4318,26 @@
         </Achievement>
     </Category>
     <Category id="9" title="Silly" iconName="Category_Crazy&amp;Fun" sortOrder="1">
-        <Achievement id="527" title="Nom" description="Eat 10 Food Items" iconName="Fun_Food_Nom_10" points="1" sortOrder="1" repeatable="false">
+        <!--All custonm except 530, 531-->
+        <Achievement id="527" title="Nom" description="Eat 10 Food Items" iconName="Fun_Food_Nom_10" points="5" sortOrder="5" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Eat 10 Food Items" type="Consumable" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="528" title="Nom Nom" description="Eat 25 Food Items" iconName="Fun_Food_NomNom_25" points="1" sortOrder="2" repeatable="false">
+        <Achievement id="528" title="Nom Nom" description="Eat 25 Food Items" iconName="Fun_Food_NomNom_25" points="10" sortOrder="10" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="1" quantity="0" />
+                <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Eat 25 Food Items" type="Consumable" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="529" title="Om Nom Nom Nom" description="Eat 50 Food Items" iconName="Fun_Food_OmNomNomNom_50" points="1" sortOrder="3" repeatable="false">
+        <Achievement id="529" title="Om Nom Nom Nom" description="Eat 50 Food Items" iconName="Fun_Food_OmNomNomNom_50" points="15" sortOrder="3" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="1" quantity="0" />
+                <Reward type="Xp" value="90" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Eat 50 Food Items" type="Consumable" value="" goal="50" visible="true" />
@@ -4365,57 +4375,57 @@
                 <Condition id="1" title="Unknown Condition" type="" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="534" title="Bo Staff Riff Raff!" description="Equip Donatello's Bo Staff" iconName="Fun_Equip_BoStaffRiffRaff" points="1" sortOrder="8" repeatable="false">
+        <Achievement id="534" title="Bo Staff Riff Raff!" description="Equip Donatello's Bo Staff" iconName="Fun_Equip_BoStaffRiffRaff" points="10" sortOrder="8" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Donatello's Bo Staff" type="EquipItem" value="WPN_MEL_TMNT_Bow01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="535" title="Flower Power" description="Equip Stun Flower" iconName="Fun_Equip_FlowerPower" points="1" sortOrder="9" repeatable="false">
+        <Achievement id="535" title="Flower Power" description="Equip Stun Flower" iconName="Fun_Equip_FlowerPower" points="10" sortOrder="9" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Stun Flower" type="EquipItem" value="ABIL_StunDart01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="536" title="Smell of Success" description="Equip Venom Plate Shield" iconName="Fun_Equip_SmellofSuccess" points="1" sortOrder="10" repeatable="false">
+        <Achievement id="536" title="Smell of Success" description="Equip Venom Plate Shield" iconName="Fun_Equip_SmellofSuccess" points="10" sortOrder="10" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Venom Plate Shield" type="EquipItem" value="Add_COM_DreadPlate01_BP02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="537" title="Katana Nirvana" description="Equip Leonardo's Sword" iconName="Fun_Equip_KatanaNirvana" points="1" sortOrder="11" repeatable="false">
+        <Achievement id="537" title="Katana Nirvana" description="Equip Leonardo's Sword" iconName="Fun_Equip_KatanaNirvana" points="10" sortOrder="11" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Leonardo's Sword" type="EquipItem" value="WPN_MEL_TMNT_Sword01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="538" title="Monkey Needs Healing Badly" description="Equip Healing Staff" iconName="Fun_Equip_MonkeyNeedsHealingBadly" points="1" sortOrder="12" repeatable="false">
+        <Achievement id="538" title="Monkey Needs Healing Badly" description="Equip Healing Staff" iconName="Fun_Equip_MonkeyNeedsHealingBadly" points="10" sortOrder="12" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Healing Staff" type="EquipItem" value="ABIL_HealingStaff01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="539" title="Nunchuck Amok" description="Equip Michelangelo's Nunchucks" iconName="Fun_Equip_NunchuckAmok" points="1" sortOrder="13" repeatable="false">
+        <Achievement id="539" title="Nunchuck Amok" description="Equip Michelangelo's Nunchucks" iconName="Fun_Equip_NunchuckAmok" points="10" sortOrder="13" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Michelangelo's Nunchucks" type="EquipItem" value="WPN_PRJ_TMNT_Nunchuck01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="540" title="Sai Guy" description="Equip Raphael's Sais" iconName="Fun_Equip_SaiGuy" points="1" sortOrder="14" repeatable="false">
+        <Achievement id="540" title="Sai Guy" description="Equip Raphael's Sais" iconName="Fun_Equip_SaiGuy" points="10" sortOrder="14" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Raphael's Sais" type="EquipItem" value="WPN_PRJ_TMNT_Sai01" goal="1" visible="true" />
@@ -4433,9 +4443,9 @@
                 <Condition id="5" title="Equip Shredder's Bracers" type="EquipItem" value="Add_EVT_TMNT_Shredder01_W01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="542" title="Heroes in a Half Shell" description="Participate in a Turtle's Party" iconName="Fun_Participate_HalfShell" points="5" sortOrder="16" repeatable="false">
+        <Achievement id="542" title="Heroes in a Half Shell" description="Participate in a Turtle's Party" iconName="Fun_Participate_HalfShell" points="3" sortOrder="16" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Participate in a Turtle's Party" type="ExploreTrail" value="lv_evt_tmnt01" goal="1" visible="true" />
@@ -4454,36 +4464,36 @@
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Use 3 Different Chicken Emotes" type="Unknown" value="" goal="3" visible="true" />
+                <Condition id="1" title="Use 3 Different Chicken Emotes" type="Invalid" value="" goal="3" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="545" title="Axe Me a Question" description="Equip Ice Fighter Throwing Axe" iconName="Fun_Equip_AxeMeaQuestion" points="1" sortOrder="19" repeatable="false">
+        <Achievement id="545" title="Axe Me a Question" description="Equip Ice Fighter Throwing Axe" iconName="Fun_Equip_AxeMeaQuestion" points="10" sortOrder="19" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Ice Fighter Throwing Axe" type="EquipItem" value="WPN_PRJ_ThrowingAxe01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="546" title="Burp Excuse You" description="Equip Can of Foul Breath" iconName="Fun_Equip_BurpExcuseYou" points="1" sortOrder="20" repeatable="false">
+        <Achievement id="546" title="Burp Excuse You" description="Equip Can of Foul Breath" iconName="Fun_Equip_BurpExcuseYou" points="10" sortOrder="20" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Can of Foul Breath" type="EquipItem" value="WPN_PRJ_BossBurp01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="547" title="Crest of the Guardian" description="Equip Guardian Crest" iconName="Fun_Equip_CrestoftheGuardian" points="1" sortOrder="21" repeatable="false">
+        <Achievement id="547" title="Crest of the Guardian" description="Equip Guardian Crest" iconName="Fun_Equip_CrestoftheGuardian" points="10" sortOrder="21" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Guardian Crest" type="EquipItem" value="REL_ChargeAttack01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="548" title="Legendary" description="Equip Typhoon Stars" iconName="Fun_Equip_Legendary" points="1" sortOrder="22" repeatable="false">
+        <Achievement id="548" title="Legendary" description="Equip Typhoon Stars" iconName="Fun_Equip_Legendary" points="10" sortOrder="22" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Typhoon Stars" type="EquipItem" value="WPN_PRJ_ShootingStar01" goal="1" visible="true" />
@@ -4491,39 +4501,39 @@
         </Achievement>
         <Achievement id="549" title="Party Warrior" description="Equip a Weapon Usable in Cities and Highways" iconName="Fun_Equip_PartyWarrior" points="3" sortOrder="23" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Confetti Cannon" type="EquipItem" value="WPN_PRJ_ConfettiGun01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="550" title="Raging Tornado" description="Equip Golden Tornado Stars" iconName="Fun_Equip_RagingTornado" points="1" sortOrder="24" repeatable="false">
+        <Achievement id="550" title="Raging Tornado" description="Equip Golden Tornado Stars" iconName="Fun_Equip_RagingTornado" points="10" sortOrder="24" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Golden Tornado Stars" type="EquipItem" value="WPN_PRJ_Shuriken02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="551" title="Party Animal" description="Participate in a Banana Bash" iconName="Fun_Participate_PartyAnimal" points="5" sortOrder="25" repeatable="false">
+        <Achievement id="551" title="Party Animal" description="Participate in a Banana Bash" iconName="Fun_Participate_PartyAnimal" points="3" sortOrder="25" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Participate in a Banana Bash" type="ExploreTrail" value="lv_evt_bananabash" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="552" title="Mace of the Guardian" description="Equip Guardian Mace" iconName="Fun_Equip_MaceoftheGuardian" points="1" sortOrder="26" repeatable="false">
+        <Achievement id="552" title="Mace of the Guardian" description="Equip Guardian Mace" iconName="Fun_Equip_MaceoftheGuardian" points="10" sortOrder="26" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Guardian Mace" type="EquipItem" value="WPN_KnightMace01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="553" title="Mustachio" description="Equip Jaunty Black Mustache" iconName="Fun_Equip_Mustachio" points="1" sortOrder="27" repeatable="false">
+        <Achievement id="553" title="Mustachio" description="Equip Jaunty Black Mustache" iconName="Fun_Equip_Mustachio" points="10" sortOrder="27" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="40" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Jaunty Black Mustache" type="EquipItem" value="Add_OUT_CaptainBoy01_LF02" goal="1" visible="true" />
@@ -4558,52 +4568,52 @@
         </Achievement>
     </Category>
     <Category id="10" title="Monthly" iconName="Category_Monthly" sortOrder="0">
-        <Achievement id="557" title="Banana of the Month Club" description="Unknown Description. Hint: the icon is named Monthly_BananaoftheMonthClub!" iconName="Monthly_BananaoftheMonthClub" points="1" sortOrder="1" repeatable="true">
+        <Achievement id="557" title="Banana of the Month Club" description="Collect 20,000 Bananas" iconName="Monthly_BananaoftheMonthClub" points="75" sortOrder="1" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="2000" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Collect 20,000 Bananas" type="CollectBanana" value="" goal="20000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="558" title="Monthly Meetings" description="Unknown Description. Hint: the icon is named Monthly_MonthlyMeetings!" iconName="Monthly_MonthlyMeetings" points="1" sortOrder="2" repeatable="true">
+        <Achievement id="558" title="Monthly Meetings" description="Join 20 Groups" iconName="Monthly_MonthlyMeetings" points="25" sortOrder="2" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="200" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Join 20 Groups" type="JoinGroup" value="" goal="20" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="559" title="Montly See Montly Do" description="Unknown Description. Hint: the icon is named Monthly_MontlySeeMontlyDo!" iconName="Monthly_MontlySeeMontlyDo" points="1" sortOrder="3" repeatable="true">
+        <Achievement id="559" title="Montly See Montly Do" description="Add 20 Friends" iconName="Monthly_MontlySeeMontlyDo" points="25" sortOrder="3" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="200" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Add 20 Friends" type="AddFriend" value="" goal="20" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="560" title="Monthly Melee" description="Unknown Description. Hint: the icon is named Monthly_MonthlyMelee!" iconName="Monthly_MonthlyMelee" points="1" sortOrder="4" repeatable="true">
+        <Achievement id="560" title="Monthly Melee" description="Defeat 1,000 Enemies" iconName="Monthly_MonthlyMelee" points="40" sortOrder="4" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="500" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1000 Enemies" type="DefeatEnemy" value="" goal="10000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="561" title="Monthly Dailies" description="Unknown Description. Hint: the icon is named Monthly_MonthlyDailies!" iconName="Monthly_MonthlyDailies" points="1" sortOrder="5" repeatable="true">
+        <Achievement id="561" title="Monthly Dailies" description="Complete 100 Daily Quests" iconName="Monthly_MonthlyDailies" points="40" sortOrder="5" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="500" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete 100 Daily Quests" type="CompleteDailyQuest" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="562" title="Monthly Missions" description="Unknown Description. Hint: the icon is named Monthly_MonthlyMissions!" iconName="Monthly_MonthlyMissions" points="1" sortOrder="6" repeatable="true">
+        <Achievement id="562" title="Monthly Missions" description="Complete 100 Quests" iconName="Monthly_MonthlyMissions" points="75" sortOrder="6" repeatable="true">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="1000" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete 100 Quests" type="CompleteQuest" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
     </Category>
