@@ -122,22 +122,7 @@ public class State : ExternalProtocol
                     break;
                 case SyncEvent.EventType.PhysicStatus:
                     var physicStatusEvent = new PhysicStatus_SyncEvent(syncEvent);
-
-                    if (!physicStatusEvent.GravityEnabled)
-                    {
-                        if (Player.TempData.UnderwaterTimer != null)
-                            return;
-
-                        Player.TempData.Underwater = true;
-                        Player.StartUnderwaterTimer(Player.Character.Data.MaxLife / 10, TimerThread, ServerConfig);
-                    }
-
-                    else
-                    {
-                        Player.TempData.Underwater = false;
-                        Player.StopUnderwaterTimer();
-                    }
-                   
+                  
                     break;
             }
 
