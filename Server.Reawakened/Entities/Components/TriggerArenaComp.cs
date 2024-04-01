@@ -43,7 +43,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 
                 foreach (var spawner in Room.GetEntitiesFromId<BaseSpawnerControllerComp>(entity))
                 {
-                    // Add "PF_CRS_SpawnerBoss01" to config on cleanup
+                    // Add "PF_CRS_SpawnerBoss01" to ServerRConfig on cleanup
                     if (spawner.PrefabName != "PF_CRS_SpawnerBoss01")
                         ArenaEntities.Add(entity.ToString());
 
@@ -54,7 +54,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 
             _timer = Room.Time + ActiveDuration;
 
-            //Add to config eventually. This exists to stop the arena from regenerating if the spawners are defeated before it has finished initializing
+            //Add to ServerRConfig eventually. This exists to stop the arena from regenerating if the spawners are defeated before it has finished initializing
             _minClearTime = Room.Time + 12;
         }
         else

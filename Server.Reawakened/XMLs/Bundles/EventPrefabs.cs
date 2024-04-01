@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
@@ -9,13 +10,13 @@ using System.Xml;
 using static A2m.Server.DescriptionHandler;
 
 namespace Server.Reawakened.XMLs.Bundles;
-public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
+public class EventPrefabs : EventPrefabsXML, IBundledXml
 {
     public string BundleName => "event_prefabs";
     public BundlePriority Priority => BundlePriority.Low;
 
-    public ILogger<EventPrefabs> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
+    public ServerRwConfig RwConfig { get; set; }
+    public ServerRConfig RConfig { get; set; }
 
     public Dictionary<string, Dictionary<string, string>> PrefabMap { get; private set; }
     public Dictionary<string, Dictionary<string, string>> ReversePrefabMap { get; private set; }
@@ -215,21 +216,18 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
     {
         GameFlow.EventPrefabsXML = this;
 
-        var rwConfig = Services.GetRequiredService<ServerRwConfig>();
-        var rConfig = Services.GetRequiredService<ServerRConfig>();
-
         var defaultEventName = string.Empty;
         var defaultTimedEvent = string.Empty;
 
-        if (!string.IsNullOrEmpty(rwConfig.CurrentEventOverride))
-            defaultEventName = rwConfig.CurrentEventOverride;
-        else if (rConfig.CurrentEvent.TryGetValue(rConfig.GameVersion, out var defaultEventString))
+        if (!string.IsNullOrEmpty(RwConfig.CurrentEventOverride))
+            defaultEventName = RwConfig.CurrentEventOverride;
+        else if (RConfig.CurrentEvent.TryGetValue(RConfig.GameVersion, out var defaultEventString))
             defaultEventName = new string(defaultEventString.Reverse().ToArray());
 
 
-        if (!string.IsNullOrEmpty(rwConfig.CurrentTimedEventOverride))
-            defaultTimedEvent = rwConfig.CurrentTimedEventOverride;
-        else if (rConfig.CurrentTimedEvent.TryGetValue(rConfig.GameVersion, out var defaultTimedString))
+        if (!string.IsNullOrEmpty(RwConfig.CurrentTimedEventOverride))
+            defaultTimedEvent = RwConfig.CurrentTimedEventOverride;
+        else if (RConfig.CurrentTimedEvent.TryGetValue(RConfig.GameVersion, out var defaultTimedString))
             defaultTimedEvent = new string(defaultTimedString.Reverse().ToArray());
 
         var reversedDict = EventIdToNameDict.ToDictionary(
@@ -281,7 +279,7 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml<EventPrefabs>
                 .ToList(),
 
             TimedEventName = defaultTimedEvent,
-            GameVersion = rConfig.GameVersion
+            GameVersion = RConfig.GameVersion
         };
     }
 }

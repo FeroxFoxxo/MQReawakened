@@ -9,13 +9,13 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalRecipe : IBundledXml<InternalRecipe>
+public class InternalRecipe : IBundledXml
 {
     public string BundleName => "InternalRecipe";
     public BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<InternalRecipe> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     public Dictionary<int, RecipeModel> RecipeCatalog;
     public Dictionary<string, List<int>> RecipeTypeList;
@@ -32,8 +32,6 @@ public class InternalRecipe : IBundledXml<InternalRecipe>
 
     public void ReadDescription(string xml)
     {
-        var itemCatalog = Services.GetRequiredService<ItemCatalog>();
-
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
@@ -75,7 +73,7 @@ public class InternalRecipe : IBundledXml<InternalRecipe>
                         }
                     }
 
-                    var itemList = recipeInfo.GetXmlItems(itemCatalog, Logger);
+                    var itemList = recipeInfo.GetXmlItems(ItemCatalog, Logger);
 
                     foreach (var item in itemList)
                     {
@@ -88,7 +86,7 @@ public class InternalRecipe : IBundledXml<InternalRecipe>
                         ingredients.Add(ingredientModel);
                     }
 
-                    var recipeItem = itemCatalog.GetItemFromPrefabName(recipeName);
+                    var recipeItem = ItemCatalog.GetItemFromPrefabName(recipeName);
 
                     if (recipeItem == null)
                     {

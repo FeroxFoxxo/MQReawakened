@@ -1,4 +1,11 @@
-﻿namespace Server.Reawakened.XMLs.Abstractions;
+﻿using System.Xml;
 
-public interface ILocalizationXml<T> : IBundledXml<T>, IInternalLocalizationXml
-{ }
+namespace Server.Reawakened.XMLs.Abstractions;
+public interface ILocalizationXml : IBundledXml
+{
+    string LocalizationName { get; }
+
+    public void EditLocalization(XmlDocument xml);
+
+    public void ReadLocalization(string xml);
+}

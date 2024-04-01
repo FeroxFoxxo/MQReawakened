@@ -8,16 +8,15 @@ using UnityEngine;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class QuestCatalog : QuestCatalogXML, IBundledXml<QuestCatalog>
+public class QuestCatalog : QuestCatalogXML, IBundledXml
 {
     public string BundleName => "QuestCatalog";
     public BundlePriority Priority => BundlePriority.Low;
 
-    public ILogger<QuestCatalog> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
-
     public Dictionary<int, QuestDescription> QuestCatalogs;
     public Dictionary<int, QuestLineDescription> QuestLineCatalogs;
+
+    public ItemCatalog ItemCatalog { get; set; }
 
     public void InitializeVariables()
     {

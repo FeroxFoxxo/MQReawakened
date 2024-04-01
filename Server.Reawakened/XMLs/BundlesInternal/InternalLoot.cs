@@ -9,13 +9,13 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalLoot : IBundledXml<InternalLoot>
+public class InternalLoot : IBundledXml
 {
     public string BundleName => "InternalLoot";
     public BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<InternalLoot> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     // LEVEL ID, OBJECT ID, LOOT MODEL
     public Dictionary<int, Dictionary<string, LootModel>> LootCatalog;
@@ -28,8 +28,6 @@ public class InternalLoot : IBundledXml<InternalLoot>
 
     public void ReadDescription(string xml)
     {
-        var itemCatalog = Services.GetRequiredService<ItemCatalog>();
-
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
@@ -110,7 +108,7 @@ public class InternalLoot : IBundledXml<InternalLoot>
                                             continue;
                                     }
 
-                                var itemList = reward.GetXmlLootItems(itemCatalog, Logger);
+                                var itemList = reward.GetXmlLootItems(ItemCatalog, Logger);
 
                                 foreach (var item in itemList)
                                     weightRange += item.Key;

@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
@@ -7,20 +6,17 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class CannedChatDictionary : CannedChatXML, ILocalizationXml<CannedChatDictionary>
+public class CannedChatDictionary : CannedChatXML, ILocalizationXml
 {
     public string BundleName => "CannedChat";
     public string LocalizationName => "CannedChatDict_en-US";
     public BundlePriority Priority => BundlePriority.Low;
 
-    public ILogger<CannedChatDictionary> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
-
-    private Dictionary<int, string> CannedChatDict;
+    private Dictionary<int, string> _cannedChatDict;
 
     public void InitializeVariables()
     {
-        CannedChatDict = [];
+        _cannedChatDict = [];
 
         this.SetField<CannedChatXML>("_cannedChatDict", new Dictionary<int, CategoryNode>());
         this.SetField<CannedChatXML>("_dic", new Dictionary<int, string>());
@@ -37,7 +33,7 @@ public class CannedChatDictionary : CannedChatXML, ILocalizationXml<CannedChatDi
 
         foreach (XmlNode phraseRoot in xmlDoc.ChildNodes)
         {
-            if (!(phraseRoot.Name == "CannedChatDict"))
+            if (!(phraseRoot.Name == "_cannedChatDict"))
                 continue;
 
             foreach (XmlNode phrase in phraseRoot.ChildNodes)
@@ -52,7 +48,7 @@ public class CannedChatDictionary : CannedChatXML, ILocalizationXml<CannedChatDi
 
                 var text = phrase.InnerText;
 
-                CannedChatDict.Add(id, text);
+                _cannedChatDict.Add(id, text);
             }
         }
     }
@@ -68,5 +64,5 @@ public class CannedChatDictionary : CannedChatXML, ILocalizationXml<CannedChatDi
     }
 
     public string GetDialogById(int id) =>
-        CannedChatDict.TryGetValue(id, out var text) ? text : null;
+        _cannedChatDict.TryGetValue(id, out var text) ? text : null;
 }

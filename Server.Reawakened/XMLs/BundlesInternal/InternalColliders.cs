@@ -5,13 +5,10 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalColliders : IBundledXml<InternalColliders>
+public class InternalColliders : IBundledXml
 {
     public string BundleName => "InternalColliders";
     public BundlePriority Priority => BundlePriority.High;
-
-    public ILogger<InternalColliders> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
 
     public Dictionary<int, List<ColliderModel>> TerrainColliderCatalog;
 

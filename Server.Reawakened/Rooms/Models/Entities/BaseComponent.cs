@@ -47,7 +47,7 @@ public abstract class BaseComponent
         SendComponentMethodUnknown("unrun-synced-events", "Failed Sync Event", "RunSyncedEvent",
             $"Sync Data: {syncEvent.EncodeData()}\nType: {syncEvent.Type}");
 
-    public void SendComponentMethodUnknown(string file, string title, string method, string data = string.Empty)
+    public void SendComponentMethodUnknown(string file, string title, string method, string data = "")
     {
         var sb = new StringBuilder();
 

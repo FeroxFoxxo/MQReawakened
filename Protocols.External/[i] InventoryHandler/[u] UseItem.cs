@@ -11,7 +11,6 @@ using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
-using static LeaderBoardTopScoresJson;
 
 namespace Protocols.External._i__InventoryHandler;
 

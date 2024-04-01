@@ -42,6 +42,12 @@ public static class ReflectionExtensions
                                               $"Possible properties: {string.Join(", ", type.GetProperties(Bindings).Select(x => x.Name))}");
     }
 
+    public static PropertyInfo[] GetProperties<T>(this T instance)
+    {
+        var type = instance.GetType();
+        return type.GetProperties(Bindings);
+    }
+
     public static object GetField<T>(this T instance, string fieldName)
     {
         var type = typeof(T);

@@ -118,7 +118,7 @@ public static class PlayerLootHandler
                     finalItemId = drop.Id;
                     break;
                 case Entities.Enums.DynamicDropType.RandomArmor:
-                    //Magic number 4 here will be changed and sent to config once I get more info on clothing drops
+                    //Magic number 4 here will be changed and sent to ServerRConfig once I get more info on clothing drops
                     var armorList = itemCatalog.GetItemsFromLevel(level - 4, level + 4, A2m.Server.ItemCategory.Wearable);
                     finalItemId = armorList[random.Next(armorList.Count)].ItemId;
                     break;

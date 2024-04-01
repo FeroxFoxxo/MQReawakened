@@ -93,10 +93,8 @@ public static class PlayerAchievementExtensions
             if (!containsAch)
                 player.TempData.CurrentAchievements[type].Add(achValue);
 
-            var itemCatalog = internalAchievement.Services.GetRequiredService<ItemCatalog>();
-
             if (amountLeft <= 0)
-                achievement.Key.rewards.RewardPlayer(player, itemCatalog, internalAchievement, logger);
+                achievement.Key.rewards.RewardPlayer(player, internalAchievement, logger);
         }
     }
 

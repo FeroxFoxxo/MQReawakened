@@ -68,8 +68,8 @@ public class PacketHandler(IServiceScopeFactory serviceFact, ReflectionUtils ref
 
         if (!logger.Ask(
                 $"It's recommended to add the protocols '{string.Join(", ", serverConfig.DefaultProtocolTypeIgnore)}' " +
-                "to the server ignore config, as to reduce spam. Please press 'y' to enable this. " +
-                "You are able to add to this later in the related config file.", true))
+                "to the server ignore ServerRConfig, as to reduce spam. Please press 'y' to enable this. " +
+                "You are able to add to this later in the related ServerRConfig file.", true))
             return;
 
         var internalDebugs = internalWConfig.IgnoreProtocolType.ToList();

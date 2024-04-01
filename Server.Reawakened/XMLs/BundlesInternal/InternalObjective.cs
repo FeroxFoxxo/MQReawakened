@@ -5,13 +5,10 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalObjective : IBundledXml<InternalObjective>
+public class InternalObjective : IBundledXml
 {
     public string BundleName => "InternalObjective";
     public BundlePriority Priority => BundlePriority.Highest;
-
-    public ILogger<InternalObjective> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
 
     public Dictionary<int, string> ObjectivePrefabs;
 

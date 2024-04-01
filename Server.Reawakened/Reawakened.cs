@@ -40,7 +40,7 @@ public class Reawakened(ILogger<Reawakened> logger) : Module(logger)
 
         Logger.LogDebug("Loading bundles");
 
-        foreach (var xml in modules.GetServices<IInternalBundledXml>())
+        foreach (var xml in modules.GetServices<IBundledXml>())
         {
             Logger.LogTrace("   Loaded: {ServiceName}", xml.Name);
             services.AddSingleton(xml, RuntimeHelpers.GetUninitializedObject(xml));

@@ -7,13 +7,13 @@ using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesEdit;
-public class EditItem : IBundledXml<EditItem>
+public class EditItem : IBundledXml
 {
     public string BundleName => "EditItem";
     public BundlePriority Priority => BundlePriority.Highest;
 
     public ILogger<EditItem> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
+    public ServerRConfig Config { get; set; }
 
     private Dictionary<GameVersion, Dictionary<string, Dictionary<string, string>>> _editedItemAttributes;
     private GameVersion[] _possibleVersions;
@@ -127,11 +127,7 @@ public class EditItem : IBundledXml<EditItem>
         return attributes;
     }
 
-    public GameVersion[] GetPossibleVersions()
-    {
-        var config = Services.GetRequiredService<ServerRConfig>();
-        return [.. _editedItemAttributes.Keys.Where(v => v <= config.GameVersion).OrderBy(v => v)];
-    }
+    public GameVersion[] GetPossibleVersions() => [.. _editedItemAttributes.Keys.Where(v => v <= Config.GameVersion).OrderBy(v => v)];
 
     public void FinalizeBundle() { }
 }

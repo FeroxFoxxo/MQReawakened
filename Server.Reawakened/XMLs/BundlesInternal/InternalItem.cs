@@ -11,13 +11,15 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalItem : IBundledXml<InternalItem>
+public class InternalItem : IBundledXml
 {
-    public string BundleName => "InternalItem";
+    public string BundleName => "InternalCatalog";
     public BundlePriority Priority => BundlePriority.High;
 
-    public IServiceProvider Services { get; set; }
     public ILogger<InternalItem> Logger { get; set; }
+    public MiscTextDictionary MiscTextDictionary { get; set; }
+    public EditItem EditItem { get; set; }
+    public InternalObjective InternalObjective { get; set; }
 
     public Dictionary<int, ItemDescription> Items;
     public Dictionary<int, string> Descriptions;
@@ -38,10 +40,6 @@ public class InternalItem : IBundledXml<InternalItem>
 
     public void ReadDescription(string xml)
     {
-        var miscDict = Services.GetRequiredService<MiscTextDictionary>();
-        var editItem = Services.GetRequiredService<EditItem>();
-        var config = Services.GetRequiredService<ServerRConfig>();
-
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
@@ -238,20 +236,20 @@ public class InternalItem : IBundledXml<InternalItem>
 
                         var description = string.Empty;
 
-                        if (miscDict.LocalizationDict.TryGetValue(descriptionId, out var miscDescription))
+                        if (MiscTextDictionary.LocalizationDict.TryGetValue(descriptionId, out var miscDescription))
                         {
                             description = miscDescription;
                             Descriptions.TryAdd(descriptionId, description);
                         }
                         else
                         {
-                            var attributes = editItem.GetItemAttributes(prefabName);
+                            var attributes = EditItem.GetItemAttributes(prefabName);
 
                             if (attributes.TryGetValue("ingamedescription", out var attributeValue))
                             {
                                 var editedDescriptionId = int.Parse(attributeValue);
 
-                                if (miscDict.LocalizationDict.TryGetValue(editedDescriptionId, out var editedDescription))
+                                if (MiscTextDictionary.LocalizationDict.TryGetValue(editedDescriptionId, out var editedDescription))
                                 {
                                     Descriptions.TryAdd(editedDescriptionId, editedDescription);
                                     break;
@@ -259,7 +257,7 @@ public class InternalItem : IBundledXml<InternalItem>
                             }
                         }
 
-                        var nameId = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == itemName);
+                        var nameId = MiscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Value == itemName);
 
                         if (string.IsNullOrEmpty(nameId.Value))
                         {
@@ -286,11 +284,9 @@ public class InternalItem : IBundledXml<InternalItem>
             }
         }
 
-        var questObjs = Services.GetRequiredService<InternalObjective>();
-
         var maxDesc = Descriptions.Max(x => x.Key);
 
-        foreach (var obj in questObjs.ObjectivePrefabs)
+        foreach (var obj in InternalObjective.ObjectivePrefabs)
         {
             maxDesc++;
 

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Enums;
@@ -9,13 +11,14 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalVendor : IBundledXml<InternalVendor>
+public class InternalVendor : IBundledXml
 {
     public string BundleName => "InternalVendor";
     public BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<InternalVendor> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
+    public MiscTextDictionary MiscTextDictionary { get; set; }
 
     public Dictionary<int, List<VendorInfo>> VendorCatalog;
 
@@ -27,9 +30,6 @@ public class InternalVendor : IBundledXml<InternalVendor>
 
     public void ReadDescription(string xml)
     {
-        var miscDict = Services.GetRequiredService<MiscTextDictionary>();
-        var itemCat = Services.GetRequiredService<ItemCatalog>();
-
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
@@ -122,20 +122,23 @@ public class InternalVendor : IBundledXml<InternalVendor>
                         foreach (XmlAttribute itemAttribute in item.Attributes)
                             if (itemAttribute.Name == "prefabName")
                             {
-                                var itemD = itemCat.GetItemFromPrefabName(itemAttribute.Value);
+                                var itemDescription = ItemCatalog.GetItemFromPrefabName(itemAttribute.Value);
 
-                                if (itemD == null)
+                                if (itemDescription == null)
                                 {
                                     Logger.LogError("Unknown item with prefab name: {Val}", itemAttribute.Value);
                                     continue;
                                 }
 
-                                items.Add(itemD.ItemId);
+                                if (!ItemCatalog.CanAddItem(itemDescription))
+                                    continue;
+
+                                items.Add(itemDescription.ItemId);
                                 break;
                             }
                     }
 
-                    var nameModel = miscDict.LocalizationDict.FirstOrDefault(x => x.Value == name);
+                    var nameModel = MiscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Value == name);
 
                     if (!string.IsNullOrEmpty(nameModel.Value))
                     {

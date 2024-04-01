@@ -10,13 +10,13 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalEventReward : IBundledXml<InternalEventReward>
+public class InternalEventReward : IBundledXml
 {
     public string BundleName => "InternalEventReward";
     public BundlePriority Priority => BundlePriority.Lowest;
 
     public ILogger<InternalEventReward> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     public Dictionary<int, List<AchievementDefinitionRewards>> EventRewards;
 
@@ -30,8 +30,6 @@ public class InternalEventReward : IBundledXml<InternalEventReward>
     {
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
-
-        var catalog = Services.GetRequiredService<ItemCatalog>();
 
         foreach (XmlNode eventRewardXml in xmlDocument.ChildNodes)
         {
@@ -51,7 +49,7 @@ public class InternalEventReward : IBundledXml<InternalEventReward>
                             continue;
                     }
 
-                var rewards = tEvent.GetXmlRewards(Logger, catalog);
+                var rewards = tEvent.GetXmlRewards(Logger, ItemCatalog);
 
                 EventRewards.Add(eventId, rewards);
             }
@@ -62,11 +60,11 @@ public class InternalEventReward : IBundledXml<InternalEventReward>
     {
     }
 
-    public void CheckEventReward(int eventId, ItemCatalog itemCatalog, Player player, InternalAchievement internalAchievement)
+    public void CheckEventReward(int eventId, Player player, InternalAchievement internalAchievement)
     {
         if (!EventRewards.TryGetValue(eventId, out var eventRewards))
             return;
 
-        eventRewards.RewardPlayer(player, itemCatalog, internalAchievement, Logger);
+        eventRewards.RewardPlayer(player, internalAchievement, Logger);
     }
 }

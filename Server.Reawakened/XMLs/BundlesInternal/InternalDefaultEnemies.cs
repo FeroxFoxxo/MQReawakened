@@ -6,13 +6,11 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalDefaultEnemies : IBundledXml<InternalDefaultEnemies>
+public class InternalDefaultEnemies : IBundledXml
 {
     public string BundleName => "InternalDefaultEnemies";
     public BundlePriority Priority => BundlePriority.Low;
 
-    public ILogger<InternalDefaultEnemies> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
 
     public Dictionary<string, BehaviorModel> EnemyInfoCatalog;
 

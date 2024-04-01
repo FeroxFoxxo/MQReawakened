@@ -5,13 +5,11 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalDialogRewrite : IBundledXml<InternalDialogRewrite>
+public class InternalDialogRewrite : IBundledXml
 {
     public string BundleName => "InternalDialogRewrite";
     public BundlePriority Priority => BundlePriority.Medium;
 
-    public ILogger<InternalDialogRewrite> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
 
     public Dictionary<string, string> Rewrites;
 

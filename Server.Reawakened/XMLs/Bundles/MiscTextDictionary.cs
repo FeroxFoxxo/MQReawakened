@@ -8,13 +8,10 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class MiscTextDictionary : LocalizationHandler, IBundledXml<MiscTextDictionary>
+public class MiscTextDictionary : LocalizationHandler, IBundledXml
 {
     public string BundleName => "MiscTextDict_en-US";
     public BundlePriority Priority => BundlePriority.Highest;
-
-    public ILogger<MiscTextDictionary> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
 
     public Dictionary<int, string> LocalizationDict;
 

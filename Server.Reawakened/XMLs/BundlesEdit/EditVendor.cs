@@ -8,13 +8,14 @@ using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesEdit;
-public class EditVendor : IBundledXml<EditVendor>
+public class EditVendor : IBundledXml
 {
     public string BundleName => "EditVendor";
     public BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<EditVendor> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
+
 
     public Dictionary<GameVersion, Dictionary<string, List<string>>> EditedVendorAttributes;
 
@@ -31,8 +32,6 @@ public class EditVendor : IBundledXml<EditVendor>
 
     public void ReadDescription(string xml)
     {
-        var itemCatalog = Services.GetRequiredService<ItemCatalog>();
-
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
@@ -87,7 +86,7 @@ public class EditVendor : IBundledXml<EditVendor>
                                     break;
                             }
 
-                        var itemDesc = itemCatalog.GetItemFromPrefabName(prefabName);
+                        var itemDesc = ItemCatalog.GetItemFromPrefabName(prefabName);
 
                         if (itemDesc == null)
                             continue;

@@ -8,13 +8,13 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalDialog : IBundledXml<InternalDialog>
+public class InternalDialog : IBundledXml
 {
     public string BundleName => "InternalDialog";
     public BundlePriority Priority => BundlePriority.Medium;
 
     public ILogger<InternalDialog> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
+    public MiscTextDictionary MiscTextDictionary { get; set; }
 
     // <Level Id, <Npc Id, Dialog Info>>
     public Dictionary<int, Dictionary<int, DialogInfo>> NpcDialogs;
@@ -27,8 +27,6 @@ public class InternalDialog : IBundledXml<InternalDialog>
 
     public void ReadDescription(string xml)
     {
-        var miscDict = Services.GetRequiredService<MiscTextDictionary>();
-
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
@@ -107,8 +105,8 @@ public class InternalDialog : IBundledXml<InternalDialog>
                     }
 
                     var nameModel = nameId > 0 ?
-                        miscDict.LocalizationDict.FirstOrDefault(x => x.Key == nameId) :
-                        miscDict.LocalizationDict.FirstOrDefault(x => x.Value == name);
+                        MiscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Key == nameId) :
+                        MiscTextDictionary.LocalizationDict.FirstOrDefault(x => x.Value == name);
 
                     if (!string.IsNullOrEmpty(nameModel.Value))
                     {

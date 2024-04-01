@@ -10,13 +10,13 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalQuestItem : IBundledXml<InternalQuestItem>
+public class InternalQuestItem : IBundledXml
 {
     public string BundleName => "InternalQuestItem";
     public BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<InternalQuestItem> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     public Dictionary<GameVersion, Dictionary<int, List<ItemModel>>> QuestItemList;
 
@@ -33,8 +33,6 @@ public class InternalQuestItem : IBundledXml<InternalQuestItem>
 
     public void ReadDescription(string xml)
     {
-        var itemCatalog = Services.GetRequiredService<ItemCatalog>();
-
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(xml);
 
@@ -72,7 +70,7 @@ public class InternalQuestItem : IBundledXml<InternalQuestItem>
                                 break;
                         }
 
-                    var itemList = quest.GetXmlItems(itemCatalog, Logger);
+                    var itemList = quest.GetXmlItems(ItemCatalog, Logger);
 
                     QuestItemList[gameVersion].TryAdd(questId, itemList);
                 }

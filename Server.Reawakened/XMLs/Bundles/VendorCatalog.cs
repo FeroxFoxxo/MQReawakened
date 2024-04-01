@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Abstractions;
@@ -11,13 +12,15 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
 
-public class VendorCatalog : VendorCatalogsXML, IBundledXml<VendorCatalog>
+public class VendorCatalog : VendorCatalogsXML, IBundledXml
 {
     public string BundleName => "vendor_catalogs";
     public BundlePriority Priority => BundlePriority.Lowest;
 
-    public ILogger<VendorCatalog> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
+    public InternalVendor InternalVendor { get; set; }
+    public MiscTextDictionary MiscTextDictionary { get; set; }
+    public EditVendor EditVendor { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
 
     public void InitializeVariables()
     {
@@ -60,11 +63,6 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml<VendorCatalog>
 
         if (vendors != null)
         {
-            var internalCatalog = Services.GetRequiredService<InternalVendor>();
-            var miscTextDict = Services.GetRequiredService<MiscTextDictionary>();
-            var editVendor = Services.GetRequiredService<EditVendor>();
-            var config = Services.GetRequiredService<ServerRConfig>();
-
             var preExistingCategories = new List<int>();
 
             foreach (XmlNode aNode in vendors)
@@ -76,7 +74,7 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml<VendorCatalog>
 
                 if (nameAttribute != null)
                 {
-                    if (editVendor.EditedVendorAttributes[config.GameVersion].TryGetValue(nameAttribute.InnerText, out var lItems))
+                    if (EditVendor.EditedVendorAttributes[ServerRConfig.GameVersion].TryGetValue(nameAttribute.InnerText, out var lItems))
                     {
                         foreach (var item in lItems)
                         {
@@ -99,12 +97,12 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml<VendorCatalog>
             {
                 if (!(vendorCatalogNode.Name == "vendor_catalogs")) continue;
 
-                foreach (var vendor in internalCatalog.VendorCatalog.Values.SelectMany(x => x))
+                foreach (var vendor in InternalVendor.VendorCatalog.Values.SelectMany(x => x))
                 {
                     if (vendor.CatalogId != -1)
                         return;
 
-                    var name = miscTextDict.GetLocalizationTextById(vendor.NameId);
+                    var name = MiscTextDictionary.GetLocalizationTextById(vendor.NameId);
                     var catalogId = preExistingCategories.FindSmallest(lastSmallest);
                     var vendorId = catalogId;
 

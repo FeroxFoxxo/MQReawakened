@@ -6,15 +6,12 @@ using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
-public class RarityFactor : RarityFactorXML, IBundledXml<RarityFactor>
+public class RarityFactor : RarityFactorXML, IBundledXml
 {
     public string BundleName => "RarityFactor";
 
     public BundlePriority Priority => BundlePriority.Low;
-
-    public ILogger<RarityFactor> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
-
+    
     public Dictionary<ItemRarity, float> OffensiveFactor;
     public Dictionary<ItemRarity, float> DefensiveFactor;
 

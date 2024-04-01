@@ -6,13 +6,10 @@ using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
-public class WorldStatistics : StatisticDataXML, IBundledXml<WorldStatistics>
+public class WorldStatistics : StatisticDataXML, IBundledXml
 {
     public string BundleName => "WorldStatistics";
     public BundlePriority Priority => BundlePriority.Low;
-
-    public ILogger<WorldStatistics> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
 
     public Dictionary<ItemEffectType, Dictionary<WorldStatisticsGroup, Dictionary<int, int>>> Statistics;
     public Dictionary<Globals, float> GlobalStats;

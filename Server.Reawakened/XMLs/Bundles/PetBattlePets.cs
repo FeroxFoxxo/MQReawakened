@@ -4,13 +4,12 @@ using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
-public class PetBattlePets : PetBattlePetsXML, IBundledXml<PetBattlePets>
+public class PetBattlePets : PetBattlePetsXML, IBundledXml
 {
     public string BundleName => "PetBattlePets";
     public BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<PetBattlePets> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
 
     public void InitializeVariables()
     {

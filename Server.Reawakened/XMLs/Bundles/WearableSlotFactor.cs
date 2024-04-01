@@ -1,19 +1,15 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.Bundles;
-public class WearableSlotFactor : EquipmentSlotFactorXML, IBundledXml<WearableSlotFactor>
+public class WearableSlotFactor : EquipmentSlotFactorXML, IBundledXml
 {
     public string BundleName => "WearableSlotFactor";
 
     public BundlePriority Priority => BundlePriority.Low;
-
-    public ILogger<WearableSlotFactor> Logger { get; set; }
-    public IServiceProvider Services { get; set; }
 
     public Dictionary<ItemSubCategory, float> SlotFactors;
 
