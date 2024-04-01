@@ -170,49 +170,16 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     private BehaviorEnemy SetEnemy(int index)
     {
-        switch (PrefabNameToSpawn1)
-        {
-            case string bird when bird.Contains(ServerRConfig.EnemyNameSearch[0]):
-                LinkedEnemies.Add(index, new EnemyBird(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-            case string fish when fish.Contains(ServerRConfig.EnemyNameSearch[1]):
-                LinkedEnemies.Add(index, new EnemyFish(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-            case string spider when spider.Contains(ServerRConfig.EnemyNameSearch[2]):
-                LinkedEnemies.Add(index, new EnemySpider(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-            case string bathog when bathog.Contains(ServerRConfig.EnemyNameSearch[3]):
-                LinkedEnemies.Add(index, new EnemyBathog(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-            case string bomber when bomber.Contains(ServerRConfig.EnemyNameSearch[4]):
-                LinkedEnemies.Add(index, new EnemyBomber(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-            case string crawler when crawler.Contains(ServerRConfig.EnemyNameSearch[5]):
-                LinkedEnemies.Add(index, new EnemyCrawler(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-            case string dragon when dragon.Contains(ServerRConfig.EnemyNameSearch[6]):
-                LinkedEnemies.Add(index, new EnemyDragon(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-            case string grenadier when grenadier.Contains(ServerRConfig.EnemyNameSearch[7]):
-                LinkedEnemies.Add(index, new EnemyGrenadier(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-            case string orchid when orchid.Contains(ServerRConfig.EnemyNameSearch[8]):
-                LinkedEnemies.Add(index, new EnemyOrchid(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-            case string pincer when pincer.Contains(ServerRConfig.EnemyNameSearch[9]):
-                LinkedEnemies.Add(index, new EnemyPincer(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-            case string stomper when stomper.Contains(ServerRConfig.EnemyNameSearch[10]):
-                LinkedEnemies.Add(index, new EnemyStomper(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-            case string vespid when vespid.Contains(ServerRConfig.EnemyNameSearch[11]):
-                LinkedEnemies.Add(index, new EnemyVespid(Room, _spawnedEntityId, PrefabNameToSpawn1, EnemyController, Services));
-                break;
-        }
+        var enemy = Room.GenerateEntityFromName(PrefabNameToSpawn1, _spawnedEntityId, EnemyController, Services, ServerRConfig);
 
-        LinkedEnemies.TryGetValue(index, out var enemy);
-        enemy.Initialize();
-        return enemy;
+        if (enemy is not BehaviorEnemy bEnemy)
+            return null;
+
+        LinkedEnemies.Add(index, bEnemy);
+
+        bEnemy.Initialize();
+
+        return bEnemy;
     }
 
     private bool IsPlayerNearby(float radius)
