@@ -86,7 +86,7 @@ public class UseItem : ExternalProtocol
         Player.CheckAchievement(AchConditionType.Bomb, string.Empty, InternalAchievement, Logger);
         Player.CheckAchievement(AchConditionType.Bomb, usedItem.PrefabName, InternalAchievement, Logger);
 
-        Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
+        Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
 
         var removeFromHotbar = true;
 
@@ -112,7 +112,7 @@ public class UseItem : ExternalProtocol
             Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, InternalAchievement, Logger);
         }
 
-        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, Logger);
+        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
 
         var removeFromHotbar = true;
 
