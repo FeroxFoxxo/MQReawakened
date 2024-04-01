@@ -1,7 +1,6 @@
 ﻿using Achievement.Categories;
 using Achievement.StaticData;
 using Achievement.Types;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Icons.Services;
 using Server.Reawakened.XMLs.Abstractions;

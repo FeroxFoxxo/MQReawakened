@@ -1,5 +1,4 @@
 ﻿using Achievement.StaticData;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Abstractions;

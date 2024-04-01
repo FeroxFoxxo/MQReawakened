@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Server.Base.Core.Extensions;
+﻿using Server.Base.Core.Extensions;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
