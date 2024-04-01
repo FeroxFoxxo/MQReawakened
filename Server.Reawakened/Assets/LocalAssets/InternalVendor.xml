@@ -101,7 +101,7 @@
             <Item prefabName="WPN_PRJ_Thunderbow01" />
             <Item prefabName="WPN_MEL_IceRaiderHammer01" />
             <Item prefabName="WPN_SPC_PoisonGrenade01" />
-            <Item prefabName="WPN_MEL_GreatAxe01" />
+            <!--<Item prefabName="WPN_MEL_GreatAxe01" />-->
             <Item prefabName="WPN_PRJ_FistOfTerra01" />
             <Item prefabName="ABIL_PoisonBomb03" />
             <Item prefabName="ABIL_Grenade03b" />
@@ -148,7 +148,7 @@
             <Item prefabName="Add_COM_Explorator01_UF01" />
             <Item prefabName="COL_FOOD_Apple01" />
             <Item prefabName="Add_COM_AnimalWood01_S01" />
-            <Item prefabName="WPN_1H_SwordGKnight02" />
+            <!--<Item prefabName="WPN_1H_SwordGKnight02" />-->
             <Item prefabName="Add_OUT_WaterBandit01_E03" />
             <Item prefabName="Add_COM_Cocohelm01_S02" />
             <Item prefabName="COL_FOOD_IceCream01" />
@@ -226,7 +226,7 @@
             <Item prefabName="WPN_PRJ_Thunderbow01" />
             <Item prefabName="WPN_MEL_IceRaiderHammer01" />
             <Item prefabName="WPN_SPC_PoisonGrenade01" />
-            <Item prefabName="WPN_MEL_GreatAxe01" />
+            <!--<Item prefabName="WPN_MEL_GreatAxe01" />-->
             <Item prefabName="WPN_PRJ_FistOfTerra01" />
             <Item prefabName="ABIL_PoisonBomb03" />
             <Item prefabName="ABIL_Grenade03b" />
@@ -680,7 +680,7 @@
             <Item prefabName="WPN_PRJ_Thunderbow01" />
             <Item prefabName="WPN_MEL_RottenStick01" />
             <Item prefabName="WPN_SPC_PoisonGrenade01" />
-            <Item prefabName="WPN_MEL_GreatAxe01" />
+            <!--<Item prefabName="WPN_MEL_GreatAxe01" />-->
             <Item prefabName="WPN_PRJ_FistOfTerra01" />
             <Item prefabName="WPN_MEL_ScorpionSword01" />
             <Item prefabName="ABIL_PoisonBomb03" />
@@ -943,7 +943,7 @@
             <Item prefabName="COL_FOOD_Cookie02" />
         </Vendor>
         <Vendor objectId="16906" name="Anora" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1420" greetingConversationId="3604" leavingConversationId="3603">
-            <Item prefabName="WPN_1H_SwordGKnight02" />
+            <!--<Item prefabName="WPN_1H_SwordGKnight02" />-->
             <Item prefabName="WPN_SPC_DoomGrenade01" />
             <Item prefabName="COL_PACK_NC_DoomGrenade01" />
             <Item prefabName="WPN_MEL_IceRaiderHammer01" />
@@ -1015,7 +1015,7 @@
             <Item prefabName="WPN_MEL_CrimsonSword01" />
             <Item prefabName="WPN_SPC_ChimFooPopper01" />
             <Item prefabName="WPN_MEL_GargoyleSword01" />
-            <Item prefabName="WPN_MEL_GreatAxe01" />
+            <!--<Item prefabName="WPN_MEL_GreatAxe01" />-->
         </Vendor>
         <Vendor objectId="1092" name="Dimsum" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="787" greetingConversationId="2196" leavingConversationId="2195">
             <Item prefabName="COL_RECIP_POT_Healing05" />
@@ -1109,8 +1109,17 @@
         </Vendor>
     </Level>
     <Level name="Jade Mountain" id="48">
-        <!--Custom inventory-->
         <Vendor objectId="639" name="Miya" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1260" greetingConversationId="3404" leavingConversationId="3403">
+            <!--<Item prefabName="Add_COM_Tiger01_S05" />
+            <Item prefabName="Add_COM_Tiger01_LS05" />
+            <Item prefabName="Add_COM_Tiger01_TS05" />-->
+            <Item prefabName="Add_COM_Tiger01_T05" />
+            <Item prefabName="Add_SHD_Monk01_T01" />
+            <Item prefabName="WPN_PRJ_Shuriken01" />
+            <Item prefabName="COL_RECIP_SHD_Monk01_TS03" />
+            <Item prefabName="COL_RECIP_PRJ_Shuriken02" />
+            <Item prefabName="WPN_SPC_StormyPopper01" />
+            <!--Rest are custom-->
             <Item prefabName="COL_POT_Healing01" />
             <Item prefabName="Add_COM_Baseball01_TS02" />
             <Item prefabName="COL_FOOD_Apple01" />
@@ -1125,6 +1134,23 @@
             <Item prefabName="Add_COM_ScaleTail01_T02" />
             <Item prefabName="Add_SHD_Snake01_TS02" />
             <Item prefabName="Add_SHD_Snake01_S02" />
+        </Vendor>
+    </Level>
+    <Level name="Stone Gardens" id="101">
+        <Vendor objectId="5151" name="Chinzee" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="1350" greetingConversationId="3420" leavingConversationId="3419">
+            <Item prefabName="COL_PACK_NC_InvincibilityPotion01" />
+            <Item prefabName="COL_FOOD_Orange01" />
+            <Item prefabName="COL_RECIP_SHD_Snake01_TS01" />
+            <Item prefabName="COL_RECIP_PRJ_TornadoStaff01" />
+            <Item prefabName="COL_POT_Healing04" />
+            <Item prefabName="WPN_PRJ_Thunderbow01" />
+            <Item prefabName="Add_COM_Warrior01_W01" />
+            <Item prefabName="Add_SHD_Snake01_TS02" />
+            <Item prefabName="Add_COM_Warrior01_T01" />
+            <Item prefabName="Add_SHD_Snake01_S02" />
+            <Item prefabName="WPN_PRJ_AirFist01" />
+            <Item prefabName="Add_SHD_Snake01_LS02" />
+            <Item prefabName="Panda Costume Pack" />
         </Vendor>
     </Level>
 </VendorCatalog>
