@@ -3,7 +3,6 @@
 namespace Server.Reawakened.Entities.Enemies.Utils;
 public class AISyncEventHelper
 {
-
     public static AIDo_SyncEvent AIDo(string id, float time, Vector3 position, float speedFactor, int behaviorId, string args, float targetPosX, float targetPosY, int direction, bool awareBool)
     {
         var aiDo = new AIDo_SyncEvent(new SyncEvent(id, SyncEvent.EventType.AIDo, time));

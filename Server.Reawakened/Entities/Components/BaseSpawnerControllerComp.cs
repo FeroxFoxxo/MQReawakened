@@ -4,6 +4,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Enemies.EnemyAI;
 using Server.Reawakened.Entities.Enemies.EnemyAI.BehaviorEnemies;
+using Server.Reawakened.Entities.Enemies.Utils;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.BundlesInternal;
@@ -120,22 +121,14 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         _spawnRequested = false;
 
         //Spawn the enemy and set it in the room enemy list
-        Room.SendSyncEvent(new AIInit_SyncEvent(Id, Room.Time, 0, 0, 0, 0, 0, Generic.Patrol_InitialProgressRatio,
+        Room.SendSyncEvent(new AIInit_SyncEvent(Id, Room.Time, Position.X, Position.Y, Position.Z,
+            Position.X, Position.Y, Generic.Patrol_InitialProgressRatio,
         Health, Health, 1f, 1f, 1f, 0, Level, GlobalProperties.ToString(), "Idle||"));
 
-        var aiDo = new AIDo_SyncEvent(new SyncEvent(Id, SyncEvent.EventType.AIDo, Room.Time));
-
-        aiDo.EventDataList.Add(0);
-        aiDo.EventDataList.Add(0);
-        aiDo.EventDataList.Add(1f);
-        aiDo.EventDataList.Add(0);
-        aiDo.EventDataList.Add("");
-        aiDo.EventDataList.Add(0);
-        aiDo.EventDataList.Add(0);
-        aiDo.EventDataList.Add(0);
-        aiDo.EventDataList.Add(0);
-
-        Room.SendSyncEvent(aiDo);
+        Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time,
+            new Vector3 { x = Position.X + SpawningOffsetX, y = Position.Y + SpawningOffsetY, z = Position.Z },
+            1.0f, BehaviorList.IndexOf(""), string.Empty, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
+            Generic.Patrol_ForceDirectionX, false));
 
         var spawn = new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount);
         Room.SendSyncEvent(spawn);
