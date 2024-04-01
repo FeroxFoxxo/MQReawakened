@@ -38,5 +38,5 @@ public static class GetConfigs
     }
 
     public static string GetFileName(Type config) =>
-        $"{config.Name.Replace("RwConfig", "")}.json";
+        $"{config.Name.Replace("RwConfig", string.Empty)}.json";
 }

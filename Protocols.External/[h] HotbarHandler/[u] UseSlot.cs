@@ -170,12 +170,12 @@ public class UseSlot : ExternalProtocol
 
     private void RemoveFromHotBar(CharacterModel character, ItemDescription item, int hotbarSlotId)
     {
-        character.Data.Inventory.Items[item.ItemId].Count--;
+        var itemModel = character.Data.Inventory.Items[item.ItemId];
+        itemModel.Count--;
 
-        if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
+        if (itemModel.Count <= 0)
         {
             Player.RemoveHotbarSlot(hotbarSlotId, ItemCatalog);
-
             SendXt("hu", character.Data.Hotbar);
         }
 

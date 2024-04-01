@@ -344,7 +344,7 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         aiDo.EventDataList.Add(AiData.Sync_PosY);
         aiDo.EventDataList.Add(1f);
         aiDo.EventDataList.Add(GetIndexOfCurrentBehavior());
-        aiDo.EventDataList.Add("");
+        aiDo.EventDataList.Add(string.Empty);
         aiDo.EventDataList.Add(AiData.Sync_TargetPosX);
         aiDo.EventDataList.Add(AiData.Sync_TargetPosY);
         aiDo.EventDataList.Add(AiData.Intern_Dir);

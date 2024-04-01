@@ -47,8 +47,8 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("save", "owner only", SaveLevel));
         AddCommand(new ChatCommand("getAllItems", "[categoryValue] - owner only", GetAllItems));
 
-        AddCommand(new ChatCommand("godMode", "", GodMode));
-        AddCommand(new ChatCommand("maxHP", "", MaxHealth));
+        AddCommand(new ChatCommand("godMode", string.Empty, GodMode));
+        AddCommand(new ChatCommand("maxHP", string.Empty, MaxHealth));
 
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("hotbar", "[hotbarNum] [itemId]", Hotbar));
@@ -56,15 +56,15 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
 
         AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
-        AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
+        AddCommand(new ChatCommand("discoverTribes", string.Empty, DiscoverTribes));
 
         AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
         AddCommand(new ChatCommand("tp", "[X] [Y]", Teleport));
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
-        AddCommand(new ChatCommand("openDoors", "", OpenDoors));
+        AddCommand(new ChatCommand("openDoors", string.Empty, OpenDoors));
 
-        AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
+        AddCommand(new ChatCommand("closestEntity", string.Empty, ClosestEntity));
 
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("playerCount", "[detailed]", PlayerCount));
@@ -73,8 +73,8 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("addQuest", "[id]", AddQuest));
         AddCommand(new ChatCommand("findQuest", "[name]", GetQuestByName));
 
-        AddCommand(new ChatCommand("updateNpcs", "", UpdateLevelNpcs));
-        AddCommand(new ChatCommand("playerPos", "", GetPlayerPos));
+        AddCommand(new ChatCommand("updateNpcs", string.Empty, UpdateLevelNpcs));
+        AddCommand(new ChatCommand("playerPos", string.Empty, GetPlayerPos));
 
         AddCommand(new ChatCommand("resetArmor", "[id]", ResetArmor));
 
@@ -350,7 +350,7 @@ public partial class ChatCommands(
         player.AddNCash(config.CashKitAmount);
 
         Log($"{character.Data.CharacterName} received {config.CashKitAmount} " +
-            $"banana{(config.CashKitAmount > 1 ? "s" : "")} & monkey cash!", player);
+            $"banana{(config.CashKitAmount > 1 ? "s" : string.Empty)} & monkey cash!", player);
 
         return true;
     }
@@ -366,7 +366,7 @@ public partial class ChatCommands(
         }
 
         var names = args.Select(name =>
-            MyRegex().Replace(name.ToLower(), "")
+            MyRegex().Replace(name.ToLower(), string.Empty)
         ).ToList();
 
         var firstName = names[1];

@@ -28,7 +28,7 @@ public class GlobalInteractionControllerComp : Component<GlobalInteractionContro
         if (counter != null)
             _counter = counter;
 
-        var t = new AIInit_SyncEvent(Id, Room.Time, Position.X, Position.Y, Position.Z, Position.X, Position.Y, 0, 10, 10, 1, 1, 1, 0, 1, "", "");
+        var t = new AIInit_SyncEvent(Id, Room.Time, Position.X, Position.Y, Position.Z, Position.X, Position.Y, 0, 10, 10, 1, 1, 1, 0, 1, string.Empty, string.Empty);
         Room.SendSyncEvent(t);
 
         GoToNextState(new GameObjectComponents() {

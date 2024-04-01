@@ -210,19 +210,19 @@ public static class LoadRoomData
                         field.SetValue(dataObj, Enum.Parse(field.FieldType, componentValue.Value));
                     else if (field.FieldType == typeof(Vector3))
                     {
-                        var translateComponent = componentValue.Value.Replace("(", "").Replace(")", "");
+                        var translateComponent = componentValue.Value.Replace("(", string.Empty).Replace(")", string.Empty);
                         var translatedArray = translateComponent.Split(",");
                         field.SetValue(dataObj, new Vector3(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2])));
                     }
                     else if (field.FieldType == typeof(Vector2))
                     {
-                        var translateComponent = componentValue.Value.Replace("(", "").Replace(")", "");
+                        var translateComponent = componentValue.Value.Replace("(", string.Empty).Replace(")", string.Empty);
                         var translatedArray = translateComponent.Split(",");
                         field.SetValue(dataObj, new Vector2(float.Parse(translatedArray[0]), float.Parse(translatedArray[1])));
                     }
                     else if (field.FieldType == typeof(Color))
                     {
-                        var translateComponent = componentValue.Value.Replace("RGBA(", "").Replace(")", "");
+                        var translateComponent = componentValue.Value.Replace("RGBA(", string.Empty).Replace(")", string.Empty);
                         var translatedArray = translateComponent.Split(",");
                         field.SetValue(dataObj, new Color(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2]), float.Parse(translatedArray[3])));
                     }

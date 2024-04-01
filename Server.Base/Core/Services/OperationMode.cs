@@ -78,7 +78,7 @@ public class OperationMode(EventSink eventSink, ServerConsole console, InternalR
     public static async Task<IPAddress> GetExternalIpAddress()
     {
         var externalIpString = (await new HttpClient().GetStringAsync("http://icanhazip.com"))
-            .Replace("\\r\\n", "").Replace("\\n", "").Trim();
+            .Replace("\\r\\n", string.Empty).Replace("\\n", string.Empty).Trim();
 
         return !IPAddress.TryParse(externalIpString, out var ipAddress) ? null : ipAddress;
     }

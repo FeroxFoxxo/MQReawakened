@@ -80,7 +80,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         Hazard = Room.GetEntityFromId<HazardControllerComp>(TemplatePrefabNameToSpawn1);
 
         //This is just a dummy, it gets assigned properly later in Enemy
-        GlobalProperties = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", "", false, false, 0);
+        GlobalProperties = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
 
         BehaviorList = EnemyInfoXml.GetBehaviorsByName(PrefabNameToSpawn1);
         LinkedEnemies = new Dictionary<int, BehaviorEnemy>();
@@ -127,7 +127,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time,
             new Vector3 { x = Position.X + SpawningOffsetX, y = Position.Y + SpawningOffsetY, z = Position.Z },
-            1.0f, BehaviorList.IndexOf(""), string.Empty, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
+            1.0f, BehaviorList.IndexOf(string.Empty), string.Empty, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
             Generic.Patrol_ForceDirectionX, false));
 
         var spawn = new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount);
@@ -137,7 +137,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         _arena?.ArenaEntities.Add(_spawnedEntityId);
 
-        TimerThread.DelayCall(DelayedSpawnData, "", TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
+        TimerThread.DelayCall(DelayedSpawnData, string.Empty, TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
     }
 
     private void DelayedSpawnData(object _)

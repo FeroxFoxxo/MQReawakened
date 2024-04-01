@@ -76,7 +76,7 @@ public class CreateCharacter : ExternalProtocol
             var levelUpData = new LevelData
             {
                 LevelId = ServerConfig.GameVersion >= GameVersion.v2014 ? WorldGraph.DefaultLevel : WorldGraph.NewbZone,
-                SpawnPointId = ""
+                SpawnPointId = string.Empty
             };
 
             var model = CharacterHandler.Create(characterData, levelUpData);

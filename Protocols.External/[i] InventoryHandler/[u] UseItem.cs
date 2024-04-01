@@ -161,13 +161,15 @@ public class UseItem : ExternalProtocol
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item)
     {
-        if (character.Data.Inventory.Items[item.ItemId] == null)
+        var itemModel = character.Data.Inventory.Items[item.ItemId];
+
+        if (itemModel == null)
             return;
 
-        if (character.Data.Inventory.Items[item.ItemId].Count > 0)
-            character.Data.Inventory.Items[item.ItemId].Count--;
+        if (itemModel.Count > 0)
+            itemModel.Count--;
 
-        else if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
+        else if (itemModel.Count <= 0)
             character.Data.Inventory.Items.Remove(item.ItemId);
 
         Player.SendUpdatedInventory();
