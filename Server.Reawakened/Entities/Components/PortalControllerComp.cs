@@ -1,11 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
+﻿using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
 
 namespace Server.Reawakened.Entities.Components;
 
@@ -18,18 +13,13 @@ public class PortalControllerComp : Component<PortalController>
     public string TimedEventPortalOnAnim => ComponentData.TimedEventPortalOnAnim;
     public string TimedEventPortalOffAnim => ComponentData.TimedEventPortalOffAnim;
 
-    public WorldGraph WorldGraph { get; set; }
     public WorldHandler WorldHandler { get; set; }
-    public InternalAchievement InternalAchievement { get; set; }
-    public ILogger<PortalControllerComp> Logger { get; set; }
 
     public override object[] GetInitData(Player player) =>
         [string.Empty];
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        var character = player.Character;
-
         var portal = new Portal_SyncEvent(syncEvent);
 
         if (portal.IsAllowedEntry == false)
@@ -44,50 +34,8 @@ public class PortalControllerComp : Component<PortalController>
             portalId = int.Parse(Id);
 
         var levelId = player.Room.LevelInfo.LevelId;
+        var defaultSpawn = portal.EventDataList.Count < 4 ? string.Empty : portal.SpawnPointID;
 
-        var newLevelId = WorldGraph.GetLevelFromPortal(levelId, portalId);
-
-        if (newLevelId <= 0)
-        {
-            Logger.LogError("Could not find level for portal {PortalId} in room {RoomId}", portalId, levelId);
-            return;
-        }
-
-        var node = WorldGraph.GetDestinationNodeFromPortal(levelId, portalId);
-
-        string spawnId;
-
-        if (node != null)
-        {
-            spawnId = node.ToSpawnID.ToString();
-            Logger.LogDebug("Node found! Portal ID: '{Portal}'. Spawn ID: '{Spawn}'.", node.PortalID, node.ToSpawnID);
-        }
-        else
-        {
-            spawnId = portal.EventDataList.Count < 4 ? string.Empty : portal.SpawnPointID;
-
-            Logger.LogError("Could not find node for '{Old}' -> '{New}' for portal {PortalId}.", levelId, newLevelId, portalId);
-        }
-
-        if (levelId == newLevelId && character.LevelData.SpawnPointId == spawnId)
-        {
-            Logger.LogError("Attempt made to teleport to the same portal! Skipping...");
-            return;
-        }
-
-        character.SetLevel(newLevelId, spawnId, Logger);
-
-        var levelInfo = WorldGraph.GetInfoLevel(newLevelId);
-
-        Logger.LogInformation(
-            "Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
-            "using portal {PortalId}", character.Data.CharacterName,
-            character.Id, levelInfo.InGameName, levelInfo.LevelId, portalId
-        );
-
-        player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, InternalAchievement, Logger);
-        player.CheckAchievement(AchConditionType.ExploreTrail, levelInfo.Name, InternalAchievement, Logger);
-
-        player.SendLevelChange(WorldHandler);
+        WorldHandler.UsePortal(player, levelId, portalId, defaultSpawn);
     }
 }

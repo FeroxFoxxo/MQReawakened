@@ -14,12 +14,12 @@ public class HazardEffectCollider(string hazardId, Vector3Model position, RectMo
         if (received is not PlayerCollider playerCollider)
             return;
 
-        ApplyEffectBasedOffHazardType(hazardId, playerCollider.Player);
+        ApplyEffectBasedOffHazardType(Id, playerCollider.Player);
 
-        if (!playerCollider.Player.TempData.CollidingHazards.Contains(hazardId))
+        if (!playerCollider.Player.TempData.CollidingHazards.Contains(Id))
         {
-            logger.LogInformation("{characterName} collided with hazard ({Id}).", playerCollider.Player.CharacterName, hazardId);
-            playerCollider.Player.TempData.CollidingHazards.Add(hazardId);
+            logger.LogInformation("{characterName} collided with hazard ({Id}).", playerCollider.Player.CharacterName, Id);
+            playerCollider.Player.TempData.CollidingHazards.Add(Id);
         }
     }
 

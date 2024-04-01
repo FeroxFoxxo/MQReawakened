@@ -83,7 +83,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         GlobalProperties = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
 
         BehaviorList = EnemyInfoXml.GetBehaviorsByName(PrefabNameToSpawn1);
-        LinkedEnemies = new Dictionary<int, BehaviorEnemy>();
+        LinkedEnemies = [];
 
         if (ComponentData.SpawnOnDetection)
             _activated = true;

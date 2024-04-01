@@ -21,7 +21,6 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
 using System.Text.RegularExpressions;
 
 namespace Server.Reawakened.Chat.Services;
@@ -418,15 +417,11 @@ public partial class ChatCommands(
             return false;
         }
 
-        character.SetLevel(levelId, logger);
-
-        player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, internalAchievement, logger);
-        player.CheckAchievement(AchConditionType.ExploreTrail, player.Room.LevelInfo.Name, internalAchievement, logger);
-
-        var tribe = levelInfo.Tribe;
-
-        player.DiscoverTribe(tribe);
-        player.SendLevelChange(worldHandler);
+        if (!worldHandler.TryChangePlayerRoom(player, levelId))
+        {
+            Log($"Please specify a valid level.", player);
+            return false;
+        }
 
         Log(
             $"Successfully set character {character.Id}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",

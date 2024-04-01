@@ -23,7 +23,6 @@ namespace Server.Reawakened.Entities.Enemies;
 
 public abstract class Enemy : IDestructible
 {
-
     public readonly ILogger<BehaviorEnemy> Logger;
     public readonly InternalAchievement InternalAchievement;
     public readonly QuestCatalog QuestCatalog;

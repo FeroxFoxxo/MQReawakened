@@ -25,11 +25,11 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         base.Initialize();
 
         //External Component Info
-        var global = room.GetEntityFromId<AIStatsGlobalComp>(Id);
+        var global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         if (global != null)
             Global = global;
 
-        var generic = room.GetEntityFromId<AIStatsGenericComp>(Id);
+        var generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
         if (generic != null)
             Generic = generic;
 

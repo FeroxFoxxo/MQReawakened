@@ -9,11 +9,11 @@ public class BreakableCollider(string breakableId, Vector3Model position, float 
     public override void SendCollisionEvent(BaseCollider received)
     {
         if (received is AttackCollider attack)
-            foreach (var breakable in Room.GetEntitiesFromId<BreakableEventControllerComp>(breakableId))
+            foreach (var breakable in Room.GetEntitiesFromId<BreakableEventControllerComp>(Id))
                 breakable.Damage(attack.Damage, attack.DamageType, attack.Owner);
 
         if (received is PlayerCollider)
-            foreach (var collapsingPlatform in Room.GetEntitiesFromId<CollapsingPlatformComp>(breakableId))
+            foreach (var collapsingPlatform in Room.GetEntitiesFromId<CollapsingPlatformComp>(Id))
                 collapsingPlatform.Collapse(false);
     }
 }

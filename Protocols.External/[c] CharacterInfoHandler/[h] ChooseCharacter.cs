@@ -31,8 +31,8 @@ public class ChooseCharacter : ExternalProtocol
             return;
         }
 
-        if (character.LevelData.LevelId == 0)
-            character.SetLevel(WorldGraph.DefaultLevel, Logger);
+        if (character.LevelData.LevelId <= 0)
+            character.ForceSetLevel(WorldGraph.DefaultLevel);
 
         var levelInfo = WorldHandler.GetLevelInfo(character.LevelData.LevelId);
 

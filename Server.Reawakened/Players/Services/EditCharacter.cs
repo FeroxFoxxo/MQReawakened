@@ -141,20 +141,22 @@ public class EditCharacter(ServerConsole console, EventSink sink,
             return;
         }
 
-        character.SetLevel(levelId, string.Empty, logger);
-
         var levelInfo = worldGraph.GetInfoLevel(levelId);
 
-        var tribe = levelInfo.Tribe;
+        if (levelInfo == null)
+        {
+            logger.LogError("Level must be valid");
+            return;
+        }
 
         if (handler.IsPlayerOnline(user.Id, out var player))
         {
-            player.DiscoverTribe(tribe);
-            player.SendLevelChange(worldHandler);
+            worldHandler.ChangePlayerRoom(player, levelId);
         }
         else
         {
-            character?.HasAddedDiscoveredTribe(tribe);
+            character.ForceSetLevel(levelId, string.Empty);
+            character?.HasAddedDiscoveredTribe(levelInfo.Tribe);
             playerEventSink.InvokePlayerRefresh();
         }
 

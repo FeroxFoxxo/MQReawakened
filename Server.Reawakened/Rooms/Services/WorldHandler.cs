@@ -6,13 +6,16 @@ using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Services;
 
-public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph,
-    TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> handlerLogger) : IService
+public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph, InternalAchievement achievements,
+    TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> logger) : IService
 {
     private readonly Dictionary<int, Level> _levels = [];
     private readonly object Lock = new();
@@ -48,10 +51,10 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             catch (NullReferenceException)
             {
                 if (_levels.Count == 0)
-                    handlerLogger.LogCritical(
+                    logger.LogCritical(
                         "Could not find any rooms! Are you sure you have your cache set up correctly?");
                 else
-                    handlerLogger.LogError("Could not find the required room! Are you sure your caches contain this?");
+                    logger.LogError("Could not find the required room! Are you sure your caches contain this?");
             }
 
         var name = levelId switch
@@ -122,5 +125,73 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             .Select(x => worldGraph.GetInfoLevel(x.ToLevelID).Name)
             .Distinct()
             .ToList();
+    }
+
+    public void UsePortal(Player player, int levelId, int portalId, string defaultSpawnId = "")
+    {
+        var character = player.Character;
+        var newLevelId = worldGraph.GetLevelFromPortal(levelId, portalId);
+
+        if (newLevelId <= 0)
+        {
+            logger.LogError("Could not find level for portal {PortalId} in room {RoomId}", portalId, levelId);
+            return;
+        }
+
+        var node = worldGraph.GetDestinationNodeFromPortal(levelId, portalId);
+
+        string spawnId;
+
+        if (node != null)
+        {
+            spawnId = node.ToSpawnID.ToString();
+            logger.LogDebug("Node found! Portal ID: '{Portal}'. Spawn ID: '{Spawn}'.", node.PortalID, node.ToSpawnID);
+        }
+        else
+        {
+            spawnId = defaultSpawnId;
+            logger.LogError("Could not find node for '{Old}' -> '{New}' for portal {PortalId}.", levelId, newLevelId, portalId);
+        }
+
+        if (levelId == newLevelId && character.LevelData.SpawnPointId == spawnId)
+        {
+            logger.LogError("Attempt made to teleport to the same portal! Skipping...");
+            return;
+        }
+
+        var levelInfo = worldGraph.GetInfoLevel(newLevelId);
+
+        logger.LogInformation(
+            "Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
+            "using portal {PortalId}", character.Data.CharacterName,
+            character.Id, levelInfo.InGameName, levelInfo.LevelId, portalId
+        );
+
+        ChangePlayerRoom(player, newLevelId, spawnId);
+    }
+
+    public bool ChangePlayerRoom(Player player, int levelId, string spawnId = "") => _ = TryChangePlayerRoom(player, levelId, spawnId);
+
+    public bool TryChangePlayerRoom(Player player, int levelId, string spawnId = "")
+    {
+        var levelInfo = worldGraph.GetInfoLevel(levelId);
+
+        if (string.IsNullOrEmpty(levelInfo.Name) || !config.LoadedAssets.Contains(levelInfo.Name))
+        {
+            logger.LogError("Player: {player} specified an invalid level!", player);
+            return false;
+        }
+
+        player.Character.LevelData.LevelId = levelInfo.LevelId;
+        player.Character.LevelData.SpawnPointId = spawnId;
+
+        player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, achievements, logger);
+        player.CheckAchievement(AchConditionType.ExploreTrail, levelInfo.Name, achievements, logger);
+
+        player.DiscoverTribe(levelInfo.Tribe);
+
+        player.SendLevelChange(this);
+
+        return true;
     }
 }
