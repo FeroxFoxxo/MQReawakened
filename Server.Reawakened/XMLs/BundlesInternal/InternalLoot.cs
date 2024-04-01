@@ -8,10 +8,10 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalLoot : IBundledXml
+public class InternalLoot : InternalXml
 {
-    public string BundleName => "InternalLoot";
-    public BundlePriority Priority => BundlePriority.Low;
+    public override string BundleName => "InternalLoot";
+    public override BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<InternalLoot> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
@@ -19,17 +19,19 @@ public class InternalLoot : IBundledXml
     // LEVEL ID, OBJECT ID, LOOT MODEL
     public Dictionary<int, Dictionary<string, LootModel>> LootCatalog;
 
-    public void InitializeVariables() => LootCatalog = [];
+    public override void InitializeVariables() => LootCatalog = [];
 
-    public void EditDescription(XmlDocument xml)
+    public LootModel GetLootById(int levelId, string objectId)
     {
+        if (LootCatalog.TryGetValue(levelId, out var level))
+            if (level.TryGetValue(objectId, out var lootInfo))
+                return lootInfo;
+
+        return new LootModel(string.Empty, [], [], false, 0, 1);
     }
 
-    public void ReadDescription(string xml)
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         foreach (XmlNode lootXml in xmlDocument.ChildNodes)
         {
             if (lootXml.Name != "LootCatalog") continue;
@@ -78,6 +80,7 @@ public class InternalLoot : IBundledXml
                         }
 
                     foreach (XmlNode reward in lootInfo.ChildNodes)
+                    {
                         switch (reward.Name)
                         {
                             case "Bananas":
@@ -115,9 +118,10 @@ public class InternalLoot : IBundledXml
                                 itemRewards.Add(new ItemReward(itemList, rewardAmount));
                                 break;
                             default:
-                                Logger.LogWarning("Unknown reward type {RewardType} for object {Id}", lootInfo.Name, objectId);
+                                Logger.LogWarning("Unknown reward type '{RewardType}' for object {Id}", reward.Name, objectId);
                                 break;
                         }
+                    }
 
                     LootCatalog[levelId].Add(objectId, new LootModel(objectId, bananaRewards, itemRewards, doWheel, multiplayerWheelChance, weightRange));
                     lootList.Add(objectId);
@@ -125,15 +129,4 @@ public class InternalLoot : IBundledXml
             }
         }
     }
-
-    public void FinalizeBundle()
-    {
-    }
-
-    public LootModel GetLootById(int levelId, string objectId) =>
-        LootCatalog.TryGetValue(levelId, out var level) ?
-            level.TryGetValue(objectId, out var lootInfo) ?
-                lootInfo :
-                new LootModel(string.Empty, [], [], false, 0, 1) :
-            new LootModel(string.Empty, [], [], false, 0, 1);
 }

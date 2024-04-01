@@ -9,33 +9,22 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalQuestItem : IBundledXml
+public class InternalQuestItem : InternalXml
 {
-    public string BundleName => "InternalQuestItem";
-    public BundlePriority Priority => BundlePriority.Low;
+    public override string BundleName => "InternalQuestItem";
+    public override BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<InternalQuestItem> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
 
     public Dictionary<GameVersion, Dictionary<int, List<ItemModel>>> QuestItemList;
 
-    public InternalQuestItem()
-    {
-    }
-
-    public void InitializeVariables() =>
+    public override void InitializeVariables() =>
         QuestItemList = [];
 
-    public void EditDescription(XmlDocument xml)
+    public override void ReadDescription(XmlDocument xml)
     {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
-        foreach (XmlNode questItemXml in xmlDocument.ChildNodes)
+        foreach (XmlNode questItemXml in xml.ChildNodes)
         {
             if (!(questItemXml.Name == "QuestItems")) continue;
 
@@ -75,9 +64,5 @@ public class InternalQuestItem : IBundledXml
                 }
             }
         }
-    }
-
-    public void FinalizeBundle()
-    {
     }
 }

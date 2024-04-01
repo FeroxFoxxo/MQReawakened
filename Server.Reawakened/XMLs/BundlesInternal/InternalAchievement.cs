@@ -10,10 +10,10 @@ using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
-public class InternalAchievement : IBundledXml
+public class InternalAchievement : InternalXml
 {
-    public string BundleName => "InternalAchievement";
-    public BundlePriority Priority => BundlePriority.Lowest;
+    public override string BundleName => "InternalAchievement";
+    public override BundlePriority Priority => BundlePriority.Lowest;
 
     public ILogger<InternalAchievement> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
@@ -22,7 +22,7 @@ public class InternalAchievement : IBundledXml
     public AchievementStaticJson.AchievementDefinition Definitions { get; private set; }
     public Dictionary<int, List<string>> PossibleConditions { get; private set; }
 
-    public void InitializeVariables()
+    public override void InitializeVariables()
     {
         Definitions = new AchievementStaticJson.AchievementDefinition()
         {
@@ -41,15 +41,8 @@ public class InternalAchievement : IBundledXml
         PossibleConditions = [];
     }
 
-    public void EditDescription(XmlDocument xml)
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         var enumValues = Enum.GetValues<RewardType>();
 
         foreach (var value in enumValues)
@@ -231,9 +224,5 @@ public class InternalAchievement : IBundledXml
                 }
             }
         }
-    }
-
-    public void FinalizeBundle()
-    {
     }
 }

@@ -8,10 +8,10 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalVendor : IBundledXml
+public class InternalVendor : InternalXml
 {
-    public string BundleName => "InternalVendor";
-    public BundlePriority Priority => BundlePriority.Low;
+    public override string BundleName => "InternalVendor";
+    public override BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<InternalVendor> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
@@ -19,17 +19,13 @@ public class InternalVendor : IBundledXml
 
     public Dictionary<int, List<VendorInfo>> VendorCatalog;
 
-    public void InitializeVariables() => VendorCatalog = [];
+    public override void InitializeVariables() => VendorCatalog = [];
 
-    public void EditDescription(XmlDocument xml)
+    public VendorInfo GetVendorById(int levelId, int id) =>
+        VendorCatalog.TryGetValue(levelId, out var vendors) ? vendors.FirstOrDefault(x => x.GameObjectId == id) : null;
+
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         foreach (XmlNode vendorXml in xmlDocument.ChildNodes)
         {
             if (vendorXml.Name != "VendorCatalog") continue;
@@ -157,11 +153,4 @@ public class InternalVendor : IBundledXml
             }
         }
     }
-
-    public void FinalizeBundle()
-    {
-    }
-
-    public VendorInfo GetVendorById(int levelId, int id) =>
-        VendorCatalog.TryGetValue(levelId, out var vendors) ? vendors.FirstOrDefault(x => x.GameObjectId == id) : null;
 }

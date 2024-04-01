@@ -7,10 +7,10 @@ using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesEdit;
-public class EditVendor : IBundledXml
+public class EditVendor : InternalXml
 {
-    public string BundleName => "EditVendor";
-    public BundlePriority Priority => BundlePriority.Low;
+    public override string BundleName => "EditVendor";
+    public override BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<EditVendor> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
@@ -18,22 +18,11 @@ public class EditVendor : IBundledXml
 
     public Dictionary<GameVersion, Dictionary<string, List<string>>> EditedVendorAttributes;
 
-    public EditVendor()
-    {
-    }
-
-    public void InitializeVariables() =>
+    public override void InitializeVariables() =>
         EditedVendorAttributes = [];
 
-    public void EditDescription(XmlDocument xml)
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         foreach (XmlNode items in xmlDocument.ChildNodes)
         {
             if (!(items.Name == "EditedVendors")) continue;
@@ -95,9 +84,5 @@ public class EditVendor : IBundledXml
                 }
             }
         }
-    }
-
-    public void FinalizeBundle()
-    {
     }
 }

@@ -5,25 +5,22 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalDefaultEnemies : IBundledXml
+public class InternalDefaultEnemies : InternalXml
 {
-    public string BundleName => "InternalDefaultEnemies";
-    public BundlePriority Priority => BundlePriority.Low;
-
+    public override string BundleName => "InternalDefaultEnemies";
+    public override BundlePriority Priority => BundlePriority.Low;
 
     public Dictionary<string, BehaviorModel> EnemyInfoCatalog;
 
-    public void InitializeVariables() => EnemyInfoCatalog = [];
+    public override void InitializeVariables() => EnemyInfoCatalog = [];
 
-    public void EditDescription(XmlDocument xml)
+    public BehaviorModel GetBehaviorsByName(string enemyName) =>
+        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ?
+            behaviors :
+            new BehaviorModel([], [], [], new HitboxModel(0, 0, 0, 0));
+
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         foreach (XmlNode enemyXml in xmlDocument.ChildNodes)
         {
             if (enemyXml.Name != "InternalDefaultEnemies") continue;
@@ -41,6 +38,7 @@ public class InternalDefaultEnemies : IBundledXml
                         enemyType = enemyName.Value;
                         continue;
                     }
+
                 foreach (XmlNode behavior in enemy.ChildNodes)
                 {
                     var behaviorDataModel = new BehaviorDataModel([], []);
@@ -49,6 +47,7 @@ public class InternalDefaultEnemies : IBundledXml
                     {
                         var resourceType = string.Empty;
                         var resourceName = string.Empty;
+
                         foreach (XmlAttribute enemyResourceData in enemyResource.Attributes)
                         {
                             if (enemyResourceData.Name.Equals("type"))
@@ -56,13 +55,13 @@ public class InternalDefaultEnemies : IBundledXml
                             else if (enemyResourceData.Name.Equals("name"))
                                 resourceName = enemyResourceData.Value;
                         }
+
                         if (!string.IsNullOrEmpty(resourceType))
                             behaviorDataModel.Resources.Add(new EnemyResourceModel(resourceType, resourceName));
                     }
 
                     switch (behavior.Name)
                     {
-
                         // Patrol Behavior
                         case "Patrol":
                             var speed = 0f;
@@ -480,11 +479,4 @@ public class InternalDefaultEnemies : IBundledXml
             }
         }
     }
-
-    public void FinalizeBundle()
-    {
-    }
-
-    public BehaviorModel GetBehaviorsByName(string enemyName) =>
-        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ? behaviors : new BehaviorModel([], [], [], new HitboxModel(0, 0, 0, 0));
 }

@@ -8,10 +8,7 @@ public interface IBundledXml
     public BundlePriority Priority { get; }
 
     public void InitializeVariables();
-
     public void EditDescription(XmlDocument xml);
-
     public void ReadDescription(string xml);
-
     public void FinalizeBundle();
 }

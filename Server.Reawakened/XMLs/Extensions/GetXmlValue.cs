@@ -14,7 +14,7 @@ public static class GetXmlValue
         else if (Enum.TryParse(typeof(T), attribute, ignoreCase: true, out var enumValue))
             return (T)enumValue;
 
-        logger.LogError("Unknown enum type: {Name} for {Type}", attribute, typeof(T).Name);
+        logger.LogError("Unknown enum type: '{Name}' for '{Type}'", attribute, typeof(T).Name);
 
         return value;
     }
@@ -26,7 +26,7 @@ public static class GetXmlValue
         else if (attribute.Equals("false", StringComparison.CurrentCultureIgnoreCase))
             return false;
 
-        logger.LogError("Unknown bool value: {Type}", attribute);
+        logger.LogError("Unknown bool value: '{Type}'", attribute);
 
         return value;
     }
@@ -39,7 +39,7 @@ public static class GetXmlValue
         if (DateTime.TryParse(attribute, out var date))
             return DateTime.SpecifyKind(date, DateTimeKind.Utc);
 
-        logger.LogError("Unknown date time: {Type}", attribute);
+        logger.LogError("Unknown date time: '{Type}'", attribute);
 
         return value;
     }

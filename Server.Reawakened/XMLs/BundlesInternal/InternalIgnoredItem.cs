@@ -4,31 +4,20 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalIgnoredItem : IBundledXml
+public class InternalIgnoredItem : InternalXml
 {
-    public string BundleName => "InternalIgnoredItem";
-    public BundlePriority Priority => BundlePriority.Highest;
+    public override string BundleName => "InternalIgnoredItem";
+    public override BundlePriority Priority => BundlePriority.Highest;
 
     private List<string> _ignoredItems;
 
-    public InternalIgnoredItem()
-    {
-    }
-
-    public void InitializeVariables() =>
+    public override void InitializeVariables() =>
         _ignoredItems = [];
 
     public bool IsItemIgnored(string name) => _ignoredItems.Contains(name.ToUpper());
 
-    public void EditDescription(XmlDocument xml)
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         foreach (XmlNode itemsXml in xmlDocument.ChildNodes)
         {
             if (!(itemsXml.Name == "IgnoredItems")) continue;
@@ -53,9 +42,5 @@ public class InternalIgnoredItem : IBundledXml
                     _ignoredItems.Add(itemName);
             }
         }
-    }
-
-    public void FinalizeBundle()
-    {
     }
 }

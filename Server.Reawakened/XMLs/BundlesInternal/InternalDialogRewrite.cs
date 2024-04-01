@@ -4,25 +4,17 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalDialogRewrite : IBundledXml
+public class InternalDialogRewrite : InternalXml
 {
-    public string BundleName => "InternalDialogRewrite";
-    public BundlePriority Priority => BundlePriority.Medium;
-
+    public override string BundleName => "InternalDialogRewrite";
+    public override BundlePriority Priority => BundlePriority.Medium;
 
     public Dictionary<string, string> Rewrites;
 
-    public void InitializeVariables() => Rewrites = [];
+    public override void InitializeVariables() => Rewrites = [];
 
-    public void EditDescription(XmlDocument xml)
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         foreach (XmlNode dialogRewriteXml in xmlDocument.ChildNodes)
         {
             if (dialogRewriteXml.Name != "DialogRewrites") continue;
@@ -51,9 +43,5 @@ public class InternalDialogRewrite : IBundledXml
                 Rewrites.Add(oldDialogName, newDialogName);
             }
         }
-    }
-
-    public void FinalizeBundle()
-    {
     }
 }

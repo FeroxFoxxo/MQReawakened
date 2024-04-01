@@ -7,10 +7,10 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalDialog : IBundledXml
+public class InternalDialog : InternalXml
 {
-    public string BundleName => "InternalDialog";
-    public BundlePriority Priority => BundlePriority.Medium;
+    public override string BundleName => "InternalDialog";
+    public override BundlePriority Priority => BundlePriority.Medium;
 
     public ILogger<InternalDialog> Logger { get; set; }
     public MiscTextDictionary MiscTextDictionary { get; set; }
@@ -18,17 +18,17 @@ public class InternalDialog : IBundledXml
     // <Level Id, <Npc Id, Dialog Info>>
     public Dictionary<int, Dictionary<int, DialogInfo>> NpcDialogs;
 
-    public void InitializeVariables() => NpcDialogs = [];
+    public override void InitializeVariables() => NpcDialogs = [];
 
-    public void EditDescription(XmlDocument xml)
+    public DialogInfo GetDialogById(int levelId, int dialogId) =>
+        NpcDialogs.TryGetValue(levelId, out var levelInfo) ?
+        levelInfo.TryGetValue(dialogId, out var dialog) ?
+        dialog :
+        null :
+        null;
+
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         foreach (XmlNode dialogXml in xmlDocument.ChildNodes)
         {
             if (dialogXml.Name != "DialogCatalog") continue;
@@ -120,15 +120,4 @@ public class InternalDialog : IBundledXml
             }
         }
     }
-
-    public void FinalizeBundle()
-    {
-    }
-
-    public DialogInfo GetDialogById(int levelId, int dialogId) =>
-        NpcDialogs.TryGetValue(levelId, out var levelInfo) ?
-        levelInfo.TryGetValue(dialogId, out var dialog) ?
-        dialog :
-        null :
-        null;
 }

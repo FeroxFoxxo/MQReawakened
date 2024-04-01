@@ -1150,7 +1150,7 @@
             <Item prefabName="Add_SHD_Snake01_S02" />
             <Item prefabName="WPN_PRJ_AirFist01" />
             <Item prefabName="Add_SHD_Snake01_LS02" />
-            <Item prefabName="Panda Costume Pack" />
+            <Item prefabName="COL_PACK_NC_Panda01" />
         </Vendor>
     </Level>
 </VendorCatalog>

@@ -8,10 +8,10 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalRecipe : IBundledXml
+public class InternalRecipe : InternalXml
 {
-    public string BundleName => "InternalRecipe";
-    public BundlePriority Priority => BundlePriority.Low;
+    public override string BundleName => "InternalRecipe";
+    public override BundlePriority Priority => BundlePriority.Low;
 
     public ILogger<InternalRecipe> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
@@ -19,21 +19,17 @@ public class InternalRecipe : IBundledXml
     public Dictionary<int, RecipeModel> RecipeCatalog;
     public Dictionary<string, List<int>> RecipeTypeList;
 
-    public void InitializeVariables()
+    public override void InitializeVariables()
     {
         RecipeCatalog = [];
         RecipeTypeList = [];
     }
 
-    public void EditDescription(XmlDocument xml)
-    {
-    }
+    public RecipeModel GetRecipeById(int recipeId) =>
+        RecipeCatalog.TryGetValue(recipeId, out var recipeInfo) ? recipeInfo : RecipeCatalog[0];
 
-    public void ReadDescription(string xml)
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         foreach (XmlNode recipeXml in xmlDocument.ChildNodes)
         {
             if (recipeXml.Name != "RecipeCatalog") continue;
@@ -116,11 +112,4 @@ public class InternalRecipe : IBundledXml
             }
         }
     }
-
-    public void FinalizeBundle()
-    {
-    }
-
-    public RecipeModel GetRecipeById(int recipeId) =>
-        RecipeCatalog.TryGetValue(recipeId, out var recipeInfo) ? recipeInfo : RecipeCatalog[0];
 }

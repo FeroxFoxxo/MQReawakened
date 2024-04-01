@@ -4,24 +4,20 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalColliders : IBundledXml
+public class InternalColliders : InternalXml
 {
-    public string BundleName => "InternalColliders";
-    public BundlePriority Priority => BundlePriority.High;
+    public override string BundleName => "InternalColliders";
+    public override BundlePriority Priority => BundlePriority.High;
 
     public Dictionary<int, List<ColliderModel>> TerrainColliderCatalog;
 
-    public void InitializeVariables() => TerrainColliderCatalog = [];
+    public override void InitializeVariables() => TerrainColliderCatalog = [];
 
-    public void EditDescription(XmlDocument xml)
+    public List<ColliderModel> GetTerrainColliders(int id) =>
+        TerrainColliderCatalog.TryGetValue(id, out var colliders) ? colliders : [];
+
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         foreach (XmlNode colliderXml in xmlDocument.ChildNodes)
         {
             if (colliderXml.Name != "InternalColliders") continue;
@@ -82,11 +78,4 @@ public class InternalColliders : IBundledXml
             }
         }
     }
-
-    public void FinalizeBundle()
-    {
-    }
-
-    public List<ColliderModel> GetTerrainColliders(int id) =>
-        TerrainColliderCatalog.TryGetValue(id, out var colliders) ? colliders : [];
 }

@@ -9,10 +9,10 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalItem : IBundledXml
+public class InternalItem : InternalXml
 {
-    public string BundleName => "InternalItem";
-    public BundlePriority Priority => BundlePriority.High;
+    public override string BundleName => "InternalItem";
+    public override BundlePriority Priority => BundlePriority.High;
 
     public ILogger<InternalItem> Logger { get; set; }
     public MiscTextDictionary MiscTextDictionary { get; set; }
@@ -22,25 +22,14 @@ public class InternalItem : IBundledXml
     public Dictionary<int, ItemDescription> Items;
     public Dictionary<int, string> Descriptions;
 
-    public InternalItem()
-    {
-    }
-
-    public void InitializeVariables()
+    public override void InitializeVariables()
     {
         Items = [];
         Descriptions = [];
     }
 
-    public void EditDescription(XmlDocument xml)
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         foreach (XmlNode itemXml in xmlDocument.ChildNodes)
         {
             if (!(itemXml.Name == "Catalog")) continue;
@@ -259,7 +248,7 @@ public class InternalItem : IBundledXml
 
                         if (string.IsNullOrEmpty(nameId.Value))
                         {
-                            Logger.LogError("Could not find name for item {ItemName} in misc dictionary", itemName);
+                            Logger.LogError("Could not find name for item '{ItemName}' in misc dictionary", itemName);
                             continue;
                         }
 
@@ -267,7 +256,7 @@ public class InternalItem : IBundledXml
 
                         if (!string.IsNullOrEmpty(prefabName))
                             if (Items.TryGetValue(itemId, out var itemDesc))
-                                Logger.LogError("Item {PrefabName} cannot be added as item {PrefabName} already exists with id {Id}", prefabName, itemDesc.PrefabName, itemId);
+                                Logger.LogError("Item '{PrefabName}' cannot be added as item '{PrefabName}' already exists with id '{Id}'", prefabName, itemDesc.PrefabName, itemId);
                             else
                                 Items.Add(itemId, new ItemDescription(itemId,
                                     tribe, itemCategoryType, subCategoryType, actionType,
@@ -299,11 +288,7 @@ public class InternalItem : IBundledXml
                     0, DateTime.Now, false, 0));
             }
             else
-                Logger.LogError("Objective with id {Id} and prefab {Name} already exists in item dictionary!", obj.Key, obj.Value);
+                Logger.LogError("Objective with id '{Id}' and prefab '{Name}' already exists in item dictionary!", obj.Key, obj.Value);
         }
-    }
-
-    public void FinalizeBundle()
-    {
     }
 }

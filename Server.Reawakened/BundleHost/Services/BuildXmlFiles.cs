@@ -96,14 +96,25 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
                     XmlFiles.Add(localizedAsset.Name, locPath);
                 }
 
-                var xml = new XmlDocument();
-                xml.LoadXml(text);
+                var settings = new XmlReaderSettings() { IgnoreComments = true, IgnoreWhitespace = true };
+                var xmlDocument = new XmlDocument();
 
-                bundle.EditDescription(xml);
+                using var reader = XmlReader.Create(new StringReader(text), settings);
 
-                text = xml.WriteToString();
+                xmlDocument.Load(reader);
 
-                bundle.ReadDescription(text);
+                bundle.EditDescription(xmlDocument);
+
+                if (bundle is InternalXml internalXml)
+                {
+                    internalXml.ReadDescription(xmlDocument);
+                }
+                else
+                {
+                    text = xmlDocument.WriteToString();
+                    bundle.ReadDescription(text);
+                }
+
                 bundle.FinalizeBundle();
 
                 bundles.Remove(asset.Name);

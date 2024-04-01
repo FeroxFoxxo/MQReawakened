@@ -6,10 +6,10 @@ using Server.Reawakened.XMLs.Extensions;
 using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesEdit;
-public class EditItem : IBundledXml
+public class EditItem : InternalXml
 {
-    public string BundleName => "EditItem";
-    public BundlePriority Priority => BundlePriority.Highest;
+    public override string BundleName => "EditItem";
+    public override BundlePriority Priority => BundlePriority.Highest;
 
     public ILogger<EditItem> Logger { get; set; }
     public ServerRConfig Config { get; set; }
@@ -17,25 +17,15 @@ public class EditItem : IBundledXml
     private Dictionary<GameVersion, Dictionary<string, Dictionary<string, string>>> _editedItemAttributes;
     private GameVersion[] _possibleVersions;
 
-    public EditItem()
-    {
-    }
-
-    public void InitializeVariables()
+    public override void InitializeVariables()
     {
         _editedItemAttributes = [];
         _possibleVersions = [];
     }
+    public GameVersion[] GetPossibleVersions() => [.. _editedItemAttributes.Keys.Where(v => v <= Config.GameVersion).OrderBy(v => v)];
 
-    public void EditDescription(XmlDocument xml)
+    public override void ReadDescription(XmlDocument xmlDocument)
     {
-    }
-
-    public void ReadDescription(string xml)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(xml);
-
         foreach (XmlNode items in xmlDocument.ChildNodes)
         {
             if (!(items.Name == "EditedItems")) continue;
@@ -125,8 +115,4 @@ public class EditItem : IBundledXml
 
         return attributes;
     }
-
-    public GameVersion[] GetPossibleVersions() => [.. _editedItemAttributes.Keys.Where(v => v <= Config.GameVersion).OrderBy(v => v)];
-
-    public void FinalizeBundle() { }
 }
