@@ -320,6 +320,8 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         field.SetValue(null, this);
 
         Items = (Dictionary<int, ItemDescription>)this.GetField<ItemHandler>("_itemDescriptionCache");
+
+        IconBank.CheckDuplicatedIcons(this);
     }
 
     public new ItemDescription GetItemFromId(int id)

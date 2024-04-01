@@ -107,10 +107,10 @@
       <None Update="Assets\LocalAssets\InternalIgnoredItem.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="BundleHost\DLLs\X64\Texture2DDecoderNative.dll">
+      <None Update="DLLs\X64\Texture2DDecoderNative.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="BundleHost\DLLs\X86\Texture2DDecoderNative.dll">
+      <None Update="DLLs\X86\Texture2DDecoderNative.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="BundleHost\Licences\LICENSE_ASSETRIPPER">

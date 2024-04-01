@@ -11,7 +11,7 @@ using System.Collections.Specialized;
 namespace Server.Reawakened.Icons.Services;
 
 public class ExtractIcons(IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBundleRwConfig aRwConfig,
-    ILogger<ExtractIcons> logger, IServiceProvider services, ServerHandler serverHandler, ItemCatalog itemCatalog)
+    ILogger<ExtractIcons> logger, IServiceProvider services, ServerHandler serverHandler)
 {
     private string[] _knownIconNames = [];
 
@@ -54,25 +54,11 @@ public class ExtractIcons(IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBun
         if (outOfDateCache > 0)
         {
             Directory.CreateDirectory(rConfig.IconDirectory).Empty();
-            Directory.CreateDirectory(rConfig.UnknownItemsDirectory).Empty();
 
             foreach (var asset in knownIcons)
                 ExtractIconsFrom(asset.Value, asset.Key);
 
             services.SaveConfigs(serverHandler.Modules, logger);
-
-            var icons = Directory.GetFiles(rConfig.IconDirectory);
-
-            foreach (var icon in icons)
-            {
-                var name = Path.GetFileNameWithoutExtension(icon);
-                var nameWExten = Path.GetFileName(icon);
-
-                if (itemCatalog.Items.Any(x => x.Value.PrefabName == name))
-                    continue;
-
-                File.Copy(icon, Path.Combine(rConfig.UnknownItemsDirectory, nameWExten));
-            }
         }
 
         var iconNames = new List<string>();
@@ -89,6 +75,22 @@ public class ExtractIcons(IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBun
         _knownIconNames = [.. iconNames.OrderBy(a => a)];
 
         logger.LogDebug("Read {Count} icons from file.", _knownIconNames.Length);
+    }
+
+    public void CheckDuplicatedIcons(ItemCatalog itemCatalog)
+    {
+        Directory.CreateDirectory(rConfig.UnknownItemsDirectory).Empty();
+
+        foreach (var icon in Directory.GetFiles(rConfig.IconDirectory))
+        {
+            var name = Path.GetFileNameWithoutExtension(icon);
+            var nameWExten = Path.GetFileName(icon);
+
+            if (itemCatalog.Items.Any(x => x.Value.PrefabName == name))
+                continue;
+
+            File.Copy(icon, Path.Combine(rConfig.UnknownItemsDirectory, nameWExten));
+        }
     }
 
     private Dictionary<string, Texture2D> GetIcons(InternalAssetInfo asset)
