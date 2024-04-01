@@ -8,8 +8,6 @@ public abstract class Module(ILogger logger)
 {
     public readonly ILogger Logger = logger;
 
-    public abstract string[] Contributors { get; }
-
     public virtual string GetModuleInformation() => GetType().Namespace;
 
     public virtual void AddLogging(ILoggingBuilder loggingBuilder)

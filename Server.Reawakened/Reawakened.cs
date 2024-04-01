@@ -15,8 +15,6 @@ namespace Server.Reawakened;
 
 public class Reawakened(ILogger<Reawakened> logger) : Module(logger)
 {
-    public override string[] Contributors { get; } = ["Ferox"];
-
     public override void AddServices(IServiceCollection services, Module[] modules)
     {
         Logger.LogDebug("Loading thrift handlers");

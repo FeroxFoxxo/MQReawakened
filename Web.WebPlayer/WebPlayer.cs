@@ -5,5 +5,4 @@ namespace Web.WebPlayer;
 
 public class WebPlayer(ILogger<WebPlayer> logger) : WebModule(logger)
 {
-    public override string[] Contributors { get; } = ["Ferox"];
 }

@@ -16,8 +16,6 @@ namespace Server.Base;
 
 public class Server(ILogger<Server> logger) : Module(logger)
 {
-    public override string[] Contributors { get; } = ["Ferox", "ServUO"];
-
     public override void AddLogging(ILoggingBuilder loggingBuilder)
     {
         loggingBuilder.ClearProviders();

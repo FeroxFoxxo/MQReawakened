@@ -13,7 +13,7 @@ namespace Server.Reawakened.XMLs.BundlesInternal;
 
 public class InternalItem : IBundledXml
 {
-    public string BundleName => "InternalCatalog";
+    public string BundleName => "InternalItem";
     public BundlePriority Priority => BundlePriority.High;
 
     public ILogger<InternalItem> Logger { get; set; }

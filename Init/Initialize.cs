@@ -50,15 +50,7 @@ public class Initialize
         var modules = ImportModules.GetModules();
 
         foreach (var module in modules)
-        {
             logger.LogInformation("Imported {ModuleInfo}", module.GetModuleInformation());
-
-            if (module.Contributors.Length <= 0)
-                continue;
-
-            logger.LogTrace("    Contributed By:      ");
-            logger.LogTrace("        {Contributors}", string.Join(", ", module.Contributors));
-        }
 
         logger.LogInformation("Fetched {ModuleCount} modules", modules.Length);
 

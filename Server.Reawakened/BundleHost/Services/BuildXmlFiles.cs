@@ -32,7 +32,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
 
         foreach (var bundle in bundles)
         {
-            foreach (var property in bundle.GetProperties())
+            foreach (var property in bundle.Value.GetProperties())
             {
                 var service = services.GetService(property.PropertyType);
 

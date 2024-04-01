@@ -5,5 +5,4 @@ namespace Web.Launcher;
 
 public class Launcher(ILogger<Launcher> logger) : WebModule(logger)
 {
-    public override string[] Contributors { get; } = ["Ferox"];
 }

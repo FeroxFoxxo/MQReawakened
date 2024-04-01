@@ -18,8 +18,6 @@ namespace Server.Web;
 
 public class Web(ILogger<Web> logger) : WebModule(logger)
 {
-    public override string[] Contributors { get; } = ["Ferox"];
-
     public override void AddServices(IServiceCollection services, Module[] modules)
     {
         services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
