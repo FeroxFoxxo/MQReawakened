@@ -1,8 +1,7 @@
 ﻿using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Enemies.AIStateEnemies;
 using Server.Reawakened.Rooms;
 
-namespace Server.Reawakened.Entities.Enemies.EnemyAI.AIStateEnemies;
+namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.Spiderling;
 public class EnemySpiderling(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : AIStateEnemy(room, entityId, prefabName, enemyController, services)
 {
     public override void Initialize()

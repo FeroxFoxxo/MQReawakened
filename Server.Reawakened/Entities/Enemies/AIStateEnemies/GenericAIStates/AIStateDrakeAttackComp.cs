@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.AIStates;
+namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.GenericAIStates;
 public class AIStateDrakeAttackComp : Component<AIStateDrakeAttack>
 {
     public float RamSpeed => ComponentData.RamSpeed;
