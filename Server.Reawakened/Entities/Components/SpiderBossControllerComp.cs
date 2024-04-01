@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Entities.AIStates;
-using Server.Reawakened.Entities.AIStates.SyncEvents;
+using Server.Reawakened.Entities.Enemies.AIStateEnemies.Rachnok.AIStates;
+using Server.Reawakened.Entities.Enemies.AIStateEnemies.SyncEvents;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;

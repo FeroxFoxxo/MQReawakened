@@ -8,7 +8,7 @@ using A2m.Server;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Enemies.Utils;
+using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 
 namespace Server.Reawakened.Entities.Components;
 public class DroppingsControllerComp : Component<DroppingsController>

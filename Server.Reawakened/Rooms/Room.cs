@@ -6,6 +6,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enemies;
+using Server.Reawakened.Entities.Enemies.AIStateEnemies.Rachnok;
 using Server.Reawakened.Entities.Enemies.EnemyAI.AIStateEnemies;
 using Server.Reawakened.Entities.Enemies.EnemyAI.BehaviorEnemies;
 using Server.Reawakened.Entities.Interfaces;

@@ -15,11 +15,13 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value="COL_PRJ_WaterMelon"/>
         </GlobalProperties>
-        <Patrol speed="3.2" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="1" fireSpreadAngle="0" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
-            <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="3.2" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="1" fireSpreadAngle="0" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
+                <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1583" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -41,11 +43,13 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value="COL_PRJ_WaterMelon"/>
         </GlobalProperties>
-        <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="15" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
-            <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="15" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
+                <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -68,11 +72,13 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value="COL_PRJ_WaterMelon"/>
         </GlobalProperties>
-        <Patrol speed="3.2" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="15" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
-            <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="3.2" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="15" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-90">
+                <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1583" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1582" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -94,11 +100,13 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value="COL_PRJ_WaterMelon"/>
         </GlobalProperties>
-        <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="3" fireSpreadAngle="30" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-105">
-            <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="3" fireSpreadAngle="30" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-105">
+                <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1583" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1582" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -121,11 +129,13 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value="COL_PRJ_WaterMelon"/>
         </GlobalProperties>
-        <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="3" fireSpreadAngle="30" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-105">
-            <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="3.6" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="1.8" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="3" fireSpreadAngle="30" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="0.6" startCoolDownTime="0.0" endCoolDownTime="0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-105">
+                <Resource type="PROJ" name="COL_PRJ_WaterMelon"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1583" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1582" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -151,10 +161,12 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-		<Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <ComeBack speed="3.2"/>
+        <Behaviors>
+            <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <ComeBack speed="3.2"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -176,10 +188,12 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <ComeBack speed="3.2"/>
+        <Behaviors>
+            <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <ComeBack speed="3.2"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -201,10 +215,12 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <ComeBack speed="3.2"/>
+        <Behaviors>
+            <Patrol speed="3.2" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="4" detectionRangeDownY="4"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <ComeBack speed="3.2"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="868" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1602" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -226,10 +242,12 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="3.6" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="3.6" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="6" detectionRangeDownY="6"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <ComeBack speed="3.6"/>
+        <Behaviors>
+            <Patrol speed="3.6" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="3.6" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="6" detectionRangeDownY="6"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <ComeBack speed="3.6"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="868" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1602" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -252,10 +270,12 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="4.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="6" detectionRangeDownY="6"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <ComeBack speed="4.0"/>
+        <Behaviors>
+            <Patrol speed="4.0" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="6" detectionRangeDownY="6"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <ComeBack speed="4.0"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="868" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1602" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -281,9 +301,11 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="4.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Behaviors>
+            <Patrol speed="4.0" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        </Behaviors>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider_Boss">
@@ -300,12 +322,14 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="5" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="5" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -330,12 +354,14 @@
             <ShootOffsetY value="-2.9"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="5" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="5" fireSpreadAngle="60" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="-60">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="5" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="5" fireSpreadAngle="60" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="-60">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -360,12 +386,14 @@
             <ShootOffsetY value="2.9"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="5" fireSpreadAngle="60" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="5" fireSpreadAngle="60" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -389,12 +417,14 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-		<Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65"/>
@@ -417,12 +447,14 @@
             <ShootOffsetY value="-1"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65"/>
@@ -445,12 +477,14 @@
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.01" minLevel="6" maxLevel="65"/>
@@ -472,12 +506,14 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -501,12 +537,14 @@
             <ShootOffsetY value="-2"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -530,12 +568,14 @@
             <ShootOffsetY value="2"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -558,12 +598,14 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -586,12 +628,14 @@
             <ShootOffsetY value="-1.5"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -614,12 +658,14 @@
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.0" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.6" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="0.8" startCoolDownTime="0.0" endCoolDownTime="2" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -641,12 +687,14 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -670,12 +718,14 @@
             <ShootOffsetY value="-2.2"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -699,12 +749,14 @@
             <ShootOffsetY value="2.2"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1599" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1065" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -729,10 +781,12 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <ComeBack speed="2.4"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <ComeBack speed="2.4"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="864" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="866" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -755,13 +809,15 @@
             <ShootOffsetY value="0.5"/>
             <ProjectilePrefabName value="COL_PRJ_DamageProjectile"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
-        </Shooting>
-        <ComeBack speed="2.4"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="3"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
+            </Shooting>
+            <ComeBack speed="2.4"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="864" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="866" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -783,10 +839,12 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <ComeBack speed="2.4"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <ComeBack speed="2.4"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -812,13 +870,15 @@
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
-        </Shooting>
-        <ComeBack speed="2.4"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
+            </Shooting>
+            <ComeBack speed="2.4"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -843,10 +903,12 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <ComeBack speed="2.4"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <ComeBack speed="2.4"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -872,13 +934,15 @@
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_DamageProjectile"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
-        </Shooting>
-        <ComeBack speed="2.4"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
+            </Shooting>
+            <ComeBack speed="2.4"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -903,10 +967,12 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <ComeBack speed="2.4"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <ComeBack speed="2.4"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -932,13 +998,15 @@
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
-        <ComeBack speed="2.4"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+            <ComeBack speed="2.4"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="864" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="866" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -963,10 +1031,12 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <ComeBack speed="3.2"/>
+        <Behaviors>
+            <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <ComeBack speed="3.2"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="864" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="866" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -990,13 +1060,15 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value="COL_PRJ_DamageSuperProjectile"/>
         </GlobalProperties>
-        <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="5" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile"/>
-        </Shooting>
-        <ComeBack speed="3.2"/>
+        <Behaviors>
+            <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="5" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.5" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile"/>
+            </Shooting>
+            <ComeBack speed="3.2"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="864" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="866" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -1022,12 +1094,14 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Bomber inTime="0.5" loopTime="0.5" bombRadius="1.5">
-            <Resource type="EABIL" name="PF_EABIL_Spite_Bomber"/>
-        </Bomber>
+        <Behaviors>
+            <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Bomber inTime="0.5" loopTime="0.5" bombRadius="1.5">
+                <Resource type="EABIL" name="PF_EABIL_Spite_Bomber"/>
+            </Bomber>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="3052" chance="0.2" minLevel="5" maxLevel="65"/>
         </LootTable>
@@ -1047,12 +1121,14 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2"/>
-        <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Bomber inTime="0.5" loopTime="0.5" bombRadius="1.5">
-            <Resource type="EABIL" name="PF_EABIL_Spite_Bomber_Fire"/>
-        </Bomber>
+        <Behaviors>
+            <Patrol speed="2.4" smoothMove="false" endPathWaitTime="2"/>
+            <Aggro speed="5.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Bomber inTime="0.5" loopTime="0.5" bombRadius="1.5">
+                <Resource type="EABIL" name="PF_EABIL_Spite_Bomber_Fire"/>
+            </Bomber>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="3052" chance="0.5" minLevel="5" maxLevel="65"/>
         </LootTable>
@@ -1074,9 +1150,11 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
-        <Aggro speed="4.8" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
+            <Aggro speed="4.8" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1585" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1586" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -1100,9 +1178,11 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
-        <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
+            <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1127,9 +1207,11 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
-        <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
+            <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1154,9 +1236,11 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-		<Patrol speed="1.6" smoothMove="false" endPathWaitTime="3"/>
-		<Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Behaviors>
+            <Patrol speed="1.6" smoothMove="false" endPathWaitTime="3"/>
+            <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1585" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1586" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -1178,9 +1262,11 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
-        <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
+            <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1586" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1208,11 +1294,13 @@
             <ShootOffsetY value="0.5"/>
             <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="1" fireSpreadAngle="0" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="1" fireSpreadAngle="0" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1589" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1587" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -1235,11 +1323,13 @@
             <ShootOffsetY value="0.6"/>
             <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1265,11 +1355,13 @@
             <ShootOffsetY value="0.6"/>
             <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1295,11 +1387,13 @@
             <ShootOffsetY value="0.7"/>
             <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1589" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1587" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -1324,11 +1418,13 @@
             <ShootOffsetY value="0.6"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="2" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1589" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1587" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1354,12 +1450,14 @@
             <BackDetectionRangeDownY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_GrenadierRock"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Grenadier inTime="0.5" loopTime="0.5" outTime="1" isTracking="false" projCount="2" projSpeed="1" maxHeight="3">
-            <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier"/>
-            <Resource type="PROJ" name="COL_PRJ_GrenadierRock"/>
-        </Grenadier>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Grenadier inTime="0.5" loopTime="0.5" outTime="1" isTracking="false" projCount="2" projSpeed="1" maxHeight="3">
+                <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier"/>
+                <Resource type="PROJ" name="COL_PRJ_GrenadierRock"/>
+            </Grenadier>
+        </Behaviors>
         <Hitbox width="1" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
     <Enemy name="PF_Spite_Grenadier_Lava">
@@ -1375,12 +1473,14 @@
             <BackDetectionRangeDownY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_GrenadierLava"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Grenadier inTime="0.5" loopTime="0.5" outTime="1" isTracking="false" projCount="3" projSpeed="5" maxHeight="5">
-            <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier_Fire"/>
-            <Resource type="PROJ" name="COL_PRJ_GrenadierLava"/>
-        </Grenadier>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Grenadier inTime="0.5" loopTime="0.5" outTime="1" isTracking="false" projCount="3" projSpeed="5" maxHeight="5">
+                <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier_Fire"/>
+                <Resource type="PROJ" name="COL_PRJ_GrenadierLava"/>
+            </Grenadier>
+        </Behaviors>
         <Hitbox width="1" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
     <Enemy name="PF_Spite_Grenadier_Swamp">
@@ -1396,12 +1496,14 @@
             <BackDetectionRangeDownY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_GrenadierSwamp"/>
         </GlobalProperties>
-        <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
-        <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Grenadier inTime="0.5" loopTime="0.5" outTime="1" isTracking="false" projCount="3" projSpeed="5" maxHeight="5">
-            <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier_Poison"/>
-            <Resource type="PROJ" name="COL_PRJ_GrenadierSwamp"/>
-        </Grenadier>
+        <Behaviors>
+            <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2"/>
+            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Grenadier inTime="0.5" loopTime="0.5" outTime="1" isTracking="false" projCount="3" projSpeed="5" maxHeight="5">
+                <Resource type="EABIL" name="PF_EABIL_Spite_Grenadier_Poison"/>
+                <Resource type="PROJ" name="COL_PRJ_GrenadierSwamp"/>
+            </Grenadier>
+        </Behaviors>
         <Hitbox width="1" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
     
@@ -1420,11 +1522,13 @@
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_DamageProjectile"/>
         </GlobalProperties>
-        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="1" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="1" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1593" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1595" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -1446,11 +1550,13 @@
             <ShootOffsetY value="-1"/>
             <ProjectilePrefabName value="COL_PRJ_DamageProjectile"/>
         </GlobalProperties>
-        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="1" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="1" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="4.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1593" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1595" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -1472,11 +1578,13 @@
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
         </GlobalProperties>
-        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1501,11 +1609,13 @@
             <ShootOffsetY value="-1"/>
             <ProjectilePrefabName value="COL_PRJ_FireProjectile"/>
         </GlobalProperties>
-        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_FireProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1530,11 +1640,13 @@
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1559,11 +1671,13 @@
             <ShootOffsetY value="-1"/>
             <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1"/>
         </GlobalProperties>
-        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1588,11 +1702,13 @@
             <ShootOffsetY value="1"/>
             <ProjectilePrefabName value="COL_PRJ_DamageProjectile"/>
         </GlobalProperties>
-        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1617,11 +1733,13 @@
             <ShootOffsetY value="-1"/>
             <ProjectilePrefabName value="COL_PRJ_DamageProjectile"/>
         </GlobalProperties>
-        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="2" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_DamageProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1593" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1595" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1646,11 +1764,13 @@
             <ShootOffsetY value="2"/>
             <ProjectilePrefabName value="COL_PRJ_DamageSuperProjectile"/>
         </GlobalProperties>
-        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="10" fireSpreadAngle="180" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
-            <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="10" fireSpreadAngle="180" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1593" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1595" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -1674,11 +1794,13 @@
             <ShootOffsetY value="-2"/>
             <ProjectilePrefabName value="COL_PRJ_DamageSuperProjectile"/>
         </GlobalProperties>
-        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
-        <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Shooting nbBulletsPerRound="10" fireSpreadAngle="180" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
-            <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile"/>
-        </Shooting>
+        <Behaviors>
+            <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Shooting nbBulletsPerRound="10" fireSpreadAngle="180" delayBetweenBullet="0.05" delayShoot_Anim="1.3" nbFireRounds="2" delayBetweenFireRound="1.5" startCoolDownTime="1.0" endCoolDownTime="1.0" projectileSpeed="8.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                <Resource type="PROJ" name="COL_PRJ_DamageSuperProjectile"/>
+            </Shooting>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="1593" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1595" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -1704,9 +1826,11 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
-        <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Behaviors>
+            <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
+            <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="867" chance="0.8" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1596" chance="0.5" minLevel="6" maxLevel="65"/>
@@ -1730,9 +1854,11 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
-        <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Behaviors>
+            <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
+            <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1757,9 +1883,11 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
-        <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Behaviors>
+            <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
+            <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1784,9 +1912,11 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
-        <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Behaviors>
+            <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
+            <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="867" chance="0.2" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1596" chance="0.1" minLevel="6" maxLevel="65"/>
@@ -1808,9 +1938,11 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-		<Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
-        <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        <Behaviors>
+            <Patrol speed="2.4" smoothMove="false" endPathWaitTime="0"/>
+            <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+        </Behaviors>
         <LootTable>
             <Drop type="item" id="867" chance="0.5" minLevel="5" maxLevel="65"/>
             <Drop type="item" id="1596" chance="0.2" minLevel="6" maxLevel="65"/>
@@ -1836,12 +1968,14 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-		<Patrol speed="1.5" smoothMove="false" endPathWaitTime="4"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
-            <Resource type="EABIL" name="PF_EABIL_Spite_Stomper"/>
-        </Stomper>
+        <Behaviors>
+            <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4"/>
+            <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
+                <Resource type="EABIL" name="PF_EABIL_Spite_Stomper"/>
+            </Stomper>
+        </Behaviors>
         <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
 	</Enemy>
     <Enemy name="PF_Spite_Stomper_Lava">
@@ -1858,12 +1992,14 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
-            <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Fire"/>
-        </Stomper>
+        <Behaviors>
+            <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4"/>
+            <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
+                <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Fire"/>
+            </Stomper>
+        </Behaviors>
         <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Stomper_Swamp">
@@ -1880,12 +2016,14 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
-            <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Poison"/>
-        </Stomper>
+        <Behaviors>
+            <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4"/>
+            <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
+                <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Poison"/>
+            </Stomper>
+        </Behaviors>
         <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Stomper_Boss">
@@ -1902,12 +2040,14 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value=""/>
         </GlobalProperties>
-        <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4"/>
-        <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-        <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
-        <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
-            <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Miniboss"/>
-        </Stomper>
+        <Behaviors>
+            <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4"/>
+            <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
+            <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
+                <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Miniboss"/>
+            </Stomper>
+        </Behaviors>
         <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
     </Enemy>
 
@@ -1926,10 +2066,12 @@
             <ViewOffsetY value="0"/>
             <ProjectilePrefabName value="COL_PRJ_WaspProjectile01"/>
         </GlobalProperties>
-        <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
-        <Stinger speedForward="12" speedBackward="4" inDurationForward="0.43" attackDuration="2.67" damageAttackTimeOffset="1" inDurationBackward="1.29" damageDistance="2">
-            <Resource type="EABIL" name="PF_EABIL_Spite_Vespid_StingerAttack"/>
-        </Stinger>
+        <Behaviors>
+            <Patrol speed="0" smoothMove="false" endPathWaitTime="0"/>
+            <Stinger speedForward="12" speedBackward="4" inDurationForward="0.43" attackDuration="2.67" damageAttackTimeOffset="1" inDurationBackward="1.29" damageDistance="2">
+                <Resource type="EABIL" name="PF_EABIL_Spite_Vespid_StingerAttack"/>
+            </Stinger>
+        </Behaviors>
     </Enemy>
 
     <!--AI STATE ENEMIES BELOW THIS LINE-->

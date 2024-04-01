@@ -2,12 +2,14 @@
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Enemies.EnemyAI;
+using Server.Reawakened.Entities.Enemies.BehaviorEnemies;
+using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 using Server.Reawakened.Entities.Enemies.EnemyAI.BehaviorEnemies;
-using Server.Reawakened.Entities.Enemies.Utils;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Models.Enemy.Enums;
+using Server.Reawakened.XMLs.Models.Enemy.Models;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components;
@@ -127,7 +129,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time,
             new Vector3 { x = Position.X + SpawningOffsetX, y = Position.Y + SpawningOffsetY, z = Position.Z },
-            1.0f, BehaviorList.IndexOf(string.Empty), string.Empty, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
+            1.0f, BehaviorList.IndexOf(StateTypes.Unknown), string.Empty, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
             Generic.Patrol_ForceDirectionX, false));
 
         var spawn = new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount);

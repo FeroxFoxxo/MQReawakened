@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Rooms.Extensions;
+﻿using Server.Reawakened.Entities.Enemies.AIStateEnemies.SyncEvents;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Entities.AIStates.SyncEvents;
 using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components;

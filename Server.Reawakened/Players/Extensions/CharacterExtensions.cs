@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Players.Models;
-using static LeaderBoardTopScoresJson;
 
 namespace Server.Reawakened.Players.Extensions;
 
