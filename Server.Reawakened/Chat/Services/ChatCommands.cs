@@ -51,7 +51,7 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("maxHP", "", MaxHealth));
 
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
-        AddCommand(new ChatCommand("hotbar", "[hotbarNum] [itemId] [amount]", Hotbar));
+        AddCommand(new ChatCommand("hotbar", "[hotbarNum] [itemId]", Hotbar));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
 
@@ -164,18 +164,24 @@ public partial class ChatCommands(
             return false;
         }
 
-        if (!int.TryParse(args[3], out var amount))
-        {
-            Log("Please enter a number for your item count", player);
-            return false;
-        }
-
         if (item.InventoryCategoryID is
             ItemFilterCategory.WeaponAndAbilities or
             ItemFilterCategory.Consumables or
             ItemFilterCategory.NestedSuperPack)
         {
-            player.SetHotbarSlot(hotbarId - 1, item, amount);
+            var itemModel = new ItemModel()
+            {
+                ItemId = item.ItemId,
+                Count = 1,
+                BindingCount = 1,
+                DelayUseExpiry = DateTime.Now
+            };
+
+            player.Character.Data.Inventory.Items.TryAdd(item.ItemId, itemModel);
+
+            player.SetHotbarSlot(hotbarId - 1, itemModel, itemCatalog);
+
+            player.SendXt("hs", player.Character.Data.Hotbar);
 
             return true;
         }

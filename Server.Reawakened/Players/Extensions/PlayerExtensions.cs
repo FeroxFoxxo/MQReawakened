@@ -280,22 +280,6 @@ public static class PlayerExtensions
         }
     }
 
-    public static void SetHotbarSlot(this Player player, int hotbarIndex, ItemDescription usedItem, int itemAmount)
-    {
-        var itemModel = new ItemModel()
-        {
-            ItemId = usedItem.ItemId,
-            Count = itemAmount,
-            BindingCount = usedItem.BindingCount,
-            DelayUseExpiry = DateTime.MinValue
-        };
-
-        player.Character.Data.Inventory.Items.TryAdd(usedItem.ItemId, itemModel);
-        player.Character.Data.Hotbar.HotbarButtons[hotbarIndex] = itemModel;
-
-        player.SendXt("hs", player.Character.Data.Hotbar);
-    }
-
     public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
         int count, QuestCatalog questCatalog)
     {
