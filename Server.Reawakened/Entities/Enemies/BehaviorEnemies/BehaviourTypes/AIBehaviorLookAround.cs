@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
@@ -12,6 +13,8 @@ public class AIBehaviorLookAround(LookAroundState lookAroundState, AIStatsGlobal
     public float ForceDirection => globalComp.LookAround_ForceDirection != default ? globalComp.LookAround_ForceDirection : lookAroundState.ForceDirection;
     public float InitialProgressRatio => globalComp.LookAround_InitialProgressRatio != default ? globalComp.LookAround_InitialProgressRatio : lookAroundState.InitialProgressRatio;
     public bool SnapOnGround => globalComp.LookAround_SnapOnGround != default ? globalComp.LookAround_SnapOnGround : lookAroundState.SnapOnGround;
+
+    public override float ResetTime => LookTime;
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_LookAround(LookTime, InitialProgressRatio, SnapOnGround);
 

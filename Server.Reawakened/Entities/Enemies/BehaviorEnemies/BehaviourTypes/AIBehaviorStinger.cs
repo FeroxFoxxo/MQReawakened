@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Players.Helpers;
+﻿using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
 
@@ -13,6 +14,8 @@ public class AIBehaviorStinger(StingerState stingerState) : AIBaseBehavior
     public float DamageAttackTimeOffset => stingerState.DamageAttackTimeOffset;
     public float InDurationBackward => stingerState.InDurationBackward;
     public float StingerDamageDistance => stingerState.StingerDamageDistance;
+
+    public override float ResetTime => 0;
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Stinger(SpeedForward, SpeedBackward, InDurationForward, AttackDuration, DamageAttackTimeOffset, InDurationBackward);
 

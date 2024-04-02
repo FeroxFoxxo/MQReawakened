@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
@@ -14,6 +15,8 @@ public class AIBehaviorPatrol(PatrolState patrolState, AIStatsGlobalComp globalC
     public float PatrolY => genericComp.PatrolY;
     public int ForceDirectionX => genericComp.Patrol_ForceDirectionX;
     public float InitialProgressRatio => genericComp.Patrol_InitialProgressRatio;
+
+    public override float ResetTime => 0;
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Patrol(MoveSpeed, EndPathWaitTime, PatrolX, PatrolY, ForceDirectionX, InitialProgressRatio);
 

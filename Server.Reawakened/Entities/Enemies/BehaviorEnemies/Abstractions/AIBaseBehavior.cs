@@ -1,10 +1,12 @@
 ﻿using Server.Reawakened.XMLs.Models.Enemy.Enums;
 
-namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
+namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 
 public abstract class AIBaseBehavior
 {
     private AI_Behavior _behavior;
+
+    public abstract float ResetTime { get; }
 
     public AIBaseBehavior() => SetBehaviour();
 

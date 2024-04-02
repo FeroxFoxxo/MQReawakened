@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
@@ -18,6 +19,8 @@ public class AIBehaviorShooting(ShootingState shootingState, AIStatsGlobalComp g
     public float ProjectileSpeed => globalComp.Shooting_ProjectileSpeed != default ? globalComp.Shooting_ProjectileSpeed : shootingState.ProjectileSpeed;
     public bool FireSpreadClockwise => globalComp.Shooting_FireSpreadClockwise != default ? globalComp.Shooting_FireSpreadClockwise : shootingState.FireSpreadClockwise;
     public float FireSpreadStartAngle => globalComp.Shooting_FireSpreadStartAngle != default ? globalComp.Shooting_FireSpreadStartAngle : shootingState.FireSpreadStartAngle;
+
+    public override float ResetTime => 0;
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Shooting(NbBulletsPerRound, FireSpreadAngle, DelayBetweenBullet, DelayShootAnim,
         NbFireRounds, DelayBetweenFireRound, StartCoolDownTime, EndCoolDownTime, ProjectileSpeed, FireSpreadClockwise, FireSpreadStartAngle);

@@ -17,9 +17,8 @@ using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Models.Enemy.Models;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
+using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 
 namespace Server.Reawakened.Entities.Enemies;
 
@@ -207,7 +206,7 @@ public abstract class Enemy : IDestructible
         }
     }
 
-    public virtual void GetInitData(Player player)
+    public virtual void SendInitData(Player player)
     {
     }
 

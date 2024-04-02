@@ -13,7 +13,7 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies;
+namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 
 public abstract class BehaviorEnemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : Enemy(room, entityId, prefabName, enemyController, services), IDestructible
 {
@@ -22,6 +22,7 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
     public AIBaseBehavior AiBehavior;
 
     public float BehaviorEndTime;
+
     public StateTypes OffensiveBehavior;
 
     public override void Initialize()
@@ -51,6 +52,16 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         };
 
         AiData.SetStats(GlobalProperties);
+
+        AiData.services = new AIServices
+        {
+            _shoot = new IShoot(),
+            _bomber = new IBomber(),
+            _scan = new IScan()
+        };
+
+        // Address magic numbers when we get to adding enemy effect mods
+        SendAiInit(1, 1, 1);
     }
 
     public override void CheckForSpawner()
@@ -124,20 +135,39 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         return bList.ToString();
     }
 
-    public virtual AIBaseBehavior ChangeBehavior(StateTypes behaviourType)
+    public void ChangeBehavior(StateTypes behaviourType, float x, float y, int direction)
     {
         var behaviour = BehaviorModel.BehaviorData[behaviourType];
+        var index = BehaviorModel.IndexOf(behaviourType);
 
         AiBehavior = behaviour.CreateBaseBehaviour(Global, Generic);
+
         var args = behaviour.GetStartArgs(this);
 
         AiBehavior.Start(ref AiData, Room.Time, args);
 
-        return AiBehavior;
+        var argBuilder = new SeparatedStringBuilder('`');
+
+        foreach (var str in args)
+            argBuilder.Append(str);
+
+        Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, index, argBuilder.ToString(), x, y, direction, false));
+
+        ResetBehaviorTime(AiBehavior.ResetTime);
     }
 
-    public virtual void DetectPlayers(StateTypes stateTypes)
+    public virtual void DetectPlayers(StateTypes type)
     {
+        foreach (var player in Room.Players.Values)
+        {
+            if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
+            {
+                AiData.Sync_TargetPosX = player.TempData.Position.X;
+                AiData.Sync_TargetPosY = player.TempData.Position.Y;
+
+                ChangeBehavior(type, player.TempData.Position.X, player.TempData.Position.Y, Generic.Patrol_ForceDirectionX);
+            }
+        }
     }
 
     public bool PlayerInRange(Vector3Model pos, bool limitedByPatrolLine) =>
@@ -147,11 +177,23 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
             Position.z < pos.Z + 1 && Position.z > pos.Z - 1 &&
             (!limitedByPatrolLine || pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5);
 
-    public float ResetBehaviorTime(float behaviorEndTime) => Room.Time + behaviorEndTime;
+    public void ResetBehaviorTime(float behaviorEndTime)
+    {
+        if (behaviorEndTime < MinBehaviorTime)
+            behaviorEndTime = MinBehaviorTime;
+
+        BehaviorEndTime = Room.Time + behaviorEndTime;
+    }
 
     public virtual void HandleLookAround() { }
 
-    public virtual void HandlePatrol() => AiBehavior.Update(ref AiData, Room.Time);
+    public void HandlePatrol()
+    {
+        AiBehavior.Update(ref AiData, Room.Time);
+
+        if (Room.Time >= BehaviorEndTime)
+            DetectPlayers(OffensiveBehavior);
+    }
 
     public virtual void HandleComeBack() { }
 
@@ -212,16 +254,39 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         }
     }
 
-    public virtual void HandleStomper() { }
+    public void HandleStomper()
+    {
+        if (Room.Time >= BehaviorEndTime)
+            ChangeBehavior(StateTypes.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
+    }
 
     public virtual void HandleIdle() { }
 
-    public virtual void HandleStinger() { }
+    public void HandleStinger()
+    {
+        if (!AiBehavior.Update(ref AiData, Room.Time))
+            ChangeBehavior(StateTypes.Patrol, Position.x, Position.y, AiData.Intern_Dir);
+    }
 
     public virtual void HandleSpike() { }
 
-    //This one is not in the helper because it needs too many arguments and too much reformatted data to qualify being there.
-    public AIInit_SyncEvent AIInit(float healthMod, float sclMod, float resMod)
+    public override void Damage(int damage, Player player)
+    {
+        base.Damage(damage, player);
+
+        if (AiBehavior is not AIBehaviorShooting)
+        {
+            // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
+            AiData.Sync_TargetPosX = player.TempData.Position.X;
+            AiData.Sync_TargetPosY = player.TempData.Position.Y;
+
+            ChangeBehavior(OffensiveBehavior, player.TempData.Position.X, player.TempData.Position.Y, Generic.Patrol_ForceDirectionX);
+
+            ResetBehaviorTime(MinBehaviorTime);
+        }
+    }
+
+    public void SendAiInit(float healthMod, float sclMod, float resMod)
     {
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, Position.x, Position.y, Position.z, Position.x, Position.y, Generic.Patrol_InitialProgressRatio,
         Health, MaxHealth, healthMod, sclMod, resMod, Status.Stars, Level, GlobalProperties.ToString(), WriteBehaviorList());
@@ -230,10 +295,12 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         aiInit.EventDataList[3] = Position.y;
         aiInit.EventDataList[4] = Position.z;
 
-        return aiInit;
+        Room.SendSyncEvent(aiInit);
+
+        ChangeBehavior(StateTypes.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
     }
 
-    public override void GetInitData(Player player)
+    public override void SendInitData(Player player)
     {
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ, AiData.Intern_SpawnPosX, AiData.Intern_SpawnPosY, AiBehavior.GetBehaviorRatio(ref AiData, Room.Time),
         Health, MaxHealth, 1f, 1f, 1f, Status.Stars, Level, GlobalProperties.ToString(), WriteBehaviorList());

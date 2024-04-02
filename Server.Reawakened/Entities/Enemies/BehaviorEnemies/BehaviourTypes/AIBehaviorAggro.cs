@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
@@ -14,6 +15,8 @@ public class AIBehaviorAggro(AggroState aggroState, AIStatsGlobalComp globalComp
     public bool UseAttackBeyondPatrolLine => aggroState.UseAttackBeyondPatrolLine;
     public float DetectionRangeUpY => aggroState.DetectionRangeUpY;
     public float DetectionRangeDownY => aggroState.DetectionRangeDownY;
+
+    public override float ResetTime => 0;
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Aggro(
         AggroSpeed, MoveBeyondTargetDistance,

@@ -27,7 +27,7 @@ public class RoomUpdate : ExternalProtocol
             entityComponent.SendDelayedData(Player);
 
         foreach (var enemy in Player.Room.Enemies.Values)
-            enemy.GetInitData(Player);
+            enemy.SendInitData(Player);
 
         Player.Room.SendCharacterInfo(Player);
 
