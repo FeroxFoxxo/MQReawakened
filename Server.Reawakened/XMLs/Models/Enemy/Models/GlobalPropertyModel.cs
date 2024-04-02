@@ -25,7 +25,8 @@ public class GlobalPropertyModel(bool detectionLimitedByPatrolLine, float backDe
             detectionSourceOnPatrolLine, attackBeyondPatrolLine
         );
 
-        globalStats?.MixGlobalProperties(properties);
+        // Breaks enemy behavior stats, commenting out for now
+        //globalStats?.MixGlobalProperties(properties);
 
         return properties;
     }

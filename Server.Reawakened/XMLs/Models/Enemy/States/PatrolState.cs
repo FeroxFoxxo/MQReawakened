@@ -13,4 +13,6 @@ public class PatrolState(float speed, bool smoothMove, float endPathWaitTime, Li
     public float EndPathWaitTime { get; } = endPathWaitTime;
 
     protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorPatrol(this, globalComp, genericComp);
+
+    public override string[] GetStartArgs(BehaviorEnemy behaviorEnemy) => [];
 }
