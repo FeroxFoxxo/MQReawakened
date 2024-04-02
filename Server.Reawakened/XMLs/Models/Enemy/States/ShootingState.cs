@@ -23,26 +23,5 @@ public class ShootingState(int nbBulletsPerRound, float fireSpreadAngle, float d
     public bool FireSpreadClockwise { get; } = fireSpreadClockwise;
     public float FireSpreadStartAngle { get; } = fireSpreadStartAngle;
 
-    public override AIBaseBehavior CreateBaseBehaviour(AIStatsGenericComp generic) => new AIBehaviorShooting(this);
-
-    public override string[] GetStartArgs(BehaviorEnemy behaviorEnemy) => [];
-
-    public override string ToStateString(AIStatsGenericComp generic)
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(NbBulletsPerRound);
-        sb.Append(FireSpreadAngle);
-        sb.Append(DelayBetweenBullet);
-        sb.Append(DelayShootAnim);
-        sb.Append(NbFireRounds);
-        sb.Append(DelayBetweenFireRound);
-        sb.Append(StartCoolDownTime);
-        sb.Append(EndCoolDownTime);
-        sb.Append(ProjectileSpeed);
-        sb.Append(FireSpreadClockwise ? 1 : 0);
-        sb.Append(FireSpreadStartAngle);
-
-        return sb.ToString();
-    }
+    protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorShooting(this, globalComp);
 }

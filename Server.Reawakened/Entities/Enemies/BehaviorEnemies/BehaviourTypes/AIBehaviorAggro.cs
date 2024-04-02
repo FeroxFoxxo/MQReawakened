@@ -1,21 +1,40 @@
-﻿using Server.Reawakened.XMLs.Models.Enemy.Enums;
+﻿using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 
-public class AIBehaviorAggro(AggroState aggroState) : AIBaseBehavior
+public class AIBehaviorAggro(AggroState aggroState, AIStatsGlobalComp globalComp) : AIBaseBehavior
 {
-    public AI_Behavior_Aggro AggroBehavior = new(
-        aggroState.AggroSpeed, aggroState.MoveBeyondTargetDistance,
-        aggroState.StayOnPatrolPath, aggroState.AttackBeyondPatrolLine,
-        aggroState.DetectionRangeUpY, aggroState.DetectionRangeDownY
+    public float AggroSpeed => globalComp.Aggro_AttackSpeed != default ? globalComp.Aggro_AttackSpeed : aggroState.AggroSpeed;
+    public float MoveBeyondTargetDistance => globalComp.Aggro_MoveBeyondTargetDistance != default ? globalComp.Aggro_MoveBeyondTargetDistance : aggroState.MoveBeyondTargetDistance;
+    public bool StayOnPatrolPath => globalComp.Aggro_StayOnPatrolPath != default ? globalComp.Aggro_StayOnPatrolPath : aggroState.StayOnPatrolPath;
+    public float AttackBeyondPatrolLine => globalComp.Aggro_AttackBeyondPatrolLine != default ? globalComp.Aggro_AttackBeyondPatrolLine : aggroState.AttackBeyondPatrolLine;
+    public bool UseAttackBeyondPatrolLine => aggroState.UseAttackBeyondPatrolLine;
+    public float DetectionRangeUpY => aggroState.DetectionRangeUpY;
+    public float DetectionRangeDownY => aggroState.DetectionRangeDownY;
+
+    protected override AI_Behavior GetBehaviour() => new AI_Behavior_Aggro(
+        AggroSpeed, MoveBeyondTargetDistance,
+        StayOnPatrolPath, AttackBeyondPatrolLine,
+        DetectionRangeUpY, DetectionRangeDownY
     );
 
-    public override void Start(ref AIProcessData aiData, float roomTime, string[] args) => AggroBehavior.Start(aiData, roomTime, args);
-
-    public override bool Update(ref AIProcessData aiData, float roomTime) => AggroBehavior.Update(aiData, roomTime);
-
-    public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => AggroBehavior.GetBehaviorRatio(aiData, roomTime);
-
     public override StateTypes GetBehavior() => StateTypes.Aggro;
+
+    public override string ToString()
+    {
+        var sb = new SeparatedStringBuilder(';');
+
+        sb.Append(AggroSpeed);
+        sb.Append(MoveBeyondTargetDistance);
+        sb.Append(StayOnPatrolPath ? 1 : 0);
+        sb.Append(AttackBeyondPatrolLine);
+        sb.Append(UseAttackBeyondPatrolLine ? 1 : 0);
+        sb.Append(DetectionRangeUpY);
+        sb.Append(DetectionRangeDownY);
+
+        return sb.ToString();
+    }
 }

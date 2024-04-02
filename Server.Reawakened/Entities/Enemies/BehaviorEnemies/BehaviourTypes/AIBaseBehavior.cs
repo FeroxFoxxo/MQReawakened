@@ -1,19 +1,23 @@
 ﻿using Server.Reawakened.XMLs.Models.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
+
 public abstract class AIBaseBehavior
 {
-    public virtual void Start(ref AIProcessData aiData, float startTime, string[] args) { }
+    private AI_Behavior _behavior;
 
-    public virtual bool Update(ref AIProcessData aiData, float time) => false;
+    public AIBaseBehavior() => SetBehaviour();
 
-    public virtual float GetBehaviorRatio(ref AIProcessData aiData, float time) => 0f;
+    public void Start(ref AIProcessData aiData, float roomTime, string[] args) => _behavior.Start(aiData, roomTime, args);
+    public bool Update(ref AIProcessData aiData, float roomTime) => _behavior.Update(aiData, roomTime);
+    public float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => _behavior.GetBehaviorRatio(aiData, roomTime);
+    public void Stop(ref AIProcessData aiData) => _behavior.Stop(aiData);
+    public void GetComebackPosition(AIProcessData aiData, ref float outPosX, ref float outPosY) => _behavior.GetComebackPosition(aiData, ref outPosX, ref outPosY);
+    public void SetStats(AIProcessData aiData) => _behavior.SetStats(aiData);
+    public bool MustDoComeback(AIProcessData aiData) => _behavior.MustDoComeback(aiData, _behavior);
+    public virtual string[] GetInitArgs() => _behavior.GetInitArgs() ?? ([]);
 
-    public virtual void Stop(ref AIProcessData aiData) { }
-
-    public virtual bool MustDoComeback(AIProcessData aiData) => false;
-
-    public virtual void GetComebackPosition(AIProcessData aiData, ref float outPosX, ref float outPosY) { }
-
+    public void SetBehaviour() => _behavior = GetBehaviour();
+    protected abstract AI_Behavior GetBehaviour();
     public abstract StateTypes GetBehavior();
 }

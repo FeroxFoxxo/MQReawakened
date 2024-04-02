@@ -10,7 +10,7 @@ public class EnemySpiderling(Room room, string entityId, string prefabName, Enem
 
         //Temporarily here until I figure out how these dudes work
         var aiInit = new AIInit_SyncEvent(Id, Room.Time, Position.x, Position.y, Position.z, Position.x, Position.y, 0,
-        Health, MaxHealth, 1, 1, 1, Status.Stars, Level, EnemyGlobalProps.ToString(), string.Empty);
+        Health, MaxHealth, 1, 1, 1, Status.Stars, Level, GlobalProperties.ToString(), string.Empty);
 
         aiInit.EventDataList[2] = Position.x;
         aiInit.EventDataList[3] = Position.y;

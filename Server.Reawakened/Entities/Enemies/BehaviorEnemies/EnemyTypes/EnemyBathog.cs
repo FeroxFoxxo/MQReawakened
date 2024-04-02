@@ -13,24 +13,11 @@ public class EnemyBathog(Room room, string entityId, string prefabName, EnemyCon
 {
     public override void Initialize()
     {
-        // Add enemy props before initialization of base
-        EnemyGlobalProps.Global_DetectionLimitedByPatrolLine = Convert.ToBoolean(BehaviorList.GetGlobalProperty("DetectionLimitedByPatrolLine"));
-        EnemyGlobalProps.Global_FrontDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeX"));
-        EnemyGlobalProps.Global_FrontDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeUpY"));
-        EnemyGlobalProps.Global_FrontDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeDownY"));
-        EnemyGlobalProps.Global_BackDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeX"));
-        EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
-        EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
-        EnemyGlobalProps.Aggro_AttackBeyondPatrolLine = Convert.ToSingle(BehaviorList.GetGlobalProperty("AttackBeyondPatrolLine"));
-        EnemyGlobalProps.Global_ShootOffsetX = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetX"));
-        EnemyGlobalProps.Global_ShootOffsetY = Convert.ToSingle(BehaviorList.GetGlobalProperty("ShootOffsetY"));
-        EnemyGlobalProps.Global_ShootingProjectilePrefabName = BehaviorList.GetGlobalProperty("ProjectilePrefabName").ToString();
-
         base.Initialize();
 
         // Address magic numbers when we get to adding enemy effect mods
         Room.SendSyncEvent(AIInit(1, 1, 1));
-        Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(StateTypes.Patrol), string.Empty, Position.x, Position.y, -1, false));
+        Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorModel.IndexOf(StateTypes.Patrol), string.Empty, Position.x, Position.y, -1, false));
 
         AiBehavior = ChangeBehavior(StateTypes.Patrol);
     }
@@ -41,7 +28,7 @@ public class EnemyBathog(Room room, string entityId, string prefabName, EnemyCon
 
         if (AiBehavior is not AIBehaviorShooting)
         {
-            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(OffensiveBehavior), string.Empty, player.TempData.Position.X,
+            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorModel.IndexOf(OffensiveBehavior), string.Empty, player.TempData.Position.X,
                     player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
 
             // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here
@@ -67,12 +54,12 @@ public class EnemyBathog(Room room, string entityId, string prefabName, EnemyCon
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(StateTypes.LookAround), string.Empty, Position.x, Position.y,
+            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorModel.IndexOf(StateTypes.LookAround), string.Empty, Position.x, Position.y,
             AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior(StateTypes.LookAround);
 
-            var behavior = BehaviorList.BehaviorData[StateTypes.LookAround] as LookAroundState;
+            var behavior = BehaviorModel.BehaviorData[StateTypes.LookAround] as LookAroundState;
             BehaviorEndTime = ResetBehaviorTime(behavior.LookTime);
         }
     }
@@ -89,7 +76,7 @@ public class EnemyBathog(Room room, string entityId, string prefabName, EnemyCon
             argBuilder.Append(Position.x);
             argBuilder.Append(AiData.Intern_SpawnPosY);
 
-            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(StateTypes.ComeBack), argBuilder.ToString(), Position.x, AiData.Intern_SpawnPosY, AiData.Intern_Dir, false));
+            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorModel.IndexOf(StateTypes.ComeBack), argBuilder.ToString(), Position.x, AiData.Intern_SpawnPosY, AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior(StateTypes.ComeBack);
             AiBehavior.MustDoComeback(AiData);
@@ -102,12 +89,12 @@ public class EnemyBathog(Room room, string entityId, string prefabName, EnemyCon
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(StateTypes.LookAround), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
+            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorModel.IndexOf(StateTypes.LookAround), string.Empty, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY,
             AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior(StateTypes.LookAround);
 
-            var behavior = BehaviorList.BehaviorData[StateTypes.LookAround] as LookAroundState;
+            var behavior = BehaviorModel.BehaviorData[StateTypes.LookAround] as LookAroundState;
             BehaviorEndTime = ResetBehaviorTime(behavior.LookTime);
         }
     }
@@ -119,16 +106,16 @@ public class EnemyBathog(Room room, string entityId, string prefabName, EnemyCon
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
             AiBehavior = ChangeBehavior(StateTypes.Patrol);
-            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(StateTypes.Patrol), string.Empty, Position.x, Position.y, Generic.Patrol_ForceDirectionX, false));
+            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorModel.IndexOf(StateTypes.Patrol), string.Empty, Position.x, Position.y, Generic.Patrol_ForceDirectionX, false));
         }
     }
 
     public override void DetectPlayers(StateTypes behaviorToRun)
     {
         foreach (var player in Room.Players.Values)
-            if (PlayerInRange(player.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
+            if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
             {
-                Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.TempData.Position.X,
+                Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorModel.IndexOf(behaviorToRun), string.Empty, player.TempData.Position.X,
                     player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here

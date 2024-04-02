@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
@@ -107,7 +108,7 @@ public class InternalDefaultEnemies : InternalXml
                                         var aggroSpeed = 0f;
                                         var moveBeyondTargetDistance = 0f;
                                         var stayOnPatrolPath = true;
-                                        var attackBeyondPatrolLine = 0f;
+                                        var aggroAttackBeyondPatrolLine = 0f;
                                         var useAttackBeyondPatrolLine = true;
                                         var detectionRangeUpY = 0f;
                                         var detectionRangeDownY = 0f;
@@ -126,7 +127,7 @@ public class InternalDefaultEnemies : InternalXml
                                                     stayOnPatrolPath = bool.Parse(behaviorData.Value);
                                                     break;
                                                 case "attackBeyondPatrolLine":
-                                                    attackBeyondPatrolLine = float.Parse(behaviorData.Value);
+                                                    aggroAttackBeyondPatrolLine = float.Parse(behaviorData.Value);
                                                     break;
                                                 case "useAttackBeyondPatrolLine":
                                                     useAttackBeyondPatrolLine = bool.Parse(behaviorData.Value);
@@ -140,7 +141,7 @@ public class InternalDefaultEnemies : InternalXml
                                             }
                                         }
 
-                                        state = new AggroState(aggroSpeed, moveBeyondTargetDistance, stayOnPatrolPath, attackBeyondPatrolLine,
+                                        state = new AggroState(aggroSpeed, moveBeyondTargetDistance, stayOnPatrolPath, aggroAttackBeyondPatrolLine,
                                             useAttackBeyondPatrolLine, detectionRangeUpY, detectionRangeDownY, resources);
                                         break;
                                     case StateTypes.LookAround:
@@ -386,23 +387,124 @@ public class InternalDefaultEnemies : InternalXml
                             behaviorModel.BehaviorData = behaviors;
                             break;
                         case "GlobalProperties":
-                            var globalProperties = new Dictionary<string, object>();
+                            // Custom XML attributes
+                            var offensiveBehavior = StateTypes.Unknown;
+                            var minBehaviorTime = 0f;
+
+                            var detectionLimitedByPatrolLine = true;
+                            var frontDetectionRangeX = 0f;
+                            var frontDetectionRangeUpY = 0f;
+                            var frontDetectionRangeDownY = 0f;
+                            var backDetectionRangeX = 0f;
+                            var backDetectionRangeUpY = 0f;
+                            var backDetectionRangeDownY = 0f;
+                            var attackBeyondPatrolLine = 0f;
+                            var shootOffsetX = 0f;
+                            var shootOffsetY = 0f;
+                            var shootingProjectilePrefabName = "COL_PRJ_DamageProjectile";
+                            var viewOffsetY = 0f;
+
+                            // Values currently not specified in XML file
+                            var script = string.Empty;
+                            var disableCollision = false;
+                            var detectionSourceOnPatrolLine = true;
 
                             foreach (XmlNode globalProperty in data.ChildNodes)
                             {
-                                var gDataName = string.Empty;
-                                object gDataValue = null;
+                                var gDataName = globalProperty.Name;
+                                var gDataValue = string.Empty;
 
                                 foreach (XmlAttribute globalPropValue in globalProperty.Attributes)
                                 {
-                                    gDataName = globalProperty.Name;
-                                    gDataValue = globalPropValue.Value;
+                                    switch (globalPropValue.Name)
+                                    {
+                                        case "value":
+                                            gDataValue = globalPropValue.Value;
+                                            break;
+                                        default:
+                                            Logger.LogWarning("Unknown global parameter: '{ParameterName}' for '{EnemyName}'", globalPropValue.Name, enemyType);
+                                            break;
+                                    }
                                 }
 
-                                globalProperties.Add(gDataName, gDataValue);
+                                if (string.IsNullOrEmpty(gDataName) || string.IsNullOrEmpty(gDataValue))
+                                    continue;
+
+                                switch (gDataName)
+                                {
+                                    // CUSTOM XML ATTRIBUTES
+                                    case "OffensiveBehavior":
+                                        offensiveBehavior = Enum.Parse<StateTypes>(gDataValue);
+                                        break;
+                                    case "MinBehaviorTime":
+                                        minBehaviorTime = Convert.ToSingle(gDataValue);
+                                        break;
+
+                                    case "DetectionLimitedByPatrolLine":
+                                        detectionLimitedByPatrolLine = Convert.ToBoolean(gDataValue);
+                                        break;
+                                    case "FrontDetectionRangeX":
+                                        frontDetectionRangeX = Convert.ToSingle(gDataValue);
+                                        break;
+                                    case "FrontDetectionRangeUpY":
+                                        frontDetectionRangeUpY = Convert.ToSingle(gDataValue);
+                                        break;
+                                    case "FrontDetectionRangeDownY":
+                                        frontDetectionRangeDownY = Convert.ToSingle(gDataValue);
+                                        break;
+                                    case "BackDetectionRangeX":
+                                        backDetectionRangeX = Convert.ToSingle(gDataValue);
+                                        break;
+                                    case "BackDetectionRangeUpY":
+                                        backDetectionRangeUpY = Convert.ToSingle(gDataValue);
+                                        break;
+                                    case "BackDetectionRangeDownY":
+                                        backDetectionRangeDownY = Convert.ToSingle(gDataValue);
+                                        break;
+                                    case "AttackBeyondPatrolLine":
+                                        attackBeyondPatrolLine = Convert.ToSingle(gDataValue);
+                                        break;
+                                    case "ShootOffsetX":
+                                        shootOffsetX = Convert.ToSingle(gDataValue);
+                                        break;
+                                    case "ShootOffsetY":
+                                        shootOffsetY = Convert.ToSingle(gDataValue);
+                                        break;
+                                    case "ProjectilePrefabName":
+                                        shootingProjectilePrefabName = gDataValue;
+                                        break;
+                                    case "ViewOffsetY":
+                                        viewOffsetY = Convert.ToSingle(gDataValue);
+                                        break;
+                                    case "Script":
+                                        script = gDataValue;
+                                        break;
+                                    case "DisableCollision":
+                                        disableCollision = Convert.ToBoolean(gDataValue);
+                                        break;
+                                    case "DetectionSourceOnPatrolLine":
+                                        detectionSourceOnPatrolLine = Convert.ToBoolean(gDataValue);
+                                        break;
+                                    default:
+                                        Logger.LogWarning("Unknown global property: '{PropertyName}' for '{EnemyName}'", gDataName, enemyType);
+                                        break;
+                                }
                             }
 
-                            behaviorModel.GlobalProperties = globalProperties;
+                            behaviorModel.GlobalProperties =
+                                new GlobalPropertyModel(
+                                    detectionLimitedByPatrolLine, backDetectionRangeX,
+                                    viewOffsetY, backDetectionRangeUpY,
+                                    backDetectionRangeDownY, shootOffsetX,
+                                    shootOffsetY, frontDetectionRangeX,
+                                    frontDetectionRangeUpY, frontDetectionRangeDownY,
+                                    script, shootingProjectilePrefabName,
+                                    disableCollision, detectionSourceOnPatrolLine,
+                                    attackBeyondPatrolLine,
+
+                                    // Custom XML attributes
+                                    offensiveBehavior, minBehaviorTime
+                                );
                             break;
                         case "LootTable":
                             var lootTable = new List<EnemyDropModel>();
@@ -485,6 +587,8 @@ public class InternalDefaultEnemies : InternalXml
                             break;
                     }
                 }
+
+                behaviorModel.EnsureBehaviourValid(Logger, enemyType);
 
                 EnemyInfoCatalog.Add(enemyType, behaviorModel);
             }

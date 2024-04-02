@@ -1,21 +1,24 @@
-﻿using Server.Reawakened.XMLs.Models.Enemy.Enums;
+﻿using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 
-public class AIBehaviorComeBack(ComeBackState comeBackState) : AIBaseBehavior
+public class AIBehaviorComeBack(ComeBackState comeBackState, AIStatsGlobalComp globalComp) : AIBaseBehavior
 {
-    public AI_Behavior_ComeBack ComeBackBehavior = new(
-        comeBackState.ComeBackSpeed
-    );
+    public float ComeBackSpeed => globalComp.ComeBack_MoveSpeed != default ? globalComp.ComeBack_MoveSpeed : comeBackState.ComeBackSpeed;
 
-    public override void Start(ref AIProcessData aiData, float startTime, string[] args) => ComeBackBehavior.Start(aiData, startTime, args);
-
-    public override bool Update(ref AIProcessData aiData, float roomTime) => ComeBackBehavior.Update(aiData, roomTime);
-
-    public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => ComeBackBehavior.GetBehaviorRatio(aiData, roomTime);
-
-    public override bool MustDoComeback(AIProcessData aiData) => ComeBackBehavior.MustDoComeback(aiData, ComeBackBehavior);
+    protected override AI_Behavior GetBehaviour() => new AI_Behavior_ComeBack(ComeBackSpeed);
 
     public override StateTypes GetBehavior() => StateTypes.ComeBack;
+
+    public override string ToString()
+    {
+        var sb = new SeparatedStringBuilder(';');
+
+        sb.Append(ComeBackSpeed);
+
+        return sb.ToString();
+    }
 }

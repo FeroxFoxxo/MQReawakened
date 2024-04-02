@@ -13,19 +13,5 @@ public class StomperState(float attackTime, float impactTime, float damageDistan
     public float DamageDistance { get; } = damageDistance;
     public float DamageOffset { get; } = damageOffset;
 
-    public override AIBaseBehavior CreateBaseBehaviour(AIStatsGenericComp generic) => new AIBehaviorStomper(this);
-
-    public override string[] GetStartArgs(BehaviorEnemy behaviorEnemy) => [];
-
-    public override string ToStateString(AIStatsGenericComp generic)
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(AttackTime);
-        sb.Append(ImpactTime);
-        sb.Append(DamageDistance);
-        sb.Append(DamageOffset);
-
-        return sb.ToString();
-    }
+    protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorStomper(this);
 }

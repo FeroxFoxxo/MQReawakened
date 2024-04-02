@@ -11,15 +11,6 @@ public class EnemyVespid(Room room, string entityId, string prefabName, EnemyCon
 {
     public override void Initialize()
     {
-        // Add enemy props before initialization of base
-        EnemyGlobalProps.Global_DetectionLimitedByPatrolLine = Convert.ToBoolean(BehaviorList.GetGlobalProperty("DetectionLimitedByPatrolLine"));
-        EnemyGlobalProps.Global_FrontDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeX"));
-        EnemyGlobalProps.Global_FrontDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeUpY"));
-        EnemyGlobalProps.Global_FrontDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("FrontDetectionRangeDownY"));
-        EnemyGlobalProps.Global_BackDetectionRangeX = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeX"));
-        EnemyGlobalProps.Global_BackDetectionRangeUpY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeUpY"));
-        EnemyGlobalProps.Global_BackDetectionRangeDownY = Convert.ToSingle(BehaviorList.GetGlobalProperty("BackDetectionRangeDownY"));
-
         base.Initialize();
 
         AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
@@ -27,7 +18,7 @@ public class EnemyVespid(Room room, string entityId, string prefabName, EnemyCon
         // Address magic numbers when we get to adding enemy effect mods
         Position.z = 10;
         Room.SendSyncEvent(AIInit(1, 1, 1));
-        Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(StateTypes.Patrol), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
+        Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorModel.IndexOf(StateTypes.Patrol), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
 
         // Set these calls to the xml later. Instead of using hardcoded "Patrol", "Aggro", etc.
         // the XML can just specify which behaviors to use when attacked, when moving, etc.
@@ -41,7 +32,7 @@ public class EnemyVespid(Room room, string entityId, string prefabName, EnemyCon
         if (AiBehavior is not AIBehaviorShooting)
         {
             var aiEvent = AISyncEventHelper.AIDo(
-                Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(OffensiveBehavior), string.Empty,
+                Id, Room.Time, Position, 1.0f, BehaviorModel.IndexOf(OffensiveBehavior), string.Empty,
                 player.TempData.Position.X, player.TempData.Position.Y, Generic.Patrol_ForceDirectionX, false
             );
 
@@ -71,7 +62,7 @@ public class EnemyVespid(Room room, string entityId, string prefabName, EnemyCon
 
         if (!AiBehavior.Update(ref AiData, Room.Time))
         {
-            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(StateTypes.Patrol), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
+            Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorModel.IndexOf(StateTypes.Patrol), string.Empty, Position.x, Position.y, AiData.Intern_Dir, false));
 
             AiBehavior = ChangeBehavior(StateTypes.Patrol);
         }
@@ -80,9 +71,9 @@ public class EnemyVespid(Room room, string entityId, string prefabName, EnemyCon
     public override void DetectPlayers(StateTypes behaviorToRun)
     {
         foreach (var player in Room.Players)
-            if (PlayerInRange(player.Value.TempData.Position, EnemyGlobalProps.Global_DetectionLimitedByPatrolLine))
+            if (PlayerInRange(player.Value.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
             {
-                Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorList.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
+                Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position, 1.0f, BehaviorModel.IndexOf(behaviorToRun), string.Empty, player.Value.TempData.Position.X,
                     Position.y, Generic.Patrol_ForceDirectionX, false));
 
                 // For some reason, the SyncEvent doesn't initialize these properly, so I just do them here

@@ -11,8 +11,8 @@ public class AIStatsGenericComp : Component<AI_Stats_Generic>
     public int Patrol_ForceDirectionX => ComponentData.Patrol_ForceDirectionX;
     public bool Aggro_UseAttackBeyondPatrolLine => ComponentData.Aggro_UseAttackBeyondPatrolLine;
 
-    public float PatrolX;
-    public float PatrolY;
+    public float PatrolX { get; set; }
+    public float PatrolY { get; set; }
 
     public override void InitializeComponent()
     {

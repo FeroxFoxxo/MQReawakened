@@ -1,19 +1,27 @@
-﻿using Server.Reawakened.XMLs.Models.Enemy.Enums;
+﻿using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 
 public class AIBehaviorBomber(BomberState bomberState) : AIBaseBehavior
 {
-    public AI_Behavior_Bomber BomberBehavior = new(
-        bomberState.InTime, bomberState.LoopTime
-    );
+    public float InTime => bomberState.InTime;
+    public float LoopTime => bomberState.LoopTime;
+    public float BombRadius => bomberState.BombRadius;
 
-    public override void Start(ref AIProcessData aiData, float roomTime, string[] args) => BomberBehavior.Start(aiData, roomTime, args);
-
-    public override bool Update(ref AIProcessData aiData, float roomTime) => BomberBehavior.Update(aiData, roomTime);
-
-    public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => BomberBehavior.GetBehaviorRatio(aiData, roomTime);
+    protected override AI_Behavior GetBehaviour() => new AI_Behavior_Bomber(InTime, LoopTime);
 
     public override StateTypes GetBehavior() => StateTypes.Bomber;
+
+    public override string ToString()
+    {
+        var sb = new SeparatedStringBuilder(';');
+
+        sb.Append(InTime);
+        sb.Append(LoopTime);
+        sb.Append(BombRadius);
+
+        return sb.ToString();
+    }
 }

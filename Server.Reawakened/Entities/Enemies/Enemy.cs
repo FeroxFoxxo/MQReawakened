@@ -15,10 +15,11 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.XMLs.Models.Enemy.Models;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies;
+using Server.Reawakened.Rooms.Models.Entities.ColliderType;
+using Server.Reawakened.Rooms.Models.Entities.Colliders;
 
 namespace Server.Reawakened.Entities.Enemies;
 
@@ -31,9 +32,10 @@ public abstract class Enemy : IDestructible
     public readonly InternalDefaultEnemies InternalEnemy;
     public readonly ServerRConfig ServerRConfig;
 
+    public readonly Room Room;
+
     public bool Init;
 
-    public Room Room;
     public string Id;
     public Vector3 Position;
     public Rect DetectionRange;
@@ -47,16 +49,17 @@ public abstract class Enemy : IDestructible
     public int Level;
     public int DeathXp;
     public string OnDeathTargetId;
+
     public BaseSpawnerControllerComp LinkedSpawner;
-
-    public BaseComponent Entity;
     public InterObjStatusComp Status;
-    public EnemyControllerComp EnemyController;
-    public BehaviorModel BehaviorList;
-
-    public GlobalProperties EnemyGlobalProps;
     public AIProcessData AiData;
-    public AISyncEventHelper SyncBuilder;
+    public GlobalProperties GlobalProperties;
+
+    public readonly BaseComponent Entity;
+    public readonly EnemyControllerComp EnemyController;
+    public readonly BehaviorModel BehaviorModel;
+
+    public readonly AISyncEventHelper SyncBuilder;
 
     public Enemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services)
     {
@@ -93,7 +96,7 @@ public abstract class Enemy : IDestructible
             Position.z = 20;
 
         //Stats
-        BehaviorList = InternalEnemy.GetBehaviorsByName(prefabName);
+        BehaviorModel = InternalEnemy.GetBehaviorsByName(prefabName);
         OnDeathTargetId = EnemyController.OnDeathTargetID;
         Health = EnemyController.EnemyHealth;
         MaxHealth = EnemyController.MaxHealth;
@@ -101,10 +104,10 @@ public abstract class Enemy : IDestructible
         Level = EnemyController.Level;
 
         //Hitbox Info
-        GenerateHitbox(BehaviorList.Hitbox);
+        GenerateHitbox(BehaviorModel.Hitbox);
 
         //This is just a dummy. AI_Stats_Global has no data, so these fields are populated in the specific Enemy classes
-        EnemyGlobalProps = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
+        GlobalProperties = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
     }
 
     public virtual void Initialize() => Init = true;
@@ -170,8 +173,8 @@ public abstract class Enemy : IDestructible
 
             //Dynamic Loot Drop
             var chance = new System.Random();
-            if (BehaviorList.EnemyLootTable != null)
-                foreach (var drop in BehaviorList.EnemyLootTable)
+            if (BehaviorModel.EnemyLootTable != null)
+                foreach (var drop in BehaviorModel.EnemyLootTable)
                 {
                     chance.NextDouble();
                     if (Level <= drop.MaxLevel && Level >= drop.MinLevel)

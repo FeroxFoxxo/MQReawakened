@@ -1,21 +1,35 @@
-﻿using Server.Reawakened.XMLs.Models.Enemy.Enums;
+﻿using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 
 public class AIBehaviorStinger(StingerState stingerState) : AIBaseBehavior
 {
-    public AI_Behavior_Stinger StingerBehavior = new(
-        stingerState.SpeedForward, stingerState.SpeedBackward,
-        stingerState.InDurationForward, stingerState.AttackDuration,
-        stingerState.DamageAttackTimeOffset, stingerState.InDurationBackward
-    );
+    public float SpeedForward => stingerState.SpeedForward;
+    public float SpeedBackward => stingerState.SpeedBackward;
+    public float InDurationForward => stingerState.InDurationForward;
+    public float AttackDuration => stingerState.AttackDuration;
+    public float DamageAttackTimeOffset => stingerState.DamageAttackTimeOffset;
+    public float InDurationBackward => stingerState.InDurationBackward;
+    public float StingerDamageDistance => stingerState.StingerDamageDistance;
 
-    public override void Start(ref AIProcessData aiData, float roomTime, string[] args) => StingerBehavior.Start(aiData, roomTime, args);
-
-    public override bool Update(ref AIProcessData aiData, float roomTime) => StingerBehavior.Update(aiData, roomTime);
-
-    public override float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => StingerBehavior.GetBehaviorRatio(aiData, roomTime);
+    protected override AI_Behavior GetBehaviour() => new AI_Behavior_Stinger(SpeedForward, SpeedBackward, InDurationForward, AttackDuration, DamageAttackTimeOffset, InDurationBackward);
 
     public override StateTypes GetBehavior() => StateTypes.Stinger;
+
+    public override string ToString()
+    {
+        var sb = new SeparatedStringBuilder(';');
+
+        sb.Append(SpeedForward);
+        sb.Append(SpeedBackward);
+        sb.Append(InDurationForward);
+        sb.Append(AttackDuration);
+        sb.Append(DamageAttackTimeOffset);
+        sb.Append(InDurationBackward);
+        sb.Append(StingerDamageDistance);
+
+        return sb.ToString();
+    }
 }

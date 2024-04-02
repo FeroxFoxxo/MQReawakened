@@ -1,14 +1,42 @@
-﻿using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 
 namespace Server.Reawakened.XMLs.Models.Enemy.Models;
 
 public class BehaviorModel
 {
-    public Dictionary<StateTypes, BaseState> BehaviorData = [];
-    public Dictionary<string, object> GlobalProperties = [];
-    public List<EnemyDropModel> EnemyLootTable = [];
-    public HitboxModel Hitbox = new(0, 0, 0, 0);
+    public Dictionary<StateTypes, BaseState> BehaviorData { get; set; }
+    public List<EnemyDropModel> EnemyLootTable { get; set; }
+    public GlobalPropertyModel GlobalProperties { get; set; }
+    public HitboxModel Hitbox { get; set; }
+
+    public void EnsureBehaviourValid(Microsoft.Extensions.Logging.ILogger logger, string enemyType)
+    {
+        if (BehaviorData == null)
+        {
+            logger.LogError("Enemy '{Name}' does not have a behavior data attached!", enemyType);
+            BehaviorData = [];
+        }
+
+        if (EnemyLootTable == null)
+        {
+            logger.LogError("Enemy '{Name}' does not have a loot table attached!", enemyType);
+            EnemyLootTable = [];
+        }
+
+        if (Hitbox == null)
+        {
+            logger.LogError("Enemy '{Name}' does not have a hit box attached!", enemyType);
+            Hitbox = new HitboxModel(0, 0, 0, 0);
+        }
+
+        if (GlobalProperties == null)
+        {
+            logger.LogError("Enemy '{Name}' does not have any global properties attached!", enemyType);
+            GlobalProperties = new GlobalPropertyModel(false, 0, 0, 0, 0, 0, 0, 0, 0, 0, string.Empty, "COL_PRJ_DamageProjectile", false, false, 0, StateTypes.Unknown, 0);
+        }
+    }
 
     public int IndexOf(StateTypes behaviorType)
     {
@@ -23,14 +51,5 @@ public class BehaviorModel
         }
 
         return 0;
-    }
-
-    public object GetGlobalProperty(string property)
-    {
-        if (GlobalProperties.TryGetValue(property, out var value))
-            return value;
-
-        //Returning anything other than a valid prefab for ProjectilePrefabName causes a serverwide crash
-        return property.Equals("ProjectilePrefabName") ? "COL_PRJ_DamageProjectile" : 0;
     }
 }
