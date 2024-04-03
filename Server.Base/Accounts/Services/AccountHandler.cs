@@ -143,7 +143,7 @@ public class AccountHandler(EventSink sink, ILogger<Account> logger, InternalRCo
         {
             Logger.LogInformation("Login: {Address}: User post _data for '{Username}' is invalid in length!",
                 ipAddress, username);
-            throw new InvalidOperationException();
+            return null;
         }
 
         var isSafe = !(username.StartsWith(' ') || username.EndsWith(' ') || username.EndsWith('.'));
