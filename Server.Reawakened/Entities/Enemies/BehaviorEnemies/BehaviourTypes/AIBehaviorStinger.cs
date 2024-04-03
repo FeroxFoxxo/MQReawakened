@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
 
@@ -21,18 +20,10 @@ public class AIBehaviorStinger(StingerState stingerState) : AIBaseBehavior
 
     public override StateTypes GetBehavior() => StateTypes.Stinger;
 
-    public override string ToString()
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(SpeedForward);
-        sb.Append(SpeedBackward);
-        sb.Append(InDurationForward);
-        sb.Append(AttackDuration);
-        sb.Append(DamageAttackTimeOffset);
-        sb.Append(InDurationBackward);
-        sb.Append(StingerDamageDistance);
-
-        return sb.ToString();
-    }
+    public override object[] GetData() => [
+        SpeedForward, SpeedBackward,
+        InDurationForward, AttackDuration,
+        DamageAttackTimeOffset, InDurationBackward,
+        StingerDamageDistance
+    ];
 }

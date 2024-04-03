@@ -1,8 +1,8 @@
-﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.Players;
-using Server.Reawakened.Rooms.Extensions;
+﻿using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Models.Enemy.Enums;
+using Server.Reawakened.XMLs.Models.Enemy.Models;
 
 namespace Server.Reawakened.Entities.Components;
 public class AIStatsGlobalComp : Component<AI_Stats_Global>
@@ -112,6 +112,43 @@ public class AIStatsGlobalComp : Component<AI_Stats_Global>
 
         if (Global_Script != Default.Global_Script)
             globalProps.Global_Script = Global_Script;
+
+        if (Aggro_AttackBeyondPatrolLine != Default.Aggro_AttackBeyondPatrolLine)
+            globalProps.Aggro_AttackBeyondPatrolLine = Aggro_AttackBeyondPatrolLine;
+    }
+    public GenericScriptPropertiesModel MixGenericProperties(ClassCopier classCopier, GenericScriptPropertiesModel properties)
+    {
+        var baseType = typeof(AI_Stats_Global);
+        Default = classCopier.GetClassAndInfo(baseType).Key as AI_Stats_Global;
+
+        var attackBehavior = GenericScript_AttackBehavior != Default.GenericScript_AttackBehavior ?
+            GenericScript_AttackBehavior :
+            Enum.GetName(properties.AttackBehavior);
+
+        var awareBehavior = GenericScript_AwareBehavior != Default.GenericScript_AwareBehavior ?
+            GenericScript_AwareBehavior :
+            Enum.GetName(properties.AwareBehavior);
+
+        var unawareBehavior = GenericScript_UnawareBehavior != Default.GenericScript_UnawareBehavior ?
+            GenericScript_UnawareBehavior :
+            Enum.GetName(properties.UnawareBehavior);
+
+        var duration = GenericScript_AwareBehaviorDuration != Default.GenericScript_AwareBehaviorDuration ?
+            GenericScript_AwareBehaviorDuration :
+            properties.genericScript_AwareBehaviorDuration;
+
+        var healthRegenAmount = GenericScript_HealthRegenerationAmount != Default.GenericScript_HealthRegenerationAmount ?
+            GenericScript_HealthRegenerationAmount :
+            properties.genericScript_HealthRegenerationAmount;
+
+        var healthRegenFreq = GenericScript_HealthRegenerationFrequency != Default.GenericScript_HealthRegenerationFrequency ?
+            GenericScript_HealthRegenerationFrequency :
+            properties.genericScript_HealthRegenerationFrequency;
+
+        return new GenericScriptPropertiesModel(
+            Enum.Parse<StateTypes>(attackBehavior), Enum.Parse<StateTypes>(awareBehavior), Enum.Parse<StateTypes>(unawareBehavior),
+            duration, healthRegenAmount, healthRegenFreq
+        );
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)

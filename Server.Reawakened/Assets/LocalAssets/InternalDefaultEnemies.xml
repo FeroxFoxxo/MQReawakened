@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <InternalDefaultEnemies>
+    <!--BEHAVIOR ENEMIES BELOW THIS LINE-->
+
     <!--Bombirds-->
     <Enemy name="PF_Critter_Bird01">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="0.25"/>
             <FrontDetectionRangeUpY value="0"/>
@@ -30,9 +38,15 @@
         <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
     <Enemy name="PF_Critter_Bird02">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="0.25"/>
             <FrontDetectionRangeUpY value="0"/>
@@ -59,9 +73,15 @@
         <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
     <Enemy name="PF_Critter_Bird03">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="0.25"/>
             <FrontDetectionRangeUpY value="0"/>
@@ -87,9 +107,15 @@
         <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
     <Enemy name="PF_Critter_Bird04">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="0.25"/>
             <FrontDetectionRangeUpY value="0"/>
@@ -116,9 +142,15 @@
         <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
     <Enemy name="PF_Critter_Bird_Boss">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="0.25"/>
             <FrontDetectionRangeUpY value="0"/>
@@ -148,9 +180,15 @@
     
     <!--Spinefish-->
     <Enemy name="PF_Critter_Fish01">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -175,9 +213,15 @@
         <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
 	</Enemy>
     <Enemy name="PF_Critter_Fish02">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -202,9 +246,15 @@
         <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
     </Enemy>
     <Enemy name="PF_Critter_Fish03">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -229,9 +279,15 @@
         <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
     </Enemy>
     <Enemy name="PF_Critter_Fish04">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -257,9 +313,15 @@
         <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
     </Enemy>
     <Enemy name="PF_Critter_Fish_Boss">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -288,9 +350,15 @@
     
     <!--Rachnoids-->
     <Enemy name="PF_Critter_Spider_Newb">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -309,9 +377,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider_Boss">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -340,9 +414,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider_Boss_Ceiling_Shoot">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -372,9 +452,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider_Boss_Shoot">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="5"/>
@@ -404,9 +490,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
 	<Enemy name="PF_Critter_Spider01">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -433,9 +525,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
 	</Enemy>
     <Enemy name="PF_Critter_Spider01_Ceiling_Shoot">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="0"/>
@@ -463,9 +561,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider01_Shoot">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -493,9 +597,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider02">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -523,9 +633,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider02_Ceiling_Shoot">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="0"/>
@@ -554,9 +670,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider02_Shoot">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -585,9 +707,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider03">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -614,9 +742,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider03_Ceiling_Shoot">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="0"/>
@@ -644,9 +778,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider03_Shoot">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -674,9 +814,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider04">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -704,9 +850,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider04_Ceiling_Shoot">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="0"/>
@@ -735,9 +887,15 @@
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
     <Enemy name="PF_Critter_Spider04_Shoot">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -768,9 +926,15 @@
     
     <!--Bathogs-->
 	<Enemy name="PF_Spite_Bathog_Rock">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -795,9 +959,15 @@
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
     <Enemy name="PF_Spite_Bathog_Shoot_Rock">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -826,9 +996,15 @@
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
     <Enemy name="PF_Spite_Bathog_Lava">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -856,9 +1032,15 @@
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
     <Enemy name="PF_Spite_Bathog_Shoot_Lava">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -890,9 +1072,15 @@
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
     <Enemy name="PF_Spite_Bathog_Invis">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -920,9 +1108,15 @@
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
     <Enemy name="PF_Spite_Bathog_Shoot_Invis">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -954,9 +1148,15 @@
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
     <Enemy name="PF_Spite_Bathog_Swamp">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -984,9 +1184,15 @@
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
     <Enemy name="PF_Spite_Bathog_Shoot_Swamp">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1018,9 +1224,15 @@
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
     <Enemy name="PF_Spite_Bathog_Boss">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1047,9 +1259,15 @@
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
     <Enemy name="PF_Spite_Bathog_Shoot_Boss">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="ComeBack"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="5"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1081,9 +1299,15 @@
     
     <!--Boombugs-->
     <Enemy name="PF_Spite_Bomber_Rock">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="Bomber"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="0.25"/>
@@ -1108,9 +1332,15 @@
         <Hitbox width="0.25" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
     <Enemy name="PF_Spite_Bomber_Lava">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="Bomber"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="0.25"/>
@@ -1137,9 +1367,15 @@
     
     <!--Cragcrawlers-->
     <Enemy name="PF_Spite_Crawler_Boss">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -1165,9 +1401,15 @@
         <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Crawler_Invis">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -1194,9 +1436,15 @@
         <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Crawler_Lava">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -1223,9 +1471,15 @@
         <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
 	<Enemy name="PF_Spite_Crawler_Rock">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -1249,9 +1503,15 @@
         <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
 	</Enemy>
     <Enemy name="PF_Spite_Crawler_Swamp">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -1280,9 +1540,15 @@
     
     <!--Dragons-->
     <Enemy name="PF_Spite_Dragon_Rock">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1309,9 +1575,15 @@
         <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
     <Enemy name="PF_Spite_Dragon_Lava">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="7"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1341,9 +1613,15 @@
         <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
     <Enemy name="PF_Spite_Dragon_Invis">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="7"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1373,9 +1651,15 @@
         <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
     <Enemy name="PF_Spite_Dragon_Boss">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="7"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1404,9 +1688,15 @@
         <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
     <Enemy name="PF_Spite_Dragon_Swamp">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="7"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1438,9 +1728,15 @@
     
     <!--Rumblers-->
     <Enemy name="PF_Spite_Grenadier_Rock">
+        <GenericScript>
+            <AttackBehavior value="Grenadier"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Grenadier"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="5"/>
@@ -1461,9 +1757,15 @@
         <Hitbox width="1" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
     <Enemy name="PF_Spite_Grenadier_Lava">
+        <GenericScript>
+            <AttackBehavior value="Grenadier"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Grenadier"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="5"/>
@@ -1484,9 +1786,15 @@
         <Hitbox width="1" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
     <Enemy name="PF_Spite_Grenadier_Swamp">
+        <GenericScript>
+            <AttackBehavior value="Grenadier"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Grenadier"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="5"/>
@@ -1509,9 +1817,15 @@
     
     <!--Orchids-->
     <Enemy name="PF_Spite_Orchid_Rock">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -1537,9 +1851,15 @@
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Ceiling_Rock">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -1565,9 +1885,15 @@
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Lava">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -1596,9 +1922,15 @@
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Ceiling_Lava">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -1627,9 +1959,15 @@
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Swamp">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -1658,9 +1996,15 @@
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Ceiling_Swamp">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -1689,9 +2033,15 @@
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Invis">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="4"/>
@@ -1720,9 +2070,15 @@
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Ceiling_Invis">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -1751,9 +2107,15 @@
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Boss">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="10"/>
             <FrontDetectionRangeUpY value="6"/>
@@ -1781,9 +2143,15 @@
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Orchid_Ceiling_Boss">
+        <GenericScript>
+            <AttackBehavior value="Shooting"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Shooting"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="10"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -1813,9 +2181,15 @@
     
     <!--Pincers-->
     <Enemy name="PF_Spite_Pincer_Boss">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1841,9 +2215,15 @@
         <Hitbox width="8" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Invis">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="1"/>
@@ -1870,9 +2250,15 @@
         <Hitbox width="8" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Lava">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1899,9 +2285,15 @@
         <Hitbox width="8" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
     <Enemy name="PF_Spite_Pincer_Rock">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="2"/>
@@ -1925,9 +2317,15 @@
         <Hitbox width="8" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
 	<Enemy name="PF_Spite_Pincer_Swamp">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="true"/>
             <FrontDetectionRangeX value="6"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1955,9 +2353,15 @@
 	</Enemy>
     <!--Ograks-->
 	<Enemy name="PF_Spite_Stomper_Rock">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -1979,9 +2383,15 @@
         <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
 	</Enemy>
     <Enemy name="PF_Spite_Stomper_Lava">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -2003,9 +2413,15 @@
         <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Stomper_Swamp">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -2027,9 +2443,15 @@
         <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
     </Enemy>
     <Enemy name="PF_Spite_Stomper_Boss">
+        <GenericScript>
+            <AttackBehavior value="Aggro"/>
+            <AwareBehaviorDuration value="0.5"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Aggro"/>
-            <MinBehaviorTime value="0.5"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="3"/>
@@ -2053,9 +2475,15 @@
 
     <!--Vespid-->
     <Enemy name="Spite_Wasp_Boss01">
+        <GenericScript>
+            <AttackBehavior value="Stinger"/>
+            <AwareBehaviorDuration value="4"/>
+            <AwareBehavior value="LookAround"/>
+            <UnawareBehavior value="Patrol"/>
+            <HealthRegenAmount value="0"/>
+            <HealthRegenFrequency value="0"/>
+        </GenericScript>
         <GlobalProperties>
-            <OffensiveBehavior value="Stinger"/>
-            <MinBehaviorTime value="4"/>
             <DetectionLimitedByPatrolLine value="false"/>
             <FrontDetectionRangeX value="8"/>
             <FrontDetectionRangeUpY value="8"/>
@@ -2078,16 +2506,19 @@
 
     <!--Spiderling-->
     <Enemy name="PF_Spite_Spiderling_Boss01">
+        <AIStateEnemy/>
         <Hitbox width="1.3" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
 
     <!--Tutorial Rachnok-->
     <Enemy name="Spite_TeaserSpider_Boss">
+        <AIStateEnemy/>
         <Hitbox width="15" height="9" offsetX="0" offsetY="5.2"/>
     </Enemy>
 
     <!--Rachnok-->
     <Enemy name="Spite_Spider_Boss">
+        <AIStateEnemy/>
         <Hitbox width="15" height="9" offsetX="0" offsetY="5.2"/>
     </Enemy>
 </InternalDefaultEnemies>

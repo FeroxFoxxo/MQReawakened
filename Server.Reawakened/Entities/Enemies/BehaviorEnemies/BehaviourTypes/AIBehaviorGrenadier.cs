@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
 
@@ -21,18 +20,8 @@ public class AIBehaviorGrenadier(GrenadierState grenadierState) : AIBaseBehavior
 
     public override StateTypes GetBehavior() => StateTypes.Grenadier;
 
-    public override string ToString()
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(GInTime);
-        sb.Append(GLoopTime);
-        sb.Append(GOutTime);
-        sb.Append(IsTracking ? 1 : 0);
-        sb.Append(ProjCount);
-        sb.Append(ProjSpeed);
-        sb.Append(MaxHeight);
-
-        return sb.ToString();
-    }
+    public override object[] GetData() => [
+        GInTime, GLoopTime, GOutTime,
+        IsTracking, ProjCount, ProjSpeed, MaxHeight
+    ];
 }

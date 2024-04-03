@@ -1,6 +1,5 @@
 ﻿using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
 
@@ -27,22 +26,12 @@ public class AIBehaviorShooting(ShootingState shootingState, AIStatsGlobalComp g
 
     public override StateTypes GetBehavior() => StateTypes.Shooting;
 
-    public override string ToString()
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(NbBulletsPerRound);
-        sb.Append(FireSpreadAngle);
-        sb.Append(DelayBetweenBullet);
-        sb.Append(DelayShootAnim);
-        sb.Append(NbFireRounds);
-        sb.Append(DelayBetweenFireRound);
-        sb.Append(StartCoolDownTime);
-        sb.Append(EndCoolDownTime);
-        sb.Append(ProjectileSpeed);
-        sb.Append(FireSpreadClockwise ? 1 : 0);
-        sb.Append(FireSpreadStartAngle);
-
-        return sb.ToString();
-    }
+    public override object[] GetData() => [
+        NbBulletsPerRound, FireSpreadAngle,
+        DelayBetweenBullet, DelayShootAnim,
+        NbFireRounds, DelayBetweenFireRound,
+        StartCoolDownTime, EndCoolDownTime,
+        ProjectileSpeed,
+        FireSpreadClockwise, FireSpreadStartAngle
+    ];
 }

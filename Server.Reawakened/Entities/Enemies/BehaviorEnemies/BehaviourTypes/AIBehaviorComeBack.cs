@@ -1,6 +1,5 @@
 ﻿using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
 
@@ -16,12 +15,5 @@ public class AIBehaviorComeBack(ComeBackState comeBackState, AIStatsGlobalComp g
 
     public override StateTypes GetBehavior() => StateTypes.ComeBack;
 
-    public override string ToString()
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(ComeBackSpeed);
-
-        return sb.ToString();
-    }
+    public override object[] GetData() => [ ComeBackSpeed ];
 }

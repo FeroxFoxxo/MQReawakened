@@ -4,21 +4,16 @@ using Server.Reawakened.XMLs.Models.Enemy.Enums;
 
 namespace Server.Reawakened.XMLs.Models.Enemy.Models;
 
-public class BehaviorModel
+public class EnemyModel
 {
     public Dictionary<StateTypes, BaseState> BehaviorData { get; set; }
     public List<EnemyDropModel> EnemyLootTable { get; set; }
     public GlobalPropertyModel GlobalProperties { get; set; }
+    public GenericScriptModel GenericScript { get; set; }
     public HitboxModel Hitbox { get; set; }
 
-    public void EnsureBehaviourValid(Microsoft.Extensions.Logging.ILogger logger, string enemyType)
+    public void EnsureValidData(bool isAiStateEnemy, string enemyType, Microsoft.Extensions.Logging.ILogger logger)
     {
-        if (BehaviorData == null)
-        {
-            logger.LogError("Enemy '{Name}' does not have a behavior data attached!", enemyType);
-            BehaviorData = [];
-        }
-
         if (EnemyLootTable == null)
         {
             logger.LogError("Enemy '{Name}' does not have a loot table attached!", enemyType);
@@ -31,10 +26,25 @@ public class BehaviorModel
             Hitbox = new HitboxModel(0, 0, 0, 0);
         }
 
-        if (GlobalProperties == null)
+        if (!isAiStateEnemy)
         {
-            logger.LogError("Enemy '{Name}' does not have any global properties attached!", enemyType);
-            GlobalProperties = new GlobalPropertyModel(false, 0, 0, 0, 0, 0, 0, 0, 0, 0, string.Empty, "COL_PRJ_DamageProjectile", false, false, 0, StateTypes.Unknown, 0);
+            if (BehaviorData == null)
+            {
+                logger.LogError("Enemy '{Name}' does not have a behavior data attached!", enemyType);
+                BehaviorData = [];
+            }
+
+            if (GlobalProperties == null)
+            {
+                logger.LogError("Enemy '{Name}' does not have any global properties attached!", enemyType);
+                GlobalProperties = new GlobalPropertyModel(false, 0, 0, 0, 0, 0, 0, 0, 0, 0, string.Empty, "COL_PRJ_DamageProjectile", false, false, 0);
+            }
+
+            if (GenericScript == null)
+            {
+                logger.LogError("Enemy '{Name}' does not have any generic script attached!", enemyType);
+                GenericScript = new GenericScriptModel(StateTypes.Unknown, StateTypes.Unknown, StateTypes.Unknown, 0, 0, 0);
+            }
         }
     }
 
