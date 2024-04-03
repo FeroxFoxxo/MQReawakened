@@ -1153,7 +1153,7 @@
         <Behaviors>
             <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
             <Aggro speed="4.8" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
         </Behaviors>
         <LootTable>
             <Drop type="item" id="1585" chance="0.8" minLevel="5" maxLevel="65"/>
@@ -1181,7 +1181,7 @@
         <Behaviors>
             <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
             <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
         </Behaviors>
         <LootTable>
             <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65"/>
@@ -1210,7 +1210,7 @@
         <Behaviors>
             <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
             <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
         </Behaviors>
         <LootTable>
             <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65"/>
@@ -1239,7 +1239,7 @@
         <Behaviors>
             <Patrol speed="1.6" smoothMove="false" endPathWaitTime="3"/>
             <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
         </Behaviors>
         <LootTable>
             <Drop type="item" id="1585" chance="0.2" minLevel="5" maxLevel="65"/>
@@ -1265,7 +1265,7 @@
         <Behaviors>
             <Patrol speed="1.8" smoothMove="false" endPathWaitTime="3"/>
             <Aggro speed="4.0" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0"/>
-            <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
+            <LookAround lookTime="4" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false"/>
         </Behaviors>
         <LootTable>
             <Drop type="item" id="1585" chance="0.5" minLevel="5" maxLevel="65"/>

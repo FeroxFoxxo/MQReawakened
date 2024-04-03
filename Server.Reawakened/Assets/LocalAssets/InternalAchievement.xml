@@ -848,97 +848,97 @@
         </Achievement>
     </Category>
     <Category id="4" title="Battling" iconName="Category_Combat" sortOrder="6">
-        <!--Custom-->
-        <Achievement id="98" title="One Down" description="Defeat Your First Enemy" iconName="Combat_Enemies_1" points="1" sortOrder="1" repeatable="false">
+        <!--All custom except 100, 102, 105, 218-->
+        <Achievement id="98" title="One Down" description="Defeat Your First Enemy" iconName="Combat_Enemies_1" points="3" sortOrder="1" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="5" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat Your First Enemy" type="DefeatEnemy" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="99" title="Battle Tested" description="Defeat 10 Enemies" iconName="Combat_Enemies_10" points="1" sortOrder="2" repeatable="false">
+        <Achievement id="99" title="Smasher" description="Defeat 10 Enemies" iconName="Combat_Enemies_10" points="5" sortOrder="2" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 10 Enemies" type="DefeatEnemy" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="100" title="Unknown Achievement 100" description="Defeat 25 Enemies" iconName="Combat_Enemies_25" points="1" sortOrder="3" repeatable="false">
+        <Achievement id="100" title="Warming Up" description="Defeat 25 Enemies" iconName="Combat_Enemies_25" points="10" sortOrder="3" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 25 Enemies" type="DefeatEnemy" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="101" title="Unknown Achievement 101" description="Defeat 50 Enemies" iconName="Combat_Enemies_50" points="1" sortOrder="4" repeatable="false">
+        <Achievement id="101" title="Defeater" description="Defeat 50 Enemies" iconName="Combat_Enemies_50" points="10" sortOrder="4" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 50 Enemies" type="DefeatEnemy" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="102" title="Rumble in the Jungle" description="Defeat 100 Enemies" iconName="Combat_Enemies_100" points="1" sortOrder="5" repeatable="false">
+        <Achievement id="102" title="Rumble in the Jungle" description="Defeat 100 Enemies" iconName="Combat_Enemies_100" points="25" sortOrder="5" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 100 Enemies" type="DefeatEnemy" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="103" title="Unknown Achievement 103" description="Defeat 250 Enemies" iconName="Combat_Enemies_250" points="1" sortOrder="6" repeatable="false">
+        <Achievement id="103" title="Crusher" description="Defeat 250 Enemies" iconName="Combat_Enemies_250" points="75" sortOrder="6" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="75" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 250 Enemies" type="DefeatEnemy" value="" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="104" title="Unknown Achievement 104" description="Defeat 500 Enemies" iconName="Combat_Enemies_500" points="1" sortOrder="7" repeatable="false">
+        <Achievement id="104" title="Vanquisher" description="Defeat 500 Enemies" iconName="Combat_Enemies_500" points="150" sortOrder="7" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="85" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 500 Enemies" type="DefeatEnemy" value="" goal="500" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="105" title="Brutal Battler" description="Defeat 1000 Enemies" iconName="Combat_Enemies_1000" points="1" sortOrder="8" repeatable="false">
+        <Achievement id="105" title="Brutal Battler" description="Defeat 1000 Enemies" iconName="Combat_Enemies_1000" points="200" sortOrder="8" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 1000 Enemies" type="DefeatEnemy" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="106" title="Unknown Achievement 106" description="Defeat 2500 Enemies" iconName="Combat_Enemies_2500" points="1" sortOrder="9" repeatable="false">
+        <Achievement id="106" title="Annihilator" description="Defeat 2500 Enemies" iconName="Combat_Enemies_2500" points="350" sortOrder="9" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="250" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 2500 Enemies" type="DefeatEnemy" value="" goal="2500" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="107" title="Unknown Achievement 107" description="Defeat 5000 Enemies" iconName="Combat_Enemies_5000" points="1" sortOrder="10" repeatable="false">
+        <Achievement id="107" title="Conqueror" description="Defeat 5000 Enemies" iconName="Combat_Enemies_5000" points="500" sortOrder="10" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="500" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 5000 Enemies" type="DefeatEnemy" value="" goal="5000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="218" title="Hero of Ook" description="Defeat 10000 Enemies" iconName="Defeat_10k" points="1" sortOrder="11" repeatable="false">
+        <Achievement id="218" title="Hero of Ook" description="Defeat 10000 Enemies" iconName="Defeat_10k" points="1000" sortOrder="11" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="1000" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 10000 Enemies" type="DefeatEnemy" value="" goal="10000" visible="true" />
             </Conditions>
         </Achievement>
         <!--All custom except 108,110,113,116-->
-        <Achievement id="108" title="SUPER Stomp!" description="Defeat 1 Enemy with a Super Stomp" iconName="Combat_Superstomp_1" points="1" sortOrder="12" repeatable="false">
+        <Achievement id="108" title="SUPER Stomp!" description="Defeat 1 Enemy with a Super Stomp" iconName="Combat_Superstomp_1" points="3" sortOrder="12" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="5" quantity="0" />
             </Rewards>
@@ -946,7 +946,7 @@
                 <Condition id="1" title="Defeat 1 Enemy with a Super Stomp" type="DefeatEnemyStomp" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="109" title="Unknown Achievement 109" description="Defeat 5 Enemies with a Super Stomp" iconName="Combat_Superstomp_5" points="1" sortOrder="12" repeatable="false">
+        <Achievement id="109" title="Like a Meteor" description="Defeat 5 Enemies with a Super Stomp" iconName="Combat_Superstomp_5" points="5" sortOrder="12" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
@@ -954,7 +954,7 @@
                 <Condition id="1" title="Defeat 5 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="110" title="Stomptastic!" description="Defeat 10 Enemies with a Super Stomp" iconName="Combat_Superstomp_10" points="1" sortOrder="13" repeatable="false">
+        <Achievement id="110" title="Stomptastic!" description="Defeat 10 Enemies with a Super Stomp" iconName="Combat_Superstomp_10" points="15" sortOrder="13" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
@@ -962,7 +962,7 @@
                 <Condition id="1" title="Defeat 10 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="111" title="Unknown Achievement 111" description="Defeat 25 Enemies with a Super Stomp" iconName="Combat_Superstomp_25" points="1" sortOrder="14" repeatable="false">
+        <Achievement id="111" title="Like a Stomper" description="Defeat 25 Enemies with a Super Stomp" iconName="Combat_Superstomp_25" points="25" sortOrder="14" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="25" quantity="0" />
             </Rewards>
@@ -970,7 +970,7 @@
                 <Condition id="1" title="Defeat 25 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="112" title="Unknown Achievement 112" description="Defeat 50 Enemies with a Super Stomp" iconName="Combat_Superstomp_50" points="1" sortOrder="15" repeatable="false">
+        <Achievement id="112" title="Ain't Stomping Now" description="Defeat 50 Enemies with a Super Stomp" iconName="Combat_Superstomp_50" points="50" sortOrder="15" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
@@ -978,7 +978,7 @@
                 <Condition id="1" title="Defeat 50 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="113" title="Super SUPER Stomp" description="Defeat 100 Enemies with a Super Stomp" iconName="Combat_Superstomp_100" points="1" sortOrder="16" repeatable="false">
+        <Achievement id="113" title="Super SUPER Stomp" description="Defeat 100 Enemies with a Super Stomp" iconName="Combat_Superstomp_100" points="75" sortOrder="16" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
@@ -986,7 +986,7 @@
                 <Condition id="1" title="Defeat 100 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="114" title="Unknown Achievement 114" description="Defeat 250 Enemies with a Super Stomp" iconName="Combat_Superstomp_250" points="1" sortOrder="17" repeatable="false">
+        <Achievement id="114" title="Super DUPER Stomp" description="Defeat 250 Enemies with a Super Stomp" iconName="Combat_Superstomp_250" points="100" sortOrder="17" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="250" quantity="0" />
             </Rewards>
@@ -994,7 +994,7 @@
                 <Condition id="1" title="Defeat 250 Enemies with a Super Stomp" type="DefeatEnemyStomp" value="" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="115" title="Unknown Achievement 115" description="Defeat 500 Enemies with a Super Stomp" iconName="Combat_Superstomp_500" points="1" sortOrder="18" repeatable="false">
+        <Achievement id="115" title="Stomp'em Out!" description="Defeat 500 Enemies with a Super Stomp" iconName="Combat_Superstomp_500" points="200" sortOrder="18" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="500" quantity="0" />
             </Rewards>
@@ -1011,7 +1011,7 @@
             </Conditions>
         </Achievement>
         <!--All custom except 118, 120-->
-        <Achievement id="117" title="Unknown Achievement 117" description="Use 5 Potions" iconName="Combat_Potions_5" points="1" sortOrder="20" repeatable="false">
+        <Achievement id="117" title="Sampler" description="Use 5 Potions" iconName="Combat_Potions_5" points="3" sortOrder="20" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
@@ -1027,7 +1027,7 @@
                 <Condition id="1" title="Use 10 Potions" type="Drink" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="119" title="Unknown Achievement 119" description="Use 25 Potions" iconName="Combat_Potions_25" points="5" sortOrder="22" repeatable="false">
+        <Achievement id="119" title="Healing Aid" description="Use 25 Potions" iconName="Combat_Potions_25" points="5" sortOrder="22" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="100" quantity="0" />
             </Rewards>
@@ -1043,7 +1043,7 @@
                 <Condition id="1" title="Use 100 Potions" type="Drink" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="121" title="Unknown Achievement 121" description="Use 250 Potions" iconName="Combat_Potions_250" points="20" sortOrder="24" repeatable="false">
+        <Achievement id="121" title="Witch's Brew" description="Use 250 Potions" iconName="Combat_Potions_250" points="20" sortOrder="24" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="350" quantity="0" />
             </Rewards>
@@ -1051,7 +1051,7 @@
                 <Condition id="1" title="Use 250 Potions" type="Drink" value="" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="122" title="Unknown Achievement 122" description="Use 1000 Potions" iconName="Defeat_1000_Potions" points="20" sortOrder="25" repeatable="false">
+        <Achievement id="122" title="Legendary Alchemist" description="Use 1000 Potions" iconName="Defeat_1000_Potions" points="20" sortOrder="25" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="2000" quantity="0" />
             </Rewards>
@@ -1761,7 +1761,7 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 300 Mini Robo-Plankton Enemies" goal="300" visible="true" />
+                <Condition id="1" title="Defeat 300 Mini Robo-Plankton Enemies" type="DefeatEnemy" value="Invalid" goal="300" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="211" title="Walk The Plankton" description="Defeat Plankton 10 Times (2014 SpongeBob Event)" iconName="Combat_SpongeBob_BossPlankton_10" points="50" sortOrder="114" repeatable="false">
@@ -1769,9 +1769,10 @@
                 <Reward type="Xp" value="200" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat Plankton 10 Times" goal="10" visible="true" />
+                <Condition id="1" title="Defeat Plankton 10 Times" type="DefeatEnemy" value="Invalid" goal="10" visible="true" />
             </Conditions>
         </Achievement>
+        <!--All custom except 212, 214, 216, 217-->
         <Achievement id="212" title="BOOM go the Baddies!" description="Use 10 Bombs or Poppers" iconName="Defeat_10_Bombs" points="5" sortOrder="115" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="60" quantity="0" />
@@ -1780,8 +1781,7 @@
                 <Condition id="1" title="Use 10 Bombs or Poppers" type="Bomb" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom-->
-        <Achievement id="213" title="Ka-Boom" description="Use 25 Bombs or Poppers" iconName="Combat_Bombs_25" points="10" sortOrder="116" repeatable="false">
+        <Achievement id="213" title="KA-Boom" description="Use 25 Bombs or Poppers" iconName="Combat_Bombs_25" points="10" sortOrder="116" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="80" quantity="0" />
             </Rewards>
@@ -1797,7 +1797,6 @@
                 <Condition id="1" title="Use 100 Bombs or Poppers" type="Bomb" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <!--Custom-->
         <Achievement id="215" title="Bomb Expert" description="Use 5 Different Bombs or Poppers" iconName="Combat_BombsMad_5" points="10" sortOrder="118" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="80" quantity="0" />

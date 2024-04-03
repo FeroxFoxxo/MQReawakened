@@ -37,6 +37,7 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         //External Component Info
         Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
+        Console.WriteLine(Global.PrefabName);
         GlobalProperties = BehaviorModel.GlobalProperties.GenerateGlobalPropertiesFromModel(Global);
 
         //AIProcessData assignment, used for AI_Behavior
