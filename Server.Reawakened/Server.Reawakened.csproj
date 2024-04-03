@@ -131,7 +131,7 @@
       <None Update="Assets\LocalAssets\InternalColliders.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Assets\LocalAssets\InternalDefaultEnemies.xml">
+      <None Update="Assets\LocalAssets\InternalEnemyData.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Assets\LocalAssets\InternalDialog.xml">

@@ -1,11 +1,18 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Logging;
 using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Enums;
+using WorldGraphDefines;
 
 namespace Protocols.External._l__ExtLevelEditor;
 
@@ -16,6 +23,7 @@ public class RoomUpdate : ExternalProtocol
     public ILogger<RoomUpdate> Logger { get; set; }
     public ChatCommands ChatCommands { get; set; }
     public ServerRConfig Config { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public override void Run(string[] message)
     {
@@ -27,18 +35,27 @@ public class RoomUpdate : ExternalProtocol
             entityComponent.SendDelayedData(Player);
 
         foreach (var enemy in Player.Room.Enemies.Values)
-            enemy.SendInitData(Player);
+            enemy.SendAiData(Player);
 
         Player.Room.SendCharacterInfo(Player);
 
         foreach (var npc in Player.Room.GetEntitiesFromType<NPCControllerComp>())
             npc.SendNpcInfo(Player);
 
-        if (!Player.FirstLogin)
-            return;
+        if (Player.FirstLogin)
+        {
+            ChatCommands.DisplayHelp(Player);
+            Player.FirstLogin = false;
+        }
+        else
+        {
+            var levelInfo = Player.Room.LevelInfo;
 
-        ChatCommands.DisplayHelp(Player);
-        Player.FirstLogin = false;
+            Player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.ExploreTrail, levelInfo.Name, InternalAchievement, Logger);
+
+            Player.DiscoverTribe(levelInfo.Tribe);
+        }
     }
 
     private string GetGameObjectStore(Room room)

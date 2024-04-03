@@ -1,6 +1,9 @@
 ﻿using Server.Reawakened.Entities.Enemies.AIStateEnemies.SyncEvents;
+using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
+using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components;
@@ -28,12 +31,22 @@ public class GlobalInteractionControllerComp : Component<GlobalInteractionContro
         if (counter != null)
             _counter = counter;
 
-        var t = new AIInit_SyncEvent(Id, Room.Time, Position.X, Position.Y, Position.Z, Position.X, Position.Y, 0, 10, 10, 1, 1, 1, 0, 1, string.Empty, string.Empty);
-        Room.SendSyncEvent(t);
+        var defaultProperties = AISyncEventHelper.CreateDefaultGlobalProperties();
+        var behaviors = new Dictionary<StateType, BaseState>();
+        
+        Room.SendSyncEvent(
+            AISyncEventHelper.AIInit(
+                Id, Room.Time, Position.X, Position.Y, Position.Z, Position.X, Position.Y,
+                0, 10, 10, 1, 1, 1,
+                0, 1, defaultProperties, behaviors, null, null
+            )
+        );
 
-        GoToNextState(new GameObjectComponents() {
+        GoToNextState(
+            new GameObjectComponents() {
                     {"AIStateGlobalInteractionActive", new ComponentSettings() {"ST", "0"}}
-                });
+            }
+        );
     }
 
     public override void Update()
@@ -44,9 +57,6 @@ public class GlobalInteractionControllerComp : Component<GlobalInteractionContro
             var pollStatus = new SyncEvent(Id, SyncEvent.EventType.GlobalInteractionEvent, Room.Time);
             pollStatus.EventDataList.Add(_counter.Interactions);
             Room.SendSyncEvent(pollStatus);
-
-            //var triggerCounter = new Trigger_SyncEvent(Id, Room.Time, true, Id, true);
-            //Room.SendSyncEvent(triggerCounter);
 
             _nextPollTime = Room.Time + PollInterval;
         }

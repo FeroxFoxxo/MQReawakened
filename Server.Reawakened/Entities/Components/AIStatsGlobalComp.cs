@@ -1,5 +1,8 @@
 ﻿using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Models.Enemy.Enums;
+using Server.Reawakened.XMLs.Models.Enemy.Models;
 
 namespace Server.Reawakened.Entities.Components;
 public class AIStatsGlobalComp : Component<AI_Stats_Global>
@@ -61,49 +64,91 @@ public class AIStatsGlobalComp : Component<AI_Stats_Global>
     public int GenericScript_HealthRegenerationAmount => ComponentData.GenericScript_HealthRegenerationAmount;
     public int GenericScript_HealthRegenerationFrequency => ComponentData.GenericScript_HealthRegenerationFrequency;
 
-    public void MixGlobalProperties(GlobalProperties globalProps)
+    public AI_Stats_Global Default;
+
+    public void MixGlobalProperties(ClassCopier classCopier, GlobalProperties globalProps)
     {
-        if (Global_viewOffsetY != default)
+        var baseType = typeof(AI_Stats_Global);
+        Default = classCopier.GetClassAndInfo(baseType).Key as AI_Stats_Global;
+
+        if (Global_viewOffsetY != Default.Global_viewOffsetY)
             globalProps.Global_ViewOffsetY = Global_viewOffsetY;
 
-        if (Global_FrontDetectionRangeX != default)
+        if (Global_FrontDetectionRangeX != Default.Global_FrontDetectionRangeX)
             globalProps.Global_FrontDetectionRangeX = Global_FrontDetectionRangeX;
 
-        if (Global_FrontDetectionRangeUpY != default)
+        if (Global_FrontDetectionRangeUpY != Default.Global_FrontDetectionRangeUpY)
             globalProps.Global_FrontDetectionRangeUpY = Global_FrontDetectionRangeUpY;
 
-        if (Global_FrontDetectionRangeDownY != default)
+        if (Global_FrontDetectionRangeDownY != Default.Global_FrontDetectionRangeDownY)
             globalProps.Global_FrontDetectionRangeDownY = Global_FrontDetectionRangeDownY;
 
-        if (Global_BackDetectionRangeX != default)
+        if (Global_BackDetectionRangeX != Default.Global_BackDetectionRangeX)
             globalProps.Global_BackDetectionRangeX = Global_BackDetectionRangeX;
 
-        if (Global_BackDetectionRangeUpY != default)
+        if (Global_BackDetectionRangeUpY != Default.Global_BackDetectionRangeUpY)
             globalProps.Global_BackDetectionRangeUpY = Global_BackDetectionRangeUpY;
 
-        if (Global_BackDetectionRangeDownY != default)
+        if (Global_BackDetectionRangeDownY != Default.Global_BackDetectionRangeDownY)
             globalProps.Global_BackDetectionRangeDownY = Global_BackDetectionRangeDownY;
 
-        if (Global_ShootOffsetX != default)
+        if (Global_ShootOffsetX != Default.Global_ShootOffsetX)
             globalProps.Global_ShootOffsetX = Global_ShootOffsetX;
 
-        if (Global_ShootOffsetY != default)
+        if (Global_ShootOffsetY != Default.Global_ShootOffsetY)
             globalProps.Global_ShootOffsetY = Global_ShootOffsetY;
 
-        if (Global_DetectionSourceOnPatrolLine != default)
+        if (Global_DetectionSourceOnPatrolLine != Default.Global_DetectionSourceOnPatrolLine)
             globalProps.Global_DetectionSourceOnPatrolLine = Global_DetectionSourceOnPatrolLine;
 
-        if (Global_DetectionLimitedByPatrolLine != default)
+        if (Global_DetectionLimitedByPatrolLine != Default.Global_DetectionLimitedByPatrolLine)
             globalProps.Global_DetectionLimitedByPatrolLine = Global_DetectionLimitedByPatrolLine;
 
-        if (Global_ShootingProjectilePrefabName != default)
+        if (Global_ShootingProjectilePrefabName != Default.Global_ShootingProjectilePrefabName)
             globalProps.Global_ShootingProjectilePrefabName = Global_ShootingProjectilePrefabName;
 
-        if (Global_DisableCollision != default)
+        if (Global_DisableCollision != Default.Global_DisableCollision)
             globalProps.Global_DisableCollision = Global_DisableCollision;
 
-        if (Global_Script != default)
+        if (Global_Script != Default.Global_Script)
             globalProps.Global_Script = Global_Script;
+
+        if (Aggro_AttackBeyondPatrolLine != Default.Aggro_AttackBeyondPatrolLine)
+            globalProps.Aggro_AttackBeyondPatrolLine = Aggro_AttackBeyondPatrolLine;
+    }
+    public GenericScriptPropertiesModel MixGenericProperties(ClassCopier classCopier, GenericScriptPropertiesModel properties)
+    {
+        var baseType = typeof(AI_Stats_Global);
+        Default = classCopier.GetClassAndInfo(baseType).Key as AI_Stats_Global;
+
+        var attackBehavior = GenericScript_AttackBehavior != Default.GenericScript_AttackBehavior ?
+            GenericScript_AttackBehavior :
+            Enum.GetName(properties.AttackBehavior);
+
+        var awareBehavior = GenericScript_AwareBehavior != Default.GenericScript_AwareBehavior ?
+            GenericScript_AwareBehavior :
+            Enum.GetName(properties.AwareBehavior);
+
+        var unawareBehavior = GenericScript_UnawareBehavior != Default.GenericScript_UnawareBehavior ?
+            GenericScript_UnawareBehavior :
+            Enum.GetName(properties.UnawareBehavior);
+
+        var duration = GenericScript_AwareBehaviorDuration != Default.GenericScript_AwareBehaviorDuration ?
+            GenericScript_AwareBehaviorDuration :
+            properties.genericScript_AwareBehaviorDuration;
+
+        var healthRegenAmount = GenericScript_HealthRegenerationAmount != Default.GenericScript_HealthRegenerationAmount ?
+            GenericScript_HealthRegenerationAmount :
+            properties.genericScript_HealthRegenerationAmount;
+
+        var healthRegenFreq = GenericScript_HealthRegenerationFrequency != Default.GenericScript_HealthRegenerationFrequency ?
+            GenericScript_HealthRegenerationFrequency :
+            properties.genericScript_HealthRegenerationFrequency;
+
+        return new GenericScriptPropertiesModel(
+            Enum.Parse<StateType>(attackBehavior), Enum.Parse<StateType>(awareBehavior), Enum.Parse<StateType>(unawareBehavior),
+            duration, healthRegenAmount, healthRegenFreq
+        );
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)

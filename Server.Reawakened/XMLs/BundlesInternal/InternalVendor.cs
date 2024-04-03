@@ -119,7 +119,7 @@ public class InternalVendor : InternalXml
 
                                 if (itemDescription == null)
                                 {
-                                    Logger.LogError("Unknown item with prefab name: {Val}", itemAttribute.Value);
+                                    Logger.LogError("Unknown item with prefab name: '{item}'", itemAttribute.Value);
                                     continue;
                                 }
 
@@ -148,7 +148,7 @@ public class InternalVendor : InternalXml
                         );
                     }
                     else
-                        Logger.LogError("Cannot find text id for character with name: {Name}", name);
+                        Logger.LogError("Cannot find text id for character with name: '{Name}'", name);
                 }
             }
         }

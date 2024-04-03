@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
 
@@ -16,17 +15,9 @@ public class AIBehaviorStomper(StomperState stomperState) : AIBaseBehavior
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Stomper(AttackTime, ImpactTime);
 
-    public override StateTypes GetBehavior() => StateTypes.Stomper;
+    public override StateType GetBehavior() => StateType.Stomper;
 
-    public override string ToString()
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(AttackTime);
-        sb.Append(ImpactTime);
-        sb.Append(DamageDistance);
-        sb.Append(DamageOffset);
-
-        return sb.ToString();
-    }
+    public override object[] GetData() => [
+        AttackTime, ImpactTime, DamageDistance, DamageOffset
+    ];
 }

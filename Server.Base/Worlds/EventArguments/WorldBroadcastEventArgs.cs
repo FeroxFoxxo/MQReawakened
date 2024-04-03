@@ -2,5 +2,5 @@
 
 public class WorldBroadcastEventArgs(string msg)
 {
-    public string Message { get; } = msg;
+    public string Message => msg;
 }

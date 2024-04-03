@@ -8,10 +8,10 @@ namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 
 public class AIBehaviorAggro(AggroState aggroState, AIStatsGlobalComp globalComp) : AIBaseBehavior
 {
-    public float AggroSpeed => globalComp.Aggro_AttackSpeed != default ? globalComp.Aggro_AttackSpeed : aggroState.AggroSpeed;
-    public float MoveBeyondTargetDistance => globalComp.Aggro_MoveBeyondTargetDistance != default ? globalComp.Aggro_MoveBeyondTargetDistance : aggroState.MoveBeyondTargetDistance;
-    public bool StayOnPatrolPath => globalComp.Aggro_StayOnPatrolPath != default ? globalComp.Aggro_StayOnPatrolPath : aggroState.StayOnPatrolPath;
-    public float AttackBeyondPatrolLine => globalComp.Aggro_AttackBeyondPatrolLine != default ? globalComp.Aggro_AttackBeyondPatrolLine : aggroState.AttackBeyondPatrolLine;
+    public float AggroSpeed => globalComp.Aggro_AttackSpeed != globalComp.Default.Aggro_AttackSpeed ? globalComp.Aggro_AttackSpeed : aggroState.AggroSpeed;
+    public float MoveBeyondTargetDistance => globalComp.Aggro_MoveBeyondTargetDistance != globalComp.Default.Aggro_MoveBeyondTargetDistance ? globalComp.Aggro_MoveBeyondTargetDistance : aggroState.MoveBeyondTargetDistance;
+    public bool StayOnPatrolPath => globalComp.Aggro_StayOnPatrolPath != globalComp.Default.Aggro_StayOnPatrolPath ? globalComp.Aggro_StayOnPatrolPath : aggroState.StayOnPatrolPath;
+    public float AttackBeyondPatrolLine => globalComp.Aggro_AttackBeyondPatrolLine != globalComp.Default.Aggro_AttackBeyondPatrolLine ? globalComp.Aggro_AttackBeyondPatrolLine : aggroState.AttackBeyondPatrolLine;
     public bool UseAttackBeyondPatrolLine => aggroState.UseAttackBeyondPatrolLine;
     public float DetectionRangeUpY => aggroState.DetectionRangeUpY;
     public float DetectionRangeDownY => aggroState.DetectionRangeDownY;
@@ -24,7 +24,7 @@ public class AIBehaviorAggro(AggroState aggroState, AIStatsGlobalComp globalComp
         DetectionRangeUpY, DetectionRangeDownY
     );
 
-    public override StateTypes GetBehavior() => StateTypes.Aggro;
+    public override StateType GetBehavior() => StateType.Aggro;
 
     public override string ToString()
     {
@@ -40,4 +40,10 @@ public class AIBehaviorAggro(AggroState aggroState, AIStatsGlobalComp globalComp
 
         return sb.ToString();
     }
+
+    public override object[] GetData() => [
+            AggroSpeed, MoveBeyondTargetDistance, StayOnPatrolPath,
+            AttackBeyondPatrolLine, UseAttackBeyondPatrolLine,
+            DetectionRangeUpY, DetectionRangeDownY
+        ];
 }

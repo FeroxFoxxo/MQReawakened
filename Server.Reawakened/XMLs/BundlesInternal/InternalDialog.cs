@@ -115,7 +115,7 @@ public class InternalDialog : InternalXml
                         NpcDialogs[levelId].Add(objectId, new DialogInfo(objectId, nameModel.Key, descriptionId, dialogList));
                     }
                     else
-                        Logger.LogError("Cannot find text id for character with name: {Name}", nameId > 0 ? nameId : name);
+                        Logger.LogError("Cannot find text id for character with name: '{Name}'", nameId > 0 ? nameId : name);
                 }
             }
         }

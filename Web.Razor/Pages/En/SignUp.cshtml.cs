@@ -13,6 +13,9 @@ namespace Web.Razor.Pages.En;
 [BindProperties]
 public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfoHandler, ILogger<SignUpModel> logger) : PageModel
 {
+    [TempData]
+    public string StatusMessage { get; set; }
+
     [Display(Name = "User Name")]
     [StringLength(10, ErrorMessage = "The {0} cannot be over {1} characters long.")]
     public string Username { get; set; }
@@ -69,29 +72,50 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
     public IActionResult OnPost()
     {
         if (!ModelState.IsValid)
+        {
+            StatusMessage = "An error occurred while verifying data!";
             return Page();
+        }
 
         if (!Date.HasValue)
+        {
+            StatusMessage = "An error occurred while ensuring data value!";
+            return Page();
+        }
+
+        if (string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Email))
             return Page();
 
         if (accountHandler.GetInternal().Any(a => a.Value.Username == Username))
-            return Forbid();
+        {
+            StatusMessage = "An account already exists with this username!";
+            return Page();
+        }
 
         if (accountHandler.GetInternal().Any(a => a.Value.Email == Email))
-            return Forbid();
+        {
+            StatusMessage = "An account already exists with this email!";
+            return Page();
+        }
 
         var ip = Request.HttpContext.Connection.RemoteIpAddress;
 
         if (ip == null || string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password) ||
             string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Region))
-            return BadRequest();
+        {
+            StatusMessage = "A bad request occured. Try on a different device.";
+            return Page();
+        }
 
         var account = accountHandler.Create(ip, Username, Password, Email);
 
         if (account == null)
         {
             logger.LogError("Could not create account with name: {Username}", Username);
-            return NotFound();
+            StatusMessage = "Could not create an account! " +
+                "You could have too many, or have put strange characters in your username/password. " +
+                "Ensure these consist of English characters, if possible.";
+            return Page();
         }
 
         var userInfo = userInfoHandler.Create(ip, account.Id, Gender, Date.Value, Region, "Website");
@@ -99,7 +123,9 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
         if (account == null)
         {
             logger.LogError("Could not create user info with name: {Username}", Username);
-            return NotFound();
+            StatusMessage = "Could not create any user information! " +
+                "Perhaps an account already exists with this username?";
+            return Page();
         }
 
         return RedirectToPage("Success");

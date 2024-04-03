@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.XMLs.Models.Enemy.Enums;
+﻿using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.XMLs.Models.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 
@@ -21,5 +22,17 @@ public abstract class AIBaseBehavior
 
     public void SetBehaviour() => _behavior = GetBehaviour();
     protected abstract AI_Behavior GetBehaviour();
-    public abstract StateTypes GetBehavior();
+    public abstract StateType GetBehavior();
+
+    public abstract object[] GetData();
+
+    public override string ToString()
+    {
+        var sb = new SeparatedStringBuilder(';');
+
+        foreach (var obj in GetData())
+            sb.Append(obj is bool booleanValue ? booleanValue ? 1 : 0 : obj);
+
+        return sb.ToString();
+    }
 }

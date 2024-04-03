@@ -1,5 +1,5 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Players.Helpers;
 using static A2m.Server.DescriptionHandler;
 

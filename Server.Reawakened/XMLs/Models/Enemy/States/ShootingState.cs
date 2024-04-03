@@ -10,17 +10,17 @@ public class ShootingState(int nbBulletsPerRound, float fireSpreadAngle, float d
     float endCoolDownTime, float projectileSpeed, bool fireSpreadClockwise, float fireSpreadStartAngle,
     List<EnemyResourceModel> resources) : BaseState(resources)
 {
-    public int NbBulletsPerRound { get; } = nbBulletsPerRound;
-    public float FireSpreadAngle { get; } = fireSpreadAngle;
-    public float DelayBetweenBullet { get; } = delayBetweenBullet;
-    public float DelayShootAnim { get; } = delayShootAnim;
-    public int NbFireRounds { get; } = nbFireRounds;
-    public float DelayBetweenFireRound { get; } = delayBetweenFireRound;
-    public float StartCoolDownTime { get; } = startCoolDownTime;
-    public float EndCoolDownTime { get; } = endCoolDownTime;
-    public float ProjectileSpeed { get; } = projectileSpeed;
-    public bool FireSpreadClockwise { get; } = fireSpreadClockwise;
-    public float FireSpreadStartAngle { get; } = fireSpreadStartAngle;
+    public int NbBulletsPerRound => nbBulletsPerRound;
+    public float FireSpreadAngle => fireSpreadAngle;
+    public float DelayBetweenBullet => delayBetweenBullet;
+    public float DelayShootAnim => delayShootAnim;
+    public int NbFireRounds => nbFireRounds;
+    public float DelayBetweenFireRound => delayBetweenFireRound;
+    public float StartCoolDownTime => startCoolDownTime;
+    public float EndCoolDownTime => endCoolDownTime;
+    public float ProjectileSpeed => projectileSpeed;
+    public bool FireSpreadClockwise => fireSpreadClockwise;
+    public float FireSpreadStartAngle => fireSpreadStartAngle;
 
     protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorShooting(this, globalComp);
 }

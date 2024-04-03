@@ -2,5 +2,5 @@
 
 public class NetStateAddedEventArgs(NetState state)
 {
-    public NetState State { get; } = state;
+    public NetState State => state;
 }

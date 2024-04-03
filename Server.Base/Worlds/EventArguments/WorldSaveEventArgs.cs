@@ -2,5 +2,5 @@
 
 public class WorldSaveEventArgs(bool msg) : EventArgs
 {
-    public bool Message { get; } = msg;
+    public bool Message => msg;
 }

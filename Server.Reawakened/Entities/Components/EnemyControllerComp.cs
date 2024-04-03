@@ -30,13 +30,8 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
     public ItemEffectType EnemyEffectType => ComponentData.EnemyEffectType;
 
-    public InternalDefaultEnemies EnemyInfoXml { get; set; }
-    public InternalAchievement InternalAchievement { get; set; }
-    public QuestCatalog QuestCatalog { get; set; }
     public TimerThread TimerThread { get; set; }
-    public ItemCatalog ItemCatalog { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
-    public ILogger<EnemyControllerComp> Logger { get; set; }
     public ServerRConfig Config { get; set; }
 
     public int Level;

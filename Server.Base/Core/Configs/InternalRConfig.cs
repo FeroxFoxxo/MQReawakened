@@ -54,7 +54,7 @@ public class InternalRConfig : IRConfig
         LogDirectory = InternalDirectory.GetDirectory("Logs");
         CrashDirectory = InternalDirectory.GetDirectory("Logs/Crashes");
 
-        MaxAccountsPerIp = 1;
+        MaxAccountsPerIp = 5;
         ForbiddenChars =
         [
             '<', '>', ':', '"', '/', '\\', '|', '?', '*', ' ', '%'

@@ -8,22 +8,22 @@ public class VendorInfo(int gameObjectId, int nameId, int descriptionId,
     int vendorId, int catalogId, NPCController.NPCStatus vendorType,
     ConversationInfo greetingConversation, ConversationInfo leavingConversation, int[] items)
 {
-    public int GameObjectId { get; } = gameObjectId;
+    public int GameObjectId => gameObjectId;
     public int NameId { get; set; } = nameId;
-    public int DescriptionId { get; } = descriptionId;
+    public int DescriptionId => descriptionId;
 
-    public int NumberOfIdolsToAccessBackStore { get; } = numberOfIdolsToAccessBackStore;
-    public int IdolLevelId { get; } = idolLevelId;
+    public int NumberOfIdolsToAccessBackStore => numberOfIdolsToAccessBackStore;
+    public int IdolLevelId => idolLevelId;
 
     public int VendorId { get; set; } = vendorId;
     public int CatalogId { get; set; } = catalogId;
 
-    public NPCController.NPCStatus VendorType { get; } = vendorType;
+    public NPCController.NPCStatus VendorType => vendorType;
 
-    public ConversationInfo GreetingConversation { get; } = greetingConversation;
-    public ConversationInfo LeavingConversation { get; } = leavingConversation;
+    public ConversationInfo GreetingConversation => greetingConversation;
+    public ConversationInfo LeavingConversation => leavingConversation;
 
-    public int[] Items { get; } = items;
+    public int[] Items => items;
 
     public string ToString(Player player)
     {
