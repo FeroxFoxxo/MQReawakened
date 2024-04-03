@@ -8,9 +8,9 @@ namespace Server.Reawakened.XMLs.Models.Enemy.States;
 
 public class BomberState(float inTime, float loopTime, float bombRadius, List<EnemyResourceModel> resources) : BaseState(resources)
 {
-    public float InTime { get; } = inTime;
-    public float LoopTime { get; } = loopTime;
-    public float BombRadius { get; } = bombRadius;
+    public float InTime => inTime;
+    public float LoopTime => loopTime;
+    public float BombRadius => bombRadius;
 
     protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorBomber(this);
 }

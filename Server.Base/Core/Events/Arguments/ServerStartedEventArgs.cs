@@ -4,5 +4,5 @@ namespace Server.Base.Core.Events.Arguments;
 
 public class ServerStartedEventArgs(IEnumerable<Module> modules) : EventArgs
 {
-    public IEnumerable<Module> Modules { get; } = modules;
+    public IEnumerable<Module> Modules => modules;
 }

@@ -119,7 +119,7 @@ public class InternalVendor : InternalXml
 
                                 if (itemDescription == null)
                                 {
-                                    Logger.LogError("Unknown item with prefab name: {Val}", itemAttribute.Value);
+                                    Logger.LogError("Unknown item with prefab name: '{item}'", itemAttribute.Value);
                                     continue;
                                 }
 

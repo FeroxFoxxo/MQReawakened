@@ -2,10 +2,10 @@
 
 public class LootModel(string objectId, List<BananaReward> bananaRewards, List<ItemReward> itemRewards, bool doWheel, int multiplayerWheelChance, int weightRange)
 {
-    public string ObjectId { get; } = objectId;
-    public List<BananaReward> BananaRewards { get; } = bananaRewards;
-    public List<ItemReward> ItemRewards { get; } = itemRewards;
-    public bool DoWheel { get; } = doWheel;
-    public int MultiplayerWheelChance { get; } = multiplayerWheelChance;
-    public int WeightRange { get; } = weightRange;
+    public string ObjectId => objectId;
+    public List<BananaReward> BananaRewards => bananaRewards;
+    public List<ItemReward> ItemRewards => itemRewards;
+    public bool DoWheel => doWheel;
+    public int MultiplayerWheelChance => multiplayerWheelChance;
+    public int WeightRange => weightRange;
 }

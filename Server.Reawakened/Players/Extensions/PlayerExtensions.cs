@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -246,7 +247,16 @@ public static class PlayerExtensions
     public static void DiscoverTribe(this Player player, TribeType tribe)
     {
         if (player.Character.HasAddedDiscoveredTribe(tribe))
+        {
+            // Set tribe on 2011-2013
+            if (player.Character.Data.Allegiance == TribeType.Invalid
+                && tribe is TribeType.Shadow
+                or TribeType.Outlaw or TribeType.Bone
+                or TribeType.Wild or TribeType.Grease)
+                player.Character.Data.Allegiance = tribe;
+
             player.SendXt("cB", (int)tribe);
+        }
     }
 
     public static void DiscoverAllTribes(this Player player)

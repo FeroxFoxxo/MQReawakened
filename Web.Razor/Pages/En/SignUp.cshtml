@@ -9,6 +9,21 @@
     ViewData["Title"] = "Sign Up";
 }
 
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <script>
+        window.onload = function () {
+            Swal.fire({
+                text: '@Model.StatusMessage',
+                showConfirmButton: false
+            });
+        };
+    </script>
+}
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
 <body class="align">
     <div class="grid align_item">
         <div class="register">

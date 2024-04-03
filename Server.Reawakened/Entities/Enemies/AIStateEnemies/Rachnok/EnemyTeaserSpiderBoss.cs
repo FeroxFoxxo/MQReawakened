@@ -1,8 +1,5 @@
-﻿using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Rooms;
-
-namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.Rachnok;
-public class EnemyTeaserSpiderBoss(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : AIStateEnemy(room, entityId, prefabName, enemyController, services)
+﻿namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.Rachnok;
+public class EnemyTeaserSpiderBoss(EnemyData data) : AIStateEnemy(data)
 {
     public override void Initialize()
     {

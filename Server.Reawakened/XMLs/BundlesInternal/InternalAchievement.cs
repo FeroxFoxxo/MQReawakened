@@ -93,7 +93,7 @@ public class InternalAchievement : InternalXml
 
                 if (cIds.Contains(categoryId))
                 {
-                    Logger.LogError("Category with id of {catId} already exists!", categoryId);
+                    Logger.LogError("Category with id of '{catId}' already exists!", categoryId);
                     return;
                 }
 
@@ -167,7 +167,7 @@ public class InternalAchievement : InternalXml
 
                     if (aIds.Contains(achId))
                     {
-                        Logger.LogError("Achievement with id of {achId} already exists!", achId);
+                        Logger.LogError("Achievement with id of '{achId}' already exists!", achId);
                         return;
                     }
 

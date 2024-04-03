@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Models.Enemy.Models;
 namespace Server.Reawakened.XMLs.Models.Enemy.States;
 public class ComeBackState(float comeBackSpeed, List<EnemyResourceModel> resources) : BaseState(resources)
 {
-    public float ComeBackSpeed { get; } = comeBackSpeed;
+    public float ComeBackSpeed => comeBackSpeed;
 
     protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorComeBack(this, globalComp);
 

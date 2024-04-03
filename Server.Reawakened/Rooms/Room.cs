@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enemies;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Extensions;
@@ -56,7 +56,7 @@ public class Room : Timer
 
     public ItemCatalog ItemCatalog;
     public InternalColliders ColliderCatalog;
-
+    public InternalEnemyData InternalEnemyData;
     public CheckpointControllerComp LastCheckpoint { get; set; }
 
     public LevelInfo LevelInfo => _level.LevelInfo;
@@ -74,6 +74,7 @@ public class Room : Timer
 
         ColliderCatalog = services.GetRequiredService<InternalColliders>();
         ItemCatalog = services.GetRequiredService<ItemCatalog>();
+        InternalEnemyData = services.GetRequiredService<InternalEnemyData>();
         Logger = services.GetRequiredService<ILogger<Room>>();
 
         _level = level;
@@ -118,7 +119,13 @@ public class Room : Timer
         {
             if (component.Name == config.EnemyComponentName && !component.ParentPlane.Equals("TemplatePlane"))
             {
-                Enemies.Add(component.Id, this.GenerateEntityFromName(component.PrefabName, component.Id, (EnemyControllerComp)component, services, config));
+                var enemy = this.GenerateEntityFromName(
+                        component.PrefabName, component.Id, (EnemyControllerComp)component,
+                        services, config, InternalEnemyData, Logger
+                    );
+
+                if (enemy != null)
+                    Enemies.Add(component.Id, enemy);
             }
             if (component.Name == config.BreakableComponentName)
             {
@@ -405,9 +412,6 @@ public class Room : Timer
 
     public void KillEntity(Player player, string id)
     {
-        if (player == null)
-            return;
-
         lock (_roomLock)
             if (KilledObjects.Contains(id))
                 return;
@@ -420,7 +424,7 @@ public class Room : Timer
         {
             if (destructible is BaseComponent component)
             {
-                destructible.Destroy(player, player.Room, component.Id);
+                destructible.Destroy(player, this, component.Id);
 
                 Logger.LogDebug("Killed destructible {destructible} from GameObject {prefabname} with Id {id}",
                     destructible.GetType().Name, component.PrefabName, component.Id);

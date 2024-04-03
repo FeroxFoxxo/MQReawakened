@@ -40,14 +40,14 @@ public class Player(Account account, UserInfo userInfo, NetState state, WorldHan
 
     public void Remove(Microsoft.Extensions.Logging.ILogger logger)
     {
-        lock (playerContainer.Lock)
+        lock (PlayerContainer.Lock)
             playerContainer.RemovePlayer(this);
 
         this.RemoveFromGroup();
 
         if (Character != null)
         {
-            lock (playerContainer.Lock)
+            lock (PlayerContainer.Lock)
             {
                 foreach (var player in playerContainer.GetPlayersByFriend(CharacterId))
                     player.SendXt("fz", Character.Data.CharacterName);

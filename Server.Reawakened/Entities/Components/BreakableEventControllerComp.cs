@@ -101,7 +101,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public void Destroy(Player player, Room room, string id)
     {
-        player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
+        player?.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
 
         room.Enemies.Remove(id);
         room.Colliders.Remove(id);

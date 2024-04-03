@@ -83,7 +83,7 @@ public class SpiderBossControllerComp : Component<SpiderBossController>, IReciev
 
     public void Destroy(Player player, Room room, string id)
     {
-        if (room == null || room.IsObjectKilled(Id))
+        if (room.IsObjectKilled(Id))
             return;
 
         var delay = 0f;

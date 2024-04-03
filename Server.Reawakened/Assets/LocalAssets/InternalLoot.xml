@@ -243,7 +243,7 @@
             </Items>
         </LootInfo>
         <!--Green Chest-->
-        <LootInfo objectId="" doLootWheel="true">
+        <LootInfo objectId="19696" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing01" count="1" />
             </Items>
@@ -1246,28 +1246,6 @@
                 <Item itemName="Unknown Pattern: (2 stars)" count="1" />
             </Items>
         </LootInfo>
-        <!--Arena Purple Chest-->
-        <LootInfo objectId="28175" doLootWheel="True">
-            <Items rewardAmount="1">
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-            </Items>
-        </LootInfo>
-        <!--Blue Chest 2-->
     </Level>
     <Level name="Mushroom Hollow" id="85">
         <LootInfo objectId="10264" doLootWheel="True">
@@ -2496,11 +2474,11 @@
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_KidBoy01_S02" count="1" />
                 <Item itemName="Add_SHD_ImpGirl01_LS03" count="1" />
-                <Item itemName="Add_SHD_Monk01_LS01 " count="1" />
+                <Item itemName="Add_SHD_Monk01_LS01" count="1" />
                 <Item itemName="Add_COM_Fish01_TS01" count="1" />
                 <Item itemName="Add_COM_RibbonTail01_T01" count="1" />
                 <Item itemName="Add_COM_Armor01_S02" count="1" />
-                <Item itemName="Add_SHD_Guard01_T03 " count="1" />
+                <Item itemName="Add_SHD_Guard01_T03" count="1" />
             </Items>
         </LootInfo>
         <!--Jack in the Box (speculation)-->
@@ -2732,26 +2710,6 @@
         <LootInfo objectId="33614" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing01" count="1" />
-            </Items>
-        </LootInfo>
-    </Level>
-    <Level name="Razor Bay" id="54">
-        <!--Jack-in-the-Box-->
-        <LootInfo objectId="2540" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
-                <Item itemName="" count="1" />
             </Items>
         </LootInfo>
     </Level>

@@ -8,13 +8,13 @@ namespace Server.Reawakened.XMLs.Models.Enemy.States;
 public class StingerState(float speedForward, float speedBackward, float inDurationForward, float attackDuration,
     float damageAttackTimeOffset, float inDurationBackward, float stingerDamageDistance, List<EnemyResourceModel> resources) : BaseState(resources)
 {
-    public float SpeedForward { get; } = speedForward;
-    public float SpeedBackward { get; } = speedBackward;
-    public float InDurationForward { get; } = inDurationForward;
-    public float AttackDuration { get; } = attackDuration;
-    public float DamageAttackTimeOffset { get; } = damageAttackTimeOffset;
-    public float InDurationBackward { get; } = inDurationBackward;
-    public float StingerDamageDistance { get; } = stingerDamageDistance;
+    public float SpeedForward => speedForward;
+    public float SpeedBackward => speedBackward;
+    public float InDurationForward => inDurationForward;
+    public float AttackDuration => attackDuration;
+    public float DamageAttackTimeOffset => damageAttackTimeOffset;
+    public float InDurationBackward => inDurationBackward;
+    public float StingerDamageDistance => stingerDamageDistance;
 
     protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorStinger(this);
 

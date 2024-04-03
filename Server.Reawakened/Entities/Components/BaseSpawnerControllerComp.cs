@@ -1,14 +1,21 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Entities.Enemies;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.Models;
+using Server.Reawakened.XMLs.Models.Enemy.States;
+using System;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components;
@@ -39,29 +46,24 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public Vector3 PatrolDistance => ComponentData.PatrolDistance;
     public string OnDeathTargetID => ComponentData.OnDeathTargetID;
     public ILogger<BaseSpawnerControllerComp> Logger { get; set; }
-    public InternalDefaultEnemies EnemyInfoXml { get; set; }
+    public InternalEnemyData EnemyInfoXml { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public IServiceProvider Services { get; set; }
     public TimerThread TimerThread { get; set; }
 
     public int Health;
     public int Level;
-    public AIStatsGlobalComp Global;
-    public AIStatsGenericComp Generic;
-    public InterObjStatusComp Status;
-    public EnemyControllerComp EnemyController;
-    public HazardControllerComp Hazard;
-    public GlobalProperties GlobalProperties;
-    public BehaviorModel BehaviorList;
 
-    public Dictionary<int, BehaviorEnemy> LinkedEnemies;
+    public Dictionary<string, BehaviorEnemy> LinkedEnemies;
+    public Dictionary<string, EnemyModel> EnemyModels;
+    public Dictionary<string, SpawnedEnemyData> TemplateEnemyModels;
+
     private int _spawnedEntityCount;
     private float _nextSpawnRequestTime;
     private bool _spawnRequested;
     private bool _activated;
     private float _activeDetectionRadius;
     private TriggerArenaComp _arena;
-    private string _spawnedEntityId;
 
     public override void InitializeComponent()
     {
@@ -74,29 +76,75 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         _activated = false;
         _activeDetectionRadius = DetectionRadius;
 
-        Global = Room.GetEntityFromId<AIStatsGlobalComp>(TemplatePrefabNameToSpawn1);
-        Generic = Room.GetEntityFromId<AIStatsGenericComp>(TemplatePrefabNameToSpawn1);
-        Status = Room.GetEntityFromId<InterObjStatusComp>(TemplatePrefabNameToSpawn1);
-        EnemyController = Room.GetEntityFromId<EnemyControllerComp>(TemplatePrefabNameToSpawn1);
-        Hazard = Room.GetEntityFromId<HazardControllerComp>(TemplatePrefabNameToSpawn1);
-
-        //This is just a dummy, it gets assigned properly later in Enemy
-        GlobalProperties = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
-
-        BehaviorList = EnemyInfoXml.GetBehaviorsByName(PrefabNameToSpawn1);
         LinkedEnemies = [];
+        EnemyModels = [];
+        TemplateEnemyModels = [];
+
+        AddEnemyModel(PrefabNameToSpawn1);
+        AddEnemyModel(PrefabNameToSpawn2);
+        AddEnemyModel(PrefabNameToSpawn3);
+        AddEnemyModel(PrefabNameToSpawn4);
+        AddEnemyModel(PrefabNameToSpawn5);
+
+        AddTemplateModel(TemplatePrefabNameToSpawn1);
+        AddTemplateModel(TemplatePrefabNameToSpawn2);
+        AddTemplateModel(TemplatePrefabNameToSpawn3);
+        AddTemplateModel(TemplatePrefabNameToSpawn4);
+        AddTemplateModel(TemplatePrefabNameToSpawn5);
 
         if (ComponentData.SpawnOnDetection)
             _activated = true;
     }
 
+    public void AddEnemyModel(string prefabName)
+    {
+        if (string.IsNullOrEmpty(prefabName))
+            return;
+
+        if (EnemyInfoXml.EnemyInfoCatalog.TryGetValue(prefabName, out var enemyModel))
+            EnemyModels.TryAdd(prefabName, enemyModel);
+        else
+            Logger.LogError("Unknown enemy to add to spawner: '{EnemyPrefab}'", prefabName);
+    }
+
+    public void AddTemplateModel(string templatePrefabName)
+    {
+        if (string.IsNullOrEmpty(templatePrefabName))
+            return;
+
+        var global = Room.GetEntityFromId<AIStatsGlobalComp>(templatePrefabName);
+        var generic = Room.GetEntityFromId<AIStatsGenericComp>(templatePrefabName);
+        var status = Room.GetEntityFromId<InterObjStatusComp>(templatePrefabName);
+        var enemyController = Room.GetEntityFromId<EnemyControllerComp>(templatePrefabName);
+        var hazard = Room.GetEntityFromId<HazardControllerComp>(templatePrefabName);
+
+        if (global is null || generic is null || status is null || enemyController is null || hazard is null)
+        {
+            Logger.LogError("Unknown enemy template to add to spawner: '{EnemyPrefab}'", templatePrefabName);
+            return;
+        }
+
+        var defaultProperties = AISyncEventHelper.CreateDefaultGlobalProperties();
+        var copier = Services.GetRequiredService<ClassCopier>();
+
+        global.MixGlobalProperties(copier, defaultProperties);
+
+        var spawnerData = new SpawnedEnemyData(global, generic, status, enemyController, hazard, defaultProperties);
+
+        TemplateEnemyModels.TryAdd(templatePrefabName, spawnerData);
+    }
+
     public override void Update()
     {
-        if (_activated && IsPlayerNearby(_activeDetectionRadius) && LinkedEnemies.Count < 1 && _nextSpawnRequestTime == 0)
-            Spawn();
-        if (_activated && _spawnRequested && _nextSpawnRequestTime <= Room.Time)
-            //NOT A MAGIC NUMBER. This is a constant defined in BaseSpawnerController
-            SpawnEventCalled(4);
+        if (_activated)
+        {
+            if (IsPlayerNearby(_activeDetectionRadius) && LinkedEnemies.Count < 1 && _nextSpawnRequestTime == 0)
+                Spawn();
+
+            if (_spawnRequested && _nextSpawnRequestTime <= Room.Time)
+                //NOT A MAGIC NUMBER. This is a constant defined in BaseSpawnerController
+                SpawnEventCalled(4);
+        }
     }
 
     public void Spawn()
@@ -121,39 +169,68 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         _spawnedEntityCount++;
         _spawnRequested = false;
 
-        //Spawn the enemy and set it in the room enemy list
-        Room.SendSyncEvent(new AIInit_SyncEvent(Id, Room.Time, Position.X, Position.Y, Position.Z,
-            Position.X, Position.Y, Generic.Patrol_InitialProgressRatio,
-        Health, Health, 1f, 1f, 1f, 0, Level, GlobalProperties.ToString(), "Idle||"));
+        // TODO: Change to spawn correct enemy; not just first.
+        var enemyToSpawn = EnemyModels.Values.FirstOrDefault();
+        var templateToSpawnAt = TemplateEnemyModels.Values.FirstOrDefault();
 
-        Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time,
-            new Vector3 { x = Position.X + SpawningOffsetX, y = Position.Y + SpawningOffsetY, z = Position.Z },
-            1.0f, BehaviorList.IndexOf(StateTypes.Unknown), string.Empty, Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
-            Generic.Patrol_ForceDirectionX, false));
+        if (enemyToSpawn is null || templateToSpawnAt is null)
+        {
+            Logger.LogError("Either enemy to spawn and template is null for spawner with id: {Id}. Returning...", Id);
+            return;
+        }
+
+        var behaviors = new Dictionary<StateType, BaseState>
+        {
+            { StateType.Idle, new IdleState([]) }
+        };
+
+        Room.SendSyncEvent(
+            AISyncEventHelper.AIInit(
+                Id, Room.Time,
+                Position.X, Position.Y, Position.Z, Position.X, Position.Y,
+                templateToSpawnAt.Generic.Patrol_InitialProgressRatio, Health, Health, 1, 1, 1,
+                0, Level, templateToSpawnAt.GlobalProperties, behaviors, null, null
+            )
+        );
+
+        Room.SendSyncEvent(
+            AISyncEventHelper.AIDo(
+                Id, Room.Time,
+                0, 0,
+                1.0f, enemyToSpawn.IndexOf(StateType.Unknown), [],
+                Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
+                templateToSpawnAt.Generic.Patrol_ForceDirectionX, false
+            )
+        );
 
         var spawn = new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount);
+
         Room.SendSyncEvent(spawn);
 
-        _spawnedEntityId = $"{Id}_{_spawnedEntityCount}";
-
-        _arena?.ArenaEntities.Add(_spawnedEntityId);
-
-        TimerThread.DelayCall(DelayedSpawnData, string.Empty, TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
+        TimerThread.DelayCall(DelayedSpawnData, templateToSpawnAt, TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
     }
 
-    private void DelayedSpawnData(object _)
+    private void DelayedSpawnData(object obj)
     {
+        _nextSpawnRequestTime = 0;
+
+        var enemyTemplate = obj as SpawnedEnemyData;
+
         //Set all component data
         var newEntity = new List<BaseComponent>
         {
-            Global,
-            Generic,
-            Status,
-            EnemyController,
-            Hazard
-
+            enemyTemplate.Global,
+            enemyTemplate.Generic,
+            enemyTemplate.Status,
+            enemyTemplate.EnemyController,
+            enemyTemplate.Hazard
         };
+
+        var _spawnedEntityId = $"{Id}_{_spawnedEntityCount}";
+
         Room.AddEntity(_spawnedEntityId, newEntity);
+        _arena?.ArenaEntities.Add(_spawnedEntityId);
+
         foreach (var component in newEntity)
         {
             component.InitializeComponent();
@@ -161,25 +238,24 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         }
 
         //Fix some things before setting the enemy
-        Hazard.SetId(_spawnedEntityId);
-        Generic.SetPatrolRange(PatrolDistance);
+        enemyTemplate.Hazard.SetId(_spawnedEntityId);
+        enemyTemplate.Generic.SetPatrolRange(PatrolDistance);
 
-        Room.Enemies.Add(_spawnedEntityId, SetEnemy(_spawnedEntityCount));
-        _nextSpawnRequestTime = 0;
-    }
+        var enemy = Room.GenerateEntityFromName(
+            PrefabNameToSpawn1, _spawnedEntityId, enemyTemplate.EnemyController,
+            Services, ServerRConfig, EnemyInfoXml, Logger
+        );
 
-    private BehaviorEnemy SetEnemy(int index)
-    {
-        var enemy = Room.GenerateEntityFromName(PrefabNameToSpawn1, _spawnedEntityId, EnemyController, Services, ServerRConfig);
+        if (enemy is null)
+            return;
 
         if (enemy is not BehaviorEnemy bEnemy)
-            return null;
-
-        LinkedEnemies.Add(index, bEnemy);
+            throw new InvalidCastException($"{PrefabName} is not a valid behavior enemy!");
 
         bEnemy.Initialize();
 
-        return bEnemy;
+        LinkedEnemies.Add(_spawnedEntityId, bEnemy);
+        Room.Enemies.Add(_spawnedEntityId, bEnemy);
     }
 
     private bool IsPlayerNearby(float radius)
@@ -194,5 +270,5 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         return false;
     }
 
-    public void NotifyEnemyDefeat(int id) => LinkedEnemies.Remove(id);
+    public void NotifyEnemyDefeat(string id) => LinkedEnemies.Remove(id);
 }
