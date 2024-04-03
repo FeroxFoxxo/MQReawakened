@@ -118,12 +118,13 @@ public class Room : Timer
         {
             if (component.Name == config.EnemyComponentName && !component.ParentPlane.Equals("TemplatePlane"))
             {
-                Enemies.Add(component.Id,
-                    this.GenerateEntityFromName(
+                var enemy = this.GenerateEntityFromName(
                         component.PrefabName, component.Id, (EnemyControllerComp)component,
                         services, config, InternalEnemyData, Logger
-                    )
-                );
+                    );
+
+                if (enemy != null)
+                    Enemies.Add(component.Id, enemy);
             }
             if (component.Name == config.BreakableComponentName)
             {

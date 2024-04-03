@@ -22,11 +22,11 @@ public static class GenerateEnemy
 
         var enemyData = new EnemyData(room, entityId, enemyPrefab, enemyController, enemyModel, services);
 
-        switch (enemyModel.BehaviorType)
+        switch (enemyModel.AiType)
         {
-            case BehaviorType.BehaviorType:
+            case AiType.Behavior:
                 return new BehaviorEnemy(enemyData);
-            case BehaviorType.AiStateType:
+            case AiType.State:
                 return enemyPrefab switch
                 {
                     string spiderling when spiderling.Contains(config.EnemyNameSearch[0]) => new EnemySpiderling(enemyData),
@@ -36,7 +36,7 @@ public static class GenerateEnemy
                 };
             default:
                 logger.LogError("No enemy generator found with type: '{Type}' for enemy '{EnemyName}'. Returning null...",
-                    enemyModel.BehaviorType, enemyPrefab
+                    enemyModel.AiType, enemyPrefab
                 );
                 return null;
         }

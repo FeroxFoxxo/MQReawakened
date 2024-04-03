@@ -60,7 +60,7 @@ public static class GetInternalXml
 
                 if (itemModel == null)
                 {
-                    logger.LogError("Could not find item with name: {ItemName}", itemName);
+                    logger.LogError("Could not find item with name: '{ItemName}'", itemName);
                     continue;
                 }
 
@@ -130,7 +130,7 @@ public static class GetInternalXml
                 }
                 else
                 {
-                    logger.LogError("Unknown item with prefab name: {name}", value);
+                    logger.LogError("Unknown item with prefab name: '{name}'", value);
                     continue;
                 }
             }
@@ -192,7 +192,7 @@ public static class GetInternalXml
 
             if (type == AchConditionType.Invalid)
             {
-                logger.LogError("Unknown condition type for {Name} " +
+                logger.LogError("Unknown condition type for '{Name}' " +
                     "(Achievement Id: {Id}, Condition Id {CId})", title, achievementId, id);
             }
 

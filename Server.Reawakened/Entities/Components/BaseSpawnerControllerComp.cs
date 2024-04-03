@@ -109,6 +109,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public void AddTemplateModel(string templatePrefabName)
     {
+        if (string.IsNullOrEmpty(templatePrefabName))
+            return;
+
         var global = Room.GetEntityFromId<AIStatsGlobalComp>(templatePrefabName);
         var generic = Room.GetEntityFromId<AIStatsGenericComp>(templatePrefabName);
         var status = Room.GetEntityFromId<InterObjStatusComp>(templatePrefabName);
@@ -209,6 +212,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     private void DelayedSpawnData(object obj)
     {
+        _nextSpawnRequestTime = 0;
+
         var enemyTemplate = obj as SpawnedEnemyData;
 
         //Set all component data
@@ -241,6 +246,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             Services, ServerRConfig, EnemyInfoXml, Logger
         );
 
+        if (enemy is null)
+            return;
+
         if (enemy is not BehaviorEnemy bEnemy)
             throw new InvalidCastException($"{PrefabName} is not a valid behavior enemy!");
 
@@ -248,8 +256,6 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         LinkedEnemies.Add(_spawnedEntityId, bEnemy);
         Room.Enemies.Add(_spawnedEntityId, bEnemy);
-
-        _nextSpawnRequestTime = 0;
     }
 
     private bool IsPlayerNearby(float radius)

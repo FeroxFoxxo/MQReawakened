@@ -8,13 +8,11 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Services;
 
-public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph, InternalAchievement achievements,
+public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph,
     TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> logger) : IService
 {
     private readonly Dictionary<int, Level> _levels = [];
@@ -184,11 +182,6 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
         player.Character.LevelData.LevelId = levelInfo.LevelId;
         player.Character.LevelData.SpawnPointId = spawnId;
-
-        player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, achievements, logger);
-        player.CheckAchievement(AchConditionType.ExploreTrail, levelInfo.Name, achievements, logger);
-
-        player.DiscoverTribe(levelInfo.Tribe);
 
         player.SendLevelChange(this);
 

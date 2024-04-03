@@ -85,7 +85,7 @@ public class InternalRecipe : InternalXml
 
                     if (recipeItem == null)
                     {
-                        Logger.LogError("Could not find recipe with name: {RecipeName}", recipeName);
+                        Logger.LogError("Could not find recipe with name: '{RecipeName}'", recipeName);
                         continue;
                     }
 
@@ -93,7 +93,7 @@ public class InternalRecipe : InternalXml
 
                     if (itemId <= 0)
                     {
-                        Logger.LogError("Could not find parent item {Parent} for recipe name: {RecipeName}", itemId, recipeName);
+                        Logger.LogError("Could not find parent item '{Parent}' for recipe name: '{RecipeName}'", itemId, recipeName);
                         continue;
                     }
 

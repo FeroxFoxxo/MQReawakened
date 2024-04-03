@@ -90,13 +90,13 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
                     if (!string.IsNullOrEmpty(tryGetDict.Key))
                     {
-                        Logger.LogError("Item already exists: {Name} (desc key: {_itemId})", tryGetDict.Key, item.Key);
+                        Logger.LogError("Item already exists: '{Name}' (desc key: {_itemId})", tryGetDict.Key, item.Key);
                         continue;
                     }
 
                     if (_itemNameDict.ContainsKey(item.Value))
                     {
-                        Logger.LogTrace("Item description already exists: {Name}", item.Value);
+                        Logger.LogTrace("Item description already exists: '{Name}'", item.Value);
                         continue;
                     }
 
@@ -238,7 +238,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
                 if (items.TryGetValue(itemId, out var itemName))
                 {
-                    Logger.LogError("An item with id '{Id}' already exists! (Conflicts {Name} and {Name2})", itemId, item.ItemName, itemName);
+                    Logger.LogError("An item with id '{Id}' already exists! (Conflicts '{Name}' and '{Name2}')", itemId, item.ItemName, itemName);
                     continue;
                 }
 

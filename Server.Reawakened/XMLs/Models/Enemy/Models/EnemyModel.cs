@@ -6,7 +6,8 @@ namespace Server.Reawakened.XMLs.Models.Enemy.Models;
 
 public class EnemyModel
 {
-    public BehaviorType BehaviorType { get; set; }
+    public AiType AiType { get; set; }
+    public EnemyCategory EnemyCategory { get; set; }
     public Dictionary<StateType, BaseState> BehaviorData { get; set; }
     public List<EnemyDropModel> EnemyLootTable { get; set; }
     public GlobalPropertyModel GlobalProperties { get; set; }
@@ -27,7 +28,7 @@ public class EnemyModel
             Hitbox = new HitboxModel(0, 0, 0, 0);
         }
 
-        if (BehaviorType == BehaviorType.BehaviorType)
+        if (AiType == AiType.Behavior)
         {
             if (BehaviorData == null)
             {

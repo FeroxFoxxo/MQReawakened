@@ -223,6 +223,7 @@ public abstract class Enemy : IDestructible
                 origin.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, QuestCatalog);
 
                 origin.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, InternalAchievement, Logger);
+                origin.CheckAchievement(AchConditionType.DefeatEnemy, Enum.GetName(EnemyModel.EnemyCategory), InternalAchievement, Logger);
                 origin.CheckAchievement(AchConditionType.DefeatEnemy, EnemyController.PrefabName, InternalAchievement, Logger);
                 origin.CheckAchievement(AchConditionType.DefeatEnemyInLevel, origin.Room.LevelInfo.Name, InternalAchievement, Logger);
             }

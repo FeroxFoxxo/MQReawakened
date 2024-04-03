@@ -1,7 +1,7 @@
 ﻿namespace Server.Reawakened.XMLs.Models.Enemy.Enums;
-public enum BehaviorType
+public enum AiType
 {
     Unknown,
-    BehaviorType,
-    AiStateType
+    Behavior,
+    State
 }
