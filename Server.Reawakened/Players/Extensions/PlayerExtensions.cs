@@ -246,7 +246,16 @@ public static class PlayerExtensions
     public static void DiscoverTribe(this Player player, TribeType tribe)
     {
         if (player.Character.HasAddedDiscoveredTribe(tribe))
+        {
+            // Set tribe on 2011-2013
+            if (player.Character.Data.Allegiance == TribeType.Invalid
+                && tribe is TribeType.Shadow
+                or TribeType.Outlaw or TribeType.Bone
+                or TribeType.Wild or TribeType.Grease)
+                player.Character.Data.Allegiance = tribe;
+
             player.SendXt("cB", (int)tribe);
+        }
     }
 
     public static void DiscoverAllTribes(this Player player)
