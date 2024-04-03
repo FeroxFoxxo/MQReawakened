@@ -148,23 +148,9 @@ public class ServerRConfig : IRConfig
         DailyBoxName = "Daily";
 
         EnemyNameSearch = [
-            "PF_Critter_Bird",
-            "PF_Critter_Fish",
-            "PF_Critter_Spider",
-            "PF_Spite_Bathog",
-            "PF_Spite_Bomber",
-            "PF_Spite_Crawler",
-            "PF_Spite_Dragon",
-            "PF_Spite_Grenadier",
-            "PF_Spite_Orchid",
-            "PF_Spite_Pincer",
-            "PF_Spite_Stomper",
-            "Spite_Wasp_Boss01",
             "PF_Spite_Spiderling",
             "Spite_TeaserSpider_Boss",
-            "Spite_Spider_Boss",
-            "PF_Spite_Hamster",
-            "PF_Spite_Squirrel"
+            "Spite_Spider_Boss"
         ];
 
         MaximumEntitiesToReturnLog = 15;

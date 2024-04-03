@@ -3,7 +3,7 @@ using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 
 namespace Server.Reawakened.XMLs.Models.Enemy.Models;
-public class GenericScriptModel(StateTypes attackBehavior, StateTypes awareBehavior, StateTypes unawareBehavior, float awareBehaviorDuration, int healthRegenAmount, int healthRegenFreq)
+public class GenericScriptModel(StateType attackBehavior, StateType awareBehavior, StateType unawareBehavior, float awareBehaviorDuration, int healthRegenAmount, int healthRegenFreq)
 {
     public GenericScriptPropertiesModel GenerateGenericPropertiesFromModel(ClassCopier classCopier, AIStatsGlobalComp globalStats)
     {

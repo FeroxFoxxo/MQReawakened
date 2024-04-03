@@ -8,7 +8,7 @@ public class AIBehaviorIdle : AIBaseBehavior
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Idle();
 
-    public override StateTypes GetBehavior() => StateTypes.Idle;
+    public override StateType GetBehavior() => StateType.Idle;
 
     public override object[] GetData() => [];
 }

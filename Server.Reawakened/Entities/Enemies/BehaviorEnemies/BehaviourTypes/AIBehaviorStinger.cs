@@ -18,7 +18,7 @@ public class AIBehaviorStinger(StingerState stingerState) : AIBaseBehavior
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Stinger(SpeedForward, SpeedBackward, InDurationForward, AttackDuration, DamageAttackTimeOffset, InDurationBackward);
 
-    public override StateTypes GetBehavior() => StateTypes.Stinger;
+    public override StateType GetBehavior() => StateType.Stinger;
 
     public override object[] GetData() => [
         SpeedForward, SpeedBackward,

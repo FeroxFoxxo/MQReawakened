@@ -6,8 +6,8 @@ namespace Server.Reawakened.XMLs.Models.Enemy.Models;
 
 public class EnemyModel
 {
-    public bool IsAiStateEnemy { get; set; }
-    public Dictionary<StateTypes, BaseState> BehaviorData { get; set; }
+    public BehaviorType BehaviorType { get; set; }
+    public Dictionary<StateType, BaseState> BehaviorData { get; set; }
     public List<EnemyDropModel> EnemyLootTable { get; set; }
     public GlobalPropertyModel GlobalProperties { get; set; }
     public GenericScriptModel GenericScript { get; set; }
@@ -27,7 +27,7 @@ public class EnemyModel
             Hitbox = new HitboxModel(0, 0, 0, 0);
         }
 
-        if (!IsAiStateEnemy)
+        if (BehaviorType == BehaviorType.BehaviorType)
         {
             if (BehaviorData == null)
             {
@@ -44,12 +44,12 @@ public class EnemyModel
             if (GenericScript == null)
             {
                 logger.LogError("Enemy '{Name}' does not have any generic script attached!", enemyType);
-                GenericScript = new GenericScriptModel(StateTypes.Unknown, StateTypes.Unknown, StateTypes.Unknown, 0, 0, 0);
+                GenericScript = new GenericScriptModel(StateType.Unknown, StateType.Unknown, StateType.Unknown, 0, 0, 0);
             }
         }
     }
 
-    public int IndexOf(StateTypes behaviorType)
+    public int IndexOf(StateType behaviorType)
     {
         var index = 0;
 

@@ -3,7 +3,7 @@
     <!--BEHAVIOR ENEMIES BELOW THIS LINE-->
 
     <!--Bombirds-->
-    <Enemy name="PF_Critter_Bird01">
+    <Enemy name="PF_Critter_Bird01" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -37,7 +37,7 @@
         </LootTable>
         <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
-    <Enemy name="PF_Critter_Bird02">
+    <Enemy name="PF_Critter_Bird02" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -72,7 +72,7 @@
         </LootTable>
         <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
-    <Enemy name="PF_Critter_Bird03">
+    <Enemy name="PF_Critter_Bird03" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -106,7 +106,7 @@
         </LootTable>
         <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
-    <Enemy name="PF_Critter_Bird04">
+    <Enemy name="PF_Critter_Bird04" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -141,7 +141,7 @@
         </LootTable>
         <Hitbox width="2" height="0.7" offsetX="0.7" offsetY="0.6"/>
     </Enemy>
-    <Enemy name="PF_Critter_Bird_Boss">
+    <Enemy name="PF_Critter_Bird_Boss" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -179,7 +179,7 @@
     </Enemy>
     
     <!--Spinefish-->
-    <Enemy name="PF_Critter_Fish01">
+    <Enemy name="PF_Critter_Fish01" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -212,7 +212,7 @@
         </LootTable>
         <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
 	</Enemy>
-    <Enemy name="PF_Critter_Fish02">
+    <Enemy name="PF_Critter_Fish02" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -245,7 +245,7 @@
         </LootTable>
         <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
     </Enemy>
-    <Enemy name="PF_Critter_Fish03">
+    <Enemy name="PF_Critter_Fish03" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -278,7 +278,7 @@
         </LootTable>
         <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
     </Enemy>
-    <Enemy name="PF_Critter_Fish04">
+    <Enemy name="PF_Critter_Fish04" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -312,7 +312,7 @@
         </LootTable>
         <Hitbox width="1" height="0.65" offsetX="0.45" offsetY="0.1"/>
     </Enemy>
-    <Enemy name="PF_Critter_Fish_Boss">
+    <Enemy name="PF_Critter_Fish_Boss" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -349,7 +349,7 @@
     </Enemy>
     
     <!--Rachnoids-->
-    <Enemy name="PF_Critter_Spider_Newb">
+    <Enemy name="PF_Critter_Spider_Newb" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -376,7 +376,7 @@
         </Behaviors>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider_Boss">
+    <Enemy name="PF_Critter_Spider_Boss" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -413,7 +413,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider_Boss_Ceiling_Shoot">
+    <Enemy name="PF_Critter_Spider_Boss_Ceiling_Shoot" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -451,7 +451,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider_Boss_Shoot">
+    <Enemy name="PF_Critter_Spider_Boss_Shoot" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -489,7 +489,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-	<Enemy name="PF_Critter_Spider01">
+	<Enemy name="PF_Critter_Spider01" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -524,7 +524,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
 	</Enemy>
-    <Enemy name="PF_Critter_Spider01_Ceiling_Shoot">
+    <Enemy name="PF_Critter_Spider01_Ceiling_Shoot" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -560,7 +560,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider01_Shoot">
+    <Enemy name="PF_Critter_Spider01_Shoot" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -596,7 +596,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider02">
+    <Enemy name="PF_Critter_Spider02" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -632,7 +632,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider02_Ceiling_Shoot">
+    <Enemy name="PF_Critter_Spider02_Ceiling_Shoot" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -669,7 +669,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider02_Shoot">
+    <Enemy name="PF_Critter_Spider02_Shoot" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -706,7 +706,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider03">
+    <Enemy name="PF_Critter_Spider03" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -741,7 +741,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider03_Ceiling_Shoot">
+    <Enemy name="PF_Critter_Spider03_Ceiling_Shoot" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -777,7 +777,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider03_Shoot">
+    <Enemy name="PF_Critter_Spider03_Shoot" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -813,7 +813,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider04">
+    <Enemy name="PF_Critter_Spider04" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -849,7 +849,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider04_Ceiling_Shoot">
+    <Enemy name="PF_Critter_Spider04_Ceiling_Shoot" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -886,7 +886,7 @@
         </LootTable>
         <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0"/>
     </Enemy>
-    <Enemy name="PF_Critter_Spider04_Shoot">
+    <Enemy name="PF_Critter_Spider04_Shoot" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -925,7 +925,7 @@
     </Enemy>
     
     <!--Bathogs-->
-	<Enemy name="PF_Spite_Bathog_Rock">
+	<Enemy name="PF_Spite_Bathog_Rock" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -958,7 +958,7 @@
         </LootTable>
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
-    <Enemy name="PF_Spite_Bathog_Shoot_Rock">
+    <Enemy name="PF_Spite_Bathog_Shoot_Rock" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -995,7 +995,7 @@
         </LootTable>
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
-    <Enemy name="PF_Spite_Bathog_Lava">
+    <Enemy name="PF_Spite_Bathog_Lava" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1031,7 +1031,7 @@
         </LootTable>
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
-    <Enemy name="PF_Spite_Bathog_Shoot_Lava">
+    <Enemy name="PF_Spite_Bathog_Shoot_Lava" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1071,7 +1071,7 @@
         </LootTable>
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
-    <Enemy name="PF_Spite_Bathog_Invis">
+    <Enemy name="PF_Spite_Bathog_Invis" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1107,7 +1107,7 @@
         </LootTable>
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
-    <Enemy name="PF_Spite_Bathog_Shoot_Invis">
+    <Enemy name="PF_Spite_Bathog_Shoot_Invis" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1147,7 +1147,7 @@
         </LootTable>
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
-    <Enemy name="PF_Spite_Bathog_Swamp">
+    <Enemy name="PF_Spite_Bathog_Swamp" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1183,7 +1183,7 @@
         </LootTable>
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
-    <Enemy name="PF_Spite_Bathog_Shoot_Swamp">
+    <Enemy name="PF_Spite_Bathog_Shoot_Swamp" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1223,7 +1223,7 @@
         </LootTable>
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
 	</Enemy>
-    <Enemy name="PF_Spite_Bathog_Boss">
+    <Enemy name="PF_Spite_Bathog_Boss" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1258,7 +1258,7 @@
         </LootTable>
         <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65"/>
     </Enemy>
-    <Enemy name="PF_Spite_Bathog_Shoot_Boss">
+    <Enemy name="PF_Spite_Bathog_Shoot_Boss" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1298,7 +1298,7 @@
     </Enemy>
     
     <!--Boombugs-->
-    <Enemy name="PF_Spite_Bomber_Rock">
+    <Enemy name="PF_Spite_Bomber_Rock" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1331,7 +1331,7 @@
         </LootTable>
         <Hitbox width="0.25" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
-    <Enemy name="PF_Spite_Bomber_Lava">
+    <Enemy name="PF_Spite_Bomber_Lava" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1366,7 +1366,7 @@
     </Enemy>
     
     <!--Cragcrawlers-->
-    <Enemy name="PF_Spite_Crawler_Boss">
+    <Enemy name="PF_Spite_Crawler_Boss" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1400,7 +1400,7 @@
         </LootTable>
         <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
-    <Enemy name="PF_Spite_Crawler_Invis">
+    <Enemy name="PF_Spite_Crawler_Invis" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1435,7 +1435,7 @@
         </LootTable>
         <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
-    <Enemy name="PF_Spite_Crawler_Lava">
+    <Enemy name="PF_Spite_Crawler_Lava" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1470,7 +1470,7 @@
         </LootTable>
         <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
-	<Enemy name="PF_Spite_Crawler_Rock">
+	<Enemy name="PF_Spite_Crawler_Rock" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1502,7 +1502,7 @@
         </LootTable>
         <Hitbox width="1.75" height="1" offsetX="0" offsetY="0.5"/>
 	</Enemy>
-    <Enemy name="PF_Spite_Crawler_Swamp">
+    <Enemy name="PF_Spite_Crawler_Swamp" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1539,7 +1539,7 @@
     </Enemy>
     
     <!--Dragons-->
-    <Enemy name="PF_Spite_Dragon_Rock">
+    <Enemy name="PF_Spite_Dragon_Rock" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1574,7 +1574,7 @@
         </LootTable>
         <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
-    <Enemy name="PF_Spite_Dragon_Lava">
+    <Enemy name="PF_Spite_Dragon_Lava" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1612,7 +1612,7 @@
         </LootTable>
         <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
-    <Enemy name="PF_Spite_Dragon_Invis">
+    <Enemy name="PF_Spite_Dragon_Invis" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1650,7 +1650,7 @@
         </LootTable>
         <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
-    <Enemy name="PF_Spite_Dragon_Boss">
+    <Enemy name="PF_Spite_Dragon_Boss" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1687,7 +1687,7 @@
         </LootTable>
         <Hitbox width="4" height="1.6" offsetX="1" offsetY="0.8"/>
     </Enemy>
-    <Enemy name="PF_Spite_Dragon_Swamp">
+    <Enemy name="PF_Spite_Dragon_Swamp" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1727,7 +1727,7 @@
     </Enemy>
     
     <!--Rumblers-->
-    <Enemy name="PF_Spite_Grenadier_Rock">
+    <Enemy name="PF_Spite_Grenadier_Rock" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Grenadier"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1756,7 +1756,7 @@
         </Behaviors>
         <Hitbox width="1" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
-    <Enemy name="PF_Spite_Grenadier_Lava">
+    <Enemy name="PF_Spite_Grenadier_Lava" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Grenadier"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1785,7 +1785,7 @@
         </Behaviors>
         <Hitbox width="1" height="0.75" offsetX="0" offsetY="0.375"/>
     </Enemy>
-    <Enemy name="PF_Spite_Grenadier_Swamp">
+    <Enemy name="PF_Spite_Grenadier_Swamp" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Grenadier"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1816,7 +1816,7 @@
     </Enemy>
     
     <!--Orchids-->
-    <Enemy name="PF_Spite_Orchid_Rock">
+    <Enemy name="PF_Spite_Orchid_Rock" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1850,7 +1850,7 @@
         </LootTable>
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Orchid_Ceiling_Rock">
+    <Enemy name="PF_Spite_Orchid_Ceiling_Rock" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1884,7 +1884,7 @@
         </LootTable>
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Orchid_Lava">
+    <Enemy name="PF_Spite_Orchid_Lava" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1921,7 +1921,7 @@
         </LootTable>
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Orchid_Ceiling_Lava">
+    <Enemy name="PF_Spite_Orchid_Ceiling_Lava" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1958,7 +1958,7 @@
         </LootTable>
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Orchid_Swamp">
+    <Enemy name="PF_Spite_Orchid_Swamp" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -1995,7 +1995,7 @@
         </LootTable>
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Orchid_Ceiling_Swamp">
+    <Enemy name="PF_Spite_Orchid_Ceiling_Swamp" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2032,7 +2032,7 @@
         </LootTable>
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Orchid_Invis">
+    <Enemy name="PF_Spite_Orchid_Invis" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2069,7 +2069,7 @@
         </LootTable>
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Orchid_Ceiling_Invis">
+    <Enemy name="PF_Spite_Orchid_Ceiling_Invis" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2106,7 +2106,7 @@
         </LootTable>
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Orchid_Boss">
+    <Enemy name="PF_Spite_Orchid_Boss" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2142,7 +2142,7 @@
         </LootTable>
         <Hitbox width="2" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Orchid_Ceiling_Boss">
+    <Enemy name="PF_Spite_Orchid_Ceiling_Boss" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Shooting"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2180,7 +2180,7 @@
     </Enemy>
     
     <!--Pincers-->
-    <Enemy name="PF_Spite_Pincer_Boss">
+    <Enemy name="PF_Spite_Pincer_Boss" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2214,7 +2214,7 @@
         </LootTable>
         <Hitbox width="8" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Pincer_Invis">
+    <Enemy name="PF_Spite_Pincer_Invis" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2249,7 +2249,7 @@
         </LootTable>
         <Hitbox width="8" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Pincer_Lava">
+    <Enemy name="PF_Spite_Pincer_Lava" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2284,7 +2284,7 @@
         </LootTable>
         <Hitbox width="8" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-    <Enemy name="PF_Spite_Pincer_Rock">
+    <Enemy name="PF_Spite_Pincer_Rock" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2316,7 +2316,7 @@
         </LootTable>
         <Hitbox width="8" height="4" offsetX="0" offsetY="2"/>
     </Enemy>
-	<Enemy name="PF_Spite_Pincer_Swamp">
+	<Enemy name="PF_Spite_Pincer_Swamp" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2352,7 +2352,7 @@
         <Hitbox width="8" height="4" offsetX="0" offsetY="2"/>
 	</Enemy>
     <!--Ograks-->
-	<Enemy name="PF_Spite_Stomper_Rock">
+	<Enemy name="PF_Spite_Stomper_Rock" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2382,7 +2382,7 @@
         </Behaviors>
         <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
 	</Enemy>
-    <Enemy name="PF_Spite_Stomper_Lava">
+    <Enemy name="PF_Spite_Stomper_Lava" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2412,7 +2412,7 @@
         </Behaviors>
         <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
     </Enemy>
-    <Enemy name="PF_Spite_Stomper_Swamp">
+    <Enemy name="PF_Spite_Stomper_Swamp" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2442,7 +2442,7 @@
         </Behaviors>
         <Hitbox width="2.25" height="1" offsetX="0.8" offsetY="0.5"/>
     </Enemy>
-    <Enemy name="PF_Spite_Stomper_Boss">
+    <Enemy name="PF_Spite_Stomper_Boss" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Aggro"/>
             <AwareBehaviorDuration value="0.5"/>
@@ -2474,12 +2474,12 @@
     </Enemy>
 
     <!--Vespid-->
-    <Enemy name="Spite_Wasp_Boss01">
+    <Enemy name="Spite_Wasp_Boss01" type="BehaviorType">
         <GenericScript>
             <AttackBehavior value="Stinger"/>
             <AwareBehaviorDuration value="4"/>
             <AwareBehavior value="LookAround"/>
-            <UnawareBehavior value="Patrol"/>
+            <UnawareBehavior value="ComeBack"/>
             <HealthRegenAmount value="0"/>
             <HealthRegenFrequency value="0"/>
         </GenericScript>
@@ -2505,20 +2505,17 @@
     <!--AI STATE ENEMIES BELOW THIS LINE-->
 
     <!--Spiderling-->
-    <Enemy name="PF_Spite_Spiderling_Boss01">
-        <AIStateEnemy/>
+    <Enemy name="PF_Spite_Spiderling_Boss01" type="AiStateType">
         <Hitbox width="1.3" height="1" offsetX="0" offsetY="0.5"/>
     </Enemy>
 
     <!--Tutorial Rachnok-->
-    <Enemy name="Spite_TeaserSpider_Boss">
-        <AIStateEnemy/>
+    <Enemy name="Spite_TeaserSpider_Boss" type="AiStateType">
         <Hitbox width="15" height="9" offsetX="0" offsetY="5.2"/>
     </Enemy>
 
     <!--Rachnok-->
-    <Enemy name="Spite_Spider_Boss">
-        <AIStateEnemy/>
+    <Enemy name="Spite_Spider_Boss" type="AiStateType">
         <Hitbox width="15" height="9" offsetX="0" offsetY="5.2"/>
     </Enemy>
 </InternalEnemyData>

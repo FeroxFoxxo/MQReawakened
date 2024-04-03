@@ -6,7 +6,6 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enemies;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Extensions;
@@ -56,7 +55,7 @@ public class Room : Timer
 
     public ItemCatalog ItemCatalog;
     public InternalColliders ColliderCatalog;
-
+    public InternalEnemyData InternalEnemyData;
     public CheckpointControllerComp LastCheckpoint { get; set; }
 
     public LevelInfo LevelInfo => _level.LevelInfo;
@@ -74,6 +73,7 @@ public class Room : Timer
 
         ColliderCatalog = services.GetRequiredService<InternalColliders>();
         ItemCatalog = services.GetRequiredService<ItemCatalog>();
+        InternalEnemyData = services.GetRequiredService<InternalEnemyData>();
         Logger = services.GetRequiredService<ILogger<Room>>();
 
         _level = level;
@@ -118,7 +118,12 @@ public class Room : Timer
         {
             if (component.Name == config.EnemyComponentName && !component.ParentPlane.Equals("TemplatePlane"))
             {
-                Enemies.Add(component.Id, this.GenerateEntityFromName(component.PrefabName, component.Id, (EnemyControllerComp)component, services, config));
+                Enemies.Add(component.Id,
+                    this.GenerateEntityFromName(
+                        component.PrefabName, component.Id, (EnemyControllerComp)component,
+                        services, config, InternalEnemyData, Logger
+                    )
+                );
             }
             if (component.Name == config.BreakableComponentName)
             {

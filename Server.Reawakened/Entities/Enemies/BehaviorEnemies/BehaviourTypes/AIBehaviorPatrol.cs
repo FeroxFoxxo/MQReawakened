@@ -19,7 +19,7 @@ public class AIBehaviorPatrol(PatrolState patrolState, AIStatsGlobalComp globalC
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Patrol(MoveSpeed, EndPathWaitTime, PatrolX, PatrolY, ForceDirectionX, InitialProgressRatio);
 
-    public override StateTypes GetBehavior() => StateTypes.Patrol;
+    public override StateType GetBehavior() => StateType.Patrol;
 
     public override object[] GetData() => [
         MoveSpeed, SmoothMove, EndPathWaitTime,

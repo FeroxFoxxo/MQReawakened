@@ -73,6 +73,7 @@ public abstract class Enemy : IDestructible
         PrefabName = data.PrefabName;
         Services = data.Services;
         EnemyController = data.EnemyController;
+        EnemyModel = data.EnemyModel;
 
         IsFromSpawner = false;
         AwareBehaviorDuration = 0;
@@ -82,7 +83,6 @@ public abstract class Enemy : IDestructible
         InternalAchievement = Services.GetRequiredService<InternalAchievement>();
         QuestCatalog = Services.GetRequiredService<QuestCatalog>();
         ItemCatalog = Services.GetRequiredService<ItemCatalog>();
-        InternalEnemy = Services.GetRequiredService<InternalEnemyData>();
         ServerRConfig = Services.GetRequiredService<ServerRConfig>();
 
         ParentPlane = EnemyController.ParentPlane;
@@ -107,7 +107,6 @@ public abstract class Enemy : IDestructible
         }
 
         //Stats
-        EnemyModel = InternalEnemy.GetEnemyByName(PrefabName);
         OnDeathTargetId = EnemyController.OnDeathTargetID;
         Health = EnemyController.EnemyHealth;
         MaxHealth = EnemyController.MaxHealth;
@@ -195,7 +194,11 @@ public abstract class Enemy : IDestructible
                     trigger.Trigger(true);
 
             //The XP Reward here is not accurate, but pretty close
-            var xpAward = origin != null ? DeathXp + (origin.Character.Data.GlobalLevel - 1) * 5 : DeathXp;
+            var xpAward = origin != null ? DeathXp - (origin.Character.Data.GlobalLevel - 1) * 5 : DeathXp;
+
+            if (xpAward < 1)
+                xpAward = 1;
+
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, origin == null ? "0" : origin.GameObjectId, false));
 
             //Dynamic Loot Drop
@@ -227,8 +230,7 @@ public abstract class Enemy : IDestructible
             //For spawners
             if (IsFromSpawner)
             {
-                var spawnCount = Id.Split("_");
-                LinkedSpawner.NotifyEnemyDefeat(int.Parse(spawnCount[1]));
+                LinkedSpawner.NotifyEnemyDefeat(Id);
                 Room.Enemies.Remove(Id);
                 Room.Colliders.Remove(Id);
             }

@@ -14,7 +14,7 @@ public class AIBehaviorBomber(BomberState bomberState) : AIBaseBehavior
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Bomber(InTime, LoopTime);
 
-    public override StateTypes GetBehavior() => StateTypes.Bomber;
+    public override StateType GetBehavior() => StateType.Bomber;
 
     public override object[] GetData() => [ InTime, LoopTime, BombRadius ];
 }

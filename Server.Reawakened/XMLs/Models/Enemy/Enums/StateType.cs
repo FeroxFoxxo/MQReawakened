@@ -1,6 +1,6 @@
 ﻿namespace Server.Reawakened.XMLs.Models.Enemy.Enums;
 
-public enum StateTypes
+public enum StateType
 {
     Unknown,
     Patrol,

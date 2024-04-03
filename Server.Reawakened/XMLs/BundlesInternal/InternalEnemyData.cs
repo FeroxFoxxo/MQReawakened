@@ -21,11 +21,6 @@ public class InternalEnemyData : InternalXml
 
     public override void InitializeVariables() => EnemyInfoCatalog = [];
 
-    public EnemyModel GetEnemyByName(string enemyName) =>
-        EnemyInfoCatalog.TryGetValue(enemyName, out var enemy) ?
-            enemy :
-            new EnemyModel();
-
     public override void ReadDescription(XmlDocument xmlDocument)
     {
         foreach (XmlNode enemyXml in xmlDocument.ChildNodes)
@@ -36,33 +31,38 @@ public class InternalEnemyData : InternalXml
             {
                 if (enemy.Name != "Enemy") continue;
 
-                var enemyType = string.Empty;
+                var prefabName = string.Empty;
+                var enemyType = BehaviorType.Unknown;
+
+                foreach (XmlAttribute enemyData in enemy.Attributes)
+                {
+                    switch (enemyData.Name)
+                    {
+                        case "name":
+                            prefabName = enemyData.Value;
+                            break;
+                        case "type":
+                            enemyType = Enum.Parse<BehaviorType>(enemyData.Value);
+                            break;
+                    }
+                }
 
                 var enemyModel = new EnemyModel()
                 {
-                    IsAiStateEnemy = false
+                    BehaviorType = enemyType
                 };
-
-                foreach (XmlAttribute enemyName in enemy.Attributes)
-                {
-                    if (enemyName.Name == "name")
-                    {
-                        enemyType = enemyName.Value;
-                        break;
-                    }
-                }
 
                 foreach (XmlNode data in enemy.ChildNodes)
                 {
                     switch (data.Name)
                     {
                         case "Behaviors":
-                            var behaviors = new Dictionary<StateTypes, BaseState>();
+                            var behaviors = new Dictionary<StateType, BaseState>();
 
                             foreach (XmlNode behavior in data.ChildNodes)
                             {
                                 BaseState state = null;
-                                var stateType = Enum.Parse<StateTypes>(behavior.Name);
+                                var stateType = Enum.Parse<StateType>(behavior.Name);
                                 var resources = new List<EnemyResourceModel>();
 
                                 foreach (XmlNode enemyResource in behavior.ChildNodes)
@@ -84,7 +84,7 @@ public class InternalEnemyData : InternalXml
 
                                 switch (stateType)
                                 {
-                                    case StateTypes.Patrol:
+                                    case StateType.Patrol:
                                         var speed = 0f;
                                         var smoothMove = true;
                                         var endPathWaitTime = 0f;
@@ -107,7 +107,7 @@ public class InternalEnemyData : InternalXml
 
                                         state = new PatrolState(speed, smoothMove, endPathWaitTime, resources);
                                         break;
-                                    case StateTypes.Aggro:
+                                    case StateType.Aggro:
                                         var aggroSpeed = 0f;
                                         var moveBeyondTargetDistance = 0f;
                                         var stayOnPatrolPath = true;
@@ -147,7 +147,7 @@ public class InternalEnemyData : InternalXml
                                         state = new AggroState(aggroSpeed, moveBeyondTargetDistance, stayOnPatrolPath, aggroAttackBeyondPatrolLine,
                                             useAttackBeyondPatrolLine, detectionRangeUpY, detectionRangeDownY, resources);
                                         break;
-                                    case StateTypes.LookAround:
+                                    case StateType.LookAround:
                                         var lookTime = 0f;
                                         var startDirection = 0f;
                                         var forceDirection = 0f;
@@ -178,7 +178,7 @@ public class InternalEnemyData : InternalXml
 
                                         state = new LookAroundState(lookTime, startDirection, forceDirection, initialProgressRatio, snapOnGround, resources);
                                         break;
-                                    case StateTypes.ComeBack:
+                                    case StateType.ComeBack:
                                         var comeBackSpeed = 1f;
 
                                         foreach (XmlAttribute behaviorData in behavior.Attributes)
@@ -193,7 +193,7 @@ public class InternalEnemyData : InternalXml
 
                                         state = new ComeBackState(comeBackSpeed, resources);
                                         break;
-                                    case StateTypes.Shooting:
+                                    case StateType.Shooting:
                                         var nbBulletsPerRound = 1;
                                         var fireSpreadAngle = 0f;
                                         var delayBetweenBullet = 0f;
@@ -250,7 +250,7 @@ public class InternalEnemyData : InternalXml
                                             nbFireRounds, delayBetweenFireRound, startCoolDownTime, endCoolDownTime,
                                             projectileSpeed, fireSpreadClockwise, fireSpreadStartAngle, resources);
                                         break;
-                                    case StateTypes.Bomber:
+                                    case StateType.Bomber:
                                         var inTime = 0f;
                                         var loopTime = 0f;
                                         var bombRadius = 0f;
@@ -273,7 +273,7 @@ public class InternalEnemyData : InternalXml
 
                                         state = new BomberState(inTime, loopTime, bombRadius, resources);
                                         break;
-                                    case StateTypes.Grenadier:
+                                    case StateType.Grenadier:
                                         var gInTime = 0f;
                                         var gLoopTime = 0f;
                                         var gOutTime = 0f;
@@ -312,7 +312,7 @@ public class InternalEnemyData : InternalXml
 
                                         state = new GrenadierState(gInTime, gLoopTime, gOutTime, isTracking, projCount, projSpeed, maxHeight, resources);
                                         break;
-                                    case StateTypes.Stomper:
+                                    case StateType.Stomper:
                                         var attackTime = 0f;
                                         var impactTime = 0f;
                                         var damageDistance = 0f;
@@ -339,7 +339,7 @@ public class InternalEnemyData : InternalXml
 
                                         state = new StomperState(attackTime, impactTime, damageDistance, damageOffset, resources);
                                         break;
-                                    case StateTypes.Stinger:
+                                    case StateType.Stinger:
                                         var speedForward = 0f;
                                         var speedBackward = 0f;
                                         var inDurationForward = 0f;
@@ -380,7 +380,7 @@ public class InternalEnemyData : InternalXml
                                             damageAttackTimeOffset, inDurationBackward, stingerDamageDistance, resources);
                                         break;
                                     default:
-                                        Logger.LogError("Unimplemented state for: {State} ({EnemyName})", stateType, enemyType);
+                                        Logger.LogError("Unimplemented state for: {State} ({EnemyName})", stateType, prefabName);
                                         break;
                                 }
 
@@ -390,9 +390,9 @@ public class InternalEnemyData : InternalXml
                             enemyModel.BehaviorData = behaviors;
                             break;
                         case "GenericScript":
-                            var attackBehavior = StateTypes.Unknown;
-                            var awareBehavior = StateTypes.Unknown;
-                            var unawareBehavior = StateTypes.Unknown;
+                            var attackBehavior = StateType.Unknown;
+                            var awareBehavior = StateType.Unknown;
+                            var unawareBehavior = StateType.Unknown;
                             var awareBehaviorDuration = 0f;
                             var healthRegenAmount = 0;
                             var healthRegenFrequency = 0;
@@ -410,7 +410,7 @@ public class InternalEnemyData : InternalXml
                                             gDataValue = globalPropValue.Value;
                                             break;
                                         default:
-                                            Logger.LogWarning("Unknown global parameter: '{ParameterName}' for '{EnemyName}'", globalPropValue.Name, enemyType);
+                                            Logger.LogWarning("Unknown global parameter: '{ParameterName}' for '{EnemyName}'", globalPropValue.Name, prefabName);
                                             break;
                                     }
                                 }
@@ -421,13 +421,13 @@ public class InternalEnemyData : InternalXml
                                 switch (gDataName)
                                 {
                                     case "AttackBehavior":
-                                        attackBehavior = Enum.Parse<StateTypes>(gDataValue);
+                                        attackBehavior = Enum.Parse<StateType>(gDataValue);
                                         break;
                                     case "AwareBehavior":
-                                        awareBehavior = Enum.Parse<StateTypes>(gDataValue);
+                                        awareBehavior = Enum.Parse<StateType>(gDataValue);
                                         break;
                                     case "UnawareBehavior":
-                                        unawareBehavior = Enum.Parse<StateTypes>(gDataValue);
+                                        unawareBehavior = Enum.Parse<StateType>(gDataValue);
                                         break;
                                     case "AwareBehaviorDuration":
                                         awareBehaviorDuration = Convert.ToSingle(gDataValue);
@@ -439,7 +439,7 @@ public class InternalEnemyData : InternalXml
                                         healthRegenFrequency = Convert.ToInt32(gDataValue);
                                         break;
                                     default:
-                                        Logger.LogWarning("Unknown generic property: '{PropertyName}' for '{EnemyName}'", gDataName, enemyType);
+                                        Logger.LogWarning("Unknown generic property: '{PropertyName}' for '{EnemyName}'", gDataName, prefabName);
                                         break;
                                 }
                             }
@@ -478,7 +478,7 @@ public class InternalEnemyData : InternalXml
                                             gDataValue = globalPropValue.Value;
                                             break;
                                         default:
-                                            Logger.LogWarning("Unknown global parameter: '{ParameterName}' for '{EnemyName}'", globalPropValue.Name, enemyType);
+                                            Logger.LogWarning("Unknown global parameter: '{ParameterName}' for '{EnemyName}'", globalPropValue.Name, prefabName);
                                             break;
                                     }
                                 }
@@ -534,7 +534,7 @@ public class InternalEnemyData : InternalXml
                                         detectionSourceOnPatrolLine = Convert.ToBoolean(gDataValue);
                                         break;
                                     default:
-                                        Logger.LogWarning("Unknown global property: '{PropertyName}' for '{EnemyName}'", gDataName, enemyType);
+                                        Logger.LogWarning("Unknown global property: '{PropertyName}' for '{EnemyName}'", gDataName, prefabName);
                                         break;
                                 }
                             }
@@ -550,9 +550,6 @@ public class InternalEnemyData : InternalXml
                                     disableCollision, detectionSourceOnPatrolLine,
                                     attackBeyondPatrolLine
                                 );
-                            break;
-                        case "AIStateEnemy":
-                            enemyModel.IsAiStateEnemy = true;
                             break;
                         case "LootTable":
                             var lootTable = new List<EnemyDropModel>();
@@ -631,14 +628,14 @@ public class InternalEnemyData : InternalXml
                             enemyModel.Hitbox = new HitboxModel(width, height, xOffset, yOffset);
                             break;
                         default:
-                            Logger.LogError("Unknown enemy data type for: {DataType} ({EnemyName}", data.Name, enemyType);
+                            Logger.LogError("Unknown enemy data type for: {DataType} ({EnemyName}", data.Name, prefabName);
                             break;
                     }
                 }
 
-                enemyModel.EnsureValidData(enemyType, Logger);
+                enemyModel.EnsureValidData(prefabName, Logger);
 
-                EnemyInfoCatalog.Add(enemyType, enemyModel);
+                EnemyInfoCatalog.Add(prefabName, enemyModel);
             }
         }
     }

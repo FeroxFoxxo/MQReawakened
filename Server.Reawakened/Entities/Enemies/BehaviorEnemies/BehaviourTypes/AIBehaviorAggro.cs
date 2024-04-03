@@ -24,7 +24,7 @@ public class AIBehaviorAggro(AggroState aggroState, AIStatsGlobalComp globalComp
         DetectionRangeUpY, DetectionRangeDownY
     );
 
-    public override StateTypes GetBehavior() => StateTypes.Aggro;
+    public override StateType GetBehavior() => StateType.Aggro;
 
     public override string ToString()
     {

@@ -13,7 +13,7 @@ public class AIBehaviorComeBack(ComeBackState comeBackState, AIStatsGlobalComp g
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_ComeBack(ComeBackSpeed);
 
-    public override StateTypes GetBehavior() => StateTypes.ComeBack;
+    public override StateType GetBehavior() => StateType.ComeBack;
 
     public override object[] GetData() => [ ComeBackSpeed ];
 }

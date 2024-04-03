@@ -17,7 +17,7 @@ public class AIBehaviorLookAround(LookAroundState lookAroundState, AIStatsGlobal
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_LookAround(LookTime, InitialProgressRatio, SnapOnGround);
 
-    public override StateTypes GetBehavior() => StateTypes.LookAround;
+    public override StateType GetBehavior() => StateType.LookAround;
 
     public override object[] GetData() => [
             LookTime, StartDirection, ForceDirection, 

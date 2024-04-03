@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 
-public abstract class BehaviorEnemy(EnemyData data) : Enemy(data)
+public class BehaviorEnemy(EnemyData data) : Enemy(data)
 {
     public AIStatsGlobalComp Global;
     public AIStatsGenericComp Generic;
@@ -73,23 +73,18 @@ public abstract class BehaviorEnemy(EnemyData data) : Enemy(data)
     {
         base.CheckForSpawner();
 
-        Global = LinkedSpawner.Global;
-        Generic = LinkedSpawner.Generic;
-        Status = LinkedSpawner.Status;
-    }
+        // Should use apt template rather than first
+        var spawnerTemplate = LinkedSpawner.TemplateEnemyModels.FirstOrDefault().Value;
 
-    public virtual void DetectPlayers(StateTypes type)
-    {
-        foreach (var player in Room.Players.Values)
+        if (spawnerTemplate is null)
         {
-            if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
-            {
-                AiData.Sync_TargetPosX = player.TempData.Position.X;
-                AiData.Sync_TargetPosY = player.TempData.Position.Y;
-
-                ChangeBehavior(type, player.TempData.Position.X, player.TempData.Position.Y, Generic.Patrol_ForceDirectionX);
-            }
+            Logger.LogError("Spawner with {Id} has invalid templates! Returning...", LinkedSpawner.Id);
+            return;
         }
+
+        Global = spawnerTemplate.Global;
+        Generic = spawnerTemplate.Generic;
+        Status = spawnerTemplate.Status;
     }
 
     public bool PlayerInRange(Vector3Model pos, bool limitedByPatrolLine) =>
@@ -109,40 +104,82 @@ public abstract class BehaviorEnemy(EnemyData data) : Enemy(data)
 
     public override void InternalUpdate()
     {
-        // Commented lines are behaviors that have not been added yet
-        // AIBehavior_Spike
-        // AIBehavior_Projectile
-        // AIBehavior_Acting
+        /* Behaviors that have not been added yet:
+                AIBehavior_Spike
+                AIBehavior_Projectile
+                AIBehavior_Acting
+        */
 
         switch (AiBehavior)
         {
-            case AIBehaviorLookAround:
-                HandleLookAround();
-                break;
-            case AIBehaviorPatrol:
-                HandlePatrol();
-                break;
             case AIBehaviorAggro:
-                HandleAggro();
+                if (!AiBehavior.Update(ref AiData, Room.Time))
+                {
+                    ChangeBehavior(GenericScript.AwareBehavior,
+                        GenericScript.UnawareBehavior == StateType.ComeBack ? Position.x : AiData.Sync_TargetPosX,
+                        GenericScript.UnawareBehavior == StateType.ComeBack ? Position.y : AiData.Sync_TargetPosY,
+                        AiData.Intern_Dir
+                    );
+                }
                 break;
+
+            case AIBehaviorLookAround:
+                DetectPlayers(GenericScript.AttackBehavior);
+
+                if (Room.Time >= BehaviorEndTime)
+                {
+                    ChangeBehavior(
+                        GenericScript.UnawareBehavior,
+                        Position.x,
+                        GenericScript.UnawareBehavior == StateType.ComeBack ? AiData.Intern_SpawnPosY : Position.y,
+                        Generic.Patrol_ForceDirectionX
+                    );
+
+                    AiBehavior.MustDoComeback(AiData);
+                }
+                break;
+
+            case AIBehaviorPatrol:
+                AiBehavior.Update(ref AiData, Room.Time);
+
+                if (Room.Time >= BehaviorEndTime)
+                    DetectPlayers(GenericScript.AttackBehavior);
+                break;
+
             case AIBehaviorComeBack:
-                HandleComeBack();
+                if (!AiBehavior.Update(ref AiData, Room.Time))
+                    ChangeBehavior(StateType.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
                 break;
+
             case AIBehaviorShooting:
-                HandleShooting();
+                TryFireProjectile(false);
+
+                if (!AiBehavior.Update(ref AiData, Room.Time))
+                    ChangeBehavior(GenericScript.AwareBehavior, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir);
                 break;
+
             case AIBehaviorBomber:
-                HandleBomber();
+                if (Room.Time >= BehaviorEndTime)
+                    Damage(EnemyController.MaxHealth, null);
                 break;
+
             case AIBehaviorGrenadier:
-                HandleGrenadier();
+                TryFireProjectile(true);
+
+                if (Room.Time >= BehaviorEndTime)
+                    ChangeBehavior(GenericScript.AwareBehavior, Position.x, Position.y, AiData.Intern_Dir);
                 break;
+
             case AIBehaviorStomper:
-                HandleStomper();
+                if (Room.Time >= BehaviorEndTime)
+                    ChangeBehavior(GenericScript.UnawareBehavior, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
                 break;
+
             case AIBehaviorStinger:
-                HandleStinger();
+                if (!AiBehavior.Update(ref AiData, Room.Time))
+                    ChangeBehavior(GenericScript.AwareBehavior, Position.x, Position.y, AiData.Intern_Dir);
                 break;
+
             default:
                 Logger.LogError("Behavioral enemy '{Enemy}' has no update method for '{Behavior}'", PrefabName, AiBehavior.ToString());
                 break;
@@ -151,116 +188,66 @@ public abstract class BehaviorEnemy(EnemyData data) : Enemy(data)
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
         Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.ColliderBox.Height : 0), Position.z);
     }
-    
-    // LOOK INTO WHY AGGRO AND LOOKAROUND CAN HAVE DIFFERENT IMPLEMENTATIONS
 
-    public virtual void HandleLookAround() {
-        DetectPlayers(GenericScript.AttackBehavior);
-
-        if (Room.Time >= BehaviorEndTime)
+    public void DetectPlayers(StateType type)
+    {
+        foreach (var player in Room.Players.Values)
         {
-            ChangeBehavior(GenericScript.UnawareBehavior, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
-            AiBehavior.MustDoComeback(AiData);
+            if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
+            {
+                AiData.Sync_TargetPosX = player.TempData.Position.X;
+                AiData.Sync_TargetPosY = GenericScript.AttackBehavior == StateType.Grenadier ? Position.y : player.TempData.Position.Y;
+
+                ChangeBehavior(type, player.TempData.Position.X, GenericScript.AttackBehavior == StateType.Grenadier ? player.TempData.Position.Y : Position.y, Generic.Patrol_ForceDirectionX);
+            }
         }
     }
 
-    public virtual void HandleAggro()
-    {
-        if (!AiBehavior.Update(ref AiData, Room.Time))
-            ChangeBehavior(GenericScript.AwareBehavior, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir);
-    }
-
-    // ----------------------------------------------------------------------
-
-    public void HandlePatrol()
-    {
-        AiBehavior.Update(ref AiData, Room.Time);
-
-        if (Room.Time >= BehaviorEndTime)
-            DetectPlayers(GenericScript.AttackBehavior);
-    }
-
-    public void HandleComeBack() {
-        if (!AiBehavior.Update(ref AiData, Room.Time))
-            ChangeBehavior(StateTypes.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
-    }
-
-    public void HandleShooting()
+    public void TryFireProjectile(bool isGrenade)
     {
         if (AiData.Intern_FireProjectile)
         {
-            var pos = new Vector3Model { X = Position.x + AiData.Intern_Dir * GlobalProperties.Global_ShootOffsetX, Y = Position.y + GlobalProperties.Global_ShootOffsetY, Z = Position.z };
+            var pos = new Vector3Model {
+                X = Position.x + AiData.Intern_Dir * GlobalProperties.Global_ShootOffsetX,
+                Y = Position.y + GlobalProperties.Global_ShootOffsetY,
+                Z = Position.z
+            };
 
-            var rand = new System.Random();
-            var projectileId = Math.Abs(rand.Next()).ToString();
+            var projectileId = GetProjectileId();
 
-            while (Room.GameObjectIds.Contains(projectileId))
-                projectileId = Math.Abs(rand.Next()).ToString();
+            var speedX = (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed;
+            var speedY = (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed;
 
-            // Magic numbers here are temporary
             Room.SendSyncEvent(
-                AISyncEventHelper.AILaunchItem(Id, Room.Time, pos.X, pos.Y, pos.Z,
-                    (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
-                    (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, int.Parse(projectileId), 0
+                AISyncEventHelper.AILaunchItem(
+                    Id, Room.Time, pos.X, pos.Y, pos.Z, speedX, speedY, 3, projectileId, isGrenade
                 )
             );
 
-            AiData.Intern_FireProjectile = false;
+            var timerThread = Room.Enemies[Id].EnemyController.TimerThread;
+            var damage = GameFlow.StatisticData.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level);
+            var effect = EnemyController.ComponentData.EnemyEffectType;
 
             var prj = new AIProjectile(
-                Room, Id, projectileId, pos, (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
-                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed, 3, Room.Enemies[Id].EnemyController.TimerThread,
-                GameFlow.StatisticData.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level),
-                EnemyController.ComponentData.EnemyEffectType, ServerRConfig, ItemCatalog
+                Room, Id, projectileId.ToString(), pos, speedX, speedY,
+                3, timerThread, damage, effect, ServerRConfig, ItemCatalog
             );
 
             Room.AddProjectile(prj);
-        }
-
-        if (!AiBehavior.Update(ref AiData, Room.Time))
-            ChangeBehavior(GenericScript.AwareBehavior, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir);
-    }
-
-    public void HandleBomber()
-    {
-        if (Room.Time >= BehaviorEndTime)
-            base.Damage(EnemyController.MaxHealth, null);
-    }
-
-    public void HandleGrenadier()
-    {
-        if (AiData.Intern_FireProjectile)
-        {
-            // Magic numbers here are temporary
-            Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Id, Room.Time,
-                Position.x + AiData.Intern_Dir * GlobalProperties.Global_ShootOffsetX,
-                Position.y + GlobalProperties.Global_ShootOffsetY,
-                Position.z,
-                (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
-                (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
-                3, 0, 1)
-            );
-
             AiData.Intern_FireProjectile = false;
         }
-
-        if (Room.Time >= BehaviorEndTime)
-            ChangeBehavior(GenericScript.AwareBehavior, Position.x, Position.y, AiData.Intern_Dir);
     }
 
-    public void HandleStomper()
+    public int GetProjectileId()
     {
-        if (Room.Time >= BehaviorEndTime)
-            ChangeBehavior(GenericScript.UnawareBehavior, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
+        var rand = new System.Random();
+
+        var projectileId = Math.Abs(rand.Next());
+
+        return Room.GameObjectIds.Contains(projectileId.ToString()) ? GetProjectileId() : projectileId;
     }
 
-    public void HandleStinger()
-    {
-        if (!AiBehavior.Update(ref AiData, Room.Time))
-            ChangeBehavior(GenericScript.UnawareBehavior, Position.x, Position.y, AiData.Intern_Dir);
-    }
-
-    public void ChangeBehavior(StateTypes behaviourType, float x, float y, int direction)
+    public void ChangeBehavior(StateType behaviourType, float targetX, float targetY, int direction)
     {
         var behaviour = EnemyModel.BehaviorData[behaviourType];
         var index = EnemyModel.IndexOf(behaviourType);
@@ -271,7 +258,7 @@ public abstract class BehaviorEnemy(EnemyData data) : Enemy(data)
 
         AiBehavior.Start(ref AiData, Room.Time, args);
 
-        Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position.x, Position.y, 1.0f, index, args, x, y, direction, false));
+        Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position.x, Position.y, 1.0f, index, args, targetX, targetY, direction, false));
 
         ResetBehaviorTime(AiBehavior.ResetTime);
     }
@@ -279,6 +266,12 @@ public abstract class BehaviorEnemy(EnemyData data) : Enemy(data)
     public override void Damage(int damage, Player player)
     {
         base.Damage(damage, player);
+
+        if (player == null)
+        {
+            Logger.LogError("Could not change behavior of {PrefabName} when damaged!", PrefabName);
+            return;
+        }
 
         if (AiBehavior is not AIBehaviorShooting)
         {
@@ -305,7 +298,7 @@ public abstract class BehaviorEnemy(EnemyData data) : Enemy(data)
             )
         );
 
-        ChangeBehavior(StateTypes.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
+        ChangeBehavior(StateType.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
     }
 
     public override void SendAiData(Player player)

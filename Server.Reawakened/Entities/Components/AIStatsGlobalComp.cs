@@ -146,7 +146,7 @@ public class AIStatsGlobalComp : Component<AI_Stats_Global>
             properties.genericScript_HealthRegenerationFrequency;
 
         return new GenericScriptPropertiesModel(
-            Enum.Parse<StateTypes>(attackBehavior), Enum.Parse<StateTypes>(awareBehavior), Enum.Parse<StateTypes>(unawareBehavior),
+            Enum.Parse<StateType>(attackBehavior), Enum.Parse<StateType>(awareBehavior), Enum.Parse<StateType>(unawareBehavior),
             duration, healthRegenAmount, healthRegenFreq
         );
     }

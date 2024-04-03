@@ -9,7 +9,7 @@ public class AISyncEventHelper
 {
     public static AIInit_SyncEvent AIInit(string id, float time, float posX, float posY, float posZ, float spawnX,
         float spawnY, float behaviorRatio, int health, int maxHealth, float healthMod, float scaleMod, float resMod,
-        int stars, int level, GlobalProperties globalProperties, Dictionary<StateTypes, BaseState> states,
+        int stars, int level, GlobalProperties globalProperties, Dictionary<StateType, BaseState> states,
         AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp)
     {
         var bList = new SeparatedStringBuilder('`');
@@ -79,7 +79,7 @@ public class AISyncEventHelper
         return aiDo;
     }
 
-    public static AILaunchItem_SyncEvent AILaunchItem(string id, float time, float posX, float posY, float posZ, float speedX, float speedY, float lifeTime, int prjId, int isGrenade)
+    public static AILaunchItem_SyncEvent AILaunchItem(string id, float time, float posX, float posY, float posZ, float speedX, float speedY, float lifeTime, int prjId, bool isGrenade)
     {
         var launch = new AILaunchItem_SyncEvent(new SyncEvent(id, SyncEvent.EventType.AILaunchItem, time));
 
@@ -91,7 +91,7 @@ public class AISyncEventHelper
         launch.EventDataList.Add(speedY);
         launch.EventDataList.Add(lifeTime);
         launch.EventDataList.Add(prjId);
-        launch.EventDataList.Add(isGrenade);
+        launch.EventDataList.Add(isGrenade ? 1 : 0);
 
         return launch;
     }
@@ -113,5 +113,5 @@ public class AISyncEventHelper
         new (false, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
 
     public static GenericScriptPropertiesModel CreateDefaultGenericScript() =>
-        new (StateTypes.Unknown, StateTypes.Unknown, StateTypes.Unknown, 0, 0, 0);
+        new (StateType.Unknown, StateType.Unknown, StateType.Unknown, 0, 0, 0);
 }

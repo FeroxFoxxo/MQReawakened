@@ -22,7 +22,7 @@ public abstract class AIBaseBehavior
 
     public void SetBehaviour() => _behavior = GetBehaviour();
     protected abstract AI_Behavior GetBehaviour();
-    public abstract StateTypes GetBehavior();
+    public abstract StateType GetBehavior();
 
     public abstract object[] GetData();
 

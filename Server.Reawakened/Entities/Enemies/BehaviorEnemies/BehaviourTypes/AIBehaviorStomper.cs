@@ -15,7 +15,7 @@ public class AIBehaviorStomper(StomperState stomperState) : AIBaseBehavior
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Stomper(AttackTime, ImpactTime);
 
-    public override StateTypes GetBehavior() => StateTypes.Stomper;
+    public override StateType GetBehavior() => StateType.Stomper;
 
     public override object[] GetData() => [
         AttackTime, ImpactTime, DamageDistance, DamageOffset

@@ -42,8 +42,14 @@ public class DroppingsControllerComp : Component<DroppingsController>
 
         Room.AddProjectile(aiProjectile);
 
-        Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Id, Room.Time,
-            Position.X, Position.Y, Position.Z, 0, 0, 3, int.Parse(projectileId), 0));
+        Room.SendSyncEvent(
+            AISyncEventHelper.AILaunchItem(
+                Id, Room.Time,
+                Position.X, Position.Y, Position.Z,
+                0, 0, // SPEED
+                3, int.Parse(projectileId), false
+            )
+        );
 
         WaitDrop();
     }

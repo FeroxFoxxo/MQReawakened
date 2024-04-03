@@ -24,7 +24,7 @@ public class AIBehaviorShooting(ShootingState shootingState, AIStatsGlobalComp g
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Shooting(NbBulletsPerRound, FireSpreadAngle, DelayBetweenBullet, DelayShootAnim,
         NbFireRounds, DelayBetweenFireRound, StartCoolDownTime, EndCoolDownTime, ProjectileSpeed, FireSpreadClockwise, FireSpreadStartAngle);
 
-    public override StateTypes GetBehavior() => StateTypes.Shooting;
+    public override StateType GetBehavior() => StateType.Shooting;
 
     public override object[] GetData() => [
         NbBulletsPerRound, FireSpreadAngle,
