@@ -52,6 +52,7 @@ public class BehaviorEnemy(EnemyData data) : Enemy(data)
             Intern_SpawnPosZ = Position.z,
             Sync_PosX = Position.x,
             Sync_PosY = Position.y,
+            Sync_PosZ = Position.z,
             SyncInit_Dir = 1,
             SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio
         };
@@ -85,6 +86,9 @@ public class BehaviorEnemy(EnemyData data) : Enemy(data)
         Global = spawnerTemplate.Global;
         Generic = spawnerTemplate.Generic;
         Status = spawnerTemplate.Status;
+
+        //Fix Z
+        Position.z = ParentPlane.Equals("Plane1")? 20 : 0;
     }
 
     public bool PlayerInRange(Vector3Model pos, bool limitedByPatrolLine) =>

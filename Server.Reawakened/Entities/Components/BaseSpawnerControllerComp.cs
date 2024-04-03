@@ -187,7 +187,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
                 Id, Room.Time,
-                Position.X, Position.Y, Position.Z, Position.X, Position.Y,
+                Position.X, Position.Y, ParentPlane.Equals("Plane1") ? 20 : 0, Position.X, Position.Y,
                 templateToSpawnAt.Generic.Patrol_InitialProgressRatio, Health, Health, 1, 1, 1,
                 0, Level, templateToSpawnAt.GlobalProperties, behaviors, null, null
             )

@@ -1,6 +1,7 @@
 ﻿using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.States;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 
@@ -15,9 +16,7 @@ public class AIBehaviorGrenadier(GrenadierState grenadierState) : AIBaseBehavior
     public float MaxHeight => grenadierState.MaxHeight;
 
     public override float ResetTime => GInTime + GLoopTime + GOutTime;
-
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Grenadier(GInTime, GLoopTime, GOutTime, IsTracking, ProjCount, ProjSpeed, MaxHeight);
-
     public override StateType GetBehavior() => StateType.Grenadier;
 
     public override object[] GetData() => [
