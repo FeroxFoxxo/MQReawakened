@@ -82,7 +82,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         EnemyController = Room.GetEntityFromId<EnemyControllerComp>(TemplatePrefabNameToSpawn1);
         Hazard = Room.GetEntityFromId<HazardControllerComp>(TemplatePrefabNameToSpawn1);
 
-        GlobalProperties = AISyncEventHelper.CreateDefaultProperties();
+        GlobalProperties = AISyncEventHelper.CreateDefaultGlobalProperties();
 
         BehaviorList = EnemyInfoXml.GetBehaviorsByName(PrefabNameToSpawn1);
         LinkedEnemies = [];

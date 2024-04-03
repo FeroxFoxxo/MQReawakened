@@ -41,7 +41,9 @@ public abstract class Enemy : IDestructible
     public EnemyCollider Hitbox;
     public string ParentPlane;
     public bool IsFromSpawner;
-    public float MinBehaviorTime;
+    public float AwareBehaviorDuration;
+
+    public readonly string PrefabName;
 
     public int Health;
     public int MaxHealth;
@@ -52,7 +54,9 @@ public abstract class Enemy : IDestructible
     public BaseSpawnerControllerComp LinkedSpawner;
     public InterObjStatusComp Status;
     public AIProcessData AiData;
+
     public GlobalProperties GlobalProperties;
+    public GenericScriptPropertiesModel GenericScript;
 
     public readonly BaseComponent Entity;
     public readonly EnemyControllerComp EnemyController;
@@ -64,14 +68,15 @@ public abstract class Enemy : IDestructible
 
     public Enemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services)
     {
-        //Basic Stats
         Room = room;
         Id = entityId;
-        IsFromSpawner = false;
-        MinBehaviorTime = 0;
-        SyncBuilder = new AISyncEventHelper();
-
+        PrefabName = prefabName;
         Services = services;
+        EnemyController = enemyController;
+
+        IsFromSpawner = false;
+        AwareBehaviorDuration = 0;
+        SyncBuilder = new AISyncEventHelper();
 
         Logger = services.GetRequiredService<ILogger<BehaviorEnemy>>();
         InternalAchievement = services.GetRequiredService<InternalAchievement>();
@@ -80,23 +85,26 @@ public abstract class Enemy : IDestructible
         InternalEnemy = services.GetRequiredService<InternalDefaultEnemies>();
         ServerRConfig = services.GetRequiredService<ServerRConfig>();
 
-        //Component Info
-        EnemyController = enemyController;
-
-        //Position Info
         ParentPlane = EnemyController.ParentPlane;
         Position = new Vector3(EnemyController.Position.X, EnemyController.Position.Y, EnemyController.Position.Z);
-
-        var status = room.GetEntityFromId<InterObjStatusComp>(Id);
-        if (status != null)
-            Status = status;
+        
+        Status = room.GetEntityFromId<InterObjStatusComp>(Id);
 
         //Plane Wrapup
-        if (ParentPlane.Equals("TemplatePlane"))
-            CheckForSpawner();
-
-        if (ParentPlane.Equals("Plane1"))
-            Position.z = 20;
+        switch (ParentPlane)
+        {
+            case "TemplatePlane":
+                CheckForSpawner();
+                break;
+            case "Plane1":
+                Position.z = 20;
+                break;
+            case "Plane0":
+                break;
+            default:
+                Logger.LogError("Unknown plane: '{Plane}' for enemy {Name}", ParentPlane, PrefabName);
+                break;
+        }
 
         //Stats
         BehaviorModel = InternalEnemy.GetBehaviorsByName(prefabName);
@@ -109,23 +117,29 @@ public abstract class Enemy : IDestructible
         //Hitbox Info
         GenerateHitbox(BehaviorModel.Hitbox);
 
-        GlobalProperties = AISyncEventHelper.CreateDefaultProperties();
+        GlobalProperties = AISyncEventHelper.CreateDefaultGlobalProperties();
+        GenericScript = AISyncEventHelper.CreateDefaultGenericScript();
     }
 
     public virtual void Initialize() => Init = true;
 
-    public virtual void Update()
+    public void Update()
     {
         if (!Init)
             Initialize();
 
         if (Room.IsObjectKilled(Id))
             return;
+
+        InternalUpdate();
     }
+
+    public virtual void InternalUpdate() { }
 
     public virtual void CheckForSpawner()
     {
         IsFromSpawner = true;
+
         var spawnerId = Id.Split("_");
 
         LinkedSpawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(spawnerId[0]);
@@ -133,7 +147,12 @@ public abstract class Enemy : IDestructible
         if (LinkedSpawner == null)
             return;
 
-        Position = new Vector3(LinkedSpawner.Position.X + LinkedSpawner.SpawningOffsetX, LinkedSpawner.Position.Y + LinkedSpawner.SpawningOffsetY, LinkedSpawner.Position.Z);
+        Position = new Vector3(
+            LinkedSpawner.Position.X + LinkedSpawner.SpawningOffsetX,
+            LinkedSpawner.Position.Y + LinkedSpawner.SpawningOffsetY,
+            LinkedSpawner.Position.Z
+        );
+
         ParentPlane = LinkedSpawner.ParentPlane;
     }
 
@@ -143,7 +162,6 @@ public abstract class Enemy : IDestructible
         var height = box.Height * EnemyController.Scale.Y * (EnemyController.Scale.Y < 0 ? -1 : 1);
 
         var offsetX = box.XOffset * EnemyController.Scale.X - width / 2 * (EnemyController.Scale.X < 0 ? -1 : 1);
-
         var offsetY = box.YOffset * EnemyController.Scale.Y - height / 2 * (EnemyController.Scale.Y < 0 ? -1 : 1);
 
         var position = new Vector3Model { X = offsetX, Y = offsetY, Z = Position.z };
@@ -168,8 +186,7 @@ public abstract class Enemy : IDestructible
 
         Health -= trueDamage;
 
-        var damageEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, trueDamage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true);
-        Room.SendSyncEvent(damageEvent);
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, trueDamage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true));
 
         if (Health <= 0)
         {
@@ -179,17 +196,22 @@ public abstract class Enemy : IDestructible
 
             //Dynamic Loot Drop
             var chance = new System.Random();
+
             if (BehaviorModel.EnemyLootTable != null)
+            {
                 foreach (var drop in BehaviorModel.EnemyLootTable)
                 {
                     chance.NextDouble();
                     if (Level <= drop.MaxLevel && Level >= drop.MinLevel)
                         origin.GrantDynamicLoot(Level, drop, ItemCatalog);
                 }
+            }
 
             //The XP Reward here is not accurate, but pretty close
             var xpAward = DeathXp - (origin.Character.Data.GlobalLevel - 1) * 5;
+
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, origin == null ? "0" : origin.GameObjectId, false));
+            
             origin.AddReputation(xpAward > 0 ? xpAward : 1, ServerRConfig);
 
             //For spawners

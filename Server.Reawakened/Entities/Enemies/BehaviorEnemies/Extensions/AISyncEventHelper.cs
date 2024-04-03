@@ -2,6 +2,7 @@
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
+using Server.Reawakened.XMLs.Models.Enemy.Models;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 public class AISyncEventHelper
@@ -108,6 +109,9 @@ public class AISyncEventHelper
         return die;
     }
 
-    public static GlobalProperties CreateDefaultProperties() =>
+    public static GlobalProperties CreateDefaultGlobalProperties() =>
         new (false, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
+
+    public static GenericScriptPropertiesModel CreateDefaultGenericScript() =>
+        new (StateTypes.Unknown, StateTypes.Unknown, StateTypes.Unknown, 0, 0, 0);
 }

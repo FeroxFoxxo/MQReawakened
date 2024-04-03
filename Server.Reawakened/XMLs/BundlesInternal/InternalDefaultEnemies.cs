@@ -48,6 +48,8 @@ public class InternalDefaultEnemies : InternalXml
                     }
                 }
 
+                var isAiStateEnemy = false;
+
                 foreach (XmlNode data in enemy.ChildNodes)
                 {
                     switch (data.Name)
@@ -385,11 +387,64 @@ public class InternalDefaultEnemies : InternalXml
 
                             behaviorModel.BehaviorData = behaviors;
                             break;
-                        case "GlobalProperties":
-                            // Custom XML attributes
-                            var offensiveBehavior = StateTypes.Unknown;
-                            var minBehaviorTime = 0f;
+                        case "GenericScript":
+                            var attackBehavior = StateTypes.Unknown;
+                            var awareBehavior = StateTypes.Unknown;
+                            var unawareBehavior = StateTypes.Unknown;
+                            var awareBehaviorDuration = 0f;
+                            var healthRegenAmount = 0;
+                            var healthRegenFrequency = 0;
 
+                            foreach (XmlNode globalProperty in data.ChildNodes)
+                            {
+                                var gDataName = globalProperty.Name;
+                                var gDataValue = string.Empty;
+
+                                foreach (XmlAttribute globalPropValue in globalProperty.Attributes)
+                                {
+                                    switch (globalPropValue.Name)
+                                    {
+                                        case "value":
+                                            gDataValue = globalPropValue.Value;
+                                            break;
+                                        default:
+                                            Logger.LogWarning("Unknown global parameter: '{ParameterName}' for '{EnemyName}'", globalPropValue.Name, enemyType);
+                                            break;
+                                    }
+                                }
+
+                                if (string.IsNullOrEmpty(gDataName) || string.IsNullOrEmpty(gDataValue))
+                                    continue;
+
+                                switch (gDataName)
+                                {
+                                    case "AttackBehavior":
+                                        attackBehavior = Enum.Parse<StateTypes>(gDataValue);
+                                        break;
+                                    case "AwareBehavior":
+                                        awareBehavior = Enum.Parse<StateTypes>(gDataValue);
+                                        break;
+                                    case "UnawareBehavior":
+                                        unawareBehavior = Enum.Parse<StateTypes>(gDataValue);
+                                        break;
+                                    case "AwareBehaviorDuration":
+                                        awareBehaviorDuration = Convert.ToSingle(gDataValue);
+                                        break;
+                                    case "HealthRegenAmount":
+                                        healthRegenAmount = Convert.ToInt32(gDataValue);
+                                        break;
+                                    case "HealthRegenFrequency":
+                                        healthRegenFrequency = Convert.ToInt32(gDataValue);
+                                        break;
+                                    default:
+                                        Logger.LogWarning("Unknown generic property: '{PropertyName}' for '{EnemyName}'", gDataName, enemyType);
+                                        break;
+                                }
+                            }
+
+                            behaviorModel.GenericScript = new GenericScriptModel(attackBehavior, awareBehavior, unawareBehavior, awareBehaviorDuration, healthRegenAmount, healthRegenFrequency);
+                            break;
+                        case "GlobalProperties":
                             var detectionLimitedByPatrolLine = true;
                             var frontDetectionRangeX = 0f;
                             var frontDetectionRangeUpY = 0f;
@@ -431,14 +486,6 @@ public class InternalDefaultEnemies : InternalXml
 
                                 switch (gDataName)
                                 {
-                                    // CUSTOM XML ATTRIBUTES
-                                    case "OffensiveBehavior":
-                                        offensiveBehavior = Enum.Parse<StateTypes>(gDataValue);
-                                        break;
-                                    case "MinBehaviorTime":
-                                        minBehaviorTime = Convert.ToSingle(gDataValue);
-                                        break;
-
                                     case "DetectionLimitedByPatrolLine":
                                         detectionLimitedByPatrolLine = Convert.ToBoolean(gDataValue);
                                         break;
@@ -499,11 +546,11 @@ public class InternalDefaultEnemies : InternalXml
                                     frontDetectionRangeUpY, frontDetectionRangeDownY,
                                     script, shootingProjectilePrefabName,
                                     disableCollision, detectionSourceOnPatrolLine,
-                                    attackBeyondPatrolLine,
-
-                                    // Custom XML attributes
-                                    offensiveBehavior, minBehaviorTime
+                                    attackBeyondPatrolLine
                                 );
+                            break;
+                        case "AIStateEnemy":
+                            isAiStateEnemy = true;
                             break;
                         case "LootTable":
                             var lootTable = new List<EnemyDropModel>();
@@ -587,7 +634,7 @@ public class InternalDefaultEnemies : InternalXml
                     }
                 }
 
-                behaviorModel.EnsureBehaviourValid(Logger, enemyType);
+                behaviorModel.EnsureBehaviourValid(isAiStateEnemy, enemyType, Logger);
 
                 EnemyInfoCatalog.Add(enemyType, behaviorModel);
             }
