@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
-using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -17,7 +16,7 @@ using UnityEngine;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 
-public abstract class BehaviorEnemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : Enemy(room, entityId, prefabName, enemyController, services), IDestructible
+public abstract class BehaviorEnemy(EnemyData data) : Enemy(data)
 {
     public AIStatsGlobalComp Global;
     public AIStatsGenericComp Generic;

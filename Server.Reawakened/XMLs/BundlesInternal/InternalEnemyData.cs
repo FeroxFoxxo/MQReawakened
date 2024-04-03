@@ -10,12 +10,12 @@ using System.Xml;
 
 namespace Server.Reawakened.XMLs.BundlesInternal;
 
-public class InternalDefaultEnemies : InternalXml
+public class InternalEnemyData : InternalXml
 {
-    public override string BundleName => "InternalDefaultEnemies";
+    public override string BundleName => "InternalEnemyData";
     public override BundlePriority Priority => BundlePriority.Low;
 
-    public ILogger<InternalDefaultEnemies> Logger { get; set; }
+    public ILogger<InternalEnemyData> Logger { get; set; }
 
     public Dictionary<string, EnemyModel> EnemyInfoCatalog;
 
@@ -30,14 +30,18 @@ public class InternalDefaultEnemies : InternalXml
     {
         foreach (XmlNode enemyXml in xmlDocument.ChildNodes)
         {
-            if (enemyXml.Name != "InternalDefaultEnemies") continue;
+            if (enemyXml.Name != "InternalEnemyData") continue;
 
             foreach (XmlNode enemy in enemyXml.ChildNodes)
             {
                 if (enemy.Name != "Enemy") continue;
 
                 var enemyType = string.Empty;
-                var enemyModel = new EnemyModel();
+
+                var enemyModel = new EnemyModel()
+                {
+                    IsAiStateEnemy = false
+                };
 
                 foreach (XmlAttribute enemyName in enemy.Attributes)
                 {
@@ -47,8 +51,6 @@ public class InternalDefaultEnemies : InternalXml
                         break;
                     }
                 }
-
-                var isAiStateEnemy = false;
 
                 foreach (XmlNode data in enemy.ChildNodes)
                 {
@@ -550,7 +552,7 @@ public class InternalDefaultEnemies : InternalXml
                                 );
                             break;
                         case "AIStateEnemy":
-                            isAiStateEnemy = true;
+                            enemyModel.IsAiStateEnemy = true;
                             break;
                         case "LootTable":
                             var lootTable = new List<EnemyDropModel>();
@@ -634,7 +636,7 @@ public class InternalDefaultEnemies : InternalXml
                     }
                 }
 
-                enemyModel.EnsureValidData(isAiStateEnemy, enemyType, Logger);
+                enemyModel.EnsureValidData(enemyType, Logger);
 
                 EnemyInfoCatalog.Add(enemyType, enemyModel);
             }

@@ -405,9 +405,6 @@ public class Room : Timer
 
     public void KillEntity(Player player, string id)
     {
-        if (player == null)
-            return;
-
         lock (_roomLock)
             if (KilledObjects.Contains(id))
                 return;
@@ -420,7 +417,7 @@ public class Room : Timer
         {
             if (destructible is BaseComponent component)
             {
-                destructible.Destroy(player, player.Room, component.Id);
+                destructible.Destroy(player, this, component.Id);
 
                 Logger.LogDebug("Killed destructible {destructible} from GameObject {prefabname} with Id {id}",
                     destructible.GetType().Name, component.PrefabName, component.Id);

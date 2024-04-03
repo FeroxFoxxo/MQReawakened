@@ -41,7 +41,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public Vector3 PatrolDistance => ComponentData.PatrolDistance;
     public string OnDeathTargetID => ComponentData.OnDeathTargetID;
     public ILogger<BaseSpawnerControllerComp> Logger { get; set; }
-    public InternalDefaultEnemies EnemyInfoXml { get; set; }
+    public InternalEnemyData EnemyInfoXml { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public IServiceProvider Services { get; set; }
     public TimerThread TimerThread { get; set; }

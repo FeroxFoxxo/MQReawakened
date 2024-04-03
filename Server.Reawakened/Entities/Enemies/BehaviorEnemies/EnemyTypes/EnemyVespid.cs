@@ -1,17 +1,17 @@
-﻿using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
+﻿using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.EnemyTypes;
-public class EnemyVespid(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
+public class EnemyVespid(EnemyData data) : BehaviorEnemy(data)
 {
     public override void Initialize()
     {
-        AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
         Position.z = 10;
 
         base.Initialize();
+        
+        AiData.Intern_Dir = Generic.Patrol_ForceDirectionX;
     }
 
     // Use current position for Y target rather than player.TempData.Position.Y

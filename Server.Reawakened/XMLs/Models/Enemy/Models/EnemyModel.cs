@@ -6,13 +6,14 @@ namespace Server.Reawakened.XMLs.Models.Enemy.Models;
 
 public class EnemyModel
 {
+    public bool IsAiStateEnemy { get; set; }
     public Dictionary<StateTypes, BaseState> BehaviorData { get; set; }
     public List<EnemyDropModel> EnemyLootTable { get; set; }
     public GlobalPropertyModel GlobalProperties { get; set; }
     public GenericScriptModel GenericScript { get; set; }
     public HitboxModel Hitbox { get; set; }
 
-    public void EnsureValidData(bool isAiStateEnemy, string enemyType, Microsoft.Extensions.Logging.ILogger logger)
+    public void EnsureValidData(string enemyType, Microsoft.Extensions.Logging.ILogger logger)
     {
         if (EnemyLootTable == null)
         {
@@ -26,7 +27,7 @@ public class EnemyModel
             Hitbox = new HitboxModel(0, 0, 0, 0);
         }
 
-        if (!isAiStateEnemy)
+        if (!IsAiStateEnemy)
         {
             if (BehaviorData == null)
             {

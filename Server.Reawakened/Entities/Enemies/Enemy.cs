@@ -28,7 +28,7 @@ public abstract class Enemy : IDestructible
     public readonly InternalAchievement InternalAchievement;
     public readonly QuestCatalog QuestCatalog;
     public readonly ItemCatalog ItemCatalog;
-    public readonly InternalDefaultEnemies InternalEnemy;
+    public readonly InternalEnemyData InternalEnemy;
     public readonly ServerRConfig ServerRConfig;
 
     public readonly Room Room;
@@ -66,29 +66,29 @@ public abstract class Enemy : IDestructible
 
     protected IServiceProvider Services;
 
-    public Enemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services)
+    public Enemy(EnemyData data)
     {
-        Room = room;
-        Id = entityId;
-        PrefabName = prefabName;
-        Services = services;
-        EnemyController = enemyController;
+        Room = data.Room;
+        Id = data.EntityId;
+        PrefabName = data.PrefabName;
+        Services = data.Services;
+        EnemyController = data.EnemyController;
 
         IsFromSpawner = false;
         AwareBehaviorDuration = 0;
         SyncBuilder = new AISyncEventHelper();
 
-        Logger = services.GetRequiredService<ILogger<BehaviorEnemy>>();
-        InternalAchievement = services.GetRequiredService<InternalAchievement>();
-        QuestCatalog = services.GetRequiredService<QuestCatalog>();
-        ItemCatalog = services.GetRequiredService<ItemCatalog>();
-        InternalEnemy = services.GetRequiredService<InternalDefaultEnemies>();
-        ServerRConfig = services.GetRequiredService<ServerRConfig>();
+        Logger = Services.GetRequiredService<ILogger<BehaviorEnemy>>();
+        InternalAchievement = Services.GetRequiredService<InternalAchievement>();
+        QuestCatalog = Services.GetRequiredService<QuestCatalog>();
+        ItemCatalog = Services.GetRequiredService<ItemCatalog>();
+        InternalEnemy = Services.GetRequiredService<InternalEnemyData>();
+        ServerRConfig = Services.GetRequiredService<ServerRConfig>();
 
         ParentPlane = EnemyController.ParentPlane;
         Position = new Vector3(EnemyController.Position.X, EnemyController.Position.Y, EnemyController.Position.Z);
         
-        Status = room.GetEntityFromId<InterObjStatusComp>(Id);
+        Status = Room.GetEntityFromId<InterObjStatusComp>(Id);
 
         //Plane Wrapup
         switch (ParentPlane)
@@ -107,7 +107,7 @@ public abstract class Enemy : IDestructible
         }
 
         //Stats
-        EnemyModel = InternalEnemy.GetEnemyByName(prefabName);
+        EnemyModel = InternalEnemy.GetEnemyByName(PrefabName);
         OnDeathTargetId = EnemyController.OnDeathTargetID;
         Health = EnemyController.EnemyHealth;
         MaxHealth = EnemyController.MaxHealth;
@@ -194,26 +194,36 @@ public abstract class Enemy : IDestructible
                 foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(OnDeathTargetId))
                     trigger.Trigger(true);
 
-            //Dynamic Loot Drop
-            var chance = new System.Random();
-
-            if (EnemyModel.EnemyLootTable != null)
-            {
-                foreach (var drop in EnemyModel.EnemyLootTable)
-                {
-                    chance.NextDouble();
-                    if (Level <= drop.MaxLevel && Level >= drop.MinLevel)
-                        origin.GrantDynamicLoot(Level, drop, ItemCatalog);
-                }
-            }
-
             //The XP Reward here is not accurate, but pretty close
-            var xpAward = DeathXp - (origin.Character.Data.GlobalLevel - 1) * 5;
-
+            var xpAward = origin != null ? DeathXp + (origin.Character.Data.GlobalLevel - 1) * 5 : DeathXp;
             Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, origin == null ? "0" : origin.GameObjectId, false));
-            
-            origin.AddReputation(xpAward > 0 ? xpAward : 1, ServerRConfig);
 
+            //Dynamic Loot Drop
+            if (origin != null)
+            {
+                origin.AddReputation(xpAward > 0 ? xpAward : 1, ServerRConfig);
+
+                if (EnemyModel.EnemyLootTable != null)
+                {
+                    var random = new System.Random();
+
+                    foreach (var drop in EnemyModel.EnemyLootTable)
+                    {
+                        random.NextDouble();
+                        if (Level <= drop.MaxLevel && Level >= drop.MinLevel)
+                            origin.GrantDynamicLoot(Level, drop, ItemCatalog);
+                    }
+                }
+
+                //Achievements
+                origin.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, QuestCatalog);
+                origin.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, QuestCatalog);
+
+                origin.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, InternalAchievement, Logger);
+                origin.CheckAchievement(AchConditionType.DefeatEnemy, EnemyController.PrefabName, InternalAchievement, Logger);
+                origin.CheckAchievement(AchConditionType.DefeatEnemyInLevel, origin.Room.LevelInfo.Name, InternalAchievement, Logger);
+            }
+            
             //For spawners
             if (IsFromSpawner)
             {
@@ -222,14 +232,6 @@ public abstract class Enemy : IDestructible
                 Room.Enemies.Remove(Id);
                 Room.Colliders.Remove(Id);
             }
-
-            //Achievements
-            origin.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, QuestCatalog);
-            origin.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, QuestCatalog);
-
-            origin.CheckAchievement(AchConditionType.DefeatEnemy, string.Empty, InternalAchievement, Logger);
-            origin.CheckAchievement(AchConditionType.DefeatEnemy, EnemyController.PrefabName, InternalAchievement, Logger);
-            origin.CheckAchievement(AchConditionType.DefeatEnemyInLevel, origin.Room.LevelInfo.Name, InternalAchievement, Logger);
 
             Room.KillEntity(origin, Id);
         }

@@ -1,9 +1,8 @@
-﻿using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
+﻿using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 using Server.Reawakened.Rooms;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.EnemyTypes;
-public class EnemyFish(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services) : BehaviorEnemy(room, entityId, prefabName, enemyController, services)
+public class EnemyFish(EnemyData data) : BehaviorEnemy(data)
 {
     // Uses Position.X/Y instead of AiData.Sync_TargetPosX/Y
     public override void HandleAggro()
