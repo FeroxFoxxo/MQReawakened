@@ -148,7 +148,7 @@ public class InternalVendor : InternalXml
                         );
                     }
                     else
-                        Logger.LogError("Cannot find text id for character with name: {Name}", name);
+                        Logger.LogError("Cannot find text id for character with name: '{Name}'", name);
                 }
             }
         }
