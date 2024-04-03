@@ -20,16 +20,8 @@ public class AIBehaviorLookAround(LookAroundState lookAroundState, AIStatsGlobal
 
     public override StateTypes GetBehavior() => StateTypes.LookAround;
 
-    public override string ToString()
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(LookTime);
-        sb.Append(StartDirection);
-        sb.Append(ForceDirection);
-        sb.Append(InitialProgressRatio);
-        sb.Append(SnapOnGround ? 1 : 0);
-
-        return sb.ToString();
-    }
+    public override object[] GetData() => [
+            LookTime, StartDirection, ForceDirection, 
+            InitialProgressRatio, SnapOnGround
+        ];
 }

@@ -16,12 +16,5 @@ public class AIBehaviorComeBack(ComeBackState comeBackState, AIStatsGlobalComp g
 
     public override StateTypes GetBehavior() => StateTypes.ComeBack;
 
-    public override string ToString()
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(ComeBackSpeed);
-
-        return sb.ToString();
-    }
+    public override object[] GetData() => [ ComeBackSpeed ];
 }

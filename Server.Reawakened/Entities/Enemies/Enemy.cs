@@ -214,7 +214,7 @@ public abstract class Enemy : IDestructible
         }
     }
 
-    public virtual void SendInitData(Player player)
+    public virtual void SendAiData(Player player)
     {
     }
 

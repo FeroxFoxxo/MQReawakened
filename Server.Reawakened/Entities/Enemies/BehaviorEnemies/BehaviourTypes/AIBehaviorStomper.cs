@@ -18,15 +18,7 @@ public class AIBehaviorStomper(StomperState stomperState) : AIBaseBehavior
 
     public override StateTypes GetBehavior() => StateTypes.Stomper;
 
-    public override string ToString()
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(AttackTime);
-        sb.Append(ImpactTime);
-        sb.Append(DamageDistance);
-        sb.Append(DamageOffset);
-
-        return sb.ToString();
-    }
+    public override object[] GetData() => [
+        AttackTime, ImpactTime, DamageDistance, DamageOffset
+    ];
 }

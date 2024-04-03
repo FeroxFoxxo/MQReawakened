@@ -11,5 +11,6 @@ public enum StateTypes
     Bomber,
     Grenadier,
     Stomper,
-    Stinger
+    Stinger,
+    Idle
 }

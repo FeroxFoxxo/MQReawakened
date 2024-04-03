@@ -21,18 +21,8 @@ public class AIBehaviorGrenadier(GrenadierState grenadierState) : AIBaseBehavior
 
     public override StateTypes GetBehavior() => StateTypes.Grenadier;
 
-    public override string ToString()
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(GInTime);
-        sb.Append(GLoopTime);
-        sb.Append(GOutTime);
-        sb.Append(IsTracking ? 1 : 0);
-        sb.Append(ProjCount);
-        sb.Append(ProjSpeed);
-        sb.Append(MaxHeight);
-
-        return sb.ToString();
-    }
+    public override object[] GetData() => [
+        GInTime, GLoopTime, GOutTime,
+        IsTracking, ProjCount, ProjSpeed, MaxHeight
+    ];
 }

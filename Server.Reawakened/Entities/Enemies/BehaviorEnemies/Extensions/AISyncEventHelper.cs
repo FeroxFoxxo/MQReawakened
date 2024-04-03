@@ -1,15 +1,73 @@
-﻿using UnityEngine;
+﻿using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Players;
+using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
+using Server.Reawakened.XMLs.Models.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 public class AISyncEventHelper
 {
-    public static AIDo_SyncEvent AIDo(string id, float time, Vector3 position, float speedFactor, int behaviorId, string args, float targetPosX, float targetPosY, int direction, bool awareBool)
+    public static AIInit_SyncEvent AIInit(string id, float time, float posX, float posY, float posZ, float spawnX,
+        float spawnY, float behaviorRatio, int health, int maxHealth, float healthMod, float scaleMod, float resMod,
+        int stars, int level, GlobalProperties globalProperties, Dictionary<StateTypes, BaseState> states,
+        AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp)
     {
+        var bList = new SeparatedStringBuilder('`');
+
+        foreach (var behavior in states)
+        {
+            var bDefinesList = new SeparatedStringBuilder('|');
+
+            bDefinesList.Append(Enum.GetName(behavior.Key));
+            bDefinesList.Append(behavior.Value.ToStateString(globalComp, genericComp));
+            bDefinesList.Append(behavior.Value.ToResourcesString());
+
+            bList.Append(bDefinesList.ToString());
+        }
+
+        var behaviors = bList.ToString();
+
+        var aiInit = new AIInit_SyncEvent(
+            id,
+            time,
+            posX,
+            posY,
+            posZ,
+            spawnX,
+            spawnX,
+            behaviorRatio,
+            health, 
+            maxHealth,
+            healthMod, 
+            scaleMod, 
+            resMod, 
+            stars, 
+            level,
+            globalProperties.ToString(),
+            behaviors
+        );
+
+        aiInit.EventDataList[2] = spawnX;
+        aiInit.EventDataList[3] = spawnY;
+        aiInit.EventDataList[4] = posZ;
+
+        return aiInit;
+    }
+
+    public static AIDo_SyncEvent AIDo(string id, float time, float posX, float posY, float speedFactor, int behaviorId, string[] inArgs, float targetPosX, float targetPosY, int direction, bool awareBool)
+    {
+        var argBuilder = new SeparatedStringBuilder('`');
+
+        foreach (var str in inArgs)
+            argBuilder.Append(str);
+
+        var args = argBuilder.ToString();
+
         var aiDo = new AIDo_SyncEvent(new SyncEvent(id, SyncEvent.EventType.AIDo, time));
 
         aiDo.EventDataList.Clear();
-        aiDo.EventDataList.Add(position.x);
-        aiDo.EventDataList.Add(position.y);
+        aiDo.EventDataList.Add(posX);
+        aiDo.EventDataList.Add(posY);
         aiDo.EventDataList.Add(speedFactor);
         aiDo.EventDataList.Add(behaviorId);
         aiDo.EventDataList.Add(args);

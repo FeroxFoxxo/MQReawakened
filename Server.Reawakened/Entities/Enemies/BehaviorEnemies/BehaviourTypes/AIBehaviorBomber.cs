@@ -17,14 +17,5 @@ public class AIBehaviorBomber(BomberState bomberState) : AIBaseBehavior
 
     public override StateTypes GetBehavior() => StateTypes.Bomber;
 
-    public override string ToString()
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(InTime);
-        sb.Append(LoopTime);
-        sb.Append(BombRadius);
-
-        return sb.ToString();
-    }
+    public override object[] GetData() => [ InTime, LoopTime, BombRadius ];
 }

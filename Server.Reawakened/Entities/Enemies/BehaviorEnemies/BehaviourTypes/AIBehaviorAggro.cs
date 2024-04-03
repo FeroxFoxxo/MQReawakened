@@ -40,4 +40,10 @@ public class AIBehaviorAggro(AggroState aggroState, AIStatsGlobalComp globalComp
 
         return sb.ToString();
     }
+
+    public override object[] GetData() => [
+            AggroSpeed, MoveBeyondTargetDistance, StayOnPatrolPath,
+            AttackBeyondPatrolLine, UseAttackBeyondPatrolLine,
+            DetectionRangeUpY, DetectionRangeDownY
+        ];
 }
