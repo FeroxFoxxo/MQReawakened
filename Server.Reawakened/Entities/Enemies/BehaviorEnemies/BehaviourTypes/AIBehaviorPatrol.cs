@@ -8,9 +8,9 @@ namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 
 public class AIBehaviorPatrol(PatrolState patrolState, AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) : AIBaseBehavior
 {
-    public float MoveSpeed => globalComp.Patrol_MoveSpeed != default ? globalComp.Patrol_MoveSpeed : patrolState.Speed;
-    public bool SmoothMove => globalComp.Patrol_SmoothMove != default ? globalComp.Patrol_SmoothMove : patrolState.SmoothMove;
-    public float EndPathWaitTime => globalComp.Patrol_EndPathWaitTime != default ? globalComp.Patrol_EndPathWaitTime : patrolState.EndPathWaitTime;
+    public float MoveSpeed => globalComp.Patrol_MoveSpeed != globalComp.Default.Patrol_MoveSpeed ? globalComp.Patrol_MoveSpeed : patrolState.Speed;
+    public bool SmoothMove => globalComp.Patrol_SmoothMove != globalComp.Default.Patrol_SmoothMove ? globalComp.Patrol_SmoothMove : patrolState.SmoothMove;
+    public float EndPathWaitTime => globalComp.Patrol_EndPathWaitTime != globalComp.Default.Patrol_EndPathWaitTime ? globalComp.Patrol_EndPathWaitTime : patrolState.EndPathWaitTime;
     public float PatrolX => genericComp.PatrolX;
     public float PatrolY => genericComp.PatrolY;
     public int ForceDirectionX => genericComp.Patrol_ForceDirectionX;

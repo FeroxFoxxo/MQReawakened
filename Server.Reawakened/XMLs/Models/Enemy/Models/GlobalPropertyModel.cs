@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 
 namespace Server.Reawakened.XMLs.Models.Enemy.Models;
@@ -14,7 +15,7 @@ public class GlobalPropertyModel(bool detectionLimitedByPatrolLine, float backDe
     public StateTypes OffensiveBehavior { get; } = offensiveBehavior;
     public float MinBehaviorTime { get; } = minBehaviorTime;
 
-    public GlobalProperties GenerateGlobalPropertiesFromModel(AIStatsGlobalComp globalStats)
+    public GlobalProperties GenerateGlobalPropertiesFromModel(ClassCopier classCopier, AIStatsGlobalComp globalStats)
     {
         var properties = new GlobalProperties(
             detectionLimitedByPatrolLine, backDetectionRangeX,
@@ -26,7 +27,7 @@ public class GlobalPropertyModel(bool detectionLimitedByPatrolLine, float backDe
         );
 
         // Breaks enemy behavior stats, commenting out for now
-        //globalStats?.MixGlobalProperties(properties);
+        globalStats?.MixGlobalProperties(classCopier, properties);
 
         return properties;
     }

@@ -14,6 +14,7 @@ public class EnemyVespid(Room room, string entityId, string prefabName, EnemyCon
         base.Initialize();
     }
 
+    // Use current position for Y target rather than player.TempData.Position.Y
     public override void DetectPlayers(StateTypes behaviorToRun)
     {
         foreach (var player in Room.Players)

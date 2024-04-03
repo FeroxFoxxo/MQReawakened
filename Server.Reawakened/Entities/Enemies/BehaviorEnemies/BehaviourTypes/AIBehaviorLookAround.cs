@@ -8,11 +8,11 @@ namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 
 public class AIBehaviorLookAround(LookAroundState lookAroundState, AIStatsGlobalComp globalComp) : AIBaseBehavior
 {
-    public float LookTime => globalComp.LookAround_LookTime != default ? globalComp.LookAround_LookTime : lookAroundState.LookTime;
-    public float StartDirection => globalComp.LookAround_StartDirection != default ? globalComp.LookAround_StartDirection : lookAroundState.StartDirection;
-    public float ForceDirection => globalComp.LookAround_ForceDirection != default ? globalComp.LookAround_ForceDirection : lookAroundState.ForceDirection;
-    public float InitialProgressRatio => globalComp.LookAround_InitialProgressRatio != default ? globalComp.LookAround_InitialProgressRatio : lookAroundState.InitialProgressRatio;
-    public bool SnapOnGround => globalComp.LookAround_SnapOnGround != default ? globalComp.LookAround_SnapOnGround : lookAroundState.SnapOnGround;
+    public float LookTime => globalComp.LookAround_LookTime != globalComp.Default.LookAround_LookTime ? globalComp.LookAround_LookTime : lookAroundState.LookTime;
+    public float StartDirection => globalComp.LookAround_StartDirection != globalComp.Default.LookAround_StartDirection ? globalComp.LookAround_StartDirection : lookAroundState.StartDirection;
+    public float ForceDirection => globalComp.LookAround_ForceDirection != globalComp.Default.LookAround_ForceDirection ? globalComp.LookAround_ForceDirection : lookAroundState.ForceDirection;
+    public float InitialProgressRatio => globalComp.LookAround_InitialProgressRatio != globalComp.Default.LookAround_InitialProgressRatio ? globalComp.LookAround_InitialProgressRatio : lookAroundState.InitialProgressRatio;
+    public bool SnapOnGround => globalComp.LookAround_SnapOnGround != globalComp.Default.LookAround_SnapOnGround ? globalComp.LookAround_SnapOnGround : lookAroundState.SnapOnGround;
 
     public override float ResetTime => LookTime;
 
