@@ -1,5 +1,8 @@
-﻿using Server.Reawakened.Players;
+﻿using Server.Base.Core.Extensions;
+using Server.Reawakened.Players;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Services;
 
 namespace Server.Reawakened.Entities.Components;
 public class AIStatsGlobalComp : Component<AI_Stats_Global>
@@ -61,48 +64,53 @@ public class AIStatsGlobalComp : Component<AI_Stats_Global>
     public int GenericScript_HealthRegenerationAmount => ComponentData.GenericScript_HealthRegenerationAmount;
     public int GenericScript_HealthRegenerationFrequency => ComponentData.GenericScript_HealthRegenerationFrequency;
 
-    public void MixGlobalProperties(GlobalProperties globalProps)
+    public AI_Stats_Global Default;
+
+    public void MixGlobalProperties(ClassCopier classCopier, GlobalProperties globalProps)
     {
-        if (Global_viewOffsetY != default)
+        var baseType = typeof(AI_Stats_Global);
+        Default = classCopier.GetClassAndInfo(baseType).Key as AI_Stats_Global;
+
+        if (Global_viewOffsetY != Default.Global_viewOffsetY)
             globalProps.Global_ViewOffsetY = Global_viewOffsetY;
 
-        if (Global_FrontDetectionRangeX != default)
+        if (Global_FrontDetectionRangeX != Default.Global_FrontDetectionRangeX)
             globalProps.Global_FrontDetectionRangeX = Global_FrontDetectionRangeX;
 
-        if (Global_FrontDetectionRangeUpY != default)
+        if (Global_FrontDetectionRangeUpY != Default.Global_FrontDetectionRangeUpY)
             globalProps.Global_FrontDetectionRangeUpY = Global_FrontDetectionRangeUpY;
 
-        if (Global_FrontDetectionRangeDownY != default)
+        if (Global_FrontDetectionRangeDownY != Default.Global_FrontDetectionRangeDownY)
             globalProps.Global_FrontDetectionRangeDownY = Global_FrontDetectionRangeDownY;
 
-        if (Global_BackDetectionRangeX != default)
+        if (Global_BackDetectionRangeX != Default.Global_BackDetectionRangeX)
             globalProps.Global_BackDetectionRangeX = Global_BackDetectionRangeX;
 
-        if (Global_BackDetectionRangeUpY != default)
+        if (Global_BackDetectionRangeUpY != Default.Global_BackDetectionRangeUpY)
             globalProps.Global_BackDetectionRangeUpY = Global_BackDetectionRangeUpY;
 
-        if (Global_BackDetectionRangeDownY != default)
+        if (Global_BackDetectionRangeDownY != Default.Global_BackDetectionRangeDownY)
             globalProps.Global_BackDetectionRangeDownY = Global_BackDetectionRangeDownY;
 
-        if (Global_ShootOffsetX != default)
+        if (Global_ShootOffsetX != Default.Global_ShootOffsetX)
             globalProps.Global_ShootOffsetX = Global_ShootOffsetX;
 
-        if (Global_ShootOffsetY != default)
+        if (Global_ShootOffsetY != Default.Global_ShootOffsetY)
             globalProps.Global_ShootOffsetY = Global_ShootOffsetY;
 
-        if (Global_DetectionSourceOnPatrolLine != default)
+        if (Global_DetectionSourceOnPatrolLine != Default.Global_DetectionSourceOnPatrolLine)
             globalProps.Global_DetectionSourceOnPatrolLine = Global_DetectionSourceOnPatrolLine;
 
-        if (Global_DetectionLimitedByPatrolLine != default)
+        if (Global_DetectionLimitedByPatrolLine != Default.Global_DetectionLimitedByPatrolLine)
             globalProps.Global_DetectionLimitedByPatrolLine = Global_DetectionLimitedByPatrolLine;
 
-        if (Global_ShootingProjectilePrefabName != default)
+        if (Global_ShootingProjectilePrefabName != Default.Global_ShootingProjectilePrefabName)
             globalProps.Global_ShootingProjectilePrefabName = Global_ShootingProjectilePrefabName;
 
-        if (Global_DisableCollision != default)
+        if (Global_DisableCollision != Default.Global_DisableCollision)
             globalProps.Global_DisableCollision = Global_DisableCollision;
 
-        if (Global_Script != default)
+        if (Global_Script != Default.Global_Script)
             globalProps.Global_Script = Global_Script;
     }
 

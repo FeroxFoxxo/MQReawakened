@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
@@ -10,6 +11,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using UnityEngine;
 
@@ -34,11 +36,12 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         MinBehaviorTime = BehaviorModel.GlobalProperties.MinBehaviorTime;
         OffensiveBehavior = BehaviorModel.GlobalProperties.OffensiveBehavior;
 
+        var classCopier = Services.GetRequiredService<ClassCopier>();
+
         //External Component Info
         Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
-        Console.WriteLine(Global.PrefabName);
-        GlobalProperties = BehaviorModel.GlobalProperties.GenerateGlobalPropertiesFromModel(Global);
+        GlobalProperties = BehaviorModel.GlobalProperties.GenerateGlobalPropertiesFromModel(classCopier, Global);
 
         //AIProcessData assignment, used for AI_Behavior
         AiData = new AIProcessData
@@ -186,9 +189,17 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
         BehaviorEndTime = Room.Time + behaviorEndTime;
     }
 
-    public virtual void HandleLookAround() { }
+    public virtual void HandleLookAround() {
+        DetectPlayers(OffensiveBehavior);
 
-    public void HandlePatrol()
+        if (Room.Time >= BehaviorEndTime)
+        {
+            ChangeBehavior(StateTypes.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
+            AiBehavior.MustDoComeback(AiData);
+        }
+    }
+
+    public virtual void HandlePatrol()
     {
         AiBehavior.Update(ref AiData, Room.Time);
 
@@ -196,9 +207,15 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
             DetectPlayers(OffensiveBehavior);
     }
 
-    public virtual void HandleComeBack() { }
+    public virtual void HandleComeBack() {
+        if (!AiBehavior.Update(ref AiData, Room.Time))
+            ChangeBehavior(StateTypes.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
+    }
 
-    public virtual void HandleAggro() { }
+    public virtual void HandleAggro() {
+        if (!AiBehavior.Update(ref AiData, Room.Time))
+            ChangeBehavior(StateTypes.LookAround, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir);
+    }
 
     public virtual void HandleShooting()
     {
@@ -231,11 +248,16 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
 
             Room.AddProjectile(prj);
         }
+
+        if (!AiBehavior.Update(ref AiData, Room.Time))
+            ChangeBehavior(StateTypes.LookAround, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir);
     }
 
-    public virtual void HandleProjectile() { }
-
-    public virtual void HandleBomber() { }
+    public virtual void HandleBomber()
+    {
+        if (Room.Time >= BehaviorEndTime)
+            base.Damage(EnemyController.MaxHealth, null);
+    }
 
     public virtual void HandleGrenadier()
     {
@@ -253,6 +275,9 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
 
             AiData.Intern_FireProjectile = false;
         }
+
+        if (Room.Time >= BehaviorEndTime)
+            ChangeBehavior(StateTypes.LookAround, Position.x, Position.y, AiData.Intern_Dir);
     }
 
     public void HandleStomper()
@@ -261,15 +286,11 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
             ChangeBehavior(StateTypes.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
     }
 
-    public virtual void HandleIdle() { }
-
     public void HandleStinger()
     {
         if (!AiBehavior.Update(ref AiData, Room.Time))
             ChangeBehavior(StateTypes.Patrol, Position.x, Position.y, AiData.Intern_Dir);
     }
-
-    public virtual void HandleSpike() { }
 
     public override void Damage(int damage, Player player)
     {

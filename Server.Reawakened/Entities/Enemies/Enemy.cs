@@ -60,6 +60,8 @@ public abstract class Enemy : IDestructible
 
     public readonly AISyncEventHelper SyncBuilder;
 
+    protected IServiceProvider Services;
+
     public Enemy(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, IServiceProvider services)
     {
         //Basic Stats
@@ -68,6 +70,8 @@ public abstract class Enemy : IDestructible
         IsFromSpawner = false;
         MinBehaviorTime = 0;
         SyncBuilder = new AISyncEventHelper();
+
+        Services = services;
 
         Logger = services.GetRequiredService<ILogger<BehaviorEnemy>>();
         InternalAchievement = services.GetRequiredService<InternalAchievement>();
@@ -124,7 +128,11 @@ public abstract class Enemy : IDestructible
     {
         IsFromSpawner = true;
         var spawnerId = Id.Split("_");
+
         LinkedSpawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(spawnerId[0]);
+
+        if (LinkedSpawner == null)
+            return;
 
         Position = new Vector3(LinkedSpawner.Position.X + LinkedSpawner.SpawningOffsetX, LinkedSpawner.Position.Y + LinkedSpawner.SpawningOffsetY, LinkedSpawner.Position.Z);
         ParentPlane = LinkedSpawner.ParentPlane;
