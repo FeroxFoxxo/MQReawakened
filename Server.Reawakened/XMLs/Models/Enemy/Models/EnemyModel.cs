@@ -47,6 +47,15 @@ public class EnemyModel
                 logger.LogError("Enemy '{Name}' does not have any generic script attached!", enemyType);
                 GenericScript = new GenericScriptModel(StateType.Unknown, StateType.Unknown, StateType.Unknown, 0, 0, 0);
             }
+
+            if (!BehaviorData.ContainsKey(GenericScript.AttackBehavior))
+                logger.LogError("Enemy '{Name}' does not have the attack behavior '{Behavior}' defined!", enemyType, GenericScript.AttackBehavior);
+
+            if (!BehaviorData.ContainsKey(GenericScript.AwareBehavior))
+                logger.LogError("Enemy '{Name}' does not have the aware behavior '{Behavior}' defined!", enemyType, GenericScript.AwareBehavior);
+
+            if (!BehaviorData.ContainsKey(GenericScript.UnawareBehavior))
+                logger.LogError("Enemy '{Name}' does not have the unaware behavior '{Behavior}' defined!", enemyType, GenericScript.UnawareBehavior);
         }
     }
 

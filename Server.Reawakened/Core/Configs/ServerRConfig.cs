@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.Core.Enums;
 
 namespace Server.Reawakened.Configs;
 

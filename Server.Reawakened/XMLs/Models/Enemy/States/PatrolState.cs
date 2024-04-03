@@ -8,9 +8,9 @@ namespace Server.Reawakened.XMLs.Models.Enemy.States;
 
 public class PatrolState(float speed, bool smoothMove, float endPathWaitTime, List<EnemyResourceModel> resources) : BaseState(resources)
 {
-    public float Speed { get; } = speed;
-    public bool SmoothMove { get; } = smoothMove;
-    public float EndPathWaitTime { get; } = endPathWaitTime;
+    public float Speed => speed;
+    public bool SmoothMove => smoothMove;
+    public float EndPathWaitTime => endPathWaitTime;
 
     protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorPatrol(this, globalComp, genericComp);
 

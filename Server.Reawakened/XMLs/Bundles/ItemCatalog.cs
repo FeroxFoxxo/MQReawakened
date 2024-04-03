@@ -56,6 +56,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
 
     public void EditLocalization(XmlDocument xml)
     {
+        Logger.LogTrace("Editing localization text");
         _itemNameDict.Clear();
 
         var dicts = xml.SelectNodes("/ItemCatalogDict/text");
@@ -95,10 +96,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                     }
 
                     if (_itemNameDict.ContainsKey(item.Value))
-                    {
-                        Logger.LogTrace("Item description already exists: '{Name}'", item.Value);
                         continue;
-                    }
 
                     _itemNameDict.Add(item.Value, AddDictIfNotExists(xml, itemCatalogNode, item.Key, item.Value, localization));
                 }
@@ -124,11 +122,16 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         return nameId;
     }
 
-    public void ReadLocalization(string xml) =>
+    public void ReadLocalization(string xml)
+    {
+        Logger.LogTrace("Reading localization text");
         ReadLocalizationXml(xml.ToString());
+    }
 
     public void EditDescription(XmlDocument xml)
     {
+        Logger.LogTrace("Editing description text");
+
         _itemCategories.Clear();
         _itemSubCategories.Clear();
 
@@ -137,6 +140,8 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         foreach (XmlNode catalogs in xml.ChildNodes)
         {
             if (!(catalogs.Name == "Catalog")) continue;
+
+            Logger.LogTrace("Editing items");
 
             foreach (XmlNode category in catalogs.ChildNodes)
             {
@@ -191,6 +196,8 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
             }
 
             var smallestItemId = 0;
+
+            Logger.LogTrace("Adding internal items");
 
             foreach (var itemKVP in InternalCatalog.Items)
             {
@@ -308,8 +315,12 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
         }
     }
 
-    public void ReadDescription(string xml) =>
+    public void ReadDescription(string xml)
+    {
+        Logger.LogTrace("Reading description text");
+
         ReadDescriptionXml(xml);
+    }
 
     public void FinalizeBundle()
     {

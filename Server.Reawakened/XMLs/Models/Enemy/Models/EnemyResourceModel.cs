@@ -4,8 +4,8 @@ namespace Server.Reawakened.XMLs.Models.Enemy.Models;
 
 public class EnemyResourceModel(string type, string asset)
 {
-    public string Type { get; } = type;
-    public string Resource { get; } = asset;
+    public string Type => type;
+    public string Resource => asset;
 
     public override string ToString()
     {

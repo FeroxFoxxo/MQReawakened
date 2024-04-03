@@ -65,7 +65,7 @@
                 <Reward type="Xp" value="5" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="1" visible="true" />
+                <Condition id="1" title="Unknown Condition" type="Invalid" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="9" title="I Made A Friend" description="Add a Friend" iconName="Daily_IMadeAFriend" points="3" sortOrder="9" repeatable="true">
@@ -1529,7 +1529,7 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Rachnoids" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Rachnoids" type="Invalid" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="182" title="Rumbler Defeater" description="Defeat 10 Rumblers" iconName="Combat_DefeaterRumbler_10" points="5" sortOrder="85" repeatable="false">
@@ -1721,7 +1721,7 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Spinefish" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Spinefish" type="Invalid" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="206" title="Unknown Achievement 206" description="Unknown Description. Hint: the icon is named Combat_zombiebat!" iconName="Combat_zombiebat" points="1" sortOrder="109" repeatable="false">
@@ -1865,14 +1865,14 @@
                 <Condition id="1" title="Defeat 25 Enemies in Volcano Lair" type="DefeatEnemyInLevel" value="lv_crs_dungeon01" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <!--<Achievement id="226" title="The Forgotten Temple Defender" description="Defeat 25 Enemies in The Forgotten Temple" iconName="Combat_Defender_Crossroads_ForgottenTemple" points="10" sortOrder="129" repeatable="false">
+        <Achievement id="226" title="The Forgotten Temple Defender" description="Defeat 25 Enemies in The Forgotten Temple" iconName="Combat_Defender_Crossroads_ForgottenTemple" points="10" sortOrder="129" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Defeat 25 Enemies in The Forgotten Temple" type="DefeatEnemyInLevel" value="" goal="25" visible="true" />
             </Conditions>
-        </Achievement>-->
+        </Achievement>
         <Achievement id="227" title="Guardian's Keep Defender" description="Defeat 25 Enemies in Guardian's Keep" iconName="Combat_Defender_Crossroads_GuardiansKeep" points="10" sortOrder="130" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="15" quantity="0" />
@@ -2657,7 +2657,7 @@
         </Achievement>
         <Achievement id="324" title="Quest Compass" description="Complete 50 Quests" iconName="Questing_CompleteQuest_50" points="100" sortOrder="2" repeatable="false">
             <Rewards>
-                <Reward type="Item" value="" quantity="0" />
+                <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Complete 50 Quests" type="CompleteQuest" value="" goal="50" visible="true" />
@@ -2665,7 +2665,7 @@
         </Achievement>
         <Achievement id="325" title="Monkey Quest" description="Complete 100 Quests" iconName="Questing_CompleteQuest_100" points="200" sortOrder="3" repeatable="false">
             <Rewards>
-                <Reward type="Item" value="" quantity="0" />
+                <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Complete 100 Quests" type="CompleteQuest" value="" goal="100" visible="true" />
@@ -3993,7 +3993,7 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete 25 'Flower Groups' in SpongeBob's Park (2014 Event)" goal="25" visible="true" />
+                <Condition id="1" title="Complete 25 'Flower Groups' in SpongeBob's Park (2014 Event)" type="Invalid" goal="25" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="16" title="Feeling Festive" description="Light up the Holiday Tree 50 Times (2013 Holiday Event)" iconName="Daily_HolidayTree" points="25" sortOrder="65" repeatable="false">
@@ -4011,7 +4011,7 @@
                 <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" goal="50" visible="true" />
+                <Condition id="1" title="Unknown Condition" type="Invalid" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="492" title="Emote-tional" description="Use 1 Emote" iconName="Social_Emotes_HelloWorld" points="3" sortOrder="2" repeatable="false">
@@ -4117,7 +4117,7 @@
                 <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="InviteGroup" goal="1" visible="true" />
+                <Condition id="1" title="Unknown Condition" type="Invalid" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="504" title="Troop Group'" description="Be in a Full Group" iconName="Social_Grouping_TroopGroup" points="5" sortOrder="14" repeatable="false">
@@ -4371,7 +4371,7 @@
                 <Reward type="Bananas" value="1" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="" value="" goal="2" visible="true" />
+                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="534" title="Bo Staff Riff Raff!" description="Equip Donatello's Bo Staff" iconName="Fun_Equip_BoStaffRiffRaff" points="10" sortOrder="8" repeatable="false">
@@ -4562,7 +4562,7 @@
                 <Reward type="Xp" value="200" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Participate in 25 SpongeBob Parties" goal="25" visible="true" />
+                <Condition id="1" title="Participate in 25 SpongeBob Parties" type="Invalid" goal="25" visible="true" />
             </Conditions>
         </Achievement>
     </Category>

@@ -77,9 +77,9 @@ public static class PlayerHealExtensions
 
     private class ItemHealOverTimeData(Player player, int overTimeHealValue, int totalTicks)
     {
-        public Player Player { get; } = player;
-        public int OverTimeHealValue { get; } = overTimeHealValue;
-        public int TotalTicks { get; } = totalTicks;
+        public Player Player => player;
+        public int OverTimeHealValue => overTimeHealValue;
+        public int TotalTicks => totalTicks;
     }
 
     private static void OverTimeHealTicks(object itemData)

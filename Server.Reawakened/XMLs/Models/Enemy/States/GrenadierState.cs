@@ -9,13 +9,13 @@ namespace Server.Reawakened.XMLs.Models.Enemy.States;
 public class GrenadierState(float gInTime, float gLoopTime, float gOutTime, bool isTracking,
     int projCount, float projSpeed, float maxHeight, List<EnemyResourceModel> resources) : BaseState(resources)
 {
-    public float GInTime { get; } = gInTime;
-    public float GLoopTime { get; } = gLoopTime;
-    public float GOutTime { get; } = gOutTime;
-    public bool IsTracking { get; } = isTracking;
-    public int ProjCount { get; } = projCount;
-    public float ProjSpeed { get; } = projSpeed;
-    public float MaxHeight { get; } = maxHeight;
+    public float GInTime => gInTime;
+    public float GLoopTime => gLoopTime;
+    public float GOutTime => gOutTime;
+    public bool IsTracking => isTracking;
+    public int ProjCount => projCount;
+    public float ProjSpeed => projSpeed;
+    public float MaxHeight => maxHeight;
 
     protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorGrenadier(this);
 }

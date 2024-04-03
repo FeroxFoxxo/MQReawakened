@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Configs;
+﻿namespace Server.Reawakened.Core.Enums;
 
 public enum GameVersion
 {

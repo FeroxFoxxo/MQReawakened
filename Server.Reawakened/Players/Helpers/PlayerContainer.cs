@@ -2,7 +2,7 @@
 
 public class PlayerContainer
 {
-    public object Lock { get; } = new object();
+    public static object Lock => new();
 
     private readonly List<Player> _playerList = [];
 

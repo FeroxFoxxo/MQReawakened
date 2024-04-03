@@ -385,7 +385,7 @@ public class InternalEnemyData : InternalXml
                                                             speedForward = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "speedBackward":
-                                                            speedForward = float.Parse(behaviorData.Value);
+                                                            speedBackward = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "inDurationForward":
                                                             inDurationForward = float.Parse(behaviorData.Value);

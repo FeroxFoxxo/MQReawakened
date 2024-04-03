@@ -6,7 +6,7 @@ using Server.Reawakened.XMLs.Models.Enemy.Models;
 namespace Server.Reawakened.XMLs.Models.Enemy.Abstractions;
 public abstract class BaseState(List<EnemyResourceModel> resources)
 {
-    public List<EnemyResourceModel> Resources { get; } = resources;
+    public List<EnemyResourceModel> Resources => resources;
 
     protected abstract AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp);
 

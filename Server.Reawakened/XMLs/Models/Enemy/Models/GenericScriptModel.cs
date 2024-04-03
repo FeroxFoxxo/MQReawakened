@@ -5,12 +5,16 @@ using Server.Reawakened.XMLs.Models.Enemy.Enums;
 namespace Server.Reawakened.XMLs.Models.Enemy.Models;
 public class GenericScriptModel(StateType attackBehavior, StateType awareBehavior, StateType unawareBehavior, float awareBehaviorDuration, int healthRegenAmount, int healthRegenFreq)
 {
+    public StateType AttackBehavior => attackBehavior;
+    public StateType AwareBehavior => awareBehavior;
+    public StateType UnawareBehavior => unawareBehavior;
+
     public GenericScriptPropertiesModel GenerateGenericPropertiesFromModel(ClassCopier classCopier, AIStatsGlobalComp globalStats)
     {
         var properties = new GenericScriptPropertiesModel(
-            attackBehavior,
-            awareBehavior,
-            unawareBehavior,
+            AttackBehavior,
+            AwareBehavior,
+            UnawareBehavior,
             awareBehaviorDuration,
             healthRegenAmount,
             healthRegenFreq

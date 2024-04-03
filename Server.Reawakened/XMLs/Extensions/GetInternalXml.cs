@@ -162,6 +162,7 @@ public static class GetInternalXml
             var title = string.Empty;
             var goal = -1;
             var type = AchConditionType.Invalid;
+            var strType = string.Empty;
             var value = string.Empty;
             var visible = false;
 
@@ -176,7 +177,8 @@ public static class GetInternalXml
                         title = conditionAttribute.Value;
                         continue;
                     case "type":
-                        type = type.GetEnumValue(conditionAttribute.Value, logger);
+                        strType = conditionAttribute.Value;
+                        type = type.GetEnumValue(strType, logger);
                         continue;
                     case "value":
                         value = conditionAttribute.Value;
@@ -192,8 +194,8 @@ public static class GetInternalXml
 
             if (type == AchConditionType.Invalid)
             {
-                logger.LogError("Unknown condition type for '{Name}' " +
-                    "(Achievement Id: {Id}, Condition Id {CId})", title, achievementId, id);
+                logger.LogError("Unknown condition '{Type}' for '{Name}' " +
+                    "(Ach Id: {Id}, Cond Id: {CId})", strType, title, achievementId, id);
             }
 
             if (string.IsNullOrEmpty(value))

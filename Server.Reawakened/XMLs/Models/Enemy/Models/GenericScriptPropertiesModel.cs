@@ -10,7 +10,7 @@ public class GenericScriptPropertiesModel(
         Enum.GetName(unawareBehavior), awareBehaviorDuration,
         healthRegenerationAmount, healthRegenerationFrequency)
 {
-    public StateType AttackBehavior { get; } = attackBehavior;
-    public StateType AwareBehavior { get; } = awareBehavior;
-    public StateType UnawareBehavior { get; } = unawareBehavior;
+    public StateType AttackBehavior => attackBehavior;
+    public StateType AwareBehavior => awareBehavior;
+    public StateType UnawareBehavior => unawareBehavior;
 }
