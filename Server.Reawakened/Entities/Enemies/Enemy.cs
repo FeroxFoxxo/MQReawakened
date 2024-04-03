@@ -100,6 +100,7 @@ public abstract class Enemy : IDestructible
                 Position.z = 20;
                 break;
             case "Plane0":
+                Position.z = 0;
                 break;
             default:
                 Logger.LogError("Unknown plane: '{Plane}' for enemy {Name}", ParentPlane, PrefabName);

@@ -11,7 +11,7 @@ public abstract class AIBaseBehavior
 
     public AIBaseBehavior() => SetBehaviour();
 
-    public virtual void Start(ref AIProcessData aiData, float roomTime, string[] args) => _behavior.Start(aiData, roomTime, args);
+    public void Start(ref AIProcessData aiData, float roomTime, string[] args) => _behavior.Start(aiData, roomTime, args);
     public bool Update(ref AIProcessData aiData, float roomTime) => _behavior.Update(aiData, roomTime);
     public float GetBehaviorRatio(ref AIProcessData aiData, float roomTime) => _behavior.GetBehaviorRatio(aiData, roomTime);
     public void Stop(ref AIProcessData aiData) => _behavior.Stop(aiData);

@@ -80,6 +80,19 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         EnemyModels = [];
         TemplateEnemyModels = [];
 
+        switch (ParentPlane)
+        {
+            case "Plane1":
+                Position.Z = 20;
+                break;
+            case "Plane0":
+                Position.Z = 0;
+                break;
+            default:
+                Logger.LogError("Unknown plane: '{Plane}' for spawner {Name}", ParentPlane, PrefabName);
+                break;
+        }
+
         AddEnemyModel(PrefabNameToSpawn1);
         AddEnemyModel(PrefabNameToSpawn2);
         AddEnemyModel(PrefabNameToSpawn3);
@@ -187,7 +200,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
                 Id, Room.Time,
-                Position.X, Position.Y, ParentPlane.Equals("Plane1") ? 20 : 0, Position.X, Position.Y,
+                Position.X, Position.Y, Position.Z, Position.X, Position.Y,
                 templateToSpawnAt.Generic.Patrol_InitialProgressRatio, Health, Health, 1, 1, 1,
                 0, Level, templateToSpawnAt.GlobalProperties, behaviors, null, null
             )
