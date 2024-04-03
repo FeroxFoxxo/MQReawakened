@@ -54,7 +54,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public EnemyControllerComp EnemyController;
     public HazardControllerComp Hazard;
     public GlobalProperties GlobalProperties;
-    public BehaviorModel BehaviorList;
+    public EnemyModel EnemyModel;
 
     public Dictionary<int, BehaviorEnemy> LinkedEnemies;
     private int _spawnedEntityCount;
@@ -84,7 +84,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         GlobalProperties = AISyncEventHelper.CreateDefaultGlobalProperties();
 
-        BehaviorList = EnemyInfoXml.GetBehaviorsByName(PrefabNameToSpawn1);
+        EnemyModel = EnemyInfoXml.GetEnemyByName(PrefabNameToSpawn1);
         LinkedEnemies = [];
 
         if (ComponentData.SpawnOnDetection)
@@ -140,7 +140,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             AISyncEventHelper.AIDo(
                 Id, Room.Time,
                 Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
-                1.0f, BehaviorList.IndexOf(StateTypes.Unknown), [],
+                1.0f, EnemyModel.IndexOf(StateTypes.Unknown), [],
                 Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
                 Generic.Patrol_ForceDirectionX, false
             )

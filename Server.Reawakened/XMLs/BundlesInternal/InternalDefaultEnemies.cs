@@ -17,14 +17,14 @@ public class InternalDefaultEnemies : InternalXml
 
     public ILogger<InternalDefaultEnemies> Logger { get; set; }
 
-    public Dictionary<string, BehaviorModel> EnemyInfoCatalog;
+    public Dictionary<string, EnemyModel> EnemyInfoCatalog;
 
     public override void InitializeVariables() => EnemyInfoCatalog = [];
 
-    public BehaviorModel GetBehaviorsByName(string enemyName) =>
-        EnemyInfoCatalog.TryGetValue(enemyName, out var behaviors) ?
-            behaviors :
-            new BehaviorModel();
+    public EnemyModel GetEnemyByName(string enemyName) =>
+        EnemyInfoCatalog.TryGetValue(enemyName, out var enemy) ?
+            enemy :
+            new EnemyModel();
 
     public override void ReadDescription(XmlDocument xmlDocument)
     {
@@ -37,7 +37,7 @@ public class InternalDefaultEnemies : InternalXml
                 if (enemy.Name != "Enemy") continue;
 
                 var enemyType = string.Empty;
-                var behaviorModel = new BehaviorModel();
+                var enemyModel = new EnemyModel();
 
                 foreach (XmlAttribute enemyName in enemy.Attributes)
                 {
@@ -385,7 +385,7 @@ public class InternalDefaultEnemies : InternalXml
                                 behaviors.Add(stateType, state);
                             }
 
-                            behaviorModel.BehaviorData = behaviors;
+                            enemyModel.BehaviorData = behaviors;
                             break;
                         case "GenericScript":
                             var attackBehavior = StateTypes.Unknown;
@@ -442,7 +442,7 @@ public class InternalDefaultEnemies : InternalXml
                                 }
                             }
 
-                            behaviorModel.GenericScript = new GenericScriptModel(attackBehavior, awareBehavior, unawareBehavior, awareBehaviorDuration, healthRegenAmount, healthRegenFrequency);
+                            enemyModel.GenericScript = new GenericScriptModel(attackBehavior, awareBehavior, unawareBehavior, awareBehaviorDuration, healthRegenAmount, healthRegenFrequency);
                             break;
                         case "GlobalProperties":
                             var detectionLimitedByPatrolLine = true;
@@ -537,7 +537,7 @@ public class InternalDefaultEnemies : InternalXml
                                 }
                             }
 
-                            behaviorModel.GlobalProperties =
+                            enemyModel.GlobalProperties =
                                 new GlobalPropertyModel(
                                     detectionLimitedByPatrolLine, backDetectionRangeX,
                                     viewOffsetY, backDetectionRangeUpY,
@@ -599,7 +599,7 @@ public class InternalDefaultEnemies : InternalXml
                                 lootTable.Add(new EnemyDropModel(dropType, dropId, dropChance, dropMinLevel, dropMaxLevel));
                             }
 
-                            behaviorModel.EnemyLootTable = lootTable;
+                            enemyModel.EnemyLootTable = lootTable;
                             break;
                         case "Hitbox":
                             var width = 0f;
@@ -626,7 +626,7 @@ public class InternalDefaultEnemies : InternalXml
                                 }
                             }
 
-                            behaviorModel.Hitbox = new HitboxModel(width, height, xOffset, yOffset);
+                            enemyModel.Hitbox = new HitboxModel(width, height, xOffset, yOffset);
                             break;
                         default:
                             Logger.LogError("Unknown enemy data type for: {DataType} ({EnemyName}", data.Name, enemyType);
@@ -634,9 +634,9 @@ public class InternalDefaultEnemies : InternalXml
                     }
                 }
 
-                behaviorModel.EnsureBehaviourValid(isAiStateEnemy, enemyType, Logger);
+                enemyModel.EnsureValidData(isAiStateEnemy, enemyType, Logger);
 
-                EnemyInfoCatalog.Add(enemyType, behaviorModel);
+                EnemyInfoCatalog.Add(enemyType, enemyModel);
             }
         }
     }

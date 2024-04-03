@@ -4,7 +4,7 @@ using Server.Reawakened.XMLs.Models.Enemy.Enums;
 
 namespace Server.Reawakened.XMLs.Models.Enemy.Models;
 
-public class BehaviorModel
+public class EnemyModel
 {
     public Dictionary<StateTypes, BaseState> BehaviorData { get; set; }
     public List<EnemyDropModel> EnemyLootTable { get; set; }
@@ -12,7 +12,7 @@ public class BehaviorModel
     public GenericScriptModel GenericScript { get; set; }
     public HitboxModel Hitbox { get; set; }
 
-    public void EnsureBehaviourValid(bool isAiStateEnemy, string enemyType, Microsoft.Extensions.Logging.ILogger logger)
+    public void EnsureValidData(bool isAiStateEnemy, string enemyType, Microsoft.Extensions.Logging.ILogger logger)
     {
         if (EnemyLootTable == null)
         {

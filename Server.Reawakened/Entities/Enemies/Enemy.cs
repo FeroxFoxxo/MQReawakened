@@ -60,7 +60,7 @@ public abstract class Enemy : IDestructible
 
     public readonly BaseComponent Entity;
     public readonly EnemyControllerComp EnemyController;
-    public readonly BehaviorModel BehaviorModel;
+    public readonly EnemyModel EnemyModel;
 
     public readonly AISyncEventHelper SyncBuilder;
 
@@ -107,7 +107,7 @@ public abstract class Enemy : IDestructible
         }
 
         //Stats
-        BehaviorModel = InternalEnemy.GetBehaviorsByName(prefabName);
+        EnemyModel = InternalEnemy.GetEnemyByName(prefabName);
         OnDeathTargetId = EnemyController.OnDeathTargetID;
         Health = EnemyController.EnemyHealth;
         MaxHealth = EnemyController.MaxHealth;
@@ -115,7 +115,7 @@ public abstract class Enemy : IDestructible
         Level = EnemyController.Level;
 
         //Hitbox Info
-        GenerateHitbox(BehaviorModel.Hitbox);
+        GenerateHitbox(EnemyModel.Hitbox);
 
         GlobalProperties = AISyncEventHelper.CreateDefaultGlobalProperties();
         GenericScript = AISyncEventHelper.CreateDefaultGenericScript();
@@ -197,9 +197,9 @@ public abstract class Enemy : IDestructible
             //Dynamic Loot Drop
             var chance = new System.Random();
 
-            if (BehaviorModel.EnemyLootTable != null)
+            if (EnemyModel.EnemyLootTable != null)
             {
-                foreach (var drop in BehaviorModel.EnemyLootTable)
+                foreach (var drop in EnemyModel.EnemyLootTable)
                 {
                     chance.NextDouble();
                     if (Level <= drop.MaxLevel && Level >= drop.MinLevel)

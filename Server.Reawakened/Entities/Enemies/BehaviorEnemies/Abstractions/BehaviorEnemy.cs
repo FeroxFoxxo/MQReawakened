@@ -42,8 +42,8 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
 
         var classCopier = Services.GetRequiredService<ClassCopier>();
 
-        GlobalProperties = BehaviorModel.GlobalProperties.GenerateGlobalPropertiesFromModel(classCopier, Global);
-        GenericScript = BehaviorModel.GenericScript.GenerateGenericPropertiesFromModel(classCopier, Global);
+        GlobalProperties = EnemyModel.GlobalProperties.GenerateGlobalPropertiesFromModel(classCopier, Global);
+        GenericScript = EnemyModel.GenericScript.GenerateGenericPropertiesFromModel(classCopier, Global);
 
         //AIProcessData assignment, used for AI_Behavior
         AiData = new AIProcessData
@@ -263,8 +263,8 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
 
     public void ChangeBehavior(StateTypes behaviourType, float x, float y, int direction)
     {
-        var behaviour = BehaviorModel.BehaviorData[behaviourType];
-        var index = BehaviorModel.IndexOf(behaviourType);
+        var behaviour = EnemyModel.BehaviorData[behaviourType];
+        var index = EnemyModel.IndexOf(behaviourType);
 
         AiBehavior = behaviour.CreateBaseBehaviour(Global, Generic);
 
@@ -326,9 +326,9 @@ public abstract class BehaviorEnemy(Room room, string entityId, string prefabNam
             AISyncEventHelper.AIInit(
                 Id, Room.Time, poxX, posY, posZ, spawnX, spawnY, behaviourRatio,
                 Health, MaxHealth, HealthModifier, ScaleModifier, ResistanceModifier,
-                Status.Stars, Level, GlobalProperties, BehaviorModel.BehaviorData, Global, Generic
+                Status.Stars, Level, GlobalProperties, EnemyModel.BehaviorData, Global, Generic
             );
 
 
-    public int GetIndexOfCurrentBehavior() => BehaviorModel.IndexOf(AiBehavior.GetBehavior());
+    public int GetIndexOfCurrentBehavior() => EnemyModel.IndexOf(AiBehavior.GetBehavior());
 }
