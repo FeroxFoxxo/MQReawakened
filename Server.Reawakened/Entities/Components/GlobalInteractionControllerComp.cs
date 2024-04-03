@@ -33,7 +33,7 @@ public class GlobalInteractionControllerComp : Component<GlobalInteractionContro
         if (counter != null)
             _counter = counter;
 
-        var defaultProperties = new GlobalProperties(false, 0, 0, 0, 0, 0, 0, 0, 0, 0, string.Empty, string.Empty, false, false, 0);
+        var defaultProperties = AISyncEventHelper.CreateDefaultProperties();
         var behaviors = new Dictionary<StateTypes, BaseState>();
         
         Room.SendSyncEvent(

@@ -2,6 +2,7 @@
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Entities.Enemies.AIStateEnemies.SyncEvents;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 using Server.Reawakened.Rooms.Extensions;
@@ -82,8 +83,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         EnemyController = Room.GetEntityFromId<EnemyControllerComp>(TemplatePrefabNameToSpawn1);
         Hazard = Room.GetEntityFromId<HazardControllerComp>(TemplatePrefabNameToSpawn1);
 
-        //This is just a dummy, it gets assigned properly later in Enemy
-        GlobalProperties = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
+        GlobalProperties = AISyncEventHelper.CreateDefaultProperties();
 
         BehaviorList = EnemyInfoXml.GetBehaviorsByName(PrefabNameToSpawn1);
         LinkedEnemies = [];

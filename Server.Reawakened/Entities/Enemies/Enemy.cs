@@ -109,8 +109,7 @@ public abstract class Enemy : IDestructible
         //Hitbox Info
         GenerateHitbox(BehaviorModel.Hitbox);
 
-        //This is just a dummy. AI_Stats_Global has no data, so these fields are populated in the specific Enemy classes
-        GlobalProperties = new GlobalProperties(true, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
+        GlobalProperties = AISyncEventHelper.CreateDefaultProperties();
     }
 
     public virtual void Initialize() => Init = true;

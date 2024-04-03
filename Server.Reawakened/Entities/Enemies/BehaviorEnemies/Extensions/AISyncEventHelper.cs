@@ -108,4 +108,7 @@ public class AISyncEventHelper
 
         return die;
     }
+
+    public static GlobalProperties CreateDefaultProperties() =>
+        new (false, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
 }
