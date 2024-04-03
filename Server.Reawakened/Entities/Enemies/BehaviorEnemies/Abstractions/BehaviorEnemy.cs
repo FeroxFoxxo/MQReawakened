@@ -7,15 +7,12 @@ using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
-using System;
 using UnityEngine;
-using static UIBase;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 

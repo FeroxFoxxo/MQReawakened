@@ -1,5 +1,4 @@
 ﻿using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;

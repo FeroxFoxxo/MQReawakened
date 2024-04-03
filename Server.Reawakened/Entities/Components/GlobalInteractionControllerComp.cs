@@ -1,11 +1,9 @@
 ﻿using Server.Reawakened.Entities.Enemies.AIStateEnemies.SyncEvents;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
-using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
-using Server.Reawakened.XMLs.Models.Enemy.Models;
 using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components;
