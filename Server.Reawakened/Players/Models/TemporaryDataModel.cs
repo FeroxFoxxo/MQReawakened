@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Players.Models.Trade;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
+using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Planes;
 using Timer = Server.Base.Timers.Timer;
 

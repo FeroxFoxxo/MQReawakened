@@ -6,10 +6,14 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Components.GameObjects.Breakables;
+using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
+using Server.Reawakened.Entities.Components.GameObjects.Checkpoints;
+using Server.Reawakened.Entities.Components.GameObjects.Controllers;
 using Server.Reawakened.Entities.Enemies;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
-using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Entities.Projectiles;
+using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -17,6 +21,7 @@ using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
@@ -379,7 +384,7 @@ public class Room : Timer
     public BaseComponent GetSpawnPoint(CharacterModel character)
     {
         var spawnPoints = GetEntitiesFromType<SpawnPointComp>().ToDictionary(x => x.Id, x => x);
-        var portals = GetEntitiesFromType<PortalControllerComp>().ToDictionary(x => x.Id, x => x);
+        var portals = GetEntitiesFromType<PortalComp>().ToDictionary(x => x.Id, x => x);
 
         var spawnId = character.LevelData.SpawnPointId;
 
