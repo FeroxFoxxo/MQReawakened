@@ -5,6 +5,8 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards;
+using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -148,5 +150,33 @@ public static class PlayerItemExtensions
             logger.LogInformation("Item ({usedItemName}) with ({damageType}) has been used!", usedItem.ItemName, effect.Type);
         }
         return damage;
+    }
+
+    public static void VoteForItem(this Player player, int objectId, bool accepted)
+    {
+        player.TempData.VotedForItem.Add(objectId, accepted);
+
+        var playersInRoom = player.Room.GetPlayers();
+
+        foreach (var roomPlayer in playersInRoom)
+            roomPlayer.SendXt(accepted ? "jr" : "jp", player.UserId, objectId);
+
+        if (playersInRoom.All(x => x.TempData.VotedForItem.ContainsKey(objectId)))
+        {
+            var participants = playersInRoom.Where(x => x.TempData.VotedForItem[objectId] == true).ToList();
+            var winningPlayer = participants[new Random().Next(participants.Count)];
+
+            foreach (var roomPlayer in playersInRoom)
+            {
+                var rewardedData = new SeparatedStringBuilder('|');
+
+                rewardedData.Append(objectId);
+                rewardedData.Append(winningPlayer.UserId);
+
+                roomPlayer.SendXt("jl", rewardedData.ToString());
+                roomPlayer.SendUpdatedInventory();
+                roomPlayer.TempData.VotedForItem.Remove(objectId);
+            }
+        }
     }
 }
