@@ -30,8 +30,6 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public override void Initialize()
     {
-        base.Initialize();
-
         //External Component Info
         Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
@@ -68,6 +66,8 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         // Address magic numbers when we get to adding enemy effect mods
         SendAiInit(1, 1, 1);
+
+        base.Initialize();
     }
 
     public override void CheckForSpawner()
