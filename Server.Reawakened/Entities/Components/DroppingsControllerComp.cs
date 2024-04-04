@@ -6,9 +6,8 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Players;
 using A2m.Server;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components;
 public class DroppingsControllerComp : Component<DroppingsController>
@@ -22,7 +21,7 @@ public class DroppingsControllerComp : Component<DroppingsController>
 
     public override void InitializeComponent()
     {
-        SetStartPosition(Position);
+        ChangePosition(StartPosition, Position);
         WaitDrop();
     }
 
@@ -31,52 +30,53 @@ public class DroppingsControllerComp : Component<DroppingsController>
 
     public void SendDrop(object _)
     {
-        if (Room.KilledObjects.Contains(Id)) return;
+        if (Room.KilledObjects.Contains(Id))
+            return;
 
-        ResetPosition(Room.GetEntityFromId<DroppingsControllerComp>(Id).Position);
+        ChangePosition(Position, StartPosition);
 
-        var projectileId = Room.SetProjectileId();
+        var position = new Vector3
+        {
+            x = Position.X,
+            y = Position.Y,
+            z = Position.Z
+        };
 
-        var aiProjectile = new AIProjectile(Room, Id, projectileId, Position, 0, -5, 3, TimerThread,
-            0, ItemEffectType.Freezing, ServerRConfig, ItemCatalog);
+        var speed = new Vector2
+        {
+            x = -5,
+            y = 3
+        };
 
-        Room.AddProjectile(aiProjectile);
+        var damage = 0;
+        var effect = ItemEffectType.Freezing;
 
-        Room.SendSyncEvent(
-            AISyncEventHelper.AILaunchItem(
-                Id, Room.Time,
-                Position.X, Position.Y, Position.Z,
-                0, 0, // SPEED
-                3, int.Parse(projectileId), false
-            )
-        );
+        Room.AddRangedProjectile(Id, position, speed, 3, damage, effect, false);
 
         WaitDrop();
     }
 
     public void FreezePlayer(Player player)
     {
-        Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-            (int)ItemEffectType.IceDamage, 1, 5, true, Id, false));
-
-        Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-            (int)ItemEffectType.Freezing, 1, 5, true, Id, false));
-
-        Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-           (int)ItemEffectType.FreezingStatusEffect, 1, 5, true, Id, false));
+        SendFreezeEvent(player, ItemEffectType.IceDamage, 1, 5, true, false);
+        SendFreezeEvent(player, ItemEffectType.Freezing, 1, 5, true, false);
+        SendFreezeEvent(player, ItemEffectType.FreezingStatusEffect, 1, 5, true, false);
     }
 
-    public void SetStartPosition(Vector3Model position)
-    {
-        StartPosition.X = position.X;
-        StartPosition.Y = position.Y;
-        StartPosition.Z = position.Z;
-    }
+    private void SendFreezeEvent(Player player, ItemEffectType effect, int amount,
+            int duration, bool start, bool isPremium) =>
+        Room.SendSyncEvent(
+            new StatusEffect_SyncEvent(
+                player.GameObjectId, Room.Time,
+                (int) effect, amount, duration,
+                start, Id, isPremium
+            )
+        );
 
-    public void ResetPosition(Vector3Model position)
+    public static void ChangePosition(Vector3Model to, Vector3Model from)
     {
-        position.X = StartPosition.X;
-        position.Y = StartPosition.Y;
-        position.Z = StartPosition.Z;
+        to.X = from.X;
+        to.Y = from.Y;
+        to.Z = from.Z;
     }
 }

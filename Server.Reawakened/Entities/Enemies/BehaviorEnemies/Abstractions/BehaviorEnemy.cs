@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
-using Server.Reawakened.Entities.Projectiles;
+using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
@@ -187,7 +187,12 @@ public class BehaviorEnemy(EnemyData data) : Enemy(data)
         }
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
-        Hitbox.Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.ColliderBox.Height : 0), Position.z);
+
+        Hitbox.Position = new Vector3(
+            AiData.Sync_PosX,
+            AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.ColliderBox.Height : 0),
+            Position.z
+        );
     }
 
     public void DetectPlayers(StateType type)
@@ -197,9 +202,16 @@ public class BehaviorEnemy(EnemyData data) : Enemy(data)
             if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
             {
                 AiData.Sync_TargetPosX = player.TempData.Position.X;
-                AiData.Sync_TargetPosY = GenericScript.AttackBehavior == StateType.Grenadier ? Position.y : player.TempData.Position.Y;
 
-                ChangeBehavior(type, player.TempData.Position.X, GenericScript.AttackBehavior == StateType.Grenadier ? player.TempData.Position.Y : Position.y, Generic.Patrol_ForceDirectionX);
+                AiData.Sync_TargetPosY = GenericScript.AttackBehavior == StateType.Grenadier ?
+                    Position.y : player.TempData.Position.Y;
+
+                ChangeBehavior(
+                    type,
+                    player.TempData.Position.X,
+                    GenericScript.AttackBehavior == StateType.Grenadier ? player.TempData.Position.Y : Position.y,
+                    Generic.Patrol_ForceDirectionX
+                );
             }
         }
     }
@@ -208,44 +220,28 @@ public class BehaviorEnemy(EnemyData data) : Enemy(data)
     {
         if (AiData.Intern_FireProjectile)
         {
-            var pos = new Vector3Model {
-                X = Position.x + AiData.Intern_Dir * GlobalProperties.Global_ShootOffsetX,
-                Y = Position.y + GlobalProperties.Global_ShootOffsetY,
-                Z = Position.z
+            var position = new Vector3 {
+                x = Position.x + AiData.Intern_Dir * GlobalProperties.Global_ShootOffsetX,
+                y = Position.y + GlobalProperties.Global_ShootOffsetY,
+                z = Position.z
             };
 
-            var projectileId = GetProjectileId();
+            var speed = new Vector2
+            {
+                x = (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
+                y = (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed
+            };
 
-            var speedX = (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed;
-            var speedY = (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed;
-
-            Room.SendSyncEvent(
-                AISyncEventHelper.AILaunchItem(
-                    Id, Room.Time, pos.X, pos.Y, pos.Z, speedX, speedY, 3, projectileId, isGrenade
-                )
+            var damage = GameFlow.StatisticData.GetValue(
+                ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level
             );
 
-            var timerThread = Room.Enemies[Id].EnemyController.TimerThread;
-            var damage = GameFlow.StatisticData.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level);
             var effect = EnemyController.ComponentData.EnemyEffectType;
 
-            var prj = new AIProjectile(
-                Room, Id, projectileId.ToString(), pos, speedX, speedY,
-                3, timerThread, damage, effect, ServerRConfig, ItemCatalog
-            );
+            Room.AddRangedProjectile(Id, position, speed, 3, damage, effect, isGrenade);
 
-            Room.AddProjectile(prj);
             AiData.Intern_FireProjectile = false;
         }
-    }
-
-    public int GetProjectileId()
-    {
-        var rand = new System.Random();
-
-        var projectileId = Math.Abs(rand.Next());
-
-        return Room.GameObjectIds.Contains(projectileId.ToString()) ? GetProjectileId() : projectileId;
     }
 
     public void ChangeBehavior(StateType behaviourType, float targetX, float targetY, int direction)
@@ -259,7 +255,12 @@ public class BehaviorEnemy(EnemyData data) : Enemy(data)
 
         AiBehavior.Start(ref AiData, Room.Time, args);
 
-        Room.SendSyncEvent(AISyncEventHelper.AIDo(Id, Room.Time, Position.x, Position.y, 1.0f, index, args, targetX, targetY, direction, false));
+        Room.SendSyncEvent(
+            AISyncEventHelper.AIDo(
+                Id, Room.Time, Position.x, Position.y, 1.0f,
+                index, args, targetX, targetY, direction, false
+            )
+        );
 
         ResetBehaviorTime(AiBehavior.ResetTime);
     }
@@ -279,7 +280,11 @@ public class BehaviorEnemy(EnemyData data) : Enemy(data)
             AiData.Sync_TargetPosX = player.TempData.Position.X;
             AiData.Sync_TargetPosY = player.TempData.Position.Y;
 
-            ChangeBehavior(GenericScript.AttackBehavior, player.TempData.Position.X, player.TempData.Position.Y, Generic.Patrol_ForceDirectionX);
+            ChangeBehavior(
+                GenericScript.AttackBehavior,
+                player.TempData.Position.X, player.TempData.Position.Y,
+                Generic.Patrol_ForceDirectionX
+            );
 
             ResetBehaviorTime(AwareBehaviorDuration);
         }
@@ -312,16 +317,22 @@ public class BehaviorEnemy(EnemyData data) : Enemy(data)
             )
         );
 
-        player.SendSyncEventToPlayer(AISyncEventHelper.AIDo(Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY, 1.0f, GetIndexOfCurrentBehavior(), AiBehavior.GetInitArgs(), AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, false));
+        player.SendSyncEventToPlayer(
+            AISyncEventHelper.AIDo(
+                Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY,
+                1.0f, GetIndexOfCurrentBehavior(), AiBehavior.GetInitArgs(),
+                AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, false
+            )
+        );
     }
 
-    public AIInit_SyncEvent GetEnemyInit(float poxX, float posY, float posZ, float spawnX, float spawnY, float behaviourRatio) =>
+    public AIInit_SyncEvent GetEnemyInit(float poxX, float posY, float posZ,
+        float spawnX, float spawnY, float behaviourRatio) =>
             AISyncEventHelper.AIInit(
                 Id, Room.Time, poxX, posY, posZ, spawnX, spawnY, behaviourRatio,
                 Health, MaxHealth, HealthModifier, ScaleModifier, ResistanceModifier,
                 Status.Stars, Level, GlobalProperties, EnemyModel.BehaviorData, Global, Generic
             );
-
 
     public int GetIndexOfCurrentBehavior() => EnemyModel.IndexOf(AiBehavior.GetBehavior());
 }

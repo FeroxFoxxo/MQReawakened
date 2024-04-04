@@ -4,6 +4,7 @@ using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enemies.AIStateEnemies.Rachnok;
 using Server.Reawakened.Entities.Enemies.AIStateEnemies.Spiderling;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
+using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.XMLs.BundlesInternal;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;

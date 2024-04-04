@@ -7,6 +7,7 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Components;
 using Server.Reawakened.Entities.Enemies;
+using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 using Server.Reawakened.Entities.Interfaces;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Extensions;
@@ -21,7 +22,9 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using UnityEngine;
 using WorldGraphDefines;
+using Random = System.Random;
 using Timer = Server.Base.Timers.Timer;
 
 namespace Server.Reawakened.Rooms;
@@ -53,10 +56,12 @@ public class Room : Timer
 
     private readonly ServerRConfig _config;
     private readonly ItemRConfig _itemConfig;
+    public TimerThread _timerThread;
 
     public ItemCatalog ItemCatalog;
     public InternalColliders ColliderCatalog;
     public InternalEnemyData InternalEnemyData;
+
     public CheckpointControllerComp LastCheckpoint { get; set; }
 
     public LevelInfo LevelInfo => _level.LevelInfo;
@@ -70,6 +75,7 @@ public class Room : Timer
 
         _roomId = roomId;
         _config = config;
+        _timerThread = timerThread;
         _itemConfig = services.GetRequiredService<ItemRConfig>();
 
         ColliderCatalog = services.GetRequiredService<InternalColliders>();
@@ -452,15 +458,13 @@ public class Room : Timer
             ? _entities.Values.SelectMany(x => x).ToArray() as T[]
             : _entities.SelectMany(x => x.Value).Where(x => x is T and not null).Select(x => x as T).ToArray();
 
-    public string SetProjectileId()
+    public int CreateProjectileId()
     {
-        var rand = new Random();
-        var projectileId = Math.Abs(rand.Next()).ToString();
+        var projectileId = Math.Abs(new Random().Next());
 
-        while (GameObjectIds.Contains(projectileId))
-            projectileId = Math.Abs(rand.Next()).ToString();
-
-        return projectileId;
+        return GameObjectIds.Contains(projectileId.ToString()) ?
+            CreateProjectileId() :
+            projectileId;
     }
 
     public void AddProjectile(BaseProjectile projectile)
@@ -469,6 +473,34 @@ public class Room : Timer
         {
             _projectiles.Add(projectile.ProjectileId, projectile);
         }
+    }
+
+    public void AddRangedProjectile(string ownerId, Vector3 position, Vector2 speed,
+        float lifeTime, int damage, ItemEffectType effect, bool isGrenade)
+    {
+        var projectileId = CreateProjectileId();
+        var positionModel = new Vector3Model()
+        {
+            X = position.x,
+            Y = position.y,
+            Z = position.z
+        };
+
+        var aiProjectile = new AIProjectile(
+            this, ownerId, projectileId.ToString(), positionModel, speed.x, speed.y,
+            lifeTime, _timerThread, damage, effect, _config, ItemCatalog
+        );
+
+        this.SendSyncEvent(
+            AISyncEventHelper.AILaunchItem(
+                ownerId, Time,
+                position.x, position.y, position.z,
+                speed.x, speed.y,
+                lifeTime, projectileId, isGrenade
+            )
+        );
+
+        AddProjectile(aiProjectile);
     }
 
     public void RemoveProjectile(string projectileId)

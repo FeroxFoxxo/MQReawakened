@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Server.Base.Core.Extensions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Enemies;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
+using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
@@ -15,7 +15,6 @@ using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.Models;
 using Server.Reawakened.XMLs.Models.Enemy.States;
-using System;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components;

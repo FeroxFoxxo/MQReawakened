@@ -1,4 +1,6 @@
-﻿namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.Rachnok;
+﻿using Server.Reawakened.Entities.Enemies.Models;
+
+namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.Rachnok;
 public class EnemyTeaserSpiderBoss(EnemyData data) : AIStateEnemy(data)
 {
     public override void Initialize()

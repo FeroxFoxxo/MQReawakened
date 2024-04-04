@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Entities.Interfaces;
@@ -8,7 +7,6 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
 using UnityEngine;
 using Room = Server.Reawakened.Rooms.Room;
 
@@ -42,9 +40,11 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public override void InitializeComponent()
     {
         Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
-        MaxHealth = WorldStatistics.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Enemy, Level);
+
         EnemyHealth = MaxHealth;
+
         OnKillExp = WorldStatistics.GetValue(ItemEffectType.IncreaseExperience, WorldStatisticsGroup.Enemy, Level);
+        MaxHealth = WorldStatistics.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Enemy, Level);
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
@@ -59,6 +59,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         EnemyHealth -= damage;
 
         var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, EnemyHealth, damage, 0, 0, origin.CharacterName, false, true);
+
         origin.Room.SendSyncEvent(breakEvent);
 
         if (EnemyHealth <= 0)

@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Entities.Components;
 
-namespace Server.Reawakened.Entities.Enemies;
+namespace Server.Reawakened.Entities.Enemies.Models;
 public class SpawnedEnemyData(AIStatsGlobalComp global, AIStatsGenericComp generic, InterObjStatusComp status,
     EnemyControllerComp enemyController, HazardControllerComp hazard, GlobalProperties globalProperties)
 {

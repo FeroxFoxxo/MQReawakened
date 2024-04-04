@@ -19,6 +19,7 @@ using Server.Reawakened.XMLs.Models.Enemy.Models;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
+using Server.Reawakened.Entities.Enemies.Models;
 
 namespace Server.Reawakened.Entities.Enemies;
 
@@ -90,7 +91,6 @@ public abstract class Enemy : IDestructible
         
         Status = Room.GetEntityFromId<InterObjStatusComp>(Id);
 
-        //Plane Wrapup
         switch (ParentPlane)
         {
             case "TemplatePlane":
@@ -107,14 +107,12 @@ public abstract class Enemy : IDestructible
                 break;
         }
 
-        //Stats
         OnDeathTargetId = EnemyController.OnDeathTargetID;
         Health = EnemyController.EnemyHealth;
         MaxHealth = EnemyController.MaxHealth;
         DeathXp = EnemyController.OnKillExp;
         Level = EnemyController.Level;
 
-        //Hitbox Info
         GenerateHitbox(EnemyModel.Hitbox);
 
         GlobalProperties = AISyncEventHelper.CreateDefaultGlobalProperties();
