@@ -363,7 +363,7 @@ public class Room : Timer
         return new Vector2Model()
         {
             X = (rect.X == 0 ? pos.X : rect.X) + spawnLocation.Rectangle.Width / 2 - .5f,
-            Y = (rect.Y == 0 ? pos.Y : rect.Y) + spawnLocation.Rectangle.Height / 2 + .5f
+            Y = (rect.Y == 0 ? pos.Y : rect.Y) + spawnLocation.Rectangle.Height / 2 + .25f
         };
     }
 
