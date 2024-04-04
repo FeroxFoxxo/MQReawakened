@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+namespace Server.Reawakened.XMLs.Data.Collider;
+
 public class ColliderModel(string plane, float x, float y, float sx, float sy)
 {
     public string Plane => plane;

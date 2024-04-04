@@ -2,6 +2,7 @@
 using Server.Reawakened.Players.Models.Trade;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Data.Collider;
 using Timer = Server.Base.Timers.Timer;
 
 namespace Server.Reawakened.Players.Models;

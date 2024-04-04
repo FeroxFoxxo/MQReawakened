@@ -7,7 +7,6 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
-using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
@@ -19,8 +18,6 @@ public class ChargeAttackProjectile : BaseProjectile
 
     private readonly int _itemId;
     private readonly int _zoneId;
-
-    public override BaseCollider Collider { get; set; }
 
     public ChargeAttackProjectile(string id, Player player, Vector3Model startPosition, Vector3Model endPosition, Vector2Model speed, float lifeTime, int itemId, int zoneId, int damage, Elemental type, ServerRConfig config, TimerThread timerThread)
         : base(id, speed.X, speed.Y, lifeTime, player.Room, startPosition, endPosition, config)

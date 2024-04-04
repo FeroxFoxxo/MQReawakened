@@ -1,10 +1,11 @@
 ﻿using Server.Reawakened.Configs;
 using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
 
 namespace Server.Reawakened.Entities.Projectiles.Abstractions;
-public abstract class BaseProjectile(string id, float speedX, float speedY, float tickDuration,
+public abstract class BaseProjectile(string id, float speedX, float speedY, float lifetime,
     Room room, Vector3Model position, Vector3Model endPosition, ServerRConfig config)
 {
     public string ProjectileId => id;
@@ -18,9 +19,9 @@ public abstract class BaseProjectile(string id, float speedX, float speedY, floa
     public Vector3Model SpawnPosition = new() { X = position.X, Y = position.Y, Z = position.Z };
 
     public float StartTime = room.Time;
-    public float LifeTime = room.Time + tickDuration;
+    public float LifeTime = room.Time + lifetime;
 
-    public abstract BaseCollider Collider { get; set; }
+    public BaseCollider Collider { get; set; }
 
     public void Update()
     {
@@ -31,13 +32,15 @@ public abstract class BaseProjectile(string id, float speedX, float speedY, floa
 
         Move();
 
+        var time = room.Time;
+
         var collisions = Collider.IsColliding(true);
 
         if (collisions.Length > 0)
             foreach (var collision in collisions)
                 Hit(collision);
 
-        if (LifeTime <= room.Time)
+        if (LifeTime <= time)
             Hit("-1");
     }
 

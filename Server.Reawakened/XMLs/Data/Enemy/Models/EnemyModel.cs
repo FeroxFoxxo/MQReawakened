@@ -2,7 +2,6 @@
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
-using UnityEngine;
 
 namespace Server.Reawakened.XMLs.Models.Enemy.Models;
 

@@ -5,7 +5,6 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
-using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
@@ -15,8 +14,6 @@ public class MeleeEntity : BaseProjectile
 {
     private readonly Vector3Model _hitboxPosition;
     private readonly string _gameObjectId;
-
-    public override BaseCollider Collider { get; set; }
 
     public MeleeEntity(string id, Vector3Model position, Player player, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig serverConfig, ItemRConfig config)
         : base(id, 0, 0, lifeTime, player.Room, position, null, serverConfig)
@@ -46,9 +43,16 @@ public class MeleeEntity : BaseProjectile
             _hitboxPosition.Y -= config.MeleeArialYOffset;
         }
 
-        Collider = new AttackCollider(id, _hitboxPosition, new Vector2(meleeWidth, meleeHeight), PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f);
+        Collider = new AttackCollider(id, _hitboxPosition, new Vector2(meleeWidth, meleeHeight),
+            PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f
+        );
 
-        var hitEvent = new Melee_SyncEvent(_gameObjectId, Room.Time, Position.X, Position.Y, Position.Z, direction, SpeedY, LifeTime, int.Parse(ProjectileId), item.PrefabName);
+        var hitEvent = new Melee_SyncEvent(
+            _gameObjectId, Room.Time,
+            Position.X, Position.Y, Position.Z, direction, SpeedY, LifeTime,
+            int.Parse(ProjectileId), item.PrefabName
+        );
+        
         Room.SendSyncEvent(hitEvent);
     }
 

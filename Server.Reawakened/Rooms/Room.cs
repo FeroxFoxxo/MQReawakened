@@ -340,7 +340,7 @@ public class Room : Timer
     public void AddCollider(BaseCollider collider)
     {
         lock (_roomLock)
-            _colliders.Add(collider.Id, collider);
+            _colliders.TryAdd(collider.Id, collider);
     }
 
     public void OverwriteCollider(BaseCollider collider)

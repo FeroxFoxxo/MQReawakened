@@ -4,7 +4,6 @@ using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
-using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
@@ -14,8 +13,6 @@ public class GenericProjectile : BaseProjectile
     private readonly Vector3Model _hitboxPosition;
     private readonly string _gameObjectId;
     private readonly float _gravityFactor;
-
-    public override BaseCollider Collider { get; set; }
 
     public GenericProjectile(string id, Player player, float lifeTime, Vector3Model position, ItemRConfig config, ServerRConfig serverConfig,
         int direction, ItemDescription item, int damage, Elemental damageType, bool isGrenade)

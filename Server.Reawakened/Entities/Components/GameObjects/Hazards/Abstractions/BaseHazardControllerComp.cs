@@ -48,12 +48,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
     public override void InitializeComponent()
     {
-        var controller = Room.GetEntityFromId<EnemyControllerComp>(Id);
-
-        if (controller != null)
-            _enemyController = controller;
-
-        _id = Id;
+        SetId(Id);
 
         Enum.TryParse(HurtEffect, true, out EffectType);
 
@@ -64,27 +59,18 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             TimerThread.DelayCall(ActivateHazard, null, TimeSpan.Zero, TimeSpan.Zero, 1);
         }
 
-        //Check if colliders should be created.
-        CanCreateColliderCheck();
+        //Prevents enemies and hazards sharing same collider Ids.
+        if (_enemyController == null)
+            //Hazards which also contain the LinearPlatform component already have colliders and do not need a new one created. They have NoEffect.
+            //Many Toxic Clouds seem to have no components, so we find the object with PrefabName to create its colliders. (Seek Moss Temple for example)
+            if (HurtEffect != ItemRConfig.NoEffect || PrefabName.Contains(ItemRConfig.ToxicCloud))
+                TimerThread.DelayCall(ColliderCreationDelay, null, TimeSpan.FromSeconds(3), TimeSpan.Zero, 1);
     }
 
     public void SetId(string id)
     {
         _id = id;
         _enemyController = Room.GetEntityFromId<EnemyControllerComp>(id);
-    }
-
-    public void CanCreateColliderCheck()
-    {
-        //Prevents enemies and hazards sharing same collider Ids.
-        if (!Room.ContainsEnemy(Id))
-        {
-            //Hazards which also contain the LinearPlatform component already have colliders and do not need a new one created. They have NoEffect.
-            if (HurtEffect != ItemRConfig.NoEffect ||
-                //Many Toxic Clouds seem to have no components, so we find the object with PrefabName to create its colliders. (Seek Moss Temple for example)
-                PrefabName.Contains(ItemRConfig.ToxicCloud))
-                TimerThread.DelayCall(ColliderCreationDelay, null, TimeSpan.FromSeconds(3), TimeSpan.Zero, 1);
-        }
     }
 
     //Creates hazard colliders after enemy colliders are created to prevent duplicated collider ID bugs.
@@ -94,7 +80,8 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (EffectType == ItemEffectType.SlowStatusEffect)
             Rectangle.X = 0;
 
-        Room.AddCollider(new HazardEffectCollider(
+        Room.AddCollider(
+            new HazardEffectCollider(
                 Id, AdjustPosition(Position, Rectangle),
                 new Vector2(Rectangle.X, Rectangle.Y), ParentPlane,
                 Room, Logger

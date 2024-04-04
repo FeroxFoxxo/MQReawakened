@@ -5,7 +5,6 @@ using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
-using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using UnityEngine;
@@ -15,13 +14,12 @@ public class AIProjectile : BaseProjectile
 {
     private readonly string _ownerId;
 
-    public override BaseCollider Collider { get; set; }
-
     public AIProjectile(Room room, string ownerId, string projectileId, Vector3Model position,
         float speedX, float speedY, float lifeTime, TimerThread timerThread, int baseDamage, ItemEffectType effect, ServerRConfig config, ItemCatalog itemCatalog)
         : base(projectileId, speedX, speedY, lifeTime, room, position, null, config)
     {
         _ownerId = ownerId;
+
         Collider = new AIProjectileCollider(
             projectileId, ownerId, room, projectileId, position,
             new Vector2(0.5f, 0.5f), PrjPlane, LifeTime,

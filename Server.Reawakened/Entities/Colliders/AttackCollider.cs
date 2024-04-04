@@ -15,7 +15,7 @@ public class AttackCollider(string id, Vector3Model position,
     public int Damage = damage;
     public Elemental DamageType = type;
 
-    private readonly float _offset = player.Room.Time + offset;
+    public readonly float OffsetTime = player.Room.Time + offset;
 
     public override string[] IsColliding(bool isAttack)
     {
@@ -23,28 +23,32 @@ public class AttackCollider(string id, Vector3Model position,
 
         List<string> collidedWith = [];
 
-        if (LifeTime <= Room.Time)
+        var time = Room.Time;
+
+        if (LifeTime <= time)
         {
             Room.RemoveCollider(Id);
-            return ["0"];
+            return [];
         }
 
+        if (time < OffsetTime)
+            return [];
+
         if (isAttack)
+        {
             foreach (var collider in colliders)
             {
                 var collided = CheckCollision(collider);
-                var isCollidableType = collider.Type is not ColliderType.Attack and not ColliderType.Player and not ColliderType.Hazard and not ColliderType.AiAttack;
-                var existsNow = Room.Time >= _offset;
+                var isCollidableType = collider.Type is not ColliderType.Attack and not
+                    ColliderType.Player and not ColliderType.Hazard and not ColliderType.AiAttack;
 
-                //if (collider.Id != "13160505")
-                //    continue;
-
-                if (collided && isCollidableType && existsNow)
+                if (collided && isCollidableType)
                 {
                     collidedWith.Add(collider.Id);
                     collider.SendCollisionEvent(this);
                 }
             }
+        }
 
         return [.. collidedWith];
     }
