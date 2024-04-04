@@ -31,6 +31,7 @@ public class UseSlot : ExternalProtocol
         var targetUserId = int.Parse(message[6]);
 
         var direction = Player.TempData.Direction;
+
         var position = new Vector3Model()
         {
             X = Convert.ToSingle(message[7]),
@@ -137,38 +138,37 @@ public class UseSlot : ExternalProtocol
             TimerThread.DelayCall(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ItemRConfig.GrenadeSpawnDelay), TimeSpan.Zero, 1);
             RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
         }
-
         else
             LaunchProjectile(projectileData);
     }
 
-    private void LaunchProjectile(object projectileData)
+    private void LaunchProjectile(object projectileObj)
     {
-        var prjData = (ProjectileData)projectileData;
+        var projectileData = (ProjectileData)projectileObj;
 
         // Add weapon stats later
-        var prj = new GenericProjectile(
-            prjData.ProjectileId, Player, ItemRConfig.GrenadeLifeTime,
-            prjData.Position, ItemRConfig, ServerRConfig, prjData.Direction, prjData.UsedItem,
-            Player.Character.Data.CalculateDamage(prjData.UsedItem, ItemCatalog),
-            prjData.UsedItem.Elemental, prjData.IsGrenade
+        var projectile = new GenericProjectile(
+            projectileData.ProjectileId, Player, ItemRConfig.GrenadeLifeTime,
+            projectileData.Position, ItemRConfig, ServerRConfig, projectileData.Direction, projectileData.UsedItem,
+            Player.Character.Data.CalculateDamage(projectileData.UsedItem, ItemCatalog),
+            projectileData.UsedItem.Elemental, projectileData.IsGrenade
         );
 
-        Player.Room.AddProjectile(prj);
+        Player.Room.AddProjectile(projectile);
     }
 
     private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        var prjId = Player.Room.CreateProjectileId();
+        var projectileId = Player.Room.CreateProjectileId();
 
         // Add weapon stats later
-        var prj = new MeleeEntity(
-            prjId.ToString(), position, Player, direction, 0.51f, usedItem,
+        var projectile = new MeleeEntity(
+            projectileId.ToString(), position, Player, direction, 0.51f, usedItem,
             Player.Character.Data.CalculateDamage(usedItem, ItemCatalog),
             usedItem.Elemental, ServerRConfig, ItemRConfig
         );
 
-        Player.Room.AddProjectile(prj);
+        Player.Room.AddProjectile(projectile);
     }
 
     private void RemoveFromHotBar(CharacterModel character, ItemDescription item, int hotbarSlotId)

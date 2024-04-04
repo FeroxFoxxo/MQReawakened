@@ -8,6 +8,7 @@ using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles;
 public class AIProjectile : BaseProjectile
@@ -21,7 +22,11 @@ public class AIProjectile : BaseProjectile
         : base(projectileId, speedX, speedY, lifeTime, room, position, null, config)
     {
         _ownerId = ownerId;
-        Collider = new AIProjectileCollider(projectileId, ownerId, room, projectileId, position, 0.5f, 0.5f, PrjPlane, LifeTime, timerThread, baseDamage, effect, itemCatalog);
+        Collider = new AIProjectileCollider(
+            projectileId, ownerId, room, projectileId, position,
+            new Vector2(0.5f, 0.5f), PrjPlane, LifeTime,
+            timerThread, baseDamage, effect, itemCatalog
+        );
     }
 
     public override void Move()

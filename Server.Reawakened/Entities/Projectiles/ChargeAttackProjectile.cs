@@ -9,6 +9,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles;
 public class ChargeAttackProjectile : BaseProjectile
@@ -29,7 +30,7 @@ public class ChargeAttackProjectile : BaseProjectile
         _itemId = itemId;
         _zoneId = zoneId;
 
-        Collider = new AttackCollider(player.GameObjectId, startPosition, 1, 1, PrjPlane, player, damage, type, 15f, 0);
+        Collider = new AttackCollider(player.GameObjectId, startPosition, new Vector2(1, 1), PrjPlane, player, damage, type, 15f, 0);
 
         Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(player.GameObjectId.ToString(), Room.Time,
                         endPosition.X, endPosition.Y, speed.X, speed.Y, itemId, zoneId));

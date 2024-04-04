@@ -6,6 +6,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles;
 public class GenericProjectile : BaseProjectile
@@ -27,7 +28,7 @@ public class GenericProjectile : BaseProjectile
         _hitboxPosition = new Vector3Model { X = Position.X, Y = Position.Y - config.ProjectileHeight, Z = Position.Z };
         _hitboxPosition.X -= direction > 0 ? 0 : config.ProjectileWidth;
 
-        Collider = new AttackCollider(id, _hitboxPosition, config.ProjectileWidth, config.ProjectileHeight, PrjPlane, player, damage, damageType, LifeTime, 0);
+        Collider = new AttackCollider(id, _hitboxPosition, new Vector2(config.ProjectileWidth, config.ProjectileHeight), PrjPlane, player, damage, damageType, LifeTime, 0);
 
         var prj = new LaunchItem_SyncEvent(_gameObjectId, StartTime, Position.X, Position.Y, Position.Z, SpeedX, SpeedY, LifeTime, int.Parse(ProjectileId), item.PrefabName);
         Room.SendSyncEvent(prj);

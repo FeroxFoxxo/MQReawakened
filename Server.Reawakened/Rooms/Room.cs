@@ -88,6 +88,7 @@ public class Room : Timer
         _config = config;
         _timerThread = timerThread;
         _itemConfig = services.GetRequiredService<ItemRConfig>();
+        _services = services;
 
         ColliderCatalog = services.GetRequiredService<InternalColliders>();
         ItemCatalog = services.GetRequiredService<ItemCatalog>();
@@ -117,6 +118,8 @@ public class Room : Timer
         _entities = this.LoadEntities(services);
         _colliders = this.LoadTerrainColliders();
 
+        _defaultSpawn = GetEntitiesFromType<SpawnPointComp>().MinBy(p => p.Index);
+
         foreach (var type in UnknownEntities.Values.SelectMany(x => x).Distinct().Order())
             Logger.LogWarning("Could not find synced entity for {EntityType}", type);
 
@@ -134,29 +137,23 @@ public class Room : Timer
 
         foreach (var component in _entities.Values.SelectMany(x => x))
         {
-            if (component.Name == config.EnemyComponentName && !component.ParentPlane.Equals("TemplatePlane"))
+            if (component is EnemyControllerComp enemy)
             {
-                var enemy = GenerateEnemy(component.PrefabName, component.Id, (EnemyControllerComp) component);
-
-                if (enemy != null)
-                    _enemies.Add(component.Id, enemy);
+                if (!component.ParentPlane.Equals("TemplatePlane"))
+                    GenerateEnemy(component.PrefabName, component.Id, enemy);
             }
-            if (component.Name == config.BreakableComponentName)
+            else if (component is BreakableEventControllerComp breakable)
             {
-                var breakable = (BreakableEventControllerComp)component;
                 breakable.PostInit();
             }
         }
-
-        var spawnPoints = GetEntitiesFromType<SpawnPointComp>();
-
-        _defaultSpawn = spawnPoints.MinBy(p => p.Index);
 
         if (_defaultSpawn == null)
             Logger.LogError("Could not find default spawn for level: {RoomId} ({RoomName})",
                 LevelInfo.LevelId, LevelInfo.Name);
 
         TimeOffset = GetTime.GetCurrentUnixMilliseconds();
+
         Start();
     }
 
@@ -343,10 +340,13 @@ public class Room : Timer
     public void AddCollider(BaseCollider collider)
     {
         lock (_roomLock)
-        {
-            if (!_colliders.TryAdd(collider.Id, collider))
-                _colliders[collider.Id] = collider;
-        }
+            _colliders.Add(collider.Id, collider);
+    }
+
+    public void OverwriteCollider(BaseCollider collider)
+    {
+        lock (_roomLock)
+            _colliders[collider.Id] = collider;
     }
 
     public void RemoveCollider(string colliderId)
@@ -451,8 +451,13 @@ public class Room : Timer
     public void AddProjectile(BaseProjectile projectile)
     {
         lock (_roomLock)
-            if (!_projectiles.TryAdd(projectile.ProjectileId, projectile))
-                _projectiles[projectile.ProjectileId] = projectile;
+            _projectiles.Add(projectile.ProjectileId, projectile);
+    }
+
+    public void SetProjectile(BaseProjectile projectile)
+    {
+        lock (_roomLock)
+            _projectiles[projectile.ProjectileId] = projectile;
     }
 
     public void RemoveProjectile(string enemyId)
@@ -597,8 +602,6 @@ public class Room : Timer
                 );
                 return null;
         }
-
-        enemy.Initialize();
 
         AddEnemy(enemy);
 

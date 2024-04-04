@@ -3,11 +3,12 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
+using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities.Colliders;
-public class AIProjectileCollider(string projectileId, string ownerId, Room room, string id, Vector3Model position,
-    float sizeX, float sizeY, string plane, float lifeTime, TimerThread timerThread, int damage, ItemEffectType effect,
-    ItemCatalog itemCatalog) : BaseCollider(id, position, sizeX, sizeY, plane, room, ColliderType.AiAttack)
+public class AIProjectileCollider(string projectileId, string ownerId, Room room, string id,
+    Vector3Model position, Vector2 size, string plane, float lifeTime, TimerThread timerThread, int damage, ItemEffectType effect,
+    ItemCatalog itemCatalog) : BaseCollider(id, position, size, plane, room, ColliderType.AiAttack)
 {
     public float LifeTime = lifeTime + room.Time;
     public string PrjId = projectileId;

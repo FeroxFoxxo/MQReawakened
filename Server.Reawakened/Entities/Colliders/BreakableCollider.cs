@@ -2,11 +2,11 @@
 using Server.Reawakened.Entities.Components.GameObjects.Platforms;
 using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities.Colliders;
-public class BreakableCollider(string breakableId, Vector3Model position,
-    float sizeX, float sizeY, string plane, Room room) :
-    BaseCollider(breakableId, position, sizeX, sizeY, plane, room, ColliderType.Breakable)
+public class BreakableCollider(string breakableId, Vector3Model position, Vector2 size, string plane, Room room) :
+    BaseCollider(breakableId, position, size, plane, room, ColliderType.Breakable)
 {
     public override void SendCollisionEvent(BaseCollider received)
     {

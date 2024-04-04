@@ -11,6 +11,7 @@ using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles;
 using System.Text;
+using UnityEngine;
 using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
@@ -160,7 +161,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
                 Room.AddCollider(
                     new TriggerableTargetCollider(
                         Id, AdjustColliderPositionX(Position),
-                        Rectangle.Width, Rectangle.Height, ParentPlane, Room
+                        new Vector2(Rectangle.Width, Rectangle.Height), ParentPlane, Room
                     )
                 );
     }
@@ -290,7 +291,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
 
     public void RunTrigger(Player player)
     {
-        var players = player.Room.GetPlayers();
+        var players = Room.GetPlayers();
 
         // GoTo must be outside for if someone in the room has interactd with the trigger in the past (i.e. in public rooms like CTS)
         if (player != null)

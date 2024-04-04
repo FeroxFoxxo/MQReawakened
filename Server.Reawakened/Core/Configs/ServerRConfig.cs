@@ -65,8 +65,6 @@ public class ServerRConfig : IRConfig
 
     public int CashKitAmount { get; }
 
-    public string BreakableComponentName { get; set; }
-    public string EnemyComponentName { get; set; }
     public string DailyBoxName { get; set; }
 
     public int MaximumEntitiesToReturnLog { get; set; }
@@ -142,8 +140,6 @@ public class ServerRConfig : IRConfig
             "PF_GLB_DoorArena01"
         ];
 
-        EnemyComponentName = "EnemyController";
-        BreakableComponentName = "BreakableEventController";
         DailyBoxName = "Daily";
 
         MaximumEntitiesToReturnLog = 15;

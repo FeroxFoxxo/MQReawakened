@@ -2,38 +2,16 @@
 using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
-public abstract class BaseCollider
+public abstract class BaseCollider(string id, Vector3Model position, Vector2 size, string plane, Room room, ColliderType colliderType)
 {
-    public Room Room;
-    public Vector3 Position;
-    public string Id;
-    public string Plane;
-    public ColliderType Type;
-    public RectModel ColliderBox;
-    public Vector3 SpawnPosition;
+    public Room Room => room;
+    public string Id => id;
+    public string Plane => plane;
+    public ColliderType Type => colliderType;
 
-    public BaseCollider(string id, Vector3Model position, float sizeX, float sizeY, string plane, Room room, ColliderType colliderType)
-    {
-        // Builder for projectiles
-        Id = id;
-        Position = new Vector3(position.X, position.Y, position.Z);
-        SpawnPosition = new Vector3(position.X, position.Y, position.Z);
-        Plane = plane;
-        Room = room;
-
-        Type = colliderType;
-        ColliderBox = new RectModel(position.X, position.Y, sizeX, sizeY);
-    }
-
-    public BaseCollider(ColliderModel collider, Room room)
-    {
-        Id = string.Empty;
-        Position = new Vector3(collider.Position.x, collider.Position.y, 0);
-        Plane = collider.Plane;
-        Room = room;
-        Type = ColliderType.TerrainCube;
-        ColliderBox = new RectModel(Position.x, Position.y + 0.1f, collider.Width, collider.Height);
-    }
+    public Vector3 Position = new(position.X, position.Y, position.Z);
+    public Vector3 SpawnPosition = new(position.X, position.Y, position.Z);
+    public RectModel ColliderBox = new(position.X, position.Y, size.x, size.y);
 
     public virtual string[] IsColliding(bool isAttack) => [];
 

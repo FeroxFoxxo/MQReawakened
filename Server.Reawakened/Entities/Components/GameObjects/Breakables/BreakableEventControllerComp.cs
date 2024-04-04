@@ -12,6 +12,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.BundlesInternal;
+using UnityEngine;
 using Room = Server.Reawakened.Rooms.Room;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Breakables;
@@ -39,7 +40,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         MaxHealth = 1;
         _health = MaxHealth;
 
-        Room.AddCollider( new BreakableCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+        Room.AddCollider( new BreakableCollider(Id, Position, new Vector2(Rectangle.Width, Rectangle.Height), ParentPlane, Room));
     }
 
     public void PostInit()

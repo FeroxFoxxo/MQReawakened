@@ -166,7 +166,7 @@ public abstract class BaseEnemy : IDestructible
 
         var position = new Vector3Model { X = offsetX, Y = offsetY, Z = Position.z };
 
-        Hitbox = new EnemyCollider(Id, position, width, height, ParentPlane, Room)
+        Hitbox = new EnemyCollider(Id, position, new Vector2(width, height), ParentPlane, Room)
         {
             Position = new Vector3 (
                 Position.x + EnemyModel.Offset.X,

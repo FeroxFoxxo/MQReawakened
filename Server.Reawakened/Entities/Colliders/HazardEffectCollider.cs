@@ -4,11 +4,12 @@ using Server.Reawakened.Entities.Components.GameObjects.Hazards;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities.Colliders;
-public class HazardEffectCollider(string hazardId, Vector3Model position,
-    RectModel rect, string plane, Room room, ILogger<BaseHazardControllerComp<HazardController>> logger) :
-    BaseCollider(hazardId, AdjustPosition(position, rect), rect.Width, rect.Height, plane, room, ColliderType.Hazard)
+public class HazardEffectCollider(string hazardId, Vector3Model position, Vector2 size, string plane,
+    Room room, ILogger<BaseHazardControllerComp<HazardController>> logger) :
+    BaseCollider(hazardId, position, size, plane, room, ColliderType.Hazard)
 {
     public override void SendCollisionEvent(BaseCollider received)
     {
@@ -29,18 +30,5 @@ public class HazardEffectCollider(string hazardId, Vector3Model position,
         Room.GetEntityFromId<BaseHazardControllerComp<HazardController>>(hazardId)?.ApplyHazardEffect(player);
         Room.GetEntityFromId<BaseHazardControllerComp<TrapHazardController>>(hazardId)?.ApplyHazardEffect(player);
         Room.GetEntityFromId<DroppingsControllerComp>(hazardId)?.FreezePlayer(player);
-    }
-
-    public static Vector3Model AdjustPosition(Vector3Model originalPosition, RectModel rect)
-    {
-        var adjustedXPos = rect.X;
-        var adjustedYPos = rect.Y;
-
-        return new()
-        {
-            X = originalPosition.X + adjustedXPos,
-            Y = originalPosition.Y + adjustedYPos,
-            Z = originalPosition.Z
-        };
     }
 }

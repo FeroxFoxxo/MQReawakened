@@ -25,11 +25,18 @@ public static class LoadRoomData
     {
         var outColliderList = new Dictionary<string, BaseCollider>();
         var idCounter = 0;
+
         foreach (var collider in room.ColliderCatalog.GetTerrainColliders(room.LevelInfo.LevelId))
         {
             idCounter--;
-            outColliderList.Add(idCounter.ToString(), new TCCollider(collider, room));
+
+            var id = idCounter.ToString();
+
+            var position = new Vector3Model(collider.Position.x, collider.Position.y, 0);
+
+            outColliderList.Add(id, new TCCollider(id, position, new Vector2(collider.Width, collider.Height), collider.Plane, room));
         }
+
         return outColliderList;
     }
 

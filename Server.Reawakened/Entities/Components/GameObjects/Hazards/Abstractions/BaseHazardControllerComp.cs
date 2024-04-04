@@ -10,6 +10,8 @@ using Server.Reawakened.Configs;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Entities.Components.GameObjects.Controllers;
+using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
@@ -92,8 +94,25 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (EffectType == ItemEffectType.SlowStatusEffect)
             Rectangle.X = 0;
 
-        var hazardCollider = new HazardEffectCollider(Id, Position, Rectangle, ParentPlane, Room, Logger);
-        Room.AddCollider(hazardCollider);
+        Room.AddCollider(new HazardEffectCollider(
+                Id, AdjustPosition(Position, Rectangle),
+                new Vector2(Rectangle.X, Rectangle.Y), ParentPlane,
+                Room, Logger
+            )
+        );
+    }
+
+    public static Vector3Model AdjustPosition(Vector3Model originalPosition, RectModel rect)
+    {
+        var adjustedXPos = rect.X;
+        var adjustedYPos = rect.Y;
+
+        return new()
+        {
+            X = originalPosition.X + adjustedXPos,
+            Y = originalPosition.Y + adjustedYPos,
+            Z = originalPosition.Z
+        };
     }
 
     public void DeactivateHazard(object _)

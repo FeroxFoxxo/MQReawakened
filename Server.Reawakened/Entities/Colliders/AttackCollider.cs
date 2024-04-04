@@ -2,12 +2,13 @@
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Models.Entities.Colliders;
 public class AttackCollider(string id, Vector3Model position,
-    float sizeX, float sizeY, string plane, Player player,
+    Vector2 size, string plane, Player player,
     int damage, Elemental type, float lifeTime, float offset) :
-    BaseCollider(id, position, sizeX, sizeY, plane, player.Room, ColliderType.Attack)
+    BaseCollider(id, position, size, plane, player.Room, ColliderType.Attack)
 {
     public float LifeTime = player.Room.Time + lifeTime;
     public Player Owner = player;
@@ -30,14 +31,20 @@ public class AttackCollider(string id, Vector3Model position,
 
         if (isAttack)
             foreach (var collider in colliders)
-                if (CheckCollision(collider) &&
-                    collider.Type != ColliderType.Attack && collider.Type != ColliderType.Player &&
-                    collider.Type != ColliderType.Hazard && collider.Type != ColliderType.AiAttack
-                    && Room.Time >= _offset)
+            {
+                var collided = CheckCollision(collider);
+                var isCollidableType = collider.Type is not ColliderType.Attack and not ColliderType.Player and not ColliderType.Hazard and not ColliderType.AiAttack;
+                var existsNow = Room.Time >= _offset;
+
+                //if (collider.Id != "13160505")
+                //    continue;
+
+                if (collided && isCollidableType && existsNow)
                 {
                     collidedWith.Add(collider.Id);
                     collider.SendCollisionEvent(this);
                 }
+            }
 
         return [.. collidedWith];
     }

@@ -7,6 +7,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles;
 
@@ -45,7 +46,7 @@ public class MeleeEntity : BaseProjectile
             _hitboxPosition.Y -= config.MeleeArialYOffset;
         }
 
-        Collider = new AttackCollider(id, _hitboxPosition, meleeWidth, meleeHeight, PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f);
+        Collider = new AttackCollider(id, _hitboxPosition, new Vector2(meleeWidth, meleeHeight), PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f);
 
         var hitEvent = new Melee_SyncEvent(_gameObjectId, Room.Time, Position.X, Position.Y, Position.Z, direction, SpeedY, LifeTime, int.Parse(ProjectileId), item.PrefabName);
         Room.SendSyncEvent(hitEvent);

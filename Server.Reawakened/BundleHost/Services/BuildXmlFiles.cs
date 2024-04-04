@@ -63,7 +63,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
             {
                 var time = DateTimeOffset.FromUnixTimeSeconds(asset.CacheTime);
 
-                logger.LogTrace("Loading XML: {BundleName} ({DateTime})", asset.Name, time.Date.ToShortDateString());
+                logger.LogTrace("Loading XML: {BundleName} {DateTime}", asset.Name, time.Date > DateTime.UnixEpoch ? $"({time.Date.ToShortDateString()})" : string.Empty);
 
                 if (bundle is ILocalizationXml localizedXmlBundle)
                 {
