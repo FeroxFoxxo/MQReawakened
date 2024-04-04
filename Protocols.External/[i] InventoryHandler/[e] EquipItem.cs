@@ -30,7 +30,7 @@ public class EquipItem : ExternalProtocol
             var itemDesc = ItemCatalog.GetItemFromId(item.Value);
 
             if (itemDesc != null)
-                Player.CheckAchievement(AchConditionType.EquipItem, itemDesc.PrefabName, InternalAchievement, Logger);
+                Player.CheckAchievement(AchConditionType.EquipItem, [itemDesc.PrefabName], InternalAchievement, Logger);
 
             Player.RemoveItem(ItemCatalog.GetItemFromId(item.Value), 1, ItemCatalog);
         }

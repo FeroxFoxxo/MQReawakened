@@ -31,8 +31,8 @@ public class JoinGroup : ExternalProtocol
 
         if (accepted)
         {
-            leaderPlayer.CheckAchievement(AchConditionType.JoinGroup, string.Empty, InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.JoinGroup, string.Empty, InternalAchievement, Logger);
+            leaderPlayer.CheckAchievement(AchConditionType.JoinGroup, [], InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.JoinGroup, [], InternalAchievement, Logger);
 
             leaderPlayer.TempData.Group.AddPlayer(Player);
             Player.TempData.Group = leaderPlayer.TempData.Group;

@@ -29,13 +29,13 @@ public class HoopGroup : ExternalProtocol
             if (!string.IsNullOrEmpty(message[7]))
                 hoopGroupName = message[7];
 
-        Player.CheckAchievement(AchConditionType.Hoop, string.Empty, InternalAchievement, Logger, numberOfHoops);
-        Player.CheckAchievement(AchConditionType.HoopInLevel, Player.Room.LevelInfo.Name, InternalAchievement, Logger, numberOfHoops);
+        Player.CheckAchievement(AchConditionType.Hoop, [], InternalAchievement, Logger, numberOfHoops);
+        Player.CheckAchievement(AchConditionType.HoopInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger, numberOfHoops);
 
         if (completed)
         {
-            Player.CheckAchievement(AchConditionType.HoopGroup, string.Empty, InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.HoopGroupInLevel, Player.Room.LevelInfo.Name, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.HoopGroup, [], InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.HoopGroupInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger);
 
             var hoops = Player.Room.GetEntitiesFromType<HoopControllerComp>();
 

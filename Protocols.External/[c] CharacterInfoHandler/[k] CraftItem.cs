@@ -53,7 +53,7 @@ public class CraftItem : ExternalProtocol
         {
             Player.AddItem(itemDesc, amount, ItemCatalog);
 
-            Player.CheckAchievement(AchConditionType.CraftItem, itemDesc.PrefabName, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.CraftItem, [itemDesc.PrefabName], InternalAchievement, Logger);
         }
 
         Player.SendUpdatedInventory();

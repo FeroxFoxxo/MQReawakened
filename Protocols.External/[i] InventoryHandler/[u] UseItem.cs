@@ -82,8 +82,7 @@ public class UseItem : ExternalProtocol
 
     private void HandleBomb(ItemDescription usedItem, Vector3Model position, int direction)
     {
-        Player.CheckAchievement(AchConditionType.Bomb, string.Empty, InternalAchievement, Logger);
-        Player.CheckAchievement(AchConditionType.Bomb, usedItem.PrefabName, InternalAchievement, Logger);
+        Player.CheckAchievement(AchConditionType.Bomb, [usedItem.PrefabName], InternalAchievement, Logger);
 
         Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
 
@@ -100,15 +99,14 @@ public class UseItem : ExternalProtocol
 
     private void HandleConsumable(ItemDescription usedItem)
     {
-        if (usedItem.ItemActionType == ItemActionType.Eat)
+        switch (usedItem.ItemActionType)
         {
-            Player.CheckAchievement(AchConditionType.Consumable, string.Empty, InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, InternalAchievement, Logger);
-        }
-        else if (usedItem.ItemActionType == ItemActionType.Drink)
-        {
-            Player.CheckAchievement(AchConditionType.Drink, string.Empty, InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, InternalAchievement, Logger);
+            case ItemActionType.Eat:
+                Player.CheckAchievement(AchConditionType.Consumable, [ usedItem.PrefabName ], InternalAchievement, Logger);
+                break;
+            case ItemActionType.Drink:
+                Player.CheckAchievement(AchConditionType.Drink,[ usedItem.PrefabName], InternalAchievement, Logger);
+                break;
         }
 
         Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, Logger);
