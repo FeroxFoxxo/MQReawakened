@@ -180,10 +180,20 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             return false;
         }
 
-        player.Character.LevelData.LevelId = levelInfo.LevelId;
         player.Character.LevelData.SpawnPointId = spawnId;
 
-        player.SendLevelChange(this);
+        if (player.Character.LevelData.LevelId == levelInfo.LevelId)
+        {
+            var character = player.Character;
+
+            player.Room.SetPlayerPosition(character);
+            player.TeleportPlayer(character.Data.SpawnPositionX, character.Data.SpawnPositionY, character.Data.SpawnOnBackPlane);
+        }
+        else
+        {
+            player.Character.LevelData.LevelId = levelInfo.LevelId;
+            player.SendLevelChange(this);
+        }
 
         return true;
     }
