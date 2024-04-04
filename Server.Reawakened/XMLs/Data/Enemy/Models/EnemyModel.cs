@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
+using UnityEngine;
 
 namespace Server.Reawakened.XMLs.Models.Enemy.Models;
 
@@ -13,9 +15,12 @@ public class EnemyModel
     public GlobalPropertyModel GlobalProperties { get; set; }
     public GenericScriptModel GenericScript { get; set; }
     public HitboxModel Hitbox { get; set; }
+    public Vector3Model Offset { get; set; }
 
     public void EnsureValidData(string enemyType, Microsoft.Extensions.Logging.ILogger logger)
     {
+        Offset ??= new Vector3Model(0, 0, 0);
+
         if (EnemyLootTable == null)
         {
             logger.LogError("Enemy '{Name}' does not have a loot table attached!", enemyType);

@@ -157,8 +157,12 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
 
         if (TriggerOnNormalDamage || TriggerOnAirDamage || TriggerOnEarthDamage
             || TriggerOnFireDamage || TriggerOnIceDamage || TriggerOnLightningDamage)
-                Room.Colliders.Add(Id, new TriggerableTargetCollider
-                    (Id, AdjustColliderPositionX(Position), Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+                Room.AddCollider(
+                    new TriggerableTargetCollider(
+                        Id, AdjustColliderPositionX(Position),
+                        Rectangle.Width, Rectangle.Height, ParentPlane, Room
+                    )
+                );
     }
 
     public Vector3Model AdjustColliderPositionX(Vector3Model position)
@@ -223,30 +227,31 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
         if (_currentPhysicalInteractors.Contains(playerId))
             return;
 
-        if (Room.Players.TryGetValue(playerId, out var player))
+        var player = Room.GetPlayerById(playerId);
+
+        if (player == null)
+            return;
+
+        if (!string.IsNullOrEmpty(QuestCompletedRequired))
         {
-            if (!string.IsNullOrEmpty(QuestCompletedRequired))
-            {
-                var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
+            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
 
-                if (requiredQuest != null)
-                    if (!player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
-                        return;
-            }
-
-            if (!string.IsNullOrEmpty(QuestInProgressRequired))
-            {
-                var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
-
-                if (requiredQuest != null)
-                    if (player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
-                        return;
-            }
+            if (requiredQuest != null)
+                if (!player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
+                    return;
         }
-        else return;
 
+        if (!string.IsNullOrEmpty(QuestInProgressRequired))
+        {
+            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
+
+            if (requiredQuest != null)
+                if (player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
+                    return;
+        }
         _currentPhysicalInteractors.Add(playerId);
         SendInteractionUpdate();
+
     }
 
     public void RemovePhysicalInteractor(string playerId)
@@ -285,27 +290,25 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
 
     public void RunTrigger(Player player)
     {
+        var players = player.Room.GetPlayers();
+
         // GoTo must be outside for if someone in the room has interactd with the trigger in the past (i.e. in public rooms like CTS)
         if (player != null)
         {
-            foreach (var rPlayer in player.Room.Players.Where(x => _currentPhysicalInteractors.Contains(x.Key)))
+            foreach (var rPlayer in players.Where(x => _currentPhysicalInteractors.Contains(x.GameObjectId)))
             {
-                if (rPlayer.Value == null)
+                if (rPlayer == null)
                     continue;
 
-                rPlayer.Value.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1, QuestCatalog);
-                rPlayer.Value.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1, QuestCatalog);
+                rPlayer.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1, QuestCatalog);
+                rPlayer.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1, QuestCatalog);
             }
         }
 
         if (!IsActive)
         {
-            if (NbInteractionsMatchesNbPlayers)
-            {
-                if (Interactions < Room.Players.Count || player == null)
-                    return;
-            }
-            else if (Interactions < NbInteractionsNeeded)
+            if (NbInteractionsMatchesNbPlayers && (Interactions < players.Length || player == null) ||
+                    Interactions < NbInteractionsNeeded)
                 return;
 
             Trigger(player, true);

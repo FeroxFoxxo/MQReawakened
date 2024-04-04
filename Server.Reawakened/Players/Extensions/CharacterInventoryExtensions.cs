@@ -199,8 +199,8 @@ public static class CharacterInventoryExtensions
         if (item.CategoryId != ItemCategory.Pet)
             return;
 
-        foreach (var roomPlayer in player.Room.Players)
-            roomPlayer.Value.SendXt("ZE", player.UserId, item.ItemId, equiped ? 1 : 0);
+        foreach (var roomPlayer in player.Room.GetPlayers())
+            roomPlayer.SendXt("ZE", player.UserId, item.ItemId, equiped ? 1 : 0);
 
         player.Character.Data.PetItemId = equiped ? item.ItemId : 0;
     }

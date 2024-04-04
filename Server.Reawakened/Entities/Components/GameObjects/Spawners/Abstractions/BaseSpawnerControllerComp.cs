@@ -56,7 +56,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public int Health;
     public int Level;
 
-    public Dictionary<string, BehaviorEnemy> LinkedEnemies;
+    public Dictionary<string, BaseEnemy> LinkedEnemies;
     public Dictionary<string, EnemyModel> EnemyModels;
     public Dictionary<string, SpawnedEnemyData> TemplateEnemyModels;
 
@@ -249,35 +249,26 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         foreach (var component in newEntity)
         {
             component.InitializeComponent();
-            Room.KilledObjects.Remove(component.Id);
+            Room.RemoveKilledEnemy(component.Id);
         }
 
         //Fix some things before setting the enemy
         enemyTemplate.Hazard.SetId(_spawnedEntityId);
         enemyTemplate.Generic.SetPatrolRange(PatrolDistance);
 
-        var enemy = Room.GenerateEntityFromName(
-            PrefabNameToSpawn1, _spawnedEntityId, enemyTemplate.EnemyController,
-            Services, ServerRConfig, EnemyInfoXml, Logger
-        );
+        var enemy = Room.GenerateEnemy(PrefabNameToSpawn1, _spawnedEntityId, enemyTemplate.EnemyController);
 
         if (enemy is null)
             return;
 
-        if (enemy is not BehaviorEnemy bEnemy)
-            throw new InvalidCastException($"{PrefabName} is not a valid behavior enemy!");
-
-        bEnemy.Initialize();
-
-        LinkedEnemies.Add(_spawnedEntityId, bEnemy);
-        Room.Enemies.Add(_spawnedEntityId, bEnemy);
+        LinkedEnemies.Add(_spawnedEntityId, enemy);
     }
 
     private bool IsPlayerNearby(float radius)
     {
-        foreach (var player in Room.Players)
+        foreach (var player in Room.GetPlayers())
         {
-            var pos = player.Value.TempData.Position;
+            var pos = player.TempData.Position;
             if (Position.X - radius < pos.X && pos.X < Position.X + radius &&
                    Position.Y - radius < pos.Y && pos.Y < Position.Y + radius)
                 return true;

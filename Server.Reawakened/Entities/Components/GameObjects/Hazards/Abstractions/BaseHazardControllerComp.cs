@@ -28,7 +28,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public float HealthRatioDamage => ComponentData.HealthRatioDamage;
     public int HurtSelfOnDamage => ComponentData.HurtSelfOnDamage;
 
-    public string HazardId;
     public ItemEffectType EffectType = ItemEffectType.Unknown;
     public bool IsActive = true;
     public bool TimedHazard = false;
@@ -76,7 +75,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public void CanCreateColliderCheck()
     {
         //Prevents enemies and hazards sharing same collider Ids.
-        if (!Room.Enemies.ContainsKey(Id))
+        if (!Room.ContainsEnemy(Id))
         {
             //Hazards which also contain the LinearPlatform component already have colliders and do not need a new one created. They have NoEffect.
             if (HurtEffect != ItemRConfig.NoEffect ||
@@ -89,14 +88,12 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     //Creates hazard colliders after enemy colliders are created to prevent duplicated collider ID bugs.
     public void ColliderCreationDelay(object _)
     {
-        HazardId = Id;
-
         //Prevents spider webs from inaccurately adjusting collider positioning.
         if (EffectType == ItemEffectType.SlowStatusEffect)
             Rectangle.X = 0;
 
-        var hazardCollider = new HazardEffectCollider(HazardId, Position, Rectangle, ParentPlane, Room, Logger);
-        Room.Colliders.TryAdd(HazardId, hazardCollider);
+        var hazardCollider = new HazardEffectCollider(Id, Position, Rectangle, ParentPlane, Room, Logger);
+        Room.AddCollider(hazardCollider);
     }
 
     public void DeactivateHazard(object _)
@@ -157,7 +154,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
             case ItemEffectType.BluntDamage:
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-                (int)ItemEffectType.BluntDamage, 1, 1, true, HazardId, false));
+                (int)ItemEffectType.BluntDamage, 1, 1, true, Id, false));
 
                 player.ApplyCharacterDamage(Damage, DamageDelay, TimerThread);
                 break;
@@ -196,16 +193,19 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
     public void ApplyPoisonEffect(object playerData)
     {
-        if (playerData == null) return;
+        if (playerData == null)
+            return;
 
         if (playerData is not Player player)
             return;
 
-        //Checks collision after InitialDamageDelay
-        if (!Room.Colliders[HazardId].CheckCollision(new PlayerCollider(player)))
-            return;
+        var collider = Room.GetColliderById(Id);
 
-        player.StartPoisonDamage(HazardId, Damage, (int)HurtLength, TimerThread);
+        if (collider != null)
+            if (!collider.CheckCollision(new PlayerCollider(player)))
+                return;
+
+        player.StartPoisonDamage(Id, Damage, (int)HurtLength, TimerThread);
     }
 
     public void ApplyWaterBreathing(object playerData)
@@ -225,5 +225,5 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public void RestartTimerDelay(object data) => IsActive = true;
 
     public void ApplySlowEffect(Player player) =>
-        player.ApplySlowEffect(HazardId, Damage);
+        player.ApplySlowEffect(Id, Damage);
 }

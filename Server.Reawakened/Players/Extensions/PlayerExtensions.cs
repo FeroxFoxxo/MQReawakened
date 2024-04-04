@@ -18,6 +18,20 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerExtensions
 {
+    public static void AddGear(this Player currentPlayer, string gear, ItemCatalog itemCatalog)
+    {
+        var item = itemCatalog.GetItemFromPrefabName(gear);
+
+        if (item != null)
+        {
+            if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+            {
+                currentPlayer.AddItem(item, 1, itemCatalog);
+                currentPlayer.SendUpdatedInventory();
+            }
+        }
+    }
+
     public static void TeleportPlayer(this Player player, int x, int y, int z)
     {
         var isBackPlane = z == 1;
@@ -448,7 +462,7 @@ public static class PlayerExtensions
     {
         foreach (
             var player in
-            from player in sentPlayer.Room.Players.Values
+            from player in sentPlayer.Room.GetPlayers()
             select player
         )
             player.SendXt("iq", sentPlayer.UserId, sentPlayer.Character.Data.Equipment);

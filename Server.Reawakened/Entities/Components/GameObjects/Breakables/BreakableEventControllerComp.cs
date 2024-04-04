@@ -39,7 +39,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         MaxHealth = 1;
         _health = MaxHealth;
 
-        Room.Colliders.Add(Id, new BreakableCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
+        Room.AddCollider( new BreakableCollider(Id, Position, Rectangle.Width, Rectangle.Height, ParentPlane, Room));
     }
 
     public void PostInit()
@@ -104,7 +104,6 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     {
         player?.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
 
-        room.Enemies.Remove(id);
-        room.Colliders.Remove(id);
+        room.RemoveEnemy(id);
     }
 }

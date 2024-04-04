@@ -2513,6 +2513,7 @@
         </EnemyCategory>
         <EnemyCategory name="Rachnok">
             <Enemy name="Spite_TeaserSpider_Boss">
+                <Offset x="0" y="-21" z="0" />
                 <Hitbox width="15" height="9" offsetX="0" offsetY="5.2" />
             </Enemy>
             <Enemy name="Spite_Spider_Boss">

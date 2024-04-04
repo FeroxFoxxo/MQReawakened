@@ -25,7 +25,7 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
 
             player.TemporaryInvincibility(aiProjectileCollider.TimerThread, 1);
 
-            Room.Colliders.Remove(aiProjectileCollider.PrjId);
+            Room.RemoveCollider(aiProjectileCollider.PrjId);
         }
 
         if (received is HazardEffectCollider hazard)
@@ -34,10 +34,11 @@ public class PlayerCollider(Player player) : BaseCollider(player.TempData.GameOb
 
     public override string[] IsColliding(bool isAttack)
     {
-        var roomList = Room.Colliders.Values.ToList();
+        var colliders = Room.GetColliders();
+
         List<string> collidedWith = [];
 
-        foreach (var collider in roomList)
+        foreach (var collider in colliders)
             if (CheckCollision(collider) &&
                 collider.Type != ColliderType.Player && collider.Type != ColliderType.Attack)
             {

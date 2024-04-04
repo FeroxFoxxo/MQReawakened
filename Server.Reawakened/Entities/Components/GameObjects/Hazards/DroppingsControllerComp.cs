@@ -30,7 +30,7 @@ public class DroppingsControllerComp : Component<DroppingsController>
 
     public void SendDrop(object _)
     {
-        if (Room.KilledObjects.Contains(Id))
+        if (Room.IsObjectKilled(Id))
             return;
 
         ChangePosition(Position, StartPosition);

@@ -86,7 +86,7 @@ public static class PlayerExtensions
             IncPowerJewel = player.Character.Data.BadgePoints,
         };
 
-        foreach (var currentPlayer in player.Room.Players.Values)
+        foreach (var currentPlayer in player.Room.GetPlayers())
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
 
         //Temporary way to earn NC upon level up.
@@ -123,4 +123,21 @@ public static class PlayerExtensions
         var planeName = player.TempData.Position.Z > 10 ? "Plane1" : "Plane0";
         return [.. player.Room.Planes[planeName].GameObjects.Values.SelectMany(x => x)];
     }
+
+    public static void GroupMemberRoomChanged(this Room room, Player player)
+    {
+        if (player.TempData.Group == null)
+            return;
+
+        foreach (var groupMember in player.TempData.Group.GetMembers())
+        {
+            groupMember.SendXt(
+                "pm",
+                player.CharacterName,
+                room.LevelInfo.Name,
+                room.ToString()
+            );
+        }
+    }
+
 }

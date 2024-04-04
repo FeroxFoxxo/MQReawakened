@@ -12,7 +12,7 @@ public static class RoomExtensions
     {
         foreach (
             var player in
-            from player in room.Players.Values
+            from player in room.GetPlayers()
             where sentPlayer == null || player.UserId != sentPlayer.UserId
             select player
         )

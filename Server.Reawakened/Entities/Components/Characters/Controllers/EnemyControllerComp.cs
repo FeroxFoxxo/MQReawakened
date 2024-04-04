@@ -69,9 +69,5 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
         }
     }
 
-    public void Destroy(Player player, Room room, string id)
-    {
-        room.Enemies.Remove(id);
-        room.Colliders.Remove(id);
-    }
+    public void Destroy(Player player, Room room, string id) => room.RemoveEnemy(id);
 }

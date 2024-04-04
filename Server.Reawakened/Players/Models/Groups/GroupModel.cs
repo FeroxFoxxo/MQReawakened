@@ -69,7 +69,7 @@ public class GroupModel
             sb.Append(player.CharacterName);
             sb.Append(player.Room.LevelInfo.LevelId);
             sb.Append(player.Room.LevelInfo.Name);
-            sb.Append(player.Room.GetRoomName());
+            sb.Append(player.Room.ToString());
         }
 
         return sb.ToString();

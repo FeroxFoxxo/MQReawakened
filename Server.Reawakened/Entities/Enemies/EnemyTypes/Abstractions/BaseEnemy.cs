@@ -25,7 +25,7 @@ using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
 
 namespace Server.Reawakened.Entities.Enemies;
 
-public abstract class Enemy : IDestructible
+public abstract class BaseEnemy : IDestructible
 {
     public readonly ILogger<BehaviorEnemy> Logger;
     public readonly InternalAchievement InternalAchievement;
@@ -69,7 +69,7 @@ public abstract class Enemy : IDestructible
 
     protected IServiceProvider Services;
 
-    public Enemy(EnemyData data)
+    public BaseEnemy(EnemyData data)
     {
         Room = data.Room;
         Id = data.EntityId;
@@ -168,10 +168,14 @@ public abstract class Enemy : IDestructible
 
         Hitbox = new EnemyCollider(Id, position, width, height, ParentPlane, Room)
         {
-            Position = new Vector3(Position.x, Position.y, Position.z)
+            Position = new Vector3 (
+                Position.x + EnemyModel.Offset.X,
+                Position.y + EnemyModel.Offset.Y,
+                Position.z + EnemyModel.Offset.Z
+            )
         };
 
-        Room.Colliders.Add(Id, Hitbox);
+        Room.AddCollider(Hitbox);
     }
 
     public virtual void Damage(int damage, Player origin)
@@ -233,8 +237,7 @@ public abstract class Enemy : IDestructible
             if (IsFromSpawner)
             {
                 LinkedSpawner.NotifyEnemyDefeat(Id);
-                Room.Enemies.Remove(Id);
-                Room.Colliders.Remove(Id);
+                Room.RemoveEnemy(Id);
             }
 
             Room.KillEntity(origin, Id);
@@ -245,9 +248,5 @@ public abstract class Enemy : IDestructible
     {
     }
 
-    public void Destroy(Player player, Room room, string id)
-    {
-        room.Enemies.Remove(id);
-        room.Colliders.Remove(id);
-    }
+    public void Destroy(Player player, Room room, string id) => room.RemoveEnemy(id);
 }

@@ -12,10 +12,10 @@ public class EnemyCollider(string id, Vector3Model position,
     {
         if (received is AttackCollider attack)
         {
-            Room.Enemies.TryGetValue(Id, out var enemy);
-
             var damage = Room.GetEntityFromId<IDamageable>(Id)
                 .GetDamageAmount(attack.Damage, attack.DamageType);
+
+            var enemy = Room.GetEnemy(Id);
 
             if (enemy != null)
             {
@@ -24,7 +24,6 @@ public class EnemyCollider(string id, Vector3Model position,
 
                 enemy.Damage(damage, attack.Owner);
             }
-
             else
             {
                 var enemyController = Room.GetEntitiesFromId<EnemyControllerComp>(Id).First();

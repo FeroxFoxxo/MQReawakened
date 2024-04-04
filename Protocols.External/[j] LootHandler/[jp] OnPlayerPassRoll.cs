@@ -15,14 +15,14 @@ public class OnPlayerPassRoll : ExternalProtocol
 
         Player.TempData.VotedForItem.Add(objectId, false);
 
-        var playersInRoom = Player.Room.Players.Values;
+        var playersInRoom = Player.Room.GetPlayers();
 
         foreach (var player in playersInRoom)
             player.SendXt("jp", Player.UserId, objectId);
 
         if (playersInRoom.All(x => x.TempData.VotedForItem.ContainsKey(objectId)))
         {
-            var participants = Player.Room.Players.Values.Where(x => x.TempData.VotedForItem[objectId] == true).ToList();
+            var participants = playersInRoom.Where(x => x.TempData.VotedForItem[objectId] == true).ToList();
             var winningPlayer = participants[new Random().Next(participants.Count)];
 
             foreach (var player in playersInRoom)

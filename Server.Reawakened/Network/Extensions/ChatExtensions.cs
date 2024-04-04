@@ -13,7 +13,7 @@ public static class ChatExtensions
     {
         foreach (
             var client in
-            from client in room.Players.Values
+            from client in room.GetPlayers()
             select client
         )
             client.Chat(channelId, sender, message);

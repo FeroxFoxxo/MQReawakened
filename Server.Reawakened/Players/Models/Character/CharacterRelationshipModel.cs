@@ -25,7 +25,7 @@ public class CharacterRelationshipModel
         IsOnline = otherPlayer != null;
 
         Level = otherCharacter.LevelData.LevelId;
-        Location = otherPlayer != null ? otherPlayer.Room.GetRoomName() : "UNKNOWN";
+        Location = otherPlayer != null ? otherPlayer.Room.ToString() : "unknown";
 
         IsBlocked = currentPlayer.Character.Data.Blocked.Any(x => x == characterId);
         IsMuted = currentPlayer.Character.Data.Muted.Any(x => x == characterId);

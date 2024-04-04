@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
 
-public class BehaviorEnemy(EnemyData data) : Enemy(data)
+public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 {
     public AIStatsGlobalComp Global;
     public AIStatsGenericComp Generic;
@@ -197,7 +197,7 @@ public class BehaviorEnemy(EnemyData data) : Enemy(data)
 
     public void DetectPlayers(StateType type)
     {
-        foreach (var player in Room.Players.Values)
+        foreach (var player in Room.GetPlayers())
         {
             if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
             {

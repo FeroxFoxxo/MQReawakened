@@ -50,7 +50,9 @@ public class State : ExternalProtocol
 
         var entityId = syncEvent.TargetID;
 
-        if (Player.Room.Players.TryGetValue(entityId, out var newPlayer))
+        var newPlayer = Player.Room.GetPlayerById(entityId);
+
+        if (newPlayer != null)
         {
             switch (syncEvent.Type)
             {
@@ -155,7 +157,7 @@ public class State : ExternalProtocol
     {
         var playerCollider = new PlayerCollider(player);
         playerCollider.IsColliding(false);
-        player.Room.Colliders[player.GameObjectId] = playerCollider;
+        player.Room.AddCollider(playerCollider);
     }
 
     private void RequestRespawn(string entityId, float triggerTime)
@@ -168,7 +170,7 @@ public class State : ExternalProtocol
         Player.SendSyncEventToPlayer(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
             Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
 
-        BaseComponent respawnPosition = Player.Room.LastCheckpoint != null ? Player.Room.LastCheckpoint : Player.Room.DefaultSpawn;
+        var respawnPosition = Player.Room.LastCheckpoint ?? Player.Room.GetDefaultSpawnPoint();
 
         Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                  respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
@@ -196,7 +198,9 @@ public class State : ExternalProtocol
         var uniqueIdentifier = entityId;
         var additionalInfo = string.Empty;
 
-        if (room.Players.TryGetValue(entityId, out var newPlayer))
+        var newPlayer = room.GetPlayerById(entityId);
+
+        if (newPlayer != null)
         {
             uniqueType = "Player";
 

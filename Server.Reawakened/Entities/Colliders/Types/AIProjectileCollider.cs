@@ -19,16 +19,16 @@ public class AIProjectileCollider(string projectileId, string ownerId, Room room
 
     public override string[] IsColliding(bool isAttack)
     {
-        var roomList = Room.Colliders.Values.ToList();
+        var colliders = Room.GetColliders();
         List<string> collidedWith = [];
 
         if (LifeTime <= Room.Time)
         {
-            Room.Colliders.Remove(Id);
+            Room.RemoveCollider(Id);
             return ["0"];
         }
 
-        foreach (var collider in roomList)
+        foreach (var collider in colliders)
             if (CheckCollision(collider) && collider.Type != ColliderType.Attack &&
                 collider.Type != ColliderType.AiAttack && collider.Type != ColliderType.Enemy &&
                 collider.Type != ColliderType.Breakable && collider.Type != ColliderType.Hazard)

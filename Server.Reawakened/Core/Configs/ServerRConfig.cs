@@ -55,8 +55,6 @@ public class ServerRConfig : IRConfig
 
     public string[] IgnoredDoors { get; set; }
 
-    public string[] EnemyNameSearch { get; set; }
-
     public float PlayerWidth { get; set; }
     public float PlayerHeight { get; set; }
 
@@ -147,12 +145,6 @@ public class ServerRConfig : IRConfig
         EnemyComponentName = "EnemyController";
         BreakableComponentName = "BreakableEventController";
         DailyBoxName = "Daily";
-
-        EnemyNameSearch = [
-            "PF_Spite_Spiderling",
-            "Spite_TeaserSpider_Boss",
-            "Spite_Spider_Boss"
-        ];
 
         MaximumEntitiesToReturnLog = 15;
 

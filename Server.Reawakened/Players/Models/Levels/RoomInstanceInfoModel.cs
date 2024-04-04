@@ -27,9 +27,9 @@ public class RoomInstanceInfoModel
         HostPort = config.Port;
 
         LevelName = room.LevelInfo.Name;
-        RoomName = room.GetRoomName();
+        RoomName = room.ToString();
 
-        var players = room.Players.Values.ToArray();
+        var players = room.GetPlayers();
 
         CountGroup = player.TempData.Group != null
             ? player.TempData.Group.GetMembers()

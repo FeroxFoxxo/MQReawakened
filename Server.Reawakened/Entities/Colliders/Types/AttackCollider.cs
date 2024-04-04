@@ -18,17 +18,18 @@ public class AttackCollider(string id, Vector3Model position,
 
     public override string[] IsColliding(bool isAttack)
     {
-        var roomList = Room.Colliders.Values.ToList();
+        var colliders = Room.GetColliders();
+
         List<string> collidedWith = [];
 
         if (LifeTime <= Room.Time)
         {
-            Room.Colliders.Remove(Id);
+            Room.RemoveCollider(Id);
             return ["0"];
         }
 
         if (isAttack)
-            foreach (var collider in roomList)
+            foreach (var collider in colliders)
                 if (CheckCollision(collider) &&
                     collider.Type != ColliderType.Attack && collider.Type != ColliderType.Player &&
                     collider.Type != ColliderType.Hazard && collider.Type != ColliderType.AiAttack

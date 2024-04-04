@@ -28,9 +28,11 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 
     public override void Update()
     {
+        var players = Room.GetPlayers();
+
         if (_hasStarted)
             if (Room.Time >= _timer || ArenaEntities.All(Room.IsObjectKilled) && Room.Time >= _minClearTime)
-                Trigger(Room.Players.FirstOrDefault().Value, false);
+                Trigger(players.FirstOrDefault(), false);
     }
 
     public override void Triggered(Player _, bool isSuccess, bool isActive)
@@ -60,6 +62,8 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
         }
         else
         {
+            var players = Room.GetPlayers();
+
             //Trigger rewarded entities on win and shut down Arena
             if (ArenaEntities.All(Room.IsObjectKilled) && Room.Time >= _minClearTime)
             {
@@ -67,11 +71,11 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
                     foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(entity.ToString()))
                         trigger.Trigger(true);
 
-                foreach (var player in Room.Players.Values)
+                foreach (var player in players)
                     player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, QuestCatalog);
             }
             else
-                foreach (var player in Room.Players.Values)
+                foreach (var player in players)
                     RemovePhysicalInteractor(player.GameObjectId);
         }
 

@@ -80,7 +80,9 @@ public static class PlayerLootHandler
                 player.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count, itemCatalog);
         }
 
-        if (lootModel.MultiplayerWheelChance > 0 && player.Room.Players.Count > 1 && player.Room.LevelInfo.Type == LevelType.Trail)
+        var players = player.Room.GetPlayers();
+
+        if (lootModel.MultiplayerWheelChance > 0 && players.Length > 1 && player.Room.LevelInfo.Type == LevelType.Trail)
         {
             var randomChance = new Random().Next(100);
 
@@ -92,12 +94,12 @@ public static class PlayerLootHandler
                 multiplayerWheelData.Append(gottenItems[new Random().Next(gottenItems.Count)].ItemId);
                 multiplayerWheelData.Append(lootableItems);
 
-                foreach (var groupMember in player.Room.Players.Values)
+                foreach (var groupMember in players)
                     SendMultiplayerLootWheel(groupMember, multiplayerWheelData.ToString());
             }
         }
 
-        if (lootModel.DoWheel && player.Room.Players.Count <= 1)
+        if (lootModel.DoWheel && players.Length <= 1)
             SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
 
         player.SendUpdatedInventory();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Enums;
+using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Abstractions;
 using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
@@ -628,6 +629,29 @@ public class InternalEnemyData : InternalXml
                                     }
 
                                     enemyModel.EnemyLootTable = lootTable;
+                                    break;
+                                case "Offset":
+                                    var x = 0f;
+                                    var y = 0f;
+                                    var z = 0f;
+
+                                    foreach (XmlAttribute hitboxData in data.Attributes)
+                                    {
+                                        switch (hitboxData.Name)
+                                        {
+                                            case "x":
+                                                x = float.Parse(hitboxData.Value);
+                                                break;
+                                            case "y":
+                                                y = float.Parse(hitboxData.Value);
+                                                break;
+                                            case "z":
+                                                z = float.Parse(hitboxData.Value);
+                                                break;
+                                        }
+                                    }
+
+                                    enemyModel.Offset = new Vector3Model(x, y, z);
                                     break;
                                 case "Hitbox":
                                     var width = 0f;

@@ -39,7 +39,9 @@ public class GenericControllerComp : Component<GenericCollectible>
     {
         Collected = true;
 
-        var collectedValue = Value * Room.Players.Count;
+        var players = Room.GetPlayers();
+
+        var collectedValue = Value * players.Length;
 
         Room.SentEntityTriggered(Id, player, true, true);
 
@@ -58,15 +60,17 @@ public class GenericControllerComp : Component<GenericCollectible>
                 break;
         }
 
-        var effectEvent = new FX_SyncEvent(Id.ToString(), Room.Time, effectName,
-            Position.X, Position.Y, FX_SyncEvent.FXState.Play);
+        var effectEvent = new FX_SyncEvent(
+            Id.ToString(), Room.Time, effectName,
+            Position.X, Position.Y, FX_SyncEvent.FXState.Play
+        );
 
         Room.SendSyncEvent(effectEvent);
 
         if (collectedValue <= 0)
             return;
 
-        foreach (var currentPlayer in Room.Players.Values)
+        foreach (var currentPlayer in players)
             currentPlayer.AddBananas(collectedValue, Achievement, Logger);
     }
 }
