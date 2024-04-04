@@ -4,7 +4,6 @@ using A2m.Server;
 using Server.Reawakened.Players.Extensions;
 using Server.Base.Timers.Services;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Base.Timers.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Configs;
