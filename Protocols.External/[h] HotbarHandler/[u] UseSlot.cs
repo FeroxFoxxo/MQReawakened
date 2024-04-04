@@ -96,15 +96,14 @@ public class UseSlot : ExternalProtocol
 
         if (removeFromHotBar)
         {
-            if (usedItem.ItemActionType == ItemActionType.Eat)
+            switch (usedItem.ItemActionType)
             {
-                Player.CheckAchievement(AchConditionType.Consumable, string.Empty, InternalAchievement, Logger);
-                Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, InternalAchievement, Logger);
-            }
-            else if (usedItem.ItemActionType == ItemActionType.Drink)
-            {
-                Player.CheckAchievement(AchConditionType.Drink, string.Empty, InternalAchievement, Logger);
-                Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, InternalAchievement, Logger);
+                case ItemActionType.Eat:
+                    Player.CheckAchievement(AchConditionType.Consumable, [usedItem.PrefabName], InternalAchievement, Logger);
+                    break;
+                case ItemActionType.Drink:
+                    Player.CheckAchievement(AchConditionType.Drink, [usedItem.PrefabName], InternalAchievement, Logger);
+                    break;
             }
 
             RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);

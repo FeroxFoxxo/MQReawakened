@@ -37,7 +37,7 @@ public class IdolControllerComp : Component<IdolController>
 
         character.CollectedIdols[levelId].Add(Index);
 
-        player.CheckAchievement(AchConditionType.CollectIdol, Room.LevelInfo.Name, Achievement, Logger);
+        player.CheckAchievement(AchConditionType.CollectIdol, [ Room.LevelInfo.Name ], Achievement, Logger);
 
         var collectedEvent =
             new Trigger_SyncEvent(Id.ToString(), Room.Time, true, player.GameObjectId.ToString(), true);

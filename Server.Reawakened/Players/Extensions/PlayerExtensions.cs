@@ -147,7 +147,7 @@ public static class PlayerExtensions
         if (player.TempData.BananaBoostsElixir)
             collectedBananas = Convert.ToInt32(collectedBananas * 0.1);
 
-        player.CheckAchievement(AchConditionType.CollectBanana, string.Empty, internalAchievement, logger, collectedBananas);
+        player.CheckAchievement(AchConditionType.CollectBanana, [], internalAchievement, logger, collectedBananas);
 
         charData.Cash += collectedBananas;
         player.SendCashUpdate();

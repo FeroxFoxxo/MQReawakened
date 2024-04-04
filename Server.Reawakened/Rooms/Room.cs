@@ -180,9 +180,11 @@ public class Room : Timer
                 player.Remove(Logger);
                 return;
             }
-
-            var playerCollider = new PlayerCollider(player);
-            playerCollider.IsColliding(false);
+            else
+            {
+                var playerCollider = new PlayerCollider(player);
+                playerCollider.IsColliding(false);
+            }
         }
     }
 

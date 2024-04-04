@@ -49,8 +49,7 @@ public class RoomUpdate : ExternalProtocol
         {
             var levelInfo = Player.Room.LevelInfo;
 
-            Player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.ExploreTrail, levelInfo.Name, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.ExploreTrail, [ levelInfo.Name ], InternalAchievement, Logger);
 
             Player.DiscoverTribe(levelInfo.Tribe);
         }
