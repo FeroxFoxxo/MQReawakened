@@ -3,6 +3,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Models.Enemy.Enums;
 using Server.Reawakened.XMLs.Models.Enemy.Models;
+using static UIBase;
 
 namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 public class AISyncEventHelper
@@ -34,7 +35,7 @@ public class AISyncEventHelper
             posY,
             posZ,
             spawnX,
-            spawnX,
+            spawnY,
             behaviorRatio,
             health, 
             maxHealth,
