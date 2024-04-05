@@ -279,20 +279,19 @@ public partial class ChatCommands(
 
     private bool Teleport(Player player, string[] args)
     {
-        if (args.Length < 3 || !int.TryParse(args[1], out var xPos) || !int.TryParse(args[2], out var yPos))
+        if (args.Length < 3 || !int.TryParse(args[1], out var x) || !int.TryParse(args[2], out var y))
         {
             Log("Please enter valid coordinates.", player);
             return false;
         }
 
-        var currentZPosition = player.TempData.Position.Z == 0 ? 0 : 1;
+        var zPosition = player.TempData.Position.Z;
 
-        var zPos = args.Length > 3 ? int.Parse(args[3]) : currentZPosition;
+        if (args.Length > 3)
+            if (int.TryParse(args[3], out var givenZPosition))
+                zPosition = givenZPosition;
 
-        if (zPos is < 0 or > 1)
-            zPos = currentZPosition;
-
-        player.TeleportPlayer(xPos, yPos, Convert.ToInt32(zPos));
+        player.TeleportPlayer(player.TempData.Position.X + x, player.TempData.Position.Y + y, zPosition == 0);
 
         return true;
     }

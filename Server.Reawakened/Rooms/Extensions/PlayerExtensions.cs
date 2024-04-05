@@ -15,26 +15,15 @@ namespace Server.Reawakened.Rooms.Extensions;
 
 public static class PlayerExtensions
 {
-    private static void JoinRoom(this Player player, Room room, bool useOriginalRoom, out JoinReason reason)
+    private static void JoinRoom(this Player player, Room room, out JoinReason reason)
     {
-        player.Room?.RemoveClient(player, useOriginalRoom);
+        player.Room?.RemoveClient(player);
         player.Room = room;
         player.Room.AddClient(player, out reason);
     }
 
-    public static void QuickJoinRoom(this Player player, int id, WorldHandler worldHandler, out JoinReason reason)
-    {
-        var useOriginalRoom = false;
-
-        if (player.Room != null)
-            if (player.Room.LevelInfo.LevelId == id)
-                useOriginalRoom = true;
-
-        var room = useOriginalRoom ? player.Room :
-            worldHandler.GetRoomFromLevelId(id, player);
-
-        player.JoinRoom(room, useOriginalRoom, out reason);
-    }
+    public static void QuickJoinRoom(this Player player, int id, WorldHandler worldHandler, out JoinReason reason) =>
+        player.JoinRoom(worldHandler.GetRoomFromLevelId(id, player), out reason);
 
     public static string GetPlayersPlaneString(this Player player)
         => player.TempData.Position.Z > 0 ? "Plane1" : "Plane0";

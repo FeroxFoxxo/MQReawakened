@@ -239,7 +239,7 @@ public class Room : Timer
         }
     }
 
-    public void RemoveClient(Player player, bool useOriginalRoom)
+    public void RemoveClient(Player player)
     {
         lock (_roomLock)
         {
@@ -264,27 +264,17 @@ public class Room : Timer
             return;
         }
 
-        if (useOriginalRoom)
+        lock (_level.Lock)
         {
-            var checkpoints = _entities.Where(x => x.Value.Any(x => x is CheckpointControllerComp)).Select(x => x.Value).SelectMany(x => x);
-
-            foreach (var checkpoint in checkpoints)
-                checkpoint.InitializeComponent();
+            _level.Rooms.Remove(_roomId);
         }
-        else
+
+        lock (_roomLock)
         {
-            lock (_level.Lock)
-            {
-                _level.Rooms.Remove(_roomId);
-            }
-
-            lock (_roomLock)
-            {
-                CleanData();
-            }
-
-            Stop();
+            CleanData();
         }
+
+        Stop();
     }
 
     public void DumpPlayersToLobby(WorldHandler worldHandler)
@@ -295,9 +285,22 @@ public class Room : Timer
 
     public void SendCharacterInfo(Player player)
     {
-        // WHERE TO SPAWN
-        var character = player.Character;
+        SetPlayerPosition(player.Character);
 
+        foreach (var currentPlayer in _players.Values)
+        {
+            var areDifferentClients = currentPlayer.UserId != player.UserId;
+
+            player.SendCharacterInfoDataTo(currentPlayer,
+                areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals, LevelInfo);
+
+            if (areDifferentClients)
+                currentPlayer.SendCharacterInfoDataTo(player, CharacterInfoType.Lite, LevelInfo);
+        }
+    }
+
+    public void SetPlayerPosition(CharacterModel character)
+    {
         var spawnPoint = GetSpawnPoint(character);
         var coordinates = GetSpawnCoordinates(spawnPoint);
 
@@ -314,19 +317,6 @@ public class Room : Timer
         );
 
         Logger.LogDebug("Position of spawn: {Position}", spawnPoint.Position);
-
-        // CHARACTER DATA
-
-        foreach (var currentPlayer in _players.Values)
-        {
-            var areDifferentClients = currentPlayer.UserId != player.UserId;
-
-            player.SendCharacterInfoDataTo(currentPlayer,
-                areDifferentClients ? CharacterInfoType.Lite : CharacterInfoType.Portals, LevelInfo);
-
-            if (areDifferentClients)
-                currentPlayer.SendCharacterInfoDataTo(player, CharacterInfoType.Lite, LevelInfo);
-        }
     }
 
     // Players
@@ -367,27 +357,13 @@ public class Room : Timer
 
     public static Vector2Model GetSpawnCoordinates(BaseComponent spawnLocation)
     {
-        var x = spawnLocation.Rectangle.X;
-
-        if (x == 0)
-            x = spawnLocation.Position.X;
-
-        x -= .25f;
-
-        var y = spawnLocation.Rectangle.Y;
-
-        if (y == 0)
-            y = spawnLocation.Position.Y;
-
-        y += .25f;
-
-        x += spawnLocation.Rectangle.Width / 2;
-        y += spawnLocation.Rectangle.Height / 2;
+        var rect = spawnLocation.Rectangle;
+        var pos = spawnLocation.Position;
 
         return new Vector2Model()
         {
-            X = x,
-            Y = y
+            X = (rect.X == 0 ? pos.X : rect.X) + spawnLocation.Rectangle.Width / 2 - .5f,
+            Y = (rect.Y == 0 ? pos.Y : rect.Y) + spawnLocation.Rectangle.Height / 2 + .25f
         };
     }
 

@@ -32,12 +32,10 @@ public static class PlayerExtensions
         }
     }
 
-    public static void TeleportPlayer(this Player player, int x, int y, int z)
+    public static void TeleportPlayer(this Player player, float x, float y, bool isBackPlane)
     {
-        var isBackPlane = z == 1;
-
         var coordinates = new PhysicTeleport_SyncEvent(player.GameObjectId.ToString(),
-            player.Room.Time, player.TempData.Position.X + x, player.TempData.Position.Y + y, isBackPlane);
+            player.Room.Time, x, y, isBackPlane);
 
         player.SendSyncEventToPlayer(coordinates);
     }

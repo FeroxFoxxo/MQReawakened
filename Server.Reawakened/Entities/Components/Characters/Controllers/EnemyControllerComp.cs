@@ -41,10 +41,10 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     {
         Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
 
-        EnemyHealth = MaxHealth;
-
         OnKillExp = WorldStatistics.GetValue(ItemEffectType.IncreaseExperience, WorldStatisticsGroup.Enemy, Level);
         MaxHealth = WorldStatistics.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Enemy, Level);
+
+        EnemyHealth = MaxHealth;
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
