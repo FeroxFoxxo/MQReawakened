@@ -140,9 +140,17 @@ public class ItemRConfig : IRConfig
         TrainingGear2011 = new Dictionary<int, string>
         {
             { 48, "ABIL_GrapplingHook01" }, // lv_shd_highway01
+            { 48, "Add_SHD_ChimFoo01_S01" },
+            { 48, "WPN_PRJ_Shuriken01" },
             { 54, "ABIL_Glider01" }, // lv_out_highway01
+            { 54, "Add_OUT_SeaDragon01_S01" },
+            { 54, "WPN_MEL_FireSword01" },
             { 46, "ABIL_MysticCharm01" }, // lv_bon_highway01
+            { 46, "Add_BON_OootuMystic01_S01" },
+            { 46, "WPN_PRJ_PosionousFlower01" },
             { 498, "ABIL_SnowBoard02" }, // lv_wld_highway01
+            { 498, "Add_WLD_IceRaider01_TS01" },
+            { 498, "WPN_MEL_IceRaiderAxe01" }
         };
 
         PetSlotId = 4;
