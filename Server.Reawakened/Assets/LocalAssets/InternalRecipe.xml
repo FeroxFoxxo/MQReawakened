@@ -191,43 +191,44 @@
         <RecipeInfo recipeName="COL_RECIP_BON_Ritualist01_S01">
             <Item itemName="COL_ING_C_WeakThread01" count="1" />
         </RecipeInfo>
+        <!--Guardian Cadet Armor-->
         <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight01_TS01">
             <Item itemName="COL_ING_G_Oak01" count="4" />
             <Item itemName="COL_ING_G_Oak03" count="3" />
         </RecipeInfo>
         <!--Dread Plate Helmet-->
         <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_S01">
-            <Item itemName="COL_ING_G_ShadowShard04" count="15" />
+            <Item itemName="COL_ING_G_ShadowShard02" count="15" />
             <Item itemName="COL_ING_M_DragonScale01" count="12" />
             <Item itemName="COL_ING_G_Amethyst" count="8" />
         </RecipeInfo>
         <!--Dread Plate Armor-->
         <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_TS01">
-            <Item itemName="COL_ING_G_ShadowShard04" count="8" />
+            <Item itemName="COL_ING_G_ShadowShard02" count="8" />
             <Item itemName="COL_ING_M_DragonScale01" count="6" />
             <Item itemName="COL_ING_G_Amethyst" count="4" />
         </RecipeInfo>
         <!--Dread Plate Leg Armor-->
         <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_LS01">
-            <Item itemName="COL_ING_G_ShadowShard04" count="6" />
+            <Item itemName="COL_ING_G_ShadowShard02" count="6" />
             <Item itemName="COL_ING_M_DragonScale01" count="6" />
             <Item itemName="COL_ING_G_Amethyst" count="4" />
         </RecipeInfo>
         <!--Dread Plate Bracers-->
         <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_W01">
-            <Item itemName="COL_ING_G_ShadowShard04" count="8" />
+            <Item itemName="COL_ING_G_ShadowShard02" count="8" />
             <Item itemName="COL_ING_M_DragonScale01" count="6" />
             <Item itemName="COL_ING_G_Amethyst" count="4" />
         </RecipeInfo>
         <!--Dread Plate Shield-->
         <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_BP01">
-            <Item itemName="COL_ING_G_ShadowShard04" count="12" />
+            <Item itemName="COL_ING_G_ShadowShard02" count="12" />
             <Item itemName="COL_ING_M_DragonScale01" count="10" />
             <Item itemName="COL_ING_G_Amethyst" count="6" />
         </RecipeInfo>
         <!--Dread Plate Tailguard-->
         <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_T01">
-            <Item itemName="COL_ING_G_ShadowShard04" count="8" />
+            <Item itemName="COL_ING_G_ShadowShard02" count="8" />
             <Item itemName="COL_ING_M_DragonScale01" count="6" />
             <Item itemName="COL_ING_G_Amethyst" count="4" />
         </RecipeInfo>
@@ -341,7 +342,7 @@
         </RecipeInfo>
         <!--Bubble Blower-->
         <RecipeInfo recipeName="COL_RECIP_WPN_PRJ_SpongeBob_Bubble01">
-            <Item itemName="COL_ING_G_ShadowShard04" count="4" />
+            <Item itemName="COL_ING_G_ShadowShard02" count="4" />
             <Item itemName="COL_ING_SpongeBob01" count="4" />
         </RecipeInfo>
         <!--Krusty Krab Spatula-->
