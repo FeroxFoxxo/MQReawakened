@@ -231,7 +231,8 @@ public class Room : Timer
             if (_itemConfig.TrainingGear.TryGetValue(LevelInfo.LevelId, out var trainingGear) && _config.GameVersion == GameVersion.v2014)
                 currentPlayer.AddGear(trainingGear, ItemCatalog);
             else if (_itemConfig.TrainingGear2011.TryGetValue(LevelInfo.LevelId, out var gear) && _config.GameVersion >= GameVersion.v2011)
-                currentPlayer. AddGear(gear, ItemCatalog);
+                foreach (var item in gear)
+                    currentPlayer.AddGear(item, ItemCatalog);
         }
         else
         {
