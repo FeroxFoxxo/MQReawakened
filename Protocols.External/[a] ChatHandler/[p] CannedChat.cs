@@ -19,13 +19,12 @@ public class CannedChat : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var channelType = (CannedChatChannel)Convert.ToInt32(message[5]);
-        var chatPhraseId = Convert.ToInt32(message[6]);
+        var channelType = (CannedChatChannel) int.Parse(message[5]);
+        var chatPhraseId = int.Parse(message[6]);
         _ = message[7]; // recipientName
 
-        var character = Player.Character;
         var chatPhrase = CannedChatDict.GetDialogById(chatPhraseId);
 
-        Player.Room.Chat(channelType, character.Data.CharacterName, chatPhrase);
+        Player.Room.Chat(channelType, Player.CharacterName, chatPhrase);
     }
 }
