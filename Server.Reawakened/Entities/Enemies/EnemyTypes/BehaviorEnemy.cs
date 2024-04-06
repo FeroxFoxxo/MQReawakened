@@ -212,7 +212,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         if (player == null)
         {
-            Logger.LogError("Could not change behavior of {PrefabName} when damaged!", PrefabName);
+            Logger.LogError("Could not find player that damaged {PrefabName}! Returning...", PrefabName);
             return;
         }
 
