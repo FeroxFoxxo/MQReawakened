@@ -7,5 +7,5 @@ using Server.Reawakened.XMLs.Data.Enemy.Models;
 namespace Server.Reawakened.XMLs.Data.Enemy.States;
 public class IdleState(List<EnemyResourceModel> resources) : BaseState(resources)
 {
-    protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorIdle();
+    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorIdle();
 }

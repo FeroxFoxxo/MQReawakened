@@ -17,5 +17,5 @@ public class AggroState(float aggroSpeed, float moveBeyondTargetDistance, bool s
     public float DetectionRangeUpY => detectionRangeUpY;
     public float DetectionRangeDownY => detectionRangeDownY;
 
-    protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorAggro(this, globalComp);
+    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorAggro(this, globalComp);
 }

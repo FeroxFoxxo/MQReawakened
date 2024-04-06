@@ -17,7 +17,7 @@ public class StingerState(float speedForward, float speedBackward, float inDurat
     public float InDurationBackward => inDurationBackward;
     public float StingerDamageDistance => stingerDamageDistance;
 
-    protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorStinger(this);
+    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorStinger(this);
 
     public override string[] GetStartArgs(BehaviorEnemy behaviorEnemy) =>
         [

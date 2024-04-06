@@ -1,5 +1,6 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.States;
 
@@ -13,14 +14,24 @@ public class AIBehaviorLookAround(LookAroundState lookAroundState, AIStatsGlobal
     public float InitialProgressRatio => globalComp.LookAround_InitialProgressRatio != globalComp.Default.LookAround_InitialProgressRatio ? globalComp.LookAround_InitialProgressRatio : lookAroundState.InitialProgressRatio;
     public bool SnapOnGround => globalComp.LookAround_SnapOnGround != globalComp.Default.LookAround_SnapOnGround ? globalComp.LookAround_SnapOnGround : lookAroundState.SnapOnGround;
 
-    public override float ResetTime => LookTime;
+    public override bool ShouldDetectPlayers => true;
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_LookAround(LookTime, InitialProgressRatio, SnapOnGround);
-
-    public override StateType GetBehavior() => StateType.LookAround;
 
     public override object[] GetData() => [
             LookTime, StartDirection, ForceDirection,
             InitialProgressRatio, SnapOnGround
         ];
+
+    public override void NextState(BehaviorEnemy enemy)
+    {
+        enemy.ChangeBehavior(
+            enemy.GenericScript.UnawareBehavior,
+            enemy.Position.x,
+            enemy.GenericScript.UnawareBehavior == StateType.ComeBack ? enemy.AiData.Intern_SpawnPosY : enemy.Position.y,
+            enemy.Generic.Patrol_ForceDirectionX
+        );
+
+        enemy.AiBehavior.MustDoComeback(enemy.AiData);
+    }
 }

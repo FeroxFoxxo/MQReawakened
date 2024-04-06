@@ -22,5 +22,5 @@ public class ReawakenedLogger(ILogger<ReawakenedLogger> logger) : ILogger, IServ
         logger.LogInformation("{Str}: {Context}", str, objectContext != null ? objectContext.ToString() : "N/A");
 
     public override void debug(string str, object objectContext) =>
-        logger.LogDebug("{Str}: {Context}", str, objectContext != null ? objectContext.ToString() : "N/A");
+        logger.LogTrace("{Str}: {Context}", str, objectContext != null ? objectContext.ToString() : "N/A");
 }

@@ -12,5 +12,5 @@ public class BomberState(float inTime, float loopTime, float bombRadius, List<En
     public float LoopTime => loopTime;
     public float BombRadius => bombRadius;
 
-    protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorBomber(this);
+    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorBomber(this);
 }

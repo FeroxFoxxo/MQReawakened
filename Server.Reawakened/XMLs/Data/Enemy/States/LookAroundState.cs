@@ -13,5 +13,5 @@ public class LookAroundState(float lookTime, float startDirection, float forceDi
     public float InitialProgressRatio => initialProgressRatio;
     public bool SnapOnGround => snapOnGround;
 
-    protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorLookAround(this, globalComp);
+    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorLookAround(this, globalComp);
 }

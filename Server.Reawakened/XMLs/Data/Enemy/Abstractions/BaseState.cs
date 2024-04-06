@@ -9,17 +9,10 @@ public abstract class BaseState(List<EnemyResourceModel> resources)
 {
     public List<EnemyResourceModel> Resources => resources;
 
-    protected abstract AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp);
-
-    public AIBaseBehavior CreateBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp)
-    {
-        var behaviour = GetBaseBehaviour(globalComp, genericComp);
-        behaviour.SetBehaviour();
-        return behaviour;
-    }
+    public abstract AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp);
 
     public virtual string[] GetStartArgs(BehaviorEnemy behaviorEnemy) =>
-        CreateBaseBehaviour(behaviorEnemy.Global, behaviorEnemy.Generic).GetInitArgs();
+        GetBaseBehaviour(behaviorEnemy.Global, behaviorEnemy.Generic).GetInitArgs();
 
     public string ToResourcesString()
     {
@@ -32,5 +25,5 @@ public abstract class BaseState(List<EnemyResourceModel> resources)
     }
 
     public object ToStateString(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) =>
-        CreateBaseBehaviour(globalComp, genericComp).ToString();
+        GetBaseBehaviour(globalComp, genericComp).ToString();
 }

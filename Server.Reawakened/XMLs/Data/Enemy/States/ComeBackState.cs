@@ -10,7 +10,7 @@ public class ComeBackState(float comeBackSpeed, List<EnemyResourceModel> resourc
 {
     public float ComeBackSpeed => comeBackSpeed;
 
-    protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorComeBack(this, globalComp);
+    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorComeBack(this, globalComp);
 
     public override string[] GetStartArgs(BehaviorEnemy behaviorEnemy) =>
         [

@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
-using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
@@ -19,12 +19,11 @@ public class AIBehaviorShooting(ShootingState shootingState, AIStatsGlobalComp g
     public bool FireSpreadClockwise => globalComp.Shooting_FireSpreadClockwise != globalComp.Default.Shooting_FireSpreadClockwise ? globalComp.Shooting_FireSpreadClockwise : shootingState.FireSpreadClockwise;
     public float FireSpreadStartAngle => globalComp.Shooting_FireSpreadStartAngle != globalComp.Default.Shooting_FireSpreadStartAngle ? globalComp.Shooting_FireSpreadStartAngle : shootingState.FireSpreadStartAngle;
 
-    public override float ResetTime => 0;
+    public override bool ShouldDetectPlayers => false;
 
-    protected override AI_Behavior GetBehaviour() => new AI_Behavior_Shooting(NbBulletsPerRound, FireSpreadAngle, DelayBetweenBullet, DelayShootAnim,
+    protected override AI_Behavior GetBehaviour() =>
+        new AI_Behavior_Shooting(NbBulletsPerRound, FireSpreadAngle, DelayBetweenBullet, DelayShootAnim,
         NbFireRounds, DelayBetweenFireRound, StartCoolDownTime, EndCoolDownTime, ProjectileSpeed, FireSpreadClockwise, FireSpreadStartAngle);
-
-    public override StateType GetBehavior() => StateType.Shooting;
 
     public override object[] GetData() => [
         NbBulletsPerRound, FireSpreadAngle,
@@ -34,4 +33,7 @@ public class AIBehaviorShooting(ShootingState shootingState, AIStatsGlobalComp g
         ProjectileSpeed,
         FireSpreadClockwise, FireSpreadStartAngle
     ];
+
+    public override void NextState(BehaviorEnemy enemy) =>
+        enemy.ChangeBehavior(enemy.GenericScript.AwareBehavior, enemy.AiData.Sync_TargetPosX, enemy.AiData.Sync_TargetPosY, enemy.AiData.Intern_Dir);
 }

@@ -25,27 +25,28 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     public AIStatsGenericComp Generic;
     public AIBaseBehavior AiBehavior;
 
-    public float BehaviorEndTime;
-
     public float HealthModifier;
     public float ScaleModifier;
     public float ResistanceModifier;
 
+    private object _enemyLock;
+
+    private StateType _currentState;
+    private float _lastUpdate;
+    private int _index;
+
     public override void Initialize()
     {
-        //External Component Info
+        _enemyLock = new object();
+
         Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
-
-        // Set up base config that all behaviours have
-        BehaviorEndTime = 0;
 
         var classCopier = Services.GetRequiredService<ClassCopier>();
 
         GlobalProperties = EnemyModel.GlobalProperties.GenerateGlobalPropertiesFromModel(classCopier, Global);
         GenericScript = EnemyModel.GenericScript.GenerateGenericPropertiesFromModel(classCopier, Global);
 
-        //AIProcessData assignment, used for AI_Behavior
         AiData = new AIProcessData
         {
             Intern_SpawnPosX = Position.x,
@@ -100,93 +101,22 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             Position.z < pos.Z + 1 && Position.z > pos.Z - 1 &&
             (!limitedByPatrolLine || pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5);
 
-    public void ResetBehaviorTime(float behaviorEndTime)
-    {
-        if (behaviorEndTime < AwareBehaviorDuration)
-            behaviorEndTime = AwareBehaviorDuration;
-
-        BehaviorEndTime = Room.Time + behaviorEndTime;
-    }
-
     public override void InternalUpdate()
     {
-        /* Behaviors that have not been added yet:
-                AIBehavior_Spike
-                AIBehavior_Projectile
-                AIBehavior_Acting
-        */
+        var hasDetected = false;
 
-        switch (AiBehavior)
+        if (AiBehavior.ShouldDetectPlayers)
+            hasDetected = HasDetectedPlayers();
+
+        if (!hasDetected)
         {
-            case AIBehaviorAggro:
-                if (!AiBehavior.Update(ref AiData, Room.Time))
-                    ChangeBehavior(GenericScript.AwareBehavior,
-                        GenericScript.UnawareBehavior == StateType.ComeBack ? Position.x : AiData.Sync_TargetPosX,
-                        GenericScript.UnawareBehavior == StateType.ComeBack ? Position.y : AiData.Sync_TargetPosY,
-                        AiData.Intern_Dir
-                    );
-                break;
+            if (AiBehavior.TryUpdate(AiData, Room.Time, this))
+                if (AiData.Intern_FireProjectile)
+                    FireProjectile(false);
 
-            case AIBehaviorLookAround:
-                DetectPlayers(GenericScript.AttackBehavior);
-
-                if (Room.Time >= BehaviorEndTime)
-                {
-                    ChangeBehavior(
-                        GenericScript.UnawareBehavior,
-                        Position.x,
-                        GenericScript.UnawareBehavior == StateType.ComeBack ? AiData.Intern_SpawnPosY : Position.y,
-                        Generic.Patrol_ForceDirectionX
-                    );
-
-                    AiBehavior.MustDoComeback(AiData);
-                }
-                break;
-
-            case AIBehaviorPatrol:
-                AiBehavior.Update(ref AiData, Room.Time);
-
-                if (Room.Time >= BehaviorEndTime)
-                    DetectPlayers(GenericScript.AttackBehavior);
-                break;
-
-            case AIBehaviorComeBack:
-                if (!AiBehavior.Update(ref AiData, Room.Time))
-                    ChangeBehavior(StateType.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
-                break;
-
-            case AIBehaviorShooting:
-                TryFireProjectile(false);
-
-                if (!AiBehavior.Update(ref AiData, Room.Time))
-                    ChangeBehavior(GenericScript.AwareBehavior, AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir);
-                break;
-
-            case AIBehaviorBomber:
-                if (Room.Time >= BehaviorEndTime)
-                    Damage(EnemyController.MaxHealth, null);
-                break;
-
-            case AIBehaviorGrenadier:
-                TryFireProjectile(true);
-
-                if (Room.Time >= BehaviorEndTime)
-                    ChangeBehavior(GenericScript.AwareBehavior, Position.x, Position.y, AiData.Intern_Dir);
-                break;
-
-            case AIBehaviorStomper:
-                if (Room.Time >= BehaviorEndTime)
-                    ChangeBehavior(GenericScript.UnawareBehavior, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
-                break;
-
-            case AIBehaviorStinger:
-                if (!AiBehavior.Update(ref AiData, Room.Time))
-                    ChangeBehavior(GenericScript.AwareBehavior, Position.x, Position.y, AiData.Intern_Dir);
-                break;
-
-            default:
-                Logger.LogError("Behavioral enemy '{Enemy}' has no update method for '{Behavior}'", PrefabName, AiBehavior.ToString());
-                break;
+            if (_currentState == GenericScript.AwareBehavior)
+                if (Room.Time >= _lastUpdate + GenericScript.genericScript_AwareBehaviorDuration)
+                    AiBehavior.NextState(this);
         }
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
@@ -198,9 +128,10 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         );
     }
 
-    public void DetectPlayers(StateType type)
+    public bool HasDetectedPlayers()
     {
         foreach (var player in Room.GetPlayers())
+        {
             if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
             {
                 AiData.Sync_TargetPosX = player.TempData.Position.X;
@@ -209,62 +140,71 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                     Position.y : player.TempData.Position.Y;
 
                 ChangeBehavior(
-                    type,
+                    GenericScript.AttackBehavior,
                     player.TempData.Position.X,
                     GenericScript.AttackBehavior == StateType.Grenadier ? player.TempData.Position.Y : Position.y,
                     Generic.Patrol_ForceDirectionX
                 );
+
+                return true;
             }
+        }
+
+        return false;
     }
 
-    public void TryFireProjectile(bool isGrenade)
+    public void FireProjectile(bool isGrenade)
     {
-        if (AiData.Intern_FireProjectile)
+        var position = new Vector3
         {
-            var position = new Vector3
-            {
-                x = Position.x + AiData.Intern_Dir * GlobalProperties.Global_ShootOffsetX,
-                y = Position.y + GlobalProperties.Global_ShootOffsetY,
-                z = Position.z
-            };
+            x = Position.x + AiData.Intern_Dir * GlobalProperties.Global_ShootOffsetX,
+            y = Position.y + GlobalProperties.Global_ShootOffsetY,
+            z = Position.z
+        };
 
-            var speed = new Vector2
-            {
-                x = (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
-                y = (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed
-            };
+        var speed = new Vector2
+        {
+            x = (float)Math.Cos(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed,
+            y = (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed
+        };
 
-            var damage = GameFlow.StatisticData.GetValue(
-                ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level
-            );
+        var damage = GameFlow.StatisticData.GetValue(
+            ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level
+        );
 
-            var effect = EnemyController.ComponentData.EnemyEffectType;
+        var effect = EnemyController.ComponentData.EnemyEffectType;
 
-            Room.AddRangedProjectile(Id, position, speed, 3, damage, effect, isGrenade);
+        Room.AddRangedProjectile(Id, position, speed, 3, damage, effect, isGrenade);
 
-            AiData.Intern_FireProjectile = false;
-        }
+        AiData.Intern_FireProjectile = false;
     }
 
     public void ChangeBehavior(StateType behaviourType, float targetX, float targetY, int direction)
     {
-        var behaviour = EnemyModel.BehaviorData[behaviourType];
-        var index = EnemyModel.IndexOf(behaviourType);
+        lock (_enemyLock)
+        {
+            if (AiData != null && AiBehavior != null)
+                AiBehavior.Stop(AiData);
 
-        AiBehavior = behaviour.CreateBaseBehaviour(Global, Generic);
+            _currentState = behaviourType;
+            _index = EnemyModel.IndexOf(behaviourType);
+            _lastUpdate = Room.Time;
 
-        var args = behaviour.GetStartArgs(this);
+            var behaviour = EnemyModel.BehaviorData[behaviourType];
 
-        AiBehavior.Start(ref AiData, Room.Time, args);
+            AiBehavior = behaviour.GetBaseBehaviour(Global, Generic);
 
-        Room.SendSyncEvent(
-            AISyncEventHelper.AIDo(
-                Id, Room.Time, Position.x, Position.y, 1.0f,
-                index, args, targetX, targetY, direction, false
-            )
-        );
+            var args = behaviour.GetStartArgs(this);
 
-        ResetBehaviorTime(AiBehavior.ResetTime);
+            AiBehavior.Start(AiData, Room.Time, args);
+
+            Room.SendSyncEvent(
+                AISyncEventHelper.AIDo(
+                    Id, Room.Time, Position.x, Position.y, 1.0f,
+                    _index, args, targetX, targetY, direction, false
+                )
+            );
+        }
     }
 
     public override void Damage(int damage, Player player)
@@ -277,7 +217,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             return;
         }
 
-        if (AiBehavior is not AIBehaviorShooting)
+        if (_currentState != StateType.Shooting)
         {
             AiData.Sync_TargetPosX = player.TempData.Position.X;
             AiData.Sync_TargetPosY = player.TempData.Position.Y;
@@ -287,8 +227,6 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                 player.TempData.Position.X, player.TempData.Position.Y,
                 Generic.Patrol_ForceDirectionX
             );
-
-            ResetBehaviorTime(AwareBehaviorDuration);
         }
     }
 
@@ -315,14 +253,14 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             GetEnemyInit(
                 AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ,
                 AiData.Intern_SpawnPosX, AiData.Intern_SpawnPosY,
-                AiBehavior.GetBehaviorRatio(ref AiData, Room.Time)
+                AiBehavior.GetBehaviorRatio(AiData, Room.Time)
             )
         );
 
         player.SendSyncEventToPlayer(
             AISyncEventHelper.AIDo(
                 Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY,
-                1.0f, GetIndexOfCurrentBehavior(), AiBehavior.GetInitArgs(),
+                1.0f, _index, AiBehavior.GetInitArgs(),
                 AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, false
             )
         );
@@ -335,6 +273,4 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                 Health, MaxHealth, HealthModifier, ScaleModifier, ResistanceModifier,
                 Status.Stars, Level, GlobalProperties, EnemyModel.BehaviorData, Global, Generic
             );
-
-    public int GetIndexOfCurrentBehavior() => EnemyModel.IndexOf(AiBehavior.GetBehavior());
 }

@@ -22,5 +22,5 @@ public class ShootingState(int nbBulletsPerRound, float fireSpreadAngle, float d
     public bool FireSpreadClockwise => fireSpreadClockwise;
     public float FireSpreadStartAngle => fireSpreadStartAngle;
 
-    protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorShooting(this, globalComp);
+    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorShooting(this, globalComp);
 }

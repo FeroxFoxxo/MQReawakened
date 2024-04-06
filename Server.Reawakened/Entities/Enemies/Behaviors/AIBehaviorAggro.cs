@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
-using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.States;
 
@@ -16,7 +16,7 @@ public class AIBehaviorAggro(AggroState aggroState, AIStatsGlobalComp globalComp
     public float DetectionRangeUpY => aggroState.DetectionRangeUpY;
     public float DetectionRangeDownY => aggroState.DetectionRangeDownY;
 
-    public override float ResetTime => 0;
+    public override bool ShouldDetectPlayers => false;
 
     protected override AI_Behavior GetBehaviour() => new AI_Behavior_Aggro(
         AggroSpeed, MoveBeyondTargetDistance,
@@ -24,26 +24,17 @@ public class AIBehaviorAggro(AggroState aggroState, AIStatsGlobalComp globalComp
         DetectionRangeUpY, DetectionRangeDownY
     );
 
-    public override StateType GetBehavior() => StateType.Aggro;
-
-    public override string ToString()
-    {
-        var sb = new SeparatedStringBuilder(';');
-
-        sb.Append(AggroSpeed);
-        sb.Append(MoveBeyondTargetDistance);
-        sb.Append(StayOnPatrolPath ? 1 : 0);
-        sb.Append(AttackBeyondPatrolLine);
-        sb.Append(UseAttackBeyondPatrolLine ? 1 : 0);
-        sb.Append(DetectionRangeUpY);
-        sb.Append(DetectionRangeDownY);
-
-        return sb.ToString();
-    }
-
     public override object[] GetData() => [
             AggroSpeed, MoveBeyondTargetDistance, StayOnPatrolPath,
             AttackBeyondPatrolLine, UseAttackBeyondPatrolLine,
             DetectionRangeUpY, DetectionRangeDownY
         ];
+
+    public override void NextState(BehaviorEnemy enemy) =>
+        enemy.ChangeBehavior(
+            enemy.GenericScript.AwareBehavior,
+            enemy.GenericScript.UnawareBehavior == StateType.ComeBack ? enemy.Position.x : enemy.AiData.Sync_TargetPosX,
+            enemy.GenericScript.UnawareBehavior == StateType.ComeBack ? enemy.Position.y : enemy.AiData.Sync_TargetPosY,
+            enemy.AiData.Intern_Dir
+        );
 }

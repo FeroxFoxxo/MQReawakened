@@ -12,5 +12,5 @@ public class StomperState(float attackTime, float impactTime, float damageDistan
     public float DamageDistance => damageDistance;
     public float DamageOffset => damageOffset;
 
-    protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorStomper(this);
+    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorStomper(this);
 }

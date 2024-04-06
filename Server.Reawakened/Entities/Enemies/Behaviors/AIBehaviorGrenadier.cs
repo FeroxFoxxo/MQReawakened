@@ -1,5 +1,5 @@
 ﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
-using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
@@ -14,12 +14,16 @@ public class AIBehaviorGrenadier(GrenadierState grenadierState) : AIBaseBehavior
     public float ProjSpeed => grenadierState.ProjSpeed;
     public float MaxHeight => grenadierState.MaxHeight;
 
-    public override float ResetTime => GInTime + GLoopTime + GOutTime;
-    protected override AI_Behavior GetBehaviour() => new AI_Behavior_Grenadier(GInTime, GLoopTime, GOutTime, IsTracking, ProjCount, ProjSpeed, MaxHeight);
-    public override StateType GetBehavior() => StateType.Grenadier;
+    public override bool ShouldDetectPlayers => false;
+
+    protected override AI_Behavior GetBehaviour() =>
+        new AI_Behavior_Grenadier(GInTime, GLoopTime, GOutTime, IsTracking, ProjCount, ProjSpeed, MaxHeight);
 
     public override object[] GetData() => [
         GInTime, GLoopTime, GOutTime,
-        IsTracking, ProjCount, ProjSpeed, MaxHeight
+        ProjCount, ProjSpeed, MaxHeight
     ];
+
+    public override void NextState(BehaviorEnemy enemy) =>
+        enemy.ChangeBehavior(enemy.GenericScript.AwareBehavior, enemy.Position.x, enemy.Position.y, enemy.AiData.Intern_Dir);
 }

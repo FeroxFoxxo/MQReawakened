@@ -17,5 +17,5 @@ public class GrenadierState(float gInTime, float gLoopTime, float gOutTime, bool
     public float ProjSpeed => projSpeed;
     public float MaxHeight => maxHeight;
 
-    protected override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorGrenadier(this);
+    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorGrenadier(this);
 }
