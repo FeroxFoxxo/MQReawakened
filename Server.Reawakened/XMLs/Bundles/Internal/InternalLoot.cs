@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Extensions;
-using Server.Reawakened.XMLs.Models.LootRewards;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Data.LootRewards.Models;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.BundlesInternal;
+namespace Server.Reawakened.XMLs.Bundles.Internal;
 
 public class InternalLoot : InternalXml
 {
@@ -80,7 +80,6 @@ public class InternalLoot : InternalXml
                         }
 
                     foreach (XmlNode reward in lootInfo.ChildNodes)
-                    {
                         switch (reward.Name)
                         {
                             case "Bananas":
@@ -121,7 +120,6 @@ public class InternalLoot : InternalXml
                                 Logger.LogWarning("Unknown reward type '{RewardType}' for object {Id}", reward.Name, objectId);
                                 break;
                         }
-                    }
 
                     LootCatalog[levelId].Add(objectId, new LootModel(objectId, bananaRewards, itemRewards, doWheel, multiplayerWheelChance, weightRange));
                     lootList.Add(objectId);

@@ -1,7 +1,7 @@
 ﻿using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
-namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
+namespace Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 
 public abstract class AIBaseBehavior
 {

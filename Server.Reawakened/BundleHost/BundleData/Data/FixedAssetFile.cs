@@ -1,6 +1,6 @@
 ﻿using AssetRipper.IO.Endian;
 
-namespace Server.Reawakened.BundleHost.BundleFix.Data;
+namespace Server.Reawakened.BundleHost.BundleData.Data;
 
 public class FixedAssetFile(string path) : IEndianWritable
 {

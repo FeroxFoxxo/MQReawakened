@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.BundleHost.BundleFix.Header.Enums;
+﻿namespace Server.Reawakened.BundleHost.BundleData.Header.Enums;
 
 public enum BundleVersion
 {

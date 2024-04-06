@@ -1,9 +1,9 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
-using Server.Reawakened.XMLs.Models.Enemy.States;
+using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.States;
 
-namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
+namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
 public class AIBehaviorComeBack(ComeBackState comeBackState, AIStatsGlobalComp globalComp) : AIBaseBehavior
 {
@@ -15,5 +15,5 @@ public class AIBehaviorComeBack(ComeBackState comeBackState, AIStatsGlobalComp g
 
     public override StateType GetBehavior() => StateType.ComeBack;
 
-    public override object[] GetData() => [ ComeBackSpeed ];
+    public override object[] GetData() => [ComeBackSpeed];
 }

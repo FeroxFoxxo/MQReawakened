@@ -1,6 +1,6 @@
 ﻿using LitJson;
 using Microsoft.AspNetCore.Mvc;
-using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Bundles.Internal;
 
 namespace Web.Apps.Achievements.API.Definition;
 

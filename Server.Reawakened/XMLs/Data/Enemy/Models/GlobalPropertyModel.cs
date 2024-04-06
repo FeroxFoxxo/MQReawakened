@@ -1,7 +1,7 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Rooms.Services;
 
-namespace Server.Reawakened.XMLs.Models.Enemy.Models;
+namespace Server.Reawakened.XMLs.Data.Enemy.Models;
 
 public class GlobalPropertyModel(bool detectionLimitedByPatrolLine, float backDetectionRangeX, float viewOffsetY,
     float backDetectionRangeUpY, float backDetectionRangeDownY, float shootOffsetX, float shootOffsetY, float frontDetectionRangeX,

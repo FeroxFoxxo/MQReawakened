@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Arenas;
-using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Bundles.Internal;
 
 namespace Protocols.External._M__MinigameHandler;
 

@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.XMLs.Models.Events;
+﻿namespace Server.Reawakened.XMLs.Data.Events;
 
 public class Event
 {

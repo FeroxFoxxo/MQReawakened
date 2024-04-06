@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.XMLs.Extensions;
+﻿namespace Server.Reawakened.XMLs.Abstractions.Extensions;
 
 public static class GetSmallest
 {

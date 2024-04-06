@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.XMLs.Models.Enemy.Models;
+namespace Server.Reawakened.XMLs.Data.Enemy.Models;
 
 public class EnemyResourceModel(string type, string asset)
 {

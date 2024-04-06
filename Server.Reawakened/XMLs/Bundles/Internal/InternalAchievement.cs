@@ -3,13 +3,15 @@ using Achievement.StaticData;
 using Achievement.Types;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Icons.Services;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Data.Achievements;
+using Server.Reawakened.XMLs.Data.LootRewards.Enums;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.BundlesInternal;
+namespace Server.Reawakened.XMLs.Bundles.Internal;
 public class InternalAchievement : InternalXml
 {
     public override string BundleName => "InternalAchievement";
@@ -150,7 +152,6 @@ public class InternalAchievement : InternalXml
                         }
 
                     foreach (XmlNode achievementLists in achievement.ChildNodes)
-                    {
                         switch (achievementLists.Name)
                         {
                             case "Rewards":
@@ -160,7 +161,6 @@ public class InternalAchievement : InternalXml
                                 achConditions = achievementLists.GetXmlConditions(Logger, achId);
                                 break;
                         }
-                    }
 
                     if (!ExtractIcons.HasIcon($"ACH_{achIconName}_ON"))
                         continue;

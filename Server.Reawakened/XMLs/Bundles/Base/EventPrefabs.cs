@@ -1,12 +1,12 @@
 ﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.Configs;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Models.Events;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
+using Server.Reawakened.XMLs.Data.Events;
 using System.Xml;
 using static A2m.Server.DescriptionHandler;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.Bundles.Base;
 public class EventPrefabs : EventPrefabsXML, IBundledXml
 {
     public string BundleName => "event_prefabs";
@@ -52,7 +52,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                 continue;
 
             foreach (XmlNode mEvent in eventPrefabXml.ChildNodes)
-            {
                 switch (mEvent.Name)
                 {
                     case "event":
@@ -61,7 +60,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                         var levelId = string.Empty;
 
                         foreach (XmlAttribute mEventAttribute in mEvent.Attributes)
-                        {
                             switch (mEventAttribute.Name)
                             {
                                 case "name":
@@ -74,7 +72,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                                     levelId = mEventAttribute.Value.ToString();
                                     continue;
                             }
-                        }
 
                         if (string.IsNullOrEmpty(eventName))
                             continue;
@@ -93,7 +90,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                             var replacementName = string.Empty;
 
                             foreach (XmlAttribute prefabAttribute in eventPrefab.Attributes)
-                            {
                                 switch (prefabAttribute.Name)
                                 {
                                     case "name":
@@ -103,7 +99,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                                         replacementName = prefabAttribute.Value.ToString();
                                         continue;
                                 }
-                            }
 
                             if (prefabName != string.Empty && replacementName != string.Empty)
                             {
@@ -120,7 +115,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                         var timedEventName = string.Empty;
 
                         foreach (XmlAttribute mEventAttribute in mEvent.Attributes)
-                        {
                             switch (mEventAttribute.Name)
                             {
                                 case "timedEventId":
@@ -130,7 +124,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                                     timedEventName = mEventAttribute.Value.ToString();
                                     continue;
                             }
-                        }
 
                         if (timedEventId == 0 || string.IsNullOrEmpty(timedEventName))
                             continue;
@@ -145,7 +138,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                                 continue;
 
                             foreach (XmlAttribute prefabAttribute in eventPrefab.Attributes)
-                            {
                                 switch (prefabAttribute.Name)
                                 {
                                     case "activePopup":
@@ -158,7 +150,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                                         TimedSocialEvents[comb].IsMemberOnly = prefabAttribute.Value.ToString() != "0";
                                         continue;
                                 }
-                            }
 
                             foreach (XmlNode timePeriod in eventPrefab.ChildNodes)
                             {
@@ -168,7 +159,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                                 var timeWindow = new TimeWindow();
 
                                 foreach (XmlAttribute timePeriodAttribute in timePeriod.Attributes)
-                                {
                                     switch (timePeriodAttribute.Name)
                                     {
                                         case "startTime":
@@ -180,7 +170,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                                             timeWindow.EndDateTime = DateTime.Parse(timeWindow.End);
                                             continue;
                                     }
-                                }
 
                                 TimedSocialEvents[comb].TimeWindows.Add(timeWindow);
                             }
@@ -190,7 +179,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                             [.. TimedSocialEvents[comb].TimeWindows.OrderBy(x => DateTime.Parse(x.Start).TimeOfDay.TotalSeconds)];
                         break;
                 }
-            }
         }
 
         this.SetField<EventPrefabsXML>("_eventPrefabsMap", PrefabMap);

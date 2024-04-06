@@ -5,7 +5,7 @@ using Server.Reawakened.BundleHost.Events;
 using Server.Reawakened.BundleHost.Events.Arguments;
 using Server.Reawakened.BundleHost.Extensions;
 using Server.Reawakened.BundleHost.Models;
-using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 
 namespace Server.Reawakened.BundleHost.Services;

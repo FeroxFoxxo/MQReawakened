@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.XMLs.Models.Npcs;
+﻿namespace Server.Reawakened.XMLs.Data.Npcs;
 
 public class DialogInfo(int gameObjectId, int nameId, int descriptionId, Dictionary<int, ConversationInfo> dialog)
 {

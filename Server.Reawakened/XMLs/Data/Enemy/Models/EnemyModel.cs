@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
-namespace Server.Reawakened.XMLs.Models.Enemy.Models;
+namespace Server.Reawakened.XMLs.Data.Enemy.Models;
 
 public class EnemyModel
 {

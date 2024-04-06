@@ -1,15 +1,15 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
-using Server.Reawakened.XMLs.Models.Enemy.Models;
-using Server.Reawakened.XMLs.Models.Enemy.States;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
+using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.Models;
+using Server.Reawakened.XMLs.Data.Enemy.States;
+using Server.Reawakened.XMLs.Data.LootRewards.Enums;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.BundlesInternal;
+namespace Server.Reawakened.XMLs.Bundles.Internal;
 
 public class InternalEnemyData : InternalXml
 {
@@ -35,14 +35,12 @@ public class InternalEnemyData : InternalXml
                 var aiType = AiType.Unknown;
 
                 foreach (XmlAttribute aiTypeData in aiTypeElement.Attributes)
-                {
                     switch (aiTypeData.Name)
                     {
                         case "name":
                             aiType = Enum.Parse<AiType>(aiTypeData.Value);
                             break;
                     }
-                }
 
                 foreach (XmlNode enemyCategoryElement in aiTypeElement.ChildNodes)
                 {
@@ -51,14 +49,12 @@ public class InternalEnemyData : InternalXml
                     var enemyCategory = EnemyCategory.Unknown;
 
                     foreach (XmlAttribute categoryData in enemyCategoryElement.Attributes)
-                    {
                         switch (categoryData.Name)
                         {
                             case "name":
                                 enemyCategory = Enum.Parse<EnemyCategory>(categoryData.Value);
                                 break;
                         }
-                    }
 
                     foreach (XmlNode enemy in enemyCategoryElement.ChildNodes)
                     {
@@ -67,14 +63,12 @@ public class InternalEnemyData : InternalXml
                         var prefabName = string.Empty;
 
                         foreach (XmlAttribute enemyData in enemy.Attributes)
-                        {
                             switch (enemyData.Name)
                             {
                                 case "name":
                                     prefabName = enemyData.Value;
                                     break;
                             }
-                        }
 
                         var enemyModel = new EnemyModel()
                         {
@@ -83,7 +77,6 @@ public class InternalEnemyData : InternalXml
                         };
 
                         foreach (XmlNode data in enemy.ChildNodes)
-                        {
                             switch (data.Name)
                             {
                                 case "Behaviors":
@@ -101,12 +94,10 @@ public class InternalEnemyData : InternalXml
                                             var resourceName = string.Empty;
 
                                             foreach (XmlAttribute enemyResourceData in enemyResource.Attributes)
-                                            {
                                                 if (enemyResourceData.Name.Equals("type"))
                                                     resourceType = enemyResourceData.Value;
                                                 else if (enemyResourceData.Name.Equals("name"))
                                                     resourceName = enemyResourceData.Value;
-                                            }
 
                                             if (!string.IsNullOrEmpty(resourceType))
                                                 resources.Add(new EnemyResourceModel(resourceType, resourceName));
@@ -120,7 +111,6 @@ public class InternalEnemyData : InternalXml
                                                 var endPathWaitTime = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
-                                                {
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "speed":
@@ -133,7 +123,6 @@ public class InternalEnemyData : InternalXml
                                                             endPathWaitTime = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
-                                                }
 
                                                 state = new PatrolState(speed, smoothMove, endPathWaitTime, resources);
                                                 break;
@@ -147,7 +136,6 @@ public class InternalEnemyData : InternalXml
                                                 var detectionRangeDownY = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
-                                                {
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "speed":
@@ -172,7 +160,6 @@ public class InternalEnemyData : InternalXml
                                                             detectionRangeDownY = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
-                                                }
 
                                                 state = new AggroState(aggroSpeed, moveBeyondTargetDistance, stayOnPatrolPath, aggroAttackBeyondPatrolLine,
                                                     useAttackBeyondPatrolLine, detectionRangeUpY, detectionRangeDownY, resources);
@@ -185,7 +172,6 @@ public class InternalEnemyData : InternalXml
                                                 var snapOnGround = true;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
-                                                {
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "lookTime":
@@ -204,7 +190,6 @@ public class InternalEnemyData : InternalXml
                                                             snapOnGround = bool.Parse(behaviorData.Value);
                                                             break;
                                                     }
-                                                }
 
                                                 state = new LookAroundState(lookTime, startDirection, forceDirection, initialProgressRatio, snapOnGround, resources);
                                                 break;
@@ -212,14 +197,12 @@ public class InternalEnemyData : InternalXml
                                                 var comeBackSpeed = 1f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
-                                                {
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "speed":
                                                             comeBackSpeed = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
-                                                }
 
                                                 state = new ComeBackState(comeBackSpeed, resources);
                                                 break;
@@ -237,7 +220,6 @@ public class InternalEnemyData : InternalXml
                                                 var fireSpreadStartAngle = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
-                                                {
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "nbBulletsPerRound":
@@ -274,7 +256,6 @@ public class InternalEnemyData : InternalXml
                                                             fireSpreadStartAngle = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
-                                                }
 
                                                 state = new ShootingState(nbBulletsPerRound, fireSpreadAngle, delayBetweenBullet, delayShootAnim,
                                                     nbFireRounds, delayBetweenFireRound, startCoolDownTime, endCoolDownTime,
@@ -286,7 +267,6 @@ public class InternalEnemyData : InternalXml
                                                 var bombRadius = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
-                                                {
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "inTime":
@@ -299,7 +279,6 @@ public class InternalEnemyData : InternalXml
                                                             bombRadius = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
-                                                }
 
                                                 state = new BomberState(inTime, loopTime, bombRadius, resources);
                                                 break;
@@ -313,7 +292,6 @@ public class InternalEnemyData : InternalXml
                                                 var maxHeight = 1f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
-                                                {
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "inTime":
@@ -338,7 +316,6 @@ public class InternalEnemyData : InternalXml
                                                             maxHeight = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
-                                                }
 
                                                 state = new GrenadierState(gInTime, gLoopTime, gOutTime, isTracking, projCount, projSpeed, maxHeight, resources);
                                                 break;
@@ -349,7 +326,6 @@ public class InternalEnemyData : InternalXml
                                                 var damageOffset = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
-                                                {
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "attackTime":
@@ -365,7 +341,6 @@ public class InternalEnemyData : InternalXml
                                                             damageOffset = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
-                                                }
 
                                                 state = new StomperState(attackTime, impactTime, damageDistance, damageOffset, resources);
                                                 break;
@@ -379,7 +354,6 @@ public class InternalEnemyData : InternalXml
                                                 var stingerDamageDistance = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
-                                                {
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "speedForward":
@@ -404,7 +378,6 @@ public class InternalEnemyData : InternalXml
                                                             stingerDamageDistance = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
-                                                }
 
                                                 state = new StingerState(speedForward, speedBackward, inDurationForward, attackDuration,
                                                     damageAttackTimeOffset, inDurationBackward, stingerDamageDistance, resources);
@@ -433,7 +406,6 @@ public class InternalEnemyData : InternalXml
                                         var gDataValue = string.Empty;
 
                                         foreach (XmlAttribute globalPropValue in globalProperty.Attributes)
-                                        {
                                             switch (globalPropValue.Name)
                                             {
                                                 case "value":
@@ -443,7 +415,6 @@ public class InternalEnemyData : InternalXml
                                                     Logger.LogWarning("Unknown global parameter: '{ParameterName}' for '{EnemyName}'", globalPropValue.Name, prefabName);
                                                     break;
                                             }
-                                        }
 
                                         if (string.IsNullOrEmpty(gDataName) || string.IsNullOrEmpty(gDataValue))
                                             continue;
@@ -501,7 +472,6 @@ public class InternalEnemyData : InternalXml
                                         var gDataValue = string.Empty;
 
                                         foreach (XmlAttribute globalPropValue in globalProperty.Attributes)
-                                        {
                                             switch (globalPropValue.Name)
                                             {
                                                 case "value":
@@ -511,7 +481,6 @@ public class InternalEnemyData : InternalXml
                                                     Logger.LogWarning("Unknown global parameter: '{ParameterName}' for '{EnemyName}'", globalPropValue.Name, prefabName);
                                                     break;
                                             }
-                                        }
 
                                         if (string.IsNullOrEmpty(gDataName) || string.IsNullOrEmpty(gDataValue))
                                             continue;
@@ -593,7 +562,6 @@ public class InternalEnemyData : InternalXml
                                         var dropMaxLevel = 65;
 
                                         foreach (XmlAttribute dynamicDropAttributes in dynamicDrop.Attributes)
-                                        {
                                             switch (dynamicDropAttributes.Name)
                                             {
                                                 case "type":
@@ -623,7 +591,6 @@ public class InternalEnemyData : InternalXml
                                                     dropMaxLevel = int.Parse(dynamicDropAttributes.Value);
                                                     break;
                                             }
-                                        }
 
                                         lootTable.Add(new EnemyDropModel(dropType, dropId, dropChance, dropMinLevel, dropMaxLevel));
                                     }
@@ -636,7 +603,6 @@ public class InternalEnemyData : InternalXml
                                     var z = 0f;
 
                                     foreach (XmlAttribute hitboxData in data.Attributes)
-                                    {
                                         switch (hitboxData.Name)
                                         {
                                             case "x":
@@ -649,7 +615,6 @@ public class InternalEnemyData : InternalXml
                                                 z = float.Parse(hitboxData.Value);
                                                 break;
                                         }
-                                    }
 
                                     enemyModel.Offset = new Vector3Model(x, y, z);
                                     break;
@@ -660,7 +625,6 @@ public class InternalEnemyData : InternalXml
                                     var yOffset = 0f;
 
                                     foreach (XmlAttribute hitboxData in data.Attributes)
-                                    {
                                         switch (hitboxData.Name)
                                         {
                                             case "width":
@@ -676,7 +640,6 @@ public class InternalEnemyData : InternalXml
                                                 yOffset = float.Parse(hitboxData.Value);
                                                 break;
                                         }
-                                    }
 
                                     enemyModel.Hitbox = new HitboxModel(width, height, xOffset, yOffset);
                                     break;
@@ -684,7 +647,6 @@ public class InternalEnemyData : InternalXml
                                     Logger.LogError("Unknown enemy data type for: {DataType} ({EnemyName}", data.Name, prefabName);
                                     break;
                             }
-                        }
 
                         enemyModel.EnsureValidData(prefabName, Logger);
 

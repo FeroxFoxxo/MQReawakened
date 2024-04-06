@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Entities.Enums;
+﻿using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 
-namespace Server.Reawakened.Entities.Interfaces;
+namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 
 public interface ICoopTriggered
 {

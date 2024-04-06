@@ -2,7 +2,7 @@
 using Server.Reawakened.Rooms;
 using static A2m.Server.ExtLevelEditor;
 
-namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.SyncEvents;
+namespace Server.Reawakened.Entities.Enemies.Models;
 
 public class AiStateSyncEvent()
 {

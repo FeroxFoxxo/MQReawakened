@@ -1,10 +1,12 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Entities.Colliders.Abstractions;
+using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Players;
-using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
-namespace Server.Reawakened.Rooms.Models.Entities.Colliders;
+namespace Server.Reawakened.Entities.Colliders;
 public class AttackCollider(string id, Vector3Model position,
     Vector2 size, string plane, Player player,
     int damage, Elemental type, float lifeTime, float offset) :
@@ -35,7 +37,6 @@ public class AttackCollider(string id, Vector3Model position,
             return [];
 
         if (isAttack)
-        {
             foreach (var collider in colliders)
             {
                 var collided = CheckCollision(collider);
@@ -48,7 +49,6 @@ public class AttackCollider(string id, Vector3Model position,
                     collider.SendCollisionEvent(this);
                 }
             }
-        }
 
         return [.. collidedWith];
     }

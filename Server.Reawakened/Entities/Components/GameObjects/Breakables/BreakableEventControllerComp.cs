@@ -1,17 +1,17 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
-using Server.Reawakened.Entities.Components.Misc;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
+using Server.Reawakened.Entities.Components.GameObjects.Spawners.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
 using UnityEngine;
 using Room = Server.Reawakened.Rooms.Room;
 
@@ -40,7 +40,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         MaxHealth = 1;
         _health = MaxHealth;
 
-        Room.AddCollider( new BreakableCollider(Id, Position, new Vector2(Rectangle.Width, Rectangle.Height), ParentPlane, Room));
+        Room.AddCollider(new BreakableCollider(Id, Position, new Vector2(Rectangle.Width, Rectangle.Height), ParentPlane, Room));
     }
 
     public void PostInit()

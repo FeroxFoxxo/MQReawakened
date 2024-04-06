@@ -1,13 +1,13 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Components.GameObjects.Items.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
 
-namespace Server.Reawakened.Entities.Components;
+namespace Server.Reawakened.Entities.Components.GameObjects.Items;
 
 public class HarvestControllerComp : BaseChestControllerComp<HarvestController>
 {

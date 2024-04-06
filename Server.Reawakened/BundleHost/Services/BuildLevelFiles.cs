@@ -4,7 +4,7 @@ using Server.Base.Core.Extensions;
 using Server.Reawakened.BundleHost.Events;
 using Server.Reawakened.BundleHost.Events.Arguments;
 using Server.Reawakened.BundleHost.Extensions;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 
 namespace Server.Reawakened.BundleHost.Services;
 

@@ -1,10 +1,10 @@
 ﻿using A2m.Server;
 using Server.Base.Core.Extensions;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.Bundles.Base;
 public class WorldStatistics : StatisticDataXML, IBundledXml
 {
     public string BundleName => "WorldStatistics";
@@ -28,11 +28,11 @@ public class WorldStatistics : StatisticDataXML, IBundledXml
         VulnerabilityTable = [];
     }
 
-    public void EditDescription(XmlDocument xml) 
-    { 
+    public void EditDescription(XmlDocument xml)
+    {
     }
 
-    public void ReadDescription(string xml) => 
+    public void ReadDescription(string xml) =>
         ReadDescriptionXml(xml);
 
     public void FinalizeBundle()
@@ -47,8 +47,8 @@ public class WorldStatistics : StatisticDataXML, IBundledXml
     public new int GetValue(ItemEffectType effect, WorldStatisticsGroup group, int level)
     {
         var result = 0;
-        if (Statistics.TryGetValue(effect, out var effectValue) 
-            && effectValue.TryGetValue(group, out var groupValue) 
+        if (Statistics.TryGetValue(effect, out var effectValue)
+            && effectValue.TryGetValue(group, out var groupValue)
             && groupValue.TryGetValue(level, out var value))
             result = value;
         return result;
@@ -73,12 +73,8 @@ public class WorldStatistics : StatisticDataXML, IBundledXml
     public new int GetReputationForNextLevel(int reputation)
     {
         foreach (var key in Statistics[ItemEffectType.IncreaseLevelFromExperience][WorldStatisticsGroup.Player].Keys)
-        {
             if (key <= 64 && Statistics[ItemEffectType.IncreaseLevelFromExperience][WorldStatisticsGroup.Player][key] > reputation)
-            {
                 return Statistics[ItemEffectType.IncreaseLevelFromExperience][WorldStatisticsGroup.Player][key];
-            }
-        }
         return Statistics[ItemEffectType.IncreaseLevelFromExperience][WorldStatisticsGroup.Player][64];
     }
 }

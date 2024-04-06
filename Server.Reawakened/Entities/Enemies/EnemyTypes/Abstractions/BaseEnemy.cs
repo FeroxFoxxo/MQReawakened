@@ -1,29 +1,29 @@
-﻿using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Rooms.Models.Entities;
-using UnityEngine;
-using Server.Reawakened.Rooms;
-using Microsoft.Extensions.Logging;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
+﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
-using Server.Reawakened.Rooms.Models.Planes;
+using Microsoft.Extensions.Logging;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.Characters.Controllers;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
+using Server.Reawakened.Entities.Components.GameObjects.Spawners.Abstractions;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
+using Server.Reawakened.Entities.Enemies.Extensions;
+using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
-using A2m.Server;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.Configs;
-using Server.Reawakened.XMLs.Models.Enemy.Models;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.Entities.Enemies.Models;
-using Server.Reawakened.Entities.Components.Misc;
-using Server.Reawakened.Entities.Components.GameObjects.Controllers;
-using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
+using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
+using Server.Reawakened.XMLs.Data.Enemy.Models;
+using UnityEngine;
 
-namespace Server.Reawakened.Entities.Enemies;
+namespace Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 
 public abstract class BaseEnemy : IDestructible
 {
@@ -90,7 +90,7 @@ public abstract class BaseEnemy : IDestructible
 
         ParentPlane = EnemyController.ParentPlane;
         Position = new Vector3(EnemyController.Position.X, EnemyController.Position.Y, EnemyController.Position.Z);
-        
+
         Status = Room.GetEntityFromId<InterObjStatusComp>(Id);
 
         switch (ParentPlane)
@@ -168,7 +168,7 @@ public abstract class BaseEnemy : IDestructible
 
         Hitbox = new EnemyCollider(Id, position, new Vector2(width, height), ParentPlane, Room)
         {
-            Position = new Vector3 (
+            Position = new Vector3(
                 Position.x + EnemyModel.Offset.X,
                 Position.y + EnemyModel.Offset.Y,
                 Position.z + EnemyModel.Offset.Z
@@ -227,10 +227,10 @@ public abstract class BaseEnemy : IDestructible
                 origin.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, QuestCatalog);
                 origin.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, QuestCatalog);
 
-                origin.CheckAchievement(AchConditionType.DefeatEnemy, [ Enum.GetName(EnemyModel.EnemyCategory), EnemyController.PrefabName ], InternalAchievement, Logger);
-                origin.CheckAchievement(AchConditionType.DefeatEnemyInLevel, [ origin.Room.LevelInfo.Name ], InternalAchievement, Logger);
+                origin.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory), EnemyController.PrefabName], InternalAchievement, Logger);
+                origin.CheckAchievement(AchConditionType.DefeatEnemyInLevel, [origin.Room.LevelInfo.Name], InternalAchievement, Logger);
             }
-            
+
             //For spawners
             if (IsFromSpawner)
             {

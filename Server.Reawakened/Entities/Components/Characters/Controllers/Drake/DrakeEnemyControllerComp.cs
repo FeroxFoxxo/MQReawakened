@@ -1,8 +1,8 @@
-﻿using Server.Base.Timers.Services;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Rooms.Models.Entities;
-using Microsoft.Extensions.Logging;
 
-namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.Drake;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.Drake;
 
 public class DrakeEnemyControllerComp : Component<DrakeEnemyController>
 {

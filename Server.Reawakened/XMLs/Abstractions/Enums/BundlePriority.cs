@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.XMLs.Enums;
+﻿namespace Server.Reawakened.XMLs.Abstractions.Enums;
 
 public enum BundlePriority
 {

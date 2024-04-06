@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
-using Server.Reawakened.XMLs.Models.Enemy.States;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.States;
 
-namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
+namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
 public class AIBehaviorStomper(StomperState stomperState) : AIBaseBehavior
 {

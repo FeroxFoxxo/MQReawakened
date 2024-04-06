@@ -1,18 +1,18 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
+using Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
-using Server.Reawakened.Entities.Enemies.AIStateEnemies.Rachnok.AIStates;
-using Server.Reawakened.Entities.Enemies.AIStateEnemies.SyncEvents;
+using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using static A2m.Server.ExtLevelEditor;
 
-namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.Rachnok;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss;
 
 public class SpiderBossControllerComp : Component<SpiderBossController>, IRecieverTriggered, IDestructible
 {

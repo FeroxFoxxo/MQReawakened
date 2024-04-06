@@ -1,7 +1,7 @@
 ﻿using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 
-namespace Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
+namespace Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 
 public interface IDestructible
 {

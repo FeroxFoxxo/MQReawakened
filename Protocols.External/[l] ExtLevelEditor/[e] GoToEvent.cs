@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Protocols.External._l__ExtLevelEditor;
 
@@ -32,7 +32,7 @@ public class GoToEvent : ExternalProtocol
             }
             else return;
         }
-        
+
         WorldHandler.ChangePlayerRoom(Player, levelId, spawnId.ToString());
     }
 }

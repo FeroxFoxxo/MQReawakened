@@ -3,7 +3,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 
-namespace Server.Reawakened.Entities.AbstractComponents;
+namespace Server.Reawakened.Entities.Components.GameObjects.Platforms.Abstractions;
 
 public abstract class BaseMovingObjectControllerComp<T> : Component<T>, IRecieverTriggered where T : MovingObjectController
 {

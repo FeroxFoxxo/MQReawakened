@@ -2,25 +2,26 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Components.GameObjects.Controllers;
+using Server.Reawakened.Entities.Components.Characters.Controllers;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards;
-using Server.Reawakened.Entities.Enemies;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
+using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
+using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
-using Server.Reawakened.XMLs.Models.Enemy.Models;
-using Server.Reawakened.XMLs.Models.Enemy.States;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.Models;
+using Server.Reawakened.XMLs.Data.Enemy.States;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.Components.Misc;
+namespace Server.Reawakened.Entities.Components.GameObjects.Spawners.Abstractions;
 
 public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 {

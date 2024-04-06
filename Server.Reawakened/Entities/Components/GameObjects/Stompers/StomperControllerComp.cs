@@ -1,8 +1,8 @@
 ﻿using Server.Base.Timers.Services;
-using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Components.GameObjects.Platforms.Abstractions;
 using static Stomper_Movement;
 
-namespace Server.Reawakened.Entities.Components;
+namespace Server.Reawakened.Entities.Components.GameObjects.Stompers;
 
 public class StomperControllerComp : BaseMovingObjectControllerComp<StomperController>
 {
@@ -39,7 +39,7 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
     public override void Update()
     {
         base.Update();
-        
+
         var movement = (Stomper_Movement)Movement;
         movement.GetBehaviorRatio(Room.Time);
 

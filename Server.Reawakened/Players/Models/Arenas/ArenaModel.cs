@@ -1,7 +1,7 @@
 ﻿using Server.Base.Core.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Bundles.Internal;
 
 namespace Server.Reawakened.Players.Models.Arenas;
 
@@ -46,8 +46,8 @@ public class ArenaModel
         var lootableItems = new SeparatedStringBuilder('|');
 
         foreach (var reward in lootCatalog.LootCatalog[levelId][arenaId].ItemRewards)
-                foreach (var itemReward in reward.Items)
-                    lootableItems.Append(itemReward.Value.ItemId);
+            foreach (var itemReward in reward.Items)
+                lootableItems.Append(itemReward.Value.ItemId);
 
         return lootableItems.ToString();
     }

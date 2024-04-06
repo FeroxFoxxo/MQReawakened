@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.XMLs.Models.Enemy.Enums;
+﻿using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
-namespace Server.Reawakened.XMLs.Models.Enemy.Models;
+namespace Server.Reawakened.XMLs.Data.Enemy.Models;
 public class GenericScriptPropertiesModel(
     StateType attackBehavior, StateType awareBehavior,
     StateType unawareBehavior, float awareBehaviorDuration,

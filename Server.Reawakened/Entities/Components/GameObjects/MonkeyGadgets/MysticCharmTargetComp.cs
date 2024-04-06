@@ -1,10 +1,10 @@
 ﻿using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.Components;
+namespace Server.Reawakened.Entities.Components.GameObjects.MonkeyGadgets;
 
 public class MysticCharmTargetComp : Component<MysticCharmTarget>
 {

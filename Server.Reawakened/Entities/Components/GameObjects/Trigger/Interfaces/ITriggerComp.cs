@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Players;
 
-namespace Server.Reawakened.Entities.AbstractComponents;
+namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 
 public interface ITriggerComp
 {

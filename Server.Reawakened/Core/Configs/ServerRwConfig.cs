@@ -1,6 +1,6 @@
 ﻿using Server.Base.Core.Abstractions;
 
-namespace Server.Reawakened.Configs;
+namespace Server.Reawakened.Core.Configs;
 
 public class ServerRwConfig : IRwConfig
 {

@@ -1,11 +1,13 @@
-﻿using Server.Reawakened.Players;
+﻿using Server.Reawakened.Entities.Colliders.Abstractions;
+using Server.Reawakened.Entities.Colliders.Enums;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
-namespace Server.Reawakened.Rooms.Models.Entities.Colliders;
+namespace Server.Reawakened.Entities.Colliders;
 public class PlayerCollider(Player player) :
     BaseCollider(player.TempData.GameObjectId,
         new Vector3Model(player.TempData.Position.X, player.TempData.Position.Y, player.TempData.Position.Z),

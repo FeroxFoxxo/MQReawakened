@@ -1,9 +1,9 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
-using Server.Reawakened.XMLs.Models.Enemy.States;
+using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.States;
 
-namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
+namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
 public class AIBehaviorLookAround(LookAroundState lookAroundState, AIStatsGlobalComp globalComp) : AIBaseBehavior
 {
@@ -20,7 +20,7 @@ public class AIBehaviorLookAround(LookAroundState lookAroundState, AIStatsGlobal
     public override StateType GetBehavior() => StateType.LookAround;
 
     public override object[] GetData() => [
-            LookTime, StartDirection, ForceDirection, 
+            LookTime, StartDirection, ForceDirection,
             InitialProgressRatio, SnapOnGround
         ];
 }

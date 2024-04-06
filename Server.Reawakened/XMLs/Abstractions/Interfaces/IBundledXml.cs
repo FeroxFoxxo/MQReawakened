@@ -1,7 +1,7 @@
-﻿using Server.Reawakened.XMLs.Enums;
+﻿using Server.Reawakened.XMLs.Abstractions.Enums;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Abstractions;
+namespace Server.Reawakened.XMLs.Abstractions.Interfaces;
 public interface IBundledXml
 {
     public string BundleName { get; }

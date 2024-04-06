@@ -1,8 +1,8 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
-namespace Server.Reawakened.XMLs.Models.Enemy.Models;
+namespace Server.Reawakened.XMLs.Data.Enemy.Models;
 public class GenericScriptModel(StateType attackBehavior, StateType awareBehavior, StateType unawareBehavior, float awareBehaviorDuration, int healthRegenAmount, int healthRegenFreq)
 {
     public StateType AttackBehavior => attackBehavior;

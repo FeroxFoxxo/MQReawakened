@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.Rachnok.AIStates;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
 public class AIStateSpiderTeaserRetreatComp : Component<AIStateSpiderTeaserRetreat>
 {
     public float TransTime => ComponentData.TransTime;

@@ -3,23 +3,23 @@ using FollowCamDefines;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
-using Server.Reawakened.Entities.Enums;
+using Server.Reawakened.Entities.Components.GameObjects.NPC.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Models.Npcs;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
+using Server.Reawakened.XMLs.Data.Npcs;
 using static A2m.Server.QuestStatus;
 using static NPCController;
 
-namespace Server.Reawakened.Entities.Components;
+namespace Server.Reawakened.Entities.Components.GameObjects.NPC;
 
 public class NPCControllerComp : Component<NPCController>
 {
@@ -147,7 +147,7 @@ public class NPCControllerComp : Component<NPCController>
     public void TalkToNpc(Player player)
     {
         RunObjectives(player);
-        player.CheckAchievement(AchConditionType.Talkto, [ PrefabName ], InternalAchievement, Logger);
+        player.CheckAchievement(AchConditionType.Talkto, [PrefabName], InternalAchievement, Logger);
 
         switch (NpcType)
         {
@@ -437,7 +437,6 @@ public class NPCControllerComp : Component<NPCController>
             canStartQuest = requiredQuests.Count == 0;
 
             foreach (var requiredQuest in requiredQuests)
-            {
                 if (player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
                 {
                     foreach (var previousQuest in previousQuests)
@@ -448,7 +447,6 @@ public class NPCControllerComp : Component<NPCController>
                         }
                     break;
                 }
-            }
         }
 
         if (canStartQuest)
@@ -489,8 +487,8 @@ public class NPCControllerComp : Component<NPCController>
 
             if (completedQuest != null)
             {
-                player.CheckAchievement(AchConditionType.CompleteQuest, [ quest.Name ], InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
-                player.CheckAchievement(AchConditionType.CompleteQuestInLevel, [ player.Room.LevelInfo.Name ], InternalAchievement, Logger); // Quest by Level/Trail if any exist
+                player.CheckAchievement(AchConditionType.CompleteQuest, [quest.Name], InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
+                player.CheckAchievement(AchConditionType.CompleteQuestInLevel, [player.Room.LevelInfo.Name], InternalAchievement, Logger); // Quest by Level/Trail if any exist
 
                 var questLine = QuestCatalog.GetQuestLineData(quest.QuestLineId);
 
@@ -511,7 +509,6 @@ public class NPCControllerComp : Component<NPCController>
                 player.UpdateAllNpcsInLevel();
 
                 if (quest.QuestRewards.Count > 0)
-                {
                     foreach (var item in quest.QuestRewards)
                     {
                         var newQuest = QuestCatalog.GetQuestData(item.Key);
@@ -519,7 +516,6 @@ public class NPCControllerComp : Component<NPCController>
                         if (newQuest != null && player.Character.Data.CompletedQuests.Any(x => newQuest.PreviousQuests.Any(y => y.Key == x)))
                             player.AddQuest(newQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}", Logger);
                     }
-                }
             }
 
             break;
@@ -546,7 +542,6 @@ public class NPCControllerComp : Component<NPCController>
     public void StartNewQuest(Player player)
     {
         foreach (var givenQuest in GiverQuests)
-        {
             if (GetQuestType(player, givenQuest.Id) == NPCStatus.QuestAvailable)
             {
                 var quest = player.AddQuest(givenQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, NpcName, Logger);
@@ -555,7 +550,6 @@ public class NPCControllerComp : Component<NPCController>
 
                 return;
             }
-        }
     }
 
     public void SendNpcDialog(Player player, QuestStatusModel questStatus, QuestState state)
@@ -618,7 +612,7 @@ public class NPCControllerComp : Component<NPCController>
         player.NetState.SendXt("nl", oQuestStatus, Id, NameId, dialog);
     }
 
-    private static bool CanStartDailyQuest(Player player, string dailyObjectId) => 
+    private static bool CanStartDailyQuest(Player player, string dailyObjectId) =>
         !player.Character.CurrentQuestDailies.ContainsKey(dailyObjectId) ||
             player.Character.CurrentQuestDailies.Values.Any(x => x.GameObjectId == dailyObjectId &&
                 x.LevelId == player.Room.LevelInfo.LevelId && DateTime.Now >= x.TimeOfHarvest + TimeSpan.FromDays(1));

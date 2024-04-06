@@ -1,12 +1,13 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Entities.AbstractComponents;
-using Server.Reawakened.Entities.Components.Misc;
+using Server.Reawakened.Entities.Components.GameObjects.Spawners.Abstractions;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using SmartFoxClientAPI.Data;
 
-namespace Server.Reawakened.Entities.Components;
+namespace Server.Reawakened.Entities.Components.GameObjects.Trigger;
 
 public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 {
@@ -39,7 +40,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
     {
         if (IsActive)
         {
-            foreach (var entity in Triggers.Where(x => x.Value == Enums.TriggerType.Activate).Select(x => x.Key))
+            foreach (var entity in Triggers.Where(x => x.Value == TriggerType.Activate).Select(x => x.Key))
             {
                 if (int.Parse(entity) <= 0)
                     continue;

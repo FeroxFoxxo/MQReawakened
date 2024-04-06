@@ -3,7 +3,7 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.Core.Enums;
 
-namespace Server.Reawakened.Configs;
+namespace Server.Reawakened.Core.Configs;
 
 public class ServerRConfig : IRConfig
 {

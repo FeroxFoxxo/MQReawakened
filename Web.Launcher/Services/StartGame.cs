@@ -13,7 +13,7 @@ using Server.Base.Logging;
 using Server.Base.Network.Enums;
 using Server.Base.Worlds;
 using Server.Reawakened.BundleHost.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Events;

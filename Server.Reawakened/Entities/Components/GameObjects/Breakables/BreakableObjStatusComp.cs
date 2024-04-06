@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Entities.AbstractComponents;
+﻿using Server.Reawakened.Entities.Components.GameObjects.Breakables.Abstractions;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Breakables;
 

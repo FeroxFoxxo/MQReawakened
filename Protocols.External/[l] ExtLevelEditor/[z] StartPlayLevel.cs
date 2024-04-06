@@ -1,7 +1,7 @@
-﻿using Server.Reawakened.Network.Protocols;
+﻿using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Services;
 
 namespace Protocols.External._l__ExtLevelEditor;

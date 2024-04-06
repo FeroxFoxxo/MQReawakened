@@ -3,12 +3,13 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
+using Server.Reawakened.XMLs.Data.LootRewards.Enums;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Extensions;
+namespace Server.Reawakened.XMLs.Abstractions.Extensions;
 
 public static class GetInternalXml
 {
@@ -31,7 +32,6 @@ public static class GetInternalXml
             var weight = 1;
 
             foreach (XmlAttribute itemAttribute in item.Attributes)
-            {
                 switch (itemAttribute.Name)
                 {
                     case "itemName":
@@ -50,7 +50,6 @@ public static class GetInternalXml
                         weight = int.Parse(itemAttribute.Value);
                         break;
                 }
-            }
 
             var itemId = 0;
 
@@ -103,7 +102,6 @@ public static class GetInternalXml
             var quantity = -1;
 
             foreach (XmlAttribute rewardAttribute in reward.Attributes)
-            {
                 switch (rewardAttribute.Name)
                 {
                     case "type":
@@ -116,7 +114,6 @@ public static class GetInternalXml
                         quantity = int.Parse(rewardAttribute.Value);
                         continue;
                 }
-            }
 
             id++;
 
@@ -125,9 +122,7 @@ public static class GetInternalXml
                 var item = catalog.GetItemFromPrefabName(value.ToString());
 
                 if (item != null)
-                {
                     value = item.ItemId;
-                }
                 else
                 {
                     logger.LogError("Unknown item with prefab name: '{name}'", value);
@@ -167,7 +162,6 @@ public static class GetInternalXml
             var visible = false;
 
             foreach (XmlAttribute conditionAttribute in condition.Attributes)
-            {
                 switch (conditionAttribute.Name)
                 {
                     case "id":
@@ -190,13 +184,10 @@ public static class GetInternalXml
                         visible = visible.GetBoolValue(conditionAttribute.Value, logger);
                         continue;
                 }
-            }
 
             if (type == AchConditionType.Invalid)
-            {
                 logger.LogError("Unknown condition '{Type}' for '{Name}' " +
                     "(Ach Id: {Id}, Cond Id: {CId})", strType, title, achievementId, id);
-            }
 
             if (string.IsNullOrEmpty(value))
                 value = "any";

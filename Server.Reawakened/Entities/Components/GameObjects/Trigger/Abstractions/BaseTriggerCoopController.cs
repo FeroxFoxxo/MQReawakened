@@ -1,20 +1,19 @@
 ﻿using A2m.Server;
 using Server.Base.Logging;
-using Server.Reawakened.Entities.Components;
-using Server.Reawakened.Entities.Enums;
-using Server.Reawakened.Entities.Interfaces;
+using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 using System.Text;
 using UnityEngine;
 using static TriggerCoopController;
 
-namespace Server.Reawakened.Entities.AbstractComponents;
+namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 
 public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp where T : TriggerCoopController
 {
@@ -158,12 +157,12 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
 
         if (TriggerOnNormalDamage || TriggerOnAirDamage || TriggerOnEarthDamage
             || TriggerOnFireDamage || TriggerOnIceDamage || TriggerOnLightningDamage)
-                Room.AddCollider(
-                    new TriggerableTargetCollider(
-                        Id, AdjustColliderPositionX(Position),
-                        new Vector2(Rectangle.Width, Rectangle.Height), ParentPlane, Room
-                    )
-                );
+            Room.AddCollider(
+                new TriggerableTargetCollider(
+                    Id, AdjustColliderPositionX(Position),
+                    new Vector2(Rectangle.Width, Rectangle.Height), ParentPlane, Room
+                )
+            );
     }
 
     public Vector3Model AdjustColliderPositionX(Vector3Model position)
@@ -295,7 +294,6 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
 
         // GoTo must be outside for if someone in the room has interactd with the trigger in the past (i.e. in public rooms like CTS)
         if (player != null)
-        {
             foreach (var rPlayer in players.Where(x => _currentPhysicalInteractors.Contains(x.GameObjectId)))
             {
                 if (rPlayer == null)
@@ -304,7 +302,6 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
                 rPlayer.CheckObjective(ObjectiveEnum.Goto, Id, PrefabName, 1, QuestCatalog);
                 rPlayer.CheckObjective(ObjectiveEnum.HiddenGoto, Id, PrefabName, 1, QuestCatalog);
             }
-        }
 
         if (!IsActive)
         {

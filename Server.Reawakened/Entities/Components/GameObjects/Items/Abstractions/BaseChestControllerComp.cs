@@ -1,8 +1,8 @@
 ﻿using Server.Reawakened.Players;
-using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Players.Models;
+using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.AbstractComponents;
+namespace Server.Reawakened.Entities.Components.GameObjects.Items.Abstractions;
 
 public abstract class BaseChestControllerComp<T> : Component<T> where T : BaseChestController
 {
@@ -16,7 +16,7 @@ public abstract class BaseChestControllerComp<T> : Component<T> where T : BaseCh
         Active = 1
     }
 
-    public bool CanActivateDailies(Player player, string dailyObjectId) => 
+    public bool CanActivateDailies(Player player, string dailyObjectId) =>
         !player.Character.CurrentCollectedDailies.ContainsKey(dailyObjectId) ||
             player.Character.CurrentCollectedDailies.Values.Any(x => x.GameObjectId == dailyObjectId &&
                 x.LevelId == player.Room.LevelInfo.LevelId && DateTime.Now >= x.TimeOfHarvest + TimeSpan.FromDays(1));

@@ -1,9 +1,9 @@
 ﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.Bundles.Base;
 
 public class LootsInfo : LootsInfoXML, IBundledXml
 {

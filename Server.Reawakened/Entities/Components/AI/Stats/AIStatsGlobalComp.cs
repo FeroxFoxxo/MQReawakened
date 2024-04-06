@@ -1,8 +1,8 @@
 ﻿using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
-using Server.Reawakened.XMLs.Models.Enemy.Models;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.Models;
 
 namespace Server.Reawakened.Entities.Components.AI.Stats;
 public class AIStatsGlobalComp : Component<AI_Stats_Global>

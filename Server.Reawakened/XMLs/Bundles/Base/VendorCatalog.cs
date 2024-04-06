@@ -1,13 +1,13 @@
 ﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.Configs;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.BundlesEdit;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Extensions;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
+using Server.Reawakened.XMLs.Bundles.Edit;
+using Server.Reawakened.XMLs.Bundles.Internal;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.Bundles.Base;
 
 public class VendorCatalog : VendorCatalogsXML, IBundledXml
 {
@@ -40,7 +40,6 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
         var vendors = xml.SelectNodes("/vendor_catalogs/vendor");
 
         if (items != null)
-        {
             foreach (XmlNode aNode in items)
             {
                 if (aNode.Attributes == null)
@@ -56,7 +55,6 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
 
                 aNode.Attributes.Append(quantity);
             }
-        }
 
         if (vendors != null)
         {
@@ -70,17 +68,13 @@ public class VendorCatalog : VendorCatalogsXML, IBundledXml
                 var nameAttribute = aNode.Attributes["name"];
 
                 if (nameAttribute != null)
-                {
                     if (EditVendor.EditedVendorAttributes[ServerRConfig.GameVersion].TryGetValue(nameAttribute.InnerText, out var lItems))
-                    {
                         foreach (var item in lItems)
                         {
                             var itemElement = xml.CreateElement("item");
                             itemElement.SetAttribute("id", item);
                             aNode.AppendChild(itemElement);
                         }
-                    }
-                }
 
                 var categoryAttribute = aNode.Attributes["catalogid"];
 

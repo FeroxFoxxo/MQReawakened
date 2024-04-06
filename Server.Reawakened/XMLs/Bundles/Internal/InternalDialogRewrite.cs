@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Enums;
+﻿using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.BundlesInternal;
+namespace Server.Reawakened.XMLs.Bundles.Internal;
 
 public class InternalDialogRewrite : InternalXml
 {

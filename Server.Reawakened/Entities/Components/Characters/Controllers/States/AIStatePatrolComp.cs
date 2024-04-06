@@ -1,7 +1,7 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.GenericAIStates;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.States;
 public class AIStatePatrolComp : Component<AIStatePatrol>
 {
     public Vector2 Patrol1 => ComponentData.Patrol1;

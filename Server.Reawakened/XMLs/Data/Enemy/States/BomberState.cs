@@ -1,10 +1,10 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
-using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
-using Server.Reawakened.XMLs.Models.Enemy.Models;
+using Server.Reawakened.Entities.Enemies.Behaviors;
+using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Models;
 
-namespace Server.Reawakened.XMLs.Models.Enemy.States;
+namespace Server.Reawakened.XMLs.Data.Enemy.States;
 
 public class BomberState(float inTime, float loopTime, float bombRadius, List<EnemyResourceModel> resources) : BaseState(resources)
 {

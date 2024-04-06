@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Network;
 using Server.Reawakened.Players;
 using Server.Reawakened.Thrift.Abstractions;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 using Thrift.Protocol;
 using static A2m.Server.Protocol.DescriptionHandlerServer;
 

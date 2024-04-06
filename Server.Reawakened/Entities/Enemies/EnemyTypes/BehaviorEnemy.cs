@@ -2,8 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
+using Server.Reawakened.Entities.Enemies.Behaviors;
+using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
+using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Entities.Enemies.Services;
 using Server.Reawakened.Players;
@@ -12,10 +14,10 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
+namespace Server.Reawakened.Entities.Enemies.EnemyTypes;
 
 public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 {
@@ -118,13 +120,11 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         {
             case AIBehaviorAggro:
                 if (!AiBehavior.Update(ref AiData, Room.Time))
-                {
                     ChangeBehavior(GenericScript.AwareBehavior,
                         GenericScript.UnawareBehavior == StateType.ComeBack ? Position.x : AiData.Sync_TargetPosX,
                         GenericScript.UnawareBehavior == StateType.ComeBack ? Position.y : AiData.Sync_TargetPosY,
                         AiData.Intern_Dir
                     );
-                }
                 break;
 
             case AIBehaviorLookAround:
@@ -201,7 +201,6 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     public void DetectPlayers(StateType type)
     {
         foreach (var player in Room.GetPlayers())
-        {
             if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
             {
                 AiData.Sync_TargetPosX = player.TempData.Position.X;
@@ -216,14 +215,14 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                     Generic.Patrol_ForceDirectionX
                 );
             }
-        }
     }
 
     public void TryFireProjectile(bool isGrenade)
     {
         if (AiData.Intern_FireProjectile)
         {
-            var position = new Vector3 {
+            var position = new Vector3
+            {
                 x = Position.x + AiData.Intern_Dir * GlobalProperties.Global_ShootOffsetX,
                 y = Position.y + GlobalProperties.Global_ShootOffsetY,
                 z = Position.z

@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Rooms.Models.Entities;
+﻿namespace Server.Reawakened.Entities.Colliders.Enums;
 public enum ColliderType
 {
     Default,

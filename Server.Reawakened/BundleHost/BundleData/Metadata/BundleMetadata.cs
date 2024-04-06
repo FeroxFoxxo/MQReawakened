@@ -1,7 +1,7 @@
 ﻿using AssetRipper.IO.Endian;
-using Server.Reawakened.BundleHost.BundleFix.Header.Models;
+using Server.Reawakened.BundleHost.BundleData.Header.Models;
 
-namespace Server.Reawakened.BundleHost.BundleFix.Metadata;
+namespace Server.Reawakened.BundleHost.BundleData.Metadata;
 
 public class BundleMetadata(string cacheName, uint fileSize) : IEndianReadableWritable
 {

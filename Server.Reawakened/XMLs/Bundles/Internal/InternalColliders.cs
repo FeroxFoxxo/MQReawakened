@@ -1,9 +1,9 @@
-﻿using Server.Reawakened.XMLs.Abstractions;
+﻿using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using Server.Reawakened.XMLs.Data.Collider;
-using Server.Reawakened.XMLs.Enums;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.BundlesInternal;
+namespace Server.Reawakened.XMLs.Bundles.Internal;
 
 public class InternalColliders : InternalXml
 {
@@ -43,7 +43,7 @@ public class InternalColliders : InternalXml
                     foreach (XmlAttribute planeAttribute in levelPlane.Attributes)
                         if (planeAttribute.Name == "plane")
                         {
-                            plane = (planeAttribute.Value == "1") ? "Plane1" : "Plane0";
+                            plane = planeAttribute.Value == "1" ? "Plane1" : "Plane0";
                             continue;
                         }
 
@@ -55,7 +55,6 @@ public class InternalColliders : InternalXml
                         var height = 1f;
 
                         foreach (XmlAttribute colliderAttributes in colliderBox.Attributes)
-                        {
                             switch (colliderAttributes.Name)
                             {
                                 case "x":
@@ -71,7 +70,6 @@ public class InternalColliders : InternalXml
                                     height = float.Parse(colliderAttributes.Value);
                                     continue;
                             }
-                        }
                         colliderList.Add(new ColliderModel(plane, posX, posY, width, height));
                     }
                 }

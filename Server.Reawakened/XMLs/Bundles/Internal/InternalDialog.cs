@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Models.Npcs;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Data.Npcs;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.BundlesInternal;
+namespace Server.Reawakened.XMLs.Bundles.Internal;
 
 public class InternalDialog : InternalXml
 {

@@ -9,8 +9,9 @@ using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
-using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Components.GameObjects.MonkeyGadgets;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -19,8 +20,8 @@ using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
 using System.Text.RegularExpressions;
 
 namespace Server.Reawakened.Chat.Services;
@@ -28,7 +29,7 @@ namespace Server.Reawakened.Chat.Services;
 public partial class ChatCommands(
     ItemCatalog itemCatalog, ServerRConfig config, ItemRConfig itemConfig, ILogger<ServerConsole> logger, FileLogger fileLogger,
     WorldHandler worldHandler, InternalAchievement internalAchievement, InternalQuestItem questItem,
-    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog, 
+    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog,
     CharacterHandler characterHandler, AccountHandler accountHandler) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];

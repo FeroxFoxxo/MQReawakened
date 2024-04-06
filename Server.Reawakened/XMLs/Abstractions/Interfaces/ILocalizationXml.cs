@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace Server.Reawakened.XMLs.Abstractions;
+namespace Server.Reawakened.XMLs.Abstractions.Interfaces;
 public interface ILocalizationXml : IBundledXml
 {
     string LocalizationName { get; }

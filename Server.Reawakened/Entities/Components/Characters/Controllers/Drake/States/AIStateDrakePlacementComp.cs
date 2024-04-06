@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Enemies.AIStateEnemies.Drake.AIStates;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.Drake.States;
 public class AIStateDrakePlacementComp : Component<AIStateDrakePlacement>
 {
     public float MovementSpeed => ComponentData.MovementSpeed;

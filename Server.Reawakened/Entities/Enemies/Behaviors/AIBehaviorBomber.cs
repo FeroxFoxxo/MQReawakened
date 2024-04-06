@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
-using Server.Reawakened.XMLs.Models.Enemy.States;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.States;
 
-namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
+namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
 public class AIBehaviorBomber(BomberState bomberState) : AIBaseBehavior
 {
@@ -16,5 +16,5 @@ public class AIBehaviorBomber(BomberState bomberState) : AIBaseBehavior
 
     public override StateType GetBehavior() => StateType.Bomber;
 
-    public override object[] GetData() => [ InTime, LoopTime, BombRadius ];
+    public override object[] GetData() => [InTime, LoopTime, BombRadius];
 }

@@ -2,9 +2,9 @@
 using Achievement.StaticData;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Extensions;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
 
 namespace Server.Reawakened.Players.Extensions;
 

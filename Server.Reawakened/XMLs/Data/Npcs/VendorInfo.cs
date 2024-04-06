@@ -1,7 +1,7 @@
 ﻿using Server.Reawakened.Players;
 using Server.Reawakened.Players.Helpers;
 
-namespace Server.Reawakened.XMLs.Models.Npcs;
+namespace Server.Reawakened.XMLs.Data.Npcs;
 
 public class VendorInfo(int gameObjectId, int nameId, int descriptionId,
     int numberOfIdolsToAccessBackStore, int idolLevelId,

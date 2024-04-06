@@ -1,17 +1,17 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Icons.Services;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.BundlesEdit;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
+using Server.Reawakened.XMLs.Bundles.Edit;
+using Server.Reawakened.XMLs.Bundles.Internal;
 using System.Reflection;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.Bundles.Base;
 
 public class ItemCatalog : ItemHandler, ILocalizationXml
 {
@@ -176,7 +176,6 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                         var name = string.Empty;
 
                         foreach (XmlAttribute itemAttributes in item.Attributes)
-                        {
                             switch (itemAttributes.Name)
                             {
                                 case "id":
@@ -186,7 +185,6 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                                     name = itemAttributes.Value;
                                     break;
                             }
-                        }
 
                         items.Add(id, name);
 
@@ -344,18 +342,16 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
     public List<ItemDescription> GetItemsFromLevel(int minLevel, int maxLevel, ItemCategory category)
     {
         var itemList = new List<ItemDescription>();
-        foreach(var item in Items)
-        {
+        foreach (var item in Items)
             //Replace this in the future with xmls detailing all the items that are capable of dropping
-            if (item.Value.CategoryId == category && 
-                item.Value.LevelRequired >= minLevel && item.Value.LevelRequired <= maxLevel && 
+            if (item.Value.CategoryId == category &&
+                item.Value.LevelRequired >= minLevel && item.Value.LevelRequired <= maxLevel &&
                 (item.Value.Binding == ItemBinding.Unbound || item.Value.Binding == ItemBinding.OnEquip) &&
                 item.Value.SubCategoryId != ItemSubCategory.SlotHead &&
                 item.Value.Currency == CurrencyType.Banana &&
                 item.Value.ProductionStatus == ProductionStatus.Ingame &&
                 item.Value.Tribe == TribeType.Crossroads)
                 itemList.Add(item.Value);
-        }
         return itemList;
     }
 

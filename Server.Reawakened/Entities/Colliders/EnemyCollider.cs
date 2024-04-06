@@ -1,10 +1,12 @@
-﻿using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
-using Server.Reawakened.Entities.Components.GameObjects.Controllers;
-using Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
+﻿using Server.Reawakened.Entities.Colliders.Abstractions;
+using Server.Reawakened.Entities.Colliders.Enums;
+using Server.Reawakened.Entities.Components.Characters.Controllers;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
-namespace Server.Reawakened.Rooms.Models.Entities.Colliders;
+namespace Server.Reawakened.Entities.Colliders;
 public class EnemyCollider(string id, Vector3Model position, Vector2 size, string plane, Room room) :
     BaseCollider(id, position, size, plane, room, ColliderType.Enemy)
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Server.Reawakened.XMLs.Extensions;
+namespace Server.Reawakened.XMLs.Abstractions.Extensions;
 
 public static class GetXmlValue
 {

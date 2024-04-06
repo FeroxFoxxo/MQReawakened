@@ -1,7 +1,7 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Components.GameObjects.Controllers;
+using Server.Reawakened.Entities.Components.Characters.Controllers;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards;
-using Server.Reawakened.Entities.Components.Misc;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 
 namespace Server.Reawakened.Entities.Enemies.Models;
 public class SpawnedEnemyData(AIStatsGlobalComp global, AIStatsGenericComp generic, InterObjStatusComp status,

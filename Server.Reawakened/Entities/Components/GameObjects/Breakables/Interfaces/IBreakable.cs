@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Entities.AbstractComponents;
+﻿namespace Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
 
 public interface IBreakable
 {

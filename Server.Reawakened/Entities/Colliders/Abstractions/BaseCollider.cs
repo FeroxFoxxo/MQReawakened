@@ -1,7 +1,9 @@
-﻿using Server.Reawakened.Rooms.Models.Planes;
+﻿using Server.Reawakened.Entities.Colliders.Enums;
+using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
-namespace Server.Reawakened.Rooms.Models.Entities.Colliders.Abstractions;
+namespace Server.Reawakened.Entities.Colliders.Abstractions;
 public abstract class BaseCollider(string id, Vector3Model position, Vector2 size, string plane, Room room, ColliderType colliderType)
 {
     public Room Room => room;

@@ -1,6 +1,6 @@
 ﻿using AssetRipper.IO.Endian;
 
-namespace Server.Reawakened.BundleHost.BundleFix.Header.Models;
+namespace Server.Reawakened.BundleHost.BundleData.Header.Models;
 
 public sealed record BundleScene : IEndianReadableWritable
 {

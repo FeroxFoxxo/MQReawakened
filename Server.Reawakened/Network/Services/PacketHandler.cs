@@ -9,7 +9,7 @@ using Server.Base.Network;
 using Server.Base.Network.Models;
 using Server.Base.Network.Services;
 using Server.Base.Worlds.EventArguments;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Network.Protocols;
 using System.Reflection;

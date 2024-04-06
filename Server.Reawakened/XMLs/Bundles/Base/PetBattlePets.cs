@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.Bundles.Base;
 public class PetBattlePets : PetBattlePetsXML, IBundledXml
 {
     public string BundleName => "PetBattlePets";
@@ -33,8 +33,7 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml
         {
             var petBattlePet = new PetBattlePet();
 
-            foreach (XmlAttribute attribute in petBattlePetXml.Attributes) 
-            {
+            foreach (XmlAttribute attribute in petBattlePetXml.Attributes)
                 switch (attribute.Name)
                 {
                     case "id":
@@ -65,7 +64,6 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml
                         petBattlePet.speed = Enum.Parse<PetBattlePetSpeed>(attribute.Value);
                         break;
                 }
-            }
 
             var abilities = new List<PetBattlePetAbility>();
 
@@ -74,7 +72,6 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml
                 var petBattlePetAbility = new PetBattlePetAbility();
 
                 foreach (XmlAttribute attribute in petAbilities.Attributes)
-                {
                     switch (attribute.Name)
                     {
                         case "id":
@@ -129,7 +126,6 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml
                             petBattlePetAbility.healthMitigation = int.Parse(attribute.Value);
                             break;
                     }
-                }
 
                 abilities.Add(petBattlePetAbility);
             }
@@ -141,7 +137,7 @@ public class PetBattlePets : PetBattlePetsXML, IBundledXml
         }
     }
 
-    public void FinalizeBundle() => 
+    public void FinalizeBundle() =>
         GameFlow.PetBattlePetsXML = this;
 
     public new List<PetBattlePet> GetPetEvolutionFamily(int itemId)

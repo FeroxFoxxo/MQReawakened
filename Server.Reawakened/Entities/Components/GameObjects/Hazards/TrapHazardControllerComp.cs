@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Components.GameObjects.Hazards.Abstractions;
 using Server.Reawakened.Players;
 
-namespace Server.Reawakened.Entities.Components;
+namespace Server.Reawakened.Entities.Components.GameObjects.Hazards;
 
 public class TrapHazardControllerComp : BaseHazardControllerComp<TrapHazardController>
 {

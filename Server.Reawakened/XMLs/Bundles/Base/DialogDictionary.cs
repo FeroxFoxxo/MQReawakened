@@ -1,11 +1,11 @@
 ﻿using A2m.Server;
 using Server.Base.Core.Extensions;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
-using ConversationModel = Server.Reawakened.XMLs.Models.Npcs.ConversationInfo;
+using ConversationModel = Server.Reawakened.XMLs.Data.Npcs.ConversationInfo;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.Bundles.Base;
 
 public class DialogDictionary : DialogXML, ILocalizationXml
 {
@@ -66,12 +66,10 @@ public class DialogDictionary : DialogXML, ILocalizationXml
                 var dialogName = string.Empty;
 
                 foreach (XmlAttribute attribute in dialog.Attributes!)
-                {
                     if (attribute.Name == "id")
                         id = int.Parse(attribute.Value);
                     else if (attribute.Name == "name")
                         dialogName = attribute.Value;
-                }
 
                 DialogNames.TryAdd(id, dialogName);
             }
@@ -85,7 +83,6 @@ public class DialogDictionary : DialogXML, ILocalizationXml
         DialogDict = this.GetField<DialogXML>("_dialogDict") as Dictionary<int, List<Conversation>>;
 
         foreach (var dialog in DialogDict)
-        {
             foreach (var conversation in dialog.Value)
             {
                 var dialogModel = dialog.Value.Select(c => new ConversationModel(c.DialogId, c.ConversationId)).ToList();
@@ -97,6 +94,5 @@ public class DialogDictionary : DialogXML, ILocalizationXml
                 else if (conversation.DialogType == "Vendor")
                     VendorDialog.TryAdd(DialogNames[dialog.Key], dialogModel);
             }
-        }
     }
 }

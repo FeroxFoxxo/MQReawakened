@@ -3,7 +3,7 @@ using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Players.Helpers;
 using static A2m.Server.DescriptionHandler;
 
-namespace Server.Reawakened.XMLs.Models.Events;
+namespace Server.Reawakened.XMLs.Data.Events;
 
 public class EventInfo
 {

@@ -1,8 +1,8 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Models.Character;
 
@@ -118,7 +118,7 @@ public class CharacterDataModel : CharacterLightModel
             sb.Append(ShouldExpireGuestPass ? 1 : 0);
             sb.Append(Registered ? 1 : 0);
         }
-        
+
         sb.Append(Resistances);
         sb.Append(RecipeList);
         sb.Append(BuildTribesDiscoveredString());
@@ -299,7 +299,7 @@ public class CharacterDataModel : CharacterLightModel
         foreach (var item in Equipment.EquippedItems)
             itemList.Add(itemCatalog.GetItemFromId(item.Value));
 
-        damage += + statManager.ComputeEquimentBoost(effect, itemList);
+        damage += +statManager.ComputeEquimentBoost(effect, itemList);
 
         return damage;
     }

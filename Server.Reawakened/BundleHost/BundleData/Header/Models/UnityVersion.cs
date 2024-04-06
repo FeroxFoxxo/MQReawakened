@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.BundleHost.BundleFix.Header.Models;
+﻿namespace Server.Reawakened.BundleHost.BundleData.Header.Models;
 
 public class UnityVersion
 {

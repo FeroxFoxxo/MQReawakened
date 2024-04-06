@@ -1,13 +1,13 @@
 ﻿using Server.Reawakened.Entities.Components.GameObjects.Interactables;
-using Server.Reawakened.Entities.Enemies.AIStateEnemies.SyncEvents;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
+using Server.Reawakened.Entities.Enemies.Extensions;
+using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using static A2m.Server.ExtLevelEditor;
 
-namespace Server.Reawakened.Entities.Components.GameObjects.Controllers.SocialEvents;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.SocialEvents_GlobalInteraction;
 
 public class GlobalInteractionControllerComp : Component<GlobalInteractionController>
 {

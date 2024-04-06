@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Entities.Enums;
+﻿namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 
 public enum TriggerType
 {

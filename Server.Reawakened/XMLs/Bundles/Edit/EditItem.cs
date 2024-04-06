@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.BundlesEdit;
+namespace Server.Reawakened.XMLs.Bundles.Edit;
 public class EditItem : InternalXml
 {
     public override string BundleName => "EditItem";
@@ -107,12 +107,10 @@ public class EditItem : InternalXml
         foreach (var version in _possibleVersions)
             if (_editedItemAttributes[version].TryGetValue(prefabName, out var editedAttributes))
                 foreach (var attribute in editedAttributes)
-                {
                     if (attributes.ContainsKey(attribute.Key))
                         attributes[attribute.Key] = attribute.Value;
                     else
                         attributes.Add(attribute.Key, attribute.Value);
-                }
 
         return attributes;
     }

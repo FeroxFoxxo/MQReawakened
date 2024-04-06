@@ -1,10 +1,10 @@
 ﻿using A2m.Server;
 using Server.Base.Core.Extensions;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.Bundles.Base;
 public class WearableSlotFactor : EquipmentSlotFactorXML, IBundledXml
 {
     public string BundleName => "WearableSlotFactor";
@@ -23,11 +23,11 @@ public class WearableSlotFactor : EquipmentSlotFactorXML, IBundledXml
         SlotFactors = [];
     }
 
-    public void EditDescription(XmlDocument xml) 
-    { 
+    public void EditDescription(XmlDocument xml)
+    {
     }
 
-    public void ReadDescription(string xml) => 
+    public void ReadDescription(string xml) =>
         ReadDescriptionXml(xml);
 
     public void FinalizeBundle()

@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Players.Models.Groups;
+﻿using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Players.Models.Trade;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Data.Collider;
 using Timer = Server.Base.Timers.Timer;
@@ -35,5 +35,5 @@ public class TemporaryDataModel
     public Dictionary<int, List<string>> CurrentAchievements { get; set; } = [];
 
     //Make the _player size and such a ServerRConfig option down the line
-    public ColliderModel DrawPlayerRect() => new(Position.Z > 10 ? "Plane1" : "Plane0", Position.X - 0.5f, Position.Y - 0.5f, 1, 1);   
+    public ColliderModel DrawPlayerRect() => new(Position.Z > 10 ? "Plane1" : "Plane0", Position.X - 0.5f, Position.Y - 0.5f, 1, 1);
 }

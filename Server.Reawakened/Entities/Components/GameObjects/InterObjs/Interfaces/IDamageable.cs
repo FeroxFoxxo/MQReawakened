@@ -1,6 +1,6 @@
 ﻿using A2m.Server;
 
-namespace Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
+namespace Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 
 public interface IDamageable
 {

@@ -1,10 +1,10 @@
 ﻿using A2m.Server;
 using Server.Base.Core.Extensions;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.Bundles;
+namespace Server.Reawakened.XMLs.Bundles.Base;
 
 public class CannedChatDictionary : CannedChatXML, ILocalizationXml
 {
@@ -41,10 +41,8 @@ public class CannedChatDictionary : CannedChatXML, ILocalizationXml
                 var id = -1;
 
                 foreach (XmlAttribute attribute in phrase.Attributes)
-                {
                     if (attribute.Name == "id")
                         id = int.Parse(attribute.Value);
-                }
 
                 var text = phrase.InnerText;
 

@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Rooms.Extensions;
+﻿using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Platforms;

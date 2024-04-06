@@ -1,19 +1,19 @@
-﻿using Server.Reawakened.Players;
-using Server.Reawakened.Rooms.Models.Entities;
-using A2m.Server;
-using Server.Reawakened.Players.Extensions;
-using Server.Base.Timers.Services;
+﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
+using Server.Base.Timers.Services;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.Characters.Controllers;
+using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Configs;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
-using Server.Reawakened.Entities.Components.GameObjects.Controllers;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.AbstractComponents;
+namespace Server.Reawakened.Entities.Components.GameObjects.Hazards.Abstractions;
 
 public abstract class BaseHazardControllerComp<T> : Component<T> where T : HazardController
 {

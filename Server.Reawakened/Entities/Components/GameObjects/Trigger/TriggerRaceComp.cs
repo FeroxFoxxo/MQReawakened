@@ -1,9 +1,9 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 
-namespace Server.Reawakened.Entities.Components;
+namespace Server.Reawakened.Entities.Components.GameObjects.Trigger;
 
 public class TriggerRaceComp : BaseTriggerStatueComp<TriggerRace>
 {

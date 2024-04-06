@@ -2,7 +2,7 @@
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
 
-namespace Server.Reawakened.Entities.Components;
+namespace Server.Reawakened.Entities.Components.GameObjects.Global;
 
 public class PortalComp : Component<PortalController>
 {

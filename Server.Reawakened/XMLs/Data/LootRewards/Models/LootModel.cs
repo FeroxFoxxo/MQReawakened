@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.XMLs.Models.LootRewards;
+﻿namespace Server.Reawakened.XMLs.Data.LootRewards.Models;
 
 public class LootModel(string objectId, List<BananaReward> bananaRewards, List<ItemReward> itemRewards, bool doWheel, int multiplayerWheelChance, int weightRange)
 {

@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Entities.Enums;
+﻿using Server.Reawakened.XMLs.Data.LootRewards.Enums;
 
 public class EnemyDropModel(DynamicDropType type, int id, float chance, int minLevel, int maxLevel)
 {

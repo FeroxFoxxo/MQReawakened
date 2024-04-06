@@ -1,16 +1,16 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
 
 namespace Protocols.External._i__InventoryHandler;
 
@@ -102,10 +102,10 @@ public class UseItem : ExternalProtocol
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Eat:
-                Player.CheckAchievement(AchConditionType.Consumable, [ usedItem.PrefabName ], InternalAchievement, Logger);
+                Player.CheckAchievement(AchConditionType.Consumable, [usedItem.PrefabName], InternalAchievement, Logger);
                 break;
             case ItemActionType.Drink:
-                Player.CheckAchievement(AchConditionType.Drink,[ usedItem.PrefabName], InternalAchievement, Logger);
+                Player.CheckAchievement(AchConditionType.Drink, [usedItem.PrefabName], InternalAchievement, Logger);
                 break;
         }
 

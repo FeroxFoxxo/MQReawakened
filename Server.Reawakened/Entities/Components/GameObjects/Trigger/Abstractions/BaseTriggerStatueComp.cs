@@ -1,7 +1,6 @@
-﻿
-using Server.Reawakened.Entities.Enums;
+﻿using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 
-namespace Server.Reawakened.Entities.AbstractComponents;
+namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 
 public abstract class BaseTriggerStatueComp<T> : BaseTriggerCoopController<T> where T : TriggerStatue
 {

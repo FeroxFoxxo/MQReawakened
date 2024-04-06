@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.XMLs.Models.Enemy.Enums;
+﻿namespace Server.Reawakened.XMLs.Data.Enemy.Enums;
 public enum AiType
 {
     Unknown,

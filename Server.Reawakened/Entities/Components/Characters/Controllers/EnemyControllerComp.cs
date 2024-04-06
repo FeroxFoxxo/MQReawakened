@@ -1,16 +1,16 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
 using Room = Server.Reawakened.Rooms.Room;
 
-namespace Server.Reawakened.Entities.Components.GameObjects.Controllers;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers;
 public class EnemyControllerComp : Component<EnemyController>, IDestructible
 {
     public int OnKillRepPoints => ComponentData.OnKillRepPoints;

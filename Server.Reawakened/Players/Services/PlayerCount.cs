@@ -11,11 +11,11 @@ public class PlayerCount(ServerConsole serverConsole,
 {
     public void Initialize() => sink.WorldLoad += Load;
 
-    public void Load() => 
+    public void Load() =>
         serverConsole.AddCommand(
-            "playerCount", 
-            "Sends the current online _player count in console.", 
-            NetworkType.Server, 
+            "playerCount",
+            "Sends the current online _player count in console.",
+            NetworkType.Server,
             SendPlayerCount);
 
     private void SendPlayerCount(string[] command)

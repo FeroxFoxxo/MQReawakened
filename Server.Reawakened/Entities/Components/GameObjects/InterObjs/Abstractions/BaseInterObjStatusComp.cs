@@ -1,8 +1,8 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.AbstractComponents;
+namespace Server.Reawakened.Entities.Components.GameObjects.InterObjs.Abstractions;
 
 public abstract class BaseInterObjStatusComp<T> : Component<T>, IDamageable where T : InterObjStatus
 {

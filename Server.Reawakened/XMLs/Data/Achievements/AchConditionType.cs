@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.XMLs.Enums;
+﻿namespace Server.Reawakened.XMLs.Data.Achievements;
 
 public enum AchConditionType
 {

@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
+using Server.Reawakened.XMLs.Bundles.Base;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.BundlesInternal;
+namespace Server.Reawakened.XMLs.Bundles.Internal;
 
 public class InternalQuestItem : InternalXml
 {

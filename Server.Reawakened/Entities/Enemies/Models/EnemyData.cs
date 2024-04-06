@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Entities.Components.GameObjects.Controllers;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers;
 using Server.Reawakened.Rooms;
-using Server.Reawakened.XMLs.Models.Enemy.Models;
+using Server.Reawakened.XMLs.Data.Enemy.Models;
 
 namespace Server.Reawakened.Entities.Enemies.Models;
 public class EnemyData(Room room, string entityId, string prefabName, EnemyControllerComp enemyController, EnemyModel enemyModel, IServiceProvider services)

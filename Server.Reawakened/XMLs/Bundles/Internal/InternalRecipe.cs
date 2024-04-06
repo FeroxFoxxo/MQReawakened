@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Abstractions;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.Enums;
-using Server.Reawakened.XMLs.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Enums;
+using Server.Reawakened.XMLs.Abstractions.Extensions;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
+using Server.Reawakened.XMLs.Bundles.Base;
 using System.Xml;
 
-namespace Server.Reawakened.XMLs.BundlesInternal;
+namespace Server.Reawakened.XMLs.Bundles.Internal;
 
 public class InternalRecipe : InternalXml
 {
@@ -42,14 +42,12 @@ public class InternalRecipe : InternalXml
                 var typeList = new List<int>();
 
                 foreach (XmlAttribute recipeTypeAttribute in recipeType.Attributes)
-                {
                     switch (recipeTypeAttribute.Name)
                     {
                         case "name":
                             name = recipeTypeAttribute.Value;
                             break;
                     }
-                }
 
                 foreach (XmlNode recipeInfo in recipeType.ChildNodes)
                 {
@@ -59,14 +57,12 @@ public class InternalRecipe : InternalXml
                     var ingredients = new List<IngredientModel>();
 
                     foreach (XmlAttribute recipeAttribute in recipeInfo.Attributes)
-                    {
                         switch (recipeAttribute.Name)
                         {
                             case "recipeName":
                                 recipeName = recipeAttribute.Value;
                                 break;
                         }
-                    }
 
                     var itemList = recipeInfo.GetXmlItems(ItemCatalog, Logger);
 

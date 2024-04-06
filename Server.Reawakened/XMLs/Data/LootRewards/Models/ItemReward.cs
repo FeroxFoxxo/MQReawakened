@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Players.Models.Character;
 
-namespace Server.Reawakened.XMLs.Models.LootRewards;
+namespace Server.Reawakened.XMLs.Data.LootRewards.Models;
 
 public class ItemReward(List<KeyValuePair<int, ItemModel>> items, int rewardAmount)
 {

@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.XMLs.Models.LootRewards;
+﻿namespace Server.Reawakened.XMLs.Data.LootRewards.Models;
 
 public class BananaReward(int bananaMin, int bananaMax)
 {

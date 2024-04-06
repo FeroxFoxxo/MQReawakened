@@ -1,11 +1,10 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.XMLs.Models.Enemy.Abstractions;
-using Server.Reawakened.XMLs.Models.Enemy.Enums;
-using Server.Reawakened.XMLs.Models.Enemy.Models;
-using static UIBase;
+using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.Models;
 
-namespace Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
+namespace Server.Reawakened.Entities.Enemies.Extensions;
 public class AISyncEventHelper
 {
     public static AIInit_SyncEvent AIInit(string id, float time, float posX, float posY, float posZ, float spawnX,
@@ -37,12 +36,12 @@ public class AISyncEventHelper
             spawnX,
             spawnY,
             behaviorRatio,
-            health, 
+            health,
             maxHealth,
-            healthMod, 
-            scaleMod, 
-            resMod, 
-            stars, 
+            healthMod,
+            scaleMod,
+            resMod,
+            stars,
             level,
             globalProperties.ToString(),
             behaviors
@@ -111,8 +110,8 @@ public class AISyncEventHelper
     }
 
     public static GlobalProperties CreateDefaultGlobalProperties() =>
-        new (false, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
+        new(false, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
 
     public static GenericScriptPropertiesModel CreateDefaultGenericScript() =>
-        new (StateType.Unknown, StateType.Unknown, StateType.Unknown, 0, 0, 0);
+        new(StateType.Unknown, StateType.Unknown, StateType.Unknown, 0, 0, 0);
 }

@@ -1,9 +1,10 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Abstractions;
+using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.XMLs.Models.Enemy.Models;
+using Server.Reawakened.XMLs.Data.Enemy.Models;
 
-namespace Server.Reawakened.XMLs.Models.Enemy.Abstractions;
+namespace Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 public abstract class BaseState(List<EnemyResourceModel> resources)
 {
     public List<EnemyResourceModel> Resources => resources;
