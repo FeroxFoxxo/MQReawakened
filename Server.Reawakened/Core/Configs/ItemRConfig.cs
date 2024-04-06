@@ -48,7 +48,7 @@ public class ItemRConfig : IRConfig
     public float MeleeArialHeight { get; }
 
     public Dictionary<int, string> TrainingGear { get; }
-    public Dictionary<int, string> TrainingGear2011 { get; }
+    public Dictionary<int, List<string>> TrainingGear2011 { get; }
     public int PetSlotId { get; }
 
     public ItemRConfig()
@@ -137,12 +137,12 @@ public class ItemRConfig : IRConfig
             { 498, "ABIL_SnowBoard02" }, // lv_wld_highway01
         };
 
-        TrainingGear2011 = new Dictionary<int, string>
+        TrainingGear2011 = new Dictionary<int, List<string>>
         {
-            { 48, "ABIL_GrapplingHook01" }, // lv_shd_highway01
-            { 54, "ABIL_Glider01" }, // lv_out_highway01
-            { 46, "ABIL_MysticCharm01" }, // lv_bon_highway01
-            { 498, "ABIL_SnowBoard02" }, // lv_wld_highway01
+            { 48, ["ABIL_GrapplingHook01", "Add_SHD_ChimFoo01_S01", "WPN_PRJ_Shuriken01"] }, // lv_shd_highway01
+            { 54, ["ABIL_Glider01", "Add_OUT_SeaDragon01_S01", "WPN_MEL_FireSword01"] }, // lv_out_highway01
+            { 46, ["ABIL_MysticCharm01", "Add_BON_OotuMystic01_S01", "WPN_PRJ_PosionousFlower01"] }, // lv_bon_highway01
+            { 498, ["ABIL_SnowBoard02", "Add_WLD_IceRaider01_TS01", "WPN_MEL_IceRaiderAxe01"] }, // lv_wld_highway01
         };
 
         PetSlotId = 4;
