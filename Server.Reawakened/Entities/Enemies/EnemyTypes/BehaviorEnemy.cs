@@ -5,6 +5,7 @@ using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.BehaviourTypes;
 using Server.Reawakened.Entities.Enemies.BehaviorEnemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;
+using Server.Reawakened.Entities.Enemies.Services;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
@@ -59,9 +60,11 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         AiData.services = new AIServices
         {
-            _shoot = new IShoot(),
-            _bomber = new IBomber(),
-            _scan = new IScan()
+            _shoot = new Shooter(),
+            _bomber = new Bomber(),
+            _scan = new Scanner(),
+            _collision = new Collisions(),
+            _suicide = new Runnable()
         };
 
         // Address magic numbers when we get to adding enemy effect mods
