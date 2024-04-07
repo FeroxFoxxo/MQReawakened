@@ -5,11 +5,10 @@ using Server.Reawakened.Entities.Components.GameObjects.Hazards;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
-using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class HazardEffectCollider(string hazardId, Vector3Model position, Vector2 size, string plane,
+public class HazardEffectCollider(string hazardId, Vector3 position, Vector2 size, string plane,
     Room room, ILogger<BaseHazardControllerComp<HazardController>> logger) :
     BaseCollider(hazardId, position, size, plane, room, ColliderType.Hazard)
 {

@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
@@ -11,7 +12,6 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using UnityEngine;
@@ -34,9 +34,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     private float _lastUpdate;
     private int _index;
 
+    public TimerThread TimerThread;
+
     public override void Initialize()
     {
         _enemyLock = new object();
+        TimerThread = Services.GetRequiredService<TimerThread>();
 
         Global = Room.GetEntityFromId<AIStatsGlobalComp>(Id);
         Generic = Room.GetEntityFromId<AIStatsGenericComp>(Id);
@@ -63,7 +66,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         AiData.services = new AIServices
         {
             _shoot = new Shooter(this),
-            _bomber = new Bomber(),
+            _bomber = new Bomber(this),
             _scan = new Scanner(),
             _collision = new Collisions(),
             _suicide = new Runnable()
@@ -93,12 +96,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         Status = spawnerTemplate.Status;
     }
 
-    public bool PlayerInRange(Vector3Model pos, bool limitedByPatrolLine) =>
-        AiData.Sync_PosX - (AiData.Intern_Dir < 0 ? GlobalProperties.Global_FrontDetectionRangeX : GlobalProperties.Global_BackDetectionRangeX) < pos.X &&
-            pos.X < AiData.Sync_PosX + (AiData.Intern_Dir < 0 ? GlobalProperties.Global_BackDetectionRangeX : GlobalProperties.Global_FrontDetectionRangeX) &&
-            AiData.Sync_PosY - GlobalProperties.Global_FrontDetectionRangeDownY < pos.Y && pos.Y < AiData.Sync_PosY + GlobalProperties.Global_FrontDetectionRangeUpY &&
-            Position.z < pos.Z + 1 && Position.z > pos.Z - 1 &&
-            (!limitedByPatrolLine || pos.X > AiData.Intern_MinPointX - 1.5 && pos.X < AiData.Intern_MaxPointX + 1.5);
+    public bool PlayerInRange(Vector3 pos, bool limitedByPatrolLine) =>
+        AiData.Sync_PosX - (AiData.Intern_Dir < 0 ? GlobalProperties.Global_FrontDetectionRangeX : GlobalProperties.Global_BackDetectionRangeX) < pos.x &&
+            pos.x < AiData.Sync_PosX + (AiData.Intern_Dir < 0 ? GlobalProperties.Global_BackDetectionRangeX : GlobalProperties.Global_FrontDetectionRangeX) &&
+            AiData.Sync_PosY - GlobalProperties.Global_FrontDetectionRangeDownY < pos.y && pos.y < AiData.Sync_PosY + GlobalProperties.Global_FrontDetectionRangeUpY &&
+            Position.z < pos.z + 1 && Position.z > pos.z - 1 &&
+            (!limitedByPatrolLine || pos.x > AiData.Intern_MinPointX - 1.5 && pos.x < AiData.Intern_MaxPointX + 1.5);
 
     public override void InternalUpdate()
     {
@@ -133,15 +136,15 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         {
             if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
             {
-                AiData.Sync_TargetPosX = player.TempData.Position.X;
+                AiData.Sync_TargetPosX = player.TempData.Position.x;
 
                 AiData.Sync_TargetPosY = GenericScript.AttackBehavior == StateType.Grenadier ?
-                    Position.y : player.TempData.Position.Y;
+                    Position.y : player.TempData.Position.y;
 
                 ChangeBehavior(
                     GenericScript.AttackBehavior,
-                    player.TempData.Position.X,
-                    GenericScript.AttackBehavior == StateType.Grenadier ? player.TempData.Position.Y : Position.y,
+                    player.TempData.Position.x,
+                    GenericScript.AttackBehavior == StateType.Grenadier ? player.TempData.Position.y : Position.y,
                     Generic.Patrol_ForceDirectionX
                 );
 
@@ -172,16 +175,13 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         AiData.Intern_FireProjectile = false;
     }
 
-    public void FireProjectile(Vector3 position, Vector2 speed, bool isGrenade)
-    {
-        var damage = GameFlow.StatisticData.GetValue(
+    public void FireProjectile(Vector3 position, Vector2 speed, bool isGrenade) =>
+        Room.AddRangedProjectile(Id, position, speed, 3, GetDamage(), EnemyController.ComponentData.EnemyEffectType, isGrenade);
+
+    public int GetDamage() =>
+        GameFlow.StatisticData.GetValue(
             ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level
         );
-
-        var effect = EnemyController.ComponentData.EnemyEffectType;
-
-        Room.AddRangedProjectile(Id, position, speed, 3, damage, effect, isGrenade);
-    }
 
     public void ChangeBehavior(StateType behaviourType, float targetX, float targetY, int direction)
     {
@@ -223,12 +223,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         if (_currentState != StateType.Shooting)
         {
-            AiData.Sync_TargetPosX = player.TempData.Position.X;
-            AiData.Sync_TargetPosY = player.TempData.Position.Y;
+            AiData.Sync_TargetPosX = player.TempData.Position.x;
+            AiData.Sync_TargetPosY = player.TempData.Position.y;
 
             ChangeBehavior(
                 GenericScript.AttackBehavior,
-                player.TempData.Position.X, player.TempData.Position.Y,
+                player.TempData.Position.x, player.TempData.Position.y,
                 Generic.Patrol_ForceDirectionX
             );
         }

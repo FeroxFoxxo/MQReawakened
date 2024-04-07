@@ -51,7 +51,6 @@ public class ServerRConfig : IRConfig
     public int AccessRights { get; }
 
     public Dictionary<TribeType, int> TutorialTribe2014 { get; }
-    public GameVersion GameVersion { get; }
 
     public string[] IgnoredDoors { get; }
 
@@ -69,10 +68,10 @@ public class ServerRConfig : IRConfig
 
     public int MaximumEntitiesToReturnLog { get; }
 
-    public List<string> LoadedAssets { get; }
-
-    public long LastClientUpdate { get; }
-    public long CutOffFor2014 { get; }
+    public GameVersion GameVersion { get; set; }
+    public List<string> LoadedAssets { get; set; }
+    public long LastClientUpdate { get; set; }
+    public long CutOffFor2014 { get; set; }
 
     public float Gravity { get; }
 

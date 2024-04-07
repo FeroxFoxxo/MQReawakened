@@ -16,6 +16,7 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Base;
 using System.Text;
+using UnityEngine;
 using WorldGraphDefines;
 
 namespace Protocols.External._s__Synchronizer;
@@ -68,8 +69,8 @@ public class State : ExternalProtocol
                         attack.SpeedX, attack.SpeedY, attack.MaxPosX, attack.MaxPosY, attack.ItemId, attack.ZoneId);
 
                     var chargeAttackProjectile = new ChargeAttackProjectile(Player.GameObjectId, Player,
-                                        new Vector3Model() { X = attack.PosX, Y = attack.PosY, Z = Player.TempData.Position.Z },
-                                        new Vector3Model() { X = attack.MaxPosX, Y = attack.MaxPosY, Z = Player.TempData.Position.Z },
+                                        new Vector3() { x = attack.PosX, y = attack.PosY, z = Player.TempData.Position.z },
+                                        new Vector3Model() { X = attack.MaxPosX, Y = attack.MaxPosY, Z = Player.TempData.Position.z },
                                         new Vector2Model() { X = attack.SpeedX, Y = attack.SpeedY },
                                         15, attack.ItemId, attack.ZoneId,
                                         WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
@@ -100,18 +101,18 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
 
-                    newPlayer.TempData.Position = new Vector3Model
+                    newPlayer.TempData.Position = new Vector3
                     {
-                        X = physicsBasicEvent.PositionX,
-                        Y = physicsBasicEvent.PositionY,
-                        Z = physicsBasicEvent.PositionZ
+                        x = physicsBasicEvent.PositionX,
+                        y = physicsBasicEvent.PositionY,
+                        z = physicsBasicEvent.PositionZ
                     };
 
-                    newPlayer.TempData.Velocity = new Vector3Model
+                    newPlayer.TempData.Velocity = new Vector3
                     {
-                        X = physicsBasicEvent.VelocityX,
-                        Y = physicsBasicEvent.VelocityY,
-                        Z = physicsBasicEvent.VelocityZ
+                        x = physicsBasicEvent.VelocityX,
+                        y = physicsBasicEvent.VelocityY,
+                        z = physicsBasicEvent.VelocityZ
                     };
 
                     newPlayer.TempData.OnGround = physicsBasicEvent.OnGround;

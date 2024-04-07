@@ -3,11 +3,10 @@ using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
-using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class AttackCollider(string id, Vector3Model position,
+public class AttackCollider(string id, Vector3 position,
     Vector2 size, string plane, Player player,
     int damage, Elemental type, float lifeTime, float offset) :
     BaseCollider(id, position, size, plane, player.Room, ColliderType.Attack)

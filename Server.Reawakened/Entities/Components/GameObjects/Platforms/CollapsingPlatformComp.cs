@@ -17,7 +17,11 @@ public class CollapsingPlatformComp : Component<CollapsingPlatform>
     {
         Position.X += Rectangle.X;
         Position.Y += Rectangle.Y;
-        Room.AddCollider(new BreakableCollider(Id, Position, new Vector2(Rectangle.Width, Rectangle.Height), ParentPlane, Room));
+
+        var position = new Vector3(Position.X, Position.Y, Position.Z);
+        var size = new Vector2(Rectangle.Width, Rectangle.Height);
+
+        Room.AddCollider(new BreakableCollider(Id, position, size, ParentPlane, Room));
     }
 
     public override void Update()

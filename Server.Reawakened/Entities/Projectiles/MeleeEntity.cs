@@ -5,17 +5,16 @@ using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles;
 
 public class MeleeEntity : BaseProjectile
 {
-    private readonly Vector3Model _hitboxPosition;
+    private readonly Vector3 _hitboxPosition;
     private readonly string _gameObjectId;
 
-    public MeleeEntity(string id, Vector3Model position, Player player, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig serverConfig, ItemRConfig config)
+    public MeleeEntity(string id, Vector3 position, Player player, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig serverConfig, ItemRConfig config)
         : base(id, 0, 0, lifeTime, player.Room, position, null, false, serverConfig)
     {
         _gameObjectId = player.GameObjectId;
@@ -24,23 +23,22 @@ public class MeleeEntity : BaseProjectile
         var meleeHeight = config.MeleeHeight;
         var isRight = direction > 0;
 
-        _hitboxPosition = new Vector3Model { X = position.X, Y = position.Y, Z = position.Z };
+        _hitboxPosition = new Vector3 { x = position.x, y = position.y, z = position.z };
 
         var onGround = player.TempData.OnGround;
 
-        if (onGround && !isRight)
+        if (onGround)
         {
-            _hitboxPosition.X -= config.MeleeXOffset;
-            _hitboxPosition.Y += config.MeleeYOffset;
+            _hitboxPosition.y += config.MeleeYOffset;
+            _hitboxPosition.x += isRight ? config.MeleeXOffset : -config.MeleeXOffset;
         }
-
-        if (!onGround)
+        else
         {
             meleeWidth = config.MeleeArialWidth;
             meleeHeight = config.MeleeArialHeight;
 
-            _hitboxPosition.X -= config.MeleeArialXOffset;
-            _hitboxPosition.Y -= config.MeleeArialYOffset;
+            _hitboxPosition.x += isRight ? config.MeleeArialXOffset : -config.MeleeArialXOffset;
+            _hitboxPosition.y -= config.MeleeArialYOffset;
         }
 
         Collider = new AttackCollider(id, _hitboxPosition, new Vector2(meleeWidth, meleeHeight),

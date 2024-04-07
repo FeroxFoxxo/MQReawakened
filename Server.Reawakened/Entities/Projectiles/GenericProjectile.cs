@@ -4,26 +4,25 @@ using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles;
 public class GenericProjectile : BaseProjectile
 {
-    private readonly Vector3Model _hitboxPosition;
+    private readonly Vector3 _hitboxPosition;
     private readonly string _gameObjectId;
     private readonly float _gravityFactor;
 
-    public GenericProjectile(string id, Player player, float lifeTime, Vector3Model position, ItemRConfig config, ServerRConfig serverConfig,
+    public GenericProjectile(string id, Player player, float lifeTime, Vector3 position, ItemRConfig config, ServerRConfig serverConfig,
         int direction, ItemDescription item, int damage, Elemental damageType, bool isGrenade)
             : base(id, config.ProjectileSpeedX * (direction > 0 ? 1 : -1), isGrenade ? config.GrenadeSpeedY : config.ProjectileSpeedY, lifeTime, player.Room,
-                new Vector3Model(position.X + config.ProjectileXOffset * (direction > 0 ? 1 : -1), position.Y + config.ProjectileYOffset, position.Z), null, false, serverConfig)
+                new Vector3(position.x + config.ProjectileXOffset * (direction > 0 ? 1 : -1), position.y + config.ProjectileYOffset, position.z), null, false, serverConfig)
     {
         _gameObjectId = player.GameObjectId;
         _gravityFactor = isGrenade ? config.GrenadeGravityFactor : config.ProjectileGravityFactor;
 
-        _hitboxPosition = new Vector3Model { X = Position.x, Y = Position.y - config.ProjectileHeight, Z = Position.z };
-        _hitboxPosition.X -= direction > 0 ? 0 : config.ProjectileWidth;
+        _hitboxPosition = new Vector3 { x = Position.x, y = Position.y - config.ProjectileHeight, z = Position.z };
+        _hitboxPosition.x -= direction > 0 ? 0 : config.ProjectileWidth;
 
         Collider = new AttackCollider(id, _hitboxPosition, new Vector2(config.ProjectileWidth, config.ProjectileHeight), PrjPlane, player, damage, damageType, LifeTime, 0);
 

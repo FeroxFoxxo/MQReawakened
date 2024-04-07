@@ -19,7 +19,7 @@ public class ChargeAttackProjectile : BaseProjectile
     private readonly int _itemId;
     private readonly int _zoneId;
 
-    public ChargeAttackProjectile(string id, Player player, Vector3Model startPosition, Vector3Model endPosition, Vector2Model speed, float lifeTime, int itemId, int zoneId, int damage, Elemental type, ServerRConfig config, TimerThread timerThread)
+    public ChargeAttackProjectile(string id, Player player, Vector3 startPosition, Vector3Model endPosition, Vector2Model speed, float lifeTime, int itemId, int zoneId, int damage, Elemental type, ServerRConfig config, TimerThread timerThread)
         : base(id, speed.X, speed.Y, lifeTime, player.Room, startPosition, endPosition, false, config)
     {
         _timerThread = timerThread;
@@ -38,8 +38,12 @@ public class ChargeAttackProjectile : BaseProjectile
         _player.TempData.IsSuperStomping = false;
         _player.TemporaryInvincibility(_timerThread, 1);
 
-        Room.SendSyncEvent(new ChargeAttackStop_SyncEvent(_player.GameObjectId.ToString(), Room.Time,
-           _player.TempData.Position.X, _player.TempData.Position.Y, _itemId, _zoneId, hitGoID));
+        Room.SendSyncEvent(
+            new ChargeAttackStop_SyncEvent(
+                _player.GameObjectId.ToString(), Room.Time,
+                _player.TempData.Position.x, _player.TempData.Position.y, _itemId, _zoneId, hitGoID
+            )
+        );
 
         Room.RemoveProjectile(_player.GameObjectId);
     }

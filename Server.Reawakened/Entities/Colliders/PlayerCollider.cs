@@ -4,13 +4,11 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
 public class PlayerCollider(Player player) :
-    BaseCollider(player.TempData.GameObjectId,
-        new Vector3Model(player.TempData.Position.X, player.TempData.Position.Y, player.TempData.Position.Z),
+    BaseCollider(player.TempData.GameObjectId, player.TempData.CopyPosition(),
         new Vector2(1, 1), player.GetPlayersPlaneString(), player.Room, ColliderType.Player
     )
 {

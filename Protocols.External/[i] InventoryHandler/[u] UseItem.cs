@@ -7,10 +7,10 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
+using UnityEngine;
 
 namespace Protocols.External._i__InventoryHandler;
 
@@ -80,7 +80,7 @@ public class UseItem : ExternalProtocol
         SendXt("hs", Player.Character.Data.Hotbar);
     }
 
-    private void HandleBomb(ItemDescription usedItem, Vector3Model position, int direction)
+    private void HandleBomb(ItemDescription usedItem, Vector3 position, int direction)
     {
         Player.CheckAchievement(AchConditionType.Bomb, [usedItem.PrefabName], InternalAchievement, Logger);
 

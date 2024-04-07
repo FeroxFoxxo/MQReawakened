@@ -1,13 +1,13 @@
 ﻿using A2m.Server;
 using Server.Base.Logging;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles.Base;
 using System.Text;
 using UnityEngine;
@@ -157,22 +157,12 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
 
         if (TriggerOnNormalDamage || TriggerOnAirDamage || TriggerOnEarthDamage
             || TriggerOnFireDamage || TriggerOnIceDamage || TriggerOnLightningDamage)
-            Room.AddCollider(
-                new TriggerableTargetCollider(
-                    Id, AdjustColliderPositionX(Position),
-                    new Vector2(Rectangle.Width, Rectangle.Height), ParentPlane, Room
-                )
-            );
-    }
+        {
+            var size = new Vector2(Rectangle.Width, Rectangle.Height);
+            var position = BaseCollider.AdjustPosition(new Vector3(Position.X, Position.Y, Position.Z), new Vector2(size.x, 0));
 
-    public Vector3Model AdjustColliderPositionX(Vector3Model position)
-    {
-        if (Rectangle.X > 0)
-            position.X += Rectangle.Width;
-        else
-            position.X -= Rectangle.Width;
-
-        return position;
+            Room.AddCollider(new TriggerableTargetCollider(Id, position, size, ParentPlane, Room));
+        }
     }
 
     public override void DelayedComponentInitialization() => RunTrigger(null);

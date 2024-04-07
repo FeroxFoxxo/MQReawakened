@@ -6,15 +6,15 @@ using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles.Abstractions;
 public abstract class BaseProjectile(string id, float speedX, float speedY, float lifetime,
-    Room room, Vector3Model position, Vector3Model endPosition, bool gravity, ServerRConfig config)
+    Room room, Vector3 position, Vector3Model endPosition, bool gravity, ServerRConfig config)
 {
     public string ProjectileId => id;
     public Room Room => room;
 
-    public readonly string PrjPlane = position.Z > 10 ? config.FrontPlane : config.BackPlane;
+    public readonly string PrjPlane = position.z > 10 ? config.FrontPlane : config.BackPlane;
 
-    public Vector3 Position = new() { x = position.X, y = position.Y, z = position.Z };
-    public Vector3 SpawnPosition = new() { x = position.X, y = position.Y, z = position.Z };
+    public Vector3 Position = new() { x = position.x, y = position.y, z = position.z };
+    public Vector3 SpawnPosition = new() { x = position.x, y = position.y, z = position.z };
 
     public Vector3 Speed = new(speedX, speedY, 1);
 
@@ -53,13 +53,22 @@ public abstract class BaseProjectile(string id, float speedX, float speedY, floa
     private Vector3 GetPositionBasedOnTime(Vector3 spawnPos)
     {
         var timeDelta = Room.Time - StartTime;
-        var newPosition = spawnPos + timeDelta * Speed;
+
+        var pos = new Vector3()
+        {
+            x = GetCoordFromTime(spawnPos.x, Speed.x, timeDelta),
+            y = GetCoordFromTime(spawnPos.y, Speed.y, timeDelta),
+            z = spawnPos.z
+        };
 
         if (gravity)
-            newPosition.y = timeDelta * (spawnPos.y + Speed.y - 0.5f * config.Gravity * timeDelta);
+            pos.y -= 0.5f * 15f * timeDelta * timeDelta;
 
-        return newPosition;
+        return pos;
     }
+
+    private static float GetCoordFromTime(float spawnCoord, float speedCoord, float timeDelta) =>
+        spawnCoord + timeDelta * speedCoord;
 
     public abstract void Hit(string hitGoID);
 

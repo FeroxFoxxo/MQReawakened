@@ -16,7 +16,6 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
@@ -164,7 +163,7 @@ public abstract class BaseEnemy : IDestructible
         var offsetX = box.XOffset * EnemyController.Scale.X - width / 2 * (EnemyController.Scale.X < 0 ? -1 : 1);
         var offsetY = box.YOffset * EnemyController.Scale.Y - height / 2 * (EnemyController.Scale.Y < 0 ? -1 : 1);
 
-        var position = new Vector3Model { X = offsetX, Y = offsetY, Z = Position.z };
+        var position = new Vector3 { x = offsetX, y = offsetY, z = Position.z };
 
         Hitbox = new EnemyCollider(Id, position, new Vector2(width, height), ParentPlane, Room)
         {
