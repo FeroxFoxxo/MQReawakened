@@ -62,7 +62,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         AiData.services = new AIServices
         {
-            _shoot = new Shooter(),
+            _shoot = new Shooter(this),
             _bomber = new Bomber(),
             _scan = new Scanner(),
             _collision = new Collisions(),
@@ -167,6 +167,13 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             y = (float)Math.Sin(AiData.Intern_FireAngle) * AiData.Intern_FireSpeed
         };
 
+        FireProjectile(position, speed, isGrenade);
+
+        AiData.Intern_FireProjectile = false;
+    }
+
+    public void FireProjectile(Vector3 position, Vector2 speed, bool isGrenade)
+    {
         var damage = GameFlow.StatisticData.GetValue(
             ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level
         );
@@ -174,8 +181,6 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         var effect = EnemyController.ComponentData.EnemyEffectType;
 
         Room.AddRangedProjectile(Id, position, speed, 3, damage, effect, isGrenade);
-
-        AiData.Intern_FireProjectile = false;
     }
 
     public void ChangeBehavior(StateType behaviourType, float targetX, float targetY, int direction)

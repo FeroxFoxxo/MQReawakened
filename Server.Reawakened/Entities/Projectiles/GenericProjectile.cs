@@ -17,17 +17,17 @@ public class GenericProjectile : BaseProjectile
     public GenericProjectile(string id, Player player, float lifeTime, Vector3Model position, ItemRConfig config, ServerRConfig serverConfig,
         int direction, ItemDescription item, int damage, Elemental damageType, bool isGrenade)
             : base(id, config.ProjectileSpeedX * (direction > 0 ? 1 : -1), isGrenade ? config.GrenadeSpeedY : config.ProjectileSpeedY, lifeTime, player.Room,
-                new Vector3Model(position.X + config.ProjectileXOffset * (direction > 0 ? 1 : -1), position.Y + config.ProjectileYOffset, position.Z), null, serverConfig)
+                new Vector3Model(position.X + config.ProjectileXOffset * (direction > 0 ? 1 : -1), position.Y + config.ProjectileYOffset, position.Z), null, false, serverConfig)
     {
         _gameObjectId = player.GameObjectId;
         _gravityFactor = isGrenade ? config.GrenadeGravityFactor : config.ProjectileGravityFactor;
 
-        _hitboxPosition = new Vector3Model { X = Position.X, Y = Position.Y - config.ProjectileHeight, Z = Position.Z };
+        _hitboxPosition = new Vector3Model { X = Position.x, Y = Position.y - config.ProjectileHeight, Z = Position.z };
         _hitboxPosition.X -= direction > 0 ? 0 : config.ProjectileWidth;
 
         Collider = new AttackCollider(id, _hitboxPosition, new Vector2(config.ProjectileWidth, config.ProjectileHeight), PrjPlane, player, damage, damageType, LifeTime, 0);
 
-        var prj = new LaunchItem_SyncEvent(_gameObjectId, StartTime, Position.X, Position.Y, Position.Z, SpeedX, SpeedY, LifeTime, int.Parse(ProjectileId), item.PrefabName);
+        var prj = new LaunchItem_SyncEvent(_gameObjectId, StartTime, Position.x, Position.y, Position.z, Speed.x, Speed.y, LifeTime, int.Parse(ProjectileId), item.PrefabName);
         Room.SendSyncEvent(prj);
     }
 
@@ -44,8 +44,8 @@ public class GenericProjectile : BaseProjectile
         hit.EventDataList.Add(int.Parse(ProjectileId));
         hit.EventDataList.Add(hitGoID);
         hit.EventDataList.Add(0);
-        hit.EventDataList.Add(Position.X);
-        hit.EventDataList.Add(Position.Y);
+        hit.EventDataList.Add(Position.x);
+        hit.EventDataList.Add(Position.y);
 
         Room.SendSyncEvent(hit);
         Room.RemoveProjectile(ProjectileId);

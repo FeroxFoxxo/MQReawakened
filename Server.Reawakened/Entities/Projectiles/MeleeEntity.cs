@@ -16,7 +16,7 @@ public class MeleeEntity : BaseProjectile
     private readonly string _gameObjectId;
 
     public MeleeEntity(string id, Vector3Model position, Player player, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig serverConfig, ItemRConfig config)
-        : base(id, 0, 0, lifeTime, player.Room, position, null, serverConfig)
+        : base(id, 0, 0, lifeTime, player.Room, position, null, false, serverConfig)
     {
         _gameObjectId = player.GameObjectId;
 
@@ -49,7 +49,7 @@ public class MeleeEntity : BaseProjectile
 
         var hitEvent = new Melee_SyncEvent(
             _gameObjectId, Room.Time,
-            Position.X, Position.Y, Position.Z, direction, SpeedY, LifeTime,
+            Position.x, Position.y, Position.z, direction, Speed.y, LifeTime,
             int.Parse(ProjectileId), item.PrefabName
         );
 
@@ -61,8 +61,8 @@ public class MeleeEntity : BaseProjectile
         var hit = new MeleeHit_SyncEvent(new SyncEvent(_gameObjectId, SyncEvent.EventType.MeleeHit, Room.Time));
 
         hit.EventDataList.Add(0);
-        hit.EventDataList.Add(Position.X);
-        hit.EventDataList.Add(Position.Y);
+        hit.EventDataList.Add(Position.x);
+        hit.EventDataList.Add(Position.y);
 
         Room.SendSyncEvent(hit);
         Room.RemoveProjectile(ProjectileId);

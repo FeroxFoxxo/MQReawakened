@@ -1210,7 +1210,7 @@
         <!--Green Chest-->
         <LootInfo objectId="28578" doLootWheel="True">
             <Items rewardAmount="1">
-                <Item itemName="COL_POT_EarthElixir01[]" count="1" />
+                <Item itemName="COL_POT_EarthElixir01" count="1" />
                 <Item itemName="Unknown Alchemy Recipe (0 stars)" count="1" />
                 <Item itemName="COL_POT_EarthResist01" count="1" />
                 <Item itemName="Add_COM_AnimalWood01_S01" count="1" /><!--speculation-->
