@@ -17,14 +17,13 @@ public class Shooter(BehaviorEnemy enemy) : IShoot
         var gravity = enemy.ServerRConfig.Gravity;
 
         var distance = target.x - pos.x;
-        var heightDifference = target.y - pos.y;
-        var peak = Math.Max(heightDifference, maxHeight);
+        var deltaY = target.y - pos.y;
 
-        var timeToPeak = Convert.ToSingle(Math.Sqrt(2 * peak / gravity));
-        var totalTime = 2 * timeToPeak;
+        var timeToPeak = Math.Sqrt(2 * maxHeight / gravity);
+        var totalTime = timeToPeak + Math.Sqrt(2 * (maxHeight + deltaY) / gravity);
 
-        var vx = distance / totalTime;
-        var vy = gravity * timeToPeak;
+        var vx = Convert.ToSingle(distance / totalTime);
+        var vy = Convert.ToSingle(gravity * timeToPeak);
 
         var position = new Vector3(pos.x, pos.y, pos.z);
         var velocity = new Vector2(vx, vy);
