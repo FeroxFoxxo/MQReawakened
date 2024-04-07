@@ -72,7 +72,7 @@ public class AssetBundleRConfig : IRConfig
                 new Dictionary<string, string>()
                 {
                     { "FX_R01_ShardDestroyed_Silver", "FX_R01_Shard_Absorb" },
-                    { "FX_R01_EnergyDust01", "FX_R01_ShardEnergyTravel" }
+                    { "FX_WaspBossFightShardsTrail", "FX_R01_ShardEnergyTravel" }
                 }
             }
         };

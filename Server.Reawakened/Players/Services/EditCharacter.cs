@@ -44,7 +44,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
 
         console.AddCommand(
             "levelUp",
-            "Changes a _player's XP level.",
+            "Changes a player's XP level.",
             NetworkType.Server,
             _ => LevelUp()
         );
