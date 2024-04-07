@@ -25,8 +25,12 @@ public static class RoomExtensions
         var playersNearby = new List<Player>();
 
         foreach (var player in room.GetPlayers())
+        {
+            LogFacade.debug($"Comparing player position {player.TempData.Position} to {currentPosition}");
+
             if (Vector3.Distance(player.TempData.Position, currentPosition) <= radius)
                 playersNearby.Add(player);
+        }
 
         return playersNearby;
     }

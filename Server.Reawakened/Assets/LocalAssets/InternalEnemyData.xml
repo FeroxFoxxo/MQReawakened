@@ -2355,8 +2355,8 @@
             <Enemy name="PF_Spite_Stomper_Rock">
                 <GenericScript>
                     <AttackBehavior value="Aggro" />
-                    <AwareBehaviorDuration value="0.5" />
-                    <AwareBehavior value="LookAround" />
+                    <AwareBehaviorDuration value="6" />
+                    <AwareBehavior value="Stomper" />
                     <UnawareBehavior value="Patrol" />
                     <HealthRegenAmount value="0" />
                     <HealthRegenFrequency value="0" />
@@ -2376,7 +2376,7 @@
                     <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
-                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
+                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="3">
                         <Resource type="EABIL" name="PF_EABIL_Spite_Stomper" />
                     </Stomper>
                 </Behaviors>
@@ -2385,8 +2385,8 @@
             <Enemy name="PF_Spite_Stomper_Lava">
                 <GenericScript>
                     <AttackBehavior value="Aggro" />
-                    <AwareBehaviorDuration value="0.5" />
-                    <AwareBehavior value="LookAround" />
+                    <AwareBehaviorDuration value="6" />
+                    <AwareBehavior value="Stomper" />
                     <UnawareBehavior value="Patrol" />
                     <HealthRegenAmount value="0" />
                     <HealthRegenFrequency value="0" />
@@ -2406,7 +2406,7 @@
                     <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
-                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
+                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="3">
                         <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Fire" />
                     </Stomper>
                 </Behaviors>
@@ -2415,8 +2415,8 @@
             <Enemy name="PF_Spite_Stomper_Swamp">
                 <GenericScript>
                     <AttackBehavior value="Aggro" />
-                    <AwareBehaviorDuration value="0.5" />
-                    <AwareBehavior value="LookAround" />
+                    <AwareBehaviorDuration value="6" />
+                    <AwareBehavior value="Stomper" />
                     <UnawareBehavior value="Patrol" />
                     <HealthRegenAmount value="0" />
                     <HealthRegenFrequency value="0" />
@@ -2436,7 +2436,7 @@
                     <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
-                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
+                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="3">
                         <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Poison" />
                     </Stomper>
                 </Behaviors>
@@ -2445,8 +2445,8 @@
             <Enemy name="PF_Spite_Stomper_Boss">
                 <GenericScript>
                     <AttackBehavior value="Aggro" />
-                    <AwareBehaviorDuration value="0.5" />
-                    <AwareBehavior value="LookAround" />
+                    <AwareBehaviorDuration value="6" />
+                    <AwareBehavior value="Stomper" />
                     <UnawareBehavior value="Patrol" />
                     <HealthRegenAmount value="0" />
                     <HealthRegenFrequency value="0" />
@@ -2466,7 +2466,7 @@
                     <Patrol speed="1.5" smoothMove="false" endPathWaitTime="4" />
                     <Aggro speed="3.2" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
                     <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
-                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="0">
+                    <Stomper attackTime="4" impactTime="2" damageDistance="2" damageOffset="3">
                         <Resource type="EABIL" name="PF_EABIL_Spite_Stomper_Miniboss" />
                     </Stomper>
                 </Behaviors>

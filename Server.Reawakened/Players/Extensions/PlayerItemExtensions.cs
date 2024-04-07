@@ -98,6 +98,8 @@ public static class PlayerItemExtensions
         if (player == null)
             foreach (var nearPlayer in room.GetNearbyPlayers(position, radius))
                 nearPlayer.ApplyCharacterDamage(damage, 1, thread);
+
+        room.Logger.LogInformation("Running bomb at coords: {Position} of radius {Radius}", position, radius);
     }
 
     private static void ExplodeBomb(object data)

@@ -117,7 +117,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                     FireProjectile(false);
 
             if (_currentState == GenericScript.AwareBehavior)
+            {
                 if (Room.Time >= _lastUpdate + GenericScript.genericScript_AwareBehaviorDuration)
+                    AiBehavior.NextState(this);
+            }
+            else if (_currentState == StateType.LookAround)
+                if (Room.Time >= _lastUpdate + .5f)
                     AiBehavior.NextState(this);
         }
 

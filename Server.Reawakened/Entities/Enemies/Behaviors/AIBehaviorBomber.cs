@@ -20,7 +20,5 @@ public class AIBehaviorBomber(BomberState bomberState) : AIBaseBehavior
 
     public override void NextState(BehaviorEnemy enemy)
     {
-        enemy.Room.ExplodeBomb(null, enemy.Position, BombRadius, enemy.GetDamage(), Elemental.Standard, enemy.TimerThread);
-        enemy.Damage(enemy.EnemyController.MaxHealth, null);
     }
 }

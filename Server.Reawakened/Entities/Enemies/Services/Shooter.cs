@@ -6,7 +6,11 @@ public class Shooter(BehaviorEnemy enemy) : IShoot
 {
     public override int projectile(float clockTime, float speedX, float speedY, float posX, float posY, float posZ, bool isLob)
     {
-        LogFacade.error("Running unimplemented AI method 'projectile (x,y,z)' (from Shooter.cs)");
+        var position = new Vector3(posX, posY, posZ);
+        var velocity = new Vector2(speedX, speedY);
+
+        enemy.FireProjectile(position, velocity, isLob);
+
         return 0;
     }
 
