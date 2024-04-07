@@ -1,11 +1,12 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles;
 
@@ -14,10 +15,8 @@ public class MeleeEntity : BaseProjectile
     private readonly Vector3Model _hitboxPosition;
     private readonly string _gameObjectId;
 
-    public override BaseCollider Collider { get; set; }
-
     public MeleeEntity(string id, Vector3Model position, Player player, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig serverConfig, ItemRConfig config)
-        : base(id, 0, 0, lifeTime, player.Room, position, null, serverConfig)
+        : base(id, 0, 0, lifeTime, player.Room, position, null, false, serverConfig)
     {
         _gameObjectId = player.GameObjectId;
 
@@ -44,9 +43,16 @@ public class MeleeEntity : BaseProjectile
             _hitboxPosition.Y -= config.MeleeArialYOffset;
         }
 
-        Collider = new AttackCollider(id, _hitboxPosition, meleeWidth, meleeHeight, PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f);
+        Collider = new AttackCollider(id, _hitboxPosition, new Vector2(meleeWidth, meleeHeight),
+            PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f
+        );
 
-        var hitEvent = new Melee_SyncEvent(_gameObjectId, Room.Time, Position.X, Position.Y, Position.Z, direction, SpeedY, LifeTime, int.Parse(ProjectileId), item.PrefabName);
+        var hitEvent = new Melee_SyncEvent(
+            _gameObjectId, Room.Time,
+            Position.x, Position.y, Position.z, direction, Speed.y, LifeTime,
+            int.Parse(ProjectileId), item.PrefabName
+        );
+
         Room.SendSyncEvent(hitEvent);
     }
 
@@ -55,8 +61,8 @@ public class MeleeEntity : BaseProjectile
         var hit = new MeleeHit_SyncEvent(new SyncEvent(_gameObjectId, SyncEvent.EventType.MeleeHit, Room.Time));
 
         hit.EventDataList.Add(0);
-        hit.EventDataList.Add(Position.X);
-        hit.EventDataList.Add(Position.Y);
+        hit.EventDataList.Add(Position.x);
+        hit.EventDataList.Add(Position.y);
 
         Room.SendSyncEvent(hit);
         Room.RemoveProjectile(ProjectileId);

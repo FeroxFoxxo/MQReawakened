@@ -3,8 +3,8 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
 
 namespace Protocols.External._p__GroupHandler;
 
@@ -31,8 +31,8 @@ public class JoinGroup : ExternalProtocol
 
         if (accepted)
         {
-            leaderPlayer.CheckAchievement(AchConditionType.JoinGroup, string.Empty, InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.JoinGroup, string.Empty, InternalAchievement, Logger);
+            leaderPlayer.CheckAchievement(AchConditionType.JoinGroup, [], InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.JoinGroup, [], InternalAchievement, Logger);
 
             leaderPlayer.TempData.Group.AddPlayer(Player);
             Player.TempData.Group = leaderPlayer.TempData.Group;

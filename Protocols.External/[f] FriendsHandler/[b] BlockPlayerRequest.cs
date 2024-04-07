@@ -34,7 +34,7 @@ public class BlockPlayerRequest : ExternalProtocol
                 Player.Character.Data.Friends.Remove(friend.Id);
                 friend.Data.Friends.Remove(Player.CharacterId);
             }
-            
+
             Player.Character.Data.Blocked.Add(friend.Id);
 
             Player.SendXt("fb", friendData.ToString());

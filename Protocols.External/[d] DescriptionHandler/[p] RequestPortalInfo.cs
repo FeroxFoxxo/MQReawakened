@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Protocols.External._d__DescriptionHandler;
 public class RequestPortalInfo : ExternalProtocol

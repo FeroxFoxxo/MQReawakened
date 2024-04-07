@@ -10,7 +10,7 @@ using Server.Reawakened.BundleHost.Events.Arguments;
 using Server.Reawakened.BundleHost.Extensions;
 using Server.Reawakened.BundleHost.Helpers;
 using Server.Reawakened.BundleHost.Models;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Icons.Services;
 using System.Xml;
 
@@ -50,8 +50,8 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
         );
     }
 
-    public void LoadAssets() 
-    { 
+    public void LoadAssets()
+    {
         rwConfig.CacheInfoFile = GetInfoFile.TryGetInfoFile("Original", rwConfig.CacheInfoFile, logger);
 
         if (!string.IsNullOrEmpty(rwConfig.WebPlayerInfoFile))

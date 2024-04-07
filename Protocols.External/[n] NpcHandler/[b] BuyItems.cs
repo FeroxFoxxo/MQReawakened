@@ -1,12 +1,12 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -45,8 +45,8 @@ public class BuyItems : ExternalProtocol
 
             Player.CheckObjective(ObjectiveEnum.Buyitem, vendorGoId.ToString(), itemDescription.PrefabName, amount, ItemCatalog);
 
-            Player.CheckAchievement(AchConditionType.BuyItem, itemDescription.PrefabName, InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.BuyPet, itemDescription.PrefabName, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.BuyItem, [itemDescription.PrefabName], InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.BuyPet, [itemDescription.PrefabName], InternalAchievement, Logger);
         }
 
         Player.SendUpdatedInventory();

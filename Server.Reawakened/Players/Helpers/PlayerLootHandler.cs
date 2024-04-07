@@ -3,9 +3,10 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Models.LootRewards;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.LootRewards.Enums;
+using Server.Reawakened.XMLs.Data.LootRewards.Models;
 
 namespace Server.Reawakened.Players.Helpers;
 
@@ -80,7 +81,9 @@ public static class PlayerLootHandler
                 player.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count, itemCatalog);
         }
 
-        if (lootModel.MultiplayerWheelChance > 0 && player.Room.Players.Count > 1 && player.Room.LevelInfo.Type == LevelType.Trail)
+        var players = player.Room.GetPlayers();
+
+        if (lootModel.MultiplayerWheelChance > 0 && players.Length > 1 && player.Room.LevelInfo.Type == LevelType.Trail)
         {
             var randomChance = new Random().Next(100);
 
@@ -92,12 +95,12 @@ public static class PlayerLootHandler
                 multiplayerWheelData.Append(gottenItems[new Random().Next(gottenItems.Count)].ItemId);
                 multiplayerWheelData.Append(lootableItems);
 
-                foreach (var groupMember in player.Room.Players.Values)
+                foreach (var groupMember in players)
                     SendMultiplayerLootWheel(groupMember, multiplayerWheelData.ToString());
             }
         }
 
-        if (lootModel.DoWheel && player.Room.Players.Count <= 1)
+        if (lootModel.DoWheel && players.Length <= 1)
             SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
 
         player.SendUpdatedInventory();
@@ -114,10 +117,10 @@ public static class PlayerLootHandler
         {
             switch (drop.Type)
             {
-                case Entities.Enums.DynamicDropType.Item:
+                case DynamicDropType.Item:
                     finalItemId = drop.Id;
                     break;
-                case Entities.Enums.DynamicDropType.RandomArmor:
+                case DynamicDropType.RandomArmor:
                     //Magic number 4 here will be changed and sent to ServerRConfig once I get more info on clothing drops
                     var armorList = itemCatalog.GetItemsFromLevel(level - 4, level + 4, A2m.Server.ItemCategory.Wearable);
                     finalItemId = armorList[random.Next(armorList.Count)].ItemId;

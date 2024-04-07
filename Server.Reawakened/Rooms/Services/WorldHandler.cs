@@ -4,10 +4,10 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Services;
@@ -89,7 +89,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
                         var playerMembers = player.TempData.Group.GetMembers();
 
                         var trailRoom = level.Rooms.Values.FirstOrDefault(r =>
-                            r.Players.Any(c => playerMembers.Contains(c.Value))
+                            r.GetPlayers().Any(c => playerMembers.Contains(c))
                         );
 
                         if (trailRoom != null)
@@ -180,10 +180,20 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             return false;
         }
 
-        player.Character.LevelData.LevelId = levelInfo.LevelId;
         player.Character.LevelData.SpawnPointId = spawnId;
 
-        player.SendLevelChange(this);
+        if (player.Character.LevelData.LevelId == levelInfo.LevelId)
+        {
+            var character = player.Character;
+
+            player.Room.SetPlayerPosition(character);
+            player.TeleportPlayer(character.Data.SpawnPositionX, character.Data.SpawnPositionY, character.Data.SpawnOnBackPlane);
+        }
+        else
+        {
+            player.Character.LevelData.LevelId = levelInfo.LevelId;
+            player.SendLevelChange(this);
+        }
 
         return true;
     }

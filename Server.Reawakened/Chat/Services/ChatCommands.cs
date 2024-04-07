@@ -9,8 +9,9 @@ using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
-using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Components.GameObjects.MonkeyGadgets;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -19,8 +20,8 @@ using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
 using System.Text.RegularExpressions;
 
 namespace Server.Reawakened.Chat.Services;
@@ -28,7 +29,7 @@ namespace Server.Reawakened.Chat.Services;
 public partial class ChatCommands(
     ItemCatalog itemCatalog, ServerRConfig config, ItemRConfig itemConfig, ILogger<ServerConsole> logger, FileLogger fileLogger,
     WorldHandler worldHandler, InternalAchievement internalAchievement, InternalQuestItem questItem,
-    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog, 
+    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog,
     CharacterHandler characterHandler, AccountHandler accountHandler) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
@@ -279,20 +280,19 @@ public partial class ChatCommands(
 
     private bool Teleport(Player player, string[] args)
     {
-        if (args.Length < 3 || !int.TryParse(args[1], out var xPos) || !int.TryParse(args[2], out var yPos))
+        if (args.Length < 3 || !int.TryParse(args[1], out var x) || !int.TryParse(args[2], out var y))
         {
             Log("Please enter valid coordinates.", player);
             return false;
         }
 
-        var currentZPosition = player.TempData.Position.Z == 0 ? 0 : 1;
+        var zPosition = player.TempData.Position.Z;
 
-        var zPos = args.Length > 3 ? int.Parse(args[3]) : currentZPosition;
+        if (args.Length > 3)
+            if (int.TryParse(args[3], out var givenZPosition))
+                zPosition = givenZPosition;
 
-        if (zPos is < 0 or > 1)
-            zPos = currentZPosition;
-
-        player.TeleportPlayer(xPos, yPos, Convert.ToInt32(zPos));
+        player.TeleportPlayer(player.TempData.Position.X + x, player.TempData.Position.Y + y, zPosition == 0);
 
         return true;
     }

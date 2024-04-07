@@ -1,13 +1,14 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Entities.Colliders;
 using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles;
 public class ChargeAttackProjectile : BaseProjectile
@@ -18,17 +19,15 @@ public class ChargeAttackProjectile : BaseProjectile
     private readonly int _itemId;
     private readonly int _zoneId;
 
-    public override BaseCollider Collider { get; set; }
-
     public ChargeAttackProjectile(string id, Player player, Vector3Model startPosition, Vector3Model endPosition, Vector2Model speed, float lifeTime, int itemId, int zoneId, int damage, Elemental type, ServerRConfig config, TimerThread timerThread)
-        : base(id, speed.X, speed.Y, lifeTime, player.Room, startPosition, endPosition, config)
+        : base(id, speed.X, speed.Y, lifeTime, player.Room, startPosition, endPosition, false, config)
     {
         _timerThread = timerThread;
         _player = player;
         _itemId = itemId;
         _zoneId = zoneId;
 
-        Collider = new AttackCollider(player.GameObjectId, startPosition, 1, 1, PrjPlane, player, damage, type, 15f, 0);
+        Collider = new AttackCollider(player.GameObjectId, startPosition, new Vector2(1, 1), PrjPlane, player, damage, type, 15f, 0);
 
         Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(player.GameObjectId.ToString(), Room.Time,
                         endPosition.X, endPosition.Y, speed.X, speed.Y, itemId, zoneId));

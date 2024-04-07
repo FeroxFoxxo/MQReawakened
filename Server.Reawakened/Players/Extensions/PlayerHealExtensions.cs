@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Players.Extensions;

@@ -946,7 +946,7 @@
                 <Condition id="1" title="Defeat 1 Enemy with a Super Stomp" type="DefeatEnemyStomp" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="109" title="Like a Meteor" description="Defeat 5 Enemies with a Super Stomp" iconName="Combat_Superstomp_5" points="5" sortOrder="12" repeatable="false">
+        <Achievement id="109" title="Falling Meteor" description="Defeat 5 Enemies with a Super Stomp" iconName="Combat_Superstomp_5" points="5" sortOrder="12" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
@@ -1059,116 +1059,118 @@
                 <Condition id="1" title="Use 1000 Potions" type="Drink" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="123" title="Unknown Achievement 123" description="Unknown Description. Hint: the icon is named Combat_DefeaterBathog_10!" iconName="Combat_DefeaterBathog_10" points="1" sortOrder="26" repeatable="false">
+        <Achievement id="123" title="Bathog Defeater" description="Defeat 10 Bathogs" iconName="Combat_DefeaterBathog_10" points="5" sortOrder="26" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Bathogs" type="DefeatEnemy" value="Bathog" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="124" title="Unknown Achievement 124" description="Unknown Description. Hint: the icon is named Combat_CrusherBathog_50!" iconName="Combat_CrusherBathog_50" points="1" sortOrder="27" repeatable="false">
+        <Achievement id="124" title="Bathog Crusher" description="Defeat 50 Bathogs" iconName="Combat_CrusherBathog_50" points="10" sortOrder="27" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_ShadowShard01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Bathogs" type="DefeatEnemy" value="Bathog" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="125" title="Unknown Achievement 125" description="Unknown Description. Hint: the icon is named Combat_VanquisherBathog_100!" iconName="Combat_VanquisherBathog_100" points="1" sortOrder="28" repeatable="false">
+        <Achievement id="125" title="Bathog Vanquisher" description="Defeat 100 Bathogs" iconName="Combat_VanquisherBathog_100" points="25" sortOrder="28" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_ShadowShard02" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Bathogs" type="DefeatEnemy" value="Bathog" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="126" title="Unknown Achievement 126" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorBathog_250!" iconName="Combat_AnnihilatorBathog_250" points="1" sortOrder="29" repeatable="false">
+        <Achievement id="126" title="Bathog Annihilator" description="Defeat 250 Bathogs" iconName="Combat_AnnihilatorBathog_250" points="75" sortOrder="29" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_ShadowShard03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Bathogs" type="DefeatEnemy" value="Bathog" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="127" title="Unknown Achievement 127" description="Unknown Description. Hint: the icon is named Combat_ConquerorBathog_500!" iconName="Combat_ConquerorBathog_500" points="1" sortOrder="30" repeatable="false">
+        <!--Custom-->
+        <Achievement id="127" title="Bathog Dominator" description="Defeat 500 Bathogs" iconName="Combat_ConquerorBathog_500" points="150" sortOrder="30" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Bathogs" type="DefeatEnemy" value="Bathog" goal="500" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="128" title="Unknown Achievement 128" description="Unknown Description. Hint: the icon is named Defeat_1000_Bathhogs!" iconName="Defeat_1000_Bathhogs" points="1" sortOrder="31" repeatable="false">
+        <Achievement id="128" title="Bathog Conqueror" description="Defeat 1000 Bathogs" iconName="Defeat_1000_Bathhogs" points="200" sortOrder="31" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1000 Bathogs" type="DefeatEnemy" value="Bathog" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="129" title="Unknown Achievement 129" description="Unknown Description. Hint: the icon is named Combat_DefeaterBoombird_10!" iconName="Combat_DefeaterBoombird_10" points="1" sortOrder="32" repeatable="false">
+        <Achievement id="129" title="Boombird Defeater" description="Defeat 10 Boombirds" iconName="Combat_DefeaterBoombird_10" points="5" sortOrder="32" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Boombirds" type="DefeatEnemy" value="Boombird" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="130" title="Unknown Achievement 130" description="Unknown Description. Hint: the icon is named Combat_CrusherBombird_50!" iconName="Combat_CrusherBombird_50" points="1" sortOrder="33" repeatable="false">
+        <Achievement id="130" title="Boombird Crusher" description="Defeat 50 Boombirds" iconName="Combat_CrusherBombird_50" points="10" sortOrder="33" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_LightShard01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Boombirds" type="DefeatEnemy" value="Boombird" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="131" title="Unknown Achievement 131" description="Unknown Description. Hint: the icon is named Combat_VanquisherBombird_100!" iconName="Combat_VanquisherBombird_100" points="1" sortOrder="34" repeatable="false">
+        <Achievement id="131" title="Boombird Vanquisher" description="Defeat 100 Boombirds" iconName="Combat_VanquisherBombird_100" points="25" sortOrder="34" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_LightShard02" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Boombirds" type="DefeatEnemy" value="Boombird" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="132" title="Unknown Achievement 132" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorBombird_250!" iconName="Combat_AnnihilatorBombird_250" points="1" sortOrder="35" repeatable="false">
+        <Achievement id="132" title="Boombird Annihilator" description="Defeat 250 Boombirds" iconName="Combat_AnnihilatorBombird_250" points="75" sortOrder="35" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_LightShard03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Boombirds" type="DefeatEnemy" value="Boombird" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="133" title="Unknown Achievement 133" description="Unknown Description. Hint: the icon is named Combat_ConquerorBombird_500!" iconName="Combat_ConquerorBombird_500" points="1" sortOrder="36" repeatable="false">
+        <!--Custom-->
+        <Achievement id="133" title="Boombird Dominator" description="Defeat 500 Boombirds" iconName="Combat_ConquerorBombird_500" points="150" sortOrder="36" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Boombirds" type="DefeatEnemy" value="Boombird" goal="500" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="134" title="Unknown Achievement 134" description="Unknown Description. Hint: the icon is named Defeat_1000_Bombirds!" iconName="Defeat_1000_Bombirds" points="1" sortOrder="37" repeatable="false">
+        <Achievement id="134" title="Boombird Conqueror" description="Defeat 1000 Boombirds" iconName="Defeat_1000_Bombirds" points="200" sortOrder="37" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1000 Boombirds" type="DefeatEnemy" value="Boombird" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="135" title="Unknown Achievement 135" description="Unknown Description. Hint: the icon is named Combat_DefeaterBoombug_10!" iconName="Combat_DefeaterBoombug_10" points="1" sortOrder="38" repeatable="false">
+        <Achievement id="135" title="Boombug Defeater" description="Defeat 10 Boombugs" iconName="Combat_DefeaterBoombug_10" points="5" sortOrder="38" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Boombugs" type="DefeatEnemy" value="Boombug" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="136" title="Unknown Achievement 136" description="Unknown Description. Hint: the icon is named Combat_CrusherBoombug_50!" iconName="Combat_CrusherBoombug_50" points="1" sortOrder="39" repeatable="false">
+        <Achievement id="136" title="Boombug Crusher" description="Defeat 50 Boombugs" iconName="Combat_CrusherBoombug_50" points="10" sortOrder="39" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Amethyst" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Boombugs" type="DefeatEnemy" value="Boombug" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="137" title="Boombug Vanquisher" description="Defeat 100 Boombugs" iconName="Combat_VanquisherBoombug_100" points="25" sortOrder="40" repeatable="false">
@@ -1176,23 +1178,24 @@
                 <Reward type="Item" value="COL_ING_G_Amethyst" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 100 Boombugs" type="Invalid" value="" goal="100" visible="true" />
+                <Condition id="1" title="Defeat 100 Boombugs" type="DefeatEnemy" value="Boombug" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="138" title="Unknown Achievement 138" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorBoombug_250!" iconName="Combat_AnnihilatorBoombug_250" points="1" sortOrder="41" repeatable="false">
+        <Achievement id="138" title="Boombug Annihilator" description="Defeat 250 Boombugs" iconName="Combat_AnnihilatorBoombug_250" points="75" sortOrder="41" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Amethyst" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Boombugs" type="DefeatEnemy" value="Boombug" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="139" title="Unknown Achievement 139" description="Unknown Description. Hint: the icon is named Combat_ConquerorBoombug_500!" iconName="Combat_ConquerorBoombug_500" points="1" sortOrder="42" repeatable="false">
+        <!--Custom-->
+        <Achievement id="139" title="Boombug Dominator" description="Defeat 500 Boombugs" iconName="Combat_ConquerorBoombug_500" points="150" sortOrder="42" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Boombugs" type="DefeatEnemy" value="Boombug" goal="500" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="140" title="BoomBug Conqueror" description="Defeat 1,000 BoomBugs" iconName="Defeat_1000_Boombugs" points="200" sortOrder="43" repeatable="false">
@@ -1200,96 +1203,97 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 BoomBugs" type="Invalid" value="" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 BoomBugs" type="DefeatEnemy" value="Boombug" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="141" title="Unknown Achievement 141" description="Unknown Description. Hint: the icon is named Combat_DefeaterCragcrawler_10!" iconName="Combat_DefeaterCragcrawler_10" points="1" sortOrder="44" repeatable="false">
+        <Achievement id="141" title="Cragcrawler Defeater" description="Defeat 10 Cragcrawlers" iconName="Combat_DefeaterCragcrawler_10" points="5" sortOrder="44" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Cragcrawlers" type="DefeatEnemy" value="Cragcrawler" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="142" title="Unknown Achievement 142" description="Unknown Description. Hint: the icon is named Combat_CrusherCragcrawler_50!" iconName="Combat_CrusherCragcrawler_50" points="1" sortOrder="45" repeatable="false">
+        <Achievement id="142" title="Cragcrawler Crusher" description="Defeat 50 Cragcrawlers" iconName="Combat_CrusherCragcrawler_50" points="10" sortOrder="45" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Obsidian" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Cragcrawlers" type="DefeatEnemy" value="Cragcrawler" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="143" title="Unknown Achievement 143" description="Unknown Description. Hint: the icon is named Combat_VanquisherCragcrawler_100!" iconName="Combat_VanquisherCragcrawler_100" points="1" sortOrder="46" repeatable="false">
+        <Achievement id="143" title="Cragcrawler Vanquisher" description="Defeat 100 Cragcrawlers" iconName="Combat_VanquisherCragcrawler_100" points="25" sortOrder="46" repeatable="false">
             <Rewards>
-                defeater
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Obsidian" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Cragcrawlers" type="DefeatEnemy" value="Cragcrawler" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="144" title="Unknown Achievement 144" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorCragcrawler_250!" iconName="Combat_AnnihilatorCragcrawler_250" points="1" sortOrder="47" repeatable="false">
+        <Achievement id="144" title="Cragcrawler Annihilator" description="Defeat 250 Cragcrawlers" iconName="Combat_AnnihilatorCragcrawler_250" points="75" sortOrder="47" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Obsidian" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Cragcrawlers" type="DefeatEnemy" value="Cragcrawler" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="145" title="Unknown Achievement 145" description="Unknown Description. Hint: the icon is named Combat_ConquerorCragcrawler_500!" iconName="Combat_ConquerorCragcrawler_500" points="1" sortOrder="48" repeatable="false">
+        <!--Custom-->
+        <Achievement id="145" title="Cragcrawler Dominator" description="Defeat 500 Cragcrawlers" iconName="Combat_ConquerorCragcrawler_500" points="150" sortOrder="48" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Cragcrawlers" type="DefeatEnemy" value="Cragcrawler" goal="500" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="146" title="Unknown Achievement 146" description="Unknown Description. Hint: the icon is named Defeat_1000_Cragcrawler!" iconName="Defeat_1000_Cragcrawler" points="1" sortOrder="49" repeatable="false">
+        <Achievement id="146" title="Cragcrawler Conqueror" description="Defeat 1000 Cragcrawlers" iconName="Defeat_1000_Cragcrawler" points="200" sortOrder="49" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1000 Cragcrawlers" type="DefeatEnemy" value="Cragcrawler" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="147" title="Dragon Defeater" description="Defeat 10 Dragons" iconName="Combat_DefeaterDragon_10" points="5" sortOrder="50" repeatable="false">
             <Rewards>
-                <Reward type="Xp" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 10 Dragons" type="DefeatEnemy" value="PF_Spite_Dragon_Rock" goal="10" visible="true" />
+                <Condition id="1" title="Defeat 10 Dragons" type="DefeatEnemy" value="Dragon" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="148" title="Unknown Achievement 148" description="Unknown Description. Hint: the icon is named Combat_CrusherDragon_50!" iconName="Combat_CrusherDragon_50" points="1" sortOrder="51" repeatable="false">
+        <Achievement id="148" title="Dragon Crusher" description="Defeat 50 Dragons" iconName="Combat_CrusherDragon_50" points="10" sortOrder="51" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Jade" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Dragons" type="DefeatEnemy" value="Dragon" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="149" title="Unknown Achievement 149" description="Unknown Description. Hint: the icon is named Combat_VanquisherDragon_100!" iconName="Combat_VanquisherDragon_100" points="1" sortOrder="52" repeatable="false">
+        <Achievement id="149" title="Dragon Vanquisher" description="Defeat 100 Dragons" iconName="Combat_VanquisherDragon_100" points="25" sortOrder="52" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Jade" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Dragons" type="DefeatEnemy" value="Dragon" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="150" title="Unknown Achievement 150" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorDragon_250!" iconName="Combat_AnnihilatorDragon_250" points="1" sortOrder="53" repeatable="false">
+        <Achievement id="150" title="Dragon Annihilator" description="Defeat 250 Dragons" iconName="Combat_AnnihilatorDragon_250" points="75" sortOrder="53" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Jade" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Dragons" type="DefeatEnemy" value="Dragon" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="151" title="Unknown Achievement 151" description="Unknown Description. Hint: the icon is named Combat_ConquerorDragon_500!" iconName="Combat_ConquerorDragon_500" points="1" sortOrder="54" repeatable="false">
+        <!--Custom-->
+        <Achievement id="151" title="Dragon Dominator" description="Defeat 500 Dragons" iconName="Combat_ConquerorDragon_500" points="150" sortOrder="54" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Dragons" type="DefeatEnemy" value="Dragon" goal="500" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="152" title="Dragon Conqueror" description="Defeat 1,000 Dragons" iconName="Defeat_1000_Dragons" points="200" sortOrder="55" repeatable="false">
@@ -1297,47 +1301,48 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Dragons" type="Invalid" value="" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Dragons" type="DefeatEnemy" value="Dragon" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="153" title="Unknown Achievement 153" description="Unknown Description. Hint: the icon is named Combat_DefeaterDraicon_10!" iconName="Combat_DefeaterDraicon_10" points="1" sortOrder="56" repeatable="false">
+        <Achievement id="153" title="Draicon Defeater" description="Defeat 10 Draicons" iconName="Combat_DefeaterDraicon_10" points="5" sortOrder="56" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Draicons" type="DefeatEnemy" value="Draicon" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="154" title="Unknown Achievement 154" description="Unknown Description. Hint: the icon is named Combat_CrusherDraicon_50!" iconName="Combat_CrusherDraicon_50" points="1" sortOrder="57" repeatable="false">
+        <Achievement id="154" title="Draicon Crusher" description="Defeat 50 Draicons" iconName="Combat_CrusherDraicon_50" points="10" sortOrder="57" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_LightGem01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Draicons" type="DefeatEnemy" value="Draicon" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="155" title="Unknown Achievement 155" description="Unknown Description. Hint: the icon is named Combat_VanquisherDraicon_100!" iconName="Combat_VanquisherDraicon_100" points="1" sortOrder="58" repeatable="false">
+        <Achievement id="155" title="Draicon Vanquisher" description="Defeat 100 Draicons" iconName="Combat_VanquisherDraicon_100" points="25" sortOrder="58" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_LightGem02" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Draicons" type="DefeatEnemy" value="Draicon" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="156" title="Unknown Achievement 156" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorDraicon_250!" iconName="Combat_AnnihilatorDraicon_250" points="1" sortOrder="59" repeatable="false">
+        <Achievement id="156" title="Draicon Annihilator" description="Defeat 250 Draicons" iconName="Combat_AnnihilatorDraicon_250" points="75" sortOrder="59" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_LightGem03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Draicons" type="DefeatEnemy" value="Draicon" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="157" title="Unknown Achievement 157" description="Unknown Description. Hint: the icon is named Combat_ConquerorDraicon_500!" iconName="Combat_ConquerorDraicon_500" points="1" sortOrder="60" repeatable="false">
+        <!--Custom-->
+        <Achievement id="157" title="Draicon Dominator" description="Defeat 500 Draicons" iconName="Combat_ConquerorDraicon_500" points="150" sortOrder="60" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Draicons" type="DefeatEnemy" value="Draicon" goal="500" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="158" title="Draicon Conqueror" description="Defeat 1,000 Draicons" iconName="Defeat_1000_Draicons" points="200" sortOrder="61" repeatable="false">
@@ -1345,23 +1350,23 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Draicons" type="Invalid" value="" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Draicons" type="DefeatEnemy" value="Draicon" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="159" title="Unknown Achievement 159" description="Unknown Description. Hint: the icon is named Combat_DefeaterOgrak_10!" iconName="Combat_DefeaterOgrak_10" points="1" sortOrder="62" repeatable="false">
+        <Achievement id="159" title="Ograk Defeater" description="Defeat 10 Ograks" iconName="Combat_DefeaterOgrak_10" points="5" sortOrder="62" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Ograks" type="DefeatEnemy" value="Ograk" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="160" title="Unknown Achievement 160" description="Unknown Description. Hint: the icon is named Combat_CrusherOgrak_50!" iconName="Combat_CrusherOgrak_50" points="1" sortOrder="63" repeatable="false">
+        <Achievement id="160" title="Ograk Crusher" description="Defeat 50 Ograks" iconName="Combat_CrusherOgrak_50" points="10" sortOrder="63" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Diamond01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Ograks" type="DefeatEnemy" value="Ograk" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="161" title="Ograk Vanquisher" description="Defeat 100 Ograks" iconName="Combat_VanquisherOgrak_100" points="25" sortOrder="64" repeatable="false">
@@ -1369,111 +1374,122 @@
                 <Reward type="Item" value="COL_ING_G_Diamond02" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 100 Ograks" type="Invalid" value="" goal="100" visible="true" />
+                <Condition id="1" title="Defeat 100 Ograks" type="DefeatEnemy" value="Ograk" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="162" title="Unknown Achievement 162" description="Unknown Description. Hint: the icon is named Combat_ConquerorOgrak_500!" iconName="Combat_ConquerorOgrak_500" points="1" sortOrder="65" repeatable="false">
+        <Achievement id="563" title="Ograk Annihilator" description="Defeat 250 Ograks" iconName="Combat_AnnihilatorOgrak_250" points="75" sortOrder="65" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Ograks" type="DefeatEnemy" value="Ograk" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="163" title="Ograk Conqueror" description="Defeat 1,000 Ograks" iconName="Defeat_1000_Ograks" points="1" sortOrder="66" repeatable="false">
+        <!--Custom-->
+        <Achievement id="162" title="Ograk Dominator" description="Defeat 500 Ograks" iconName="Combat_ConquerorOgrak_500" points="150" sortOrder="65" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Diamond03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Ograks" type="Invalid" value="" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 500 Ograks" type="DefeatEnemy" value="Ograk" goal="500" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="164" title="Unknown Achievement 164" description="Unknown Description. Hint: the icon is named Combat_DefeaterOrchid_10!" iconName="Combat_DefeaterOrchid_10" points="1" sortOrder="67" repeatable="false">
+        <Achievement id="163" title="Ograk Conqueror" description="Defeat 1,000 Ograks" iconName="Defeat_1000_Ograks" points="200" sortOrder="66" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Ograks" type="DefeatEnemy" value="Ograk" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="165" title="Unknown Achievement 165" description="Unknown Description. Hint: the icon is named Combat_CrusherOrchid_50!" iconName="Combat_CrusherOrchid_50" points="1" sortOrder="68" repeatable="false">
+        <Achievement id="164" title="Orchid Defeater" description="Defeat 10 Orchids" iconName="Combat_DefeaterOrchid_10" points="5" sortOrder="67" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Orchids" type="DefeatEnemy" value="Orchid" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="166" title="Unknown Achievement 166" description="Unknown Description. Hint: the icon is named Combat_VanquisherOrchid_100!" iconName="Combat_VanquisherOrchid_100" points="1" sortOrder="69" repeatable="false">
+        <Achievement id="165" title="Orchid Crusher" description="Defeat 50 Orchids" iconName="Combat_CrusherOrchid_50" points="10" sortOrder="68" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Emerald01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Orchids" type="DefeatEnemy" value="Orchid" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="167" title="Unknown Achievement 167" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorOrchid_250!" iconName="Combat_AnnihilatorOrchid_250" points="1" sortOrder="70" repeatable="false">
+        <Achievement id="166" title="Orchid Vanquisher" description="Defeat 100 Orchids" iconName="Combat_VanquisherOrchid_100" points="25" sortOrder="69" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Emerald02" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Orchids" type="DefeatEnemy" value="Orchid" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="168" title="Unknown Achievement 168" description="Unknown Description. Hint: the icon is named Combat_ConquerorOrchid_500!" iconName="Combat_ConquerorOrchid_500" points="1" sortOrder="71" repeatable="false">
+        <Achievement id="167" title="Orchid Annihilator" description="Defeat 250 Orchids" iconName="Combat_AnnihilatorOrchid_250" points="75" sortOrder="70" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Emerald03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Orchids" type="DefeatEnemy" value="Orchid" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="169" title="Unknown Achievement 169" description="Unknown Description. Hint: the icon is named Defeat_1000_Orchids!" iconName="Defeat_1000_Orchids" points="1" sortOrder="72" repeatable="false">
+        <!--Custom-->
+        <Achievement id="168" title="Orchid Dominator" description="Defeat 500 Orchids" iconName="Combat_ConquerorOrchid_500" points="150" sortOrder="71" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Orchids" type="DefeatEnemy" value="Orchid" goal="500" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="170" title="Unknown Achievement 170" description="Unknown Description. Hint: the icon is named Combat_DefeaterPincer_10!" iconName="Combat_DefeaterPincer_10" points="1" sortOrder="73" repeatable="false">
+        <Achievement id="169" title="Orchid Conqueror" description="Defeat 1000 Orchids" iconName="Defeat_1000_Orchids" points="200" sortOrder="72" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 1000 Orchids" type="DefeatEnemy" value="Orchid" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="171" title="Unknown Achievement 171" description="Unknown Description. Hint: the icon is named Combat_CrusherPincer_50!" iconName="Combat_CrusherPincer_50" points="1" sortOrder="74" repeatable="false">
+        <Achievement id="170" title="Pincer Defeater" description="Defeat 10 Pincers" iconName="Combat_DefeaterPincer_10" points="5" sortOrder="73" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Pincers" type="DefeatEnemy" value="Pincer" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="172" title="Unknown Achievement 172" description="Unknown Description. Hint: the icon is named Combat_VanquisherPincer_100!" iconName="Combat_VanquisherPincer_100" points="1" sortOrder="75" repeatable="false">
+        <Achievement id="171" title="Pincer Crusher" description="Defeat 50 Pincers" iconName="Combat_CrusherPincer_50" points="10" sortOrder="74" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Topaz01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Pincers" type="DefeatEnemy" value="Pincer" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="173" title="Unknown Achievement 173" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorPincer_250!" iconName="Combat_AnnihilatorPincer_250" points="1" sortOrder="76" repeatable="false">
+        <Achievement id="172" title="Pincer Vanquisher" description="Defeat 100 Pincers" iconName="Combat_VanquisherPincer_100" points="25" sortOrder="75" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Topaz02" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Pincers" type="DefeatEnemy" value="Pincer" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="174" title="Unknown Achievement 174" description="Unknown Description. Hint: the icon is named Combat_ConquerorPincer_500!" iconName="Combat_ConquerorPincer_500" points="1" sortOrder="77" repeatable="false">
+        <Achievement id="173" title="Pincer Annihilator" description="Defeat 250 Pincers" iconName="Combat_AnnihilatorPincer_250" points="75" sortOrder="76" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Topaz03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Pincers" type="DefeatEnemy" value="Pincer" goal="250" visible="true" />
+            </Conditions>
+        </Achievement>
+        <!--Custom-->
+        <Achievement id="174" title="Pincer Dominator" description="Defeat 500 Pincers" iconName="Combat_ConquerorPincer_500" points="150" sortOrder="77" repeatable="false">
+            <Rewards>
+                <Reward type="Bananas" value="50" quantity="0" />
+            </Rewards>
+            <Conditions>
+                <Condition id="1" title="Defeat 500 Pincers" type="DefeatEnemy" value="Pincer" goal="500" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="175" title="Pincer Conqueror" description="Defeat 1,000 Pincers" iconName="Defeat_1000_Pincers" points="200" sortOrder="78" repeatable="false">
@@ -1481,47 +1497,48 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Pincers" type="Invalid" value="" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Pincers" type="DefeatEnemy" value="Pincer" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="176" title="Unknown Achievement 176" description="Unknown Description. Hint: the icon is named Combat_DefeaterRachnoid_10!" iconName="Combat_DefeaterRachnoid_10" points="1" sortOrder="79" repeatable="false">
+        <Achievement id="176" title="Rachnoid Defeater" description="Defeat 10 Rachnoids" iconName="Combat_DefeaterRachnoid_10" points="5" sortOrder="79" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Rachnoids" type="DefeatEnemy" value="Rachnoid" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="177" title="Unknown Achievement 177" description="Unknown Description. Hint: the icon is named Combat_CrusherRachnoid_50!" iconName="Combat_CrusherRachnoid_50" points="1" sortOrder="80" repeatable="false">
+        <Achievement id="177" title="Rachnoid Crusher" description="Defeat 50 Rachnoids" iconName="Combat_CrusherRachnoid_50" points="10" sortOrder="80" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_SunShard01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Rachnoids" type="DefeatEnemy" value="Rachnoid" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="178" title="Unknown Achievement 178" description="Unknown Description. Hint: the icon is named Combat_VanquisherRachnoid_100!" iconName="Combat_VanquisherRachnoid_100" points="1" sortOrder="81" repeatable="false">
+        <Achievement id="178" title="Rachnoid Vanquisher" description="Defeat 100 Rachnoids" iconName="Combat_VanquisherRachnoid_100" points="25" sortOrder="81" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_SunShard02" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Rachnoids" type="DefeatEnemy" value="Rachnoid" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="179" title="Unknown Achievement 179" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorRachnoid_250!" iconName="Combat_AnnihilatorRachnoid_250" points="1" sortOrder="82" repeatable="false">
+        <Achievement id="179" title="Rachnoid Annihilator" description="Defeat 250 Rachnoids" iconName="Combat_AnnihilatorRachnoid_250" points="75" sortOrder="82" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_SunShard03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Rachnoids" type="DefeatEnemy" value="Rachnoid" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="180" title="Unknown Achievement 180" description="Unknown Description. Hint: the icon is named Combat_ConquerorRachnoid_500!" iconName="Combat_ConquerorRachnoid_500" points="1" sortOrder="83" repeatable="false">
+        <!--Custom-->
+        <Achievement id="180" title="Rachnoid Dominator" description="Defeat 500 Rachnoids" iconName="Combat_ConquerorRachnoid_500" points="150" sortOrder="83" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Rachnoids" type="DefeatEnemy" value="Rachnoid" goal="500" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="181" title="Rachnoid Conqueror" description="Defeat 1,000 Rachnoids" iconName="Defeat_1000_Rachnoids" points="200" sortOrder="84" repeatable="false">
@@ -1529,7 +1546,7 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Rachnoids" type="Invalid" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Rachnoids" type="DefeatEnemy" value="Rachnoid" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="182" title="Rumbler Defeater" description="Defeat 10 Rumblers" iconName="Combat_DefeaterRumbler_10" points="5" sortOrder="85" repeatable="false">
@@ -1537,7 +1554,7 @@
                 <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 10 Rumblers" type="Invalid" value="" goal="10" visible="true" />
+                <Condition id="1" title="Defeat 10 Rumblers" type="DefeatEnemy" value="Rumbler" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="183" title="Rumbler Crusher" description="Defeat 50 Rumblers" iconName="Combat_CrusherRumbler_50" points="10" sortOrder="86" repeatable="false">
@@ -1545,7 +1562,7 @@
                 <Reward type="Item" value="COL_ING_G_Ruby01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 50 Rumblers" type="Invalid" value="" goal="50" visible="true" />
+                <Condition id="1" title="Defeat 50 Rumblers" type="DefeatEnemy" value="Rumbler" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="184" title="Rumbler Vanquisher" description="Defeat 100 Rumblers" iconName="Combat_VanquisherRumbler_100" points="25" sortOrder="87" repeatable="false">
@@ -1553,7 +1570,7 @@
                 <Reward type="Item" value="COL_ING_G_Ruby02" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 100 Rumblers" type="Invalid" value="" goal="100" visible="true" />
+                <Condition id="1" title="Defeat 100 Rumblers" type="DefeatEnemy" value="Rumbler" goal="100" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="185" title="Rumbler Annihilator" description="Defeat 250 Rumblers" iconName="Combat_AnnihilatorRumbler_250" points="75" sortOrder="88" repeatable="false">
@@ -1561,15 +1578,16 @@
                 <Reward type="Item" value="COL_ING_G_Ruby03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 250 Rumblers" type="Invalid" value="" goal="250" visible="true" />
+                <Condition id="1" title="Defeat 250 Rumblers" type="DefeatEnemy" value="Rumbler" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="186" title="Unknown Achievement 186" description="Unknown Description. Hint: the icon is named Combat_ConquerorRumbler_500!" iconName="Combat_ConquerorRumbler_500" points="1" sortOrder="89" repeatable="false">
+        <!--Custom-->
+        <Achievement id="186" title="Rumbler Dominator" description="Defeat 500 Rumblers" iconName="Combat_ConquerorRumbler_500" points="150" sortOrder="89" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Rumblers" type="DefeatEnemy" value="Rumbler" goal="500" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="187" title="Rumbler Conqueror" description="Defeat 1,000 Rumblers" iconName="Defeat_1000_Rumblers" points="200" sortOrder="90" repeatable="false">
@@ -1577,47 +1595,48 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Rumblers" type="Invalid" value="" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Rumblers" type="DefeatEnemy" value="Rumbler" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="188" title="Unknown Achievement 188" description="Unknown Description. Hint: the icon is named Combat_DefeaterSpiker_10!" iconName="Combat_DefeaterSpiker_10" points="1" sortOrder="91" repeatable="false">
+        <Achievement id="188" title="Spiker Defeater" description="Defeat 10 Spikers" iconName="Combat_DefeaterSpiker_10" points="5" sortOrder="91" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Spikers" type="DefeatEnemy" value="Spiker" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="189" title="Unknown Achievement 189" description="Unknown Description. Hint: the icon is named Combat_CrusherSpiker_50!" iconName="Combat_CrusherSpiker_50" points="1" sortOrder="92" repeatable="false">
+        <Achievement id="189" title="Spiker Crusher" description="Defeat 50 Spikers" iconName="Combat_CrusherSpiker_50" points="10" sortOrder="92" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_SharpGravel01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Spikers" type="DefeatEnemy" value="Spiker" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="190" title="Unknown Achievement 190" description="Unknown Description. Hint: the icon is named Combat_VanquisherSpiker_100!" iconName="Combat_VanquisherSpiker_100" points="1" sortOrder="93" repeatable="false">
+        <Achievement id="190" title="Spiker Vanquisher" description="Defeat 100 Spikers" iconName="Combat_VanquisherSpiker_100" points="25" sortOrder="93" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_SharpGravel02" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Spikers" type="DefeatEnemy" value="Spiker" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="191" title="Unknown Achievement 191" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorSpiker_250!" iconName="Combat_AnnihilatorSpiker_250" points="1" sortOrder="94" repeatable="false">
+        <Achievement id="191" title="Spiker Annihilator" description="Defeat 250 Spikers" iconName="Combat_AnnihilatorSpiker_250" points="75" sortOrder="94" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_SharpGravel03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Spikers" type="DefeatEnemy" value="Spiker" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="192" title="Unknown Achievement 192" description="Unknown Description. Hint: the icon is named Combat_ConquerorSpiker_500!" iconName="Combat_ConquerorSpiker_500" points="1" sortOrder="95" repeatable="false">
+        <!--Custom-->
+        <Achievement id="192" title="Spiker Dominator" description="Defeat 500 Spikers" iconName="Combat_ConquerorSpiker_500" points="150" sortOrder="95" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Spikers" type="DefeatEnemy" value="Spiker" goal="500" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="193" title="Spiker Conqueror" description="Defeat 1,000 Spikers" iconName="Defeat_1000_Spikers" points="200" sortOrder="96" repeatable="false">
@@ -1625,47 +1644,48 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Spikers" type="Invalid" value="" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Spikers" type="DefeatEnemy" value="Spiker" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="194" title="Unknown Achievement 194" description="Unknown Description. Hint: the icon is named Combat_DefeaterStomper_10!" iconName="Combat_DefeaterStomper_10" points="1" sortOrder="97" repeatable="false">
+        <Achievement id="194" title="Stomper Defeater" description="Defeat 10 Stompers" iconName="Combat_DefeaterStomper_10" points="5" sortOrder="97" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Stompers" type="DefeatEnemy" value="Stomper" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="195" title="Unknown Achievement 195" description="Unknown Description. Hint: the icon is named Combat_CrusherStomper_50!" iconName="Combat_CrusherStomper_50" points="1" sortOrder="98" repeatable="false">
+        <Achievement id="195" title="Stomper Crusher" description="Defeat 50 Stompers" iconName="Combat_CrusherStomper_50" points="10" sortOrder="98" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_IceShard01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Stompers" type="DefeatEnemy" value="Stomper" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="196" title="Unknown Achievement 196" description="Unknown Description. Hint: the icon is named Combat_VanquisherStomper_100!" iconName="Combat_VanquisherStomper_100" points="1" sortOrder="99" repeatable="false">
+        <Achievement id="196" title="Stomper Vanquisher" description="Defeat 100 Stompers" iconName="Combat_VanquisherStomper_100" points="25" sortOrder="99" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_IceShard02" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Stompers" type="DefeatEnemy" value="Stomper" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="197" title="Unknown Achievement 197" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorStomper_250!" iconName="Combat_AnnihilatorStomper_250" points="1" sortOrder="100" repeatable="false">
+        <Achievement id="197" title="Stomper Annihilator" description="Defeat 250 Stompers" iconName="Combat_AnnihilatorStomper_250" points="75" sortOrder="100" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_IceShard03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Stompers" type="DefeatEnemy" value="Stomper" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="198" title="Unknown Achievement 198" description="Unknown Description. Hint: the icon is named Combat_ConquerorStomper_500!" iconName="Combat_ConquerorStomper_500" points="1" sortOrder="101" repeatable="false">
+        <!--Custom-->
+        <Achievement id="198" title="Stomper Dominator" description="Defeat 500 Stompers" iconName="Combat_ConquerorStomper_500" points="150" sortOrder="101" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Stompers" type="DefeatEnemy" value="Stomper" goal="500" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="199" title="Stomper Conqueror" description="Defeat 1,000 Stompers" iconName="Defeat_1000_Stompers" points="200" sortOrder="102" repeatable="false">
@@ -1673,47 +1693,48 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Stompers" type="Invalid" value="" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Stompers" type="DefeatEnemy" value="Stomper" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="200" title="Unknown Achievement 200" description="Unknown Description. Hint: the icon is named Combat_DefeaterTrawler_10!" iconName="Combat_DefeaterTrawler_10" points="1" sortOrder="103" repeatable="false">
+        <Achievement id="200" title="Spinefish Defeater" description="Defeat 10 Spinefish" iconName="Combat_DefeaterTrawler_10" points="5" sortOrder="103" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 10 Spinefish" type="DefeatEnemy" value="Spinefish" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="201" title="Unknown Achievement 201" description="Unknown Description. Hint: the icon is named Combat_CrusherTrawler_50!" iconName="Combat_CrusherTrawler_50" points="1" sortOrder="104" repeatable="false">
+        <Achievement id="201" title="Spinefish Crusher" description="Defeat 50 Spinefish" iconName="Combat_CrusherTrawler_50" points="10" sortOrder="104" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Sapphire01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 50 Spinefish" type="DefeatEnemy" value="Spinefish" goal="50" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="202" title="Unknown Achievement 202" description="Unknown Description. Hint: the icon is named Combat_VanquisherTrawler_100!" iconName="Combat_VanquisherTrawler_100" points="1" sortOrder="105" repeatable="false">
+        <Achievement id="202" title="Spinefish Vanquisher" description="Defeat 100 Spinefish" iconName="Combat_VanquisherTrawler_100" points="25" sortOrder="105" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Sapphire02" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 100 Spinefish" type="DefeatEnemy" value="Spinefish" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="203" title="Unknown Achievement 203" description="Unknown Description. Hint: the icon is named Combat_AnnihilatorTrawler_250!" iconName="Combat_AnnihilatorTrawler_250" points="1" sortOrder="106" repeatable="false">
+        <Achievement id="203" title="Spinefish Annihilator" description="Defeat 250 Spinefish" iconName="Combat_AnnihilatorTrawler_250" points="75" sortOrder="106" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_ING_G_Sapphire03" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 250 Spinefish" type="DefeatEnemy" value="Spinefish" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="204" title="Unknown Achievement 204" description="Unknown Description. Hint: the icon is named Combat_ConquerorTrawler_500!" iconName="Combat_ConquerorTrawler_500" points="1" sortOrder="107" repeatable="false">
+        <!--Custom-->
+        <Achievement id="204" title="Spinefish Dominator" description="Defeat 500 Spinefish" iconName="Combat_ConquerorTrawler_500" points="150" sortOrder="107" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 500 Spinefish" type="DefeatEnemy" value="Spinefish" goal="500" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="205" title="Spinefish Conqueror" description="Defeat 1,000 Spinefish" iconName="Defeat_1000_Spinefish" points="200" sortOrder="108" repeatable="false">
@@ -1721,7 +1742,7 @@
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 1,000 Spinefish" type="Invalid" goal="1000" visible="true" />
+                <Condition id="1" title="Defeat 1,000 Spinefish" type="DefeatEnemy" value="Spinefish" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="206" title="Unknown Achievement 206" description="Unknown Description. Hint: the icon is named Combat_zombiebat!" iconName="Combat_zombiebat" points="1" sortOrder="109" repeatable="false">
@@ -1732,12 +1753,12 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="207" title="Unknown Achievement 207" description="Unknown Description. Hint: the icon is named Combat_Smasher_Spiderling_3!" iconName="Combat_Smasher_Spiderling_3" points="1" sortOrder="110" repeatable="false">
+        <Achievement id="207" title="Spiderling Smasher" description="Defeat 3 Spiderlings" iconName="Combat_Smasher_Spiderling_3" points="3" sortOrder="110" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="5" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 3 Spiderlings" type="DefeatEnemy" value="" goal="3" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="208" title="Unknown Achievement 208" description="Unknown Description. Hint: the icon is named Combat_TMNT_Shredder_3!" iconName="Combat_TMNT_Shredder_3" points="1" sortOrder="111" repeatable="false">
@@ -1870,7 +1891,7 @@
                 <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Defeat 25 Enemies in The Forgotten Temple" type="DefeatEnemyInLevel" value="" goal="25" visible="true" />
+                <Condition id="1" title="Defeat 25 Enemies in The Forgotten Temple" type="DefeatEnemyInLevel" value="lv_crs_newbzonenew02" goal="25" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="227" title="Guardian's Keep Defender" description="Defeat 25 Enemies in Guardian's Keep" iconName="Combat_Defender_Crossroads_GuardiansKeep" points="10" sortOrder="130" repeatable="false">
@@ -2657,7 +2678,7 @@
         </Achievement>
         <Achievement id="324" title="Quest Compass" description="Complete 50 Quests" iconName="Questing_CompleteQuest_50" points="100" sortOrder="2" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="WPN_SPC_DoomGrenade01" quantity="15" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Complete 50 Quests" type="CompleteQuest" value="" goal="50" visible="true" />
@@ -2665,7 +2686,7 @@
         </Achievement>
         <Achievement id="325" title="Monkey Quest" description="Complete 100 Quests" iconName="Questing_CompleteQuest_100" points="200" sortOrder="3" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="WPN_SPC_DoomGrenade01" quantity="30" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Complete 100 Quests" type="CompleteQuest" value="" goal="100" visible="true" />
@@ -4358,20 +4379,22 @@
                 <Condition id="1" title="Eat 1000 Food Items" type="Consumable" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="532" title="Planet of the Grapes" description="Unknown Description. Hint: the icon is named Fun_Food_PlanetoftheGrapes_100!" iconName="Fun_Food_PlanetoftheGrapes_100" points="1" sortOrder="6" repeatable="false">
+        <!--Custom-->
+        <Achievement id="532" title="Planet of the Grapes" description="Eat 100 Sour Grape Pops" iconName="Fun_Food_PlanetoftheGrapes_100" points="20" sortOrder="6" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="180" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Eat 100 Sour Grape Pops" type="Consumable" value="COL_FOOD_LollyPop01" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="533" title="Grape Ape" description="Unknown Description. Hint: the icon is named Fun_Food_GrapeApe_100!" iconName="Fun_Food_GrapeApe_100" points="1" sortOrder="7" repeatable="false">
+        <!--Custom-->
+        <Achievement id="533" title="Grape Ape" description="Eat 1000 Sour Grape Pops" iconName="Fun_Food_GrapeApe_100" points="200" sortOrder="7" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="1800" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Eat 1000 Sour Grape Pops" type="Consumable" value="COL_FOOD_LollyPop01" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="534" title="Bo Staff Riff Raff!" description="Equip Donatello's Bo Staff" iconName="Fun_Equip_BoStaffRiffRaff" points="10" sortOrder="8" repeatable="false">

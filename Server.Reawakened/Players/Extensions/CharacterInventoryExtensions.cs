@@ -2,13 +2,13 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -104,7 +104,7 @@ public static class CharacterInventoryExtensions
 
         player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count, itemCatalog);
     }
-    
+
     public static void AddItem(this Player player, ItemDescription item, int count, ItemCatalog itemCatalog)
     {
         if (!itemCatalog.CanAddItem(item))
@@ -199,8 +199,8 @@ public static class CharacterInventoryExtensions
         if (item.CategoryId != ItemCategory.Pet)
             return;
 
-        foreach (var roomPlayer in player.Room.Players)
-            roomPlayer.Value.SendXt("ZE", player.UserId, item.ItemId, equiped ? 1 : 0);
+        foreach (var roomPlayer in player.Room.GetPlayers())
+            roomPlayer.SendXt("ZE", player.UserId, item.ItemId, equiped ? 1 : 0);
 
         player.Character.Data.PetItemId = equiped ? item.ItemId : 0;
     }

@@ -4,7 +4,7 @@ using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Services;
 using Server.Base.Network;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Helpers;

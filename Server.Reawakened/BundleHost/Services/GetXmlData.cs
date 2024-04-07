@@ -3,8 +3,8 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
-using Server.Reawakened.Configs;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.BundleHost.Services;
 

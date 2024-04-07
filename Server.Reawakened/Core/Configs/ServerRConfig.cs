@@ -3,12 +3,12 @@ using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.Core.Enums;
 
-namespace Server.Reawakened.Configs;
+namespace Server.Reawakened.Core.Configs;
 
 public class ServerRConfig : IRConfig
 {
-    public Dictionary<GameVersion, string> CurrentEvent { get; set; }
-    public Dictionary<GameVersion, string> CurrentTimedEvent { get; set; }
+    public Dictionary<GameVersion, string> CurrentEvent { get; }
+    public Dictionary<GameVersion, string> CurrentTimedEvent { get; }
 
     public int DefaultChatLevel { get; }
     public bool DefaultMemberStatus { get; }
@@ -51,32 +51,30 @@ public class ServerRConfig : IRConfig
     public int AccessRights { get; }
 
     public Dictionary<TribeType, int> TutorialTribe2014 { get; }
-    public GameVersion GameVersion { get; set; }
+    public GameVersion GameVersion { get; }
 
-    public string[] IgnoredDoors { get; set; }
+    public string[] IgnoredDoors { get; }
 
-    public string[] EnemyNameSearch { get; set; }
+    public float PlayerWidth { get; }
+    public float PlayerHeight { get; }
 
-    public float PlayerWidth { get; set; }
-    public float PlayerHeight { get; set; }
+    public string FrontPlane { get; }
+    public string BackPlane { get; }
 
-    public string FrontPlane { get; set; }
-    public string BackPlane { get; set; }
-
-    public Dictionary<string, int> Planes { get; set; }
+    public Dictionary<string, int> Planes { get; }
 
     public int CashKitAmount { get; }
 
-    public string BreakableComponentName { get; set; }
-    public string EnemyComponentName { get; set; }
-    public string DailyBoxName { get; set; }
+    public string DailyBoxName { get; }
 
-    public int MaximumEntitiesToReturnLog { get; set; }
+    public int MaximumEntitiesToReturnLog { get; }
 
-    public List<string> LoadedAssets { get; set; }
+    public List<string> LoadedAssets { get; }
 
-    public long LastClientUpdate { get; set; }
-    public long CutOffFor2014 { get; set; }
+    public long LastClientUpdate { get; }
+    public long CutOffFor2014 { get; }
+
+    public float Gravity { get; }
 
     public ServerRConfig()
     {
@@ -144,15 +142,7 @@ public class ServerRConfig : IRConfig
             "PF_GLB_DoorArena01"
         ];
 
-        EnemyComponentName = "EnemyController";
-        BreakableComponentName = "BreakableEventController";
         DailyBoxName = "Daily";
-
-        EnemyNameSearch = [
-            "PF_Spite_Spiderling",
-            "Spite_TeaserSpider_Boss",
-            "Spite_Spider_Boss"
-        ];
 
         MaximumEntitiesToReturnLog = 15;
 
@@ -196,5 +186,7 @@ public class ServerRConfig : IRConfig
 
         LastClientUpdate = 0;
         CutOffFor2014 = 0;
+
+        Gravity = 15f;
     }
 }

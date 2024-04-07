@@ -90,7 +90,7 @@ public class PlaneModel(string planeName)
         };
 
         var id = obj.ObjectInfo.ObjectId;
-        if(PlaneName.Equals("TemplatePlane"))
+        if (PlaneName.Equals("TemplatePlane"))
             id = obj.ObjectInfo.PrefabName;
 
         if (!GameObjects.ContainsKey(id))

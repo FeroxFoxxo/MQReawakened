@@ -3,7 +3,8 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -11,10 +12,9 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 using System.Text;
 using WorldGraphDefines;
 
@@ -50,7 +50,9 @@ public class State : ExternalProtocol
 
         var entityId = syncEvent.TargetID;
 
-        if (Player.Room.Players.TryGetValue(entityId, out var newPlayer))
+        var newPlayer = Player.Room.GetPlayerById(entityId);
+
+        if (newPlayer != null)
         {
             switch (syncEvent.Type)
             {
@@ -155,7 +157,7 @@ public class State : ExternalProtocol
     {
         var playerCollider = new PlayerCollider(player);
         playerCollider.IsColliding(false);
-        player.Room.Colliders[player.GameObjectId] = playerCollider;
+        player.Room.OverwriteCollider(playerCollider);
     }
 
     private void RequestRespawn(string entityId, float triggerTime)
@@ -168,7 +170,7 @@ public class State : ExternalProtocol
         Player.SendSyncEventToPlayer(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
             Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
 
-        BaseComponent respawnPosition = Player.Room.LastCheckpoint != null ? Player.Room.LastCheckpoint : Player.Room.DefaultSpawn;
+        var respawnPosition = Player.Room.LastCheckpoint ?? Player.Room.GetDefaultSpawnPoint();
 
         Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                  respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
@@ -196,7 +198,9 @@ public class State : ExternalProtocol
         var uniqueIdentifier = entityId;
         var additionalInfo = string.Empty;
 
-        if (room.Players.TryGetValue(entityId, out var newPlayer))
+        var newPlayer = room.GetPlayerById(entityId);
+
+        if (newPlayer != null)
         {
             uniqueType = "Player";
 

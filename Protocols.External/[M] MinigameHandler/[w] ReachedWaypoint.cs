@@ -12,7 +12,7 @@ public class WaypointReached : ExternalProtocol
         var minigameObjectId = message[5];
         var waypointId = message[6];
 
-        foreach (var player in Player.Room.Players.Values)
+        foreach (var player in Player.Room.GetPlayers())
             player.SendXt("My", minigameObjectId, waypointId, Player.CharacterId);
     }
 }

@@ -5,7 +5,7 @@ using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
 using Server.Reawakened.BundleHost.Models;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 
 namespace Server.Reawakened.BundleHost.Services;

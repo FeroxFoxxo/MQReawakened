@@ -1,18 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Logging;
 using Server.Reawakened.Chat.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
-using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Components.GameObjects.NPC;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
-using WorldGraphDefines;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
 
 namespace Protocols.External._l__ExtLevelEditor;
 
@@ -34,7 +32,7 @@ public class RoomUpdate : ExternalProtocol
         foreach (var entityComponent in Player.Room.GetEntitiesFromType<BaseComponent>())
             entityComponent.SendDelayedData(Player);
 
-        foreach (var enemy in Player.Room.Enemies.Values)
+        foreach (var enemy in Player.Room.GetEnemies())
             enemy.SendAiData(Player);
 
         Player.Room.SendCharacterInfo(Player);
@@ -51,8 +49,7 @@ public class RoomUpdate : ExternalProtocol
         {
             var levelInfo = Player.Room.LevelInfo;
 
-            Player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.ExploreTrail, levelInfo.Name, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.ExploreTrail, [levelInfo.Name], InternalAchievement, Logger);
 
             Player.DiscoverTribe(levelInfo.Tribe);
         }

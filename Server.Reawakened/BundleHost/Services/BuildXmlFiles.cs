@@ -5,7 +5,7 @@ using Server.Reawakened.BundleHost.Events;
 using Server.Reawakened.BundleHost.Events.Arguments;
 using Server.Reawakened.BundleHost.Extensions;
 using Server.Reawakened.BundleHost.Models;
-using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 
 namespace Server.Reawakened.BundleHost.Services;
@@ -63,7 +63,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
             {
                 var time = DateTimeOffset.FromUnixTimeSeconds(asset.CacheTime);
 
-                logger.LogTrace("Loading XML: {BundleName} ({DateTime})", asset.Name, time.Date.ToShortDateString());
+                logger.LogTrace("Loading XML: {BundleName} {DateTime}", asset.Name, time.Date > DateTime.UnixEpoch ? $"({time.Date.ToShortDateString()})" : string.Empty);
 
                 if (bundle is ILocalizationXml localizedXmlBundle)
                 {

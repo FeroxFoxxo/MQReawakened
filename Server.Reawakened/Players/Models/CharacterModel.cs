@@ -30,7 +30,7 @@ public class CharacterModel : PersistantData
 
         Data = new CharacterDataModel();
         LevelData = new LevelData();
-    } 
+    }
 
     public override string ToString() => throw new InvalidOperationException();
 }

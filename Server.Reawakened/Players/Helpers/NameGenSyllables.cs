@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Services;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Helpers;
 
@@ -17,7 +17,7 @@ public class NameGenSyllables(NameSyllables nameGen, Random random)
 
     public static string GetName(string[] names) =>
         $"{names[0]}{names[1]}{names[2]}";
-    
+
     public bool IsPossible(Gender gender, string[] names) =>
         nameGen.Syllables[gender][0].Contains(names[0]) &&
         nameGen.Syllables[gender][1].Contains(names[1]) &&

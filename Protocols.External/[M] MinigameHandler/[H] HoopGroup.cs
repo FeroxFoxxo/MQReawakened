@@ -1,12 +1,12 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Entities.Components.GameObjects.Interactables;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
 
 namespace Protocols.External._M__MinigameHandler;
 
@@ -29,13 +29,13 @@ public class HoopGroup : ExternalProtocol
             if (!string.IsNullOrEmpty(message[7]))
                 hoopGroupName = message[7];
 
-        Player.CheckAchievement(AchConditionType.Hoop, string.Empty, InternalAchievement, Logger, numberOfHoops);
-        Player.CheckAchievement(AchConditionType.HoopInLevel, Player.Room.LevelInfo.Name, InternalAchievement, Logger, numberOfHoops);
+        Player.CheckAchievement(AchConditionType.Hoop, [], InternalAchievement, Logger, numberOfHoops);
+        Player.CheckAchievement(AchConditionType.HoopInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger, numberOfHoops);
 
         if (completed)
         {
-            Player.CheckAchievement(AchConditionType.HoopGroup, string.Empty, InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.HoopGroupInLevel, Player.Room.LevelInfo.Name, InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.HoopGroup, [], InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.HoopGroupInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger);
 
             var hoops = Player.Room.GetEntitiesFromType<HoopControllerComp>();
 

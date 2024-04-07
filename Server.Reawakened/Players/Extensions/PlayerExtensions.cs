@@ -1,6 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -9,21 +9,33 @@ using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
 using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerExtensions
 {
-    public static void TeleportPlayer(this Player player, int x, int y, int z)
+    public static void AddGear(this Player currentPlayer, string gear, ItemCatalog itemCatalog)
     {
-        var isBackPlane = z == 1;
+        var item = itemCatalog.GetItemFromPrefabName(gear);
 
+        if (item != null)
+        {
+            if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+            {
+                currentPlayer.AddItem(item, 1, itemCatalog);
+                currentPlayer.SendUpdatedInventory();
+            }
+        }
+    }
+
+    public static void TeleportPlayer(this Player player, float x, float y, bool isBackPlane)
+    {
         var coordinates = new PhysicTeleport_SyncEvent(player.GameObjectId.ToString(),
-            player.Room.Time, player.TempData.Position.X + x, player.TempData.Position.Y + y, isBackPlane);
+            player.Room.Time, x, y, isBackPlane);
 
         player.SendSyncEventToPlayer(coordinates);
     }
@@ -133,7 +145,7 @@ public static class PlayerExtensions
         if (player.TempData.BananaBoostsElixir)
             collectedBananas = Convert.ToInt32(collectedBananas * 0.1);
 
-        player.CheckAchievement(AchConditionType.CollectBanana, string.Empty, internalAchievement, logger, collectedBananas);
+        player.CheckAchievement(AchConditionType.CollectBanana, [], internalAchievement, logger, collectedBananas);
 
         charData.Cash += collectedBananas;
         player.SendCashUpdate();
@@ -448,7 +460,7 @@ public static class PlayerExtensions
     {
         foreach (
             var player in
-            from player in sentPlayer.Room.Players.Values
+            from player in sentPlayer.Room.GetPlayers()
             select player
         )
             player.SendXt("iq", sentPlayer.UserId, sentPlayer.Character.Data.Equipment);

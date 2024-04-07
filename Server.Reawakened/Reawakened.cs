@@ -7,7 +7,7 @@ using Server.Reawakened.Icons.Services;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Thrift.Abstractions;
-using Server.Reawakened.XMLs.Abstractions;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using SmartFoxClientAPI;
 using System.Runtime.CompilerServices;
 
