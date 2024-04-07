@@ -77,7 +77,7 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
 
         InternalAssets = assets.GetClosestBundles(sRConfig);
 
-        InternalAssets.AddModifiedAssets(rConfig);
+        InternalAssets.AddModifiedAssets(rConfig, sRConfig);
         InternalAssets.AddLocalXmlFiles(logger, rConfig);
 
         logger.LogInformation("Loaded {Count} assets to memory.", InternalAssets.Count);

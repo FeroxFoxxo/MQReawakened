@@ -93,6 +93,9 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         if (_damageable != null)
             _damageable.CurrentHealth = _health;
 
+        if (_health < 0)
+            _health = 0;
+
         origin.Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true));
 
         if (_health <= 0)

@@ -37,6 +37,29 @@ public class Shooter(BehaviorEnemy enemy) : IShoot
         return 0;
     }
 
-    public override void spread(float clockTime, float speed, int count, float spreadAngle, vector3 origin, vector3 target) =>
-        LogFacade.error("Running unimplemented AI method 'spread' (from Shooter.cs)");
+    public override void spread(float clockTime, float speed, int count, float spreadAngle, vector3 inOrg, vector3 inTarg)
+    {
+        var velocities = new List<Vector3>();
+
+        var origin = new Vector3(inOrg.x, inOrg.y, inOrg.z);
+        var target = new Vector3(inTarg.x, inTarg.y, inTarg.z);
+
+        var direction = (target - origin).normalized;
+        var startRotation = Quaternion.LookRotation(direction);
+        var startSpread = Quaternion.AngleAxis(-spreadAngle / 2, Vector3.up);
+
+        for (var i = 0; i < count; i++)
+        {
+            var angleStep = spreadAngle / (count - 1);
+            var projectileRotation = startRotation * startSpread * Quaternion.AngleAxis(angleStep * i, Vector3.up);
+            var velocity = projectileRotation * Vector3.forward * speed;
+
+            velocities.Add(velocity);
+        }
+
+        foreach (var velocity in velocities)
+            enemy.FireProjectile(origin, velocity, false);
+
+        LogFacade.debug("Sending experimental implementation of 'spread' in Shooter.cs class");
+    }
 }

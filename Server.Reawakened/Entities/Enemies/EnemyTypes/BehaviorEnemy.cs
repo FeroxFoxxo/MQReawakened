@@ -67,9 +67,9 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         {
             _shoot = new Shooter(this),
             _bomber = new Bomber(this),
-            _scan = new Scanner(),
-            _collision = new Collisions(),
-            _suicide = new Runnable()
+            _scan = new Scanner(this),
+            _collision = new Collisions(this),
+            _suicide = new Runnable(this)
         };
 
         // Address magic numbers when we get to adding enemy effect mods

@@ -246,4 +246,14 @@ public abstract class BaseEnemy : IDestructible
     }
 
     public void Destroy(Player player, Room room, string id) => room.RemoveEnemy(id);
+
+    public void Heal(int healPoints)
+    {
+        if (Room.IsObjectKilled(Id))
+            return;
+
+        Health += healPoints;
+
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, healPoints, 0, 0, string.Empty, false, true));
+    }
 }

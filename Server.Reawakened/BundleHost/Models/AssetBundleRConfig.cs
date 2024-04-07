@@ -1,5 +1,6 @@
 ﻿using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.Core.Enums;
 
 namespace Server.Reawakened.BundleHost.Models;
 
@@ -32,7 +33,7 @@ public class AssetBundleRConfig : IRConfig
 
     public string[] ForceLocalAsset { get; }
     public string[] AssetModifiers { get; }
-    public Dictionary<string, string> AssetRenames { get; }
+    public Dictionary<GameVersion, Dictionary<string, string>> AssetRenames { get; }
 
     public bool LogAssetLoadInfo { get; }
 
@@ -56,11 +57,24 @@ public class AssetBundleRConfig : IRConfig
         DefaultWebPlayerCacheLocation = "AppData/LocalLow/Unity/WebPlayer/Cache";
         AssetModifiers = ["_nomesh"];
 
-        AssetRenames = new Dictionary<string, string>
+        AssetRenames = new Dictionary<GameVersion, Dictionary<string, string>>
         {
-            // UNKNOWN
-            { "WelcomeGamePopup", "NotificationNoMailPopup" },
-            { "FX_GiftBoxconfettis", "FX_GiftBoxConfettis" }
+            {
+                GameVersion.v2011, 
+                new Dictionary<string, string>()
+                {
+                    { "WelcomeGamePopup", "NotificationNoMailPopup" },
+                    { "FX_GiftBoxconfettis", "FX_GiftBoxConfettis" }
+                }
+            },
+            {
+                GameVersion.v2014,
+                new Dictionary<string, string>()
+                {
+                    { "FX_R01_ShardDestroyed_Silver", "FX_R01_Shard_Absorb" },
+                    { "FX_R01_EnergyDust01", "FX_R01_ShardEnergyTravel" }
+                }
+            }
         };
 
         PublishConfigKey = "unity.game.publishconfig";
