@@ -554,7 +554,7 @@ public class NPCControllerComp : Component<NPCController>
         var quest = QuestCatalog.GetQuestData(questStatus.Id);
         var questName = quest.Name;
 
-        if (quest.ValidatorName != quest.QuestgGiverName && quest.ValidatorGoId.ToString() == Id)
+        if ((quest.ValidatorName != quest.QuestgGiverName || quest.ValidatorGoId != quest.QuestGiverGoId && quest.QuestGiverGoId > 0) && quest.ValidatorGoId.ToString() == Id)
             questName += "validator";
 
         if (DialogRewrites.Rewrites.TryGetValue(questName, out var rewrittenName))
@@ -596,8 +596,9 @@ public class NPCControllerComp : Component<NPCController>
             return;
         }
 
-        if (conversation.Lines.All(x => x.TextId == 0))
+        if (conversation.Lines.All(x => x.TextId == 0) || conversation.Lines.Count == 0)
         {
+            Logger.LogError("[{QuestName}] [UNKNOWN XML CONVERSATION TEXT {DialogId}]", questName, dialog.ConversationId);
             SendDialog(player);
             return;
         }
@@ -605,8 +606,9 @@ public class NPCControllerComp : Component<NPCController>
         var oQuestStatus = questStatus.DeepCopy();
 
         oQuestStatus.QuestStatus = state;
+        var dialogStr = dialog.ToString();
 
-        player.NetState.SendXt("nl", oQuestStatus, Id, NameId, dialog);
+        player.NetState.SendXt("nl", oQuestStatus, Id, NameId, dialogStr);
     }
 
     private static bool CanStartDailyQuest(Player player, string dailyObjectId) =>
