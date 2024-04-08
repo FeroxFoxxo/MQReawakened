@@ -27,8 +27,8 @@ public class MeleeEntity : BaseProjectile
 
         _hitboxPosition = new Vector3 { x = position.x, y = position.y, z = position.z };
 
-        _hitboxPosition.x -= isRight ? 0 : meleeWidth;
-        _hitboxPosition.y -= meleeHeight;
+        _hitboxPosition.x -= isRight ? 0 : meleeWidth / 2;
+        _hitboxPosition.y -= meleeHeight / 2;
 
         Collider = new AttackCollider(id, _hitboxPosition, new Vector2(meleeWidth, meleeHeight),
             PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f

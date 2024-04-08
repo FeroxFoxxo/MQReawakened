@@ -2750,7 +2750,7 @@
                 <Condition id="1" title="Complete the Nest Raider Quest 1 Time" type="CompleteQuest" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="333" title="Unknown Achievement 333" description="Complete the Nest Raider Quest 5 Time (2014 Easter Event)" iconName="Questing_RaidNests_5" points="10" sortOrder="11" repeatable="false">
+        <Achievement id="333" title="Unknown Achievement 333 (Nest Raiders)" description="Complete the Nest Raider Quest 5 Time (2014 Easter Event)" iconName="Questing_RaidNests_5" points="10" sortOrder="11" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
@@ -2774,7 +2774,7 @@
                 <Condition id="1" title="Complete the Nest Raider Quest 25 Times" type="CompleteQuest" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="336" title="Unknown Achievement 336" description="Complete the Nest Raider Quest 50 Time (2014 Easter Event)" iconName="Questing_RaidNests_50" points="50" sortOrder="14" repeatable="false">
+        <Achievement id="336" title="Unknown Achievement 336 (Nest Raiders)" description="Complete the Nest Raider Quest 50 Times (2014 Easter Event)" iconName="Questing_RaidNests_50" points="50" sortOrder="14" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="300" quantity="0" />
             </Rewards>
