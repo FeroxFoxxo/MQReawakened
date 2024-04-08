@@ -3,5 +3,5 @@
 namespace Server.Reawakened.Entities.Enemies.Services;
 public class Runnable(BehaviorEnemy enemy) : IRunnable
 {
-    public override void run() => enemy.Damage(enemy.EnemyController.MaxHealth, null);
+    public override void run() => enemy.Damage(enemy.Health, null);
 }

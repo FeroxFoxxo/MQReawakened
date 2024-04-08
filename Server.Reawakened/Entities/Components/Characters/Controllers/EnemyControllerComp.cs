@@ -1,17 +1,11 @@
 ﻿using A2m.Server;
-using Server.Base.Timers.Services;
-using Server.Reawakened.Core.Configs;
-using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
+using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
-using Room = Server.Reawakened.Rooms.Room;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers;
-public class EnemyControllerComp : Component<EnemyController>, IDestructible
+public class EnemyControllerComp : Component<EnemyController>
 {
     public int OnKillRepPoints => ComponentData.OnKillRepPoints;
     public bool TopBounceImmune => ComponentData.TopBounceImmune;
@@ -28,46 +22,7 @@ public class EnemyControllerComp : Component<EnemyController>, IDestructible
     public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
     public ItemEffectType EnemyEffectType => ComponentData.EnemyEffectType;
 
-    public TimerThread TimerThread { get; set; }
-    public WorldStatistics WorldStatistics { get; set; }
-    public ServerRConfig Config { get; set; }
-
-    public int Level;
-    public int EnemyHealth;
-    public int MaxHealth;
-    public int OnKillExp;
-
-    public override void InitializeComponent()
-    {
-        Level = Room.LevelInfo.Difficulty + EnemyLevelOffset;
-
-        OnKillExp = WorldStatistics.GetValue(ItemEffectType.IncreaseExperience, WorldStatisticsGroup.Enemy, Level);
-        MaxHealth = WorldStatistics.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Enemy, Level);
-
-        EnemyHealth = MaxHealth;
-    }
-
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
     }
-
-    public void Damage(int damage, Player origin)
-    {
-        if (Room.IsObjectKilled(Id))
-            return;
-
-        EnemyHealth -= damage;
-
-        var breakEvent = new AiHealth_SyncEvent(Id.ToString(), Room.Time, EnemyHealth, damage, 0, 0, origin.CharacterName, false, true);
-
-        origin.Room.SendSyncEvent(breakEvent);
-
-        if (EnemyHealth <= 0)
-        {
-            origin.AddReputation(OnKillExp, Config);
-            Room.KillEntity(origin, Id);
-        }
-    }
-
-    public void Destroy(Player player, Room room, string id) => room.RemoveEnemy(id);
 }

@@ -84,7 +84,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         var pos = BaseCollider.AdjustPosition(new Vector3(Position.X, Position.Y, Position.Z), size);
 
 
-        Room.AddCollider(new HazardEffectCollider(Id, pos, size, ParentPlane, Room, Logger));
+        Room.AddCollider(new HazardEffectCollider(_id, pos, size, ParentPlane, Room, Logger));
     }
 
     public void DeactivateHazard(object _)
@@ -112,15 +112,18 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
             (int)ItemEffectType.BluntDamage, 0, 1, true, _id, false));
 
-        if (_enemyController != null)
+        var enemy = Room.GetEnemy(_id);
+
+        if (enemy != null)
         {
-            var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, _enemyController.Level) - player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
+            var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) - player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
 
             player.ApplyCharacterDamage(damage > 0 ? damage : 1, 1, TimerThread);
+
+            return;
         }
 
-        else
-            player.ApplyDamageByPercent(HealthRatioDamage, TimerThread);
+        player.ApplyDamageByPercent(HealthRatioDamage, TimerThread);
     }
 
     public void ApplyHazardEffect(Player player)
@@ -145,7 +148,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
             case ItemEffectType.BluntDamage:
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-                (int)ItemEffectType.BluntDamage, 1, 1, true, Id, false));
+                (int)ItemEffectType.BluntDamage, 1, 1, true, _id, false));
 
                 player.ApplyCharacterDamage(Damage, DamageDelay, TimerThread);
                 break;
@@ -190,13 +193,13 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (playerData is not Player player)
             return;
 
-        var collider = Room.GetColliderById(Id);
+        var collider = Room.GetColliderById(_id);
 
         if (collider != null)
             if (!collider.CheckCollision(new PlayerCollider(player)))
                 return;
 
-        player.StartPoisonDamage(Id, Damage, (int)HurtLength, TimerThread);
+        player.StartPoisonDamage(_id, Damage, (int)HurtLength, TimerThread);
     }
 
     public void ApplyWaterBreathing(object playerData)
@@ -216,5 +219,5 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public void RestartTimerDelay(object data) => IsActive = true;
 
     public void ApplySlowEffect(Player player) =>
-        player.ApplySlowEffect(Id, Damage);
+        player.ApplySlowEffect(_id, Damage);
 }

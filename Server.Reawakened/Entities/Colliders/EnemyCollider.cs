@@ -25,11 +25,6 @@ public class EnemyCollider(string id, Vector3 position, Vector2 size, string pla
 
                 enemy.Damage(damage, attack.Owner);
             }
-            else
-            {
-                var enemyController = Room.GetEntitiesFromId<EnemyControllerComp>(Id).First();
-                enemyController?.Damage(damage, attack.Owner);
-            }
         }
     }
 }

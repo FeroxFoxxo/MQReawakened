@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Components.Characters.Controllers;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
@@ -19,6 +20,8 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
+using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 using UnityEngine;
 
@@ -26,7 +29,7 @@ namespace Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 
 public abstract class BaseEnemy : IDestructible
 {
-    public readonly ILogger<BehaviorEnemy> Logger;
+    public readonly ILogger<BaseEnemy> Logger;
     public readonly InternalAchievement InternalAchievement;
     public readonly QuestCatalog QuestCatalog;
     public readonly ItemCatalog ItemCatalog;
@@ -52,6 +55,10 @@ public abstract class BaseEnemy : IDestructible
     public int Level;
     public int DeathXp;
     public string OnDeathTargetId;
+
+    public float HealthModifier;
+    public float ScaleModifier;
+    public float ResistanceModifier;
 
     public BaseSpawnerControllerComp LinkedSpawner;
     public InterObjStatusComp Status;
@@ -81,7 +88,7 @@ public abstract class BaseEnemy : IDestructible
         AwareBehaviorDuration = 0;
         SyncBuilder = new AISyncEventHelper();
 
-        Logger = Services.GetRequiredService<ILogger<BehaviorEnemy>>();
+        Logger = Services.GetRequiredService<ILogger<BaseEnemy>>();
         InternalAchievement = Services.GetRequiredService<InternalAchievement>();
         QuestCatalog = Services.GetRequiredService<QuestCatalog>();
         ItemCatalog = Services.GetRequiredService<ItemCatalog>();
@@ -109,15 +116,24 @@ public abstract class BaseEnemy : IDestructible
         }
 
         OnDeathTargetId = EnemyController.OnDeathTargetID;
-        Health = EnemyController.EnemyHealth;
-        MaxHealth = EnemyController.MaxHealth;
-        DeathXp = EnemyController.OnKillExp;
-        Level = EnemyController.Level;
+
+        Level = Room.LevelInfo.Difficulty + EnemyController.EnemyLevelOffset;
+
+        DeathXp = GameFlow.StatisticData.GetValue(ItemEffectType.IncreaseExperience, WorldStatisticsGroup.Enemy, Level);
+        MaxHealth = GameFlow.StatisticData.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Enemy, Level);
+
+        Health = MaxHealth;
 
         GenerateHitbox(EnemyModel.Hitbox);
 
         GlobalProperties = AISyncEventHelper.CreateDefaultGlobalProperties();
         GenericScript = AISyncEventHelper.CreateDefaultGenericScript();
+
+        // Temporary values
+
+        HealthModifier = 1;
+        ScaleModifier = 1;
+        ResistanceModifier = 1;
     }
 
     public virtual void Initialize() => Init = true;
@@ -189,6 +205,9 @@ public abstract class BaseEnemy : IDestructible
 
         Health -= trueDamage;
 
+        if (Health < 0)
+            Health = 0;
+
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, trueDamage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true));
 
         if (Health <= 0)
@@ -241,9 +260,7 @@ public abstract class BaseEnemy : IDestructible
         }
     }
 
-    public virtual void SendAiData(Player player)
-    {
-    }
+    public abstract void SendAiData(Player player);
 
     public void Destroy(Player player, Room room, string id) => room.RemoveEnemy(id);
 
@@ -256,4 +273,16 @@ public abstract class BaseEnemy : IDestructible
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, healPoints, 0, 0, string.Empty, false, true));
     }
+
+    public AIInit_SyncEvent GetBlankEnemyInit(float posX, float posY, float posZ, float spawnX, float spawnY) =>
+        GetEnemyInit(posX, posY, posZ, spawnX, spawnY, 0, [], null, null);
+
+    public AIInit_SyncEvent GetEnemyInit(float posX, float posY, float posZ,
+        float spawnX, float spawnY, float behaviourRatio, Dictionary<StateType, BaseState> states,
+            AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) =>
+            AISyncEventHelper.AIInit(
+                Id, Room.Time, posX, posY, posZ, spawnX, spawnY, behaviourRatio,
+                Health, MaxHealth, HealthModifier, ScaleModifier, ResistanceModifier,
+                Status.Stars, Level, GlobalProperties, states, globalComp, genericComp
+            );
 }

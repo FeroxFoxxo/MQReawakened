@@ -24,10 +24,6 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     public AIStatsGenericComp Generic;
     public AIBaseBehavior AiBehavior;
 
-    public float HealthModifier;
-    public float ScaleModifier;
-    public float ResistanceModifier;
-
     private object _enemyLock;
 
     private StateType _currentState;
@@ -72,8 +68,16 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             _suicide = new Runnable(this)
         };
 
-        // Address magic numbers when we get to adding enemy effect mods
-        SendAiInit(1, 1, 1);
+        Room.SendSyncEvent(
+            GetEnemyInit(
+                Position.x, Position.y, Position.z,
+                Position.x, Position.y,
+                Generic.Patrol_InitialProgressRatio,
+                EnemyModel.BehaviorData, Global, Generic
+            )
+        );
+
+        ChangeBehavior(StateType.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
 
         base.Initialize();
     }
@@ -239,30 +243,14 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         }
     }
 
-    public void SendAiInit(float healthMod, float sclMod, float resMod)
-    {
-        HealthModifier = healthMod;
-        ScaleModifier = sclMod;
-        ResistanceModifier = resMod;
-
-        Room.SendSyncEvent(
-            GetEnemyInit(
-                Position.x, Position.y, Position.z,
-                Position.x, Position.y,
-                Generic.Patrol_InitialProgressRatio
-            )
-        );
-
-        ChangeBehavior(StateType.Patrol, Position.x, Position.y, Generic.Patrol_ForceDirectionX);
-    }
-
     public override void SendAiData(Player player)
     {
         player.SendSyncEventToPlayer(
             GetEnemyInit(
                 AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ,
                 AiData.Intern_SpawnPosX, AiData.Intern_SpawnPosY,
-                AiBehavior.GetBehaviorRatio(AiData, Room.Time)
+                AiBehavior.GetBehaviorRatio(AiData, Room.Time),
+                EnemyModel.BehaviorData, Global, Generic
             )
         );
 
@@ -274,12 +262,4 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             )
         );
     }
-
-    public AIInit_SyncEvent GetEnemyInit(float poxX, float posY, float posZ,
-        float spawnX, float spawnY, float behaviourRatio) =>
-            AISyncEventHelper.AIInit(
-                Id, Room.Time, poxX, posY, posZ, spawnX, spawnY, behaviourRatio,
-                Health, MaxHealth, HealthModifier, ScaleModifier, ResistanceModifier,
-                Status.Stars, Level, GlobalProperties, EnemyModel.BehaviorData, Global, Generic
-            );
 }
