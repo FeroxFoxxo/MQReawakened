@@ -1,7 +1,5 @@
-﻿using A2m.Server;
-using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;

@@ -487,9 +487,6 @@ public class NPCControllerComp : Component<NPCController>
 
             if (completedQuest != null)
             {
-                player.CheckAchievement(AchConditionType.CompleteQuest, [quest.Name], InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
-                player.CheckAchievement(AchConditionType.CompleteQuestInLevel, [player.Room.LevelInfo.Name], InternalAchievement, Logger); // Quest by Level/Trail if any exist
-
                 var questLine = QuestCatalog.GetQuestLineData(quest.QuestLineId);
 
                 player.Character.Data.QuestLog.Remove(completedQuest);

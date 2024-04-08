@@ -38,12 +38,8 @@ public class ItemRConfig : IRConfig
     public float GrenadeSpawnDelay { get; }
     public float GrenadeLifeTime { get; }
 
-    public float MeleeXOffset { get; }
-    public float MeleeYOffset { get; }
     public float MeleeWidth { get; }
     public float MeleeHeight { get; }
-    public float MeleeArialXOffset { get; }
-    public float MeleeArialYOffset { get; }
     public float MeleeArialWidth { get; }
     public float MeleeArialHeight { get; }
 
@@ -118,13 +114,9 @@ public class ItemRConfig : IRConfig
         ProjectileHeight = 0.5f;
         ProjectileWidth = 0.5f;
 
-        MeleeXOffset = 4f;
-        MeleeYOffset = 0f;
         MeleeWidth = 4f;
         MeleeHeight = 1f;
 
-        MeleeArialXOffset = 3f;
-        MeleeArialYOffset = 2.6f;
         MeleeArialWidth = 6f;
         MeleeArialHeight = 5.2f;
 

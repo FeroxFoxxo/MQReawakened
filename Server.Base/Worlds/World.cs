@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
+using Server.Base.Network.Events;
 using Server.Base.Network.Services;
 using Server.Base.Worlds.EventArguments;
 using System.Diagnostics;
@@ -10,7 +12,7 @@ using System.Diagnostics;
 namespace Server.Base.Worlds;
 
 public class World(ILogger<World> logger, IServiceProvider services, ServerHandler serverHandler,
-    EventSink sink, InternalRConfig config, NetStateHandler netStateHandler)
+    EventSink sink, InternalRConfig config, NetStateHandler netStateHandler) : IService
 {
     private readonly ManualResetEvent _diskWriteHandle = new(true);
 
@@ -18,6 +20,19 @@ public class World(ILogger<World> logger, IServiceProvider services, ServerHandl
     public bool Loaded { get; private set; } = false;
     public bool Loading { get; private set; } = false;
     public bool Crashed { get; private set; } = false;
+
+    private DateTime _lastSave = DateTime.Now;
+
+    public void Initialize() => sink.NetStateRemoved += TrySaveWorld;
+
+    private void TrySaveWorld(NetStateRemovedEventArgs @event)
+    {
+        if (_lastSave + config.SaveRateLimit > DateTime.Now)
+            return;
+
+        Save(true);
+        _lastSave = DateTime.Now;
+    }
 
     public void NotifyDiskWriteComplete()
     {

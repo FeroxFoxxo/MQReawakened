@@ -7,6 +7,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -52,6 +53,9 @@ public class ChooseQuestReward : ExternalProtocol
         }
 
         var quest = QuestCatalog.QuestCatalogs[questId];
+
+        Player.CheckAchievement(AchConditionType.CompleteQuest, [quest.Name], InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
+        Player.CheckAchievement(AchConditionType.CompleteQuestInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger); // Quest by Level/Trail if any exist
 
         Player.AddBananas(quest.BananaReward, InternalAchievement, Logger);
         Player.AddReputation(quest.ReputationReward, Config);

@@ -19,27 +19,16 @@ public class MeleeEntity : BaseProjectile
     {
         _gameObjectId = player.GameObjectId;
 
-        var meleeWidth = config.MeleeWidth;
-        var meleeHeight = config.MeleeHeight;
+        var onGround = player.TempData.OnGround;
         var isRight = direction > 0;
+
+        var meleeWidth = onGround ? config.MeleeWidth : config.MeleeArialWidth;
+        var meleeHeight = onGround ? config.MeleeHeight : config.MeleeArialHeight;
 
         _hitboxPosition = new Vector3 { x = position.x, y = position.y, z = position.z };
 
-        var onGround = player.TempData.OnGround;
-
-        if (onGround)
-        {
-            _hitboxPosition.y += config.MeleeYOffset;
-            _hitboxPosition.x += isRight ? config.MeleeXOffset : -config.MeleeXOffset;
-        }
-        else
-        {
-            meleeWidth = config.MeleeArialWidth;
-            meleeHeight = config.MeleeArialHeight;
-
-            _hitboxPosition.x += isRight ? config.MeleeArialXOffset : -config.MeleeArialXOffset;
-            _hitboxPosition.y -= config.MeleeArialYOffset;
-        }
+        _hitboxPosition.x -= isRight ? 0 : meleeWidth;
+        _hitboxPosition.y -= meleeHeight;
 
         Collider = new AttackCollider(id, _hitboxPosition, new Vector2(meleeWidth, meleeHeight),
             PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f
