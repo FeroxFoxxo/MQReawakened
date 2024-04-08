@@ -465,6 +465,11 @@
         </Vendor>
         <Vendor objectId="170" name="Tonic" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="777" greetingConversationId="2136" leavingConversationId="2135">
             <Item prefabName="WPN_1H_SwordBasic01" />
+            <!--Custom-->
+            <Item prefabName="WPN_MEL_StarterSword01" />
+            <Item prefabName="WPN_MEL_StarterAxe01" />
+            <Item prefabName="WPN_MEL_StarterStaff01" />
+            <Item prefabName="WPN_MEL_StarterCutlass01" />
         </Vendor>
     </Level>
     <Level name="The Forgotten Temple" id="437">

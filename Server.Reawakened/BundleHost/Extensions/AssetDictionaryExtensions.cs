@@ -2,13 +2,14 @@
 using Server.Base.Core.Extensions;
 using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.BundleHost.Services;
+using Server.Reawakened.Core.Configs;
 
 namespace Server.Reawakened.BundleHost.Extensions;
 
 public static class AssetDictionaryExtensions
 {
     public static void AddModifiedAssets(this Dictionary<string, InternalAssetInfo> assets,
-        AssetBundleRConfig config)
+        AssetBundleRConfig config, ServerRConfig serverConfig)
     {
         var assetsToAdd = new Dictionary<string, InternalAssetInfo>();
 
@@ -19,12 +20,20 @@ public static class AssetDictionaryExtensions
                 assetsToAdd.AddChangedNameToDict(assetName, assets[oldAsset]);
             }
 
-        foreach (var replacement in config.AssetRenames)
-            foreach (var oldAsset in assets.Keys.Where(a => a.Contains(replacement.Key)))
+        foreach (var version in config.AssetRenames)
+        {
+            if (version.Key > serverConfig.GameVersion)
+                continue;
+
+            foreach (var replacement in version.Value)
             {
-                var assetName = oldAsset.Replace(replacement.Key, replacement.Value);
-                assetsToAdd.AddChangedNameToDict(assetName, assets[oldAsset]);
+                foreach (var oldAsset in assets.Keys.Where(a => a.Contains(replacement.Key)))
+                {
+                    var assetName = oldAsset.Replace(replacement.Key, replacement.Value);
+                    assetsToAdd.AddChangedNameToDict(assetName, assets[oldAsset]);
+                }
             }
+        }
 
         foreach (var asset in assetsToAdd
                      .Where(asset => !assets.ContainsKey(asset.Key)))

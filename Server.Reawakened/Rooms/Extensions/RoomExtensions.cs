@@ -3,6 +3,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using System.Xml;
+using UnityEngine;
 
 namespace Server.Reawakened.Rooms.Extensions;
 
@@ -17,6 +18,30 @@ public static class RoomExtensions
             select player
         )
             player.SendSyncEventToPlayer(syncEvent);
+    }
+
+    public static List<Player> GetNearbyPlayers(this Room room, Vector3 currentPosition, float radius)
+    {
+        var playersNearby = new List<Player>();
+
+        foreach (var player in room.GetPlayers())
+        {
+            LogFacade.debug($"Comparing player position {player.TempData.Position} to {currentPosition}");
+
+            if (Vector3.Distance(player.TempData.Position, currentPosition) <= radius)
+                playersNearby.Add(player);
+        }
+
+        return playersNearby;
+    }
+
+    public static bool IsPlayerNearby(this Room room, Vector3 currentPosition, float radius)
+    {
+        foreach (var player in room.GetPlayers())
+            if (Vector3.Distance(player.TempData.Position, currentPosition) <= radius)
+                return true;
+
+        return false;
     }
 
     public static string GetValue(this XmlAttributeCollection attributes, string valName)

@@ -16,6 +16,7 @@ public class AIBehaviorBomber(BomberState bomberState) : AIBaseBehavior
 
     public override object[] GetData() => [InTime, LoopTime, BombRadius];
 
-    public override void NextState(BehaviorEnemy enemy) =>
-        enemy.Damage(enemy.EnemyController.MaxHealth, null);
+    public override void NextState(BehaviorEnemy enemy)
+    {
+    }
 }

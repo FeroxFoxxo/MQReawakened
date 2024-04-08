@@ -2,15 +2,12 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Core.Abstractions;
-using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Core.Workers;
 using Server.Base.Logging;
 using Server.Base.Network.Helpers;
 using Server.Base.Timers.Helpers;
-using Server.Base.Timers.Services;
-using Server.Base.Worlds;
 
 namespace Server.Base;
 
@@ -78,10 +75,6 @@ public class Server(ILogger<Server> logger) : Module(logger)
 
         services
             .AddSingleton<Random>()
-            .AddSingleton<ServerHandler>()
-            .AddSingleton<EventSink>()
-            .AddSingleton<World>()
-            .AddSingleton<TimerThread>()
             .AddSingleton<TimerChangePool>()
             .AddSingleton<AccountAttackLimiter>()
             .AddSingleton<PasswordHasher>()

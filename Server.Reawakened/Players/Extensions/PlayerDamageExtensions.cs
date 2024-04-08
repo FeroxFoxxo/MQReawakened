@@ -69,14 +69,17 @@ public static class PlayerDamageExtensions
         if (player.Character.Data.CurrentLife < 0)
             player.Character.Data.CurrentLife = 0;
 
-        player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            player.Character.Data.CurrentLife, player.Character.Data.MaxLife, "Hurt"));
+        player.Room.SendSyncEvent(
+            new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+            player.Character.Data.CurrentLife, player.Character.Data.MaxLife, "Hurt")
+        );
 
         if (invincibilityDuration <= 0)
             invincibilityDuration = 1;
 
         player.TemporaryInvincibility(timerThread, invincibilityDuration);
     }
+
     public static void ApplyDamageByPercent(this Player player, double percentage, TimerThread timerThread)
     {
         var health = (double)player.Character.Data.MaxLife;
@@ -85,8 +88,4 @@ public static class PlayerDamageExtensions
 
         ApplyCharacterDamage(player, damage, 1, timerThread);
     }
-
-    // Temporary code until enemy/hazard system is implemented
-    public static void ApplyDamageByObject(this Player player, TimerThread timerThread) =>
-        ApplyDamageByPercent(player, .10, timerThread);
 }

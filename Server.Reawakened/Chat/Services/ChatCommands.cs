@@ -123,9 +123,7 @@ public partial class ChatCommands(
 
     public static bool GetPlayerPos(Player player, string[] args)
     {
-        Log($"X: {player.TempData.Position.X}" +
-            $" | Y: {player.TempData.Position.Y}" +
-            $" | Z: {player.TempData.Position.Z}", player);
+        Log(player.TempData.Position.ToString(), player);
 
         return true;
     }
@@ -286,13 +284,13 @@ public partial class ChatCommands(
             return false;
         }
 
-        var zPosition = player.TempData.Position.Z;
+        var zPosition = player.TempData.Position.z;
 
         if (args.Length > 3)
             if (int.TryParse(args[3], out var givenZPosition))
                 zPosition = givenZPosition;
 
-        player.TeleportPlayer(player.TempData.Position.X + x, player.TempData.Position.Y + y, zPosition == 0);
+        player.TeleportPlayer(player.TempData.Position.x + x, player.TempData.Position.y + y, zPosition == 0);
 
         return true;
     }
@@ -538,8 +536,8 @@ public partial class ChatCommands(
 
         var closestGameObjects = plane.Select(gameObject =>
         {
-            var x = gameObject.ObjectInfo.Position.X - player.TempData.Position.X;
-            var y = gameObject.ObjectInfo.Position.Y - player.TempData.Position.Y;
+            var x = gameObject.ObjectInfo.Position.X - player.TempData.Position.x;
+            var y = gameObject.ObjectInfo.Position.Y - player.TempData.Position.y;
 
             var distance = Math.Round(Math.Sqrt(Math.Pow(Math.Abs(x), 2) + Math.Pow(Math.Abs(y), 2)));
 

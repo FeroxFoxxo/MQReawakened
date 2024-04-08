@@ -40,7 +40,10 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         MaxHealth = 1;
         _health = MaxHealth;
 
-        Room.AddCollider(new BreakableCollider(Id, Position, new Vector2(Rectangle.Width, Rectangle.Height), ParentPlane, Room));
+        var position = new Vector3(Position.X, Position.Y, Position.Z);
+        var size = new Vector2(Rectangle.Width, Rectangle.Height);
+
+        Room.AddCollider(new BreakableCollider(Id, position, size, ParentPlane, Room));
     }
 
     public void PostInit()
@@ -89,6 +92,9 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         if (_damageable != null)
             _damageable.CurrentHealth = _health;
+
+        if (_health < 0)
+            _health = 0;
 
         origin.Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true));
 

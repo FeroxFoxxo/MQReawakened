@@ -20,6 +20,6 @@ public class Coords(ServerConsole serverConsole,
     private void GetPlayerCoords(string[] command)
     {
         foreach (var player in playerContainer.GetAllPlayers())
-            logger.LogInformation("{PlayerName} - {LevelName} - {X}, {Y}, {Z}", player.CharacterName, player.Room.LevelInfo.InGameName, player.TempData.Position.X, player.TempData.Position.Y, player.TempData.Position.Z);
+            logger.LogInformation("{PlayerName} - {LevelName} - {Position}", player.CharacterName, player.Room.LevelInfo.InGameName, player.TempData.Position);
     }
 }

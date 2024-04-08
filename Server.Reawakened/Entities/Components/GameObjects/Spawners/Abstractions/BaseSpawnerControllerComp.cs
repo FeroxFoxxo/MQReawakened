@@ -154,7 +154,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     {
         if (_activated)
         {
-            if (IsPlayerNearby(_activeDetectionRadius) && LinkedEnemies.Count < 1 && _nextSpawnRequestTime == 0)
+            var position = new Vector3(Position.X, Position.Y, Position.Z);
+
+            if (Room.IsPlayerNearby(position, _activeDetectionRadius) && LinkedEnemies.Count < 1 && _nextSpawnRequestTime == 0)
                 Spawn();
 
             if (_spawnRequested && _nextSpawnRequestTime <= Room.Time)
@@ -263,18 +265,6 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             return;
 
         LinkedEnemies.Add(_spawnedEntityId, enemy);
-    }
-
-    private bool IsPlayerNearby(float radius)
-    {
-        foreach (var player in Room.GetPlayers())
-        {
-            var pos = player.TempData.Position;
-            if (Position.X - radius < pos.X && pos.X < Position.X + radius &&
-                   Position.Y - radius < pos.Y && pos.Y < Position.Y + radius)
-                return true;
-        }
-        return false;
     }
 
     public void NotifyEnemyDefeat(string id) => LinkedEnemies.Remove(id);

@@ -5,7 +5,6 @@ using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
 
@@ -14,7 +13,7 @@ public class AIProjectile : BaseProjectile
 {
     private readonly string _ownerId;
 
-    public AIProjectile(Room room, string ownerId, string projectileId, Vector3Model position,
+    public AIProjectile(Room room, string ownerId, string projectileId, Vector3 position,
         float speedX, float speedY, float lifeTime, TimerThread timerThread, int baseDamage,
         ItemEffectType effect, bool gravity, ServerRConfig config, ItemCatalog itemCatalog)
         : base(projectileId, speedX, speedY, lifeTime, room, position, null, gravity, config)

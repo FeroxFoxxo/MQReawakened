@@ -4,12 +4,12 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Components.Characters.Controllers;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
 
@@ -80,26 +80,11 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (EffectType == ItemEffectType.SlowStatusEffect)
             Rectangle.X = 0;
 
-        Room.AddCollider(
-            new HazardEffectCollider(
-                Id, AdjustPosition(Position, Rectangle),
-                new Vector2(Rectangle.X, Rectangle.Y), ParentPlane,
-                Room, Logger
-            )
-        );
-    }
+        var size = new Vector2(Rectangle.X, Rectangle.Y);
+        var pos = BaseCollider.AdjustPosition(new Vector3(Position.X, Position.Y, Position.Z), size);
 
-    public static Vector3Model AdjustPosition(Vector3Model originalPosition, RectModel rect)
-    {
-        var adjustedXPos = rect.X;
-        var adjustedYPos = rect.Y;
 
-        return new()
-        {
-            X = originalPosition.X + adjustedXPos,
-            Y = originalPosition.Y + adjustedYPos,
-            Z = originalPosition.Z
-        };
+        Room.AddCollider(new HazardEffectCollider(_id, pos, size, ParentPlane, Room, Logger));
     }
 
     public void DeactivateHazard(object _)
@@ -127,15 +112,18 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
             (int)ItemEffectType.BluntDamage, 0, 1, true, _id, false));
 
-        if (_enemyController != null)
+        var enemy = Room.GetEnemy(_id);
+
+        if (enemy != null)
         {
-            var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, _enemyController.Level) - player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
+            var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) - player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
 
             player.ApplyCharacterDamage(damage > 0 ? damage : 1, 1, TimerThread);
+
+            return;
         }
 
-        else
-            player.ApplyDamageByPercent(HealthRatioDamage, TimerThread);
+        player.ApplyDamageByPercent(HealthRatioDamage, TimerThread);
     }
 
     public void ApplyHazardEffect(Player player)
@@ -160,7 +148,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
             case ItemEffectType.BluntDamage:
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-                (int)ItemEffectType.BluntDamage, 1, 1, true, Id, false));
+                (int)ItemEffectType.BluntDamage, 1, 1, true, _id, false));
 
                 player.ApplyCharacterDamage(Damage, DamageDelay, TimerThread);
                 break;
@@ -205,13 +193,13 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (playerData is not Player player)
             return;
 
-        var collider = Room.GetColliderById(Id);
+        var collider = Room.GetColliderById(_id);
 
         if (collider != null)
             if (!collider.CheckCollision(new PlayerCollider(player)))
                 return;
 
-        player.StartPoisonDamage(Id, Damage, (int)HurtLength, TimerThread);
+        player.StartPoisonDamage(_id, Damage, (int)HurtLength, TimerThread);
     }
 
     public void ApplyWaterBreathing(object playerData)
@@ -231,5 +219,5 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public void RestartTimerDelay(object data) => IsActive = true;
 
     public void ApplySlowEffect(Player player) =>
-        player.ApplySlowEffect(Id, Damage);
+        player.ApplySlowEffect(_id, Damage);
 }

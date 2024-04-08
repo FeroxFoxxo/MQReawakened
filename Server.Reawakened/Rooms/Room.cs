@@ -462,15 +462,8 @@ public class Room : Timer
     {
         var projectileId = CreateProjectileId();
 
-        var positionModel = new Vector3Model()
-        {
-            X = position.x,
-            Y = position.y,
-            Z = position.z
-        };
-
         var aiProjectile = new AIProjectile(
-            this, ownerId, projectileId.ToString(), positionModel, speed.x, speed.y,
+            this, ownerId, projectileId.ToString(), position, speed.x, speed.y,
             lifeTime, _timerThread, damage, effect, isGrenade, _config, ItemCatalog
         );
 

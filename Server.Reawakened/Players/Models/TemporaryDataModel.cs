@@ -1,8 +1,7 @@
 ﻿using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Players.Models.Trade;
-using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Data.Collider;
+using UnityEngine;
 using Timer = Server.Base.Timers.Timer;
 
 namespace Server.Reawakened.Players.Models;
@@ -26,14 +25,14 @@ public class TemporaryDataModel
     public List<string> CollidingHazards { get; set; } = [];
     public Dictionary<int, bool> VotedForItem { get; set; } = [];
 
-    public Vector3Model Position { get; set; } = new Vector3Model();
-    public Vector3Model Velocity { get; set; } = new Vector3Model();
+    public Vector3 Position { get; set; } = new Vector3();
+    public Vector3 Velocity { get; set; } = new Vector3();
 
     public TradeModel TradeModel { get; set; }
     public GroupModel Group { get; set; }
 
     public Dictionary<int, List<string>> CurrentAchievements { get; set; } = [];
 
-    //Make the _player size and such a ServerRConfig option down the line
-    public ColliderModel DrawPlayerRect() => new(Position.Z > 10 ? "Plane1" : "Plane0", Position.X - 0.5f, Position.Y - 0.5f, 1, 1);
+    public Vector3 CopyPosition() =>
+        new(Position.x, Position.y, Position.z);
 }

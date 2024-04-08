@@ -8,10 +8,10 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
+using UnityEngine;
 
 namespace Protocols.External._h__HotbarHandler;
 public class UseSlot : ExternalProtocol
@@ -32,11 +32,11 @@ public class UseSlot : ExternalProtocol
 
         var direction = Player.TempData.Direction;
 
-        var position = new Vector3Model()
+        var position = new Vector3()
         {
-            X = Convert.ToSingle(message[7]),
-            Y = Convert.ToSingle(message[8]),
-            Z = Convert.ToSingle(message[9])
+            x = Convert.ToSingle(message[7]),
+            y = Convert.ToSingle(message[8]),
+            z = Convert.ToSingle(message[9])
         };
 
         var slotItem = Player.Character.Data.Hotbar.HotbarButtons[hotbarSlotId];
@@ -114,12 +114,12 @@ public class UseSlot : ExternalProtocol
     {
         public string ProjectileId;
         public ItemDescription UsedItem;
-        public Vector3Model Position;
+        public Vector3 Position;
         public int Direction;
         public bool IsGrenade;
     }
 
-    private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction, int hotbarSlotId)
+    private void HandleRangedWeapon(ItemDescription usedItem, Vector3 position, int direction, int hotbarSlotId)
     {
         var isGrenade = usedItem.SubCategoryId is ItemSubCategory.Grenade or ItemSubCategory.Bomb;
 
@@ -156,7 +156,7 @@ public class UseSlot : ExternalProtocol
         Player.Room.AddProjectile(projectile);
     }
 
-    private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
+    private void HandleMeleeWeapon(ItemDescription usedItem, Vector3 position, int direction)
     {
         var projectileId = Player.Room.CreateProjectileId();
 
