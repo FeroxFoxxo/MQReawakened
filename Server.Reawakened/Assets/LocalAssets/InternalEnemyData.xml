@@ -2520,5 +2520,10 @@
                 <Hitbox width="15" height="9" offsetX="0" offsetY="5.2" />
             </Enemy>
         </EnemyCategory>
+        <EnemyCategory name="Spiker">
+            <Enemy name="PF_Spite_Squirrel_Ice" />
+            <Enemy name="PF_Spite_Squirrel_Shadow" />
+            <Enemy name="PF_Spite_Squirrel_Rock" />
+        </EnemyCategory>
     </AiType>
 </InternalEnemyData>

@@ -16,4 +16,5 @@ public enum EnemyCategory
     Vespid,
     Spiderling,
     Rachnok,
+    Spiker
 }

@@ -29,7 +29,7 @@ public class EnemyModel
         if (Hitbox == null)
         {
             logger.LogError("Enemy '{Name}' does not have a hit box attached!", enemyType);
-            Hitbox = new HitboxModel(0, 0, 0, 0);
+            Hitbox = new HitboxModel(1, 1, 0.5f, 0.5f);
         }
 
         if (AiType == AiType.Behavior)
