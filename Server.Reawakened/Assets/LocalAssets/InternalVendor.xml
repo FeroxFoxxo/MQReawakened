@@ -127,6 +127,164 @@
             <Item prefabName="COL_FOOD_Mango01" />
             <Item prefabName="COL_FOOD_Pinapple01" />
         </Vendor>
+        <Vendor objectId="639" name="Miya" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1260" greetingConversationId="3404" leavingConversationId="3403">
+            <Item prefabName="Add_COM_Tiger01_S05" />
+            <Item prefabName="Add_COM_Tiger01_LS05" />
+            <Item prefabName="Add_COM_Tiger01_TS05" />
+            <Item prefabName="Add_COM_Tiger01_T05" />
+            <Item prefabName="Add_SHD_Monk01_T01" />
+            <Item prefabName="WPN_PRJ_Shuriken01" />
+            <Item prefabName="COL_RECIP_SHD_Monk01_TS03" />
+            <Item prefabName="COL_RECIP_PRJ_Shuriken02" />
+            <Item prefabName="WPN_SPC_StormyPopper01" />
+            <Item prefabName="Add_SHD_Monk01_S01" />
+            <Item prefabName="Add_SHD_Monk01_TS01" />
+            <Item prefabName="Add_SHD_Monk01_LS01" />
+            <Item prefabName="WPN_PRJ_AnubisStaff01" />
+            <Item prefabName="Add_SHD_Samurai01_S01" />
+            <Item prefabName="Add_SHD_Samurai01_TS01" />
+            <Item prefabName="Add_SHD_Samurai01_LS01" />
+            <Item prefabName="WPN_SPC_DragonBomb01" />
+            <Item prefabName="WPN_PRJ_SodaBurp01" />
+            <Item prefabName="Add_SHD_Guard01_TS02" />
+            <Item prefabName="Add_SHD_Snake01_S02" />
+            <Item prefabName="Add_SHD_Snake01_TS02" />
+            <Item prefabName="Add_SHD_Snake01_LS02" />
+            <Item prefabName="WPN_MEL_CrimsonSword01" />
+            <Item prefabName="Add_SHD_Crimson01_S01" />
+            <Item prefabName="Add_SHD_Crimson01_TS01" />
+            <Item prefabName="Add_SHD_Crimson01_LS01" />
+            <Item prefabName="Add_SHD_Crimson01_W01" />
+            <Item prefabName="WPN_PRJ_AirFist01" />
+            <Item prefabName="WPN_PRJ_TyphoonBow01" />
+            <Item prefabName="Add_SHD_Guard01_T02" />
+            <Item prefabName="Add_SHD_Guard01_LS02" />
+            <Item prefabName="Add_SHD_Guard01_S02" />
+        </Vendor>
+        <Vendor objectId="945" name="Etok" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1318" greetingConversationId="3073" leavingConversationId="3399">
+            <Item prefabName="Add_BON_SkullFighter01_TS01" />
+            <Item prefabName="Add_BON_Ritualist01_S01" />
+            <Item prefabName="Add_BON_Ritualist01_TS01" />
+            <Item prefabName="Add_BON_SkullFighter01_LS01" />
+            <Item prefabName="WPN_MEL_RottenStick01" />
+            <Item prefabName="Add_BON_SkullFighter01_W01" />
+            <Item prefabName="Add_BON_Shaman01_LS01" />
+            <Item prefabName="Add_BON_Ritualist01_W01" />
+            <Item prefabName="Add_BON_Mystic01_LS01" />
+            <Item prefabName="Add_BON_Shaman01_E01" />
+            <Item prefabName="Add_BON_Mystic01_TS01" />
+            <Item prefabName="WPN_PRJ_FistOfTerra01" />
+            <Item prefabName="WPN_PRJ_BeetleLauncher01" />
+            <Item prefabName="Add_BON_Mystic01_W01" />
+            <Item prefabName="Add_BON_SwampCrusher01_S01" />
+            <Item prefabName="Add_BON_SkullFighter01_S01" />
+            <Item prefabName="Add_BON_Ritualist01_LS01" />
+            <Item prefabName="WPN_MEL_MysticSword01" />
+            <Item prefabName="Add_BON_Mystic01_E01" />
+            <Item prefabName="WPN_SPC_BeastBomb01" />
+            <Item prefabName="Add_BON_SkullFighter01_T01" />
+            <Item prefabName="Add_BON_Shaman01_TS02" />
+            <Item prefabName="Add_BON_Mystic01_LS02" />
+            <Item prefabName="Add_BON_Mystic01_E02" />
+            <Item prefabName="Add_BON_SwampCrusher01_TS01" />
+            <Item prefabName="Add_BON_Shaman01_S03" />
+            <Item prefabName="COL_BOMB_FireBomb02A" />
+            <Item prefabName="COL_BOMB_FireBomb03" />
+            <Item prefabName="WPN_SPC_OotuMysticPopper01" />
+            <Item prefabName="Add_BON_Shaman01_TS03" />
+            <Item prefabName="ABIL_PoisonBomb03" />
+            <Item prefabName="Add_BON_Mystic01_S02" />
+            <Item prefabName="Add_BON_Voodoo01_LS04" />
+            <Item prefabName="Add_BON_SkullFighter01_W04" />
+            <Item prefabName="Add_BON_SwampCrusher01_LS01" />
+            <Item prefabName="ABIL_PoisonBomb02" />
+            <Item prefabName="ABIL_PoisonBomb01" />
+        </Vendor>
+        <Vendor objectId="2611" name="Shivers" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1302" greetingConversationId="3384" leavingConversationId="3383">
+            <Item prefabName="Add_COM_Fish01_S01" />
+            <Item prefabName="Add_COM_Fish01_LS01" />
+            <Item prefabName="Add_COM_Fish01_TS01" />
+            <Item prefabName="COL_RECIP_ABIL_Grenade03" />
+            <Item prefabName="Add_OUT_FortuneHunter01_S01" />
+            <Item prefabName="WPN_MEL_FireSword01" />
+            <Item prefabName="Add_OUT_FortuneHunter01_TS01" />
+            <Item prefabName="COL_RECIP_OUT_FortuneHunter01_S02" />
+            <Item prefabName="WPN_PRJ_BlasterGun01" />
+            <Item prefabName="Add_OUT_FortuneHunter01_LS01" />
+            <Item prefabName="COL_RECIP_OUT_FortuneHunter01_TS02" />
+            <Item prefabName="Add_OUT_FortuneHunter01_E01" />
+            <Item prefabName="COL_BOMB_FireBomb01" />
+            <Item prefabName="COL_RECIP_BOMB_FireBomb01" />
+            <Item prefabName="WPN_PRJ_SpearGun01" />
+            <Item prefabName="Add_OUT_Buccaneer01_S01" />
+            <Item prefabName="Add_OUT_BlackMaid01_S01" />
+            <Item prefabName="Add_OUT_Buccaneer01_TS01" />
+            <Item prefabName="Add_OUT_BlackMaid01_TS01" />
+            <Item prefabName="Add_OUT_Buccaneer01_LS01" />
+            <Item prefabName="Add_OUT_BlackMaid01_LS01" />
+            <Item prefabName="ABIL_Grenade01" />
+            <Item prefabName="COL_RECIP_ABIL_Grenade01" />
+            <Item prefabName="Add_OUT_WaterBandit01_E01" />
+            <Item prefabName="Add_OUT_WaterBandit01_S01" />
+            <Item prefabName="Add_OUT_WaterBandit01_TS01" />
+            <Item prefabName="Add_OUT_WaterBandit01_LS01" />
+            <Item prefabName="COL_BOMB_FireBomb02A" />
+            <Item prefabName="COL_RECIP_BOMB_FireBomb02" />
+            <Item prefabName="COL_RECIP_OUT_SeaExplorer01_W04" />
+            <Item prefabName="COL_RECIP_OUT_SeaExplorer01_TS02" />
+            <Item prefabName="Add_OUT_SeaExplorer01_W01" />
+            <Item prefabName="Add_OUT_SeaExplorer01_S01" />
+            <Item prefabName="Add_OUT_SeaExplorer01_TS01" />
+            <Item prefabName="WPN_PRJ_FireStaff01" />
+            <Item prefabName="Add_OUT_SeaExplorer01_LS01" />
+            <Item prefabName="ABIL_Grenade02" />
+            <Item prefabName="COL_RECIP_ABIL_Grenade02" />
+            <Item prefabName="COL_RECIP_COM_DreadPlate01_S03" />
+            <Item prefabName="WPN_PRJ_ZotanFist01" />
+            <Item prefabName="COL_RECIP_COM_DreadPlate01_TS03" />
+            <Item prefabName="Add_OUT_CaptainBoy01_E03" />
+            <Item prefabName="Add_OUT_CaptainBoy01_S03" />
+            <Item prefabName="COL_RECIP_COM_DreadPlate01_T03" />
+            <Item prefabName="Add_OUT_CaptainBoy01_TS03" />
+            <Item prefabName="Add_OUT_CaptainBoy01_LS03" />
+            <Item prefabName="COL_RECIP_BOMB_FireBomb03" />
+            <Item prefabName="COL_BOMB_FireBomb03" />
+            <Item prefabName="ABIL_Grenade03" />
+        </Vendor>
+        <Vendor objectId="13161441" name="Halfred" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1570" greetingConversationId="3982" leavingConversationId="3981">
+            <Item prefabName="WPN_PRJ_BossBurp01" />
+            <Item prefabName="WPN_PRJ_TornadoStaff01" />
+            <Item prefabName="Add_SHD_Snake01_S04" />
+            <Item prefabName="Add_SHD_Snake01_TS04" />
+            <Item prefabName="Add_SHD_Snake01_LS04" />
+            <Item prefabName="Add_WLD_IceTribe01_S01" />
+            <Item prefabName="Add_WLD_IceTribe01_TS01" />
+            <Item prefabName="Add_WLD_IceTribe01_LS01" />
+            <Item prefabName="Add_WLD_IceTribe01_W01" />
+            <Item prefabName="Add_WLD_IceTribe01_T01" />
+            <Item prefabName="Add_COM_GemTailRing01_T01" />
+            <Item prefabName="WPN_PRJ_IceLauncher01" />
+            <Item prefabName="Add_WLD_IceRaider01_S01" />
+            <Item prefabName="Add_WLD_IceRaider01_TS01" />
+            <Item prefabName="Add_WLD_IceRaider01_LS01" />
+            <Item prefabName="Add_WLD_IceRaider01_W01" />
+            <Item prefabName="WPN_MEL_IceRaiderHammer01" />
+            <Item prefabName="Add_COM_Panda01_TS04" />
+            <Item prefabName="Add_COM_Panda01_S04" />
+            <Item prefabName="Add_COM_Panda01_LS04" />
+            <Item prefabName="WPN_SPC_IceRaiderPopper01" />
+            <Item prefabName="Add_OUT_JewelTailRing_T02" />
+            <Item prefabName="WPN_PRJ_ThrowingAxe01" />
+            <Item prefabName="Add_COM_DreadPlate01_W04" />
+            <Item prefabName="Add_COM_DreadPlate01_LS04" />
+            <Item prefabName="Add_COM_DreadPlate01_TS04" />
+            <Item prefabName="Add_COM_Viking01_LS10" />
+            <Item prefabName="Add_COM_Viking01_LS01" />
+            <Item prefabName="Add_COM_Viking01_TS01" />
+            <Item prefabName="Add_COM_Viking01_S01" />
+            <Item prefabName="Add_COM_Viking01_LS03" />
+            <Item prefabName="WPN_SPC_BeastBomb01" />
+        </Vendor>    
     </Level>
     <Level name="Crossroads Path" id="99">
         <Vendor objectId="1167" name="Mogri" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Pets" dialogId="1090" greetingConversationId="3028" leavingConversationId="3027">
@@ -307,6 +465,11 @@
         </Vendor>
         <Vendor objectId="170" name="Tonic" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="777" greetingConversationId="2136" leavingConversationId="2135">
             <Item prefabName="WPN_1H_SwordBasic01" />
+            <!--Custom-->
+            <Item prefabName="WPN_MEL_StarterSword01" />
+            <Item prefabName="WPN_MEL_StarterAxe01" />
+            <Item prefabName="WPN_MEL_StarterStaff01" />
+            <Item prefabName="WPN_MEL_StarterCutlass01" />
         </Vendor>
     </Level>
     <Level name="The Forgotten Temple" id="437">
@@ -439,43 +602,22 @@
     <!-- Ootu Mystics Tribe -->
     <Level name="Swamp of Misery" id="46">
         <Vendor objectId="945" name="Etok" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1318" greetingConversationId="3073" leavingConversationId="3399">
-                <Item prefabName="Add_BON_SkullFighter01_TS01" />
-                <Item prefabName="Add_BON_Ritualist01_S01" />
-                <Item prefabName="Add_BON_Ritualist01_TS01" />
-                <Item prefabName="Add_BON_SkullFighter01_LS01" />
-                <Item prefabName="WPN_MEL_RottenStick01" />
-                <Item prefabName="Add_BON_SkullFighter01_W01" />
-                <Item prefabName="Add_BON_Shaman01_LS01" />
-                <Item prefabName="Add_BON_Ritualist01_W01" />
-                <Item prefabName="Add_BON_Mystic01_LS01" />
-                <Item prefabName="Add_BON_Shaman01_E01" />
-                <Item prefabName="Add_BON_Mystic01_TS01" />
-                <Item prefabName="WPN_PRJ_FistOfTerra01" />
-                <Item prefabName="WPN_PRJ_BeetleLauncher01" />
-                <Item prefabName="Add_BON_Mystic01_W01" />
+                <Item prefabName="COL_POT_Healing04" />
+                <Item prefabName="COL_RECIP_PurifiedMudPie01" />
+                <Item prefabName="COL_ING_G_GloomCap01" />
+                <Item prefabName="COL_ING_C_GlacialWater01" />
+                <Item prefabName="COL_ING_C_MountainWater01" />
+                <Item prefabName="COL_ING_C_PureWater01" />
+                <Item prefabName="COL_RECIP_RefinedGloomCap01" />
+                <Item prefabName="COL_RECIP_RefinedMudPie01" />
+                <Item prefabName="COL_RECIP_RefinedDandelions01" />
+                <Item prefabName="COL_RECIP_RefinedLinen01" />
+                <Item prefabName="COL_RECIP_POT_ElixerOfLife02" />
+                <!--Rest are custom-->
+                <Item prefabName="COL_ING_C_VoodooDice01" />
                 <Item prefabName="Add_BON_SwampCrusher01_S01" />
-                <Item prefabName="Add_BON_SkullFighter01_S01" />
-                <Item prefabName="Add_BON_Ritualist01_LS01" />
-                <Item prefabName="WPN_MEL_MysticSword01" />
-                <Item prefabName="Add_BON_Mystic01_E01" />
-                <Item prefabName="WPN_SPC_BeastBomb01" />
-                <Item prefabName="Add_BON_SkullFighter01_T01" />
-                <Item prefabName="Add_BON_Shaman01_TS02" />
-                <Item prefabName="Add_BON_Mystic01_LS02" />
-                <Item prefabName="Add_BON_Mystic01_E02" />
-                <Item prefabName="Add_BON_SwampCrusher01_TS01" />
-                <Item prefabName="Add_BON_Shaman01_S03" />
-                <Item prefabName="COL_BOMB_FireBomb02A" />
-                <Item prefabName="COL_BOMB_FireBomb03" />
-                <Item prefabName="WPN_SPC_OotuMysticPopper01" />
-                <Item prefabName="Add_BON_Shaman01_TS03" />
-                <Item prefabName="ABIL_PoisonBomb03" />
-                <Item prefabName="Add_BON_Mystic01_S02" />
-                <Item prefabName="Add_BON_Voodoo01_LS04" />
-                <Item prefabName="Add_BON_SkullFighter01_W04" />
-                <Item prefabName="Add_BON_SwampCrusher01_LS01" />
-                <Item prefabName="ABIL_PoisonBomb02" />
-                <Item prefabName="ABIL_PoisonBomb01" />
+                <Item prefabName="Add_BON_Voodoo01_S01" />
+                <Item prefabName="Add_BON_Seer01_TS01" />
             </Vendor>
     </Level>
     <Level name="Moss Temple" id="86">
@@ -689,69 +831,34 @@
 
     <!-- Sea Dragons Tribe -->
     <Level name="Razor Bay" id="54">
-        <Vendor objectId="2611" name="Shivers" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="419" greetingConversationId="1242" leavingConversationId="1247">
-            <Item prefabName="Add_COM_Fish01_S01" />
-            <Item prefabName="Add_COM_Fish01_LS01" />
-            <Item prefabName="Add_COM_Fish01_TS01" />
-            <Item prefabName="COL_RECIP_ABIL_Grenade03" />
-            <Item prefabName="Add_OUT_FortuneHunter01_S01" />
-            <Item prefabName="WPN_MEL_FireSword01" />
-            <Item prefabName="Add_OUT_FortuneHunter01_TS01" />
-            <Item prefabName="COL_RECIP_OUT_FortuneHunter01_S02" />
-            <Item prefabName="WPN_PRJ_BlasterGun01" />
+        <Vendor objectId="2611" name="Shivers" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1302" greetingConversationId="3384" leavingConversationId="3383">
+            <!--Custom inventory-->
+            <Item prefabName="COL_FOOD_Orange01" />
+            <Item prefabName="Col_POT_BananaPotion02" />
+            <Item prefabName="COL_POT_Healing02" />
+            <Item prefabName="COL_POT_Healing03" />
+            <Item prefabName="Add_OUT_CaptainBoy01_TS02" />
+            <Item prefabName="Col_POT_ExperiencePotion02" />
+            <Item prefabName="Add_OUT_CaptainBoy01_LS02" />
+        </Vendor>
+        <Vendor objectId="2513" name="Koz" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="791" greetingConversationId="2220" leavingConversationId="2219">
+            <Item prefabName="COL_FOOD_Coconut01" />
+            <Item prefabName="Col_POT_BananaPotion01" />
+            <Item prefabName="COL_POT_Healing02" />
+            <Item prefabName="COL_POT_Healing03" />
+            <Item prefabName="Add_OUT_WaterBandit01_TS02" />
+            <Item prefabName="Col_POT_ExperiencePotion01" />
             <Item prefabName="Add_OUT_FortuneHunter01_LS01" />
-            <Item prefabName="COL_RECIP_OUT_FortuneHunter01_TS02" />
-            <Item prefabName="Add_OUT_FortuneHunter01_E01" />
-            <Item prefabName="COL_BOMB_FireBomb01" />
-            <Item prefabName="COL_RECIP_BOMB_FireBomb01" />
-            <Item prefabName="WPN_PRJ_SpearGun01" />
-            <Item prefabName="Add_OUT_Buccaneer01_S01" />
-            <Item prefabName="Add_OUT_BlackMaid01_S01" />
-            <Item prefabName="Add_OUT_Buccaneer01_TS01" />
-            <Item prefabName="Add_OUT_BlackMaid01_TS01" />
-            <Item prefabName="Add_OUT_Buccaneer01_LS01" />
-            <Item prefabName="Add_OUT_BlackMaid01_LS01" />
-            <Item prefabName="ABIL_Grenade01" />
-            <Item prefabName="COL_RECIP_ABIL_Grenade01" />
-            <Item prefabName="Add_OUT_WaterBandit01_E01" />
-            <Item prefabName="Add_OUT_WaterBandit01_S01" />
-            <Item prefabName="Add_OUT_WaterBandit01_TS01" />
-            <Item prefabName="Add_OUT_WaterBandit01_LS01" />
-            <Item prefabName="COL_BOMB_FireBomb02A" />
-            <Item prefabName="COL_RECIP_BOMB_FireBomb02" />
-            <Item prefabName="COL_RECIP_OUT_SeaExplorer01_W04" />
-            <Item prefabName="COL_RECIP_OUT_SeaExplorer01_TS02" />
-            <Item prefabName="Add_OUT_SeaExplorer01_W01" />
-            <Item prefabName="Add_OUT_SeaExplorer01_S01" />
-            <Item prefabName="Add_OUT_SeaExplorer01_TS01" />
-            <Item prefabName="WPN_PRJ_FireStaff01" />
-            <Item prefabName="Add_OUT_SeaExplorer01_LS01" />
-            <Item prefabName="ABIL_Grenade02" />
-            <Item prefabName="COL_RECIP_ABIL_Grenade02" />
-            <Item prefabName="COL_RECIP_COM_DreadPlate01_S03" />
-            <Item prefabName="WPN_PRJ_ZotanFist01" />
-            <Item prefabName="COL_RECIP_COM_DreadPlate01_TS03" />
-            <Item prefabName="Add_OUT_CaptainBoy01_E03" />
-            <Item prefabName="Add_OUT_CaptainBoy01_S03" />
-            <Item prefabName="COL_RECIP_COM_DreadPlate01_T03" />
-            <Item prefabName="Add_OUT_CaptainBoy01_TS03" />
-            <Item prefabName="Add_OUT_CaptainBoy01_LS03" />
-            <Item prefabName="COL_RECIP_BOMB_FireBomb03" />
-            <Item prefabName="COL_BOMB_FireBomb03" />
-            <Item prefabName="ABIL_Grenade03" />
         </Vendor>
     </Level>
     <Level name="Plunder Alley" id="274">
         <Vendor objectId="639" name="Cutlass" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1309" greetingConversationId="3307" leavingConversationId="3306">
             <Item prefabName="WPN_PRJ_SpearGun01" />
-            <Item prefabName="WPN_MEL_SwordFish01" />
             <Item prefabName="COL_BOMB_FireBomb02A" />
-            <Item prefabName="WPN_PRJ_FireStaff01" />
             <Item prefabName="WPN_SPC_DoomGrenade01" />
             <Item prefabName="ABIL_Grenade03b" />
-            <Item prefabName="WPN_PRJ_Thunderbow01" />
+            <Item prefabName="WPN_MEL_GargoyleSword01" />
             <Item prefabName="WPN_PRJ_CannonGun01" />
-            <Item prefabName="WPN_PRJ_FireStaff01" />
             <Item prefabName="WPN_PRJ_MeteorSlingshot01" />
             <Item prefabName="WPN_PRJ_ZotanFist01" />
         </Vendor>
@@ -872,6 +979,18 @@
             <Item prefabName="COL_RECIP_COM_DreadPlate01_W03" />
         </Vendor>
     </Level>
+    <Level name="Rosy's Reef" id="69">
+        <Vendor objectId="7556" name="Muffin" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="1302" greetingConversationId="3384" leavingConversationId="3383">
+            <Item prefabName="COL_RECIP_POT_WaterBreath02" />
+            <Item prefabName="COL_RECIP_RefinedGoldNugget01" />
+            <Item prefabName="COL_POT_Healing04" />
+            <Item prefabName="COL_ING_C_PureWater01" />
+            <Item prefabName="COL_ING_C_MountainWater01" />
+            <Item prefabName="COL_ING_C_GlacialWater01" />
+            <Item prefabName="COL_RECIP_RefinedGarlic01" />
+            <Item prefabName="COL_RECIP_RefinedLeather01" />
+        </Vendor>
+    </Level>
 
     <!-- Ice Raiders Tribe -->
     <Level name="Raiders Village" id="500">
@@ -953,36 +1072,56 @@
 
     <!-- Chim Foo Tribe -->
     <Level name="Ancient Foo Archive" id="144">
-        <!--Custom inventories-->
-        <Vendor objectId="533" name="Miasma" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="1259" greetingConversationId="3352" leavingConversationId="3351">
-            <Item prefabName="COL_ING_C_PureWater01" />
-            <Item prefabName="COL_ING_C_MountainWater01" />
+        <Vendor objectId="533" name="Miasma" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="780" greetingConversationId="2154" leavingConversationId="2153">
+            <Item prefabName="COL_RECIP_RefinedDandelions01" />
+            <Item prefabName="COL_RECIP_RefinedGoldNugget01" />
+            <Item prefabName="COL_RECIP_ABIL_SmokeBomb01" />
+            <Item prefabName="COL_RECIP_RefinedMudPie01" />
+            <Item prefabName="COL_RECIP_RefinedLeather01" />
+            <Item prefabName="COL_RECIP_RefinedAloe01" />
             <Item prefabName="COL_RECIP_POT_ElixirOfShadow01" />
             <Item prefabName="COL_RECIP_POT_ElixirOfShadow02" />
-            <Item prefabName="COL_RECIP_POT_ElixirOfShadow03" />
-            <Item prefabName="COL_RECIP_POT_Healing05" />
-            <Item prefabName="COL_RECIP_POT_AirResist02" />
-            <Item prefabName="COL_RECIP_POT_AirResist03" />
-            <Item prefabName="COL_RECIPE_POT_AirElixir02" />
-            <Item prefabName="COL_RECIPE_POT_AirElixir03" />
+            <Item prefabName="COL_RECIP_RefinedGarlic01" />
+            <Item prefabName="COL_RECIP_RefinedLinen01" />
+            <Item prefabName="COL_RECIP_POT_FireResist01" />
+            <Item prefabName="COL_RECIP_POT_FireResist02" />
+            <Item prefabName="COL_RECIP_POT_FireResist03" />
+            <Item prefabName="COL_RECIP_POT_Healing01" />
+            <Item prefabName="COL_RECIP_POT_Healing02" />
+            <Item prefabName="COL_RECIP_POT_Healing03" />
+            <Item prefabName="COL_RECIP_RefinedOak01" />
+            <Item prefabName="COL_ING_C_Sulphur01" />
+            <Item prefabName="COL_ING_C_Quartz01" />
+            <Item prefabName="COL_ING_C_Sodium01" />
+            <Item prefabName="COL_ING_C_GlacialWater01" />
+            <Item prefabName="COL_ING_C_MountainWater01" />
+            <Item prefabName="COL_ING_C_PureWater01" />
+            <Item prefabName="COL_ING_C_ShadowDust01" />
+            <Item prefabName="COL_ING_C_CocoShell01" />
         </Vendor>
         <Vendor objectId="534" name="Mantila" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="779" greetingConversationId="2148" leavingConversationId="2147">
+            <Item prefabName="COL_RECIP_COM_DragonFish01_LS02" />
+            <Item prefabName="COL_RECIP_SHD_Assassin01_LS02" />
             <Item prefabName="COL_RECIP_SHD_Samurai01_TS02" />
-            <Item prefabName="COL_RECIP_SHD_Samurai01_LS02" />
-            <Item prefabName="COL_RECIP_SHD_Samurai01_S02" />
-            <Item prefabName="COL_RECIP_BON_Spiritualist01_W02" />
-            <Item prefabName="COL_RECIP_BON_TailRing01_T05" />
-            <Item prefabName="COL_RECIP_COM_Goat01_W02" />
-            <Item prefabName="COL_RECIP_COM_Centurion01_S04" />
-            <Item prefabName="COL_RECIP_COM_DreadPlate01_LS01" />
-            <Item prefabName="COL_RECIP_COM_DreadPlate01_S01" />
-            <Item prefabName="COL_RECIP_COM_DreadPlate01_TS01" />
-            <Item prefabName="COL_RECIP_COM_DreadPlate01_W01" />
+            <Item prefabName="COL_RECIP_SHD_Snake01_LS02" />
+            <Item prefabName="COL_RECIP_SHD_Snake01_S02" />
+            <Item prefabName="COL_RECIP_COM_Burglar01_UF02" />
+            <Item prefabName="COL_RECIP_SHD_Snake01_TS02" />
             <Item prefabName="COL_ING_C_WeakThread01" />
             <Item prefabName="COL_ING_C_MediumThread01" />
             <Item prefabName="COL_ING_C_StrongThread01" />
+            <Item prefabName="COL_RECIP_SHD_Shinto01_T03" />
+            <Item prefabName="COL_RECIP_COM_Indonesian01_S02" />
+            <Item prefabName="COL_RECIP_COM_Indonesian01_TS02" />
+            <Item prefabName="COL_RECIP_COM_Indonesian01_LS02" />
+            <Item prefabName="COL_RECIP_COM_Indonesian01_W02" />
+            <Item prefabName="COL_RECIP_BON_TailRing01_T03" />
+            <Item prefabName="COL_RECIP_OUT_CaptBoy01_E05" />
+            <Item prefabName="COL_RECIP_COM_HoopEarrings02_E01" />
+            <Item prefabName="COL_RECIP_COM_HoopEarrings02_E02" />
         </Vendor>
         <Vendor objectId="550" name="Guanyu" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="BlackSmith" dialogId="1211" greetingConversationId="3368" leavingConversationId="3367">
+            <!--Custom inventory-->
             <Item prefabName="COL_RECIP_ABIL_SmokeBomb01" />
             <Item prefabName="COL_RECIP_BUFF_Bandage03" />
             <Item prefabName="COL_RECIP_BUFF_Bandage04" />
@@ -1003,7 +1142,7 @@
         </Vendor>
     </Level>
     <Level name="Grand Glowing Market" id="145">
-        <!--Custom inventories-->
+        <!--Wushu, Dimsum, Omura and Maoka are custom-->
         <Vendor objectId="1156" name="Wushu" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1212" greetingConversationId="3363" leavingConversationId="3362">
             <Item prefabName="WPN_PRJ_AirFist01" />
             <Item prefabName="WPN_MEL_ShadowFighter01" />
@@ -1023,8 +1162,13 @@
             <Item prefabName="COL_RECIP_POT_PotionOfShielding01" />
             <Item prefabName="COL_RECIP_POT_PotionOfShielding02" />
             <Item prefabName="COL_RECIP_POT_PotionOfShielding03" />
+            <Item prefabName="COL_PACK_NC_ExperiencePotion01" />
+            <Item prefabName="COL_PACK_NC_Rejuvenation05" />
+            <Item prefabName="COL_PACK_NC_BananaPotion01" />
+            <Item prefabName="Col_POT_ExperiencePotion01" />
+            <Item prefabName="Col_POT_BananaPotion01" />
         </Vendor>
-        <Vendor objectId="1089" name="Omura" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="780" greetingConversationId="2154" leavingConversationId="2153">
+        <Vendor objectId="1089" name="Omura" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="1259" greetingConversationId="3352" leavingConversationId="3351">
             <Item prefabName="COL_POT_Healing01" />
             <Item prefabName="COL_POT_Healing02" />
             <Item prefabName="COL_POT_Healing03" />
@@ -1032,27 +1176,24 @@
             <Item prefabName="COL_POT_AirResist01" />
             <Item prefabName="COL_POT_AirElixir00" />
             <Item prefabName="COL_POT_AirElixir01" />
-            <Item prefabName="COL_PACK_NC_ExperiencePotion01" />
-            <Item prefabName="COL_PACK_NC_Rejuvenation05" />
-            <Item prefabName="COL_PACK_NC_BananaPotion01" />
         </Vendor>
         <Vendor objectId="1048" name="Akami" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1218" greetingConversationId="3358" leavingConversationId="3357">
-            <Item prefabName="Add_SHD_Monk01_LF01" />
-            <Item prefabName="Add_SHD_ImpGirl01_T02" />
-            <Item prefabName="Add_SHD_Guard01_T02" />
-            <Item prefabName="Add_SHD_Monk01_T01" />
-            <Item prefabName="Add_SHD_Monk01_T02" />
-            <Item prefabName="Add_SHD_ChimFoo01_T01" />
-            <Item prefabName="Add_SHD_Assassin01_LF01" />
+            <Item prefabName="Add_COM_HoopEarrings01_E02" />
+            <Item prefabName="Add_COM_HoopEarrings01_E03" />
+            <Item prefabName="Add_COM_KidBoy01_BP01" />
+            <Item prefabName="Add_COM_KidBoy01_BP02" />
             <Item prefabName="Add_SHD_Ninja01_LF04" />
-            <Item prefabName="Add_SHD_Samurai01_LF04" />
-            <Item prefabName="Add_SHD_Shield01_BP01" />
-            <Item prefabName="Add_SHD_FooWeek01_BP01" />
-            <Item prefabName="Add_SHD_FooWeek01_UF01" />
+            <Item prefabName="Add_COM_Baseball01_T01" />
+            <Item prefabName="Add_COM_Wings01_BP02" />
+            <Item prefabName="Add_COM_Wings03_BP01" />
+            <Item prefabName="Add_SHD_KittyCostume01_S04" />
+            <Item prefabName="Add_COM_HoopEarrings01_E01" />
+            <Item prefabName="Add_SHD_Monk01_LF01" />
+            <Item prefabName="Add_COM_RibbonTail01_T04" />
             <Item prefabName="Add_COM_RibbonTail01_T06" />
-            <Item prefabName="Add_COM_ShardEarrings02_E02" />
-            <Item prefabName="Add_SHD_Guard01_T03" />
-            <Item prefabName="Add_COM_Skate01_BP01" />
+            <Item prefabName="Add_OUT_JewelTailRing_T02" />
+            <Item prefabName="Add_COM_BackPack01_BP05" />
+            <Item prefabName="Add_COM_Friendship01_W03" />
         </Vendor>
         <Vendor objectId="1087" name="Maoka" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Alchemist" dialogId="1210" greetingConversationId="3415" leavingConversationId="3414">
             <Item prefabName="COL_FOOD_Cookie01" />
@@ -1066,74 +1207,67 @@
             <Item prefabName="COL_FOOD_Sundae01" />
             <Item prefabName="COL_FOOD_Cookie02" />
             <Item prefabName="COL_FOOD_BananaShake01" />
-            <Item prefabName="COL_FOOD_Dumpling01" />
             <Item prefabName="COL_FOOD_PumpkinPie01" />
             <Item prefabName="COL_FOOD_BananaBits02" />
         </Vendor>
         <Vendor objectId="1093" name="Nao" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="785" greetingConversationId="2184" leavingConversationId="2183">
-            <Item prefabName="Add_SHD_FooWeek01_W01" />
-            <Item prefabName="Add_SHD_FooWeek01_FH01" />
-            <Item prefabName="Add_SHD_Crimson01_S01" />
-            <Item prefabName="Add_SHD_Crimson01_TS01" />
-            <Item prefabName="Add_SHD_Crimson01_LS01" />
-            <Item prefabName="Add_SHD_Guard01_TS02" />
-            <Item prefabName="Add_SHD_Crimson01_W01" />
-            <Item prefabName="Add_SHD_Monk01_S03" />
-            <Item prefabName="Add_SHD_Monk01_TS03" />
+            <Item prefabName="Add_COM_Lion01_LS01" />
+            <Item prefabName="Add_COM_Lion01_TS01" />
+            <Item prefabName="Add_COM_Lion01_S01" />
+            <Item prefabName="Add_COM_Army01_LS01" />
+            <Item prefabName="Add_COM_Army01_S01" />
+            <Item prefabName="Add_COM_Army01_TS01" />
+            <Item prefabName="Add_SHD_KittyCostume01_S01" />
+            <Item prefabName="Add_SHD_KittyCostume01_S02" />
+            <Item prefabName="Add_SHD_KittyCostume01_S04" />
+            <Item prefabName="Add_COM_KidBoy01_BP02" />
+            <Item prefabName="Add_COM_Indi01_LS01" />
+            <Item prefabName="Add_COM_Indi01_S01" />
+            <Item prefabName="Add_COM_Indi01_TS01" />
+            <Item prefabName="Add_COM_Lara01_S03" />
+            <Item prefabName="Add_COM_Lara01_S05" />
+            <Item prefabName="Add_COM_Lara01_TS04" />
+            <Item prefabName="Add_COM_Panda01_LS01" />
+            <Item prefabName="Add_COM_Panda01_S01" />
+            <Item prefabName="Add_COM_Panda01_TS01" />
+            <Item prefabName="Add_SHD_ImpGirl01_S01" />
+            <Item prefabName="Add_SHD_ImpGirl01_S02" />
+            <Item prefabName="Add_SHD_Samurai01_LF01" />
+            <Item prefabName="Add_SHD_Samurai01_LS01" />
+            <Item prefabName="Add_SHD_Samurai01_S01" />
+            <Item prefabName="Add_SHD_Samurai01_TS01" />
+            <Item prefabName="Add_SHD_Ninja01_LF05" />
+            <Item prefabName="Add_SHD_Ninja01_LS05" />
+            <Item prefabName="Add_SHD_Ninja01_S05" />
+            <Item prefabName="Add_SHD_Ninja01_TS05" />
+            <Item prefabName="Add_SHD_ImpGirl01_LS03" />
+            <Item prefabName="Add_SHD_ImpGirl01_S03" />
+            <Item prefabName="Add_SHD_ImpGirl01_T03" />
+            <Item prefabName="Add_SHD_ImpGirl01_TS03" />
+        </Vendor>
+        <Vendor objectId="1088" name="Kioko" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1261" greetingConversationId="3409" leavingConversationId="3408">
+            <Item prefabName="Add_SHD_Geisha01_FH01" />
+            <Item prefabName="Add_COM_Sheep01_T02" />
+            <Item prefabName="Add_COM_Army01_S03" />
+            <Item prefabName="Add_COM_Jason01_UF01" />
+            <Item prefabName="Add_COM_Mummy01_FH01" />
+            <Item prefabName="Add_COM_Mummy01_LS01" />
+            <Item prefabName="Add_COM_Mummy01_TS01" />
             <Item prefabName="Add_SHD_Ninja01_LS04" />
             <Item prefabName="Add_SHD_Ninja01_S04" />
             <Item prefabName="Add_SHD_Ninja01_TS04" />
-            <Item prefabName="Add_COM_Lion01_S02" />
-            <Item prefabName="Add_COM_Lion01_TS02" />
-            <Item prefabName="Add_COM_Lion01_LS02" />
-        </Vendor>
-        <Vendor objectId="1088" name="Kioko" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1261" greetingConversationId="3409" leavingConversationId="3408">
-            <Item prefabName="Add_SHD_KittyCostume01_S01" />
-            <Item prefabName="Add_SHD_KittyCostume01_S04" />
-            <Item prefabName="Add_SHD_Geisha01_TS02" />
-            <Item prefabName="Add_SHD_Geisha01_LS02" />
-            <Item prefabName="Add_SHD_ImpGirl01_LS03" />
-            <Item prefabName="Add_SHD_ImpGirl01_TS01" />
-            <Item prefabName="Add_SHD_ImpGirl01_TS03" />
-            <Item prefabName="Add_SHD_Assassin01_S01" />
-            <Item prefabName="Add_SHD_Assassin01_TS01" />
-            <Item prefabName="Add_SHD_Assassin01_LS01" />
-            <Item prefabName="Add_SHD_Guard01_S02" />
-            <Item prefabName="Add_COM_SpaceSuit01_S01" />
-            <Item prefabName="Add_SHD_ImpGirl01_S03" />
-            <Item prefabName="Add_SHD_ImpGirl01_S02" />
-            <Item prefabName="Add_COM_Skate01_S01" />
-            <Item prefabName="Add_COM_Skate01_TS01" />
-            <Item prefabName="Add_COM_Skate01_LS01" />
-            <Item prefabName="Add_SHD_Shinto01_S02" />
         </Vendor>
     </Level>
     <Level name="Jade Mountain" id="48">
         <Vendor objectId="639" name="Miya" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1260" greetingConversationId="3404" leavingConversationId="3403">
-            <Item prefabName="Add_COM_Tiger01_S05" />
-            <Item prefabName="Add_COM_Tiger01_LS05" />
-            <Item prefabName="Add_COM_Tiger01_TS05" />
-            <Item prefabName="Add_COM_Tiger01_T05" />
-            <Item prefabName="Add_SHD_Monk01_T01" />
-            <Item prefabName="WPN_PRJ_Shuriken01" />
-            <Item prefabName="COL_RECIP_SHD_Monk01_TS03" />
-            <Item prefabName="COL_RECIP_PRJ_Shuriken02" />
-            <Item prefabName="WPN_SPC_StormyPopper01" />
-            <!--Rest are custom-->
             <Item prefabName="COL_POT_Healing01" />
-            <Item prefabName="Add_COM_Baseball01_TS02" />
-            <Item prefabName="COL_FOOD_Apple01" />
-            <Item prefabName="Add_COM_Burglar01_UF03" />
-            <Item prefabName="Add_COM_Cloak01_BP03" />
-            <Item prefabName="Add_COM_Emo01_S02" />
-            <Item prefabName="Add_COM_Emo01_TS02" />
-            <Item prefabName="COL_FOOD_IceCream01" />
             <Item prefabName="COL_POT_Healing02" />
-            <Item prefabName="Add_COM_Goat01_W02" />
-            <Item prefabName="Add_COM_KidBoy01_S02" />
-            <Item prefabName="Add_COM_ScaleTail01_T02" />
-            <Item prefabName="Add_SHD_Snake01_TS02" />
-            <Item prefabName="Add_SHD_Snake01_S02" />
+            <Item prefabName="Add_SHD_KittyCostume01_S01" />
+            <Item prefabName="Col_POT_BananaPotion01" />
+            <Item prefabName="Col_POT_ExperiencePotion01" />
+            <Item prefabName="Add_SHD_ImpGirl01_T03" />
+            <Item prefabName="Add_SHD_Samurai01_TS01" />
+            <Item prefabName="COL_FOOD_Pie01" />
         </Vendor>
     </Level>
     <Level name="Stone Gardens" id="101">
