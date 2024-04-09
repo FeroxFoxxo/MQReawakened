@@ -16,5 +16,11 @@ public enum EnemyCategory
     Vespid,
     Spiderling,
     Rachnok,
-    Spiker
+    Spiker,
+    Draicon,
+    Plankton,
+    Hamster,
+    XBorg,
+    Foulbreath,
+    TMNT
 }
