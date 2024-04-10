@@ -19,8 +19,8 @@ public class ChargeAttackProjectile : BaseProjectile
     private readonly int _itemId;
     private readonly int _zoneId;
 
-    public ChargeAttackProjectile(string id, Player player, Vector3 startPosition, Vector3Model endPosition, Vector2Model speed, float lifeTime, int itemId, int zoneId, int damage, Elemental type, ServerRConfig config, TimerThread timerThread)
-        : base(id, speed.X, speed.Y, lifeTime, player.Room, startPosition, endPosition, false, config)
+    public ChargeAttackProjectile(string id, Player player, Vector3 startPosition, Vector3 endPosition, Vector2 speed, float lifeTime, int itemId, int zoneId, int damage, Elemental type, ServerRConfig config, TimerThread timerThread)
+        : base(id, lifeTime, player.Room, startPosition, speed, endPosition, false, config)
     {
         _timerThread = timerThread;
         _player = player;
@@ -30,7 +30,7 @@ public class ChargeAttackProjectile : BaseProjectile
         Collider = new AttackCollider(player.GameObjectId, startPosition, new Vector2(1, 1), PrjPlane, player, damage, type, 15f, 0);
 
         Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(player.GameObjectId.ToString(), Room.Time,
-                        endPosition.X, endPosition.Y, speed.X, speed.Y, itemId, zoneId));
+                        endPosition.x, endPosition.y, speed.x, speed.y, itemId, zoneId));
     }
 
     public override void Hit(string hitGoID)

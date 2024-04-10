@@ -4,17 +4,16 @@ using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders.Abstractions;
-public abstract class BaseCollider(string id, Vector3 pos, Vector2 size, string plane, Room room, ColliderType colliderType)
+public abstract class BaseCollider(string id, Vector3 position, Vector2 size, string plane, Room room, ColliderType colliderType)
 {
     public Room Room => room;
     public string Id => id;
     public string Plane => plane;
     public ColliderType Type => colliderType;
 
-    public Vector3 Position = new(pos.x, pos.y, pos.z);
-    public Vector3 SpawnPosition = new(pos.x, pos.y, pos.z);
-
-    public RectModel ColliderBox = new(pos.x, pos.y, size.x, size.y);
+    public Vector3 Position = new(position.x, position.y, position.z);
+    public Vector3 SpawnPosition = new(position.x, position.y, position.z);
+    public RectModel ColliderBox = new(position.x, position.y, size.x, size.y);
 
     public virtual string[] IsColliding(bool isAttack) => [];
 

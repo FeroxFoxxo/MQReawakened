@@ -183,11 +183,7 @@ public abstract class BaseEnemy : IDestructible
 
         Hitbox = new EnemyCollider(Id, position, new Vector2(width, height), ParentPlane, Room)
         {
-            Position = new Vector3(
-                Position.x + EnemyModel.Offset.X,
-                Position.y + EnemyModel.Offset.Y,
-                Position.z + EnemyModel.Offset.Z
-            )
+            Position = new Vector3(Position.x, Position.y, Position.z)
         };
 
         Room.AddCollider(Hitbox);

@@ -15,8 +15,10 @@ public class GenericProjectile : BaseProjectile
 
     public GenericProjectile(string id, Player player, float lifeTime, Vector3 position, ItemRConfig config, ServerRConfig serverConfig,
         int direction, ItemDescription item, int damage, Elemental damageType, bool isGrenade)
-            : base(id, config.ProjectileSpeedX * (direction > 0 ? 1 : -1), isGrenade ? config.GrenadeSpeedY : config.ProjectileSpeedY, lifeTime, player.Room,
-                new Vector3(position.x + config.ProjectileXOffset * (direction > 0 ? 1 : -1), position.y + config.ProjectileYOffset, position.z), null, false, serverConfig)
+            : base(id, lifeTime, player.Room,
+                new Vector3(position.x + config.ProjectileXOffset * (direction > 0 ? 1 : -1), position.y + config.ProjectileYOffset, position.z),
+                new Vector2(config.ProjectileSpeedX * (direction > 0 ? 1 : -1), isGrenade ? config.GrenadeSpeedY : config.ProjectileSpeedY),
+                null, false, serverConfig)
     {
         _gameObjectId = player.GameObjectId;
         _gravityFactor = isGrenade ? config.GrenadeGravityFactor : config.ProjectileGravityFactor;

@@ -1,7 +1,7 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Draicon;
-public class DraiconEnemyControllerComp : Component<DraiconEnemyController>
+public class DraiconEnemyControllerComp : AiStateMachineComponent<DraiconEnemyController>
 {
     /* 
      * -- AI STATES --

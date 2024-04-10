@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Drake;
 
-public class DrakeEnemyControllerComp : Component<DrakeEnemyController>
+public class DrakeEnemyControllerComp : AiStateMachineComponent<DrakeEnemyController>
 {
     /* 
      * -- AI STATES --

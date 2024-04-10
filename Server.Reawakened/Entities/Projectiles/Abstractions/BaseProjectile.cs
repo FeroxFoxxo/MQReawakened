@@ -1,12 +1,11 @@
 ﻿using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Rooms;
-using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Projectiles.Abstractions;
-public abstract class BaseProjectile(string id, float speedX, float speedY, float lifetime,
-    Room room, Vector3 position, Vector3Model endPosition, bool gravity, ServerRConfig config)
+public abstract class BaseProjectile(string id, float lifetime,
+    Room room, Vector3 position, Vector2 speed, Vector3? endPosition, bool gravity, ServerRConfig config)
 {
     public string ProjectileId => id;
     public Room Room => room;
@@ -16,7 +15,7 @@ public abstract class BaseProjectile(string id, float speedX, float speedY, floa
     public Vector3 Position = new() { x = position.x, y = position.y, z = position.z };
     public Vector3 SpawnPosition = new() { x = position.x, y = position.y, z = position.z };
 
-    public Vector3 Speed = new(speedX, speedY, 1);
+    public Vector3 Speed = new(speed.x, speed.y, 1);
 
     public float StartTime = room.Time;
     public float LifeTime = room.Time + lifetime;
@@ -27,8 +26,9 @@ public abstract class BaseProjectile(string id, float speedX, float speedY, floa
     {
         if (room == null) return;
 
-        if (Position.y <= endPosition?.Y)
-            Hit("-1");
+        if (endPosition.HasValue)
+            if (Position.y <= endPosition.Value.y)
+                Hit("-1");
 
         Move();
 
@@ -72,5 +72,5 @@ public abstract class BaseProjectile(string id, float speedX, float speedY, floa
 
     public abstract void Hit(string hitGoID);
 
-    public void DecreaseSpeedY(float speed) => speedY -= speed;
+    public void DecreaseSpeedY(float speedY) => Speed.y -= speedY;
 }

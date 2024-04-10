@@ -14,14 +14,15 @@ public class DroppingsControllerComp : Component<DroppingsController>
 {
     public float DropRate => ComponentData.DropRate;
 
-    public static Vector3Model StartPosition => new();
     public TimerThread TimerThread { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
 
+    private Vector3 _startPosition;
+
     public override void InitializeComponent()
     {
-        ChangePosition(StartPosition, Position);
+        _startPosition = new Vector3(Position.X, Position.Y, Position.Z);
         WaitDrop();
     }
 
@@ -33,14 +34,7 @@ public class DroppingsControllerComp : Component<DroppingsController>
         if (Room.IsObjectKilled(Id))
             return;
 
-        ChangePosition(Position, StartPosition);
-
-        var position = new Vector3
-        {
-            x = Position.X,
-            y = Position.Y,
-            z = Position.Z
-        };
+        Position.SetPosition(_startPosition);
 
         var speed = new Vector2
         {
@@ -51,7 +45,7 @@ public class DroppingsControllerComp : Component<DroppingsController>
         var damage = 0;
         var effect = ItemEffectType.Freezing;
 
-        Room.AddRangedProjectile(Id, position, speed, 3, damage, effect, false);
+        Room.AddRangedProjectile(Id, _startPosition, speed, 3, damage, effect, false);
 
         WaitDrop();
     }
@@ -72,11 +66,4 @@ public class DroppingsControllerComp : Component<DroppingsController>
                 start, Id, isPremium
             )
         );
-
-    public static void ChangePosition(Vector3Model to, Vector3Model from)
-    {
-        to.X = from.X;
-        to.Y = from.Y;
-        to.Z = from.Z;
-    }
 }

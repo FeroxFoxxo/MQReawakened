@@ -21,12 +21,7 @@ public abstract class BaseMovingObjectControllerComp<T> : Component<T>, IRecieve
 
         var position = Movement.GetPositionBasedOnTime(Room.Time);
 
-        Entity.GameObject.ObjectInfo.Position = new Vector3Model
-        {
-            X = position.x,
-            Y = position.y,
-            Z = position.z
-        };
+        Position.SetPosition(position);
     }
 
     public override object[] GetInitData(Player player) =>

@@ -32,6 +32,7 @@ using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using UnityEngine;
 using WorldGraphDefines;
 using Random = System.Random;
 using Timer = Server.Base.Timers.Timer;
@@ -117,7 +118,7 @@ public class Room : Timer
             return;
         }
 
-        Planes = LevelInfo.LoadPlanes(_config);
+        Planes = LevelInfo.LoadPlanes(this, _config);
         _entities = this.LoadEntities(services);
         _colliders = this.LoadTerrainColliders();
 
@@ -308,8 +309,8 @@ public class Room : Timer
         var spawnPoint = GetSpawnPoint(character);
         var coordinates = GetSpawnCoordinates(spawnPoint);
 
-        character.Data.SpawnPositionX = coordinates.X;
-        character.Data.SpawnPositionY = coordinates.Y;
+        character.Data.SpawnPositionX = coordinates.x;
+        character.Data.SpawnPositionY = coordinates.y;
         character.Data.SpawnOnBackPlane = spawnPoint.IsOnBackPlane(Logger);
 
         Logger.LogDebug(
@@ -359,15 +360,15 @@ public class Room : Timer
 
     // Spawn Points
 
-    public static Vector2Model GetSpawnCoordinates(BaseComponent spawnLocation)
+    public static Vector2 GetSpawnCoordinates(BaseComponent spawnLocation)
     {
         var rect = spawnLocation.Rectangle;
         var pos = spawnLocation.Position;
 
-        return new Vector2Model()
+        return new Vector2()
         {
-            X = (rect.X == 0 ? pos.X : rect.X) + spawnLocation.Rectangle.Width / 2 - .5f,
-            Y = (rect.Y == 0 ? pos.Y : rect.Y) + spawnLocation.Rectangle.Height / 2 + .25f
+            x = (rect.X == 0 ? pos.X : rect.X) + spawnLocation.Rectangle.Width / 2 - .5f,
+            y = (rect.Y == 0 ? pos.Y : rect.Y) + spawnLocation.Rectangle.Height / 2 + .25f
         };
     }
 
@@ -478,13 +479,13 @@ public class Room : Timer
             projectileId;
     }
 
-    public void AddRangedProjectile(string ownerId, UnityEngine.Vector3 position, UnityEngine.Vector2 speed,
+    public void AddRangedProjectile(string ownerId, Vector3 position, Vector2 speed,
         float lifeTime, int damage, ItemEffectType effect, bool isGrenade)
     {
         var projectileId = CreateProjectileId();
 
         var aiProjectile = new AIProjectile(
-            this, ownerId, projectileId.ToString(), position, speed.x, speed.y,
+            this, ownerId, projectileId.ToString(), position, speed,
             lifeTime, _timerThread, damage, effect, isGrenade, _config, ItemCatalog
         );
 

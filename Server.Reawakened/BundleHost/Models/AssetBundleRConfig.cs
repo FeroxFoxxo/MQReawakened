@@ -66,14 +66,6 @@ public class AssetBundleRConfig : IRConfig
                     { "WelcomeGamePopup", "NotificationNoMailPopup" },
                     { "FX_GiftBoxconfettis", "FX_GiftBoxConfettis" }
                 }
-            },
-            {
-                GameVersion.v2014,
-                new Dictionary<string, string>()
-                {
-                    { "FX_R01_ShardDestroyed_Silver", "FX_R01_Shard_Absorb" },
-                    { "FX_WaspBossFightShardsTrail", "FX_R01_ShardEnergyTravel" }
-                }
             }
         };
 

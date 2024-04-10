@@ -15,7 +15,7 @@ public class MeleeEntity : BaseProjectile
     private readonly string _gameObjectId;
 
     public MeleeEntity(string id, Vector3 position, Player player, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig serverConfig, ItemRConfig config)
-        : base(id, 0, 0, lifeTime, player.Room, position, null, false, serverConfig)
+        : base(id, lifeTime, player.Room, position, new Vector2(0, 0), null, false, serverConfig)
     {
         _gameObjectId = player.GameObjectId;
 

@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Entities.DataComponentAccessors.Spiker;
-using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+using Server.Reawakened.Entities.DataComponentAccessors.Spiker;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Spiker;
-public class SpikerComponentComp : Component<SpikerControllerMQR>
+public class SpikerComponentComp : AiStateMachineInternalComponent<SpikerControllerMQR>
 {
     /* 
      * -- AI STATES --

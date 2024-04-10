@@ -1,15 +1,14 @@
-﻿using Server.Reawakened.Entities.Components.GameObjects.Interactables;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+using Server.Reawakened.Entities.Components.GameObjects.Interactables;
 using Server.Reawakened.Entities.Enemies.Extensions;
-using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.GlobalInteraction;
 
-public class GlobalInteractionControllerComp : Component<GlobalInteractionController>
+public class GlobalInteractionControllerComp : AiStateMachineComponent<GlobalInteractionController>
 {
     /* 
      * -- AI STATES --
@@ -24,8 +23,6 @@ public class GlobalInteractionControllerComp : Component<GlobalInteractionContro
     public float PartyDuration => ComponentData.PartyDuration;
     public float PollInterval => ComponentData.PollInterval;
     public string TimedEventName => ComponentData.TimedEventName;
-
-    public GameObjectComponents PreviousState = [];
 
     private GlobalCounterInteractableControllerComp _counter;
     private float _nextPollTime;
@@ -67,21 +64,5 @@ public class GlobalInteractionControllerComp : Component<GlobalInteractionContro
 
             _nextPollTime = Room.Time + PollInterval;
         }
-    }
-
-    public void GoToNextState(GameObjectComponents NewState)
-    {
-        if (Room == null || Room.IsObjectKilled(Id))
-            return;
-
-        var syncEvent2 = new AiStateSyncEvent()
-        {
-            InStates = PreviousState,
-            GoToStates = NewState
-        };
-
-        PreviousState = NewState;
-
-        Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, Room));
     }
 }

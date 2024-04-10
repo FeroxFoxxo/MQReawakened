@@ -68,13 +68,15 @@ public class State : ExternalProtocol
                         attack.IsCharging, attack.PosX, attack.PosY, attack.StartDelay,
                         attack.SpeedX, attack.SpeedY, attack.MaxPosX, attack.MaxPosY, attack.ItemId, attack.ZoneId);
 
-                    var chargeAttackProjectile = new ChargeAttackProjectile(Player.GameObjectId, Player,
-                                        new Vector3() { x = attack.PosX, y = attack.PosY, z = Player.TempData.Position.z },
-                                        new Vector3Model() { X = attack.MaxPosX, Y = attack.MaxPosY, Z = Player.TempData.Position.z },
-                                        new Vector2Model() { X = attack.SpeedX, Y = attack.SpeedY },
-                                        15, attack.ItemId, attack.ZoneId,
-                                        WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
-                                        Elemental.Standard, ServerConfig, TimerThread);
+                    var chargeAttackProjectile = new ChargeAttackProjectile(
+                        Player.GameObjectId, Player,
+                        new Vector3() { x = attack.PosX, y = attack.PosY, z = Player.TempData.Position.z },
+                        new Vector3() { x = attack.MaxPosX, y = attack.MaxPosY, z = Player.TempData.Position.z },
+                        new Vector2() { x = attack.SpeedX, y = attack.SpeedY },
+                        15, attack.ItemId, attack.ZoneId,
+                        WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
+                        Elemental.Standard, ServerConfig, TimerThread
+                    );
 
                     Player.Room.AddProjectile(chargeAttackProjectile);
                     break;

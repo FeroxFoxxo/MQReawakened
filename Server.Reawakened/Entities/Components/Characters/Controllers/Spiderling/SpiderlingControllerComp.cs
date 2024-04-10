@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Entities.DataComponentAccessors.Spiderling;
-using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+using Server.Reawakened.Entities.DataComponentAccessors.Spiderling;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Spiderling;
-public class SpiderlingControllerComp : Component<SpiderlingControllerMQR>
+public class SpiderlingControllerComp : AiStateMachineInternalComponent<SpiderlingControllerMQR>
 {
     /* 
      * -- AI STATES --

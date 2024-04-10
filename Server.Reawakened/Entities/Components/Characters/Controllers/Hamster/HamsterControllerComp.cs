@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Entities.DataComponentAccessors.Hampster;
-using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+using Server.Reawakened.Entities.DataComponentAccessors.Hampster;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.HampsterController;
-public class HamsterControllerComp : Component<HamsterControllerMQR>
+public class HamsterControllerComp : AiStateMachineInternalComponent<HamsterControllerMQR>
 {
     /* 
      * -- AI STATES --

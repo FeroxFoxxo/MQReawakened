@@ -1,6 +1,5 @@
 ﻿using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Colliders.Enums;
-using Server.Reawakened.Entities.Components.Characters.Controllers;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Rooms;
 using UnityEngine;
