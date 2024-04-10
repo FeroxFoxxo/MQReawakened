@@ -16,6 +16,33 @@ namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBos
 
 public class SpiderBossControllerComp : Component<SpiderBossController>, IRecieverTriggered, IDestructible
 {
+    /* 
+     * -- AI STATES --
+     * AIStateSpiderVenom
+     * AIStateSpiderWebs
+     * AIStateSpiderBase
+     * AIStateSpiderPatrol
+     * AIStateSpiderRetreat
+     * AIStateSpiderPhase2
+     * AIStateSpiderPhase1
+     * AIStateSpiderPhase3
+     * AIStateSpiderPhaseTrans
+     * AIStateSpiderDeactivated
+     * AIStateSpiderDrop
+     * AIStateSpiderMove
+     * AIStateSpiderIdle
+     * AIStateSpiderPhaseTeaser
+     * AIStateSpiderVineThrow
+     * 
+     * -- BOSS ONLY --
+     * AIStateSpiderSwichSide
+     * AIStateSpiderEntrance
+     * 
+     * -- TEASER ONLY --
+     * AIStateSpiderTeaserRetreat
+     * AIStateSpiderTeaserEntrance
+    */
+
     public bool Teaser => ComponentData.Teaser;
     public string NPCId => ComponentData.NPCId;
     public string NPCTriggerId => ComponentData.NPCTriggerId;

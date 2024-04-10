@@ -11,6 +11,13 @@ namespace Server.Reawakened.Entities.Components.Characters.Controllers.GlobalInt
 
 public class GlobalInteractionControllerComp : Component<GlobalInteractionController>
 {
+    /* 
+     * -- AI STATES --
+     * AIStateGlobalInteractionActive
+     * AIStateGlobalInteractionDone
+     * AIStateGlobalInteractionDone
+    */
+
     public int MinimumRequiredInteractions => ComponentData.MinimumRequiredInteractions;
     public float RequiredInteractionsMultiplier => ComponentData.RequiredInteractionsMultiplier;
     public int BananasAwarded => ComponentData.BananasAwarded;

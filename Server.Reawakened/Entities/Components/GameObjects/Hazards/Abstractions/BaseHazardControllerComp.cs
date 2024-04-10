@@ -5,7 +5,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Colliders.Abstractions;
-using Server.Reawakened.Entities.Components.Characters.Controllers;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
@@ -35,7 +35,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public bool TimedHazard = false;
 
     public int Damage;
-    private EnemyControllerComp _enemyController;
+    private IEnemyController _enemyController;
     private string _id;
 
     public TimerThread TimerThread { get; set; }
@@ -70,7 +70,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public void SetId(string id)
     {
         _id = id;
-        _enemyController = Room.GetEntityFromId<EnemyControllerComp>(id);
+        _enemyController = Room.GetEnemyFromId(id);
     }
 
     //Creates hazard colliders after enemy colliders are created to prevent duplicated collider ID bugs.

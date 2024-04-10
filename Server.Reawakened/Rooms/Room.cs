@@ -7,7 +7,7 @@ using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Colliders.Abstractions;
-using Server.Reawakened.Entities.Components.Characters.Controllers;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Entities.Components.GameObjects.Checkpoints;
 using Server.Reawakened.Entities.Components.GameObjects.Global;
@@ -80,7 +80,7 @@ public class Room : Timer
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
 
-    public Room(int roomId, Level level, WorldHandler world, 
+    public Room(int roomId, Level level, WorldHandler world,
             IServiceProvider services, TimerThread timerThread, ServerRConfig config) :
         base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
@@ -140,7 +140,7 @@ public class Room : Timer
 
         foreach (var component in _entities.Values.SelectMany(x => x))
         {
-            if (component is EnemyControllerComp enemy)
+            if (component is IEnemyController enemy)
             {
                 if (!component.ParentPlane.Equals("TemplatePlane"))
                     GenerateEnemy(component.PrefabName, component.Id, enemy);
@@ -418,6 +418,22 @@ public class Room : Timer
             entities.FirstOrDefault(x => x is T and not null) as T :
             null;
 
+    public IEnemyController GetEnemyFromId(string id)
+    {
+        var enemy = GetEntityFromId<EnemyControllerComp>(id);
+
+        if (enemy != null)
+            return enemy;
+
+        var armoredEnemy = GetEntityFromId<ArmoredEnemyControllerComp>(id);
+
+        if (armoredEnemy != null)
+            return armoredEnemy;
+
+        Logger.LogError("Unknown enemy with id: {Id}", id);
+        return null;
+    }
+
     public T[] GetEntitiesFromId<T>(string id) where T : class =>
         _entities.TryGetValue(id, out var entities) ?
             entities.Where(x => x is T and not null).Select(x => x as T).ToArray() :
@@ -552,7 +568,7 @@ public class Room : Timer
     public bool ContainsEnemy(string enemyId) =>
         _enemies.ContainsKey(enemyId);
 
-    public BaseEnemy GenerateEnemy(string enemyPrefab, string entityId, EnemyControllerComp enemyController)
+    public BaseEnemy GenerateEnemy(string enemyPrefab, string entityId, IEnemyController enemyController)
     {
         if (!InternalEnemyData.EnemyInfoCatalog.TryGetValue(enemyPrefab, out var enemyModel))
         {

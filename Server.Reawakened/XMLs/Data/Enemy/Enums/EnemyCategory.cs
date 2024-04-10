@@ -20,7 +20,7 @@ public enum EnemyCategory
     Draicon,
     Plankton,
     Hamster,
-    XBorg,
+    Drake,
     Foulbreath,
     TMNT
 }

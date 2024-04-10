@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Components.Characters.Controllers;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners.Abstractions;
@@ -68,7 +68,7 @@ public abstract class BaseEnemy : IDestructible
     public GenericScriptPropertiesModel GenericScript;
 
     public readonly BaseComponent Entity;
-    public readonly EnemyControllerComp EnemyController;
+    public readonly IEnemyController EnemyController;
     public readonly EnemyModel EnemyModel;
 
     public readonly AISyncEventHelper SyncBuilder;

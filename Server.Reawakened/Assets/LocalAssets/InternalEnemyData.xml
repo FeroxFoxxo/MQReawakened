@@ -2541,9 +2541,8 @@
             <Enemy name="PF_Spite_Squirrel_Shadow" />
             <Enemy name="PF_Spite_Squirrel_Rock" />
         </EnemyCategory>
-        <EnemyCategory name="Draicon">
+        <EnemyCategory name="Drake">
             <Enemy name="PF_Critter_Drake_Boss01" />
-            <!-- Draicon -->
             <Enemy name="PF_Critter_Drake01" />
         </EnemyCategory>
         <EnemyCategory name="Plankton">
@@ -2552,7 +2551,7 @@
             <Enemy name="PF_Spite_MiniRoboPlankton01" />
             <Enemy name="PF_Spite_MiniRoboPlankton02" />
         </EnemyCategory>
-        <EnemyCategory name="XBorg">
+        <EnemyCategory name="Draicon">
             <Enemy name="PF_Spite_PR_XborgBoss01" />
             
             <Enemy name="PF_Spite_PR_XborgPatroller01" />

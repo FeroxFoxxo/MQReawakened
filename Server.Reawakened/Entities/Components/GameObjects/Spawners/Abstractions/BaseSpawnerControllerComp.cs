@@ -4,7 +4,7 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Components.Characters.Controllers;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
@@ -131,7 +131,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         var global = Room.GetEntityFromId<AIStatsGlobalComp>(templatePrefabName);
         var generic = Room.GetEntityFromId<AIStatsGenericComp>(templatePrefabName);
         var status = Room.GetEntityFromId<InterObjStatusComp>(templatePrefabName);
-        var enemyController = Room.GetEntityFromId<EnemyControllerComp>(templatePrefabName);
+        var enemyController = Room.GetEnemyFromId(templatePrefabName);
         var hazard = Room.GetEntityFromId<HazardControllerComp>(templatePrefabName);
 
         if (global is null || generic is null || status is null || enemyController is null || hazard is null)
@@ -234,13 +234,22 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         var enemyTemplate = obj as SpawnedEnemyData;
 
+        BaseComponent enemyComponent = null;
+
+        if (enemyTemplate.EnemyController is EnemyControllerComp controllerComp)
+            enemyComponent = controllerComp;
+        else if (enemyTemplate.EnemyController is ArmoredEnemyControllerComp armoredEnemyController)
+            enemyComponent = armoredEnemyController;
+        else
+            Logger.LogError("Unknown enemy component of type {Type}", enemyComponent.GetType().Name);
+
         //Set all component data
         var newEntity = new List<BaseComponent>
         {
             enemyTemplate.Global,
             enemyTemplate.Generic,
             enemyTemplate.Status,
-            enemyTemplate.EnemyController,
+            enemyComponent,
             enemyTemplate.Hazard
         };
 

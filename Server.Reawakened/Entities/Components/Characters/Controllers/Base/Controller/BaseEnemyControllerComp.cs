@@ -1,11 +1,10 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.Components.Characters.Controllers;
-public class EnemyControllerComp : Component<EnemyController>
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+public abstract class BaseEnemyControllerComp<T> : Component<T>, IEnemyController where T : EnemyController
 {
     public int OnKillRepPoints => ComponentData.OnKillRepPoints;
     public bool TopBounceImmune => ComponentData.TopBounceImmune;

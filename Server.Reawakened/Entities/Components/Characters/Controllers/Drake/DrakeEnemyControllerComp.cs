@@ -4,4 +4,12 @@ namespace Server.Reawakened.Entities.Components.Characters.Controllers.Drake;
 
 public class DrakeEnemyControllerComp : Component<DrakeEnemyController>
 {
+    /* 
+     * -- AI STATES --
+     * AIStateDrakeAttack
+     * AIStatePatrol
+     * AIStateDrakePlacement
+     * AIStateMove
+     * AIStateStunned
+    */
 }
