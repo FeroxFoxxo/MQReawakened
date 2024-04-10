@@ -147,9 +147,7 @@ public class RequestMiddleware
                 ip = context.Request.Headers["REMOTE_ADDR"]!;
             else
                 // Using X-Forwarded-For last address
-                ip = ip.Split(',')
-                    .Last()
-                    .Trim();
+                ip = ip.Split(',').Last().Trim();
 
             if (context.Connection.RemoteIpAddress != null)
                 return string.IsNullOrEmpty(ip) ? context.Connection.RemoteIpAddress.ToString() : ip;

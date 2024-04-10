@@ -18,6 +18,9 @@ public class AuthenticateController(AccountHandler accHandler, UserInfoHandler u
     [HttpPost]
     public IActionResult GetLoginInfo([FromForm] string username, [FromForm] string token)
     {
+        username = username?.Trim();
+        token = token?.Trim();
+
         var account = accHandler.GetInternal().FirstOrDefault(x => x.Value.Username == username).Value;
 
         if (account == null)

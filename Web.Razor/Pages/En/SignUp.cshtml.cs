@@ -83,6 +83,11 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
             return Page();
         }
 
+        Username = Username?.Trim();
+        ConfirmPassword = ConfirmPassword?.Trim();
+        Password = Password?.Trim();
+        Email = Email?.Trim();
+
         if (string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Email))
             return Page();
 
