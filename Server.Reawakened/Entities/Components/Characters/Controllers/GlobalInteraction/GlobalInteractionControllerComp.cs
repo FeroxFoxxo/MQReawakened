@@ -14,7 +14,7 @@ public class GlobalInteractionControllerComp : AiStateMachineComponent<GlobalInt
      * -- AI STATES --
      * AIStateGlobalInteractionActive
      * AIStateGlobalInteractionDone
-     * AIStateGlobalInteractionDone
+     * AIStateGlobalInteractionInactive
     */
 
     public int MinimumRequiredInteractions => ComponentData.MinimumRequiredInteractions;
