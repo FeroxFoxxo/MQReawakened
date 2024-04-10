@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using static A2m.Server.ExtLevelEditor;
 
-namespace Server.Reawakened.Entities.Components.Characters.Controllers.SocialEvents_GlobalInteraction;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.GlobalInteraction;
 
 public class GlobalInteractionControllerComp : Component<GlobalInteractionController>
 {
@@ -45,14 +45,13 @@ public class GlobalInteractionControllerComp : Component<GlobalInteractionContro
 
         GoToNextState(
             new GameObjectComponents() {
-                    {"AIStateGlobalInteractionActive", new ComponentSettings() {"ST", "0"}}
+                {"AIStateGlobalInteractionActive", new ComponentSettings() {"ST", "0"}}
             }
         );
     }
 
     public override void Update()
     {
-        base.Update();
         if (Room.Time >= _nextPollTime)
         {
             var pollStatus = new SyncEvent(Id, SyncEvent.EventType.GlobalInteractionEvent, Room.Time);

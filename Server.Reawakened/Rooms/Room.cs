@@ -71,13 +71,17 @@ public class Room : Timer
     public InternalColliders ColliderCatalog;
     public InternalEnemyData InternalEnemyData;
 
+    public WorldHandler World;
+
     public CheckpointControllerComp LastCheckpoint { get; set; }
 
     public LevelInfo LevelInfo => _level.LevelInfo;
+
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
 
-    public Room(int roomId, Level level, TimerThread timerThread, IServiceProvider services, ServerRConfig config) :
+    public Room(int roomId, Level level, WorldHandler world, 
+            IServiceProvider services, TimerThread timerThread, ServerRConfig config) :
         base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
         _roomLock = new object();
@@ -85,9 +89,10 @@ public class Room : Timer
         _roomId = roomId;
         _config = config;
         _timerThread = timerThread;
-        _itemConfig = services.GetRequiredService<ItemRConfig>();
         _services = services;
+        _itemConfig = services.GetRequiredService<ItemRConfig>();
 
+        World = world;
         ColliderCatalog = services.GetRequiredService<InternalColliders>();
         ItemCatalog = services.GetRequiredService<ItemCatalog>();
         InternalEnemyData = services.GetRequiredService<InternalEnemyData>();

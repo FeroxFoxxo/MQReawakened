@@ -1,6 +1,6 @@
 ﻿namespace Server.Reawakened.Rooms.Models.Entities;
 
-public abstract class Component<T> : BaseComponent where T : DataComponentAccessor
+public abstract class Component<T> : BaseComponent
 {
     public T ComponentData;
 

@@ -7,6 +7,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using WorldGraphDefines;
 
@@ -17,6 +18,9 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 {
     private readonly Dictionary<int, Level> _levels = [];
     private readonly object Lock = new();
+
+    public Dictionary<string, Type> EntityComponents { get; private set; } = [];
+    public Dictionary<string, Type> ProcessableComponents { get; private set; } = [];
 
     public void Initialize() => sink.WorldLoad += LoadRooms;
 
@@ -30,6 +34,47 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             room.Value.DumpPlayersToLobby(this);
 
         _levels.Clear();
+
+        GetClassComponents();
+    }
+
+    private void GetClassComponents()
+    {
+        EntityComponents = typeof(BaseComponent).Assembly.GetServices<BaseComponent>()
+            .Where(t => t.BaseType != null)
+            .Where(t => t.BaseType.GenericTypeArguments.Length > 0)
+            .Select(t => new Tuple<string, Type>(t.BaseType.GenericTypeArguments.FirstOrDefault(x => !string.IsNullOrEmpty(x.Name))?.Name, t))
+            .Where(t => !string.IsNullOrEmpty(t.Item1))
+            .ToDictionary(t => t.Item1, t => t.Item2);
+
+        ProcessableComponents = typeof(DataComponentAccessor).Assembly.GetServices<DataComponentAccessor>()
+            .ToDictionary(x => x.Name, x => x);
+
+        var internalProcessableComponents = typeof(DataComponentAccessorMQR).Assembly.GetServices<DataComponentAccessorMQR>()
+            .ToDictionary(x => x.Name, x => x);
+
+        foreach (var internalProcessable in internalProcessableComponents)
+        {
+            var dataComp = Activator.CreateInstance(internalProcessable.Value) as DataComponentAccessorMQR;
+            
+            if (!ProcessableComponents.ContainsKey(dataComp.OverrideName))
+            {
+                logger.LogError("Unknown class to override for: {Class}!", dataComp.OverrideName);
+                continue;
+            }
+
+            if (!EntityComponents.TryGetValue(internalProcessable.Key, out var entityComp))
+            {
+                logger.LogError("Unknown entity class for: {Class}!", internalProcessable.Key);
+                continue;
+            }
+
+            ProcessableComponents.Remove(dataComp.OverrideName);
+            ProcessableComponents.Add(dataComp.OverrideName, internalProcessable.Value);
+
+            EntityComponents.Remove(internalProcessable.Key);
+            EntityComponents.Add(dataComp.OverrideName, entityComp);
+        }
     }
 
     public LevelInfo GetLevelInfo(int levelId)
@@ -104,7 +149,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
             var roomId = level.Rooms.Keys.Count > 0 ? level.Rooms.Keys.Max() + 1 : 1;
 
-            room = new Room(roomId, level, timerThread, services, config);
+            room = new Room(roomId, level, this, services, timerThread, config);
 
             level.Rooms.Add(roomId, room);
         }
