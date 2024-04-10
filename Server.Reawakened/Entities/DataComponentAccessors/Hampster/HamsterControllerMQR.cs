@@ -1,7 +1,7 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.DataComponentAccessors.Hampster;
-public class HampsterControllerMQR : DataComponentAccessorMQR
+public class HamsterControllerMQR : DataComponentAccessorMQR
 {
     public override string OverrideName => "HamsterController";
 

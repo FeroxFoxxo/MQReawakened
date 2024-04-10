@@ -2,7 +2,7 @@
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.HampsterController;
-public class HampsterControllerComp : Component<HampsterControllerMQR>
+public class HamsterControllerComp : Component<HamsterControllerMQR>
 {
     /* 
      * -- AI STATES --
