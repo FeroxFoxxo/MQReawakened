@@ -48,14 +48,14 @@ public class SpiderBossControllerComp : AiStateMachineComponent<SpiderBossContro
 
     public void RecievedTrigger(bool triggered)
     {
-        if (Room == null || Room.IsObjectKilled(Id))
+        if (Room == null)
             return;
 
         if (triggered)
         {
             var delay = Teaser ?
-                    Room.GetEntityFromId<AIStateSpiderTeaserEntranceComp>(Id)?.DelayBeforeEntranceDuration :
-                    Room.GetEntityFromId<AIStateSpiderEntranceComp>(Id)?.DelayBeforeEntranceDuration;
+                Room.GetEntityFromId<AIStateSpiderTeaserEntranceComp>(Id)?.DelayBeforeEntranceDuration :
+                Room.GetEntityFromId<AIStateSpiderEntranceComp>(Id)?.DelayBeforeEntranceDuration;
 
             if (delay.HasValue)
                 TimerThread.DelayCall(RunEntrance, null, TimeSpan.FromSeconds(delay.Value), TimeSpan.Zero, 1);
@@ -64,21 +64,17 @@ public class SpiderBossControllerComp : AiStateMachineComponent<SpiderBossContro
 
     public void RunEntrance(object _)
     {
-        if (Room == null || Room.IsObjectKilled(Id))
+        if (Room == null)
             return;
 
         var delay = Teaser ?
             Room.GetEntityFromId<AIStateSpiderTeaserEntranceComp>(Id)?.IntroDuration :
             Room.GetEntityFromId<AIStateSpiderEntranceComp>(Id)?.IntroDuration;
 
-        var componentName = Teaser ?
-            "AIStateSpiderTeaserEntrance" :
-            "AIStateSpiderEntrance";
-
         if (delay.HasValue)
         {
             GoToNextState(new GameObjectComponents() {
-                {componentName, new ComponentSettings() {"ST", "0"}}
+                {Teaser ? "AIStateSpiderTeaserEntrance" : "AIStateSpiderEntrance", new ComponentSettings() {"ST", "0"}}
             });
 
             TimerThread.DelayCall(RunExitEntrance, null, TimeSpan.FromSeconds(delay.Value), TimeSpan.Zero, 1);
@@ -87,7 +83,7 @@ public class SpiderBossControllerComp : AiStateMachineComponent<SpiderBossContro
 
     private void RunExitEntrance(object _)
     {
-        if (Room == null || Room.IsObjectKilled(Id))
+        if (Room == null)
             return;
 
         var drop = Room.GetEntityFromId<AIStateSpiderDropComp>(Id);
@@ -105,7 +101,7 @@ public class SpiderBossControllerComp : AiStateMachineComponent<SpiderBossContro
 
     public void Destroy(Player player, Room room, string id)
     {
-        if (Room == null || Room.IsObjectKilled(Id))
+        if (Room == null)
             return;
 
         var delay = 0f;
@@ -121,7 +117,6 @@ public class SpiderBossControllerComp : AiStateMachineComponent<SpiderBossContro
 
             delay = retreat.TalkDuration + retreat.DieDuration + retreat.TransTime;
             doorId = retreat.DoorToOpenID;
-            state = "AIStateSpiderTeaserRetreat";
         }
         else
         {
@@ -132,12 +127,10 @@ public class SpiderBossControllerComp : AiStateMachineComponent<SpiderBossContro
 
             delay = retreat.TalkDuration + retreat.DieDuration + retreat.TransTime;
             doorId = retreat.DoorToOpenID;
-            state = "AIStateSpiderRetreat";
         }
 
-
         GoToNextState(new GameObjectComponents() {
-            {state, new ComponentSettings() {"ST", "0"}}
+            {Teaser ? "AIStateSpiderTeaserRetreat" : "AIStateSpiderRetreat", new ComponentSettings() {"ST", "0"}}
         });
 
         if (doorId > 0)
@@ -146,7 +139,7 @@ public class SpiderBossControllerComp : AiStateMachineComponent<SpiderBossContro
 
     private void OpenDoor(object door)
     {
-        if (Room == null || Room.IsObjectKilled(Id))
+        if (Room == null)
             return;
 
         var doorId = (int)door;
