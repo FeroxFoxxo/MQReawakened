@@ -1,10 +1,21 @@
-﻿namespace Server.Reawakened.Players.Helpers;
+﻿using System.Text;
+
+namespace Server.Reawakened.Players.Helpers;
 
 public class SeparatedStringBuilder(char separator)
 {
-    private readonly List<string> _text = [];
+    private readonly StringBuilder _stringBuilder = new ();
+    private bool _first = true;
 
-    public void Append(object text) => _text.Add(text.ToString());
+    public void Append(object text)
+    {
+        if (!_first)
+            _stringBuilder.Append(separator);
+        else
+            _first = false;
 
-    public override string ToString() => string.Join(separator, _text);
+        _stringBuilder.Append(text.ToString());
+    }
+
+    public override string ToString() => _stringBuilder.ToString();
 }
