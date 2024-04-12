@@ -2,15 +2,20 @@
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
-public abstract class BaseAIStateMachine<T> : Component<T>
+public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
 {
     public IAIState[] CurrentStates = [];
     public List<IAIState> NextStates = [];
 
-    public void AddNextState<AiState>() where AiState : class, IAIState =>
-        NextStates.Add(Room.GetEntityFromId<AiState>(Id));
+    public void AddNextState<AiState>() where AiState : class, IAIState
+    {
+        var state = Room.GetEntityFromId<AiState>(Id) ?? throw new NullReferenceException();
+        state.AIStateMachine = this;
+        NextStates.Add(state);
+    }
 
     public void GoToNextState()
     {
@@ -22,17 +27,27 @@ public abstract class BaseAIStateMachine<T> : Component<T>
 
         var syncEvent2 = new AiStateSyncEvent()
         {
-            InStates = PreviousState,
-            GoToStates = NewState
+            InStates = GetGameComponents(CurrentStates),
+            GoToStates = GetGameComponents(NextStates)
         };
 
-        CurrentStates = NextStates.ToArray();
+        CurrentStates = [.. NextStates];
         NextStates.Clear();
 
         foreach (var state in CurrentStates)
             state.StartState();
 
         Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, Room));
+    }
+
+    private static GameObjectComponents GetGameComponents(IEnumerable<IAIState> states)
+    {
+        var components = new GameObjectComponents();
+
+        foreach (var state in states)
+            components.Add(state.StateName, state.GetFullSettings());
+
+        return components;
     }
 
     public override void Update()

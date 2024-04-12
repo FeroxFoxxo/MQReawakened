@@ -1,10 +1,10 @@
 ﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+using Server.Reawakened.Entities.Components.Characters.Controllers.GlobalInteraction.States;
 using Server.Reawakened.Entities.Components.GameObjects.Interactables;
 using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
-using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.GlobalInteraction;
 
@@ -47,11 +47,8 @@ public class GlobalInteractionControllerComp : BaseAIStateMachine<GlobalInteract
             )
         );
 
-        GoToNextState(
-            new GameObjectComponents() {
-                {"AIStateGlobalInteractionActive", new ComponentSettings() {"ST", "0"}}
-            }
-        );
+        AddNextState<AIStateGlobalInteractionActiveComp>();
+        GoToNextState();
     }
 
     public override void Update()

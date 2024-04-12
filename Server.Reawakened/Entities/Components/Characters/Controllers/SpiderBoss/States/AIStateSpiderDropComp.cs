@@ -11,7 +11,10 @@ public class AIStateSpiderDropComp : BaseAIState<AIStateSpiderDrop>
     public float FloorY => ComponentData.FloorY;
     public string[] SpawnerIds => ComponentData.SpawnerIds;
     public int[] NumberOfThrowPerPhase => ComponentData.NumberOfThrowPerPhase;
-    
-    // Provide Drop Position
-    public override ExtLevelEditor.ComponentSettings GetSettings() => throw new NotImplementedException();
+
+    public override void StartState() =>
+        Position.SetPosition(Position.X, FloorY, Position.Z);
+
+    public override ExtLevelEditor.ComponentSettings GetSettings() =>
+        [Position.X.ToString(), FloorY.ToString(), Position.Z.ToString()];
 }

@@ -6,7 +6,6 @@ using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
-using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss;
 
@@ -16,7 +15,7 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
      * -- AI STATES --
      * AIStateSpiderBase
      * AIStateSpiderDeactivated
-     * AIStateSpiderDrop
+     * [DONE] AIStateSpiderDrop
      * AIStateSpiderIdle
      * AIStateSpiderMove
      * AIStateSpiderPatrol
@@ -25,18 +24,18 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
      * AIStateSpiderPhase3
      * AIStateSpiderPhaseTeaser
      * AIStateSpiderPhaseTrans
-     * AIStateSpiderRetreat
+     * [DONE] AIStateSpiderRetreat
      * AIStateSpiderVenom
      * AIStateSpiderVineThrow
      * AIStateSpiderWebs
      * 
      * -- BOSS ONLY --
-     * AIStateSpiderEntrance
+     * [DONE] AIStateSpiderEntrance
      * AIStateSpiderSwichSide
      * 
      * -- TEASER ONLY --
-     * AIStateSpiderTeaserEntrance
-     * AIStateSpiderTeaserRetreat
+     * [DONE] AIStateSpiderTeaserEntrance
+     * [DONE] AIStateSpiderTeaserRetreat
     */
 
     public bool Teaser => ComponentData.Teaser;
@@ -66,36 +65,12 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
         if (Room == null)
             return;
 
-        var delay = Teaser ?
-            Room.GetEntityFromId<AIStateSpiderTeaserEntranceComp>(Id)?.IntroDuration :
-            Room.GetEntityFromId<AIStateSpiderEntranceComp>(Id)?.IntroDuration;
+        if (Teaser)
+            AddNextState<AIStateSpiderTeaserEntranceComp>();
+        else
+            AddNextState<AIStateSpiderEntranceComp>();
 
-        if (delay.HasValue)
-        {
-            GoToNextState(new GameObjectComponents() {
-                {Teaser ? "AIStateSpiderTeaserEntrance" : "AIStateSpiderEntrance", new ComponentSettings() {"ST", "0"}}
-            });
-
-            TimerThread.DelayCall(RunExitEntrance, null, TimeSpan.FromSeconds(delay.Value), TimeSpan.Zero, 1);
-        }
-    }
-
-    private void RunExitEntrance(object _)
-    {
-        if (Room == null)
-            return;
-
-        var drop = Room.GetEntityFromId<AIStateSpiderDropComp>(Id);
-
-        if (drop == null)
-            return;
-
-        Position.SetPosition(Position.X, drop.FloorY, Position.Z);
-
-        GoToNextState(new GameObjectComponents() {
-            {"AIStateSpiderDrop", new ComponentSettings() {Position.X.ToString(), Position.Y.ToString(), Position.Z.ToString()}},
-            {"AIStateSpiderIdle", new ComponentSettings() {"ST", "0"}}
-        });
+        GoToNextState();
     }
 
     public void Destroy(Player player, Room room, string id)
@@ -103,36 +78,11 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
         if (Room == null)
             return;
 
-        var delay = 0f;
-        var doorId = 0;
-        var state = string.Empty;
-
         if (Teaser)
-        {
-            var retreat = room.GetEntityFromId<AIStateSpiderTeaserRetreatComp>(Id);
-
-            if (retreat == null)
-                return;
-
-            delay = retreat.TalkDuration + retreat.DieDuration + retreat.TransTime;
-            doorId = retreat.DoorToOpenID;
-        }
+            AddNextState<AIStateSpiderTeaserRetreatComp>();
         else
-        {
-            var retreat = Room.GetEntityFromId<AIStateSpiderRetreatComp>(Id);
+            AddNextState<AIStateSpiderRetreatComp>();
 
-            if (retreat == null)
-                return;
-
-            delay = retreat.TalkDuration + retreat.DieDuration + retreat.TransTime;
-            doorId = retreat.DoorToOpenID;
-        }
-
-        GoToNextState(new GameObjectComponents() {
-            {Teaser ? "AIStateSpiderTeaserRetreat" : "AIStateSpiderRetreat", new ComponentSettings() {"ST", "0"}}
-        });
-
-        if (doorId > 0)
-            TimerThread.DelayCall(OpenDoor, doorId, TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
+        GoToNextState();
     }
 }
