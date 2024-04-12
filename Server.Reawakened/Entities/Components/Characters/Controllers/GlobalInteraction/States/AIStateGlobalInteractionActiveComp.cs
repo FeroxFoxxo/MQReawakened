@@ -3,4 +3,5 @@
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.GlobalInteraction.States;
 public class AIStateGlobalInteractionActiveComp : BaseAIState<AIStateGlobalInteractionActive>
 {
+    public override string StateName => "AIStateGlobalInteractionActive";
 }

@@ -1,7 +1,11 @@
-﻿namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
 
 public class AIStateSpiderTeaserEntranceComp : BaseAIState<AIStateSpiderTeaserEntrance>
 {
+    public override string StateName => "AIStateSpiderTeaserEntrance";
+
     public float DelayBeforeEntranceDuration => ComponentData.DelayBeforeEntranceDuration;
     public float EntranceDuration => ComponentData.EntranceDuration;
     public float IntroDuration => ComponentData.IntroDuration;

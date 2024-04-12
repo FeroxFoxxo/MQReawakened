@@ -3,7 +3,6 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 using Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
-using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
@@ -17,8 +16,8 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
      * -- AI STATES --
      * AIStateSpiderBase
      * AIStateSpiderDeactivated
-     * AIStateSpiderDrop [DONE]
-     * AIStateSpiderIdle [DONE]
+     * AIStateSpiderDrop
+     * AIStateSpiderIdle
      * AIStateSpiderMove
      * AIStateSpiderPatrol
      * AIStateSpiderPhase1
@@ -26,18 +25,18 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
      * AIStateSpiderPhase3
      * AIStateSpiderPhaseTeaser
      * AIStateSpiderPhaseTrans
-     * AIStateSpiderRetreat [DONE]
+     * AIStateSpiderRetreat
      * AIStateSpiderVenom
      * AIStateSpiderVineThrow
      * AIStateSpiderWebs
      * 
      * -- BOSS ONLY --
-     * AIStateSpiderEntrance [DONE]
+     * AIStateSpiderEntrance
      * AIStateSpiderSwichSide
      * 
      * -- TEASER ONLY --
-     * AIStateSpiderTeaserEntrance [DONE]
-     * AIStateSpiderTeaserRetreat [DONE]
+     * AIStateSpiderTeaserEntrance
+     * AIStateSpiderTeaserRetreat
     */
 
     public bool Teaser => ComponentData.Teaser;
@@ -135,16 +134,5 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
 
         if (doorId > 0)
             TimerThread.DelayCall(OpenDoor, doorId, TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
-    }
-
-    private void OpenDoor(object door)
-    {
-        if (Room == null)
-            return;
-
-        var doorId = (int)door;
-
-        foreach (var trigReceiver in Room.GetEntitiesFromId<TriggerReceiverComp>(doorId.ToString()))
-            trigReceiver.Trigger(true);
     }
 }

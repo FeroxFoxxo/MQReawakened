@@ -4,6 +4,8 @@ namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBos
 
 public class AIStateSpiderEntranceComp : BaseAIState<AIStateSpiderEntrance>
 {
+    public override string StateName => "AIStateSpiderEntrance";
+
     public float DelayBeforeEntranceDuration => ComponentData.DelayBeforeEntranceDuration;
     public float EntranceDuration => ComponentData.EntranceDuration;
     public float IntroDuration => ComponentData.IntroDuration;
