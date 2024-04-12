@@ -40,6 +40,7 @@ public class InternalRConfig : IRConfig
     public TimeSpan ExpireAge { get; }
     public MergeType Merge { get; }
 
+    public TimeSpan SaveRateLimit { get; }
     public string ServerShutdownMessage { get; }
 
     public double DisconnectionTimeout { get; }
@@ -54,7 +55,7 @@ public class InternalRConfig : IRConfig
         LogDirectory = InternalDirectory.GetDirectory("Logs");
         CrashDirectory = InternalDirectory.GetDirectory("Logs/Crashes");
 
-        MaxAccountsPerIp = 1;
+        MaxAccountsPerIp = 5;
         ForbiddenChars =
         [
             '<', '>', ':', '"', '/', '\\', '|', '?', '*', ' ', '%'
@@ -89,6 +90,7 @@ public class InternalRConfig : IRConfig
 
         DisconnectionTimeout = 100000;
 
+        SaveRateLimit = TimeSpan.FromMinutes(5);
         ServerShutdownMessage = "Server is shutting down!";
     }
 }

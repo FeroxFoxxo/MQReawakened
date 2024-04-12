@@ -11,20 +11,20 @@ public class PlayerCount(ServerConsole serverConsole,
 {
     public void Initialize() => sink.WorldLoad += Load;
 
-    public void Load() => 
+    public void Load() =>
         serverConsole.AddCommand(
-            "playerCount", 
-            "Sends the current online player count in console.", 
-            NetworkType.Server, 
+            "playerCount",
+            "Sends the current online player count in console.",
+            NetworkType.Server,
             SendPlayerCount);
 
     private void SendPlayerCount(string[] command)
     {
         if (command.Length == 1)
-            logger.LogInformation($"Currently online players: {playerContainer.GetAllPlayers().Count}");
+            logger.LogInformation("Currently online players: {Count}", playerContainer.GetAllPlayers().Count);
 
         if (command.Length == 2)
             foreach (var item in playerContainer.GetAllPlayers())
-                logger.LogInformation($"{item.CharacterName} - {item.Room.LevelInfo.InGameName} / {item.Room.LevelInfo.LevelId}");
+                logger.LogInformation("{Name} - {RoomName} / {LevelId}", item.CharacterName, item.Room.LevelInfo.InGameName, item.Room.LevelInfo.LevelId);
     }
 }

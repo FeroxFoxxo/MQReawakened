@@ -9,8 +9,9 @@ using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
-using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Components.GameObjects.MonkeyGadgets;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -19,17 +20,16 @@ using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
 using System.Text.RegularExpressions;
 
 namespace Server.Reawakened.Chat.Services;
 
 public partial class ChatCommands(
-    ItemCatalog itemCatalog, ServerRConfig config, ILogger<ServerConsole> logger, FileLogger fileLogger,
+    ItemCatalog itemCatalog, ServerRConfig config, ItemRConfig itemConfig, ILogger<ServerConsole> logger, FileLogger fileLogger,
     WorldHandler worldHandler, InternalAchievement internalAchievement, InternalQuestItem questItem,
-    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog, 
+    WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog,
     CharacterHandler characterHandler, AccountHandler accountHandler) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
@@ -43,28 +43,28 @@ public partial class ChatCommands(
     {
         logger.LogDebug("Setting up chat commands");
 
-        AddCommand(new ChatCommand("setAccess", "[owner only]", SetAccessLevel));
-        AddCommand(new ChatCommand("save", "[owner only]", SaveLevel));
+        AddCommand(new ChatCommand("setAccess", "owner only", SetAccessLevel));
+        AddCommand(new ChatCommand("save", "owner only", SaveLevel));
+        AddCommand(new ChatCommand("getAllItems", "[categoryValue] - owner only", GetAllItems));
 
-        AddCommand(new ChatCommand("godMode", "", GodMode));
-        AddCommand(new ChatCommand("maxHP", "", MaxHealth));
+        AddCommand(new ChatCommand("godMode", string.Empty, GodMode));
+        AddCommand(new ChatCommand("maxHP", string.Empty, MaxHealth));
 
         AddCommand(new ChatCommand("giveItem", "[itemId] [amount]", AddItem));
         AddCommand(new ChatCommand("hotbar", "[hotbarNum] [itemId]", Hotbar));
-        AddCommand(new ChatCommand("getAllItems", "[categoryValue]", GetAllItems));
         AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
         AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
 
         AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
-        AddCommand(new ChatCommand("discoverTribes", "", DiscoverTribes));
+        AddCommand(new ChatCommand("discoverTribes", string.Empty, DiscoverTribes));
 
         AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
         AddCommand(new ChatCommand("levelUp", "[newLevel]", LevelUp));
-        AddCommand(new ChatCommand("tp", "[X] [Y] [backPlane]", Teleport));
+        AddCommand(new ChatCommand("tp", "[X] [Y]", Teleport));
         AddCommand(new ChatCommand("warp", "[levelId]", ChangeLevel));
-        AddCommand(new ChatCommand("openDoors", "", OpenDoors));
+        AddCommand(new ChatCommand("openDoors", string.Empty, OpenDoors));
 
-        AddCommand(new ChatCommand("closestEntity", "", ClosestEntity));
+        AddCommand(new ChatCommand("closestEntity", string.Empty, ClosestEntity));
 
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
         AddCommand(new ChatCommand("playerCount", "[detailed]", PlayerCount));
@@ -73,8 +73,8 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("addQuest", "[id]", AddQuest));
         AddCommand(new ChatCommand("findQuest", "[name]", GetQuestByName));
 
-        AddCommand(new ChatCommand("updateNpcs", "", UpdateLevelNpcs));
-        AddCommand(new ChatCommand("playerPos", "", GetPlayerPos));
+        AddCommand(new ChatCommand("updateNpcs", string.Empty, UpdateLevelNpcs));
+        AddCommand(new ChatCommand("playerPos", string.Empty, GetPlayerPos));
 
         AddCommand(new ChatCommand("resetArmor", "[id]", ResetArmor));
 
@@ -121,15 +121,13 @@ public partial class ChatCommands(
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
 
-    public bool GetPlayerPos(Player player, string[] args)
+    public static bool GetPlayerPos(Player player, string[] args)
     {
-        Log($"X: {player.TempData.Position.X}" +
-            $" | Y: {player.TempData.Position.Y}" +
-            $" | Z: {player.TempData.Position.Z}", player);
+        Log(player.TempData.Position.ToString(), player);
 
         return true;
     }
-    public bool MaxHealth(Player player, string[] args)
+    public static bool MaxHealth(Player player, string[] args)
     {
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId, player.Room.Time,
             player.Character.Data.CurrentLife = player.Character.Data.MaxLife, player.Character.Data.MaxLife, player.GameObjectId));
@@ -169,39 +167,34 @@ public partial class ChatCommands(
             ItemFilterCategory.Consumables or
             ItemFilterCategory.NestedSuperPack)
         {
-            //Item must be in inventory to use in hotbar
-            if (!player.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+            var itemModel = new ItemModel()
             {
-                var itemModel = new ItemModel()
-                {
-                    ItemId = item.ItemId,
-                    Count = 1,
-                    BindingCount = 1,
-                    DelayUseExpiry = DateTime.Now
-                };
-
-                player.Character.Data.Inventory.Items.Add(item.ItemId, itemModel);
-            }
-
-            player.Character.Data.Hotbar.HotbarButtons[hotbarId - 1] = new Players.Models.Character.ItemModel()
-            {
-                ItemId = itemId,
-                Count = 1
+                ItemId = item.ItemId,
+                Count = 1,
+                BindingCount = 1,
+                DelayUseExpiry = DateTime.Now
             };
+
+            player.Character.Data.Inventory.Items.TryAdd(item.ItemId, itemModel);
+
+            player.SetHotbarSlot(hotbarId - 1, itemModel, itemCatalog);
+
             player.SendXt("hs", player.Character.Data.Hotbar);
 
             return true;
         }
-
         else
         {
-            Log("Please enter the item Id of a weapon, consumable, or pack.", player);
+            Log("Please enter the item id of a weapon, consumable, or pack.", player);
             return false;
         }
     }
 
     public bool GetAllItems(Player player, string[] args)
     {
+        if (player.NetState.Get<Account>().AccessLevel < AccessLevel.Owner)
+            return false;
+
         if (args.Length > 1)
         {
             if (!int.TryParse(args[1], out var categoryValue))
@@ -212,12 +205,12 @@ public partial class ChatCommands(
                 Log($"Please enter a category value between 0-12!", player);
                 return false;
             }
+
             var chosenCategory = itemCatalog.GetItemsDescription((ItemFilterCategory)categoryValue);
 
             foreach (var item in chosenCategory)
                 player.AddItem(item, 1, itemCatalog);
         }
-
         else
         {
             var categoryList = new List<List<ItemDescription>>();
@@ -239,11 +232,11 @@ public partial class ChatCommands(
         AddKit(player, 1);
         player.AddSlots(true);
 
-        player.AddBananas(config.CashKitAmount);
+        player.AddBananas(config.CashKitAmount, internalAchievement, logger);
         player.AddNCash(config.CashKitAmount);
         player.SendCashUpdate();
 
-        player.LevelUp(config.MaxLevel, logger);
+        player.LevelUp(config.MaxLevel, config, logger);
         player.AddPoints();
         player.DiscoverAllTribes();
 
@@ -252,7 +245,7 @@ public partial class ChatCommands(
         var health = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, player.Character.Data.MaxLife, player.Character.Data.MaxLife, "now");
         player.Room.SendSyncEvent(health);
 
-        var heal = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, (int)ItemEffectType.Healing, config.HealAmount, 1, true, player.GameObjectId.ToString(), true);
+        var heal = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, (int)ItemEffectType.Healing, itemConfig.HealAmount, 1, true, player.GameObjectId.ToString(), true);
         player.Room.SendSyncEvent(heal);
 
         return true;
@@ -260,11 +253,11 @@ public partial class ChatCommands(
 
     private void AddKit(Player player, int amount)
     {
-        var items = config.SingleItemKit
+        var items = itemConfig.SingleItemKit
             .Select(itemCatalog.GetItemFromId)
             .ToList();
 
-        foreach (var itemId in config.StackedItemKit)
+        foreach (var itemId in itemConfig.StackedItemKit)
         {
             var stackedItem = itemCatalog.GetItemFromId(itemId);
 
@@ -274,7 +267,7 @@ public partial class ChatCommands(
                 continue;
             }
 
-            for (var i = 0; i < config.AmountToStack; i++)
+            for (var i = 0; i < itemConfig.AmountToStack; i++)
                 items.Add(stackedItem);
         }
 
@@ -285,20 +278,19 @@ public partial class ChatCommands(
 
     private bool Teleport(Player player, string[] args)
     {
-        if (args.Length < 3 || !int.TryParse(args[1], out var xPos) || !int.TryParse(args[2], out var yPos))
+        if (args.Length < 3 || !int.TryParse(args[1], out var x) || !int.TryParse(args[2], out var y))
         {
             Log("Please enter valid coordinates.", player);
             return false;
         }
 
-        var currentZPosition = player.TempData.Position.Z == 0 ? 0 : 1;
+        var zPosition = player.TempData.Position.z;
 
-        var zPos = args.Length > 3 ? int.Parse(args[3]) : currentZPosition;
+        if (args.Length > 3)
+            if (int.TryParse(args[3], out var givenZPosition))
+                zPosition = givenZPosition;
 
-        if (zPos is < 0 or > 1)
-            zPos = currentZPosition;
-
-        player.TeleportPlayer(xPos, yPos, Convert.ToInt32(zPos));
+        player.TeleportPlayer(player.TempData.Position.x + x, player.TempData.Position.y + y, zPosition == 0);
 
         return true;
     }
@@ -351,11 +343,11 @@ public partial class ChatCommands(
     {
         var character = player.Character;
 
-        player.AddBananas(config.CashKitAmount);
+        player.AddBananas(config.CashKitAmount, internalAchievement, logger);
         player.AddNCash(config.CashKitAmount);
 
         Log($"{character.Data.CharacterName} received {config.CashKitAmount} " +
-            $"banana{(config.CashKitAmount > 1 ? "s" : "")} & monkey cash!", player);
+            $"banana{(config.CashKitAmount > 1 ? "s" : string.Empty)} & monkey cash!", player);
 
         return true;
     }
@@ -371,7 +363,7 @@ public partial class ChatCommands(
         }
 
         var names = args.Select(name =>
-            MyRegex().Replace(name.ToLower(), "")
+            MyRegex().Replace(name.ToLower(), string.Empty)
         ).ToList();
 
         var firstName = names[1];
@@ -389,7 +381,7 @@ public partial class ChatCommands(
 
         if (characterHandler.GetCharacterFromName(newName) != null)
         {
-            Log("Please specify a name that is not in use by another player.", player);
+            Log("Please specify a name that is not in use by another _player.", player);
             return false;
         }
 
@@ -423,15 +415,11 @@ public partial class ChatCommands(
             return false;
         }
 
-        character.SetLevel(levelId, logger);
-
-        player.CheckAchievement(AchConditionType.ExploreTrail, string.Empty, internalAchievement, logger);
-        player.CheckAchievement(AchConditionType.ExploreTrail, player.Room.LevelInfo.Name, internalAchievement, logger);
-
-        var tribe = levelInfo.Tribe;
-
-        player.DiscoverTribe(tribe);
-        player.SendLevelChange(worldHandler);
+        if (!worldHandler.TryChangePlayerRoom(player, levelId))
+        {
+            Log($"Please specify a valid level.", player);
+            return false;
+        }
 
         Log(
             $"Successfully set character {character.Id}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
@@ -453,15 +441,11 @@ public partial class ChatCommands(
             level = config.MaxLevel;
         }
 
-        var newLevel = level;
+        player.LevelUp(level, config, logger);
 
-        player.LevelUp(newLevel, logger);
-
-        //If players wanted to level down, it would level them back up to the highest level they've ever hit upon recieving xp.
-        //Now their level will stay at the level they set it to.
         character.Data.Reputation = character.Data.ReputationForCurrentLevel;
 
-        Log($"{character.Data.CharacterName} has leveled up to level {newLevel}!", player);
+        Log($"{character.Data.CharacterName} has leveled up to level {level}!", player);
 
         return true;
     }
@@ -548,8 +532,8 @@ public partial class ChatCommands(
 
         var closestGameObjects = plane.Select(gameObject =>
         {
-            var x = gameObject.ObjectInfo.Position.X - player.TempData.Position.X;
-            var y = gameObject.ObjectInfo.Position.Y - player.TempData.Position.Y;
+            var x = gameObject.ObjectInfo.Position.X - player.TempData.Position.x;
+            var y = gameObject.ObjectInfo.Position.Y - player.TempData.Position.y;
 
             var distance = Math.Round(Math.Sqrt(Math.Pow(Math.Abs(x), 2) + Math.Pow(Math.Abs(y), 2)));
 
@@ -558,7 +542,7 @@ public partial class ChatCommands(
 
         if (closestGameObjects.Count == 0)
         {
-            Log("No game objects found close to player!", player);
+            Log("No game objects found close to _player!", player);
             return false;
         }
 

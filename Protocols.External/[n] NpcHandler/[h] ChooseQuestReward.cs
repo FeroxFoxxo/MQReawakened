@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -20,6 +21,7 @@ public class ChooseQuestReward : ExternalProtocol
     public FileLogger FileLogger { get; set; }
     public InternalQuestItem QuestItems { get; set; }
     public ServerRConfig Config { get; set; }
+    public InternalAchievement InternalAchievement { get; set; }
 
     public override void Run(string[] message)
     {
@@ -52,7 +54,10 @@ public class ChooseQuestReward : ExternalProtocol
 
         var quest = QuestCatalog.QuestCatalogs[questId];
 
-        Player.AddBananas(quest.BananaReward);
+        Player.CheckAchievement(AchConditionType.CompleteQuest, [quest.Name], InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
+        Player.CheckAchievement(AchConditionType.CompleteQuestInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger); // Quest by Level/Trail if any exist
+
+        Player.AddBananas(quest.BananaReward, InternalAchievement, Logger);
         Player.AddReputation(quest.ReputationReward, Config);
 
         foreach (var item in quest.RewardItems)

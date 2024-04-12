@@ -2,17 +2,19 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.BundleHost.Events;
+using Server.Reawakened.Icons.Services;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Thrift.Abstractions;
+using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using SmartFoxClientAPI;
+using System.Runtime.CompilerServices;
 
 namespace Server.Reawakened;
 
 public class Reawakened(ILogger<Reawakened> logger) : Module(logger)
 {
-    public override string[] Contributors { get; } = ["Ferox"];
-
     public override void AddServices(IServiceCollection services, Module[] modules)
     {
         Logger.LogDebug("Loading thrift handlers");
@@ -30,6 +32,19 @@ public class Reawakened(ILogger<Reawakened> logger) : Module(logger)
             .AddSingleton<SmartFoxClient>()
             .AddSingleton<PlayerContainer>()
             .AddSingleton<NameGenSyllables>();
+
+        services.AddSingleton<AssetEventSink>()
+            .AddSingleton<ExtractIcons>();
+
+        Logger.LogDebug("Loading bundles");
+
+        foreach (var xml in modules.GetServices<IBundledXml>())
+        {
+            Logger.LogTrace("   Loaded: {ServiceName}", xml.Name);
+            services.AddSingleton(xml, RuntimeHelpers.GetUninitializedObject(xml));
+        }
+
+        Logger.LogInformation("Loaded bundles");
     }
 
     public override void PostBuild(IServiceProvider services, Module[] modules)

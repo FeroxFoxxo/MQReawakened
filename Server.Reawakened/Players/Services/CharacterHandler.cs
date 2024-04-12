@@ -2,7 +2,7 @@
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 

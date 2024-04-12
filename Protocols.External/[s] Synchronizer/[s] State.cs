@@ -3,19 +3,19 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Entity;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 using System.Text;
+using UnityEngine;
 using WorldGraphDefines;
 
 namespace Protocols.External._s__Synchronizer;
@@ -26,6 +26,7 @@ public class State : ExternalProtocol
 
     public SyncEventManager SyncEventManager { get; set; }
     public ServerRConfig ServerConfig { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public FileLogger FileLogger { get; set; }
     public TimerThread TimerThread { get; set; }
@@ -49,7 +50,9 @@ public class State : ExternalProtocol
 
         var entityId = syncEvent.TargetID;
 
-        if (Player.Room.Players.TryGetValue(entityId, out var newPlayer))
+        var newPlayer = Player.Room.GetPlayerById(entityId);
+
+        if (newPlayer != null)
         {
             switch (syncEvent.Type)
             {
@@ -59,54 +62,58 @@ public class State : ExternalProtocol
 
                     var attack = new ChargeAttack_SyncEvent(syncEvent);
 
-                    Logger.LogDebug("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
+                    Logger.LogTrace("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
                         "at speed ({X}, {Y}) with max pos ({X}, {Y}) for item id: '{Id}' and zone: {Zone}",
                         attack.IsCharging, attack.PosX, attack.PosY, attack.StartDelay,
                         attack.SpeedX, attack.SpeedY, attack.MaxPosX, attack.MaxPosY, attack.ItemId, attack.ZoneId);
 
-                    var chargeAttackCollider = new ChargeAttackEntity(Player,
-                                        new Vector3Model() { X = attack.PosX, Y = attack.PosY, Z = Player.TempData.Position.Z },
-                                        new Vector3Model() { X = attack.MaxPosX, Y = attack.MaxPosY, Z = Player.TempData.Position.Z },
-                                        new Vector2Model() { X = attack.SpeedX, Y = attack.SpeedY },
-                                        15, attack.ItemId, attack.ZoneId,
-                                        WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
-                                        Elemental.Standard, TimerThread);
+                    var chargeAttackProjectile = new ChargeAttackProjectile(
+                        Player.GameObjectId, Player,
+                        new Vector3() { x = attack.PosX, y = attack.PosY, z = Player.TempData.Position.z },
+                        new Vector3() { x = attack.MaxPosX, y = attack.MaxPosY, z = Player.TempData.Position.z },
+                        new Vector2() { x = attack.SpeedX, y = attack.SpeedY },
+                        15, attack.ItemId, attack.ZoneId,
+                        WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
+                        Elemental.Standard, ServerConfig, TimerThread
+                    );
 
-                    Player.Room.Projectiles.TryAdd(Player.GameObjectId, chargeAttackCollider);
+                    Player.Room.AddProjectile(chargeAttackProjectile);
                     break;
                 case SyncEvent.EventType.ChargeAttackStop:
                     Player.TempData.IsSuperStomping = false;
                     Player.TempData.Invincible = false;
 
-                    Player.Room.Projectiles.Remove(Player.GameObjectId);
+                    Player.Room.RemoveProjectile(Player.GameObjectId);
                     break;
                 case SyncEvent.EventType.NotifyCollision:
                     var notifyCollisionEvent = new NotifyCollision_SyncEvent(syncEvent);
                     var collisionTarget = notifyCollisionEvent.CollisionTarget;
 
                     if (newPlayer.Room.ContainsEntity(collisionTarget))
+                    {
                         foreach (var component in Player.Room.GetEntitiesFromId<BaseComponent>(collisionTarget))
                             if (!Player.Room.IsObjectKilled(component.Id))
                                 component.NotifyCollision(notifyCollisionEvent, newPlayer);
-                            else
-                                Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
-                                    collisionTarget, newPlayer.Room.GetUnknownComponentTypes(collisionTarget));
+                    }
+                    else
+                        Logger.LogWarning("Unhandled collision from {TargetId}, no entity for {EntityType}.",
+                            collisionTarget, newPlayer.Room.GetUnknownComponentTypes(collisionTarget));
                     break;
                 case SyncEvent.EventType.PhysicBasic:
                     var physicsBasicEvent = new PhysicBasic_SyncEvent(syncEvent);
 
-                    newPlayer.TempData.Position = new Vector3Model
+                    newPlayer.TempData.Position = new Vector3
                     {
-                        X = physicsBasicEvent.PositionX,
-                        Y = physicsBasicEvent.PositionY,
-                        Z = physicsBasicEvent.PositionZ
+                        x = physicsBasicEvent.PositionX,
+                        y = physicsBasicEvent.PositionY,
+                        z = physicsBasicEvent.PositionZ
                     };
 
-                    newPlayer.TempData.Velocity = new Vector3Model
+                    newPlayer.TempData.Velocity = new Vector3
                     {
-                        X = physicsBasicEvent.VelocityX,
-                        Y = physicsBasicEvent.VelocityY,
-                        Z = physicsBasicEvent.VelocityZ
+                        x = physicsBasicEvent.VelocityX,
+                        y = physicsBasicEvent.VelocityY,
+                        z = physicsBasicEvent.VelocityZ
                     };
 
                     newPlayer.TempData.OnGround = physicsBasicEvent.OnGround;
@@ -119,9 +126,6 @@ public class State : ExternalProtocol
                     break;
                 case SyncEvent.EventType.RequestRespawn:
                     RequestRespawn(entityId, syncEvent.TriggerTime);
-                    break;
-                case SyncEvent.EventType.PhysicStatus:
-                    var physicStatusEvent = new PhysicStatus_SyncEvent(syncEvent);
                     break;
             }
 
@@ -151,12 +155,12 @@ public class State : ExternalProtocol
                 LogEvent(syncEvent, entityId, Player.Room);
     }
 
-    private void UpdatePlayerCollider(Player player)
+    private static void UpdatePlayerCollider(Player player)
     {
         var playerCollider = new PlayerCollider(player);
         playerCollider.IsColliding(false);
-        player.Room.Colliders[player.GameObjectId] = playerCollider;
-    }  
+        player.Room.OverwriteCollider(playerCollider);
+    }
 
     private void RequestRespawn(string entityId, float triggerTime)
     {
@@ -168,7 +172,7 @@ public class State : ExternalProtocol
         Player.SendSyncEventToPlayer(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
             Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
 
-        BaseComponent respawnPosition = Player.Room.LastCheckpoint != null ? Player.Room.LastCheckpoint : Player.Room.DefaultSpawn;
+        var respawnPosition = Player.Room.LastCheckpoint ?? Player.Room.GetDefaultSpawnPoint();
 
         Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                  respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
@@ -196,7 +200,9 @@ public class State : ExternalProtocol
         var uniqueIdentifier = entityId;
         var additionalInfo = string.Empty;
 
-        if (room.Players.TryGetValue(entityId, out var newPlayer))
+        var newPlayer = room.GetPlayerById(entityId);
+
+        if (newPlayer != null)
         {
             uniqueType = "Player";
 

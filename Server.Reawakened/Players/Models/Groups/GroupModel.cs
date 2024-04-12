@@ -1,6 +1,4 @@
-﻿using A2m.Server;
-using Server.Reawakened.Network.Extensions;
-using Server.Reawakened.Players.Helpers;
+﻿using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Groups;
 
@@ -61,16 +59,6 @@ public class GroupModel
             return [.. _groupMembers];
     }
 
-    public void Chat(Player player, CannedChatChannel channelId, string sender, string message)
-    {
-        foreach (
-            var client in
-            from client in player.TempData.Group.GetMembers()
-            select client
-        )
-            client.Chat(channelId, sender, message);
-    }
-
     public override string ToString()
     {
         var sb = new SeparatedStringBuilder('#');
@@ -81,7 +69,7 @@ public class GroupModel
             sb.Append(player.CharacterName);
             sb.Append(player.Room.LevelInfo.LevelId);
             sb.Append(player.Room.LevelInfo.Name);
-            sb.Append(player.Room.GetRoomName());
+            sb.Append(player.Room.ToString());
         }
 
         return sb.ToString();

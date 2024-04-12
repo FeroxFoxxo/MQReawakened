@@ -5,5 +5,4 @@ namespace Protocols.System;
 
 public class SysProtocol(ILogger<SysProtocol> logger) : Module(logger)
 {
-    public override string[] Contributors { get; } = ["Ferox"];
 }

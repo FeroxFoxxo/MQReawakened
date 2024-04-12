@@ -2,17 +2,21 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Components.GameObjects.Breakables;
+using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
+using UnityEngine;
+using Random = System.Random;
 
 namespace Server.Reawakened.Players.Extensions;
 public static class PlayerItemExtensions
 {
-    public static void HandleDrop(this Player player, ServerRConfig config, TimerThread timerThread,
-        Microsoft.Extensions.Logging.ILogger logger, ItemDescription usedItem, Vector3Model position, int direction)
+    public static void HandleDrop(this Player player, ItemRConfig config, TimerThread timerThread,
+        Microsoft.Extensions.Logging.ILogger logger, ItemDescription usedItem, Vector3 position, int direction)
     {
         var isLeft = direction > 0;
         var dropDirection = isLeft ? 1 : -1;
@@ -26,7 +30,7 @@ public static class PlayerItemExtensions
             UsedItem = usedItem,
             Player = player,
             Logger = logger,
-            ServerRConfig = config,
+            ItemRConfig = config,
             TimerThread = timerThread
         };
 
@@ -37,10 +41,10 @@ public static class PlayerItemExtensions
     {
         public int DropDirection { get; set; }
         public ItemDescription UsedItem { get; set; }
-        public Vector3Model Position { get; set; }
+        public Vector3 Position { get; set; }
         public Player Player { get; set; }
         public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
-        public ServerRConfig ServerRConfig { get; set; }
+        public ItemRConfig ItemRConfig { get; set; }
         public TimerThread TimerThread { get; set; }
     }
 
@@ -56,65 +60,59 @@ public static class PlayerItemExtensions
             return;
 
         var dropItem = new LaunchItem_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            player.TempData.Position.X + dropData.DropDirection, player.TempData.Position.Y, player.TempData.Position.Z,
+            player.TempData.Position.x + dropData.DropDirection, player.TempData.Position.y, player.TempData.Position.z,
             0, 0, 3, 0, dropData.UsedItem.PrefabName);
 
         player.Room.SendSyncEvent(dropItem);
 
-        var components = new List<BaseComponent>();
-
-        components.AddRange(player.Room.GetEntitiesFromType<HazardControllerComp>());
-        components.AddRange(player.Room.GetEntitiesFromType<BreakableEventControllerComp>());
-
-        //Needs collider-based rework.
-        foreach (var component in components.Where(comp => Vector3Model.Distance(dropData.Position, comp.Position) <= 5.4f))
+        var bombData = new BombData()
         {
-            var prefabName = component.PrefabName;
-            var objectId = component.Id;
+            Position = player.TempData.CopyPosition(),
+            Radius = 5.4f,
+            Thread = dropData.TimerThread,
+            Damage = dropData.UsedItem.GetDamageAmount(dropData.Logger, dropData.ItemRConfig),
+            DamageType = dropData.UsedItem.Elemental,
+            Player = player
+        };
 
-            if (component is HazardControllerComp or BreakableEventControllerComp)
-            {
-                var bombData = new BombData()
-                {
-                    PrefabName = prefabName,
-                    Component = component,
-                    ObjectId = objectId,
-                    Damage = dropData.UsedItem.GetDamageAmount(dropData.Logger, dropData.ServerRConfig),
-                    DamageType = dropData.UsedItem.Elemental,
-                    Player = player,
-                    Logger = dropData.Logger
-                };
-
-                dropData.TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2850), TimeSpan.Zero, 1);
-            }
-        }
+        dropData.TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2850), TimeSpan.Zero, 1);
     }
 
     private class BombData()
     {
-        public string PrefabName { get; set; }
-        public string ObjectId { get; set; }
-        public BaseComponent Component { get; set; }
+        public Player Player { get; set; }
+        public Vector3 Position { get; set; }
+        public float Radius { get; set; }
         public int Damage { get; set; }
         public Elemental DamageType { get; set; }
-        public Player Player { get; set; }
-        public Microsoft.Extensions.Logging.ILogger Logger { get; set; }
+        public TimerThread Thread { get; set; }
+    }
+
+    public static void ExplodeBomb(this Room room, Player player, Vector3 position, float radius, int damage, Elemental damageType, TimerThread thread)
+    {
+        foreach (var component in room.GetEntitiesFromType<BreakableEventControllerComp>().Where(comp =>
+            Vector3.Distance(position, new Vector3(comp.Position.X, comp.Position.Y, comp.Position.Z)) <= radius
+        ))
+            component.Damage(damage, damageType, player);
+
+        if (player == null)
+            foreach (var nearPlayer in room.GetNearbyPlayers(position, radius))
+                nearPlayer.ApplyCharacterDamage(damage, 1, thread);
+
+        room.Logger.LogInformation("Running bomb at coords: {Position} of radius {Radius}", position, radius);
     }
 
     private static void ExplodeBomb(object data)
     {
-        var bData = (BombData)data;
-
-        bData.Logger.LogInformation("Found close hazard {PrefabName} with Id {ObjectId}", bData.PrefabName, bData.ObjectId);
+        var bData = (BombData) data;
 
         if (bData.Player == null)
             return;
 
-        if (bData.Component is BreakableEventControllerComp breakableObjEntity)
-            breakableObjEntity.Damage(bData.Damage, bData.DamageType, bData.Player);
+        ExplodeBomb(bData.Player.Room, bData.Player, bData.Position, bData.Radius, bData.Damage, bData.DamageType, bData.Thread);
     }
 
-    public static int GetDamageAmount(this ItemDescription usedItem, Microsoft.Extensions.Logging.ILogger logger, ServerRConfig config)
+    public static int GetDamageAmount(this ItemDescription usedItem, Microsoft.Extensions.Logging.ILogger logger, ItemRConfig config)
     {
         var damage = config.DefaultDropDamage;
 
@@ -147,5 +145,33 @@ public static class PlayerItemExtensions
             logger.LogInformation("Item ({usedItemName}) with ({damageType}) has been used!", usedItem.ItemName, effect.Type);
         }
         return damage;
+    }
+
+    public static void VoteForItem(this Player player, int objectId, bool accepted)
+    {
+        player.TempData.VotedForItem.Add(objectId, accepted);
+
+        var playersInRoom = player.Room.GetPlayers();
+
+        foreach (var roomPlayer in playersInRoom)
+            roomPlayer.SendXt(accepted ? "jr" : "jp", player.UserId, objectId);
+
+        if (playersInRoom.All(x => x.TempData.VotedForItem.ContainsKey(objectId)))
+        {
+            var participants = playersInRoom.Where(x => x.TempData.VotedForItem[objectId] == true).ToList();
+            var winningPlayer = participants[new Random().Next(participants.Count)];
+
+            foreach (var roomPlayer in playersInRoom)
+            {
+                var rewardedData = new SeparatedStringBuilder('|');
+
+                rewardedData.Append(objectId);
+                rewardedData.Append(winningPlayer.UserId);
+
+                roomPlayer.SendXt("jl", rewardedData.ToString());
+                roomPlayer.SendUpdatedInventory();
+                roomPlayer.TempData.VotedForItem.Remove(objectId);
+            }
+        }
     }
 }

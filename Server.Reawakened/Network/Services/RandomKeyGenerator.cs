@@ -2,7 +2,7 @@
 using Server.Base.Core.Events;
 using Server.Base.Network;
 using Server.Base.Network.Events;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 
 namespace Server.Reawakened.Network.Services;
 

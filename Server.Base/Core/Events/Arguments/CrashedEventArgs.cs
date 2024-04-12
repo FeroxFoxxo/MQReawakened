@@ -2,6 +2,6 @@
 
 public class CrashedEventArgs(Exception ex) : EventArgs
 {
-    public Exception Exception { get; } = ex;
+    public Exception Exception => ex;
     public bool Close { get; set; }
 }

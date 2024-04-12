@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Services;
 
@@ -15,18 +14,12 @@ public class TravelToFriend : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
         var playerName = message[5];
         var otherPlayer = PlayerContainer.GetPlayerByName(playerName);
 
         var levelId = otherPlayer.Character.LevelData.LevelId;
         var spawnId = otherPlayer.Character.LevelData.SpawnPointId;
 
-        character.SetLevel(levelId, spawnId, Logger);
-
-        Player.SendLevelChange(WorldHandler);
-
-        Logger.LogError("Travelling to friends are not implemented yet!");
+        WorldHandler.ChangePlayerRoom(Player, levelId, spawnId);
     }
 }

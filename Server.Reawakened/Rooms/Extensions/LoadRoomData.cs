@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Server.Base.Core.Extensions;
 using Server.Base.Logging;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Rooms.Models.Entities;
-using Server.Reawakened.Rooms.Models.Entities.ColliderType;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using System.Reflection;
@@ -24,14 +24,23 @@ public static class LoadRoomData
     {
         var outColliderList = new Dictionary<string, BaseCollider>();
         var idCounter = 0;
+
         foreach (var collider in room.ColliderCatalog.GetTerrainColliders(room.LevelInfo.LevelId))
         {
             idCounter--;
-            outColliderList.Add(idCounter.ToString(), new TCCollider(collider, room));
+
+            var id = idCounter.ToString();
+
+            var position = new Vector3(collider.Position.x, collider.Position.y, collider.Position.z);
+            var size = new Vector2(collider.Width, collider.Height);
+
+            outColliderList.Add(id, new TCCollider(id, position, size, collider.Plane, room));
         }
+
         return outColliderList;
     }
-    public static Dictionary<string, PlaneModel> LoadPlanes(this LevelInfo levelInfo, ServerRConfig config)
+
+    public static Dictionary<string, PlaneModel> LoadPlanes(this LevelInfo levelInfo, Room room, ServerRConfig config)
     {
         var levelInfoPath = Path.Join(config.LevelSaveDirectory, $"{levelInfo.Name}.xml");
         var levelDataPath = Path.Join(config.LevelDataSaveDirectory, $"{levelInfo.Name}.json");
@@ -68,7 +77,7 @@ public static class LoadRoomData
                         switch (data.Name)
                         {
                             case "LoadUnit":
-                                plane.LoadGameObjectXml(gameObjectAttributes);
+                                plane.LoadGameObjectXml(gameObjectAttributes, room);
                                 break;
                             case "Collider":
                                 plane.LoadColliderXml(gameObjectAttributes);
@@ -95,78 +104,74 @@ public static class LoadRoomData
         if (room.Planes == null)
             return entities;
 
-        var entityComponents = typeof(BaseComponent).Assembly.GetServices<BaseComponent>()
-            .Where(t => t.BaseType != null)
-            .Where(t => t.BaseType.GenericTypeArguments.Length > 0)
-            .Select(t => new Tuple<string, Type>(t.BaseType.GenericTypeArguments.FirstOrDefault(x => !string.IsNullOrEmpty(x.FullName))?.FullName, t))
-            .Where(t => !string.IsNullOrEmpty(t.Item1))
-            .ToDictionary(t => t.Item1, t => t.Item2);
-
-        var processable = typeof(DataComponentAccessor).Assembly.GetServices<DataComponentAccessor>()
-            .ToDictionary(x => x.Name, x => x);
-
-        var entityTransfer = new EntityTransfer(reflectionUtils, classCopier, room, fileLogger, entityComponents, services, processable);
+        var entityTransfer = new EntityTransfer(reflectionUtils, classCopier, room, fileLogger, services);
 
         foreach (var plane in room.Planes)
+        {
             foreach (var entityList in plane.Value.GameObjects)
             {
                 var entityId = entityList.Key;
+                var components = GetComponents(room, entityList, entityTransfer);
 
-                if (entityList.Value.Count == 1)
+                if (components.Count > 1)
                 {
-                    var entity = entityList.Value.FirstOrDefault();
+                    if (!room.DuplicateEntities.ContainsKey(entityId))
+                        room.DuplicateEntities.Add(entityId, []);
 
-                    var componentList = GetEntity(entity, entityTransfer, out var unknownComponents);
-
-                    if (unknownComponents.Count > 0)
-                        room.UnknownEntities.Add(entityId, unknownComponents);
-
-                    if (componentList.Count > 0)
-                        entities.TryAdd(entityId, componentList);
-                }
-                else
-                {
-                    foreach (var entity in entityList.Value)
+                    foreach (var componentList in components)
                     {
-                        var componentList = GetEntity(entity, entityTransfer, out var unknownComponents);
+                        room.Logger.LogError("Room already has entity for id {Id}, storing duplicate with components {Components}",
+                            entityId, string.Join(", ", componentList.Select(c => c.GetType().Name)));
 
-                        if (unknownComponents.Count > 0)
-                        {
-                            if (!room.UnknownEntities.ContainsKey(entityId))
-                                room.UnknownEntities.Add(entityId, []);
-
-                            foreach (var component in unknownComponents)
-                                if (!room.UnknownEntities[entityId].Contains(component))
-                                    room.UnknownEntities[entityId].Add(component);
-                        }
-
-                        if (componentList.Count > 0)
-                        {
-                            if (!room.DuplicateEntities.ContainsKey(entityId))
-                                room.DuplicateEntities.Add(entityId, []);
-
-                            room.Logger.LogError("Room already has entity for id {Id}, storing duplicate with components {Components}",
-                                entityId, string.Join(", ", componentList.Select(c => c.GetType().Name)));
-
-                            room.DuplicateEntities[entityId].Add(componentList);
-                        }
+                        room.DuplicateEntities[entityId].Add(componentList);
                     }
                 }
+                else if (components.Count == 1)
+                {
+                    var componentList = components.FirstOrDefault();
+                    entities.Add(entityId, componentList);
+                }
             }
+        }
+
+        return entities;
+    }
+
+    private static List<List<BaseComponent>> GetComponents(Room room, KeyValuePair<string, List<GameObjectModel>> objects, EntityTransfer entityTransfer)
+    {
+        var entityId = objects.Key;
+        var models = objects.Value;
+
+        var entities = new List<List<BaseComponent>>();
+
+        foreach (var entity in models)
+        {
+            var componentList = GetEntity(entity, entityTransfer, out var unknownComponents);
+
+            if (unknownComponents.Count > 0)
+            {
+                if (!room.UnknownEntities.ContainsKey(entityId))
+                    room.UnknownEntities.Add(entityId, []);
+
+                foreach (var component in unknownComponents)
+                    if (!room.UnknownEntities[entityId].Contains(component))
+                        room.UnknownEntities[entityId].Add(component);
+            }
+
+            if (componentList.Count > 0)
+                entities.Add(componentList);
+        }
 
         return entities;
     }
 
     private class EntityTransfer(ReflectionUtils reflectionUtils, ClassCopier classCopier,
-        Room room, FileLogger fileLogger, Dictionary<string, Type> knownComps,
-        IServiceProvider serviceProvider, Dictionary<string, Type> processableComps)
+        Room room, FileLogger fileLogger, IServiceProvider serviceProvider)
     {
         public ReflectionUtils ReflectionUtils => reflectionUtils;
         public ClassCopier ClassCopier => classCopier;
         public Room Room => room;
         public FileLogger FileLogger => fileLogger;
-        public Dictionary<string, Type> KnownComps => knownComps;
-        public Dictionary<string, Type> ProcessableComps => processableComps;
         public IServiceProvider ServiceProvider => serviceProvider;
     }
 
@@ -179,89 +184,90 @@ public static class LoadRoomData
 
         foreach (var component in entity.ObjectInfo.Components)
         {
-            if (!vars.ProcessableComps.TryGetValue(component.Key, out var mqType))
+            if (!vars.Room.World.ProcessableComponents.TryGetValue(component.Key, out var mqType))
                 continue;
 
-            if (vars.KnownComps.TryGetValue(mqType.FullName!, out var internalType))
+            if (!vars.Room.World.EntityComponents.TryGetValue(component.Key, out var internalType))
             {
-                var newEntity = vars.ClassCopier.GetClassAndInfo(mqType);
-
-                var dataObj = newEntity.Key;
-                var fields = newEntity.Value;
-
-                foreach (var componentValue in component.Value.ComponentAttributes.Where(componentValue =>
-                             !string.IsNullOrEmpty(componentValue.Value)))
-                {
-                    var field = fields.FirstOrDefault(f => f.Name == componentValue.Key);
-
-                    if (field == null)
-                        continue;
-
-                    if (field.FieldType == typeof(string))
-                        field.SetValue(dataObj, componentValue.Value);
-                    else if (field.FieldType == typeof(int))
-                        field.SetValue(dataObj, int.Parse(componentValue.Value));
-                    else if (field.FieldType == typeof(bool))
-                        field.SetValue(dataObj, componentValue.Value.Equals("true", StringComparison.CurrentCultureIgnoreCase));
-                    else if (field.FieldType == typeof(float))
-                        field.SetValue(dataObj, float.Parse(componentValue.Value));
-                    else if (field.FieldType.IsEnum)
-                        field.SetValue(dataObj, Enum.Parse(field.FieldType, componentValue.Value));
-                    else if (field.FieldType == typeof(Vector3))
-                    {
-                        var translateComponent = componentValue.Value.Replace("(", "").Replace(")", "");
-                        var translatedArray = translateComponent.Split(",");
-                        field.SetValue(dataObj, new Vector3(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2])));
-                    }
-                    else if (field.FieldType == typeof(Vector2))
-                    {
-                        var translateComponent = componentValue.Value.Replace("(", "").Replace(")", "");
-                        var translatedArray = translateComponent.Split(",");
-                        field.SetValue(dataObj, new Vector2(float.Parse(translatedArray[0]), float.Parse(translatedArray[1])));
-                    }
-                    else if (field.FieldType == typeof(Color))
-                    {
-                        var translateComponent = componentValue.Value.Replace("RGBA(", "").Replace(")", "");
-                        var translatedArray = translateComponent.Split(",");
-                        field.SetValue(dataObj, new Color(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2]), float.Parse(translatedArray[3])));
-                    }
-                    else if (field.FieldType == typeof(string[]))
-                    {
-                        var translatedArray = componentValue.Value.Split(",");
-                        field.SetValue(dataObj, translatedArray);
-                    }
-                    else
-                    {
-                        vars.Room.Logger.LogError("It is unknown how to convert a string to a {FieldType} (data: {Data}).",
-                            field.FieldType, componentValue.Value);
-                    }
-                }
-
-                var instancedComponent = vars.ReflectionUtils.CreateBuilder<BaseComponent>(internalType.GetTypeInfo())
-                    .Invoke(vars.ServiceProvider);
-
-                var methods = internalType.GetMethods().Where(m =>
-                {
-                    var parameters = m.GetParameters();
-
-                    return
-                        m.Name == "SetComponentData" &&
-                        parameters.Length == 2 &&
-                        parameters[0].ParameterType == dataObj.GetType() &&
-                        parameters[1].ParameterType == entityData.GetType();
-                }).ToArray();
-
-                if (methods.Length != 1)
-                    vars.Room.Logger.LogError(
-                        "Found invalid {Count} amount of initialization methods for {EntityId} ({EntityType})",
-                        methods.Length, entity, internalType.Name);
-                else
-                    methods.First().Invoke(instancedComponent, [dataObj, entityData]);
-
-                componentList.Add(instancedComponent);
-            }
-            else
                 unknownComponents.Add(mqType.Name);
+                continue;
+            }
+
+            var newEntity = vars.ClassCopier.GetClassAndInfo(mqType);
+
+            var dataObj = newEntity.Key;
+            var fields = newEntity.Value;
+
+            foreach (var componentValue in component.Value.ComponentAttributes.Where(componentValue =>
+                         !string.IsNullOrEmpty(componentValue.Value)))
+            {
+                var field = fields.FirstOrDefault(f => f.Name == componentValue.Key);
+
+                if (field == null)
+                    continue;
+
+                if (field.FieldType == typeof(string))
+                    field.SetValue(dataObj, componentValue.Value);
+                else if (field.FieldType == typeof(int))
+                    field.SetValue(dataObj, int.Parse(componentValue.Value));
+                else if (field.FieldType == typeof(bool))
+                    field.SetValue(dataObj, componentValue.Value.Equals("true", StringComparison.CurrentCultureIgnoreCase));
+                else if (field.FieldType == typeof(float))
+                    field.SetValue(dataObj, float.Parse(componentValue.Value));
+                else if (field.FieldType.IsEnum)
+                    field.SetValue(dataObj, Enum.Parse(field.FieldType, componentValue.Value));
+                else if (field.FieldType == typeof(Vector3))
+                {
+                    var translateComponent = componentValue.Value.Replace("(", string.Empty).Replace(")", string.Empty);
+                    var translatedArray = translateComponent.Split(",");
+                    field.SetValue(dataObj, new Vector3(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2])));
+                }
+                else if (field.FieldType == typeof(Vector2))
+                {
+                    var translateComponent = componentValue.Value.Replace("(", string.Empty).Replace(")", string.Empty);
+                    var translatedArray = translateComponent.Split(",");
+                    field.SetValue(dataObj, new Vector2(float.Parse(translatedArray[0]), float.Parse(translatedArray[1])));
+                }
+                else if (field.FieldType == typeof(Color))
+                {
+                    var translateComponent = componentValue.Value.Replace("RGBA(", string.Empty).Replace(")", string.Empty);
+                    var translatedArray = translateComponent.Split(",");
+                    field.SetValue(dataObj, new Color(float.Parse(translatedArray[0]), float.Parse(translatedArray[1]), float.Parse(translatedArray[2]), float.Parse(translatedArray[3])));
+                }
+                else if (field.FieldType == typeof(string[]))
+                {
+                    var translatedArray = componentValue.Value.Split(",");
+                    field.SetValue(dataObj, translatedArray);
+                }
+                else
+                {
+                    vars.Room.Logger.LogError("It is unknown how to convert a string to a {FieldType} (data: {Data}).",
+                        field.FieldType, componentValue.Value);
+                }
+            }
+
+            var instancedComponent = vars.ReflectionUtils.CreateBuilder<BaseComponent>(internalType.GetTypeInfo())
+                .Invoke(vars.ServiceProvider);
+
+            var methods = internalType.GetMethods().Where(m =>
+            {
+                var parameters = m.GetParameters();
+
+                return
+                    m.Name == "SetComponentData" &&
+                    parameters.Length == 2 &&
+                    parameters[0].ParameterType == dataObj.GetType() &&
+                    parameters[1].ParameterType == entityData.GetType();
+            }).ToArray();
+
+            if (methods.Length != 1)
+                vars.Room.Logger.LogError(
+                    "Found invalid {Count} amount of initialization methods for {EntityId} ({EntityType})",
+                    methods.Length, entity, internalType.Name);
+            else
+                methods.First().Invoke(instancedComponent, [dataObj, entityData]);
+
+            componentList.Add(instancedComponent);
         }
 
         return componentList;

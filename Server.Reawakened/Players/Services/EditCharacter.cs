@@ -8,12 +8,12 @@ using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
 using Server.Base.Network.Services;
 using Server.Reawakened.Chat.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players.Events;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Services;
 
@@ -58,7 +58,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
 
         console.AddCommand(
             "runCommand",
-            "Runs a command for a given player.",
+            "Runs a command for a given _player.",
             NetworkType.Server,
             _ => RunPlayerCommand()
         );
@@ -141,20 +141,22 @@ public class EditCharacter(ServerConsole console, EventSink sink,
             return;
         }
 
-        character.SetLevel(levelId, string.Empty, logger);
-
         var levelInfo = worldGraph.GetInfoLevel(levelId);
 
-        var tribe = levelInfo.Tribe;
+        if (levelInfo == null)
+        {
+            logger.LogError("Level must be valid");
+            return;
+        }
 
         if (handler.IsPlayerOnline(user.Id, out var player))
         {
-            player.DiscoverTribe(tribe);
-            player.SendLevelChange(worldHandler);
+            worldHandler.ChangePlayerRoom(player, levelId);
         }
         else
         {
-            character?.HasAddedDiscoveredTribe(tribe);
+            character.ForceSetLevel(levelId, string.Empty);
+            character?.HasAddedDiscoveredTribe(levelInfo.Tribe);
             playerEventSink.InvokePlayerRefresh();
         }
 
@@ -181,7 +183,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
         }
 
         if (handler.IsPlayerOnline(user.Id, out var player))
-            player.LevelUp(levelId, logger);
+            player.LevelUp(levelId, config, logger);
         else
             character.SetLevelXp(levelId);
     }
@@ -229,7 +231,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
         }
         else
         {
-            logger.LogError("Could not find item with id: '{ItemId}'", itemId);
+            logger.LogError("Could not find item with id: '{_itemId}'", itemId);
         }
     }
 }

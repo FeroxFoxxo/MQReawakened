@@ -16,7 +16,7 @@ public class InteractionStatus : ExternalProtocol
         Player.Character.Data.InteractionStatus = (CharacterLightData.InteractionStatus)interactionStatus;
 
         if (broadcast)
-            foreach (var roomPlayer in Player.Room.Players.Values)
+            foreach (var roomPlayer in Player.Room.GetPlayers())
                 roomPlayer.SendXt("fi", Player.CharacterName, interactionStatus);
         else
             SendXt("fi", Player.CharacterName, interactionStatus);

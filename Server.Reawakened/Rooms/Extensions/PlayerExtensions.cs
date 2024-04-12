@@ -1,5 +1,5 @@
 ﻿using Server.Base.Accounts.Extensions;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -8,36 +8,25 @@ using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Extensions;
 
 public static class PlayerExtensions
 {
-    private static void JoinRoom(this Player player, Room room, bool useOriginalRoom, out JoinReason reason)
+    private static void JoinRoom(this Player player, Room room, out JoinReason reason)
     {
-        player.Room?.RemoveClient(player, useOriginalRoom);
+        player.Room?.RemoveClient(player);
         player.Room = room;
         player.Room.AddClient(player, out reason);
     }
 
-    public static void QuickJoinRoom(this Player player, int id, WorldHandler worldHandler, out JoinReason reason)
-    {
-        var useOriginalRoom = false;
-
-        if (player.Room != null)
-            if (player.Room.LevelInfo.LevelId == id)
-                useOriginalRoom = true;
-
-        var room = useOriginalRoom ? player.Room :
-            worldHandler.GetRoomFromLevelId(id, player);
-
-        player.JoinRoom(room, useOriginalRoom, out reason);
-    }
+    public static void QuickJoinRoom(this Player player, int id, WorldHandler worldHandler, out JoinReason reason) =>
+        player.JoinRoom(worldHandler.GetRoomFromLevelId(id, player), out reason);
 
     public static string GetPlayersPlaneString(this Player player)
-        => player.TempData.Position.Z > 0 ? "Plane1" : "Plane0";
+        => player.TempData.Position.z > 0 ? "Plane1" : "Plane0";
 
     public static int GetLevelId(this Player player) =>
         player.Character?.LevelData.LevelId ?? -1;
@@ -86,13 +75,13 @@ public static class PlayerExtensions
             IncPowerJewel = player.Character.Data.BadgePoints,
         };
 
-        foreach (var currentPlayer in player.Room.Players.Values)
+        foreach (var currentPlayer in player.Room.GetPlayers())
             currentPlayer.SendXt("ce", levelUpData, player.UserId);
 
         //Temporary way to earn NC upon level up.
         //(Needed for gameplay improvements as NC is currently unobtainable)
         player.AddNCash(125);
-      
+
         player.SendSyncEventToPlayer(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
             player.Character.Data.MaxLife, player.Character.Data.MaxLife, player.GameObjectId.ToString()));
     }
@@ -120,7 +109,24 @@ public static class PlayerExtensions
 
     public static List<GameObjectModel> GetPlaneEntities(this Player player)
     {
-        var planeName = player.TempData.Position.Z > 10 ? "Plane1" : "Plane0";
+        var planeName = player.TempData.Position.z > 10 ? "Plane1" : "Plane0";
         return [.. player.Room.Planes[planeName].GameObjects.Values.SelectMany(x => x)];
     }
+
+    public static void GroupMemberRoomChanged(this Room room, Player player)
+    {
+        if (player.TempData.Group == null)
+            return;
+
+        foreach (var groupMember in player.TempData.Group.GetMembers())
+        {
+            groupMember.SendXt(
+                "pm",
+                player.CharacterName,
+                room.LevelInfo.Name,
+                room.ToString()
+            );
+        }
+    }
+
 }

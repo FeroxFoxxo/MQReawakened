@@ -7,7 +7,7 @@ namespace Server.Reawakened.Rooms.Models.Planes;
 public class PlaneModel(string planeName)
 {
     public Dictionary<string, List<GameObjectModel>> GameObjects { get; set; } = [];
-    public string PlaneName { get; } = planeName;
+    public string PlaneName => planeName;
 
     public void LoadColliderXml(XmlNode colliderNode)
     {
@@ -32,35 +32,43 @@ public class PlaneModel(string planeName)
             obj.ObjectInfo.Rectangle = rect;
     }
 
-    public void LoadGameObjectXml(XmlNode gameObjectNode)
+    public void LoadGameObjectXml(XmlNode gameObjectNode, Room room)
     {
         var attributes = gameObjectNode.Attributes!;
 
         if (attributes == null)
             return;
 
+        var prefabName = attributes.GetValue("name");
+        var id = PlaneName.Equals("TemplatePlane") ? prefabName : attributes.GetValue("id");
+
         var objectInfo = new ObjectInfoModel
         {
-            PrefabName = attributes.GetValue("name"),
-            ObjectId = attributes.GetValue("id"),
-            Position = new Vector3Model
-            {
-                X = attributes.GetSingleValue("x"),
-                Y = attributes.GetSingleValue("y"),
-                Z = attributes.GetSingleValue("z")
-            },
+            PrefabName = prefabName,
+            ObjectId = id,
+            Position = new Vector3Model(
+                attributes.GetSingleValue("x"),
+                attributes.GetSingleValue("y"),
+                attributes.GetSingleValue("z"),
+                id,
+                room
+            ),
             Rotation = new Vector3Model
-            {
-                X = attributes.GetSingleValue("rx"),
-                Y = attributes.GetSingleValue("ry"),
-                Z = attributes.GetSingleValue("rz")
-            },
+            (
+                attributes.GetSingleValue("rx"),
+                attributes.GetSingleValue("ry"),
+                attributes.GetSingleValue("rz"),
+                string.Empty,
+                null
+            ),
             Scale = new Vector3Model
-            {
-                X = attributes.GetSingleValue("sx"),
-                Y = attributes.GetSingleValue("sy"),
-                Z = attributes.GetSingleValue("sz")
-            },
+            (
+                attributes.GetSingleValue("sx"),
+                attributes.GetSingleValue("sy"),
+                attributes.GetSingleValue("sz"),
+                string.Empty,
+                null
+            ),
             ParentPlane = PlaneName,
             Rectangle = new RectModel(-1000.0f, -1000.0f, 0f, 0f)
 
@@ -88,10 +96,6 @@ public class PlaneModel(string planeName)
         {
             ObjectInfo = objectInfo
         };
-
-        var id = obj.ObjectInfo.ObjectId;
-        if(PlaneName.Equals("TemplatePlane"))
-            id = obj.ObjectInfo.PrefabName;
 
         if (!GameObjects.ContainsKey(id))
             GameObjects.Add(id, []);

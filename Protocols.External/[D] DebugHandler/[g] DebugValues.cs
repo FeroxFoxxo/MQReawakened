@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Configs;
+﻿using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
 

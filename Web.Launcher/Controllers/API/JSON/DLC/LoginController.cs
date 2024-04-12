@@ -17,6 +17,9 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
     [HttpPost]
     public IActionResult HandleLogin([FromForm] string username, [FromForm] string password)
     {
+        username = username?.Trim();
+        password = password?.Trim();
+
         var hashedPw = passwordHasher.GetPassword(username, password);
 
         var account = accHandler.GetInternal().Values.FirstOrDefault(x => x.Username == username);

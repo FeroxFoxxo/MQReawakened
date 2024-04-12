@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
 using Server.Reawakened.Players.Models;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -44,17 +43,9 @@ public static class CharacterExtensions
         return true;
     }
 
-    public static void SetLevel(this CharacterModel character, int levelId,
-        Microsoft.Extensions.Logging.ILogger logger) =>
-        character.SetLevel(levelId, string.Empty, logger);
-
-    public static void SetLevel(this CharacterModel character, int levelId, string spawnId,
-        Microsoft.Extensions.Logging.ILogger logger)
+    public static void ForceSetLevel(this CharacterModel characterData, int levelId, string spawnId = "")
     {
-        character.LevelData.LevelId = levelId;
-        character.LevelData.SpawnPointId = spawnId;
-
-        logger.LogDebug("Set spawn of '{CharacterName}' to spawn {SpawnId}",
-            character.Data.CharacterName, spawnId);
+        characterData.LevelData.LevelId = levelId;
+        characterData.LevelData.SpawnPointId = spawnId;
     }
 }

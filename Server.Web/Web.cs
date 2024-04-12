@@ -18,15 +18,13 @@ namespace Server.Web;
 
 public class Web(ILogger<Web> logger) : WebModule(logger)
 {
-    public override string[] Contributors { get; } = ["Ferox"];
-
     public override void AddServices(IServiceCollection services, Module[] modules)
     {
         services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
         services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-        services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();;
+        services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>(); ;
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();

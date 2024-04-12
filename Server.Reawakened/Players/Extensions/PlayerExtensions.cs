@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -9,19 +9,33 @@ using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
 using static A2m.Server.QuestStatus;
 
 namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerExtensions
 {
-    public static void TeleportPlayer(this Player player, int x, int y, int z)
+    public static void AddGear(this Player currentPlayer, string gear, ItemCatalog itemCatalog)
     {
-        var isBackPlane = z == 1;
+        var item = itemCatalog.GetItemFromPrefabName(gear);
 
+        if (item != null)
+        {
+            if (!currentPlayer.Character.Data.Inventory.Items.ContainsKey(item.ItemId))
+            {
+                currentPlayer.AddItem(item, 1, itemCatalog);
+                currentPlayer.SendUpdatedInventory();
+            }
+        }
+    }
+
+    public static void TeleportPlayer(this Player player, float x, float y, bool isBackPlane)
+    {
         var coordinates = new PhysicTeleport_SyncEvent(player.GameObjectId.ToString(),
-            player.Room.Time, player.TempData.Position.X + x, player.TempData.Position.Y + y, isBackPlane);
+            player.Room.Time, x, y, isBackPlane);
 
         player.SendSyncEventToPlayer(coordinates);
     }
@@ -73,7 +87,12 @@ public static class PlayerExtensions
 
         while (reputation > charData.ReputationForNextLevel)
         {
-            player.Character.SetLevelXp(charData.GlobalLevel + 1);
+            var newLevel = charData.GlobalLevel + 1;
+
+            if (newLevel > config.MaxLevel)
+                break;
+
+            player.Character.SetLevelXp(newLevel);
             player.SendLevelUp();
         }
 
@@ -124,12 +143,14 @@ public static class PlayerExtensions
             trade.TempData.TradeModel = null;
     }
 
-    public static void AddBananas(this Player player, int collectedBananas)
+    public static void AddBananas(this Player player, int collectedBananas, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
         var charData = player.Character.Data;
 
         if (player.TempData.BananaBoostsElixir)
             collectedBananas = Convert.ToInt32(collectedBananas * 0.1);
+
+        player.CheckAchievement(AchConditionType.CollectBanana, [], internalAchievement, logger, collectedBananas);
 
         charData.Cash += collectedBananas;
         player.SendCashUpdate();
@@ -205,10 +226,6 @@ public static class PlayerExtensions
             error = e.Message;
         }
 
-        // this allows early 2012 to load 
-        // the empty string is displayLevelName in ILSpy
-        // player.SendXt("lw", error, levelName, string.Empty, surroundingLevels);
-
         player.SendXt("lw", error, levelName, surroundingLevels);
     }
 
@@ -232,8 +249,11 @@ public static class PlayerExtensions
             : string.Empty;
     }
 
-    public static void LevelUp(this Player player, int level, Microsoft.Extensions.Logging.ILogger logger)
+    public static void LevelUp(this Player player, int level, ServerRConfig config, Microsoft.Extensions.Logging.ILogger logger)
     {
+        if (level > config.MaxLevel)
+            level = config.MaxLevel;
+
         player.Character.SetLevelXp(level);
         player.SendLevelUp();
 
@@ -247,7 +267,16 @@ public static class PlayerExtensions
     public static void DiscoverTribe(this Player player, TribeType tribe)
     {
         if (player.Character.HasAddedDiscoveredTribe(tribe))
+        {
+            // Set tribe on 2011-2013
+            if (player.Character.Data.Allegiance == TribeType.Invalid
+                && tribe is TribeType.Shadow
+                or TribeType.Outlaw or TribeType.Bone
+                or TribeType.Wild or TribeType.Grease)
+                player.Character.Data.Allegiance = tribe;
+
             player.SendXt("cB", (int)tribe);
+        }
     }
 
     public static void DiscoverAllTribes(this Player player)
@@ -277,32 +306,16 @@ public static class PlayerExtensions
     }
 
     public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
-        int count, QuestCatalog questCatalog)
-    {
-        var itemCatalog = questCatalog.Services.GetRequiredService<ItemCatalog>();
-        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog);
-    }
+        int count, QuestCatalog questCatalog) => player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, questCatalog.ItemCatalog);
 
     public static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
-        int count, ItemCatalog itemCatalog)
-    {
-        var questCatalog = itemCatalog.Services.GetRequiredService<QuestCatalog>();
-        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog);
-    }
+        int count, ItemCatalog itemCatalog) => player.CheckObjective(type, gameObjectId, prefabName, count, itemCatalog.QuestCatalog, itemCatalog);
 
     public static void SetObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
-        int count, QuestCatalog questCatalog)
-    {
-        var itemCatalog = questCatalog.Services.GetRequiredService<ItemCatalog>();
-        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog, true);
-    }
+        int count, QuestCatalog questCatalog) => player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, questCatalog.ItemCatalog, true);
 
     public static void SetObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
-        int count, ItemCatalog itemCatalog)
-    {
-        var questCatalog = itemCatalog.Services.GetRequiredService<QuestCatalog>();
-        player.CheckObjective(type, gameObjectId, prefabName, count, questCatalog, itemCatalog, true);
-    }
+        int count, ItemCatalog itemCatalog) => player.CheckObjective(type, gameObjectId, prefabName, count, itemCatalog.QuestCatalog, itemCatalog, true);
 
     private static void CheckObjective(this Player player, ObjectiveEnum type, string gameObjectId, string prefabName,
         int count, QuestCatalog questCatalog, ItemCatalog itemCatalog, bool setObjective = false)
@@ -409,7 +422,7 @@ public static class PlayerExtensions
                                 var item = itemCatalog.GetItemFromId(obj.ItemId);
 
                                 if (player.Character.Data.Inventory.Items.TryGetValue(obj.ItemId, out var itemModel) && item != null)
-                                    player.CheckObjective(ObjectiveEnum.Deliver, gameObjectId, item.PrefabName, itemModel.Count, questCatalog);
+                                    player.CheckObjective(ObjectiveEnum.Deliver, gameObjectId, item.PrefabName, itemModel.Count, questCatalog, itemCatalog);
                             }
                             break;
                         case ObjectiveEnum.Deliver:
@@ -455,7 +468,7 @@ public static class PlayerExtensions
     {
         foreach (
             var player in
-            from player in sentPlayer.Room.Players.Values
+            from player in sentPlayer.Room.GetPlayers()
             select player
         )
             player.SendXt("iq", sentPlayer.UserId, sentPlayer.Character.Data.Equipment);

@@ -40,14 +40,14 @@ public class Player(Account account, UserInfo userInfo, NetState state, WorldHan
 
     public void Remove(Microsoft.Extensions.Logging.ILogger logger)
     {
-        lock (playerContainer.Lock)
+        lock (PlayerContainer.Lock)
             playerContainer.RemovePlayer(this);
 
         this.RemoveFromGroup();
 
         if (Character != null)
         {
-            lock (playerContainer.Lock)
+            lock (PlayerContainer.Lock)
             {
                 foreach (var player in playerContainer.GetPlayersByFriend(CharacterId))
                     player.SendXt("fz", Character.Data.CharacterName);
@@ -71,7 +71,7 @@ public class Player(Account account, UserInfo userInfo, NetState state, WorldHan
             var roomName = Room.LevelInfo.Name;
 
             if (!string.IsNullOrEmpty(roomName))
-                logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
+                logger.LogDebug("Dumped _player with ID '{User}' from room '{Room}'", UserId, roomName);
         }
 
         this.DumpToLobby(worldHandler);

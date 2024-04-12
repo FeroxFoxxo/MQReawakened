@@ -6,7 +6,7 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.System;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Protocols.External._C__CashShopHandler;
 

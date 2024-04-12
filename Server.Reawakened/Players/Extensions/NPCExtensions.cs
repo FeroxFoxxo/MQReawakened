@@ -2,12 +2,13 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
-using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Components;
+using Server.Reawakened.Core.Enums;
+using Server.Reawakened.Entities.Components.GameObjects.Items;
+using Server.Reawakened.Entities.Components.GameObjects.NPC;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
 using System.Text;
 using static A2m.Server.QuestStatus;
 using static CollectibleController;

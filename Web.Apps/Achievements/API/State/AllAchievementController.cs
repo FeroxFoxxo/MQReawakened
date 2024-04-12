@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Services;
-using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Bundles.Internal;
 
 namespace Web.Apps.Achievements.API.State;
 [Route("Apps/achievements/api/state/{uuid}/{characterId}/achievements/all")]

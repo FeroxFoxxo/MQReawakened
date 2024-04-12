@@ -1,5 +1,5 @@
 ﻿using Server.Base.Core.Abstractions;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Enums;
 
 namespace Web.Launcher.Models;
 

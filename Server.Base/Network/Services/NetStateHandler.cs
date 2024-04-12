@@ -33,10 +33,10 @@ public class NetStateHandler(FileLogger fileLogger,
     public NetState FindUser(int userId) =>
         (
             from state in Instances
-                 let account = state.Get<Account>()
-                 where account != null
-                 where account.Id == userId
-                 select state
+            let account = state.Get<Account>()
+            where account != null
+            where account.Id == userId
+            select state
         ).FirstOrDefault();
 
     public void ProcessDisposedQueue()

@@ -8,7 +8,7 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerStatusEffectExtensions
 {
-    public static void ApplySlowEffect(this Player player, string hazardId, int damage) => 
+    public static void ApplySlowEffect(this Player player, string hazardId, int damage) =>
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
         (int)ItemEffectType.SlowStatusEffect, damage, 1, true, hazardId, false));
 
@@ -25,7 +25,7 @@ public static class PlayerStatusEffectExtensions
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
         (int)ItemEffectType.PoisonDamage, damage, hurtLength, true, hazardId, false));
 
-        player.ApplyCharacterDamage(player.Room, damage, hurtLength, timerThread);
+        player.ApplyCharacterDamage(damage, hurtLength, timerThread);
     }
 
     public class InvisibiltyData()

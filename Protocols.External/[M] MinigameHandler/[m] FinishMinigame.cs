@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.AbstractComponents;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Arenas;
-using Server.Reawakened.XMLs.BundlesInternal;
+using Server.Reawakened.XMLs.Bundles.Internal;
 
 namespace Protocols.External._M__MinigameHandler;
 
@@ -24,7 +24,9 @@ public class FinishedMinigame : ExternalProtocol
 
         Logger.LogInformation("Minigame with ID ({minigameId}) has completed.", arenaObjectId);
 
-        foreach (var player in Player.Room.Players.Values)
+        var players = Player.Room.GetPlayers();
+
+        foreach (var player in players)
             player.SendXt("Mt", arenaObjectId, Player.CharacterId, finishedRaceTime);
 
         if (Player.Character.BestMinigameTimes.TryGetValue(Player.Room.LevelInfo.Name, out var time))
@@ -54,9 +56,8 @@ public class FinishedMinigame : ExternalProtocol
 
         if (trigger.GetPhysicalInteractorCount() <= 0)
         {
-            var players = Player.Room.Players;
-            foreach (var player in players.Values)
-                FinishMinigame(player, arenaObjectId, players.Count);
+            foreach (var player in players)
+                FinishMinigame(player, arenaObjectId, players.Length);
 
             trigger.RunTrigger(Player);
             trigger.ResetTrigger();

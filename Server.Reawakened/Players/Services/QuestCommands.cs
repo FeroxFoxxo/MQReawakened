@@ -4,7 +4,7 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
-using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Services;
 public class QuestCommands(ServerConsole serverConsole, EventSink sink,
@@ -27,10 +27,10 @@ public class QuestCommands(ServerConsole serverConsole, EventSink sink,
 
         foreach (var quest in quests)
         {
-            var rewardItems = (Dictionary<int, int>) quest.GetField("_rewardItemsIds");
+            var rewardItems = (Dictionary<int, int>)quest.GetField("_rewardItemsIds");
             var rewardItemsToChoose = (Dictionary<int, int>)quest.GetField("_rewardItemsToChooseIds");
 
-            foreach(var rewardItem in rewardItemsToChoose)
+            foreach (var rewardItem in rewardItemsToChoose)
             {
                 if (!rewardItems.ContainsKey(rewardItem.Key))
                     rewardItems.Add(rewardItem.Key, rewardItem.Value);
@@ -44,8 +44,8 @@ public class QuestCommands(ServerConsole serverConsole, EventSink sink,
             if (unknownRewards.Any())
                 logger.LogError("Unknown quest reward ids: '{RewardIds}' for quest '{Quest}' ({QuestId}), " +
                     "given by '{QuestGiver}' in {QuestLocation}{KnownItems}",
-                    string.Join(", ", unknownRewards), quest.Title, quest.Name, quest.QuestgGiverName, 
+                    string.Join(", ", unknownRewards), quest.Title, quest.Name, quest.QuestgGiverName,
                     worldGraph.LevelNameFromID(quest.QuestGiverLevelId), knownRewards.Any() ? $" - known items: '{string.Join(", ", knownRewards)}'" : string.Empty);
-        }    
+        }
     }
 }

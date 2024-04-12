@@ -5,5 +5,4 @@ namespace Web.Apps;
 
 public class Apps(ILogger<Apps> logger) : WebModule(logger)
 {
-    public override string[] Contributors { get; } = ["Ferox"];
 }

@@ -2,17 +2,16 @@ using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
-using Server.Reawakened.Entities.Entity;
-using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Rooms.Models.Planes;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Enums;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Achievements;
+using UnityEngine;
 
 namespace Protocols.External._h__HotbarHandler;
 public class UseSlot : ExternalProtocol
@@ -20,6 +19,7 @@ public class UseSlot : ExternalProtocol
     public override string ProtocolName => "hu";
 
     public ItemCatalog ItemCatalog { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
@@ -31,11 +31,12 @@ public class UseSlot : ExternalProtocol
         var targetUserId = int.Parse(message[6]);
 
         var direction = Player.TempData.Direction;
-        var position = new Vector3Model()
+
+        var position = new Vector3()
         {
-            X = Convert.ToSingle(message[7]),
-            Y = Convert.ToSingle(message[8]),
-            Z = Convert.ToSingle(message[9])
+            x = Convert.ToSingle(message[7]),
+            y = Convert.ToSingle(message[8]),
+            z = Convert.ToSingle(message[9])
         };
 
         var slotItem = Player.Character.Data.Hotbar.HotbarButtons[hotbarSlotId];
@@ -47,7 +48,7 @@ public class UseSlot : ExternalProtocol
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drop:
-                Player.HandleDrop(ServerRConfig, TimerThread, Logger, usedItem, position, direction);
+                Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
                 RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
                 break;
             case ItemActionType.Grenade:
@@ -62,9 +63,6 @@ public class UseSlot : ExternalProtocol
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
                 break;
-            case ItemActionType.Pet:
-                HandlePet(usedItem);
-                break;
             case ItemActionType.Relic:
                 HandleRelic(usedItem);
                 break;
@@ -75,23 +73,20 @@ public class UseSlot : ExternalProtocol
         }
     }
 
-    private void HandlePet(ItemDescription usedItem)
-    {
-        Player.SendXt("ZE", Player.UserId, usedItem.ItemId, 1);
-        Player.Character.Data.PetItemId = usedItem.ItemId;
-    }
     private void HandleRelic(ItemDescription usedItem) //Needs rework.
     {
         StatusEffect_SyncEvent itemEffect = null;
+
         foreach (var effect in usedItem.ItemEffects)
             itemEffect = new StatusEffect_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
                     (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false);
+
         Player.SendSyncEventToPlayer(itemEffect);
     }
 
     private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
     {
-        Player.HandleItemEffect(usedItem, TimerThread, ServerRConfig, Logger);
+        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, Logger);
         var removeFromHotBar = true;
 
         if (usedItem.InventoryCategoryID is
@@ -101,15 +96,14 @@ public class UseSlot : ExternalProtocol
 
         if (removeFromHotBar)
         {
-            if (usedItem.ItemActionType == ItemActionType.Eat)
+            switch (usedItem.ItemActionType)
             {
-                Player.CheckAchievement(AchConditionType.Consumable, string.Empty, InternalAchievement, Logger);
-                Player.CheckAchievement(AchConditionType.Consumable, usedItem.PrefabName, InternalAchievement, Logger);
-            }
-            else if (usedItem.ItemActionType == ItemActionType.Drink)
-            {
-                Player.CheckAchievement(AchConditionType.Drink, string.Empty, InternalAchievement, Logger);
-                Player.CheckAchievement(AchConditionType.Drink, usedItem.PrefabName, InternalAchievement, Logger);
+                case ItemActionType.Eat:
+                    Player.CheckAchievement(AchConditionType.Consumable, [usedItem.PrefabName], InternalAchievement, Logger);
+                    break;
+                case ItemActionType.Drink:
+                    Player.CheckAchievement(AchConditionType.Drink, [usedItem.PrefabName], InternalAchievement, Logger);
+                    break;
             }
 
             RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
@@ -120,18 +114,18 @@ public class UseSlot : ExternalProtocol
     {
         public string ProjectileId;
         public ItemDescription UsedItem;
-        public Vector3Model Position;
+        public Vector3 Position;
         public int Direction;
         public bool IsGrenade;
     }
 
-    private void HandleRangedWeapon(ItemDescription usedItem, Vector3Model position, int direction, int hotbarSlotId)
+    private void HandleRangedWeapon(ItemDescription usedItem, Vector3 position, int direction, int hotbarSlotId)
     {
         var isGrenade = usedItem.SubCategoryId is ItemSubCategory.Grenade or ItemSubCategory.Bomb;
 
         var projectileData = new ProjectileData()
         {
-            ProjectileId = Player.Room.SetProjectileId(),
+            ProjectileId = Player.Room.CreateProjectileId().ToString(),
             UsedItem = usedItem,
             Position = position,
             Direction = direction,
@@ -140,46 +134,53 @@ public class UseSlot : ExternalProtocol
 
         if (isGrenade)
         {
-            TimerThread.DelayCall(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ServerRConfig.GrenadeSpawnDelay), TimeSpan.Zero, 1);
+            TimerThread.DelayCall(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ItemRConfig.GrenadeSpawnDelay), TimeSpan.Zero, 1);
             RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
         }
-
         else
             LaunchProjectile(projectileData);
     }
 
-    private void LaunchProjectile(object projectileData)
+    private void LaunchProjectile(object projectileObj)
     {
-        var prjData = (ProjectileData)projectileData;
+        var projectileData = (ProjectileData)projectileObj;
 
         // Add weapon stats later
-        var prj = new ProjectileEntity(Player, prjData.ProjectileId,
-            prjData.Position, prjData.Direction, ServerRConfig.GrenadeLifeTime, prjData.UsedItem,
-            Player.Character.Data.CalculateDamage(prjData.UsedItem, ItemCatalog),
-            prjData.UsedItem.Elemental, prjData.IsGrenade, ServerRConfig);
-        Player.Room.Projectiles.Add(prjData.ProjectileId, prj);
+        var projectile = new GenericProjectile(
+            projectileData.ProjectileId, Player, ItemRConfig.GrenadeLifeTime,
+            projectileData.Position, ItemRConfig, ServerRConfig, projectileData.Direction, projectileData.UsedItem,
+            Player.Character.Data.CalculateDamage(projectileData.UsedItem, ItemCatalog),
+            projectileData.UsedItem.Elemental, projectileData.IsGrenade
+        );
+
+        Player.Room.AddProjectile(projectile);
     }
 
-    private void HandleMeleeWeapon(ItemDescription usedItem, Vector3Model position, int direction)
+    private void HandleMeleeWeapon(ItemDescription usedItem, Vector3 position, int direction)
     {
-        var prjId = Player.Room.SetProjectileId();
+        var projectileId = Player.Room.CreateProjectileId();
 
         // Add weapon stats later
-        var prj = new MeleeEntity(Player, prjId, position, direction, 0.51f, usedItem,
+        var projectile = new MeleeEntity(
+            projectileId.ToString(), position, Player, direction, 0.51f, usedItem,
             Player.Character.Data.CalculateDamage(usedItem, ItemCatalog),
-            usedItem.Elemental, ServerRConfig);
+            usedItem.Elemental, ServerRConfig, ItemRConfig
+        );
 
-        Player.Room.Projectiles.Add(prjId, prj);
+        Player.Room.AddProjectile(projectile);
     }
 
     private void RemoveFromHotBar(CharacterModel character, ItemDescription item, int hotbarSlotId)
     {
-        character.Data.Inventory.Items[item.ItemId].Count--;
-        if (character.Data.Inventory.Items[item.ItemId].Count <= 0)
+        var itemModel = character.Data.Inventory.Items[item.ItemId];
+        itemModel.Count--;
+
+        if (itemModel.Count <= 0)
         {
-            character.Data.Hotbar.HotbarButtons.Remove(hotbarSlotId);
+            Player.RemoveHotbarSlot(hotbarSlotId, ItemCatalog);
             SendXt("hu", character.Data.Hotbar);
         }
+
         Player.SendUpdatedInventory();
     }
 }

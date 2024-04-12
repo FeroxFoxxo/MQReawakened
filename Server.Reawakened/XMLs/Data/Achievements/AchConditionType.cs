@@ -1,0 +1,35 @@
+﻿namespace Server.Reawakened.XMLs.Data.Achievements;
+
+public enum AchConditionType
+{
+    Invalid,
+    Unknown,
+    CollectIdol,
+    CollectBanana,
+    EquipItem,
+    CraftItem,
+    Drink,
+    Consumable,
+    DefeatEnemy,
+    DefeatEnemyStomp,
+    DefeatEnemyInLevel,
+    CompleteQuest,
+    CompleteQuestInLevel,
+    ExploreTrail,
+    Talkto,
+    Hoop,
+    HoopGroup,
+    HoopInLevel,
+    HoopGroupInLevel,
+    Bomb,
+    BuyItem,
+    BuyPet,
+    Emote,
+    AddFriend,
+    JoinGroup,
+    InviteGroup,
+    OpenPetEgg,
+    ReachLevel,
+    CompleteDailyQuest,
+    OpenJackinTheBox
+}

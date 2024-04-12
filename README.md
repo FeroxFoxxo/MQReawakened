@@ -32,7 +32,7 @@ Please email me at feroxfoxxo@gmail.com if anything is in breach, which will be 
 
 #### Developer information
 
-We've moved to use [Discord](https://discord.gg/gSbZ8apE6V) to handle our to-do list!
+We've moved to use Discord to handle our to-do list!
 
 If you have anything you wish to report, please submit an issue through [the repo's issue system](https://github.com/FeroxFoxxo/MQReawakened/issues), and it will be assigned to someone accordingly.
 

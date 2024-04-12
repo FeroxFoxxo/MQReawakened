@@ -3,16 +3,17 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.XMLs.Bundles;
-using Server.Reawakened.XMLs.BundlesInternal;
-using Server.Reawakened.XMLs.Models.LootRewards;
+using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.LootRewards.Enums;
+using Server.Reawakened.XMLs.Data.LootRewards.Models;
 
 namespace Server.Reawakened.Players.Helpers;
 
 public static class PlayerLootHandler
 {
     public static void GrantLoot(this Player player, string gameObjectId, InternalLoot lootCatalog,
-        ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
+        ItemCatalog itemCatalog, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
         var loot = lootCatalog.GetLootById(player.Room.LevelInfo.LevelId, gameObjectId);
 
@@ -20,13 +21,13 @@ public static class PlayerLootHandler
             logger.LogError("Loot table not yet implemented for chest with ID '{ChestId}'.", gameObjectId);
 
         if (loot.BananaRewards.Count > 0)
-            loot.BananaRewards.GrantLootBananas(player);
+            loot.BananaRewards.GrantLootBananas(player, internalAchievement, logger);
 
         if (loot.ItemRewards.Count > 0)
             loot.GrantLootItems(gameObjectId, player, itemCatalog);
     }
 
-    private static void GrantLootBananas(this List<BananaReward> bananas, Player player)
+    private static void GrantLootBananas(this List<BananaReward> bananas, Player player, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
         var random = new Random();
 
@@ -35,7 +36,7 @@ public static class PlayerLootHandler
         foreach (var banana in bananas)
             totalBananas += random.Next(banana.BananaMin, banana.BananaMax + 1);
 
-        player.AddBananas(totalBananas);
+        player.AddBananas(totalBananas, internalAchievement, logger);
     }
 
     private static void GrantLootItems(this LootModel lootModel, string objectId, Player player,
@@ -80,7 +81,9 @@ public static class PlayerLootHandler
                 player.AddItem(itemCatalog.GetItemFromId(item.ItemId), item.Count, itemCatalog);
         }
 
-        if (lootModel.MultiplayerWheelChance > 0 && player.Room.Players.Count > 1 && player.Room.LevelInfo.Type == LevelType.Trail)
+        var players = player.Room.GetPlayers();
+
+        if (lootModel.MultiplayerWheelChance > 0 && players.Length > 1 && player.Room.LevelInfo.Type == LevelType.Trail)
         {
             var randomChance = new Random().Next(100);
 
@@ -92,12 +95,12 @@ public static class PlayerLootHandler
                 multiplayerWheelData.Append(gottenItems[new Random().Next(gottenItems.Count)].ItemId);
                 multiplayerWheelData.Append(lootableItems);
 
-                foreach (var groupMember in player.Room.Players.Values)
+                foreach (var groupMember in players)
                     SendMultiplayerLootWheel(groupMember, multiplayerWheelData.ToString());
             }
         }
 
-        if (lootModel.DoWheel && player.Room.Players.Count <= 1)
+        if (lootModel.DoWheel && players.Length <= 1)
             SendLootWheel(player, itemsLooted.ToString(), lootableItems.ToString(), objectId);
 
         player.SendUpdatedInventory();
@@ -114,11 +117,11 @@ public static class PlayerLootHandler
         {
             switch (drop.Type)
             {
-                case Entities.Enums.DynamicDropType.Item:
+                case DynamicDropType.Item:
                     finalItemId = drop.Id;
                     break;
-                case Entities.Enums.DynamicDropType.RandomArmor:
-                    //Magic number 4 here will be changed and sent to config once I get more info on clothing drops
+                case DynamicDropType.RandomArmor:
+                    //Magic number 4 here will be changed and sent to ServerRConfig once I get more info on clothing drops
                     var armorList = itemCatalog.GetItemsFromLevel(level - 4, level + 4, A2m.Server.ItemCategory.Wearable);
                     finalItemId = armorList[random.Next(armorList.Count)].ItemId;
                     break;

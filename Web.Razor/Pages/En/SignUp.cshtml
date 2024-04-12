@@ -9,11 +9,27 @@
     ViewData["Title"] = "Sign Up";
 }
 
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <script>
+        window.onload = function () {
+            Swal.fire({
+                text: '@Model.StatusMessage',
+                showConfirmButton: false
+            });
+        };
+    </script>
+}
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
 <body class="align">
     <div class="grid align_item">
         <div class="register">
             <img class="site_logo" src="~/_content/Web.Razor/SignUp/logo.png", alt="Site Logo"/>
             <h2>Sign Up</h2>
+            <h3 style="color:orange">Please only use alpha-numeric characters - no funky symbols!</h3>
             <form asp- method="post" class="form">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 
