@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.Behaviors;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 
@@ -22,5 +22,6 @@ public class ShootingState(int nbBulletsPerRound, float fireSpreadAngle, float d
     public bool FireSpreadClockwise => fireSpreadClockwise;
     public float FireSpreadStartAngle => fireSpreadStartAngle;
 
-    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorShooting(this, globalComp);
+    public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
+        new AIBehaviorShooting(this, enemy);
 }

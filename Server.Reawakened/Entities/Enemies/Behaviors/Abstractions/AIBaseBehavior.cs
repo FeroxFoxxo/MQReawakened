@@ -1,5 +1,6 @@
 ﻿using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 
@@ -7,43 +8,65 @@ public abstract class AIBaseBehavior
 {
     public abstract bool ShouldDetectPlayers { get; }
 
+    public readonly BehaviorEnemy Enemy;
+
     private readonly AI_Behavior _behavior;
 
-    public AIBaseBehavior() => _behavior = GetBehaviour();
+    public abstract StateType State { get; }
 
-    public void Start(AIProcessData aiData, float roomTime, string[] args) => _behavior.Start(aiData, roomTime, args);
-
-    public bool TryUpdate(AIProcessData aiData, float roomTime, BehaviorEnemy enemy)
+    public AIBaseBehavior(BehaviorEnemy behaviorEnemy)
     {
-        if (!_behavior.Update(aiData, roomTime))
+        Enemy = behaviorEnemy;
+        _behavior = GetBehaviour();
+    }
+
+    public void Start() => _behavior.Start(Enemy.AiData, Enemy.Room.Time, GetStartArgsString().Split('`'));
+
+    public bool TryUpdate()
+    {
+        if (!_behavior.Update(Enemy.AiData, Enemy.Room.Time))
         {
-            NextState(enemy);
+            NextState();
             return false;
         }
 
         return true;
     }
 
-    public void Stop(AIProcessData aiData) => _behavior.Stop(aiData);
+    public void Stop() => _behavior.Stop(Enemy.AiData);
 
-    public float GetBehaviorRatio(AIProcessData aiData, float roomTime) => _behavior.GetBehaviorRatio(aiData, roomTime);
-    public void GetComebackPosition(AIProcessData aiData, ref float outPosX, ref float outPosY) => _behavior.GetComebackPosition(aiData, ref outPosX, ref outPosY);
-    public void SetStats(AIProcessData aiData) => _behavior.SetStats(aiData);
-    public bool MustDoComeback(AIProcessData aiData) => _behavior.MustDoComeback(aiData, _behavior);
+    public float GetBehaviorRatio(float roomTime) => _behavior.GetBehaviorRatio(Enemy.AiData, roomTime);
+    public void GetComebackPosition(ref float outPosX, ref float outPosY) => _behavior.GetComebackPosition(Enemy.AiData, ref outPosX, ref outPosY);
+    public void SetStats() => _behavior.SetStats(Enemy.AiData);
+    public bool MustDoComeback() => _behavior.MustDoComeback(Enemy.AiData, _behavior);
 
-    public virtual string[] GetInitArgs() => _behavior.GetInitArgs() ?? ([]);
+    public AI_Behavior GetBehaviour()
+    {
+        var typeName = Enum.GetName(State);
+        var properties = AiPropertiesFactory.create(typeName, GetStartArgsString());
+        return EnemyBehaviorFactory.create(typeName, properties);
+    }
 
-    protected abstract AI_Behavior GetBehaviour();
+    public abstract void NextState();
 
-    public abstract void NextState(BehaviorEnemy enemy);
+    public abstract object[] GetProperties();
+    public abstract object[] GetStartArgs();
 
-    public abstract object[] GetData();
-
-    public override string ToString()
+    public string GetPropertiesString()
     {
         var sb = new SeparatedStringBuilder(';');
 
-        foreach (var obj in GetData())
+        foreach (var obj in GetProperties())
+            sb.Append(obj is bool booleanValue ? booleanValue ? 1 : 0 : obj);
+
+        return sb.ToString();
+    }
+
+    public string GetStartArgsString()
+    {
+        var sb = new SeparatedStringBuilder('`');
+
+        foreach (var obj in GetStartArgs())
             sb.Append(obj is bool booleanValue ? booleanValue ? 1 : 0 : obj);
 
         return sb.ToString();

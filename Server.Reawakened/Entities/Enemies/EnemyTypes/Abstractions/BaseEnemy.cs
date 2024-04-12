@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
-using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
@@ -20,8 +19,6 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
-using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
-using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 using UnityEngine;
 
@@ -258,16 +255,4 @@ public abstract class BaseEnemy : IDestructible
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, healPoints, 0, 0, string.Empty, false, true));
     }
-
-    public AIInit_SyncEvent GetBlankEnemyInit(float posX, float posY, float posZ, float spawnX, float spawnY) =>
-        GetEnemyInit(posX, posY, posZ, spawnX, spawnY, 0, [], null, null);
-
-    public AIInit_SyncEvent GetEnemyInit(float posX, float posY, float posZ,
-        float spawnX, float spawnY, float behaviourRatio, Dictionary<StateType, BaseState> states,
-            AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) =>
-            AISyncEventHelper.AIInit(
-                Id, Room.Time, posX, posY, posZ, spawnX, spawnY, behaviourRatio,
-                Health, MaxHealth, HealthModifier, ScaleModifier, ResistanceModifier,
-                Status.Stars, Level, GlobalProperties, states, globalComp, genericComp
-            );
 }

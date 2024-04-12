@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
@@ -9,10 +8,7 @@ public abstract class BaseState(List<EnemyResourceModel> resources)
 {
     public List<EnemyResourceModel> Resources => resources;
 
-    public abstract AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp);
-
-    public virtual string[] GetStartArgs(BehaviorEnemy behaviorEnemy) =>
-        GetBaseBehaviour(behaviorEnemy.Global, behaviorEnemy.Generic).GetInitArgs();
+    public abstract AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy);
 
     public string ToResourcesString()
     {
@@ -24,6 +20,6 @@ public abstract class BaseState(List<EnemyResourceModel> resources)
         return assetList.ToString();
     }
 
-    public object ToStateString(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) =>
-        GetBaseBehaviour(globalComp, genericComp).ToString();
+    public object GetProperties(BehaviorEnemy enemy) =>
+        GetBaseBehaviour(enemy).GetPropertiesString();
 }

@@ -28,11 +28,10 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public GenericScriptPropertiesModel GenericScript;
 
-    private object _enemyLock;
+    public StateType CurrentState;
 
-    private StateType _currentState;
+    private object _enemyLock;
     private float _lastUpdate;
-    private int _index;
 
     public TimerThread TimerThread;
 
@@ -73,11 +72,10 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         };
 
         Room.SendSyncEvent(
-            GetEnemyInit(
+            AISyncEventHelper.AIInit(
                 Position.x, Position.y, Position.z,
                 Position.x, Position.y,
-                Generic.Patrol_InitialProgressRatio,
-                EnemyModel.BehaviorData, Global, Generic
+                Generic.Patrol_InitialProgressRatio, this
             )
         );
 
@@ -120,18 +118,18 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         if (!hasDetected)
         {
-            if (AiBehavior.TryUpdate(AiData, Room.Time, this))
+            if (AiBehavior.TryUpdate())
                 if (AiData.Intern_FireProjectile)
                     FireProjectile(false);
 
-            if (_currentState == GenericScript.AwareBehavior)
+            if (CurrentState == GenericScript.AwareBehavior)
             {
                 if (Room.Time >= _lastUpdate + GenericScript.genericScript_AwareBehaviorDuration)
-                    AiBehavior.NextState(this);
+                    AiBehavior.NextState();
             }
-            else if (_currentState == StateType.LookAround)
+            else if (CurrentState == StateType.LookAround)
                 if (Room.Time >= _lastUpdate + .5f)
-                    AiBehavior.NextState(this);
+                    AiBehavior.NextState();
         }
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
@@ -201,24 +199,22 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         lock (_enemyLock)
         {
             if (AiData != null && AiBehavior != null)
-                AiBehavior.Stop(AiData);
+                AiBehavior.Stop();
 
-            _currentState = behaviourType;
-            _index = EnemyModel.IndexOf(behaviourType);
+            CurrentState = behaviourType;
             _lastUpdate = Room.Time;
 
             var behaviour = EnemyModel.BehaviorData[behaviourType];
 
-            AiBehavior = behaviour.GetBaseBehaviour(Global, Generic);
+            AiBehavior = behaviour.GetBaseBehaviour(this);
 
-            var args = behaviour.GetStartArgs(this);
-
-            AiBehavior.Start(AiData, Room.Time, args);
+            AiBehavior.Start();
 
             Room.SendSyncEvent(
                 AISyncEventHelper.AIDo(
-                    Id, Room.Time, Position.x, Position.y, 1.0f,
-                    _index, args, targetX, targetY, direction, false
+                    Position.x, Position.y, 1.0f,
+                    targetX, targetY, direction, CurrentState == GenericScript.AwareBehavior,
+                    this
                 )
             );
         }
@@ -234,7 +230,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             return;
         }
 
-        if (_currentState != StateType.Shooting)
+        if (CurrentState != StateType.Shooting)
         {
             AiData.Sync_TargetPosX = player.TempData.Position.x;
             AiData.Sync_TargetPosY = player.TempData.Position.y;
@@ -250,19 +246,18 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     public override void SendAiData(Player player)
     {
         player.SendSyncEventToPlayer(
-            GetEnemyInit(
+            AISyncEventHelper.AIInit(
                 AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ,
                 AiData.Intern_SpawnPosX, AiData.Intern_SpawnPosY,
-                AiBehavior.GetBehaviorRatio(AiData, Room.Time),
-                EnemyModel.BehaviorData, Global, Generic
+                AiBehavior.GetBehaviorRatio(Room.Time), this
             )
         );
 
         player.SendSyncEventToPlayer(
             AISyncEventHelper.AIDo(
-                Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY,
-                1.0f, _index, AiBehavior.GetInitArgs(),
-                AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, false
+                AiData.Sync_PosX, AiData.Sync_PosY, 1.0f,
+                AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, CurrentState == GenericScript.AwareBehavior,
+                this
             )
         );
     }

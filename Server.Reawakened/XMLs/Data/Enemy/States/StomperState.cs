@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.Behaviors;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 
@@ -12,5 +12,6 @@ public class StomperState(float attackTime, float impactTime, float damageDistan
     public float DamageDistance => damageDistance;
     public float DamageOffset => damageOffset;
 
-    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorStomper(this);
+    public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
+        new AIBehaviorStomper(this, enemy);
 }

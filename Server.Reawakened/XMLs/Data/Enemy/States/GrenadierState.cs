@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.Behaviors;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 
@@ -17,5 +17,6 @@ public class GrenadierState(float gInTime, float gLoopTime, float gOutTime, bool
     public float ProjSpeed => projSpeed;
     public float MaxHeight => maxHeight;
 
-    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorGrenadier(this);
+    public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
+        new AIBehaviorGrenadier(this, enemy);
 }

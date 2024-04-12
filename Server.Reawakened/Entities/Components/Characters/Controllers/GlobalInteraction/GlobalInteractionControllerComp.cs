@@ -41,9 +41,9 @@ public class GlobalInteractionControllerComp : BaseAIStateMachine<GlobalInteract
 
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
-                Id, Room.Time, Position.X, Position.Y, Position.Z, Position.X, Position.Y,
-                0, 10, 10, 1, 1, 1,
-                0, 1, defaultProperties, behaviors, null, null
+                Id, Room,
+                Position.X, Position.Y, Position.Z, Position.X, Position.Y,
+                0, 10, 10, 1, 1, 1, 0, 1, defaultProperties, behaviors, null
             )
         );
 

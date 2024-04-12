@@ -54,6 +54,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public IServiceProvider Services { get; set; }
     public TimerThread TimerThread { get; set; }
 
+    public int MaxHealth;
     public int Health;
     public int Level;
 
@@ -71,7 +72,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public override void InitializeComponent()
     {
         Level = Room.LevelInfo.Difficulty + LevelOffset;
-        Health = 9999;
+
+        MaxHealth = 9999;
+        Health = MaxHealth;
 
         _spawnedEntityCount = 0;
         _nextSpawnRequestTime = 0;
@@ -193,20 +196,19 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
-                Id, Room.Time,
+                Id, Room,
                 Position.X, Position.Y, Position.Z, Position.X, Position.Y,
-                templateToSpawnAt.Generic.Patrol_InitialProgressRatio, Health, Health, 1, 1, 1,
-                0, Level, templateToSpawnAt.GlobalProperties, behaviors, null, null
+                templateToSpawnAt.Generic.Patrol_InitialProgressRatio, Health, MaxHealth,
+                1, 1, 1, 0, Level, templateToSpawnAt.GlobalProperties, behaviors, null
             )
         );
 
         Room.SendSyncEvent(
             AISyncEventHelper.AIDo(
-                Id, Room.Time,
-                0, 0,
-                1.0f, enemyToSpawn.IndexOf(StateType.Unknown), [],
-                Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY,
-                templateToSpawnAt.Generic.Patrol_ForceDirectionX, false
+                Id, Room,
+                0, 0, 1.0f,
+                Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY, templateToSpawnAt.Generic.Patrol_ForceDirectionX,
+                false, AISyncEventHelper.IndexOf(StateType.Unknown, enemyToSpawn.BehaviorData), string.Empty
             )
         );
 

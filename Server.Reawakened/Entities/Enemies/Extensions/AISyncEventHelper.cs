@@ -1,16 +1,27 @@
-﻿using Server.Reawakened.Entities.Components.AI.Stats;
+﻿using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
-using Server.Reawakened.XMLs.Data.Enemy.Models;
 
 namespace Server.Reawakened.Entities.Enemies.Extensions;
-public class AISyncEventHelper
+public static class AISyncEventHelper
 {
-    public static AIInit_SyncEvent AIInit(string id, float time, float posX, float posY, float posZ, float spawnX,
-        float spawnY, float behaviorRatio, int health, int maxHealth, float healthMod, float scaleMod, float resMod,
-        int stars, int level, GlobalProperties globalProperties, Dictionary<StateType, BaseState> states,
-        AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp)
+    public static AIInit_SyncEvent AIInit(float posX, float posY, float posZ, float spawnX, float spawnY, float behaviorRatio, BehaviorEnemy behaviorEnemy) =>
+        AIInit(
+            behaviorEnemy.Id, behaviorEnemy.Room,
+            posX, posY, posZ, spawnX, spawnY, behaviorRatio,
+            behaviorEnemy.Health, behaviorEnemy.MaxHealth,
+            behaviorEnemy.HealthModifier, behaviorEnemy.ScaleModifier, behaviorEnemy.ResistanceModifier,
+            behaviorEnemy.Status.Stars, behaviorEnemy.Level, behaviorEnemy.GlobalProperties, behaviorEnemy.EnemyModel.BehaviorData, behaviorEnemy
+        );
+
+    public static AIInit_SyncEvent AIInit(
+        string id, Room room,
+        float posX, float posY, float posZ, float spawnX, float spawnY, float behaviorRatio,
+        int health, int maxHealth, float healthModifier, float scaleModifier, float resistanceModifier,
+        int stars, int level, GlobalProperties globalProperties, Dictionary<StateType, BaseState> states, BehaviorEnemy enemy
+    )
     {
         var bList = new SeparatedStringBuilder('`');
 
@@ -19,7 +30,7 @@ public class AISyncEventHelper
             var bDefinesList = new SeparatedStringBuilder('|');
 
             bDefinesList.Append(Enum.GetName(behavior.Key));
-            bDefinesList.Append(behavior.Value.ToStateString(globalComp, genericComp));
+            bDefinesList.Append(behavior.Value.GetProperties(enemy));
             bDefinesList.Append(behavior.Value.ToResourcesString());
 
             bList.Append(bDefinesList.ToString());
@@ -28,23 +39,10 @@ public class AISyncEventHelper
         var behaviors = bList.ToString();
 
         var aiInit = new AIInit_SyncEvent(
-            id,
-            time,
-            posX,
-            posY,
-            posZ,
-            spawnX,
-            spawnY,
-            behaviorRatio,
-            health,
-            maxHealth,
-            healthMod,
-            scaleMod,
-            resMod,
-            stars,
-            level,
-            globalProperties.ToString(),
-            behaviors
+            id, room.Time,
+            posX, posY, posZ, spawnX, spawnY, behaviorRatio,
+            health, maxHealth, healthModifier, scaleModifier, resistanceModifier,
+            stars, level, globalProperties.ToString(), behaviors
         );
 
         aiInit.EventDataList[2] = spawnX;
@@ -54,29 +52,40 @@ public class AISyncEventHelper
         return aiInit;
     }
 
-    public static AIDo_SyncEvent AIDo(string id, float time, float posX, float posY, float speedFactor, int behaviorId, string[] inArgs, float targetPosX, float targetPosY, int direction, bool awareBool)
+    public static AIDo_SyncEvent AIDo(float posX, float posY, float speedFactor, float targetPosX, float targetPosY, int direction, bool awareBool, BehaviorEnemy enemy) =>
+        AIDo(enemy.Id, enemy.Room, posX, posY, speedFactor, targetPosX, targetPosY, direction, awareBool, IndexOf(enemy.CurrentState, enemy.EnemyModel.BehaviorData), enemy.AiBehavior.GetStartArgsString());
+
+    public static AIDo_SyncEvent AIDo(string id, Room room, float posX, float posY, float speedFactor, float targetPosX, float targetPosY, int direction, bool awareBool, int index, string startString)
     {
-        var argBuilder = new SeparatedStringBuilder('`');
-
-        foreach (var str in inArgs)
-            argBuilder.Append(str);
-
-        var args = argBuilder.ToString();
-
-        var aiDo = new AIDo_SyncEvent(new SyncEvent(id, SyncEvent.EventType.AIDo, time));
+        var aiDo = new AIDo_SyncEvent(new SyncEvent(id, SyncEvent.EventType.AIDo, room.Time));
 
         aiDo.EventDataList.Clear();
         aiDo.EventDataList.Add(posX);
         aiDo.EventDataList.Add(posY);
         aiDo.EventDataList.Add(speedFactor);
-        aiDo.EventDataList.Add(behaviorId);
-        aiDo.EventDataList.Add(args);
+        aiDo.EventDataList.Add(index);
+        aiDo.EventDataList.Add(startString);
         aiDo.EventDataList.Add(targetPosX);
         aiDo.EventDataList.Add(targetPosY);
         aiDo.EventDataList.Add(direction);
         aiDo.EventDataList.Add(awareBool ? 1 : 0);
 
         return aiDo;
+    }
+
+    public static int IndexOf(StateType behaviorType, Dictionary<StateType, BaseState> states)
+    {
+        var index = 0;
+
+        foreach (var behavior in states)
+        {
+            if (behavior.Key == behaviorType)
+                return index;
+
+            index++;
+        }
+
+        return 0;
     }
 
     public static AILaunchItem_SyncEvent AILaunchItem(string id, float time, float posX, float posY, float posZ, float speedX, float speedY, float lifeTime, int prjId, bool isGrenade)
@@ -111,7 +120,4 @@ public class AISyncEventHelper
 
     public static GlobalProperties CreateDefaultGlobalProperties() =>
         new(false, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Generic", string.Empty, false, false, 0);
-
-    public static GenericScriptPropertiesModel CreateDefaultGenericScript() =>
-        new(StateType.Unknown, StateType.Unknown, StateType.Unknown, 0, 0, 0);
 }

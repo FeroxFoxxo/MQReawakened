@@ -165,8 +165,8 @@ public class InternalEnemyData : InternalXml
                                                 break;
                                             case StateType.LookAround:
                                                 var lookTime = 0f;
-                                                var startDirection = 0f;
-                                                var forceDirection = 0f;
+                                                var startDirection = 0;
+                                                var forceDirection = 0;
                                                 var initialProgressRatio = 0f;
                                                 var snapOnGround = true;
 
@@ -177,10 +177,10 @@ public class InternalEnemyData : InternalXml
                                                             lookTime = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "startDirection":
-                                                            startDirection = float.Parse(behaviorData.Value);
+                                                            startDirection = int.Parse(behaviorData.Value);
                                                             break;
                                                         case "forceDirection":
-                                                            forceDirection = float.Parse(behaviorData.Value);
+                                                            forceDirection = int.Parse(behaviorData.Value);
                                                             break;
                                                         case "initialProgressRatio":
                                                             initialProgressRatio = float.Parse(behaviorData.Value);

@@ -1,10 +1,11 @@
 ﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorStinger(StingerState stingerState) : AIBaseBehavior
+public class AIBehaviorStinger(StingerState stingerState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
 {
     public float SpeedForward => stingerState.SpeedForward;
     public float SpeedBackward => stingerState.SpeedBackward;
@@ -16,15 +17,26 @@ public class AIBehaviorStinger(StingerState stingerState) : AIBaseBehavior
 
     public override bool ShouldDetectPlayers => false;
 
-    protected override AI_Behavior GetBehaviour() => new AI_Behavior_Stinger(SpeedForward, SpeedBackward, InDurationForward, AttackDuration, DamageAttackTimeOffset, InDurationBackward);
+    public override StateType State => StateType.Stinger;
 
-    public override object[] GetData() => [
+    public override object[] GetProperties() => [
         SpeedForward, SpeedBackward,
         InDurationForward, AttackDuration,
-        DamageAttackTimeOffset, InDurationBackward,
-        StingerDamageDistance
+        DamageAttackTimeOffset, InDurationBackward
     ];
 
-    public override void NextState(BehaviorEnemy enemy) =>
-        enemy.ChangeBehavior(enemy.GenericScript.AwareBehavior, enemy.Position.x, enemy.Position.y, enemy.AiData.Intern_Dir);
+    public override object[] GetStartArgs() =>
+        [
+            Enemy.AiData.Sync_TargetPosX,
+            Enemy.AiData.Sync_TargetPosY,
+            0, // Target will always be on first plane
+            Enemy.AiData.Intern_SpawnPosX,
+            Enemy.AiData.Intern_SpawnPosY,
+            Enemy.AiData.Intern_SpawnPosY,
+            SpeedForward,
+            SpeedBackward
+        ];
+
+    public override void NextState() =>
+        Enemy.ChangeBehavior(Enemy.GenericScript.AwareBehavior, Enemy.Position.x, Enemy.Position.y, Enemy.AiData.Intern_Dir);
 }

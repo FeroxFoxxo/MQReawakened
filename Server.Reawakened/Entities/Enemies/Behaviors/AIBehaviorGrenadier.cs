@@ -1,10 +1,11 @@
 ﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorGrenadier(GrenadierState grenadierState) : AIBaseBehavior
+public class AIBehaviorGrenadier(GrenadierState grenadierState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
 {
     public float GInTime => grenadierState.GInTime;
     public float GLoopTime => grenadierState.GLoopTime;
@@ -16,14 +17,15 @@ public class AIBehaviorGrenadier(GrenadierState grenadierState) : AIBaseBehavior
 
     public override bool ShouldDetectPlayers => false;
 
-    protected override AI_Behavior GetBehaviour() =>
-        new AI_Behavior_Grenadier(GInTime, GLoopTime, GOutTime, IsTracking, ProjCount, ProjSpeed, MaxHeight);
+    public override StateType State => StateType.Grenadier;
 
-    public override object[] GetData() => [
+    public override object[] GetProperties() => [
         GInTime, GLoopTime, GOutTime,
         ProjCount, ProjSpeed, MaxHeight
     ];
 
-    public override void NextState(BehaviorEnemy enemy) =>
-        enemy.ChangeBehavior(enemy.GenericScript.AwareBehavior, enemy.Position.x, enemy.Position.y, enemy.AiData.Intern_Dir);
+    public override object[] GetStartArgs() => [];
+
+    public override void NextState() =>
+        Enemy.ChangeBehavior(Enemy.GenericScript.AwareBehavior, Enemy.Position.x, Enemy.Position.y, Enemy.AiData.Intern_Dir);
 }

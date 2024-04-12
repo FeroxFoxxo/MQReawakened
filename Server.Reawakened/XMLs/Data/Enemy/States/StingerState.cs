@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.Behaviors;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
@@ -17,17 +16,6 @@ public class StingerState(float speedForward, float speedBackward, float inDurat
     public float InDurationBackward => inDurationBackward;
     public float StingerDamageDistance => stingerDamageDistance;
 
-    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorStinger(this);
-
-    public override string[] GetStartArgs(BehaviorEnemy behaviorEnemy) =>
-        [
-            behaviorEnemy.AiData.Sync_TargetPosX.ToString(),
-            behaviorEnemy.AiData.Sync_TargetPosY.ToString(),
-            "0",
-            behaviorEnemy.AiData.Intern_SpawnPosX.ToString(),
-            behaviorEnemy.AiData.Intern_SpawnPosY.ToString(),
-            behaviorEnemy.AiData.Intern_SpawnPosZ.ToString(),
-            SpeedForward.ToString(),
-            SpeedBackward.ToString()
-        ];
+    public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
+        new AIBehaviorStinger(this, enemy);
 }

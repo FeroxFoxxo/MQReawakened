@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.Behaviors;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 
@@ -17,5 +17,6 @@ public class AggroState(float aggroSpeed, float moveBeyondTargetDistance, bool s
     public float DetectionRangeUpY => detectionRangeUpY;
     public float DetectionRangeDownY => detectionRangeDownY;
 
-    public override AIBaseBehavior GetBaseBehaviour(AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) => new AIBehaviorAggro(this, globalComp);
+    public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
+        new AIBehaviorAggro(this, enemy);
 }
