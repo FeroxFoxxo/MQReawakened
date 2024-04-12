@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 

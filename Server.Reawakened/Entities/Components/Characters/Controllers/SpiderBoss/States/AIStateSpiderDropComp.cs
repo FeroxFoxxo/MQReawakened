@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
 
-public class AIStateSpiderDropComp : Component<AIStateSpiderDrop>
+public class AIStateSpiderDropComp : BaseAIState<AIStateSpiderDrop>
 {
     public float GetUpDuration => ComponentData.GetUpDuration;
     public float FloorY => ComponentData.FloorY;

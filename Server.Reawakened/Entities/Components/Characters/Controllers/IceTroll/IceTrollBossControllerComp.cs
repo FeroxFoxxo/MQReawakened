@@ -10,24 +10,24 @@ using Server.Reawakened.Rooms;
 using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.IceTrollController;
-public class IceTrollBossControllerComp : AiStateMachineComponent<IceTrollBossController>, IRecieverTriggered, IDestructible
+public class IceTrollBossControllerComp : BaseAIStateMachine<IceTrollBossController>, IRecieverTriggered, IDestructible
 {
     /* 
     * -- AI STATES --
-    * AIStateTrollVacuum
-    * AIStateTrollSmash
-    * AIStateTrollBreath
-    * AIStateTrollBase
-    * AIStateTrollIdle [DONE]
-    * AIStateTrollTaunt
-    * AIStateTrollRetreat [DONE]
-    * AIStateTrollPhase2
-    * AIStateTrollPhase1
-    * AIStateTrollPhase3
     * AIStateTrollArmorBreak
-    * AIStateTrollPhaseTrans
+    * AIStateTrollBase
+    * AIStateTrollBreath
     * AIStateTrollDeactivated
     * AIStateTrollEntrance [DONE]
+    * AIStateTrollIdle [DONE]
+    * AIStateTrollPhase1
+    * AIStateTrollPhase2
+    * AIStateTrollPhase3
+    * AIStateTrollPhaseTrans
+    * AIStateTrollRetreat [DONE]
+    * AIStateTrollSmash
+    * AIStateTrollTaunt
+    * AIStateTrollVacuum
     */
 
     public TimerThread TimerThread { get; set; }

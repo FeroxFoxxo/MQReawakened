@@ -4,7 +4,7 @@ using Server.Reawakened.Rooms.Models.Entities;
 using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
-public abstract class AiStateMachineComponent<T> : Component<T> where T : AIStateMachine
+public abstract class BaseAIStateMachine<T> : Component<T>
 {
     public GameObjectComponents PreviousState = [];
 

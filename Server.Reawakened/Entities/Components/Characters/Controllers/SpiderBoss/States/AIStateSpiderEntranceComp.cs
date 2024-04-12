@@ -1,8 +1,8 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
 
-public class AIStateSpiderEntranceComp : Component<AIStateSpiderEntrance>
+public class AIStateSpiderEntranceComp : BaseAIState<AIStateSpiderEntrance>
 {
     public float DelayBeforeEntranceDuration => ComponentData.DelayBeforeEntranceDuration;
     public float EntranceDuration => ComponentData.EntranceDuration;

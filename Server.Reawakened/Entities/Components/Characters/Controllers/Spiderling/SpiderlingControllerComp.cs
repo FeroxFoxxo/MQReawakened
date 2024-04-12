@@ -2,15 +2,16 @@
 using Server.Reawakened.Entities.DataComponentAccessors.Spiderling;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Spiderling;
-public class SpiderlingControllerComp : AiStateMachineInternalComponent<SpiderlingControllerMQR>
+public class SpiderlingControllerComp : BaseAIStateMachine<SpiderlingControllerMQR>
 {
     /* 
      * -- AI STATES --
-     * AIStatePatrol
-     * AIStateSpiderlingAttack
      * AIStateSpiderlingAlert
-     * AIStateStunned
+     * AIStateSpiderlingAttack
      * AIStateSpiderlingDigOut
+     * 
+     * AIStatePatrol
+     * AIStateStunned
     */
 
     public bool StartIdle => ComponentData.StartIdle;

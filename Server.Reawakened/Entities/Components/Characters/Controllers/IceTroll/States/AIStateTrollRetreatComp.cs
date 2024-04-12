@@ -1,7 +1,7 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.IceTroll.States;
-public class AIStateTrollRetreatComp : Component<AIStateTrollRetreat>
+public class AIStateTrollRetreatComp : BaseAIState<AIStateTrollRetreat>
 {
     public float TransTime => ComponentData.TransTime;
     public float DieDuration => ComponentData.DieDuration;

@@ -1,5 +1,5 @@
 ﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 

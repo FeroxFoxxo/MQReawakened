@@ -2,7 +2,7 @@
 using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 public interface IEnemyController
 {
     public string Name { get; }

@@ -2,16 +2,17 @@
 using Server.Reawakened.Entities.DataComponentAccessors.Hampster;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.HampsterController;
-public class HamsterControllerComp : AiStateMachineInternalComponent<HamsterControllerMQR>
+public class HamsterControllerComp : BaseAIStateMachine<HamsterControllerMQR>
 {
     /* 
      * -- AI STATES --
-     * AIStatePatrol
      * AIStateHamsterAttack
+     * 
      * AIStateIdle
-     * AIStateWait
-     * AIStateStunned
      * AIStateMove
+     * AIStatePatrol
+     * AIStateStunned
+     * AIStateWait
      * AIStateWait2
     */
 

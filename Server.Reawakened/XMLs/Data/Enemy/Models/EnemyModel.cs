@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
-using UnityEngine;
 
 namespace Server.Reawakened.XMLs.Data.Enemy.Models;
 

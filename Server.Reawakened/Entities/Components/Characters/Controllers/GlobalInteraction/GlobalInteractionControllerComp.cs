@@ -8,7 +8,7 @@ using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.GlobalInteraction;
 
-public class GlobalInteractionControllerComp : AiStateMachineComponent<GlobalInteractionController>
+public class GlobalInteractionControllerComp : BaseAIStateMachine<GlobalInteractionController>
 {
     /* 
      * -- AI STATES --

@@ -1,7 +1,7 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Drake.States;
-public class AIStateDrakePlacementComp : Component<AIStateDrakePlacement>
+public class AIStateDrakePlacementComp : BaseAIState<AIStateDrakePlacement>
 {
     public float MovementSpeed => ComponentData.MovementSpeed;
     public float AttackInAnimDuration => ComponentData.AttackInAnimDuration;

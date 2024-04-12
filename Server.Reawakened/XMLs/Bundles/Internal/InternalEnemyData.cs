@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Abstractions.Enums;
 using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
@@ -8,7 +7,6 @@ using Server.Reawakened.XMLs.Data.Enemy.Models;
 using Server.Reawakened.XMLs.Data.Enemy.States;
 using Server.Reawakened.XMLs.Data.LootRewards.Enums;
 using System.Xml;
-using UnityEngine;
 
 namespace Server.Reawakened.XMLs.Bundles.Internal;
 

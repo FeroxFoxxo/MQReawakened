@@ -1,12 +1,13 @@
 ﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Draicon;
-public class DraiconEnemyControllerComp : AiStateMachineComponent<DraiconEnemyController>
+public class DraiconEnemyControllerComp : BaseAIStateMachine<DraiconEnemyController>
 {
     /* 
      * -- AI STATES --
-     * AIStatePatrol
      * AIStateDraiconAttack
+     * 
+     * AIStatePatrol
      * AIStateWait
      * AIStateStunned
     */

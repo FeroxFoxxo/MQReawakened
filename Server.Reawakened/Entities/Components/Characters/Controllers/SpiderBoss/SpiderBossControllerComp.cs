@@ -11,33 +11,33 @@ using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss;
 
-public class SpiderBossControllerComp : AiStateMachineComponent<SpiderBossController>, IRecieverTriggered, IDestructible
+public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>, IRecieverTriggered, IDestructible
 {
     /* 
      * -- AI STATES --
-     * AIStateSpiderVenom
-     * AIStateSpiderWebs
      * AIStateSpiderBase
-     * AIStateSpiderPatrol
-     * AIStateSpiderRetreat [DONE]
-     * AIStateSpiderPhase2
-     * AIStateSpiderPhase1
-     * AIStateSpiderPhase3
-     * AIStateSpiderPhaseTrans
      * AIStateSpiderDeactivated
      * AIStateSpiderDrop [DONE]
-     * AIStateSpiderMove
      * AIStateSpiderIdle [DONE]
+     * AIStateSpiderMove
+     * AIStateSpiderPatrol
+     * AIStateSpiderPhase1
+     * AIStateSpiderPhase2
+     * AIStateSpiderPhase3
      * AIStateSpiderPhaseTeaser
+     * AIStateSpiderPhaseTrans
+     * AIStateSpiderRetreat [DONE]
+     * AIStateSpiderVenom
      * AIStateSpiderVineThrow
+     * AIStateSpiderWebs
      * 
      * -- BOSS ONLY --
-     * AIStateSpiderSwichSide
      * AIStateSpiderEntrance [DONE]
+     * AIStateSpiderSwichSide
      * 
      * -- TEASER ONLY --
-     * AIStateSpiderTeaserRetreat [DONE]
      * AIStateSpiderTeaserEntrance [DONE]
+     * AIStateSpiderTeaserRetreat [DONE]
     */
 
     public bool Teaser => ComponentData.Teaser;

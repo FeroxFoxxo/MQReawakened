@@ -1,6 +1,6 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.GlobalInteraction.States;
-public class AIStateGlobalInteractionDoneComp : Component<AIStateGlobalInteractionDone>
+public class AIStateGlobalInteractionDoneComp : BaseAIState<AIStateGlobalInteractionDone>
 {
 }
