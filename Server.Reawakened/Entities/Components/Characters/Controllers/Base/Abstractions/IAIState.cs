@@ -4,7 +4,7 @@ namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abst
 
 public interface IAIState
 {
-    public IAIStateMachine AIStateMachine { set; }
+    public void SetStateMachine(IAIStateMachine machine);
 
     public string StateName { get; }
 

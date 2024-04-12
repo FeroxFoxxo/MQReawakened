@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -10,10 +11,14 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
     public IAIState[] CurrentStates = [];
     public List<IAIState> NextStates = [];
 
+    public AIStateEnemy EnemyData;
+
+    public void SetAIStateEnemy(AIStateEnemy enemy) => EnemyData = enemy;
+
     public void AddNextState<AiState>() where AiState : class, IAIState
     {
         var state = Room.GetEntityFromId<AiState>(Id) ?? throw new NullReferenceException();
-        state.AIStateMachine = this;
+        state.SetStateMachine(this);
         NextStates.Add(state);
     }
 

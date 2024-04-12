@@ -1,37 +1,23 @@
 ﻿using Server.Reawakened.Entities.Enemies.EnemyTypes;
-using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
-using UnityEngine;
 
 namespace Server.Reawakened.Entities.Enemies.Services;
 public class Scanner(BehaviorEnemy enemy) : IScan
 {
     public override vector3 findTarget(float clockTime) =>
-        FindClosestPosition(enemy.Room.GetPlayers());
+        FindClosestPosition();
 
     public override vector3 findClosestTarget(float radius) =>
-        FindClosestPosition(enemy.Room.GetNearbyPlayers(enemy.Position, radius));
+        FindClosestPosition(radius);
 
-    private vector3 FindClosestPosition(IEnumerable<Player> players)
+    private vector3 FindClosestPosition(float radius = float.MaxValue)
     {
-        var firstPlayer = players.FirstOrDefault(x => x != null);
+        var firstPlayer = enemy.Room.GetClosetPlayer(enemy.Position, radius);
 
         if (firstPlayer == null)
             return new vector3(0, 0, 0);
 
-        var closestDistance = float.MaxValue;
         var closestPos = firstPlayer.TempData.Position;
-
-        foreach (var player in players)
-        {
-            var distance = Vector3.Distance(player.TempData.Position, enemy.Position);
-
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestPos = player.TempData.Position;
-            }
-        }
 
         return new vector3(closestPos.x, closestPos.y, closestPos.z);
     }

@@ -4,11 +4,9 @@ using static A2m.Server.ExtLevelEditor;
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 public abstract class BaseAIState<T> : Component<T>, IAIState
 {
-    private IAIStateMachine internalStateMachine;
+    public IAIStateMachine StateMachine;
 
     public abstract string StateName { get; }
-
-    IAIStateMachine IAIState.AIStateMachine { set => internalStateMachine = value; }
 
     public float StartTime = 0;
 
@@ -16,13 +14,14 @@ public abstract class BaseAIState<T> : Component<T>, IAIState
     public virtual void UpdateState() { }
     public virtual void StopState() { }
 
+    public virtual ComponentSettings GetSettings() => [];
+
     public void AddNextState<AiState>() where AiState : class, IAIState =>
-        internalStateMachine.AddNextState<AiState>();
+        StateMachine.AddNextState<AiState>();
 
     public void GoToNextState() =>
-        internalStateMachine.GoToNextState();
+        StateMachine.GoToNextState();
 
-    public virtual ComponentSettings GetSettings() => [];
     private ComponentSettings GetStartSettings() => ["ST", StartTime.ToString()];
 
     public ComponentSettings GetFullSettings()
@@ -31,4 +30,6 @@ public abstract class BaseAIState<T> : Component<T>, IAIState
         startSettings.AddRange(GetStartSettings());
         return startSettings;
     }
+
+    public void SetStateMachine(IAIStateMachine machine) => StateMachine = machine;
 }

@@ -20,17 +20,29 @@ public static class RoomExtensions
             player.SendSyncEventToPlayer(syncEvent);
     }
 
+    public static Player GetClosetPlayer(this Room room, Vector3 currentPosition, float radius)
+    {
+        Player closestPlayer = null;
+        var closestDistance = float.MaxValue;
+
+        foreach (var player in room.GetPlayers())
+        {
+            var distance = Vector3.Distance(player.TempData.Position, currentPosition);
+
+            if (distance <= radius && distance <= closestDistance)
+                closestPlayer = player;
+        }
+
+        return closestPlayer;
+    }
+
     public static List<Player> GetNearbyPlayers(this Room room, Vector3 currentPosition, float radius)
     {
         var playersNearby = new List<Player>();
 
         foreach (var player in room.GetPlayers())
-        {
-            LogFacade.debug($"Comparing player position {player.TempData.Position} to {currentPosition}");
-
             if (Vector3.Distance(player.TempData.Position, currentPosition) <= radius)
                 playersNearby.Add(player);
-        }
 
         return playersNearby;
     }
