@@ -33,7 +33,6 @@ public abstract class BaseEnemy : IDestructible
     public readonly InternalAchievement InternalAchievement;
     public readonly QuestCatalog QuestCatalog;
     public readonly ItemCatalog ItemCatalog;
-    public readonly InternalEnemyData InternalEnemy;
     public readonly ServerRConfig ServerRConfig;
 
     public readonly Room Room;
@@ -42,11 +41,9 @@ public abstract class BaseEnemy : IDestructible
 
     public string Id;
     public Vector3 Position;
-    public Rect DetectionRange;
     public EnemyCollider Hitbox;
     public string ParentPlane;
     public bool IsFromSpawner;
-    public float AwareBehaviorDuration;
 
     public readonly string PrefabName;
 
@@ -62,16 +59,12 @@ public abstract class BaseEnemy : IDestructible
 
     public BaseSpawnerControllerComp LinkedSpawner;
     public InterObjStatusComp Status;
-    public AIProcessData AiData;
 
     public GlobalProperties GlobalProperties;
-    public GenericScriptPropertiesModel GenericScript;
 
     public readonly BaseComponent Entity;
     public readonly IEnemyController EnemyController;
     public readonly EnemyModel EnemyModel;
-
-    public readonly AISyncEventHelper SyncBuilder;
 
     protected IServiceProvider Services;
 
@@ -83,10 +76,7 @@ public abstract class BaseEnemy : IDestructible
         Services = data.Services;
         EnemyController = data.EnemyController;
         EnemyModel = data.EnemyModel;
-
         IsFromSpawner = false;
-        AwareBehaviorDuration = 0;
-        SyncBuilder = new AISyncEventHelper();
 
         Logger = Services.GetRequiredService<ILogger<BaseEnemy>>();
         InternalAchievement = Services.GetRequiredService<InternalAchievement>();
@@ -127,7 +117,6 @@ public abstract class BaseEnemy : IDestructible
         GenerateHitbox(EnemyModel.Hitbox);
 
         GlobalProperties = AISyncEventHelper.CreateDefaultGlobalProperties();
-        GenericScript = AISyncEventHelper.CreateDefaultGenericScript();
 
         // Temporary values
 

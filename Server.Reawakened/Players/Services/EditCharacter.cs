@@ -183,7 +183,7 @@ public class EditCharacter(ServerConsole console, EventSink sink,
         }
 
         if (handler.IsPlayerOnline(user.Id, out var player))
-            player.LevelUp(levelId, logger);
+            player.LevelUp(levelId, config, logger);
         else
             character.SetLevelXp(levelId);
     }

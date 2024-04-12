@@ -87,7 +87,12 @@ public static class PlayerExtensions
 
         while (reputation > charData.ReputationForNextLevel)
         {
-            player.Character.SetLevelXp(charData.GlobalLevel + 1);
+            var newLevel = charData.GlobalLevel + 1;
+
+            if (newLevel > config.MaxLevel)
+                break;
+
+            player.Character.SetLevelXp(newLevel);
             player.SendLevelUp();
         }
 
@@ -244,8 +249,11 @@ public static class PlayerExtensions
             : string.Empty;
     }
 
-    public static void LevelUp(this Player player, int level, Microsoft.Extensions.Logging.ILogger logger)
+    public static void LevelUp(this Player player, int level, ServerRConfig config, Microsoft.Extensions.Logging.ILogger logger)
     {
+        if (level > config.MaxLevel)
+            level = config.MaxLevel;
+
         player.Character.SetLevelXp(level);
         player.SendLevelUp();
 

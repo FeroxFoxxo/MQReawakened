@@ -9,7 +9,9 @@ public class AIStateTrollEntranceComp : BaseAIState<AIStateTrollEntrance>
 
     public float DelayBeforeEntranceDuration => ComponentData.DelayBeforeEntranceDuration;
     public float EntranceDuration => ComponentData.EntranceDuration;
-    public float IntroDuration => ComponentData.IntroDuration;
+
+    // NOTE: UNKNOWN VALUE! EXAMPLE OF HOW TO OVERRIDE DEFAULT VALUES
+    public float IntroDuration => ComponentData.IntroDuration != default ? ComponentData.IntroDuration : 5f;
 
     public TimerThread TimerThread { get; set; }
 

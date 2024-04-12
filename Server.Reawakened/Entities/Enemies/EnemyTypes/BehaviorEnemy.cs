@@ -14,6 +14,7 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using Server.Reawakened.XMLs.Data.Enemy.Models;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Enemies.EnemyTypes;
@@ -23,6 +24,9 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     public AIStatsGlobalComp Global;
     public AIStatsGenericComp Generic;
     public AIBaseBehavior AiBehavior;
+    public AIProcessData AiData;
+
+    public GenericScriptPropertiesModel GenericScript;
 
     private object _enemyLock;
 

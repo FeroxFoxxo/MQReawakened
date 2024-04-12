@@ -62,7 +62,7 @@ public class State : ExternalProtocol
 
                     var attack = new ChargeAttack_SyncEvent(syncEvent);
 
-                    Logger.LogDebug("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
+                    Logger.LogTrace("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
                         "at speed ({X}, {Y}) with max pos ({X}, {Y}) for item id: '{Id}' and zone: {Zone}",
                         attack.IsCharging, attack.PosX, attack.PosY, attack.StartDelay,
                         attack.SpeedX, attack.SpeedY, attack.MaxPosX, attack.MaxPosY, attack.ItemId, attack.ZoneId);

@@ -20,7 +20,21 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
 
     public void AddNextState<AiState>() where AiState : class, IAIState
     {
-        var state = Room.GetEntityFromId<AiState>(Id) ?? throw new NullReferenceException();
+        var state = Room.GetEntityFromId<AiState>(Id);
+
+        if (state == null)
+        {
+            var stateName = typeof(AiState).Name;
+            var types = string.Join(", ", Room.GetEntitiesFromId<IAIState>(Id).Select(x => x.StateName));
+
+            Logger.LogError(
+                "Could not find state of {StateName} for {PrefabName}. Possible types: {Types}",
+                stateName, PrefabName, types
+            );
+
+            return;
+        }
+
         state.SetStateMachine(this);
         NextStates.Add(state);
     }
