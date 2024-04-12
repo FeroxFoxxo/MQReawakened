@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Rooms.Extensions;
@@ -10,6 +11,8 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
 {
     public IAIState[] CurrentStates = [];
     public List<IAIState> NextStates = [];
+
+    public ILogger<T> Logger { get; set; }
 
     public AIStateEnemy EnemyData;
 
@@ -28,7 +31,14 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
             return;
 
         foreach (var state in CurrentStates)
+        {
+            Logger.LogTrace(
+                "Stopping state '{State}' for '{Name} ({Id})'",
+                state.StateName, PrefabName, Id
+            );
+
             state.StopState();
+        }
 
         var syncEvent2 = new AiStateSyncEvent()
         {
@@ -40,7 +50,13 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
         NextStates.Clear();
 
         foreach (var state in CurrentStates)
+        {
+            Logger.LogTrace(
+                "Starting state '{State}' for '{Name} ({Id})'",
+                state.StateName, PrefabName, Id
+            );
             state.StartState();
+        }
 
         Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, Room));
     }

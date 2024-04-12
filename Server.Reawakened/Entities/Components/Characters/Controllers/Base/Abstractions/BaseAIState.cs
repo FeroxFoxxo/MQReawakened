@@ -27,7 +27,7 @@ public abstract class BaseAIState<T> : Component<T>, IAIState
     public ComponentSettings GetFullSettings()
     {
         var startSettings = GetStartSettings();
-        startSettings.AddRange(GetStartSettings());
+        startSettings.AddRange(GetSettings());
         return startSettings;
     }
 

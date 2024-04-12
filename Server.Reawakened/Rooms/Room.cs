@@ -423,17 +423,7 @@ public class Room : Timer
     public IEnemyController GetEnemyFromId(string id)
     {
         var enemy = GetEntityFromId<EnemyControllerComp>(id);
-
-        if (enemy != null)
-            return enemy;
-
-        var armoredEnemy = GetEntityFromId<ArmoredEnemyControllerComp>(id);
-
-        if (armoredEnemy != null)
-            return armoredEnemy;
-
-        Logger.LogError("Unknown enemy with id: {Id}", id);
-        return null;
+        return enemy != null ? enemy : GetEntityFromId<ArmoredEnemyControllerComp>(id);
     }
 
     public T[] GetEntitiesFromId<T>(string id) where T : class =>
