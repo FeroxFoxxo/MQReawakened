@@ -191,7 +191,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         var behaviors = new Dictionary<StateType, BaseState>
         {
-            { StateType.Idle, new IdleState([]) }
+            { StateType.Idle, new IdleState([], StateType.Idle) }
         };
 
         Room.SendSyncEvent(
@@ -199,7 +199,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
                 Id, Room,
                 Position.X, Position.Y, Position.Z, Position.X, Position.Y,
                 templateToSpawnAt.Generic.Patrol_InitialProgressRatio, Health, MaxHealth,
-                1, 1, 1, 0, Level, templateToSpawnAt.GlobalProperties, behaviors, null
+                1, 1, 1, 0, Level, templateToSpawnAt.GlobalProperties, behaviors
             )
         );
 

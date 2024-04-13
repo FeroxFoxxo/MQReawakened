@@ -4,18 +4,11 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorStomper(StomperProperties stomperState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
+public class AIBehaviorStomper(StomperProperties stomperState, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
 {
-    public float AttackTime => stomperState.attackDuration;
-    public float ImpactTime => stomperState.impactTime;
-    public float DamageDistance => stomperState.damageDistance;
-    public float DamageOffset => stomperState.damageOffset;
-
     public override bool ShouldDetectPlayers => false;
 
-    public override StateType State => StateType.Stomper;
-
-    public override object[] GetProperties() => [ AttackTime ];
+    public override AiProperties GetProperties() => stomperState;
 
     public override object[] GetStartArgs() => [];
 

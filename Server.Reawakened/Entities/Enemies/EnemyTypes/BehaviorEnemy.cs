@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
@@ -23,12 +24,14 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 {
     public AIStatsGlobalComp Global;
     public AIStatsGenericComp Generic;
-    public AIBaseBehavior AiBehavior;
     public AIProcessData AiData;
 
     public GenericScriptPropertiesModel GenericScript;
 
+    public Dictionary<StateType, AIBaseBehavior> Behaviors;
+
     public StateType CurrentState;
+    public AIBaseBehavior CurrentBehavior;
 
     private object _enemyLock;
     private float _lastUpdate;
@@ -70,6 +73,8 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             _collision = new Collisions(this),
             _suicide = new Runnable(this)
         };
+
+        Behaviors = EnemyModel.BehaviorData.ToDictionary(s => s.Key, s => s.Value.GetBaseBehaviour(this));
 
         Room.SendSyncEvent(
             AISyncEventHelper.AIInit(
@@ -113,23 +118,23 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     {
         var hasDetected = false;
 
-        if (AiBehavior.ShouldDetectPlayers)
+        if (CurrentBehavior.ShouldDetectPlayers)
             hasDetected = HasDetectedPlayers();
 
         if (!hasDetected)
         {
-            if (AiBehavior.TryUpdate())
+            if (CurrentBehavior.TryUpdate())
                 if (AiData.Intern_FireProjectile)
                     FireProjectile(false);
 
             if (CurrentState == GenericScript.AwareBehavior)
             {
                 if (Room.Time >= _lastUpdate + GenericScript.genericScript_AwareBehaviorDuration)
-                    AiBehavior.NextState();
+                    CurrentBehavior.NextState();
             }
             else if (CurrentState == StateType.LookAround)
                 if (Room.Time >= _lastUpdate + .5f)
-                    AiBehavior.NextState();
+                    CurrentBehavior.NextState();
         }
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
@@ -198,17 +203,21 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     {
         lock (_enemyLock)
         {
-            if (AiData != null && AiBehavior != null)
-                AiBehavior.Stop();
+            if (AiData.Intern_PendingSpeedFactor >= 0f)
+            {
+                AiData.Sync_SpeedFactor = AiData.Intern_PendingSpeedFactor;
+                AiData.Intern_AnimSpeed = AiData.Intern_PendingSpeedFactor;
+                AiData.Intern_PendingSpeedFactor = -1f;
+            }
 
+            CurrentBehavior?.Stop();
+
+            CurrentBehavior = Behaviors[behaviourType];
             CurrentState = behaviourType;
+
+            Behaviors[behaviourType].Start();
+
             _lastUpdate = Room.Time;
-
-            var behaviour = EnemyModel.BehaviorData[behaviourType];
-
-            AiBehavior = behaviour.GetBaseBehaviour(this);
-
-            AiBehavior.Start();
 
             Room.SendSyncEvent(
                 AISyncEventHelper.AIDo(
@@ -249,7 +258,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             AISyncEventHelper.AIInit(
                 AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ,
                 AiData.Intern_SpawnPosX, AiData.Intern_SpawnPosY,
-                AiBehavior.GetBehaviorRatio(Room.Time), this
+                CurrentBehavior.GetBehaviorRatio(Room.Time), this
             )
         );
 

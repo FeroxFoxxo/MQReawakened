@@ -4,25 +4,11 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorStinger(StingerProperties stingerState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
+public class AIBehaviorStinger(StingerProperties stingerState, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
 {
-    public float SpeedForward => stingerState.speedForward;
-    public float SpeedBackward => stingerState.speedBackward;
-    public float InDurationForward => stingerState.inDurationForward;
-    public float AttackDuration => stingerState.attackDuration;
-    public float DamageAttackTimeOffset => stingerState.damageAttackTimeOffset;
-    public float InDurationBackward => stingerState.inDurationBackward;
-    public float StingerDamageDistance => stingerState.damageDistance;
-
     public override bool ShouldDetectPlayers => false;
 
-    public override StateType State => StateType.Stinger;
-
-    public override object[] GetProperties() => [
-        SpeedForward, SpeedBackward,
-        InDurationForward, AttackDuration,
-        DamageAttackTimeOffset, InDurationBackward
-    ];
+    public override AiProperties GetProperties() => stingerState;
 
     public override object[] GetStartArgs() =>
         [
@@ -32,8 +18,8 @@ public class AIBehaviorStinger(StingerProperties stingerState, BehaviorEnemy ene
             Enemy.AiData.Intern_SpawnPosX,
             Enemy.AiData.Intern_SpawnPosY,
             Enemy.AiData.Intern_SpawnPosY,
-            SpeedForward,
-            SpeedBackward
+            stingerState.speedForward,
+            stingerState.speedBackward
         ];
 
     public override void NextState() =>

@@ -6,8 +6,8 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 
 namespace Server.Reawakened.XMLs.Data.Enemy.States;
-public class IdleState(List<EnemyResourceModel> resources, StateType stateType) : BaseState(resources)
+public class GoToState(List<EnemyResourceModel> resources, StateType stateType) : BaseState(resources)
 {
-    public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
-        new AIBehaviorIdle(enemy, stateType);
+    public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) => 
+        new AIBehaviorGoTo(enemy, stateType);
 }

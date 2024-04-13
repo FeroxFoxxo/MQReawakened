@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Entities.Enemies.EnemyTypes;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
@@ -13,16 +14,19 @@ public static class AISyncEventHelper
             posX, posY, posZ, spawnX, spawnY, behaviorRatio,
             behaviorEnemy.Health, behaviorEnemy.MaxHealth,
             behaviorEnemy.HealthModifier, behaviorEnemy.ScaleModifier, behaviorEnemy.ResistanceModifier,
-            behaviorEnemy.Status.Stars, behaviorEnemy.Level, behaviorEnemy.GlobalProperties, behaviorEnemy.EnemyModel.BehaviorData, behaviorEnemy
+            behaviorEnemy.Status.Stars, behaviorEnemy.Level, behaviorEnemy.GlobalProperties, behaviorEnemy.EnemyModel.BehaviorData, behaviorEnemy.Behaviors, behaviorEnemy
         );
 
     public static AIInit_SyncEvent AIInit(
         string id, Room room,
         float posX, float posY, float posZ, float spawnX, float spawnY, float behaviorRatio,
         int health, int maxHealth, float healthModifier, float scaleModifier, float resistanceModifier,
-        int stars, int level, GlobalProperties globalProperties, Dictionary<StateType, BaseState> states, BehaviorEnemy enemy
+        int stars, int level, GlobalProperties globalProperties, Dictionary<StateType, BaseState> states,
+        Dictionary<StateType, AIBaseBehavior> behaviors = null, BehaviorEnemy enemy = null
     )
     {
+        behaviors ??= states.ToDictionary(s => s.Key, s => s.Value.GetBaseBehaviour(enemy));
+
         var bList = new SeparatedStringBuilder('`');
 
         foreach (var behavior in states)
@@ -30,19 +34,20 @@ public static class AISyncEventHelper
             var bDefinesList = new SeparatedStringBuilder('|');
 
             bDefinesList.Append(Enum.GetName(behavior.Key));
-            bDefinesList.Append(behavior.Value.GetProperties(enemy));
+
+            bDefinesList.Append(behaviors[behavior.Key].GetProperties());
             bDefinesList.Append(behavior.Value.ToResourcesString());
 
             bList.Append(bDefinesList.ToString());
         }
 
-        var behaviors = bList.ToString();
+        var behaviorList = bList.ToString();
 
         var aiInit = new AIInit_SyncEvent(
             id, room.Time,
             posX, posY, posZ, spawnX, spawnY, behaviorRatio,
             health, maxHealth, healthModifier, scaleModifier, resistanceModifier,
-            stars, level, globalProperties.ToString(), behaviors
+            stars, level, globalProperties.ToString(), behaviorList
         );
 
         aiInit.EventDataList[2] = spawnX;
@@ -53,7 +58,7 @@ public static class AISyncEventHelper
     }
 
     public static AIDo_SyncEvent AIDo(float posX, float posY, float speedFactor, float targetPosX, float targetPosY, int direction, bool awareBool, BehaviorEnemy enemy) =>
-        AIDo(enemy.Id, enemy.Room, posX, posY, speedFactor, targetPosX, targetPosY, direction, awareBool, IndexOf(enemy.CurrentState, enemy.EnemyModel.BehaviorData), enemy.AiBehavior.GetStartArgsString());
+        AIDo(enemy.Id, enemy.Room, posX, posY, speedFactor, targetPosX, targetPosY, direction, awareBool, IndexOf(enemy.CurrentState, enemy.EnemyModel.BehaviorData), enemy.CurrentBehavior.GetStartArgsString());
 
     public static AIDo_SyncEvent AIDo(string id, Room room, float posX, float posY, float speedFactor, float targetPosX, float targetPosY, int direction, bool awareBool, int index, string startString)
     {

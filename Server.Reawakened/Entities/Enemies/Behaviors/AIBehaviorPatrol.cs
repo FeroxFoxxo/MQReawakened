@@ -1,29 +1,37 @@
-﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+﻿using Server.Base.Core.Extensions;
+using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorPatrol(PatrolProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
+public class AIBehaviorPatrol(PatrolProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
 {
-    public float MoveSpeed => Enemy.Global.Patrol_MoveSpeed != Enemy.Global.Default.Patrol_MoveSpeed ? Enemy.Global.Patrol_MoveSpeed : properties.patrol_MoveSpeed;
-    public bool SmoothMove => Enemy.Global.Patrol_SmoothMove != Enemy.Global.Default.Patrol_SmoothMove ? Enemy.Global.Patrol_SmoothMove : properties.patrol_SmoothMove;
-    public float EndPathWaitTime => Enemy.Global.Patrol_EndPathWaitTime != Enemy.Global.Default.Patrol_EndPathWaitTime ? Enemy.Global.Patrol_EndPathWaitTime : properties.patrol_EndPathWaitTime;
-    public float PatrolDistanceX => Enemy.Generic.PatrolX;
-    public float PatrolDistanceY => Enemy.Generic.PatrolY;
-    public int ForceDirectionX => Enemy.Generic.Patrol_ForceDirectionX;
-    public float InitialProgressRatio => Enemy.Generic.Patrol_InitialProgressRatio;
-
     public override bool ShouldDetectPlayers => true;
 
-    public override StateType State => StateType.Patrol;
+    public override AiProperties GetProperties() =>
+        new PatrolProperties(
+            Enemy.Global.Patrol_MoveSpeed != Enemy.Global.Default.Patrol_MoveSpeed ? Enemy.Global.Patrol_MoveSpeed : properties.patrol_MoveSpeed,
+            Enemy.Global.Patrol_SmoothMove != Enemy.Global.Default.Patrol_SmoothMove ? Enemy.Global.Patrol_SmoothMove : properties.patrol_SmoothMove,
+            Enemy.Global.Patrol_EndPathWaitTime != Enemy.Global.Default.Patrol_EndPathWaitTime ? Enemy.Global.Patrol_EndPathWaitTime : properties.patrol_EndPathWaitTime,
+            Enemy.Generic.PatrolX,
+            Enemy.Generic.PatrolY,
+            Enemy.Generic.Patrol_ForceDirectionX,
+            Enemy.Generic.Patrol_InitialProgressRatio
+        );
 
-    public override object[] GetProperties() => [
-        MoveSpeed, SmoothMove, EndPathWaitTime,
-        PatrolDistanceX, PatrolDistanceY, ForceDirectionX, InitialProgressRatio
-    ];
+    public override object[] GetStartArgs()
+    {
+        var behavior = Behavior as AI_Behavior_Patrol;
 
-    public override object[] GetStartArgs() => [ InitialProgressRatio ];
+        behavior.SetStats(Enemy.AiData);
+
+        var method = behavior.GetMethod("CalculateProgressRatio");
+        method.Invoke(behavior, [Enemy.AiData]);
+
+        var ratio = behavior.GetField("Patrol_InitialProgressRatio");
+        return [ratio];
+    }
 
     public override void NextState() { }
 }

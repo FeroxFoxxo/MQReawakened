@@ -3,14 +3,18 @@
 public enum StateType
 {
     Unknown,
-    Patrol,
-    Aggro,
+    Acting,
     LookAround,
+    Patrol,
     ComeBack,
+    Aggro,
     Shooting,
+    Projectile,
     Bomber,
     Grenadier,
     Stomper,
+    Idle,
     Stinger,
-    Idle
+    Spike,
+    GoTo
 }

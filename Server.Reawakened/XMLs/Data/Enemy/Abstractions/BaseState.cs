@@ -19,7 +19,4 @@ public abstract class BaseState(List<EnemyResourceModel> resources)
 
         return assetList.ToString();
     }
-
-    public object GetProperties(BehaviorEnemy enemy) =>
-        GetBaseBehaviour(enemy).GetPropertiesString();
 }
