@@ -1,13 +1,12 @@
 ﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
-using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorComeBack(ComeBackState comeBackState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
+public class AIBehaviorComeBack(ComeBackProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
 {
-    public float ComeBackSpeed => Enemy.Global.ComeBack_MoveSpeed != Enemy.Global.Default.ComeBack_MoveSpeed ? Enemy.Global.ComeBack_MoveSpeed : comeBackState.ComeBackSpeed;
+    public float ComeBackSpeed => Enemy.Global.ComeBack_MoveSpeed != Enemy.Global.Default.ComeBack_MoveSpeed ? Enemy.Global.ComeBack_MoveSpeed : properties.comeBack_MoveSpeed;
 
     public override bool ShouldDetectPlayers => true;
 

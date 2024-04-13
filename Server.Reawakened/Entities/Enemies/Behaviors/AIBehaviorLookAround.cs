@@ -1,17 +1,16 @@
 ﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
-using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorLookAround(LookAroundState lookAroundState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
+public class AIBehaviorLookAround(LookAroundProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
 {
-    public float LookTime => Enemy.Global.LookAround_LookTime != Enemy.Global.Default.LookAround_LookTime ? Enemy.Global.LookAround_LookTime : lookAroundState.LookTime;
-    public int StartDirection => Enemy.Global.LookAround_StartDirection != Enemy.Global.Default.LookAround_StartDirection ? Enemy.Global.LookAround_StartDirection : lookAroundState.StartDirection;
-    public int ForceDirection => Enemy.Global.LookAround_ForceDirection != Enemy.Global.Default.LookAround_ForceDirection ? Enemy.Global.LookAround_ForceDirection : lookAroundState.ForceDirection;
-    public float InitialProgressRatio => Enemy.Global.LookAround_InitialProgressRatio != Enemy.Global.Default.LookAround_InitialProgressRatio ? Enemy.Global.LookAround_InitialProgressRatio : lookAroundState.InitialProgressRatio;
-    public bool SnapOnGround => Enemy.Global.LookAround_SnapOnGround != Enemy.Global.Default.LookAround_SnapOnGround ? Enemy.Global.LookAround_SnapOnGround : lookAroundState.SnapOnGround;
+    public float LookTime => Enemy.Global.LookAround_LookTime != Enemy.Global.Default.LookAround_LookTime ? Enemy.Global.LookAround_LookTime : properties.lookAround_LookTime;
+    public int StartDirection => Enemy.Global.LookAround_StartDirection != Enemy.Global.Default.LookAround_StartDirection ? Enemy.Global.LookAround_StartDirection : properties.lookAround_StartDirection;
+    public int ForceDirection => Enemy.Global.LookAround_ForceDirection != Enemy.Global.Default.LookAround_ForceDirection ? Enemy.Global.LookAround_ForceDirection : properties.lookAround_ForceDirection;
+    public float InitialProgressRatio => Enemy.Global.LookAround_InitialProgressRatio != Enemy.Global.Default.LookAround_InitialProgressRatio ? Enemy.Global.LookAround_InitialProgressRatio : properties.lookAround_InitialProgressRatio;
+    public bool SnapOnGround => Enemy.Global.LookAround_SnapOnGround != Enemy.Global.Default.LookAround_SnapOnGround ? Enemy.Global.LookAround_SnapOnGround : properties.lookAround_SnapOnGround;
 
     public override bool ShouldDetectPlayers => true;
 

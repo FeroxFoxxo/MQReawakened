@@ -5,17 +5,8 @@ using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 
 namespace Server.Reawakened.XMLs.Data.Enemy.States;
-public class StingerState(float speedForward, float speedBackward, float inDurationForward, float attackDuration,
-    float damageAttackTimeOffset, float inDurationBackward, float stingerDamageDistance, List<EnemyResourceModel> resources) : BaseState(resources)
+public class StingerState(StingerProperties properties, List<EnemyResourceModel> resources) : BaseState(resources)
 {
-    public float SpeedForward => speedForward;
-    public float SpeedBackward => speedBackward;
-    public float InDurationForward => inDurationForward;
-    public float AttackDuration => attackDuration;
-    public float DamageAttackTimeOffset => damageAttackTimeOffset;
-    public float InDurationBackward => inDurationBackward;
-    public float StingerDamageDistance => stingerDamageDistance;
-
     public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
-        new AIBehaviorStinger(this, enemy);
+        new AIBehaviorStinger(properties, enemy);
 }

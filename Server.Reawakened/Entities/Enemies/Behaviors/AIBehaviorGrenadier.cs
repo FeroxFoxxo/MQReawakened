@@ -1,19 +1,18 @@
 ﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
-using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorGrenadier(GrenadierState grenadierState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
+public class AIBehaviorGrenadier(GrenadierProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
 {
-    public float GInTime => grenadierState.GInTime;
-    public float GLoopTime => grenadierState.GLoopTime;
-    public float GOutTime => grenadierState.GOutTime;
-    public bool IsTracking => grenadierState.IsTracking;
-    public int ProjCount => grenadierState.ProjCount;
-    public float ProjSpeed => grenadierState.ProjSpeed;
-    public float MaxHeight => grenadierState.MaxHeight;
+    public float GInTime => properties.inTime;
+    public float GLoopTime => properties.loopTime;
+    public float GOutTime => properties.outTime;
+    public bool IsTracking => properties.isTracking;
+    public int ProjCount => properties.projCount;
+    public float ProjSpeed => properties.projSpeed;
+    public float MaxHeight => properties.maxHeight;
 
     public override bool ShouldDetectPlayers => false;
 

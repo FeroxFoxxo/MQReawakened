@@ -123,7 +123,8 @@ public class InternalEnemyData : InternalXml
                                                             break;
                                                     }
 
-                                                state = new PatrolState(speed, smoothMove, endPathWaitTime, resources);
+                                                var patrolProperties = new PatrolProperties(speed, smoothMove, endPathWaitTime, 0, 0, 0, 0);
+                                                state = new PatrolState(patrolProperties, resources);
                                                 break;
                                             case StateType.Aggro:
                                                 var aggroSpeed = 0f;
@@ -160,8 +161,11 @@ public class InternalEnemyData : InternalXml
                                                             break;
                                                     }
 
-                                                state = new AggroState(aggroSpeed, moveBeyondTargetDistance, stayOnPatrolPath, aggroAttackBeyondPatrolLine,
-                                                    useAttackBeyondPatrolLine, detectionRangeUpY, detectionRangeDownY, resources);
+                                                var aggroProperties = new AggroProperties(
+                                                    aggroSpeed, moveBeyondTargetDistance, stayOnPatrolPath, aggroAttackBeyondPatrolLine,
+                                                    useAttackBeyondPatrolLine, detectionRangeUpY, detectionRangeDownY
+                                                );
+                                                state = new AggroState(aggroProperties, resources);
                                                 break;
                                             case StateType.LookAround:
                                                 var lookTime = 0f;
@@ -190,7 +194,8 @@ public class InternalEnemyData : InternalXml
                                                             break;
                                                     }
 
-                                                state = new LookAroundState(lookTime, startDirection, forceDirection, initialProgressRatio, snapOnGround, resources);
+                                                var lookAroundProperties = new LookAroundProperties(lookTime, startDirection, forceDirection, initialProgressRatio, snapOnGround);
+                                                state = new LookAroundState(lookAroundProperties, resources);
                                                 break;
                                             case StateType.ComeBack:
                                                 var comeBackSpeed = 1f;
@@ -203,7 +208,8 @@ public class InternalEnemyData : InternalXml
                                                             break;
                                                     }
 
-                                                state = new ComeBackState(comeBackSpeed, resources);
+                                                var comeBackProperties = new ComeBackProperties(comeBackSpeed);
+                                                state = new ComeBackState(comeBackProperties, resources);
                                                 break;
                                             case StateType.Shooting:
                                                 var nbBulletsPerRound = 1;
@@ -256,9 +262,13 @@ public class InternalEnemyData : InternalXml
                                                             break;
                                                     }
 
-                                                state = new ShootingState(nbBulletsPerRound, fireSpreadAngle, delayBetweenBullet, delayShootAnim,
+                                                var shootingProperties = new ShootingProperties(
+                                                    nbBulletsPerRound, fireSpreadAngle, delayBetweenBullet, delayShootAnim,
                                                     nbFireRounds, delayBetweenFireRound, startCoolDownTime, endCoolDownTime,
-                                                    projectileSpeed, fireSpreadClockwise, fireSpreadStartAngle, resources);
+                                                    projectileSpeed, fireSpreadClockwise, fireSpreadStartAngle
+                                                );
+
+                                                state = new ShootingState(shootingProperties, resources);
                                                 break;
                                             case StateType.Bomber:
                                                 var inTime = 0f;
@@ -279,7 +289,8 @@ public class InternalEnemyData : InternalXml
                                                             break;
                                                     }
 
-                                                state = new BomberState(inTime, loopTime, bombRadius, resources);
+                                                var bomberProperties = new BomberProperties(inTime, loopTime, bombRadius);
+                                                state = new BomberState(bomberProperties, resources);
                                                 break;
                                             case StateType.Grenadier:
                                                 var gInTime = 0f;
@@ -316,7 +327,8 @@ public class InternalEnemyData : InternalXml
                                                             break;
                                                     }
 
-                                                state = new GrenadierState(gInTime, gLoopTime, gOutTime, isTracking, projCount, projSpeed, maxHeight, resources);
+                                                var grenadierProperties = new GrenadierProperties(gInTime, gLoopTime, gOutTime, isTracking, projCount, projSpeed, maxHeight);
+                                                state = new GrenadierState(grenadierProperties, resources);
                                                 break;
                                             case StateType.Stomper:
                                                 var attackTime = 0f;
@@ -341,7 +353,8 @@ public class InternalEnemyData : InternalXml
                                                             break;
                                                     }
 
-                                                state = new StomperState(attackTime, impactTime, damageDistance, damageOffset, resources);
+                                                var stomperProperties = new StomperProperties(attackTime, impactTime, damageDistance, damageOffset);
+                                                state = new StomperState(stomperProperties, resources);
                                                 break;
                                             case StateType.Stinger:
                                                 var speedForward = 0f;
@@ -378,8 +391,11 @@ public class InternalEnemyData : InternalXml
                                                             break;
                                                     }
 
-                                                state = new StingerState(speedForward, speedBackward, inDurationForward, attackDuration,
-                                                    damageAttackTimeOffset, inDurationBackward, stingerDamageDistance, resources);
+                                                var stingerProperties = new StingerProperties(
+                                                    speedForward, speedBackward, inDurationForward, attackDuration,
+                                                    damageAttackTimeOffset, inDurationBackward, stingerDamageDistance
+                                                );
+                                                state = new StingerState(stingerProperties, resources);
                                                 break;
                                             default:
                                                 Logger.LogError("Unimplemented state for: {State} ({EnemyName})", stateType, prefabName);

@@ -1,19 +1,18 @@
 ﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
-using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorStinger(StingerState stingerState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
+public class AIBehaviorStinger(StingerProperties stingerState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
 {
-    public float SpeedForward => stingerState.SpeedForward;
-    public float SpeedBackward => stingerState.SpeedBackward;
-    public float InDurationForward => stingerState.InDurationForward;
-    public float AttackDuration => stingerState.AttackDuration;
-    public float DamageAttackTimeOffset => stingerState.DamageAttackTimeOffset;
-    public float InDurationBackward => stingerState.InDurationBackward;
-    public float StingerDamageDistance => stingerState.StingerDamageDistance;
+    public float SpeedForward => stingerState.speedForward;
+    public float SpeedBackward => stingerState.speedBackward;
+    public float InDurationForward => stingerState.inDurationForward;
+    public float AttackDuration => stingerState.attackDuration;
+    public float DamageAttackTimeOffset => stingerState.damageAttackTimeOffset;
+    public float InDurationBackward => stingerState.inDurationBackward;
+    public float StingerDamageDistance => stingerState.damageDistance;
 
     public override bool ShouldDetectPlayers => false;
 

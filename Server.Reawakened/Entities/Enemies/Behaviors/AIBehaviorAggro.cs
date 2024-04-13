@@ -1,19 +1,18 @@
 ﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
-using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorAggro(AggroState aggroState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
+public class AIBehaviorAggro(AggroProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
 {
-    public float AggroSpeed => Enemy.Global.Aggro_AttackSpeed != Enemy.Global.Default.Aggro_AttackSpeed ? Enemy.Global.Aggro_AttackSpeed : aggroState.AggroSpeed;
-    public float MoveBeyondTargetDistance => Enemy.Global.Aggro_MoveBeyondTargetDistance != Enemy.Global.Default.Aggro_MoveBeyondTargetDistance ? Enemy.Global.Aggro_MoveBeyondTargetDistance : aggroState.MoveBeyondTargetDistance;
-    public bool StayOnPatrolPath => Enemy.Global.Aggro_StayOnPatrolPath != Enemy.Global.Default.Aggro_StayOnPatrolPath ? Enemy.Global.Aggro_StayOnPatrolPath : aggroState.StayOnPatrolPath;
-    public float AttackBeyondPatrolLine => Enemy.Global.Aggro_AttackBeyondPatrolLine != Enemy.Global.Default.Aggro_AttackBeyondPatrolLine ? Enemy.Global.Aggro_AttackBeyondPatrolLine : aggroState.AttackBeyondPatrolLine;
-    public bool UseAttackBeyondPatrolLine => aggroState.UseAttackBeyondPatrolLine;
-    public float DetectionRangeUpY => aggroState.DetectionRangeUpY;
-    public float DetectionRangeDownY => aggroState.DetectionRangeDownY;
+    public float AggroSpeed => Enemy.Global.Aggro_AttackSpeed != Enemy.Global.Default.Aggro_AttackSpeed ? Enemy.Global.Aggro_AttackSpeed : properties.aggro_AttackSpeed;
+    public float MoveBeyondTargetDistance => Enemy.Global.Aggro_MoveBeyondTargetDistance != Enemy.Global.Default.Aggro_MoveBeyondTargetDistance ? Enemy.Global.Aggro_MoveBeyondTargetDistance : properties.aggro_MoveBeyondTargetDistance;
+    public bool StayOnPatrolPath => Enemy.Global.Aggro_StayOnPatrolPath != Enemy.Global.Default.Aggro_StayOnPatrolPath ? Enemy.Global.Aggro_StayOnPatrolPath : properties.aggro_StayOnPatrolPath;
+    public float AttackBeyondPatrolLine => Enemy.Global.Aggro_AttackBeyondPatrolLine != Enemy.Global.Default.Aggro_AttackBeyondPatrolLine ? Enemy.Global.Aggro_AttackBeyondPatrolLine : properties.aggro_AttackBeyondPatrolLine;
+    public bool UseAttackBeyondPatrolLine => properties.aggro_UseAttackBeyondPatrolLine;
+    public float DetectionRangeUpY => properties.aggro_DetectionRangeUpY;
+    public float DetectionRangeDownY => properties.aggro_DetectionRangeDownY;
 
     public override bool ShouldDetectPlayers => false;
 

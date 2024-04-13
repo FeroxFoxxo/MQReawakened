@@ -6,12 +6,8 @@ using Server.Reawakened.XMLs.Data.Enemy.Models;
 
 namespace Server.Reawakened.XMLs.Data.Enemy.States;
 
-public class PatrolState(float speed, bool smoothMove, float endPathWaitTime, List<EnemyResourceModel> resources) : BaseState(resources)
+public class PatrolState(PatrolProperties properties, List<EnemyResourceModel> resources) : BaseState(resources)
 {
-    public float Speed => speed;
-    public bool SmoothMove => smoothMove;
-    public float EndPathWaitTime => endPathWaitTime;
-
     public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
-        new AIBehaviorPatrol(this, enemy);
+        new AIBehaviorPatrol(properties, enemy);
 }

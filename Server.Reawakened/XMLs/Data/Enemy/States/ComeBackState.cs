@@ -5,10 +5,8 @@ using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 
 namespace Server.Reawakened.XMLs.Data.Enemy.States;
-public class ComeBackState(float comeBackSpeed, List<EnemyResourceModel> resources) : BaseState(resources)
+public class ComeBackState(ComeBackProperties properties, List<EnemyResourceModel> resources) : BaseState(resources)
 {
-    public float ComeBackSpeed => comeBackSpeed;
-
     public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
-        new AIBehaviorComeBack(this, enemy);
+        new AIBehaviorComeBack(properties, enemy);
 }

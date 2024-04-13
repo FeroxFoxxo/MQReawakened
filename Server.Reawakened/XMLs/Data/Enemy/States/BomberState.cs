@@ -6,12 +6,8 @@ using Server.Reawakened.XMLs.Data.Enemy.Models;
 
 namespace Server.Reawakened.XMLs.Data.Enemy.States;
 
-public class BomberState(float inTime, float loopTime, float bombRadius, List<EnemyResourceModel> resources) : BaseState(resources)
+public class BomberState(BomberProperties properties, List<EnemyResourceModel> resources) : BaseState(resources)
 {
-    public float InTime => inTime;
-    public float LoopTime => loopTime;
-    public float BombRadius => bombRadius;
-
     public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
-        new AIBehaviorBomber(this, enemy);
+        new AIBehaviorBomber(properties, enemy);
 }

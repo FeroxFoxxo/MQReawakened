@@ -1,23 +1,22 @@
 ﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
-using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorShooting(ShootingState shootingState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
+public class AIBehaviorShooting(ShootingProperties shootingState, BehaviorEnemy enemy) : AIBaseBehavior(enemy)
 {
-    public int NbBulletsPerRound => Enemy.Global.Shooting_NbBulletsPerRound != Enemy.Global.Default.Shooting_NbBulletsPerRound ? Enemy.Global.Shooting_NbBulletsPerRound : shootingState.NbBulletsPerRound;
-    public float FireSpreadAngle => Enemy.Global.Shooting_FireSpreadAngle != Enemy.Global.Default.Shooting_FireSpreadAngle ? Enemy.Global.Shooting_FireSpreadAngle : shootingState.FireSpreadAngle;
-    public float DelayBetweenBullet => Enemy.Global.Shooting_DelayBetweenBullet != Enemy.Global.Default.Shooting_DelayBetweenBullet ? Enemy.Global.Shooting_DelayBetweenBullet : shootingState.DelayBetweenBullet;
-    public float DelayShootAnim => Enemy.Global.Shooting_DelayShot_Anim != Enemy.Global.Default.Shooting_DelayShot_Anim ? Enemy.Global.Shooting_DelayShot_Anim : shootingState.DelayShootAnim;
-    public int NbFireRounds => Enemy.Global.Shooting_NbFireRounds != Enemy.Global.Default.Shooting_NbFireRounds ? Enemy.Global.Shooting_NbFireRounds : shootingState.NbFireRounds;
-    public float DelayBetweenFireRound => Enemy.Global.Shooting_DelayBetweenFireRound != Enemy.Global.Default.Shooting_DelayBetweenFireRound ? Enemy.Global.Shooting_DelayBetweenFireRound : shootingState.DelayBetweenFireRound;
-    public float StartCoolDownTime => Enemy.Global.Shooting_StartCoolDownTime != Enemy.Global.Default.Shooting_StartCoolDownTime ? Enemy.Global.Shooting_StartCoolDownTime : shootingState.StartCoolDownTime;
-    public float EndCoolDownTime => Enemy.Global.Shooting_EndCoolDownTime != Enemy.Global.Default.Shooting_EndCoolDownTime ? Enemy.Global.Shooting_EndCoolDownTime : shootingState.EndCoolDownTime;
-    public float ProjectileSpeed => Enemy.Global.Shooting_ProjectileSpeed != Enemy.Global.Default.Shooting_ProjectileSpeed ? Enemy.Global.Shooting_ProjectileSpeed : shootingState.ProjectileSpeed;
-    public bool FireSpreadClockwise => Enemy.Global.Shooting_FireSpreadClockwise != Enemy.Global.Default.Shooting_FireSpreadClockwise ? Enemy.Global.Shooting_FireSpreadClockwise : shootingState.FireSpreadClockwise;
-    public float FireSpreadStartAngle => Enemy.Global.Shooting_FireSpreadStartAngle != Enemy.Global.Default.Shooting_FireSpreadStartAngle ? Enemy.Global.Shooting_FireSpreadStartAngle : shootingState.FireSpreadStartAngle;
+    public int NbBulletsPerRound => Enemy.Global.Shooting_NbBulletsPerRound != Enemy.Global.Default.Shooting_NbBulletsPerRound ? Enemy.Global.Shooting_NbBulletsPerRound : shootingState.shooting_NbBulletsPerRound;
+    public float FireSpreadAngle => Enemy.Global.Shooting_FireSpreadAngle != Enemy.Global.Default.Shooting_FireSpreadAngle ? Enemy.Global.Shooting_FireSpreadAngle : shootingState.shooting_FireSpreadAngle;
+    public float DelayBetweenBullet => Enemy.Global.Shooting_DelayBetweenBullet != Enemy.Global.Default.Shooting_DelayBetweenBullet ? Enemy.Global.Shooting_DelayBetweenBullet : shootingState.shooting_DelayBetweenBullet;
+    public float DelayShootAnim => Enemy.Global.Shooting_DelayShot_Anim != Enemy.Global.Default.Shooting_DelayShot_Anim ? Enemy.Global.Shooting_DelayShot_Anim : shootingState.shooting_DelayShoot_Anim;
+    public int NbFireRounds => Enemy.Global.Shooting_NbFireRounds != Enemy.Global.Default.Shooting_NbFireRounds ? Enemy.Global.Shooting_NbFireRounds : shootingState.shooting_NbFireRounds;
+    public float DelayBetweenFireRound => Enemy.Global.Shooting_DelayBetweenFireRound != Enemy.Global.Default.Shooting_DelayBetweenFireRound ? Enemy.Global.Shooting_DelayBetweenFireRound : shootingState.shooting_DelayBetweenFireRound;
+    public float StartCoolDownTime => Enemy.Global.Shooting_StartCoolDownTime != Enemy.Global.Default.Shooting_StartCoolDownTime ? Enemy.Global.Shooting_StartCoolDownTime : shootingState.shooting_StartCoolDownTime;
+    public float EndCoolDownTime => Enemy.Global.Shooting_EndCoolDownTime != Enemy.Global.Default.Shooting_EndCoolDownTime ? Enemy.Global.Shooting_EndCoolDownTime : shootingState.shooting_EndCoolDownTime;
+    public float ProjectileSpeed => Enemy.Global.Shooting_ProjectileSpeed != Enemy.Global.Default.Shooting_ProjectileSpeed ? Enemy.Global.Shooting_ProjectileSpeed : shootingState.shooting_ProjectileSpeed;
+    public bool FireSpreadClockwise => Enemy.Global.Shooting_FireSpreadClockwise != Enemy.Global.Default.Shooting_FireSpreadClockwise ? Enemy.Global.Shooting_FireSpreadClockwise : shootingState.shooting_FireSpreadClockwise;
+    public float FireSpreadStartAngle => Enemy.Global.Shooting_FireSpreadStartAngle != Enemy.Global.Default.Shooting_FireSpreadStartAngle ? Enemy.Global.Shooting_FireSpreadStartAngle : shootingState.shooting_FireSpreadStartAngle;
 
     public override bool ShouldDetectPlayers => false;
 
