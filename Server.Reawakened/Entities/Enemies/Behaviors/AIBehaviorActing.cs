@@ -7,6 +7,7 @@ public class AIBehaviorActing(ActingProperties properties, BehaviorEnemy enemy, 
 {
     // TODO: CREATE LOGIC FLOW FOR ACTING STATES
     public ActingState ActingState = ActingState.Idle;
+
     public bool SnapOnGround => properties.lookAround_SnapOnGround;
 
     public override bool ShouldDetectPlayers => false;
