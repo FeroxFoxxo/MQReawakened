@@ -4,11 +4,11 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorStinger(StingerProperties stingerState, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
+public class AIBehaviorStinger(StingerProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
 {
     public override bool ShouldDetectPlayers => false;
 
-    public override AiProperties GetProperties() => stingerState;
+    public override AiProperties GetProperties() => properties;
 
     public override object[] GetStartArgs() =>
         [
@@ -17,9 +17,9 @@ public class AIBehaviorStinger(StingerProperties stingerState, BehaviorEnemy ene
             0, // Target will always be on first plane
             Enemy.AiData.Intern_SpawnPosX,
             Enemy.AiData.Intern_SpawnPosY,
-            Enemy.AiData.Intern_SpawnPosY,
-            stingerState.speedForward,
-            stingerState.speedBackward
+            Enemy.AiData.Intern_SpawnPosZ,
+            properties.speedForward,
+            properties.speedBackward
         ];
 
     public override void NextState() =>

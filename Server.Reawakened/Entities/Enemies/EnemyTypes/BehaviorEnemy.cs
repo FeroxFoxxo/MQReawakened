@@ -153,14 +153,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
             {
                 AiData.Sync_TargetPosX = player.TempData.Position.x;
-
-                AiData.Sync_TargetPosY = GenericScript.AttackBehavior == StateType.Grenadier ?
-                    Position.y : player.TempData.Position.y;
+                AiData.Sync_TargetPosY = player.TempData.Position.y;
 
                 ChangeBehavior(
                     GenericScript.AttackBehavior,
-                    player.TempData.Position.x,
-                    GenericScript.AttackBehavior == StateType.Grenadier ? player.TempData.Position.y : Position.y,
+                    AiData.Sync_TargetPosX,
+                    AiData.Sync_TargetPosY,
                     Generic.Patrol_ForceDirectionX
                 );
 

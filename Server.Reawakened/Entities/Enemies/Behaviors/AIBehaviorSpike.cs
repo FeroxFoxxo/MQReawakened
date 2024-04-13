@@ -8,6 +8,15 @@ public class AIBehaviorSpike(SpikeProperties properties, BehaviorEnemy enemy, St
     public override bool ShouldDetectPlayers => false;
 
     public override AiProperties GetProperties() => properties;
-    public override object[] GetStartArgs() => throw new NotImplementedException();
-    public override void NextState() => throw new NotImplementedException();
+    public override object[] GetStartArgs() =>
+        [
+            Enemy.AiData.Sync_TargetPosX,
+            Enemy.AiData.Sync_TargetPosY,
+            Enemy.AiData.Intern_SpawnPosZ,
+            properties.speedForward,
+            properties.speedBackward
+        ];
+
+    public override void NextState() =>
+        Enemy.ChangeBehavior(Enemy.GenericScript.AwareBehavior, Enemy.Position.x, Enemy.Position.y, Enemy.AiData.Intern_Dir);
 }
