@@ -13,5 +13,7 @@ public class AIBehaviorGoTo(BehaviorEnemy enemy, StateType state) : AIBaseBehavi
 
     public override AiProperties GetProperties() => new EmptyAiProperties();
     public override object[] GetStartArgs() => [GoToPosition.x, GoToPosition.y, GoToPosition.z, Velocity];
+
+    // TODO: ADD CODE FOR CALCULATING NEXT STATE
     public override void NextState() => throw new NotImplementedException();
 }
