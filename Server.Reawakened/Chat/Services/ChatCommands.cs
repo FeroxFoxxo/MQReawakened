@@ -9,6 +9,7 @@ using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Components.GameObjects.MonkeyGadgets;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
@@ -28,7 +29,7 @@ namespace Server.Reawakened.Chat.Services;
 
 public partial class ChatCommands(
     ItemCatalog itemCatalog, ServerRConfig config, ItemRConfig itemConfig, ILogger<ServerConsole> logger, FileLogger fileLogger,
-    WorldHandler worldHandler, InternalAchievement internalAchievement, InternalQuestItem questItem,
+    WorldHandler worldHandler, WorldStatistics worldStatistics, InternalAchievement internalAchievement, InternalQuestItem questItem,
     WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog,
     CharacterHandler characterHandler, AccountHandler accountHandler) : IService
 {
@@ -177,7 +178,7 @@ public partial class ChatCommands(
 
             player.Character.Data.Inventory.Items.TryAdd(item.ItemId, itemModel);
 
-            player.SetHotbarSlot(hotbarId - 1, itemModel, itemCatalog);
+            player.SetHotbarSlot(hotbarId - 1, itemModel, itemCatalog, worldStatistics);
 
             player.SendXt("hs", player.Character.Data.Hotbar);
 

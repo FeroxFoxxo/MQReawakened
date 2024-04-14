@@ -178,76 +178,96 @@ public abstract class BaseEnemy : IDestructible
         Room.AddCollider(Hitbox);
     }
 
-    public virtual void Damage(int damage, Player origin)
+    public virtual void Damage(Player player, int damage)
     {
         if (Room.IsObjectKilled(Id))
             return;
 
-        var trueDamage = damage - GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Enemy, Level);
+        var resistance = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Enemy, Level);
+        var resistedDamage = damage - resistance;
 
-        if (trueDamage <= 0)
-            trueDamage = 1;
+        if (resistedDamage <= 0)
+            resistedDamage = 1;
 
-        Health -= trueDamage;
+        Health -= resistedDamage;
 
-        if (Health < 0)
-            Health = 0;
-
-        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, trueDamage, 0, 0, origin == null ? string.Empty : origin.CharacterName, false, true));
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, resistance, resistedDamage, player == null ? string.Empty : player.CharacterName, false, true));
 
         if (Health <= 0)
+            KillEnemy(player);
+    }
+
+    public virtual void PetDamage(Player player)
+    {
+        if (Room.IsObjectKilled(Id))
+            return;
+
+        var pet = player.Character.Pets[player.Character.Data.PetItemId];  
+        var petDamage = (int)Math.Ceiling(MaxHealth * pet.PetAbilities.ItemEffectStatRatio);
+
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health -= petDamage, petDamage, 0, 0, player == null ? string.Empty : player.CharacterName, false, true));
+
+        if (Health <= 0)
+            KillEnemy(player);
+    }
+
+    public void KillEnemy(Player player)
+    {
+        if (OnDeathTargetId is not null and not "0")
+            foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(OnDeathTargetId))
+                trigger.Trigger(true);
+
+        SendRewards(player);
+
+        //For spawners
+        if (IsFromSpawner)
+            LinkedSpawner.NotifyEnemyDefeat(Id);
+
+        Destroy(Room, Id);
+        Room.KillEntity(Id);
+    }
+
+    private void SendRewards(Player player)
+    {
+        //The XP Reward here is not accurate, but pretty close
+        var xpAward = player != null ? DeathXp - (player.Character.Data.GlobalLevel - 1) * 5 : DeathXp;
+
+        if (xpAward < 1)
+            xpAward = 1;
+
+        Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, player == null ? "0" : player.GameObjectId, false));
+
+        //Dynamic Loot Drop
+        if (player != null)
         {
-            if (OnDeathTargetId is not null and not "0")
-                foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(OnDeathTargetId))
-                    trigger.Trigger(true);
+            player.AddReputation(xpAward > 0 ? xpAward : 1, ServerRConfig);
 
-            //The XP Reward here is not accurate, but pretty close
-            var xpAward = origin != null ? DeathXp - (origin.Character.Data.GlobalLevel - 1) * 5 : DeathXp;
-
-            if (xpAward < 1)
-                xpAward = 1;
-
-            Room.SendSyncEvent(AISyncEventHelper.AIDie(Id, Room.Time, string.Empty, xpAward > 0 ? xpAward : 1, true, origin == null ? "0" : origin.GameObjectId, false));
-
-            //Dynamic Loot Drop
-            if (origin != null)
+            if (EnemyModel.EnemyLootTable != null)
             {
-                origin.AddReputation(xpAward > 0 ? xpAward : 1, ServerRConfig);
+                var random = new System.Random();
 
-                if (EnemyModel.EnemyLootTable != null)
+                foreach (var drop in EnemyModel.EnemyLootTable)
                 {
-                    var random = new System.Random();
-
-                    foreach (var drop in EnemyModel.EnemyLootTable)
-                    {
-                        random.NextDouble();
-                        if (Level <= drop.MaxLevel && Level >= drop.MinLevel)
-                            origin.GrantDynamicLoot(Level, drop, ItemCatalog);
-                    }
+                    random.NextDouble();
+                    if (Level <= drop.MaxLevel && Level >= drop.MinLevel)
+                        player.GrantDynamicLoot(Level, drop, ItemCatalog);
                 }
-
-                //Achievements
-                origin.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, QuestCatalog);
-                origin.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, QuestCatalog);
-
-                origin.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory), EnemyController.PrefabName], InternalAchievement, Logger);
-                origin.CheckAchievement(AchConditionType.DefeatEnemyInLevel, [origin.Room.LevelInfo.Name], InternalAchievement, Logger);
             }
 
-            //For spawners
-            if (IsFromSpawner)
-            {
-                LinkedSpawner.NotifyEnemyDefeat(Id);
-                Room.RemoveEnemy(Id);
-            }
+            //Achievements
+            player.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, QuestCatalog);
+            player.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, QuestCatalog);
 
-            Room.KillEntity(origin, Id);
+            player.CheckAchievement(AchConditionType.DefeatEnemy, [PrefabName], InternalAchievement, Logger);
+            player.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory)], InternalAchievement, Logger);
+            player.CheckAchievement(AchConditionType.DefeatEnemy, [EnemyController.PrefabName], InternalAchievement, Logger);
+            player.CheckAchievement(AchConditionType.DefeatEnemyInLevel, [player.Room.LevelInfo.Name], InternalAchievement, Logger);
         }
     }
 
     public abstract void SendAiData(Player player);
 
-    public void Destroy(Player player, Room room, string id) => room.RemoveEnemy(id);
+    public void Destroy(Room room, string id) => room.RemoveEnemy(id);
 
     public void Heal(int healPoints)
     {

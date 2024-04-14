@@ -196,23 +196,21 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level
         );
 
-    public void ChangeBehavior(StateType behaviourType, float targetX, float targetY, int direction)
+    public void ChangeBehavior(StateType behaviorType, float targetX, float targetY, int direction)
     {
         lock (_enemyLock)
         {
             if (AiData != null && AiBehavior != null)
                 AiBehavior.Stop(AiData);
 
-            _currentState = behaviourType;
-            _index = EnemyModel.IndexOf(behaviourType);
+            _currentState = behaviorType;
+            _index = EnemyModel.IndexOf(behaviorType);
             _lastUpdate = Room.Time;
 
-            var behaviour = EnemyModel.BehaviorData[behaviourType];
+            var behavior = EnemyModel.BehaviorData[behaviorType];
+            var args = behavior.GetStartArgs(this);
 
-            AiBehavior = behaviour.GetBaseBehaviour(Global, Generic);
-
-            var args = behaviour.GetStartArgs(this);
-
+            AiBehavior = behavior.GetBaseBehaviour(Global, Generic);
             AiBehavior.Start(AiData, Room.Time, args);
 
             Room.SendSyncEvent(
@@ -224,11 +222,11 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         }
     }
 
-    public override void Damage(int damage, Player player)
+    public override void Damage(Player origin, int damage)
     {
-        base.Damage(damage, player);
+        base.Damage(origin, damage);
 
-        if (player == null)
+        if (origin == null)
         {
             Logger.LogError("Could not find player that damaged {PrefabName}! Returning...", PrefabName);
             return;
@@ -236,12 +234,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         if (_currentState != StateType.Shooting)
         {
-            AiData.Sync_TargetPosX = player.TempData.Position.x;
-            AiData.Sync_TargetPosY = player.TempData.Position.y;
+            AiData.Sync_TargetPosX = origin.TempData.Position.x;
+            AiData.Sync_TargetPosY = origin.TempData.Position.y;
 
             ChangeBehavior(
                 GenericScript.AttackBehavior,
-                player.TempData.Position.x, player.TempData.Position.y,
+                origin.TempData.Position.x, origin.TempData.Position.y,
                 Generic.Patrol_ForceDirectionX
             );
         }

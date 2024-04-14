@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
@@ -22,8 +23,8 @@ public class MeleeEntity : BaseProjectile
         var onGround = player.TempData.OnGround;
         var isRight = direction > 0;
 
-        var meleeWidth = onGround ? config.MeleeWidth : config.MeleeArialWidth;
-        var meleeHeight = onGround ? config.MeleeHeight : config.MeleeArialHeight;
+        var meleeWidth = onGround ? config.MeleeWidth : config.MeleeAerialWidth;
+        var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialHeight;
 
         _hitboxPosition = new Vector3 { x = position.x, y = position.y, z = position.z };
 

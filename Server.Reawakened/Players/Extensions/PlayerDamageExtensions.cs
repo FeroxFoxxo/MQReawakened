@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -69,10 +69,8 @@ public static class PlayerDamageExtensions
         if (player.Character.Data.CurrentLife < 0)
             player.Character.Data.CurrentLife = 0;
 
-        player.Room.SendSyncEvent(
-            new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            player.Character.Data.CurrentLife, player.Character.Data.MaxLife, "Hurt")
-        );
+        player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+            player.Character.Data.CurrentLife, player.Character.Data.MaxLife, "Hurt"));
 
         if (invincibilityDuration <= 0)
             invincibilityDuration = 1;
@@ -80,12 +78,12 @@ public static class PlayerDamageExtensions
         player.TemporaryInvincibility(timerThread, invincibilityDuration);
     }
 
-    public static void ApplyDamageByPercent(this Player player, double percentage, TimerThread timerThread)
+    public static void ApplyDamageByPercent(this Player player, double percentage, string hazardId, float duration, TimerThread timerThread)
     {
         var health = (double)player.Character.Data.MaxLife;
 
         var damage = Convert.ToInt32(Math.Ceiling(health * percentage));
 
-        ApplyCharacterDamage(player, damage, 1, timerThread);
+        ApplyCharacterDamage(player, damage, duration, timerThread);
     }
 }

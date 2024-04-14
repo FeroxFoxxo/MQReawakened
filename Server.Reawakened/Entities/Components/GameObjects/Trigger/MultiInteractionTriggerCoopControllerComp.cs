@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
+﻿using Server.Reawakened.Entities.AbstractComponents;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Trigger;
 

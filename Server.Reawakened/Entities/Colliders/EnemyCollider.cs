@@ -22,7 +22,7 @@ public class EnemyCollider(string id, Vector3 position, Vector2 size, string pla
                 if (Room.IsObjectKilled(Id))
                     return;
 
-                enemy.Damage(damage, attack.Owner);
+                enemy.Damage(attack.Owner, damage);
             }
         }
     }

@@ -2,11 +2,12 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Models.Pets;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
 
@@ -17,12 +18,16 @@ public static class CharacterInventoryExtensions
     public static void HandleItemEffect(this Player player, ItemDescription usedItem, TimerThread timerThread, ItemRConfig config, ILogger<PlayerStatus> logger)
     {
         var effect = usedItem.ItemEffects.FirstOrDefault();
+
         if (usedItem.ItemEffects.Count > 0)
             player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
                                 (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, true));
 
         switch (effect.Type)
         {
+            case ItemEffectType.PetRegainEnergy:
+                player.Character.Pets[player.Character.Data.PetItemId].GainEnergy(player, usedItem);
+                break;
             case ItemEffectType.Healing:
             case ItemEffectType.HealthBoost:
             case ItemEffectType.IncreaseHealing:
@@ -36,8 +41,6 @@ public static class CharacterInventoryExtensions
             case ItemEffectType.IncreaseAllResist:
             case ItemEffectType.Shield:
             case ItemEffectType.WaterBreathing:
-            case ItemEffectType.PetRegainEnergy:
-            case ItemEffectType.PetEnergyValue:
             case ItemEffectType.BananaMultiplier:
                 player.TempData.BananaBoostsElixir = true;
                 timerThread.DelayCall(SetBananaElixirTimer, player, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
@@ -170,17 +173,20 @@ public static class CharacterInventoryExtensions
                 player.Character.Data.Inventory.Items.Remove(item.Key);
     }
 
-    public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel, ItemCatalog catalog)
+    public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel, ItemCatalog catalog, WorldStatistics worldStatistics)
     {
         var hotbar = player.Character.Data.Hotbar;
 
-        if (!hotbar.HotbarButtons.TryAdd(slotId, itemModel))
+        if (hotbar.HotbarButtons.ContainsKey(slotId))
             hotbar.HotbarButtons[slotId] = itemModel;
 
-        CheckPetEquip(player, itemModel.ItemId, true, catalog);
+        else
+            hotbar.HotbarButtons.Add(slotId, itemModel);
+
+        CheckPetEquip(player, itemModel.ItemId, true, catalog, worldStatistics);
     }
 
-    public static void RemoveHotbarSlot(this Player player, int slotId, ItemCatalog catalog)
+    public static void RemoveHotbarSlot(this Player player, int slotId, ItemCatalog catalog, WorldStatistics worldStatistics)
     {
         var hotbar = player.Character.Data.Hotbar;
 
@@ -189,19 +195,38 @@ public static class CharacterInventoryExtensions
 
         hotbar.HotbarButtons.Remove(slotId);
 
-        CheckPetEquip(player, itemModel.ItemId, false, catalog);
+        CheckPetEquip(player, itemModel.ItemId, false, catalog, worldStatistics);
     }
 
-    private static void CheckPetEquip(Player player, int itemId, bool equiped, ItemCatalog catalog)
+    public static void CheckPetEquip(this Player player, int petId, bool equipped, ItemCatalog catalog, WorldStatistics worldStatistics)
     {
-        var item = catalog.GetItemFromId(itemId);
-
-        if (item.CategoryId != ItemCategory.Pet)
+        if (!catalog.GetItemFromId(petId).IsPet())
             return;
 
-        foreach (var roomPlayer in player.Room.GetPlayers())
-            roomPlayer.SendXt("ZE", player.UserId, item.ItemId, equiped ? 1 : 0);
+        var petList = player.Character.Pets;
+        var maxPetEnergy = worldStatistics.Statistics[ItemEffectType.PetEnergyValue][WorldStatisticsGroup.Pet]
+            .Where(x => x.Key == player.Character.Data.GlobalLevel).First().Value;
+        var petModel = new PetModel()
+        {
+            Id = petId,
+            MaxEnergy = maxPetEnergy,
+            AbilityCooldown = player.Room.Time
+        };
 
-        player.Character.Data.PetItemId = equiped ? item.ItemId : 0;
+        if (!petList.ContainsKey(petId))
+            petList.Add(petId, petModel);
+
+        else
+        {
+            //petList[itemId].CurrentEnergy = GetCurrentEnergy();
+            petList[petId] = petModel;
+        }
+
+        player.Character.Data.PetItemId = equipped ? petId : 0;
+
+        player.SendXt("Zg", player.UserId, maxPetEnergy);
+
+        foreach (var roomPlayer in player.Room.GetPlayers())
+            roomPlayer.SendXt("ZE", player.UserId, petId, equipped ? 1 : 0);
     }
 }

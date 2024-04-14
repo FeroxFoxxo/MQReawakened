@@ -24,7 +24,7 @@ public class HealerControllerComp : Component<HealerController>, IDestructible
 
     public override object[] GetInitData(Player player) => [_destroyed ? 0 : 1];
 
-    public void Destroy(Player player, Room room, string id) => _destroyed = true;
+    public void Destroy(Room room, string id) => _destroyed = true;
 
     public override void Update()
     {

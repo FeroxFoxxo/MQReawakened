@@ -210,9 +210,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             )
         );
 
-        var spawn = new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount);
-
-        Room.SendSyncEvent(spawn);
+        Room.SendSyncEvent(new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount));
 
         TimerThread.DelayCall(DelayedSpawnData, templateToSpawnAt, TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
     }

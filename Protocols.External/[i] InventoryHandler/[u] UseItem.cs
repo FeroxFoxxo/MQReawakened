@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
@@ -23,8 +24,9 @@ public class UseItem : ExternalProtocol
     public InternalRecipe RecipeCatalog { get; set; }
     public ItemRConfig ItemRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
-    public ILogger<PlayerStatus> Logger { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
+    public ILogger<PlayerStatus> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -76,7 +78,7 @@ public class UseItem : ExternalProtocol
     private void HandlePet(ItemDescription usedItem)
     {
         var itemModel = Player.Character.Data.Inventory.Items[usedItem.ItemId];
-        Player.SetHotbarSlot(ItemRConfig.PetSlotId, itemModel, ItemCatalog);
+        Player.SetHotbarSlot(ItemRConfig.PetSlotId, itemModel, ItemCatalog, WorldStatistics);
         SendXt("hs", Player.Character.Data.Hotbar);
     }
 

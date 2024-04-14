@@ -26,7 +26,6 @@ public class State : ExternalProtocol
 
     public SyncEventManager SyncEventManager { get; set; }
     public ServerRConfig ServerConfig { get; set; }
-    public ItemRConfig ItemRConfig { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public FileLogger FileLogger { get; set; }
     public TimerThread TimerThread { get; set; }

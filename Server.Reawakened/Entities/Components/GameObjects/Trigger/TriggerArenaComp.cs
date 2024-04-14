@@ -77,7 +77,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
             }
             else
                 foreach (var player in players)
-                    RemovePhysicalInteractor(player.GameObjectId);
+                    RemovePhysicalInteractor(player, player.GameObjectId);
         }
 
         _hasStarted = isActive;

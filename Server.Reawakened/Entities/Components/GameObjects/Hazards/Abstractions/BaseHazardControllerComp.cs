@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Colliders.Abstractions;
@@ -109,21 +110,19 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (!notifyCollisionEvent.Colliding || player.TempData.Invincible)
             return;
 
-        Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-            (int)ItemEffectType.BluntDamage, 0, 1, true, _id, false));
-
-        var enemy = Room.GetEnemy(_id);
-
-        if (enemy != null)
+        if (Room.ContainsEnemy(Id))
         {
-            var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) - player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
+            if (player.TempData.PetDefensiveBarrier)
+                Room.GetEnemy(Id).PetDamage(player);
 
-            player.ApplyCharacterDamage(damage > 0 ? damage : 1, 1, TimerThread);
-
-            return;
+            else
+                ApplyHazardEffect(player);
         }
 
-        player.ApplyDamageByPercent(HealthRatioDamage, TimerThread);
+        else
+            player.ApplyDamageByPercent(HealthRatioDamage, Id, HurtLength, TimerThread);
+            Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
+          (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));
     }
 
     public void ApplyHazardEffect(Player player)
@@ -139,7 +138,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         //For toxic purple cloud hazards with no components
         if (PrefabName.Contains(ItemRConfig.ToxicCloud))
             effectType = ItemEffectType.PoisonDamage;
-
         switch (effectType)
         {
             case ItemEffectType.SlowStatusEffect:
@@ -147,10 +145,13 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             case ItemEffectType.BluntDamage:
-                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-                (int)ItemEffectType.BluntDamage, 1, 1, true, _id, false));
+                var enemy = Room.GetEnemy(Id);
+                var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
+                             player.Character.Data.CalculateDefense(player, EffectType, ItemCatalog);
 
-                player.ApplyCharacterDamage(Damage, DamageDelay, TimerThread);
+                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
+                (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));
+                player.ApplyCharacterDamage(damage, DamageDelay, TimerThread);
                 break;
 
             case ItemEffectType.PoisonDamage:
@@ -159,7 +160,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             default:
-                //Waterbreathing.
+                //WaterBreathing.
                 if (HurtLength < 0)
                 {
                     if (IsActive)
@@ -178,9 +179,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 (int)ItemEffectType.FireDamage, 1, 1, true, _id, false));
 
                 player.ApplyCharacterDamage(Damage, DamageDelay, TimerThread);
-
-                player.TemporaryInvincibility(TimerThread, 1);
-
                 break;
         }
     }

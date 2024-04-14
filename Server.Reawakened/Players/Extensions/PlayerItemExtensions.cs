@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Network.Extensions;
@@ -9,6 +10,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
 using Random = System.Random;
 
@@ -72,7 +74,7 @@ public static class PlayerItemExtensions
             Thread = dropData.TimerThread,
             Damage = dropData.UsedItem.GetDamageAmount(dropData.Logger, dropData.ItemRConfig),
             DamageType = dropData.UsedItem.Elemental,
-            Player = player
+            Player = player,
         };
 
         dropData.TimerThread.DelayCall(ExplodeBomb, bombData, TimeSpan.FromMilliseconds(2850), TimeSpan.Zero, 1);

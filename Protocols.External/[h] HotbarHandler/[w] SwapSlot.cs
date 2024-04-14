@@ -9,8 +9,9 @@ public class SwapSlot : ExternalProtocol
 {
     public override string ProtocolName => "hw";
 
-    public ILogger<SetSlot> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
+    public ILogger<SetSlot> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -34,8 +35,8 @@ public class SwapSlot : ExternalProtocol
 
                 var otherItem = character.Data.Hotbar.HotbarButtons[hotbarSlotId];
 
-                Player.SetHotbarSlot(hotbarKVP.Key, otherItem, ItemCatalog);
-                Player.SetHotbarSlot(hotbarSlotId, item, ItemCatalog);
+                Player.SetHotbarSlot(hotbarKVP.Key, otherItem, ItemCatalog, WorldStatistics);
+                Player.SetHotbarSlot(hotbarSlotId, item, ItemCatalog, WorldStatistics);
             }
         }
 

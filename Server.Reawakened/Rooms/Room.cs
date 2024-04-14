@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Colliders;
@@ -264,7 +265,7 @@ public class Room : Timer
                     player.SendUserGoneDataTo(currentPlayer);
 
                 foreach (var entity in GetEntitiesFromType<TriggerCoopControllerComp>())
-                    entity.RemovePhysicalInteractor(player.GameObjectId);
+                    entity.RemovePhysicalInteractor(player, player.GameObjectId);
             }
 
             return;
@@ -494,7 +495,7 @@ public class Room : Timer
 
     // Killed Entities
 
-    public void AddKilledEntity(string killedEnemy)
+    public void AddKilledEnemy(string killedEnemy)
     {
         lock (_roomLock)
             _killedObjects.Add(killedEnemy);
@@ -512,7 +513,7 @@ public class Room : Timer
             return _killedObjects.Contains(id);
     }
 
-    public void KillEntity(Player player, string id)
+    public void KillEntity(string id)
     {
         lock (_roomLock)
             if (_killedObjects.Contains(id))
@@ -526,14 +527,14 @@ public class Room : Timer
         {
             if (destructible is BaseComponent component)
             {
-                destructible.Destroy(player, this, component.Id);
+                destructible.Destroy(this, component.Id);
 
                 Logger.LogDebug("Killed destructible {destructible} from GameObject {prefabname} with Id {id}",
                     destructible.GetType().Name, component.PrefabName, component.Id);
             }
         }
 
-        AddKilledEntity(id);
+        AddKilledEnemy(id);
     }
 
     // Enemies

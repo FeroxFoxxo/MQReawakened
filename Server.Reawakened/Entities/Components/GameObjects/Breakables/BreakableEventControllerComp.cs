@@ -100,19 +100,16 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         if (_health <= 0)
         {
+            origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
             origin.SendUpdatedInventory();
 
-            Room.KillEntity(origin, Id);
+            Room.KillEntity(Id);
+            Destroy(Room, Id);
         }
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
 
-    public void Destroy(Player player, Room room, string id)
-    {
-        player?.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
-
-        room.RemoveEnemy(id);
-    }
+    public void Destroy(Room room, string id) => room.RemoveEnemy(id);
 }

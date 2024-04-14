@@ -52,7 +52,7 @@ public class FinishedMinigame : ExternalProtocol
             return;
         }
 
-        trigger.RemovePhysicalInteractor(Player.GameObjectId);
+        trigger.RemovePhysicalInteractor(Player, Player.GameObjectId);
 
         if (trigger.GetPhysicalInteractorCount() <= 0)
         {
