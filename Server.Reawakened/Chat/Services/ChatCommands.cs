@@ -650,7 +650,7 @@ public partial class ChatCommands(
             return false;
         }
 
-        player.AddQuest(questData, questItem, config.GameVersion, itemCatalog, fileLogger, "Chat command", logger);
+        player.AddQuest(questData, questItem, itemCatalog, fileLogger, "Chat command", logger);
         Log($"Added quest {questData.Name} with id {questData.Id}.", player);
 
         return true;

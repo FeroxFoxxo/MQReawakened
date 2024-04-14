@@ -527,7 +527,7 @@ public class InternalEnemyData : InternalXml
 
                                                 var actingProperties = new ActingProperties(actingSnapOnGround);
 
-                                                state = new ActingState(actingProperties, resources, stateType);
+                                                state = new Data.Enemy.States.ActingState(actingProperties, resources, stateType);
                                                 break;
                                             default:
                                                 Logger.LogError("Unimplemented state for: {State} ({EnemyName})", stateType, prefabName);

@@ -2542,6 +2542,7 @@
         </EnemyCategory>
         <EnemyCategory name="Drake">
             <Enemy name="PF_Critter_Drake_Boss01" />
+            
             <Enemy name="PF_Critter_Drake01" />
         </EnemyCategory>
         <EnemyCategory name="Plankton">
@@ -2551,10 +2552,9 @@
             <Enemy name="PF_Spite_MiniRoboPlankton02" />
         </EnemyCategory>
         <EnemyCategory name="Draicon">
-            <Enemy name="PF_Spite_PR_XborgBoss01" />
+            <Enemy name="PF_Critter_Dragon_Boss01" />
             
-            <Enemy name="PF_Spite_PR_XborgPatroller01" />
-            <Enemy name="PF_Spite_PR_XborgShooter01" />
+            <Enemy name="PF_Critter_Dragon01" />
         </EnemyCategory>
         <EnemyCategory name="Hamster">
             <Enemy name="PF_Spite_Hamster_Ice" />
@@ -2568,6 +2568,12 @@
             <Enemy name="PF_Spite_TMNT_FootPatroller01" />
             <Enemy name="PF_Spite_TMNT_FootThrower01" />
         </EnemyCategory>
+        <EnemyCategory name="Xborg">
+            <Enemy name="PF_Spite_PR_XborgBoss01" />
+            
+            <Enemy name="PF_Spite_PR_XborgPatroller01" />
+            <Enemy name="PF_Spite_PR_XborgShooter01" />
+        </EnemyCategory>
         <EnemyCategory name="Foulbreath">
             <!-- Foulbreath (Boss) -->
             <Enemy name="Spite_IceTroll_Boss01" />
@@ -2578,9 +2584,6 @@
 
             <Enemy name="PF_Critter_Spider_Zombie" />
             <Enemy name="PF_Critter_Spider01_Ceiling_Shoot_Zombie" />
-
-            <Enemy name="PF_Critter_Dragon_Boss01" />
-            <Enemy name="PF_Critter_Dragon01" />
         </EnemyCategory>
     </AiType>
 </InternalEnemyData>

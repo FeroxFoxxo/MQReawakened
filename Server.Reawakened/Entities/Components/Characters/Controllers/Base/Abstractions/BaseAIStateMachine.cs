@@ -2,6 +2,7 @@
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Entities.Enemies.Models;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using static A2m.Server.ExtLevelEditor;
@@ -90,4 +91,6 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
         foreach (var state in CurrentStates)
             state.UpdateState();
     }
+
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
 }

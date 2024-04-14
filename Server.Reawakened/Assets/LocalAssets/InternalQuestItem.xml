@@ -1,33 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <QuestItems>
-    <GameVersion version="vEarly2013">
-        <Quest questId="803">
-            <Item itemName="WPN_1H_SwordBasic01" count="1" />
-        </Quest>
-    </GameVersion>
-    <GameVersion version="vLate2012">
-        <Quest questId="803">
-            <Item itemName="WPN_1H_SwordBasic01" count="1" />
-        </Quest>
-    </GameVersion>
-    <GameVersion version="vMinigames2012">
-        <Quest questId="803">
-            <Item itemName="WPN_1H_SwordBasic01" count="1" />
-        </Quest>
-    </GameVersion>
-    <GameVersion version="vPets2012">
-        <Quest questId="803">
-            <Item itemName="WPN_1H_SwordBasic01" count="1" />
-        </Quest>
-    </GameVersion>
-    <GameVersion version="vEarly2012">
-        <Quest questId="803">
-            <Item itemName="WPN_1H_SwordBasic01" count="1" />
-        </Quest>
-    </GameVersion>
-    <GameVersion version="v2011">
-        <Quest questId="803">
-            <Item itemName="WPN_1H_SwordBasic01" count="1" />
-        </Quest>
-    </GameVersion>
+    <Quest questId="803">
+        <Item itemName="WPN_1H_SwordBasic01" count="1" />
+    </Quest>
 </QuestItems>

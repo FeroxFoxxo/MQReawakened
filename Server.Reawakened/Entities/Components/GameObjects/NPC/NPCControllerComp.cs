@@ -511,7 +511,7 @@ public class NPCControllerComp : Component<NPCController>
                         var newQuest = QuestCatalog.GetQuestData(item.Key);
 
                         if (newQuest != null && player.Character.Data.CompletedQuests.Any(x => newQuest.PreviousQuests.Any(y => y.Key == x)))
-                            player.AddQuest(newQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}", Logger);
+                            player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}", Logger);
                     }
             }
 
@@ -541,7 +541,7 @@ public class NPCControllerComp : Component<NPCController>
         foreach (var givenQuest in GiverQuests)
             if (GetQuestType(player, givenQuest.Id) == NPCStatus.QuestAvailable)
             {
-                var quest = player.AddQuest(givenQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, NpcName, Logger);
+                var quest = player.AddQuest(givenQuest, QuestItems, ItemCatalog, FileLogger, NpcName, Logger);
 
                 SendNpcDialog(player, quest, QuestState.NOT_START);
 

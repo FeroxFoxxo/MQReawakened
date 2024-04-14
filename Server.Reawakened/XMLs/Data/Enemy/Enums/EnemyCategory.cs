@@ -21,6 +21,7 @@ public enum EnemyCategory
     Plankton,
     Hamster,
     Drake,
+    Xborg,
     Foulbreath,
     TMNT
 }
