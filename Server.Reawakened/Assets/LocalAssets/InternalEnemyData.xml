@@ -2529,12 +2529,10 @@
         <!-- Frostblaze (Mini-Boss) -->
         <!-- Spicicle (Mini-Boss) -->
         <!-- Snowberg (Mini-Boss) -->
-
-        <!-- Bombird incl Large Bombird (Elite) and Red Bombird (Elite) -->
+        <!-- Large Bombird (Elite) and Red Bombird (Elite) -->
         <!-- BlackFlame -->
-
         <!-- Darkfin (Mini-Boss) -->
-        <!-- Spinefish incl Large Spinefish (Elite) -->
+        <!-- Large Spinefish (Elite) -->
         
         <EnemyCategory name="Spiker">
             <!-- Spiker -->
@@ -2547,12 +2545,6 @@
             
             <Enemy name="PF_Critter_Drake01" />
         </EnemyCategory>
-        <EnemyCategory name="Plankton">
-            <Enemy name="PF_Spite_BossRoboPlankton04" />
-            
-            <Enemy name="PF_Spite_MiniRoboPlankton01" />
-            <Enemy name="PF_Spite_MiniRoboPlankton02" />
-        </EnemyCategory>
         <EnemyCategory name="Stormbeast">
             <Enemy name="PF_Critter_Dragon_Boss01" />
             <!-- Stormbeast -->
@@ -2564,26 +2556,12 @@
             <!-- Stomper -->
             <Enemy name="PF_Spite_Hamster_Shadow" />
         </EnemyCategory>
-        <EnemyCategory name="TMNT">
-            <Enemy name="PF_Spite_TMNT_Shredder01" />
-
-            <Enemy name="PF_Spite_TMNT_FootJumper01" />
-            <Enemy name="PF_Spite_TMNT_FootPatroller01" />
-            <Enemy name="PF_Spite_TMNT_FootThrower01" />
-        </EnemyCategory>
         <EnemyCategory name="Foulbreath">
             <!-- Foulbreath (Boss) -->
             <Enemy name="Spite_IceTroll_Boss01" />
         </EnemyCategory>
         
         <!-- BEHAVIOR ENEMIES TO BE ADDED -->
-        
-        <EnemyCategory name="PwrRngr">
-            <Enemy name="PF_Spite_PR_XborgBoss01" />
-            
-            <Enemy name="PF_Spite_PR_XborgPatroller01" />
-            <Enemy name="PF_Spite_PR_XborgShooter01" />
-        </EnemyCategory>
 
         <EnemyCategory name="Bathog">
             <Enemy name="PF_Spite_Bathog_Zombie" />
@@ -2592,6 +2570,28 @@
         <EnemyCategory name="Rachnoid">
             <Enemy name="PF_Critter_Spider_Zombie" />
             <Enemy name="PF_Critter_Spider01_Ceiling_Shoot_Zombie" />
+        </EnemyCategory>
+
+        <EnemyCategory name="TMNT">
+            <Enemy name="PF_Spite_TMNT_Shredder01" />
+
+            <Enemy name="PF_Spite_TMNT_FootJumper01" />
+            <Enemy name="PF_Spite_TMNT_FootPatroller01" />
+            <Enemy name="PF_Spite_TMNT_FootThrower01" />
+        </EnemyCategory>
+
+        <EnemyCategory name="PwrRngr">
+            <Enemy name="PF_Spite_PR_XborgBoss01" />
+
+            <Enemy name="PF_Spite_PR_XborgPatroller01" />
+            <Enemy name="PF_Spite_PR_XborgShooter01" />
+        </EnemyCategory>
+        
+        <EnemyCategory name="SpngBob">
+            <Enemy name="PF_Spite_BossRoboPlankton04" />
+
+            <Enemy name="PF_Spite_MiniRoboPlankton01" />
+            <Enemy name="PF_Spite_MiniRoboPlankton02" />
         </EnemyCategory>
     </AiType>
 </InternalEnemyData>
