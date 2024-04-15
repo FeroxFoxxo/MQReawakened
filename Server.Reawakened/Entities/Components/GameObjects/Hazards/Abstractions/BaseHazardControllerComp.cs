@@ -119,6 +119,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) - player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
 
             player.ApplyCharacterDamage(damage > 0 ? damage : 1, 1, TimerThread);
+            Logger.LogTrace("Attacked by entity: '{Prefab}' for damage: '{Damage}'", PrefabName, damage);
 
             return;
         }

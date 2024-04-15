@@ -14,7 +14,13 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
     {
         var stateMachine = Room.GetEntityFromId<IAIStateMachine>(Id);
 
-        stateMachine.SetAIStateEnemy(this);
+        if (stateMachine == null)
+        {
+            Logger.LogError("Enemy for '{Name}' does not have a state machine! " +
+                "Are you sure it is an AI state enemy?", PrefabName);
+        }
+        else
+            stateMachine.SetAIStateEnemy(this);
 
         Room.SendSyncEvent(
             GetBlankEnemyInit(
@@ -24,12 +30,6 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
         );
 
         base.Initialize();
-
-        if (stateMachine == null)
-        {
-            Logger.LogError("Enemy for '{Name}' does not have a state machine! " +
-                "Are you sure it is an AI state enemy?", PrefabName);
-        }
     }
 
     public override void SendAiData(Player player) =>
