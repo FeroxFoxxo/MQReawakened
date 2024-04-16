@@ -33,6 +33,8 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
         Trigger(ActiveByDefault);
     }
 
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
+
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
         if (syncEvent.Type != SyncEvent.EventType.TriggerReceiver)
