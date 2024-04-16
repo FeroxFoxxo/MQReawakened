@@ -99,9 +99,9 @@ public class UpdatePetMode : ExternalProtocol
                     (int)ItemEffectType.IncreaseAllResist, (int)Math.Ceiling(Player.Character.Data.MaxLife * petAbilityParams.DefensiveBonusRatio),
                     (int)petAbilityParams.Duration, true, ItemCatalog.GetItemFromId(petId).PrefabName, true));
 
-                TimerThread.DelayCall(DisablePetDefenseBoost, Player, TimeSpan.FromSeconds(petAbilityParams.InitialDelayBeforeUse),
-                    TimeSpan.FromSeconds(petAbilityParams.Frequency), petAbilityParams.HitCount);
                 Player.TempData.PetDefenseBoost = true;
+                TimerThread.DelayCall(DisablePetDefenseBoost, Player, TimeSpan.FromSeconds(petAbilityParams.Duration),
+                    TimeSpan.FromSeconds(petAbilityParams.Frequency), petAbilityParams.HitCount);
                 break;
 
             case PetAbilityType.DefensiveBarrier:
@@ -109,8 +109,8 @@ public class UpdatePetMode : ExternalProtocol
                  (int)ItemEffectType.IncreaseAllResist, (int)Math.Ceiling(Player.Character.Data.MaxLife * petAbilityParams.DefensiveBonusRatio),
                  (int)petAbilityParams.Duration, true, ItemCatalog.GetItemFromId(petId).PrefabName, true));
 
-                TimerThread.DelayCall(DisablePetDefensiveBarrier, Player, TimeSpan.FromSeconds(petAbilityParams.InitialDelayBeforeUse), TimeSpan.Zero, 1);
                 Player.TempData.PetDefensiveBarrier = true;
+                TimerThread.DelayCall(DisablePetDefensiveBarrier, Player, TimeSpan.FromSeconds(petAbilityParams.Duration), TimeSpan.Zero, petAbilityParams.HitCount);
                 break;
 
                 //case PetAbilityType.Unknown:

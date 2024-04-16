@@ -120,9 +120,11 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         }
 
         else
+        {
             player.ApplyDamageByPercent(HealthRatioDamage, Id, HurtLength, TimerThread);
             Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
           (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));
+        }
     }
 
     public void ApplyHazardEffect(Player player)
