@@ -165,12 +165,9 @@ public abstract class BaseEnemy : IDestructible
         var offsetX = box.XOffset * EnemyController.Scale.X - width / 2 * (EnemyController.Scale.X < 0 ? -1 : 1);
         var offsetY = box.YOffset * EnemyController.Scale.Y - height / 2 * (EnemyController.Scale.Y < 0 ? -1 : 1);
 
-        var position = new Vector3 { x = offsetX, y = offsetY, z = Position.z };
+        var position = new Vector3(Position.x, Position.y, Position.z);
 
-        Hitbox = new EnemyCollider(Id, position, new Vector2(width, height), ParentPlane, Room)
-        {
-            Position = new Vector3(Position.x, Position.y, Position.z)
-        };
+        Hitbox = new EnemyCollider(Id, position, new Rect(offsetX, offsetY, width, height), ParentPlane, Room);
 
         Room.AddCollider(Hitbox);
     }

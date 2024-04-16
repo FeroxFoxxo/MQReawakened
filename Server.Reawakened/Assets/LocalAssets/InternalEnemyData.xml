@@ -2524,13 +2524,16 @@
                 <Hitbox width="15" height="9" offsetX="0" offsetY="5.2" />
             </Enemy>
         </EnemyCategory>
+        
+        <!-- Unknown enemies (may need labeling) -->
 
         <!-- Icefire (Mini-Boss) -->
         <!-- Frostblaze (Mini-Boss) -->
         <!-- Spicicle (Mini-Boss) -->
         <!-- Snowberg (Mini-Boss) -->
-        <!-- Large Bombird (Elite) and Red Bombird (Elite) -->
-        <!-- BlackFlame -->
+        <!-- Large Bombird (Elite) --> 
+        <!-- Red Bombird (Elite) -->
+        <!-- BlackFlame (Mini-Boss) -->
         <!-- Darkfin (Mini-Boss) -->
         <!-- Large Spinefish (Elite) -->
         
@@ -2542,7 +2545,7 @@
         </EnemyCategory>
         <EnemyCategory name="Draicon">
             <Enemy name="PF_Critter_Drake_Boss01" />
-            
+            <!-- Draicon -->
             <Enemy name="PF_Critter_Drake01" />
         </EnemyCategory>
         <EnemyCategory name="Stormbeast">
@@ -2560,7 +2563,17 @@
             <!-- Foulbreath (Boss) -->
             <Enemy name="Spite_IceTroll_Boss01" />
         </EnemyCategory>
+
+        <EnemyCategory name="SpngBob">
+            <!-- Uses DRAICON AI State Controller -->
+            <Enemy name="PF_Spite_BossRoboPlankton04" />
+        </EnemyCategory>
         
+        <EnemyCategory name="TMNT">
+            <!-- Uses SPIDERLING AI State Controller -->
+            <Enemy name="PF_Spite_TMNT_Shredder01" />
+        </EnemyCategory>
+
         <!-- BEHAVIOR ENEMIES TO BE ADDED -->
 
         <EnemyCategory name="Bathog">
@@ -2573,8 +2586,6 @@
         </EnemyCategory>
 
         <EnemyCategory name="TMNT">
-            <Enemy name="PF_Spite_TMNT_Shredder01" />
-
             <Enemy name="PF_Spite_TMNT_FootJumper01" />
             <Enemy name="PF_Spite_TMNT_FootPatroller01" />
             <Enemy name="PF_Spite_TMNT_FootThrower01" />
@@ -2588,8 +2599,6 @@
         </EnemyCategory>
         
         <EnemyCategory name="SpngBob">
-            <Enemy name="PF_Spite_BossRoboPlankton04" />
-
             <Enemy name="PF_Spite_MiniRoboPlankton01" />
             <Enemy name="PF_Spite_MiniRoboPlankton02" />
         </EnemyCategory>

@@ -15,9 +15,6 @@ public class ItemRConfig : IRConfig
     public int[] StackedItemKit { get; }
     public int AmountToStack { get; }
 
-    public string NoEffect { get; }
-    public string ToxicCloud { get; }
-
     public int HealingStaffID { get; }
     public int MysticCharmID { get; }
 
@@ -93,9 +90,6 @@ public class ItemRConfig : IRConfig
         DefaultDropDamage = 35;
         BreathTimerDuration = 30;
         UnderwaterDamageInterval = 2;
-
-        NoEffect = "NoEffect";
-        ToxicCloud = "ToxicCloud";
 
         HealingStaffID = 396;
         MysticCharmID = 398;

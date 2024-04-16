@@ -106,7 +106,7 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
             break;
         }
 
-        logger.LogInformation("Launcher Directory: {Directory}", Path.GetDirectoryName(lWConfig.GameSettingsFile));
+        logger.LogInformation("Launcher directory: '{Directory}'", Path.GetDirectoryName(lWConfig.GameSettingsFile));
 
         var lastUpdate = DateTime.ParseExact(CurrentVersion.game.lastUpdate, lConfig.TimeFilter,
             CultureInfo.InvariantCulture);

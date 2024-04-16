@@ -331,7 +331,7 @@ public static class PlayerExtensions
 
         var character = player.Character.Data;
 
-        player.Room.Logger.LogDebug("Checking {type} objective for {prefab} id ({id}) of count {count}.", type, prefabName, gameObjectId, count);
+        player.Room.Logger.LogDebug("Checking {Type} objective for '{Prefab}' ({Id}) of count {Count}.", type, prefabName, gameObjectId, count);
 
         foreach (var quest in character.QuestLog)
         {

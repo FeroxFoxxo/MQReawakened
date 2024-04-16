@@ -528,7 +528,7 @@ public class Room : Timer
             {
                 destructible.Destroy(player, this, component.Id);
 
-                Logger.LogDebug("Killed destructible {destructible} from GameObject {prefabname} with Id {id}",
+                Logger.LogDebug("Killed destructible {Destructible} from game object '{PrefabName}' ({Id})",
                     destructible.GetType().Name, component.PrefabName, component.Id);
             }
         }

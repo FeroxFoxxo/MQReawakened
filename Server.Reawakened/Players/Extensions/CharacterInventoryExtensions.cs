@@ -61,7 +61,7 @@ public static class CharacterInventoryExtensions
                 logger.LogError("Unknown ItemEffectType of ({effectType}) for item {usedItemName}", effect.Type, usedItem.PrefabName);
                 return;
         }
-        logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for _player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
+        logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
     }
 
     public static void SetBananaElixirTimer(object playerObj)

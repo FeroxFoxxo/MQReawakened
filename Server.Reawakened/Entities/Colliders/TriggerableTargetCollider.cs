@@ -5,8 +5,8 @@ using Server.Reawakened.Rooms;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class TriggerableTargetCollider(string gameObjectId, Vector3 position, Vector2 size, string plane, Room room) :
-    BaseCollider(gameObjectId, position, size, plane, room, ColliderType.TerrainCube)
+public class TriggerableTargetCollider(string gameObjectId, Vector3 position, Rect box, string plane, Room room) :
+    BaseCollider(gameObjectId, position, box, plane, room, ColliderType.TerrainCube)
 {
     public override void SendCollisionEvent(BaseCollider received)
     {

@@ -14,7 +14,7 @@ public class Vector3Model
 
     public Vector3Model(float x, float y, float z, string id, Room room)
     {
-        InternalSetPosition(x, y, z);
+        SetPosition(x, y, z, true);
         _id = id;
         _room = room;
     }
@@ -22,34 +22,24 @@ public class Vector3Model
     public void SetPosition(Vector3 position) => SetPosition(position.x, position.y, position.z);
     public void SetPosition(vector3 position) => SetPosition(position.x, position.y, position.z);
 
-    public void SetPosition(float x, float y, float z)
-    {
-        if (_room == null)
-        {
-            InternalSetPosition(x, y, z);
-            return;
-        }
-
-        var collider = _room.GetColliderById(_id);
-
-        if (collider == null)
-        {
-            InternalSetPosition(x, y, z);
-            return;
-        }
-
-        collider.Position.x += x - X;
-        collider.Position.y += y - Y;
-        collider.Position.z += z - Z;
-
-        InternalSetPosition(x, y, z);
-    }
-
-    private void InternalSetPosition(float x, float y, float z)
+    public void SetPosition(float x, float y, float z, bool init = false)
     {
         X = x;
         Y = y;
         Z = z;
+
+        if (init)
+            return;
+
+        if (_room == null)
+            return;
+
+        var collider = _room.GetColliderById(_id);
+
+        if (collider == null)
+            return;
+
+        collider.Position = new Vector3(x, y, z);
     }
 
     public void SetPositionViaPlane(string parentPlane, string prefabName, Microsoft.Extensions.Logging.ILogger logger)
@@ -71,5 +61,5 @@ public class Vector3Model
     public static float Distance(Vector3Model left, Vector3Model right) =>
         Mathf.Sqrt(Mathf.Pow(left.X - right.X, 2) + Mathf.Pow(left.Y - right.Y, 2) + Mathf.Pow(left.Z - right.Z, 2));
 
-    public override string ToString() => $"X: {X}, Y: {Y}, Z: {Z}";
+    public override string ToString() => $"({X}, {Y}, {Z})";
 }

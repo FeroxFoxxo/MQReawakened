@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Server.Base.Logging;
 using Server.Reawakened.Entities.Colliders;
-using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Players;
@@ -158,10 +157,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
         if (TriggerOnNormalDamage || TriggerOnAirDamage || TriggerOnEarthDamage
             || TriggerOnFireDamage || TriggerOnIceDamage || TriggerOnLightningDamage)
         {
-            var size = new Vector2(Rectangle.Width, Rectangle.Height);
-            var position = BaseCollider.AdjustPosition(new Vector3(Position.X, Position.Y, Position.Z), new Vector2(size.x, 0));
-
-            Room.AddCollider(new TriggerableTargetCollider(Id, position, size, ParentPlane, Room));
+            var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+            var position = new Vector3(Position.X, Position.Y, Position.Z);
+            Room.AddCollider(new TriggerableTargetCollider(Id, position, box, ParentPlane, Room));
         }
     }
 

@@ -125,7 +125,7 @@ public static class GetInternalXml
                     value = item.ItemId;
                 else
                 {
-                    logger.LogError("Unknown item with prefab name: '{name}'", value);
+                    logger.LogError("Unknown item with prefab name: '{Name}'", value);
                     continue;
                 }
             }
@@ -186,7 +186,7 @@ public static class GetInternalXml
                 }
 
             if (type == AchConditionType.Invalid)
-                logger.LogError("Unknown condition '{Type}' for '{Name}' " +
+                logger.LogError("Unknown condition '{Type}' for: '{Name}' " +
                     "(Ach Id: {Id}, Cond Id: {CId})", strType, title, achievementId, id);
 
             if (string.IsNullOrEmpty(value))

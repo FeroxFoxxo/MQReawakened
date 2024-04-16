@@ -107,12 +107,29 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         Status = spawnerTemplate.Status;
     }
 
-    public bool PlayerInRange(Vector3 pos, bool limitedByPatrolLine) =>
-        AiData.Sync_PosX - (AiData.Intern_Dir < 0 ? GlobalProperties.Global_FrontDetectionRangeX : GlobalProperties.Global_BackDetectionRangeX) < pos.x &&
-            pos.x < AiData.Sync_PosX + (AiData.Intern_Dir < 0 ? GlobalProperties.Global_BackDetectionRangeX : GlobalProperties.Global_FrontDetectionRangeX) &&
-            AiData.Sync_PosY - GlobalProperties.Global_FrontDetectionRangeDownY < pos.y && pos.y < AiData.Sync_PosY + GlobalProperties.Global_FrontDetectionRangeUpY &&
-            Position.z < pos.z + 1 && Position.z > pos.z - 1 &&
-            (!limitedByPatrolLine || pos.x > AiData.Intern_MinPointX - 1.5 && pos.x < AiData.Intern_MaxPointX + 1.5);
+    public bool PlayerInRange(Vector3 pos, bool limitedByPatrolLine)
+    {
+        var originBounds = new Vector3
+        (
+            AiData.Sync_PosX - (AiData.Intern_Dir < 0 ? GlobalProperties.Global_FrontDetectionRangeX : GlobalProperties.Global_BackDetectionRangeX),
+            AiData.Sync_PosY - GlobalProperties.Global_FrontDetectionRangeDownY,
+            Position.z - 1
+        );
+
+        var maxBounds = new Vector3
+        (
+            AiData.Sync_PosX + (AiData.Intern_Dir < 0 ? GlobalProperties.Global_BackDetectionRangeX : GlobalProperties.Global_FrontDetectionRangeX),
+            AiData.Sync_PosY + GlobalProperties.Global_FrontDetectionRangeUpY,
+            Position.z + 1
+        );
+
+        var minPatrolBound = AiData.Intern_MinPointX - 1.5;
+        var maxPatrolBound = AiData.Intern_MaxPointX + 1.5;
+
+        return pos.x > originBounds.x && pos.x < maxBounds.x &&
+            pos.y > originBounds.y && pos.y < maxBounds.y &&
+            (!limitedByPatrolLine || pos.x > minPatrolBound && pos.x < maxPatrolBound);
+    }
 
     public override void InternalUpdate()
     {
@@ -141,7 +158,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
         Hitbox.Position = new Vector3(
             AiData.Sync_PosX,
-            AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.ColliderBox.Height : 0),
+            AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.BoundingBox.height : 0),
             Position.z
         );
     }

@@ -21,7 +21,7 @@ public class OperationMode(EventSink eventSink, ServerConsole console, InternalR
         if (config.NetworkType == NetworkType.Unknown)
             ChangeNetworkType();
 
-        logger.LogInformation("Playing as: {Mode} connected to {Address}", config.NetworkType,
+        logger.LogInformation("Playing as: '{Mode}' connected to '{Address}'", config.NetworkType.ToString().ToLower(),
             config.GetHostAddress());
     }
 

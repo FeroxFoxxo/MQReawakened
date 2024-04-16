@@ -50,8 +50,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     {
         SetId(Id);
 
-        Enum.TryParse(HurtEffect, true, out EffectType);
-
         //Activate timed hazards.
         if (ActiveDuration > 0 && DeactivationDuration > 0)
         {
@@ -59,12 +57,37 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             TimerThread.DelayCall(ActivateHazard, null, TimeSpan.Zero, TimeSpan.Zero, 1);
         }
 
+        switch (HurtEffect)
+        {
+            case "NoEffect":
+                // Temporary mapping for NoEffect
+                EffectType = ItemEffectType.Unknown_70;
+                return;
+            case "StandardDamage":
+                EffectType = ItemEffectType.BluntDamage;
+                break;
+            default:
+                //Many Toxic Clouds seem to have no components, so we find the object with PrefabName to create its colliders. (Seek Moss Temple for example)
+                if (PrefabName.Contains("ToxicCloud"))
+                    EffectType = ItemEffectType.PoisonDamage;
+                else if (!Enum.TryParse(HurtEffect, true, out EffectType))
+                    Logger.LogError("Could not find effect type of: '{effect}' for '{prefabname}' ({id})!", HurtEffect, PrefabName, Id);
+
+                break;
+        }
+
         //Prevents enemies and hazards sharing same collider Ids.
         if (_enemyController == null)
-            //Hazards which also contain the LinearPlatform component already have colliders and do not need a new one created. They have NoEffect.
-            //Many Toxic Clouds seem to have no components, so we find the object with PrefabName to create its colliders. (Seek Moss Temple for example)
-            if (HurtEffect != ItemRConfig.NoEffect || PrefabName.Contains(ItemRConfig.ToxicCloud))
-                TimerThread.DelayCall(ColliderCreationDelay, null, TimeSpan.FromSeconds(3), TimeSpan.Zero, 1);
+        {
+            //Prevents spider webs from inaccurately adjusting collider positioning.
+            if (EffectType == ItemEffectType.SlowStatusEffect)
+                Rectangle.X = 0;
+
+            var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+            var position = new Vector3(Position.X, Position.Y, Position.Z);
+
+            Room.AddCollider(new HazardEffectCollider(_id, position, box, ParentPlane, Room, Logger));
+        }
     }
 
     public void SetId(string id)
@@ -73,34 +96,18 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         _enemyController = Room.GetEnemyFromId(id);
     }
 
-    //Creates hazard colliders after enemy colliders are created to prevent duplicated collider ID bugs.
-    public void ColliderCreationDelay(object _)
-    {
-        //Prevents spider webs from inaccurately adjusting collider positioning.
-        if (EffectType == ItemEffectType.SlowStatusEffect)
-            Rectangle.X = 0;
-
-        var size = new Vector2(Rectangle.X, Rectangle.Y);
-        var pos = BaseCollider.AdjustPosition(new Vector3(Position.X, Position.Y, Position.Z), size);
-
-
-        Room.AddCollider(new HazardEffectCollider(_id, pos, size, ParentPlane, Room, Logger));
-    }
-
     public void DeactivateHazard(object _)
     {
         IsActive = false;
 
-        TimerThread.DelayCall(ActivateHazard, null,
-                TimeSpan.FromSeconds(DeactivationDuration), TimeSpan.Zero, 1);
+        TimerThread.DelayCall(ActivateHazard, null, TimeSpan.FromSeconds(DeactivationDuration), TimeSpan.Zero, 1);
     }
 
     public void ActivateHazard(object _)
     {
         IsActive = true;
 
-        TimerThread.DelayCall(DeactivateHazard, null,
-                TimeSpan.FromSeconds(ActiveDuration), TimeSpan.Zero, 1);
+        TimerThread.DelayCall(DeactivateHazard, null, TimeSpan.FromSeconds(ActiveDuration), TimeSpan.Zero, 1);
     }
 
     //Standard Hazards
@@ -133,16 +140,16 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             TimedHazard && !IsActive || HitOnlyVisible && player.TempData.Invisible)
             return;
 
-        Enum.TryParse(HurtEffect, true, out ItemEffectType effectType);
-
         Damage = (int)Math.Ceiling(player.Character.Data.MaxLife * HealthRatioDamage);
 
-        //For toxic purple cloud hazards with no components
-        if (PrefabName.Contains(ItemRConfig.ToxicCloud))
-            effectType = ItemEffectType.PoisonDamage;
+        Logger.LogInformation("Applying {statusEffect} to {characterName} from {prefabname}", EffectType, player.CharacterName, PrefabName);
 
-        switch (effectType)
+        switch (EffectType)
         {
+            // Temporary mapping for no effect.
+            case ItemEffectType.Unknown_70:
+                return;
+
             case ItemEffectType.SlowStatusEffect:
                 ApplySlowEffect(player);
                 break;
@@ -160,6 +167,8 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             default:
+                Logger.LogInformation("Unknown status effect {statusEffect} from {prefabname}", HurtEffect, PrefabName);
+
                 //Waterbreathing.
                 if (HurtLength < 0)
                 {
@@ -171,16 +180,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                     return;
                 }
 
-                if (!player.TempData.Invincible)
-                    Logger.LogInformation("Applied {statusEffect} to {characterName}", EffectType, player.CharacterName);
-
-                //Used by Flamer and Dragon Statues which emit fire damage.
-                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-                (int)ItemEffectType.FireDamage, 1, 1, true, _id, false));
+                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage, 1, 1, true, _id, false));
 
                 player.ApplyCharacterDamage(Damage, DamageDelay, TimerThread);
-
-                player.TemporaryInvincibility(TimerThread, 1);
 
                 break;
         }

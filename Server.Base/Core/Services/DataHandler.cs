@@ -52,7 +52,7 @@ public abstract class DataHandler<T>(EventSink sink, ILogger<T> logger, Internal
 
                 var count = _data.Count;
 
-                Logger.LogInformation("Loaded {Count} {Name}{Plural} to memory from {Directory}", count,
+                Logger.LogInformation("Loaded {Count} {Name}{Plural} to memory from '{Directory}'", count,
                     typeof(T).Name.ToLower(), count != 1 ? "s" : string.Empty, filePath);
 
                 streamReader.Close();

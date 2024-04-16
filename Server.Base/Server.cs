@@ -25,7 +25,7 @@ public class Server(ILogger<Server> logger) : Module(logger)
 
         {
             services.AddHostedService<ServerWorker>();
-            Logger.LogTrace("   Loaded: Service Worker");
+            Logger.LogTrace("Loaded: Service Worker");
         }
 
         Logger.LogInformation("Loaded hosted services");
@@ -34,7 +34,7 @@ public class Server(ILogger<Server> logger) : Module(logger)
 
         foreach (var service in modules.GetServices<IService>())
         {
-            Logger.LogTrace("   Loaded: {ServiceName}", service.Name);
+            Logger.LogTrace("Loaded: {ServiceName}", service.Name);
             services.AddSingleton(service);
         }
 
@@ -44,7 +44,7 @@ public class Server(ILogger<Server> logger) : Module(logger)
 
         foreach (var eventSink in modules.GetServices<IEventSink>())
         {
-            Logger.LogTrace("   Loaded: {EventSink}", eventSink.Name);
+            Logger.LogTrace("Loaded: {EventSink}", eventSink.Name);
             services.AddSingleton(eventSink);
         }
 
@@ -53,7 +53,7 @@ public class Server(ILogger<Server> logger) : Module(logger)
         Logger.LogDebug("Loading modules");
         foreach (var service in modules.GetServices<Module>())
         {
-            Logger.LogTrace("   Loaded: {ServiceName}", service.Name);
+            Logger.LogTrace("Loaded: {ServiceName}", service.Name);
             services.AddSingleton(service);
         }
 

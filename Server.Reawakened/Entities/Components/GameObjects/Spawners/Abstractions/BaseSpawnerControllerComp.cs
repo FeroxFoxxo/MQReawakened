@@ -208,7 +208,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
                 Id, Room,
                 0, 0, 1.0f,
                 Position.X + SpawningOffsetX, Position.Y + SpawningOffsetY, templateToSpawnAt.Generic.Patrol_ForceDirectionX,
-                false, AISyncEventHelper.IndexOf(StateType.Unknown, enemyToSpawn.BehaviorData), string.Empty
+                false, AISyncEventHelper.IndexOf(StateType.Unknown, enemyToSpawn.BehaviorData ?? []), string.Empty
             )
         );
 

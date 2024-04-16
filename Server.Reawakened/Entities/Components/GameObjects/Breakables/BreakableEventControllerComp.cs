@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners.Abstractions;
@@ -40,10 +41,10 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         MaxHealth = 1;
         _health = MaxHealth;
 
+        var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
         var position = new Vector3(Position.X, Position.Y, Position.Z);
-        var size = new Vector2(Rectangle.Width, Rectangle.Height);
 
-        Room.AddCollider(new BreakableCollider(Id, position, size, ParentPlane, Room));
+        Room.AddCollider(new BreakableCollider(Id, position, box, ParentPlane, Room));
     }
 
     public void PostInit()
@@ -83,7 +84,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         NumberOfHits++;
 
-        Logger.LogInformation("Object name: {args1} Object Id: {args2}", PrefabName, Id);
+        Logger.LogInformation("Damaged object: '{PrefabName}' ({Id})", PrefabName, Id);
 
         if (damagable is IBreakable breakable)
             if (breakable.NumberOfHitsToBreak > 0)

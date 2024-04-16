@@ -56,7 +56,7 @@ public static class GetInfoFile
             break;
         }
 
-        logger.LogInformation("{Type} Cache Directory: {Directory}", cacheName, Path.GetDirectoryName(defaultFile));
+        logger.LogInformation("{Type} cache directory: '{Directory}'", cacheName, Path.GetDirectoryName(defaultFile));
 
         return defaultFile;
     }

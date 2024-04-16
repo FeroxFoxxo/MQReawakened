@@ -16,7 +16,7 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
 
         if (stateMachine == null)
         {
-            Logger.LogError("Enemy for '{Name}' does not have a state machine! " +
+            Logger.LogError("Enemy for: '{Name}' does not have a state machine! " +
                 "Are you sure it is an AI state enemy?", PrefabName);
         }
         else
