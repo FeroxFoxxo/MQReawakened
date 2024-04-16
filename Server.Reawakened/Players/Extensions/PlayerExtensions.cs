@@ -226,6 +226,9 @@ public static class PlayerExtensions
             error = e.Message;
         }
 
+        var petId = player.Character.Data.PetItemId;
+        player.Character.Pets[petId].AbilityCooldown = 0;
+
         player.SendXt("lw", error, levelName, surroundingLevels);
     }
 

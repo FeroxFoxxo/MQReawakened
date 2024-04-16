@@ -286,7 +286,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
     {
         var players = Room.GetPlayers();
 
-        // GoTo must be outside for if someone in the room has interactd with the trigger in the past (i.e. in public rooms like CTS)
+        // GoTo must be outside for if someone in the room has interacted with the trigger in the past (i.e. in public rooms like CTS)
         if (player != null)
             foreach (var rPlayer in players.Where(x => CurrentPhysicalInteractors.Contains(x.GameObjectId)))
             {

@@ -74,8 +74,8 @@ public class UseSlot : ExternalProtocol
                 HandleRelic(usedItem);
                 break;
             case ItemActionType.PetUse:
-                //Console.WriteLine("1: " + usedItem.ItemEffects[(int)ItemFilterCategory.Consumables].Value + " | 2: " + usedItem.ItemEffects[1].Value);
-                Player.Character.Pets[usedItem.ItemId].GainEnergy(Player, usedItem);
+                var petId = Player.Character.Data.PetItemId;
+                Player.Character.Pets[petId].GainEnergy(Player, usedItem);
                 break;
             case ItemActionType.Pet:
                 HandlePetState(Player.Character.Pets[usedItem.ItemId]);

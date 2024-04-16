@@ -206,21 +206,21 @@ public static class CharacterInventoryExtensions
         var petList = player.Character.Pets;
         var maxPetEnergy = worldStatistics.Statistics[ItemEffectType.PetEnergyValue][WorldStatisticsGroup.Pet]
             .Where(x => x.Key == player.Character.Data.GlobalLevel).First().Value;
-        var petModel = new PetModel()
-        {
-            Id = petId,
-            MaxEnergy = maxPetEnergy,
-            AbilityCooldown = player.Room.Time
-        };
 
-        if (!petList.ContainsKey(petId))
-            petList.Add(petId, petModel);
+        if (!petList.TryGetValue(petId, out var pet) && equipped)
+        {
+            petList.Add(petId, new PetModel()
+            {
+                Id = petId,
+                MaxEnergy = maxPetEnergy,
+                CurrentEnergy = maxPetEnergy
+            });
+            player.SendXt("Za", player.UserId, pet.PetProfile(Convert.ToInt32(player.GameObjectId), petId, (int)PetType.coop, pet.CurrentEnergy, 0, 0, 0));
+            player.SendXt("Zg", player.UserId, maxPetEnergy);
+        }
 
         else
-        {
-            //petList[itemId].CurrentEnergy = GetCurrentEnergy();
-            petList[petId] = petModel;
-        }
+            pet.MaxEnergy = maxPetEnergy;
 
         player.Character.Data.PetItemId = equipped ? petId : 0;
 

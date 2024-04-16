@@ -38,15 +38,18 @@ public class UpdatePetMode : ExternalProtocol
         Dictionary<int, BaseEnemy> closestEnemies = null;
         BaseEnemy closestEnemy = null;
 
-        if (pet.CurrentEnergy <= 0)
+        if (pet.InCoopJumpState || pet.InCoopSwitchState ||
+            pet.AbilityCooldown > Player.Room.Time && pet.AbilityCooldown != 0)
+        {
+            Logger.LogInformation("{characterName}'s pet is already in a coop state or waiting for ability cooldown to finish.", Player.CharacterName);
+            return;
+        }
+
+        if (pet.UseEnergy(Player, ItemRConfig) <= 0)
         {
             Player.SendXt("Zo", Player.UserId);
             return;
         }
-
-        if (pet.InCoopJumpState || pet.InCoopSwitchState ||
-            pet.AbilityCooldown > Player.Room.Time && pet.AbilityCooldown != 0)
-            return;
 
         if (IsAttackAbility(petAbilityParams))
         {
@@ -59,9 +62,8 @@ public class UpdatePetMode : ExternalProtocol
             }
         }
 
-        pet.AbilityCooldown += petAbilityParams.CooldownTime;
+        pet.AbilityCooldown = Player.Room.Time + petAbilityParams.CooldownTime;
 
-        Console.WriteLine("AbilType: " + petAbilityParams.AbilityType);
         switch (petAbilityParams.AbilityType)
         {
             //case PetAbilityType.Invalid:
@@ -73,7 +75,6 @@ public class UpdatePetMode : ExternalProtocol
                 break;
 
             case PetAbilityType.DamageZone:
-            case PetAbilityType.DamageOverTimeFromAbove:
                 foreach (var enemyToAttack in closestEnemies.Values)
                 {
                     Player.Room.SendSyncEvent(new DamageZone_SyncEvent(enemyToAttack.Id, Player.Room.Time,
@@ -81,14 +82,15 @@ public class UpdatePetMode : ExternalProtocol
                         Player.Room.CreateProjectileId(), ItemCatalog.GetItemFromId(petId).PrefabName));
 
                     TimerThread.DelayCall(AttackClosestEnemy, enemyToAttack, TimeSpan.FromSeconds(petAbilityParams.InitialDelayBeforeUse),
-                        TimeSpan.FromSeconds(petAbilityParams.Frequency), petAbilityParams.UseCount);
+                        TimeSpan.FromSeconds(petAbilityParams.Frequency), petAbilityParams.HitCount);
                 }
                 break;
 
             case PetAbilityType.Damage:
             case PetAbilityType.DamageOverTime:
+            case PetAbilityType.DamageOverTimeFromAbove:
                 TimerThread.DelayCall(AttackClosestEnemy, closestEnemy, TimeSpan.FromSeconds(petAbilityParams.InitialDelayBeforeUse),
-                    TimeSpan.FromSeconds(petAbilityParams.Frequency), petAbilityParams.UseCount);
+                    TimeSpan.FromSeconds(petAbilityParams.Frequency), petAbilityParams.HitCount);
                 syncParams = closestEnemy.Id;
                 break;
 
@@ -97,7 +99,8 @@ public class UpdatePetMode : ExternalProtocol
                     (int)ItemEffectType.IncreaseAllResist, (int)Math.Ceiling(Player.Character.Data.MaxLife * petAbilityParams.DefensiveBonusRatio),
                     (int)petAbilityParams.Duration, true, ItemCatalog.GetItemFromId(petId).PrefabName, true));
 
-                TimerThread.DelayCall(DisablePetDefenseBoost, Player, TimeSpan.FromSeconds(petAbilityParams.Duration), TimeSpan.Zero, 1);
+                TimerThread.DelayCall(DisablePetDefenseBoost, Player, TimeSpan.FromSeconds(petAbilityParams.InitialDelayBeforeUse),
+                    TimeSpan.FromSeconds(petAbilityParams.Frequency), petAbilityParams.HitCount);
                 Player.TempData.PetDefenseBoost = true;
                 break;
 
@@ -106,7 +109,7 @@ public class UpdatePetMode : ExternalProtocol
                  (int)ItemEffectType.IncreaseAllResist, (int)Math.Ceiling(Player.Character.Data.MaxLife * petAbilityParams.DefensiveBonusRatio),
                  (int)petAbilityParams.Duration, true, ItemCatalog.GetItemFromId(petId).PrefabName, true));
 
-                TimerThread.DelayCall(DisablePetDefensiveBarrier, Player, TimeSpan.FromSeconds(petAbilityParams.Duration), TimeSpan.Zero, 1);
+                TimerThread.DelayCall(DisablePetDefensiveBarrier, Player, TimeSpan.FromSeconds(petAbilityParams.InitialDelayBeforeUse), TimeSpan.Zero, 1);
                 Player.TempData.PetDefensiveBarrier = true;
                 break;
 
@@ -117,22 +120,13 @@ public class UpdatePetMode : ExternalProtocol
         Player.Room.SendSyncEvent(new PetState_SyncEvent(Player.GameObjectId, Player.Room.Time,
             PetInformation.StateSyncType.Ability, syncParams));
 
-        pet.UseEnergy(Player, ItemRConfig);
         pet.AbilityCooldown = Player.Room.Time + petAbilityParams.CooldownTime;
         Player.SendXt("Zm", Player.UserId, true);
     }
 
-    private void DisablePetDefensiveBarrier(object playerData)
-    {
-        var player = (Player)playerData;
-        player.TempData.PetDefensiveBarrier = false;
-    }
+    private void DisablePetDefensiveBarrier(object _) => Player.TempData.PetDefensiveBarrier = false;
 
-    private void DisablePetDefenseBoost(object playerData)
-    {
-        var player = (Player)playerData;
-        player.TempData.PetDefenseBoost = false;
-    }
+    private void DisablePetDefenseBoost(object _) => Player.TempData.PetDefenseBoost = false;
 
     private void PetHealPlayer(object petAbilityParams)
     {

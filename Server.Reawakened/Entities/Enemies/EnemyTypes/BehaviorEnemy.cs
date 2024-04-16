@@ -222,27 +222,23 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         }
     }
 
-    public override void Damage(Player origin, int damage)
+    public override void Damage(Player player, int damage)
     {
-        base.Damage(origin, damage);
+        base.Damage(player, damage);
 
-        if (origin == null)
+        if (player == null)
         {
             Logger.LogError("Could not find player that damaged {PrefabName}! Returning...", PrefabName);
             return;
         }
 
-        if (_currentState != StateType.Shooting)
-        {
-            AiData.Sync_TargetPosX = origin.TempData.Position.x;
-            AiData.Sync_TargetPosY = origin.TempData.Position.y;
+        EnemyAggroPlayer(player);
+    }
 
-            ChangeBehavior(
-                GenericScript.AttackBehavior,
-                origin.TempData.Position.x, origin.TempData.Position.y,
-                Generic.Patrol_ForceDirectionX
-            );
-        }
+    public override void PetDamage(Player player)
+    {
+        base.PetDamage(player);
+        EnemyAggroPlayer(player);
     }
 
     public override void SendAiData(Player player)
@@ -263,5 +259,20 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                 AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, false
             )
         );
+    }
+
+    public void EnemyAggroPlayer(Player player)
+    {
+        if (_currentState != StateType.Shooting)
+        {
+            AiData.Sync_TargetPosX = player.TempData.Position.x;
+            AiData.Sync_TargetPosY = player.TempData.Position.y;
+
+            ChangeBehavior(
+                GenericScript.AttackBehavior,
+                player.TempData.Position.x, player.TempData.Position.y,
+                Generic.Patrol_ForceDirectionX
+            );
+        }
     }
 }

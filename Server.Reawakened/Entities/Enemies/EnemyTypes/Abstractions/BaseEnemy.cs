@@ -202,10 +202,16 @@ public abstract class BaseEnemy : IDestructible
         if (Room.IsObjectKilled(Id))
             return;
 
+        if (player == null)
+        {
+            Logger.LogError("Could not find player that damaged {PrefabName}! Returning...", PrefabName);
+            return;
+        }
+
         var pet = player.Character.Pets[player.Character.Data.PetItemId];  
         var petDamage = (int)Math.Ceiling(MaxHealth * pet.PetAbilities.ItemEffectStatRatio);
 
-        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health -= petDamage, petDamage, 0, 0, player == null ? string.Empty : player.CharacterName, false, true));
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health -= petDamage, petDamage, 1, 1, player.CharacterName, false, true));
 
         if (Health <= 0)
             KillEnemy(player);

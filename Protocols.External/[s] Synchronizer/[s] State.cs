@@ -55,6 +55,9 @@ public class State : ExternalProtocol
         {
             switch (syncEvent.Type)
             {
+                case SyncEvent.EventType.PetState:
+                    Player.Room.SendSyncEvent(new PetState_SyncEvent(Player.GameObjectId, Player.Room.Time, PetInformation.StateSyncType.PetStateVanish, Player.GameObjectId));
+                    break;
                 case SyncEvent.EventType.ChargeAttack:
                     Player.TempData.IsSuperStomping = true;
                     Player.TempData.Invincible = true;
