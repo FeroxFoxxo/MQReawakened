@@ -209,7 +209,6 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
         else if (RConfig.CurrentEvent.TryGetValue(RConfig.GameVersion, out var defaultEventString))
             defaultEventName = new string(defaultEventString.Reverse().ToArray());
 
-
         if (!string.IsNullOrEmpty(RwConfig.CurrentTimedEventOverride))
             defaultTimedEvent = RwConfig.CurrentTimedEventOverride;
         else if (RConfig.CurrentTimedEvent.TryGetValue(RConfig.GameVersion, out var defaultTimedString))

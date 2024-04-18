@@ -94,7 +94,7 @@ public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
 
         logger.LogDebug("Writing assets");
 
-        logger.LogDebug("Emptying duplicated directory folder...");
+        logger.LogDebug("Emptying duplicated bundle directory...");
         InternalDirectory.Empty(rConfig.RemovedDuplicateDirectory);
         logger.LogDebug("Emptied folder");
 
