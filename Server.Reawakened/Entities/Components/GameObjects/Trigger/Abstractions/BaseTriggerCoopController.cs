@@ -18,7 +18,39 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
 {
     private List<string> _currentPhysicalInteractors;
     public int CurrentInteractions;
-    public int Interactions => CurrentInteractions + _currentPhysicalInteractors.Count;
+
+    public List<Player> CurrentValidInteractors => _currentPhysicalInteractors.ToList().Select(ci =>
+    {
+        var player = Room.GetPlayerById(ci);
+
+        if (player == null)
+        {
+            _currentPhysicalInteractors.Remove(ci);
+            return null;
+        }
+
+        if (!string.IsNullOrEmpty(QuestCompletedRequired))
+        {
+            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
+
+            if (requiredQuest != null)
+                if (!player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
+                    return null;
+        }
+
+        if (!string.IsNullOrEmpty(QuestInProgressRequired))
+        {
+            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
+
+            if (requiredQuest != null)
+                if (player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
+                    return null;
+        }
+
+        return player;
+    }).Where(x => x != null).ToList();
+
+    public int Interactions => CurrentInteractions + CurrentValidInteractors.Count;
 
     public bool IsActive = false;
     public bool IsEnabled = false;
@@ -220,24 +252,8 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
         if (player == null)
             return;
 
-        if (!string.IsNullOrEmpty(QuestCompletedRequired))
-        {
-            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
-
-            if (requiredQuest != null)
-                if (!player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
-                    return;
-        }
-
-        if (!string.IsNullOrEmpty(QuestInProgressRequired))
-        {
-            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
-
-            if (requiredQuest != null)
-                if (player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
-                    return;
-        }
         _currentPhysicalInteractors.Add(playerId);
+
         SendInteractionUpdate();
 
     }
@@ -248,6 +264,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
             return;
 
         _currentPhysicalInteractors.Remove(playerId);
+
         SendInteractionUpdate();
     }
 

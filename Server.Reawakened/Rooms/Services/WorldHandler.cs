@@ -149,7 +149,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
             var roomId = level.Rooms.Keys.Count > 0 ? level.Rooms.Keys.Max() + 1 : 1;
 
-            room = new Room(roomId, level, this, services, timerThread, config);
+            room = new Room(roomId, level, services, timerThread, config);
 
             level.Rooms.Add(roomId, room);
         }

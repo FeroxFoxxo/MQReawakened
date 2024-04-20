@@ -141,7 +141,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         Damage = (int)Math.Ceiling(player.Character.Data.MaxLife * HealthRatioDamage);
 
-        Logger.LogInformation("Applying {statusEffect} to {characterName} from {prefabname}", EffectType, player.CharacterName, PrefabName);
+        Logger.LogTrace("Applying {statusEffect} to {characterName} from {prefabname}", EffectType, player.CharacterName, PrefabName);
 
         switch (EffectType)
         {

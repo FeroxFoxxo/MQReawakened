@@ -1,12 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using A2m.Server;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
+using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
@@ -21,7 +24,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Models;
 using Server.Reawakened.XMLs.Data.Enemy.States;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.Components.GameObjects.Spawners.Abstractions;
+namespace Server.Reawakened.Entities.Components.GameObjects.Spawners;
 
 public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 {
@@ -48,14 +51,13 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public float DetectionRadius => ComponentData.DetectionRadius;
     public Vector3 PatrolDistance => ComponentData.PatrolDistance;
     public string OnDeathTargetID => ComponentData.OnDeathTargetID;
+
     public ILogger<BaseSpawnerControllerComp> Logger { get; set; }
     public InternalEnemyData EnemyInfoXml { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public IServiceProvider Services { get; set; }
     public TimerThread TimerThread { get; set; }
 
-    public int MaxHealth;
-    public int Health;
     public int Level;
 
     public Dictionary<string, BaseEnemy> LinkedEnemies;
@@ -67,19 +69,23 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     private bool _spawnRequested;
     private bool _activated;
     private float _activeDetectionRadius;
-    private TriggerArenaComp _arena;
+
+    private TriggerArenaComp _arenaComp;
+    private BreakableEventControllerComp _breakableComp;
+
+    private int _healthMod, _scaleMod, _resMod;
 
     public override void InitializeComponent()
     {
-        Level = Room.LevelInfo.Difficulty + LevelOffset;
+        _healthMod = 1;
+        _scaleMod = 1;
+        _resMod = 1;
 
-        MaxHealth = 9999;
-        Health = MaxHealth;
+        _breakableComp = Room.GetEntityFromId<BreakableEventControllerComp>(Id);
 
         _spawnedEntityCount = 0;
         _nextSpawnRequestTime = 0;
         _spawnRequested = false;
-        _activated = false;
         _activeDetectionRadius = DetectionRadius;
 
         LinkedEnemies = [];
@@ -100,8 +106,13 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         AddTemplateModel(TemplatePrefabNameToSpawn4);
         AddTemplateModel(TemplatePrefabNameToSpawn5);
 
-        if (ComponentData.SpawnOnDetection)
-            _activated = true;
+    }
+
+    public override void DelayedComponentInitialization()
+    {
+        Level = _breakableComp.Damageable.DifficultyLevel + LevelOffset;
+
+        SetActive(ComponentData.SpawnOnDetection);
     }
 
     public void AddEnemyModel(string prefabName)
@@ -115,20 +126,27 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             Logger.LogError("Unknown enemy to add to spawner: '{EnemyPrefab}'", prefabName);
     }
 
-    public void AddTemplateModel(string templatePrefabName)
+    public void SetActive(bool result)
     {
-        if (string.IsNullOrEmpty(templatePrefabName))
+        _breakableComp.CanBreak = result;
+        _activated = result;
+    }
+
+    public void AddTemplateModel(string templateId)
+    {
+        if (string.IsNullOrEmpty(templateId))
             return;
 
-        var global = Room.GetEntityFromId<AIStatsGlobalComp>(templatePrefabName);
-        var generic = Room.GetEntityFromId<AIStatsGenericComp>(templatePrefabName);
-        var status = Room.GetEntityFromId<InterObjStatusComp>(templatePrefabName);
-        var enemyController = Room.GetEnemyFromId(templatePrefabName);
-        var hazard = Room.GetEntityFromId<HazardControllerComp>(templatePrefabName);
+        var global = Room.GetEntityFromId<AIStatsGlobalComp>(templateId);
+        var generic = Room.GetEntityFromId<AIStatsGenericComp>(templateId);
+        var status = Room.GetEntityFromId<InterObjStatusComp>(templateId);
+        var hazard = Room.GetEntityFromId<HazardControllerComp>(templateId);
+
+        var enemyController = Room.GetEnemyFromId(templateId);
 
         if (global is null || generic is null || status is null || enemyController is null || hazard is null)
         {
-            Logger.LogError("Unknown enemy template to add to spawner: '{EnemyPrefab}'", templatePrefabName);
+            Logger.LogError("Unknown enemy template to add to spawner: '{EnemyPrefab}'", templateId);
             return;
         }
 
@@ -139,7 +157,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         var spawnerData = new SpawnedEnemyData(global, generic, status, enemyController, hazard, defaultProperties);
 
-        TemplateEnemyModels.TryAdd(templatePrefabName, spawnerData);
+        TemplateEnemyModels.TryAdd(templateId, spawnerData);
     }
 
     public override void Update()
@@ -167,11 +185,12 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public void Spawn(TriggerArenaComp arena)
     {
-        _activated = true;
-        _activeDetectionRadius = 20;
-        Spawn();
+        _arenaComp = arena;
 
-        _arena = arena;
+        _activeDetectionRadius = 20;
+        SetActive(true);
+
+        Spawn();
     }
 
     private void SpawnEventCalled(int delay)
@@ -198,8 +217,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             AISyncEventHelper.AIInit(
                 Id, Room,
                 Position.X, Position.Y, Position.Z, Position.X, Position.Y,
-                templateToSpawnAt.Generic.Patrol_InitialProgressRatio, Health, MaxHealth,
-                1, 1, 1, 0, Level, templateToSpawnAt.GlobalProperties, behaviors
+                templateToSpawnAt.Generic.Patrol_InitialProgressRatio, _breakableComp.Damageable.CurrentHealth, _breakableComp.Damageable.MaxHealth,
+                _healthMod, _scaleMod, _resMod, _breakableComp.Damageable.Stars, Level, templateToSpawnAt.GlobalProperties, behaviors
             )
         );
 
@@ -213,7 +232,6 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         );
 
         var spawn = new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount);
-
         Room.SendSyncEvent(spawn);
 
         TimerThread.DelayCall(DelayedSpawnData, templateToSpawnAt, TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
@@ -247,7 +265,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         var _spawnedEntityId = $"{Id}_{_spawnedEntityCount}";
 
         Room.AddEntity(_spawnedEntityId, newEntity);
-        _arena?.ArenaEntities.Add(_spawnedEntityId);
+        _arenaComp?.ArenaEntities.Add(_spawnedEntityId);
 
         foreach (var component in newEntity)
         {
@@ -259,7 +277,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         enemyTemplate.Hazard.SetId(_spawnedEntityId);
         enemyTemplate.Generic.SetPatrolRange(PatrolDistance);
 
-        var enemy = Room.GenerateEnemy(PrefabNameToSpawn1, _spawnedEntityId, enemyTemplate.EnemyController);
+        var enemy = enemyTemplate.EnemyController.CreateEnemy(_spawnedEntityId, PrefabNameToSpawn1);
 
         if (enemy is null)
             return;

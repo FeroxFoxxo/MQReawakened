@@ -1,4 +1,5 @@
-﻿using Server.Base.Core.Extensions;
+﻿using AssetStudio;
+using Server.Base.Core.Extensions;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
@@ -30,7 +31,10 @@ public class AIBehaviorPatrol(PatrolProperties properties, BehaviorEnemy enemy, 
         method.Invoke(behavior, [Enemy.AiData]);
 
         var ratio = behavior.GetField("Patrol_InitialProgressRatio");
-        return [ratio];
+
+        Logger.Error($"Should be sending {ratio} as the progress ratio, however - this is currently broken!");
+
+        return [];
     }
 
     public override void NextState() { }

@@ -9,16 +9,13 @@ using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
-using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Entities.Components.GameObjects.Checkpoints;
 using Server.Reawakened.Entities.Components.GameObjects.Global;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
-using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
-using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Network.Extensions;
@@ -32,7 +29,6 @@ using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
-using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using UnityEngine;
 using WorldGraphDefines;
 using Random = System.Random;
@@ -67,7 +63,6 @@ public class Room : Timer
     private readonly ServerRConfig _config;
     private readonly ItemRConfig _itemConfig;
     private readonly TimerThread _timerThread;
-    private readonly IServiceProvider _services;
 
     public ItemCatalog ItemCatalog;
     public InternalColliders ColliderCatalog;
@@ -82,8 +77,7 @@ public class Room : Timer
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
 
-    public Room(int roomId, Level level, WorldHandler world,
-            IServiceProvider services, TimerThread timerThread, ServerRConfig config) :
+    public Room(int roomId, Level level, IServiceProvider services, TimerThread timerThread, ServerRConfig config) :
         base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
         _roomLock = new object();
@@ -91,14 +85,13 @@ public class Room : Timer
         _roomId = roomId;
         _config = config;
         _timerThread = timerThread;
-        _services = services;
-        _itemConfig = services.GetRequiredService<ItemRConfig>();
 
-        World = world;
+        _itemConfig = services.GetRequiredService<ItemRConfig>();
         ColliderCatalog = services.GetRequiredService<InternalColliders>();
         ItemCatalog = services.GetRequiredService<ItemCatalog>();
         InternalEnemyData = services.GetRequiredService<InternalEnemyData>();
         Logger = services.GetRequiredService<ILogger<Room>>();
+        World = services.GetRequiredService<WorldHandler>();
 
         _level = level;
 
@@ -139,19 +132,6 @@ public class Room : Timer
 
         foreach (var component in _entities.Values.SelectMany(x => x))
             component.DelayedComponentInitialization();
-
-        foreach (var component in _entities.Values.SelectMany(x => x))
-        {
-            if (component is IEnemyController enemy)
-            {
-                if (!component.ParentPlane.Equals("TemplatePlane"))
-                    GenerateEnemy(component.PrefabName, component.Id, enemy);
-            }
-            else if (component is BreakableEventControllerComp breakable)
-            {
-                breakable.PostInit();
-            }
-        }
 
         if (_defaultSpawn == null)
             Logger.LogError("Could not find default spawn for level: {RoomId} ({RoomName})",
@@ -560,39 +540,7 @@ public class Room : Timer
     public bool ContainsEnemy(string enemyId) =>
         _enemies.ContainsKey(enemyId);
 
-    public BaseEnemy GenerateEnemy(string enemyPrefab, string entityId, IEnemyController enemyController)
-    {
-        if (!InternalEnemyData.EnemyInfoCatalog.TryGetValue(enemyPrefab, out var enemyModel))
-        {
-            Logger.LogError("Could not find enemy with name {EnemyPrefab}! Returning null...", enemyPrefab);
-            return null;
-        }
-
-        var enemyData = new EnemyData(this, entityId, enemyPrefab, enemyController, enemyModel, _services);
-        BaseEnemy enemy;
-
-        switch (enemyModel.AiType)
-        {
-            case AiType.Behavior:
-                enemy = new BehaviorEnemy(enemyData);
-                break;
-            case AiType.State:
-                enemy = new AIStateEnemy(enemyData);
-                break;
-            default:
-                Logger.LogError("No enemy generator found with type: '{Type}' for enemy '{EnemyName}'. Returning null...",
-                    enemyModel.AiType, enemyPrefab
-                );
-                return null;
-        }
-
-        AddEnemy(enemy);
-
-        return enemy;
-    }
-
     // Cleanup
-
     private void CleanData()
     {
         _gameObjectIds.Clear();

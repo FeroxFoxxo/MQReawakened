@@ -6,7 +6,7 @@ using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
-using Server.Reawakened.Entities.Components.GameObjects.Spawners.Abstractions;
+using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;

@@ -4,6 +4,7 @@ using Server.Base.Core.Extensions;
 using Server.Base.Logging;
 using Server.Reawakened.Entities.Components.GameObjects.Items;
 using Server.Reawakened.Entities.Components.GameObjects.NPC;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles.Base;
@@ -109,6 +110,11 @@ public static class NpcExtensions
             QuestState.TO_BE_VALIDATED;
 
         player.SendXt("na", questModel, setActive ? 1 : 0);
+
+        if (player.Room != null)
+            foreach (var trigger in player.Room.GetEntitiesFromType<ITriggerComp>())
+                if (trigger.QuestInProgressRequired == quest.Name)
+                    trigger.RunTrigger(player);
 
         player.UpdateNpcsInLevel(quest);
 

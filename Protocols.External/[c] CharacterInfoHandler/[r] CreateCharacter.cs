@@ -82,7 +82,7 @@ public class CreateCharacter : ExternalProtocol
 
             var model = CharacterHandler.Create(characterData, levelUpData);
 
-            model.SetLevelXp(1);
+            model.SetLevelXp(1, ServerConfig);
 
             Player.AddCharacter(model);
 

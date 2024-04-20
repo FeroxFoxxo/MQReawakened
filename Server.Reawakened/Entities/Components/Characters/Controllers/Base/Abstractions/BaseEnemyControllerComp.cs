@@ -1,8 +1,14 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
+using Server.Reawakened.Entities.Enemies.EnemyTypes;
+using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using UnityEngine;
+using Microsoft.Extensions.Logging;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 public abstract class BaseEnemyControllerComp<T> : Component<T>, IEnemyController where T : EnemyController
@@ -22,7 +28,41 @@ public abstract class BaseEnemyControllerComp<T> : Component<T>, IEnemyControlle
     public bool CanAutoScaleDamage => ComponentData.CanAutoScaleDamage;
     public ItemEffectType EnemyEffectType => ComponentData.EnemyEffectType;
 
+    public InternalEnemyData InternalEnemyData { get; set; }
+    public IServiceProvider ServiceProvider { get; set; }
+    public ILogger<IEnemyController> Logger { get; set; }
+
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
+    }
+
+    public override void DelayedComponentInitialization()
+    {
+        if (ParentPlane.Equals("TemplatePlane"))
+            return;
+
+        CreateEnemy(Id, PrefabName);
+    }
+
+    public BaseEnemy CreateEnemy(string id, string prefabName)
+    {
+        if (!InternalEnemyData.EnemyInfoCatalog.TryGetValue(prefabName, out var enemyModel))
+        {
+            Logger.LogError("Could not find enemy with name {EnemyPrefab}! Returning null...", prefabName);
+            return null;
+        }
+
+        var enemyData = new EnemyData(Room, id, prefabName, this, enemyModel, ServiceProvider);
+
+        BaseEnemy enemy = enemyModel.AiType switch
+        {
+            AiType.Behavior => new BehaviorEnemy(enemyData),
+            AiType.State => new AIStateEnemy(enemyData),
+            _ => null,
+        };
+
+        Room.AddEnemy(enemy);
+
+        return enemy;
     }
 }

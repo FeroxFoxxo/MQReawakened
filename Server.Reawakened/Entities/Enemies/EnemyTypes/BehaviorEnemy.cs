@@ -92,6 +92,9 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     {
         base.CheckForSpawner();
 
+        if (LinkedSpawner == null)
+            return;
+
         // Should use apt template rather than first
         var spawnerTemplate = LinkedSpawner.TemplateEnemyModels.FirstOrDefault().Value;
 

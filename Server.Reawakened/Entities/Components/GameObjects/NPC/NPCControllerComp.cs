@@ -6,6 +6,7 @@ using Server.Base.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.NPC.Enums;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -500,6 +501,10 @@ public class NPCControllerComp : Component<NPCController>
                     });
                 else
                     player.Character.Data.CompletedQuests.Add(completedQuest.Id);
+
+                foreach (var trigger in Room.GetEntitiesFromType<ITriggerComp>())
+                    if (trigger.QuestCompletedRequired == quest.Name)
+                        trigger.RunTrigger(player);
 
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
 

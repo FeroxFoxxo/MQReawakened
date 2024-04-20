@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
@@ -27,4 +28,5 @@ public interface IEnemyController
     public bool CanAutoScaleResistance { get; }
     public bool CanAutoScaleDamage { get; }
     public ItemEffectType EnemyEffectType { get; }
+    public BaseEnemy CreateEnemy(string id, string prefabName);
 }
