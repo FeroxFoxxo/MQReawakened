@@ -188,6 +188,7 @@ public class NPCControllerComp : Component<NPCController>
                 break;
             default:
                 Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", NpcName, Id);
+                SendUnknownDialogChat(player);
                 break;
         }
     }
@@ -262,11 +263,17 @@ public class NPCControllerComp : Component<NPCController>
         {
             Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog found for user of level {Level}",
                 NpcName, Id, player.Character.Data.GlobalLevel);
+            SendUnknownDialogChat(player);
             return;
         }
 
         player.NetState.SendXt("nd", Id, NameId, dialog);
     }
+
+    public void SendUnknownDialogChat(Player player) =>
+        player.Chat(CannedChatChannel.Speak, "SERVER", $"NPC Name: '{NpcName}' Prefab: '{PrefabName}' ({Id})\n" +
+            "Whoops! Looks like you've interacted with an NPC that doesn't have any dialog. " +
+            $"Please message a developer about this, including the above information.");
 
     public NPCStatus GetQuestStatus(Player player)
     {
