@@ -1,0 +1,47 @@
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Services;
+using Server.Base.Core.Abstractions;
+using Server.Base.Core.Events;
+using Server.Base.Core.Services;
+using Server.Base.Network.Enums;
+using Server.Base.Network.Services;
+using Server.Reawakened.Chat.Services;
+using Server.Reawakened.Players.Extensions;
+
+namespace Server.Reawakened.Players.Services;
+
+public class RunPlayerCommand(ServerConsole console, EventSink sink,
+    ILogger<RunPlayerCommand> logger, UserInfoHandler userInfoHandler,
+    AccountHandler accountHandler, CharacterHandler characterHandler,
+    NetStateHandler handler, ChatCommands chatCommands) : IService
+{
+    public void Initialize() => sink.WorldLoad += Load;
+
+    public void Load() =>
+        console.AddCommand(
+            "runCommand",
+            "Runs a command for a given player.",
+            NetworkType.Server,
+            _ => RunPlayerCmd()
+        );
+
+    private void RunPlayerCmd()
+    {
+        Ask.GetCharacter(logger, accountHandler, userInfoHandler, characterHandler, out var character, out var user);
+
+        if (character == null || user == null)
+            return;
+
+        if (!handler.IsPlayerOnline(user.Id, out var player))
+        {
+            logger.LogError("Player must be online to use this command!");
+            return;
+        }
+
+        logger.LogInformation("Enter command and arguments:");
+
+        var command = Console.ReadLine()?.Trim();
+
+        chatCommands.RunCommand(player, command.Split(' '));
+    }
+}

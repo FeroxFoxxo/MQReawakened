@@ -4,8 +4,8 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Network.Enums;
+using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.BundleHost.Extensions;
-using Server.Reawakened.BundleHost.Models;
 
 namespace Web.Launcher.Services;
 

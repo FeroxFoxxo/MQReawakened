@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Helpers;
-using Server.Reawakened.BundleHost.Models;
+using Server.Reawakened.BundleHost.Configs;
 
 namespace Server.Reawakened.BundleHost.Extensions;
 

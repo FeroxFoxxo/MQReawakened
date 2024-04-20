@@ -2,7 +2,7 @@
 using Server.Base.Core.Extensions;
 using Server.Reawakened.Core.Enums;
 
-namespace Server.Reawakened.BundleHost.Models;
+namespace Server.Reawakened.BundleHost.Configs;
 
 public class AssetBundleRConfig : IRConfig
 {
@@ -62,10 +62,9 @@ public class AssetBundleRConfig : IRConfig
         AssetRenames = new Dictionary<GameVersion, Dictionary<string, string>>
         {
             {
-                GameVersion.v2011, 
+                GameVersion.v2011,
                 new Dictionary<string, string>()
                 {
-                    { "WelcomeGamePopup", "NotificationNoMailPopup" },
                     { "FX_GiftBoxconfettis", "FX_GiftBoxConfettis" }
                 }
             }

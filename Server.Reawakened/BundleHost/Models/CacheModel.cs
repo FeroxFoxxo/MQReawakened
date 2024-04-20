@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.BundleHost.Services;
+﻿using Server.Reawakened.BundleHost.Configs;
+using Server.Reawakened.BundleHost.Services;
 
 namespace Server.Reawakened.BundleHost.Models;
 

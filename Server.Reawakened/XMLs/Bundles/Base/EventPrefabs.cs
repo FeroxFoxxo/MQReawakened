@@ -1,4 +1,6 @@
-﻿using Server.Base.Core.Extensions;
+﻿using AssetStudio;
+using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.XMLs.Abstractions.Enums;
 using Server.Reawakened.XMLs.Abstractions.Interfaces;
@@ -14,6 +16,7 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
 
     public ServerRwConfig RwConfig { get; set; }
     public ServerRConfig RConfig { get; set; }
+    public ILogger<EventPrefabs> Logger { get; set; }
 
     public Dictionary<string, Dictionary<string, string>> PrefabMap { get; private set; }
     public Dictionary<string, Dictionary<string, string>> ReversePrefabMap { get; private set; }
@@ -234,12 +237,20 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
         );
 
         if (!reversedDict.ContainsKey(defaultEventName))
-            defaultEventName = PrefabMap.MaxBy(x => x.Value.Count).Key;
+        {
+            var newEventName = PrefabMap.MaxBy(x => x.Value.Count).Key;
+            Logger.LogError("Could not find event for: '{oldName}'. Defaulting to: '{newName}'...", defaultEventName, newEventName);
+            defaultEventName = newEventName;
+        }
 
         if (!TimedSocialEvents.Any(x => x.Key.Value == defaultTimedEvent))
-            defaultTimedEvent = TimedSocialEvents.Count > 0 ?
+        {
+            var newTimedEvent = TimedSocialEvents.Count > 0 ?
                 TimedSocialEvents.MaxBy(x => x.Value.TimeWindows.Count).Key.Value :
                 string.Empty;
+            Logger.LogError("Could not find event for: '{oldName}'. Defaulting to: '{newName}'...", defaultTimedEvent, newTimedEvent);
+            defaultTimedEvent = newTimedEvent;
+        }
 
         var defaultEvent = reversedDict[defaultEventName];
 

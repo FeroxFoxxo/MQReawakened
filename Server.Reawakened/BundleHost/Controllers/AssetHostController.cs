@@ -7,6 +7,7 @@ using Server.Reawakened.BundleHost.BundleData.Data;
 using Server.Reawakened.BundleHost.BundleData.Header;
 using Server.Reawakened.BundleHost.BundleData.Header.Models;
 using Server.Reawakened.BundleHost.BundleData.Metadata;
+using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.BundleHost.Extensions;
 using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.BundleHost.Services;

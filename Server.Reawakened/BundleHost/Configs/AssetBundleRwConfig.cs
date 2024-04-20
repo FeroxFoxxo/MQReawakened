@@ -1,6 +1,6 @@
 ﻿using Server.Base.Core.Abstractions;
 
-namespace Server.Reawakened.BundleHost.Models;
+namespace Server.Reawakened.BundleHost.Configs;
 
 public class AssetBundleRwConfig : IRwConfig
 {

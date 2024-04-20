@@ -21,13 +21,13 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
     public string Username { get; set; }
 
     [Required(ErrorMessage = "Please Enter Password")]
-    [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+    [StringLength(15, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
     [DataType(DataType.Password)]
     [Display(Name = "Password")]
     public string Password { get; set; }
 
     [Required(ErrorMessage = "Please Enter Confirm Password")]
-    [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+    [StringLength(15, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
     [DataType(DataType.Password)]
     [Display(Name = "Confirm password")]
     [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]

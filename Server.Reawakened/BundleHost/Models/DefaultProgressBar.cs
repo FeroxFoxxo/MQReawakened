@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.BundleHost.Configs;
 using ShellProgressBar;
 
 namespace Server.Reawakened.BundleHost.Models;

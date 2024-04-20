@@ -53,9 +53,7 @@ public class ServerConsole : IService
 
         AddCommand(
             "restart",
-            "Sends a message to players informing them that the server is " +
-            "restarting, performs a forced save, then shuts down and " +
-            "restarts the server.",
+            "Informs players of server restart, performs a forced save, then restarts the server.",
             NetworkType.Server,
             _ => _handler.KillServer(true)
         );

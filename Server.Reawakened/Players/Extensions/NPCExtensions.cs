@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
-using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Items;
 using Server.Reawakened.Entities.Components.GameObjects.NPC;
 using Server.Reawakened.Network.Extensions;

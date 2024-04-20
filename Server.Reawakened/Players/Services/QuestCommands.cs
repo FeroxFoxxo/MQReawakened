@@ -8,7 +8,7 @@ using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Services;
 public class QuestCommands(ServerConsole serverConsole, EventSink sink,
-    QuestCatalog questCatalog, ItemCatalog catalog, WorldGraph worldGraph, ILogger<Coords> logger) : IService
+    QuestCatalog questCatalog, ItemCatalog catalog, WorldGraph worldGraph, ILogger<QuestCommands> logger) : IService
 {
     public void Initialize() => sink.WorldLoad += Load;
 
