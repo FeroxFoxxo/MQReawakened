@@ -114,9 +114,14 @@ public class World(ILogger<World> logger, IServiceProvider services, ServerHandl
 
         logger.LogInformation("Save finished in {Time:F2} seconds.", watch.Elapsed.TotalSeconds);
 
-        if (message)
+        try
         {
-            Broadcast($"World save done in {watch.Elapsed.TotalSeconds} seconds.");
+            if (message)
+                Broadcast($"World save done in {watch.Elapsed.TotalSeconds} seconds.");
+        }
+        catch (Exception ex)
+        {
+            logger.LogCritical(ex, "FATAL: Exception in world broadcast");
         }
 
         netStateHandler.Resume();
