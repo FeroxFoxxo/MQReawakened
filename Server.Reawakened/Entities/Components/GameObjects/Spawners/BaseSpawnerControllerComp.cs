@@ -9,7 +9,6 @@ using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controll
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Entities.Components.GameObjects.Hazards;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
-using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
@@ -74,12 +73,22 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     private BreakableEventControllerComp _breakableComp;
 
     private int _healthMod, _scaleMod, _resMod;
+    private int _stars, _currentHealth, _maxHealth;
+
+    public int Difficulty => _breakableComp != null ? _breakableComp.Damageable.DifficultyLevel : Room.LevelInfo.Difficulty;
+    public int Stars => _breakableComp != null ? _breakableComp.Damageable.Stars : _stars;
+    public int CurrentHealth => _breakableComp != null ? _breakableComp.Damageable.CurrentHealth : _currentHealth;
+    public int MaxHealth => _breakableComp != null ? _breakableComp.Damageable.MaxHealth : _maxHealth;
 
     public override void InitializeComponent()
     {
         _healthMod = 1;
         _scaleMod = 1;
         _resMod = 1;
+
+        _stars = 1;
+        _maxHealth = 5;
+        _currentHealth = _maxHealth;
 
         _breakableComp = Room.GetEntityFromId<BreakableEventControllerComp>(Id);
 
@@ -110,8 +119,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public override void DelayedComponentInitialization()
     {
-        Level = _breakableComp.Damageable.DifficultyLevel + LevelOffset;
-
+        Level = Difficulty + LevelOffset;
         SetActive(ComponentData.SpawnOnDetection);
     }
 
@@ -128,7 +136,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public void SetActive(bool result)
     {
-        _breakableComp.CanBreak = result;
+        if (_breakableComp != null)
+            _breakableComp.CanBreak = result;
+
         _activated = result;
     }
 
@@ -217,8 +227,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             AISyncEventHelper.AIInit(
                 Id, Room,
                 Position.X, Position.Y, Position.Z, Position.X, Position.Y,
-                templateToSpawnAt.Generic.Patrol_InitialProgressRatio, _breakableComp.Damageable.CurrentHealth, _breakableComp.Damageable.MaxHealth,
-                _healthMod, _scaleMod, _resMod, _breakableComp.Damageable.Stars, Level, templateToSpawnAt.GlobalProperties, behaviors
+                templateToSpawnAt.Generic.Patrol_InitialProgressRatio, CurrentHealth, MaxHealth,
+                _healthMod, _scaleMod, _resMod, Stars, Level, templateToSpawnAt.GlobalProperties, behaviors
             )
         );
 
