@@ -168,7 +168,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             default:
                 Logger.LogInformation("Unknown status effect {statusEffect} from {prefabname}", HurtEffect, PrefabName);
 
-                //Waterbreathing.
+                //Water breathing.
                 if (HurtLength < 0)
                 {
                     if (IsActive)
@@ -212,7 +212,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                     (int)ItemEffectType.WaterBreathing, 1, 1, true, _id, false));
 
-        player.StartUnderwaterTimer(player.Character.Data.MaxLife / 10, TimerThread, ItemRConfig);
+        player.StartUnderwater(player.Character.Data.MaxLife / 10, TimerThread, ItemRConfig, Logger);
 
         TimerThread.DelayCall(RestartTimerDelay, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
         Logger.LogInformation("Reset underwater timer for {characterName}", player.CharacterName);

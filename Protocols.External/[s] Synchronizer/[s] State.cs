@@ -127,6 +127,20 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.RequestRespawn:
                     RequestRespawn(entityId, syncEvent.TriggerTime);
                     break;
+                case SyncEvent.EventType.PhysicStatus:
+                    var physicStatus = new PhysicStatus_SyncEvent(syncEvent);
+
+                    if (physicStatus.GravityEnabled && Player.TempData.Underwater)
+                        Player.StopUnderwater(Logger);
+
+                    break;
+                case SyncEvent.EventType.FX:
+                    var fxEvent = new FX_SyncEvent(syncEvent);
+
+                    if (fxEvent.PrefabName == ItemRConfig.WaterPrefabName)
+                        Player.StartUnderwater(newPlayer.Character.Data.MaxLife / 10, TimerThread, ItemRConfig, Logger);
+
+                    break;
             }
 
             Player.Room.SendSyncEvent(syncEvent, Player);

@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
@@ -15,9 +16,11 @@ public static class PlayerDamageExtensions
         public TimerThread TimerThread;
     }
 
-    public static void StartUnderwaterTimer(this Player player, int damage, TimerThread timerThread, ItemRConfig config)
+    public static void StartUnderwater(this Player player, int damage, TimerThread timerThread, ItemRConfig config, Microsoft.Extensions.Logging.ILogger logger)
     {
-        player.StopUnderwaterTimer();
+        player.StopUnderwater(logger);
+
+        logger.LogDebug("Player '{CharacterName}' has gotten into the water!", player.CharacterName);
 
         var underwaterData = new UnderwaterData()
         {
@@ -28,16 +31,20 @@ public static class PlayerDamageExtensions
 
         var ticksTillDeath = (int)Math.Ceiling((double)player.Character.Data.CurrentLife / damage);
 
+        player.TempData.Underwater = true;
         player.TempData.UnderwaterTimer = timerThread.DelayCall(ApplyUnderwaterDamage, underwaterData,
             TimeSpan.FromSeconds(config.BreathTimerDuration), TimeSpan.FromSeconds(config.UnderwaterDamageInterval), ticksTillDeath);
     }
 
-    public static void StopUnderwaterTimer(this Player player)
+    public static void StopUnderwater(this Player player, Microsoft.Extensions.Logging.ILogger logger)
     {
-        if (player.TempData.UnderwaterTimer == null)
-            return;
+        if (player.TempData.Underwater)
+        {
+            logger.LogDebug("Player '{CharacterName}' has gotten out of the water!", player.CharacterName);
+            player.TempData.Underwater = false;
+        }
 
-        else
+        if (player.TempData.UnderwaterTimer != null)
         {
             player.TempData.UnderwaterTimer.Stop();
             player.TempData.UnderwaterTimer = null;

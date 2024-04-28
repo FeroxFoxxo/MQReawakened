@@ -43,6 +43,7 @@ public class ItemRConfig : IRConfig
     public Dictionary<int, string> TrainingGear { get; }
     public Dictionary<int, List<string>> TrainingGear2011 { get; }
     public int PetSlotId { get; }
+    public string WaterPrefabName { get; }
 
     public ItemRConfig()
     {
@@ -132,5 +133,7 @@ public class ItemRConfig : IRConfig
         };
 
         PetSlotId = 4;
+
+        WaterPrefabName = "FX_WaterSplash";
     }
 }
