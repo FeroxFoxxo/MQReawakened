@@ -14,7 +14,7 @@ using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 
-public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp where T : TriggerCoopController
+public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp, IQuestTriggered where T : TriggerCoopController
 {
     private List<string> _currentPhysicalInteractors;
     public int CurrentInteractions;
@@ -479,4 +479,16 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
     }
 
     bool ITriggerComp.IsActive() => IsActive;
+
+    public void QuestAdded(QuestDescription quest, Player player)
+    {
+        if (QuestInProgressRequired == quest.Name)
+            RunTrigger(player);
+    }
+
+    public void QuestCompleted(QuestDescription quest, Player player)
+    {
+        if (QuestCompletedRequired == quest.Name)
+            RunTrigger(player);
+    }
 }

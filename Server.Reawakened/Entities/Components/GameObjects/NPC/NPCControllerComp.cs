@@ -509,9 +509,8 @@ public class NPCControllerComp : Component<NPCController>
                 else
                     player.Character.Data.CompletedQuests.Add(completedQuest.Id);
 
-                foreach (var trigger in Room.GetEntitiesFromType<ITriggerComp>())
-                    if (trigger.QuestCompletedRequired == quest.Name)
-                        trigger.RunTrigger(player);
+                foreach (var trigger in Room.GetEntitiesFromType<IQuestTriggered>())
+                    trigger.QuestCompleted(quest, player);
 
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
 

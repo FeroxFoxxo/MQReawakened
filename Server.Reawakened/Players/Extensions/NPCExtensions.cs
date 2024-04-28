@@ -112,9 +112,8 @@ public static class NpcExtensions
         player.SendXt("na", questModel, setActive ? 1 : 0);
 
         if (player.Room != null)
-            foreach (var trigger in player.Room.GetEntitiesFromType<ITriggerComp>())
-                if (trigger.QuestInProgressRequired == quest.Name)
-                    trigger.RunTrigger(player);
+            foreach (var trigger in player.Room.GetEntitiesFromType<IQuestTriggered>())
+                trigger.QuestAdded(quest, player);
 
         player.UpdateNpcsInLevel(quest);
 

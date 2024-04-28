@@ -28,7 +28,7 @@ public class ReflectionUtils
             var obj = InvokeConstructor<T>(constructor, args, typeInfo);
 
             foreach (var property in properties)
-                if (!property.PropertyType.IsPrimitive)
+                if (!property.PropertyType.IsPrimitive && !property.PropertyType.IsArray)
                     property.SetValue(obj, GetMember(services, property.PropertyType, typeInfo));
 
             return obj;

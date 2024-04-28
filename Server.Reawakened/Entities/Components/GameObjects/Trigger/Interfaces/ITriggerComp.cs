@@ -11,7 +11,4 @@ public interface ITriggerComp
     public int GetPhysicalInteractorCount();
     public string[] GetPhysicalInteractorIds();
     bool IsActive();
-
-    public string QuestCompletedRequired { get; }
-    public string QuestInProgressRequired { get; }
 }

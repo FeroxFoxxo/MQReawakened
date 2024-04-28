@@ -4,6 +4,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
+using Server.Reawakened.Entities.Components.GameObjects.WowMoment;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -31,6 +32,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public override void InitializeComponent()
     {
         Damageable = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
+        Damageable ??= Room.GetEntityFromId<SpiderBreakableComp>(Id);
 
         var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
         var position = new Vector3(Position.X, Position.Y, Position.Z);
@@ -40,7 +42,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public void Damage(int damage, Elemental damageType, Player origin)
     {
-        if (Room.IsObjectKilled(Id) || !CanBreak)
+        if (Room.IsObjectKilled(Id) || !CanBreak || Damageable is null)
             return;
 
         Logger.LogInformation("Damaged object: '{PrefabName}' ({Id})", PrefabName, Id);
@@ -60,6 +62,9 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public void RunDamage(int damage, Elemental damageType)
     {
+        if (Damageable is null)
+            return;
+
         if (Damageable is IBreakable breakable)
         {
             breakable.NumberOfHits++;
@@ -72,7 +77,11 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
                 }
                 else
                 {
-                    Damageable.CurrentHealth = breakable.NumberOfHits / breakable.NumberOfHitsToBreak;
+                    Damageable.CurrentHealth = Convert.ToInt32(
+                        Math.Floor(
+                            Damageable.MaxHealth * ((double) (breakable.NumberOfHitsToBreak - breakable.NumberOfHits) / breakable.NumberOfHitsToBreak)
+                        )
+                    );
 
                     if (Damageable.CurrentHealth <= 0)
                         Damageable.CurrentHealth = 1;
