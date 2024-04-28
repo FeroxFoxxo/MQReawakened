@@ -234,13 +234,13 @@ public class State : ExternalProtocol
             if (!string.IsNullOrEmpty(prefabName))
                 uniqueIdentifier = $"'{prefabName}' ({entityId})";
 
-            additionalInfo = string.Join('/', entityComponentList);
+            additionalInfo = $" {string.Join('/', entityComponentList)}";
         }
 
         var attributes = string.Join(", ", syncEvent.EventDataList);
 
         if (Player.Character != null)
-            Logger.LogDebug("SyncEvent {Type} run for {Type} {Id} by {Player} {AdditionalInfo} with attributes {Attrib}",
+            Logger.LogDebug("SyncEvent {Type} run for {Type} {Id} by {Player}{AdditionalInfo} with attributes {Attrib}",
                 syncEvent.Type, uniqueType, uniqueIdentifier, Player.CharacterName, additionalInfo, attributes);
     }
 
