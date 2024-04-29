@@ -238,12 +238,12 @@
     </Command>
     <Command name="/sfslog" description="Sets the log level for the server manager.">
         <Parameter name="loglevel" description="The level of severity for the log.">
-            <Option name="trace" description="TRACE severity"/>
-            <Option name="debug" description="DEBUG severity"/>
-            <Option name="info" description="INFO severity"/>
-            <Option name="warning" description="WARNING severity"/>
-            <Option name="error" description="ERROR severity"/>
-            <Option name="fatal" description="FATAL severity"/>
+            <Option name="trace" description="TRACE SEVERITY"/>
+            <Option name="debug" description="DEBUG SEVERITY"/>
+            <Option name="info" description="INFO SEVERITY"/>
+            <Option name="warning" description="WARNING SEVERITY"/>
+            <Option name="error" description="ERROR SEVERITY"/>
+            <Option name="fatal" description="FATAL SEVERITY"/>
         </Parameter>
     </Command>
     <Command name="/addgrenades" description="Adds all grenades to the player.">
@@ -271,7 +271,7 @@
     <Command name="/makefpstest" description="Toggles kinematic rigidbodies."/>
     <Command name="/removehud" description="Toggles hud removal."/>
     <Command name="/newcompass" description="Toggles the type of compass on screen."/>
-    <Command name="/compass" description="Adds all pets to the player.">
+    <Command name="/compass" description="Sets the type of compass on screen.">
         <Parameter name="compassmode" description="The compass mode, where the updated compass will set if greater than zero." optional="true"/>
     </Command>
     <Command name="/setactivequest" description="Sets the active quest for the player.">
@@ -308,5 +308,103 @@
     </Command>
     <Command name="/debuggo" description="Debugs a game object.">
         <Parameter name="gameobjectid" description="The id of the gaem object to debug."/>
+    </Command>
+    <Command name="/socialweapons" description="Enables weapons in social areas."/>
+    <Command name="/addandcompletequest" description="Adds and sets a quest as completed.">
+        <Parameter name="questname" description="The name of the quest to set as completed."/>
+    </Command>
+    <Command name="/showhud" description="Sets the HUD to enabled."/>
+    <Command name="/hidehud" description="Sets the HUD to disabled."/>
+    <Command name="/lockhud" description="Locks the HUD icons."/>
+    <Command name="/firevideocomplete" description="Sets the intro video as completed."/>
+    <Command name="/now" description="Sets the current time to a given parameter or, by default, now.">
+        <Parameter name="time" description="The DateTime to parse and set now to, or, to reset, either 'now' or 'reset'." optional="true"/>
+    </Command>
+    <Command name="/fg" description="Gets the forest guardian object."/>
+    <Command name="/cb" description="Executes the color blaster.">
+        <Parameter name="color" description="The color to set the color blast to." optional="true"/>
+    </Command>
+    <Command name="/cz" description="Executes the chicken zapper.">
+        <Parameter name="mode" description="The mode of the chicken zapper." optional="true"/>
+        <Parameter name="interval" description="The first interval of the chicken zapper." optional="true"/>
+        <Parameter name="interval2" description="The second interval of the chicken zapper." optional="true"/>
+    </Command>
+    <Command name="/ngg" description="Runs an NGG Tool command.">
+        <Parameter name="commandname" description="The name of the ngg command to run.">
+            <Option name="setdev" description="Sets the dev user account.">
+                <Parameter name="to" description="The name of the dev user." optional="true"/>
+            </Option>
+            <Option name="loadprefab" description="Sets the prefab mode for the HUD window.">
+                <Parameter name="prefabmode" description="The prefab mode, as an integer." optional="true"/>
+            </Option>
+            <Option name="framerate" description="Sets the target framerate of the application.">
+                <Parameter name="targetframerate" description="The framerate for the application to target." optional="true"/>
+            </Option>
+            <Option name="monitor" description="Sets the performance tool monitoring setting.">
+                <Parameter name="monitorsetting" description="The monitoring mode, as an integer." optional="true"/>
+            </Option>
+            <Option name="gcall" description="Runs the garbage collection.">
+                <Parameter name="generation" description="The generation of garbage to be collected, as an integer." optional="true"/>
+            </Option>
+            <Option name="gcpress" description="Adds memory pressure to the garbage collector.">
+                <Parameter name="bytesallocated" description="The number of bytes of memory to add as pressure to the garbage collector." optional="true"/>
+            </Option>
+            <Option name="gcunpress" description="Removes memory pressure from the garbage collector.">
+                <Parameter name="bytesallocated" description="The number of bytes of memory to remove as pressure from the garbage collector." optional="true"/>
+            </Option>
+            <Option name="memaudit" description="Audits the memory of the program."/>
+            <Option name="memleak" description="Runs a memory leak in the program."/>
+            <Option name="snapshot" description="Snapshots the current memory of the program."/>
+            <Option name="diff or diffs" description="Checks the memory diff of the program."/>
+        </Parameter>
+    </Command>
+    <Command name="/devlog" description="Runs a developer log."/>
+    <Command name="/hi" description="Selects a housing room component.">
+        <Parameter name="prefabname" description="The suffix of the housing object to load, prefixed by 'PF_HS_'." optional="true"/>
+    </Command>
+    <Command name="/la" description="Lists all animatiions for the current avatar."/>
+    <Command name="/xspot" description="Toggles target tracking crosshairs."/>
+    <Command name="/gec" description="Runs the global event cheat.">
+        <Parameter name="name" description="The name of the event." optional="true"/>
+        <Parameter name="amount" description="The amount to set the event to." optional="true"/>
+    </Command>
+    <Command name="/ach" description="Runs the achievement cheat command.">
+        <Parameter name="args" description="The arguments to the AchievementCheat command."/>
+    </Command>
+    <Command name="/bbkey" description="Runs the blackboard cheat command.">
+        <Parameter name="args" description="The arguments to the BlackboardCheat command."/>
+    </Command>
+    <Command name="/8bitmode" description="Opens the eight bit mode menu."/>
+    <Command name="/iw" description="Enables the instant wheel cheat."/>
+    <Command name="/toaster" description="Tests a toaster notification.">
+        <Parameter name="icontype" description="The icon for the toaster to open, defaults to hellow." optional="true">
+            <Option name="b" description="(Text Only) Badge Icon"/>
+            <Option name="a" description="(Text Only) Achievement Icon"/>
+            <Option name="f" description="(Text Only) Friends Icon"/>
+            <Option name="i" description="(Text Only) Inventory Icon"/>
+            <Option name="s" description="(Text Only) Social Icon"/>
+            <Option name="l" description="(Text Only) Leaderboard Icon"/>
+            <Option name="g" description="(Text Only) Games Icon"/>
+            <Option name="friendrec" description="OnReceiveFriendInvitation"/>
+            <Option name="friendacc" description="OnFriendRequestAccepted"/>
+            <Option name="frienddec" description="OnFriendRequestDeclined"/>
+            <Option name="tradeinv" description="OnTradeInvitation"/>
+            <Option name="tradeacc" description="OnTradeAcceptInvitation"/>
+            <Option name="tradedec" description="OnTradeDeclineInvitation"/>
+            <Option name="tradecan" description="OnTradeCancel"/>
+            <Option name="groupinv" description="OnGroupInvitation"/>
+            <Option name="giftrec" description="OnGiftRecieved"/>
+            <Option name="questAvailable" description="OnQuestAvailable"/>
+        </Parameter>
+    </Command>
+    <Command name="/activityquests" description="Find available activity quests."/>
+    <Command name="/turnin" description="Runs the quest turn in script for the current active quest."/>
+    <Command name="/cstuto" description="Runs the cash shop tutorial."/>
+    <Command name="/exittuto" description="Exits all tutorials."/>
+    <Command name="/mig" description="Runs the migration cheat command.">
+        <Parameter name="args" description="The arguments to the MigrationCheat command."/>
+    </Command>
+    <Command name="/notificationprefab" description="Creates and shows a notification from a prefab.">
+        <Parameter name="prefabname" description="The prefab to show in the notification."/>
     </Command>
 </Commands>
