@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Commands>
-    <Command name="warn" description="Throws a new warning message popup based on a TNNW code.">
+    <Command name="/warn" description="Throws a new warning message popup based on a TNNW code.">
         <Parameter name="code" description="A string of length 3, with the hexadecimal assosiated with the error type, i.e. unknown(0)/connection(1)/asset(2)/service(3)/admin(5)/user(6), followed by the error id.">
             <Option name="100" description="CONNECTION_UNKNOWN"/>
             <Option name="102" description="CONNECTION_DISCONNECT"/>
@@ -17,12 +17,12 @@
             <Option name="131" description="CONNECTION_WRITE_EXCEPTION"/>
             <Option name="140" description="CONNECTION_DISCONNECT_EXCEPTION"/>
             <Option name="150" description="CONNECTION_LOADING_TIMEOUT"/>
-            
+
             <Option name="201" description="ASSET_CDN_UNAVAILABLE"/>
             <Option name="210" description="ASSET_VERSION"/>
             <Option name="220" description="ASSET_BUNDLE_DOWNLOAD"/>
             <Option name="230" description="ASSET_BUNDLE_INVALID"/>
-            
+
             <Option name="301" description="SERVICE_EWALLET"/>
             <Option name="302" description="SERVICE_EWALLET_DEFAULT_ERROR"/>
             <Option name="310" description="SERVICE_SHARDER"/>
@@ -57,11 +57,11 @@
             <Option name="623" description="USER_SLEEP_ASSET"/>
         </Parameter>
     </Command>
-    <Command name="noitems" description="Empties the given player's inventory of all items."/>
-    <Command name="clock" description="Logs the time, lag estimate, lag offset and client-server clock difference."/>
-    <Command name="clock" description="Runs a given action on the client clock.">
+    <Command name="/noitems" description="Empties the given player's inventory of all items."/>
+    <Command name="/clock" description="Logs the time, lag estimate, lag offset and client-server clock difference."/>
+    <Command name="/clock" description="Runs a given action on the client clock.">
         <Parameter name="action" description="The action to perform on the clock.">
-            <Option name="up/upd/update" description="Updates the clock or its timer based on second parameter.">
+            <Option name="up/upd/update" description="Updates the clock or its timer based on the second parameter.">
                 <Parameter name="argument" description="The argument for the update action.">
                     <Option name="start" description="Runs the start update timer method."/>
                     <Option name="stop" description="Runs the stop update timer method."/>
@@ -75,7 +75,7 @@
             </Option>
         </Parameter>
     </Command>
-    <Command name="quality" description="Sets the quality level of a graphical setting.">
+    <Command name="/quality" description="Sets the quality level of a graphical setting.">
         <Parameter name="settingname" description="The quality setting you wish to modify.">
             <Option name="setting" description="The global quality level."/>
             <Option name="object" description="The object quality level."/>
@@ -97,10 +97,10 @@
             <Option name="fantastic" description="The fantastic quality level."/>
         </Parameter>
     </Command>
-    <Command name="fullscreen" description="Toggles full screen mode."/>
-    <Command name="logs" description="Enables GameFlow logs."/>
-    <Command name="no_logs" description="Disables GameFlow logs."/>
-    <Command name="xmpp" description="Runs a JabberManager command.">
+    <Command name="/fullscreen" description="Toggles full screen mode."/>
+    <Command name="/logs" description="Enables GameFlow logs."/>
+    <Command name="/no_logs" description="Disables GameFlow logs."/>
+    <Command name="/xmpp" description="Runs a JabberManager command.">
         <Parameter name="commandname" description="The name of the jabber command to run.">
             <Option name="ping" description="Sends ping message to a specific jabber.">
                 <Parameter name="to" description="The jabber id to send the ping to."/>
@@ -120,16 +120,16 @@
                 <Parameter name="roomname" description="The room name to join."/>
             </Option>
             <Option name="memberlist" description="Lists the members via the jabber.">
-                <Parameter name="roomname" description="[Optional] The room nama to query users from."/>
+                <Parameter name="roomname" description="The room nama to query users from." optional="true"/>
             </Option>
             <Option name="leaveroom" description="Leaves a room via the jabber.">
                 <Parameter name="roomname" description="The room name to leave."/>
             </Option>
             <Option name="forceconnect" description="Forces a jabber to connect to a server.">
                 <Parameter name="username" description="The username for the connection."/>
-                <Parameter name="server" description="[Optional] The server to connect to."/>
-                <Parameter name="msgport" description="[Optional] The message port for the connection."/>
-                <Parameter name="securityport" description="[Optional] The security port for the connection."/>
+                <Parameter name="server" description="The server to connect to." optional="true"/>
+                <Parameter name="msgport" description="The message port for the connection." optional="true"/>
+                <Parameter name="securityport" description="The security port for the connection." optional="true"/>
             </Option>
             <Option name="exit" description="Closes the connection of the jabber." />
             <Option name="setressource" description="Sets a resource via the jabber.">
@@ -144,6 +144,169 @@
             <Option name="updateroster" description="Updates a player in the roster via the jabber.">
                 <Parameter name="playername" description="The name of the player to update."/>
             </Option>
+            <Option name="subscribe" description="Updates a player's subscription preference via the jabber.">
+                <Parameter name="playername" description="The name of the player to update."/>
+                <Parameter name="message" description="The subscription preference message."/>
+            </Option>
+            <Option name="unsubscribe" description="Unsubscribes a player via the jabber.">
+                <Parameter name="playername" description="The name of the player to unsubscribe."/>
+            </Option>
+            <Option name="acceptsubscribe" description="Accepts a player's subscription via the jabber.">
+                <Parameter name="playername" description="The name of the player to accept the subscription of."/>
+            </Option>
+            <Option name="refusesubscribe" description="Refuses a player's subscription via the jabber.">
+                <Parameter name="playername" description="The name of the player to refuse the subscription of."/>
+            </Option>
         </Parameter>
+    </Command>
+    <Command name="/clean_cache or /clear_cache" description="Cleans the Unity asset cache."/>
+    <Command name="/popup" description="Tests the fullscreen popup for the marketplace."/>
+    <Command name="/bg_download_on" description="Enables background scene loading."/>
+    <Command name="/bg_download_off" description="Disables background scene loading."/>
+    <Command name="/event_xmas" description="Sets the current event to christmas."/>
+    <Command name="/event_none" description="Sets the current event to nothing."/>
+    <Command name="/selv" description="Sets the effect level for the current player.">
+        <Parameter name="effectlevel" description="An integer representing the effect level to set to."/>
+    </Command>
+    <Command name="/addaccess" description="Completes the starter quests for each tribe."/>
+    <Command name="/prog3" description="Levels the user up to level 3, including a slingshot, sword, armor and an apple."/>
+    <Command name="/prog5" description="Levels the user up to level 5, including 1000 bananas, both slingshots, a sword, armor, earrings, clothes, banana-bits, and a healing potion."/>
+    <Command name="/prog10" description="Levels the user up to level 10, including 3000 bananas, gadgets, a slingshot, a sword, armor, buffs, and clothes."/>
+    <Command name="/prog12" description="Levels the user up to level 12, including 4000 bananas, gadgets, a slingshot, a gun, a sword, armor, buffs, and clothes."/>
+    <Command name="/prog15" description="Levels the user up to level 15, including 5000 bananas, gadgets, a slingshot, a gun, a sword, armor, buffs, and clothes."/>
+    <Command name="/prog20" description="Levels the user up to level 20, including 8000 bananas, all ingredients, gadgets, the scrying orb, healing staff, a slingshot, a gun, food, armor, buffs, and clothes."/>
+    <Command name="/prog25" description="Levels the user up to level 25, including 10000 bananas, all ingredients, gadgets, the scrying orb, healing staff, snake staff, a slingshot, a gun, food, armor, buffs, and clothes."/>
+    <Command name="/prog30" description="Levels the user up to level 30, including 10000 bananas, all ingredients, gadgets, the scrying orb, healing staff, snake staff, a slingshot, a gun, food, armor, buffs, and clothes."/>
+    <Command name="/prog40" description="Levels the user up to level 40, including 40000 bananas, all ingredients, gadgets, the scrying orb, healing staff, snake staff, heroism ability, a slingshot, a gun, armor, and clothes."/>
+    <Command name="/prog50" description="Levels the user up to level 50, including 40000 bananas, all ingredients, gadgets, the scrying orb, healing staff, snake staff, heroism ability, a slingshot, a gun, armor, and clothes."/>
+    <Command name="/prog60" description="Levels the user up to level 60, including all ingredients, all gadgets, armor, and clothes."/>
+    <Command name="/afkwarning" description="Issues the AFK warning notification."/>
+    <Command name="/afk" description="Sets the current player AFK."/>
+    <Command name="/addfriend" description="Adds a friend to the player.">
+        <Parameter name="friendName" description="The name of the friend to add."/>
+    </Command>
+    <Command name="/trade" description="Initializes a trade with a player.">
+        <Parameter name="monkeyname" description="The name of the player to invite to trade."/>
+    </Command>
+    <Command name="/freechataccess" description="Enables free chat access."/>
+    <Command name="/freechataccessdeny" description="Disables free chat access."/>
+    <Command name="/reportbug" description="Reports a bug.">
+        <Parameter name="summary" description="A word identifying the bug." optional="true"/>
+        <Parameter name="detail" description="A sentence detailing the bug in question." optional="true"/>
+    </Command>
+    <Command name="/add" description="Adds an item to the player.">
+        <Parameter name="itemid" description="The id of the item to add, alternatively 'petbattlepoints'." optional="true"/>
+        <Parameter name="amount" description="The amount of the item to add." optional="true"/>
+    </Command>
+    <Command name="/addkeys" description="Adds all trail keys to the player."/>
+    <Command name="/exist" description="Checks to see if an object exists in the scene.">
+        <Parameter name="objectid" description="The id of the game or scene object to check exists in scene."/>
+    </Command>
+    <Command name="/cheatvelocity" description="Modifies the player's velocity.">
+        <Parameter name="xvelmultiplier" description="The multiplier to the x velocity." optional="true"/>
+        <Parameter name="yvelmultiplier" description="The multiplier to the y velocity." optional="true"/>
+    </Command>
+    <Command name="/cheatcollision" description="Disables the collision for the player for any terrain colliders."/>
+    <Command name="/housingsetnode" description="Sets the housing's item for a node.">
+        <Parameter name="path" description="The path node for the housing to set."/>
+        <Parameter name="itemid" description="The item id to set the path's node to."/>
+    </Command>
+    <Command name="/housingdelnode" description="Deletes the housing's node.">
+        <Parameter name="path" description="The path node for the housing to delete."/>
+    </Command>
+    <Command name="/housingsave" description="Saves the current house."/>
+    <Command name="/housingpublish" description="Publishes the current house."/>
+    <Command name="/gotoevent" description="Go to the current event."/>
+    <Command name="/rz" description="Rezones the player's current room."/>
+    <Command name="/teleport" description="Teleports a player to a given position.">
+        <Parameter name="x" description="A float detailing the x position."/>
+        <Parameter name="y" description="A float detailing the y position."/>
+        <Parameter name="plane" description="Either the front 'F', or back 'B' plane."/>
+    </Command>
+    <Command name="/closealldaily" description="Closes all daily chests."/>
+    <Command name="/fpsdrop" description="Simulates a drop in FPS.">
+        <Parameter name="fpstest" description="The FPS, as an integer, to test at."/>
+    </Command>
+    <Command name="/startprofiler" description="Starts the profiling manager.">
+        <Parameter name="profilerargs" description="The arguments to the profiling manager."/>
+    </Command>
+    <Command name="/startprofiler_lt" description="Starts profiling loading times.">
+        <Parameter name="profilerargs" description="The arguments to the profiling manager."/>
+    </Command>
+    <Command name="/startprofiler_nc" description="Starts profiling with no clones.">
+        <Parameter name="profilerargs" description="The arguments to the profiling manager."/>
+    </Command>
+    <Command name="/sfslog" description="Sets the log level for the server manager.">
+        <Parameter name="loglevel" description="The level of severity for the log.">
+            <Option name="trace" description="TRACE severity"/>
+            <Option name="debug" description="DEBUG severity"/>
+            <Option name="info" description="INFO severity"/>
+            <Option name="warning" description="WARNING severity"/>
+            <Option name="error" description="ERROR severity"/>
+            <Option name="fatal" description="FATAL severity"/>
+        </Parameter>
+    </Command>
+    <Command name="/addgrenades" description="Adds all grenades to the player.">
+        <Parameter name="itemcount" description="The amount of grenades to add." optional="true"/>
+    </Command>
+    <Command name="/allcrafting" description="Adds all craftable items to the player.">
+        <Parameter name="itemcount" description="The amount of craftable items to add." optional="true"/>
+    </Command>
+    <Command name="/allquestitems" description="Adds all quest items to the player.">
+        <Parameter name="itemcount" description="The amount of quest items to add." optional="true"/>
+    </Command>
+    <Command name="/allsupplies" description="Adds all consumable items to the player.">
+        <Parameter name="itemcount" description="The amount of consumable items to add." optional="true"/>
+    </Command>
+    <Command name="/allclothes" description="Adds all clothing items to the player.">
+        <Parameter name="itemcount" description="The amount of clothing items to add." optional="true"/>
+    </Command>
+    <Command name="/allpets" description="Adds all pets to the player.">
+        <Parameter name="itemcount" description="The amount of pets to add." optional="true"/>
+    </Command>
+    <Command name="/toggle_acm" description="Toggles the avatar combined mesh system."/>
+    <Command name="/test_customization" description="Tests the customization of the paperdoll monkey."/>
+    <Command name="/makemeloadfast" description="Enables faster asset cleaning up."/>
+    <Command name="/makemeloadslow" description="Disables faster asset cleaning up."/>
+    <Command name="/makefpstest" description="Toggles kinematic rigidbodies."/>
+    <Command name="/removehud" description="Toggles hud removal."/>
+    <Command name="/newcompass" description="Toggles the type of compass on screen."/>
+    <Command name="/compass" description="Adds all pets to the player.">
+        <Parameter name="compassmode" description="The compass mode, where the updated compass will set if greater than zero." optional="true"/>
+    </Command>
+    <Command name="/setactivequest" description="Sets the active quest for the player.">
+        <Parameter name="questname" description="The quest name for the new active quest." optional="true"/>
+    </Command>
+    <Command name="/setregister" description="Sets whether the current player is registered.">
+        <Parameter name="isregistered" description="An integer to set the registered value to, where 1 is true, 0 is false."/>
+    </Command>
+    <Command name="/showncpopup" description="Opens the new cash shop item menu."/>
+    <Command name="/chatbubble" description="Toggles chat bubbles.">
+        <Parameter name="chatbubblecount" description="The maximum amount of chat bubbles to show on screen at once." optional="true"/>
+    </Command>
+    <Command name="/snowlevel" description="Sets the attributes of the current level to snow.">
+        <Parameter name="newlevel" description="The weather node to activate." optional="true"/>
+        <Parameter name="testsnowset" description="The snow set to test." optional="true"/>
+        <Parameter name="atmospherictestmode" description="The atmosphere to test." optional="true"/>
+    </Command>
+    <Command name="/itemreceivetest" description="Sets the item recieve test variable.">
+        <Parameter name="itemrecievedid" description="The id of the item to recieve." optional="true"/>
+    </Command>
+    <Command name="/perftool or /pt" description="Enables or toggles the benchmark tool.">
+        <Parameter name="enablebenchmark" description="A boolean of whether to enable/disable the benchmark tool." optional="true"/>
+        <Parameter name="script" description="The script to add to the benchmark tool." optional="true"/>
+        <Parameter name="value" description="An integer to attribute to the script." optional="true"/>
+    </Command>
+    <Command name="/objtrack" description="Enables an objective tracking mode.">
+        <Parameter name="objtrackmode" description="An integer for the mode of tracking for an objective."/>
+    </Command>
+    <Command name="/fov" description="Enables FOV tracking.">
+        <Parameter name="fov" description="An integer for the type of FOV tracking, where clear is 1, red is 2, and green is 3."/>
+    </Command>
+    <Command name="/newncmall" description="Toggles the cashshop between versions.">
+        <Parameter name="cashshopversion" description="An integer for the version of cashshop, where new is 1 and old is 0." optional="true"/>
+    </Command>
+    <Command name="/debuggo" description="Debugs a game object.">
+        <Parameter name="gameobjectid" description="The id of the gaem object to debug."/>
     </Command>
 </Commands>

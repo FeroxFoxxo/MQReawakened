@@ -64,6 +64,12 @@
                 text-decoration: underline; /* Underline on hover/focus for better UX */
             }
 
+        .optional-indicator {
+            font-size: 0.8em;
+            color: #6c757d; /* A neutral color indicating optional */
+            margin-left: 10px;
+        }
+
         .option-item {
             background-color: #f0f8ff; /* Very light blue for options */
             margin-top: 10px; /* Spacing between options */
@@ -83,7 +89,13 @@
                 var optionsId = $"options-{parentId}-{parameter.Name}";
                 <div class="card my-2 parameter-card">
                     <div class="card-body">
-                        <h5 class="card-title">@parameter.Name</h5>
+                        <h5 class="card-title">
+                            @parameter.Name
+                            @if (parameter.Optional)
+                            {
+                                <span class="optional-indicator">(Optional)</span>
+                            }
+                        </h5>
                         <p class="card-text">@parameter.Description</p>
                         @if (parameter.Options != null && parameter.Options.Any())
                         {
@@ -121,9 +133,11 @@
                         <p>@command.CommandDescription</p>
                         @if (command.Parameters != null && command.Parameters.Any())
                         {
+                            int parameterId = 0;
                             foreach (var parameter in command.Parameters)
                             {
-                                RenderParameter(parameter, "0");
+                                parameterId++;
+                                RenderParameter(parameter, parameterId.ToString());
                             }
                         }
                     </div>
