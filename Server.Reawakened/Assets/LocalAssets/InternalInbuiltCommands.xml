@@ -100,9 +100,50 @@
     <Command name="fullscreen" description="Toggles full screen mode."/>
     <Command name="logs" description="Enables GameFlow logs."/>
     <Command name="no_logs" description="Disables GameFlow logs."/>
-    <Command name="xmpp" description="Runs a JabberManager command">
+    <Command name="xmpp" description="Runs a JabberManager command.">
         <Parameter name="commandname" description="The name of the jabber command to run.">
-            
+            <Option name="ping" description="Sends ping message to a specific jabber.">
+                <Parameter name="to" description="The jabber id to send the ping to."/>
+            </Option>
+            <Option name="pingall" description="Sends ping message to all jabbers." />
+            <Option name="message" description="Sends a message to a specific jabber.">
+                <Parameter name="message" description="The message to send to the jabber."/>
+                <Parameter name="to" description="The jabber id to send the message to."/>
+            </Option>
+            <Option name="messageall" description="Sends a message to all jabbers.">
+                <Parameter name="message" description="The message to send to the jabbers."/>
+            </Option>
+            <Option name="createroom" description="Creates a room via the jabber.">
+                <Parameter name="roomname" description="The room name to create."/>
+            </Option>
+            <Option name="joinroom" description="Joins a room via the jabber.">
+                <Parameter name="roomname" description="The room name to join."/>
+            </Option>
+            <Option name="memberlist" description="Lists the members via the jabber.">
+                <Parameter name="roomname" description="[Optional] The room nama to query users from."/>
+            </Option>
+            <Option name="leaveroom" description="Leaves a room via the jabber.">
+                <Parameter name="roomname" description="The room name to leave."/>
+            </Option>
+            <Option name="forceconnect" description="Forces a jabber to connect to a server.">
+                <Parameter name="username" description="The username for the connection."/>
+                <Parameter name="server" description="[Optional] The server to connect to."/>
+                <Parameter name="msgport" description="[Optional] The message port for the connection."/>
+                <Parameter name="securityport" description="[Optional] The security port for the connection."/>
+            </Option>
+            <Option name="exit" description="Closes the connection of the jabber." />
+            <Option name="setressource" description="Sets a resource via the jabber.">
+                <Parameter name="resourcename" description="The name of the resource to set."/>
+            </Option>
+            <Option name="addroster" description="Adds a player to the roster via the jabber.">
+                <Parameter name="playername" description="The name of the player to add."/>
+            </Option>
+            <Option name="removeroster" description="Removes a player from the roster via the jabber.">
+                <Parameter name="playername" description="The name of the player to remove."/>
+            </Option>
+            <Option name="updateroster" description="Updates a player in the roster via the jabber.">
+                <Parameter name="playername" description="The name of the player to update."/>
+            </Option>
         </Parameter>
     </Command>
 </Commands>
