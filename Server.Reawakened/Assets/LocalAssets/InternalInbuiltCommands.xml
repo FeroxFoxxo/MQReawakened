@@ -407,4 +407,37 @@
     <Command name="/notificationprefab" description="Creates and shows a notification from a prefab.">
         <Parameter name="prefabname" description="The prefab to show in the notification."/>
     </Command>
+    <Command name="/mbtest" description="Tests the monkey blast code.">
+        <Parameter name="monkeyblasttest" description="Whether to test monkey blast, as an integer." optional="true"/>
+        <Parameter name="cannonangle" description="The cannon angle for the blast, as a float." optional="true"/>
+    </Command>
+    <Command name="/monkeyblasthud" description="Enables the monkey blast HUD."/>
+    <Command name="/loadtestleaderboards" description="Loads the default, test leaderboards.">
+        <Parameter name="duration" description="The duration of the test leaderboard to exist for."/>
+        <Parameter name="sleep" description="The sleep time before loading the test leaderboard."/>
+        <Parameter name="env" description="The environment to load the test leaderboard on."/>
+    </Command>
+    <Command name="/mbfixedupdate" description="Enables monkey blast's fixed update."/>
+    <Command name="/mbupdate" description="Disables monkey blast's fixed update."/>
+    <Command name="/errorreport" description="Triggers the 230 ASSET error report - ASSET_BUNDLE_INVALID."/>
+    <Command name="/scalepop" description="Runs the SetGlobalPopulationScalingValue command.">
+        <Parameter name="scaleval1" description="The first value to scale the population to."/>
+        <Parameter name="scaleval2" description="The second value to scale the population to."/>
+    </Command>
+    <Command name="/scalelevel" description="Runs the SetLevelPopulationScalingValues command.">
+        <Parameter name="scaleval1" description="The first value to scale the population to."/>
+        <Parameter name="scaleval2" description="The second value to scale the population to."/>
+        <Parameter name="scaleval2" description="The third value to scale the population to."/>
+    </Command>
+    <Command name="/trackphysics" description="Runs the TrackPhysicsEvents command. Defaults to 'track'.">
+        <Parameter name="tracktype" description="Whether the player's physics should be tracked."/>
+    </Command>
+    <Command name="/battlepets" description="Runs the PetBattlePetCheat command.">
+        <Parameter name="args" description="The arguments to pass to the PetBattlePetCheat command."/>
+    </Command>
+    <Command name="/adjustdelayeduse" description="Runs the AdjustDelayedUseItemTimes command.">
+        <Parameter name="delayuseminutes" description="The minutes to add to the delay use expiry."/>
+    </Command>
+    <Command name="/socialcontextualmenuv2" description="Toggles the updated social context menu."/>
+    <Command name="/socialnotebookv2" description="Toggles the updated social notebook menu."/>
 </Commands>
