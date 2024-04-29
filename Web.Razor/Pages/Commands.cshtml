@@ -41,14 +41,20 @@
         });
     </script>
     <style>
+        @@font-face {
+            font-family: 'grobold';
+            src: url('./_content/Web.Razor/SignUp/GROBOLD.ttf');
+        }
+
         body {
-            background-color: #e6f7ff; /* Light blue background */
+            background-color: #8ED8FF;
             color: #333; /* Dark text for contrast */
             transition: background-color 0.3s; /* Smooth transition for background color */
+            font-family: 'grobold' !important;
         }
 
         .site-header {
-            background: #81cdeb;
+            background: #318dab;
             color: #fff;
             padding: 20px 0 10px; /* Reduced padding at the bottom */
             border-radius: 10px;
@@ -61,12 +67,12 @@
             font-style: italic;
             font-size: 1rem;
             margin-top: 0.25rem; /* Reduced margin for a tighter look */
-            color: #f8f9fa; /* A lighter shade of white for contrast */
+            color: #fff; /* A lighter shade of white for contrast */
             margin-bottom: 0; /* Remove default bottom margin */
         }
 
         .section-header {
-            background-color: #7ABACC; /* A light gray background */
+            background-color: #2A6A7C; /* A light gray background */
             padding: 10px 0;
             margin-bottom: 30px; /* Space below the header */
             border-radius: 5px;
@@ -91,12 +97,12 @@
         }
 
             .command-card .card-header {
-                background-color: #32cd32; /* Lime green header for commands */
+                background-color: #577B3D; /* Lime green header for commands */
                 color: #fff; /* White text for contrast */
             }
 
         .options-toggle {
-            color: #32cd32; /* Lime green color for toggle link */
+            color: #577B3D; /* Lime green color for toggle link */
             cursor: pointer; /* Pointer cursor on hover */
             text-decoration: none; /* No underline */
         }
@@ -117,18 +123,31 @@
             padding: 10px; /* Padding for content */
             border-radius: 10px; /* Rounded corners for options */
         }
+
+        .options-collapse {
+            transition: height 0.5s ease;
+        }
+
+            .options-collapse.collapsing {
+                height: 0;
+                overflow: hidden;
+            }
+
+            .options-collapse.show {
+                height: auto;
+            }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="text-center my-4 site-header">
             <h1 class="mb-0">MQReawakened Command Reference</h1>
-            <p class="text-muted site-description">Note! Commands may not be fully implemented, or may not work on older versions of MQ.</p>
+            <p class="site-description">Note! Commands may not be fully implemented, or may not work on older versions of MQ.</p>
         </header>
         @functions {
             private void RenderParameter(ParameterModel parameter, string parentId)
             {
-                var optionsId = $"options-{parentId.Replace("/", "").ToLower()}-{parameter.Name.Replace("/", "").ToLower()}";
+                var optionsId = $"{parentId.Replace("/", "").ToLower()}-{parameter.Name.Replace("/", "").ToLower()}";
                 <div class="card my-2 parameter-card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -148,9 +167,11 @@
                                         <strong>Option:</strong> @option.Name - @option.Description
                                         @if (option.Parameters != null && option.Parameters.Any())
                                         {
+                                            int parameterId = 0;
                                             foreach (var subParameter in option.Parameters)
                                             {
-                                                RenderParameter(subParameter, optionsId);
+                                                parameterId++;
+                                                RenderParameter(subParameter, $"{optionsId}-{parameterId}");
                                             }
                                         }
                                     </div>
@@ -185,7 +206,7 @@
                                             foreach (var parameter in command.Parameters)
                                             {
                                                 parameterId++;
-                                                RenderParameter(parameter, $"{name}-{command.CommandName}-{parameterId}");
+                                                RenderParameter(parameter, $"options-{name}-{command.CommandName}-{parameterId}");
                                             }
                                         }
                                     </div>
