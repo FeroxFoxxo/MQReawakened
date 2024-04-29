@@ -4,7 +4,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 
 namespace Web.Razor.Pages;
 
-public class Commands(InternalInbuiltCommands commands) : PageModel
+public class CommandsModel(InternalInbuiltCommands commands) : PageModel
 {
     public List<CommandModel> ClientCommands => commands.Commands;
 
