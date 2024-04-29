@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
 using Server.Base.Accounts.Models;
+using Server.Reawakened.Core.Services;
 using Server.Reawakened.Players.Models;
 using Web.Launcher.Models;
-using Web.Launcher.Services;
 
 namespace Web.Launcher.Extensions;
 public static class LoginData
 {
     public static JObject GetLoginData(this Account account, UserInfo userInfo,
-        StartGame startGame, LauncherRwConfig config, LauncherRConfig rConfig) =>
+        GetServerAddress getSA, LauncherRwConfig config, LauncherRConfig rConfig) =>
         new()
         {
             { "status", true },
@@ -19,7 +19,7 @@ public static class LoginData
                     { "trackingShortId", userInfo.TrackingShortId },
                     { "enabled", rConfig.AnalyticsEnabled },
                     { "firstLoginToday", (DateTime.UtcNow - account.LastLogin).TotalDays >= 1 },
-                    { "baseUrl", $"{startGame.ServerAddress}/Analytics" },
+                    { "baseUrl", $"{getSA.ServerAddress}/Analytics" },
                     { "apiKey", config.AnalyticsApiKey },
                     { "firstTimeLogin", account.Created == account.LastLogin ? "true" : "false" },
                 }

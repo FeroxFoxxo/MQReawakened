@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Commands>
     <Command name="/warn" description="Throws a new warning message popup based on a TNNW code.">
-        <Parameter name="code" description="A string of length 3, with the hexadecimal assosiated with the error type, i.e. unknown(0)/connection(1)/asset(2)/service(3)/admin(5)/user(6), followed by the error id.">
+        <Parameter name="code" description="A string of length 3, with the hexadecimal assosiated with the error type, where UNKNOWN = 0, CONNECTION = 1, ASSET = 2, SERVICE = 3, ADMIN = 5, USER = 6, followed by the error id.">
             <Option name="100" description="CONNECTION_UNKNOWN"/>
             <Option name="102" description="CONNECTION_DISCONNECT"/>
             <Option name="111" description="CONNECTION_CONNECT_SECURITY"/>

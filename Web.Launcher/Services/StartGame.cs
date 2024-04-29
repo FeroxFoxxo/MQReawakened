@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
@@ -15,6 +12,8 @@ using Server.Base.Worlds;
 using Server.Reawakened.BundleHost.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
+using Server.Reawakened.Core.Events;
+using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Events;
 using System.Diagnostics;
@@ -27,8 +26,8 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Web.Launcher.Services;
 
-public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILogger<StartGame> logger, ServerConsole _console,
-    World world, PlayerEventSink playerEventSink, RandomKeyGenerator generator, IServer server, BuildAssetList assetList,
+public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole _console, ReawakenedEventSink reawakenedSink,
+    World world, PlayerEventSink playerEventSink, RandomKeyGenerator generator, BuildAssetList assetList, GetServerAddress getSA,
     LauncherRConfig lConfig, LauncherRwConfig lWConfig, InternalRwConfig ilWConfig, ServerRConfig sConfig) : IService
 {
     private string _directory;
@@ -36,15 +35,14 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
     private Process _game;
 
     public PackageInformation CurrentVersion { get; private set; }
-    public string ServerAddress { get; private set; }
 
     public void Initialize()
     {
-        appLifetime.ApplicationStarted.Register(AppStarted);
         sink.WorldLoad += GetGameInformation;
         sink.Shutdown += StopGame;
         sink.ChangedOperationalMode += CheckRemakeConfig;
         playerEventSink.PlayerRefreshed += AskIfRestart;
+        reawakenedSink.ServerAddressFound += AppStarted;
     }
 
     private void CheckRemakeConfig()
@@ -60,8 +58,6 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
     private void AppStarted()
     {
         _appStart = true;
-        ServerAddress = server.Features.Get<IServerAddressesFeature>().Addresses.First();
-        logger.LogInformation("Set listening URL to: {Url}", ServerAddress);
         RunGame();
     }
 
@@ -250,23 +246,23 @@ public class StartGame(EventSink sink, IHostApplicationLifetime appLifetime, ILo
 
     private Dictionary<string, string> GetConfigValues(string header) => new()
     {
-        { $"{header}.unity.url.membership", $"{ServerAddress}/Membership" },
-        { $"{header}.unity.cache.domain", $"{ServerAddress}/Cache" },
+        { $"{header}.unity.url.membership", $"{getSA.ServerAddress}/Membership" },
+        { $"{header}.unity.cache.domain", $"{getSA.ServerAddress}/Cache" },
         { $"{header}.unity.cache.license", $"{lConfig.CacheLicense}" },
         { $"{header}.unity.cache.size", lConfig.CacheSize.ToString() },
         { $"{header}.unity.cache.expiration", lConfig.CacheExpiration.ToString() },
         { "game.cacheversion", lConfig.CacheVersion.ToString() },
-        { $"{header}.unity.url.crisp.host", $"{ServerAddress}/Chat/" },
+        { $"{header}.unity.url.crisp.host", $"{getSA.ServerAddress}/Chat/" },
         { "asset.log", lConfig.LogAssets ? "true" : "false" },
         { "asset.disableversioning", lConfig.DisableVersions ? "true" : "false" },
-        { "asset.jboss", $"{ServerAddress}/Apps{(sConfig.GameVersion >= GameVersion.v2014 ? "/" : string.Empty)}" },
-        { "asset.bundle", $"{ServerAddress}/Client/Bundles" },
-        { "asset.audio", $"{ServerAddress}/Client/Audio" },
-        { "logout.url", $"{ServerAddress}/Logout" },
-        { "contactus.url", $"{ServerAddress}/Contact" },
-        { "tools.urlbase", $"{ServerAddress}/Tools/" },
-        { "leaderboard.domain", $"{ServerAddress}/Apps/" },
-        { "analytics.baseurl", $"{ServerAddress}/Analytics/" },
+        { "asset.jboss", $"{getSA.ServerAddress}/Apps{(sConfig.GameVersion >= GameVersion.v2014 ? "/" : string.Empty)}" },
+        { "asset.bundle", $"{getSA.ServerAddress}/Client/Bundles" },
+        { "asset.audio", $"{getSA.ServerAddress}/Client/Audio" },
+        { "logout.url", $"{getSA.ServerAddress}/Logout" },
+        { "contactus.url", $"{getSA.ServerAddress}/Contact" },
+        { "tools.urlbase", $"{getSA.ServerAddress}/Tools/" },
+        { "leaderboard.domain", $"{getSA.ServerAddress}/Apps/" },
+        { "analytics.baseurl", $"{getSA.ServerAddress}/Analytics/" },
         { "analytics.enabled", lConfig.AnalyticsEnabled ? "true" : "false" },
         { "analytics.apikey", lWConfig.AnalyticsApiKey },
         { "project.name", lConfig.ProjectName }

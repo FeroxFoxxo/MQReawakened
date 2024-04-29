@@ -160,7 +160,7 @@ public class Room : Timer
 
         foreach (var player in _players?.Values)
         {
-            if (GetTime.GetCurrentUnixMilliseconds() - player.CurrentPing > _config.KickAfterTime)
+            if (GetTime.GetCurrentUnixMilliseconds() - player.TempData.CurrentPing > _config.KickAfterTime)
             {
                 player.Remove(Logger);
                 return;

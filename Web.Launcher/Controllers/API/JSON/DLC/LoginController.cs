@@ -3,15 +3,15 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Accounts.Services;
+using Server.Reawakened.Core.Services;
 using Server.Reawakened.Players.Services;
 using Web.Launcher.Extensions;
 using Web.Launcher.Models;
-using Web.Launcher.Services;
 
 namespace Web.Launcher.Controllers.API.JSON.DLC;
 
 [Route("api/json/dlc/login")]
-public class LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler, StartGame startGame,
+public class LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler, GetServerAddress getSA,
     LauncherRConfig rConfig, PasswordHasher passwordHasher, LauncherRwConfig config, ILogger<LoginController> logger) : Controller
 {
     [HttpPost]
@@ -44,7 +44,7 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
             return Unauthorized();
         }
 
-        var loginData = account.GetLoginData(userInfo, startGame, config, rConfig);
+        var loginData = account.GetLoginData(userInfo, getSA, config, rConfig);
 
         return Ok(JsonConvert.SerializeObject(loginData));
     }

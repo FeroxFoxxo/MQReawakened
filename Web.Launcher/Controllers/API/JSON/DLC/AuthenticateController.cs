@@ -2,18 +2,18 @@
 using Newtonsoft.Json;
 using Server.Base.Accounts.Services;
 using Server.Base.Core.Services;
+using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Services;
 using Web.Launcher.Extensions;
 using Web.Launcher.Models;
-using Web.Launcher.Services;
 
 namespace Web.Launcher.Controllers.API.JSON.DLC;
 
 [Route("api/json/dlc/authenticate")]
 public class AuthenticateController(AccountHandler accHandler, UserInfoHandler userInfoHandler,
     TemporaryDataStorage temporaryDataStorage, RandomKeyGenerator keyGenerator,
-    StartGame startGame, LauncherRwConfig config, LauncherRConfig rConfig) : Controller
+    GetServerAddress getSA, LauncherRwConfig config, LauncherRConfig rConfig) : Controller
 {
     [HttpPost]
     public IActionResult GetLoginInfo([FromForm] string username, [FromForm] string token)
@@ -37,7 +37,7 @@ public class AuthenticateController(AccountHandler accHandler, UserInfoHandler u
         temporaryDataStorage.AddData(sId, userInfo);
         temporaryDataStorage.AddData(sId, account);
 
-        var loginData = account.GetLoginData(userInfo, startGame, config, rConfig);
+        var loginData = account.GetLoginData(userInfo, getSA, config, rConfig);
 
         return Ok(JsonConvert.SerializeObject(loginData));
     }
