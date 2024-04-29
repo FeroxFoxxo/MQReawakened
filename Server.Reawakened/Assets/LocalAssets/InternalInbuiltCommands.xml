@@ -183,7 +183,7 @@
     <Command name="/afkwarning" description="Issues the AFK warning notification."/>
     <Command name="/afk" description="Sets the current player AFK."/>
     <Command name="/addfriend" description="Adds a friend to the player.">
-        <Parameter name="friendName" description="The name of the friend to add."/>
+        <Parameter name="friendname" description="The name of the friend to add."/>
     </Command>
     <Command name="/trade" description="Initializes a trade with a player.">
         <Parameter name="monkeyname" description="The name of the player to invite to trade."/>
