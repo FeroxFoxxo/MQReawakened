@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Commands>
+    <Command name="warn" description="Throws a new warning message popup based on a TNNW code.">
+        <Parameter name="code" description="A string of length 3, with the hexadecimal assosiated with the error type, i.e. unknown(0)/connection(1)/asset(2)/service(3)/admin(5)/user(6), followed by the error id.">
+            <Option name="100" description="CONNECTION_UNKNOWN"/>
+            <Option name="102" description="CONNECTION_DISCONNECT"/>
+            <Option name="111" description="CONNECTION_CONNECT_SECURITY"/>
+            <Option name="112" description="CONNECTION_CONNECT_REFUSED"/>
+            <Option name="113" description="CONNECTION_CONNECT_TIMEOUT"/>
+            <Option name="114" description="CONNECTION_CONNECT_EXCEPTION"/>
+            <Option name="115" description="CONNECTION_CONNECT_DNS"/>
+            <Option name="116" description="CONNECTION_CONNECT_ABORT"/>
+            <Option name="120" description="CONNECTION_READ_MESSAGE"/>
+            <Option name="121" description="CONNECTION_READ_EXCEPTION"/>
+            <Option name="122" description="CONNECTION_READ_DISPOSE"/>
+            <Option name="130" description="CONNECTION_WRITE_MESSAGE"/>
+            <Option name="131" description="CONNECTION_WRITE_EXCEPTION"/>
+            <Option name="140" description="CONNECTION_DISCONNECT_EXCEPTION"/>
+            <Option name="150" description="CONNECTION_LOADING_TIMEOUT"/>
+            
+            <Option name="201" description="ASSET_CDN_UNAVAILABLE"/>
+            <Option name="210" description="ASSET_VERSION"/>
+            <Option name="220" description="ASSET_BUNDLE_DOWNLOAD"/>
+            <Option name="230" description="ASSET_BUNDLE_INVALID"/>
+            
+            <Option name="301" description="SERVICE_EWALLET"/>
+            <Option name="302" description="SERVICE_EWALLET_DEFAULT_ERROR"/>
+            <Option name="310" description="SERVICE_SHARDER"/>
+            <Option name="320" description="SERVICE_CHAT"/>
+            <Option name="330" description="SERVICE_DATABASE"/>
+            <Option name="340" description="SERVICE_ACHIEVEMENTS_DOWNLOAD"/>
+            <Option name="350" description="SERVICE_LEADERBOARDS_DOWNLOAD"/>
+
+            <Option name="501" description="ADMIN_PLAYER_KICKED"/>
+            <Option name="502" description="ADMIN_PLAYER_BANNED"/>
+            <Option name="503" description="ADMIN_PLAYER_ENDSESSION"/>
+            <Option name="504" description="ADMIN_PLAYER_BHVRWARN"/>
+            <Option name="505" description="ADMIN_PLAYER_SILENCED"/>
+            <Option name="506" description="ADMIN_PLAYER_UNSILENCED"/>
+            <Option name="507" description="ADMIN_PLAYER_SUSPENDED"/>
+            <Option name="510" description="ADMIN_UPGRADE_NOTIFY"/>
+            <Option name="511" description="ADMIN_UPGRADE_TELEPORT"/>
+            <Option name="512" description="ADMIN_UPGRADE_CLOSURE"/>
+            <Option name="513" description="ADMIN_UPGRADE_ZONE"/>
+            <Option name="514" description="ADMIN_UPGRADE_KICK"/>
+            <Option name="520" description="ADMIN_LIVETOOLS_CLOSELEVEL"/>
+            <Option name="521" description="ADMIN_LIVETOOLS_RESTARTNORIGHTS"/>
+            <Option name="522" description="ADMIN_LIVETOOLS_RESTARTNOLIFE"/>
+            <Option name="523" description="ADMIN_LIVETOOLS_CLOSETRADE"/>
+
+            <Option name="601" description="USER_AFK_KICK"/>
+            <Option name="602" description="USER_AFK_WARN"/>
+            <Option name="610" description="USER_LOGIN_AGAIN"/>
+            <Option name="620" description="USER_SLEEP_AWAKE"/>
+            <Option name="621" description="USER_SLEEP_DISCONNECT"/>
+            <Option name="622" description="USER_SLEEP_CONNECTION"/>
+            <Option name="623" description="USER_SLEEP_ASSET"/>
+        </Parameter>
+    </Command>
+    <Command name="noitems" description="Empties the given player's inventory of all items."/>
+    <Command name="clock" description="Logs the time, lag estimate, lag offset and client-server clock difference."/>
+    <Command name="clock" description="Runs a given action on the client clock.">
+        <Parameter name="action" description="The action to perform on the clock.">
+            <Option name="up/upd/update" description="Updates the clock or its timer based on second parameter.">
+                <Parameter name="argument" description="The argument for the update action.">
+                    <Option name="start" description="Runs the start update timer method."/>
+                    <Option name="stop" description="Runs the stop update timer method."/>
+                    <Option name="now" description="Runs the update clock method."/>
+                </Parameter>
+            </Option>
+            <Option name="off/offset" description="Updates the current lag offset with the second parameter.">
+                <Parameter name="argument" description="The argument for the offset action.">
+                    <Option name="newoffset" description="The integer value to set the lag offset to."/>
+                </Parameter>
+            </Option>
+        </Parameter>
+    </Command>
+    <Command name="quality" description="Sets the quality level of a graphical setting.">
+        <Parameter name="settingname" description="The quality setting you wish to modify.">
+            <Option name="setting" description="The global quality level."/>
+            <Option name="object" description="The object quality level."/>
+            <Option name="animation" description="The animation quality level."/>
+            <Option name="vfx" description="The visual effect quality level."/>
+            <Option name="decoration" description="The decoration quality level - note: either on or off, does not take an quality level.">
+                <Parameter name="argument" description="The argument for the decoration action.">
+                    <Option name="on" description="Turns decorations on."/>
+                    <Option name="off" description="Turns decorations off."/>
+                </Parameter>
+            </Option>
+        </Parameter>
+        <Parameter name="qualitylevel" description="The quality to set the setting to - note: decoration has its own parameter.">
+            <Option name="fastest" description="The fastest quality level."/>
+            <Option name="fast" description="The fast quality level."/>
+            <Option name="simple" description="The simple quality level."/>
+            <Option name="good" description="The good quality level."/>
+            <Option name="beautiful" description="The beautiful quality level."/>
+            <Option name="fantastic" description="The fantastic quality level."/>
+        </Parameter>
+    </Command>
+    <Command name="fullscreen" description="Toggles full screen mode."/>
+    <Command name="logs" description="Enables GameFlow logs."/>
+    <Command name="no_logs" description="Disables GameFlow logs."/>
+    <Command name="xmpp" description="Runs a JabberManager command">
+        <Parameter name="commandname" description="The name of the jabber command to run.">
+            
+        </Parameter>
+    </Command>
+</Commands>

@@ -107,6 +107,9 @@
       <None Update="Assets\LocalAssets\InternalIgnoredItem.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Assets\LocalAssets\InternalInbuiltCommands.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="DLLs\X64\Texture2DDecoderNative.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
