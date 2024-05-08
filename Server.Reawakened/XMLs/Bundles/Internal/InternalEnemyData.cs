@@ -105,34 +105,35 @@ public class InternalEnemyData : InternalXml
                                         switch (stateType)
                                         {
                                             case StateType.Patrol:
-                                                var speed = 0f;
-                                                var smoothMove = true;
-                                                var endPathWaitTime = 0f;
+                                                var patrolSpeed = 0f;
+                                                var patrolSmoothMove = true;
+                                                var patrolEndPathWaitTime = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "speed":
-                                                            speed = float.Parse(behaviorData.Value);
+                                                            patrolSpeed = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "smoothMove":
-                                                            smoothMove = bool.Parse(behaviorData.Value);
+                                                            patrolSmoothMove = bool.Parse(behaviorData.Value);
                                                             break;
                                                         case "endPathWaitTime":
-                                                            endPathWaitTime = float.Parse(behaviorData.Value);
+                                                            patrolEndPathWaitTime = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
 
-                                                state = new PatrolState(speed, smoothMove, endPathWaitTime, resources);
+                                                var patrolProperties = new PatrolProperties(patrolSpeed, patrolSmoothMove, patrolEndPathWaitTime, 0, 0, 0, 0);
+                                                state = new PatrolState(patrolProperties, resources, stateType);
                                                 break;
                                             case StateType.Aggro:
                                                 var aggroSpeed = 0f;
-                                                var moveBeyondTargetDistance = 0f;
-                                                var stayOnPatrolPath = true;
+                                                var aggroMoveBeyondTargetDistance = 0f;
+                                                var aggroStayOnPatrolPath = true;
                                                 var aggroAttackBeyondPatrolLine = 0f;
-                                                var useAttackBeyondPatrolLine = true;
-                                                var detectionRangeUpY = 0f;
-                                                var detectionRangeDownY = 0f;
+                                                var aggroUseAttackBeyondPatrolLine = true;
+                                                var aggroDetectionRangeUpY = 0f;
+                                                var aggroDetectionRangeDownY = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
                                                     switch (behaviorData.Name)
@@ -141,56 +142,64 @@ public class InternalEnemyData : InternalXml
                                                             aggroSpeed = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "moveBeyondTargetDistance":
-                                                            moveBeyondTargetDistance = float.Parse(behaviorData.Value);
+                                                            aggroMoveBeyondTargetDistance = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "stayOnPatrolPath":
-                                                            stayOnPatrolPath = bool.Parse(behaviorData.Value);
+                                                            aggroStayOnPatrolPath = bool.Parse(behaviorData.Value);
                                                             break;
                                                         case "attackBeyondPatrolLine":
                                                             aggroAttackBeyondPatrolLine = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "useAttackBeyondPatrolLine":
-                                                            useAttackBeyondPatrolLine = bool.Parse(behaviorData.Value);
+                                                            aggroUseAttackBeyondPatrolLine = bool.Parse(behaviorData.Value);
                                                             break;
                                                         case "detectionRangeUpY":
-                                                            detectionRangeUpY = float.Parse(behaviorData.Value);
+                                                            aggroDetectionRangeUpY = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "detectionRangeDownY":
-                                                            detectionRangeDownY = float.Parse(behaviorData.Value);
+                                                            aggroDetectionRangeDownY = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
 
-                                                state = new AggroState(aggroSpeed, moveBeyondTargetDistance, stayOnPatrolPath, aggroAttackBeyondPatrolLine,
-                                                    useAttackBeyondPatrolLine, detectionRangeUpY, detectionRangeDownY, resources);
+                                                var aggroProperties = new AggroProperties(
+                                                    aggroSpeed, aggroMoveBeyondTargetDistance, aggroStayOnPatrolPath, aggroAttackBeyondPatrolLine,
+                                                    aggroUseAttackBeyondPatrolLine, aggroDetectionRangeUpY, aggroDetectionRangeDownY
+                                                );
+
+                                                state = new AggroState(aggroProperties, resources, stateType);
                                                 break;
                                             case StateType.LookAround:
-                                                var lookTime = 0f;
-                                                var startDirection = 0f;
-                                                var forceDirection = 0f;
-                                                var initialProgressRatio = 0f;
-                                                var snapOnGround = true;
+                                                var lookAroundTime = 0f;
+                                                var lookAroundStartDirection = 0;
+                                                var lookAroundForceDirection = 0;
+                                                var lookAroundInitialProgressRatio = 0f;
+                                                var lookAroundSnapOnGround = true;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "lookTime":
-                                                            lookTime = float.Parse(behaviorData.Value);
+                                                            lookAroundTime = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "startDirection":
-                                                            startDirection = float.Parse(behaviorData.Value);
+                                                            lookAroundStartDirection = int.Parse(behaviorData.Value);
                                                             break;
                                                         case "forceDirection":
-                                                            forceDirection = float.Parse(behaviorData.Value);
+                                                            lookAroundForceDirection = int.Parse(behaviorData.Value);
                                                             break;
                                                         case "initialProgressRatio":
-                                                            initialProgressRatio = float.Parse(behaviorData.Value);
+                                                            lookAroundInitialProgressRatio = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "snapOnGround":
-                                                            snapOnGround = bool.Parse(behaviorData.Value);
+                                                            lookAroundSnapOnGround = bool.Parse(behaviorData.Value);
                                                             break;
                                                     }
 
-                                                state = new LookAroundState(lookTime, startDirection, forceDirection, initialProgressRatio, snapOnGround, resources);
+                                                var lookAroundProperties = new LookAroundProperties(
+                                                    lookAroundTime, lookAroundStartDirection, lookAroundForceDirection, lookAroundInitialProgressRatio, lookAroundSnapOnGround
+                                                );
+
+                                                state = new LookAroundState(lookAroundProperties, resources, stateType);
                                                 break;
                                             case StateType.ComeBack:
                                                 var comeBackSpeed = 1f;
@@ -203,183 +212,322 @@ public class InternalEnemyData : InternalXml
                                                             break;
                                                     }
 
-                                                state = new ComeBackState(comeBackSpeed, resources);
+                                                var comeBackProperties = new ComeBackProperties(comeBackSpeed);
+                                                state = new ComeBackState(comeBackProperties, resources, stateType);
                                                 break;
                                             case StateType.Shooting:
-                                                var nbBulletsPerRound = 1;
-                                                var fireSpreadAngle = 0f;
-                                                var delayBetweenBullet = 0f;
-                                                var delayShootAnim = 0f;
-                                                var nbFireRounds = 1;
-                                                var delayBetweenFireRound = 0f;
-                                                var startCoolDownTime = 0f;
-                                                var endCoolDownTime = 0f;
-                                                var projectileSpeed = 0f;
-                                                var fireSpreadClockwise = true;
-                                                var fireSpreadStartAngle = 0f;
+                                                var shootingNbBulletsPerRound = 1;
+                                                var shootingFireSpreadAngle = 0f;
+                                                var shootingDelayBetweenBullet = 0f;
+                                                var shootingDelayShootAnim = 0f;
+                                                var shootingNbFireRounds = 1;
+                                                var shootingDelayBetweenFireRound = 0f;
+                                                var shootingStartCoolDownTime = 0f;
+                                                var shootingEndCoolDownTime = 0f;
+                                                var shootingProjectileSpeed = 0f;
+                                                var shootingFireSpreadClockwise = true;
+                                                var shootingFireSpreadStartAngle = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "nbBulletsPerRound":
-                                                            nbBulletsPerRound = int.Parse(behaviorData.Value);
+                                                            shootingNbBulletsPerRound = int.Parse(behaviorData.Value);
                                                             break;
                                                         case "fireSpreadAngle":
-                                                            fireSpreadAngle = float.Parse(behaviorData.Value);
+                                                            shootingFireSpreadAngle = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "delayBetweenBullet":
-                                                            delayBetweenBullet = float.Parse(behaviorData.Value);
+                                                            shootingDelayBetweenBullet = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "delayShoot_Anim":
-                                                            delayShootAnim = float.Parse(behaviorData.Value);
+                                                            shootingDelayShootAnim = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "delayBetweenFireRound":
-                                                            delayBetweenFireRound = float.Parse(behaviorData.Value);
+                                                            shootingDelayBetweenFireRound = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "nbFireRounds":
-                                                            nbFireRounds = int.Parse(behaviorData.Value);
+                                                            shootingNbFireRounds = int.Parse(behaviorData.Value);
                                                             break;
                                                         case "startCoolDownTime":
-                                                            startCoolDownTime = float.Parse(behaviorData.Value);
+                                                            shootingStartCoolDownTime = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "endCoolDownTime":
-                                                            endCoolDownTime = float.Parse(behaviorData.Value);
+                                                            shootingEndCoolDownTime = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "projectileSpeed":
-                                                            projectileSpeed = float.Parse(behaviorData.Value);
+                                                            shootingProjectileSpeed = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "fireSpreadClockwise":
-                                                            fireSpreadClockwise = bool.Parse(behaviorData.Value);
+                                                            shootingFireSpreadClockwise = bool.Parse(behaviorData.Value);
                                                             break;
                                                         case "fireSpreadStartAngle":
-                                                            fireSpreadStartAngle = float.Parse(behaviorData.Value);
+                                                            shootingFireSpreadStartAngle = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
 
-                                                state = new ShootingState(nbBulletsPerRound, fireSpreadAngle, delayBetweenBullet, delayShootAnim,
-                                                    nbFireRounds, delayBetweenFireRound, startCoolDownTime, endCoolDownTime,
-                                                    projectileSpeed, fireSpreadClockwise, fireSpreadStartAngle, resources);
+                                                var shootingProperties = new ShootingProperties(
+                                                    shootingNbBulletsPerRound, shootingFireSpreadAngle, shootingDelayBetweenBullet, shootingDelayShootAnim,
+                                                    shootingNbFireRounds, shootingDelayBetweenFireRound, shootingStartCoolDownTime, shootingEndCoolDownTime,
+                                                    shootingProjectileSpeed, shootingFireSpreadClockwise, shootingFireSpreadStartAngle
+                                                );
+
+                                                state = new ShootingState(shootingProperties, resources, stateType);
                                                 break;
                                             case StateType.Bomber:
-                                                var inTime = 0f;
-                                                var loopTime = 0f;
-                                                var bombRadius = 0f;
+                                                var bomberInTime = 0f;
+                                                var bomberLoopTime = 0f;
+                                                var bomberBombRadius = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "inTime":
-                                                            inTime = float.Parse(behaviorData.Value);
+                                                            bomberInTime = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "loopTime":
-                                                            loopTime = float.Parse(behaviorData.Value);
+                                                            bomberLoopTime = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "bombRadius":
-                                                            bombRadius = float.Parse(behaviorData.Value);
+                                                            bomberBombRadius = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
 
-                                                state = new BomberState(inTime, loopTime, bombRadius, resources);
+                                                var bomberProperties = new BomberProperties(bomberInTime, bomberLoopTime, bomberBombRadius);
+                                                state = new BomberState(bomberProperties, resources, stateType);
                                                 break;
                                             case StateType.Grenadier:
-                                                var gInTime = 0f;
-                                                var gLoopTime = 0f;
-                                                var gOutTime = 0f;
-                                                var isTracking = true;
-                                                var projCount = 1;
-                                                var projSpeed = 1f;
-                                                var maxHeight = 1f;
+                                                var grenadierInTime = 0f;
+                                                var grenadierLoopTime = 0f;
+                                                var grenadierOutTime = 0f;
+                                                var grenadierIsTracking = false;
+                                                var grenadierProjCount = 1;
+                                                var grenadierProjSpeed = 1f;
+                                                var grenadierMaxHeight = 1f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "inTime":
-                                                            gInTime = float.Parse(behaviorData.Value);
+                                                            grenadierInTime = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "loopTime":
-                                                            gLoopTime = float.Parse(behaviorData.Value);
+                                                            grenadierLoopTime = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "outTime":
-                                                            gOutTime = float.Parse(behaviorData.Value);
+                                                            grenadierOutTime = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "isTracking":
-                                                            isTracking = bool.Parse(behaviorData.Value);
+                                                            grenadierIsTracking = bool.Parse(behaviorData.Value);
                                                             break;
                                                         case "projCount":
-                                                            projCount = int.Parse(behaviorData.Value);
+                                                            grenadierProjCount = int.Parse(behaviorData.Value);
                                                             break;
                                                         case "projSpeed":
-                                                            projSpeed = float.Parse(behaviorData.Value);
+                                                            grenadierProjSpeed = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "maxHeight":
-                                                            maxHeight = float.Parse(behaviorData.Value);
+                                                            grenadierMaxHeight = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
 
-                                                state = new GrenadierState(gInTime, gLoopTime, gOutTime, isTracking, projCount, projSpeed, maxHeight, resources);
+                                                var grenadierProperties = new GrenadierProperties(
+                                                    grenadierInTime, grenadierLoopTime, grenadierOutTime, grenadierIsTracking,
+                                                    grenadierProjCount, grenadierProjSpeed, grenadierMaxHeight
+                                                );
+
+                                                state = new GrenadierState(grenadierProperties, resources, stateType);
                                                 break;
                                             case StateType.Stomper:
-                                                var attackTime = 0f;
-                                                var impactTime = 0f;
-                                                var damageDistance = 0f;
-                                                var damageOffset = 0f;
+                                                var stomperAttackTime = 0f;
+                                                var stomperImpactTime = 0f;
+                                                var stomperDamageDistance = 0f;
+                                                var stomperDamageOffset = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "attackTime":
-                                                            attackTime = float.Parse(behaviorData.Value);
+                                                            stomperAttackTime = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "impactTime":
-                                                            impactTime = float.Parse(behaviorData.Value);
+                                                            stomperImpactTime = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "damageDistance":
-                                                            damageDistance = float.Parse(behaviorData.Value);
+                                                            stomperDamageDistance = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "damageOffset":
-                                                            damageOffset = float.Parse(behaviorData.Value);
+                                                            stomperDamageOffset = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
 
-                                                state = new StomperState(attackTime, impactTime, damageDistance, damageOffset, resources);
+                                                var stomperProperties = new StomperProperties(stomperAttackTime, stomperImpactTime, stomperDamageDistance, stomperDamageOffset);
+                                                state = new StomperState(stomperProperties, resources, stateType);
                                                 break;
                                             case StateType.Stinger:
-                                                var speedForward = 0f;
-                                                var speedBackward = 0f;
-                                                var inDurationForward = 0f;
-                                                var attackDuration = 0f;
-                                                var damageAttackTimeOffset = 0f;
-                                                var inDurationBackward = 0f;
+                                                var stingerSpeedForward = 0f;
+                                                var stingerSpeedBackward = 0f;
+                                                var stingerInDurationForward = 0f;
+                                                var stingerAttackDuration = 0f;
+                                                var stingerDamageAttackTimeOffset = 0f;
+                                                var stingerInDurationBackward = 0f;
                                                 var stingerDamageDistance = 0f;
 
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
                                                     switch (behaviorData.Name)
                                                     {
                                                         case "speedForward":
-                                                            speedForward = float.Parse(behaviorData.Value);
+                                                            stingerSpeedForward = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "speedBackward":
-                                                            speedBackward = float.Parse(behaviorData.Value);
+                                                            stingerSpeedBackward = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "inDurationForward":
-                                                            inDurationForward = float.Parse(behaviorData.Value);
+                                                            stingerInDurationForward = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "attackDuration":
-                                                            attackDuration = float.Parse(behaviorData.Value);
+                                                            stingerAttackDuration = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "damageAttackTimeOffset":
-                                                            damageAttackTimeOffset = float.Parse(behaviorData.Value);
+                                                            stingerDamageAttackTimeOffset = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "inDurationBackward":
-                                                            inDurationBackward = float.Parse(behaviorData.Value);
+                                                            stingerInDurationBackward = float.Parse(behaviorData.Value);
                                                             break;
                                                         case "damageDistance":
                                                             stingerDamageDistance = float.Parse(behaviorData.Value);
                                                             break;
                                                     }
 
-                                                state = new StingerState(speedForward, speedBackward, inDurationForward, attackDuration,
-                                                    damageAttackTimeOffset, inDurationBackward, stingerDamageDistance, resources);
+                                                var stingerProperties = new StingerProperties(
+                                                    stingerSpeedForward, stingerSpeedBackward, stingerInDurationForward, stingerAttackDuration,
+                                                    stingerDamageAttackTimeOffset, stingerInDurationBackward, stingerDamageDistance
+                                                );
+
+                                                state = new StingerState(stingerProperties, resources, stateType);
+                                                break;
+                                            case StateType.Spike:
+                                                var spikeSpeedForward = 0f;
+                                                var spikeSpeedBackward = 0f;
+                                                var spikeInDurationForward = 0f;
+                                                var spikeAttackDuration = 0f;
+                                                var spikeAttackShootTime = 0f;
+                                                var spikeInDurationBackward = 0f;
+                                                var spikeSpreadAngle = 0f;
+                                                var spikeDetectionRadius = 0f;
+                                                var spikeTargettedProjectileCount = 0;
+                                                var spikeRandomProjectileCount = 0;
+                                                var spikeProjectileSpeed = 0f;
+
+                                                foreach (XmlAttribute behaviorData in behavior.Attributes)
+                                                    switch (behaviorData.Name)
+                                                    {
+                                                        case "speedForward":
+                                                            spikeSpeedForward = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "speedBackward":
+                                                            spikeSpeedBackward = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "inDurationForward":
+                                                            spikeInDurationForward = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "attackDuration":
+                                                            spikeAttackDuration = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "attackShootTime":
+                                                            spikeAttackShootTime = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "inDurationBackward":
+                                                            spikeInDurationBackward = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "spreadAngle":
+                                                            spikeSpreadAngle = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "detectionRadius":
+                                                            spikeDetectionRadius = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "targettedProjectileCount":
+                                                            spikeTargettedProjectileCount = int.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "randomProjectileCount":
+                                                            spikeRandomProjectileCount = int.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "projectileSpeed":
+                                                            spikeProjectileSpeed = float.Parse(behaviorData.Value);
+                                                            break;
+                                                    }
+
+                                                var spikeProperties = new SpikeProperties(
+                                                    spikeSpeedForward, spikeSpeedBackward, spikeInDurationForward,
+                                                    spikeAttackDuration, spikeAttackShootTime, spikeInDurationBackward, spikeSpreadAngle, spikeDetectionRadius,
+                                                    spikeTargettedProjectileCount, spikeRandomProjectileCount, spikeProjectileSpeed
+                                                );
+
+                                                state = new SpikeState(spikeProperties, resources, stateType);
+                                                break;
+                                            case StateType.Projectile:
+                                                var projectilePrefabName = string.Empty;
+                                                var projectileSpeed = 0f;
+                                                var projectileAngle = 0f;
+                                                var projectileCntPerRound = 0;
+                                                var projectileDelayPerShot = 0f;
+                                                var projectileDelayBetweenFireRounds = 0f;
+                                                var projectileGravity = 0f;
+                                                var projectileIsTracking = false;
+                                                
+                                                foreach (XmlAttribute behaviorData in behavior.Attributes)
+                                                    switch (behaviorData.Name)
+                                                    {
+                                                        case "projectilePrefabName":
+                                                            projectilePrefabName = behaviorData.Value;
+                                                            break;
+                                                        case "projectileSpeed":
+                                                            projectileSpeed = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "projectileAngle":
+                                                            projectileAngle = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "projectileCntPerRound":
+                                                            projectileCntPerRound = int.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "delayPerShot":
+                                                            projectileDelayPerShot = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "delayBetweenFireRounds":
+                                                            projectileDelayBetweenFireRounds = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "gravity":
+                                                            projectileGravity = float.Parse(behaviorData.Value);
+                                                            break;
+                                                        case "isTracking":
+                                                            projectileIsTracking = bool.Parse(behaviorData.Value);
+                                                            break;
+                                                    }
+
+                                                var projectileProperties = new ProjectileProperties(
+                                                    projectilePrefabName, projectileSpeed, projectileAngle, projectileCntPerRound, projectileDelayPerShot, projectileDelayBetweenFireRounds,
+                                                    projectileGravity, projectileIsTracking
+                                                );
+
+                                                state = new ProjectileState(projectileProperties, resources, stateType);
+                                                break;
+                                            case StateType.GoTo:
+                                                state = new GoToState(resources, stateType);
+                                                break;
+                                            case StateType.Acting:
+                                                var actingSnapOnGround = false;
+
+                                                foreach (XmlAttribute behaviorData in behavior.Attributes)
+                                                    switch (behaviorData.Name)
+                                                    {
+                                                        case "snapOnGround":
+                                                            actingSnapOnGround = bool.Parse(behaviorData.Value);
+                                                            break;
+                                                    }
+
+                                                var actingProperties = new ActingProperties(actingSnapOnGround);
+
+                                                state = new Data.Enemy.States.ActingState(actingProperties, resources, stateType);
                                                 break;
                                             default:
                                                 Logger.LogError("Unimplemented state for: {State} ({EnemyName})", stateType, prefabName);

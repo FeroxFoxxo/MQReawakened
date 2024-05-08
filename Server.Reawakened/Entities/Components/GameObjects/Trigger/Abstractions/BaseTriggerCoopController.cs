@@ -17,11 +17,43 @@ using Server.Reawakened.Core.Configs;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
-public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp where T : TriggerCoopController
+public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp, IQuestTriggered where T : TriggerCoopController
 {
     public List<string> CurrentPhysicalInteractors;
     public int CurrentInteractions;
-    public int Interactions => CurrentInteractions + CurrentPhysicalInteractors.Count;
+
+    public List<Player> CurrentValidInteractors => _currentPhysicalInteractors.ToList().Select(ci =>
+    {
+        var player = Room.GetPlayerById(ci);
+
+        if (player == null)
+        {
+            _currentPhysicalInteractors.Remove(ci);
+            return null;
+        }
+
+        if (!string.IsNullOrEmpty(QuestCompletedRequired))
+        {
+            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
+
+            if (requiredQuest != null)
+                if (!player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
+                    return null;
+        }
+
+        if (!string.IsNullOrEmpty(QuestInProgressRequired))
+        {
+            var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
+
+            if (requiredQuest != null)
+                if (player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
+                    return null;
+        }
+
+        return player;
+    }).Where(x => x != null).ToList();
+
+    public int Interactions => CurrentInteractions + CurrentValidInteractors.Count;
 
     public bool IsActive = false;
     public bool IsEnabled = false;
@@ -161,10 +193,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
         if (TriggerOnNormalDamage || TriggerOnAirDamage || TriggerOnEarthDamage
             || TriggerOnFireDamage || TriggerOnIceDamage || TriggerOnLightningDamage)
         {
-            var size = new Vector2(Rectangle.Width, Rectangle.Height);
-            var position = BaseCollider.AdjustPosition(new Vector3(Position.X, Position.Y, Position.Z), new Vector2(size.x, 0));
-
-            Room.AddCollider(new TriggerableTargetCollider(Id, position, size, ParentPlane, Room));
+            var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+            var position = new Vector3(Position.X, Position.Y, Position.Z);
+            Room.AddCollider(new TriggerableTargetCollider(Id, position, box, ParentPlane, Room));
         }
     }
 
@@ -221,10 +252,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
         {
             if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) &&
                 !pet.InCoopJumpState && !pet.InCoopJumpState)
-            {
                 pet.CurrentTriggerableId = Id;
-                Console.WriteLine("SetTriggerable: " + Id);
-            }
 
             if (!string.IsNullOrEmpty(QuestCompletedRequired))
             {
@@ -245,7 +273,6 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
             }
         }
 
-        Console.WriteLine("adding: " + interactionId);
         CurrentPhysicalInteractors.Add(interactionId);
         SendInteractionUpdate();
     }
@@ -255,7 +282,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
         if (!CurrentPhysicalInteractors.Contains(interactionId))
             return;
 
-        CurrentPhysicalInteractors.Remove(interactionId);
+        _currentPhysicalInteractors.Remove(playerId);
         SendInteractionUpdate();
     }
 
@@ -474,4 +501,16 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
     }
 
     bool ITriggerComp.IsActive() => IsActive;
+
+    public void QuestAdded(QuestDescription quest, Player player)
+    {
+        if (QuestInProgressRequired == quest.Name)
+            RunTrigger(player);
+    }
+
+    public void QuestCompleted(QuestDescription quest, Player player)
+    {
+        if (QuestCompletedRequired == quest.Name)
+            RunTrigger(player);
+    }
 }

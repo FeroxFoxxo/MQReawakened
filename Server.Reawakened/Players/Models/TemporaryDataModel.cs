@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Entities.Colliders;
+﻿using Server.Base.Core.Extensions;
+using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Players.Models.Trade;
 using UnityEngine;
@@ -31,6 +32,9 @@ public class TemporaryDataModel
     public GroupModel Group { get; set; }
 
     public Dictionary<int, List<string>> CurrentAchievements { get; set; } = [];
+
+    public bool FirstLogin { get; set; } = true;
+    public long CurrentPing { get; set; } = GetTime.GetCurrentUnixMilliseconds();
 
     public Vector3 CopyPosition() =>
         new(Position.x, Position.y, Position.z);

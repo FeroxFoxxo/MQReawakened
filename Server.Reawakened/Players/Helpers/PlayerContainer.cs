@@ -21,7 +21,13 @@ public class PlayerContainer
     public List<Player> GetAllPlayers()
     {
         lock (Lock)
+        {
+            foreach (var player in _playerList)
+                if (player == null)
+                    _playerList.Remove(player);
+
             return [.. _playerList];
+        }
     }
 
     public int GetPlayerCount()

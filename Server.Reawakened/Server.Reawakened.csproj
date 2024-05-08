@@ -107,16 +107,19 @@
       <None Update="Assets\LocalAssets\InternalIgnoredItem.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Assets\LocalAssets\InternalInbuiltCommands.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="DLLs\X64\Texture2DDecoderNative.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="DLLs\X86\Texture2DDecoderNative.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="BundleHost\Licences\LICENSE_ASSETRIPPER">
+      <None Update="Licences\LICENSE_ASSETRIPPER">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="BundleHost\Licences\LICENSE_ASSETSTUDIO">
+      <None Update="Licences\LICENSE_ASSETSTUDIO">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Assets\LocalAssets\EditItem.xml">
@@ -165,6 +168,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Dependencies\_Place Dependencies Here_">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </None>
+      <None Update="Licences\LICENSE_DNET">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Licences\LICENSE_THRIFT">

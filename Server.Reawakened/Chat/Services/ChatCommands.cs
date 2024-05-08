@@ -11,6 +11,7 @@ using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Services;
 using Server.Reawakened.Entities.Components.GameObjects.MonkeyGadgets;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Network.Extensions;
@@ -31,7 +32,7 @@ public partial class ChatCommands(
     ItemCatalog itemCatalog, ServerRConfig config, ItemRConfig itemConfig, ILogger<ServerConsole> logger, FileLogger fileLogger,
     WorldHandler worldHandler, InternalAchievement internalAchievement, InternalQuestItem questItem,
     WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog,
-    CharacterHandler characterHandler, AccountHandler accountHandler) : IService
+    CharacterHandler characterHandler, AccountHandler accountHandler, GetServerAddress getSA) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
 
@@ -118,6 +119,9 @@ public partial class ChatCommands(
                 player
             );
         }
+
+        Log($"Note, these commands will soon be DEPRECATED! Please become familiar with using our website: {getSA.ServerAddress}/commands", player);
+        Log("These new commands can be accessed by pressing shift + enter.", player);
     }
 
     public void AddCommand(ChatCommand command) => commands.Add(command.Name, command);
@@ -651,7 +655,7 @@ public partial class ChatCommands(
             return false;
         }
 
-        player.AddQuest(questData, questItem, config.GameVersion, itemCatalog, fileLogger, "Chat command", logger);
+        player.AddQuest(questData, questItem, itemCatalog, fileLogger, "Chat command", logger);
         Log($"Added quest {questData.Name} with id {questData.Id}.", player);
 
         return true;

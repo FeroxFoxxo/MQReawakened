@@ -47,7 +47,7 @@ public class ChooseQuestReward : ExternalProtocol
             var newQuest = QuestCatalog.GetQuestData(questRewardId);
 
             if (newQuest != null)
-                Player.AddQuest(newQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, $"Quest reward from {npcId}", Logger);
+                Player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {npcId}", Logger);
 
             Player.UpdateAllNpcsInLevel();
         }

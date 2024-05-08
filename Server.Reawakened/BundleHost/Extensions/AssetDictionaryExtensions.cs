@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.BundleHost.Services;
 using Server.Reawakened.Core.Configs;
@@ -27,11 +28,8 @@ public static class AssetDictionaryExtensions
 
             foreach (var replacement in version.Value)
             {
-                foreach (var oldAsset in assets.Keys.Where(a => a.Contains(replacement.Key)))
-                {
-                    var assetName = oldAsset.Replace(replacement.Key, replacement.Value);
-                    assetsToAdd.AddChangedNameToDict(assetName, assets[oldAsset]);
-                }
+                foreach (var oldAsset in assets.Where(a => a.Key == replacement.Key))
+                    assetsToAdd.AddChangedNameToDict(replacement.Value, oldAsset.Value);
             }
         }
 

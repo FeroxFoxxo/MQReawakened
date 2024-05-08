@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Logging;
-using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Items;
 using Server.Reawakened.Entities.Components.GameObjects.NPC;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles.Base;
@@ -17,7 +17,7 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class NpcExtensions
 {
-    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest, InternalQuestItem questItem, GameVersion version,
+    public static QuestStatusModel AddQuest(this Player player, QuestDescription quest, InternalQuestItem questItem,
         ItemCatalog itemCatalog, FileLogger fileLogger, string identifier, Microsoft.Extensions.Logging.ILogger logger, bool setActive = true)
     {
         var character = player.Character;
@@ -111,6 +111,10 @@ public static class NpcExtensions
 
         player.SendXt("na", questModel, setActive ? 1 : 0);
 
+        if (player.Room != null)
+            foreach (var trigger in player.Room.GetEntitiesFromType<IQuestTriggered>())
+                trigger.QuestAdded(quest, player);
+
         player.UpdateNpcsInLevel(quest);
 
         logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", quest.Name, questModel.Id);
@@ -119,22 +123,19 @@ public static class NpcExtensions
 
         UpdateActiveObjectives(player, itemCatalog);
 
-        if (questItem.QuestItemList.TryGetValue(version, out var questList))
+        if (questItem.QuestItemList.TryGetValue(questId, out var itemList))
         {
-            if (questList.TryGetValue(questId, out var itemList))
+            foreach (var itemModel in itemList)
             {
-                foreach (var itemModel in itemList)
-                {
-                    var item = itemCatalog.GetItemFromId(itemModel.ItemId);
+                var item = itemCatalog.GetItemFromId(itemModel.ItemId);
 
-                    if (item == null)
-                        continue;
+                if (item == null)
+                    continue;
 
-                    player.AddItem(item, itemModel.Count, itemCatalog);
-                }
-
-                player.SendUpdatedInventory();
+                player.AddItem(item, itemModel.Count, itemCatalog);
             }
+
+            player.SendUpdatedInventory();
         }
 
         return questModel;

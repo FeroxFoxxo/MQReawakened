@@ -6,8 +6,8 @@ using Server.Reawakened.Rooms;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class BreakableCollider(string breakableId, Vector3 position, Vector2 size, string plane, Room room) :
-    BaseCollider(breakableId, position, size, plane, room, ColliderType.Breakable)
+public class BreakableCollider(string breakableId, Vector3 position, Rect box, string plane, Room room) :
+    BaseCollider(breakableId, position, box, plane, room, ColliderType.Breakable)
 {
     public override void SendCollisionEvent(BaseCollider received)
     {

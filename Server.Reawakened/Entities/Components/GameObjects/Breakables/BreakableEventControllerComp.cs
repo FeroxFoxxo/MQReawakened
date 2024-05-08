@@ -4,7 +4,7 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
-using Server.Reawakened.Entities.Components.GameObjects.Spawners.Abstractions;
+using Server.Reawakened.Entities.Components.GameObjects.WowMoment;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -25,80 +25,33 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
     public InternalAchievement InternalAchievement { get; set; }
     public ILogger<BreakableEventControllerComp> Logger { get; set; }
 
-    public int MaxHealth { get; set; }
-    public int NumberOfHits;
-    public bool OverrideDeath;
+    public IDamageable Damageable;
 
-    private int _health;
-    private BaseSpawnerControllerComp _spawner;
-    private IDamageable _damageable;
+    public bool CanBreak = true;
 
     public override void InitializeComponent()
     {
-        NumberOfHits = 0;
+        Damageable = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
+        Damageable ??= Room.GetEntityFromId<SpiderBreakableComp>(Id);
 
-        MaxHealth = 1;
-        _health = MaxHealth;
-
+        var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
         var position = new Vector3(Position.X, Position.Y, Position.Z);
-        var size = new Vector2(Rectangle.Width, Rectangle.Height);
 
-        Room.AddCollider(new BreakableCollider(Id, position, size, ParentPlane, Room));
-    }
-
-    public void PostInit()
-    {
-        var spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
-        var damagable = Room.GetEntityFromId<IDamageable>(Id);
-
-        if (spawner != null)
-        {
-            _spawner = spawner;
-            MaxHealth = _spawner.Health;
-            OverrideDeath = true;
-        }
-
-        if (damagable != null)
-        {
-            _damageable = damagable;
-
-            MaxHealth = damagable.MaxHealth;
-            _damageable.CurrentHealth = MaxHealth;
-        }
-
-        _health = MaxHealth;
+        Room.AddCollider(new BreakableCollider(Id, position, box, ParentPlane, Room));
     }
 
     public void Damage(int damage, Elemental damageType, Player origin)
     {
-        if (Room.IsObjectKilled(Id))
+        if (Room.IsObjectKilled(Id) || !CanBreak || Damageable is null)
             return;
 
-        var damagable = Room.GetEntityFromId<IDamageable>(Id);
+        Logger.LogInformation("Damaged object: '{PrefabName}' ({Id})", PrefabName, Id);
 
-        if (damagable != null)
-            _health -= damagable.GetDamageAmount(damage, damageType);
-        else
-            _health -= damage;
+        RunDamage(damage, damageType);
 
-        NumberOfHits++;
+        origin.Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.CurrentHealth, damage, 0, 0, origin.CharacterName, false, true));
 
-        Logger.LogInformation("Object name: {args1} Object Id: {args2}", PrefabName, Id);
-
-        if (damagable is IBreakable breakable)
-            if (breakable.NumberOfHitsToBreak > 0)
-                if (NumberOfHits >= breakable.NumberOfHitsToBreak)
-                    _health = 0;
-
-        if (_damageable != null)
-            _damageable.CurrentHealth = _health;
-
-        if (_health < 0)
-            _health = 0;
-
-        origin.Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, _health, damage, 0, 0, origin.CharacterName, false, true));
-
-        if (_health <= 0)
+        if (Damageable.CurrentHealth <= 0)
         {
             origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
@@ -107,6 +60,43 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             Room.KillEntity(Id);
             Destroy(Room, Id);
         }
+    }
+
+    public void RunDamage(int damage, Elemental damageType)
+    {
+        if (Damageable is null)
+            return;
+
+        if (Damageable is IBreakable breakable)
+        {
+            breakable.NumberOfHits++;
+
+            if (breakable.NumberOfHitsToBreak > 0)
+            {
+                if (breakable.NumberOfHits >= breakable.NumberOfHitsToBreak)
+                {
+                    Damageable.CurrentHealth = 0;
+                }
+                else
+                {
+                    Damageable.CurrentHealth = Convert.ToInt32(
+                        Math.Floor(
+                            Damageable.MaxHealth * ((double) (breakable.NumberOfHitsToBreak - breakable.NumberOfHits) / breakable.NumberOfHitsToBreak)
+                        )
+                    );
+
+                    if (Damageable.CurrentHealth <= 0)
+                        Damageable.CurrentHealth = 1;
+                }
+
+                return;
+            }
+        }
+
+        Damageable.CurrentHealth -= Damageable.GetDamageAmount(damage, damageType);
+
+        if (Damageable.CurrentHealth < 0)
+            Damageable.CurrentHealth = 0;
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }

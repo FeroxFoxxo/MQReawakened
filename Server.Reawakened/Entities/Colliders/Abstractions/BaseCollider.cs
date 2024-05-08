@@ -1,28 +1,49 @@
 ﻿using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Rooms;
-using Server.Reawakened.Rooms.Models.Planes;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders.Abstractions;
-public abstract class BaseCollider(string id, Vector3 position, Vector2 size, string plane, Room room, ColliderType colliderType)
+public abstract class BaseCollider
 {
-    public Room Room => room;
-    public string Id => id;
-    public string Plane => plane;
-    public ColliderType Type => colliderType;
+    public readonly Room Room;
+    public readonly string Id;
+    public readonly string Plane;
+    public readonly ColliderType Type;
+    public readonly Vector3 SpawnPosition;
+    public readonly Rect BoundingBox;
 
-    public Vector3 Position = new(position.x, position.y, position.z);
-    public Vector3 SpawnPosition = new(position.x, position.y, position.z);
-    public RectModel ColliderBox = new(position.x, position.y, size.x, size.y);
+    private Vector3 internalPosition = Vector3.zero;
+    private Rect colliderBox = new (0, 0, 0, 0);
+
+    public Vector3 Position
+    {
+        get => internalPosition;
+        set
+        {
+            internalPosition = value;
+            colliderBox = new Rect(
+                internalPosition.x + BoundingBox.x,
+                internalPosition.y + BoundingBox.y,
+                BoundingBox.width,
+                BoundingBox.height
+            );
+        }
+    }
+
+    protected BaseCollider(string id, Vector3 position, Rect boundingBox, string plane, Room room, ColliderType colliderType)
+    {
+        Room = room;
+        Id = id;
+        Plane = plane;
+        Type = colliderType;
+        BoundingBox = boundingBox;
+        SpawnPosition = new Vector3(position.x, position.y, position.z);
+
+        // MUST be at bottom so collider generates correctly.
+        Position = new Vector3(position.x, position.y, position.z);
+    }
 
     public virtual string[] IsColliding(bool isAttack) => [];
-
-    public static Vector3 AdjustPosition(Vector3 originalPosition, Vector2 size) => new()
-    {
-        x = originalPosition.x + Math.Abs(size.x),
-        y = originalPosition.y + Math.Abs(size.y),
-        z = originalPosition.z
-    };
 
     public virtual void SendCollisionEvent(BaseCollider received)
     {
@@ -32,8 +53,10 @@ public abstract class BaseCollider(string id, Vector3 position, Vector2 size, st
     {
     }
 
-    public virtual bool CheckCollision(BaseCollider collided) =>
-        Position.x < collided.Position.x + collided.ColliderBox.Width && collided.Position.x < Position.x + ColliderBox.Width &&
-        Position.y < collided.Position.y + collided.ColliderBox.Height && collided.Position.y < Position.y + ColliderBox.Height &&
+    private static bool RectOverlapsRect(Rect rA, Rect rB) =>
+        rA.x < rB.x + rB.width && rA.x + rA.width > rB.x && rA.y < rB.y + rB.height && rA.y + rA.height > rB.y;
+
+    public bool CheckCollision(BaseCollider collided) =>
+        RectOverlapsRect(collided.colliderBox, colliderBox) &&
         Plane == collided.Plane;
 }

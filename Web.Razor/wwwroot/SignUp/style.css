@@ -1,22 +1,5 @@
-﻿@font-face {
-    font-family: 'grobold';
-    src: url('GROBOLD.ttf');
-}
-
-* {
+﻿* {
     box-sizing: border-box;
-}
-
-html {
-    height: 100%;
-}
-
-body {
-    background-color: #8ED8FF;
-    color: #fffdfa;
-    font: 300 1rem/1.5 grobold;
-    margin: 0;
-    min-height: 100%;
 }
 
 .align {
@@ -29,47 +12,6 @@ body {
     margin-bottom: 1rem;
     border-radius: 50%;
     width: 50%;
-}
-
-select, input {
-    border: 0;
-    font: inherit;
-    color: #fffdfa;
-}
-
-input::placeholder {
-    color: #fffdfa;
-}
-
-option {
-    color: black;
-}
-
-.form label {
-    margin-bottom: 1rem;
-}
-
-.text-danger {
-    color: #BA2221;
-}
-
-.form_field {
-    margin-bottom: 1rem;
-}
-
-.form_field select {
-    appearance: none;
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAUCAMAAACtdX32AAAAdVBMVEUAAAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhMdQaAAAAJ3RSTlMAAAECAwQGBwsOFBwkJTg5RUZ4eYCHkJefpaytrsXGy8zW3+Do8vNn0bsyAAAAYElEQVR42tXROwJDQAAA0Ymw1p9kiT+L5P5HVEi3qJn2lcPjtIuzUIJ/rhIGy762N3XaThqMN1ZPALsZPEzG1x8LrFL77DHBnEMxBewz0fJ6LyFHTPL7xhwzWYrJ9z22AqmQBV757MHfAAAAAElFTkSuQmCC);
-    background-position: 100%;
-    background-repeat: no-repeat;
-    padding: 1rem;
-    border-radius: 0;
-}
-
-.form select, input {
-    outline: 0;
-    padding: 0.5rem 1rem;
-    width: 100%;
 }
 
 .grid {
@@ -85,10 +27,6 @@ h2 {
     text-shadow: black 0px 0px .5rem;
 }
 
-.border {
-    border: 1px solid #A3B15C;
-}
-
 .register {
     box-shadow: 0 0 250px #000;
     text-align: center;
@@ -96,12 +34,8 @@ h2 {
     background-color: #577B3D;
 }
 
-.register select, input {
-    background-color: transparent;
-    text-align: center;
-    border-radius: 999px;
-}
-
-.register input[type=submit] {
-    background-image: linear-gradient(160deg, #BB7D4C 0%, #FDB93A 100%);
+/* Bootstrap overrides and additional styles */
+.navbar + .container {
+    padding-top: 1rem; /* Adds padding below the navbar */
+    padding-bottom: 1rem; /* Adds padding below the navbar */
 }

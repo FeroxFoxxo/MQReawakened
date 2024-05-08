@@ -6,6 +6,7 @@ using Server.Base.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.NPC.Enums;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -187,6 +188,7 @@ public class NPCControllerComp : Component<NPCController>
                 break;
             default:
                 Logger.LogDebug("[UNKNOWN NPC INTERACTION] [{Name} ({Id})]", NpcName, Id);
+                SendUnknownDialogChat(player);
                 break;
         }
     }
@@ -261,11 +263,17 @@ public class NPCControllerComp : Component<NPCController>
         {
             Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog found for user of level {Level}",
                 NpcName, Id, player.Character.Data.GlobalLevel);
+            SendUnknownDialogChat(player);
             return;
         }
 
         player.NetState.SendXt("nd", Id, NameId, dialog);
     }
+
+    public void SendUnknownDialogChat(Player player) =>
+        player.Chat(CannedChatChannel.Speak, "SERVER", $"NPC Name: '{NpcName}' Prefab: '{PrefabName}' ({Id})\n" +
+            "Whoops! Looks like you've interacted with an NPC that doesn't have any dialog. " +
+            $"Please message a developer about this, including the above information.");
 
     public NPCStatus GetQuestStatus(Player player)
     {
@@ -501,6 +509,9 @@ public class NPCControllerComp : Component<NPCController>
                 else
                     player.Character.Data.CompletedQuests.Add(completedQuest.Id);
 
+                foreach (var trigger in Room.GetEntitiesFromType<IQuestTriggered>())
+                    trigger.QuestCompleted(quest, player);
+
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
 
                 player.UpdateAllNpcsInLevel();
@@ -511,7 +522,7 @@ public class NPCControllerComp : Component<NPCController>
                         var newQuest = QuestCatalog.GetQuestData(item.Key);
 
                         if (newQuest != null && player.Character.Data.CompletedQuests.Any(x => newQuest.PreviousQuests.Any(y => y.Key == x)))
-                            player.AddQuest(newQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}", Logger);
+                            player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}", Logger);
                     }
             }
 
@@ -541,7 +552,7 @@ public class NPCControllerComp : Component<NPCController>
         foreach (var givenQuest in GiverQuests)
             if (GetQuestType(player, givenQuest.Id) == NPCStatus.QuestAvailable)
             {
-                var quest = player.AddQuest(givenQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, NpcName, Logger);
+                var quest = player.AddQuest(givenQuest, QuestItems, ItemCatalog, FileLogger, NpcName, Logger);
 
                 SendNpcDialog(player, quest, QuestState.NOT_START);
 

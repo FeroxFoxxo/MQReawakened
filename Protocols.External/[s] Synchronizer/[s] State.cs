@@ -129,6 +129,20 @@ public class State : ExternalProtocol
                 case SyncEvent.EventType.RequestRespawn:
                     RequestRespawn(entityId, syncEvent.TriggerTime);
                     break;
+                case SyncEvent.EventType.PhysicStatus:
+                    var physicStatus = new PhysicStatus_SyncEvent(syncEvent);
+
+                    if (physicStatus.GravityEnabled && Player.TempData.Underwater)
+                        Player.StopUnderwater(Logger);
+
+                    break;
+                case SyncEvent.EventType.FX:
+                    var fxEvent = new FX_SyncEvent(syncEvent);
+
+                    if (fxEvent.PrefabName == ItemRConfig.WaterPrefabName)
+                        Player.StartUnderwater(newPlayer.Character.Data.MaxLife / 10, TimerThread, ItemRConfig, Logger);
+
+                    break;
             }
 
             Player.Room.SendSyncEvent(syncEvent, Player);
@@ -198,7 +212,7 @@ public class State : ExternalProtocol
 
     public void LogEvent(SyncEvent syncEvent, string entityId, Room room)
     {
-        var uniqueType = "Unknown";
+        var uniqueType = "unknown";
         var uniqueIdentifier = entityId;
         var additionalInfo = string.Empty;
 
@@ -206,11 +220,11 @@ public class State : ExternalProtocol
 
         if (newPlayer != null)
         {
-            uniqueType = "Player";
+            uniqueType = "player";
 
             uniqueIdentifier = newPlayer.Character != null ?
-                $"{newPlayer.CharacterName} ({newPlayer.CharacterId})" :
-                "Unknown";
+                $"'{newPlayer.CharacterName}' ({newPlayer.CharacterId})" :
+                "'unknown'";
         }
 
         var entityComponentList = new List<string>();
@@ -231,18 +245,18 @@ public class State : ExternalProtocol
 
         if (entityComponentList.Count > 0)
         {
-            uniqueType = "Entity";
+            uniqueType = "entity";
 
             if (!string.IsNullOrEmpty(prefabName))
-                uniqueIdentifier = $"{prefabName} ({entityId})";
+                uniqueIdentifier = $"'{prefabName}' ({entityId})";
 
-            additionalInfo = string.Join('/', entityComponentList);
+            additionalInfo = $" {string.Join('/', entityComponentList)}";
         }
 
         var attributes = string.Join(", ", syncEvent.EventDataList);
 
         if (Player.Character != null)
-            Logger.LogDebug("SyncEvent '{Type}' run for {Type} [{Id}] by {Player} {AdditionalInfo} with attributes {Attrib}",
+            Logger.LogDebug("SyncEvent {Type} run for {Type} {Id} by {Player}{AdditionalInfo} with attributes {Attrib}",
                 syncEvent.Type, uniqueType, uniqueIdentifier, Player.CharacterName, additionalInfo, attributes);
     }
 

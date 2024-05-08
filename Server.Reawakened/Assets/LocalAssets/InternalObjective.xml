@@ -18,5 +18,8 @@
     <Objective prefabName="Col_CRS_ScrollLibrary02" itemId="3337" />
     <Objective prefabName="PF_CRS_WoodenDummyNewb01" itemId="3204" />
     <Objective prefabName="Col_CRS_StaffRelic01" itemId="3320" />
+    <Objective prefabName="PF_Critter_Dragon01" itemId="1001371512" />
+    <Objective prefabName="PF_Spite_Squirrel_Rock" itemId="93035246" />
+    <Objective prefabName="PF_Critter_Drake01" itemId="451802145" />
 </ObjectiveCatalogs>
  

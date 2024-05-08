@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
 public class AttackCollider(string id, Vector3 position,
-    Vector2 size, string plane, Player player,
+    Rect box, string plane, Player player,
     int damage, Elemental type, float lifeTime, float offset) :
-    BaseCollider(id, position, size, plane, player.Room, ColliderType.Attack)
+    BaseCollider(id, position, box, plane, player.Room, ColliderType.Attack)
 {
     public float LifeTime = player.Room.Time + lifeTime;
     public Player Owner = player;

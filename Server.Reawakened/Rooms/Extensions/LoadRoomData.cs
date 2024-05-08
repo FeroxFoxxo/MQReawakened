@@ -32,9 +32,8 @@ public static class LoadRoomData
             var id = idCounter.ToString();
 
             var position = new Vector3(collider.Position.x, collider.Position.y, collider.Position.z);
-            var size = new Vector2(collider.Width, collider.Height);
 
-            outColliderList.Add(id, new TCCollider(id, position, size, collider.Plane, room));
+            outColliderList.Add(id, new TCCollider(id, position, new Rect(0, 0, collider.Width, collider.Height), collider.Plane, room));
         }
 
         return outColliderList;

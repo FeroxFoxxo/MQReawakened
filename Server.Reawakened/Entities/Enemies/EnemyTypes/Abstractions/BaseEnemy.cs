@@ -3,11 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
-using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
-using Server.Reawakened.Entities.Components.GameObjects.Spawners.Abstractions;
+using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;
@@ -20,8 +19,6 @@ using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
-using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
-using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 using UnityEngine;
 
@@ -168,12 +165,9 @@ public abstract class BaseEnemy : IDestructible
         var offsetX = box.XOffset * EnemyController.Scale.X - width / 2 * (EnemyController.Scale.X < 0 ? -1 : 1);
         var offsetY = box.YOffset * EnemyController.Scale.Y - height / 2 * (EnemyController.Scale.Y < 0 ? -1 : 1);
 
-        var position = new Vector3 { x = offsetX, y = offsetY, z = Position.z };
+        var position = new Vector3(Position.x, Position.y, Position.z);
 
-        Hitbox = new EnemyCollider(Id, position, new Vector2(width, height), ParentPlane, Room)
-        {
-            Position = new Vector3(Position.x, Position.y, Position.z)
-        };
+        Hitbox = new EnemyCollider(Id, position, new Rect(offsetX, offsetY, width, height), ParentPlane, Room);
 
         Room.AddCollider(Hitbox);
     }
@@ -283,16 +277,4 @@ public abstract class BaseEnemy : IDestructible
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, healPoints, 0, 0, string.Empty, false, true));
     }
-
-    public AIInit_SyncEvent GetBlankEnemyInit(float posX, float posY, float posZ, float spawnX, float spawnY) =>
-        GetEnemyInit(posX, posY, posZ, spawnX, spawnY, 0, [], null, null);
-
-    public AIInit_SyncEvent GetEnemyInit(float posX, float posY, float posZ,
-        float spawnX, float spawnY, float behaviourRatio, Dictionary<StateType, BaseState> states,
-            AIStatsGlobalComp globalComp, AIStatsGenericComp genericComp) =>
-            AISyncEventHelper.AIInit(
-                Id, Room.Time, posX, posY, posZ, spawnX, spawnY, behaviourRatio,
-                Health, MaxHealth, HealthModifier, ScaleModifier, ResistanceModifier,
-                Status.Stars, Level, GlobalProperties, states, globalComp, genericComp
-            );
 }

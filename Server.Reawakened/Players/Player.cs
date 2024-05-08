@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Models;
-using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
@@ -31,9 +30,6 @@ public class Player(Account account, UserInfo userInfo, NetState state, WorldHan
     public int CharacterId => Character != null ? Character.Id : -1;
     public string CharacterName => Character != null ? Character.Data.CharacterName : string.Empty;
     public string GameObjectId => TempData.GameObjectId;
-
-    public bool FirstLogin { get; set; } = true;
-    public long CurrentPing { get; set; } = GetTime.GetCurrentUnixMilliseconds();
 
     public void RemovedState(NetState state, NetStateHandler handler,
         Microsoft.Extensions.Logging.ILogger logger) => Remove(logger);

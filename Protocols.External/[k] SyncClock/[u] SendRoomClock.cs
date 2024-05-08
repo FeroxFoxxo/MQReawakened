@@ -13,7 +13,7 @@ public class SendRoomUpdate : ExternalProtocol
         var isSynchronized = message[6] == "0";
         var now = GetTime.GetCurrentUnixMilliseconds();
 
-        Player.CurrentPing = now;
+        Player.TempData.CurrentPing = now;
 
         if (!isSynchronized)
             SendXt("ku", ticks, now, Player.Room.TimeOffset);

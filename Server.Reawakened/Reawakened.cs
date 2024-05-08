@@ -21,7 +21,7 @@ public class Reawakened(ILogger<Reawakened> logger) : Module(logger)
 
         foreach (var service in modules.GetServices<ThriftHandler>())
         {
-            Logger.LogTrace("   Loaded: {ServiceName}", service.Name);
+            Logger.LogTrace("Loaded: {ServiceName}", service.Name);
             services.AddSingleton(service);
         }
 
@@ -40,7 +40,7 @@ public class Reawakened(ILogger<Reawakened> logger) : Module(logger)
 
         foreach (var xml in modules.GetServices<IBundledXml>())
         {
-            Logger.LogTrace("   Loaded: {ServiceName}", xml.Name);
+            Logger.LogTrace("Loaded: {ServiceName}", xml.Name);
             services.AddSingleton(xml, RuntimeHelpers.GetUninitializedObject(xml));
         }
 
@@ -53,7 +53,7 @@ public class Reawakened(ILogger<Reawakened> logger) : Module(logger)
         {
             thrift.AddProcesses(thrift.ProcessMap);
 
-            Logger.LogTrace("   Added {Count} thrift protocols to {Handler}",
+            Logger.LogTrace("Added {Count} thrift protocols to {Handler}",
                 thrift.ProcessMap.Count, thrift.GetType().Name);
         }
     }

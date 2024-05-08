@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
-using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -12,7 +11,6 @@ public class AcceptQuest : ExternalProtocol
 {
     public override string ProtocolName => "nA";
 
-    public ServerRConfig Config { get; set; }
     public ILogger<ChooseQuestReward> Logger { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
@@ -35,6 +33,6 @@ public class AcceptQuest : ExternalProtocol
         var newQuest = QuestCatalog.GetQuestData(quest);
 
         if (newQuest != null)
-            Player.AddQuest(newQuest, QuestItems, Config.GameVersion, ItemCatalog, FileLogger, $"Accept quest protocol", Logger, setActive);
+            Player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Accept quest protocol", Logger, setActive);
     }
 }

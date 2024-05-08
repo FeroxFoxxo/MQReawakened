@@ -2,7 +2,7 @@
 using Server.Base.Core.Extensions;
 using Server.Reawakened.Core.Enums;
 
-namespace Server.Reawakened.BundleHost.Models;
+namespace Server.Reawakened.BundleHost.Configs;
 
 public class AssetBundleRConfig : IRConfig
 {
@@ -22,6 +22,7 @@ public class AssetBundleRConfig : IRConfig
     public string BundleSaveDirectory { get; }
     public string AssetSaveDirectory { get; }
     public string RemovedDuplicateDirectory { get; }
+    public string CopiedCurrentBundles { get; }
     public string XmlSaveDirectory { get; }
     public string LocalAssetsDirectory { get; }
 
@@ -44,6 +45,7 @@ public class AssetBundleRConfig : IRConfig
         AssetSaveDirectory = InternalDirectory.GetDirectory("Assets/AssetDictionaries");
         BundleSaveDirectory = InternalDirectory.GetDirectory("Assets/Bundles");
         RemovedDuplicateDirectory = InternalDirectory.GetDirectory("Assets/RemovedDuplicates");
+        CopiedCurrentBundles = InternalDirectory.GetDirectory("Assets/CopiedCurrentBundles");
         LocalAssetsDirectory = InternalDirectory.GetDirectory("Assets/LocalAssets");
 
         AlwaysRecreateBundle = false;
@@ -60,10 +62,9 @@ public class AssetBundleRConfig : IRConfig
         AssetRenames = new Dictionary<GameVersion, Dictionary<string, string>>
         {
             {
-                GameVersion.v2011, 
+                GameVersion.v2011,
                 new Dictionary<string, string>()
                 {
-                    { "WelcomeGamePopup", "NotificationNoMailPopup" },
                     { "FX_GiftBoxconfettis", "FX_GiftBoxConfettis" }
                 }
             }

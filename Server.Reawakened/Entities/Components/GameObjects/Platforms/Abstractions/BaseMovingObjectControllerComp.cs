@@ -23,6 +23,8 @@ public abstract class BaseMovingObjectControllerComp<T> : Component<T>, IRecieve
         Position.SetPosition(position);
     }
 
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
+
     public override object[] GetInitData(Player player) =>
     [
         Room.Time,

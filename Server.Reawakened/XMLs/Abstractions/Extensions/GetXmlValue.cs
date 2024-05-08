@@ -14,7 +14,7 @@ public static class GetXmlValue
         else if (Enum.TryParse(typeof(T), attribute, ignoreCase: true, out var enumValue))
             return (T)enumValue;
 
-        logger.LogError("Unknown enum type: '{Name}' for '{Type}'", attribute, typeof(T).Name);
+        logger.LogError("Unknown enum type: '{Name}' for {Type}", attribute, typeof(T).Name);
 
         return value;
     }

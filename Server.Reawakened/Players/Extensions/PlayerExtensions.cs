@@ -89,10 +89,7 @@ public static class PlayerExtensions
         {
             var newLevel = charData.GlobalLevel + 1;
 
-            if (newLevel > config.MaxLevel)
-                break;
-
-            player.Character.SetLevelXp(newLevel);
+            player.Character.SetLevelXp(newLevel, config);
             player.SendLevelUp();
         }
 
@@ -251,10 +248,7 @@ public static class PlayerExtensions
 
     public static void LevelUp(this Player player, int level, ServerRConfig config, Microsoft.Extensions.Logging.ILogger logger)
     {
-        if (level > config.MaxLevel)
-            level = config.MaxLevel;
-
-        player.Character.SetLevelXp(level);
+        player.Character.SetLevelXp(level, config);
         player.SendLevelUp();
 
         player.AddNCash(125); //Temporary way to earn NC upon level up.
@@ -331,7 +325,7 @@ public static class PlayerExtensions
 
         var character = player.Character.Data;
 
-        player.Room.Logger.LogDebug("Checking {type} objective for {prefab} id ({id}) of count {count}.", type, prefabName, gameObjectId, count);
+        player.Room.Logger.LogDebug("Checking {Type} objective for '{Prefab}' ({Id}) of count {Count}.", type, prefabName, gameObjectId, count);
 
         foreach (var quest in character.QuestLog)
         {

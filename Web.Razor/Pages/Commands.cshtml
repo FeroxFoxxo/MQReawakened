@@ -1,0 +1,215 @@
+﻿@page
+@using Server.Reawakened.XMLs.Data.Commands
+@using Web.Razor.Pages
+@model CommandsModel
+
+@{
+    ViewData["Title"] = "Commands";
+}
+
+@section Stylesheets {
+    <style>
+        body {
+            color: #333 !important; /* Dark text for contrast */
+            transition: background-color 0.3s; /* Smooth transition for background color */
+        }
+
+        .site-header {
+            background: #333;
+            color: #fff;
+            padding: 20px 0 10px; /* Reduced padding at the bottom */
+            border-radius: 10px;
+            transition: background 0.5s ease;
+            text-align: center;
+            font-size: 2.5rem; /* Larger font size for the main header */
+        }
+
+        .site-description {
+            font-style: italic;
+            font-size: 1rem;
+            margin-top: 0.25rem; /* Reduced margin for a tighter look */
+            color: #fff; /* A lighter shade of white for contrast */
+            margin-bottom: 0; /* Remove default bottom margin */
+        }
+
+        .section-header {
+            background-color: #2A6A7C; /* A light gray background */
+            padding: 10px 0;
+            margin-bottom: 30px; /* Space below the header */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* A subtle shadow */
+            color: #fff;
+        }
+
+        .command-card {
+            border: none; /* Remove default border */
+            border-radius: 10px; /* Rounded corners for the card */
+            transition: transform 0.3s ease-in-out; /* Smooth transform transition */
+        }
+
+            .command-card:hover {
+                transform: translateY(-5px); /* Slight raise effect on hover */
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+            }
+
+        .command-card, .parameter-card {
+            border-radius: 15px; /* Rounded corners for cards */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+
+            .command-card .card-header {
+                background-color: #577B3D; /* Lime green header for commands */
+                color: #fff; /* White text for contrast */
+            }
+
+        .options-toggle {
+            color: #577B3D; /* Lime green color for toggle link */
+            cursor: pointer; /* Pointer cursor on hover */
+            text-decoration: none; /* No underline */
+        }
+
+            .options-toggle:hover, .options-toggle:focus {
+                text-decoration: underline; /* Underline on hover/focus for better UX */
+            }
+
+        .optional-indicator {
+            font-size: 0.8em;
+            color: #6c757d; /* A neutral color indicating optional */
+            margin-left: 10px;
+        }
+
+        .option-item {
+            background-color: #f0f8ff; /* Very light blue for options */
+            margin-top: 10px; /* Spacing between options */
+            padding: 10px; /* Padding for content */
+            border-radius: 10px; /* Rounded corners for options */
+        }
+
+        .options-collapse {
+            transition: height 0.5s ease;
+        }
+
+            .options-collapse.collapsing {
+                height: 0;
+                overflow: hidden;
+            }
+
+            .options-collapse.show {
+                height: auto;
+            }
+
+        @@media (max-width: 767px) {
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // This function toggles the display of options and updates the button text accordingly.
+            $('.options-toggle').click(function () {
+                var $this = $(this);
+                var targetId = $this.data('target');
+                var $target = $(targetId);
+
+                // Check if the target is collapsing or expanding
+                if ($target.hasClass('show')) {
+                    // If the target is visible (collapsing), change the text to 'Show Options'
+                    $this.text('Show Options');
+                } else {
+                    // If the target is hidden (expanding), change the text to 'Hide Options'
+                    $this.text('Hide Options');
+                }
+            });
+        });
+    </script>
+}
+
+<div class="container">
+    <header class="text-center my-4 site-header">
+        <h1 class="mb-0">MQReawakened Command Reference</h1>
+        <p class="site-description">Note! Commands may not be fully implemented, or may not work on older versions of MQ.</p>
+    </header>
+    @functions {
+        private void RenderParameter(ParameterModel parameter, string parentId)
+        {
+            var optionsId = $"{parentId.Replace("/", "").ToLower()}-{parameter.Name.Replace("/", "").ToLower()}";
+            <div class="card my-2 parameter-card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @parameter.Name
+                        @if (parameter.Optional)
+                        {
+                            <span class="optional-indicator">(Optional)</span>
+                        }
+                    </h5>
+                    <p class="card-text">@parameter.Description</p>
+                    @if (parameter.Options != null && parameter.Options.Any())
+                    {
+                        <div class="options-collapse collapse" id="@optionsId">
+                            @foreach (var option in parameter.Options)
+                            {
+                                <div class="border-left pl-3 option-item">
+                                    <strong>Option:</strong> @option.Name - @option.Description
+                                    @if (option.Parameters != null && option.Parameters.Any())
+                                    {
+                                        int parameterId = 0;
+                                        foreach (var subParameter in option.Parameters)
+                                        {
+                                            parameterId++;
+                                            RenderParameter(subParameter, $"{optionsId}-{parameterId}");
+                                        }
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <button class="options-toggle btn btn-link" data-toggle="collapse" data-target="#@optionsId" aria-expanded="false" aria-controls="@optionsId">
+                            Show Options
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+
+        private void RenderCommandList(List<CommandModel> commands, string name)
+        {
+            <div class="container">
+                <h2 class="section-header text-center mt-4">@name Commands</h2> <!-- Header with Bootstrap classes -->
+                <div class="row">
+                    @foreach (var command in commands)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <!-- Bootstrap column classes -->
+                            <div class="card command-card h-100">
+                                <div class="card-header">
+                                    <h3>@command.CommandName</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>@command.CommandDescription</p>
+                                    @if (command.Parameters != null && command.Parameters.Any())
+                                    {
+                                        int parameterId = 0;
+                                        foreach (var parameter in command.Parameters)
+                                        {
+                                            parameterId++;
+                                            RenderParameter(parameter, $"options-{name}-{command.CommandName}-{parameterId}");
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+    <div class="commands">
+        @{
+            RenderCommandList(Model.ClientCommands, "Client");
+        }
+    </div>
+</div>

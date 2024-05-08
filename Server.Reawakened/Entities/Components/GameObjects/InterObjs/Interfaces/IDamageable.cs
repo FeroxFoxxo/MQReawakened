@@ -6,5 +6,8 @@ public interface IDamageable
 {
     public int CurrentHealth { get; set; }
     public int MaxHealth { get; }
+    public int Stars { get; }
+    public int DifficultyLevel { get; }
+
     public int GetDamageAmount(int damage, Elemental damageType);
 }

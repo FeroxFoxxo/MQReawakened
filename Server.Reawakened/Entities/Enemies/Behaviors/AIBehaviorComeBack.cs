@@ -1,21 +1,20 @@
-﻿using Server.Reawakened.Entities.Components.AI.Stats;
-using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
+﻿using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
-using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorComeBack(ComeBackState comeBackState, AIStatsGlobalComp globalComp) : AIBaseBehavior
+public class AIBehaviorComeBack(ComeBackProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
 {
-    public float ComeBackSpeed => globalComp.ComeBack_MoveSpeed != globalComp.Default.ComeBack_MoveSpeed ? globalComp.ComeBack_MoveSpeed : comeBackState.ComeBackSpeed;
-
     public override bool ShouldDetectPlayers => true;
 
-    protected override AI_Behavior GetBehaviour() => new AI_Behavior_ComeBack(ComeBackSpeed);
+    public override AiProperties GetProperties() =>
+        new ComeBackProperties(
+            Enemy.Global.ComeBack_MoveSpeed != Enemy.Global.Default.ComeBack_MoveSpeed ? Enemy.Global.ComeBack_MoveSpeed : properties.comeBack_MoveSpeed
+        );
 
-    public override object[] GetData() => [ComeBackSpeed];
+    public override object[] GetStartArgs() => [ Enemy.Position.x, Enemy.AiData.Intern_SpawnPosY ];
 
-    public override void NextState(BehaviorEnemy enemy) =>
-        enemy.ChangeBehavior(StateType.Patrol, enemy.Position.x, enemy.Position.y, enemy.Generic.Patrol_ForceDirectionX);
+    public override void NextState() =>
+        Enemy.ChangeBehavior(StateType.Patrol, Enemy.Position.x, Enemy.Position.y, Enemy.Generic.Patrol_ForceDirectionX);
 }

@@ -18,9 +18,10 @@ public enum EnemyCategory
     Rachnok,
     Spiker,
     Draicon,
-    Plankton,
-    Hamster,
-    Drake,
+    Stomper,
+    Stormbeast,
     Foulbreath,
-    TMNT
+    TMNT,
+    SpngBob,
+    PwrRngr
 }

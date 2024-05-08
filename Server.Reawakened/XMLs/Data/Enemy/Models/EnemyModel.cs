@@ -58,19 +58,4 @@ public class EnemyModel
                 logger.LogError("Enemy '{Name}' does not have the unaware behavior '{Behavior}' defined!", enemyType, GenericScript.UnawareBehavior);
         }
     }
-
-    public int IndexOf(StateType behaviorType)
-    {
-        var index = 0;
-
-        foreach (var behavior in BehaviorData)
-        {
-            if (behavior.Key == behaviorType)
-                return index;
-
-            index++;
-        }
-
-        return 0;
-    }
 }

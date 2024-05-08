@@ -11,7 +11,7 @@ public class ChatHandler(EventSink eventSink, ChatConfig chatConfig) : IService
 {
     public byte[] EncryptedWordList { get; private set; }
 
-    public void Initialize() => eventSink.WorldLoad += GenerateChat;
+    public void Initialize() => eventSink.ServerStarted += (_) => GenerateChat();
 
     private void GenerateChat() => EncryptedWordList =
         Encrypt(string.Join(string.Empty, chatConfig.Words.Select(x => $"{x}{chatConfig.TerminationCharacter}")));

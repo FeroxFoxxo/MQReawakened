@@ -12,7 +12,6 @@ namespace Server.Reawakened.Entities.Projectiles;
 
 public class MeleeEntity : BaseProjectile
 {
-    private readonly Vector3 _hitboxPosition;
     private readonly string _gameObjectId;
 
     public MeleeEntity(string id, Vector3 position, Player player, int direction, float lifeTime, ItemDescription item, int damage, Elemental type, ServerRConfig serverConfig, ItemRConfig config)
@@ -26,12 +25,7 @@ public class MeleeEntity : BaseProjectile
         var meleeWidth = onGround ? config.MeleeWidth : config.MeleeAerialWidth;
         var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialHeight;
 
-        _hitboxPosition = new Vector3 { x = position.x, y = position.y, z = position.z };
-
-        _hitboxPosition.x -= isRight ? 0 : meleeWidth / 2;
-        _hitboxPosition.y -= meleeHeight / 2;
-
-        Collider = new AttackCollider(id, _hitboxPosition, new Vector2(meleeWidth, meleeHeight),
+        Collider = new AttackCollider(id, position, new Rect(isRight ? 0 : -meleeWidth, 0, meleeWidth, meleeHeight),
             PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f
         );
 

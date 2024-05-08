@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Server.Reawakened.Entities.Colliders;
 public class PlayerCollider(Player player) :
     BaseCollider(player.TempData.GameObjectId, player.TempData.CopyPosition(),
-        new Vector2(1, 1), player.GetPlayersPlaneString(), player.Room, ColliderType.Player
+        new Rect(0, 0, 1, 1), player.GetPlayersPlaneString(), player.Room, ColliderType.Player
     )
 {
     public Player Player => player;

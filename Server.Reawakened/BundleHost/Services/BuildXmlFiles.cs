@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.BundleHost.Events;
 using Server.Reawakened.BundleHost.Events.Arguments;
 using Server.Reawakened.BundleHost.Extensions;
-using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 

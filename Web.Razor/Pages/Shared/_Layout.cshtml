@@ -10,10 +10,110 @@
     <meta name="robots" content="index, follow">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="language" content="English">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            background-color: #8ED8FF;
+            color: #fffdfa;
+            margin: 0;
+            min-height: 100%;
+        }
+
+        @@font-face {
+            font-family: 'grobold';
+            src: url('/_content/Web.Razor/GROBOLD.ttf');
+        }
+
+        body {
+            font-family: 'grobold' !important;
+        }
+
+        .bg-custom {
+            background-color: #216d9b; /* Custom background color */
+            transition: background-color 0.5s ease; /* Smooth transition for background color */
+        }
+
+        .navbar-dark .navbar-brand,
+        .navbar-dark .nav-link {
+            color: #fff !important; /* White text for contrast */
+            transition: color 0.3s ease; /* Smooth transition for text color */
+        }
+
+            .navbar-dark .nav-link:hover,
+            .navbar-dark .nav-link:focus {
+                color: #cceeff !important; /* Lighter shade for hover/focus */
+            }
+
+        /* Custom logo styles */
+        .navbar-brand img {
+            border-radius: 50%; /* Makes the image round */
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow around the logo */
+            transition: transform 0.3s ease; /* Smooth transition for the logo */
+
+            margin-right: 10px; /* Adds margin to the right of the logo */
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.1); /* Slightly enlarge the logo on hover */
+        }
+
+        /* Ensure the navbar is not too tall */
+        .navbar {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Adjustments for mobile view */
+        @@media (max-width: 991px) {
+            .navbar-nav .nav-link {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+        }
+    </style>
     @await RenderSectionAsync("Stylesheets", true)
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Include Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    @await RenderSectionAsync("Scripts", false)
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-custom">
+        <div class="container">
+            <!-- Logo and website name -->
+            <a class="navbar-brand" href="/">
+                <img src="/_content/Web.Razor/logo.png" alt="Logo" style="height: 40px;">
+                MQReawakened
+            </a>
+
+            <!-- Toggler/collapsible Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/en/signup">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/commands">Commands</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     @RenderBody()
-    @await RenderSectionAsync("Scripts", false)
 </body>
 </html>

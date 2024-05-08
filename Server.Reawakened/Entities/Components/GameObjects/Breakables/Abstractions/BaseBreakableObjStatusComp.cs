@@ -12,6 +12,7 @@ public abstract class BaseBreakableObjStatusComp<T> : BaseInterObjStatusComp<T>,
     public bool LocalCollision => ComponentData.LocalCollision;
 
     public int NumberOfHitsToBreak => NbOfHitToBreak;
+    public int NumberOfHits { get; set; } = 0;
 
     public override object[] GetInitData(Player player) => [CurrentHealth, MaxHealth, GenericLevel];
 }

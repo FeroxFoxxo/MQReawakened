@@ -4,7 +4,7 @@ using Server.Reawakened.Rooms;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
-public class TCCollider(string id, Vector3 position, Vector2 size, string plane, Room room) :
-    BaseCollider(id, position, size, plane, room, ColliderType.TerrainCube)
+public class TCCollider(string id, Vector3 position, Rect box, string plane, Room room) :
+    BaseCollider(id, position, box, plane, room, ColliderType.TerrainCube)
 {
 }

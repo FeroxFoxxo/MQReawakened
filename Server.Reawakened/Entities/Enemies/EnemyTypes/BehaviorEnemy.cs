@@ -23,16 +23,17 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 {
     public AIStatsGlobalComp Global;
     public AIStatsGenericComp Generic;
-    public AIBaseBehavior AiBehavior;
     public AIProcessData AiData;
 
     public GenericScriptPropertiesModel GenericScript;
 
-    private object _enemyLock;
+    public Dictionary<StateType, AIBaseBehavior> Behaviors;
 
-    private StateType _currentState;
+    public StateType CurrentState;
+    public AIBaseBehavior CurrentBehavior;
+
+    private object _enemyLock;
     private float _lastUpdate;
-    private int _index;
 
     public TimerThread TimerThread;
 
@@ -72,12 +73,13 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             _suicide = new Runnable(this)
         };
 
+        Behaviors = EnemyModel.BehaviorData.ToDictionary(s => s.Key, s => s.Value.GetBaseBehaviour(this));
+
         Room.SendSyncEvent(
-            GetEnemyInit(
+            AISyncEventHelper.AIInit(
                 Position.x, Position.y, Position.z,
                 Position.x, Position.y,
-                Generic.Patrol_InitialProgressRatio,
-                EnemyModel.BehaviorData, Global, Generic
+                Generic.Patrol_InitialProgressRatio, this
             )
         );
 
@@ -89,6 +91,9 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     public override void CheckForSpawner()
     {
         base.CheckForSpawner();
+
+        if (LinkedSpawner == null)
+            return;
 
         // Should use apt template rather than first
         var spawnerTemplate = LinkedSpawner.TemplateEnemyModels.FirstOrDefault().Value;
@@ -104,41 +109,58 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         Status = spawnerTemplate.Status;
     }
 
-    public bool PlayerInRange(Vector3 pos, bool limitedByPatrolLine) =>
-        AiData.Sync_PosX - (AiData.Intern_Dir < 0 ? GlobalProperties.Global_FrontDetectionRangeX : GlobalProperties.Global_BackDetectionRangeX) < pos.x &&
-            pos.x < AiData.Sync_PosX + (AiData.Intern_Dir < 0 ? GlobalProperties.Global_BackDetectionRangeX : GlobalProperties.Global_FrontDetectionRangeX) &&
-            AiData.Sync_PosY - GlobalProperties.Global_FrontDetectionRangeDownY < pos.y && pos.y < AiData.Sync_PosY + GlobalProperties.Global_FrontDetectionRangeUpY &&
-            Position.z < pos.z + 1 && Position.z > pos.z - 1 &&
-            (!limitedByPatrolLine || pos.x > AiData.Intern_MinPointX - 1.5 && pos.x < AiData.Intern_MaxPointX + 1.5);
+    public bool PlayerInRange(Vector3 pos, bool limitedByPatrolLine)
+    {
+        var originBounds = new Vector3
+        (
+            AiData.Sync_PosX - (AiData.Intern_Dir < 0 ? GlobalProperties.Global_FrontDetectionRangeX : GlobalProperties.Global_BackDetectionRangeX),
+            AiData.Sync_PosY - GlobalProperties.Global_FrontDetectionRangeDownY,
+            Position.z - 1
+        );
+
+        var maxBounds = new Vector3
+        (
+            AiData.Sync_PosX + (AiData.Intern_Dir < 0 ? GlobalProperties.Global_BackDetectionRangeX : GlobalProperties.Global_FrontDetectionRangeX),
+            AiData.Sync_PosY + GlobalProperties.Global_FrontDetectionRangeUpY,
+            Position.z + 1
+        );
+
+        var minPatrolBound = AiData.Intern_MinPointX - 1.5;
+        var maxPatrolBound = AiData.Intern_MaxPointX + 1.5;
+
+        return pos.x > originBounds.x && pos.x < maxBounds.x &&
+            pos.y > originBounds.y && pos.y < maxBounds.y &&
+            (!limitedByPatrolLine || pos.x > minPatrolBound && pos.x < maxPatrolBound);
+    }
 
     public override void InternalUpdate()
     {
         var hasDetected = false;
 
-        if (AiBehavior.ShouldDetectPlayers)
+        if (CurrentBehavior.ShouldDetectPlayers)
             hasDetected = HasDetectedPlayers();
 
         if (!hasDetected)
         {
-            if (AiBehavior.TryUpdate(AiData, Room.Time, this))
+            if (CurrentBehavior.TryUpdate())
                 if (AiData.Intern_FireProjectile)
                     FireProjectile(false);
 
-            if (_currentState == GenericScript.AwareBehavior)
+            if (CurrentState == GenericScript.AwareBehavior)
             {
                 if (Room.Time >= _lastUpdate + GenericScript.genericScript_AwareBehaviorDuration)
-                    AiBehavior.NextState(this);
+                    CurrentBehavior.NextState();
             }
-            else if (_currentState == StateType.LookAround)
+            else if (CurrentState == StateType.LookAround)
                 if (Room.Time >= _lastUpdate + .5f)
-                    AiBehavior.NextState(this);
+                    CurrentBehavior.NextState();
         }
 
         Position = new Vector3(AiData.Sync_PosX, AiData.Sync_PosY, Position.z);
 
         Hitbox.Position = new Vector3(
             AiData.Sync_PosX,
-            AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.ColliderBox.Height : 0),
+            AiData.Sync_PosY - (EnemyController.Scale.Y < 0 ? Hitbox.BoundingBox.height : 0),
             Position.z
         );
     }
@@ -150,14 +172,12 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine))
             {
                 AiData.Sync_TargetPosX = player.TempData.Position.x;
-
-                AiData.Sync_TargetPosY = GenericScript.AttackBehavior == StateType.Grenadier ?
-                    Position.y : player.TempData.Position.y;
+                AiData.Sync_TargetPosY = player.TempData.Position.y;
 
                 ChangeBehavior(
                     GenericScript.AttackBehavior,
-                    player.TempData.Position.x,
-                    GenericScript.AttackBehavior == StateType.Grenadier ? player.TempData.Position.y : Position.y,
+                    AiData.Sync_TargetPosX,
+                    AiData.Sync_TargetPosY,
                     Generic.Patrol_ForceDirectionX
                 );
 
@@ -200,23 +220,27 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     {
         lock (_enemyLock)
         {
-            if (AiData != null && AiBehavior != null)
-                AiBehavior.Stop(AiData);
+            if (AiData.Intern_PendingSpeedFactor >= 0f)
+            {
+                AiData.Sync_SpeedFactor = AiData.Intern_PendingSpeedFactor;
+                AiData.Intern_AnimSpeed = AiData.Intern_PendingSpeedFactor;
+                AiData.Intern_PendingSpeedFactor = -1f;
+            }
 
-            _currentState = behaviorType;
-            _index = EnemyModel.IndexOf(behaviorType);
+            CurrentBehavior?.Stop();
+
+            CurrentBehavior = Behaviors[behaviourType];
+            CurrentState = behaviourType;
+
+            Behaviors[behaviourType].Start();
+
             _lastUpdate = Room.Time;
-
-            var behavior = EnemyModel.BehaviorData[behaviorType];
-            var args = behavior.GetStartArgs(this);
-
-            AiBehavior = behavior.GetBaseBehaviour(Global, Generic);
-            AiBehavior.Start(AiData, Room.Time, args);
 
             Room.SendSyncEvent(
                 AISyncEventHelper.AIDo(
-                    Id, Room.Time, Position.x, Position.y, 1.0f,
-                    _index, args, targetX, targetY, direction, false
+                    Position.x, Position.y, 1.0f,
+                    targetX, targetY, direction, CurrentState == GenericScript.AwareBehavior,
+                    this
                 )
             );
         }
@@ -232,6 +256,17 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             return;
         }
 
+        if (CurrentState != StateType.Shooting)
+        {
+            AiData.Sync_TargetPosX = player.TempData.Position.x;
+            AiData.Sync_TargetPosY = player.TempData.Position.y;
+
+            ChangeBehavior(
+                GenericScript.AttackBehavior,
+                player.TempData.Position.x, player.TempData.Position.y,
+                Generic.Patrol_ForceDirectionX
+            );
+        }
         EnemyAggroPlayer(player);
     }
 
@@ -244,19 +279,18 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     public override void SendAiData(Player player)
     {
         player.SendSyncEventToPlayer(
-            GetEnemyInit(
+            AISyncEventHelper.AIInit(
                 AiData.Sync_PosX, AiData.Sync_PosY, AiData.Sync_PosZ,
                 AiData.Intern_SpawnPosX, AiData.Intern_SpawnPosY,
-                AiBehavior.GetBehaviorRatio(AiData, Room.Time),
-                EnemyModel.BehaviorData, Global, Generic
+                CurrentBehavior.GetBehaviorRatio(Room.Time), this
             )
         );
 
         player.SendSyncEventToPlayer(
             AISyncEventHelper.AIDo(
-                Id, Room.Time, AiData.Sync_PosX, AiData.Sync_PosY,
-                1.0f, _index, AiBehavior.GetInitArgs(),
-                AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, false
+                AiData.Sync_PosX, AiData.Sync_PosY, 1.0f,
+                AiData.Sync_TargetPosX, AiData.Sync_TargetPosY, AiData.Intern_Dir, CurrentState == GenericScript.AwareBehavior,
+                this
             )
         );
     }

@@ -15,9 +15,6 @@ public class ItemRConfig : IRConfig
     public int[] StackedItemKit { get; }
     public int AmountToStack { get; }
 
-    public string NoEffect { get; }
-    public string ToxicCloud { get; }
-
     public int HealingStaffID { get; }
     public int MysticCharmID { get; }
 
@@ -49,6 +46,7 @@ public class ItemRConfig : IRConfig
     public float PetHoldChainDelay { get; }
     public float PetPosYOffset { get; }
     public float PetPosOnButtonYOffset { get; }
+    public string WaterPrefabName { get; }
 
     public ItemRConfig()
     {
@@ -97,9 +95,6 @@ public class ItemRConfig : IRConfig
         BreathTimerDuration = 30;
         UnderwaterDamageInterval = 2;
 
-        NoEffect = "NoEffect";
-        ToxicCloud = "ToxicCloud";
-
         HealingStaffID = 396;
         MysticCharmID = 398;
 
@@ -120,8 +115,8 @@ public class ItemRConfig : IRConfig
         MeleeWidth = 4f;
         MeleeHeight = 1f;
 
-        MeleeAerialWidth = 6f;
-        MeleeAerialHeight = 5.2f;
+        MeleeArialWidth = 2f;
+        MeleeArialHeight = 4f;
 
         TrainingGear = new Dictionary<int, string>
         {

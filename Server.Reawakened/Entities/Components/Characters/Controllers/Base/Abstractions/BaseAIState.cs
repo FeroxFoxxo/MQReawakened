@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Rooms.Models.Entities;
+﻿using Server.Reawakened.Players;
+using Server.Reawakened.Rooms.Models.Entities;
 using static A2m.Server.ExtLevelEditor;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
@@ -32,4 +33,6 @@ public abstract class BaseAIState<T> : Component<T>, IAIState
     }
 
     public void SetStateMachine(IAIStateMachine machine) => StateMachine = machine;
+
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
 }

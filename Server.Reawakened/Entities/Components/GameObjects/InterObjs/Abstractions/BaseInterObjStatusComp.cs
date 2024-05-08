@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.InterObjs.Abstractions;
@@ -27,6 +28,8 @@ public abstract class BaseInterObjStatusComp<T> : Component<T>, IDamageable wher
     public int FreezeStatusEffectResistSecs => ComponentData.FreezeStatusEffectResistSecs;
 
     public int CurrentHealth { get; set; }
+
+    public override void InitializeComponent() => CurrentHealth = MaxHealth;
 
     public int GetDamageAmount(int damage, Elemental damageType)
     {
@@ -59,4 +62,6 @@ public abstract class BaseInterObjStatusComp<T> : Component<T>, IDamageable wher
 
         return damage;
     }
+
+    public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
 }

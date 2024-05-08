@@ -44,10 +44,10 @@ public class RoomUpdate : ExternalProtocol
         foreach (var npc in Player.Room.GetEntitiesFromType<NPCControllerComp>())
             npc.SendNpcInfo(Player);
 
-        if (Player.FirstLogin)
+        if (Player.TempData.FirstLogin)
         {
             ChatCommands.DisplayHelp(Player);
-            Player.FirstLogin = false;
+            Player.TempData.FirstLogin = false;
         }
         else
         {

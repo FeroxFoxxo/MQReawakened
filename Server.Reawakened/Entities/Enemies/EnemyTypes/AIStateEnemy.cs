@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
+using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
@@ -13,7 +14,13 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
     {
         var stateMachine = Room.GetEntityFromId<IAIStateMachine>(Id);
 
-        stateMachine.SetAIStateEnemy(this);
+        if (stateMachine == null)
+        {
+            Logger.LogError("Enemy for: '{Name}' does not have a state machine! " +
+                "Are you sure it is an AI state enemy?", PrefabName);
+        }
+        else
+            stateMachine.SetAIStateEnemy(this);
 
         Room.SendSyncEvent(
             GetBlankEnemyInit(
@@ -23,12 +30,6 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
         );
 
         base.Initialize();
-
-        if (stateMachine == null)
-        {
-            Logger.LogError("Enemy for '{Name}' does not have a state machine! " +
-                "Are you sure it is an AI state enemy?", PrefabName);
-        }
     }
 
     public override void SendAiData(Player player) =>
@@ -37,5 +38,13 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
                 Position.x, Position.y, Position.z,
                 Position.x, Position.y
             )
+        );
+
+    public AIInit_SyncEvent GetBlankEnemyInit(float posX, float posY, float posZ, float spawnX, float spawnY) =>
+        AISyncEventHelper.AIInit(
+            Id, Room,
+            posX, posY, posZ, spawnX, spawnY, 0,
+            Health, MaxHealth, HealthModifier, ScaleModifier, ResistanceModifier,
+            Status.Stars, Level, GlobalProperties, []
         );
 }
