@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PetAbilities>
-    <!-- Side note: When changing the duration of ability FX with "duration", it will seemingly
+    <!-- Side note: When changing the duration of an attack ability's FX with "duration", it will seemingly
                     animate the FX 3 seconds longer than the duration value provided.-->
     <!-- Saberstrike -->
     <Abillity prefab_id="1730653899" pet_ability_type_id="3" elemental="2" cooldownTime="5.0" duration="2.0" frequency="0.7" initialDelayBeforeUse="1.0" itemEffectStatRatio="0.14" useCount="10" maxHitCount="5" damageAreaX="1.0" damageAreaY="1.0" damageAreaOffsetX="1.0" damageAreaOffsetY="1.0" detectionZoneX="15.0" detectionZoneY="15.0" detectionZoneOffsetX="15.0" detectionZoneOffsetY="15.0" applyOnHealthRatio="0.0" defensiveBonusRatio="0.0" />
