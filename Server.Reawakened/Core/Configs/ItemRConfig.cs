@@ -45,13 +45,10 @@ public class ItemRConfig : IRConfig
 
     public Dictionary<int, string> TrainingGear { get; }
     public Dictionary<int, List<string>> TrainingGear2011 { get; }
-    public int PetSlotId { get; }
-    public float PetUseEnergyRatio { get; }
     public float PetPressButtonDelay { get; }
     public float PetHoldChainDelay { get; }
     public float PetPosYOffset { get; }
     public float PetPosOnButtonYOffset { get; }
-    public float PetDefenseBoost { get; }
 
     public ItemRConfig()
     {
@@ -143,12 +140,9 @@ public class ItemRConfig : IRConfig
             { 498, ["ABIL_SnowBoard02", "Add_WLD_IceRaider01_TS01", "WPN_MEL_IceRaiderAxe01"] }, // lv_wld_highway01
         };
 
-        PetSlotId = 4;
-        PetUseEnergyRatio = 0.1f;
         PetPressButtonDelay = 0.5f;
         PetHoldChainDelay = 1f;
         PetPosYOffset = 0.75f;
         PetPosOnButtonYOffset = 0.25f;
-        PetDefenseBoost = 2;
     }
 }

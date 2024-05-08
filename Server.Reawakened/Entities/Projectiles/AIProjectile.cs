@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
@@ -15,15 +16,15 @@ public class AIProjectile : BaseProjectile
 
     public AIProjectile(Room room, string ownerId, string projectileId, Vector3 position,
         Vector2 speed, float lifeTime, TimerThread timerThread, int baseDamage,
-        ItemEffectType effect, bool gravity, ServerRConfig config, ItemCatalog itemCatalog)
+        ItemEffectType effect, bool gravity, ServerRConfig config, ItemCatalog itemCatalog, ItemRConfig itemConfig)
         : base(projectileId, lifeTime, room, position, speed, null, gravity, config)
     {
         _ownerId = ownerId;
 
         Collider = new AIProjectileCollider(
             projectileId, ownerId, room, projectileId, position,
-            new Vector2(0.5f, 0.5f), PrjPlane, LifeTime,
-            timerThread, baseDamage, effect, itemCatalog
+            new Vector2(0.5f, 0.5f), PrjPlane, LifeTime, timerThread,
+            baseDamage, effect, itemCatalog, itemConfig, config
         );
     }
 

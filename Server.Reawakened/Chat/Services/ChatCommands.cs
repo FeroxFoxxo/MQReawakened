@@ -29,7 +29,7 @@ namespace Server.Reawakened.Chat.Services;
 
 public partial class ChatCommands(
     ItemCatalog itemCatalog, ServerRConfig config, ItemRConfig itemConfig, ILogger<ServerConsole> logger, FileLogger fileLogger,
-    WorldHandler worldHandler, WorldStatistics worldStatistics, InternalAchievement internalAchievement, InternalQuestItem questItem,
+    WorldHandler worldHandler, InternalAchievement internalAchievement, InternalQuestItem questItem,
     WorldGraph worldGraph, IHostApplicationLifetime appLifetime, AutoSave saves, QuestCatalog questCatalog,
     CharacterHandler characterHandler, AccountHandler accountHandler) : IService
 {
@@ -171,14 +171,14 @@ public partial class ChatCommands(
             var itemModel = new ItemModel()
             {
                 ItemId = item.ItemId,
-                Count = 1,
-                BindingCount = 1,
+                Count = 0,
+                BindingCount = 0,
                 DelayUseExpiry = DateTime.Now
             };
 
             player.Character.Data.Inventory.Items.TryAdd(item.ItemId, itemModel);
 
-            player.SetHotbarSlot(hotbarId - 1, itemModel, itemCatalog, worldStatistics);
+            player.SetHotbarSlot(hotbarId - 1, itemModel);
 
             player.SendXt("hs", player.Character.Data.Hotbar);
 
@@ -334,7 +334,7 @@ public partial class ChatCommands(
         return true;
     }
 
-    private static bool BadgePoints(Player player, string[] args)
+    private bool BadgePoints(Player player, string[] args)
     {
         player.AddPoints();
         return true;

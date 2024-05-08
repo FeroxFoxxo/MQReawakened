@@ -8,7 +8,6 @@ public class FastTravel : ExternalProtocol
     public override string ProtocolName => "lF";
 
     public WorldHandler WorldHandler { get; set; }
-
     public override void Run(string[] message)
     {
         var levelId = int.Parse(message[5]);

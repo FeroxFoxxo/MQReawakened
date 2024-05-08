@@ -41,6 +41,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
     public TimerThread TimerThread { get; set; }
     public ItemRConfig ItemRConfig { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<BaseHazardControllerComp<HazardController>> Logger { get; set; }
@@ -112,7 +113,8 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         if (Room.ContainsEnemy(Id))
         {
-            if (player.TempData.PetDefensiveBarrier)
+            if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) &&
+                pet.PetAbilityModel.DefensiveBarrierActive)
                 Room.GetEnemy(Id).PetDamage(player);
 
             else
@@ -149,7 +151,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             case ItemEffectType.BluntDamage:
                 var enemy = Room.GetEnemy(Id);
                 var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
-                             player.Character.Data.CalculateDefense(player, EffectType, ItemCatalog);
+                             player.Character.Data.CalculateDefense(player, EffectType, ItemCatalog, ServerRConfig);
 
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                 (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));

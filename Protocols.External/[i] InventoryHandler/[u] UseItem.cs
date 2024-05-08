@@ -23,9 +23,9 @@ public class UseItem : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public InternalRecipe RecipeCatalog { get; set; }
     public ItemRConfig ItemRConfig { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
-    public WorldStatistics WorldStatistics { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -78,7 +78,7 @@ public class UseItem : ExternalProtocol
     private void HandlePet(ItemDescription usedItem)
     {
         var itemModel = Player.Character.Data.Inventory.Items[usedItem.ItemId];
-        Player.SetHotbarSlot(ItemRConfig.PetSlotId, itemModel, ItemCatalog, WorldStatistics);
+        Player.SetHotbarSlot(ServerRConfig.PetHotbarIndex, itemModel);
         SendXt("hs", Player.Character.Data.Hotbar);
     }
 
@@ -111,7 +111,7 @@ public class UseItem : ExternalProtocol
                 break;
         }
 
-        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, Logger);
+        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, ServerRConfig, Logger);
 
         var removeFromHotbar = true;
 

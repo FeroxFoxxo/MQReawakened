@@ -23,7 +23,8 @@ public class PlayerCollider(Player player) :
         if (received is AIProjectileCollider aiProjectileCollider &&
             received.Type == ColliderType.AiAttack)
         {
-            var damage = aiProjectileCollider.Damage - player.Character.Data.CalculateDefense(player, aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
+            var damage = aiProjectileCollider.Damage - player.Character.Data.CalculateDefense(player,
+                aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog, aiProjectileCollider.ServerRConfig);
 
             Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)aiProjectileCollider.Effect,
             0, 1, true, aiProjectileCollider.OwnderId, false));

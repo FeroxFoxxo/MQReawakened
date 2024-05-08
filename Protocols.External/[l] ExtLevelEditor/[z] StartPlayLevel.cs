@@ -11,7 +11,6 @@ public class StartPlayRoom : ExternalProtocol
     public override string ProtocolName => "lz";
 
     public WorldHandler WorldHandler { get; set; }
-
     public override void Run(string[] message)
     {
         Player.QuickJoinRoom(Player.GetLevelId(), WorldHandler, out var reason);

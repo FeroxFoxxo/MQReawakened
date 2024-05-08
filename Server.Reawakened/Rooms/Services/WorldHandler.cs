@@ -213,7 +213,8 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         ChangePlayerRoom(player, newLevelId, spawnId);
     }
 
-    public bool ChangePlayerRoom(Player player, int levelId, string spawnId = "") => _ = TryChangePlayerRoom(player, levelId, spawnId);
+    public bool ChangePlayerRoom(Player player, int levelId, string spawnId = "") =>
+        _ = TryChangePlayerRoom(player, levelId, spawnId);
 
     public bool TryChangePlayerRoom(Player player, int levelId, string spawnId = "")
     {

@@ -13,6 +13,7 @@ using System.Text;
 using static TriggerCoopController;
 using UnityEngine;
 using Server.Reawakened.Entities.Colliders.Abstractions;
+using Server.Reawakened.Core.Configs;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 
@@ -97,6 +98,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
 
     public FileLogger FileLogger { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
 
     public override void InitializeComponent()
     {
@@ -210,15 +212,20 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
             LogTrigger();
     }
 
-    public void AddPhysicalInteractor(Player player, string interactorId)
+    public void AddPhysicalInteractor(Player player, string interactionId)
     {
-        if (CurrentPhysicalInteractors.Contains(interactorId))
+        if (CurrentPhysicalInteractors.Contains(interactionId))
             return;
 
-        if (Room.GetPlayerById(interactorId) != null)
+        if (Room.GetPlayerById(interactionId) != null)
         {
-            var petId = player.Character.Data.PetItemId;
-            player.Character.Pets[petId].CurrentTargetId = Id;
+            if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) &&
+                !pet.InCoopJumpState && !pet.InCoopJumpState)
+            {
+                pet.CurrentTriggerableId = Id;
+                Console.WriteLine("SetTriggerable: " + Id);
+            }
+
             if (!string.IsNullOrEmpty(QuestCompletedRequired))
             {
                 var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
@@ -238,19 +245,17 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
             }
         }
 
-        CurrentPhysicalInteractors.Add(interactorId);
+        Console.WriteLine("adding: " + interactionId);
+        CurrentPhysicalInteractors.Add(interactionId);
         SendInteractionUpdate();
     }
 
-    public void RemovePhysicalInteractor(Player player, string interactorId)
+    public void RemovePhysicalInteractor(Player player, string interactionId)
     {
-        if (!CurrentPhysicalInteractors.Contains(interactorId))
+        if (!CurrentPhysicalInteractors.Contains(interactionId))
             return;
 
-        if (Room.GetPlayerById(interactorId) == null)
-            player.Character.Pets[int.Parse(interactorId)].CurrentTargetId = string.Empty;
-
-        CurrentPhysicalInteractors.Remove(interactorId);
+        CurrentPhysicalInteractors.Remove(interactionId);
         SendInteractionUpdate();
     }
 
@@ -313,13 +318,12 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp 
         else
         {
             var triggerReceiverActivated = TriggerReceiverActivated();
-            var petId = player.Character.Data.PetItemId;
-            var playersPet = player.Character.Pets[petId];
 
             if (StayTriggeredOnReceiverActivated && triggerReceiverActivated)
                 return;
 
-            if (StayTriggeredOnUnpressed || Id == playersPet.CurrentTargetId && playersPet.InCoopJumpState || playersPet.InCoopSwitchState)
+            if (StayTriggeredOnUnpressed || player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet)
+                && Id == pet.CurrentTriggerableId && pet.InCoopJumpState || pet.InCoopSwitchState)
                 return;
 
             if (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time && ActivationTimeAfterFirstInteraction > 0)

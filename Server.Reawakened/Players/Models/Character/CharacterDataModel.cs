@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Bundles.Base;
 
@@ -22,7 +22,6 @@ public class CharacterDataModel : CharacterLightModel
     public RecipeListModel RecipeList { get; set; }
     public Dictionary<TribeType, bool> TribesDiscovered { get; set; }
     public Dictionary<TribeType, TribeDataModel> TribesProgression { get; set; }
-    public ItemRConfig ItemRConfig { get; set; }
 
     private Dictionary<int, int> IdolCount =>
         _player?.Character.CollectedIdols
@@ -232,7 +231,7 @@ public class CharacterDataModel : CharacterLightModel
         return sb.ToString();
     }
 
-    public int CalculateDefense(Player player, ItemEffectType effect, ItemCatalog itemCatalog)
+    public int CalculateDefense(Player player, ItemEffectType effect, ItemCatalog itemCatalog, ServerRConfig serverRConfig)
     {
         var statManager = new CharacterStatsManager(CharacterName);
         var defense = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Player, _player.Character.Data.GlobalLevel);
@@ -264,8 +263,9 @@ public class CharacterDataModel : CharacterLightModel
         foreach (var item in Equipment.EquippedItems)
             itemList.Add(itemCatalog.GetItemFromId(item.Value));
 
-        if (player.TempData.PetDefenseBoost)
-            defense *= (int)ItemRConfig.PetDefenseBoost;
+        if (player.Character.Pets.TryGetValue(player.GetEquippedPetId
+            (serverRConfig), out var pet) && pet.PetAbilityModel.DefenseBoostActive)
+            defense *= (int)pet.PetAbilityModel.PetAbilityParams.DefensiveBonusRatio;
 
         defense += statManager.ComputeEquimentBoost(defenseType, itemList);
 

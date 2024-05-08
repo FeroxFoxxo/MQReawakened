@@ -9,9 +9,6 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Players.Models.Pets;
-using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
@@ -27,7 +24,6 @@ public class UseSlot : ExternalProtocol
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
-    public WorldStatistics WorldStatistics { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -39,9 +35,6 @@ public class UseSlot : ExternalProtocol
         var posZ = Convert.ToSingle(message[9]);
 
         var direction = Player.TempData.Direction;
-
-        var slotItem = Player.Character.Data.Hotbar.HotbarButtons[hotbarSlotId];
-        var usedItem = ItemCatalog.GetItemFromId(slotItem.ItemId);
         var position = new Vector3()
         {
             x = posX,
@@ -49,9 +42,11 @@ public class UseSlot : ExternalProtocol
             z = posZ
         };
 
+        var slotItem = Player.Character.Data.Hotbar.HotbarButtons[hotbarSlotId];
+        var usedItem = ItemCatalog.GetItemFromId(slotItem.ItemId);
+
         Logger.LogDebug("Player used hotbar slot {hotbarId} on {userId} at coordinates {position}",
             hotbarSlotId, targetUserId, position);
-
         switch (usedItem.ItemActionType)
         {
             case ItemActionType.Drop:
@@ -65,7 +60,7 @@ public class UseSlot : ExternalProtocol
             case ItemActionType.Genericusing:
             case ItemActionType.Drink:
             case ItemActionType.Eat:
-                HandleConsumable(usedItem, hotbarSlotId);
+                HandleConsumable(usedItem, ServerRConfig, hotbarSlotId);
                 break;
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
@@ -74,53 +69,27 @@ public class UseSlot : ExternalProtocol
                 HandleRelic(usedItem);
                 break;
             case ItemActionType.PetUse:
-                var petId = Player.Character.Data.PetItemId;
-                Player.Character.Pets[petId].GainEnergy(Player, usedItem);
+                if (!Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var petUse))
+                {
+                    Logger.LogInformation("Could not find pet for {characterName}!", Player.CharacterName);
+                    return;
+                }
+
+                petUse.GainEnergy(Player, usedItem);
                 break;
             case ItemActionType.Pet:
-                HandlePetState(Player.Character.Pets[usedItem.ItemId]);
+                if (!Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet))
+                {
+                    Logger.LogInformation("Could not find pet for {characterName}!", Player.CharacterName);
+                    return;
+                }
+                pet.HandlePetState(Player, TimerThread, ItemRConfig, Logger);
                 break;
             default:
                 Logger.LogError("Could not find how to handle item action type {ItemAction} for user {UserId}",
                     usedItem.ItemActionType, targetUserId);
                 break;
         }
-    }
-
-    private void HandlePetState(PetModel pet)
-    {
-        var newPetState = pet.ChangePetState(Player, pet.Id);
-        var syncParams = string.Empty;
-
-        Console.WriteLine("State: " + newPetState);
-        switch (newPetState)
-        {
-            case PetInformation.StateSyncType.Deactivate:
-                pet.RemoveTriggerDelay(Player, pet, TimerThread, ItemRConfig.PetPressButtonDelay);
-                break;
-            case PetInformation.StateSyncType.PetStateCoopSwitch:
-                pet.StartTriggerDelay(Player, pet, TimerThread, ItemRConfig.PetHoldChainDelay);
-                syncParams = pet.CurrentTargetId;
-                break;
-
-            case PetInformation.StateSyncType.PetStateCoopJump:
-                var onButton = false;
-
-                if (!string.IsNullOrEmpty(pet.CurrentTargetId))
-                {
-                    onButton = true;
-                    pet.StartTriggerDelay(Player, pet, TimerThread, ItemRConfig.PetPressButtonDelay);
-                }
-
-                syncParams = pet.GetPetPosition(Player.TempData.Position, ItemRConfig, onButton);
-                break;
-
-            case PetInformation.StateSyncType.Unknown:
-                Logger.LogWarning("Unknown pet state type {petState}", newPetState);
-                break;
-        }
-
-        Player.Room.SendSyncEvent(new PetState_SyncEvent(Player.GameObjectId, Player.Room.Time, newPetState, syncParams));
     }
 
     private void HandleRelic(ItemDescription usedItem) //Needs rework.
@@ -134,9 +103,9 @@ public class UseSlot : ExternalProtocol
         Player.SendSyncEventToPlayer(itemEffect);
     }
 
-    private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
+    private void HandleConsumable(ItemDescription usedItem, ServerRConfig serverRConfig, int hotbarSlotId)
     {
-        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, Logger);
+        Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, ServerRConfig, Logger);
         var removeFromHotBar = true;
 
         if (usedItem.InventoryCategoryID is
@@ -224,7 +193,7 @@ public class UseSlot : ExternalProtocol
 
         if (itemModel.Count <= 0)
         {
-            Player.RemoveHotbarSlot(hotbarSlotId, ItemCatalog, WorldStatistics);
+            Player.RemoveHotbarSlot(hotbarSlotId);
             SendXt("hu", character.Data.Hotbar);
         }
 

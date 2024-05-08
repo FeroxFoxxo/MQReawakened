@@ -1,8 +1,10 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using PetDefines;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -15,18 +17,20 @@ namespace Server.Reawakened.Players.Extensions;
 
 public static class CharacterInventoryExtensions
 {
-    public static void HandleItemEffect(this Player player, ItemDescription usedItem, TimerThread timerThread, ItemRConfig config, ILogger<PlayerStatus> logger)
+    public static void HandleItemEffect(this Player player, ItemDescription usedItem,
+        TimerThread timerThread, ItemRConfig config, ServerRConfig serverRConfig, ILogger<PlayerStatus> logger)
     {
         var effect = usedItem.ItemEffects.FirstOrDefault();
-
-        if (usedItem.ItemEffects.Count > 0)
-            player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-                                (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, true));
-
         switch (effect.Type)
         {
             case ItemEffectType.PetRegainEnergy:
-                player.Character.Pets[player.Character.Data.PetItemId].GainEnergy(player, usedItem);
+                if (!player.Character.Pets.TryGetValue(player.GetEquippedPetId
+                    (serverRConfig), out var pet) && pet.CurrentEnergy < pet.MaxEnergy)
+                {
+                    logger.LogWarning("Couldn't find pet for {characterName}", player.CharacterName);
+                    return;
+                }
+                pet.GainEnergy(player, usedItem);
                 break;
             case ItemEffectType.Healing:
             case ItemEffectType.HealthBoost:
@@ -64,6 +68,11 @@ public static class CharacterInventoryExtensions
                 logger.LogError("Unknown ItemEffectType of ({effectType}) for item {usedItemName}", effect.Type, usedItem.PrefabName);
                 return;
         }
+
+        if (usedItem.ItemEffects.Count > 0)
+            player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+                                (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, true));
+
         logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for _player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
     }
 
@@ -173,7 +182,7 @@ public static class CharacterInventoryExtensions
                 player.Character.Data.Inventory.Items.Remove(item.Key);
     }
 
-    public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel, ItemCatalog catalog, WorldStatistics worldStatistics)
+    public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel)
     {
         var hotbar = player.Character.Data.Hotbar;
 
@@ -182,51 +191,40 @@ public static class CharacterInventoryExtensions
 
         else
             hotbar.HotbarButtons.Add(slotId, itemModel);
-
-        CheckPetEquip(player, itemModel.ItemId, true, catalog, worldStatistics);
     }
 
-    public static void RemoveHotbarSlot(this Player player, int slotId, ItemCatalog catalog, WorldStatistics worldStatistics)
+    public static void RemoveHotbarSlot(this Player player, int slotId)
     {
         var hotbar = player.Character.Data.Hotbar;
 
-        if (!hotbar.HotbarButtons.TryGetValue(slotId, out var itemModel))
+        if (!hotbar.HotbarButtons.ContainsKey(slotId))
             return;
 
         hotbar.HotbarButtons.Remove(slotId);
-
-        CheckPetEquip(player, itemModel.ItemId, false, catalog, worldStatistics);
     }
 
-    public static void CheckPetEquip(this Player player, int petId, bool equipped, ItemCatalog catalog, WorldStatistics worldStatistics)
+    public static void EquipPet(this Player player, WorldStatistics worldStatistics,
+        ServerRConfig serverRConfig, PetAbilityParams petAbilityParams)
     {
-        if (!catalog.GetItemFromId(petId).IsPet())
+        if (player == null || !player.Character.Data.Hotbar.HotbarButtons.ContainsKey(serverRConfig.PetHotbarIndex))
             return;
 
-        var petList = player.Character.Pets;
-        var maxPetEnergy = worldStatistics.Statistics[ItemEffectType.PetEnergyValue][WorldStatisticsGroup.Pet]
-            .Where(x => x.Key == player.Character.Data.GlobalLevel).First().Value;
+        var petId = player.GetEquippedPetId(serverRConfig);
+        var refillCurrentEnergy = false;
 
-        if (!petList.TryGetValue(petId, out var pet) && equipped)
+        if (!player.Character.Pets.TryGetValue(petId, out var currentPet))
         {
-            petList.Add(petId, new PetModel()
-            {
-                Id = petId,
-                MaxEnergy = maxPetEnergy,
-                CurrentEnergy = maxPetEnergy
-            });
-            player.SendXt("Za", player.UserId, pet.PetProfile(Convert.ToInt32(player.GameObjectId), petId, (int)PetType.coop, pet.CurrentEnergy, 0, 0, 0));
-            player.SendXt("Zg", player.UserId, maxPetEnergy);
+            player.Character.Pets.Add(petId, currentPet = new PetModel());
+            refillCurrentEnergy = true;
         }
 
-        else
-            pet.MaxEnergy = maxPetEnergy;
-
-        player.Character.Data.PetItemId = equipped ? petId : 0;
-
-        player.SendXt("Zg", player.UserId, maxPetEnergy);
-
-        foreach (var roomPlayer in player.Room.GetPlayers())
-            roomPlayer.SendXt("ZE", player.UserId, petId, equipped ? 1 : 0);
+        currentPet.SpawnPet(player, true, petId, petAbilityParams, refillCurrentEnergy, worldStatistics, serverRConfig);
     }
+
+    public static string GetEquippedPetId(this Player player, ServerRConfig serverRConfig) =>
+        player.Character.Data.Hotbar.HotbarButtons.TryGetValue
+        (serverRConfig.PetHotbarIndex, out var petItem) ? petItem.ItemId.ToString() : 0.ToString();
+
+    public static int GetMaxPetEnergy(this Player player, WorldStatistics worldStatistics) =>
+       worldStatistics.Statistics[ItemEffectType.PetEnergyValue][WorldStatisticsGroup.Pet][player.Character.Data.GlobalLevel];
 }

@@ -47,7 +47,7 @@ public class PetAbilities : PetAbilitiesXML, IBundledXml
                         case "elemental":
                             petAbilityParams.Elemental = (Elemental)BundledXML.ParseInt(attribute.Value);
                             break;
-                        case "coolDownTime":
+                        case "cooldownTime":
                             petAbilityParams.CooldownTime = BundledXML.ParseFloat(attribute.Value);
                             break;
                         case "duration":
@@ -99,6 +99,7 @@ public class PetAbilities : PetAbilitiesXML, IBundledXml
                             petAbilityParams.DefensiveBonusRatio = BundledXML.ParseFloat(attribute.Value);
                             break;
                     }
+
                     if (!PetAbilityData.ContainsKey(key))
                         PetAbilityData.Add(key, petAbilityParams);
                 }

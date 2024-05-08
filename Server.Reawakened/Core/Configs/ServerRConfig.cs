@@ -75,6 +75,8 @@ public class ServerRConfig : IRConfig
 
     public float Gravity { get; }
 
+    public int PetHotbarIndex { get; }
+
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -187,5 +189,7 @@ public class ServerRConfig : IRConfig
         CutOffFor2014 = 0;
 
         Gravity = 15f;
+
+        PetHotbarIndex = 4;
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Network.Protocols;
+﻿using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Services;
 
@@ -10,7 +9,6 @@ public class TravelToFriend : ExternalProtocol
 
     public WorldHandler WorldHandler { get; set; }
     public PlayerContainer PlayerContainer { get; set; }
-    public ILogger<TravelToFriend> Logger { get; set; }
 
     public override void Run(string[] message)
     {

@@ -17,7 +17,7 @@ public class CharacterModel : PersistantData
     public Dictionary<string, float> BestMinigameTimes { get; set; }
     public Dictionary<string, DailiesModel> CurrentCollectedDailies { get; set; }
     public Dictionary<string, DailiesModel> CurrentQuestDailies { get; set; }
-    public Dictionary<int, PetModel> Pets { get; set; }
+    public Dictionary<string, PetModel> Pets { get; set; }
 
     public CharacterModel()
     {

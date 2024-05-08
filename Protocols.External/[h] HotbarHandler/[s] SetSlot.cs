@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Bundles.Base;
@@ -10,10 +12,11 @@ public class SetSlot : ExternalProtocol
 {
     public override string ProtocolName => "hs";
 
+    public PetAbilities PetAbilities { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
-    public PetAbilities PetAbilities { get; set; }
-    public ILogger<SetSlot> Logger { get; set; }
+    public ILogger<PlayerStatus> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -28,12 +31,11 @@ public class SetSlot : ExternalProtocol
             return;
         }
 
-        Player.SetHotbarSlot(hotbarSlotId, item, ItemCatalog, WorldStatistics);
+        Player.SetHotbarSlot(hotbarSlotId, item);
 
-        var itemDescription = ItemCatalog.GetItemFromId(itemId);
-
-        if (itemDescription.IsPet() && Player.Character.Pets.ContainsKey(itemId))
-            Player.Character.Pets[itemId].PetAbilities = PetAbilities.PetAbilityData[itemId];
+        if (ItemCatalog.GetItemFromId(itemId).IsPet() &&
+            PetAbilities.PetAbilityData.TryGetValue(itemId, out var petAbility))
+            Player.EquipPet(WorldStatistics, ServerRConfig, petAbility);
 
         SendXt("hs", character.Data.Hotbar);
     }

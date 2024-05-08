@@ -478,7 +478,7 @@ public class Room : Timer
 
         var aiProjectile = new AIProjectile(
             this, ownerId, projectileId.ToString(), position, speed,
-            lifeTime, _timerThread, damage, effect, isGrenade, _config, ItemCatalog
+            lifeTime, _timerThread, damage, effect, isGrenade, _config, ItemCatalog, _itemConfig
         );
 
         this.SendSyncEvent(
