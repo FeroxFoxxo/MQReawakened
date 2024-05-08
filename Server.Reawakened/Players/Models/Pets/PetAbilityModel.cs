@@ -15,14 +15,14 @@ public class PetAbilityModel
 {
     public PetAbilityParams PetAbilityParams { get; set; }
     public float AbilityCooldown { get; set; }
-    public bool DefenseBoostActive { get; set; }
+    public bool DefenceBoostActive { get; set; }
     public bool DefensiveBarrierActive { get; set; }
 
-    public PetAbilityModel(PetAbilityParams petAbilityParams, float abilityCooldown, bool defenseBoostActive, bool defensiveBarrierActive)
+    public PetAbilityModel(PetAbilityParams petAbilityParams, float abilityCooldown, bool defenceBoostActive, bool defensiveBarrierActive)
     {
         PetAbilityParams = petAbilityParams;
         AbilityCooldown = abilityCooldown;
-        DefenseBoostActive = defenseBoostActive;
+        DefenceBoostActive = defenceBoostActive;
         DefensiveBarrierActive = defensiveBarrierActive;
     }
 
@@ -40,44 +40,30 @@ public class PetAbilityModel
             itemCatalog.GetItemFromId(int.Parse(pet.PetId)).PrefabName, true));
 
         //Sends method of ability type after a short delay.
-        timerThread.DelayCall(GetAbilityType(), player, TimeSpan.FromSeconds(PetAbilityParams.InitialDelayBeforeUse),
+        timerThread.DelayCall(StartAbilityType(), player, TimeSpan.FromSeconds(PetAbilityParams.InitialDelayBeforeUse),
             TimeSpan.FromSeconds(PetAbilityParams.Frequency), PetAbilityParams.HitCount);
     }
 
     public string GetAbilitySyncParams(Player player) =>
         IsAttackAbility() ? GetClosestEnemy(GetDetectedEnemies(player)).Id : player.GameObjectId;
 
-    public TimerCallback GetAbilityType()
+    public TimerCallback StartAbilityType() => PetAbilityParams.AbilityType switch
     {
-        switch (PetAbilityParams.AbilityType)
-        {
-            //case PetAbilityType.Invalid:
-            //    break;
+        PetAbilityType.Invalid => null,
+        PetAbilityType.Heal => PetHealPlayer,
+        PetAbilityType.Damage or PetAbilityType.DamageOverTime or
+        PetAbilityType.DamageOverTimeFromAbove => AttackEnemy,
+        PetAbilityType.DamageZone => AttackEnemiesInZone,
+        PetAbilityType.Defence => ActivateDefence,
+        PetAbilityType.DefensiveBarrier => ActivateDefensiveBarrier,
+        PetAbilityType.Unknown => null,
+        _ => null,
+    };
 
-            case PetAbilityType.Heal:
-                return PetHealPlayer;
-
-            case PetAbilityType.Damage:
-            case PetAbilityType.DamageOverTime:
-            case PetAbilityType.DamageOverTimeFromAbove:
-                return AttackEnemy;
-
-            case PetAbilityType.DamageZone:
-                return AttackEnemiesInZone;
-
-            case PetAbilityType.Defence:
-                DefenseBoostActive = true;
-                return DisableDefenseAfterDelay;
-
-            case PetAbilityType.DefensiveBarrier:
-                DefensiveBarrierActive = true;
-                return DisableDefensiveBarrierAfterDelay;
-
-            //case PetAbilityType.Unknown:
-            //    break;
-
-            default: return null;
-        }
+    public void PetHealPlayer(object player)
+    {
+        var petOwner = (Player)player;
+        petOwner.PetHeal((int)Math.Ceiling(petOwner.Character.Data.MaxLife * PetAbilityParams.ApplyOnHealthRatio));
     }
 
     public void AttackEnemy(object player)
@@ -95,15 +81,9 @@ public class PetAbilityModel
             enemyDetected.PetDamage(petOwner);
     }
 
-    public void DisableDefensiveBarrierAfterDelay(object _) => DefensiveBarrierActive = false;
+    public void ActivateDefence(object player) => DefenceBoostActive = !DefenceBoostActive;
 
-    public void DisableDefenseAfterDelay(object _) => DefenseBoostActive = false;
-  
-    public void PetHealPlayer(object player)
-    {
-        var petOwner = (Player)player;
-        petOwner.PetHeal((int)Math.Ceiling(petOwner.Character.Data.MaxLife * PetAbilityParams.ApplyOnHealthRatio));
-    }
+    public void ActivateDefensiveBarrier(object player) => DefensiveBarrierActive = !DefensiveBarrierActive;
 
     public Dictionary<int, BaseEnemy> GetDetectedEnemies(Player player)
     {

@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Bundles.Base;
 
@@ -231,7 +230,7 @@ public class CharacterDataModel : CharacterLightModel
         return sb.ToString();
     }
 
-    public int CalculateDefense(Player player, ItemEffectType effect, ItemCatalog itemCatalog, ServerRConfig serverRConfig)
+    public int CalculateDefense(ItemEffectType effect, ItemCatalog itemCatalog)
     {
         var statManager = new CharacterStatsManager(CharacterName);
         var defense = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Player, _player.Character.Data.GlobalLevel);
@@ -262,10 +261,6 @@ public class CharacterDataModel : CharacterLightModel
 
         foreach (var item in Equipment.EquippedItems)
             itemList.Add(itemCatalog.GetItemFromId(item.Value));
-
-        if (player.Character.Pets.TryGetValue(player.GetEquippedPetId
-            (serverRConfig), out var pet) && pet.PetAbilityModel.DefenseBoostActive)
-            defense *= (int)pet.PetAbilityModel.PetAbilityParams.DefensiveBonusRatio;
 
         defense += statManager.ComputeEquimentBoost(defenseType, itemList);
 

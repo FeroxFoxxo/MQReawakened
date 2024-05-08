@@ -119,8 +119,8 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         if (Room.ContainsEnemy(Id))
         {
-            if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) &&
-                pet.PetAbilityModel.DefensiveBarrierActive)
+            if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig),
+                out var pet) && pet.PetAbilityModel.DefensiveBarrierActive)
                 Room.GetEnemy(Id).PetDamage(player);
 
             else
@@ -157,12 +157,17 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
             case ItemEffectType.BluntDamage:
                 var enemy = Room.GetEnemy(Id);
-                var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
-                             player.Character.Data.CalculateDefense(player, EffectType, ItemCatalog, ServerRConfig);
+                var damage = (float)WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
+                             player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
 
-                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-                (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));
-                player.ApplyCharacterDamage(damage, DamageDelay, TimerThread);
+                if (player.Character.Pets.TryGetValue(player.GetEquippedPetId
+                    (ServerRConfig), out var pet) && pet.PetAbilityModel.DefenceBoostActive)
+                    Math.Ceiling(damage *= pet.PetAbilityModel.PetAbilityParams.DefensiveBonusRatio);
+
+                else
+                    Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
+                    (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));
+                player.ApplyCharacterDamage((int)damage, DamageDelay, TimerThread);
                 break;
 
             case ItemEffectType.PoisonDamage:

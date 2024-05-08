@@ -207,22 +207,38 @@ public class PetModel
     {
         var triggerData = (InteractionData)interactionData;
 
-        triggerData.TriggerCoopController?.AddPhysicalInteractor(triggerData.Player, PetId);
-        triggerData.TriggerCoopController?.RunTrigger(triggerData.Player);
+        if (triggerData.TriggerCoopController != null)
+        {
+            triggerData.TriggerCoopController.CurrentInteractions++;
+            triggerData.TriggerCoopController.AddPhysicalInteractor(triggerData.Player, PetId);
+            triggerData.TriggerCoopController.RunTrigger(triggerData.Player);
+        }
 
-        triggerData.MultiInteractionTrigger?.AddPhysicalInteractor(triggerData.Player, PetId);
-        triggerData.MultiInteractionTrigger?.RunTrigger(triggerData.Player);
+        else
+        {
+            triggerData.MultiInteractionTrigger.CurrentInteractions++;
+            triggerData.MultiInteractionTrigger.AddPhysicalInteractor(triggerData.Player, PetId);
+            triggerData.MultiInteractionTrigger.RunTrigger(triggerData.Player);
+        }
     }
 
     private void RemoveTriggerInteraction(object interactionData)
     {
         var triggerData = (InteractionData)interactionData;
 
-        triggerData.TriggerCoopController?.RemovePhysicalInteractor(triggerData.Player, PetId);
-        triggerData.TriggerCoopController?.RunTrigger(triggerData.Player);
+        if (triggerData.TriggerCoopController != null)
+        {
+            triggerData.TriggerCoopController.CurrentInteractions--;
+            triggerData.TriggerCoopController.RemovePhysicalInteractor(triggerData.Player, PetId);
+            triggerData.TriggerCoopController.RunTrigger(triggerData.Player);
+        }
 
-        triggerData.MultiInteractionTrigger?.RemovePhysicalInteractor(triggerData.Player, PetId);
-        triggerData.TriggerCoopController?.RunTrigger(triggerData.Player);
+        else
+        {
+            triggerData.MultiInteractionTrigger.CurrentInteractions--;
+            triggerData.MultiInteractionTrigger.RemovePhysicalInteractor(triggerData.Player, PetId);
+            triggerData.MultiInteractionTrigger.RunTrigger(triggerData.Player);
+        }
 
         CurrentTriggerableId = string.Empty;
     }

@@ -25,7 +25,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     {
         var player = Room.GetPlayerById(ci);
 
-        if (player == null)
+        if (player == null && !ItemCatalog.GetItemFromId(int.Parse(ci)).IsPet() || ci == "0")
         {
             CurrentPhysicalInteractors.Remove(ci);
             return null;
@@ -130,6 +130,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public FileLogger FileLogger { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     public override void InitializeComponent()
     {
@@ -249,8 +250,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
         if (Room.GetPlayerById(interactionId) != null)
         {
-            if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) &&
-                !pet.InCoopJumpState && !pet.InCoopJumpState)
+            if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) && !pet.InCoopState())
                 pet.CurrentTriggerableId = Id;
 
             if (!string.IsNullOrEmpty(QuestCompletedRequired))
@@ -349,7 +349,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 return;
 
             if (StayTriggeredOnUnpressed || player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet)
-                && Id == pet.CurrentTriggerableId && pet.InCoopJumpState || pet.InCoopSwitchState)
+                && Id == pet.CurrentTriggerableId && pet.InCoopState())
                 return;
 
             if (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time && ActivationTimeAfterFirstInteraction > 0)
@@ -449,7 +449,6 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public void Trigger(Player player, bool active)
     {
         IsActive = active;
-
         foreach (var trigger in Triggers)
         {
             var triggers = Room.GetEntitiesFromId<ICoopTriggered>(trigger.Key);
