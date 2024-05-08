@@ -12,7 +12,6 @@ using Server.Reawakened.XMLs.Bundles.Base;
 using System.Text;
 using static TriggerCoopController;
 using UnityEngine;
-using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Core.Configs;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
@@ -22,13 +21,13 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public List<string> CurrentPhysicalInteractors;
     public int CurrentInteractions;
 
-    public List<Player> CurrentValidInteractors => _currentPhysicalInteractors.ToList().Select(ci =>
+    public List<Player> CurrentValidInteractors => CurrentPhysicalInteractors.ToList().Select(ci =>
     {
         var player = Room.GetPlayerById(ci);
 
         if (player == null)
         {
-            _currentPhysicalInteractors.Remove(ci);
+            CurrentPhysicalInteractors.Remove(ci);
             return null;
         }
 
@@ -282,7 +281,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         if (!CurrentPhysicalInteractors.Contains(interactionId))
             return;
 
-        _currentPhysicalInteractors.Remove(playerId);
+        CurrentPhysicalInteractors.Remove(interactionId);
         SendInteractionUpdate();
     }
 

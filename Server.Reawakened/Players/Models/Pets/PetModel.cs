@@ -44,6 +44,7 @@ public class PetModel
         player.Character.Data.PetItemId = int.Parse(PetId);
 
         player.SendXt("ZE", player.UserId, PetId, Convert.ToInt32(spawnPet));
+        player.SendXt("Zm", player.UserId, true);
         NotifyPet(player, serverRConfig);
     }
 

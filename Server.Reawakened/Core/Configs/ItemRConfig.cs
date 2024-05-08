@@ -115,8 +115,8 @@ public class ItemRConfig : IRConfig
         MeleeWidth = 4f;
         MeleeHeight = 1f;
 
-        MeleeArialWidth = 2f;
-        MeleeArialHeight = 4f;
+        MeleeAerialWidth = 2f;
+        MeleeAerialHeight = 4f;
 
         TrainingGear = new Dictionary<int, string>
         {

@@ -23,7 +23,7 @@ public class AIProjectile : BaseProjectile
 
         Collider = new AIProjectileCollider(
             projectileId, ownerId, room, projectileId, position,
-            new Vector2(0.5f, 0.5f), PrjPlane, LifeTime, timerThread,
+            new Rect(0.5f, 0.5f, 0.5f, 0.5f), PrjPlane, LifeTime, timerThread,
             baseDamage, effect, itemCatalog, itemConfig, config
         );
     }

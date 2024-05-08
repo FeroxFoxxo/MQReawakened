@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using UnityEngine;
 using PetDefines;
@@ -39,7 +38,6 @@ public class PetAbilityModel
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
             (int)ItemEffectType.AbilityPower, 0, (int)PetAbilityParams.Duration, true,
             itemCatalog.GetItemFromId(int.Parse(pet.PetId)).PrefabName, true));
-        player.SendXt("Zm", player.UserId, true);
 
         //Sends method of ability type after a short delay.
         timerThread.DelayCall(GetAbilityType(), player, TimeSpan.FromSeconds(PetAbilityParams.InitialDelayBeforeUse),

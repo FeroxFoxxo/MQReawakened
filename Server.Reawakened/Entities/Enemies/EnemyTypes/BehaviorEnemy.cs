@@ -216,7 +216,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, Level
         );
 
-    public void ChangeBehavior(StateType behaviorType, float targetX, float targetY, int direction)
+    public void ChangeBehavior(StateType behaviourType, float targetX, float targetY, int direction)
     {
         lock (_enemyLock)
         {
@@ -297,7 +297,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public void EnemyAggroPlayer(Player player)
     {
-        if (_currentState != StateType.Shooting)
+        if (CurrentState != StateType.Shooting)
         {
             AiData.Sync_TargetPosX = player.TempData.Position.x;
             AiData.Sync_TargetPosY = player.TempData.Position.y;

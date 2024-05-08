@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles;
@@ -25,7 +26,8 @@ public class State : ExternalProtocol
     public override string ProtocolName => "ss";
 
     public SyncEventManager SyncEventManager { get; set; }
-    public ServerRConfig ServerConfig { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public FileLogger FileLogger { get; set; }
     public TimerThread TimerThread { get; set; }
@@ -44,7 +46,7 @@ public class State : ExternalProtocol
         var syncedData = message[5].Split('&');
         var syncEvent = SyncEventManager.DecodeEvent(syncedData);
 
-        if (ServerConfig.LogSyncState)
+        if (ServerRConfig.LogSyncState)
             Logger.LogDebug("Found state: {State}", syncEvent.Type);
 
         var entityId = syncEvent.TargetID;
@@ -76,7 +78,7 @@ public class State : ExternalProtocol
                         new Vector2() { x = attack.SpeedX, y = attack.SpeedY },
                         15, attack.ItemId, attack.ZoneId,
                         WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
-                        Elemental.Standard, ServerConfig, TimerThread
+                        Elemental.Standard, ServerRConfig, TimerThread
                     );
 
                     Player.Room.AddProjectile(chargeAttackProjectile);
@@ -167,7 +169,7 @@ public class State : ExternalProtocol
         }
 
         if (entityId != Player.GameObjectId)
-            if (ServerConfig.LogAllSyncEvents)
+            if (ServerRConfig.LogAllSyncEvents)
                 LogEvent(syncEvent, entityId, Player.Room);
     }
 

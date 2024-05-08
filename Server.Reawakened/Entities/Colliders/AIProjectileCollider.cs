@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
 public class AIProjectileCollider(string projectileId, string ownerId, Room room, string id,
-    Vector3 position, Vector2 size, string plane, float lifeTime, TimerThread timerThread, int damage, ItemEffectType effect,
+    Vector3 position, Rect size, string plane, float lifeTime, TimerThread timerThread, int damage, ItemEffectType effect,
     ItemCatalog itemCatalog, ItemRConfig itemConfig, ServerRConfig serverRConfig) : BaseCollider(id, position, size, plane, room, ColliderType.AiAttack)
 {
     public float LifeTime = lifeTime + room.Time;
