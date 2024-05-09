@@ -225,6 +225,7 @@ public class PetModel
     private void RemoveTriggerInteraction(object interactionData)
     {
         var triggerData = (InteractionData)interactionData;
+        CurrentTriggerableId = string.Empty;
 
         if (triggerData.TriggerCoopController != null)
         {
@@ -233,13 +234,13 @@ public class PetModel
             triggerData.TriggerCoopController.RunTrigger(triggerData.Player);
         }
 
-        else
+        else if (triggerData.MultiInteractionTrigger != null)
         {
             triggerData.MultiInteractionTrigger.CurrentInteractions--;
             triggerData.MultiInteractionTrigger.RemovePhysicalInteractor(triggerData.Player, PetId);
             triggerData.MultiInteractionTrigger.RunTrigger(triggerData.Player);
         }
 
-        CurrentTriggerableId = string.Empty;
+        else return;
     }
 }
