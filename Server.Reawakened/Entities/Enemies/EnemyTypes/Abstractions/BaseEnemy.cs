@@ -202,7 +202,7 @@ public abstract class BaseEnemy : IDestructible
             return;
         }
 ;  
-        var petDamage = (int)Math.Ceiling(MaxHealth * pet.PetAbilityModel.PetAbilityParams.ItemEffectStatRatio);
+        var petDamage = (int)Math.Ceiling(MaxHealth * pet.AbilityParams.ItemEffectStatRatio);
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health -= petDamage, petDamage, 1, 1, player.CharacterName, false, true));
 

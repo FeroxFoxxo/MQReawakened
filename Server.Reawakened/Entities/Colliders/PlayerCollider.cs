@@ -26,8 +26,8 @@ public class PlayerCollider(Player player) :
                 (aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
 
             if (player.Character.Pets.TryGetValue(player.GetEquippedPetId
-                (aiProjectileCollider.ServerRConfig), out var pet) && pet.PetAbilityModel.DefenceBoostActive)
-                damage *= (int)pet.PetAbilityModel.PetAbilityParams.DefensiveBonusRatio;
+                (aiProjectileCollider.ServerRConfig), out var pet) && player.TempData.PetDefense)
+                damage *= (int)pet.AbilityParams.DefensiveBonusRatio;
 
             else
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)aiProjectileCollider.Effect,

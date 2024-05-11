@@ -34,7 +34,7 @@ public class RemoveSlot : ExternalProtocol
 
         if (Player.Character.Pets.TryGetValue(hotbarItem.ItemId.ToString(), out var pet) &&
             PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbilityParams))
-            pet.SpawnPet(Player, false, pet.PetId, petAbilityParams, false, WorldStatistics, ServerRConfig);
+            pet.SpawnPet(Player, pet.PetId, false, petAbilityParams, false, WorldStatistics);
 
         SendXt("hr", character.Data.Hotbar);
     }

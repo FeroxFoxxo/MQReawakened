@@ -58,9 +58,10 @@ public class RoomUpdate : ExternalProtocol
             Player.DiscoverTribe(levelInfo.Tribe);
         }
 
+        Console.WriteLine("Id: " + Player.GetEquippedPetId(ServerRConfig));
         if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet) &&
             PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbility))
-            Player.EquipPet(WorldStatistics, ServerRConfig, petAbility);
+            Player.EquipPet(petAbility, WorldStatistics, ServerRConfig);
     }
 
     private string GetGameObjectStore(Room room)

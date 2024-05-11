@@ -203,8 +203,8 @@ public static class CharacterInventoryExtensions
         hotbar.HotbarButtons.Remove(slotId);
     }
 
-    public static void EquipPet(this Player player, WorldStatistics worldStatistics,
-        ServerRConfig serverRConfig, PetAbilityParams petAbilityParams)
+    public static void EquipPet(this Player player, PetAbilityParams petAbilityParams,
+        WorldStatistics worldStatistics, ServerRConfig serverRConfig)
     {
         if (player == null || !player.Character.Data.Hotbar.HotbarButtons.ContainsKey(serverRConfig.PetHotbarIndex))
             return;
@@ -214,11 +214,12 @@ public static class CharacterInventoryExtensions
 
         if (!player.Character.Pets.TryGetValue(petId, out var currentPet))
         {
-            player.Character.Pets.Add(petId, currentPet = new PetModel());
+            player.Character.Pets.Add(petId, currentPet = 
+                new PetModel());
             refillCurrentEnergy = true;
         }
 
-        currentPet.SpawnPet(player, true, petId, petAbilityParams, refillCurrentEnergy, worldStatistics, serverRConfig);
+        currentPet.SpawnPet(player, petId, true, petAbilityParams, refillCurrentEnergy, worldStatistics);
     }
 
     public static string GetEquippedPetId(this Player player, ServerRConfig serverRConfig) =>

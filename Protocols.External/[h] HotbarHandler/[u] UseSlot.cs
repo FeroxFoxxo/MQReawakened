@@ -74,7 +74,6 @@ public class UseSlot : ExternalProtocol
                     Logger.LogInformation("Could not find pet for {characterName}!", Player.CharacterName);
                     return;
                 }
-
                 petUse.GainEnergy(Player, usedItem);
                 break;
             case ItemActionType.Pet:

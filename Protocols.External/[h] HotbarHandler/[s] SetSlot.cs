@@ -35,7 +35,7 @@ public class SetSlot : ExternalProtocol
 
         if (ItemCatalog.GetItemFromId(itemId).IsPet() &&
             PetAbilities.PetAbilityData.TryGetValue(itemId, out var petAbility))
-            Player.EquipPet(WorldStatistics, ServerRConfig, petAbility);
+            Player.EquipPet(petAbility, WorldStatistics, ServerRConfig);
 
         SendXt("hs", character.Data.Hotbar);
     }

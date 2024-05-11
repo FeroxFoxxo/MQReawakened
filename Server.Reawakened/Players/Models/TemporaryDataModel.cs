@@ -13,6 +13,8 @@ public class TemporaryDataModel
     public int Direction { get; set; } = 0;
     public int Locale { get; set; }
 
+    public bool PetDefense { get; set; }
+    public bool PetDefensiveBarrier { get; set; }
     public bool Invincible { get; set; } = false;
     public bool Invisible { get; set; } = false;
     public bool OnGround { get; set; } = false;

@@ -119,8 +119,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         if (Room.ContainsEnemy(Id))
         {
-            if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig),
-                out var pet) && pet.PetAbilityModel.DefensiveBarrierActive)
+            if (player.TempData.PetDefensiveBarrier)
                 Room.GetEnemy(Id).PetDamage(player);
 
             else
@@ -161,14 +160,16 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                              player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
 
                 if (player.Character.Pets.TryGetValue(player.GetEquippedPetId
-                    (ServerRConfig), out var pet) && pet.PetAbilityModel.DefenceBoostActive)
-                    Math.Ceiling(damage *= pet.PetAbilityModel.PetAbilityParams.DefensiveBonusRatio);
+                    (ServerRConfig), out var pet) && player.TempData.PetDefense)
+                    Math.Ceiling(damage *= pet.AbilityParams.DefensiveBonusRatio);
 
                 else
                     Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                     (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));
+
                 player.ApplyCharacterDamage((int)damage, DamageDelay, TimerThread);
                 break;
+
 
             case ItemEffectType.PoisonDamage:
                 TimerThread.DelayCall(ApplyPoisonEffect, player,
