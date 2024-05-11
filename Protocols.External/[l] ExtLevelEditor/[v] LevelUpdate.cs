@@ -9,6 +9,8 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
 
@@ -18,10 +20,12 @@ public class RoomUpdate : ExternalProtocol
 {
     public override string ProtocolName => "lv";
 
-    public ILogger<RoomUpdate> Logger { get; set; }
     public ChatCommands ChatCommands { get; set; }
-    public ServerRConfig Config { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
+    public PetAbilities PetAbilities { get; set; }
+    public ILogger<RoomUpdate> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -49,17 +53,22 @@ public class RoomUpdate : ExternalProtocol
         {
             var levelInfo = Player.Room.LevelInfo;
 
-            Player.CheckAchievement(AchConditionType.ExploreTrail, [levelInfo.Name], InternalAchievement, Logger);
-
+            Player.CheckAchievement(AchConditionType.ExploreTrail,
+                [levelInfo.Name], InternalAchievement, Logger);
             Player.DiscoverTribe(levelInfo.Tribe);
         }
+
+        Console.WriteLine("Id: " + Player.GetEquippedPetId(ServerRConfig));
+        if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet) &&
+            PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbility))
+            Player.EquipPet(petAbility, WorldStatistics, ServerRConfig);
     }
 
     private string GetGameObjectStore(Room room)
     {
         var sb = new SeparatedStringBuilder('&');
 
-        if (Config.GameVersion >= GameVersion.vEarly2013)
+        if (ServerRConfig.GameVersion >= GameVersion.vEarly2013)
         {
             foreach (var gameObject in room.GetEntities().Where(e => e.Value != null).Select(GetEntity)
                          .Where(gameObject => gameObject.Split('~').Length > 1))

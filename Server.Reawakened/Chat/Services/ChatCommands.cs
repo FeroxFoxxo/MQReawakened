@@ -9,6 +9,7 @@ using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Worlds.Services;
 using Server.Reawakened.Chat.Models;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Services;
 using Server.Reawakened.Entities.Components.GameObjects.MonkeyGadgets;
@@ -174,14 +175,14 @@ public partial class ChatCommands(
             var itemModel = new ItemModel()
             {
                 ItemId = item.ItemId,
-                Count = 1,
-                BindingCount = 1,
+                Count = 0,
+                BindingCount = 0,
                 DelayUseExpiry = DateTime.Now
             };
 
             player.Character.Data.Inventory.Items.TryAdd(item.ItemId, itemModel);
 
-            player.SetHotbarSlot(hotbarId - 1, itemModel, itemCatalog);
+            player.SetHotbarSlot(hotbarId - 1, itemModel);
 
             player.SendXt("hs", player.Character.Data.Hotbar);
 
@@ -337,7 +338,7 @@ public partial class ChatCommands(
         return true;
     }
 
-    private static bool BadgePoints(Player player, string[] args)
+    private bool BadgePoints(Player player, string[] args)
     {
         player.AddPoints();
         return true;

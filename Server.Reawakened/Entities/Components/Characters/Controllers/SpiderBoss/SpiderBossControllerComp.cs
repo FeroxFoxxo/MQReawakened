@@ -73,9 +73,9 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
         GoToNextState();
     }
 
-    public void Destroy(Player player, Room room, string id)
+    public void Destroy(Room room, string id)
     {
-        if (Room == null)
+        if (room == null)
             return;
 
         if (Teaser)

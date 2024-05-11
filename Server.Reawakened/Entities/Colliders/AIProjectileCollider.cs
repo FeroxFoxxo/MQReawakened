@@ -1,5 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Rooms;
@@ -8,8 +10,8 @@ using UnityEngine;
 
 namespace Server.Reawakened.Entities.Colliders;
 public class AIProjectileCollider(string projectileId, string ownerId, Room room, string id,
-    Vector3 position, Rect box, string plane, float lifeTime, TimerThread timerThread, int damage, ItemEffectType effect,
-    ItemCatalog itemCatalog) : BaseCollider(id, position, box, plane, room, ColliderType.AiAttack)
+    Vector3 position, Rect size, string plane, float lifeTime, TimerThread timerThread, int damage, ItemEffectType effect,
+    ItemCatalog itemCatalog, ItemRConfig itemConfig, ServerRConfig serverRConfig) : BaseCollider(id, position, size, plane, room, ColliderType.AiAttack)
 {
     public float LifeTime = lifeTime + room.Time;
     public string PrjId = projectileId;
@@ -18,6 +20,8 @@ public class AIProjectileCollider(string projectileId, string ownerId, Room room
     public int Damage = damage;
     public ItemEffectType Effect = effect;
     public ItemCatalog ItemCatalog = itemCatalog;
+    public ItemRConfig ItemConfig = itemConfig;
+    public ServerRConfig ServerRConfig = serverRConfig;
 
     public override string[] IsColliding(bool isAttack)
     {

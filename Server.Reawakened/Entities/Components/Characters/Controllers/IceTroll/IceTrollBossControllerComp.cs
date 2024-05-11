@@ -53,7 +53,7 @@ public class IceTrollBossControllerComp : BaseAIStateMachine<IceTrollBossControl
         GoToNextState();
     }
 
-    public void Destroy(Player player, Room room, string id)
+    public void Destroy(Room room, string id)
     {
         if (Room == null)
             return;

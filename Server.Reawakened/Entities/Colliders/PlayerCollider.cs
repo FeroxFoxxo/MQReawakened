@@ -22,13 +22,18 @@ public class PlayerCollider(Player player) :
         if (received is AIProjectileCollider aiProjectileCollider &&
             received.Type == ColliderType.AiAttack)
         {
-            Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)aiProjectileCollider.Effect,
-            0, 1, true, aiProjectileCollider.OwnderId, false));
+            var damage = aiProjectileCollider.Damage - player.Character.Data.CalculateDefense
+                (aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
 
-            var damage = aiProjectileCollider.Damage - player.Character.Data.CalculateDefense(aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
+            if (player.Character.Pets.TryGetValue(player.GetEquippedPetId
+                (aiProjectileCollider.ServerRConfig), out var pet) && player.TempData.PetDefense)
+                damage *= (int)pet.AbilityParams.DefensiveBonusRatio;
+
+            else
+                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)aiProjectileCollider.Effect,
+                0, 1, true, aiProjectileCollider.OwnderId, false));
 
             player.ApplyCharacterDamage(damage, 1, aiProjectileCollider.TimerThread);
-
             player.TemporaryInvincibility(aiProjectileCollider.TimerThread, 1);
 
             Room.RemoveCollider(aiProjectileCollider.PrjId);

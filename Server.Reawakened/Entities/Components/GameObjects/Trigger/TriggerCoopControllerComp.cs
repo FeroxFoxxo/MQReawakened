@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
+﻿using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;

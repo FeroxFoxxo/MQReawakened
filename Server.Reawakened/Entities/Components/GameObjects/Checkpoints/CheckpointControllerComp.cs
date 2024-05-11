@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
-using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 using Server.Reawakened.Players;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Checkpoints;

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
@@ -39,6 +40,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
     public TimerThread TimerThread { get; set; }
     public ItemRConfig ItemRConfig { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ILogger<BaseHazardControllerComp<HazardController>> Logger { get; set; }
@@ -115,22 +117,21 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if (!notifyCollisionEvent.Colliding || player.TempData.Invincible)
             return;
 
-        Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-            (int)ItemEffectType.BluntDamage, 0, 1, true, _id, false));
-
-        var enemy = Room.GetEnemy(_id);
-
-        if (enemy != null)
+        if (Room.ContainsEnemy(Id))
         {
-            var damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) - player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
+            if (player.TempData.PetDefensiveBarrier)
+                Room.GetEnemy(Id).PetDamage(player);
 
-            player.ApplyCharacterDamage(damage > 0 ? damage : 1, 1, TimerThread);
-            Logger.LogTrace("Attacked by entity: '{Prefab}' for damage: '{Damage}'", PrefabName, damage);
-
-            return;
+            else
+                ApplyHazardEffect(player);
         }
 
-        player.ApplyDamageByPercent(HealthRatioDamage, TimerThread);
+        else
+        {
+            player.ApplyDamageByPercent(HealthRatioDamage, Id, HurtLength, TimerThread);
+            Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
+          (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));
+        }
     }
 
     public void ApplyHazardEffect(Player player)
@@ -154,11 +155,21 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             case ItemEffectType.BluntDamage:
-                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-                (int)ItemEffectType.BluntDamage, 1, 1, true, _id, false));
+                var enemy = Room.GetEnemy(Id);
+                var damage = (float)WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
+                             player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
 
-                player.ApplyCharacterDamage(Damage, DamageDelay, TimerThread);
+                if (player.Character.Pets.TryGetValue(player.GetEquippedPetId
+                    (ServerRConfig), out var pet) && player.TempData.PetDefense)
+                    Math.Ceiling(damage *= pet.AbilityParams.DefensiveBonusRatio);
+
+                else
+                    Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
+                    (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));
+
+                player.ApplyCharacterDamage((int)damage, DamageDelay, TimerThread);
                 break;
+
 
             case ItemEffectType.PoisonDamage:
                 TimerThread.DelayCall(ApplyPoisonEffect, player,

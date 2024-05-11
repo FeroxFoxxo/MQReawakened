@@ -1,6 +1,6 @@
 ﻿using Server.Base.Core.Abstractions;
 
-namespace Server.Reawakened.Core.Configs;
+namespace Server.Reawakened.Configs;
 public class ItemRConfig : IRConfig
 {
     public int HealingStaff { get; }
@@ -37,12 +37,15 @@ public class ItemRConfig : IRConfig
 
     public float MeleeWidth { get; }
     public float MeleeHeight { get; }
-    public float MeleeArialWidth { get; }
-    public float MeleeArialHeight { get; }
+    public float MeleeAerialWidth { get; }
+    public float MeleeAerialHeight { get; }
 
     public Dictionary<int, string> TrainingGear { get; }
     public Dictionary<int, List<string>> TrainingGear2011 { get; }
-    public int PetSlotId { get; }
+    public float PetPressButtonDelay { get; }
+    public float PetHoldChainDelay { get; }
+    public float PetPosYOffset { get; }
+    public float PetPosOnButtonYOffset { get; }
     public string WaterPrefabName { get; }
 
     public ItemRConfig()
@@ -112,8 +115,8 @@ public class ItemRConfig : IRConfig
         MeleeWidth = 4f;
         MeleeHeight = 1f;
 
-        MeleeArialWidth = 2f;
-        MeleeArialHeight = 4f;
+        MeleeAerialWidth = 2f;
+        MeleeAerialHeight = 4f;
 
         TrainingGear = new Dictionary<int, string>
         {
@@ -132,8 +135,9 @@ public class ItemRConfig : IRConfig
             { 498, ["ABIL_SnowBoard02", "Add_WLD_IceRaider01_TS01", "WPN_MEL_IceRaiderAxe01"] }, // lv_wld_highway01
         };
 
-        PetSlotId = 4;
-
-        WaterPrefabName = "FX_WaterSplash";
+        PetPressButtonDelay = 0.5f;
+        PetHoldChainDelay = 1f;
+        PetPosYOffset = 0.75f;
+        PetPosOnButtonYOffset = 0.25f;
     }
 }

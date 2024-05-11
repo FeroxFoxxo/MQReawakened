@@ -246,9 +246,9 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         }
     }
 
-    public override void Damage(int damage, Player player)
+    public override void Damage(Player player, int damage)
     {
-        base.Damage(damage, player);
+        base.Damage(player, damage);
 
         if (player == null)
         {
@@ -267,6 +267,13 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                 Generic.Patrol_ForceDirectionX
             );
         }
+        EnemyAggroPlayer(player);
+    }
+
+    public override void PetDamage(Player player)
+    {
+        base.PetDamage(player);
+        EnemyAggroPlayer(player);
     }
 
     public override void SendAiData(Player player)
@@ -286,5 +293,20 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                 this
             )
         );
+    }
+
+    public void EnemyAggroPlayer(Player player)
+    {
+        if (CurrentState != StateType.Shooting)
+        {
+            AiData.Sync_TargetPosX = player.TempData.Position.x;
+            AiData.Sync_TargetPosY = player.TempData.Position.y;
+
+            ChangeBehavior(
+                GenericScript.AttackBehavior,
+                player.TempData.Position.x, player.TempData.Position.y,
+                Generic.Patrol_ForceDirectionX
+            );
+        }
     }
 }

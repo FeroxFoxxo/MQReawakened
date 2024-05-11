@@ -457,7 +457,6 @@ public static class PlayerExtensions
         }
     }
 
-
     public static void UpdateEquipment(this Player sentPlayer)
     {
         foreach (

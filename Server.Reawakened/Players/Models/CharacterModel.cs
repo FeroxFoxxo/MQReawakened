@@ -1,5 +1,6 @@
 ﻿using Server.Base.Core.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Models.Pets;
 using Server.Reawakened.Players.Models.System;
 
 namespace Server.Reawakened.Players.Models;
@@ -16,6 +17,7 @@ public class CharacterModel : PersistantData
     public Dictionary<string, float> BestMinigameTimes { get; set; }
     public Dictionary<string, DailiesModel> CurrentCollectedDailies { get; set; }
     public Dictionary<string, DailiesModel> CurrentQuestDailies { get; set; }
+    public Dictionary<string, PetModel> Pets { get; set; }
 
     public CharacterModel()
     {
@@ -27,6 +29,7 @@ public class CharacterModel : PersistantData
         BestMinigameTimes = [];
         CurrentCollectedDailies = [];
         CurrentQuestDailies = [];
+        Pets = [];
 
         Data = new CharacterDataModel();
         LevelData = new LevelData();

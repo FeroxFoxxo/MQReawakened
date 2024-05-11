@@ -51,6 +51,12 @@
             <Item prefabName="PF_PET_Rig02_Bear01_03" />
             <Item prefabName="PF_PET_Rig02_Tiger02_02" />
             <Item prefabName="PF_PET_Rig02_Tiger02_03" />
+            <Item prefabName="COL_PET_NC_EnergyCharge01" />
+            <Item prefabName="COL_PET_NC_EnergyCharge02" />
+            <Item prefabName="COL_PET_NC_EnergyCharge03" />
+            <Item prefabName="COL_PET_NC_EnergyCharge04" />
+            <Item prefabName="COL_PET_NC_EnergyCharge05" />
+            <Item prefabName="COL_PET_NC_EnergyCharge06" />
         </Vendor>
         <Vendor objectId="243" name="Xaken" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="1017" greetingConversationId="2789" leavingConversationId="2788">
             <Item prefabName="Add_COM_Ace01_TS01" />
@@ -299,6 +305,12 @@
             <Item prefabName="PF_PET_Rig01_Owl01" />
             <Item prefabName="PF_PET_Rig02_Bear01" />
             <Item prefabName="PF_PET_Rig02_Tiger02" />
+            <Item prefabName="COL_PET_NC_EnergyCharge01" />
+            <Item prefabName="COL_PET_NC_EnergyCharge02" />
+            <Item prefabName="COL_PET_NC_EnergyCharge03" />
+            <Item prefabName="COL_PET_NC_EnergyCharge04" />
+            <Item prefabName="COL_PET_NC_EnergyCharge05" />
+            <Item prefabName="COL_PET_NC_EnergyCharge06" />
         </Vendor>
         <Vendor objectId="615" name="Altak" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1180" greetingConversationId="3173" leavingConversationId="3372">
             <Item prefabName="COL_POT_Rejuvenation02" />
@@ -507,6 +519,12 @@
             <Item prefabName="PF_PET_Rig01_Owl01" />
             <Item prefabName="PF_PET_Rig02_Bear01" />
             <Item prefabName="PF_PET_Rig02_Tiger02" />
+            <Item prefabName="COL_PET_NC_EnergyCharge01" />
+            <Item prefabName="COL_PET_NC_EnergyCharge02" />
+            <Item prefabName="COL_PET_NC_EnergyCharge03" />
+            <Item prefabName="COL_PET_NC_EnergyCharge04" />
+            <Item prefabName="COL_PET_NC_EnergyCharge05" />
+            <Item prefabName="COL_PET_NC_EnergyCharge06" />
         </Vendor>
     </Level>
     

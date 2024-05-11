@@ -3,29 +3,31 @@ using Server.Base.Logging;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using System.Text;
-using UnityEngine;
 using static TriggerCoopController;
+using UnityEngine;
+using Server.Reawakened.Core.Configs;
 
-namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
+namespace Server.Reawakened.Entities.AbstractComponents;
 
 public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp, IQuestTriggered where T : TriggerCoopController
 {
-    private List<string> _currentPhysicalInteractors;
+    public List<string> CurrentPhysicalInteractors;
     public int CurrentInteractions;
 
-    public List<Player> CurrentValidInteractors => _currentPhysicalInteractors.ToList().Select(ci =>
+    public List<Player> CurrentValidInteractors => CurrentPhysicalInteractors.ToList().Select(ci =>
     {
         var player = Room.GetPlayerById(ci);
 
-        if (player == null)
+        if (player == null && !ItemCatalog.GetItemFromId(int.Parse(ci)).IsPet() || ci == "0")
         {
-            _currentPhysicalInteractors.Remove(ci);
+            CurrentPhysicalInteractors.Remove(ci);
             return null;
         }
 
@@ -127,13 +129,15 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
     public FileLogger FileLogger { get; set; }
     public QuestCatalog QuestCatalog { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     public override void InitializeComponent()
     {
         IsEnabled = IsEnable;
         IsActive = false;
 
-        _currentPhysicalInteractors = [];
+        CurrentPhysicalInteractors = [];
 
         Triggers = [];
         Activations = [];
@@ -216,23 +220,20 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         if (!IsEnabled || syncEvent.Type != SyncEvent.EventType.Trigger)
             return;
 
-        //if (!TriggerOnPressed)
-        //    return;
-
         var tEvent = new Trigger_SyncEvent(syncEvent);
 
         LogTriggerEvent(tEvent);
 
         var updated = false;
 
-        if (tEvent.Activate && !_currentPhysicalInteractors.Contains(player.GameObjectId))
+        if (tEvent.Activate && !CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
-            AddPhysicalInteractor(player.GameObjectId);
+            AddPhysicalInteractor(player, player.GameObjectId);
             updated = true;
         }
-        else if (!tEvent.Activate && _currentPhysicalInteractors.Contains(player.GameObjectId))
+        else if (!tEvent.Activate && CurrentPhysicalInteractors.Contains(player.GameObjectId))
         {
-            RemovePhysicalInteractor(player.GameObjectId);
+            RemovePhysicalInteractor(player, player.GameObjectId);
             updated = true;
         }
 
@@ -242,41 +243,60 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
             LogTrigger();
     }
 
-    public void AddPhysicalInteractor(string playerId)
+    public void AddPhysicalInteractor(Player player, string interactionId)
     {
-        if (_currentPhysicalInteractors.Contains(playerId))
+        if (CurrentPhysicalInteractors.Contains(interactionId))
             return;
 
-        var player = Room.GetPlayerById(playerId);
+        if (Room.GetPlayerById(interactionId) != null)
+        {
+            if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) && !pet.InCoopState())
+                pet.CurrentTriggerableId = Id;
 
-        if (player == null)
-            return;
+            if (!string.IsNullOrEmpty(QuestCompletedRequired))
+            {
+                var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
 
-        _currentPhysicalInteractors.Add(playerId);
+                if (requiredQuest != null)
+                    if (!player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
+                        return;
+            }
 
+            if (!string.IsNullOrEmpty(QuestInProgressRequired))
+            {
+                var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
+
+                if (requiredQuest != null)
+                    if (player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
+                        return;
+            }
+        }
+
+        CurrentPhysicalInteractors.Add(interactionId);
         SendInteractionUpdate();
-
     }
 
-    public void RemovePhysicalInteractor(string playerId)
+    public void RemovePhysicalInteractor(Player player, string interactionId)
     {
-        if (!_currentPhysicalInteractors.Contains(playerId))
+        if (!CurrentPhysicalInteractors.Contains(interactionId))
             return;
 
-        _currentPhysicalInteractors.Remove(playerId);
-
+        CurrentPhysicalInteractors.Remove(interactionId);
         SendInteractionUpdate();
     }
 
     public void SendInteractionUpdate()
     {
+        if (TriggerReceiverActivated() && StayTriggeredOnReceiverActivated)
+            return;
+
         var tUpdate = new TriggerUpdate_SyncEvent(new SyncEvent(Id.ToString(), SyncEvent.EventType.TriggerUpdate, Room.Time));
         tUpdate.EventDataList.Add(Interactions);
         Room.SendSyncEvent(tUpdate);
     }
 
-    public int GetPhysicalInteractorCount() => _currentPhysicalInteractors.Count;
-    public string[] GetPhysicalInteractorIds() => [.. _currentPhysicalInteractors];
+    public int GetPhysicalInteractorCount() => CurrentPhysicalInteractors.Count;
+    public string[] GetPhysicalInteractorIds() => [.. CurrentPhysicalInteractors];
 
     public virtual void Triggered(Player player, bool isSuccess, bool isActive)
     {
@@ -297,9 +317,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     {
         var players = Room.GetPlayers();
 
-        // GoTo must be outside for if someone in the room has interactd with the trigger in the past (i.e. in public rooms like CTS)
+        // GoTo must be outside for if someone in the room has interacted with the trigger in the past (i.e. in public rooms like CTS)
         if (player != null)
-            foreach (var rPlayer in players.Where(x => _currentPhysicalInteractors.Contains(x.GameObjectId)))
+            foreach (var rPlayer in players.Where(x => CurrentPhysicalInteractors.Contains(x.GameObjectId)))
             {
                 if (rPlayer == null)
                     continue;
@@ -323,12 +343,13 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         }
         else
         {
-            var triggerRecieverActivated = TriggerReceiverActivated();
+            var triggerReceiverActivated = TriggerReceiverActivated();
 
-            if (StayTriggeredOnReceiverActivated && triggerRecieverActivated)
+            if (StayTriggeredOnReceiverActivated && triggerReceiverActivated)
                 return;
 
-            if (StayTriggeredOnUnpressed)
+            if (StayTriggeredOnUnpressed || player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet)
+                && Id == pet.CurrentTriggerableId && pet.InCoopState())
                 return;
 
             if (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time && ActivationTimeAfterFirstInteraction > 0)
@@ -428,7 +449,6 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public void Trigger(Player player, bool active)
     {
         IsActive = active;
-
         foreach (var trigger in Triggers)
         {
             var triggers = Room.GetEntitiesFromId<ICoopTriggered>(trigger.Key);
@@ -473,7 +493,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
     public void ResetTrigger()
     {
-        _currentPhysicalInteractors.Clear();
+        CurrentPhysicalInteractors.Clear();
         SendInteractionUpdate();
         IsActive = false;
     }

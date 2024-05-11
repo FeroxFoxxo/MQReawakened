@@ -16,7 +16,6 @@
         <Folder Include="[w] WarningMessageHandler\" />
         <Folder Include="[r] RoomHandler\" />
         <Folder Include="[o] ReportMessageHandler\" />
-        <Folder Include="[Z] PetHandler\" />
     </ItemGroup>
 
     <ItemGroup>

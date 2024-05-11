@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -21,6 +21,16 @@ public static class PlayerHealExtensions
         }
     }
 
+    public static void PetHeal(this Player player, int healValue)
+    {
+        if (player == null || player.Room == null ||
+          player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
+            return;
+
+        player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+                player.Character.Data.CurrentLife += GetHealValue(player, healValue), player.Character.Data.MaxLife, string.Empty));
+    }
+
     public static void HealOnce(Player player, ItemDescription usedItem, ItemRConfig config)
     {
         if (player == null || player.Room == null ||
@@ -36,7 +46,7 @@ public static class PlayerHealExtensions
 
         //If healing staff, convert heal value.
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities)
-            healValue = CheckMaxHealth(player, Convert.ToInt32(player.Character.Data.MaxLife / config.HealingStaffHealValue));
+            healValue = GetHealValue(player, Convert.ToInt32(player.Character.Data.MaxLife / config.HealingStaffHealValue));
 
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
                 player.Character.Data.CurrentLife += healValue, player.Character.Data.MaxLife, string.Empty));
@@ -101,17 +111,18 @@ public static class PlayerHealExtensions
 
         player.Room.SendSyncEvent(healEvent);
     }
+
     //Original healing value >2011.
     private static int GetBuffedHealValue(Player player, int outOfDateHealValue)
     {
         var healValue = outOfDateHealValue * 18;
 
-        return CheckMaxHealth(player, healValue);
+        return GetHealValue(player, healValue);
     }
     //(This is really needed in the games current state or else healing items aren't worth buying or using)
     //Worth noting; Item descriptions in-game display 2011 stats because items load from an out of date ItemCatalogDict, instead of MiscTextDisc.
 
-    private static int CheckMaxHealth(Player player, int healValue)
+    private static int GetHealValue(Player player, int healValue)
     {
         var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
 

@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
@@ -21,8 +22,8 @@ public class MeleeEntity : BaseProjectile
         var onGround = player.TempData.OnGround;
         var isRight = direction > 0;
 
-        var meleeWidth = onGround ? config.MeleeWidth : config.MeleeArialWidth;
-        var meleeHeight = onGround ? config.MeleeHeight : config.MeleeArialHeight;
+        var meleeWidth = onGround ? config.MeleeWidth : config.MeleeAerialWidth;
+        var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialHeight;
 
         Collider = new AttackCollider(id, position, new Rect(isRight ? 0 : -meleeWidth, 0, meleeWidth, meleeHeight),
             PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f

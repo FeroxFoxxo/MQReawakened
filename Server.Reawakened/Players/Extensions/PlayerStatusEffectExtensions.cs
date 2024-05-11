@@ -1,7 +1,9 @@
 ﻿using A2m.Server;
+using PetDefines;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 
 namespace Server.Reawakened.Players.Extensions;
@@ -67,18 +69,21 @@ public static class PlayerStatusEffectExtensions
     {
         player.TempData.Invincible = true;
 
-        var invinsibleData = new InvincibiltyData()
+        player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
+                 (int)ItemEffectType.Invincibility, 0, (int)durationInSeconds, true, player.CharacterName, true));
+
+        var invincibleData = new InvincibiltyData()
         {
             Player = player,
             IsInvincible = false
         };
 
-        timerThread.DelayCall(DisableInvincibility, invinsibleData, TimeSpan.FromSeconds(durationInSeconds), TimeSpan.Zero, 1);
+        timerThread.DelayCall(DisableInvincibility, invincibleData, TimeSpan.FromSeconds(durationInSeconds), TimeSpan.Zero, 1);
     }
 
     public static void DisableInvincibility(object data)
     {
-        var invinsibleData = (InvincibiltyData)data;
-        invinsibleData.Player.TempData.Invincible = false;
+        var invincibleData = (InvincibiltyData)data;
+        invincibleData.Player.TempData.Invincible = false;
     }
 }
