@@ -8,7 +8,6 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models.Pets;
 using Server.Reawakened.XMLs.Bundles;
 
 namespace Protocols.External._Z__PetHandler;

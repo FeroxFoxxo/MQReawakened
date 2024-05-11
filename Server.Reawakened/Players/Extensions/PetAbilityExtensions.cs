@@ -4,15 +4,15 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Rooms.Extensions;
 using UnityEngine;
 using PetDefines;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using TimerCallback = Server.Base.Timers.Timer.TimerCallback;
 using Server.Reawakened.Core.Configs;
 using AssetStudio;
 using Microsoft.Extensions.Logging;
 using Vector3 = UnityEngine.Vector3;
+using Server.Reawakened.Players.Models.Pets;
 
-namespace Server.Reawakened.Players.Models.Pets;
+namespace Server.Reawakened.Players.Extensions;
 
 public class PetAbilityExtensions
 {
@@ -64,7 +64,6 @@ public class PetAbilityExtensions
             return;
         }
 
-
         petOwner.PetHeal((int)Math.Ceiling
         (petOwner.Character.Data.MaxLife * pet.AbilityParams.ApplyOnHealthRatio));
     }
@@ -90,7 +89,6 @@ public class PetAbilityExtensions
             foreach (var enemyDetected in detectedEnemies.Values.Where
             (enemy => EnemyInDamageZone(pet.AbilityParams, enemy, GetCurrentPetPos(petOwner))))
                 enemyDetected.PetDamage(petOwner);
-
         else
             closestEnemy.PetDamage(petOwner);
     }

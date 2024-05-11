@@ -125,7 +125,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             else
                 ApplyHazardEffect(player);
         }
-
         else
         {
             player.ApplyDamageByPercent(HealthRatioDamage, Id, HurtLength, TimerThread);
@@ -169,7 +168,6 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
                 player.ApplyCharacterDamage((int)damage, DamageDelay, TimerThread);
                 break;
-
 
             case ItemEffectType.PoisonDamage:
                 TimerThread.DelayCall(ApplyPoisonEffect, player,

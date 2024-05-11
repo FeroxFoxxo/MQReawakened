@@ -30,11 +30,13 @@ public class UseSlot : ExternalProtocol
     {
         var hotbarSlotId = int.Parse(message[5]);
         var targetUserId = int.Parse(message[6]);
+
         var posX = Convert.ToSingle(message[7]);
         var posY = Convert.ToSingle(message[8]);
         var posZ = Convert.ToSingle(message[9]);
 
         var direction = Player.TempData.Direction;
+
         var position = new Vector3()
         {
             x = posX,
@@ -155,7 +157,6 @@ public class UseSlot : ExternalProtocol
             TimerThread.DelayCall(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ItemRConfig.GrenadeSpawnDelay), TimeSpan.Zero, 1);
             RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
         }
-
         else
             LaunchProjectile(projectileData);
     }
