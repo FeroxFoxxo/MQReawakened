@@ -186,11 +186,14 @@ public static class CharacterInventoryExtensions
     {
         var hotbar = player.Character.Data.Hotbar;
 
-        if (hotbar.HotbarButtons.ContainsKey(slotId))
-            hotbar.HotbarButtons[slotId] = itemModel;
+        foreach (var hotbarSlot in hotbar.HotbarButtons.Where
+            (slot => slot.Key != slotId && slot.Value.ItemId == itemModel.ItemId))
+            player.RemoveHotbarSlot(hotbarSlot.Key);
 
-        else
+        if (!hotbar.HotbarButtons.ContainsKey(slotId))
             hotbar.HotbarButtons.Add(slotId, itemModel);
+
+        hotbar.HotbarButtons[slotId] = itemModel;
     }
 
     public static void RemoveHotbarSlot(this Player player, int slotId)
@@ -214,7 +217,7 @@ public static class CharacterInventoryExtensions
 
         if (!player.Character.Pets.TryGetValue(petId, out var currentPet))
         {
-            player.Character.Pets.Add(petId, currentPet = 
+            player.Character.Pets.Add(petId, currentPet =
                 new PetModel());
             refillCurrentEnergy = true;
         }
