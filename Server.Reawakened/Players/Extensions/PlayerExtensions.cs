@@ -95,12 +95,7 @@ public static class PlayerExtensions
 
         charData.Reputation = reputation;
 
-        if (config.GameVersion == GameVersion.v2014)
-            player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
-
-        else
-            player.SendXt("cp", charData.Reputation - charData.ReputationForCurrentLevel,
-                charData.ReputationForNextLevel - charData.ReputationForCurrentLevel);
+        player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
     }
 
     public static void TradeWithPlayer(this Player origin, ItemCatalog itemCatalog)

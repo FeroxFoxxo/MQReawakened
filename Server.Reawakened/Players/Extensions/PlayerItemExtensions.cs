@@ -88,9 +88,11 @@ public static class PlayerItemExtensions
         public int Damage { get; set; }
         public Elemental DamageType { get; set; }
         public TimerThread Thread { get; set; }
+        public ServerRConfig ServerRConfig { get; set; }
     }
 
-    public static void ExplodeBomb(this Room room, Player player, Vector3 position, float radius, int damage, Elemental damageType, TimerThread thread)
+    public static void ExplodeBomb(this Room room, Player player, Vector3 position,
+        float radius, int damage, Elemental damageType, ServerRConfig serverRConfig, TimerThread thread)
     {
         foreach (var component in room.GetEntitiesFromType<BreakableEventControllerComp>().Where(comp =>
             Vector3.Distance(position, new Vector3(comp.Position.X, comp.Position.Y, comp.Position.Z)) <= radius
@@ -99,7 +101,7 @@ public static class PlayerItemExtensions
 
         if (player == null)
             foreach (var nearPlayer in room.GetNearbyPlayers(position, radius))
-                nearPlayer.ApplyCharacterDamage(damage, 1, thread);
+                nearPlayer.ApplyCharacterDamage(damage, nearPlayer.GameObjectId, 1, serverRConfig, thread);
 
         room.Logger.LogInformation("Running bomb at coords: {Position} of radius {Radius}", position, radius);
     }
@@ -111,7 +113,7 @@ public static class PlayerItemExtensions
         if (bData.Player == null)
             return;
 
-        ExplodeBomb(bData.Player.Room, bData.Player, bData.Position, bData.Radius, bData.Damage, bData.DamageType, bData.Thread);
+        ExplodeBomb(bData.Player.Room, bData.Player, bData.Position, bData.Radius, bData.Damage, bData.DamageType, bData.ServerRConfig, bData.Thread);
     }
 
     public static int GetDamageAmount(this ItemDescription usedItem, Microsoft.Extensions.Logging.ILogger logger, ItemRConfig config)

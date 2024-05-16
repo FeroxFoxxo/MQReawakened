@@ -136,14 +136,12 @@ public class State : ExternalProtocol
 
                     if (physicStatus.GravityEnabled && Player.TempData.Underwater)
                         Player.StopUnderwater(Logger);
-
                     break;
                 case SyncEvent.EventType.FX:
                     var fxEvent = new FX_SyncEvent(syncEvent);
 
                     if (fxEvent.PrefabName == ItemRConfig.WaterPrefabName)
-                        Player.StartUnderwater(newPlayer.Character.Data.MaxLife / 10, TimerThread, ItemRConfig, Logger);
-
+                        Player.StartUnderwater(newPlayer.Character.Data.MaxLife / 10, TimerThread, ServerRConfig, ItemRConfig, Logger);
                     break;
             }
 

@@ -127,7 +127,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         }
         else
         {
-            player.ApplyDamageByPercent(HealthRatioDamage, Id, HurtLength, TimerThread);
+            player.ApplyDamageByPercent(HealthRatioDamage, Id, HurtLength, ServerRConfig, TimerThread);
             Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
           (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));
         }
@@ -156,17 +156,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             case ItemEffectType.BluntDamage:
                 var enemy = Room.GetEnemy(Id);
                 var damage = (float)WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
-                             player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
+                             player.Character.Data.CalculateDefense(EffectType, ItemCatalog);      
 
-                if (player.Character.Pets.TryGetValue(player.GetEquippedPetId
-                    (ServerRConfig), out var pet) && player.TempData.PetDefense)
-                    Math.Ceiling(damage *= pet.AbilityParams.DefensiveBonusRatio);
-
-                else
-                    Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-                    (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));
-
-                player.ApplyCharacterDamage((int)damage, DamageDelay, TimerThread);
+                player.ApplyCharacterDamage((int)damage, Id, DamageDelay, ServerRConfig, TimerThread);
                 break;
 
             case ItemEffectType.PoisonDamage:
@@ -190,7 +182,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage, 1, 1, true, _id, false));
 
-                player.ApplyCharacterDamage(Damage, DamageDelay, TimerThread);
+                player.ApplyCharacterDamage(Damage, Id, DamageDelay, ServerRConfig, TimerThread);
 
                 break;
         }
@@ -210,7 +202,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             if (!collider.CheckCollision(new PlayerCollider(player)))
                 return;
 
-        player.StartPoisonDamage(_id, Damage, (int)HurtLength, TimerThread);
+        player.StartPoisonDamage(_id, Damage, (int)HurtLength, ServerRConfig, TimerThread);
     }
 
     public void ApplyWaterBreathing(object playerData)
@@ -221,7 +213,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                     (int)ItemEffectType.WaterBreathing, 1, 1, true, _id, false));
 
-        player.StartUnderwater(player.Character.Data.MaxLife / 10, TimerThread, ItemRConfig, Logger);
+        player.StartUnderwater(player.Character.Data.MaxLife / 10, TimerThread, ServerRConfig, ItemRConfig, Logger);
 
         TimerThread.DelayCall(RestartTimerDelay, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
         Logger.LogInformation("Reset underwater timer for {characterName}", player.CharacterName);

@@ -33,7 +33,7 @@ public class PlayerCollider(Player player) :
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)aiProjectileCollider.Effect,
                 0, 1, true, aiProjectileCollider.OwnderId, false));
 
-            player.ApplyCharacterDamage(damage, 1, aiProjectileCollider.TimerThread);
+            player.ApplyCharacterDamage(damage, aiProjectileCollider.Id, 1, aiProjectileCollider.ServerRConfig, aiProjectileCollider.TimerThread);
             player.TemporaryInvincibility(aiProjectileCollider.TimerThread, 1);
 
             Room.RemoveCollider(aiProjectileCollider.PrjId);
