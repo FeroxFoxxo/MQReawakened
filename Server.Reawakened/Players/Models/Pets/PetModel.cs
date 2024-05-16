@@ -74,8 +74,6 @@ public class PetModel() : PetAbilityExtensions
         {
             case PetInformation.StateSyncType.Deactivate:
                 RemoveTriggerInteraction(petOwner, timerThread, itemRConfig.PetPressButtonDelay);
-                CurrentTriggerableId = string.Empty;
-                AbilityCooldown = petOwner.Room.Time + AbilityParams.CooldownTime;
                 break;
             case PetInformation.StateSyncType.PetStateCoopSwitch:
                 AddTriggerInteraction(petOwner, timerThread, itemRConfig.PetHoldChainDelay);
@@ -226,8 +224,9 @@ public class PetModel() : PetAbilityExtensions
     }
 
     private void RemoveTriggerInteraction(object interactionData)
-    {       
+    {
         var triggerData = (InteractionData)interactionData;
+        CurrentTriggerableId = string.Empty;
 
         if (triggerData.TriggerCoopController != null)
         {
