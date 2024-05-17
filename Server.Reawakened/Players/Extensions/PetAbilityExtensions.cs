@@ -8,6 +8,7 @@ using TimerCallback = Server.Base.Timers.Timer.TimerCallback;
 using Server.Reawakened.Core.Configs;
 using Vector3 = UnityEngine.Vector3;
 using Server.Reawakened.Players.Models.Pets;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -20,7 +21,7 @@ public static class PetAbilityExtensions
             )
         );
 
-    public static void SendAbility(this Player petOwner, ServerRConfig serverRConfig, TimerThread timerThread)
+    public static void SendAbility(this Player petOwner, ItemCatalog itemCatalog, ServerRConfig serverRConfig, TimerThread timerThread)
     {
         if (!petOwner.Character.Pets.TryGetValue(petOwner.GetEquippedPetId(serverRConfig), out var pet))
             return;
@@ -31,8 +32,10 @@ public static class PetAbilityExtensions
 
         petOwner.Room.SendSyncEvent(new PetState_SyncEvent(petOwner.GameObjectId, petOwner.Room.Time,
             PetInformation.StateSyncType.Ability, petOwner.GetSyncParams(pet.AbilityParams)));
+
         petOwner.Room.SendSyncEvent(new StatusEffect_SyncEvent(petOwner.GameObjectId, petOwner.Room.Time,
-            (int)ItemEffectType.AbilityPower, 0, (int)pet.AbilityParams.Duration, true, petOwner.GameObjectId, true));
+            (int)ItemEffectType.Defence, (int)pet.AbilityParams.DefensiveBonusRatio, (int)pet.AbilityParams.Duration,
+            true, itemCatalog.GetItemFromId(int.Parse(pet.PetId)).PrefabName, false));
 
         pet.UseEnergy(petOwner);
         //Sends method of ability type after a short delay.

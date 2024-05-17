@@ -7,6 +7,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Protocols.External._Z__PetHandler;
 public class UpdatePetMode : ExternalProtocol
@@ -14,14 +15,15 @@ public class UpdatePetMode : ExternalProtocol
     public override string ProtocolName => "Zm";
 
     public PetAbilities PetAbilities { get; set; }
-    public TimerThread TimerThread { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
+    public TimerThread TimerThread { get; set; }
     public ILogger<UpdatePetMode> Logger { get; set; }
 
     public override void Run(string[] message)
     {
         if (Player == null || !Player.Character.Pets.TryGetValue
-            (Player.GetEquippedPetId(ServerRConfig), out var pet) || !Player.Character.Pets.Any() ||
+            (Player.GetEquippedPetId(ServerRConfig), out var pet) || Player.Character.Pets.Count == 0 ||
             !PetAbilities.PetAbilityData.TryGetValue(int.Parse(Player.GetEquippedPetId(ServerRConfig)), out var petAbilityParams))
         {
             Logger.LogInformation("{characterName} has no pet equipped!", Player.CharacterName);
@@ -53,6 +55,6 @@ public class UpdatePetMode : ExternalProtocol
             return;
         }
 
-        Player.SendAbility(ServerRConfig, TimerThread);
+        Player.SendAbility(ItemCatalog, ServerRConfig, TimerThread);
     }
 }

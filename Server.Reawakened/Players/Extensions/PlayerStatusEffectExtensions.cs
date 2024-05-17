@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
 
 
@@ -17,7 +18,7 @@ public static class PlayerStatusEffectExtensions
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
                 (int)ItemEffectType.NullifySlowStatusEffect, 1, 1, true, hazardId, false));
 
-    public static void StartPoisonDamage(this Player player, string hazardId, int damage, int hurtLength, TimerThread timerThread)
+    public static void StartPoisonDamage(this Player player, string hazardId, int damage, int hurtLength, ServerRConfig serverRConfig, TimerThread timerThread)
     {
         if (player == null || player.TempData.Invincible)
             return;
@@ -25,7 +26,7 @@ public static class PlayerStatusEffectExtensions
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
         (int)ItemEffectType.PoisonDamage, damage, hurtLength, true, hazardId, false));
 
-        player.ApplyCharacterDamage(damage, hurtLength, timerThread);
+        player.ApplyCharacterDamage(damage, hazardId, hurtLength, serverRConfig, timerThread);
     }
 
     public class InvisibiltyData()
