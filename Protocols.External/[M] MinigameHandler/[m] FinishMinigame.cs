@@ -72,8 +72,9 @@ public class FinishedMinigame : ExternalProtocol
         player.SendSyncEventToPlayer(new TriggerUpdate_SyncEvent(minigameId, player.Room.Time, membersInRoom));
 
         var bananaReward = WorldStatistics.GetValue(ItemEffectType.BananaReward, WorldStatisticsGroup.Price, player.Character.Data.GlobalLevel);
-        var xpReward = player.Character.Data.ReputationForCurrentLevel * WorldStatistics.GlobalStats[Globals.MinigameXPMultiplier] +
-            WorldStatistics.GetValue(ItemEffectType.IncreaseExpFromMinigameLT16, WorldStatisticsGroup.Player, player.Character.Data.GlobalLevel);
+        var xpReward = (player.Character.Data.ReputationForNextLevel - player.Character.Data.ReputationForCurrentLevel) *
+            WorldStatistics.GlobalStats[Globals.MinigameXPMultiplier] + WorldStatistics.GetValue(ItemEffectType.IncreaseExpFromMinigameLT16,
+            WorldStatisticsGroup.Player, player.Character.Data.GlobalLevel);
 
         var lootedItems = ArenaModel.GrantLootedItems(LootCatalog, player.Room.LevelInfo.LevelId, minigameId);
         var lootableItems = ArenaModel.GrantLootableItems(LootCatalog, player.Room.LevelInfo.LevelId, minigameId);
