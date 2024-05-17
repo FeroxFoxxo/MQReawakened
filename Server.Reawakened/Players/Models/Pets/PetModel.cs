@@ -11,11 +11,10 @@ using Server.Reawakened.Players.Extensions;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Bundles.Base;
 using PetDefines;
-using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 
 namespace Server.Reawakened.Players.Models.Pets;
 
-public class PetModel() : PetAbilityExtensions
+public class PetModel()
 {
     public string PetId { get; set; }
     public PetAbilityParams AbilityParams { get; set; } 
@@ -33,6 +32,7 @@ public class PetModel() : PetAbilityExtensions
         AbilityParams = abilityParams;
 
         MaxEnergy = petOwner.GetMaxPetEnergy(worldStatistics);
+
         if (refillEnergy)
             CurrentEnergy = petOwner.GetMaxPetEnergy(worldStatistics);
 
@@ -44,6 +44,7 @@ public class PetModel() : PetAbilityExtensions
         NotifyPet(petOwner);
 
         petOwner.Character.Data.PetItemId = int.Parse(PetId);
+
         petOwner.SendXt("ZE", petOwner.UserId, PetId, Convert.ToInt32(spawnPet));
         petOwner.SendXt("Zm", petOwner.UserId, true);
     }
@@ -54,12 +55,12 @@ public class PetModel() : PetAbilityExtensions
                 int.Parse(PetId), (int)PetType.coop, CurrentEnergy, 0, 0, 0));
 
     //Unsure how NotifyAllPets/Zp is supposed to work, needs to be looked into more.
-    public void NotifyAllPets(Player petOwner)
+    public static void NotifyAllPets(Player petOwner)
     {
         var sb = new SeparatedStringBuilder('>');
 
         foreach (var pet in petOwner.Character.Pets.Values)
-            sb.Append(pet.PetProfile(int.Parse(petOwner.GameObjectId), int.Parse(pet.PetId),
+            sb.Append(PetProfile(int.Parse(petOwner.GameObjectId), int.Parse(pet.PetId),
         (int)PetType.coop, pet.CurrentEnergy, pet.CurrentEnergy, 1, 0));
 
         petOwner.SendXt("Zp", petOwner.UserId, sb.ToString());
@@ -149,12 +150,13 @@ public class PetModel() : PetAbilityExtensions
 
         InCoopSwitchState = true;
         InCoopJumpState = false;
+
         return PetInformation.StateSyncType.PetStateCoopSwitch;
     }
 
     public bool InCoopState() => InCoopJumpState || InCoopSwitchState;
 
-    public string GetPetPosition(Vector3 position, bool OnButton, ItemRConfig itemConfig)
+    public static string GetPetPosition(Vector3 position, bool OnButton, ItemRConfig itemConfig)
     {
         var syncParams = new SeparatedStringBuilder('|');
 
@@ -167,7 +169,7 @@ public class PetModel() : PetAbilityExtensions
         return syncParams.ToString();
     }
 
-    public string PetProfile(int id, int itemId, int typeId, int energy, int foodToConsume, long timeToConsume, int boostXp)
+    public static string PetProfile(int id, int itemId, int typeId, int energy, int foodToConsume, long timeToConsume, int boostXp)
     {
         var sb = new SeparatedStringBuilder('|');
 

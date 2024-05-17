@@ -1,7 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using PetDefines;
-using Server.Base.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
@@ -18,7 +16,7 @@ public class UpdatePetMode : ExternalProtocol
     public PetAbilities PetAbilities { get; set; }
     public TimerThread TimerThread { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
-    public ILogger<PetAbilityExtensions> Logger { get; set; }
+    public ILogger<UpdatePetMode> Logger { get; set; }
 
     public override void Run(string[] message)
     {
@@ -42,7 +40,7 @@ public class UpdatePetMode : ExternalProtocol
             return;
         }
 
-        if (pet.IsAttackAbility(petAbilityParams) && pet.GetDetectedEnemies(Player).Count <= 0)
+        if (petAbilityParams.IsAttackAbility() && Player.GetDetectedEnemies().Count <= 0)
         {
             Logger.LogInformation("{characterName}'s pet detected no enemies to attack!", Player.CharacterName);
             return;
@@ -55,6 +53,6 @@ public class UpdatePetMode : ExternalProtocol
             return;
         }
 
-        pet.SendAbility(Player, ServerRConfig, TimerThread);
+        Player.SendAbility(ServerRConfig, TimerThread);
     }
 }
