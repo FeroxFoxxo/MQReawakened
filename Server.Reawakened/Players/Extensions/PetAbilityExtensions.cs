@@ -2,15 +2,13 @@
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Rooms.Extensions;
-using UnityEngine;
 using PetDefines;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using TimerCallback = Server.Base.Timers.Timer.TimerCallback;
 using Server.Reawakened.Core.Configs;
-using AssetStudio;
-using Microsoft.Extensions.Logging;
 using Vector3 = UnityEngine.Vector3;
 using Server.Reawakened.Players.Models.Pets;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -19,7 +17,7 @@ public class PetAbilityExtensions
     private void SendDeactivateState(Player player) => player.Room.SendSyncEvent(new PetState_SyncEvent(
         player.GameObjectId, player.Room.Time, PetInformation.StateSyncType.Deactivate, player.GameObjectId));
 
-    public void SendAbility(Player petOwner, ServerRConfig serverRConfig, TimerThread timerThread)
+    public void SendAbility(Player petOwner, ItemCatalog itemCatalog, ServerRConfig serverRConfig, TimerThread timerThread)
     {
         if (!petOwner.Character.Pets.TryGetValue(petOwner.GetEquippedPetId(serverRConfig), out var pet))
             return;
@@ -31,7 +29,8 @@ public class PetAbilityExtensions
         petOwner.Room.SendSyncEvent(new PetState_SyncEvent(petOwner.GameObjectId, petOwner.Room.Time,
             PetInformation.StateSyncType.Ability, GetSyncParams(petOwner, pet.AbilityParams)));
         petOwner.Room.SendSyncEvent(new StatusEffect_SyncEvent(petOwner.GameObjectId, petOwner.Room.Time,
-            (int)ItemEffectType.AbilityPower, 0, (int)pet.AbilityParams.Duration, true, petOwner.GameObjectId, true));
+            (int)ItemEffectType.Defence, (int)pet.AbilityParams.DefensiveBonusRatio, (int)pet.AbilityParams.Duration,
+            true, itemCatalog.GetItemFromId(int.Parse(pet.PetId)).PrefabName, false));
 
         pet.UseEnergy(petOwner);
         //Sends method of ability type after a short delay.

@@ -25,14 +25,6 @@ public class PlayerCollider(Player player) :
             var damage = aiProjectileCollider.Damage - player.Character.Data.CalculateDefense
                 (aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
 
-            if (player.Character.Pets.TryGetValue(player.GetEquippedPetId
-                (aiProjectileCollider.ServerRConfig), out var pet) && player.TempData.PetDefense)
-                damage *= (int)pet.AbilityParams.DefensiveBonusRatio;
-
-            else
-                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)aiProjectileCollider.Effect,
-                0, 1, true, aiProjectileCollider.OwnderId, false));
-
             player.ApplyCharacterDamage(damage, aiProjectileCollider.Id, 1, aiProjectileCollider.ServerRConfig, aiProjectileCollider.TimerThread);
             player.TemporaryInvincibility(aiProjectileCollider.TimerThread, 1);
 

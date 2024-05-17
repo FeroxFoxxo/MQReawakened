@@ -11,7 +11,6 @@ using Server.Reawakened.Players.Extensions;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Bundles.Base;
 using PetDefines;
-using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 
 namespace Server.Reawakened.Players.Models.Pets;
 

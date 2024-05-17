@@ -1,7 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using PetDefines;
-using Server.Base.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
@@ -9,6 +7,7 @@ using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Protocols.External._Z__PetHandler;
 public class UpdatePetMode : ExternalProtocol
@@ -16,8 +15,9 @@ public class UpdatePetMode : ExternalProtocol
     public override string ProtocolName => "Zm";
 
     public PetAbilities PetAbilities { get; set; }
-    public TimerThread TimerThread { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
+    public TimerThread TimerThread { get; set; }
     public ILogger<PetAbilityExtensions> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -55,6 +55,6 @@ public class UpdatePetMode : ExternalProtocol
             return;
         }
 
-        pet.SendAbility(Player, ServerRConfig, TimerThread);
+        pet.SendAbility(Player, ItemCatalog, ServerRConfig, TimerThread);
     }
 }

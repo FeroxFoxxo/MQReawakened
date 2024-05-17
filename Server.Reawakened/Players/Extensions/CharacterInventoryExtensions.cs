@@ -21,13 +21,17 @@ public static class CharacterInventoryExtensions
         TimerThread timerThread, ItemRConfig config, ServerRConfig serverRConfig, ILogger<PlayerStatus> logger)
     {
         var effect = usedItem.ItemEffects.FirstOrDefault();
+
+        if (usedItem.ItemEffects.Count > 0)
+            player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+                                (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false));
+
         switch (effect.Type)
         {
             case ItemEffectType.PetRegainEnergy:
-                if (!player.Character.Pets.TryGetValue(player.GetEquippedPetId
-                    (serverRConfig), out var pet) && pet.CurrentEnergy < pet.MaxEnergy)
+                if (!player.Character.Pets.TryGetValue(player.GetEquippedPetId(serverRConfig), out var pet))
                 {
-                    logger.LogWarning("Couldn't find pet for {characterName}", player.CharacterName);
+                    logger.LogWarning("Couldn't find equipped pet for {characterName}", player.CharacterName);
                     return;
                 }
                 pet.GainEnergy(player, usedItem);
@@ -68,10 +72,6 @@ public static class CharacterInventoryExtensions
                 logger.LogError("Unknown ItemEffectType of ({effectType}) for item {usedItemName}", effect.Type, usedItem.PrefabName);
                 return;
         }
-
-        if (usedItem.ItemEffects.Count > 0)
-            player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-                                (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, true));
 
         logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for _player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
     }
@@ -217,7 +217,7 @@ public static class CharacterInventoryExtensions
 
         if (!player.Character.Pets.TryGetValue(petId, out var currentPet))
         {
-            player.Character.Pets.Add(petId, currentPet = 
+            player.Character.Pets.Add(petId, currentPet =
                 new PetModel());
             refillCurrentEnergy = true;
         }
