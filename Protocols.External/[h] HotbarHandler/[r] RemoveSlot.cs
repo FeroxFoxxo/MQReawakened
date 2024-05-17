@@ -30,7 +30,7 @@ public class RemoveSlot : ExternalProtocol
             return;
         }
 
-        Player.RemoveHotbarSlot(hotbarSlotId);
+        Player.SetEmptySlot(hotbarSlotId);
 
         if (Player.Character.Pets.TryGetValue(hotbarItem.ItemId.ToString(), out var pet) &&
             PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbilityParams))

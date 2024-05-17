@@ -8,7 +8,6 @@ using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
@@ -53,16 +52,16 @@ public class UseSlot : ExternalProtocol
         {
             case ItemActionType.Drop:
                 Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
-                RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
+                Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog);
                 break;
             case ItemActionType.Grenade:
             case ItemActionType.Throw:
-                HandleRangedWeapon(usedItem, position, direction, hotbarSlotId);
+                HandleRangedWeapon(usedItem, position, direction);
                 break;
             case ItemActionType.Genericusing:
             case ItemActionType.Drink:
             case ItemActionType.Eat:
-                HandleConsumable(usedItem, hotbarSlotId);
+                HandleConsumable(usedItem);
                 break;
             case ItemActionType.Melee:
                 HandleMeleeWeapon(usedItem, position, direction);
@@ -104,7 +103,7 @@ public class UseSlot : ExternalProtocol
         Player.SendSyncEventToPlayer(itemEffect);
     }
 
-    private void HandleConsumable(ItemDescription usedItem, int hotbarSlotId)
+    private void HandleConsumable(ItemDescription usedItem)
     {
         Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, ServerRConfig, Logger);
         var removeFromHotBar = true;
@@ -126,7 +125,7 @@ public class UseSlot : ExternalProtocol
                     break;
             }
 
-            RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
+            Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog);
         }
     }
 
@@ -139,7 +138,7 @@ public class UseSlot : ExternalProtocol
         public bool IsGrenade;
     }
 
-    private void HandleRangedWeapon(ItemDescription usedItem, Vector3 position, int direction, int hotbarSlotId)
+    private void HandleRangedWeapon(ItemDescription usedItem, Vector3 position, int direction)
     {
         var isGrenade = usedItem.SubCategoryId is ItemSubCategory.Grenade or ItemSubCategory.Bomb;
 
@@ -155,7 +154,7 @@ public class UseSlot : ExternalProtocol
         if (isGrenade)
         {
             TimerThread.DelayCall(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ItemRConfig.GrenadeSpawnDelay), TimeSpan.Zero, 1);
-            RemoveFromHotBar(Player.Character, usedItem, hotbarSlotId);
+            Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog);
         }
         else
             LaunchProjectile(projectileData);
@@ -184,19 +183,5 @@ public class UseSlot : ExternalProtocol
             usedItem.Elemental, ServerRConfig, ItemRConfig);
 
         Player.Room.AddProjectile(prj);
-    }
-
-    private void RemoveFromHotBar(CharacterModel character, ItemDescription item, int hotbarSlotId)
-    {
-        var itemModel = character.Data.Inventory.Items[item.ItemId];
-        itemModel.Count--;
-
-        if (itemModel.Count <= 0)
-        {
-            Player.RemoveHotbarSlot(hotbarSlotId);
-            SendXt("hu", character.Data.Hotbar);
-        }
-
-        Player.SendUpdatedInventory();
     }
 }

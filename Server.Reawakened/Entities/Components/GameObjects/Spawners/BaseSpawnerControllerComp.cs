@@ -52,7 +52,6 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public ILogger<BaseSpawnerControllerComp> Logger { get; set; }
     public InternalEnemyData EnemyInfoXml { get; set; }
-    public ServerRConfig ServerRConfig { get; set; }
     public IServiceProvider Services { get; set; }
     public TimerThread TimerThread { get; set; }
 

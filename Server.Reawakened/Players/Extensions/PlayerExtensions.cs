@@ -1,10 +1,10 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
-using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
@@ -281,13 +281,7 @@ public static class PlayerExtensions
         {
             if (!hotbarButtons.ContainsKey(i))
             {
-                var itemModel = new ItemModel()
-                {
-                    ItemId = 340,
-                    Count = 1,
-                    BindingCount = 1,
-                    DelayUseExpiry = DateTime.MinValue
-                };
+                var itemModel = new ItemRConfig().EmptySlot;
                 hotbarButtons[i] = itemModel;
             }
         }

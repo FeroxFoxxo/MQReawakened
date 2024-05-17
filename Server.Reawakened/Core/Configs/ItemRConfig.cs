@@ -1,4 +1,5 @@
 ﻿using Server.Base.Core.Abstractions;
+using Server.Reawakened.Players.Models.Character;
 
 namespace Server.Reawakened.Configs;
 public class ItemRConfig : IRConfig
@@ -47,6 +48,7 @@ public class ItemRConfig : IRConfig
     public float PetPosYOffset { get; }
     public float PetPosOnButtonYOffset { get; }
     public string WaterPrefabName { get; }
+    public ItemModel EmptySlot { get; }
 
     public ItemRConfig()
     {
@@ -139,5 +141,14 @@ public class ItemRConfig : IRConfig
         PetHoldChainDelay = 1f;
         PetPosYOffset = 0.75f;
         PetPosOnButtonYOffset = 0.25f;
+
+        EmptySlot = new ItemModel()
+        {
+            //Id of 0 crashes game, so we use 340 until a better solution is found.
+            ItemId = 340,
+            Count = 0,
+            BindingCount = 0,
+            DelayUseExpiry = DateTime.Now
+        };
     }
 }
