@@ -11,19 +11,18 @@ using Server.Reawakened.Players.Extensions;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Bundles.Base;
 using PetDefines;
-using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 
 namespace Server.Reawakened.Players.Models.Pets;
 
 public class PetModel() : PetAbilityExtensions
 {
     public string PetId { get; set; }
-    public PetAbilityParams AbilityParams { get; set; } 
-    public float AbilityCooldown { get; set; } 
-    public int MaxEnergy { get; set; } 
-    public int CurrentEnergy { get; set; } 
+    public PetAbilityParams AbilityParams { get; set; }
+    public float AbilityCooldown { get; set; }
+    public int MaxEnergy { get; set; }
+    public int CurrentEnergy { get; set; }
     public bool InCoopJumpState { get; set; }
-    public bool InCoopSwitchState { get; set; } 
+    public bool InCoopSwitchState { get; set; }
     public string CurrentTriggerableId { get; set; }
 
     public void SpawnPet(Player petOwner, string petId, bool spawnPet, PetAbilityParams abilityParams,
@@ -74,6 +73,8 @@ public class PetModel() : PetAbilityExtensions
         {
             case PetInformation.StateSyncType.Deactivate:
                 RemoveTriggerInteraction(petOwner, timerThread, itemRConfig.PetPressButtonDelay);
+                CurrentTriggerableId = string.Empty;
+                AbilityCooldown = petOwner.Room.Time + AbilityParams.CooldownTime;
                 break;
             case PetInformation.StateSyncType.PetStateCoopSwitch:
                 AddTriggerInteraction(petOwner, timerThread, itemRConfig.PetHoldChainDelay);
@@ -226,7 +227,6 @@ public class PetModel() : PetAbilityExtensions
     private void RemoveTriggerInteraction(object interactionData)
     {
         var triggerData = (InteractionData)interactionData;
-        CurrentTriggerableId = string.Empty;
 
         if (triggerData.TriggerCoopController != null)
         {

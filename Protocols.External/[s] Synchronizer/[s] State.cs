@@ -65,6 +65,8 @@ public class State : ExternalProtocol
                     Player.TempData.Invincible = true;
 
                     var attack = new ChargeAttack_SyncEvent(syncEvent);
+                    var superStompDamage = (int)Math.Ceiling(WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel) +
+                        WorldStatistics.GlobalStats[Globals.StompDamageBonus]);
 
                     Logger.LogTrace("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
                         "at speed ({X}, {Y}) with max pos ({X}, {Y}) for item id: '{Id}' and zone: {Zone}",
@@ -76,8 +78,7 @@ public class State : ExternalProtocol
                         new Vector3() { x = attack.PosX, y = attack.PosY, z = Player.TempData.Position.z },
                         new Vector3() { x = attack.MaxPosX, y = attack.MaxPosY, z = Player.TempData.Position.z },
                         new Vector2() { x = attack.SpeedX, y = attack.SpeedY },
-                        15, attack.ItemId, attack.ZoneId,
-                        WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel),
+                        15, attack.ItemId, attack.ZoneId, superStompDamage,
                         Elemental.Standard, ServerRConfig, TimerThread
                     );
 
@@ -136,14 +137,12 @@ public class State : ExternalProtocol
 
                     if (physicStatus.GravityEnabled && Player.TempData.Underwater)
                         Player.StopUnderwater(Logger);
-
                     break;
                 case SyncEvent.EventType.FX:
                     var fxEvent = new FX_SyncEvent(syncEvent);
 
                     if (fxEvent.PrefabName == ItemRConfig.WaterPrefabName)
-                        Player.StartUnderwater(newPlayer.Character.Data.MaxLife / 10, TimerThread, ItemRConfig, Logger);
-
+                        Player.StartUnderwater(newPlayer.Character.Data.MaxLife / 10, TimerThread, ServerRConfig, ItemRConfig, Logger);
                     break;
             }
 
