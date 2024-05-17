@@ -4,7 +4,6 @@ using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controll
 using Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
-using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss;
