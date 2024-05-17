@@ -114,6 +114,9 @@ public static class CharacterInventoryExtensions
 
         gottenItem.Count -= count;
 
+        if (gottenItem.Count <= 0)
+            player.SetEmptySlot(item.ItemId);
+
         player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count, itemCatalog);
     }
 
@@ -182,13 +185,22 @@ public static class CharacterInventoryExtensions
                 player.Character.Data.Inventory.Items.Remove(item.Key);
     }
 
+    public static void UseItemFromHotBar(this Player player, int itemId, ItemCatalog itemCatalog)
+    {
+        var itemDescription = itemCatalog.GetItemFromId(itemId);
+
+        player.RemoveItem(itemDescription, 1, itemCatalog);  
+        player.SendXt("hu", player.Character.Data.Hotbar);
+        player.SendUpdatedInventory();
+    }
+
     public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel)
     {
         var hotbar = player.Character.Data.Hotbar;
 
         foreach (var hotbarSlot in hotbar.HotbarButtons.Where
             (slot => slot.Key != slotId && slot.Value.ItemId == itemModel.ItemId))
-            player.RemoveHotbarSlot(hotbarSlot.Key);
+            player.SetEmptySlot(hotbarSlot.Key);
 
         if (!hotbar.HotbarButtons.ContainsKey(slotId))
             hotbar.HotbarButtons.Add(slotId, itemModel);
@@ -196,14 +208,14 @@ public static class CharacterInventoryExtensions
         hotbar.HotbarButtons[slotId] = itemModel;
     }
 
-    public static void RemoveHotbarSlot(this Player player, int slotId)
+    public static void SetEmptySlot(this Player player, int slotId)
     {
         var hotbar = player.Character.Data.Hotbar;
 
         if (!hotbar.HotbarButtons.ContainsKey(slotId))
             return;
 
-        hotbar.HotbarButtons.Remove(slotId);
+        hotbar.HotbarButtons[slotId] = new ItemRConfig().EmptySlot;
     }
 
     public static void EquipPet(this Player player, PetAbilityParams petAbilityParams,
