@@ -18,12 +18,12 @@ public class UpdatePetMode : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
-    public ILogger<PetAbilityExtensions> Logger { get; set; }
+    public ILogger<UpdatePetMode> Logger { get; set; }
 
     public override void Run(string[] message)
     {
         if (Player == null || !Player.Character.Pets.TryGetValue
-            (Player.GetEquippedPetId(ServerRConfig), out var pet) || !Player.Character.Pets.Any() ||
+            (Player.GetEquippedPetId(ServerRConfig), out var pet) || Player.Character.Pets.Count == 0 ||
             !PetAbilities.PetAbilityData.TryGetValue(int.Parse(Player.GetEquippedPetId(ServerRConfig)), out var petAbilityParams))
         {
             Logger.LogInformation("{characterName} has no pet equipped!", Player.CharacterName);
@@ -42,7 +42,7 @@ public class UpdatePetMode : ExternalProtocol
             return;
         }
 
-        if (pet.IsAttackAbility(petAbilityParams) && pet.GetDetectedEnemies(Player).Count <= 0)
+        if (petAbilityParams.IsAttackAbility() && Player.GetDetectedEnemies().Count <= 0)
         {
             Logger.LogInformation("{characterName}'s pet detected no enemies to attack!", Player.CharacterName);
             return;
@@ -55,6 +55,6 @@ public class UpdatePetMode : ExternalProtocol
             return;
         }
 
-        pet.SendAbility(Player, ItemCatalog, ServerRConfig, TimerThread);
+        Player.SendAbility(ItemCatalog, ServerRConfig, TimerThread);
     }
 }

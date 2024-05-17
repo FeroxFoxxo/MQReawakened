@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Players;
-using Server.Reawakened.Rooms;
+﻿using Server.Reawakened.Rooms;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 

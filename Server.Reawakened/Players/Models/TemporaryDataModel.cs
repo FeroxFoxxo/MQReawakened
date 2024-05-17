@@ -1,5 +1,4 @@
 ﻿using Server.Base.Core.Extensions;
-using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Players.Models.Trade;
 using UnityEngine;
