@@ -97,7 +97,7 @@ public static class PlayerExtensions
         player.SendXt("cp", charData.Reputation, charData.ReputationForNextLevel);
     }
 
-    public static void TradeWithPlayer(this Player origin, ItemCatalog itemCatalog)
+    public static void TradeWithPlayer(this Player origin, ItemCatalog itemCatalog, ItemRConfig config)
     {
         var tradeModel = origin.TempData.TradeModel;
 
@@ -111,7 +111,7 @@ public static class PlayerExtensions
             var itemDesc = itemCatalog.GetItemFromId(item.Key);
 
             tradeModel.TradingPlayer.AddItem(itemDesc, item.Value, itemCatalog);
-            origin.RemoveItem(itemDesc, item.Value, itemCatalog);
+            origin.RemoveItem(itemDesc, item.Value, itemCatalog, config);
         }
 
         tradingPlayer.Character.Data.Cash += tradeModel.BananasInTrade;
@@ -229,14 +229,14 @@ public static class PlayerExtensions
     public static void AddCharacter(this Player player, CharacterModel character) =>
         player.UserInfo.CharacterIds.Add(character.Id);
 
-    public static void DeleteCharacter(this Player player, int id, CharacterHandler characterHandler)
+    public static void DeleteCharacter(this CharacterHandler characterHandler, int id, UserInfo userInfo)
     {
-        player.UserInfo.CharacterIds.Remove(id);
+        userInfo.CharacterIds.Remove(id);
 
         characterHandler.Remove(id);
 
-        player.UserInfo.LastCharacterSelected = player.UserInfo.CharacterIds.Count > 0
-            ? characterHandler.Get(player.UserInfo.CharacterIds.First()).Data.CharacterName
+        userInfo.LastCharacterSelected = userInfo.CharacterIds.Count > 0
+            ? characterHandler.Get(userInfo.CharacterIds.First()).Data.CharacterName
             : string.Empty;
     }
 
@@ -273,7 +273,7 @@ public static class PlayerExtensions
             player.DiscoverTribe(tribe);
     }
 
-    public static void AddSlots(this Player player, bool hasPet)
+    public static void AddSlots(this Player player, bool hasPet, ItemRConfig config)
     {
         var hotbarButtons = player.Character.Data.Hotbar.HotbarButtons;
 
@@ -281,7 +281,7 @@ public static class PlayerExtensions
         {
             if (!hotbarButtons.ContainsKey(i))
             {
-                var itemModel = new ItemRConfig().EmptySlot;
+                var itemModel = config.EmptySlot;
                 hotbarButtons[i] = itemModel;
             }
         }
@@ -412,7 +412,7 @@ public static class PlayerExtensions
 
                             if (deliveredItem != null)
                             {
-                                player.RemoveItem(deliveredItem, objective.Total, itemCatalog);
+                                player.RemoveItem(deliveredItem, objective.Total, itemCatalog, itemCatalog.ItemConfig);
                                 player.SendUpdatedInventory();
                             }
                             break;

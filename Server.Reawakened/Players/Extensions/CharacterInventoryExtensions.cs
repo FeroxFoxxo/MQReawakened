@@ -105,7 +105,7 @@ public static class CharacterInventoryExtensions
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>
         characterData.Data.Inventory.Items.TryGetValue(itemId, out outItem);
 
-    public static void RemoveItem(this Player player, ItemDescription item, int count, ItemCatalog itemCatalog)
+    public static void RemoveItem(this Player player, ItemDescription item, int count, ItemCatalog itemCatalog, ItemRConfig config)
     {
         var characterData = player.Character;
 
@@ -115,7 +115,7 @@ public static class CharacterInventoryExtensions
         gottenItem.Count -= count;
 
         if (gottenItem.Count <= 0)
-            player.SetEmptySlot(item.ItemId);
+            player.SetEmptySlot(item.ItemId, config);
 
         player.CheckObjective(ObjectiveEnum.Inventorycheck, gottenItem.ItemId.ToString(), item.PrefabName, gottenItem.Count, itemCatalog);
     }
@@ -185,37 +185,35 @@ public static class CharacterInventoryExtensions
                 player.Character.Data.Inventory.Items.Remove(item.Key);
     }
 
-    public static void UseItemFromHotBar(this Player player, int itemId, ItemCatalog itemCatalog)
+    public static void UseItemFromHotBar(this Player player, int itemId, ItemCatalog itemCatalog, ItemRConfig config)
     {
         var itemDescription = itemCatalog.GetItemFromId(itemId);
 
-        player.RemoveItem(itemDescription, 1, itemCatalog);  
+        player.RemoveItem(itemDescription, 1, itemCatalog, config);  
         player.SendXt("hu", player.Character.Data.Hotbar);
         player.SendUpdatedInventory();
     }
 
-    public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel)
+    public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel, ItemRConfig config)
     {
         var hotbar = player.Character.Data.Hotbar;
 
         foreach (var hotbarSlot in hotbar.HotbarButtons.Where
             (slot => slot.Key != slotId && slot.Value.ItemId == itemModel.ItemId))
-            player.SetEmptySlot(hotbarSlot.Key);
+            player.SetEmptySlot(hotbarSlot.Key, config);
 
-        if (!hotbar.HotbarButtons.ContainsKey(slotId))
-            hotbar.HotbarButtons.Add(slotId, itemModel);
-
+        hotbar.HotbarButtons.TryAdd(slotId, itemModel);
         hotbar.HotbarButtons[slotId] = itemModel;
     }
 
-    public static void SetEmptySlot(this Player player, int slotId)
+    public static void SetEmptySlot(this Player player, int slotId, ItemRConfig config)
     {
         var hotbar = player.Character.Data.Hotbar;
 
         if (!hotbar.HotbarButtons.ContainsKey(slotId))
             return;
 
-        hotbar.HotbarButtons[slotId] = new ItemRConfig().EmptySlot;
+        hotbar.HotbarButtons[slotId] = config.EmptySlot;
     }
 
     public static void EquipPet(this Player player, PetAbilityParams petAbilityParams,

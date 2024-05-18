@@ -74,18 +74,6 @@ public class AutoJoin : SystemProtocol
         {
             var character = CharacterHandler.Get(characterId);
 
-            if (character == null)
-            {
-                Player.DeleteCharacter(characterId, CharacterHandler);
-                continue;
-            }
-
-            if (character.Data.UserUuid != userInfo.Id)
-            {
-                userInfo.CharacterIds.Remove(characterId);
-                continue;
-            }
-
             characterData.Add(character.Data.GetLightCharacterData());
         }
 

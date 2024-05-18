@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Network.Extensions;
+﻿using Server.Reawakened.Configs;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -11,6 +12,7 @@ public class TradeDeal : ExternalProtocol
     public override string ProtocolName => "tf";
 
     public ItemCatalog ItemCatalog { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -40,8 +42,8 @@ public class TradeDeal : ExternalProtocol
 
         if (originTradeModel.FinalisedTrade && otherTradeModel.FinalisedTrade)
         {
-            tradingPlayer.TradeWithPlayer(ItemCatalog);
-            Player.TradeWithPlayer(ItemCatalog);
+            tradingPlayer.TradeWithPlayer(ItemCatalog, ItemRConfig);
+            Player.TradeWithPlayer(ItemCatalog, ItemRConfig);
 
             tradingPlayer.SendCashUpdate();
             tradingPlayer.SendUpdatedInventory();

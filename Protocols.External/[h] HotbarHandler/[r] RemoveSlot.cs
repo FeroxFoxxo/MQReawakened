@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -16,6 +17,7 @@ public class RemoveSlot : ExternalProtocol
     public PetAbilities PetAbilities { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public ILogger<RemoveSlot> Logger { get; set; }
+    public ItemRConfig ItemConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -30,7 +32,7 @@ public class RemoveSlot : ExternalProtocol
             return;
         }
 
-        Player.SetEmptySlot(hotbarSlotId);
+        Player.SetEmptySlot(hotbarSlotId, ItemConfig);
 
         if (Player.Character.Pets.TryGetValue(hotbarItem.ItemId.ToString(), out var pet) &&
             PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbilityParams))

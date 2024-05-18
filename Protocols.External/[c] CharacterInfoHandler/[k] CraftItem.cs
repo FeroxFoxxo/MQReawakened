@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Protocols;
@@ -18,6 +19,7 @@ public class CraftItem : ExternalProtocol
     public ServerRConfig ServerRConfig { get; set; }
     public ILogger<CraftItem> Logger { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -44,7 +46,7 @@ public class CraftItem : ExternalProtocol
         foreach (var ingredient in recipe.Ingredients)
         {
             var ingredientItem = ItemCatalog.GetItemFromId(ingredient.ItemId);
-            Player.RemoveItem(ingredientItem, ingredient.Count * amount, ItemCatalog);
+            Player.RemoveItem(ingredientItem, ingredient.Count * amount, ItemCatalog, ItemRConfig);
         }
 
         var itemDesc = ItemCatalog.GetItemFromId(recipe.ItemId);

@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Icons.Services;
 using Server.Reawakened.XMLs.Abstractions.Enums;
@@ -26,6 +27,7 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
     public Dictionary<int, ItemDescription> Items;
 
     public ServerRConfig Config { get; set; }
+    public ItemRConfig ItemConfig { get; set; }
     public ExtractIcons IconBank { get; set; }
     public InternalIgnoredItem IgnoredItems { get; set; }
     public InternalItem InternalCatalog { get; set; }

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
@@ -15,6 +16,7 @@ public class EquipItem : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
     public ILogger<EquipItem> Logger { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -32,7 +34,7 @@ public class EquipItem : ExternalProtocol
             if (itemDesc != null)
                 Player.CheckAchievement(AchConditionType.EquipItem, [itemDesc.PrefabName], InternalAchievement, Logger);
 
-            Player.RemoveItem(ItemCatalog.GetItemFromId(item.Value), 1, ItemCatalog);
+            Player.RemoveItem(ItemCatalog.GetItemFromId(item.Value), 1, ItemCatalog, ItemRConfig);
         }
 
         character.Data.Equipment = newEquipment;

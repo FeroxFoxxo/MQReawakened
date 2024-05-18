@@ -78,7 +78,7 @@ public class UseItem : ExternalProtocol
     private void HandlePet(ItemDescription usedItem)
     {
         var itemModel = Player.Character.Data.Inventory.Items[usedItem.ItemId];
-        Player.SetHotbarSlot(ServerRConfig.PetHotbarIndex, itemModel);
+        Player.SetHotbarSlot(ServerRConfig.PetHotbarIndex, itemModel, ItemRConfig);
         SendXt("hs", Player.Character.Data.Hotbar);
     }
 
@@ -126,7 +126,7 @@ public class UseItem : ExternalProtocol
 
     private void HandleRecipe(ItemDescription usedItem)
     {
-        Player.RemoveItem(usedItem, 1, ItemCatalog);
+        Player.RemoveItem(usedItem, 1, ItemCatalog, ItemRConfig);
 
         var recipe = RecipeCatalog.GetRecipeById(usedItem.RecipeParentItemID);
 

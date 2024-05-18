@@ -52,7 +52,7 @@ public class UseSlot : ExternalProtocol
         {
             case ItemActionType.Drop:
                 Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
-                Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog);
+                Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog, ItemRConfig);
                 break;
             case ItemActionType.Grenade:
             case ItemActionType.Throw:
@@ -125,7 +125,7 @@ public class UseSlot : ExternalProtocol
                     break;
             }
 
-            Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog);
+            Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog, ItemRConfig);
         }
     }
 
@@ -154,7 +154,7 @@ public class UseSlot : ExternalProtocol
         if (isGrenade)
         {
             TimerThread.DelayCall(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ItemRConfig.GrenadeSpawnDelay), TimeSpan.Zero, 1);
-            Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog);
+            Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog, ItemRConfig);
         }
         else
             LaunchProjectile(projectileData);

@@ -7,6 +7,7 @@ using Server.Base.Network;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Enums;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Services;
@@ -73,5 +74,33 @@ public class UserInfoHandler(EventSink sink, ILogger<UserInfo> logger, WorldHand
         Add(user, id);
 
         return user;
+    }
+
+    public override UserInfo Get(int id)
+    {
+        var userInfo = base.Get(id);
+
+        foreach (var characterId in userInfo.CharacterIds.ToList())
+        {
+            var character = characterHandler.Get(characterId);
+
+            if (character == null)
+            {
+                characterHandler.DeleteCharacter(characterId, userInfo);
+                continue;
+            }
+
+            if (character.Data.UserUuid != userInfo.Id)
+            {
+                userInfo.CharacterIds.Remove(characterId);
+                continue;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(userInfo.LastCharacterSelected))
+            if (userInfo.CharacterIds.Count == 0)
+                userInfo.LastCharacterSelected = string.Empty;
+
+        return userInfo;
     }
 }
