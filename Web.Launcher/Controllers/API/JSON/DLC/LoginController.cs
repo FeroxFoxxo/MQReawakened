@@ -30,7 +30,7 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
             return BadRequest();
         }
 
-        var userInfo = userInfoHandler.GetInternal().Values.FirstOrDefault(x => x.Id == account.Id);
+        var userInfo = userInfoHandler.Get(account.Id);
 
         if (userInfo == null)
         {

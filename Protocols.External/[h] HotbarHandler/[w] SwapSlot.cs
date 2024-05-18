@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 
@@ -9,6 +10,7 @@ public class SwapSlot : ExternalProtocol
     public override string ProtocolName => "hw";
 
     public ILogger<SetSlot> Logger { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -32,8 +34,8 @@ public class SwapSlot : ExternalProtocol
 
                 var otherItem = character.Data.Hotbar.HotbarButtons[hotbarSlotId];
 
-                Player.SetHotbarSlot(hotbarKVP.Key, otherItem);
-                Player.SetHotbarSlot(hotbarSlotId, item);
+                Player.SetHotbarSlot(hotbarKVP.Key, otherItem, ItemRConfig);
+                Player.SetHotbarSlot(hotbarSlotId, item, ItemRConfig);
             }
         }
 

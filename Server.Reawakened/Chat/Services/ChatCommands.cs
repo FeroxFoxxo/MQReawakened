@@ -142,7 +142,7 @@ public partial class ChatCommands(
 
     public bool Hotbar(Player player, string[] args)
     {
-        player.AddSlots(true);
+        player.AddSlots(true, itemConfig);
 
         if (args.Length <= 2)
             return true;
@@ -182,7 +182,7 @@ public partial class ChatCommands(
 
             player.Character.Data.Inventory.Items.TryAdd(item.ItemId, itemModel);
 
-            player.SetHotbarSlot(hotbarId - 1, itemModel);
+            player.SetHotbarSlot(hotbarId - 1, itemModel, itemConfig);
 
             player.SendXt("hs", player.Character.Data.Hotbar);
 
@@ -235,7 +235,7 @@ public partial class ChatCommands(
     private bool GodMode(Player player, string[] args)
     {
         AddKit(player, 1);
-        player.AddSlots(true);
+        player.AddSlots(true, itemConfig);
 
         player.AddBananas(config.CashKitAmount, internalAchievement, logger);
         player.AddNCash(config.CashKitAmount);

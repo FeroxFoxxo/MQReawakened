@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -17,6 +18,7 @@ public class SetSlot : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -31,7 +33,7 @@ public class SetSlot : ExternalProtocol
             return;
         }
 
-        Player.SetHotbarSlot(hotbarSlotId, item);
+        Player.SetHotbarSlot(hotbarSlotId, item, ItemRConfig);
 
         if (ItemCatalog.GetItemFromId(itemId).IsPet() &&
             PetAbilities.PetAbilityData.TryGetValue(itemId, out var petAbility))

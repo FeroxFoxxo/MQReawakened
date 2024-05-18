@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Network.Protocols;
+﻿using Server.Reawakened.Configs;
+using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
 
@@ -9,6 +10,7 @@ public class RemoveItem : ExternalProtocol
     public override string ProtocolName => "ir";
 
     public ItemCatalog ItemCatalog { get; set; }
+    public ItemRConfig ItemRConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -17,7 +19,7 @@ public class RemoveItem : ExternalProtocol
 
         var itemDescription = ItemCatalog.GetItemFromId(itemId);
 
-        Player.RemoveItem(itemDescription, removeCount, ItemCatalog);
+        Player.RemoveItem(itemDescription, removeCount, ItemCatalog, ItemRConfig);
 
         Player.SendUpdatedInventory();
     }
