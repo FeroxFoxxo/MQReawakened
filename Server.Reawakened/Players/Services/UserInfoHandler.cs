@@ -28,10 +28,9 @@ public class UserInfoHandler(EventSink sink, ILogger<UserInfo> logger, WorldHand
 
         var userId = account?.Id ?? throw new NullReferenceException("Account not found!");
 
-        if (!GetInternal().TryGetValue(userId, out var value))
-            throw new NullReferenceException();
+        var userInfo = Get(userId);
 
-        state.Set(new Player(account, value, state, worldHandler, playerContainer, characterHandler));
+        state.Set(new Player(account, userInfo, state, worldHandler, playerContainer, characterHandler));
     }
 
     public override UserInfo CreateDefault()
