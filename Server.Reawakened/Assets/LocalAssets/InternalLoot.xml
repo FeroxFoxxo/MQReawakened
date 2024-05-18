@@ -2948,4 +2948,19 @@
             </Items>
         </LootInfo>
     </Level>
+
+    <!-- Guardian Knights -->
+    <Level name="Vespid Lair" id="446">
+        <LootInfo objectId="3312094" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="COL_ING_G_Linen02" count="1" />
+                <Item itemName="Add_COM_HoopEarrings02_E04" count="1" />
+                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="WPN_KnightMace01" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
 </LootCatalog>
