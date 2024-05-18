@@ -291,11 +291,10 @@ public partial class ChatCommands(
 
         var zPosition = player.TempData.Position.z;
 
-        if (args.Length > 3)
-            if (int.TryParse(args[3], out var givenZPosition))
-                zPosition = givenZPosition;
+        if (args.Length > 3 && int.TryParse(args[3], out var givenZPosition))
+            zPosition = givenZPosition;
 
-        player.TeleportPlayer(player.TempData.Position.x + x, player.TempData.Position.y + y, zPosition == 0);
+        player.TeleportPlayer(player.TempData.Position.x + x, player.TempData.Position.y + y, zPosition is > 0 and not 10);
 
         return true;
     }
