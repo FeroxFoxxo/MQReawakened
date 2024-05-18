@@ -20,7 +20,10 @@ public class ShardController(AccountHandler accHandler, UserInfoHandler userInfo
         username = username?.Trim();
         authToken = authToken?.Trim();
 
-        if (!accHandler.GetInternal().TryGetValue(uuid, out var account) || !userInfoHandler.GetInternal().TryGetValue(uuid, out var user))
+        var account = accHandler.Get(uuid);
+        var user = userInfoHandler.Get(uuid);
+
+        if (account == null || user == null)
             return Unauthorized();
 
         if (account.Username != username || user.AuthToken != authToken)

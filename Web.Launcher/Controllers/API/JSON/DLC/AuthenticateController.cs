@@ -26,7 +26,9 @@ public class AuthenticateController(AccountHandler accHandler, UserInfoHandler u
         if (account == null)
             return Unauthorized();
 
-        if (!userInfoHandler.GetInternal().TryGetValue(account.Id, out var userInfo))
+        var userInfo = userInfoHandler.Get(account.Id);
+
+        if (userInfo == null)
             return Unauthorized();
 
         if (userInfo.AuthToken != token)
