@@ -15,7 +15,7 @@ public class CollapsingPlatformComp : Component<CollapsingPlatform>
 
     public override void InitializeComponent()
     {
-        Position.SetPosition(Position.X + Rectangle.X, Position.Y + Rectangle.Y, Position.Z);
+        Position.SetPosition(Position.X, Position.Y + Rectangle.Y, Position.Z);
 
         var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
         var position = new Vector3(Position.X, Position.Y, Position.Z);
