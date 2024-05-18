@@ -2963,4 +2963,66 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Knight's Gate" id="438">
+        <!--1st Green Chest-->
+        <LootInfo objectId="12768" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing01" count="1" />
+                <Item itemName="Add_COM_Explorator01_W01" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+                <Item itemName="Add_COM_Explorator01_UF01" count="1" />
+                <Item itemName="Add_COM_Explorator01_TS01" count="1" />
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--2nd Green Chest-->
+        <LootInfo objectId="12765" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing01" count="1" />
+                <Item itemName="Add_COM_Explorator01_W01" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+                <Item itemName="Add_COM_Explorator01_LF01" count="1" />
+                <Item itemName="Add_COM_Explorator01_TS01" count="1" />
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--3rd Green Chest-->
+        <LootInfo objectId="12803" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing01" count="1" />
+                <Item itemName="Add_COM_Explorator01_S01" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+                <Item itemName="Add_COM_Explorator01_LF01" count="1" />
+                <Item itemName="Add_COM_Explorator01_LS01" count="1" />
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--4th Green Chest-->
+        <LootInfo objectId="12766" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing01" count="1" />
+                <Item itemName="Add_COM_Explorator01_S01" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+                <Item itemName="Add_COM_Explorator01_LF01" count="1" />
+                <Item itemName="Add_COM_Explorator01_LS01" count="1" />
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Blue Chest-->
+        <LootInfo objectId="10338" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Friendship01_W01" count="1" />
+                <Item itemName="WPN_1H_SwordGKnight02" count="1" />
+                <Item itemName="WPN_SPC_DoomGrenade01" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
 </LootCatalog>
