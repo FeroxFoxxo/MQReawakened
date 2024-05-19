@@ -96,6 +96,7 @@ public class PetModel()
                 break;
 
             case PetInformation.StateSyncType.Unknown:
+            default:
                 logger.LogWarning("Unknown pet state type {petState}", newPetState);
                 break;
         }
