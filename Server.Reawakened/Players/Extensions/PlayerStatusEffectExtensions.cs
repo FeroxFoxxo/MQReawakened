@@ -16,7 +16,7 @@ public static class PlayerStatusEffectExtensions
     //Doesn't seem to apply fast enough.
     public static void NullifySlowStatusEffect(this Player player, string hazardId) =>
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-                (int)ItemEffectType.NullifySlowStatusEffect, 1, 1, true, hazardId, false));
+                (int)ItemEffectType.NullifySlowStatusEffect, 1, 1, true, hazardId, true));
 
     public static void StartPoisonDamage(this Player player, string hazardId, int damage, int hurtLength, ServerRConfig serverRConfig, TimerThread timerThread)
     {
