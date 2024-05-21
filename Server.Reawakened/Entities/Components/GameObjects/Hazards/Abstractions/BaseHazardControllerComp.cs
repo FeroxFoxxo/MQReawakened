@@ -72,7 +72,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 if (PrefabName.Contains("ToxicCloud"))
                     EffectType = ItemEffectType.PoisonDamage;
                 else if (!Enum.TryParse(HurtEffect, true, out EffectType))
-                    Logger.LogError("Could not find effect type of: '{effect}' for '{prefabname}' ({id})!", HurtEffect, PrefabName, Id);
+                    Logger.LogError("Could not find effect type of: '{effect}' for '{prefabName}' ({id})!", HurtEffect, PrefabName, Id);
 
                 break;
         }
@@ -137,10 +137,8 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     {
         if (player == null || player.TempData.Invincible ||
             TimedHazard && !IsActive || HitOnlyVisible && player.TempData.Invisible ||
-            EffectType == ItemEffectType.SlowStatusEffect && player.TempData.IsSlowed || 
-            //Has WebWalker Boots equipped.
-            player.Character.Data.Equipment.EquippedItems.Where(x => x.Key == ItemSubCategory.SlotLegs &&
-            ItemCatalog.GetItemFromId(x.Value).ItemEffects.FirstOrDefault().Type == ItemEffectType.NullifySlowStatusEffect).Any())
+            EffectType == ItemEffectType.SlowStatusEffect && player.TempData.IsSlowed ||
+            player.HasNullifyEffect(ItemCatalog))
             return;
 
         Damage = (int)Math.Ceiling(player.Character.Data.MaxLife * HealthRatioDamage);
@@ -171,7 +169,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             default:
-                Logger.LogInformation("Unknown status effect {statusEffect} from {prefabname}", HurtEffect, PrefabName);
+                Logger.LogInformation("Unknown status effect {statusEffect} from {prefabName}", HurtEffect, PrefabName);
 
                 //Water breathing.
                 if (HurtLength < 0)
@@ -228,7 +226,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     private void ApplySlowEffect(Player player)
     {
         player.ApplySlowEffect(_id, Damage);
-        //Reduces slow status effect spam.  
+        //IsSlowed reduces slow status effect log spam.  
         player.TempData.IsSlowed = true;
         TimerThread.DelayCall(DisableIsSlowed, player, TimeSpan.FromSeconds(0.75), TimeSpan.Zero, 1);
     }
@@ -238,4 +236,3 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         var slowedPlayer = (Player)player;
         slowedPlayer.TempData.IsSlowed = false;
     }
-}
