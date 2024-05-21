@@ -21,9 +21,10 @@ public class PetModel()
     public float AbilityCooldown { get; set; }
     public int MaxEnergy { get; set; }
     public int CurrentEnergy { get; set; }
+    public int RegeneratedEnergy { get; set; }
     public bool InCoopJumpState { get; set; }
     public bool InCoopSwitchState { get; set; }
-    public string CurrentTriggerableId { get; set; }
+    public string CoopTriggerableId { get; set; }
 
     public void SpawnPet(Player petOwner, string petId, bool spawnPet, PetAbilityParams abilityParams,
         bool refillEnergy, WorldStatistics worldStatistics)
@@ -39,7 +40,7 @@ public class PetModel()
         AbilityCooldown = petOwner.Room.Time + AbilityParams.CooldownTime;
         InCoopJumpState = false;
         InCoopSwitchState = false;
-        CurrentTriggerableId = string.Empty;
+        CoopTriggerableId = string.Empty;
 
         NotifyPet(petOwner);
 
@@ -75,18 +76,18 @@ public class PetModel()
         {
             case PetInformation.StateSyncType.Deactivate:
                 RemoveTriggerInteraction(petOwner, timerThread, itemRConfig.PetPressButtonDelay);
-                CurrentTriggerableId = string.Empty;
+                CoopTriggerableId = string.Empty;
                 AbilityCooldown = petOwner.Room.Time + AbilityParams.CooldownTime;
                 break;
             case PetInformation.StateSyncType.PetStateCoopSwitch:
                 AddTriggerInteraction(petOwner, timerThread, itemRConfig.PetHoldChainDelay);
-                syncParams = CurrentTriggerableId;
+                syncParams = CoopTriggerableId;
                 break;
 
             case PetInformation.StateSyncType.PetStateCoopJump:
                 var onButton = false;
 
-                if (!string.IsNullOrEmpty(CurrentTriggerableId))
+                if (!string.IsNullOrEmpty(CoopTriggerableId))
                 {
                     onButton = true;
                     AddTriggerInteraction(petOwner, timerThread, itemRConfig.PetPressButtonDelay);
@@ -147,6 +148,7 @@ public class PetModel()
 
         if (player.TempData.OnGround)
         {
+            InCoopSwitchState = false;
             InCoopJumpState = true;
             return PetInformation.StateSyncType.PetStateCoopJump;
         }
@@ -197,12 +199,12 @@ public class PetModel()
     public InteractionData GetInteractionData(Player player) => new()
     {
         Player = player,
-        TriggerCoopController = player.Room.GetEntityFromId<TriggerCoopControllerComp>(CurrentTriggerableId),
-        MultiInteractionTrigger = player.Room.GetEntityFromId<MultiInteractionTriggerCoopControllerComp>(CurrentTriggerableId)
+        TriggerCoopController = player.Room.GetEntityFromId<TriggerCoopControllerComp>(CoopTriggerableId),
+        MultiInteractionTrigger = player.Room.GetEntityFromId<MultiInteractionTriggerCoopControllerComp>(CoopTriggerableId)
     };
 
     public void AddTriggerInteraction(Player player, TimerThread timerThread, float delay) =>
-        timerThread.DelayCall(AddTriggerInteraction, GetInteractionData(player), TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
+       timerThread.DelayCall(AddTriggerInteraction, GetInteractionData(player), TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
 
     public void RemoveTriggerInteraction(Player player, TimerThread timerThread, float delay) =>
         timerThread.DelayCall(RemoveTriggerInteraction, GetInteractionData(player), TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
@@ -234,16 +236,16 @@ public class PetModel()
 
         if (triggerData.TriggerCoopController != null)
         {
-            triggerData.TriggerCoopController.CurrentInteractions--;
             triggerData.TriggerCoopController.RemovePhysicalInteractor(triggerData.Player, PetId);
             triggerData.TriggerCoopController.RunTrigger(triggerData.Player);
+            triggerData.TriggerCoopController.CurrentInteractions--;
         }
 
         else if (triggerData.MultiInteractionTrigger != null)
         {
-            triggerData.MultiInteractionTrigger.CurrentInteractions--;
             triggerData.MultiInteractionTrigger.RemovePhysicalInteractor(triggerData.Player, PetId);
             triggerData.MultiInteractionTrigger.RunTrigger(triggerData.Player);
+            triggerData.MultiInteractionTrigger.CurrentInteractions--;
         }
 
         else return;
