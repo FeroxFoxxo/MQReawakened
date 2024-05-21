@@ -282,22 +282,15 @@ public class NPCControllerComp : Component<NPCController>
         {
             var questStatus = GetQuestType(player, validatorQuest.Id);
 
-            if (validatorQuest.LevelRequired > player.Character.Data.GlobalLevel)
-            {
-                Logger.LogTrace("[QUEST NOT READY] Player {characterName} doesn't meet the level requirement of level {requiredLevel}.",
-                    player.CharacterName, validatorQuest.LevelRequired);
-                return NPCStatus.Dialog;
-            }
-
             if (questStatus == NPCStatus.Dialog)
             {
-                Logger.LogTrace("[QUESTLINE COMPLETED] Questline from {NpcName} ({Id}) is completed.", NpcName, Id);
+                Logger.LogTrace("[QUESTLINE COMPLETED] Questline from {NpcName} ({Id}) is completed", NpcName, Id);
                 return NPCStatus.Dialog;
             }
 
             if (questStatus == NPCStatus.QuestCompleted)
             {
-                Logger.LogTrace("[{QuestId}] [COMPLETED QUEST] Quest from {NpcName} ({Id}) has been validated.",
+                Logger.LogTrace("[{QuestId}] [COMPLETED QUEST] Quest from {NpcName} ({Id}) has been validated",
                     validatorQuest.Id, NpcName, Id);
 
                 return NPCStatus.QuestCompleted;
@@ -314,7 +307,7 @@ public class NPCControllerComp : Component<NPCController>
             {
                 Logger.LogTrace("[QUESTLINE COMPLETED] Questline from {NpcName} ({Id}) is completed", NpcName, Id);
                 return NPCStatus.Dialog;
-            }          
+            }
 
             if (questStatus == NPCStatus.QuestInProgress)
             {
@@ -326,7 +319,7 @@ public class NPCControllerComp : Component<NPCController>
 
             if (questStatus == NPCStatus.QuestAvailable)
             {
-                Logger.LogTrace("[{Quest} ({QuestId})] [AVAILABLE QUEST] Available from {NpcName} ({Id})",
+                Logger.LogTrace("[{Quest} ({QuestId})] [AVAILABLE QUEST] Availale from {NpcName} ({Id})",
                     givenQuest.Name, givenQuest.Id, NpcName, Id);
 
                 return NPCStatus.QuestAvailable;
