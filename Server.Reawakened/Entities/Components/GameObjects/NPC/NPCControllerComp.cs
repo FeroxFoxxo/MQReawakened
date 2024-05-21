@@ -319,7 +319,7 @@ public class NPCControllerComp : Component<NPCController>
 
             if (questStatus == NPCStatus.QuestAvailable)
             {
-                Logger.LogTrace("[{Quest} ({QuestId})] [AVAILABLE QUEST] Availale from {NpcName} ({Id})",
+                Logger.LogTrace("[{Quest} ({QuestId})] [AVAILABLE QUEST] Available from {NpcName} ({Id})",
                     givenQuest.Name, givenQuest.Id, NpcName, Id);
 
                 return NPCStatus.QuestAvailable;
