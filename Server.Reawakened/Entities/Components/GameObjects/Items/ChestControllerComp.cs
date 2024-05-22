@@ -45,7 +45,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
         //Temp way for adding bananas to empty chests to create a better user experience.
         if (string.IsNullOrEmpty(LootCatalog.GetLootById(player.Room.LevelInfo.LevelId, Id).ObjectId))
         {
-            var bananaReward = new Random().Next(30, 55);
+            var bananaReward = RandomBananaReward(player);
 
             player.AddBananas(bananaReward, InternalAchievement, Logger);
             triggerEvent.EventDataList[0] = bananaReward;
@@ -63,5 +63,30 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
 
         Room.SendSyncEvent(triggerEvent);
         Room.SendSyncEvent(triggerReceiver);
+    }
+
+    //Temporary for chests without loot tables. Could be used for banana rewards in the future.
+    public int RandomBananaReward(Player player)
+    {
+        var bananaReward = 0;
+        var random = new Random();
+
+        switch (PrefabName)
+        {
+            case var prefab when prefab.Contains(ServerRConfig.GreenChestName):
+                bananaReward = random.Next(45, 70);
+                break;
+            case var prefab when prefab.Contains(ServerRConfig.BlueChestName):
+                bananaReward = random.Next(85, 155);
+                break;
+            case var prefab when prefab.Contains(ServerRConfig.PurpleChestName):
+                bananaReward = random.Next(295, 500);
+                break;
+        }
+
+        if (player.Character.Data.GlobalLevel > 30)
+            bananaReward *= 2;
+
+        return bananaReward;
     }
 }
