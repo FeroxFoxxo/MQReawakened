@@ -65,6 +65,9 @@ public class ServerRConfig : IRConfig
     public int CashKitAmount { get; }
 
     public string DailyBoxName { get; }
+    public string GreenChestName { get; }
+    public string BlueChestName { get; }
+    public string PurpleChestName { get; }
 
     public int MaximumEntitiesToReturnLog { get; }
 
