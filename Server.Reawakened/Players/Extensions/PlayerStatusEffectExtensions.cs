@@ -3,6 +3,7 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.XMLs.Bundles.Base;
 
 
 namespace Server.Reawakened.Players.Extensions;
@@ -16,7 +17,12 @@ public static class PlayerStatusEffectExtensions
     //Doesn't seem to apply fast enough.
     public static void NullifySlowStatusEffect(this Player player, string hazardId) =>
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-                (int)ItemEffectType.NullifySlowStatusEffect, 1, 1, true, hazardId, false));
+                (int)ItemEffectType.NullifySlowStatusEffect, 1, 1, true, hazardId, true));
+
+    public static bool HasNullifyEffect(this Player player, ItemCatalog itemCatalog) =>
+     player.Character.Data.Equipment.EquippedItems
+         .Select(x => itemCatalog.GetItemFromId(x.Value))
+         .Any(item => item.ItemEffects.Any(effect => effect.Type == ItemEffectType.NullifySlowStatusEffect));
 
     public static void StartPoisonDamage(this Player player, string hazardId, int damage, int hurtLength, ServerRConfig serverRConfig, TimerThread timerThread)
     {
@@ -29,10 +35,10 @@ public static class PlayerStatusEffectExtensions
         player.ApplyCharacterDamage(damage, hazardId, hurtLength, serverRConfig, timerThread);
     }
 
-    public class InvisibiltyData()
+    public class InvisibilityData()
     {
         public Player Player;
-        public bool IsInvisibile;
+        public bool IsInvisible;
         public float Duration;
     }
 
@@ -40,10 +46,10 @@ public static class PlayerStatusEffectExtensions
     {
         player.TempData.Invisible = true;
 
-        var disableInvisibilityData = new InvisibiltyData()
+        var disableInvisibilityData = new InvisibilityData()
         {
             Player = player,
-            IsInvisibile = false,
+            IsInvisible = false,
             Duration = duration
         };
 
@@ -53,12 +59,11 @@ public static class PlayerStatusEffectExtensions
 
     public static void DisableInvisibility(object data)
     {
-        var invisibilityData = (InvisibiltyData)data;
-
+        var invisibilityData = (InvisibilityData)data;
         invisibilityData.Player.TempData.Invisible = false;
     }
 
-    public class InvincibiltyData()
+    public class InvincibilityData()
     {
         public Player Player;
         public bool IsInvincible;
@@ -71,7 +76,7 @@ public static class PlayerStatusEffectExtensions
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
                  (int)ItemEffectType.Invincibility, 0, (int)durationInSeconds, true, player.CharacterName, true));
 
-        var invincibleData = new InvincibiltyData()
+        var invincibleData = new InvincibilityData()
         {
             Player = player,
             IsInvincible = false
@@ -82,7 +87,7 @@ public static class PlayerStatusEffectExtensions
 
     public static void DisableInvincibility(object data)
     {
-        var invincibleData = (InvincibiltyData)data;
+        var invincibleData = (InvincibilityData)data;
         invincibleData.Player.TempData.Invincible = false;
     }
 }

@@ -251,11 +251,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         if (Room.GetPlayerById(interactionId) != null)
         {
             if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) &&
-                !pet.InCoopState() && InteractType == InteractionType.PetChain || InteractType == InteractionType.PetSwitch)
-            {
-                if (pet != null)
-                    pet.CurrentTriggerableId = Id;
-            }
+                InteractType == InteractionType.PetChain || InteractType == InteractionType.PetSwitch)
+                if (pet != null && !pet.InCoopState())
+                    pet.CoopTriggerableId = Id;
 
             if (!string.IsNullOrEmpty(QuestCompletedRequired))
             {
@@ -353,7 +351,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 return;
 
             if (StayTriggeredOnUnpressed || player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet)
-                && Id == pet.CurrentTriggerableId && pet.InCoopState())
+                && Id == pet.CoopTriggerableId && pet.InCoopState())
                 return;
 
             if (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time && ActivationTimeAfterFirstInteraction > 0)

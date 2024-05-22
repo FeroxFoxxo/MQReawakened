@@ -25,7 +25,7 @@ public class MeleeEntity : BaseProjectile
         var meleeWidth = onGround ? config.MeleeWidth : config.MeleeAerialWidth;
         var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialHeight;
 
-        Collider = new AttackCollider(id, position, new Rect(isRight ? 0 : -meleeWidth, 0, meleeWidth, meleeHeight),
+        Collider = new AttackCollider(id, position, new Rect(isRight ? 0 : -meleeWidth, onGround ? 0 : config.MeleeAerialOffset, meleeWidth, meleeHeight),
             PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f
         );
 

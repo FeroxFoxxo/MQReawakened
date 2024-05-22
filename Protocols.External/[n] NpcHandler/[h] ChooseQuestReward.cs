@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Components.GameObjects.NPC;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -53,6 +55,13 @@ public class ChooseQuestReward : ExternalProtocol
         }
 
         var quest = QuestCatalog.QuestCatalogs[questId];
+        var questLine = QuestCatalog.GetQuestLineData(quest.QuestLineId);
+
+        if (questLine.QuestType == QuestType.Main)
+        {
+            var questGiver = Player.Room.GetEntityFromId<NPCControllerComp>(npcId.ToString());
+            questGiver.StartNewQuest(Player);
+        }
 
         Player.CheckAchievement(AchConditionType.CompleteQuest, [quest.Name], InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
         Player.CheckAchievement(AchConditionType.CompleteQuestInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger); // Quest by Level/Trail if any exist

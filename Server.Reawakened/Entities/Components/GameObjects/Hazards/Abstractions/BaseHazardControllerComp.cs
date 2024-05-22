@@ -72,7 +72,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 if (PrefabName.Contains("ToxicCloud"))
                     EffectType = ItemEffectType.PoisonDamage;
                 else if (!Enum.TryParse(HurtEffect, true, out EffectType))
-                    Logger.LogError("Could not find effect type of: '{effect}' for '{prefabname}' ({id})!", HurtEffect, PrefabName, Id);
+                    Logger.LogError("Could not find effect type of: '{effect}' for '{prefabName}' ({id})!", HurtEffect, PrefabName, Id);
 
                 break;
         }
@@ -136,12 +136,14 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public void ApplyHazardEffect(Player player)
     {
         if (player == null || player.TempData.Invincible ||
-            TimedHazard && !IsActive || HitOnlyVisible && player.TempData.Invisible)
+            TimedHazard && !IsActive || HitOnlyVisible && player.TempData.Invisible ||
+            EffectType == ItemEffectType.SlowStatusEffect && player.TempData.IsSlowed ||
+            player.HasNullifyEffect(ItemCatalog))
             return;
 
         Damage = (int)Math.Ceiling(player.Character.Data.MaxLife * HealthRatioDamage);
 
-        Logger.LogTrace("Applying {statusEffect} to {characterName} from {prefabname}", EffectType, player.CharacterName, PrefabName);
+        Logger.LogTrace("Applying {statusEffect} to {characterName} from {prefabName}", EffectType, player.CharacterName, PrefabName);
 
         switch (EffectType)
         {
@@ -156,7 +158,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             case ItemEffectType.BluntDamage:
                 var enemy = Room.GetEnemy(Id);
                 var damage = (float)WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
-                             player.Character.Data.CalculateDefense(EffectType, ItemCatalog);      
+                             player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
 
                 player.ApplyCharacterDamage((int)damage, Id, DamageDelay, ServerRConfig, TimerThread);
                 break;
@@ -167,7 +169,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 break;
 
             default:
-                Logger.LogInformation("Unknown status effect {statusEffect} from {prefabname}", HurtEffect, PrefabName);
+                Logger.LogInformation("Unknown status effect {statusEffect} from {prefabName}", HurtEffect, PrefabName);
 
                 //Water breathing.
                 if (HurtLength < 0)
@@ -221,6 +223,16 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
     public void RestartTimerDelay(object data) => IsActive = true;
 
-    public void ApplySlowEffect(Player player) =>
+    private void ApplySlowEffect(Player player)
+    {
         player.ApplySlowEffect(_id, Damage);
-}
+        //IsSlowed reduces slow status effect log spam.  
+        player.TempData.IsSlowed = true;
+        TimerThread.DelayCall(DisableIsSlowed, player, TimeSpan.FromSeconds(0.75), TimeSpan.Zero, 1);
+    }
+
+    private void DisableIsSlowed(object player)
+    {
+        var slowedPlayer = (Player)player;
+        slowedPlayer.TempData.IsSlowed = false;
+    }
