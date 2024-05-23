@@ -23,23 +23,27 @@ public class EquipItem : ExternalProtocol
         var character = Player.Character;
 
         var newEquipment = new EquipmentModel(message[5]);
+        var fromEquip = false;
 
         foreach (var item in newEquipment.EquippedItems)
         {
-            if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquipped))
-                Player.AddItem(ItemCatalog.GetItemFromId(previouslyEquipped), 1, ItemCatalog);
+            if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquippedId))
+            {
+                fromEquip = true;
+                Player.AddItem(ItemCatalog.GetItemFromId(previouslyEquippedId), 1, ItemCatalog);
+            }
 
             var itemDesc = ItemCatalog.GetItemFromId(item.Value);
 
             if (itemDesc != null)
                 Player.CheckAchievement(AchConditionType.EquipItem, [itemDesc.PrefabName], InternalAchievement, Logger);
 
-            Player.RemoveItem(ItemCatalog.GetItemFromId(item.Value), 1, ItemCatalog, ItemRConfig);
+            Player.RemoveItem(ItemCatalog.GetItemFromId(previouslyEquippedId), 1, ItemCatalog, ItemRConfig);
         }
 
         character.Data.Equipment = newEquipment;
 
         Player.UpdateEquipment();
-        Player.SendUpdatedInventory(true);
+        Player.SendUpdatedInventory(fromEquip);
     }
 }
