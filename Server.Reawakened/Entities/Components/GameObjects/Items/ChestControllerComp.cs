@@ -84,7 +84,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
                 break;
         }
 
-        if (player.Character.Data.GlobalLevel > 30)
+        if (player.Character.Data.GlobalLevel > ServerRConfig.DoubleChestRewardsLevel)
             bananaReward *= 2;
 
         return bananaReward;
