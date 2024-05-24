@@ -1,3 +1,4 @@
+using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Network.Protocols;
@@ -23,27 +24,29 @@ public class EquipItem : ExternalProtocol
         var character = Player.Character;
 
         var newEquipment = new EquipmentModel(message[5]);
-        var fromEquip = false;
 
         foreach (var item in newEquipment.EquippedItems)
         {
             if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquippedId))
             {
-                fromEquip = true;
+                if (ItemAlreadyEquipped(item.Value, previouslyEquippedId))
+                    continue;
+
                 Player.AddItem(ItemCatalog.GetItemFromId(previouslyEquippedId), 1, ItemCatalog);
+                Player.RemoveItem(ItemCatalog.GetItemFromId(item.Value), 1, ItemCatalog, ItemRConfig);
             }
 
             var itemDesc = ItemCatalog.GetItemFromId(item.Value);
 
             if (itemDesc != null)
                 Player.CheckAchievement(AchConditionType.EquipItem, [itemDesc.PrefabName], InternalAchievement, Logger);
-
-            Player.RemoveItem(ItemCatalog.GetItemFromId(previouslyEquippedId), 1, ItemCatalog, ItemRConfig);
         }
 
         character.Data.Equipment = newEquipment;
 
         Player.UpdateEquipment();
-        Player.SendUpdatedInventory(fromEquip);
+        Player.SendUpdatedInventory(true);
     }
+
+    public bool ItemAlreadyEquipped(int itemId, int previouslyEquippedId) => itemId == previouslyEquippedId;
 }
