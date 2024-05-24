@@ -26,7 +26,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
         ChestState = DailiesState.Active;
 
         if (player.Character.CurrentCollectedDailies != null &&
-            PrefabName.Contains(ServerRConfig.DailyBoxName) || IsLoyaltyChest == true)
+             PrefabName.Contains(ServerRConfig.DailyBoxName) || IsLoyaltyChest == true)
             if (!CanActivateDailies(player, Id))
                 ChestState = DailiesState.Collected;
 
@@ -52,14 +52,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
         }
 
         if (PrefabName.Contains(ServerRConfig.DailyBoxName) || IsLoyaltyChest == true)
-        {
-            player.SendSyncEventToPlayer(triggerEvent);
-            player.SendSyncEventToPlayer(triggerReceiver);
-
             player.Character.CurrentCollectedDailies.TryAdd(Id, SetDailyHarvest(Id, Room.LevelInfo.LevelId, DateTime.Now));
-
-            return;
-        }
 
         Room.SendSyncEvent(triggerEvent);
         Room.SendSyncEvent(triggerReceiver);
@@ -68,21 +61,13 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
     //Temporary for chests without loot tables. Could be used for banana rewards in the future.
     public int RandomBananaReward(Player player)
     {
-        var bananaReward = 0;
         var random = new Random();
-
-        switch (PrefabName)
+        var bananaReward = PrefabName switch
         {
-            case var prefab when prefab.Contains(ServerRConfig.GreenChestName):
-                bananaReward = random.Next(45, 70);
-                break;
-            case var prefab when prefab.Contains(ServerRConfig.BlueChestName):
-                bananaReward = random.Next(85, 155);
-                break;
-            case var prefab when prefab.Contains(ServerRConfig.PurpleChestName):
-                bananaReward = random.Next(295, 500);
-                break;
-        }
+            var prefab when prefab.Contains(ServerRConfig.BlueChestName) => random.Next(85, 155),
+            var prefab when prefab.Contains(ServerRConfig.PurpleChestName) => random.Next(295, 500),
+            _ => random.Next(45, 70),
+        };
 
         if (player.Character.Data.GlobalLevel > ServerRConfig.DoubleChestRewardsLevel)
             bananaReward *= 2;
