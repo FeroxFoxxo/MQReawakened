@@ -236,3 +236,4 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         var slowedPlayer = (Player)player;
         slowedPlayer.TempData.IsSlowed = false;
     }
+}

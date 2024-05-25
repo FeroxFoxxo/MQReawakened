@@ -26,20 +26,37 @@ public class EquipItem : ExternalProtocol
 
         foreach (var item in newEquipment.EquippedItems)
         {
-            if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquipped))
-                Player.AddItem(ItemCatalog.GetItemFromId(previouslyEquipped), 1, ItemCatalog);
-
             var itemDesc = ItemCatalog.GetItemFromId(item.Value);
 
             if (itemDesc != null)
                 Player.CheckAchievement(AchConditionType.EquipItem, [itemDesc.PrefabName], InternalAchievement, Logger);
 
+            if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquippedId))
+            {
+                if (ItemAlreadyEquipped(item.Value, previouslyEquippedId))
+                    continue;
+
+                Player.AddItem(ItemCatalog.GetItemFromId(previouslyEquippedId), 1, ItemCatalog);
+            }
+
             Player.RemoveItem(ItemCatalog.GetItemFromId(item.Value), 1, ItemCatalog, ItemRConfig);
         }
 
-        character.Data.Equipment = newEquipment;
+        AddUnequippedToInventory(newEquipment);   
+        Player.Character.Data.Equipment = newEquipment;
 
         Player.UpdateEquipment();
         Player.SendUpdatedInventory(true);
+    }
+
+    private bool ItemAlreadyEquipped(int itemId, int previouslyEquippedId) => itemId == previouslyEquippedId;
+
+    private void AddUnequippedToInventory(EquipmentModel newEquipment)
+    {
+        var character = Player.Character;
+
+        foreach (var equippedItem in character.Data.Equipment.EquippedItems)
+            if (!newEquipment.EquippedItems.ContainsKey(equippedItem.Key))
+                Player.AddItem(ItemCatalog.GetItemFromId(equippedItem.Value), 1, ItemCatalog);
     }
 }

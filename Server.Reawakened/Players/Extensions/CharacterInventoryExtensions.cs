@@ -227,8 +227,7 @@ public static class CharacterInventoryExtensions
 
         if (!player.Character.Pets.TryGetValue(petId, out var currentPet))
         {
-            player.Character.Pets.Add(petId, currentPet =
-                new PetModel());
+            player.Character.Pets.Add(petId, currentPet = new PetModel());
             refillCurrentEnergy = true;
         }
 

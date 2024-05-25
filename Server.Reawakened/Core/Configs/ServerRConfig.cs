@@ -22,6 +22,7 @@ public class ServerRConfig : IRConfig
     public int MaxCharacterCount { get; }
 
     public int MaxLevel { get; }
+    public int DoubleChestRewardsLevel { get; }
 
     public int DefaultQuest { get; }
 
@@ -65,6 +66,8 @@ public class ServerRConfig : IRConfig
     public int CashKitAmount { get; }
 
     public string DailyBoxName { get; }
+    public string BlueChestName { get; }
+    public string PurpleChestName { get; }
 
     public int MaximumEntitiesToReturnLog { get; }
 
@@ -138,12 +141,15 @@ public class ServerRConfig : IRConfig
         GameVersion = GameVersion.vLate2013;
 
         MaxLevel = 65;
+        DoubleChestRewardsLevel = 30;
 
         IgnoredDoors = [
             "PF_GLB_DoorArena01"
         ];
 
         DailyBoxName = "Daily";
+        BlueChestName = "Chest02";
+        PurpleChestName = "Chest03";
 
         MaximumEntitiesToReturnLog = 15;
 
