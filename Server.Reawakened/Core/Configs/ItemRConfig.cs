@@ -55,7 +55,7 @@ public class ItemRConfig : IRConfig
 
     public ItemRConfig()
     {
-        LevelUpNCashReward = 200;
+        LevelUpNCashReward = 175;
 
         SingleItemKit =
         [
