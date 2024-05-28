@@ -9,7 +9,9 @@ namespace Server.Reawakened.Chat.Commands.Item;
 public class AddItem : SlashCommand
 {
     public override string CommandName => "/AddItem";
+
     public override string CommandDescription => "Adds an item using it's prefab name.";
+
     public override List<ParameterModel> Parameters => [
         new ParameterModel() {
             Name = "prefabname",
@@ -22,6 +24,7 @@ public class AddItem : SlashCommand
             Optional = true
         }
     ];
+
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public ItemCatalog ItemCatalog { get; set; }

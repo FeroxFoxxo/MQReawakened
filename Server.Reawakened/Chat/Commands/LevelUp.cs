@@ -10,7 +10,9 @@ namespace Server.Reawakened.Chat.Commands;
 public class LevelUp : SlashCommand
 {
     public override string CommandName => "/LevelUp";
+
     public override string CommandDescription => "Level up to a specified level or default to max level.";
+    
     public override List<ParameterModel> Parameters => [
         new ParameterModel() {
             Name = "level",
@@ -18,6 +20,7 @@ public class LevelUp : SlashCommand
             Optional = true
         }
     ];
+
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public ServerRConfig ServerRConfig { get; set; }

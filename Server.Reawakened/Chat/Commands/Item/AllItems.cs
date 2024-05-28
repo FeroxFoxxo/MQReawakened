@@ -9,9 +9,12 @@ namespace Server.Reawakened.Chat.Commands.Item;
 public class AllItems : SlashCommand
 {
     public override string CommandName => "/AllItems";
-    public override string CommandDescription => "Adds all items to the player's inventory.";
+
+    public override string CommandDescription => "Adds all items to the player's inventory. (Owner only)";
+
     public override List<ParameterModel> Parameters => [];
-    public override AccessLevel AccessLevel => AccessLevel.Moderator;
+
+    public override AccessLevel AccessLevel => AccessLevel.Owner;
 
     public ItemCatalog ItemCatalog { get; set; }
 

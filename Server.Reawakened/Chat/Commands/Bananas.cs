@@ -11,7 +11,9 @@ namespace Server.Reawakened.Chat.Commands;
 public class Bananas : SlashCommand
 {
     public override string CommandName => "/Bananas";
+
     public override string CommandDescription => "Adds bananas or default to cash kit amount.";
+    
     public override List<ParameterModel> Parameters => [
         new ParameterModel() {
             Name = "amount",
@@ -19,6 +21,7 @@ public class Bananas : SlashCommand
             Optional = true
         }
     ];
+
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public InternalAchievement InternalAchievement { get; set; }

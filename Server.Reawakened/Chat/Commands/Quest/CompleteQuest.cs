@@ -25,28 +25,51 @@ public class CompleteQuest : SlashCommand
         if (args.Length != 2)
             return;
 
-        var questId = QuestCatalog.GetQuestIdFromName(args[1]);
-        var quest = QuestCatalog.GetQuestData(questId);
+        var questData = GetQuest(player, args);
 
-        if (quest == null)
+        if (questData == null)
             return;
 
-        var questModel = player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
+        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == questData.Id);
 
-        if (questModel == null || !player.Character.Data.QuestLog.Contains(questModel))
+        if (questModel != null)
+            player.Character.Data.QuestLog.Remove(questModel);
+
+        player.Character.Data.CompletedQuests.Add(questData.Id);
+        Log($"Added quest {questData.Name} with id {questData.Id} to completed quests.", player);
+    }
+
+    public QuestDescription GetQuest(Player player, string[] args)
+    {
+        if (args.Length == 1)
         {
-            Log($"The {quest.Name} quest with id {quest.Id} is not in your Quest Log.", player);
-            return;
+            Log("Please provide a quest id.", player);
+            return null;
         }
 
-        if (player.Character.Data.CompletedQuests.Contains(quest.Id))
+        if (args.Length != 2)
+            return null;
+
+        if (!int.TryParse(args[1], out var questId))
         {
-            Log($"The {quest.Name} quest with id {quest.Id} has been completed already.", player);
-            return;
+            Log("Please provide a valid quest id.", player);
+            return null;
         }
 
-        player.Character.Data.CompletedQuests.Add(quest.Id);
+        var questData = QuestCatalog.GetQuestData(questId);
 
-        Log($"Added quest {quest.Name} with id {quest.Id} to completed quests list.", player);
+        if (questData == null)
+        {
+            Log("Please provide a valid quest id.", player);
+            return null;
+        }
+
+        if (player.Character.Data.CompletedQuests.Contains(questData.Id))
+        {
+            Log($"Quest {questData.Name} with id {questData.Id} has been completed already.", player);
+            return null;
+        }
+
+        return questData;
     }
 }

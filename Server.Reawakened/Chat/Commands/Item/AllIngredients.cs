@@ -10,7 +10,9 @@ namespace Server.Reawakened.Chat.Commands.Item;
 public class AllIngredients : SlashCommand
 {
     public override string CommandName => "/AllIngredients";
+
     public override string CommandDescription => "Adds all crafting ingredients and recipes.";
+
     public override List<ParameterModel> Parameters => [
         new ParameterModel() {
             Name = "amount",
@@ -18,6 +20,7 @@ public class AllIngredients : SlashCommand
             Optional = true
         }
     ];
+
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public ItemCatalog ItemCatalog { get; set; }

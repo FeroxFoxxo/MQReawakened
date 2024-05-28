@@ -10,8 +10,11 @@ namespace Server.Reawakened.Chat.Commands.Item;
 public class AllAbility : SlashCommand
 {
     public override string CommandName => "/AllAbility";
+
     public override string CommandDescription => "Adds all ability items.";
+
     public override List<ParameterModel> Parameters => [];
+
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public ItemCatalog ItemCatalog { get; set; }

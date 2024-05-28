@@ -9,7 +9,9 @@ namespace Server.Reawakened.Chat.Commands.Quest;
 public class CompleteQuestObjectives : SlashCommand
 {
     public override string CommandName => "/CompleteQuestObjectives";
+
     public override string CommandDescription => "Completes the provided quest's objectives.";
+
     public override List<ParameterModel> Parameters => [
         new ParameterModel() {
             Name = "questname",
@@ -17,6 +19,7 @@ public class CompleteQuestObjectives : SlashCommand
             Optional = false
         }
     ];
+
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public QuestCatalog QuestCatalog { get; set; }
