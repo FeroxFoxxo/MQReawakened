@@ -4,6 +4,8 @@ using Server.Reawakened.Players.Models.Character;
 namespace Server.Reawakened.Configs;
 public class ItemRConfig : IRConfig
 {
+    public int LevelUpNCashReward { get; }
+
     public int HealingStaff { get; }
     public double HealingStaffHealValue { get; }
     public int HealAmount { get; }
@@ -53,6 +55,8 @@ public class ItemRConfig : IRConfig
 
     public ItemRConfig()
     {
+        LevelUpNCashReward = 200;
+
         SingleItemKit =
         [
             394,  // glider
