@@ -10,7 +10,7 @@ public class AllItems : SlashCommand
 {
     public override string CommandName => "/AllItems";
     public override string CommandDescription => "Adds all items to the player's inventory.";
-    public override List<ParameterModel> Arguments => [];
+    public override List<ParameterModel> Parameters => [];
     public override AccessLevel AccessLevel => AccessLevel.Moderator;
 
     public ItemCatalog ItemCatalog { get; set; }

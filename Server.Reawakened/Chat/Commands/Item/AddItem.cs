@@ -10,7 +10,7 @@ public class AddItem : SlashCommand
 {
     public override string CommandName => "/AddItem";
     public override string CommandDescription => "Adds an item using it's prefab name.";
-    public override List<ParameterModel> Arguments => [
+    public override List<ParameterModel> Parameters => [
         new ParameterModel() {
             Name = "prefabname",
             Description = "The prefab name of the item to be added.",

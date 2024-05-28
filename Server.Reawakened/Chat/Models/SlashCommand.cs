@@ -9,7 +9,7 @@ public abstract class SlashCommand
 {
     public abstract string CommandName { get; }
     public abstract string CommandDescription { get; }
-    public abstract List<ParameterModel> Arguments { get; }
+    public abstract List<ParameterModel> Parameters { get; }
     public abstract AccessLevel AccessLevel { get; }
 
     public void Log(string message, Player player) =>

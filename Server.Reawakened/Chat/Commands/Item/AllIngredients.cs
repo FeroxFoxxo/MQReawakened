@@ -11,7 +11,7 @@ public class AllIngredients : SlashCommand
 {
     public override string CommandName => "/AllIngredients";
     public override string CommandDescription => "Adds all crafting ingredients and recipes.";
-    public override List<ParameterModel> Arguments => [
+    public override List<ParameterModel> Parameters => [
         new ParameterModel() {
             Name = "amount",
             Description = "The amount of the item to give or default to 1.",

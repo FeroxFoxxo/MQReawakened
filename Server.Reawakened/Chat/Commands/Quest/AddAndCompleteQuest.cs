@@ -9,7 +9,7 @@ public class AddAndCompleteQuest : SlashCommand
 {
     public override string CommandName => "/AddAndCompleteQuest";
     public override string CommandDescription => "Adds and marks the provided quest as completed.";
-    public override List<ParameterModel> Arguments => [
+    public override List<ParameterModel> Parameters => [
         new ParameterModel() {
             Name = "questname",
             Description = "The quest name to be marked as completed.",

@@ -12,7 +12,7 @@ public class Bananas : SlashCommand
 {
     public override string CommandName => "/Bananas";
     public override string CommandDescription => "Adds bananas or default to cash kit amount.";
-    public override List<ParameterModel> Arguments => [
+    public override List<ParameterModel> Parameters => [
         new ParameterModel() {
             Name = "amount",
             Description = "The amount of bananas to receive.",
