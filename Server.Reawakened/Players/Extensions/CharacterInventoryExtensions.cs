@@ -5,6 +5,7 @@ using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -231,13 +232,19 @@ public static class CharacterInventoryExtensions
             refillCurrentEnergy = true;
         }
 
-        currentPet.SpawnPet(player, petId, true, petAbilityParams, refillCurrentEnergy, worldStatistics);
+        currentPet.SpawnPet(player, petId, true, petAbilityParams, refillCurrentEnergy, worldStatistics, serverRConfig);
     }
 
     public static string GetEquippedPetId(this Player player, ServerRConfig serverRConfig) =>
         player.Character.Data.Hotbar.HotbarButtons.TryGetValue
         (serverRConfig.PetHotbarIndex, out var petItem) ? petItem.ItemId.ToString() : 0.ToString();
 
-    public static int GetMaxPetEnergy(this Player player, WorldStatistics worldStatistics) =>
-       worldStatistics.Statistics[ItemEffectType.PetEnergyValue][WorldStatisticsGroup.Pet][player.Character.Data.GlobalLevel];
+    public static int GetMaxPetEnergy(this Player player, WorldStatistics worldStatistics, ServerRConfig config)
+    {
+        // Needed due to pets not having abilities/energy in early 2012
+        if (config.GameVersion < GameVersion.vLate2012)
+            return 0;
+
+        return worldStatistics.Statistics[ItemEffectType.PetEnergyValue][WorldStatisticsGroup.Pet][player.Character.Data.GlobalLevel];
+    }
 }
