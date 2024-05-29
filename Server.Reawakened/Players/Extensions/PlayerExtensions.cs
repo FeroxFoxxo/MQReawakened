@@ -240,14 +240,14 @@ public static class PlayerExtensions
             : string.Empty;
     }
 
-    public static void LevelUp(this Player player, int level, ItemRConfig itemRConfig,
-        ServerRConfig config, Microsoft.Extensions.Logging.ILogger logger)
+    public static void LevelUp(this Player player, int level, 
+    ServerRConfig config, Microsoft.Extensions.Logging.ILogger logger)
     {
         player.Character.SetLevelXp(level, config);
         player.SendLevelUp();
 
         //Temporary NCash reward until original level up system is implemented.
-        player.AddNCash(itemRConfig.LevelUpNCashReward);
+        player.AddNCash(config.LevelUpNCashReward);
         player.SendCashUpdate();
         //(Needed for gameplay improvements as NC is currently unobtainable)
 
