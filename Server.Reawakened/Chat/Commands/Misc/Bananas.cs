@@ -7,13 +7,13 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Commands;
 
-namespace Server.Reawakened.Chat.Commands;
+namespace Server.Reawakened.Chat.Commands.Misc;
 public class Bananas : SlashCommand
 {
     public override string CommandName => "/Bananas";
 
     public override string CommandDescription => "Adds bananas or default to cash kit amount.";
-    
+
     public override List<ParameterModel> Parameters => [
         new ParameterModel() {
             Name = "amount",

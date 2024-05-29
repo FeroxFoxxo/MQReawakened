@@ -4,7 +4,7 @@ using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Data.Commands;
 
-namespace Server.Reawakened.Chat.Commands;
+namespace Server.Reawakened.Chat.Commands.Misc;
 public class SetAccess : SlashCommand
 {
     public override string CommandName => "/SetAccess";

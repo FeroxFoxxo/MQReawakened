@@ -6,13 +6,13 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Data.Commands;
 
-namespace Server.Reawakened.Chat.Commands;
+namespace Server.Reawakened.Chat.Commands.Misc;
 public class LevelUp : SlashCommand
 {
     public override string CommandName => "/LevelUp";
 
     public override string CommandDescription => "Level up to a specified level or default to max level.";
-    
+
     public override List<ParameterModel> Parameters => [
         new ParameterModel() {
             Name = "level",

@@ -6,7 +6,7 @@ using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Data.Commands;
 
-namespace Server.Reawakened.Chat.Commands;
+namespace Server.Reawakened.Chat.Commands.Misc;
 public class ChangeLevel : SlashCommand
 {
     public override string CommandName => "/ChangeLevel";

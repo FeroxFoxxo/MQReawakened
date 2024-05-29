@@ -4,7 +4,7 @@ using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Data.Commands;
 
-namespace Server.Reawakened.Chat.Commands;
+namespace Server.Reawakened.Chat.Commands.Misc;
 public class Save : SlashCommand
 {
     public override string CommandName => "/Save";
@@ -14,7 +14,7 @@ public class Save : SlashCommand
     public override List<ParameterModel> Parameters => [];
 
     public override AccessLevel AccessLevel => AccessLevel.Owner;
-    
+
     public AutoSave AutoSave { get; set; }
 
     public override void Execute(Player player, string[] args) => AutoSave.Save();
