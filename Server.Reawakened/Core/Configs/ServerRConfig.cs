@@ -23,6 +23,7 @@ public class ServerRConfig : IRConfig
 
     public int MaxLevel { get; }
     public int DoubleChestRewardsLevel { get; }
+    public int LevelUpNCashReward { get; }
 
     public int DefaultQuest { get; }
 
@@ -142,6 +143,7 @@ public class ServerRConfig : IRConfig
 
         MaxLevel = 65;
         DoubleChestRewardsLevel = 30;
+        LevelUpNCashReward = 175;
 
         IgnoredDoors = [
             "PF_GLB_DoorArena01"
