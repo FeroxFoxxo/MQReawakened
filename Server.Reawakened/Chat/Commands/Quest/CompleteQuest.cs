@@ -11,7 +11,7 @@ public class CompleteQuest : SlashCommand
     public override string CommandDescription => "This marks the provided quest as completed.";
     public override List<ParameterModel> Parameters => [
         new ParameterModel() {
-            Name = "questname",
+            Name = "questName",
             Description = "The quest name to be marked as completed.",
             Optional = false
         }

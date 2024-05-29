@@ -1,5 +1,4 @@
 ﻿using Server.Base.Accounts.Enums;
-using Server.Base.Core.Abstractions;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players;
@@ -8,16 +7,16 @@ using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Data.Commands;
 
 namespace Server.Reawakened.Chat.Commands;
-public class Warp : SlashCommand
+public class ChangeLevel : SlashCommand
 {
-    public override string CommandName => "/Warp";
+    public override string CommandName => "/ChangeLevel";
 
-    public override string CommandDescription => "Allows you to warp to a new trail.";
+    public override string CommandDescription => "Allows you to warp to a new level.";
 
     public override List<ParameterModel> Parameters => [
         new ParameterModel() {
-            Name = "level",
-            Description = "The level id to warp to.",
+            Name = "levelName",
+            Description = "The level name to warp to.",
             Optional = false
         }
     ];
@@ -32,16 +31,13 @@ public class Warp : SlashCommand
     {
         var character = player.Character;
 
-        int levelId;
+        var levelInfo = WorldGraph.GetInfoLevel(args[1]);
 
-        if (args.Length != 2 || !int.TryParse(args[1], out var level))
+        if (args.Length != 2 || levelInfo == null)
         {
-            Log($"Please specify a valid level ID.", player);
+            Log($"Please specify a valid level name.", player);
             return;
         }
-        levelId = level;
-
-        var levelInfo = WorldGraph.GetInfoLevel(levelId);
 
         if (string.IsNullOrEmpty(levelInfo.Name) || !ServerRConfig.LoadedAssets.Contains(levelInfo.Name))
         {
@@ -49,17 +45,17 @@ public class Warp : SlashCommand
             return;
         }
 
-        if (!WorldHandler.TryChangePlayerRoom(player, levelId))
+        if (!WorldHandler.TryChangePlayerRoom(player, levelInfo.LevelId))
         {
             Log($"Please specify a valid level.", player);
             return;
         }
 
         Log(
-            $"Successfully set character {character.Id}'s level to {levelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
+            $"Successfully set character {character.Id}'s level to {levelInfo.LevelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
             player
         );
 
-        Log($"{character.Data.CharacterName} changed to level {levelId}", player);
+        Log($"{character.Data.CharacterName} changed to level {levelInfo.LevelId}", player);
     }
 }
