@@ -1731,25 +1731,92 @@
                 <Item itemName="COL_ING_C_Quartz01" count="1" />
             </Items>
         </LootInfo>
+        <!--Idol Blue Chest, Missing Recipes-->
+        <LootInfo objectId="6145" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_PoisonGrenade01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T05" count="1" />
+                <Item itemName="WPN_PRJ_CobraCrossBow01_v2" count="1" />
+                <Item itemName="Add_OUT_SkullEarrings01_E02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Switch Puzzle Blue Chest, Missing Recipes-->
+        <LootInfo objectId="6233" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_PoisonGrenade01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T05" count="1" />
+                <Item itemName="WPN_PRJ_CobraCrossBow01_v2" count="1" />
+                <Item itemName="Add_OUT_SkullEarrings01_E02" count="1" />
+                <Item itemName="COL_ING_G_Velvet02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--1st Arena Purple Chest-->
+        <LootInfo objectId="6697" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_MEL_RottenStick01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T05" count="1" />
+                <Item itemName="Add_OUT_SkullEarrings01_E02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_TS02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_S02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Rope Puzzle Purple Chest-->
+        <LootInfo objectId="6705" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_MEL_RottenStick01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T05" count="1" />
+                <Item itemName="Add_OUT_SkullEarrings01_E02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_TS02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_S02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--2nd Arena Purple Chest-->
+        <LootInfo objectId="6698" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_MEL_RottenStick01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T05" count="1" />
+                <Item itemName="Add_OUT_SkullEarrings01_E02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_TS02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_S02" count="1" />
+            </Items>
+        </LootInfo>
     </Level>
     <Level name="The Deep Swamps" id="88">
+        <!--Idol Green Chest-->
         <LootInfo objectId="17427" doLootWheel="False">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing02" count="1" />
             </Items>
         </LootInfo>
+        <!--Green Chest Near Rachnoids-->
         <LootInfo objectId="17775" doLootWheel="False">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing02" count="1" />
                 <Item itemName="COL_BUFF_RubberBand01" count="1" />
             </Items>
         </LootInfo>
+        <!--Green Chest Near Mud-->
         <LootInfo objectId="17428" doLootWheel="False">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing02" count="1" />
                 <Item itemName="Col_POT_WaterBreath01" count="1" />
             </Items>
         </LootInfo>
+        <!--Arena Blue Chest-->
         <LootInfo objectId="5129" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="COL_RECIP_POT_Healing02" count="1" />
@@ -1775,6 +1842,7 @@
                 <Item itemName="COL_ING_G_GloomCap01" count="1" />
             </Items>
         </LootInfo>
+        <!--Green Chest Near Ograks-->
         <LootInfo objectId="17774" doLootWheel="False">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing02" count="1" />
@@ -1782,6 +1850,7 @@
                 <Item itemName="COL_BUFF_RubberBand01" count="1" />
             </Items>
         </LootInfo>
+        <!--Arena Purple Chest-->
         <LootInfo objectId="17776" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="COL_RECIP_COM_Goat01_W02" count="1" />
@@ -1811,6 +1880,7 @@
                 <Item itemName="Unknown" count="1" />
             </Items>
         </LootInfo>
+        <!--Blue Chest Behind Gate-->
         <LootInfo objectId="8280" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="COL_RECIP_COM_ScaleTail01_T02" count="1" />
@@ -2091,6 +2161,291 @@
         <LootInfo objectId="4144" doLootWheel="True">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="The Giant Tree" id="81">
+        <!--East Arena Purple Chest-->
+        <LootInfo objectId="6664" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_BON_Seer01_E01" count="1" />
+                <Item itemName="WPN_PRJ_EarthBow01" count="1" />
+                <Item itemName="Add_BON_TailRing01_T01" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_W01" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_LS03" count="1" />
+                <Item itemName="WPN_PRJ_CobraCrossBow01_v2" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_T03" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Idol Blue Chest-->
+        <LootInfo objectId="6671" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_BON_Spiritualist01_W01" count="1" />
+                <Item itemName="COL_ING_G_Velvet02" count="1" />
+                <Item itemName="Add_BON_Seer01_E01" count="1" />
+                <Item itemName="Add_BON_TailRing01_T01" count="1" />
+                <Item itemName="ABIL_PoisonBomb03" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Switch Platform Blue Chest-->
+        <LootInfo objectId="6672" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_BON_Spiritualist01_W01" count="1" />
+                <Item itemName="ADD_BON_Voodoo01_TS04" count="1" />
+                <Item itemName="Add_BON_Seer01_E01" count="1" />
+                <Item itemName="Add_BON_TailRing01_T01" count="1" />
+                <Item itemName="ABIL_PoisonBomb03" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Velvet02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Idol Purple Chest-->
+        <LootInfo objectId="6668" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_BON_Seer01_E01" count="1" />
+                <Item itemName="WPN_PRJ_EarthBow01" count="1" />
+                <Item itemName="Add_BON_TailRing01_T01" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_W01" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_LS03" count="1" />
+                <Item itemName="WPN_PRJ_CobraCrossBow01_v2" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_T03" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Grimfang Blue Chest-->
+        <LootInfo objectId="6670" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_BON_Spiritualist01_W01" count="1" />
+                <Item itemName="ADD_BON_Voodoo01_TS04" count="1" />
+                <Item itemName="Add_BON_Seer01_E01" count="1" />
+                <Item itemName="Add_BON_TailRing01_T01" count="1" />
+                <Item itemName="ABIL_PoisonBomb03" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Velvet02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Top Arena Purple Chest-->
+        <LootInfo objectId="6667" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_BON_Seer01_E01" count="1" />
+                <Item itemName="WPN_PRJ_EarthBow01" count="1" />
+                <Item itemName="Add_BON_TailRing01_T01" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_W01" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_LS03" count="1" />
+                <Item itemName="WPN_PRJ_CobraCrossBow01_v2" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_T03" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Marsh Sanctuary" id="73">
+        <!--Frontplane Arena Purple Chest-->
+        <LootInfo objectId="6948" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_MEL_RottenStick01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T05" count="1" />
+                <Item itemName="Add_OUT_SkullEarrings01_E02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_S02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--1st Blue Chest-->
+        <LootInfo objectId="6954" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_PoisonGrenade01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T05" count="1" />
+                <Item itemName="Add_OUT_SkullEarrings01_E02" count="1" />
+                <Item itemName="COL_ING_G_Velvet02" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_LS03" count="1" />
+                <Item itemName="WPN_PRJ_CobraCrossBow01_v2" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_T03" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Backplane Arena Purple Chest-->
+        <LootInfo objectId="6947" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_MEL_RottenStick01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T05" count="1" />
+                <Item itemName="Add_OUT_SkullEarrings01_E02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_TS02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_S02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Near Idol Blue Chest-->
+        <LootInfo objectId="6953" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_PoisonGrenade01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Velvet02" count="1" />
+                <Item itemName="Add_OUT_SkullEarrings01_E02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T05" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_T03" count="1" />
+                <Item itemName="WPN_PRJ_CobraCrossBow01_v2" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_LS03" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="The Spider Cave" id="80">
+        <!--Green Chest-->
+        <LootInfo objectId="5306" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing02" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Blue Chest, Missing Recipes-->
+        <LootInfo objectId="6159" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Fish01_S01" count="1" />
+                <Item itemName="Add_COM_Knight01_T01" count="1" />
+                <Item itemName="Add_OUT_Bluebeard01_TS01" count="1" />
+                <Item itemName="Add_BON_Voodoo01_S01" count="1" />
+                <Item itemName="Add_BON_Voodoo01_LS01" count="1" />
+                <Item itemName="Add_BON_Voodoo01_TS01" count="1" />
+                <Item itemName="Add_OUT_Bluebeard01_LS01" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_T01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Poison Fog Green Chest-->
+        <LootInfo objectId="2126" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_Healing02" count="1" />
+                <Item itemName="COL_ING_G_GloomCap01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Rachnoid Blue Chest, Missing Recipes-->
+        <LootInfo objectId="2125" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_BON_Voodoo01_S01" count="1" />
+                <Item itemName="Add_BON_WitchDoctor01_LS01" count="1" />
+                <Item itemName="Add_OUT_Bluebeard01_TS01" count="1" />
+                <Item itemName="Add_COM_Burglar01_LS01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="The Underground River" id="72">
+        <!--Blue Chest-->
+        <LootInfo objectId="9852" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="ABIL_PoisonBomb03" count="1" />
+                <Item itemName="Add_COM_ShardEarrings02_E04" count="1" />
+                <Item itemName="Add_COM_GemBracelet02_W01" count="1" />
+                <Item itemName="Add_COM_FxPoison01_T01" count="1" />
+                <Item itemName="COL_ING_G_Velvet02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_TS02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Poison Fog Blue Chest, Missing Recipes-->
+        <LootInfo objectId="3366" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_ShardEarrings02_E04" count="1" />
+                <Item itemName="ABIL_PoisonBomb03" count="1" />
+                <Item itemName="Add_COM_GemBracelet02_W01" count="1" />
+                <Item itemName="Add_COM_FxPoison01_T01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--1st Arena Purple Chest-->
+        <LootInfo objectId="9851" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_PRJ_FistOfTerra01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="Add_COM_ShardEarrings02_E04" count="1" />
+                <Item itemName="Add_COM_GemBracelet02_W01" count="1" />
+                <Item itemName="Add_COM_FxPoison01_T01" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_TS02" count="1" />
+                <Item itemName="WPN_MEL_ScorpionSword01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--2nd Arena Purple Chest-->
+        <LootInfo objectId="9850" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_BON_TailRing01_T05" count="1" />
+                <Item itemName="Add_COM_Viking01_TS03" count="1" />
+                <Item itemName="Add_COM_ScaleTail01_T03" count="1" />
+                <Item itemName="Add_BON_Cruella01_T01" count="1" />
+                <Item itemName="Add_COM_Sheep01_S04" count="1" />
+                <Item itemName="Add_COM_Viking01_BP03" count="1" />
+                <Item itemName="Add_COM_Viking01_BP04" count="1" />
+                <Item itemName="Add_COM_DragonFish02_FH01" count="1" />
+                <Item itemName="Add_COM_DragonFish02_TS01" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_Indonesian01_TS02" count="1" />
+                <Item itemName="COL_RECIP_BON_Spiritualist01_TS02" count="1" />
+                <Item itemName="Add_BON_SkullFighter01_S02" count="1" />
+                <Item itemName="Add_COM_Indonesian01_TS02" count="1" />
+                <Item itemName="Add_OUT_CaptainBoy01_E03" count="1" />
+                <Item itemName="Add_COM_Sasquash01_S01" count="1" />
+                <Item itemName="Add_COM_Sasquash01_TS01" count="1" />
+                <Item itemName="Add_COM_Knight01_S05" count="1" />
+                <Item itemName="Add_COM_Knight01_TS05" count="1" />
+                <Item itemName="Add_COM_ShardEarrings01_E05" count="1" />
+                <Item itemName="Add_COM_ShardEarrings02_E03" count="1" />
+                <Item itemName="Add_COM_ShardEarrings02_E04" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="Add_BON_Seer01_TS01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Switch Puzzle Purple Chest-->
+        <LootInfo objectId="9855" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="WPN_PRJ_FistOfTerra01" count="1" />
+                <Item itemName="WPN_MEL_ScorpionSword01" count="1" />
+                <Item itemName="Add_COM_ShardEarrings02_E04" count="1" />
+                <Item itemName="Add_COM_GemBracelet02_W01" count="1" />
+                <Item itemName="Add_COM_FxPoison01_T01" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_TS02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Underwater Blue Chest (Custom/Speculation)-->
+        <LootInfo objectId="19512" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_ShardEarrings02_E04" count="1" />
+                <Item itemName="ABIL_PoisonBomb03" count="1" />
+                <Item itemName="Add_COM_GemBracelet02_W01" count="1" />
+                <Item itemName="Add_COM_FxPoison01_T01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Underwater Purple Chest (Custom/Speculation)-->
+        <LootInfo objectId="9853" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_PRJ_FistOfTerra01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="Add_COM_ShardEarrings02_E04" count="1" />
+                <Item itemName="Add_COM_GemBracelet02_W01" count="1" />
+                <Item itemName="Add_COM_FxPoison01_T01" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="Add_BON_SwampCrusher01_TS02" count="1" />
+                <Item itemName="WPN_MEL_ScorpionSword01" count="1" />
             </Items>
         </LootInfo>
     </Level>
@@ -2690,6 +3045,46 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Ninja Scout Trial" id="559">
+        <!--Green Chest-->
+        <LootInfo objectId="5222" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_AirElixir03" count="1" />
+                <Item itemName="COL_POT_AirResist03" count="1" />
+                <Item itemName="Add_SHD_Geisha01_TS01" count="1" />
+                <Item itemName="Add_SHD_Geisha01_FH01" count="1" />
+                <Item itemName="COL_ING_G_Silk02" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+                <Item itemName="" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Blue Chest-->
+        <LootInfo objectId="5022" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_AirElixir03" count="1" />
+                <Item itemName="COL_POT_AirResist03" count="1" />
+                <Item itemName="Add_SHD_Geisha01_TS01" count="1" />
+                <Item itemName="Add_SHD_Geisha01_FH01" count="1" />
+                <Item itemName="COL_ING_G_Silk02" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="WPN_SPC_StormyPopper01" count="1" />
+                <Item itemName="Add_COM_ShardEarrings02_E02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Purple Chest-->
+        <LootInfo objectId="5223" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="WPN_PRJ_TyphoonBow01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W01" count="1" />
+                <Item itemName="Add_COM_GemBracelet01_W03" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
 
     <!-- Sea Dragons Tribe -->
     <Level name="Dragontail Square" id="280">
@@ -2710,6 +3105,402 @@
         <LootInfo objectId="33614" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Forgotten Lighthouse" id="296">
+        <!--Green Chest Near Pincer-->
+        <LootInfo objectId="11856" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Cotton02" count="1" />
+                <Item itemName="Add_COM_Fish01_S01" count="1" />
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="Add_COM_Fish01_TS01" count="1" />
+                <Item itemName="Add_COM_Fish01_LS01" count="1" />
+                <Item itemName="COL_POT_WaterBreath00" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Lighthouse Green Chest, Missing Recipes-->
+        <LootInfo objectId="11857" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Cotton02" count="1" />
+                <Item itemName="Add_COM_Fish01_S01" count="1" />
+                <Item itemName="COL_POT_Healing01" count="1" />
+                <Item itemName="Add_COM_Fish01_TS01" count="1" />
+                <Item itemName="Add_COM_Fish01_LS01" count="1" />
+                <Item itemName="COL_POT_WaterBreath00" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Blue Chest, Missing Recipes-->
+        <LootInfo objectId="11852" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_RibbonTail01_T06" count="1" />
+                <Item itemName="Add_COM_DragonFish01_LS01" count="1" />
+                <Item itemName="Add_COM_HawaiGirl01_LS02" count="1" />
+                <Item itemName="Add_COM_Explorator01_LS01" count="1" />
+                <Item itemName="Add_COM_Clown01_W01" count="1" />
+                <Item itemName="Add_OUT_Buccaneer01_LS01" count="1" />
+                <Item itemName="Add_OUT_SeaExplorer01_W01" count="1" />
+                <Item itemName="Add_OUT_FortuneHunter01_LS03" count="1" />
+                <Item itemName="Add_OUT_FortuneHunter01_TS01" count="1" />
+                <Item itemName="Add_COM_Sasquash01_TS01" count="1" />
+                <Item itemName="Add_OUT_FortuneHunter01_E01" count="1" />
+                <Item itemName="Add_COM_RibbonTail01_T04" count="1" />
+                <Item itemName="Add_COM_KidBoy01_TS01" count="1" />
+                <Item itemName="Add_COM_RibbonTail01_T01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Purple Chest (Custom)-->
+        <LootInfo objectId="13275" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Fish01_S02" count="1" />
+                <Item itemName="Add_COM_Fish01_TS02" count="1" />
+                <Item itemName="Add_COM_Fish01_LS02" count="1" />
+                <Item itemName="Add_COM_StudEarring01_E02" count="1" />
+                <Item itemName="Add_OUT_FortuneHunter01_E02" count="1" />
+                <Item itemName="Add_OUT_FortuneHunter01_UF01" count="1" />
+                <Item itemName="Add_OUT_PirateChef01_LS01" count="1" />
+                <Item itemName="Add_OUT_SeaExplorer01_W02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_E02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="The Goon Cave" id="70">
+        <!--Idol Green Chest-->
+        <LootInfo objectId="7282" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_POT_WaterBreath01" count="1" />
+                <Item itemName="COL_POT_FireResist01" count="1" />
+                <Item itemName="Add_COM_DragonFish01_FH01" count="1" />
+                <Item itemName="Add_COM_DragonFish01_TS01" count="1" />
+                <Item itemName="COL_POT_Healing02" count="1" />
+                <Item itemName="COL_RECIP_POT_WaterBreath01" count="1" />
+                <Item itemName="COL_RECIP_POT_FireElixer01" count="1" />
+                <Item itemName="COL_RECIP_POT_FireResist01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Crouch Spot Blue Chest-->
+        <LootInfo objectId="7283" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="ABIL_Grenade01" count="1" />
+                <Item itemName="Add_COM_Bracer01_W03" count="1" />
+                <Item itemName="Add_COM_GemTailRing02_T01" count="1" />
+                <Item itemName="Add_COM_StudEarring01_E03" count="1" />
+                <Item itemName="COL_ING_G_Cotton02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_S02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_TS02" count="1" />
+                <Item itemName="Add_OUT_Buccaneer01_LS02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Green Chest Near Idol and 3P Switch-->
+        <LootInfo objectId="7284" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_RECIP_POT_WaterBreath01" count="1" />
+                <Item itemName="COL_RECIP_POT_FireElixer01" count="1" />
+                <Item itemName="COL_RECIP_POT_FireResist01" count="1" />
+                <Item itemName="COL_RECIP_POT_FireElixer00" count="1" />
+                <Item itemName="COL_POT_FireResist00" count="1" />
+                <Item itemName="Add_COM_DragonFish01_FH01" count="1" />
+                <Item itemName="Add_COM_DragonFish01_TS01" count="1" />
+                <Item itemName="Add_COM_DragonFish01_LS01" count="1" />
+                <Item itemName="COL_POT_Healing02" count="1" />
+                <Item itemName="COL_POT_WaterBreath01" count="1" />
+                <Item itemName="COL_POT_FireResist01" count="1" />
+                <Item itemName="COL_ING_G_Cotton02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Purple Chest-->
+        <LootInfo objectId="7287" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Bracer01_W03" count="1" />
+                <Item itemName="Add_COM_GemTailRing02_T01" count="1" />
+                <Item itemName="Add_COM_StudEarring01_E03" count="1" />
+                <Item itemName="WPN_PRJ_SpearGun01" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_S02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_TS02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_LS02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Blue Chest-->
+        <LootInfo objectId="7281" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Bracer01_W03" count="1" />
+                <Item itemName="Add_COM_GemTailRing02_T01" count="1" />
+                <Item itemName="Add_COM_StudEarring01_E03" count="1" />
+                <Item itemName="Add_OUT_Buccaneer01_LS02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_S02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_TS02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_LS02" count="1" />
+                <Item itemName="COL_ING_G_Cotton02" count="1" />
+                <Item itemName="ABIL_Grenade01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Purple Chest-->
+        <LootInfo objectId="7268" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Bracer01_W03" count="1" />
+                <Item itemName="Add_COM_GemTailRing02_T01" count="1" />
+                <Item itemName="Add_COM_StudEarring01_E03" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_S02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_TS02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_LS02" count="1" />
+                <Item itemName="WPN_PRJ_SpearGun01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Blue Chest Above Arena-->
+        <LootInfo objectId="7288" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Bracer01_W03" count="1" />
+                <Item itemName="Add_COM_GemTailRing02_T01" count="1" />
+                <Item itemName="Add_COM_StudEarring01_E03" count="1" />
+                <Item itemName="Add_OUT_Buccaneer01_LS02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_S02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_TS02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_LS02" count="1" />
+                <Item itemName="COL_ING_G_Cotton02" count="1" />
+                <Item itemName="ABIL_Grenade01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Skull Cove" id="66">
+        <!--Grappling Hook Blue Chest-->
+        <LootInfo objectId="12585" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BOMB_FireBomb02A" count="1" />
+                <Item itemName="Add_COM_GemBracelet01_W02" count="1" />
+                <Item itemName="Add_COM_GemTailRing01_T03" count="1" />
+                <Item itemName="COL_ING_G_Cotton02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_S02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_TS02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_LS02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Gated Idol Underwater Blue Chest-->
+        <LootInfo objectId="12229" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BOMB_FireBomb02A" count="1" />
+                <Item itemName="Add_COM_GemBracelet01_W02" count="1" />
+                <Item itemName="Add_COM_GemTailRing01_T03" count="1" />
+                <Item itemName="COL_ING_G_Cotton02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_S02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_TS02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_LS02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Purple Chest-->
+        <LootInfo objectId="13681" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BOMB_FireBomb02A" count="1" />
+                <Item itemName="Add_COM_GemBracelet01_W02" count="1" />
+                <Item itemName="Add_COM_GemTailRing01_T03" count="1" />
+                <Item itemName="COL_RECIP_BOMB_FireBomb03" count="1" /> <!--Custom-->
+                <Item itemName="COL_RECIP_OUT_CrookedCook01_S04" count="1" /> <!--Custom-->
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="WPN_MEL_DragonMace01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Anchor Falls" id="147">
+        <!--Arena Blue Chest-->
+        <LootInfo objectId="14885" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_OUT_PirateChef01_E01" count="1" />
+                <Item itemName="Add_OUT_Swashbuckler01_S01" count="1" />
+                <Item itemName="Add_COM_Panda01_S03" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_TS01" count="1" />
+                <Item itemName="Add_COM_Clown01_TS02" count="1" />
+                <Item itemName="Add_COM_Viking01_LS02" count="1" />
+                <Item itemName="Add_COM_Panda01_TS03" count="1" />
+                <Item itemName="COL_RECIP_POT_WaterBreath01" count="1" /> <!--Custom-->
+            </Items>
+        </LootInfo>
+        <!--Underwater Blue Chest, Missing Recipes-->
+        <LootInfo objectId="14889" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Burglar01_UF04" count="1" />
+                <Item itemName="Add_COM_Knight01_LS02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T04" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_TS01" count="1" />
+                <Item itemName="Add_SHD_Shinto01_LS02" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_S01" count="1" />
+                <Item itemName="Add_OUT_SeaExplorer01_LS01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Grappling Hook Blue Chest, Missing Recipes-->
+        <LootInfo objectId="14890" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Knight01_LS02" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_TS01" count="1" />
+                <Item itemName="Add_SHD_Shinto01_LS02" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_S01" count="1" />
+                <Item itemName="Add_OUT_SeaExplorer01_LS01" count="1" />
+                <Item itemName="Add_COM_Knight01_T02" count="1" />
+                <Item itemName="Add_COM_Knight01_S02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Purple Chest (Custom)-->
+        <LootInfo objectId="14886" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Knight01_LS02" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_TS01" count="1" />
+                <Item itemName="Add_SHD_Shinto01_LS02" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_S01" count="1" />
+                <Item itemName="Add_OUT_SeaExplorer01_LS01" count="1" />
+                <Item itemName="Add_COM_Knight01_T02" count="1" />
+                <Item itemName="Add_COM_Knight01_S02" count="1" />
+                <Item itemName="Add_COM_Panda01_LS03" count="1" />
+                <Item itemName="Add_COM_Panda01_TS03" count="1" />
+                <Item itemName="Add_COM_Panda01_S03" count="1" />
+                <Item itemName="Add_COM_Viking01_S02" count="1" />
+                <Item itemName="Add_COM_Burglar01_UF04" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Rosy's Reef" id="69">
+        <!--Gated Idol Green Chest (Custom)-->
+        <LootInfo objectId="7554" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_RECIP_POT_WaterBreath01" count="1" />
+                <Item itemName="COL_RECIP_POT_FireElixer01" count="1" />
+                <Item itemName="COL_RECIP_POT_FireResist01" count="1" />
+                <Item itemName="COL_RECIP_POT_FireElixer00" count="1" />
+                <Item itemName="COL_POT_FireResist00" count="1" />
+                <Item itemName="Add_COM_DragonFish01_FH01" count="1" />
+                <Item itemName="Add_COM_DragonFish01_TS01" count="1" />
+                <Item itemName="Add_COM_DragonFish01_LS01" count="1" />
+                <Item itemName="COL_POT_Healing02" count="1" />
+                <Item itemName="COL_POT_WaterBreath01" count="1" />
+                <Item itemName="COL_POT_FireResist01" count="1" />
+                <Item itemName="COL_ING_G_Cotton02" count="1" /> 
+            </Items>
+        </LootInfo>
+        <!--Gated Idol Purple Chest-->
+        <LootInfo objectId="7300" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_RECIP_COM_Cloak_BP01" count="1" />
+                <Item itemName="COL_RECIP_COM_Cloak_BP02" count="1" />
+                <Item itemName="COL_RECIP_OUT_FortuneHunter01_UF05" count="1" />
+                <Item itemName="COL_RECIP_OUT_SeaExplorer01_S04" count="1" />
+                <Item itemName="COL_RECIP_OUT_SeaExplorer01_W04" count="1" />
+                <Item itemName="COL_RECIP_COM_WaterSport01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_WaterSport01_TS01" count="1" />
+                <Item itemName="Add_COM_Goat01_S01" count="1" />
+                <Item itemName="Add_COM_Centurion01_TS02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_TS02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_S04" count="1" />
+                <Item itemName="Add_COM_Knight01_S02" count="1" />
+                <Item itemName="Add_COM_Knight01_LS02" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_S01" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_TS01" count="1" />
+                <Item itemName="Add_COM_Clown01_TS02" count="1" />
+                <Item itemName="Add_COM_Viking01_LS02" count="1" />
+                <Item itemName="Add_COM_Panda01_S03" count="1" />
+                <Item itemName="Add_COM_Panda01_TS03" count="1" />
+                <Item itemName="Add_SHD_Shinto01_LS02" count="1" />
+                <Item itemName="Add_COM_Tiger01_T03" count="1" />
+                <Item itemName="Add_COM_Knight01_T02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T04" count="1" />
+                <Item itemName="Add_OUT_PirateChef01_E01" count="1" />
+                <Item itemName="Add_OUT_SeaExplorer01_W01" count="1" />
+                <Item itemName="Add_OUT_Swashbuckler01_S01" count="1" />
+                <Item itemName="Add_BON_BogHunter01_W01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Purple Chest Near 3P Switch-->
+        <LootInfo objectId="7299" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_RECIP_COM_Cloak_BP01" count="1" />
+                <Item itemName="COL_RECIP_COM_Cloak_BP02" count="1" />
+                <Item itemName="COL_RECIP_OUT_FortuneHunter01_UF05" count="1" />
+                <Item itemName="COL_RECIP_OUT_SeaExplorer01_S04" count="1" />
+                <Item itemName="COL_RECIP_OUT_SeaExplorer01_W04" count="1" />
+                <Item itemName="COL_RECIP_COM_WaterSport01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_WaterSport01_TS01" count="1" />
+                <Item itemName="Add_COM_Goat01_S01" count="1" />
+                <Item itemName="Add_COM_Centurion01_TS02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_TS02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_S04" count="1" />
+                <Item itemName="Add_COM_Knight01_S02" count="1" />
+                <Item itemName="Add_COM_Knight01_LS02" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_S01" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_TS01" count="1" />
+                <Item itemName="Add_COM_Clown01_TS02" count="1" />
+                <Item itemName="Add_COM_Viking01_LS02" count="1" />
+                <Item itemName="Add_COM_Panda01_S03" count="1" />
+                <Item itemName="Add_COM_Panda01_TS03" count="1" />
+                <Item itemName="Add_SHD_Shinto01_LS02" count="1" />
+                <Item itemName="Add_COM_Tiger01_T03" count="1" />
+                <Item itemName="Add_COM_Knight01_T02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T04" count="1" />
+                <Item itemName="Add_OUT_PirateChef01_E01" count="1" />
+                <Item itemName="Add_OUT_SeaExplorer01_W01" count="1" />
+                <Item itemName="Add_OUT_Swashbuckler01_S01" count="1" />
+                <Item itemName="Add_BON_BogHunter01_W01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Purple Chest-->
+        <LootInfo objectId="7298" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_RECIP_COM_Cloak_BP01" count="1" />
+                <Item itemName="COL_RECIP_COM_Cloak_BP02" count="1" />
+                <Item itemName="COL_RECIP_OUT_FortuneHunter01_UF05" count="1" />
+                <Item itemName="COL_RECIP_OUT_SeaExplorer01_S04" count="1" />
+                <Item itemName="COL_RECIP_OUT_SeaExplorer01_W04" count="1" />
+                <Item itemName="COL_RECIP_COM_WaterSport01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_WaterSport01_TS01" count="1" />
+                <Item itemName="Add_COM_Goat01_S01" count="1" />
+                <Item itemName="Add_COM_Centurion01_TS02" count="1" />
+                <Item itemName="Add_OUT_BlackMaid01_TS02" count="1" />
+                <Item itemName="Add_OUT_WaterBandit01_S04" count="1" />
+                <Item itemName="Add_COM_Knight01_S02" count="1" />
+                <Item itemName="Add_COM_Knight01_LS02" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_S01" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_TS01" count="1" />
+                <Item itemName="Add_COM_Clown01_TS02" count="1" />
+                <Item itemName="Add_COM_Viking01_LS02" count="1" />
+                <Item itemName="Add_COM_Panda01_S03" count="1" />
+                <Item itemName="Add_COM_Panda01_TS03" count="1" />
+                <Item itemName="Add_SHD_Shinto01_LS02" count="1" />
+                <Item itemName="Add_COM_Tiger01_T03" count="1" />
+                <Item itemName="Add_COM_Knight01_T02" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T04" count="1" />
+                <Item itemName="Add_OUT_PirateChef01_E01" count="1" />
+                <Item itemName="Add_OUT_SeaExplorer01_W01" count="1" />
+                <Item itemName="Add_OUT_Swashbuckler01_S01" count="1" />
+                <Item itemName="Add_BON_BogHunter01_W01" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>    
+    <Level name="Pirate Deckhand Trial" id="555">
+        <!--Blue Chest-->
+        <LootInfo objectId="26293343" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
+                <Item itemName="COL_BOMB_FireBomb03" count="1" />
+                <Item itemName="Add_COM_FxFire01_T01" count="1" />
+                <Item itemName="Add_COM_Power01_W01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
+                <Item itemName="COL_ING_G_Cotton02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Purple Chest-->
+        <LootInfo objectId="26293743" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_PRJ_ZotanFist01" count="1" />
+                <Item itemName="Add_COM_FxFire01_T01" count="1" />
+                <Item itemName="Add_COM_Power01_W01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
             </Items>
         </LootInfo>
     </Level>
@@ -2948,7 +3739,19 @@
             </Items>
         </LootInfo>
     </Level>
-
+    <Level name="Viking Warrior Trial" id="556">
+        <!--Blue Chest Behind Gate, Missing Recipes-->
+        <LootInfo objectId="26293310" doLootWheel="True">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_BeastBomb01" count="1" />
+                <Item itemName="COL_ING_G_Fur02" count="1" />
+                <Item itemName="Add_COM_ShardEarrings01_E01" count="1" />
+                <Item itemName="Add_WLD_IceRaider02_T01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Final Purple Chest unavailable due to missing spikers-->
+    </Level>
+    
     <!-- Guardian Knights -->
     <Level name="Vespid Lair" id="446">
         <LootInfo objectId="3312094" doLootWheel="True">
