@@ -392,7 +392,17 @@
             <Dialog dialogId="681" conversationId="1931" minimumReputation="5" />
         </NPC>
     </Level>
-
+    <Level name="Razor Bay" id="54">
+        <NPC objectId="2305" name="Rosy" descriptionId="0">
+            <Dialog dialogId="677" conversationId="1927" minimumReputation="5" />
+            <Dialog dialogId="678" conversationId="1928" minimumReputation="10" />
+        </NPC>
+    </Level>
+    <Level name="Anchor Falls" id="147">
+        <NPC objectId="14397" name="Lucky" descriptionId="0">
+            <Dialog dialogId="691" conversationId="1941" minimumReputation="5" />
+        </NPC>
+    </Level>
 
     <!-- Ice Raiders Tribe -->
     <Level name="Snowdrift Hills" id="497">
