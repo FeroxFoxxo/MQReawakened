@@ -14,7 +14,7 @@ public class AddItem : SlashCommand
 
     public override List<ParameterModel> Parameters => [
         new ParameterModel() {
-            Name = "prefabName",
+            Name = "name",
             Description = "The prefab name of the item to be added.",
             Optional = false
         },

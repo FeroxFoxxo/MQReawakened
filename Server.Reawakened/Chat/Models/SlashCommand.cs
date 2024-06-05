@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Server.Base.Accounts.Enums;
+using Server.Base.Accounts.Models;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Data.Commands;
@@ -17,7 +18,7 @@ public abstract class SlashCommand
 
     public void Run(Player player, string[] args)
     {
-        if (!(player.Account.AccessLevel >= AccessLevel))
+        if (!(player.NetState.Get<Account>().AccessLevel >= AccessLevel))
             return;
 
         Execute(player, args);
