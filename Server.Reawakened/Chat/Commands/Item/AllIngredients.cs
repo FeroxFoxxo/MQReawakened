@@ -35,7 +35,7 @@ public class AllIngredients : SlashCommand
 
         foreach (var item in ItemCatalog.Items)
         {
-            if (item.Value.SubCategoryId is not ItemSubCategory.CoreIngredients 
+            if (item.Value.SubCategoryId is not ItemSubCategory.CoreIngredients
                 or ItemSubCategory.Fabrics or ItemSubCategory.Mineral)
                 continue;
 

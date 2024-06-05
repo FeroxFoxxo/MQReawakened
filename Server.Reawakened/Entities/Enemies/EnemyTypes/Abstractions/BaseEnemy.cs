@@ -201,7 +201,7 @@ public abstract class BaseEnemy : IDestructible
             Logger.LogError("Could not find pet that damaged {PrefabName}! Returning...", PrefabName);
             return;
         }
-;  
+;
         var petDamage = (int)Math.Ceiling(MaxHealth * pet.AbilityParams.ItemEffectStatRatio);
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health -= petDamage, petDamage, 1, 1, player.CharacterName, false, true));

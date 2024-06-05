@@ -12,7 +12,7 @@ public class AIStateSpiderPatrolComp : BaseAIState<AIStateSpiderPatrol>
     public float ToY => ComponentData.ToY;
     public float[] MinPatrolTime => ComponentData.MinPatrolTime;
     public float[] MaxPatrolTime => ComponentData.MaxPatrolTime;
-    
+
     // Provide Initial Position
     public override ExtLevelEditor.ComponentSettings GetSettings() => throw new NotImplementedException();
 }

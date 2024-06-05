@@ -8,8 +8,8 @@ public class AIBehaviorGoTo(BehaviorEnemy enemy, StateType state) : AIBaseBehavi
     public override bool ShouldDetectPlayers => true;
 
     // TO DO: CALCULATE WHAT THESE VALUES SHOULD BE
-    public vector3 GoToPosition = new (0, 0, 0);
-    public float Velocity = 0f; 
+    public vector3 GoToPosition = new(0, 0, 0);
+    public float Velocity = 0f;
 
     public override AiProperties GetProperties() => new EmptyAiProperties();
     public override object[] GetStartArgs() => [GoToPosition.x, GoToPosition.y, GoToPosition.z, Velocity];

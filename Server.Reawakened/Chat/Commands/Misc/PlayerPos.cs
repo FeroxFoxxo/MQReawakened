@@ -14,6 +14,6 @@ public class PlayerPos : SlashCommand
 
     public override AccessLevel AccessLevel => AccessLevel.Player;
 
-    public override void Execute(Player player, string[] args) => 
+    public override void Execute(Player player, string[] args) =>
         Log(player.TempData.Position.ToString(), player);
 }

@@ -474,7 +474,7 @@ public class InternalEnemyData : InternalXml
                                                 var projectileDelayBetweenFireRounds = 0f;
                                                 var projectileGravity = 0f;
                                                 var projectileIsTracking = false;
-                                                
+
                                                 foreach (XmlAttribute behaviorData in behavior.Attributes)
                                                     switch (behaviorData.Name)
                                                     {

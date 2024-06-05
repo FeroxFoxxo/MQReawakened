@@ -13,7 +13,7 @@ public abstract class BaseCollider
     public readonly Rect BoundingBox;
 
     private Vector3 internalPosition = Vector3.zero;
-    private Rect colliderBox = new (0, 0, 0, 0);
+    private Rect colliderBox = new(0, 0, 0, 0);
 
     public Vector3 Position
     {

@@ -11,7 +11,7 @@ public class AIStateDrakePlacementComp : BaseAIState<AIStateDrakePlacement>
     public float AttackLoopAnimDuration => ComponentData.AttackLoopAnimDuration;
     public float AttackRange => ComponentData.AttackRange;
     public float AttackRangeMaximum => ComponentData.AttackRangeMaximum;
-    
+
     // Provide Initial And Placement Positions
     public override ExtLevelEditor.ComponentSettings GetSettings() => throw new NotImplementedException();
 }

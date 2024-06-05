@@ -14,7 +14,7 @@ public class AIBehaviorActing(ActingProperties properties, BehaviorEnemy enemy, 
 
     public override AiProperties GetProperties() => properties;
 
-    public override object[] GetStartArgs() => [ Enum.GetName(ActingState) ];
+    public override object[] GetStartArgs() => [Enum.GetName(ActingState)];
 
     // TODO: ADD CODE FOR CALCULATING NEXT STATE
     public override void NextState() => throw new NotImplementedException();

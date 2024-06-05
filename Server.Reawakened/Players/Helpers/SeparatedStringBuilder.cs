@@ -4,7 +4,7 @@ namespace Server.Reawakened.Players.Helpers;
 
 public class SeparatedStringBuilder(char separator)
 {
-    private readonly StringBuilder _stringBuilder = new ();
+    private readonly StringBuilder _stringBuilder = new();
     private bool _first = true;
 
     public void Append(object text)

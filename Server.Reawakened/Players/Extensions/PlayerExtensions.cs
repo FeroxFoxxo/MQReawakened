@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
-using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
@@ -241,7 +240,7 @@ public static class PlayerExtensions
             : string.Empty;
     }
 
-    public static void LevelUp(this Player player, int level, 
+    public static void LevelUp(this Player player, int level,
     ServerRConfig config, Microsoft.Extensions.Logging.ILogger logger)
     {
         player.Character.SetLevelXp(level, config);

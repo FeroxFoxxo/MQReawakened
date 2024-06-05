@@ -2,7 +2,6 @@
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Services;

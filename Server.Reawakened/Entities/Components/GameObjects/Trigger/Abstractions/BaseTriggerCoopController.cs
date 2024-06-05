@@ -1,18 +1,18 @@
 ﻿using A2m.Server;
 using Server.Base.Logging;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
-using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using System.Text;
-using static TriggerCoopController;
 using UnityEngine;
-using Server.Reawakened.Core.Configs;
+using static TriggerCoopController;
 
 namespace Server.Reawakened.Entities.AbstractComponents;
 

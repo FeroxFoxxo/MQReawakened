@@ -19,7 +19,7 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol>
     public bool RayCastDetection => ComponentData.RayCastDetection;
     public bool DetectOnlyInPatrolZone => ComponentData.DetectOnlyInPatrolZone;
     public float PatrolZoneSizeOffset => ComponentData.PatrolZoneSizeOffset;
-    
+
     // Provide Initial Position
     public override ExtLevelEditor.ComponentSettings GetSettings() => throw new NotImplementedException();
 }

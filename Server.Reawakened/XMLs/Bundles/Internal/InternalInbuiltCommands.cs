@@ -15,7 +15,8 @@ public class InternalInbuiltCommands : InternalXml
     public override void InitializeVariables() =>
         Commands = [];
 
-    public override void ReadDescription(XmlDocument xmlDocument) {
+    public override void ReadDescription(XmlDocument xmlDocument)
+    {
         var commandNodes = xmlDocument.SelectNodes("/Commands/Command");
 
         Commands.Clear();

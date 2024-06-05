@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables;

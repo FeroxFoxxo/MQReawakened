@@ -11,7 +11,7 @@ public class AIStateHamsterAttackComp : BaseAIState<AIStateHamsterAttackMQR>
     public float LoopTime => ComponentData.LoopTime;
     public float OutTime => ComponentData.OutTime;
     public float JumpHeight => ComponentData.JumpHeight;
-    
+
     // Provide Initial And Target Positions
     public override ExtLevelEditor.ComponentSettings GetSettings() => throw new NotImplementedException();
 }

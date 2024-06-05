@@ -42,7 +42,7 @@ public class EquipItem : ExternalProtocol
             Player.RemoveItem(ItemCatalog.GetItemFromId(item.Value), 1, ItemCatalog, ItemRConfig);
         }
 
-        AddUnequippedToInventory(newEquipment);   
+        AddUnequippedToInventory(newEquipment);
         Player.Character.Data.Equipment = newEquipment;
 
         Player.UpdateEquipment();

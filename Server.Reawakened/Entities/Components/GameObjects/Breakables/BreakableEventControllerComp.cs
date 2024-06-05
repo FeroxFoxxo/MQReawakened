@@ -81,7 +81,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
                 {
                     Damageable.CurrentHealth = Convert.ToInt32(
                         Math.Floor(
-                            Damageable.MaxHealth * ((double) (breakable.NumberOfHitsToBreak - breakable.NumberOfHits) / breakable.NumberOfHitsToBreak)
+                            Damageable.MaxHealth * ((double)(breakable.NumberOfHitsToBreak - breakable.NumberOfHits) / breakable.NumberOfHitsToBreak)
                         )
                     );
 

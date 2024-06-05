@@ -56,7 +56,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         foreach (var internalProcessable in internalProcessableComponents)
         {
             var dataComp = Activator.CreateInstance(internalProcessable.Value) as DataComponentAccessorMQR;
-            
+
             if (!ProcessableComponents.ContainsKey(dataComp.OverrideName))
             {
                 logger.LogError("Unknown class to override for: {Class}!", dataComp.OverrideName);

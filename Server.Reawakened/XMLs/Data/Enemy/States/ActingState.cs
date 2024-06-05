@@ -8,6 +8,6 @@ using Server.Reawakened.XMLs.Data.Enemy.Models;
 namespace Server.Reawakened.XMLs.Data.Enemy.States;
 public class ActingState(ActingProperties properties, List<EnemyResourceModel> resources, StateType stateType) : BaseState(resources)
 {
-    public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) => 
+    public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
         new AIBehaviorActing(properties, enemy, stateType);
 }

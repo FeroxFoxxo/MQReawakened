@@ -8,6 +8,6 @@ using Server.Reawakened.XMLs.Data.Enemy.Models;
 namespace Server.Reawakened.XMLs.Data.Enemy.States;
 public class ProjectileState(ProjectileProperties properties, List<EnemyResourceModel> resources, StateType stateType) : BaseState(resources)
 {
-    public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) => 
+    public override AIBaseBehavior GetBaseBehaviour(BehaviorEnemy enemy) =>
         new AIBehaviorProjectile(properties, enemy, stateType);
 }

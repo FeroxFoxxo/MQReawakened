@@ -13,7 +13,7 @@ public class AIBehaviorComeBack(ComeBackProperties properties, BehaviorEnemy ene
             Enemy.Global.ComeBack_MoveSpeed != Enemy.Global.Default.ComeBack_MoveSpeed ? Enemy.Global.ComeBack_MoveSpeed : properties.comeBack_MoveSpeed
         );
 
-    public override object[] GetStartArgs() => [ Enemy.Position.x, Enemy.AiData.Intern_SpawnPosY ];
+    public override object[] GetStartArgs() => [Enemy.Position.x, Enemy.AiData.Intern_SpawnPosY];
 
     public override void NextState() =>
         Enemy.ChangeBehavior(StateType.Patrol, Enemy.Position.x, Enemy.Position.y, Enemy.Generic.Patrol_ForceDirectionX);

@@ -107,7 +107,7 @@ public static class PlayerItemExtensions
 
     private static void ExplodeBomb(object data)
     {
-        var bData = (BombData) data;
+        var bData = (BombData)data;
 
         if (bData.Player == null)
             return;

@@ -190,7 +190,7 @@ public static class CharacterInventoryExtensions
     {
         var itemDescription = itemCatalog.GetItemFromId(itemId);
 
-        player.RemoveItem(itemDescription, 1, itemCatalog, config);  
+        player.RemoveItem(itemDescription, 1, itemCatalog, config);
         player.SendXt("hu", player.Character.Data.Hotbar);
         player.SendUpdatedInventory();
     }

@@ -10,7 +10,7 @@ public class AIStateSpiderMoveComp : BaseAIState<AIStateSpiderMoveMQR>
     public float[] MovementSpeed => ComponentData.MovementSpeed;
     public float CeilingY => ComponentData.CeilingY;
     public float PatrolFromY => ComponentData.PatrolFromY;
-    
+
     // Provide Initial And Target Position
     public override ExtLevelEditor.ComponentSettings GetSettings() => throw new NotImplementedException();
 }
