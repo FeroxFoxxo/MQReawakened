@@ -22,10 +22,12 @@ public class MeleeEntity : BaseProjectile
         var onGround = player.TempData.OnGround;
         var isRight = direction > 0;
 
-        var meleeWidth = onGround ? config.MeleeWidth : config.MeleeAerialWidth;
-        var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialHeight;
+        var meleeLeft = onGround ? isRight ? 0 : -config.MeleeWidth : -config.MeleeAerialOffset;
+        var meleeTop = onGround ? 0 : -config.MeleeAerialOffset; 
+        var meleeWidth = onGround ? config.MeleeWidth : config.MeleeAerialRange;
+        var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialRange;
 
-        Collider = new AttackCollider(id, position, new Rect(isRight ? 0 : -meleeWidth, onGround ? 0 : config.MeleeAerialOffset, meleeWidth, meleeHeight),
+        Collider = new AttackCollider(id, position, new Rect(meleeLeft, meleeTop, meleeWidth, meleeHeight),
             PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f
         );
 
