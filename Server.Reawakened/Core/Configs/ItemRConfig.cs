@@ -38,8 +38,7 @@ public class ItemRConfig : IRConfig
 
     public float MeleeWidth { get; }
     public float MeleeHeight { get; }
-    public float MeleeAerialWidth { get; }
-    public float MeleeAerialHeight { get; }
+    public float MeleeAerialRange { get; }
     public float MeleeAerialOffset { get; }
 
     public Dictionary<int, string> TrainingGear { get; }
@@ -118,9 +117,9 @@ public class ItemRConfig : IRConfig
         MeleeWidth = 3.5f;
         MeleeHeight = 1f;
 
-        MeleeAerialWidth = 2f;
-        MeleeAerialHeight = 4f;
-        MeleeAerialOffset = -2f;
+        MeleeAerialRange = 5f;
+        MeleeAerialOffset = 2.5f;
+
         TrainingGear = new Dictionary<int, string>
         {
             { 465, "ABIL_GrapplingHook01" }, // lv_shd_teaser01
