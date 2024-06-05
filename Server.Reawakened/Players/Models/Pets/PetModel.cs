@@ -11,6 +11,7 @@ using Server.Reawakened.Players.Extensions;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.XMLs.Bundles.Base;
 using PetDefines;
+using Server.Reawakened.Core.Configs;
 
 namespace Server.Reawakened.Players.Models.Pets;
 
@@ -27,15 +28,15 @@ public class PetModel()
     public string CoopTriggerableId { get; set; }
 
     public void SpawnPet(Player petOwner, string petId, bool spawnPet, PetAbilityParams abilityParams,
-        bool refillEnergy, WorldStatistics worldStatistics)
+        bool refillEnergy, WorldStatistics worldStatistics, ServerRConfig config)
     {
         PetId = petId;
         AbilityParams = abilityParams;
 
-        MaxEnergy = petOwner.GetMaxPetEnergy(worldStatistics);
+        MaxEnergy = petOwner.GetMaxPetEnergy(worldStatistics, config);
 
         if (refillEnergy)
-            CurrentEnergy = petOwner.GetMaxPetEnergy(worldStatistics);
+            CurrentEnergy = petOwner.GetMaxPetEnergy(worldStatistics, config);
 
         AbilityCooldown = petOwner.Room.Time + AbilityParams.CooldownTime;
         InCoopJumpState = false;

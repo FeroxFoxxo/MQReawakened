@@ -440,4 +440,5 @@
     </Command>
     <Command name="/socialcontextualmenuv2" description="Toggles the updated social context menu."/>
     <Command name="/socialnotebookv2" description="Toggles the updated social notebook menu."/>
+    <Command name="/unlockhud" description="Unlocks all hud elements."/>
 </Commands>
