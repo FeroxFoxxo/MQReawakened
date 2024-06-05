@@ -24,6 +24,9 @@ public class ResetArmor : SlashCommand
         {
             var target = CharacterHandler.Get(characterId);
 
+            if (player.Character != null && target == player.Character)
+                return;
+
             foreach (var equippedItem in target.Data.Equipment.EquippedItems)
                 target.Data.Inventory.Items.Add(equippedItem.Value, new ItemModel()
                 {
