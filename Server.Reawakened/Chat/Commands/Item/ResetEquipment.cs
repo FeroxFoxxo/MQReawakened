@@ -6,11 +6,11 @@ using Server.Reawakened.Players.Services;
 using Server.Reawakened.XMLs.Data.Commands;
 
 namespace Server.Reawakened.Chat.Commands.Item;
-public class ResetArmor : SlashCommand
+public class ResetEquipment : SlashCommand
 {
-    public override string CommandName => "/ResetArmor";
+    public override string CommandName => "/ResetEquipment";
 
-    public override string CommandDescription => "Reset all of your character's armor.";
+    public override string CommandDescription => "Reset all of your character's equipment.";
 
     public override List<ParameterModel> Parameters => [];
 
@@ -28,7 +28,7 @@ public class ResetArmor : SlashCommand
                 return;
 
             foreach (var equippedItem in target.Data.Equipment.EquippedItems)
-                target.Data.Inventory.Items.Add(equippedItem.Value, new ItemModel()
+                target.Data.Inventory.Items.TryAdd(equippedItem.Value, new ItemModel()
                 {
                     ItemId = equippedItem.Value,
                     Count = 1,
@@ -36,6 +36,13 @@ public class ResetArmor : SlashCommand
                     DelayUseExpiry = DateTime.Now
                 });
 
+            foreach (var equippedItem in target.Data.Hotbar.HotbarButtons)
+                target.Data.Inventory.Items.TryAdd(equippedItem.Value.ItemId, equippedItem.Value);
+
+            if (target.Data.PetItemId > 0)
+                target.Data.PetItemId = 0;
+
+            target.Data.Hotbar.HotbarButtons.Clear();
             target.Data.Equipment.EquippedItems.Clear();
             target.Data.Equipment.EquippedBinding.Clear();
         }
