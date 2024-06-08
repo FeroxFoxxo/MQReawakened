@@ -55,8 +55,6 @@ public partial class ChatCommands(
 
         AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
 
-        AddCommand(new ChatCommand("findQuest", "[name]", GetQuestByName));
-
         AddCommand(new ChatCommand("updateNpcs", string.Empty, UpdateLevelNpcs));
 
         logger.LogInformation("See chat commands by running {ChatCharStart}help", config.ChatCommandStart);
@@ -380,22 +378,6 @@ public partial class ChatCommands(
             count++;
         }
 
-        return true;
-    }
-
-    private bool GetQuestByName(Player player, string[] args)
-    {
-        var name = string.Join(" ", args.Skip(1)).ToLower();
-
-        var closestQuest = questCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Title.Equals(name, StringComparison.OrdinalIgnoreCase)).Value;
-
-        if (closestQuest == null)
-        {
-            Log($"Could not find quest with name '{name}'.", player);
-            return false;
-        }
-
-        Log($"Found quest: '{name}' with ID: '{closestQuest.Id}'.", player);
         return true;
     }
 }

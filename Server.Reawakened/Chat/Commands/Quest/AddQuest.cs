@@ -54,24 +54,19 @@ public class AddQuest : SlashCommand
     {
         if (args.Length == 1)
         {
-            Log("Please provide a quest id.", player);
+            Log("Please provide a quest name.", player);
             return null;
         }
 
         if (args.Length != 2)
             return null;
 
-        if (!int.TryParse(args[1], out var questId))
-        {
-            Log("Please provide a valid quest id.", player);
-            return null;
-        }
-
+        var questId = QuestCatalog.GetQuestIdFromName(args[1]);
         var questData = QuestCatalog.GetQuestData(questId);
 
         if (questData == null)
         {
-            Log("Please provide a valid quest id.", player);
+            Log("Please provide a valid quest name.", player);
             return null;
         }
 
