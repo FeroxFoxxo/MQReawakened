@@ -15,17 +15,14 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Bundles.Base;
-using Server.Reawakened.XMLs.Bundles.Internal;
 using System.Text.RegularExpressions;
 
 namespace Server.Reawakened.Chat.Services;
 
 public partial class ChatCommands(
     ItemCatalog itemCatalog, ServerRConfig config, ItemRConfig itemConfig, ILogger<ServerConsole> logger,
-    InternalAchievement internalAchievement, IHostApplicationLifetime appLifetime, QuestCatalog questCatalog,
-    CharacterHandler characterHandler, GetServerAddress getSA) : IService
+    IHostApplicationLifetime appLifetime, CharacterHandler characterHandler, GetServerAddress getSA) : IService
 {
     private readonly Dictionary<string, ChatCommand> commands = [];
 
@@ -41,8 +38,6 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("maxHP", string.Empty, MaxHealth));
 
         AddCommand(new ChatCommand("hotbar", "[hotbarNum] [itemId]", Hotbar));
-        AddCommand(new ChatCommand("itemKit", "[itemKit]", ItemKit));
-        AddCommand(new ChatCommand("cashKit", "[cashKit]", CashKit));
 
         AddCommand(new ChatCommand("badgePoints", "[badgePoints]", BadgePoints));
         AddCommand(new ChatCommand("discoverTribes", string.Empty, DiscoverTribes));
@@ -50,10 +45,6 @@ public partial class ChatCommands(
         AddCommand(new ChatCommand("changeName", "[first] [middle] [last]", ChangeName));
         AddCommand(new ChatCommand("tp", "[X] [Y]", Teleport));
         AddCommand(new ChatCommand("openDoors", string.Empty, OpenDoors));
-
-        AddCommand(new ChatCommand("closestEntity", string.Empty, ClosestEntity));
-
-        AddCommand(new ChatCommand("getPlayerId", "[id]", GetPlayerId));
 
         AddCommand(new ChatCommand("updateNpcs", string.Empty, UpdateLevelNpcs));
 
@@ -166,31 +157,6 @@ public partial class ChatCommands(
         }
     }
 
-    private void AddKit(Player player, int amount)
-    {
-        var items = itemConfig.SingleItemKit
-            .Select(itemCatalog.GetItemFromId)
-            .ToList();
-
-        foreach (var itemId in itemConfig.StackedItemKit)
-        {
-            var stackedItem = itemCatalog.GetItemFromId(itemId);
-
-            if (stackedItem == null)
-            {
-                logger.LogError("Unknown item with id {itemId}", itemId);
-                continue;
-            }
-
-            for (var i = 0; i < itemConfig.AmountToStack; i++)
-                items.Add(stackedItem);
-        }
-
-        player.Character.AddKit(items, amount);
-
-        player.SendUpdatedInventory();
-    }
-
     private bool Teleport(Player player, string[] args)
     {
         if (args.Length < 3 || !int.TryParse(args[1], out var x) || !int.TryParse(args[2], out var y))
@@ -220,49 +186,9 @@ public partial class ChatCommands(
         return true;
     }
 
-    private bool ItemKit(Player player, string[] args)
-    {
-        var character = player.Character;
-
-        if (args.Length > 2)
-            Log($"Unknown kit amount, defaulting to 1", player);
-
-        var amount = 1;
-
-        if (args.Length == 2)
-        {
-            if (!int.TryParse(args[1], out var kitAmount))
-                Log($"Invalid kit amount, defaulting to 1", player);
-
-            amount = kitAmount;
-
-            if (amount <= 0)
-                amount = 1;
-        }
-
-        AddKit(player, amount);
-
-        Log($"{character.Data.CharacterName} received {amount} item kit{(amount > 1 ? "s" : string.Empty)}!", player);
-
-        return true;
-    }
-
     private bool BadgePoints(Player player, string[] args)
     {
         player.AddPoints();
-        return true;
-    }
-
-    private bool CashKit(Player player, string[] args)
-    {
-        var character = player.Character;
-
-        player.AddBananas(config.CashKitAmount, internalAchievement, logger);
-        player.AddNCash(config.CashKitAmount);
-
-        Log($"{character.Data.CharacterName} received {config.CashKitAmount} " +
-            $"banana{(config.CashKitAmount > 1 ? "s" : string.Empty)} & monkey cash!", player);
-
         return true;
     }
 
@@ -327,57 +253,6 @@ public partial class ChatCommands(
     {
         player.UpdateAllNpcsInLevel();
         Log($"All NPCs updated for {player.CharacterName}.", player);
-        return true;
-    }
-
-    private bool GetPlayerId(Player player, string[] args)
-    {
-        Log($"{player.CharacterName} has id of {player.GameObjectId}", player);
-        return true;
-    }
-
-    private bool ClosestEntity(Player player, string[] args)
-    {
-        var plane = player.GetPlaneEntities();
-
-        var closestGameObjects = plane.Select(gameObject =>
-        {
-            var x = gameObject.ObjectInfo.Position.X - player.TempData.Position.x;
-            var y = gameObject.ObjectInfo.Position.Y - player.TempData.Position.y;
-
-            var distance = Math.Round(Math.Sqrt(Math.Pow(Math.Abs(x), 2) + Math.Pow(Math.Abs(y), 2)));
-
-            return new Tuple<double, GameObjectModel>(distance, gameObject);
-        }).OrderBy(x => x.Item1).ToList();
-
-        if (closestGameObjects.Count == 0)
-        {
-            Log("No game objects found close to _player!", player);
-            return false;
-        }
-
-        Log("Closest Game Objects:", player);
-
-        var count = 0;
-
-        if (closestGameObjects.Count > config.MaximumEntitiesToReturnLog)
-            closestGameObjects = closestGameObjects.Take(config.MaximumEntitiesToReturnLog).ToList();
-
-        closestGameObjects.Reverse();
-
-        foreach (var item in closestGameObjects)
-        {
-            if (count > config.MaximumEntitiesToReturnLog)
-                break;
-
-            Log($"{item.Item1} units: " +
-                $"{item.Item2.ObjectInfo.PrefabName} " +
-                $"({item.Item2.ObjectInfo.ObjectId})",
-                player);
-
-            count++;
-        }
-
         return true;
     }
 }
