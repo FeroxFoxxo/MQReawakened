@@ -19,7 +19,7 @@ public class God : SlashCommand
     public override string CommandDescription => "Enable's god mode.";
 
     public override List<ParameterModel> Parameters => [];
-    public override AccessLevel AccessLevel => AccessLevel.Moderator;
+    public override AccessLevel AccessLevel => AccessLevel.Player;
 
     public ItemRConfig ItemRConfig { get; set; }
     public ServerRConfig ServerRConfig { get; set; }

@@ -21,7 +21,7 @@ public class ChangeLevel : SlashCommand
         }
     ];
 
-    public override AccessLevel AccessLevel => AccessLevel.Moderator;
+    public override AccessLevel AccessLevel => AccessLevel.Player;
 
     public WorldGraph WorldGraph { get; set; }
     public ServerRConfig ServerRConfig { get; set; }

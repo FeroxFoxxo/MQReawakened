@@ -21,7 +21,7 @@ public class LevelUp : SlashCommand
         }
     ];
 
-    public override AccessLevel AccessLevel => AccessLevel.Moderator;
+    public override AccessLevel AccessLevel => AccessLevel.Player;
 
     public ServerRConfig ServerRConfig { get; set; }
     public ILogger<LevelUp> Logger { get; set; }
