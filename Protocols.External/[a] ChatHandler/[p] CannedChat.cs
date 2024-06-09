@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
@@ -12,8 +11,7 @@ public class CannedChat : ExternalProtocol
 {
     public override string ProtocolName => "ap";
 
-    public ILogger<ChatCommands> Logger { get; set; }
-    public ChatCommands ChatCommands { get; set; }
+    public ILogger<CannedChat> Logger { get; set; }
     public ServerRConfig Config { get; set; }
     public CannedChatDictionary CannedChatDict { get; set; }
 

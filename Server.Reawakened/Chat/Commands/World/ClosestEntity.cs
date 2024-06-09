@@ -6,7 +6,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.XMLs.Data.Commands;
 
-namespace Server.Reawakened.Chat.Commands.Misc;
+namespace Server.Reawakened.Chat.Commands.World;
 public class ClosestEntity : SlashCommand
 {
     public override string CommandName => "/ClosestEntity";

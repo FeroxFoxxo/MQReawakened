@@ -13,7 +13,7 @@ namespace Server.Reawakened.Players.Services;
 public class RunPlayerCommand(ServerConsole console, EventSink sink,
     ILogger<RunPlayerCommand> logger, UserInfoHandler userInfoHandler,
     AccountHandler accountHandler, CharacterHandler characterHandler,
-    NetStateHandler handler, ChatCommands chatCommands) : IService
+    NetStateHandler handler, MQRSlashCommands slashCommands) : IService
 {
     public void Initialize() => sink.WorldLoad += Load;
 
@@ -42,6 +42,6 @@ public class RunPlayerCommand(ServerConsole console, EventSink sink,
 
         var command = Console.ReadLine()?.Trim();
 
-        chatCommands.RunCommand(player, command.Split(' '));
+        slashCommands.RunCommand(player, command.Split(' ')[0], command.Split(' '));
     }
 }

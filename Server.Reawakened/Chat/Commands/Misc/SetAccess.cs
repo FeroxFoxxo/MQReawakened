@@ -13,24 +13,27 @@ public class SetAccess : SlashCommand
 
     public override List<ParameterModel> Parameters => [
         new ParameterModel() {
-            Name = "0",
-            Description = "The Player access level.",
-            Optional = true
-        },
-        new ParameterModel() {
-            Name = "1",
-            Description = "The VIP access level.",
-            Optional = true
-        },
-        new ParameterModel() {
-            Name = "2",
-            Description = "The Moderator access level.",
-            Optional = true
-        },
-        new ParameterModel() {
-            Name = "3",
-            Description = "The Owner access level.",
-            Optional = true
+            Name = "number",
+            Description = "The access level.",
+            Optional = true,
+            Options = [
+                new OptionModel() {
+                    Name = "0",
+                    Description = "The Player access level.",
+                },
+                new OptionModel() {
+                    Name = "1",
+                    Description = "The VIP access level."
+                },
+                new OptionModel() {
+                    Name = "2",
+                    Description = "The Moderator access level."
+                },
+                new OptionModel() {
+                    Name = "3",
+                    Description = "The Owner access level."
+                }
+            ]
         }
     ];
 
