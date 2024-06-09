@@ -20,7 +20,7 @@ public class RoomUpdate : ExternalProtocol
 {
     public override string ProtocolName => "lv";
 
-    public ChatCommands ChatCommands { get; set; }
+    public MQRSlashCommands MQRSlashCommands { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public InternalAchievement InternalAchievement { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
@@ -46,7 +46,7 @@ public class RoomUpdate : ExternalProtocol
 
         if (Player.TempData.FirstLogin)
         {
-            ChatCommands.DisplayHelp(Player);
+            MQRSlashCommands.DisplayHelp(Player);
             Player.TempData.FirstLogin = false;
         }
         else

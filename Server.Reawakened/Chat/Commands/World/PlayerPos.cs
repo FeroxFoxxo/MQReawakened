@@ -3,7 +3,7 @@ using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Data.Commands;
 
-namespace Server.Reawakened.Chat.Commands.Misc;
+namespace Server.Reawakened.Chat.Commands.World;
 public class PlayerPos : SlashCommand
 {
     public override string CommandName => "/PlayerPos";

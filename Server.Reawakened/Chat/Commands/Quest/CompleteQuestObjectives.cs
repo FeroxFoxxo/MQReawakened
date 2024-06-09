@@ -20,7 +20,7 @@ public class CompleteQuestObjectives : SlashCommand
         }
     ];
 
-    public override AccessLevel AccessLevel => AccessLevel.Moderator;
+    public override AccessLevel AccessLevel => AccessLevel.Player;
 
     public QuestCatalog QuestCatalog { get; set; }
 
@@ -29,7 +29,7 @@ public class CompleteQuestObjectives : SlashCommand
         if (args.Length != 2)
             return;
 
-        var questId = int.Parse(args[1]);
+        var questId = QuestCatalog.GetQuestIdFromName(args[1]);
 
         if (!QuestCatalog.QuestCatalogs.TryGetValue(questId, out var quest))
         {
@@ -37,7 +37,7 @@ public class CompleteQuestObjectives : SlashCommand
             return;
         }
 
-        var questModel = player.Character.Data.QuestLog[questId];
+        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
         foreach (var objective in questModel.Objectives)
         {

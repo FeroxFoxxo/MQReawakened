@@ -25,7 +25,7 @@ public class AddItem : SlashCommand
         }
     ];
 
-    public override AccessLevel AccessLevel => AccessLevel.Moderator;
+    public override AccessLevel AccessLevel => AccessLevel.Player;
 
     public ItemCatalog ItemCatalog { get; set; }
 

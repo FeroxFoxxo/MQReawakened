@@ -22,7 +22,7 @@ public class Bananas : SlashCommand
         }
     ];
 
-    public override AccessLevel AccessLevel => AccessLevel.Moderator;
+    public override AccessLevel AccessLevel => AccessLevel.Player;
 
     public InternalAchievement InternalAchievement { get; set; }
     public ServerRConfig ServerRConfig { get; set; }

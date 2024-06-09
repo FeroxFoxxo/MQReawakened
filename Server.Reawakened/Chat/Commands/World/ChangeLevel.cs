@@ -6,7 +6,7 @@ using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Data.Commands;
 
-namespace Server.Reawakened.Chat.Commands.Misc;
+namespace Server.Reawakened.Chat.Commands.World;
 public class ChangeLevel : SlashCommand
 {
     public override string CommandName => "/ChangeLevel";
@@ -21,7 +21,7 @@ public class ChangeLevel : SlashCommand
         }
     ];
 
-    public override AccessLevel AccessLevel => AccessLevel.Moderator;
+    public override AccessLevel AccessLevel => AccessLevel.Player;
 
     public WorldGraph WorldGraph { get; set; }
     public ServerRConfig ServerRConfig { get; set; }

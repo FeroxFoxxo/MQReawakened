@@ -15,7 +15,7 @@ public class AllAbility : SlashCommand
 
     public override List<ParameterModel> Parameters => [];
 
-    public override AccessLevel AccessLevel => AccessLevel.Moderator;
+    public override AccessLevel AccessLevel => AccessLevel.Player;
 
     public ItemCatalog ItemCatalog { get; set; }
 

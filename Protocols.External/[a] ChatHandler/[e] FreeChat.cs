@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
@@ -12,8 +11,7 @@ public class FreeChat : ExternalProtocol
 {
     public override string ProtocolName => "ae";
 
-    public ILogger<ChatCommands> Logger { get; set; }
-    public ChatCommands ChatCommands { get; set; }
+    public ILogger<FreeChat> Logger { get; set; }
     public ServerRConfig Config { get; set; }
 
     public override void Run(string[] message)
@@ -22,13 +20,7 @@ public class FreeChat : ExternalProtocol
         var chatMessage = message[6];
         var recipientName = message[7];
 
-        if (chatMessage.StartsWith(Config.ChatCommandStart))
-        {
-            var args = chatMessage.Contains(' ') ? chatMessage[1..].Split(' ') : [chatMessage[1..]];
-
-            ChatCommands.RunCommand(Player, args);
-        }
-        else if (channelType == CannedChatChannel.Speak)
+        if (channelType == CannedChatChannel.Speak)
         {
             var character = Player.Character;
             Player.Room.Chat(channelType, character.Data.CharacterName, chatMessage);
