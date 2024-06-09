@@ -44,6 +44,7 @@ public class MQRSlashCommands(IServiceScopeFactory serviceFact, ReflectionUtils 
     {
         Log("The chat commands have been replaced with Slash Commands!", player);
         Log($"You can find these new commands here: {getSA.ServerAddress}/commands", player);
+        Log("These new commands can be accessed by pressing shift + enter.", player);
     }
 
     public void RunCommand(Player player, string command, string[] args)
