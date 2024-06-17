@@ -7,7 +7,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Core.Services;
-public class DiscordHandler(ServerRwConfig rwConfig, PlayerContainer playerContainer) : IService
+public class DiscordHandler(DiscordRwConfig rwConfig, PlayerContainer playerContainer) : IService
 {
     private DiscordSocketClient socketClient;
 
