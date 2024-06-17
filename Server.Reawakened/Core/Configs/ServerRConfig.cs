@@ -36,9 +36,6 @@ public class ServerRConfig : IRConfig
 
     public string[] DefaultProtocolTypeIgnore { get; }
 
-    public char ChatCommandStart { get; }
-    public int ChatCommandPadding { get; }
-
     public double RoomTickRate { get; }
 
     public int LogOnLagCount { get; }
@@ -104,9 +101,6 @@ public class ServerRConfig : IRConfig
 
         LogSyncState = false;
         DefaultProtocolTypeIgnore = ["ss", "Pp", "ku", "kr"];
-
-        ChatCommandStart = '.';
-        ChatCommandPadding = 8;
 
         LogOnLagCount = 200;
 
