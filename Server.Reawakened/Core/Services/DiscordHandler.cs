@@ -67,7 +67,7 @@ public class DiscordHandler(DiscordRwConfig rwConfig, PlayerContainer playerCont
                 from client in playerContainer.GetAllPlayers()
                 select client
             )
-                client.Chat(CannedChatChannel.Speak, "Discord > " + author, message);
+                client.Chat(CannedChatChannel.Tell, "Discord > " + author, message);
         }
     }
 }
