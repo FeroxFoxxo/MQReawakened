@@ -14,8 +14,10 @@ public class ItemKit : SlashCommand
 
     public override string CommandDescription => "This will give an item kit.";
 
-    public override List<ParameterModel> Parameters => [
-        new ParameterModel() {
+    public override List<ParameterModel> Parameters => 
+    [
+        new ParameterModel() 
+        {
             Name = "amount",
             Description = "The amount of the kit to give.",
             Optional = true

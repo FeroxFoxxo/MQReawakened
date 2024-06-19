@@ -13,8 +13,10 @@ public class Warp : SlashCommand
 
     public override string CommandDescription => "Change's your level to the specified level id.";
 
-    public override List<ParameterModel> Parameters => [
-        new ParameterModel() {
+    public override List<ParameterModel> Parameters => 
+    [
+        new ParameterModel() 
+        {
             Name = "levelId",
             Description = "The level id.",
             Optional = false

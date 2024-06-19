@@ -12,8 +12,10 @@ public class CompleteQuestObjectives : SlashCommand
 
     public override string CommandDescription => "Completes the provided quest's objectives.";
 
-    public override List<ParameterModel> Parameters => [
-        new ParameterModel() {
+    public override List<ParameterModel> Parameters => 
+    [
+        new ParameterModel() 
+        {
             Name = "name",
             Description = "The quest to have it's objectives marked as completed. (i.e. OOTU_0_07)",
             Optional = false

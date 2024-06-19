@@ -15,8 +15,10 @@ public class AddQuest : SlashCommand
 
     public override string CommandDescription => "Add the provided quest by id.";
 
-    public override List<ParameterModel> Parameters => [
-        new ParameterModel() {
+    public override List<ParameterModel> Parameters => 
+    [
+        new ParameterModel() 
+        {
             Name = "id",
             Description = "The provided quest id.",
             Optional = false

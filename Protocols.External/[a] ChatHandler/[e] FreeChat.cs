@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -13,7 +14,8 @@ public class FreeChat : ExternalProtocol
 
     public ILogger<FreeChat> Logger { get; set; }
     public ServerRConfig Config { get; set; }
-
+    public DiscordHandler DiscordHandler { get; set; }
+    
     public override void Run(string[] message)
     {
         var channelType = (CannedChatChannel)Convert.ToInt32(message[5]);
@@ -24,6 +26,9 @@ public class FreeChat : ExternalProtocol
         {
             var character = Player.Character;
             Player.Room.Chat(channelType, character.Data.CharacterName, chatMessage);
+
+            // Sends a chat message to Discord
+            DiscordHandler.SendMessage(character.Data.CharacterName, chatMessage);
         }
         else if (channelType == CannedChatChannel.Group)
         {

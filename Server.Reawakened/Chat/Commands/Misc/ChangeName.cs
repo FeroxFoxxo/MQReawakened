@@ -12,18 +12,22 @@ public partial class ChangeName : SlashCommand
 
     public override string CommandDescription => "Change your monkey's name.";
 
-    public override List<ParameterModel> Parameters => [
-        new ParameterModel() {
+    public override List<ParameterModel> Parameters => 
+    [
+        new ParameterModel() 
+        {
             Name = "firstName",
             Description = "The monkey's first name.",
             Optional = false
         },
-        new ParameterModel() {
+        new ParameterModel() 
+        {
             Name = "middleName",
             Description = "The monkey's middle name",
             Optional = false
         },
-        new ParameterModel() {
+        new ParameterModel() 
+        {
             Name = "lastName",
             Description = "The monkey's last name",
             Optional = true

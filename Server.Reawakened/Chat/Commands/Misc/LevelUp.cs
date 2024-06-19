@@ -13,8 +13,10 @@ public class LevelUp : SlashCommand
 
     public override string CommandDescription => "Level up to a specified level or default to max level.";
 
-    public override List<ParameterModel> Parameters => [
-        new ParameterModel() {
+    public override List<ParameterModel> Parameters => 
+    [
+        new ParameterModel() 
+        {
             Name = "level",
             Description = "Levels the user up to the specified level.",
             Optional = true
