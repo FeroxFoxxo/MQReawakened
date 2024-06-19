@@ -9,32 +9,26 @@ using Server.Reawakened.Players.Helpers;
 namespace Server.Reawakened.Core.Services;
 public class DiscordHandler(DiscordRwConfig rwConfig, PlayerContainer playerContainer) : IService
 {
-    private DiscordSocketClient socketClient;
-
-    private string botToken;
-    private ulong channelId;
+    private DiscordSocketClient _socketClient;
 
     public void Initialize()
     {
-        botToken = rwConfig.DiscordBotToken;
-        channelId = rwConfig.ChannelId;
-
-        if (string.IsNullOrEmpty(botToken))
+        if (string.IsNullOrEmpty(rwConfig.DiscordBotToken))
             return;
 
-        socketClient = new DiscordSocketClient();
-        socketClient.MessageReceived += ClientOnMessageReceived;
+        _socketClient = new DiscordSocketClient();
+        _socketClient.MessageReceived += ClientOnMessageReceived;
 
-        socketClient.LoginAsync(TokenType.Bot, botToken);
-        socketClient.StartAsync();
+        _socketClient.LoginAsync(TokenType.Bot, rwConfig.DiscordBotToken);
+        _socketClient.StartAsync();
     }
 
     public void SendMessage(string author, string message)
     {
-        if (socketClient == null || string.IsNullOrEmpty(botToken))
+        if (_socketClient == null)
             return;
 
-        var socketChannel = (ISocketMessageChannel)socketClient.GetChannel(channelId);
+        var socketChannel = (ISocketMessageChannel)_socketClient.GetChannel(rwConfig.ChannelId);
 
         socketChannel.SendMessageAsync(author + ": " + message);
     }
@@ -46,12 +40,12 @@ public class DiscordHandler(DiscordRwConfig rwConfig, PlayerContainer playerCont
             {
                 var author = socketMessage.Author.Username;
                 var channelId = socketMessage.Channel.Id;
-                var socketChannel = (ISocketMessageChannel)socketClient.GetChannel(channelId);
+                var socketChannel = (ISocketMessageChannel)_socketClient.GetChannel(channelId);
 
                 var messageId = socketMessage.Id;
                 var message = socketChannel.GetMessageAsync(messageId);
 
-                if (this.channelId != socketChannel.Id)
+                if (rwConfig.ChannelId != socketChannel.Id)
                     return;
 
                 Log(message.Result.Content, author);
