@@ -11,8 +11,10 @@ public class SetEwSubscribed : SlashCommand
 
     public override string CommandDescription => "Change membership status.";
 
-    public override List<ParameterModel> Parameters => [
-        new ParameterModel() {
+    public override List<ParameterModel> Parameters => 
+    [
+        new ParameterModel() 
+        {
             Name = "status",
             Description = "A number 0/1 for membership status.",
             Optional = false

@@ -13,8 +13,10 @@ public class ChangeLevel : SlashCommand
 
     public override string CommandDescription => "Allows you to warp to a new level.";
 
-    public override List<ParameterModel> Parameters => [
-        new ParameterModel() {
+    public override List<ParameterModel> Parameters => 
+    [
+        new ParameterModel() 
+        {
             Name = "levelName",
             Description = "The level name to warp to.",
             Optional = false

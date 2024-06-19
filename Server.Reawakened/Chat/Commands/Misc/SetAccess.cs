@@ -11,25 +11,31 @@ public class SetAccess : SlashCommand
 
     public override string CommandDescription => "Allows you to set a player's access level. (Owner only)";
 
-    public override List<ParameterModel> Parameters => [
-        new ParameterModel() {
+    public override List<ParameterModel> Parameters => 
+    [
+        new ParameterModel() 
+        {
             Name = "number",
             Description = "The access level.",
             Optional = true,
             Options = [
-                new OptionModel() {
+                new OptionModel() 
+                {
                     Name = "0",
                     Description = "The Player access level.",
                 },
-                new OptionModel() {
+                new OptionModel() 
+                {
                     Name = "1",
                     Description = "The VIP access level."
                 },
-                new OptionModel() {
+                new OptionModel() 
+                {
                     Name = "2",
                     Description = "The Moderator access level."
                 },
-                new OptionModel() {
+                new OptionModel() 
+                {
                     Name = "3",
                     Description = "The Owner access level."
                 }
