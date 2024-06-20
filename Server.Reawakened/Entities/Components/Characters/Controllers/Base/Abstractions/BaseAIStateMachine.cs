@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
@@ -7,7 +6,7 @@ using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using static A2m.Server.ExtLevelEditor;
 
-namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
 {
     public IAIState[] CurrentStates = [];

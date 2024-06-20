@@ -13,9 +13,9 @@ public class LevelUp : SlashCommand
 
     public override string CommandDescription => "Level up to a specified level or default to max level.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "level",
             Description = "Levels the user up to the specified level.",
@@ -30,8 +30,6 @@ public class LevelUp : SlashCommand
 
     public override void Execute(Player player, string[] args)
     {
-        var character = player.Character;
-
         if (args.Length != 2 || !int.TryParse(args[1], out var level))
         {
             Log("Invalid level provided, defaulting to max level...", player);
@@ -40,6 +38,6 @@ public class LevelUp : SlashCommand
 
         player.LevelUp(level, ServerRConfig, Logger);
 
-        character.Data.Reputation = character.Data.ReputationForCurrentLevel;
+        player.Character.Write.Reputation = player.Character.ReputationForCurrentLevel;
     }
 }

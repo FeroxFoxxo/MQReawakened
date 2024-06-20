@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -21,11 +20,9 @@ public class RemoveSlot : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
         var hotbarSlotId = int.Parse(message[5]);
 
-        if (!Player.Character.Data.Hotbar.HotbarButtons.TryGetValue(hotbarSlotId, out var hotbarItem))
+        if (!Player.Character.Hotbar.HotbarButtons.TryGetValue(hotbarSlotId, out var hotbarItem))
         {
             Logger.LogWarning("{characterName} has not yet unlocked slot #{hotbarSlotNum}.)",
                 Player.CharacterName, hotbarSlotId++);
@@ -38,6 +35,6 @@ public class RemoveSlot : ExternalProtocol
             PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbilityParams))
             pet.SpawnPet(Player, pet.PetId, false, petAbilityParams, false, WorldStatistics, ServerRConfig);
 
-        SendXt("hr", character.Data.Hotbar);
+        SendXt("hr", Player.Character.Hotbar);
     }
 }

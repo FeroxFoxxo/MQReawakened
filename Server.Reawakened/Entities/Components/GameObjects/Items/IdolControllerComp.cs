@@ -18,24 +18,22 @@ public class IdolControllerComp : Component<IdolController>
 
     public override object[] GetInitData(Player player)
     {
-        var character = player.Character;
         var levelId = Room.LevelInfo.LevelId;
 
-        if (!character.CollectedIdols.ContainsKey(levelId))
-            character.CollectedIdols.Add(levelId, []);
+        if (!player.Character.CollectedIdols.ContainsKey(levelId))
+            player.Character.CollectedIdols.Add(levelId, []);
 
-        return character.CollectedIdols[levelId].Contains(Index) ? [0] : [];
+        return player.Character.CollectedIdols[levelId].Contains(Index) ? [0] : [];
     }
 
     public override void RunSyncedEvent(SyncEvent syncEvent, Player player)
     {
-        var character = player.Character;
         var levelId = Room.LevelInfo.LevelId;
 
-        if (character.CollectedIdols[levelId].Contains(Index))
+        if (player.Character.CollectedIdols[levelId].Contains(Index))
             return;
 
-        character.CollectedIdols[levelId].Add(Index);
+        player.Character.CollectedIdols[levelId].Add(Index);
 
         player.CheckAchievement(AchConditionType.CollectIdol, [Room.LevelInfo.Name], Achievement, Logger);
 
@@ -44,6 +42,6 @@ public class IdolControllerComp : Component<IdolController>
 
         player.SendSyncEventToPlayer(collectedEvent);
 
-        player.SetObjective(ObjectiveEnum.IdolCollect, Id, PrefabName, character.CollectedIdols[levelId].Count, QuestCatalog);
+        player.SetObjective(ObjectiveEnum.IdolCollect, Id, PrefabName, player.Character.CollectedIdols[levelId].Count, QuestCatalog);
     }
 }

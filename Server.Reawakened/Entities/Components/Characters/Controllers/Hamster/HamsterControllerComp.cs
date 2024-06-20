@@ -1,7 +1,7 @@
-﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.DataComponentAccessors.Hampster;
 
-namespace Server.Reawakened.Entities.Components.Characters.Controllers.HampsterController;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.Hamster;
 public class HamsterControllerComp : BaseAIStateMachine<HamsterControllerMQR>
 {
     /* 

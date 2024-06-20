@@ -20,16 +20,13 @@ public class RoomInstanceInfoModel
 
     public RoomInstanceInfoModel(Player player, InternalRwConfig config)
     {
-        var character = player.Character;
-        var room = player.Room;
-
         HostIp = config.ServerAddress;
         HostPort = config.Port;
 
-        LevelName = room.LevelInfo.Name;
-        RoomName = room.ToString();
+        LevelName = player.Room.LevelInfo.Name;
+        RoomName = player.Room.ToString();
 
-        var players = room.GetPlayers();
+        var players = player.Room.GetPlayers();
 
         CountGroup = player.TempData.Group != null
             ? player.TempData.Group.GetMembers()
@@ -37,12 +34,12 @@ public class RoomInstanceInfoModel
                 .Count()
             : 0;
 
-        CountFriends = character.Data.GetFriends().PlayerList
+        CountFriends = player.Character.GetFriends().PlayerList
             .Where(f => players.Any(p => p.UserId == f.CharacterId))
             .Count();
 
         CountClan = players
-            .Where(p => p.Character.Data.Allegiance == character.Data.Allegiance)
+            .Where(p => p.Character.Allegiance == player.Character.Allegiance)
             .Count();
 
         TotalPopulation = players.Length;

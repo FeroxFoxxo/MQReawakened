@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
-using Server.Base.Accounts.Models;
+using Server.Base.Accounts.Database;
 using Server.Reawakened.Core.Services;
-using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Database.Users;
 using Web.Launcher.Models;
 
 namespace Web.Launcher.Extensions;
 public static class LoginData
 {
-    public static JObject GetLoginData(this Account account, UserInfo userInfo,
+    public static JObject GetLoginData(this AccountModel account, UserInfoModel userInfo,
         GetServerAddress getSA, LauncherRwConfig config, LauncherRConfig rConfig) =>
         new()
         {

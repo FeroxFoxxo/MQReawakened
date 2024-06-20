@@ -1,11 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Accounts.Database;
 using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Extensions;
-using Server.Base.Accounts.Models;
-using Server.Base.Accounts.Services;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Database.Users;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Players.Services;
 using System.Xml;
 
 namespace Protocols.System._xml__System;
@@ -30,7 +29,7 @@ public class Login : SystemProtocol
         {
             lock (PlayerContainer.Lock)
             {
-                var account = NetState.Get<Account>();
+                var account = NetState.Get<AccountModel>();
 
                 foreach (var player in PlayerContainer.GetPlayersByUserId(account.Id))
                     player.Remove(Logger);

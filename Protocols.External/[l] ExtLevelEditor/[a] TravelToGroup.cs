@@ -16,7 +16,7 @@ public class TravelToGroup : ExternalProtocol
         var leaderName = Player.TempData.Group.GetLeaderName();
         var leader = PlayerContainer.GetPlayerByName(leaderName);
 
-        var levelId = leader.Character.LevelData.LevelId;
+        var levelId = leader.Character.LevelId;
 
         WorldHandler.ChangePlayerRoom(Player, levelId);
     }

@@ -20,7 +20,7 @@ public static class PlayerStatusEffectExtensions
                 (int)ItemEffectType.NullifySlowStatusEffect, 1, 1, true, hazardId, true));
 
     public static bool HasNullifyEffect(this Player player, ItemCatalog itemCatalog) =>
-     player.Character.Data.Equipment.EquippedItems
+     player.Character.Equipment.EquippedItems
          .Select(x => itemCatalog.GetItemFromId(x.Value))
          .Any(item => item.ItemEffects.Any(effect => effect.Type == ItemEffectType.NullifySlowStatusEffect));
 

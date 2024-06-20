@@ -11,11 +11,9 @@ public class DiscoverStat : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
         var stat = int.Parse(message[5]);
 
-        character.Data.DiscoveredStats.Add(stat);
+        Player.Character.DiscoveredStats.Add(stat);
 
         if (stat is >= 0 and < 12 and not 6)
             return;

@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Services;
+using Server.Base.Accounts.Database;
+using Server.Reawakened.Players.Database.Users;
 using Server.Reawakened.Players.Enums;
-using Server.Reawakened.Players.Services;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 

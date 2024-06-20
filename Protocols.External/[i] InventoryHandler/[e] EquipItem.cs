@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
@@ -20,9 +20,7 @@ public class EquipItem : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
-        var newEquipment = new EquipmentModel(message[5]);
+        var newEquipment = new TemporaryEquipmentModel(message[5]);
 
         foreach (var item in newEquipment.EquippedItems)
         {
@@ -31,7 +29,7 @@ public class EquipItem : ExternalProtocol
             if (itemDesc != null)
                 Player.CheckAchievement(AchConditionType.EquipItem, [itemDesc.PrefabName], InternalAchievement, Logger);
 
-            if (character.Data.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquippedId))
+            if (Player.Character.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquippedId))
             {
                 if (ItemAlreadyEquipped(item.Value, previouslyEquippedId))
                     continue;
@@ -43,19 +41,17 @@ public class EquipItem : ExternalProtocol
         }
 
         AddUnequippedToInventory(newEquipment);
-        Player.Character.Data.Equipment = newEquipment;
+        Player.Character.Equipment.UpdateFromTempEquip(newEquipment);
 
         Player.UpdateEquipment();
         Player.SendUpdatedInventory(true);
     }
 
-    private bool ItemAlreadyEquipped(int itemId, int previouslyEquippedId) => itemId == previouslyEquippedId;
+    private static bool ItemAlreadyEquipped(int itemId, int previouslyEquippedId) => itemId == previouslyEquippedId;
 
-    private void AddUnequippedToInventory(EquipmentModel newEquipment)
+    private void AddUnequippedToInventory(TemporaryEquipmentModel newEquipment)
     {
-        var character = Player.Character;
-
-        foreach (var equippedItem in character.Data.Equipment.EquippedItems)
+        foreach (var equippedItem in Player.Character.Equipment.EquippedItems)
             if (!newEquipment.EquippedItems.ContainsKey(equippedItem.Key))
                 Player.AddItem(ItemCatalog.GetItemFromId(equippedItem.Value), 1, ItemCatalog);
     }

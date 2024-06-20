@@ -2,7 +2,6 @@ using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
@@ -43,7 +42,7 @@ public class UseSlot : ExternalProtocol
             z = posZ
         };
 
-        var slotItem = Player.Character.Data.Hotbar.HotbarButtons[hotbarSlotId];
+        var slotItem = Player.Character.Hotbar.HotbarButtons[hotbarSlotId];
         var usedItem = ItemCatalog.GetItemFromId(slotItem.ItemId);
 
         Logger.LogDebug("Player used hotbar slot {hotbarId} on {userId} at coordinates {position}",
@@ -167,7 +166,7 @@ public class UseSlot : ExternalProtocol
         // Add weapon stats later
         var prj = new GenericProjectile(prjData.ProjectileId, Player, ItemRConfig.GrenadeLifeTime,
             prjData.Position, ItemRConfig, ServerRConfig, prjData.Direction, prjData.UsedItem,
-            Player.Character.Data.CalculateDamage(prjData.UsedItem, ItemCatalog),
+            Player.Character.CalculateDamage(prjData.UsedItem, ItemCatalog),
             prjData.UsedItem.Elemental, prjData.IsGrenade);
 
         Player.Room.AddProjectile(prj);
@@ -179,7 +178,7 @@ public class UseSlot : ExternalProtocol
 
         // Add weapon stats later
         var prj = new MeleeEntity(prjId, position, Player, direction, 0.51f, usedItem,
-            Player.Character.Data.CalculateDamage(usedItem, ItemCatalog),
+            Player.Character.CalculateDamage(usedItem, ItemCatalog),
             usedItem.Elemental, ServerRConfig, ItemRConfig);
 
         Player.Room.AddProjectile(prj);

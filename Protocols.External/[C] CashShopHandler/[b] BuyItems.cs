@@ -50,7 +50,7 @@ public class BuyItems : ExternalProtocol
             bought.Add(new(itemDescription, amount));
         }
 
-        if (price > Player.Character.Data.NCash && price > 1)
+        if (price > Player.Character.NCash && price > 1)
         {
             Player.SendXt("Ce", -1);
             return;

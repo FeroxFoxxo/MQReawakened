@@ -14,9 +14,9 @@ public class Bananas : SlashCommand
 
     public override string CommandDescription => "Adds bananas or default to cash kit amount.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "amount",
             Description = "The amount of bananas to receive.",

@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -24,17 +24,17 @@ public static class PlayerHealExtensions
     public static void PetHeal(this Player player, int healValue)
     {
         if (player == null || player.Room == null ||
-          player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
+          player.Character.CurrentLife >= player.Character.MaxLife)
             return;
 
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-                player.Character.Data.CurrentLife += GetHealValue(player, healValue), player.Character.Data.MaxLife, string.Empty));
+                player.Character.Write.CurrentLife += GetHealValue(player, healValue), player.Character.MaxLife, string.Empty));
     }
 
     public static void HealOnce(Player player, ItemDescription usedItem, ItemRConfig config)
     {
         if (player == null || player.Room == null ||
-            player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
+            player.Character.CurrentLife >= player.Character.MaxLife)
             return;
 
         //Rejuvenation Potion's initial heal value is stored as the second element in the ItemEffects list.
@@ -46,15 +46,15 @@ public static class PlayerHealExtensions
 
         //If healing staff, convert heal value.
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities)
-            healValue = GetHealValue(player, Convert.ToInt32(player.Character.Data.MaxLife / config.HealingStaffHealValue));
+            healValue = GetHealValue(player, Convert.ToInt32(player.Character.MaxLife / config.HealingStaffHealValue));
 
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-                player.Character.Data.CurrentLife += healValue, player.Character.Data.MaxLife, string.Empty));
+                player.Character.Write.CurrentLife += healValue, player.Character.MaxLife, string.Empty));
     }
 
     public static void HealOverTime(Player player, ItemDescription usedItem, TimerThread timerThread)
     {
-        if (player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
+        if (player.Character.CurrentLife >= player.Character.MaxLife)
             return;
 
         var effect = usedItem.ItemEffects.FirstOrDefault();
@@ -100,14 +100,14 @@ public static class PlayerHealExtensions
         var tickHealValue = itemHealData.OverTimeHealValue / itemHealData.TotalTicks;
 
         if (player == null || player.Room == null ||
-            player.Character.Data.CurrentLife >= player.Character.Data.MaxLife ||
-            player.Character.Data.CurrentLife <= 0)
+            player.Character.CurrentLife >= player.Character.MaxLife ||
+            player.Character.CurrentLife <= 0)
             return;
 
         tickHealValue = GetBuffedHealValue(player, tickHealValue);
 
         var healEvent = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-           player.Character.Data.CurrentLife += tickHealValue, player.Character.Data.MaxLife, string.Empty);
+           player.Character.Write.CurrentLife += tickHealValue, player.Character.MaxLife, string.Empty);
 
         player.Room.SendSyncEvent(healEvent);
     }
@@ -124,7 +124,7 @@ public static class PlayerHealExtensions
 
     private static int GetHealValue(Player player, int healValue)
     {
-        var hpUntilMaxHp = player.Character.Data.MaxLife - player.Character.Data.CurrentLife;
+        var hpUntilMaxHp = player.Character.MaxLife - player.Character.CurrentLife;
 
         if (hpUntilMaxHp < healValue)
             healValue = hpUntilMaxHp;

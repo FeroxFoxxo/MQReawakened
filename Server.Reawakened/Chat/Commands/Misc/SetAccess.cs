@@ -1,5 +1,5 @@
-﻿using Server.Base.Accounts.Enums;
-using Server.Base.Accounts.Services;
+﻿using Server.Base.Accounts.Database;
+using Server.Base.Accounts.Enums;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Data.Commands;
@@ -11,30 +11,30 @@ public class SetAccess : SlashCommand
 
     public override string CommandDescription => "Allows you to set a player's access level. (Owner only)";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "number",
             Description = "The access level.",
             Optional = true,
             Options = [
-                new OptionModel() 
+                new OptionModel()
                 {
                     Name = "0",
                     Description = "The Player access level.",
                 },
-                new OptionModel() 
+                new OptionModel()
                 {
                     Name = "1",
                     Description = "The VIP access level."
                 },
-                new OptionModel() 
+                new OptionModel()
                 {
                     Name = "2",
                     Description = "The Moderator access level."
                 },
-                new OptionModel() 
+                new OptionModel()
                 {
                     Name = "3",
                     Description = "The Owner access level."
@@ -52,7 +52,7 @@ public class SetAccess : SlashCommand
         if (args.Length != 3)
             return;
 
-        var target = AccountHandler.Get(int.Parse(args[1]));
+        var target = AccountHandler.GetAccountFromId(int.Parse(args[1]));
 
         if (target == null)
         {
@@ -60,7 +60,7 @@ public class SetAccess : SlashCommand
             return;
         }
 
-        target.AccessLevel = (AccessLevel)int.Parse(args[2]);
+        target.Write.AccessLevel = (AccessLevel)int.Parse(args[2]);
 
         Log($"Set {target.Username}'s access level to {target.AccessLevel}", player);
     }

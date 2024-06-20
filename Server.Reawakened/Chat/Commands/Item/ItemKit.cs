@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Enums;
 using Server.Reawakened.Chat.Models;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
@@ -14,9 +14,9 @@ public class ItemKit : SlashCommand
 
     public override string CommandDescription => "This will give an item kit.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "amount",
             Description = "The amount of the kit to give.",
@@ -32,8 +32,6 @@ public class ItemKit : SlashCommand
 
     public override void Execute(Player player, string[] args)
     {
-        var character = player.Character;
-
         if (args.Length > 2)
             Log($"Unknown kit amount, defaulting to 1", player);
 
@@ -52,7 +50,7 @@ public class ItemKit : SlashCommand
 
         AddKit(player, amount);
 
-        Log($"{character.Data.CharacterName} received {amount} item kit{(amount > 1 ? "s" : string.Empty)}!", player);
+        Log($"{player.Character.CharacterName} received {amount} item kit{(amount > 1 ? "s" : string.Empty)}!", player);
     }
 
     private void AddKit(Player player, int amount)

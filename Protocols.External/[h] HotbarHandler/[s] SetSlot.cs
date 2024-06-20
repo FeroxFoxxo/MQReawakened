@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -22,12 +21,10 @@ public class SetSlot : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
         var hotbarSlotId = int.Parse(message[5]);
         var itemId = int.Parse(message[6]);
 
-        if (!character.TryGetItem(itemId, out var item))
+        if (!Player.Character.TryGetItem(itemId, out var item))
         {
             Logger.LogError("Could not find item with ID {itemId} in inventory.", itemId);
             return;
@@ -39,6 +36,6 @@ public class SetSlot : ExternalProtocol
             PetAbilities.PetAbilityData.TryGetValue(itemId, out var petAbility))
             Player.EquipPet(petAbility, WorldStatistics, ServerRConfig);
 
-        SendXt("hs", character.Data.Hotbar);
+        SendXt("hs", Player.Character.Hotbar);
     }
 }

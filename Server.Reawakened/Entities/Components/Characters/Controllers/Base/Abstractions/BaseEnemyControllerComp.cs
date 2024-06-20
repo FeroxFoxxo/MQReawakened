@@ -1,6 +1,5 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Models;
@@ -10,7 +9,7 @@ using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using UnityEngine;
 
-namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 public abstract class BaseEnemyControllerComp<T> : Component<T>, IEnemyController where T : EnemyController
 {
     public int OnKillRepPoints => ComponentData.OnKillRepPoints;

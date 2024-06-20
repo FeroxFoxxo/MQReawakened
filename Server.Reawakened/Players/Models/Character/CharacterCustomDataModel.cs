@@ -1,41 +1,14 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
 
-public class CharacterCustomDataModel
+public class CharacterCustomDataModel(CharacterDbEntry entry)
 {
-    public int CharacterId { get; set; }
-    public Dictionary<CustomDataProperties, int> Properties { get; set; }
-    public Dictionary<CustomDataProperties, ColorModel> Colors { get; set; }
-    public CharacterCustomDataModel()
-    {
-        Properties = [];
-        Colors = [];
-    }
-
-    public CharacterCustomDataModel(string serverString)
-    {
-        Properties = [];
-        Colors = [];
-
-        var properties = serverString.Split(':');
-
-        foreach (var prop in properties)
-        {
-            var values = prop.Split('=');
-
-            if (values.Length != 3)
-                continue;
-
-            var key = (CustomDataProperties)int.Parse(values[0]);
-            var value = int.Parse(values[1]);
-            var color = new ColorModel(values[2]);
-
-            Properties.Add(key, value);
-            Colors.Add(key, color);
-        }
-    }
+    public int CharacterId => entry.Id;
+    public Dictionary<CustomDataProperties, int> Properties => entry.Properties;
+    public Dictionary<CustomDataProperties, ColorModel> Colors => entry.Colors;
 
     public override string ToString()
     {

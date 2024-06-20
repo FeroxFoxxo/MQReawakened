@@ -15,7 +15,7 @@ public class FreeChat : ExternalProtocol
     public ILogger<FreeChat> Logger { get; set; }
     public ServerRConfig Config { get; set; }
     public DiscordHandler DiscordHandler { get; set; }
-    
+
     public override void Run(string[] message)
     {
         var channelType = (CannedChatChannel)Convert.ToInt32(message[5]);
@@ -24,40 +24,33 @@ public class FreeChat : ExternalProtocol
 
         if (channelType == CannedChatChannel.Speak)
         {
-            var character = Player.Character;
-            Player.Room.Chat(channelType, character.Data.CharacterName, chatMessage);
+            Player.Room.Chat(channelType, Player.Character.CharacterName, chatMessage);
 
             // Sends a chat message to Discord
-            DiscordHandler.SendMessage(character.Data.CharacterName, chatMessage);
+            DiscordHandler.SendMessage(Player.Character.CharacterName, chatMessage);
         }
         else if (channelType == CannedChatChannel.Group)
         {
-            var character = Player.Character;
-
             foreach (
                 var client in
                     from client in Player.TempData.Group.GetMembers()
                     select client
                 )
-                client.Chat(channelType, character.Data.CharacterName, chatMessage);
+                client.Chat(channelType, Player.Character.CharacterName, chatMessage);
         }
         else if (channelType == CannedChatChannel.Trade)
         {
-            var character = Player.Character;
-
             if (Player.Room.LevelInfo.Type == LevelType.City)
-                Player.Room.Chat(channelType, character.Data.CharacterName, chatMessage);
+                Player.Room.Chat(channelType, Player.Character.CharacterName, chatMessage);
         }
         else if (channelType is CannedChatChannel.Tell or CannedChatChannel.Reply)
         {
-            var character = Player.Character;
-
             if (!string.IsNullOrEmpty(recipientName))
             {
                 var recipient = Player.PlayerContainer.GetPlayerByName(recipientName);
 
-                if (recipient != null && !recipient.Character.Data.Blocked.Contains(Player.CharacterId))
-                    Player.Chat(channelType, character.Data.CharacterName, chatMessage, recipientName);
+                if (recipient != null && !recipient.Character.Blocked.Contains(Player.CharacterId))
+                    Player.Chat(channelType, Player.Character.CharacterName, chatMessage, recipientName);
             }
         }
         else

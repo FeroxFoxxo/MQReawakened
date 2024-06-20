@@ -11,9 +11,9 @@ public class SetEwSubscribed : SlashCommand
 
     public override string CommandDescription => "Change membership status.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "status",
             Description = "A number 0/1 for membership status.",
@@ -31,7 +31,7 @@ public class SetEwSubscribed : SlashCommand
             return;
         }
 
-        player.UserInfo.Member = status == 1;
+        player.UserInfo.Write.Member = status == 1;
 
         player.SendXt("cb", status);
 

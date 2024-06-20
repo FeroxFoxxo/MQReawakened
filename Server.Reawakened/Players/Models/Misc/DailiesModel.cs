@@ -1,4 +1,4 @@
-﻿namespace Server.Reawakened.Players.Models;
+﻿namespace Server.Reawakened.Players.Models.Misc;
 
 public class DailiesModel
 {

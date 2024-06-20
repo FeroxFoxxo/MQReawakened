@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+﻿using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.Characters.Controllers.GlobalInteraction.States;
 using Server.Reawakened.Entities.Components.GameObjects.Interactables;
 using Server.Reawakened.Entities.Enemies.Extensions;

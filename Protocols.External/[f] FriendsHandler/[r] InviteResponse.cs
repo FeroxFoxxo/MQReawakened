@@ -30,16 +30,16 @@ public class InviteResponse : ExternalProtocol
             friender.CheckAchievement(AchConditionType.AddFriend, [], InternalAchievement, Logger);
             Player.CheckAchievement(AchConditionType.AddFriend, [], InternalAchievement, Logger);
 
-            friender.Character.Data.Friends.Add(Player.CharacterId);
-            Player.Character.Data.Friends.Add(friender.CharacterId);
+            friender.Character.Friends.Add(Player.CharacterId);
+            Player.Character.Friends.Add(friender.CharacterId);
 
-            var playerData = friender.Character.Data.GetFriends().PlayerList.First(x => x.CharacterId == Player.CharacterId);
+            var playerData = friender.Character.GetFriends().PlayerList.First(x => x.CharacterId == Player.CharacterId);
 
             friender.SendXt("fr", friender.CharacterName, Player.CharacterName, playerData);
 
             const bool isSuccess = true;
 
-            var friendData = Player.Character.Data.GetFriends().PlayerList.First(x => x.CharacterId == friender.CharacterId);
+            var friendData = Player.Character.GetFriends().PlayerList.First(x => x.CharacterId == friender.CharacterId);
 
             Player.SendXt("fa", friendData, isSuccess ? "1" : "0");
         }

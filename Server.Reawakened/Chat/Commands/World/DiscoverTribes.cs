@@ -17,10 +17,8 @@ public class DiscoverTribes : SlashCommand
 
     public override void Execute(Player player, string[] args)
     {
-        var character = player.Character;
-
         player.DiscoverAllTribes();
 
-        Log($"{character.Data.CharacterName} has discovered all tribes!", player);
+        Log($"{player.Character.CharacterName} has discovered all tribes!", player);
     }
 }

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Server.Base.Accounts.Services;
+using Server.Base.Accounts.Database;
 using Server.Base.Core.Services;
 using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Services;
-using Server.Reawakened.Players.Services;
+using Server.Reawakened.Players.Database.Users;
 using Web.Launcher.Extensions;
 using Web.Launcher.Models;
 
@@ -21,12 +21,12 @@ public class AuthenticateController(AccountHandler accHandler, UserInfoHandler u
         username = username?.Trim();
         token = token?.Trim();
 
-        var account = accHandler.GetInternal().FirstOrDefault(x => x.Value.Username == username).Value;
+        var account = accHandler.GetAccountFromUsername(username);
 
         if (account == null)
             return Unauthorized();
 
-        var userInfo = userInfoHandler.Get(account.Id);
+        var userInfo = userInfoHandler.GetUserFromId(account.Id);
 
         if (userInfo == null)
             return Unauthorized();
@@ -36,8 +36,8 @@ public class AuthenticateController(AccountHandler accHandler, UserInfoHandler u
 
         var sId = keyGenerator.GetRandomKey<TemporaryDataStorage>(account.Id.ToString());
 
-        temporaryDataStorage.AddData(sId, userInfo);
-        temporaryDataStorage.AddData(sId, account);
+        temporaryDataStorage.AddData(sId, userInfo.Write);
+        temporaryDataStorage.AddData(sId, account.Write);
 
         var loginData = account.GetLoginData(userInfo, getSA, config, rConfig);
 

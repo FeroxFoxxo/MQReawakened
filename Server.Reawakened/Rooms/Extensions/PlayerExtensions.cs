@@ -1,9 +1,8 @@
 ﻿using Server.Base.Accounts.Extensions;
-using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Models.Planes;
@@ -29,7 +28,7 @@ public static class PlayerExtensions
         => player.TempData.Position.z > 0 ? "Plane1" : "Plane0";
 
     public static int GetLevelId(this Player player) =>
-        player.Character?.LevelData.LevelId ?? -1;
+        player.Character?.LevelId ?? -1;
 
     public static void SentEntityTriggered(this Room room, string id, Player player, bool success, bool active)
     {
@@ -58,9 +57,9 @@ public static class PlayerExtensions
 
         var info = type switch
         {
-            CharacterInfoType.Lite => character.Data.GetLightCharacterData(),
-            CharacterInfoType.Portals => character.Data.BuildPortalData(),
-            CharacterInfoType.Detailed => character.Data.ToString(),
+            CharacterInfoType.Lite => character.GetLightCharacterData(),
+            CharacterInfoType.Portals => character.BuildPortalData(),
+            CharacterInfoType.Detailed => character.ToString(),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 
@@ -71,8 +70,8 @@ public static class PlayerExtensions
     {
         var levelUpData = new LevelUpDataModel
         {
-            Level = player.Character.Data.GlobalLevel,
-            IncPowerJewel = player.Character.Data.BadgePoints,
+            Level = player.Character.GlobalLevel,
+            IncPowerJewel = player.Character.BadgePoints,
         };
 
         foreach (var currentPlayer in player.Room.GetPlayers())
@@ -83,13 +82,13 @@ public static class PlayerExtensions
         player.AddNCash(125);
 
         player.SendSyncEventToPlayer(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            player.Character.Data.MaxLife, player.Character.Data.MaxLife, player.GameObjectId.ToString()));
+            player.Character.MaxLife, player.Character.MaxLife, player.GameObjectId.ToString()));
     }
 
     public static void SendStartPlay(this Player player, CharacterModel character,
-        LevelInfo levelInfo, EventPrefabs eventPrefabs, ServerRConfig config)
+        LevelInfo levelInfo, EventPrefabs eventPrefabs)
     {
-        character.Data.SetDynamicData(player, config);
+        character.SetPlayerData(player);
         player.SetCharacterSelected(character);
         player.PlayerContainer.AddPlayer(player);
         player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
@@ -97,7 +96,7 @@ public static class PlayerExtensions
 
         foreach (var friend in player.PlayerContainer.GetPlayersByFriend(player.CharacterId)
                      .Where(p =>
-                         player.Character.Data.Friends
+                         player.Character.Friends
                              .Any(x => x == p.Character.Id)
                      )
                 )

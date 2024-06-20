@@ -21,11 +21,11 @@ public class AssignBadges : ExternalProtocol
             tribeData.Add(new TribeDataModel(tribe));
         }
 
-        var autoAssign = Player.Character.Data.TribesProgression.Count % 5 == 0;
+        var autoAssign = Player.Character.TribesProgression.Count % 5 == 0;
 
-        Player.Character.Data.TribesProgression = tribeData.ToDictionary(x => x.TribeType, x => x);
+        Player.Character.Write.TribesProgression = tribeData.ToDictionary(x => x.TribeType, x => x);
 
-        SendXt("cA", GenerateTribeData(tribeData), (int)Player.Character.Data.Allegiance, autoAssign ? 1 : 0);
+        SendXt("cA", GenerateTribeData(tribeData), (int)Player.Character.Allegiance, autoAssign ? 1 : 0);
     }
 
     private static string GenerateTribeData(List<TribeDataModel> dataList)

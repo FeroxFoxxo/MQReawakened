@@ -1,6 +1,5 @@
-﻿using Server.Base.Accounts.Enums;
-using Server.Base.Accounts.Models;
-using Server.Base.Accounts.Services;
+﻿using Server.Base.Accounts.Database;
+using Server.Base.Accounts.Enums;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Extensions;
 using Server.Base.Network;
@@ -10,18 +9,14 @@ namespace Server.Base.Accounts.Extensions;
 
 public static class CheckAccessRights
 {
-    public static bool CheckAccess(this Account account, NetState netState, AccountHandler handler,
+    public static bool HasAccess(this AccountModel account, NetState netState,
         InternalRConfig config) =>
-        netState != null && account.CheckAccess(netState.Address, handler, config);
+        netState != null && account.HasAccess(netState.Address, config);
 
-    public static bool HasAccess(this Account account, NetState netState, AccountHandler handler,
-        InternalRConfig config) =>
-        netState != null && account.HasAccess(netState.Address, handler, config);
-
-    public static bool CheckAccess(this Account account, IPAddress ipAddress, AccountHandler handler,
+    public static bool CheckAccess(this AccountModel account, IPAddress ipAddress, AccountHandler handler,
         InternalRConfig config)
     {
-        var hasAccess = account.HasAccess(ipAddress, handler, config);
+        var hasAccess = account.HasAccess(ipAddress, config);
 
         if (hasAccess)
             account.LogAccess(ipAddress, handler);
@@ -29,8 +24,7 @@ public static class CheckAccessRights
         return hasAccess;
     }
 
-    public static bool HasAccess(this Account account, IPAddress ipAddress, AccountHandler handler,
-        InternalRConfig config)
+    public static bool HasAccess(this AccountModel account, IPAddress ipAddress, InternalRConfig config)
     {
         var accessLevel = config.LockDownLevel;
 
@@ -50,20 +44,16 @@ public static class CheckAccessRights
         return accessAllowed;
     }
 
-    public static void LogAccess(this Account account, NetState netState, AccountHandler handler,
-        InternalRConfig config)
+    public static void LogAccess(this AccountModel account, NetState netState, AccountHandler handler)
     {
         if (netState != null)
             account.LogAccess(netState.Address, handler);
     }
 
-    public static void LogAccess(this Account account, IPAddress ipAddress, AccountHandler handler)
+    public static void LogAccess(this AccountModel account, IPAddress ipAddress, AccountHandler handler)
     {
         if (account.LoginIPs.Length == 0)
-            if (handler.IpTable.TryGetValue(ipAddress, out var value))
-                value++;
-            else
-                handler.IpTable[ipAddress] = 1;
+            handler.IpTable[ipAddress] = handler.IpTable.TryGetValue(ipAddress, out var value) ? value + 1 : 1;
 
         var contains = false;
 
@@ -75,7 +65,7 @@ public static class CheckAccessRights
 
         var oldIPs = account.LoginIPs;
 
-        account.LoginIPs = new string[oldIPs.Length + 1];
+        account.Write.LoginIPs = new string[oldIPs.Length + 1];
 
         for (var i = 0; i < oldIPs.Length; ++i)
             account.LoginIPs[i] = oldIPs[i];

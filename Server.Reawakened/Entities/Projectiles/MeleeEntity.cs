@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
@@ -23,7 +22,7 @@ public class MeleeEntity : BaseProjectile
         var isRight = direction > 0;
 
         var meleeLeft = onGround ? isRight ? 0 : -config.MeleeWidth : -config.MeleeAerialOffset;
-        var meleeTop = onGround ? 0 : -config.MeleeAerialOffset; 
+        var meleeTop = onGround ? 0 : -config.MeleeAerialOffset;
         var meleeWidth = onGround ? config.MeleeWidth : config.MeleeAerialRange;
         var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialRange;
 

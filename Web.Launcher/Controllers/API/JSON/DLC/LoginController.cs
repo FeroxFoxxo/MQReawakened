@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Server.Base.Accounts.Database;
 using Server.Base.Accounts.Helpers;
-using Server.Base.Accounts.Services;
 using Server.Reawakened.Core.Services;
-using Server.Reawakened.Players.Services;
+using Server.Reawakened.Players.Database.Users;
 using Web.Launcher.Extensions;
 using Web.Launcher.Models;
 
@@ -22,7 +22,7 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
 
         var hashedPw = passwordHasher.GetPassword(username, password);
 
-        var account = accHandler.GetInternal().Values.FirstOrDefault(x => x.Username == username);
+        var account = accHandler.GetAccountFromUsername(username);
 
         if (account == null)
         {
@@ -30,7 +30,7 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
             return BadRequest();
         }
 
-        var userInfo = userInfoHandler.Get(account.Id);
+        var userInfo = userInfoHandler.GetUserFromId(account.Id);
 
         if (userInfo == null)
         {

@@ -49,7 +49,7 @@ public class UpdatePetMode : ExternalProtocol
         }
 
         if (petAbilityParams.AbilityType == PetAbilityType.Heal &&
-            Player.Character.Data.CurrentLife >= Player.Character.Data.MaxLife)
+            Player.Character.CurrentLife >= Player.Character.MaxLife)
         {
             Logger.LogInformation("{characterName}'s pet can't heal health at full HP!", Player.CharacterName);
             return;

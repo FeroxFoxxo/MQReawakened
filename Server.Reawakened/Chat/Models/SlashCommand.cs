@@ -1,6 +1,6 @@
 ﻿using A2m.Server;
+using Server.Base.Accounts.Database;
 using Server.Base.Accounts.Enums;
-using Server.Base.Accounts.Models;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Data.Commands;
@@ -13,12 +13,12 @@ public abstract class SlashCommand
     public abstract List<ParameterModel> Parameters { get; }
     public abstract AccessLevel AccessLevel { get; }
 
-    public void Log(string message, Player player) =>
+    public static void Log(string message, Player player) =>
         player.Chat(CannedChatChannel.Tell, "Console", message);
 
     public void Run(Player player, string[] args)
     {
-        if (!(player.NetState.Get<Account>().AccessLevel >= AccessLevel))
+        if (!(player.NetState.Get<AccountModel>().AccessLevel >= AccessLevel))
             return;
 
         Execute(player, args);

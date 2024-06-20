@@ -1,6 +1,6 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Core.Configs;
-using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Database.Characters;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -24,16 +24,16 @@ public static class CharacterExtensions
         if (level < 1)
             level = 1;
 
-        characterData.Data.GlobalLevel = level;
+        characterData.Write.GlobalLevel = level;
 
-        if (characterData.Data.Reputation < characterData.Data.ReputationForCurrentLevel)
-            characterData.Data.Reputation = characterData.Data.ReputationForCurrentLevel;
+        if (characterData.Reputation < characterData.ReputationForCurrentLevel)
+            characterData.Write.Reputation = characterData.ReputationForCurrentLevel;
 
-        characterData.Data.ReputationForCurrentLevel = GetReputationForLevel(level - 1);
-        characterData.Data.ReputationForNextLevel = GetReputationForLevel(level);
+        characterData.Write.ReputationForCurrentLevel = GetReputationForLevel(level - 1);
+        characterData.Write.ReputationForNextLevel = GetReputationForLevel(level);
 
-        characterData.Data.MaxLife = GetHealthForLevel(level);
-        characterData.Data.CurrentLife = characterData.Data.MaxLife;
+        characterData.Write.MaxLife = GetHealthForLevel(level);
+        characterData.Write.CurrentLife = characterData.MaxLife;
     }
 
     public static bool HasAddedDiscoveredTribe(this CharacterModel characterData, TribeType tribe)
@@ -41,16 +41,16 @@ public static class CharacterExtensions
         if (characterData == null)
             return false;
 
-        if (characterData.Data.TribesDiscovered.TryGetValue(tribe, out var value))
+        if (characterData.TribesDiscovered.TryGetValue(tribe, out var value))
         {
             if (value)
                 return false;
 
-            characterData.Data.TribesDiscovered[tribe] = true;
+            characterData.TribesDiscovered[tribe] = true;
         }
         else
         {
-            characterData.Data.TribesDiscovered.Add(tribe, true);
+            characterData.TribesDiscovered.Add(tribe, true);
         }
 
         return true;
@@ -58,7 +58,7 @@ public static class CharacterExtensions
 
     public static void ForceSetLevel(this CharacterModel characterData, int levelId, string spawnId = "")
     {
-        characterData.LevelData.LevelId = levelId;
-        characterData.LevelData.SpawnPointId = spawnId;
+        characterData.Write.LevelId = levelId;
+        characterData.Write.SpawnPointId = spawnId;
     }
 }

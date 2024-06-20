@@ -13,9 +13,9 @@ public class Warp : SlashCommand
 
     public override string CommandDescription => "Change's your level to the specified level id.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "levelId",
             Description = "The level id.",
@@ -31,8 +31,6 @@ public class Warp : SlashCommand
 
     public override void Execute(Player player, string[] args)
     {
-        var character = player.Character;
-
         if (args.Length != 2 || !int.TryParse(args[1], out var levelId))
         {
             Log($"Please specify a valid level id.", player);
@@ -61,10 +59,10 @@ public class Warp : SlashCommand
         }
 
         Log(
-            $"Successfully set character {character.Id}'s level to {levelInfo.LevelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
+            $"Successfully set character {player.Character.Id}'s level to {levelInfo.LevelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
             player
         );
 
-        Log($"{character.Data.CharacterName} changed to level {levelInfo.LevelId}", player);
+        Log($"{player.Character.CharacterName} changed to level {levelInfo.LevelId}", player);
     }
 }

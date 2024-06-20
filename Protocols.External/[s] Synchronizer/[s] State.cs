@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles;
@@ -65,7 +64,7 @@ public class State : ExternalProtocol
                     Player.TempData.Invincible = true;
 
                     var attack = new ChargeAttack_SyncEvent(syncEvent);
-                    var superStompDamage = (int)Math.Ceiling(WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.Data.GlobalLevel) +
+                    var superStompDamage = (int)Math.Ceiling(WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.GlobalLevel) +
                         WorldStatistics.GlobalStats[Globals.StompDamageBonus]);
 
                     Logger.LogTrace("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
@@ -142,7 +141,7 @@ public class State : ExternalProtocol
                     var fxEvent = new FX_SyncEvent(syncEvent);
 
                     if (fxEvent.PrefabName == ItemRConfig.WaterPrefabName)
-                        Player.StartUnderwater(newPlayer.Character.Data.MaxLife / 10, TimerThread, ServerRConfig, ItemRConfig, Logger);
+                        Player.StartUnderwater(newPlayer.Character.MaxLife / 10, TimerThread, ServerRConfig, ItemRConfig, Logger);
                     break;
             }
 
@@ -184,10 +183,10 @@ public class State : ExternalProtocol
         Player.SendSyncEventToPlayer(new RequestRespawn_SyncEvent(entityId.ToString(), triggerTime));
 
         Player.TempData.Invincible = true;
-        Player.Character.Data.CurrentLife = Player.Character.Data.MaxLife;
+        Player.Character.Write.CurrentLife = Player.Character.MaxLife;
 
         Player.SendSyncEventToPlayer(new Health_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-            Player.Character.Data.MaxLife, Player.Character.Data.MaxLife, Player.GameObjectId.ToString()));
+            Player.Character.MaxLife, Player.Character.MaxLife, Player.GameObjectId.ToString()));
 
         var respawnPosition = Player.Room.LastCheckpoint ?? Player.Room.GetDefaultSpawnPoint();
 

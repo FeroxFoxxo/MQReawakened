@@ -1,38 +1,37 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Models;
+using Server.Base.Accounts.Database;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Services;
 using Server.Base.Network;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Services;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Services;
 using System.Globalization;
 using System.Net;
 
-namespace Server.Reawakened.Players.Services;
+namespace Server.Reawakened.Players.Database.Users;
 
-public class UserInfoHandler(EventSink sink, ILogger<UserInfo> logger, WorldHandler worldHandler,
+public class UserInfoHandler(EventSink sink, ILogger<UserInfoDbEntry> logger, WorldHandler worldHandler,
     RandomKeyGenerator randomKeyGenerator, ServerRConfig config, InternalRConfig rConfig,
-    InternalRwConfig rwConfig, PlayerContainer playerContainer, CharacterHandler characterHandler) : DataHandler<UserInfo>(sink, logger, rConfig, rwConfig)
+    InternalRwConfig rwConfig, PlayerContainer playerContainer, CharacterHandler characterHandler) :
+    DataHandler<UserInfoDbEntry>(sink, logger, rConfig, rwConfig)
 {
     public override bool HasDefault => true;
 
     public void InitializeUser(NetState state)
     {
-        var account = state.Get<Account>();
-
-        var userId = account?.Id ?? throw new NullReferenceException("Account not found!");
-        var userInfo = Get(userId) ?? throw new NullReferenceException("User info not found!");
+        var account = state.Get<AccountModel>() ?? throw new NullReferenceException("Account not found!");
+        var userInfo = GetUserFromId(account.Id) ?? throw new NullReferenceException("User info not found!");
 
         state.Set(new Player(account, userInfo, state, worldHandler, playerContainer, characterHandler));
     }
 
-    public override UserInfo CreateDefault()
+    public override UserInfoDbEntry CreateDefault()
     {
         Gender gender;
 
@@ -59,31 +58,33 @@ public class UserInfoHandler(EventSink sink, ILogger<UserInfo> logger, WorldHand
             Logger.LogWarning("Incorrect input! Must be a date!");
         }
 
-        return new UserInfo(CreateNewId(), gender, dob, RegionInfo.CurrentRegion.Name, config.DefaultSignUpExperience, randomKeyGenerator, config);
+        return new UserInfoDbEntry(CreateNewId(), gender, dob, RegionInfo.CurrentRegion.Name, config.DefaultSignUpExperience, randomKeyGenerator, config);
     }
 
-    public UserInfo Create(IPAddress ip, int id, Gender gender, DateTime dob, string region, string signUpExperience)
+    public UserInfoDbEntry Create(IPAddress ip, int id, Gender gender, DateTime dob, string region, string signUpExperience)
     {
         Logger.LogInformation("Login: {Address}: Creating new user info '{Id}' of gender '{Gender}', DOB '{DOB}', region '{region}' and sign up experience '{SignUpExperience}'.",
             ip, id, gender, dob, region, signUpExperience);
 
-        var user = new UserInfo(id, gender, dob, region, signUpExperience, randomKeyGenerator, config);
+        var user = new UserInfoDbEntry(id, gender, dob, region, signUpExperience, randomKeyGenerator, config);
 
         Add(user, id);
 
         return user;
     }
 
-    public override UserInfo Get(int id)
+    public UserInfoModel GetUserFromId(int id)
     {
-        var userInfo = base.Get(id);
+        var userInfoEntry = Get(id);
 
-        if (userInfo == null)
+        if (userInfoEntry == null)
             return null;
+
+        var userInfo = new UserInfoModel(userInfoEntry);
 
         foreach (var characterId in userInfo.CharacterIds.ToList())
         {
-            var character = characterHandler.Get(characterId);
+            var character = characterHandler.GetCharacterFromId(characterId);
 
             if (character == null)
             {
@@ -91,7 +92,7 @@ public class UserInfoHandler(EventSink sink, ILogger<UserInfo> logger, WorldHand
                 continue;
             }
 
-            if (character.Data.UserUuid != userInfo.Id)
+            if (character.UserUuid != userInfo.Id)
             {
                 userInfo.CharacterIds.Remove(characterId);
                 continue;
@@ -100,7 +101,7 @@ public class UserInfoHandler(EventSink sink, ILogger<UserInfo> logger, WorldHand
 
         if (!string.IsNullOrEmpty(userInfo.LastCharacterSelected))
             if (userInfo.CharacterIds.Count == 0)
-                userInfo.LastCharacterSelected = string.Empty;
+                userInfo.Write.LastCharacterSelected = string.Empty;
 
         return userInfo;
     }

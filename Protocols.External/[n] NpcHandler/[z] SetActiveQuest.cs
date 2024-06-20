@@ -22,11 +22,6 @@ public class SetActiveQuest : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
-        if (character == null)
-            return;
-
         var activeQuest = int.Parse(message[5]);
 
         if (activeQuest is -1)
@@ -34,11 +29,11 @@ public class SetActiveQuest : ExternalProtocol
 
         if (activeQuest is 0)
         {
-            character.Data.ActiveQuestId = 0;
+            Player.Character.Write.ActiveQuestId = 0;
             return;
         }
 
-        if (character.Data.ActiveQuestId == activeQuest || character.Data.CompletedQuests.Contains(activeQuest))
+        if (Player.Character.ActiveQuestId == activeQuest || Player.Character.CompletedQuests.Contains(activeQuest))
             return;
 
         var newQuest = QuestCatalog.GetQuestData(activeQuest);

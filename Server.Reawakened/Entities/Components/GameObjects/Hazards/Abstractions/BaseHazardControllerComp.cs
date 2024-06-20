@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
@@ -141,7 +140,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             player.HasNullifyEffect(ItemCatalog))
             return;
 
-        Damage = (int)Math.Ceiling(player.Character.Data.MaxLife * HealthRatioDamage);
+        Damage = (int)Math.Ceiling(player.Character.MaxLife * HealthRatioDamage);
 
         Logger.LogTrace("Applying {statusEffect} to {characterName} from {prefabName}", EffectType, player.CharacterName, PrefabName);
 
@@ -158,7 +157,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             case ItemEffectType.BluntDamage:
                 var enemy = Room.GetEnemy(Id);
                 var damage = (float)WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
-                             player.Character.Data.CalculateDefense(EffectType, ItemCatalog);
+                             player.Character.CalculateDefense(EffectType, ItemCatalog);
 
                 player.ApplyCharacterDamage((int)damage, Id, DamageDelay, ServerRConfig, TimerThread);
                 break;
@@ -215,7 +214,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                     (int)ItemEffectType.WaterBreathing, 1, 1, true, _id, false));
 
-        player.StartUnderwater(player.Character.Data.MaxLife / 10, TimerThread, ServerRConfig, ItemRConfig, Logger);
+        player.StartUnderwater(player.Character.MaxLife / 10, TimerThread, ServerRConfig, ItemRConfig, Logger);
 
         TimerThread.DelayCall(RestartTimerDelay, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
         Logger.LogInformation("Reset underwater timer for {characterName}", player.CharacterName);

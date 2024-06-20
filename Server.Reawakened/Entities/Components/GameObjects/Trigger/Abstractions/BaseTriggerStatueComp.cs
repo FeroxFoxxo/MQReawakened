@@ -1,5 +1,4 @@
-﻿using Server.Reawakened.Entities.AbstractComponents;
-using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
+﻿using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 

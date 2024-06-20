@@ -13,9 +13,9 @@ public class ChangeLevel : SlashCommand
 
     public override string CommandDescription => "Allows you to warp to a new level.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "levelName",
             Description = "The level name to warp to.",
@@ -31,8 +31,6 @@ public class ChangeLevel : SlashCommand
 
     public override void Execute(Player player, string[] args)
     {
-        var character = player.Character;
-
         var levelInfo = WorldGraph.GetInfoLevel(args[1]);
 
         if (args.Length != 2 || levelInfo == null)
@@ -54,10 +52,10 @@ public class ChangeLevel : SlashCommand
         }
 
         Log(
-            $"Successfully set character {character.Id}'s level to {levelInfo.LevelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
+            $"Successfully set character {player.Character.Id}'s level to {levelInfo.LevelId} '{levelInfo.InGameName}' ({levelInfo.Name})",
             player
         );
 
-        Log($"{character.Data.CharacterName} changed to level {levelInfo.LevelId}", player);
+        Log($"{player.Character.CharacterName} changed to level {levelInfo.LevelId}", player);
     }
 }

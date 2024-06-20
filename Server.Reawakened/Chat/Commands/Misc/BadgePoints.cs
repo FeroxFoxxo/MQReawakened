@@ -15,6 +15,6 @@ public class BadgePoints : SlashCommand
 
     public override AccessLevel AccessLevel => AccessLevel.Player;
 
-    public override void Execute(Player player, string[] args) => 
+    public override void Execute(Player player, string[] args) =>
         player.AddPoints();
 }

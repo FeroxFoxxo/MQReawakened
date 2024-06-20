@@ -12,15 +12,15 @@ public class AddItem : SlashCommand
 
     public override string CommandDescription => "Adds an item using it's prefab name.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "name",
             Description = "The prefab name of the item to be added.",
             Optional = false
         },
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "amount",
             Description = "The amount of the item to give or default to 1.",

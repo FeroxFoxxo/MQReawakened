@@ -24,12 +24,10 @@ public class CashKit : SlashCommand
 
     public override void Execute(Player player, string[] args)
     {
-        var character = player.Character;
-
         player.AddBananas(ServerRConfig.CashKitAmount, InternalAchievement, Logger);
         player.AddNCash(ServerRConfig.CashKitAmount);
 
-        Log($"{character.Data.CharacterName} received {ServerRConfig.CashKitAmount} " +
+        Log($"{player.Character.CharacterName} received {ServerRConfig.CashKitAmount} " +
             $"banana{(ServerRConfig.CashKitAmount > 1 ? "s" : string.Empty)} & monkey cash!", player);
     }
 }

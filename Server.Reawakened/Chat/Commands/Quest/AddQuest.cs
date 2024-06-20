@@ -15,9 +15,9 @@ public class AddQuest : SlashCommand
 
     public override string CommandDescription => "Add the provided quest by id.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "id",
             Description = "The provided quest id.",
@@ -40,7 +40,7 @@ public class AddQuest : SlashCommand
         if (questData == null)
             return;
 
-        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == questData.Id);
+        var questModel = player.Character.QuestLog.FirstOrDefault(x => x.Id == questData.Id);
 
         if (questModel != null)
         {
@@ -72,7 +72,7 @@ public class AddQuest : SlashCommand
             return null;
         }
 
-        if (player.Character.Data.CompletedQuests.Contains(questData.Id))
+        if (player.Character.CompletedQuests.Contains(questData.Id))
         {
             Log($"Quest {questData.Name} with id {questData.Id} has been completed already.", player);
             return null;

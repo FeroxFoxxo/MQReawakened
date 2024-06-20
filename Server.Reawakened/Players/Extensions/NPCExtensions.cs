@@ -20,27 +20,24 @@ public static class NpcExtensions
     public static QuestStatusModel AddQuest(this Player player, QuestDescription quest, InternalQuestItem questItem,
         ItemCatalog itemCatalog, FileLogger fileLogger, string identifier, Microsoft.Extensions.Logging.ILogger logger, bool setActive = true)
     {
-        var character = player.Character;
-        var questId = quest.Id;
-
-        var questTest = character.Data.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
+        var questTest = player.Character.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
 
         if (questTest != null)
             return questTest;
 
-        if (character.Data.CompletedQuests.Contains(quest.Id))
+        if (player.Character.CompletedQuests.Contains(quest.Id))
             return null;
 
         if (setActive)
-            character.Data.ActiveQuestId = questId;
+            player.Character.Write.ActiveQuestId = quest.Id;
 
-        var questModel = character.Data.QuestLog.FirstOrDefault(x => x.Id == questId);
+        var questModel = player.Character.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
         if (questModel == null)
         {
             questModel = new QuestStatusModel()
             {
-                Id = questId,
+                Id = quest.Id,
                 QuestStatus = QuestState.NOT_START,
                 CurrentOrder = quest.Objectives.Values.Count > 0 ? quest.Objectives.Values.Min(x => x.Order) : 1,
                 Objectives = quest.Objectives.OrderBy(q => q.Value.Order).ToDictionary(q => q.Key, q => new ObjectiveModel()
@@ -74,7 +71,7 @@ public static class NpcExtensions
                 }
                 else if (objective.Value.ObjectiveType == ObjectiveEnum.Inventorycheck)
                 {
-                    if (player.Character.Data.Inventory.Items.TryGetValue(objective.Value.ItemId, out var item))
+                    if (player.Character.Inventory.Items.TryGetValue(objective.Value.ItemId, out var item))
                     {
                         objective.Value.CountLeft = objective.Value.Total - item.Count;
 
@@ -84,7 +81,7 @@ public static class NpcExtensions
                 }
             }
 
-            character.Data.QuestLog.Add(questModel);
+            player.Character.QuestLog.Add(questModel);
         }
 
         logger.LogTrace("[{QuestName} ({QuestId})] [ADD QUEST] Added by {Name}", quest.Name, quest.Id, identifier);
@@ -119,11 +116,11 @@ public static class NpcExtensions
 
         logger.LogInformation("[{QuestName} ({QuestId})] [QUEST STARTED]", quest.Name, questModel.Id);
 
-        player.Character.Data.ActiveQuestId = questModel.Id;
+        player.Character.Write.ActiveQuestId = questModel.Id;
 
         UpdateActiveObjectives(player, itemCatalog);
 
-        if (questItem.QuestItemList.TryGetValue(questId, out var itemList))
+        if (questItem.QuestItemList.TryGetValue(quest.Id, out var itemList))
         {
             foreach (var itemModel in itemList)
             {
@@ -147,7 +144,7 @@ public static class NpcExtensions
         {
             var item = itemCatalog.GetItemFromPrefabName(questCollectible.PrefabName);
 
-            foreach (var objective in player.Character.Data.QuestLog.SelectMany(x => x.Objectives.Values).Where
+            foreach (var objective in player.Character.QuestLog.SelectMany(x => x.Objectives.Values).Where
                 (x => x.GameObjectId.ToString() == questCollectible.Id || item != null && x.ItemId == item.ItemId))
                 questCollectible.UpdateActiveObjectives(player, CollectibleState.Active);
         }

@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
 
@@ -33,7 +32,7 @@ public static class PlayerDamageExtensions
             ServerRConfig = serverRConfig
         };
 
-        var ticksTillDeath = (int)Math.Ceiling((double)player.Character.Data.CurrentLife / damage);
+        var ticksTillDeath = (int)Math.Ceiling((double)player.Character.CurrentLife / damage);
 
         player.TempData.Underwater = true;
         player.TempData.UnderwaterTimer = timerThread.DelayCall(ApplyUnderwaterDamage, underwaterData,
@@ -65,7 +64,7 @@ public static class PlayerDamageExtensions
         waterData.Player.Room.SendSyncEvent(new StatusEffect_SyncEvent(waterData.Player.GameObjectId, waterData.Player.Room.Time,
             (int)ItemEffectType.WaterDamage, waterData.Damage, 1, true, waterData.Player.GameObjectId, false));
 
-        waterData.Player.ApplyCharacterDamage(waterData.Player.Character.Data.MaxLife / 10, string.Empty, 1, waterData.ServerRConfig, waterData.TimerThread);
+        waterData.Player.ApplyCharacterDamage(waterData.Player.Character.MaxLife / 10, string.Empty, 1, waterData.ServerRConfig, waterData.TimerThread);
     }
 
     public static void ApplyCharacterDamage(this Player player, float damage, string originId, double invincibilityDuration, ServerRConfig serverRConfig, TimerThread timerThread)
@@ -85,13 +84,13 @@ public static class PlayerDamageExtensions
                 (int)ItemEffectType.BluntDamage, 1, (int)invincibilityDuration, true, originId, false));
         }
 
-        player.Character.Data.CurrentLife -= (int)damage;
+        player.Character.Write.CurrentLife -= (int)damage;
 
-        if (player.Character.Data.CurrentLife < 0)
-            player.Character.Data.CurrentLife = 0;
+        if (player.Character.CurrentLife < 0)
+            player.Character.Write.CurrentLife = 0;
 
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            player.Character.Data.CurrentLife, player.Character.Data.MaxLife, "Hurt"));
+            player.Character.CurrentLife, player.Character.MaxLife, "Hurt"));
 
         if (invincibilityDuration <= 0)
             invincibilityDuration = 1;
@@ -101,7 +100,7 @@ public static class PlayerDamageExtensions
 
     public static void ApplyDamageByPercent(this Player player, double percentage, string hazardId, float duration, ServerRConfig serverRConfig, TimerThread timerThread)
     {
-        var health = (double)player.Character.Data.MaxLife;
+        var health = (double)player.Character.MaxLife;
 
         var damage = Convert.ToSingle(Math.Ceiling(health * percentage));
 

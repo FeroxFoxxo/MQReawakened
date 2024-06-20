@@ -1,46 +1,33 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Core.Enums;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
 
-public class CharacterLightModel
+public class CharacterLightModel(CharacterDbEntry entry, GameVersion version)
 {
-    public CharacterCustomDataModel Customization { get; set; }
-    public EquipmentModel Equipment { get; set; }
-    public int PetItemId { get; set; }
-    public bool Registered { get; set; }
-    public int CharacterId { get; set; }
-    public string CharacterName { get; set; }
-    public int UserUuid { get; set; }
-    public int Gender { get; set; }
-    public int MaxLife { get; set; }
-    public int CurrentLife { get; set; }
-    public int GlobalLevel { get; set; }
-    public CharacterLightData.InteractionStatus InteractionStatus { get; set; }
-    public TribeType Allegiance { get; set; }
-    public bool ForceTribeSelection { get; set; }
-    public List<int> DiscoveredStats { get; set; }
+    public CharacterDbEntry Write => entry;
 
-    private GameVersion _version = GameVersion.Unknown;
+    public CharacterCustomDataModel Customization => new(entry);
+    public EquipmentModel Equipment => new(entry);
 
-    public CharacterLightModel() => InitializeLiteLists();
+    public int Id => entry.Id;
 
-    public CharacterLightModel(string serverData)
-    {
-        var array = serverData.Split('[');
+    public int PetItemId => entry.PetItemId;
+    public bool Registered => entry.Registered;
+    public string CharacterName => entry.CharacterName;
+    public int UserUuid => entry.UserUuid;
+    public int Gender => entry.Gender;
+    public int MaxLife => entry.MaxLife;
+    public int CurrentLife => entry.CurrentLife;
+    public int GlobalLevel => entry.GlobalLevel;
+    public CharacterLightData.InteractionStatus InteractionStatus => entry.InteractionStatus;
+    public TribeType Allegiance => entry.Allegiance;
+    public bool ForceTribeSelection => entry.ForceTribeSelection;
+    public List<int> DiscoveredStats => entry.DiscoveredStats;
 
-        Gender = int.Parse(array[0]);
-        Customization = new CharacterCustomDataModel(array[1]);
-
-        InitializeLiteLists();
-    }
-
-    public void InitializeLiteLists()
-    {
-        Equipment = new EquipmentModel();
-        DiscoveredStats = [];
-    }
+    public GameVersion Version => version;
 
     public override string ToString() => GetLightCharacterData();
 
@@ -52,10 +39,10 @@ public class CharacterLightModel
         sb.Append(Customization);
         sb.Append(Equipment);
 
-        if (_version >= GameVersion.vPets2012)
+        if (Version >= GameVersion.vPets2012)
             sb.Append(PetItemId);
 
-        if (_version >= GameVersion.vMinigames2012)
+        if (Version >= GameVersion.vMinigames2012)
             sb.Append(Registered ? 1 : 0);
 
         sb.Append(BuildDiscoveredStats());
@@ -67,10 +54,10 @@ public class CharacterLightModel
     {
         var sb = new SeparatedStringBuilder('<');
 
-        sb.Append(CharacterId);
+        sb.Append(Id);
         sb.Append(CharacterName);
 
-        if (_version >= GameVersion.vLate2013)
+        if (Version >= GameVersion.vLate2013)
             sb.Append(UserUuid);
 
         sb.Append(Gender);
@@ -80,7 +67,7 @@ public class CharacterLightModel
         sb.Append((int)InteractionStatus);
         sb.Append((int)Allegiance);
 
-        if (_version >= GameVersion.v2014)
+        if (Version >= GameVersion.v2014)
             sb.Append(ForceTribeSelection ? 1 : 0);
 
         return sb.ToString();
@@ -95,7 +82,4 @@ public class CharacterLightModel
 
         return sb.ToString();
     }
-
-    public void SetVersion(GameVersion version) =>
-        _version = version;
 }

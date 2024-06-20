@@ -12,9 +12,9 @@ public class CompleteQuestObjectives : SlashCommand
 
     public override string CommandDescription => "Completes the provided quest's objectives.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "name",
             Description = "The quest to have it's objectives marked as completed. (i.e. OOTU_0_07)",
@@ -39,7 +39,7 @@ public class CompleteQuestObjectives : SlashCommand
             return;
         }
 
-        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
+        var questModel = player.Character.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
         foreach (var objective in questModel.Objectives)
         {

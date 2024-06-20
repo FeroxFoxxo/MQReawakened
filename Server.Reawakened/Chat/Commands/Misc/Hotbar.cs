@@ -1,7 +1,7 @@
 ﻿using A2m.Server;
 using Server.Base.Accounts.Enums;
 using Server.Reawakened.Chat.Models;
-using Server.Reawakened.Configs;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -72,11 +72,11 @@ public class Hotbar : SlashCommand
                 DelayUseExpiry = DateTime.Now
             };
 
-            player.Character.Data.Inventory.Items.TryAdd(item.ItemId, itemModel);
+            player.Character.Inventory.Items.TryAdd(item.ItemId, itemModel);
 
             player.SetHotbarSlot(hotbarId - 1, itemModel, ItemRConfig);
 
-            player.SendXt("hs", player.Character.Data.Hotbar);
+            player.SendXt("hs", player.Character.Hotbar);
 
             return;
         }

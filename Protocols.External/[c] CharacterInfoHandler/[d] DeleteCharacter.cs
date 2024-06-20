@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Services;
 
 namespace Protocols.External._c__CharacterInfoHandler;
 
@@ -15,7 +15,7 @@ public class DeleteCharacter : ExternalProtocol
         var character = CharacterHandler.GetCharacterFromName(message[5]);
 
         if (character != null)
-            if (character.Data.UserUuid == Player.UserId)
+            if (character.UserUuid == Player.UserId)
             {
                 CharacterHandler.DeleteCharacter(character.Id, Player.UserInfo);
                 SendXt("cd", 0);

@@ -11,9 +11,9 @@ public class CompleteQuest : SlashCommand
 
     public override string CommandDescription => "This marks the provided quest as completed.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "name",
             Description = "The quest name to be marked as completed. (i.e. OOTU_0_07)",
@@ -35,12 +35,12 @@ public class CompleteQuest : SlashCommand
         if (questData == null)
             return;
 
-        var questModel = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == questData.Id);
+        var questModel = player.Character.QuestLog.FirstOrDefault(x => x.Id == questData.Id);
 
         if (questModel != null)
-            player.Character.Data.QuestLog.Remove(questModel);
+            player.Character.QuestLog.Remove(questModel);
 
-        player.Character.Data.CompletedQuests.Add(questData.Id);
+        player.Character.CompletedQuests.Add(questData.Id);
         Log($"Added quest {questData.Name} with id {questData.Id} to completed quests.", player);
     }
 
@@ -65,7 +65,7 @@ public class CompleteQuest : SlashCommand
             return null;
         }
 
-        if (player.Character.Data.CompletedQuests.Contains(questData.Id))
+        if (player.Character.CompletedQuests.Contains(questData.Id))
         {
             Log($"Quest {questData.Name} with id {questData.Id} has been completed already.", player);
             return null;

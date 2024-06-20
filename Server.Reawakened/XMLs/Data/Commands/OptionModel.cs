@@ -11,14 +11,12 @@ public class OptionModel
     {
         var options = new List<OptionModel>();
         foreach (XmlNode node in nodes)
-        {
             options.Add(new OptionModel
             {
                 Name = node.Attributes["name"].Value,
                 Description = node.Attributes["description"].Value,
                 Parameters = ParameterModel.FromXmlNodes(node.SelectNodes("Parameter"))
             });
-        }
 
         return options;
     }

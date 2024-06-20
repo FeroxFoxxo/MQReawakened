@@ -115,7 +115,7 @@ public abstract class DataHandler<T>(EventSink sink, ILogger<T> logger, Internal
         streamWriter.Close();
     }
 
-    public virtual T Get(int id)
+    protected T Get(int id)
     {
         _data.TryGetValue(id, out var type);
 

@@ -7,6 +7,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Models;
 using Server.Reawakened.XMLs.Data.Enemy.States;
 using Server.Reawakened.XMLs.Data.LootRewards.Enums;
 using System.Xml;
+using ActingState = Server.Reawakened.XMLs.Data.Enemy.States.ActingState;
 
 namespace Server.Reawakened.XMLs.Bundles.Internal;
 
@@ -527,7 +528,7 @@ public class InternalEnemyData : InternalXml
 
                                                 var actingProperties = new ActingProperties(actingSnapOnGround);
 
-                                                state = new Data.Enemy.States.ActingState(actingProperties, resources, stateType);
+                                                state = new ActingState(actingProperties, resources, stateType);
                                                 break;
                                             default:
                                                 Logger.LogError("Unimplemented state for: {State} ({EnemyName})", stateType, prefabName);

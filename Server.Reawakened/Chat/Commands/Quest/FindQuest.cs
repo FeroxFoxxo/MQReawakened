@@ -11,9 +11,9 @@ public class FindQuest : SlashCommand
 
     public override string CommandDescription => "Allows you to find a quest name.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "questName",
             Description = "The quest to find.",

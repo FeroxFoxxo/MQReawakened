@@ -36,12 +36,12 @@ public class AcceptTrade : ExternalProtocol
 
         Player.SendXt("ta",
             tradedPlayer.CharacterName,
-            tradedPlayer.Character.Data.GetLightCharacterData()
+            tradedPlayer.Character.GetLightCharacterData()
         );
 
         tradedPlayer.SendXt("ta",
             Player.CharacterName,
-            Player.Character.Data.GetLightCharacterData()
+            Player.Character.GetLightCharacterData()
         );
     }
 }

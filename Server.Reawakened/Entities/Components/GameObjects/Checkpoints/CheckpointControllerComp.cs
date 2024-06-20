@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Entities.AbstractComponents;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 using Server.Reawakened.Players;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Checkpoints;
@@ -28,7 +28,7 @@ public class CheckpointControllerComp : BaseTriggerCoopController<CheckpointCont
         var spawnPoint = Room.GetEntitiesFromType<SpawnPointComp>().FirstOrDefault(x => x.Index == SpawnPoint);
 
         if (spawnPoint != null)
-            player.Character.LevelData.SpawnPointId = spawnPoint.Id;
+            player.Character.Write.SpawnPointId = spawnPoint.Id;
 
         if (player.Room.LastCheckpoint != null)
         {

@@ -1,5 +1,5 @@
 ﻿using Server.Reawakened.Players;
-using Server.Reawakened.Players.Models;
+using Server.Reawakened.Players.Models.Misc;
 using Server.Reawakened.Rooms.Models.Entities;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Items.Abstractions;

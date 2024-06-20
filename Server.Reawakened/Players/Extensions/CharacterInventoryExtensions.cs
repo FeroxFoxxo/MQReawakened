@@ -3,12 +3,11 @@ using Microsoft.Extensions.Logging;
 using PetDefines;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Network.Extensions;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Helpers;
-using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Pets;
 using Server.Reawakened.Rooms.Extensions;
@@ -41,7 +40,7 @@ public static class CharacterInventoryExtensions
             case ItemEffectType.HealthBoost:
             case ItemEffectType.IncreaseHealing:
             case ItemEffectType.Regeneration:
-                if (player.Character.Data.CurrentLife >= player.Character.Data.MaxLife)
+                if (player.Character.CurrentLife >= player.Character.MaxLife)
                     return;
 
                 player.HealCharacter(usedItem, timerThread, config, effect.Type);
@@ -104,7 +103,7 @@ public static class CharacterInventoryExtensions
     }
 
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>
-        characterData.Data.Inventory.Items.TryGetValue(itemId, out outItem);
+        characterData.Inventory.Items.TryGetValue(itemId, out outItem);
 
     public static void RemoveItem(this Player player, ItemDescription item, int count, ItemCatalog itemCatalog, ItemRConfig config)
     {
@@ -128,8 +127,8 @@ public static class CharacterInventoryExtensions
 
         var characterData = player.Character;
 
-        if (!characterData.Data.Inventory.Items.ContainsKey(item.ItemId))
-            characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel
+        if (!characterData.Inventory.Items.ContainsKey(item.ItemId))
+            characterData.Inventory.Items.Add(item.ItemId, new ItemModel
             {
                 ItemId = item.ItemId,
                 Count = 0,
@@ -150,10 +149,10 @@ public static class CharacterInventoryExtensions
         foreach (var item in items)
         {
             if (item != null)
-                if (characterData.Data.Inventory.Items.TryGetValue(item.ItemId, out var gottenKit))
+                if (characterData.Inventory.Items.TryGetValue(item.ItemId, out var gottenKit))
                     gottenKit.Count += count;
                 else
-                    characterData.Data.Inventory.Items.Add(item.ItemId, new ItemModel
+                    characterData.Inventory.Items.Add(item.ItemId, new ItemModel
                     {
                         ItemId = item.ItemId,
                         Count = count,
@@ -177,13 +176,13 @@ public static class CharacterInventoryExtensions
     {
         player.SendXt(
             "ip",
-            player.Character.Data.Inventory.GetItemListString(),
+            player.Character.Inventory.GetItemListString(),
             fromEquippedUpdate
         );
 
-        foreach (var item in player.Character.Data.Inventory.Items)
+        foreach (var item in player.Character.Inventory.Items)
             if (item.Value.Count <= 0)
-                player.Character.Data.Inventory.Items.Remove(item.Key);
+                player.Character.Inventory.Items.Remove(item.Key);
     }
 
     public static void UseItemFromHotBar(this Player player, int itemId, ItemCatalog itemCatalog, ItemRConfig config)
@@ -191,13 +190,13 @@ public static class CharacterInventoryExtensions
         var itemDescription = itemCatalog.GetItemFromId(itemId);
 
         player.RemoveItem(itemDescription, 1, itemCatalog, config);
-        player.SendXt("hu", player.Character.Data.Hotbar);
+        player.SendXt("hu", player.Character.Hotbar);
         player.SendUpdatedInventory();
     }
 
     public static void SetHotbarSlot(this Player player, int slotId, ItemModel itemModel, ItemRConfig config)
     {
-        var hotbar = player.Character.Data.Hotbar;
+        var hotbar = player.Character.Hotbar;
 
         foreach (var hotbarSlot in hotbar.HotbarButtons.Where
             (slot => slot.Key != slotId && slot.Value.ItemId == itemModel.ItemId))
@@ -209,7 +208,7 @@ public static class CharacterInventoryExtensions
 
     public static void SetEmptySlot(this Player player, int slotId, ItemRConfig config)
     {
-        var hotbar = player.Character.Data.Hotbar;
+        var hotbar = player.Character.Hotbar;
 
         if (!hotbar.HotbarButtons.ContainsKey(slotId))
             return;
@@ -220,7 +219,7 @@ public static class CharacterInventoryExtensions
     public static void EquipPet(this Player player, PetAbilityParams petAbilityParams,
         WorldStatistics worldStatistics, ServerRConfig serverRConfig)
     {
-        if (player == null || !player.Character.Data.Hotbar.HotbarButtons.ContainsKey(serverRConfig.PetHotbarIndex))
+        if (player == null || !player.Character.Hotbar.HotbarButtons.ContainsKey(serverRConfig.PetHotbarIndex))
             return;
 
         var petId = player.GetEquippedPetId(serverRConfig);
@@ -236,15 +235,12 @@ public static class CharacterInventoryExtensions
     }
 
     public static string GetEquippedPetId(this Player player, ServerRConfig serverRConfig) =>
-        player.Character.Data.Hotbar.HotbarButtons.TryGetValue
+        player.Character.Hotbar.HotbarButtons.TryGetValue
         (serverRConfig.PetHotbarIndex, out var petItem) ? petItem.ItemId.ToString() : 0.ToString();
 
-    public static int GetMaxPetEnergy(this Player player, WorldStatistics worldStatistics, ServerRConfig config)
-    {
+    public static int GetMaxPetEnergy(this Player player, WorldStatistics worldStatistics, ServerRConfig config) =>
         // Needed due to pets not having abilities/energy in early 2012
-        if (config.GameVersion < GameVersion.vLate2012)
-            return 0;
-
-        return worldStatistics.Statistics[ItemEffectType.PetEnergyValue][WorldStatisticsGroup.Pet][player.Character.Data.GlobalLevel];
-    }
+        config.GameVersion < GameVersion.vLate2012
+            ? 0
+            : worldStatistics.Statistics[ItemEffectType.PetEnergyValue][WorldStatisticsGroup.Pet][player.Character.GlobalLevel];
 }

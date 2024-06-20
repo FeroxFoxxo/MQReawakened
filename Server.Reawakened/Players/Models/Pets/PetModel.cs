@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using PetDefines;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Network.Extensions;
@@ -45,7 +44,7 @@ public class PetModel()
 
         NotifyPet(petOwner);
 
-        petOwner.Character.Data.PetItemId = int.Parse(PetId);
+        petOwner.Character.Write.PetItemId = int.Parse(PetId);
 
         petOwner.SendXt("ZE", petOwner.UserId, PetId, Convert.ToInt32(spawnPet));
         petOwner.SendXt("Zm", petOwner.UserId, true);

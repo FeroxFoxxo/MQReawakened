@@ -1,10 +1,11 @@
-﻿using Server.Base.Accounts.Models;
+﻿using Server.Base.Accounts.Database;
+using Server.Base.Accounts.Models;
 
 namespace Server.Base.Accounts.Extensions;
 
 public static class ModifyTags
 {
-    public static void RemoveTag(this Account account, string name)
+    public static void RemoveTag(this AccountModel account, string name)
     {
         for (var increment = account.Tags.Count - 1; increment >= 0; --increment)
         {
@@ -18,7 +19,7 @@ public static class ModifyTags
         }
     }
 
-    public static void SetTag(this Account account, string name, string value)
+    public static void SetTag(this AccountModel account, string name, string value)
     {
         var tag = account.Tags.FirstOrDefault(tags => tags.Name == name);
 
@@ -28,19 +29,19 @@ public static class ModifyTags
             account.AddTag(name, value);
     }
 
-    public static void AddTag(this Account account, string name, string value) =>
+    public static void AddTag(this AccountModel account, string name, string value) =>
         account.Tags.Add(new AccountTag(name, value));
 
-    public static string GetTag(this Account account, string name) =>
+    public static string GetTag(this AccountModel account, string name) =>
         account.Tags.Where(tag => tag.Name == name).Select(tag => tag.Value).FirstOrDefault();
 
-    public static bool GetFlag(this Account account, int index) => (account.Flags & (1 << index)) != 0;
+    public static bool GetFlag(this AccountModel account, int index) => (account.Flags & (1 << index)) != 0;
 
-    public static void SetFlag(this Account account, int index, bool value)
+    public static void SetFlag(this AccountModel account, int index, bool value)
     {
         if (value)
-            account.Flags |= 1 << index;
+            account.Write.Flags |= 1 << index;
         else
-            account.Flags &= ~(1 << index);
+            account.Write.Flags &= ~(1 << index);
     }
 }

@@ -1,13 +1,11 @@
-﻿using Server.Reawakened.Players.Helpers;
+﻿using Server.Reawakened.Players.Database.Characters;
+using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
 
-public class RecipeListModel
+public class RecipeListModel(CharacterDbEntry entry)
 {
-    public List<RecipeModel> RecipeList { get; set; }
-
-    public RecipeListModel() =>
-        RecipeList = [];
+    public List<RecipeModel> RecipeList => entry.RecipeList;
 
     public override string ToString()
     {

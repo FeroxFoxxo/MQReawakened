@@ -4,7 +4,7 @@ using Server.Reawakened.Players.Models.Trade;
 using UnityEngine;
 using Timer = Server.Base.Timers.Timer;
 
-namespace Server.Reawakened.Players.Models;
+namespace Server.Reawakened.Players.Models.Misc;
 
 public class TemporaryDataModel
 {

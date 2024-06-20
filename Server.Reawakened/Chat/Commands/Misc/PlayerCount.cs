@@ -10,9 +10,9 @@ public class PlayerCount : SlashCommand
 
     public override string CommandDescription => "Check how many player's there are currently.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "detailed",
             Description = "Use true to see all player locations.",

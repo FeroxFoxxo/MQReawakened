@@ -13,7 +13,7 @@ public class InteractionStatus : ExternalProtocol
         var interactionStatus = int.Parse(message[5]);
         var broadcast = message[6] == "1";
 
-        Player.Character.Data.InteractionStatus = (CharacterLightData.InteractionStatus)interactionStatus;
+        Player.Character.Write.InteractionStatus = (CharacterLightData.InteractionStatus)interactionStatus;
 
         if (broadcast)
             foreach (var roomPlayer in Player.Room.GetPlayers())

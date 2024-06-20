@@ -4,9 +4,8 @@ using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Models.System;
 
-namespace Server.Reawakened.Players.Models;
-
-public class UserInfo : PersistantData
+namespace Server.Reawakened.Players.Database.Users;
+public class UserInfoDbEntry : PersistantData
 {
     public List<int> CharacterIds { get; set; }
     public Dictionary<int, SystemMailModel> Mail { get; set; }
@@ -23,13 +22,9 @@ public class UserInfo : PersistantData
     public string TrackingShortId { get; set; }
     public int ChatLevel { get; set; }
 
-    public UserInfo()
-    {
-        CharacterIds = [];
-        Mail = [];
-    }
+    public UserInfoDbEntry() => InitializeList();
 
-    public UserInfo(int userId, Gender gender, DateTime dateOfBirth, string region,
+    public UserInfoDbEntry(int userId, Gender gender, DateTime dateOfBirth, string region,
         string signUpExperience, RandomKeyGenerator kGen, ServerRConfig config)
     {
         Region = region;
@@ -38,12 +33,17 @@ public class UserInfo : PersistantData
         SignUpExperience = signUpExperience;
 
         LastCharacterSelected = string.Empty;
-        AuthToken = kGen.GetRandomKey<UserInfo>(userId.ToString());
+        AuthToken = kGen.GetRandomKey<UserInfoModel>(userId.ToString());
 
         Member = config.DefaultMemberStatus;
         TrackingShortId = config.DefaultTrackingShortId;
         ChatLevel = config.DefaultChatLevel;
 
+        InitializeList();
+    }
+
+    public void InitializeList()
+    {
         CharacterIds = [];
         Mail = [];
     }

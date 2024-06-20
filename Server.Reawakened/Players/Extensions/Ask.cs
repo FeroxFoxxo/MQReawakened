@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Services;
-using Server.Reawakened.Players.Models;
-using Server.Reawakened.Players.Services;
+using Server.Base.Accounts.Database;
+using Server.Reawakened.Players.Database.Characters;
+using Server.Reawakened.Players.Database.Users;
 
 namespace Server.Reawakened.Players.Extensions;
 
 public static class Ask
 {
     public static void GetCharacter(Microsoft.Extensions.Logging.ILogger logger, AccountHandler accountHandler,
-        UserInfoHandler userInfoHandler, CharacterHandler characterHandler, out CharacterModel model, out UserInfo user)
+        UserInfoHandler userInfoHandler, CharacterHandler characterHandler, out CharacterModel model, out UserInfoModel user)
     {
         logger.LogInformation("Please enter the username of whom you wish to find:");
 
@@ -25,7 +25,7 @@ public static class Ask
             return;
         }
 
-        user = userInfoHandler.Get(account.Id);
+        user = userInfoHandler.GetUserFromId(account.Id);
 
         if (user == null)
         {
@@ -43,10 +43,10 @@ public static class Ask
 
         foreach (var possibleCharacter in user.CharacterIds)
         {
-            var character = characterHandler.Get(possibleCharacter);
+            var character = characterHandler.GetCharacterFromId(possibleCharacter);
 
             logger.LogInformation("    {CharacterId}: {CharacterName}",
-                possibleCharacter, character.Data.CharacterName);
+                possibleCharacter, character.Write.CharacterName);
         }
 
         var id = Console.ReadLine();
@@ -63,6 +63,6 @@ public static class Ask
             return;
         }
 
-        model = characterHandler.Get(intId);
+        model = characterHandler.GetCharacterFromId(intId);
     }
 }

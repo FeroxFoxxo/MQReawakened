@@ -1,24 +1,25 @@
-﻿using Server.Reawakened.Players.Helpers;
+﻿using Server.Reawakened.Players.Database.Characters;
+using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
 
-public class CharacterResistancesModel
+public class CharacterResistancesModel(CharacterDbEntry entry)
 {
-    public int InternalDamageResistPointsStandard { get; set; }
-    public int InternalDamageResistPointsFire { get; set; }
-    public int InternalDamageResistPointsIce { get; set; }
-    public int InternalDamageResistPointsPoison { get; set; }
-    public int InternalDamageResistPointsLightning { get; set; }
+    public int InternalDamageResistPointsStandard => entry.InternalDamageResistPointsStandard;
+    public int InternalDamageResistPointsFire => entry.InternalDamageResistPointsFire;
+    public int InternalDamageResistPointsIce => entry.InternalDamageResistPointsIce;
+    public int InternalDamageResistPointsPoison => entry.InternalDamageResistPointsPoison;
+    public int InternalDamageResistPointsLightning => entry.InternalDamageResistPointsLightning;
 
-    public int ExternalDamageResistPointsStandard { get; set; }
-    public int ExternalDamageResistPointsFire { get; set; }
-    public int ExternalDamageResistPointsIce { get; set; }
-    public int ExternalDamageResistPointsPoison { get; set; }
-    public int ExternalDamageResistPointsLightning { get; set; }
+    public int ExternalDamageResistPointsStandard => entry.ExternalDamageResistPointsStandard;
+    public int ExternalDamageResistPointsFire => entry.ExternalDamageResistPointsFire;
+    public int ExternalDamageResistPointsIce => entry.ExternalDamageResistPointsIce;
+    public int ExternalDamageResistPointsPoison => entry.ExternalDamageResistPointsPoison;
+    public int ExternalDamageResistPointsLightning => entry.ExternalDamageResistPointsLightning;
 
-    public int ExternalStatusEffectResistSecondsStun { get; set; }
-    public int ExternalStatusEffectResistSecondsSlow { get; set; }
-    public int ExternalStatusEffectResistSecondsFreeze { get; set; }
+    public int ExternalStatusEffectResistSecondsStun => entry.ExternalStatusEffectResistSecondsStun;
+    public int ExternalStatusEffectResistSecondsSlow => entry.ExternalStatusEffectResistSecondsSlow;
+    public int ExternalStatusEffectResistSecondsFreeze => entry.ExternalStatusEffectResistSecondsFreeze;
 
     public override string ToString()
     {

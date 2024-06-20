@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Entities.AbstractComponents;
+﻿using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 using static TriggerWeather;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Trigger;

@@ -1,7 +1,7 @@
 ﻿using Server.Base.Accounts.Enums;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Services;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.XMLs.Data.Commands;
 using System.Text.RegularExpressions;
 
@@ -12,21 +12,21 @@ public partial class ChangeName : SlashCommand
 
     public override string CommandDescription => "Change your monkey's name.";
 
-    public override List<ParameterModel> Parameters => 
+    public override List<ParameterModel> Parameters =>
     [
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "firstName",
             Description = "The monkey's first name.",
             Optional = false
         },
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "middleName",
             Description = "The monkey's middle name",
             Optional = false
         },
-        new ParameterModel() 
+        new ParameterModel()
         {
             Name = "lastName",
             Description = "The monkey's last name",
@@ -43,8 +43,6 @@ public partial class ChangeName : SlashCommand
 
     public override void Execute(Player player, string[] args)
     {
-        var character = player.Character;
-
         if (args.Length < 3)
         {
             Log("Please specify a valid name.", player);
@@ -74,9 +72,9 @@ public partial class ChangeName : SlashCommand
             return;
         }
 
-        character.Data.CharacterName = $"{firstName} {secondName}{thirdName}";
+        player.Character.Write.CharacterName = $"{firstName} {secondName}{thirdName}";
 
-        Log($"You have changed your monkey's name to {character.Data.CharacterName}!", player);
+        Log($"You have changed your monkey's name to {player.Character.CharacterName}!", player);
         Log("This change will apply only once you've logged out.", player);
     }
 }

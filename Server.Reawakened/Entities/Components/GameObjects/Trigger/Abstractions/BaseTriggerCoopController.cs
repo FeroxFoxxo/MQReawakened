@@ -2,7 +2,6 @@
 using Server.Base.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
-using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Players;
@@ -14,7 +13,7 @@ using System.Text;
 using UnityEngine;
 using static TriggerCoopController;
 
-namespace Server.Reawakened.Entities.AbstractComponents;
+namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 
 public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp, IQuestTriggered where T : TriggerCoopController
 {
@@ -36,7 +35,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
             var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
 
             if (requiredQuest != null)
-                if (!player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
+                if (!player.Character.CompletedQuests.Contains(requiredQuest.Id))
                     return null;
         }
 
@@ -45,7 +44,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
             var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
 
             if (requiredQuest != null)
-                if (player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
+                if (player.Character.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
                     return null;
         }
 
@@ -260,7 +259,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestCompletedRequired).Value;
 
                 if (requiredQuest != null)
-                    if (!player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
+                    if (!player.Character.CompletedQuests.Contains(requiredQuest.Id))
                         return;
             }
 
@@ -269,7 +268,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
 
                 if (requiredQuest != null)
-                    if (player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
+                    if (player.Character.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
                         return;
             }
         }

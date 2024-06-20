@@ -1,13 +1,11 @@
-﻿using Server.Reawakened.Players.Helpers;
+﻿using Server.Reawakened.Players.Database.Characters;
+using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
 
-public class HotbarModel
+public class HotbarModel(CharacterDbEntry entry)
 {
-    public Dictionary<int, ItemModel> HotbarButtons { get; set; }
-
-    public HotbarModel() =>
-        HotbarButtons = [];
+    public Dictionary<int, ItemModel> HotbarButtons => entry.HotbarButtons;
 
     public override string ToString()
     {

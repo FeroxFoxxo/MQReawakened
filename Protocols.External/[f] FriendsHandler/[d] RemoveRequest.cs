@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Services;
+using Server.Reawakened.Players.Database.Characters;
 
 namespace Protocols.External._f__FriendsHandler;
 public class DeleteResponse : ExternalProtocol
@@ -16,8 +16,8 @@ public class DeleteResponse : ExternalProtocol
 
         if (friend != null)
         {
-            Player.Character.Data.Friends.Remove(friend.Id);
-            friend.Data.Friends.Remove(Player.CharacterId);
+            Player.Character.Friends.Remove(friend.Id);
+            friend.Friends.Remove(Player.CharacterId);
 
             Player.SendXt("fd", characterName, "1");
         }

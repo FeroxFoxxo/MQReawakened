@@ -19,15 +19,10 @@ public class AcceptQuest : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var character = Player.Character;
-
-        if (character == null)
-            return;
-
         var quest = int.Parse(message[5]);
         var setActive = message[6] == "1";
 
-        if (character.Data.ActiveQuestId == quest || character.Data.CompletedQuests.Contains(quest))
+        if (Player.Character.ActiveQuestId == quest || Player.Character.CompletedQuests.Contains(quest))
             return;
 
         var newQuest = QuestCatalog.GetQuestData(quest);

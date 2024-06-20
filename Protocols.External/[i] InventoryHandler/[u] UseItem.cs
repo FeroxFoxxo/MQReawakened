@@ -1,13 +1,12 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
@@ -77,9 +76,9 @@ public class UseItem : ExternalProtocol
 
     private void HandlePet(ItemDescription usedItem)
     {
-        var itemModel = Player.Character.Data.Inventory.Items[usedItem.ItemId];
+        var itemModel = Player.Character.Inventory.Items[usedItem.ItemId];
         Player.SetHotbarSlot(ServerRConfig.PetHotbarIndex, itemModel, ItemRConfig);
-        SendXt("hs", Player.Character.Data.Hotbar);
+        SendXt("hs", Player.Character.Hotbar);
     }
 
     private void HandleBomb(ItemDescription usedItem, Vector3 position, int direction)
@@ -130,7 +129,7 @@ public class UseItem : ExternalProtocol
 
         var recipe = RecipeCatalog.GetRecipeById(usedItem.RecipeParentItemID);
 
-        Player.Character.Data.RecipeList.RecipeList.Add(recipe);
+        Player.Character.RecipeList.RecipeList.Add(recipe);
 
         Player.SendXt("cz", recipe);
     }
@@ -160,7 +159,7 @@ public class UseItem : ExternalProtocol
 
     private void RemoveFromHotbar(CharacterModel character, ItemDescription item)
     {
-        var itemModel = character.Data.Inventory.Items[item.ItemId];
+        var itemModel = character.Inventory.Items[item.ItemId];
 
         if (itemModel == null)
             return;
@@ -169,7 +168,7 @@ public class UseItem : ExternalProtocol
             itemModel.Count--;
 
         else if (itemModel.Count <= 0)
-            character.Data.Inventory.Items.Remove(item.ItemId);
+            character.Inventory.Items.Remove(item.ItemId);
 
         Player.SendUpdatedInventory();
     }

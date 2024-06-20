@@ -15,22 +15,23 @@ public class CharacterRelationshipModel
 
     public CharacterRelationshipModel(int characterId, Player currentPlayer)
     {
-        var otherCharacter = currentPlayer.CharacterHandler.Get(characterId);
+        var otherCharacter = currentPlayer.CharacterHandler.GetCharacterFromId(characterId);
+
         var otherPlayer = currentPlayer.PlayerContainer.GetPlayersByCharacterId(characterId)
             .FirstOrDefault(p => p.Character.Id == characterId);
 
-        CharacterName = otherCharacter.Data.CharacterName;
+        CharacterName = otherCharacter.CharacterName;
         CharacterId = characterId;
 
         IsOnline = otherPlayer != null;
 
-        Level = otherCharacter.LevelData.LevelId;
+        Level = otherCharacter.LevelId;
         Location = otherPlayer != null ? otherPlayer.Room.ToString() : "unknown";
 
-        IsBlocked = currentPlayer.Character.Data.Blocked.Any(x => x == characterId);
-        IsMuted = currentPlayer.Character.Data.Muted.Any(x => x == characterId);
+        IsBlocked = currentPlayer.Character.Blocked.Any(x => x == characterId);
+        IsMuted = currentPlayer.Character.Muted.Any(x => x == characterId);
 
-        InteractionStatus = (int)otherCharacter.Data.InteractionStatus;
+        InteractionStatus = (int)otherCharacter.InteractionStatus;
     }
 
     public override string ToString()

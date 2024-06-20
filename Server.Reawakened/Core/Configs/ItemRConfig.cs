@@ -1,7 +1,7 @@
 ﻿using Server.Base.Core.Abstractions;
 using Server.Reawakened.Players.Models.Character;
 
-namespace Server.Reawakened.Configs;
+namespace Server.Reawakened.Core.Configs;
 public class ItemRConfig : IRConfig
 {
     public int HealingStaff { get; }

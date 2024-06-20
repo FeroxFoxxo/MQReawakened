@@ -15,8 +15,8 @@ public class TravelToFriend : ExternalProtocol
         var playerName = message[5];
         var otherPlayer = PlayerContainer.GetPlayerByName(playerName);
 
-        var levelId = otherPlayer.Character.LevelData.LevelId;
-        var spawnId = otherPlayer.Character.LevelData.SpawnPointId;
+        var levelId = otherPlayer.Character.LevelId;
+        var spawnId = otherPlayer.Character.SpawnPointId;
 
         WorldHandler.ChangePlayerRoom(Player, levelId, spawnId);
     }

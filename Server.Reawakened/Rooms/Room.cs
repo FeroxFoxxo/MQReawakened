@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Colliders;
@@ -21,8 +20,8 @@ using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Entities.Projectiles.Abstractions;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models;
 using Server.Reawakened.Rooms.Enums;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -291,16 +290,16 @@ public class Room : Timer
         var spawnPoint = GetSpawnPoint(character);
         var coordinates = GetSpawnCoordinates(spawnPoint);
 
-        character.Data.SpawnPositionX = coordinates.x;
-        character.Data.SpawnPositionY = coordinates.y;
-        character.Data.SpawnOnBackPlane = spawnPoint.IsOnBackPlane(Logger);
+        character.Write.SpawnPositionX = coordinates.x;
+        character.Write.SpawnPositionY = coordinates.y;
+        character.Write.SpawnOnBackPlane = spawnPoint.IsOnBackPlane(Logger);
 
         Logger.LogDebug(
             "Spawning {CharacterName} at object '{Object}' (spawn '{SpawnPoint}') for room id '{NewRoom}'.",
-            character.Data.CharacterName,
+            character.CharacterName,
             spawnPoint.Id != string.Empty ? spawnPoint.Id : "DEFAULT",
-            character.LevelData.SpawnPointId != string.Empty ? character.LevelData.SpawnPointId : "DEFAULT",
-            character.LevelData.LevelId
+            character.SpawnPointId != string.Empty ? character.SpawnPointId : "DEFAULT",
+            character.LevelId
         );
 
         Logger.LogDebug("Position of spawn: {Position}", spawnPoint.Position);
@@ -359,7 +358,7 @@ public class Room : Timer
         var spawnPoints = GetEntitiesFromType<SpawnPointComp>().ToDictionary(x => x.Id, x => x);
         var portals = GetEntitiesFromType<PortalComp>().ToDictionary(x => x.Id, x => x);
 
-        var spawnId = character.LevelData.SpawnPointId;
+        var spawnId = character.SpawnPointId;
 
         if (portals.TryGetValue(spawnId, out var portal))
             if (portal != null)
@@ -369,7 +368,7 @@ public class Room : Timer
             if (spawnPoint != null)
                 return spawnPoint;
 
-        var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index.ToString() == character.LevelData.SpawnPointId);
+        var indexSpawn = spawnPoints.Values.FirstOrDefault(s => s.Index.ToString() == character.SpawnPointId);
 
         return indexSpawn ?? (BaseComponent)_defaultSpawn;
     }

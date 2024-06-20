@@ -172,7 +172,6 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
     public void UsePortal(Player player, int levelId, int portalId, string defaultSpawnId = "")
     {
-        var character = player.Character;
         var newLevelId = worldGraph.GetLevelFromPortal(levelId, portalId);
 
         if (newLevelId <= 0)
@@ -196,7 +195,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             logger.LogError("Could not find node for '{Old}' -> '{New}' for portal {PortalId}.", levelId, newLevelId, portalId);
         }
 
-        if (levelId == newLevelId && character.LevelData.SpawnPointId == spawnId)
+        if (levelId == newLevelId && player.Character.SpawnPointId == spawnId)
         {
             logger.LogError("Attempt made to teleport to the same portal! Skipping...");
             return;
@@ -206,8 +205,8 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
         logger.LogInformation(
             "Teleporting {CharacterName} ({CharacterId}) to {LevelName} ({LevelId}) " +
-            "using portal {PortalId}", character.Data.CharacterName,
-            character.Id, levelInfo.InGameName, levelInfo.LevelId, portalId
+            "using portal {PortalId}", player.Character.CharacterName,
+            player.Character.Id, levelInfo.InGameName, levelInfo.LevelId, portalId
         );
 
         ChangePlayerRoom(player, newLevelId, spawnId);
@@ -226,18 +225,16 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             return false;
         }
 
-        player.Character.LevelData.SpawnPointId = spawnId;
+        player.Character.Write.SpawnPointId = spawnId;
 
-        if (player.Character.LevelData.LevelId == levelInfo.LevelId)
+        if (player.Character.LevelId == levelInfo.LevelId)
         {
-            var character = player.Character;
-
-            player.Room.SetPlayerPosition(character);
-            player.TeleportPlayer(character.Data.SpawnPositionX, character.Data.SpawnPositionY, character.Data.SpawnOnBackPlane);
+            player.Room.SetPlayerPosition(player.Character);
+            player.TeleportPlayer(player.Character.SpawnPositionX, player.Character.SpawnPositionY, player.Character.SpawnOnBackPlane);
         }
         else
         {
-            player.Character.LevelData.LevelId = levelInfo.LevelId;
+            player.Character.Write.LevelId = levelInfo.LevelId;
             player.SendLevelChange(this);
         }
 

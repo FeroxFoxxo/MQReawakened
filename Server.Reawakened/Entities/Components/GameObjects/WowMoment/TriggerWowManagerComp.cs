@@ -50,7 +50,7 @@ public class TriggerWowManagerComp : Component<TriggerWowManager>, IQuestTrigger
     {
         var questId = Convert.ToInt32(PrevQuestID);
 
-        if (quest.Id == QuestIDNeeded && player.Character.Data.CompletedQuests.Contains(questId))
+        if (quest.Id == QuestIDNeeded && player.Character.CompletedQuests.Contains(questId))
             TriggerStateChange(true);
     }
 
@@ -58,7 +58,7 @@ public class TriggerWowManagerComp : Component<TriggerWowManager>, IQuestTrigger
     {
         var questId = Convert.ToInt32(PrevQuestID);
 
-        if (quest.Id == PrevQuestID && player.Character.Data.QuestLog.Any(q => q.Id == questId))
+        if (quest.Id == PrevQuestID && player.Character.QuestLog.Any(q => q.Id == questId))
             TriggerStateChange(true);
     }
 }

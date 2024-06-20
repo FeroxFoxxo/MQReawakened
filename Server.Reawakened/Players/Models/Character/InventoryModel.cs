@@ -1,12 +1,11 @@
-﻿using Server.Reawakened.Players.Helpers;
+﻿using Server.Reawakened.Players.Database.Characters;
+using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;
 
-public class InventoryModel
+public class InventoryModel(CharacterDbEntry entry)
 {
-    public Dictionary<int, ItemModel> Items { get; set; }
-
-    public InventoryModel() => Items = [];
+    public Dictionary<int, ItemModel> Items => entry.Items;
 
     public override string ToString()
     {

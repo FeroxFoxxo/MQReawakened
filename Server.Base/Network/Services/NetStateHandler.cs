@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Server.Base.Accounts.Models;
+using Server.Base.Accounts.Database;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
@@ -33,7 +33,7 @@ public class NetStateHandler(FileLogger fileLogger,
     public NetState FindUser(int userId) =>
         (
             from state in Instances
-            let account = state.Get<Account>()
+            let account = state.Get<AccountModel>()
             where account != null
             where account.Id == userId
             select state

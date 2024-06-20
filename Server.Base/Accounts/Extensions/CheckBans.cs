@@ -1,4 +1,4 @@
-﻿using Server.Base.Accounts.Models;
+﻿using Server.Base.Accounts.Database;
 using Server.Base.Core.Extensions;
 using System.Xml;
 
@@ -6,7 +6,7 @@ namespace Server.Base.Accounts.Extensions;
 
 public static class CheckBans
 {
-    public static bool IsBanned(this Account account)
+    public static bool IsBanned(this AccountModel account)
     {
         var isBanned = account.GetFlag(0);
 
@@ -22,10 +22,10 @@ public static class CheckBans
         return false;
     }
 
-    public static void SetBanned(this Account account, bool isBanned) =>
+    public static void SetBanned(this AccountModel account, bool isBanned) =>
         account.SetFlag(0, isBanned);
 
-    public static void SetBanTags(this Account account, string from, DateTime banTime, TimeSpan banDuration)
+    public static void SetBanTags(this AccountModel account, string from, DateTime banTime, TimeSpan banDuration)
     {
         if (from == null)
             account.RemoveTag("BanDealer");
@@ -43,10 +43,10 @@ public static class CheckBans
             account.SetTag("BanDuration", banDuration.ToString());
     }
 
-    public static void SetUnspecifiedBan(this Account account, string from) =>
+    public static void SetUnspecifiedBan(this AccountModel account, string from) =>
         account.SetBanTags(from, DateTime.MinValue, TimeSpan.Zero);
 
-    public static bool GetBanTags(this Account account, out DateTime banTime, out TimeSpan banDuration)
+    public static bool GetBanTags(this AccountModel account, out DateTime banTime, out TimeSpan banDuration)
     {
         var tagTime = account.GetTag("BanTime");
         var tagDuration = account.GetTag("BanDuration");

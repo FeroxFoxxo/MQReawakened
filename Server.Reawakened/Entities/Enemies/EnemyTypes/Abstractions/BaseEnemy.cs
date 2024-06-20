@@ -229,7 +229,7 @@ public abstract class BaseEnemy : IDestructible
     private void SendRewards(Player player)
     {
         //The XP Reward here is not accurate, but pretty close
-        var xpAward = player != null ? DeathXp - (player.Character.Data.GlobalLevel - 1) * 5 : DeathXp;
+        var xpAward = player != null ? DeathXp - (player.Character.GlobalLevel - 1) * 5 : DeathXp;
 
         if (xpAward < 1)
             xpAward = 1;

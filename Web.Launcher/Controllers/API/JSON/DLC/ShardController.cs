@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Server.Base.Accounts.Services;
+using Server.Base.Accounts.Database;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Services;
 using Server.Reawakened.Network.Services;
-using Server.Reawakened.Players.Services;
+using Server.Reawakened.Players.Database.Users;
 
 namespace Web.Launcher.Controllers.API.JSON.DLC;
 
@@ -20,8 +20,8 @@ public class ShardController(AccountHandler accHandler, UserInfoHandler userInfo
         username = username?.Trim();
         authToken = authToken?.Trim();
 
-        var account = accHandler.Get(uuid);
-        var user = userInfoHandler.Get(uuid);
+        var account = accHandler.GetAccountFromId(uuid);
+        var user = userInfoHandler.GetUserFromId(uuid);
 
         if (account == null || user == null)
             return Unauthorized();
@@ -31,8 +31,8 @@ public class ShardController(AccountHandler accHandler, UserInfoHandler userInfo
 
         var sId = keyGenerator.GetRandomKey<TemporaryDataStorage>(uuid.ToString());
 
-        temporaryDataStorage.AddData(sId, user);
-        temporaryDataStorage.AddData(sId, account);
+        temporaryDataStorage.AddData(sId, user.Write);
+        temporaryDataStorage.AddData(sId, account.Write);
 
         var json = new JObject
         {

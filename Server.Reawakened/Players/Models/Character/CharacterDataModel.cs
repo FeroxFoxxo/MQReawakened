@@ -1,31 +1,19 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Models.Character;
 
-public class CharacterDataModel : CharacterLightModel
+public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : CharacterLightModel(entry, version)
 {
     private Player _player;
 
-    public InventoryModel Inventory { get; set; }
-    public List<QuestStatusModel> QuestLog { get; set; }
-    public List<int> CompletedQuests { get; set; }
-    public HotbarModel Hotbar { get; set; }
-    public bool PetAutonomous { get; set; }
-    public long GuestPassExpiry { get; set; }
-    public bool ShouldExpireGuestPass { get; set; }
-    public CharacterResistancesModel Resistances { get; set; }
-    public RecipeListModel RecipeList { get; set; }
-    public Dictionary<TribeType, bool> TribesDiscovered { get; set; }
-    public Dictionary<TribeType, TribeDataModel> TribesProgression { get; set; }
-
-    private Dictionary<int, int> IdolCount =>
-        _player?.Character.CollectedIdols
-            .ToDictionary(x => x.Key, x => x.Value.Count)
-        ?? [];
+    public InventoryModel Inventory => new(Write);
+    public HotbarModel Hotbar => new(Write);
+    public CharacterResistancesModel Resistances => new(Write);
+    public RecipeListModel RecipeList => new(Write);
 
     private PlayerListModel FriendModels =>
         new(Friends.Select(f => new CharacterRelationshipModel(f, _player)).ToList());
@@ -33,63 +21,39 @@ public class CharacterDataModel : CharacterLightModel
     private PlayerListModel BlockModels =>
         new(Blocked.Select(b => new CharacterRelationshipModel(b, _player)).ToList());
 
-    public List<int> Friends { get; set; }
-    public List<int> Blocked { get; set; }
-    public List<int> Muted { get; set; }
-
-    public int Cash { get; set; }
-    public int NCash { get; set; }
-    public int ActiveQuestId { get; set; }
-    public int Reputation { get; set; }
-    public int ReputationForCurrentLevel { get; set; }
-    public int ReputationForNextLevel { get; set; }
-    public float SpawnPositionX { get; set; }
-    public float SpawnPositionY { get; set; }
-    public bool SpawnOnBackPlane { get; set; }
-    public int BadgePoints { get; set; }
-    public int AbilityPower { get; set; }
-
     private int ChatLevel => _player?.UserInfo.ChatLevel ?? 0;
 
-    private GameVersion _version = GameVersion.Unknown;
+    private Dictionary<int, int> IdolCount =>
+        _player?.Character.CollectedIdols
+            .ToDictionary(x => x.Key, x => x.Value.Count)
+        ?? [];
 
-    public CharacterDataModel() => InitializeDetailedLists();
+    public List<QuestStatusModel> QuestLog => Write.QuestLog;
+    public List<int> CompletedQuests => Write.CompletedQuests;
+    public bool PetAutonomous => Write.PetAutonomous;
+    public long GuestPassExpiry => Write.GuestPassExpiry;
+    public bool ShouldExpireGuestPass => Write.ShouldExpireGuestPass;
+    public Dictionary<TribeType, bool> TribesDiscovered => Write.TribesDiscovered;
+    public Dictionary<TribeType, TribeDataModel> TribesProgression => Write.TribesProgression;
+    public List<int> Friends => Write.Friends;
+    public List<int> Blocked => Write.Blocked;
+    public List<int> Muted => Write.Muted;
+    public int Cash => Write.Cash;
+    public int NCash => Write.NCash;
+    public int ActiveQuestId => Write.ActiveQuestId;
+    public int Reputation => Write.Reputation;
+    public int ReputationForCurrentLevel => Write.ReputationForCurrentLevel;
+    public int ReputationForNextLevel => Write.ReputationForNextLevel;
+    public float SpawnPositionX => Write.SpawnPositionX;
+    public float SpawnPositionY => Write.SpawnPositionY;
+    public bool SpawnOnBackPlane => Write.SpawnOnBackPlane;
+    public int BadgePoints => Write.BadgePoints;
+    public int AbilityPower => Write.AbilityPower;
 
-    public CharacterDataModel(string serverData) : base(serverData)
+    public void SetPlayerData(Player player)
     {
-        Inventory = new InventoryModel();
-        Hotbar = new HotbarModel();
-        Resistances = new CharacterResistancesModel();
-        RecipeList = new RecipeListModel();
-
-        InitializeDetailedLists();
-    }
-
-    public void SetCharacterId(int id)
-    {
-        CharacterId = id;
-        Customization.CharacterId = id;
-    }
-
-    public void SetDynamicData(Player player, ServerRConfig config)
-    {
-        _version = config.GameVersion;
         _player = player;
         _player.NetState.Identifier = CharacterName;
-        SetVersion(config.GameVersion);
-    }
-
-    private void InitializeDetailedLists()
-    {
-        QuestLog = [];
-        CompletedQuests = [];
-        TribesDiscovered = [];
-        TribesProgression = [];
-        DiscoveredStats = [];
-        Friends = [];
-        Blocked = [];
-        Muted = [];
-        InitializeLiteLists();
     }
 
     public override string ToString()
@@ -106,13 +70,13 @@ public class CharacterDataModel : CharacterLightModel
         sb.Append(BlockModels);
         sb.Append(Equipment);
 
-        if (_version >= GameVersion.vPets2012)
+        if (Version >= GameVersion.vPets2012)
             sb.Append(PetItemId);
 
-        if (_version >= GameVersion.vLate2012)
+        if (Version >= GameVersion.vLate2012)
             sb.Append(PetAutonomous ? 1 : 0);
 
-        if (_version >= GameVersion.vMinigames2012)
+        if (Version >= GameVersion.vMinigames2012)
         {
             sb.Append(GuestPassExpiry);
             sb.Append(ShouldExpireGuestPass ? 1 : 0);
@@ -152,7 +116,7 @@ public class CharacterDataModel : CharacterLightModel
     {
         var sb = new SeparatedStringBuilder('<');
 
-        sb.Append(CharacterId);
+        sb.Append(Id);
         sb.Append(CharacterName);
         sb.Append(Gender);
         sb.Append(Cash);
@@ -233,7 +197,7 @@ public class CharacterDataModel : CharacterLightModel
     public int CalculateDefense(ItemEffectType effect, ItemCatalog itemCatalog)
     {
         var statManager = new CharacterStatsManager(CharacterName);
-        var defense = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Player, _player.Character.Data.GlobalLevel);
+        var defense = GameFlow.StatisticData.GetValue(ItemEffectType.Defence, WorldStatisticsGroup.Player, _player.Character.GlobalLevel);
         var itemList = new List<ItemDescription>();
 
         var defenseType = ItemEffectType.Defence;
@@ -270,7 +234,7 @@ public class CharacterDataModel : CharacterLightModel
     public int CalculateDamage(ItemDescription usedItem, ItemCatalog itemCatalog)
     {
         var statManager = new CharacterStatsManager(CharacterName);
-        var damage = GameFlow.StatisticData.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, _player.Character.Data.GlobalLevel);
+        var damage = GameFlow.StatisticData.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, _player.Character.GlobalLevel);
         var itemList = new List<ItemDescription> { usedItem };
 
         var effect = ItemEffectType.BluntDamage;
@@ -299,11 +263,12 @@ public class CharacterDataModel : CharacterLightModel
         foreach (var item in Equipment.EquippedItems)
             itemList.Add(itemCatalog.GetItemFromId(item.Value));
 
-        damage += +statManager.ComputeEquimentBoost(effect, itemList);
+        damage += statManager.ComputeEquimentBoost(effect, itemList);
 
         return damage;
     }
 
     public PlayerListModel GetFriends() => FriendModels;
+
     public PlayerListModel GetBlocked() => BlockModels;
 }

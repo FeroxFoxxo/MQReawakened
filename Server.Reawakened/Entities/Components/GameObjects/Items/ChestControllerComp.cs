@@ -69,7 +69,7 @@ public class ChestControllerComp : BaseChestControllerComp<ChestController>
             _ => random.Next(45, 70),
         };
 
-        if (player.Character.Data.GlobalLevel > ServerRConfig.DoubleChestRewardsLevel)
+        if (player.Character.GlobalLevel > ServerRConfig.DoubleChestRewardsLevel)
             bananaReward *= 2;
 
         return bananaReward;

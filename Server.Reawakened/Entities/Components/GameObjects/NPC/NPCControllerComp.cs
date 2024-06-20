@@ -10,8 +10,8 @@ using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Models;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Models.Misc;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
@@ -254,7 +254,7 @@ public class NPCControllerComp : Component<NPCController>
                 return;
 
         var dialog = DialogInfo.Dialog
-            .Where(d => d.Key <= player.Character.Data.GlobalLevel)
+            .Where(d => d.Key <= player.Character.GlobalLevel)
             .OrderBy(d => d.Key)
             .Select(d => d.Value)
             .FirstOrDefault();
@@ -262,7 +262,7 @@ public class NPCControllerComp : Component<NPCController>
         if (dialog == null)
         {
             Logger.LogError("[DIALOG] [{NpcName} ({Id})] No dialog found for user of level {Level}",
-                NpcName, Id, player.Character.Data.GlobalLevel);
+                NpcName, Id, player.Character.GlobalLevel);
             SendUnknownDialogChat(player);
             return;
         }
@@ -336,20 +336,20 @@ public class NPCControllerComp : Component<NPCController>
         var questData = QuestCatalog.GetQuestData(questId);
 
         if (QuestCatalog.QuestLineCatalogs.TryGetValue(questData.QuestLineId, out var questLine))
-            if (GiverQuests.OrderBy(x => x.QuestgGiverName == questData.QuestgGiverName && questLine.ShowInJournal).All(y => player.Character.Data.CompletedQuests.Any(z => y.Id == z))
-                && ValidatorQuests.OrderBy(x => x.ValidatorName == NpcName && questLine.ShowInJournal).All(y => player.Character.Data.CompletedQuests.Any(z => y.Id == z)))
+            if (GiverQuests.OrderBy(x => x.QuestgGiverName == questData.QuestgGiverName && questLine.ShowInJournal).All(y => player.Character.CompletedQuests.Any(z => y.Id == z))
+                && ValidatorQuests.OrderBy(x => x.ValidatorName == NpcName && questLine.ShowInJournal).All(y => player.Character.CompletedQuests.Any(z => y.Id == z)))
             {
                 Logger.LogDebug("[{QuestLineId}] [COMPLETED QUESTLINE] Completed {NpcName}'s questline.", questData.QuestLineId, NpcName);
                 return NPCStatus.Dialog;
             }
 
-        if (player.Character.Data.CompletedQuests.Contains(questId))
+        if (player.Character.CompletedQuests.Contains(questId))
         {
             Logger.LogTrace("[{QuestName} ({QuestId})] [ALREADY COMPLETED]", questData.Name, questData.Id);
             return NPCStatus.Unknown;
         }
 
-        var currentQuest = player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == questId);
+        var currentQuest = player.Character.QuestLog.FirstOrDefault(q => q.Id == questId);
 
         if (currentQuest != null)
         {
@@ -366,7 +366,7 @@ public class NPCControllerComp : Component<NPCController>
                 foreach (var incompleteQuestObj in incompleteQuestObjs.Where(x => x.Order == minOrder))
                 {
                     if (incompleteQuestObj.ObjectiveType == ObjectiveEnum.Deliver)
-                        if (player.Character.Data.Inventory.Items.TryGetValue(incompleteQuestObj.ItemId, out var item))
+                        if (player.Character.Inventory.Items.TryGetValue(incompleteQuestObj.ItemId, out var item))
                             if (item.Count >= incompleteQuestObj.CountLeft)
                                 incompleteObjectives--;
 
@@ -410,10 +410,10 @@ public class NPCControllerComp : Component<NPCController>
             return NPCStatus.Unknown;
         }
 
-        if (player.Character.Data.GlobalLevel < questData.LevelRequired)
+        if (player.Character.GlobalLevel < questData.LevelRequired)
         {
             Logger.LogTrace("[{QuestName} ({QuestId})] [SKIPPED QUEST] Level {Current} is less than required {Required}",
-                questData.Name, questData.Id, player.Character.Data.GlobalLevel, questData.LevelRequired);
+                questData.Name, questData.Id, player.Character.GlobalLevel, questData.LevelRequired);
             return NPCStatus.Unknown;
         }
 
@@ -434,7 +434,7 @@ public class NPCControllerComp : Component<NPCController>
             canStartQuest = previousQuests.Count == 0;
 
             foreach (var previousQuest in previousQuests)
-                if (player.Character.Data.CompletedQuests.Contains(previousQuest.Id))
+                if (player.Character.CompletedQuests.Contains(previousQuest.Id))
                 {
                     canStartQuest = true;
                     break;
@@ -445,10 +445,10 @@ public class NPCControllerComp : Component<NPCController>
             canStartQuest = requiredQuests.Count == 0;
 
             foreach (var requiredQuest in requiredQuests)
-                if (player.Character.Data.CompletedQuests.Contains(requiredQuest.Id))
+                if (player.Character.CompletedQuests.Contains(requiredQuest.Id))
                 {
                     foreach (var previousQuest in previousQuests)
-                        if (player.Character.Data.CompletedQuests.Contains(previousQuest.Id))
+                        if (player.Character.CompletedQuests.Contains(previousQuest.Id))
                         {
                             canStartQuest = true;
                             break;
@@ -481,9 +481,9 @@ public class NPCControllerComp : Component<NPCController>
     {
         foreach (var quest in ValidatorQuests)
         {
-            var matchingQuest = player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
+            var matchingQuest = player.Character.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
 
-            if (matchingQuest == null || player.Character.Data.CompletedQuests.Contains(quest.Id))
+            if (matchingQuest == null || player.Character.CompletedQuests.Contains(quest.Id))
                 continue;
 
             if (matchingQuest.QuestStatus != QuestState.TO_BE_VALIDATED)
@@ -491,13 +491,13 @@ public class NPCControllerComp : Component<NPCController>
 
             SendNpcDialog(player, matchingQuest, QuestState.TO_BE_VALIDATED);
 
-            var completedQuest = player.Character.Data.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
+            var completedQuest = player.Character.QuestLog.FirstOrDefault(x => x.Id == quest.Id);
 
             if (completedQuest != null)
             {
                 var questLine = QuestCatalog.GetQuestLineData(quest.QuestLineId);
 
-                player.Character.Data.QuestLog.Remove(completedQuest);
+                player.Character.QuestLog.Remove(completedQuest);
 
                 if (questLine.QuestType == QuestType.Daily)
                     player.Character.CurrentQuestDailies.TryAdd(completedQuest.Id.ToString(), new DailiesModel()
@@ -507,7 +507,7 @@ public class NPCControllerComp : Component<NPCController>
                         TimeOfHarvest = DateTime.Now
                     });
                 else
-                    player.Character.Data.CompletedQuests.Add(completedQuest.Id);
+                    player.Character.CompletedQuests.Add(completedQuest.Id);
 
                 foreach (var trigger in Room.GetEntitiesFromType<IQuestTriggered>())
                     trigger.QuestCompleted(quest, player);
@@ -521,7 +521,7 @@ public class NPCControllerComp : Component<NPCController>
                     {
                         var newQuest = QuestCatalog.GetQuestData(item.Key);
 
-                        if (newQuest != null && player.Character.Data.CompletedQuests.Any(x => newQuest.PreviousQuests.Any(y => y.Key == x)))
+                        if (newQuest != null && player.Character.CompletedQuests.Any(x => newQuest.PreviousQuests.Any(y => y.Key == x)))
                             player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}", Logger);
                     }
             }
@@ -536,9 +536,9 @@ public class NPCControllerComp : Component<NPCController>
 
         foreach (var quest in quests)
         {
-            var matchingQuest = player.Character.Data.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
+            var matchingQuest = player.Character.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
 
-            if (matchingQuest == null || player.Character.Data.CompletedQuests.Contains(quest.Id))
+            if (matchingQuest == null || player.Character.CompletedQuests.Contains(quest.Id))
                 continue;
 
             SendNpcDialog(player, matchingQuest, QuestState.IN_PROCESSING);

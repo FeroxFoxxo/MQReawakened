@@ -69,7 +69,7 @@ public static class PetAbilityExtensions
         }
 
         petOwner.PetHeal((int)Math.Ceiling
-        (petOwner.Character.Data.MaxLife * pet.AbilityParams.ApplyOnHealthRatio));
+        (petOwner.Character.MaxLife * pet.AbilityParams.ApplyOnHealthRatio));
     }
 
     private static void AttackEnemiesInZone(object player)

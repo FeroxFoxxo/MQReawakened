@@ -1,8 +1,8 @@
 ﻿using Achievement.CharacterData;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Services;
 using Server.Reawakened.XMLs.Bundles.Internal;
 
 namespace Web.Apps.Achievements.API.State;
@@ -16,12 +16,12 @@ public class AllAchievementController(CharacterHandler characterHandler,
         var _uuid = int.Parse(uuid);
         var _characterId = int.Parse(characterId);
 
-        var character = characterHandler.Get(_characterId);
+        var character = characterHandler.GetCharacterFromId(_characterId);
 
         if (character == null)
             return NotFound();
 
-        if (character.Data.UserUuid != _uuid)
+        if (character.UserUuid != _uuid)
             return Forbid();
 
         var achievements = character.GetAllAchievements(internalAchievement);

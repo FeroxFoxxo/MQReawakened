@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Extensions;
-using Server.Reawakened.Players.Services;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Base;
@@ -18,7 +17,6 @@ public class ChooseCharacter : ExternalProtocol
     public WorldGraph WorldGraph { get; set; }
     public CharacterHandler CharacterHandler { get; set; }
     public EventPrefabs EventPrefabs { get; set; }
-    public ServerRConfig ServerRConfig { get; set; }
 
     public override void Run(string[] message)
     {
@@ -31,11 +29,11 @@ public class ChooseCharacter : ExternalProtocol
             return;
         }
 
-        if (character.LevelData.LevelId <= 0)
+        if (character.LevelId <= 0)
             character.ForceSetLevel(WorldGraph.DefaultLevel);
 
-        var levelInfo = WorldHandler.GetLevelInfo(character.LevelData.LevelId);
+        var levelInfo = WorldHandler.GetLevelInfo(character.LevelId);
 
-        Player.SendStartPlay(character, levelInfo, EventPrefabs, ServerRConfig);
+        Player.SendStartPlay(character, levelInfo, EventPrefabs);
     }
 }

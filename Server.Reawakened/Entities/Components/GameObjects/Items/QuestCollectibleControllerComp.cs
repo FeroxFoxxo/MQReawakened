@@ -23,7 +23,7 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
 
         _questItem = ItemCatalog.GetItemFromPrefabName(PrefabName);
 
-        foreach (var objective in player.Character.Data.QuestLog.SelectMany(x => x.Objectives.Values).Where
+        foreach (var objective in player.Character.QuestLog.SelectMany(x => x.Objectives.Values).Where
             (x => x.GameObjectId.ToString() == Id || _questItem != null && x.ItemId == _questItem.ItemId))
             CollectedState = CollectibleState.Active;
 
@@ -62,7 +62,7 @@ public class QuestCollectibleControllerComp : Component<QuestCollectibleControll
     {
         var questItem = ItemCatalog.GetItemFromPrefabName(PrefabName);
 
-        foreach (var objective in player.Character.Data.QuestLog.SelectMany(x => x.Objectives.Values).Where
+        foreach (var objective in player.Character.QuestLog.SelectMany(x => x.Objectives.Values).Where
             (x => x.GameObjectId.ToString() == Id || questItem != null && x.ItemId == questItem.ItemId))
             switch (collectedState)
             {

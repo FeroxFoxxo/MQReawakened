@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Enums;
 using Server.Reawakened.Chat.Models;
-using Server.Reawakened.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -40,9 +39,9 @@ public class God : SlashCommand
         player.AddPoints();
         player.DiscoverAllTribes();
 
-        player.Character.Data.CurrentLife = player.Character.Data.MaxLife;
+        player.Character.Write.CurrentLife = player.Character.MaxLife;
 
-        var health = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, player.Character.Data.MaxLife, player.Character.Data.MaxLife, "now");
+        var health = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, player.Character.MaxLife, player.Character.MaxLife, "now");
         player.Room.SendSyncEvent(health);
 
         var heal = new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, (int)ItemEffectType.Healing, ItemRConfig.HealAmount, 1, true, player.GameObjectId.ToString(), true);
