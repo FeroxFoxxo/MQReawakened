@@ -14,6 +14,14 @@
             transition: background-color 0.3s; /* Smooth transition for background color */
         }
 
+        .custom-red {
+            color: #ffa0a0; /* Lighter red */
+        }
+
+        .custom-blue {
+            color: #90bcef; /* Lighter blue */
+        }
+
         .site-header {
             background: #333;
             color: #fff;
@@ -200,6 +208,9 @@
                                         }
                                     }
                                 </div>
+                                <div class="card-footer @(command.AccessLevel > Server.Base.Accounts.Enums.AccessLevel.Player ? "custom-red" : "custom-blue")">
+                                    Requires: @command.AccessLevel
+                                </div>
                             </div>
                         </div>
                     }
@@ -209,6 +220,7 @@
     }
     <div class="commands">
         @{
+            RenderCommandList(Model.ServerCommands, "Server");
             RenderCommandList(Model.ClientCommands, "Client");
         }
     </div>

@@ -10,6 +10,7 @@ using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players;
+using Server.Reawakened.XMLs.Data.Commands;
 using System.Reflection;
 
 namespace Server.Reawakened.Chat.Services;
@@ -17,11 +18,13 @@ public class MQRSlashCommands(IServiceScopeFactory serviceFact, ReflectionUtils 
     EventSink sink, ILogger<ServerConsole> logger, GetServerAddress getSA) : IService
 {
     private readonly Dictionary<string, SlashCommand> _commands = [];
+    public List<CommandModel> ServerCommands = [];
 
     public void Initialize() => sink.ServerStarted += AddCommands;
 
     private void AddCommands(ServerStartedEventArgs e)
     {
+        _commands.Clear();
         using var scope = serviceFact.CreateScope();
 
         foreach (var type in e.Modules.Select(m => m.GetType().Assembly.GetTypes())
@@ -35,9 +38,11 @@ public class MQRSlashCommands(IServiceScopeFactory serviceFact, ReflectionUtils 
                 _commands.Add(createInstance(scope.ServiceProvider).CommandName, createInstance(scope.ServiceProvider));
             }
         }
+
+        ServerCommands = _commands.Select(c => c.Value as CommandModel).ToList();
     }
 
-    public void Log(string message, Player player) =>
+    private static void Log(string message, Player player) =>
         player.Chat(CannedChatChannel.Tell, "Console", message);
 
     public void DisplayHelp(Player player)
@@ -53,7 +58,7 @@ public class MQRSlashCommands(IServiceScopeFactory serviceFact, ReflectionUtils 
 
         if (name == null || !_commands.TryGetValue(name, out var value))
         {
-            logger.LogWarning($"Unknown slash command: {command}");
+            logger.LogWarning("Unknown slash command: {Command}", command);
             return;
         }
 

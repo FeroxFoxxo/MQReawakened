@@ -10,18 +10,17 @@ public class InternalInbuiltCommands : InternalXml
 
     public override BundlePriority Priority => BundlePriority.Low;
 
-    public List<CommandModel> Commands { get; private set; }
+    public List<CommandModel> ClientCommands { get; private set; }
 
-    public override void InitializeVariables() =>
-        Commands = [];
+    public override void InitializeVariables() => ClientCommands = [];
 
     public override void ReadDescription(XmlDocument xmlDocument)
     {
         var commandNodes = xmlDocument.SelectNodes("/Commands/Command");
 
-        Commands.Clear();
+        ClientCommands.Clear();
 
         foreach (XmlNode commandNode in commandNodes)
-            Commands.Add(CommandModel.FromXmlNode(commandNode));
+            ClientCommands.Add(ClientCommand.FromXmlNode(commandNode));
     }
 }

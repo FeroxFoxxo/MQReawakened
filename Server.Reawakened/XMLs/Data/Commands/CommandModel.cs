@@ -1,21 +1,10 @@
-﻿using System.Xml;
+﻿using Server.Base.Accounts.Enums;
 
 namespace Server.Reawakened.XMLs.Data.Commands;
-public class CommandModel
+public abstract class CommandModel
 {
-    public string CommandName { get; set; }
-    public string CommandDescription { get; set; }
-    public List<ParameterModel> Parameters { get; set; }
-
-    public static CommandModel FromXmlNode(XmlNode node)
-    {
-        var command = new CommandModel
-        {
-            CommandName = node.Attributes["name"].Value,
-            CommandDescription = node.Attributes["description"].Value,
-            Parameters = ParameterModel.FromXmlNodes(node.SelectNodes("Parameter"))
-        };
-
-        return command;
-    }
+    public abstract string CommandName { get; }
+    public abstract string CommandDescription { get; }
+    public abstract List<ParameterModel> Parameters { get; }
+    public abstract AccessLevel AccessLevel { get; }
 }

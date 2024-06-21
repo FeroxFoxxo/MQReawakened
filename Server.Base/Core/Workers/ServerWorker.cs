@@ -132,6 +132,18 @@ public class ServerWorker : IHostedService
             if (_pump != null)
                 foreach (var listener in _pump.Listeners)
                     listener?.Dispose();
+
+            foreach (var netState in _handler.Instances)
+            {
+                try
+                {
+                    netState.RemoveAllData();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogCritical(ex, "Unable to clean up netstate of {NetState}.", netState);
+                }
+            }
         }
         catch (Exception ex)
         {
