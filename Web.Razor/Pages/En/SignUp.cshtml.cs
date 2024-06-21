@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Database;
-using Server.Reawakened.Players.Database.Users;
+using Server.Base.Database.Accounts;
+using Server.Reawakened.Database.Users;
 using Server.Reawakened.Players.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
@@ -91,13 +91,13 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
         if (string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Email))
             return Page();
 
-        if (accountHandler.GetInternal().Any(a => a.Value.Username == Username))
+        if (accountHandler.ContainsUsername(Username))
         {
             StatusMessage = "An account already exists with this username!";
             return Page();
         }
 
-        if (accountHandler.GetInternal().Any(a => a.Value.Email == Email))
+        if (accountHandler.ContainsEmail(Email))
         {
             StatusMessage = "An account already exists with this email!";
             return Page();
@@ -125,7 +125,7 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
 
         var userInfo = userInfoHandler.Create(ip, account.Id, Gender, Date.Value, Region, "Website");
 
-        if (account == null)
+        if (userInfo == null)
         {
             logger.LogError("Could not create user info with name: {Username}", Username);
             StatusMessage = "Could not create any user information! " +

@@ -5,7 +5,7 @@ using Server.Reawakened.Players.Models.Misc;
 using Server.Reawakened.Players.Models.Pets;
 using Server.Reawakened.Players.Models.System;
 
-namespace Server.Reawakened.Players.Database.Characters;
+namespace Server.Reawakened.Database.Characters;
 public class CharacterDbEntry : PersistantData
 {
     // RecipeListModel

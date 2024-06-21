@@ -1,11 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Database;
 using Server.Base.Core.Models;
+using Server.Base.Database.Accounts;
 using Server.Base.Network;
-using Server.Base.Network.Services;
+using Server.Reawakened.Database.Characters;
+using Server.Reawakened.Database.Users;
 using Server.Reawakened.Network.Extensions;
-using Server.Reawakened.Players.Database.Characters;
-using Server.Reawakened.Players.Database.Users;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.Misc;
@@ -33,11 +32,18 @@ public class Player(AccountModel account, UserInfoModel userInfo, NetState state
     public string CharacterName => Character != null ? Character.CharacterName : string.Empty;
     public string GameObjectId => TempData.GameObjectId;
 
-    public void RemovedState(NetState state, NetStateHandler handler,
+    private bool _hasLoggedOut = false;
+
+    public void RemovedState(NetState _, IServiceProvider services,
         Microsoft.Extensions.Logging.ILogger logger) => Remove(logger);
 
     public void Remove(Microsoft.Extensions.Logging.ILogger logger)
     {
+        if (_hasLoggedOut)
+            return;
+
+        _hasLoggedOut = true;
+
         lock (PlayerContainer.Lock)
             playerContainer.RemovePlayer(this);
 
@@ -69,15 +75,18 @@ public class Player(AccountModel account, UserInfoModel userInfo, NetState state
             var roomName = Room.LevelInfo.Name;
 
             if (!string.IsNullOrEmpty(roomName))
-                logger.LogDebug("Dumped _player with ID '{User}' from room '{Room}'", UserId, roomName);
+                logger.LogDebug("Dumped player with ID '{User}' from room '{Room}'", UserId, roomName);
         }
 
         this.DumpToLobby(worldHandler);
 
         try
         {
+            NetState.RemoveAllData();
             NetState.Dispose();
         }
-        catch (Exception) { }
+        catch (Exception e) {
+            logger.LogError(e, "Error when disposing on logout");
+        }
     }
 }

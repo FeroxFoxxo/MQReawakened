@@ -1,7 +1,7 @@
 ﻿using Achievement.CharacterData;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Server.Reawakened.Players.Database.Characters;
+using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles.Internal;
 

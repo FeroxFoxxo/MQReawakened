@@ -1,27 +1,23 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Core.Configs;
-using Server.Base.Core.Events;
 using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Network;
 using Server.Base.Network.Helpers;
 using System.Net;
 
-namespace Server.Base.Accounts.Database;
+namespace Server.Base.Database.Accounts;
 
-public class AccountHandler(EventSink sink, ILogger<AccountDbEntry> logger, InternalRConfig rConfig,
-    PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter,
-    FileLogger fileLogger, InternalRwConfig rwConfig, TemporaryDataStorage temporaryDataStorage) :
-    DataHandler<AccountDbEntry>(sink, logger, rConfig, rwConfig)
+public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter,
+    FileLogger fileLogger, TemporaryDataStorage temporaryDataStorage, InternalRConfig config, IServiceProvider services) :
+    DataHandler<AccountDbEntry, BaseDatabase>(services)
 {
     public override bool HasDefault => true;
-
-    public Dictionary<IPAddress, int> IpTable = [];
-
-    public override void OnAfterLoad() => CreateIpTables();
 
     public override AccountDbEntry CreateDefault()
     {
@@ -48,16 +44,29 @@ public class AccountHandler(EventSink sink, ILogger<AccountDbEntry> logger, Inte
         GetAccountFromModel(Get(id));
 
     public AccountModel GetAccountFromUsername(string username) =>
-        GetAccountFromModel(GetInternal().FirstOrDefault(x => x.Value.Username == username).Value);
+        GetAccountFromId(GetIdFromUserName(username));
 
     public static AccountModel GetAccountFromModel(AccountDbEntry model) =>
-        new(model);
+        model != null ? new(model) : null;
+
+    protected int GetIdFromUserName(string username)
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
+
+        lock (db.Lock)
+        {
+            var account = db.Accounts.AsNoTracking().FirstOrDefault(a => a.Username == username);
+
+            return account == null ? -1 : account.Id;
+        }
+    }
 
     public AlrReason GetAccount(string username, string password, NetState netState)
     {
         var rejectReason = AlrReason.Invalid;
 
-        if (!RConfig.SocketBlock && !ipLimiter.Verify(netState.Address))
+        if (!config.SocketBlock && !ipLimiter.Verify(netState.Address))
         {
             IpLimitedError(netState);
             rejectReason = AlrReason.InUse;
@@ -77,9 +86,7 @@ public class AccountHandler(EventSink sink, ILogger<AccountDbEntry> logger, Inte
             }
             else
             {
-                var accountId = GetInternal().Values.FirstOrDefault(a => a.Username == username).Id;
-
-                account = GetAccountFromId(accountId);
+                account = GetAccountFromUsername(username);
 
                 if (account != null)
                     if (!hasher.CheckPassword(account, password))
@@ -87,8 +94,8 @@ public class AccountHandler(EventSink sink, ILogger<AccountDbEntry> logger, Inte
             }
 
             if (account != null)
-                if (!account.HasAccess(netState, RConfig))
-                    rejectReason = RConfig.LockDownLevel > AccessLevel.Vip
+                if (!account.HasAccess(netState, config))
+                    rejectReason = config.LockDownLevel > AccessLevel.Vip
                         ? AlrReason.BadComm
                         : AlrReason.BadPass;
                 else if (account.IsBanned())
@@ -97,8 +104,6 @@ public class AccountHandler(EventSink sink, ILogger<AccountDbEntry> logger, Inte
                 {
                     netState.Set(account);
                     rejectReason = AlrReason.Accepted;
-
-                    account.LogAccess(netState, this);
                 }
         }
 
@@ -122,20 +127,6 @@ public class AccountHandler(EventSink sink, ILogger<AccountDbEntry> logger, Inte
         return rejectReason;
     }
 
-    public void CreateIpTables()
-    {
-        IpTable = [];
-
-        foreach (var account in GetInternal().Values.Where(account => account.LoginIPs.Length > 0))
-            if (IPAddress.TryParse(account.LoginIPs[0], out var ipAddress))
-                IpTable[ipAddress] = IpTable.TryGetValue(ipAddress, out var value) ? ++value : 1;
-            else
-                Logger.LogError("Unable to parse IPAddress {IP} for {Username}",
-                    account.LoginIPs[0], account.Username);
-    }
-
-    public bool CanCreate(IPAddress ipAddress) => !IpTable.ContainsKey(ipAddress) || IpTable[ipAddress] < 1;
-
     public AccountModel Create(IPAddress ipAddress, string username, string password, string email)
     {
         if (username.Trim().Length <= 0 || password.Trim().Length <= 0 || email.Trim().Length <= 0)
@@ -149,7 +140,7 @@ public class AccountHandler(EventSink sink, ILogger<AccountDbEntry> logger, Inte
 
         for (var i = 0; isSafe && i < username.Length; ++i)
             isSafe = username[i] >= 0x20 && username[i] < 0x7F &&
-                     RConfig.ForbiddenChars.All(t => username[i] != t);
+                     config.ForbiddenChars.All(t => username[i] != t);
 
         for (var i = 0; isSafe && i < password.Length; ++i)
             isSafe = password[i] is >= (char)0x20 and < (char)0x7F;
@@ -158,15 +149,6 @@ public class AccountHandler(EventSink sink, ILogger<AccountDbEntry> logger, Inte
         {
             Logger.LogInformation("Login: {Address}: User password for '{Username}' is unsafe! Returning...",
                 ipAddress, username);
-            return null;
-        }
-
-        if (!CanCreate(ipAddress))
-        {
-            Logger.LogWarning(
-                "Login: {Address}: Account '{Username}' not created, ip already has {Accounts} account{Plural}.",
-                ipAddress, username, RConfig.MaxAccountsPerIp,
-                RConfig.MaxAccountsPerIp == 1 ? string.Empty : "s");
             return null;
         }
 
@@ -182,4 +164,26 @@ public class AccountHandler(EventSink sink, ILogger<AccountDbEntry> logger, Inte
 
     public void IpLimitedError(NetState netState) =>
         fileLogger.WriteGenericLog<IpLimiter>("ipLimits", netState.ToString(), "Past IP limit threshold", LoggerType.Debug);
+
+    public bool ContainsUsername(string username)
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
+
+        lock (db.Lock)
+        {
+            return db.Accounts.Any(a => a.Username == username);
+        }
+    }
+
+    public bool ContainsEmail(string email)
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
+
+        lock (db.Lock)
+        {
+            return db.Accounts.Any(a => a.Email == email);
+        }
+    }
 }

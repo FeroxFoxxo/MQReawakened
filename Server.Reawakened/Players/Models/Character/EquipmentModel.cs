@@ -1,5 +1,5 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Players.Database.Characters;
+using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Players.Helpers;
 
 namespace Server.Reawakened.Players.Models.Character;

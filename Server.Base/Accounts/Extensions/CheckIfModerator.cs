@@ -1,5 +1,5 @@
-﻿using Server.Base.Accounts.Database;
-using Server.Base.Accounts.Enums;
+﻿using Server.Base.Accounts.Enums;
+using Server.Base.Database.Accounts;
 
 namespace Server.Base.Accounts.Extensions;
 

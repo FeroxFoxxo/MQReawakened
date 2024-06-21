@@ -1,7 +1,7 @@
 ﻿using Server.Base.Accounts.Enums;
 using Server.Reawakened.Chat.Models;
+using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.XMLs.Data.Commands;
 using System.Text.RegularExpressions;
 

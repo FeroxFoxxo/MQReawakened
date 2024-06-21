@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Database;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Services;
+using Server.Base.Database.Accounts;
 using Server.Base.Network.Enums;
 using Server.Base.Network.Services;
 using Server.Reawakened.Chat.Services;
-using Server.Reawakened.Players.Database.Characters;
-using Server.Reawakened.Players.Database.Users;
+using Server.Reawakened.Database.Characters;
+using Server.Reawakened.Database.Users;
 using Server.Reawakened.Players.Extensions;
 
 namespace Server.Reawakened.Players.Services;

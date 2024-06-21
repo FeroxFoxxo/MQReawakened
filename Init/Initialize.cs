@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Extensions;
 using Server.Base.Logging;
 using Server.Web.Abstractions;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
+using Module = Server.Base.Core.Abstractions.Module;
 
 namespace Init;
 
@@ -32,6 +36,7 @@ public class Initialize
             logger.LogInformation("Application built");
 
             logger.LogDebug("Configuring application");
+            AddMigrations(modules, app, logger);
             ConfigureApp(modules, app, logger);
 
             logger.LogInformation("======== Running Application =======");
@@ -64,6 +69,11 @@ public class Initialize
             startup.AddLogging(builder.Logging);
         logger.LogInformation("Successfully initialized logging");
 
+        logger.LogDebug("Initializing databases");
+        foreach (var startup in modules)
+            startup.AddDatabase(builder.Services, modules);
+        logger.LogInformation("Successfully initialized databases");
+
         logger.LogDebug("Initializing services");
         foreach (var startup in modules)
             startup.AddServices(builder.Services, modules);
@@ -87,6 +97,25 @@ public class Initialize
         }
 
         logger.LogInformation("Successfully initialized web services");
+    }
+
+    private static void AddMigrations(Module[] modules, WebApplication app, ILogger logger)
+    {
+        logger.LogInformation("Heads up! This might take a while on a first install...");
+
+        using (var scope = app.Services.CreateScope())
+        {
+            foreach (var dataContext in modules.GetServices<DbContext>())
+            {
+                logger.LogTrace("Adding migrations for {Name}", dataContext.Name);
+
+                var db = scope.ServiceProvider.GetRequiredService(dataContext) as DbContext;
+
+                db.Database.Migrate();
+            }
+        }
+
+        logger.LogDebug("Successfully added migrations to databases");
     }
 
     private static void ConfigureApp(Module[] modules, WebApplication app, ILogger logger)

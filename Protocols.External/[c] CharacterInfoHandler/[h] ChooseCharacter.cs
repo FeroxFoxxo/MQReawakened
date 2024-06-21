@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;

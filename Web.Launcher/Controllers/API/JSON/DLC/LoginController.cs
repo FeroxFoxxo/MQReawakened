@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Server.Base.Accounts.Database;
 using Server.Base.Accounts.Helpers;
+using Server.Base.Database.Accounts;
 using Server.Reawakened.Core.Services;
-using Server.Reawakened.Players.Database.Users;
+using Server.Reawakened.Database.Users;
 using Web.Launcher.Extensions;
 using Web.Launcher.Models;
 

@@ -1,6 +1,6 @@
 ﻿using A2m.Server;
-using Server.Base.Accounts.Database;
 using Server.Base.Accounts.Enums;
+using Server.Base.Database.Accounts;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Data.Commands;

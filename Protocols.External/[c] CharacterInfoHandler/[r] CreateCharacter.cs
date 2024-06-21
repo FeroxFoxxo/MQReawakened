@@ -1,8 +1,8 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
+using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;

@@ -3,7 +3,7 @@ using Server.Base.Accounts.Helpers;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Models;
 
-namespace Server.Base.Accounts.Database;
+namespace Server.Base.Database.Accounts;
 public class AccountDbEntry : PersistantData
 {
     public string Username { get; set; }

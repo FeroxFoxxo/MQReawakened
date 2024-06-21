@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
@@ -18,15 +19,15 @@ public class NetState : IDisposable
 {
     public delegate bool ThrottlePacketCallback(NetState state);
 
-    private readonly InternalRConfig _rConfig;
-    private readonly InternalRwConfig _rwConfig;
-
     private readonly Dictionary<Type, INetStateData> _data;
 
     private readonly NetStateHandler _handler;
-    private readonly ILogger<MessagePump> _logger;
+    private readonly ILogger<NetState> _logger;
     private readonly FileLogger _fileLogger;
     private readonly EventSink _sink;
+    private readonly InternalRConfig _rConfig;
+    private readonly InternalRwConfig _rwConfig;
+    private readonly IServiceProvider _services;
 
     public string Identifier;
     public readonly IPAddress Address;
@@ -35,6 +36,7 @@ public class NetState : IDisposable
     public readonly DateTime ConnectedOn;
     public readonly int UpdateRange;
     private bool _disposing;
+    private bool _hasRemovedData;
     private double _nextCheckActivity;
 
     private AsyncCallback _onReceiveCallback, _onSendCallback;
@@ -45,25 +47,28 @@ public class NetState : IDisposable
     public Socket Socket { get; private set; }
     public bool Running { get; private set; }
 
-    public NetState(Socket socket, ILogger<MessagePump> logger,
-        FileLogger fileLogger, NetStateHandler handler, IpLimiter limiter,
-        InternalRwConfig rwConfig, InternalRConfig rConfig, EventSink sink)
+    public NetState(Socket socket, IServiceProvider services)
     {
         Socket = socket;
         AsyncLock = new object();
-        Buffer = new byte[rConfig.BufferSize];
 
-        _logger = logger;
-        _fileLogger = fileLogger;
-        _handler = handler;
-        _rwConfig = rwConfig;
-        _rConfig = rConfig;
-        _sink = sink;
+        _logger = services.GetRequiredService<ILogger<NetState>>();
+        _fileLogger = services.GetRequiredService<FileLogger>();
+        _handler = services.GetRequiredService<NetStateHandler>();
+        _rwConfig = services.GetRequiredService<InternalRwConfig>();
+        _rConfig = services.GetRequiredService<InternalRConfig>();
+        _sink = services.GetRequiredService<EventSink>();
+        _services = services;
+
+        Buffer = new byte[_rConfig.BufferSize];
+
+        var limiter = services.GetRequiredService<IpLimiter>();
 
         _nextCheckActivity = GetTicks.Ticks + _rConfig.DisconnectionTimeout;
 
         _handler.Instances.Add(this);
         _data = [];
+        _hasRemovedData = false;
 
         try
         {
@@ -79,7 +84,7 @@ public class NetState : IDisposable
 
         ConnectedOn = DateTime.UtcNow;
 
-        UpdateRange = rConfig.GlobalUpdateRange;
+        UpdateRange = _rConfig.GlobalUpdateRange;
 
         _sink.InvokeNetStateAdded(new NetStateAddedEventArgs(this));
     }
@@ -94,7 +99,7 @@ public class NetState : IDisposable
     {
         if (Socket == null)
         {
-            lock (_handler.Disposed)
+            lock (_handler.Lock)
             {
                 if (!_handler.Disposed.Contains(this) && _handler.Instances.Contains(this))
                 {
@@ -121,13 +126,10 @@ public class NetState : IDisposable
 
         Running = true;
 
-        lock (_handler.Disposed)
-        {
-            if (Socket == null || _handler.Paused)
-                return;
+        if (Socket == null || _handler.Paused)
+            return;
 
-            _logger.LogInformation("{NetState}: Connected. [{Count} Online]", this, _handler.Instances.Count);
-        }
+        _logger.LogInformation("{NetState}: Connected. [{Count} Online]", this, _handler.Instances.Count);
 
         try
         {
@@ -142,8 +144,7 @@ public class NetState : IDisposable
         }
         catch (Exception ex)
         {
-            lock (_handler.Disposed)
-                _handler.TraceNetworkError(ex, this);
+            _handler.TraceNetworkError(ex, this);
 
             Dispose();
         }
@@ -281,8 +282,9 @@ public class NetState : IDisposable
         catch (Exception ex)
         {
             WriteClient(bufferedPacket);
-            lock (_handler.Disposed)
-                _handler.TraceNetworkError(ex, this);
+
+            _handler.TraceNetworkError(ex, this);
+
             Dispose();
         }
     }
@@ -292,11 +294,8 @@ public class NetState : IDisposable
         NetStateHandler.GetProtocol getProtocolData = null;
         var protocolType = packet[0];
 
-        lock (_handler.Disposed)
-        {
-            if (_handler.ProtocolLookup.TryGetValue(protocolType, out var handlerProtocol))
-                getProtocolData = handlerProtocol;
-        }
+        if (_handler.ProtocolLookup.TryGetValue(protocolType, out var handlerProtocol))
+            getProtocolData = handlerProtocol;
 
         if (getProtocolData != null)
         {
@@ -320,11 +319,8 @@ public class NetState : IDisposable
 
                 NetStateHandler.SendProtocol sendProtocolData = null;
 
-                lock (_handler.Disposed)
-                {
-                    if (_handler.ProtocolSend.TryGetValue(protocolType, out var handlerProtocol))
-                        sendProtocolData = handlerProtocol;
-                }
+                if (_handler.ProtocolSend.TryGetValue(protocolType, out var hp))
+                    sendProtocolData = hp;
 
                 sendProtocolData?.Invoke(this, protocolData.ProtocolId, protocolData.PacketData);
             }
@@ -343,11 +339,15 @@ public class NetState : IDisposable
 
     public void RemoveAllData()
     {
+        if (_hasRemovedData)
+            return;
+
+        _hasRemovedData = true;
+
         foreach (var data in _data)
-        {
-            lock (_handler.Disposed)
-                data.Value?.RemovedState(this, _handler, _logger);
-        }
+            data.Value?.RemovedState(this, _services, _logger);
+
+        _data.Clear();
     }
 
     public void TraceBufferError(int byteCount)
@@ -426,13 +426,11 @@ public class NetState : IDisposable
         _onSendCallback = null;
         Throttler = null;
 
-        _data.Clear();
-
         Running = false;
 
         _logger.LogError("{NetState}: Dumping net state...", this);
 
-        lock (_handler.Disposed)
+        lock (_handler.Lock)
             _handler.Disposed.Enqueue(this);
 
         GC.SuppressFinalize(this);

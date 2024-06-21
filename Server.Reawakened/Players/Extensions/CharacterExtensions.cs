@@ -1,6 +1,6 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Core.Configs;
-using Server.Reawakened.Players.Database.Characters;
+using Server.Reawakened.Database.Characters;
 
 namespace Server.Reawakened.Players.Extensions;
 

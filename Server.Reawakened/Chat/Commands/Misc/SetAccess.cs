@@ -1,5 +1,5 @@
-﻿using Server.Base.Accounts.Database;
-using Server.Base.Accounts.Enums;
+﻿using Server.Base.Accounts.Enums;
+using Server.Base.Database.Accounts;
 using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Data.Commands;

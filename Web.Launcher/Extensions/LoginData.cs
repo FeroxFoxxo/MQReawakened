@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
-using Server.Base.Accounts.Database;
+using Server.Base.Database.Accounts;
 using Server.Reawakened.Core.Services;
-using Server.Reawakened.Players.Database.Users;
+using Server.Reawakened.Database.Users;
 using Web.Launcher.Models;
 
 namespace Web.Launcher.Extensions;

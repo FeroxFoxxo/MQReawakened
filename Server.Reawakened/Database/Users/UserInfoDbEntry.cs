@@ -4,7 +4,7 @@ using Server.Reawakened.Network.Services;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Models.System;
 
-namespace Server.Reawakened.Players.Database.Users;
+namespace Server.Reawakened.Database.Users;
 public class UserInfoDbEntry : PersistantData
 {
     public List<int> CharacterIds { get; set; }

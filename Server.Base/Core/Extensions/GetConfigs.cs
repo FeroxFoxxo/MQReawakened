@@ -23,6 +23,11 @@ public static class GetConfigs
             services.AddSingleton(config);
             logger.LogTrace("Config: {Name} was not found, creating!", config.Name);
         }
+        catch (UnauthorizedAccessException e)
+        {
+            services.AddSingleton(config);
+            logger.LogDebug("Config: {Name} could not be created! {Error}", config.Name, e.Message);
+        }
     }
 
     public static void SaveConfigs(this IServiceProvider services, IEnumerable<Module> modules, ILogger logger)

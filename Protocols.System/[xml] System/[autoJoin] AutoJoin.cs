@@ -1,9 +1,9 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Database.Characters;
+using Server.Reawakened.Database.Users;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Database.Characters;
-using Server.Reawakened.Players.Database.Users;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;

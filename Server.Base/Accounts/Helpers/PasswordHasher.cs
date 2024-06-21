@@ -1,4 +1,4 @@
-﻿using Server.Base.Accounts.Database;
+﻿using Server.Base.Database.Accounts;
 using System.Security.Cryptography;
 using System.Text;
 

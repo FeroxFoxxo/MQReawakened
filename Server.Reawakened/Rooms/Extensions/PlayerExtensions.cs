@@ -1,7 +1,7 @@
 ﻿using Server.Base.Accounts.Extensions;
+using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
-using Server.Reawakened.Players.Database.Characters;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Protocol;
 using Server.Reawakened.Rooms.Enums;

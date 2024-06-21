@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Core.Workers;
+using Server.Base.Database.Abstractions;
 using Server.Base.Logging;
 using Server.Base.Network.Helpers;
 using Server.Base.Timers.Helpers;
@@ -13,6 +15,12 @@ namespace Server.Base;
 
 public class Server(ILogger<Server> logger) : Module(logger)
 {
+    public override void AddDatabase(IServiceCollection services, Module[] modules)
+    {
+        foreach (var type in modules.GetServices<IDataContextInitialize>())
+            type.GetMethod("AddContextToServiceProvider")?.Invoke(null, [services]);
+    }
+
     public override void AddLogging(ILoggingBuilder loggingBuilder)
     {
         loggingBuilder.ClearProviders();

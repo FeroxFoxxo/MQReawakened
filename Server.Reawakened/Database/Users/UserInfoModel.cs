@@ -1,9 +1,13 @@
-﻿using Server.Reawakened.Players.Enums;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Network;
+using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Models.System;
+using Server.Base.Core.Models;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Server.Reawakened.Players.Database.Users;
+namespace Server.Reawakened.Database.Users;
 
-public class UserInfoModel(UserInfoDbEntry entry)
+public class UserInfoModel(UserInfoDbEntry entry) : INetStateData
 {
     public int Id => entry.Id;
     public UserInfoDbEntry Write => entry;
@@ -19,4 +23,12 @@ public class UserInfoModel(UserInfoDbEntry entry)
     public string Region => entry.Region;
     public string TrackingShortId => entry.TrackingShortId;
     public int ChatLevel => entry.ChatLevel;
+
+    public void RemovedState(NetState _, IServiceProvider services, Microsoft.Extensions.Logging.ILogger logger)
+    {
+        logger.LogTrace("Saving user info data for id {Id}", Id);
+
+        var handler = services.GetRequiredService<UserInfoHandler>();
+        handler.Update(Write);
+    }
 }

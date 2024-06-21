@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Database;
-using Server.Base.Core.Configs;
-using Server.Base.Core.Events;
 using Server.Base.Core.Services;
+using Server.Base.Database.Accounts;
 using Server.Base.Network;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Network.Services;
-using Server.Reawakened.Players.Database.Characters;
+using Server.Reawakened.Players;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
@@ -14,12 +13,11 @@ using Server.Reawakened.Rooms.Services;
 using System.Globalization;
 using System.Net;
 
-namespace Server.Reawakened.Players.Database.Users;
+namespace Server.Reawakened.Database.Users;
 
-public class UserInfoHandler(EventSink sink, ILogger<UserInfoDbEntry> logger, WorldHandler worldHandler,
-    RandomKeyGenerator randomKeyGenerator, ServerRConfig config, InternalRConfig rConfig,
-    InternalRwConfig rwConfig, PlayerContainer playerContainer, CharacterHandler characterHandler) :
-    DataHandler<UserInfoDbEntry>(sink, logger, rConfig, rwConfig)
+public class UserInfoHandler(WorldHandler worldHandler, RandomKeyGenerator randomKeyGenerator, ServerRConfig config,
+    PlayerContainer playerContainer, CharacterHandler characterHandler,
+    IServiceProvider services) : DataHandler<UserInfoDbEntry, ReawakenedDatabase>(services)
 {
     public override bool HasDefault => true;
 
@@ -28,6 +26,7 @@ public class UserInfoHandler(EventSink sink, ILogger<UserInfoDbEntry> logger, Wo
         var account = state.Get<AccountModel>() ?? throw new NullReferenceException("Account not found!");
         var userInfo = GetUserFromId(account.Id) ?? throw new NullReferenceException("User info not found!");
 
+        state.Set(userInfo);
         state.Set(new Player(account, userInfo, state, worldHandler, playerContainer, characterHandler));
     }
 

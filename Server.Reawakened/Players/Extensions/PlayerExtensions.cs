@@ -1,9 +1,9 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Database.Characters;
+using Server.Reawakened.Database.Users;
 using Server.Reawakened.Network.Extensions;
-using Server.Reawakened.Players.Database.Characters;
-using Server.Reawakened.Players.Database.Users;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Services;
@@ -208,6 +208,7 @@ public static class PlayerExtensions
     public static void SetCharacterSelected(this Player player, CharacterModel character)
     {
         player.Character = character;
+        player.NetState.Set(character);
         player.UserInfo.Write.LastCharacterSelected = player.CharacterName;
     }
 

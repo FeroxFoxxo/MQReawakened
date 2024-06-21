@@ -1,4 +1,4 @@
-﻿using Server.Reawakened.Players.Database.Characters;
+﻿using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.XMLs.Bundles.Base;
 
@@ -9,11 +9,8 @@ public class NameGenSyllables(NameSyllables nameGen, Random random)
     private string GetRandomFromList(IReadOnlyList<string> names) =>
         names[random.Next(names.Count)];
 
-    public static bool IsNameReserved(string[] names, CharacterHandler handler)
-    {
-        var name = GetName(names);
-        return handler.GetInternal().Any(c => c.Value.CharacterName == name);
-    }
+    public static bool IsNameReserved(string[] names, CharacterHandler handler) =>
+        handler.ContainsCharacterName(GetName(names));
 
     public static string GetName(string[] names) =>
         $"{names[0]}{names[1]}{names[2]}";

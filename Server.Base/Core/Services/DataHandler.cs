@@ -1,84 +1,41 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
-using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Models;
-using Server.Base.Worlds.EventArguments;
-using System.Text.Json;
+using Server.Base.Database.Abstractions;
 
 namespace Server.Base.Core.Services;
 
-public abstract class DataHandler<T>(EventSink sink, ILogger<T> logger, InternalRConfig rConfig, InternalRwConfig rwConfig) : IService where T : PersistantData
+public abstract class DataHandler<Entity, Database>(IServiceProvider services) : IService where Entity : PersistantData where Database : BaseDataContext
 {
-    public readonly ILogger<T> Logger = logger;
-    public readonly EventSink Sink = sink;
-    public readonly InternalRConfig RConfig = rConfig;
-    public readonly InternalRwConfig RwConfig = rwConfig;
-
-    private Dictionary<int, T> _data = [];
-
-    private JsonSerializerOptions jsonSerializerOptions;
+    public readonly ILogger<Entity> Logger = services.GetRequiredService<ILogger<Entity>>();
+    public readonly EventSink Sink = services.GetRequiredService<EventSink>();
+    public readonly IServiceProvider Services = services;
 
     public abstract bool HasDefault { get; }
 
     public virtual void Initialize()
     {
         Sink.WorldLoad += Load;
-        Sink.WorldSave += Save;
-        Sink.CreateData += () => CreateInternal($"new {typeof(T).Name.ToLower()}");
-
-        jsonSerializerOptions = new JsonSerializerOptions()
-        {
-            WriteIndented = RwConfig.IndentSaves
-        };
+        Sink.CreateData += () => CreateDefault($"new {typeof(Entity).Name.ToLower()}");
     }
-
-    public string GetFileName() =>
-        Path.Combine(RConfig.SaveDirectory, $"{typeof(T).Name.ToLower()}.json");
 
     public void Load()
     {
-        try
-        {
-            var filePath = GetFileName();
-
-            if (File.Exists(filePath))
-            {
-                using StreamReader streamReader = new(filePath, false);
-                var contents = streamReader.ReadToEnd();
-
-                _data = JsonSerializer.Deserialize<Dictionary<int, T>>(contents, jsonSerializerOptions) ??
-                       throw new InvalidOperationException();
-
-                var count = _data.Count;
-
-                Logger.LogInformation("Loaded {Count} {Name}{Plural} to memory from '{Directory}'", count,
-                    typeof(T).Name.ToLower(), count != 1 ? "s" : string.Empty, filePath);
-
-                streamReader.Close();
-            }
-            else
-            {
-                Logger.LogWarning("Could not find save file for {FileName}, generating default.", filePath);
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError(ex, "Could not deserialize save for {Type}.", typeof(T).Name);
-        }
-
-        if (_data.Count <= 0)
-            CreateInternal("server owner");
-
-        OnAfterLoad();
+        if (GetCount() <= 0)
+            CreateDefault("server owner");
     }
 
-    public void CreateInternal(string name)
+    public abstract Entity CreateDefault();
+
+    public void CreateDefault(string name)
     {
         if (!HasDefault)
             return;
 
-        var type = typeof(T).Name.ToLower();
+        var type = typeof(Entity).Name.ToLower();
 
         Logger.LogDebug("This server does not have a(n) {Type}.", type);
         Logger.LogDebug("Please create a(n) {Type} for the {Name} now", type, name);
@@ -96,46 +53,92 @@ public abstract class DataHandler<T>(EventSink sink, ILogger<T> logger, Internal
         }
     }
 
-    public abstract T CreateDefault();
+    public int CreateNewId() => GetCount() == 0 ? 1 : GetMax() + 1;
 
-    public virtual void OnAfterLoad()
+    public void Add(Entity entity, int id = -1)
     {
-    }
-
-    public void Save(WorldSaveEventArgs worldSaveEventArgs)
-    {
-        var filePath = GetFileName();
-
-        using StreamWriter streamWriter = new(filePath, false);
-
-        var json = JsonSerializer.Serialize(_data, jsonSerializerOptions);
-
-        streamWriter.Write(json);
-
-        streamWriter.Close();
-    }
-
-    protected T Get(int id)
-    {
-        _data.TryGetValue(id, out var type);
-
-        return type;
-    }
-
-    public Dictionary<int, T> GetInternal() => _data;
-
-    public int CreateNewId() => _data.Count == 0 ? 1 : _data.Max(x => x.Key) + 1;
-
-    public void Add(T entity, int id = -1)
-    {
-        if (id == -1)
+        if (id < 0)
             id = CreateNewId();
-
-        _data.Add(id, entity);
 
         if (entity is PersistantData pd)
             pd.Id = id;
+
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<Database>();
+
+        lock (db.Lock)
+        {
+            db.Set<Entity>().Add(entity);
+
+            db.SaveChanges();
+        }
     }
 
-    public void Remove(int id) => _data.Remove(id);
+    public void Remove(int id)
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<Database>();
+
+        lock (db.Lock)
+        {
+            var set = db.Set<Entity>();
+
+            var dbEntry = set.Find(id);
+
+            if (dbEntry != null)
+                set.Remove(dbEntry);
+
+            db.SaveChanges();
+        }
+    }
+
+    protected int GetCount()
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<Database>();
+
+        lock (db.Lock)
+        {
+            return db.Set<Entity>().Count();
+        }
+    }
+
+    protected int GetMax()
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<Database>();
+
+        lock (db.Lock)
+        {
+            return db.Set<Entity>().Max(a => a.Id);
+        }
+    }
+
+    public void Update(Entity entity)
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<Database>();
+
+        lock (db.Lock)
+        {
+            db.Set<Entity>().Update(entity);
+
+            db.SaveChanges();
+        }
+    }
+
+    public Entity Get(int id)
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<Database>();
+
+        lock (db.Lock)
+        {
+            var entity = db.Set<Entity>().Find(id);
+
+            db.Entry(entity).State = EntityState.Detached;
+
+            return entity;
+        }
+    }
 }

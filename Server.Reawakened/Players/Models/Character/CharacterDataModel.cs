@@ -1,6 +1,6 @@
 ﻿using A2m.Server;
 using Server.Reawakened.Core.Enums;
-using Server.Reawakened.Players.Database.Characters;
+using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Bundles.Base;
 

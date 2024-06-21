@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Models;
 using Server.Base.Core.Models;
 using Server.Base.Network;
 using Server.Base.Network.Services;
 
-namespace Server.Base.Accounts.Database;
+namespace Server.Base.Database.Accounts;
 
 public class AccountModel(AccountDbEntry entry) : INetStateData
 {
@@ -24,6 +25,13 @@ public class AccountModel(AccountDbEntry entry) : INetStateData
     public List<AccountTag> Tags => entry.Tags;
     public int Flags => entry.Flags;
 
-    public void RemovedState(NetState state, NetStateHandler handler, ILogger logger) =>
-        logger.LogError("Disconnected. [{Count} Online] [{Username}]", handler.Instances.Count, Username);
+    public void RemovedState(NetState state, IServiceProvider services, ILogger logger)
+    {
+        var nHandler = services.GetRequiredService<NetStateHandler>();
+        logger.LogError("Disconnected. [{Count} Online] [{Username}]", nHandler.Instances.Count, Username);
+
+        logger.LogTrace("Saving account data for {Username}", Username);
+        var handler = services.GetRequiredService<AccountHandler>();
+        handler.Update(Write);
+    }
 }

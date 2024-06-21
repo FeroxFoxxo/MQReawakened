@@ -1,5 +1,5 @@
-﻿using Server.Reawakened.Network.Protocols;
-using Server.Reawakened.Players.Database.Characters;
+﻿using Server.Reawakened.Database.Characters;
+using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players.Enums;
 using Server.Reawakened.Players.Helpers;
 

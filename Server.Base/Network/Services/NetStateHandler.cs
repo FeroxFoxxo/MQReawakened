@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Server.Base.Accounts.Database;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
+using Server.Base.Database.Accounts;
 using Server.Base.Logging;
 using Server.Base.Network.Enums;
 using Server.Base.Network.Models;
@@ -16,6 +16,8 @@ public class NetStateHandler(FileLogger fileLogger,
 {
     public delegate ProtocolResponse GetProtocol(string protocol);
     public delegate void SendProtocol(NetState netState, string actionType, object protocol);
+
+    public readonly object Lock = new ();
 
     public readonly Queue<NetState> Disposed = new();
     public readonly List<NetState> Instances = [];

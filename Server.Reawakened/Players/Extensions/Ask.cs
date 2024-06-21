@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Accounts.Database;
-using Server.Reawakened.Players.Database.Characters;
-using Server.Reawakened.Players.Database.Users;
+using Server.Base.Database.Accounts;
+using Server.Reawakened.Database.Characters;
+using Server.Reawakened.Database.Users;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -14,7 +14,7 @@ public static class Ask
 
         var userName = Console.ReadLine()?.Trim();
 
-        var account = accountHandler.GetInternal().Values.FirstOrDefault(x => x.Username == userName);
+        var account = accountHandler.GetAccountFromUsername(userName);
 
         model = null;
         user = null;

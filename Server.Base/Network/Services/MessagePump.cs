@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Services;
 using Server.Base.Logging;
-using Server.Base.Network.Helpers;
 using System.Net;
 using System.Net.Sockets;
 
@@ -13,30 +13,24 @@ namespace Server.Base.Network.Services;
 
 public class MessagePump : IService
 {
-    private readonly InternalRwConfig _rwConfig;
-    private readonly NetStateHandler _handler;
     private readonly IPEndPoint[] _ipEndPoints;
-    private readonly IpLimiter _limiter;
     private readonly ILogger<MessagePump> _logger;
     private readonly FileLogger _fileLogger;
-    private readonly InternalRConfig _rConfig;
     private readonly ServerHandler _serverHandler;
     private readonly EventSink _sink;
+    private readonly IServiceProvider _services;
 
     public readonly Listener[] Listeners;
 
-    public MessagePump(ILogger<MessagePump> logger, FileLogger fileLogger,
-        NetStateHandler handler, IpLimiter limiter, InternalRwConfig rwConfig,
-        InternalRConfig rConfig, EventSink sink, ServerHandler serverHandler)
+    public MessagePump(IServiceProvider services)
     {
-        _logger = logger;
-        _fileLogger = fileLogger;
-        _handler = handler;
-        _limiter = limiter;
-        _rwConfig = rwConfig;
-        _rConfig = rConfig;
-        _sink = sink;
-        _serverHandler = serverHandler;
+        var rwConfig = services.GetRequiredService<InternalRwConfig>();
+
+        _logger = services.GetRequiredService<ILogger<MessagePump>>();
+        _fileLogger = services.GetRequiredService<FileLogger>();
+        _services = services;
+        _sink = services.GetRequiredService<EventSink>();
+        _serverHandler = services.GetRequiredService<ServerHandler>();
 
         _ipEndPoints =
         [
@@ -88,9 +82,7 @@ public class MessagePump : IService
 
             foreach (var socket in accepted)
             {
-                new NetState(socket, _logger, _fileLogger,
-                        _handler, _limiter, _rwConfig, _rConfig, _sink)
-                    .Start();
+                new NetState(socket, _services).Start();
             }
         }
     }
