@@ -11,7 +11,7 @@ public abstract class DataContext<TContext> : BaseDataContext where TContext : D
         try
         {
             var path = InternalDirectory.GetDirectory("Saves");
-            DbPath = Path.Join(path, $"{typeof(TContext).Name.ToLower()}.db");
+            DbPath = Path.Join(path, $"{typeof(TContext).Name}.db");
         }
         catch (UnauthorizedAccessException)
         {
