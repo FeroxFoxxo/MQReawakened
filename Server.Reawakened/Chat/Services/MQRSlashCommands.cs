@@ -45,12 +45,8 @@ public class MQRSlashCommands(IServiceScopeFactory serviceFact, ReflectionUtils 
     private static void Log(string message, Player player) =>
         player.Chat(CannedChatChannel.Tell, "Console", message);
 
-    public void DisplayHelp(Player player)
-    {
-        Log("The chat commands have been replaced with Slash Commands!", player);
-        Log($"You can find these new commands here: {getSA.ServerAddress}/commands", player);
-        Log("These new commands can be accessed by pressing shift + enter.", player);
-    }
+    public void DisplayHelp(Player player) => 
+        Log($"You can find all slash commands, run by pressing shift + enter, here: {getSA.ServerAddress}/commands", player);
 
     public void RunCommand(Player player, string command, string[] args)
     {
