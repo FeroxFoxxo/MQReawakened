@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
@@ -17,12 +16,9 @@ public static class PlayerDamageExtensions
         public ServerRConfig ServerRConfig;
     }
 
-    public static void StartUnderwater(this Player player, int damage, TimerThread timerThread,
-        ServerRConfig serverRConfig, ItemRConfig itemRConfig, Microsoft.Extensions.Logging.ILogger logger)
+    public static void StartUnderwater(this Player player, int damage, TimerThread timerThread, ServerRConfig serverRConfig)
     {
-        player.StopUnderwater(logger);
-
-        logger.LogDebug("Player '{CharacterName}' has gotten into the water!", player.CharacterName);
+        player.StopUnderwater();
 
         var underwaterData = new UnderwaterData()
         {
@@ -36,17 +32,11 @@ public static class PlayerDamageExtensions
 
         player.TempData.Underwater = true;
         player.TempData.UnderwaterTimer = timerThread.DelayCall(ApplyUnderwaterDamage, underwaterData,
-            TimeSpan.FromSeconds(itemRConfig.BreathTimerDuration), TimeSpan.FromSeconds(itemRConfig.UnderwaterDamageInterval), ticksTillDeath);
+            TimeSpan.FromSeconds(serverRConfig.BreathTimerDuration), TimeSpan.FromSeconds(serverRConfig.UnderwaterDamageInterval), ticksTillDeath);
     }
 
-    public static void StopUnderwater(this Player player, Microsoft.Extensions.Logging.ILogger logger)
+    public static void StopUnderwater(this Player player)
     {
-        if (player.TempData.Underwater)
-        {
-            logger.LogDebug("Player '{CharacterName}' has gotten out of the water!", player.CharacterName);
-            player.TempData.Underwater = false;
-        }
-
         if (player.TempData.UnderwaterTimer != null)
         {
             player.TempData.UnderwaterTimer.Stop();
@@ -64,7 +54,8 @@ public static class PlayerDamageExtensions
         waterData.Player.Room.SendSyncEvent(new StatusEffect_SyncEvent(waterData.Player.GameObjectId, waterData.Player.Room.Time,
             (int)ItemEffectType.WaterDamage, waterData.Damage, 1, true, waterData.Player.GameObjectId, false));
 
-        waterData.Player.ApplyCharacterDamage(waterData.Player.Character.MaxLife / 10, string.Empty, 1, waterData.ServerRConfig, waterData.TimerThread);
+        waterData.Player.ApplyCharacterDamage(waterData.Player.Character.MaxLife / waterData.ServerRConfig.UnderwaterDamageRatio,
+            string.Empty, 1, waterData.ServerRConfig, waterData.TimerThread);
     }
 
     public static void ApplyCharacterDamage(this Player player, float damage, string originId, double invincibilityDuration, ServerRConfig serverRConfig, TimerThread timerThread)

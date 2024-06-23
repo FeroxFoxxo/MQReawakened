@@ -78,6 +78,11 @@ public class ServerRConfig : IRConfig
 
     public int PetHotbarIndex { get; }
 
+    public string FXWaterSplashName { get; }
+    public int BreathTimerDuration { get; }
+    public int UnderwaterDamageInterval { get; }
+    public int UnderwaterDamageRatio { get; }
+
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -193,5 +198,10 @@ public class ServerRConfig : IRConfig
         Gravity = 15f;
 
         PetHotbarIndex = 4;
+
+        FXWaterSplashName = "FX_WaterSplash";
+        BreathTimerDuration = 31;
+        UnderwaterDamageInterval = 2;
+        UnderwaterDamageRatio = 10;
     }
 }
