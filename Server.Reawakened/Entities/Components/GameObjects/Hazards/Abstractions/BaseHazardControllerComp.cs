@@ -34,6 +34,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public bool TimedHazard = false;
 
     public int Damage;
+
     private IEnemyController _enemyController;
     private string _id;
 
@@ -57,26 +58,27 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             TimerThread.DelayCall(ActivateHazard, null, TimeSpan.Zero, TimeSpan.Zero, 1);
         }
 
-        switch (HurtEffect)
+        if (!Enum.TryParse(HurtEffect, true, out EffectType))
         {
-            case "NoEffect":
-                // Temporary mapping for NoEffect
-                EffectType = ItemEffectType.Unknown_70;
-                return;
-            case "StandardDamage":
-                EffectType = ItemEffectType.BluntDamage;
-                break;
-            case "WaterBreathing":
-                EffectType = ItemEffectType.WaterBreathing;
-                break;
-            default:
-                //Many Toxic Clouds seem to have no components, so we find the object with PrefabName to create its colliders. (Seek Moss Temple for example)
-                if (PrefabName.Contains("ToxicCloud"))
-                    EffectType = ItemEffectType.PoisonDamage;
-                else if (!Enum.TryParse(HurtEffect, true, out EffectType))
-                    Logger.LogError("Could not find effect type of: '{effect}' for '{prefabName}' ({id})!", HurtEffect, PrefabName, Id);
-
-                break;
+            if (PrefabName.Contains("ToxicCloud"))
+            {
+                EffectType = ItemEffectType.PoisonDamage;
+            }
+            else
+            {
+                switch (HurtEffect)
+                {
+                    case "NoEffect":
+                        EffectType = ItemEffectType.Unknown;
+                        return;
+                    case "StandardDamage":
+                        EffectType = ItemEffectType.BluntDamage;
+                        break;
+                    default:
+                        Logger.LogError("Could not find effect type of: '{effect}' for '{prefabName}' ({id})!", HurtEffect, PrefabName, Id);
+                        break;
+                }
+            }
         }
 
         //Prevents enemies and hazards sharing same collider Ids.
@@ -99,18 +101,17 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         _enemyController = Room.GetEnemyFromId(id);
     }
 
-    public void DeactivateHazard(object _)
-    {
-        IsActive = false;
-
-        TimerThread.DelayCall(ActivateHazard, null, TimeSpan.FromSeconds(DeactivationDuration), TimeSpan.Zero, 1);
-    }
-
+    //Timed Hazards
     public void ActivateHazard(object _)
     {
         IsActive = true;
-
         TimerThread.DelayCall(DeactivateHazard, null, TimeSpan.FromSeconds(ActiveDuration), TimeSpan.Zero, 1);
+    }
+
+    public void DeactivateHazard(object _)
+    {
+        IsActive = false;
+        TimerThread.DelayCall(ActivateHazard, null, TimeSpan.FromSeconds(DeactivationDuration), TimeSpan.Zero, 1);
     }
 
     //Standard Hazards
@@ -118,7 +119,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     {
         if (!notifyCollisionEvent.Colliding || player.TempData.Invincible)
         {
-            if (HurtEffect == ItemEffectType.WaterBreathing.ToString())
+            if (EffectType == ItemEffectType.WaterBreathing)
                 ApplyWaterBreathing(player);
 
             return;
@@ -138,10 +139,19 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
     public void ApplyHazardEffect(Player player)
     {
-        if (player == null || player.TempData.Invincible || (TimedHazard ||
-            HurtEffect == ItemEffectType.WaterBreathing.ToString()) && !IsActive ||
-            HitOnlyVisible && player.TempData.Invisible || EffectType == ItemEffectType.SlowStatusEffect &&
-            player.TempData.IsSlowed || player.HasNullifyEffect(ItemCatalog))
+        if (player == null)
+            return;
+
+        if (player.TempData.Invincible)
+            return;
+
+        if ((TimedHazard || EffectType == ItemEffectType.WaterBreathing) && !IsActive)
+            return;
+
+        if (HitOnlyVisible && player.TempData.Invisible)
+            return;
+
+        if (EffectType == ItemEffectType.SlowStatusEffect && player.TempData.IsSlowed || player.HasNullifyEffect(ItemCatalog))
             return;
 
         Damage = (int)Math.Ceiling(player.Character.MaxLife * HealthRatioDamage);
@@ -150,15 +160,11 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         switch (EffectType)
         {
-            // Temporary mapping for no effect.
-            case ItemEffectType.Unknown_70:
             case ItemEffectType.Unknown:
                 return;
-
             case ItemEffectType.SlowStatusEffect:
                 ApplySlowEffect(player);
                 break;
-
             case ItemEffectType.BluntDamage:
                 var enemy = Room.GetEnemy(Id);
                 var damage = (float)WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
@@ -166,43 +172,24 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
                 player.ApplyCharacterDamage((int)damage, Id, DamageDelay, ServerRConfig, TimerThread);
                 break;
-
             case ItemEffectType.PoisonDamage:
                 TimerThread.DelayCall(ApplyPoisonEffect, player,
                     TimeSpan.FromSeconds(InitialDamageDelay), TimeSpan.FromSeconds(DamageDelay), 1);
                 break;
-            
             case ItemEffectType.WaterBreathing:
                 ApplyWaterBreathing(player);
                 break;
-
             default:
                 Logger.LogInformation("Unknown status effect {statusEffect} from {prefabName}", HurtEffect, PrefabName);
 
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage, 1, 1, true, _id, false));
-
                 player.ApplyCharacterDamage(Damage, Id, DamageDelay, ServerRConfig, TimerThread);
 
                 break;
         }
     }
 
-    public void ApplyPoisonEffect(object playerData)
-    {
-        if (playerData == null)
-            return;
-
-        if (playerData is not Player player)
-            return;
-
-        var collider = Room.GetColliderById(_id);
-
-        if (collider != null)
-            if (!collider.CheckCollision(new PlayerCollider(player)))
-                return;
-
-        player.StartPoisonDamage(_id, Damage, (int)HurtLength, ServerRConfig, TimerThread);
-    }
+    // WATER BREATHING
 
     public void ApplyWaterBreathing(object playerData)
     {
@@ -222,15 +209,38 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
     public void RestartTimerDelay(object data) => IsActive = true;
 
+    // POISON
+
+    public void ApplyPoisonEffect(object playerData)
+    {
+        if (playerData == null)
+            return;
+
+        if (playerData is not Player player)
+            return;
+
+        var collider = Room.GetColliderById(_id);
+
+        if (collider != null)
+            if (!collider.CheckCollision(new PlayerCollider(player)))
+                return;
+
+        player.StartPoisonDamage(_id, Damage, (int)HurtLength, ServerRConfig, TimerThread);
+    }
+
+    // SLOW EFFECT
+
     private void ApplySlowEffect(Player player)
     {
         player.ApplySlowEffect(_id, Damage);
-        //IsSlowed reduces slow status effect log spam.  
+
+        // Reduces slow status effect log spam.  
         player.TempData.IsSlowed = true;
-        TimerThread.DelayCall(DisableIsSlowed, player, TimeSpan.FromSeconds(0.75), TimeSpan.Zero, 1);
+        
+        TimerThread.DelayCall(DisableSlowEffect, player, TimeSpan.FromSeconds(0.75), TimeSpan.Zero, 1);
     }
 
-    private void DisableIsSlowed(object player)
+    private void DisableSlowEffect(object player)
     {
         var slowedPlayer = (Player)player;
         slowedPlayer.TempData.IsSlowed = false;
