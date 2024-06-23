@@ -19,9 +19,6 @@ public class ItemRConfig : IRConfig
     public int HealingStaffID { get; }
     public int MysticCharmID { get; }
 
-    public int BreathTimerDuration { get; }
-    public int UnderwaterDamageInterval { get; }
-
     public float ProjectileSpeedX { get; }
     public float ProjectileSpeedY { get; }
     public float ProjectileGravityFactor { get; }
@@ -47,7 +44,6 @@ public class ItemRConfig : IRConfig
     public float PetHoldChainDelay { get; }
     public float PetPosYOffset { get; }
     public float PetPosOnButtonYOffset { get; }
-    public string WaterPrefabName { get; }
     public ItemModel EmptySlot { get; }
 
     public ItemRConfig()
@@ -94,8 +90,6 @@ public class ItemRConfig : IRConfig
         DefaultMeleeDamage = 22;
         DefaultRangedDamage = 18;
         DefaultDropDamage = 35;
-        BreathTimerDuration = 30;
-        UnderwaterDamageInterval = 2;
 
         HealingStaffID = 396;
         MysticCharmID = 398;

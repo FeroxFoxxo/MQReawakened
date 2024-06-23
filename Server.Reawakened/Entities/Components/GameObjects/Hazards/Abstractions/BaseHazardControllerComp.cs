@@ -66,6 +66,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
             case "StandardDamage":
                 EffectType = ItemEffectType.BluntDamage;
                 break;
+            case "WaterBreathing":
+                EffectType = ItemEffectType.WaterBreathing;
+                break;
             default:
                 //Many Toxic Clouds seem to have no components, so we find the object with PrefabName to create its colliders. (Seek Moss Temple for example)
                 if (PrefabName.Contains("ToxicCloud"))
@@ -114,30 +117,31 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player)
     {
         if (!notifyCollisionEvent.Colliding || player.TempData.Invincible)
+        {
+            if (HurtEffect == ItemEffectType.WaterBreathing.ToString())
+                ApplyWaterBreathing(player);
+
             return;
+        }
 
         if (Room.ContainsEnemy(Id))
         {
             if (player.TempData.PetDefensiveBarrier)
+            {
                 Room.GetEnemy(Id).PetDamage(player);
+                return;
+            }
+        }
 
-            else
-                ApplyHazardEffect(player);
-        }
-        else
-        {
-            player.ApplyDamageByPercent(HealthRatioDamage, Id, HurtLength, ServerRConfig, TimerThread);
-            Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
-          (int)ItemEffectType.BluntDamage, 1, (int)HurtLength, true, _id, false));
-        }
+        ApplyHazardEffect(player);
     }
 
     public void ApplyHazardEffect(Player player)
     {
-        if (player == null || player.TempData.Invincible ||
-            TimedHazard && !IsActive || HitOnlyVisible && player.TempData.Invisible ||
-            EffectType == ItemEffectType.SlowStatusEffect && player.TempData.IsSlowed ||
-            player.HasNullifyEffect(ItemCatalog))
+        if (player == null || player.TempData.Invincible || (TimedHazard ||
+            HurtEffect == ItemEffectType.WaterBreathing.ToString()) && !IsActive ||
+            HitOnlyVisible && player.TempData.Invisible || EffectType == ItemEffectType.SlowStatusEffect &&
+            player.TempData.IsSlowed || player.HasNullifyEffect(ItemCatalog))
             return;
 
         Damage = (int)Math.Ceiling(player.Character.MaxLife * HealthRatioDamage);
@@ -148,6 +152,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         {
             // Temporary mapping for no effect.
             case ItemEffectType.Unknown_70:
+            case ItemEffectType.Unknown:
                 return;
 
             case ItemEffectType.SlowStatusEffect:
@@ -166,20 +171,13 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
                 TimerThread.DelayCall(ApplyPoisonEffect, player,
                     TimeSpan.FromSeconds(InitialDamageDelay), TimeSpan.FromSeconds(DamageDelay), 1);
                 break;
+            
+            case ItemEffectType.WaterBreathing:
+                ApplyWaterBreathing(player);
+                break;
 
             default:
                 Logger.LogInformation("Unknown status effect {statusEffect} from {prefabName}", HurtEffect, PrefabName);
-
-                //Water breathing.
-                if (HurtLength < 0)
-                {
-                    if (IsActive)
-                    {
-                        ApplyWaterBreathing(player);
-                        IsActive = false;
-                    }
-                    return;
-                }
 
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.BluntDamage, 1, 1, true, _id, false));
 
@@ -214,7 +212,9 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time,
                     (int)ItemEffectType.WaterBreathing, 1, 1, true, _id, false));
 
-        player.StartUnderwater(player.Character.MaxLife / 10, TimerThread, ServerRConfig, ItemRConfig, Logger);
+        player.StartUnderwater(player.Character.MaxLife / ServerRConfig.UnderwaterDamageRatio, TimerThread, ServerRConfig);
+
+        IsActive = false;
 
         TimerThread.DelayCall(RestartTimerDelay, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
         Logger.LogInformation("Reset underwater timer for {characterName}", player.CharacterName);
