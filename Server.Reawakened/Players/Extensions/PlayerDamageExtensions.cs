@@ -72,14 +72,13 @@ public static class PlayerDamageExtensions
 
             else
                 player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-                (int)ItemEffectType.BluntDamage, 1, (int)invincibilityDuration, true, originId, false));
+                (int)ItemEffectType.BluntDamage, (int)damage, (int)invincibilityDuration, true, originId, false));
         }
 
         player.Character.Write.CurrentLife -= (int)damage;
 
         if (player.Character.CurrentLife < 0)
             player.Character.Write.CurrentLife = 0;
-
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
             player.Character.CurrentLife, player.Character.MaxLife, "Hurt"));
 

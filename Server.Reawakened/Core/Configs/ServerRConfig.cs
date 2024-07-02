@@ -83,6 +83,12 @@ public class ServerRConfig : IRConfig
     public int UnderwaterDamageInterval { get; }
     public int UnderwaterDamageRatio { get; }
 
+    public int SpiderTeaserBossProjectileSpeed { get; }
+    public float SpiderTeaserBossProjectileYOffset { get; }
+    public int SpiderTeaserBossProjectileLifeTime { get; }
+    public int SpiderTeaserBossFirstProjectileDelay { get; }
+    public int SpiderTeaserBossSecondProjectileDelay { get; }
+
     public ServerRConfig()
     {
         LevelSaveDirectory = InternalDirectory.GetDirectory("XMLs/Levels");
@@ -203,5 +209,11 @@ public class ServerRConfig : IRConfig
         BreathTimerDuration = 31;
         UnderwaterDamageInterval = 2;
         UnderwaterDamageRatio = 10;
+
+        SpiderTeaserBossProjectileSpeed = 7;
+        SpiderTeaserBossProjectileYOffset = 0.5f;
+        SpiderTeaserBossProjectileLifeTime = 3;
+        SpiderTeaserBossFirstProjectileDelay = 3;
+        SpiderTeaserBossSecondProjectileDelay = 6;
     }
 }

@@ -44,6 +44,8 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
         if (Room == null || Room.IsObjectKilled(Id))
             return;
 
+        Console.WriteLine("GOING TO NEXT STATE");
+
         foreach (var state in CurrentStates)
         {
             Logger.LogTrace(

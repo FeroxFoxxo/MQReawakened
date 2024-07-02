@@ -23,7 +23,6 @@ public class AIStateSpiderEntranceComp : BaseAIState<AIStateSpiderEntrance>
             return;
 
         AddNextState<AIStateSpiderDropComp>();
-        AddNextState<AIStateSpiderIdleComp>();
 
         GoToNextState();
     }
