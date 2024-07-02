@@ -65,22 +65,28 @@ public static class PlayerDamageExtensions
         if (damage <= 0)
             damage = 1;
 
+        var isShielded = false;
+
         if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(serverRConfig), out var pet))
         {
             if (player.TempData.PetDefense)
+            {
+                isShielded = true;
                 Math.Ceiling(damage *= pet.AbilityParams.DefensiveBonusRatio);
-
-            else
-                player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-                (int)ItemEffectType.BluntDamage, (int)damage, (int)invincibilityDuration, true, originId, false));
+            }
         }
+
+        if (!isShielded)
+            player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
+                (int)ItemEffectType.BluntDamage, (int)damage, (int)invincibilityDuration, true, originId, false));
 
         player.Character.Write.CurrentLife -= (int)damage;
 
         if (player.Character.CurrentLife < 0)
             player.Character.Write.CurrentLife = 0;
+
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-            player.Character.CurrentLife, player.Character.MaxLife, "Hurt"));
+            player.Character.CurrentLife, player.Character.MaxLife, originId));
 
         if (invincibilityDuration <= 0)
             invincibilityDuration = 1;

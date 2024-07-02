@@ -14,9 +14,9 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle>
     public ServerRConfig ServerRConfig { get; set; }
 
     public override void StartState() =>
-        TimerThread.DelayCall(RunPhase1, null, TimeSpan.FromSeconds(ServerRConfig.SpiderTeaserBossSecondProjectileDelay), TimeSpan.Zero, 1);
+        TimerThread.DelayCall(RunVenomState, null, TimeSpan.FromSeconds(ServerRConfig.SpiderTeaserBossFirstProjectileDelay), TimeSpan.Zero, 1);
 
-    public void RunPhase1(object _)
+    public void RunVenomState(object _)
     {
         AddNextState<AIStateSpiderVenomComp>();       
 
