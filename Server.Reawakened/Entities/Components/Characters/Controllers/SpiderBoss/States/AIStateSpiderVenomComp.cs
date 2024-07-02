@@ -30,7 +30,7 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom>
 
     public override void StartState()
     {
-        TimerThread.DelayCall(LaunchProjectile, true, TimeSpan.FromSeconds(ServerRConfig.SpiderTeaserBossSecondProjectileDelay), TimeSpan.Zero, 1);
+        TimerThread.DelayCall(LaunchProjectile, true, TimeSpan.FromSeconds(ServerRConfig.SpiderTeaserBossFirstProjectileDelay), TimeSpan.Zero, 1);
         TimerThread.DelayCall(LaunchProjectile, false, TimeSpan.FromSeconds(ServerRConfig.SpiderTeaserBossSecondProjectileDelay), TimeSpan.Zero, 1);
 
         TimerThread.DelayCall(RunDropState, null, TimeSpan.FromSeconds(ServerRConfig.SpiderTeaserBossSecondProjectileDelay), TimeSpan.Zero, 1);
