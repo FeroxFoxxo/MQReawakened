@@ -24,30 +24,39 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom>
     public float CooldownTime => ComponentData.CooldownTime;
 
     public TimerThread TimerThread { get; set; }
+    public EnemyRConfig EnemyRConfig { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
     public ItemRConfig ItemRConfig { get; set; }
 
     public override void StartState()
     {
-        TimerThread.DelayCall(LaunchProjectile, true, TimeSpan.FromSeconds(ServerRConfig.SpiderTeaserBossFirstProjectileDelay), TimeSpan.Zero, 1);
-        TimerThread.DelayCall(LaunchProjectile, false, TimeSpan.FromSeconds(ServerRConfig.SpiderTeaserBossSecondProjectileDelay), TimeSpan.Zero, 1);
+        TimerThread.DelayCall(LaunchProjectile, true, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossFirstProjectileDelay), TimeSpan.Zero, 1);
+        TimerThread.DelayCall(LaunchProjectile, false, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossSecondProjectileDelay), TimeSpan.Zero, 1);
 
-        TimerThread.DelayCall(RunDropState, null, TimeSpan.FromSeconds(ServerRConfig.SpiderTeaserBossDropDelay), TimeSpan.Zero, 1);
+        TimerThread.DelayCall(RunDropState, null, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossDropDelay), TimeSpan.Zero, 1);
     }
 
     public void LaunchProjectile(object isFirstProjectile)
     {
         var projectileId = Room.CreateProjectileId();
 
-        Room.SendSyncEvent(AISyncEventHelper.AILaunchItem(Id, Room.Time, Position.X, Position.Y + ServerRConfig.SpiderTeaserBossProjectileYOffset, Position.Z,
-            -ServerRConfig.SpiderTeaserBossProjectileSpeed, Convert.ToBoolean(isFirstProjectile) ? 0 : ServerRConfig.SpiderTeaserBossProjectileSpeed,
-            ServerRConfig.SpiderTeaserBossProjectileLifeTime, projectileId, Convert.ToBoolean(0)));
+        Room.SendSyncEvent(
+            AISyncEventHelper.AILaunchItem(
+                Id, Room.Time, Position.X, Position.Y + EnemyRConfig.SpiderTeaserBossProjectileYOffset, Position.Z,
+                -EnemyRConfig.SpiderTeaserBossProjectileSpeed, Convert.ToBoolean(isFirstProjectile) ? 0 : EnemyRConfig.SpiderTeaserBossProjectileSpeed,
+                EnemyRConfig.SpiderTeaserBossProjectileLifeTime, projectileId, Convert.ToBoolean(0)
+            )
+        );
 
-        Room.AddProjectile(new AIProjectile(Room, Id, projectileId.ToString(),
-            new Vector3(Position.X, Position.Y + ServerRConfig.SpiderTeaserBossProjectileYOffset, Position.Z),
-            new Vector2(-ServerRConfig.SpiderTeaserBossProjectileSpeed, Convert.ToBoolean(isFirstProjectile) ? 0 : ServerRConfig.SpiderTeaserBossProjectileSpeed),
-            ServerRConfig.SpiderTeaserBossProjectileLifeTime, TimerThread, 1, ItemEffectType.BluntDamage, false, ServerRConfig, ItemCatalog, ItemRConfig));
+        Room.AddProjectile(
+            new AIProjectile(
+                Room, Id, projectileId.ToString(),
+                new Vector3(Position.X, Position.Y + EnemyRConfig.SpiderTeaserBossProjectileYOffset, Position.Z),
+                new Vector2(-EnemyRConfig.SpiderTeaserBossProjectileSpeed, Convert.ToBoolean(isFirstProjectile) ? 0 : EnemyRConfig.SpiderTeaserBossProjectileSpeed),
+                EnemyRConfig.SpiderTeaserBossProjectileLifeTime, TimerThread, 1, ItemEffectType.BluntDamage, false, ServerRConfig, ItemCatalog, ItemRConfig
+            )
+        );
     }
 
     public void RunDropState(object _)
