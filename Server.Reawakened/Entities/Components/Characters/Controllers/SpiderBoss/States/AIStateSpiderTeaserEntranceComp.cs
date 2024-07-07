@@ -25,7 +25,6 @@ public class AIStateSpiderTeaserEntranceComp : BaseAIState<AIStateSpiderTeaserEn
             return;
 
         AddNextState<AIStateSpiderDropComp>();
-        AddNextState<AIStateSpiderIdleComp>();
 
         GoToNextState();
     }

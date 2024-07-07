@@ -15,7 +15,7 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
      * AIStateSpiderBase
      * AIStateSpiderDeactivated
      * [DONE] AIStateSpiderDrop
-     * AIStateSpiderIdle
+     * [DONE] AIStateSpiderIdle
      * AIStateSpiderMove
      * AIStateSpiderPatrol
      * AIStateSpiderPhase1
@@ -24,7 +24,7 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
      * AIStateSpiderPhaseTeaser
      * AIStateSpiderPhaseTrans
      * [DONE] AIStateSpiderRetreat
-     * AIStateSpiderVenom
+     * [DONE] AIStateSpiderVenom
      * AIStateSpiderVineThrow
      * AIStateSpiderWebs
      * 
