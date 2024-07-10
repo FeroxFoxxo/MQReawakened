@@ -36,7 +36,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
                 Trigger(players.FirstOrDefault(), false);
     }
 
-    public override void Triggered(Player _, bool isSuccess, bool isActive)
+    public override void Triggered(Player origin, bool isSuccess, bool isActive)
     {
         if (IsActive)
         {
@@ -70,7 +70,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
             {
                 foreach (var entity in TriggeredRewards)
                     foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(entity.ToString()))
-                        trigger.Trigger(true);
+                        trigger.Trigger(true, origin.GameObjectId);
 
                 foreach (var player in players)
                     player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, QuestCatalog);

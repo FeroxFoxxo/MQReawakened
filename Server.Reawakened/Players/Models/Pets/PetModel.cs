@@ -1,15 +1,15 @@
 ﻿using A2m.Server;
-using Microsoft.Extensions.Logging;
 using PetDefines;
+using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
-using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using UnityEngine;
 
 namespace Server.Reawakened.Players.Models.Pets;
@@ -24,7 +24,7 @@ public class PetModel()
     public int RegeneratedEnergy { get; set; }
     public bool InCoopJumpState { get; set; }
     public bool InCoopSwitchState { get; set; }
-    public string CoopTriggerableId { get; set; }
+    public string CurrentTriggerId { get; set; }
 
     public void SpawnPet(Player petOwner, string petId, bool spawnPet, PetAbilityParams abilityParams,
         bool refillEnergy, WorldStatistics worldStatistics, ServerRConfig config)
@@ -40,7 +40,7 @@ public class PetModel()
         AbilityCooldown = petOwner.Room.Time + AbilityParams.CooldownTime;
         InCoopJumpState = false;
         InCoopSwitchState = false;
-        CoopTriggerableId = string.Empty;
+        CurrentTriggerId = string.Empty;
 
         NotifyPet(petOwner);
 
@@ -76,18 +76,17 @@ public class PetModel()
         {
             case PetInformation.StateSyncType.Deactivate:
                 RemoveTriggerInteraction(petOwner, timerThread, itemRConfig.PetPressButtonDelay);
-                CoopTriggerableId = string.Empty;
                 AbilityCooldown = petOwner.Room.Time + AbilityParams.CooldownTime;
                 break;
             case PetInformation.StateSyncType.PetStateCoopSwitch:
                 AddTriggerInteraction(petOwner, timerThread, itemRConfig.PetHoldChainDelay);
-                syncParams = CoopTriggerableId;
+                syncParams = CurrentTriggerId;
                 break;
 
             case PetInformation.StateSyncType.PetStateCoopJump:
                 var onButton = false;
 
-                if (!string.IsNullOrEmpty(CoopTriggerableId))
+                if (!string.IsNullOrEmpty(CurrentTriggerId))
                 {
                     onButton = true;
                     AddTriggerInteraction(petOwner, timerThread, itemRConfig.PetPressButtonDelay);
@@ -95,7 +94,6 @@ public class PetModel()
 
                 syncParams = GetPetPosition(petOwner.TempData.Position, onButton, itemRConfig);
                 break;
-
             case PetInformation.StateSyncType.Unknown:
             default:
                 logger.LogWarning("Unknown pet state type {petState}", newPetState);
@@ -199,8 +197,8 @@ public class PetModel()
     public InteractionData GetInteractionData(Player player) => new()
     {
         Player = player,
-        TriggerCoopController = player.Room.GetEntityFromId<TriggerCoopControllerComp>(CoopTriggerableId),
-        MultiInteractionTrigger = player.Room.GetEntityFromId<MultiInteractionTriggerCoopControllerComp>(CoopTriggerableId)
+        TriggerCoopController = player.Room.GetEntityFromId<TriggerCoopControllerComp>(CurrentTriggerId),
+        MultiInteractionTrigger = player.Room.GetEntityFromId<MultiInteractionTriggerCoopControllerComp>(CurrentTriggerId)
     };
 
     public void AddTriggerInteraction(Player player, TimerThread timerThread, float delay) =>
