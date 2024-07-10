@@ -57,7 +57,11 @@ public class State : ExternalProtocol
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.PetState:
-                    Player.Room.SendSyncEvent(new PetState_SyncEvent(Player.GameObjectId, Player.Room.Time, PetInformation.StateSyncType.PetStateVanish, Player.GameObjectId));
+                    if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet))
+                    {
+                        Player.Room.SendSyncEvent(new PetState_SyncEvent(Player.GameObjectId, Player.Room.Time, PetInformation.StateSyncType.PetStateVanish, Player.GameObjectId));
+                        pet.CurrentTriggerId = string.Empty;
+                    }
                     break;
                 case SyncEvent.EventType.ChargeAttack:
                     Player.TempData.IsSuperStomping = true;
