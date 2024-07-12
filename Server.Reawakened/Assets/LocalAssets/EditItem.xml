@@ -461,11 +461,46 @@
                 <ItemEffect duration="0" type="Healing" value="900"/>
             </EditItemEffects>
         </Item>
+        <Item name="COL_POT_Healing02">
+            <EditItemEffects>
+                <ItemEffect duration="0" type="Healing" value="1900"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_Healing03">
+            <EditItemEffects>
+                <ItemEffect duration="0" type="Healing" value="4000"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_Healing04">
+            <EditItemEffects>
+                <ItemEffect duration="0" type="Healing" value="6000"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_Healing05">
+            <EditItemEffects>
+                <ItemEffect duration="0" type="Healing" value="8100"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_Healing06">
+            <EditItemEffects>
+                <ItemEffect duration="0" type="Healing" value="10200"/>
+            </EditItemEffects>
+        </Item>
     </GameVersion>
     <GameVersion version="v2011">
-        <Item name="Col_POT_ExperiencePotion01">
+        <Item name="COL_POT_BananaPotion01">
+            <EditItemEffects>
+                <ItemEffect duration="3600" type="BananaMultiplier" value="110"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_ExperiencePotion01">
             <EditItemEffects>
                 <ItemEffect duration="3600" type="ExperienceMultiplier" value="110"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_ExperiencePotion02">
+            <EditItemEffects>
+                <ItemEffect duration="7200" type="ExperienceMultiplier" value="110"/>
             </EditItemEffects>
         </Item>
     </GameVersion>
