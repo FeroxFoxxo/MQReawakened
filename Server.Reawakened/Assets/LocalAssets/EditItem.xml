@@ -434,6 +434,9 @@
         <Item name="WPN_PRJ_XmasSlingshot01">
             <EditAttribute key="descriptionId" value="1000578"/>
         </Item>
+        <Item name="Add_COM_KidBoy01_S02">
+            <EditAttribute key="descriptionId" value="1000578"/>
+        </Item>
     </GameVersion>
     <GameVersion version="vMinigames2012">
     </GameVersion>
@@ -453,8 +456,53 @@
         <Item name="WPN_1H_SwordKnight01">
             <EditAttribute key="id" value="3351"/>
         </Item>
+        <Item name="COL_POT_Healing01">
+            <EditItemEffects>
+                <ItemEffect duration="0" type="Healing" value="900"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_Healing02">
+            <EditItemEffects>
+                <ItemEffect duration="0" type="Healing" value="1900"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_Healing03">
+            <EditItemEffects>
+                <ItemEffect duration="0" type="Healing" value="4000"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_Healing04">
+            <EditItemEffects>
+                <ItemEffect duration="0" type="Healing" value="6000"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_Healing05">
+            <EditItemEffects>
+                <ItemEffect duration="0" type="Healing" value="8100"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_Healing06">
+            <EditItemEffects>
+                <ItemEffect duration="0" type="Healing" value="10200"/>
+            </EditItemEffects>
+        </Item>
     </GameVersion>
     <GameVersion version="v2011">
+        <Item name="COL_POT_BananaPotion01">
+            <EditItemEffects>
+                <ItemEffect duration="3600" type="BananaMultiplier" value="110"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_ExperiencePotion01">
+            <EditItemEffects>
+                <ItemEffect duration="3600" type="ExperienceMultiplier" value="110"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_POT_ExperiencePotion02">
+            <EditItemEffects>
+                <ItemEffect duration="7200" type="ExperienceMultiplier" value="110"/>
+            </EditItemEffects>
+        </Item>
     </GameVersion>
     <GameVersion version="Unknown">
     </GameVersion>
