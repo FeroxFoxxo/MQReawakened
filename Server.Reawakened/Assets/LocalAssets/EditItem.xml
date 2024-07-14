@@ -486,6 +486,91 @@
                 <ItemEffect duration="0" type="Healing" value="10200"/>
             </EditItemEffects>
         </Item>
+        <Item name="COL_FOOD_BananaShake01">
+            <EditItemEffects>
+                <ItemEffect duration="6" type="Regeneration" value="1200"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Apple01">
+            <EditItemEffects>
+                <ItemEffect duration="15" type="Regeneration" value="500"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Cookie01">
+            <EditItemEffects>
+                <ItemEffect duration="6" type="Regeneration" value="1200"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_BananaBits01">
+            <EditItemEffects>
+                <ItemEffect duration="15" type="Regeneration" value="900"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Candy01">
+            <EditItemEffects>
+                <ItemEffect duration="6" type="Regeneration" value="5300"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_BananaBits02">
+            <EditItemEffects>
+                <ItemEffect duration="15" type="Regeneration" value="6100"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Coconut01">
+            <EditItemEffects>
+                <ItemEffect duration="15" type="Regeneration" value="1900"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Cookie02">
+            <EditItemEffects>
+                <ItemEffect duration="6" type="Regeneration" value="12500"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_IceCream01">
+            <EditItemEffects>
+                <ItemEffect duration="6" type="Regeneration" value="1900"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_LollyPop01">
+            <EditItemEffects>
+                <ItemEffect duration="6" type="Regeneration" value="8100"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Mango01">
+            <EditItemEffects>
+                <ItemEffect duration="15" type="Regeneration" value="8100"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Melon01">
+            <EditItemEffects>
+                <ItemEffect duration="15" type="Regeneration" value="4000"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Nuts01">
+            <EditItemEffects>
+                <ItemEffect duration="15" type="Regeneration" value="2900"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Orange01">
+            <EditItemEffects>
+                <ItemEffect duration="15" type="Regeneration" value="6000"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Pie01">
+            <EditItemEffects>
+                <ItemEffect duration="6" type="Regeneration" value="2600"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Pinapple01">
+            <EditItemEffects>
+                <ItemEffect duration="15" type="Regeneration" value="10200"/>
+            </EditItemEffects>
+        </Item>
+        <Item name="COL_FOOD_Sundae01">
+            <EditItemEffects>
+                <ItemEffect duration="6" type="Regeneration" value="11000"/>
+            </EditItemEffects>
+        </Item>
     </GameVersion>
     <GameVersion version="v2011">
         <Item name="COL_POT_BananaPotion01">
