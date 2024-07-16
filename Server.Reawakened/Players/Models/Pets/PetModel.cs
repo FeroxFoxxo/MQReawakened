@@ -24,7 +24,8 @@ public class PetModel()
     public bool InCoopJumpState { get; set; }
     public bool InCoopSwitchState { get; set; }
     public string CurrentTriggerId { get; set; }
-    public DateTime TimeOfLogOff { get; set; }
+    public bool HasGainedOfflineEnergy { get; set; }
+    public DateTime LastTimePetWasEquipped { get; set; }
 
     public void SpawnPet(Player petOwner, string petId, bool spawnPet, PetAbilityParams abilityParams,
         bool refillEnergy, WorldStatistics worldStatistics, ServerRConfig config, TimerThread energyRegenerationTimer)
@@ -33,7 +34,22 @@ public class PetModel()
         AbilityParams = abilityParams;
         MaxEnergy = petOwner.GetMaxPetEnergy(worldStatistics, config);
 
-        if (refillEnergy)
+        if (!spawnPet)
+            LastTimePetWasEquipped = DateTime.Now;
+
+        if (!refillEnergy)
+        {
+            if (!HasGainedOfflineEnergy)
+            {
+                CurrentEnergy += GetOfflineRegeneratedEnergy(worldStatistics);
+                HasGainedOfflineEnergy = true;
+            }
+
+            if (CurrentEnergy < MaxEnergy)
+                StartEnergyRegeneration(petOwner, energyRegenerationTimer, worldStatistics);
+        }
+
+        else
             CurrentEnergy = MaxEnergy;
 
         AbilityCooldown = petOwner.Room.Time + AbilityParams.CooldownTime;
@@ -47,14 +63,11 @@ public class PetModel()
 
         petOwner.SendXt("ZE", petOwner.UserId, PetId, Convert.ToInt32(spawnPet));
         petOwner.SendXt("Zm", petOwner.UserId, true);
-
-        if (CurrentEnergy < MaxEnergy)
-            StartEnergyRegeneration(petOwner, energyRegenerationTimer, worldStatistics);
     }
 
-    public int GetOfflineRegeneratedEnergy(WorldStatistics worldStatistics)
+    private int GetOfflineRegeneratedEnergy(WorldStatistics worldStatistics)
     {
-        var minutesSinceLogOff = (DateTime.Now - TimeOfLogOff).TotalMinutes;
+        var minutesSinceLogOff = (DateTime.Now - LastTimePetWasEquipped).TotalMinutes;
         var regainRate = MaxEnergy / worldStatistics.GlobalStats[Globals.PetFullEnergyRegainDelay];
         var gainedEnergy = (int)Math.Round(minutesSinceLogOff * regainRate);
 
@@ -69,6 +82,7 @@ public class PetModel()
         var timeToRegainEnergy = worldStatistics.GlobalStats[Globals.PetFullEnergyRegainDelay];
         var interval = timeToRegainEnergy / MaxEnergy;
 
+        player.TempData.PetEnergyRegenTimer?.Stop();
         player.TempData.PetEnergyRegenTimer = energyRegenerationTimer.DelayCall(RegenerateEnergy, player,
             TimeSpan.FromMinutes((double)interval), TimeSpan.FromMinutes((double)interval), MaxEnergy - CurrentEnergy);
     }
