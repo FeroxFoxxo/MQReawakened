@@ -22,6 +22,6 @@ public abstract class BaseAIRetreatState<T> : BaseAIState<T>
             return;
 
         foreach (var trigReceiver in Room.GetEntitiesFromId<TriggerReceiverComp>(DoorId.ToString()))
-            trigReceiver.Trigger(true);
+            trigReceiver.Trigger(true, string.Empty);
     }
 }
