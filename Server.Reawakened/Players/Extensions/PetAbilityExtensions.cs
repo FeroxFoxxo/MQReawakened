@@ -40,7 +40,6 @@ public static class PetAbilityExtensions
                 true, itemCatalog.GetItemFromId(int.Parse(pet.PetId)).PrefabName, false));
 
         pet.UseEnergy(petOwner);
-        petOwner.TempData.PetEnergyRegenTimer?.Stop();
         pet.StartEnergyRegeneration(petOwner, timerThread, worldStatistics);
 
         //Sends method of ability type after a short delay.

@@ -54,8 +54,5 @@ public class Login : SystemProtocol
         }
 
         SendXml("logKO", $"<login e='{reason.GetErrorValue()}' />");
-
-        if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet))
-            pet.CurrentEnergy += pet.GetOfflineRegeneratedEnergy(WorldStatistics);
     }
 }
