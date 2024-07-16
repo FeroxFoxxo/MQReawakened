@@ -42,8 +42,6 @@ public static class PlayerHealExtensions
             usedItem.ItemEffects.FirstOrDefault().Value :
             usedItem.ItemEffects.LastOrDefault().Value;
 
-        healValue = GetBuffedHealValue(player, healValue);
-
         //If healing staff, convert heal value.
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities)
             healValue = GetHealValue(player, Convert.ToInt32(player.Character.MaxLife / config.HealingStaffHealValue));
@@ -104,23 +102,11 @@ public static class PlayerHealExtensions
             player.Character.CurrentLife <= 0)
             return;
 
-        tickHealValue = GetBuffedHealValue(player, tickHealValue);
-
         var healEvent = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
            player.Character.Write.CurrentLife += tickHealValue, player.Character.MaxLife, string.Empty);
 
         player.Room.SendSyncEvent(healEvent);
     }
-
-    //Original healing value >2011.
-    private static int GetBuffedHealValue(Player player, int outOfDateHealValue)
-    {
-        var healValue = outOfDateHealValue * 18;
-
-        return GetHealValue(player, healValue);
-    }
-    //(This is really needed in the games current state or else healing items aren't worth buying or using)
-    //Worth noting; Item descriptions in-game display 2011 stats because items load from an out of date ItemCatalogDict, instead of MiscTextDisc.
 
     private static int GetHealValue(Player player, int healValue)
     {
