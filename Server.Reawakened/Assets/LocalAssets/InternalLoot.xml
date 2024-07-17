@@ -3508,7 +3508,7 @@
     <!-- Ice Raiders Tribe -->
     <Level name="Tempest Chasm" id="499">
         <!--Tunnel Green Chest-->
-        <LootInfo objectId="3286864" doLootWheel="True">
+        <LootInfo objectId="3286864" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Fur02" count="1" />
                 <Item itemName="Add_COM_Panda01_S04" count="1" />
@@ -3522,7 +3522,7 @@
             </Items>
         </LootInfo>
         <!--Frozen Green Chest-->
-        <LootInfo objectId="3286476" doLootWheel="True">
+        <LootInfo objectId="3286476" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_POT_IceResist01" count="1" />
                 <Item itemName="COL_RECIP_POT_IceElixir01" count="1" />
@@ -3534,7 +3534,7 @@
             </Items>
         </LootInfo>
         <!--Dingy Arena Chest-->
-        <LootInfo objectId="3286868" doLootWheel="True">
+        <LootInfo objectId="3286868" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_WLD_IceRaider01_T01" count="1" />
@@ -3546,7 +3546,7 @@
             </Items>
         </LootInfo>
         <!--Siv Arena Chest-->
-        <LootInfo objectId="3286474" doLootWheel="True">
+        <LootInfo objectId="3286474" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_COM_DropEarring01_E02" count="1" />
@@ -3558,7 +3558,7 @@
             </Items>
         </LootInfo>
         <!--Misc. Purple Chest-->
-        <LootInfo objectId="3289044" doLootWheel="True">
+        <LootInfo objectId="3289044" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="WPN_PRJ_IceLauncher01" count="1" />
@@ -3569,7 +3569,7 @@
             </Items>
         </LootInfo>
         <!--Foulbreath Chest-->
-        <LootInfo objectId="3286869" doLootWheel="True">
+        <LootInfo objectId="3286869" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="COL_RECIP_WLD_Frozen01_TS01" count="1" />
@@ -3583,7 +3583,7 @@
     </Level>
     <Level name="Snowstorm Summit" id="501">
         <!--Green Chest 1-->
-        <LootInfo objectId="3286866" doLootWheel="True">
+        <LootInfo objectId="3286866" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Fur02" count="1" />
                 <Item itemName="Add_COM_Panda01_S04" count="1" />
@@ -3597,7 +3597,7 @@
             </Items>
         </LootInfo>
         <!--Green Chest 2-->
-        <LootInfo objectId="3286864" doLootWheel="True">
+        <LootInfo objectId="3286864" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Fur02" count="1" />
                 <Item itemName="Add_COM_Panda01_S04" count="1" />
@@ -3611,7 +3611,7 @@
             </Items>
         </LootInfo>
         <!--Green Chest 3-->
-        <LootInfo objectId="3286865" doLootWheel="True">
+        <LootInfo objectId="3286865" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Fur02" count="1" />
                 <Item itemName="Add_COM_Panda01_S04" count="1" />
@@ -3625,7 +3625,7 @@
             </Items>
         </LootInfo>
         <!--Blue Arena Chest 1-->
-        <LootInfo objectId="3286867" doLootWheel="True">
+        <LootInfo objectId="3286867" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_WLD_IceRaider01_T01" count="1" />
@@ -3637,7 +3637,7 @@
             </Items>
         </LootInfo>
         <!--Blue Arena Chest 2-->
-        <LootInfo objectId="3286868" doLootWheel="True">
+        <LootInfo objectId="3286868" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_WLD_IceRaider01_T01" count="1" />
@@ -3651,7 +3651,7 @@
     </Level>
     <Level name="Icewind Caverns" id="502">
         <!--1st Green Chest -->
-        <LootInfo objectId="3287776" doLootWheel="True">
+        <LootInfo objectId="3287776" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_Tiger01_S04" count="1" />
                 <Item itemName="Add_COM_Tiger01_TS04" count="1" />
@@ -3668,7 +3668,7 @@
             </Items>
         </LootInfo>
         <!--2nd Green Chest-->
-        <LootInfo objectId="3287774" doLootWheel="True">
+        <LootInfo objectId="3287774" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_Tiger01_S04" count="1" />
                 <Item itemName="Add_COM_Tiger01_TS04" count="1" />
@@ -3685,7 +3685,7 @@
             </Items>
         </LootInfo>
         <!--3rd Green Chest-->
-        <LootInfo objectId="3287775" doLootWheel="True">
+        <LootInfo objectId="3287775" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_Tiger01_S04" count="1" />
                 <Item itemName="Add_COM_Tiger01_TS04" count="1" />
@@ -3702,7 +3702,7 @@
             </Items>
         </LootInfo>
         <!--Blue Arena Chest 1-->
-        <LootInfo objectId="3287768" doLootWheel="True">
+        <LootInfo objectId="3287768" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_COM_DropEarring01_E02" count="1" />
@@ -3714,7 +3714,7 @@
             </Items>
         </LootInfo>
         <!--Blue Arena Chest 2-->
-        <LootInfo objectId="3287769" doLootWheel="True">
+        <LootInfo objectId="3287769" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_COM_DropEarring01_E02" count="1" />
@@ -3726,7 +3726,7 @@
             </Items>
         </LootInfo>
         <!--Purple Arena Chest-->
-        <LootInfo objectId="3287133" doLootWheel="True">
+        <LootInfo objectId="3287133" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_COM_DropEarring01_E02" count="1" />
@@ -3741,7 +3741,7 @@
     </Level>
     <Level name="Viking Warrior Trial" id="556">
         <!--Blue Chest Behind Gate, Missing Recipes-->
-        <LootInfo objectId="26293310" doLootWheel="True">
+        <LootInfo objectId="26293310" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="WPN_SPC_BeastBomb01" count="1" />
                 <Item itemName="COL_ING_G_Fur02" count="1" />
@@ -3754,7 +3754,7 @@
     
     <!-- Guardian Knights -->
     <Level name="Vespid Lair" id="446">
-        <LootInfo objectId="3312094" doLootWheel="True">
+        <LootInfo objectId="3312094" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_ING_G_Amethyst" count="1" />
                 <Item itemName="COL_ING_G_Linen02" count="1" />
@@ -3768,7 +3768,7 @@
     </Level>
     <Level name="Knight's Gate" id="438">
         <!--1st Green Chest-->
-        <LootInfo objectId="12768" doLootWheel="True">
+        <LootInfo objectId="12768" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
                 <Item itemName="COL_RECIP_POT_Healing01" count="1" />
@@ -3780,7 +3780,7 @@
             </Items>
         </LootInfo>
         <!--2nd Green Chest-->
-        <LootInfo objectId="12765" doLootWheel="True">
+        <LootInfo objectId="12765" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
                 <Item itemName="COL_RECIP_POT_Healing01" count="1" />
@@ -3792,7 +3792,7 @@
             </Items>
         </LootInfo>
         <!--3rd Green Chest-->
-        <LootInfo objectId="12803" doLootWheel="True">
+        <LootInfo objectId="12803" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
                 <Item itemName="COL_RECIP_POT_Healing01" count="1" />
@@ -3804,7 +3804,7 @@
             </Items>
         </LootInfo>
         <!--4th Green Chest-->
-        <LootInfo objectId="12766" doLootWheel="True">
+        <LootInfo objectId="12766" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
                 <Item itemName="COL_RECIP_POT_Healing01" count="1" />
@@ -3816,10 +3816,84 @@
             </Items>
         </LootInfo>
         <!--Arena Blue Chest-->
-        <LootInfo objectId="10338" doLootWheel="True">
+        <LootInfo objectId="10338" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="Add_COM_Friendship01_W01" count="1" />
-                <Item itemName="WPN_1H_SwordGKnight02" count="1" />
+                <Item itemName="WPN_SPC_DoomGrenade01" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
+    <Level name="Shard Cavern Hive" id="441">  <!--Temporary Loot Tables-->
+        <!--1st Green Chest-->
+        <LootInfo objectId="17744" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing01" count="1" />
+                <Item itemName="Add_COM_Explorator01_S01" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+                <Item itemName="Add_COM_Explorator01_LF01" count="1" />
+                <Item itemName="Add_COM_Explorator01_LS01" count="1" />
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--2nd Green Chest-->
+        <LootInfo objectId="17747" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing01" count="1" />
+                <Item itemName="Add_COM_Explorator01_W01" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+                <Item itemName="Add_COM_Explorator01_UF01" count="1" />
+                <Item itemName="Add_COM_Explorator01_TS01" count="1" />
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--3rd Green Chest-->
+        <LootInfo objectId="17750" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing01" count="1" />
+                <Item itemName="Add_COM_Explorator01_W01" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+                <Item itemName="Add_COM_Explorator01_LF01" count="1" />
+                <Item itemName="Add_COM_Explorator01_TS01" count="1" />
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Blue Chest-->
+        <LootInfo objectId="15202" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Friendship01_W01" count="1" />
+                <Item itemName="WPN_SPC_DoomGrenade01" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--1st Blue Chest-->
+        <LootInfo objectId="17755" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Friendship01_W01" count="1" />
+                <Item itemName="WPN_SPC_DoomGrenade01" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Purple Chest-->
+        <LootInfo objectId="17771" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Explorator01_S01" count="1" />
+                <Item itemName="Add_COM_Explorator01_UF01" count="1" />
+                <Item itemName="Add_COM_Explorator01_LF01" count="1" />
+                <Item itemName="Add_COM_Explorator01_TS01" count="1" />
+                <Item itemName="Add_COM_Explorator01_W01" count="1" />
                 <Item itemName="WPN_SPC_DoomGrenade01" count="1" />
                 <Item itemName="COL_ING_G_Ruby02" count="1" />
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
