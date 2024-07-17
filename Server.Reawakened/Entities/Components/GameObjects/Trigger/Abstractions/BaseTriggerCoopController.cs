@@ -249,11 +249,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         if (Room.GetPlayerById(interactionId) != null)
         {
             if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) && !pet.InCoopState() &&
-                InteractType == InteractionType.PetChain || InteractType == InteractionType.PetSwitch)
-            {
+                (InteractType == InteractionType.PetChain || InteractType == InteractionType.PetSwitch))
                 if (pet != null)
                     pet.CurrentTriggerId = Id;
-            }
 
             if (!string.IsNullOrEmpty(QuestCompletedRequired))
             {
