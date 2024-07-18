@@ -43,6 +43,8 @@ public abstract class BaseCollider
         Position = new Vector3(position.x, position.y, position.z);
     }
 
+    public virtual string[] IsColliding() => [];
+
     public virtual string[] IsColliding(bool isAttack) => [];
 
     public virtual void SendCollisionEvent(BaseCollider received)

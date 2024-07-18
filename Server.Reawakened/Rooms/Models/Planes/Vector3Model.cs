@@ -61,5 +61,8 @@ public class Vector3Model
     public static float Distance(Vector3Model left, Vector3Model right) =>
         Mathf.Sqrt(Mathf.Pow(left.X - right.X, 2) + Mathf.Pow(left.Y - right.Y, 2) + Mathf.Pow(left.Z - right.Z, 2));
 
+    public vector3 ToVector3() => new(X, Y, Z);
+    public Vector3 ToUnityVector3() => new(X, Y, Z);
+
     public override string ToString() => $"({X}, {Y}, {Z})";
 }
