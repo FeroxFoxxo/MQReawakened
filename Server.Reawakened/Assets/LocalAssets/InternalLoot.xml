@@ -538,40 +538,67 @@
         <LootInfo objectId="39671" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="Add_COM_HoopEarrings01_E05" count="1" />
                 <Item itemName="Add_COM_ScaleTail01_T03" count="1" />
-                <Item itemName="COL_ING_G_Linen02" count="1" />
-                <Item itemName="COL_ING_G_Leather02" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_TS02" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_W02" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_BP01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
                 <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_W01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T04" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP04" count="1" />
             </Items>
         </LootInfo>
         <LootInfo objectId="39672" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="Add_COM_HoopEarrings01_E05" count="1" />
                 <Item itemName="Add_COM_ScaleTail01_T03" count="1" />
-                <Item itemName="COL_ING_G_Linen02" count="1" />
-                <Item itemName="COL_ING_G_Leather02" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_TS02" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_W02" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_BP02" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_T02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
                 <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T04" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP04" count="1" />
             </Items>
         </LootInfo>
         <LootInfo objectId="39673" doLootWheel="true">
             <Items rewardAmount="1">
                 <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="Add_COM_HoopEarrings01_E05" count="1" />
                 <Item itemName="Add_COM_ScaleTail01_T03" count="1" />
-                <Item itemName="COL_ING_G_Linen02" count="1" />
-                <Item itemName="COL_ING_G_Leather02" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_TS02" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_W02" count="1" />
                 <Item itemName="COL_RECIP_COM_DreadPlate01_BP03" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_T03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
                 <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T04" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP04" count="1" />
             </Items>
         </LootInfo>
         <LootInfo objectId="15488" doLootWheel="true">
@@ -583,11 +610,19 @@
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_COM_HoopEarrings01_E05" count="1" />
                 <Item itemName="Add_COM_ScaleTail01_T03" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_S02" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_LS02" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_S01" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP03" count="1" />
                 <Item itemName="COL_RECIP_COM_DreadPlate01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S04" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T04" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP04" count="1" />
+                <Item itemName="WPN_MEL_GreatAxe01" count="1" />
             </Items>
         </LootInfo>
         <LootInfo objectId="9332" doLootWheel="true">
@@ -599,11 +634,19 @@
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_COM_HoopEarrings01_E05" count="1" />
                 <Item itemName="Add_COM_ScaleTail01_T03" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_S02" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_LS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS03" count="1" />
                 <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
                 <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_LS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S04" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T04" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP04" count="1" />
+                <Item itemName="WPN_MEL_GreatAxe01" count="1" />
             </Items>
         </LootInfo>
         <LootInfo objectId="15523" doLootWheel="true">
@@ -615,11 +658,19 @@
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_COM_HoopEarrings01_E05" count="1" />
                 <Item itemName="Add_COM_ScaleTail01_T03" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_S02" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_LS02" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_S03" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_TS03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS01" count="1" />
                 <Item itemName="COL_RECIP_COM_DreadPlate01_LS03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S04" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T04" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP04" count="1" />
+                <Item itemName="WPN_MEL_GreatAxe01" count="1" />
             </Items>
         </LootInfo>
         <LootInfo objectId="39666" doLootWheel="true">
@@ -631,14 +682,19 @@
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
                 <Item itemName="Add_COM_HoopEarrings01_E05" count="1" />
                 <Item itemName="Add_COM_ScaleTail01_T03" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_S02" count="1" />
-                <Item itemName="COL_RECIP_COM_Centurion01_LS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_S02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_T01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W02" count="1" />
                 <Item itemName="COL_RECIP_COM_DreadPlate01_S04" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_TS04" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_LS04" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_BP04" count="1" />
                 <Item itemName="COL_RECIP_COM_DreadPlate01_T04" count="1" />
-                <Item itemName="COL_RECIP_COM_DreadPlate01_W04" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_BP04" count="1" />
+                <Item itemName="WPN_MEL_GreatAxe01" count="1" />
             </Items>
         </LootInfo>
     </Level>
