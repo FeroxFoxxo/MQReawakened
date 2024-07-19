@@ -15,7 +15,9 @@ public class ReportAbuse : ExternalProtocol
         var character = Encoding.UTF8.GetString(Convert.FromBase64String(message[6].Replace("character$", "")));
         var reportMessage = Encoding.UTF8.GetString(Convert.FromBase64String(message[7].Replace("message$", "")));
 
-        DiscordHandler.SendReport(category, Player.CharacterName, character, reportMessage);
+        var reportId = Guid.NewGuid();
+
+        DiscordHandler.SendReport(reportId.ToString(), category, Player.CharacterName, character, reportMessage);
 
         SendXt("oa", "1");
     }
