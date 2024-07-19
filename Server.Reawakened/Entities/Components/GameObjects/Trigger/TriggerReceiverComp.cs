@@ -17,6 +17,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 
     public bool Activated = true;
     public bool Enabled = true;
+
     public int NbActivationsNeeded => ComponentData.NbActivationsNeeded;
     public int NbDeactivationsNeeded => ComponentData.NbDeactivationsNeeded;
     public bool DisabledUntilTriggered => ComponentData.DisabledUntilTriggered;
@@ -30,7 +31,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
     public override void DelayedComponentInitialization()
     {
         base.InitializeComponent();
-        Trigger(ActiveByDefault);
+        Trigger(ActiveByDefault, string.Empty);
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
@@ -42,10 +43,10 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 
         var tEvent = new TriggerReceiver_SyncEvent(syncEvent);
 
-        Trigger(tEvent.Activate);
+        Trigger(tEvent.Activate, player.GameObjectId);
     }
 
-    public void TriggerStateChange(TriggerType triggerType, bool triggered)
+    public void TriggerStateChange(TriggerType triggerType, bool triggered, string triggeredBy)
     {
         Enabled = triggerType switch
         {
@@ -74,9 +75,9 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
         }
 
         if (_activations >= NbActivationsNeeded)
-            Trigger(true);
+            Trigger(true, triggeredBy);
         else if (_deactivations >= NbDeactivationsNeeded)
-            Trigger(false);
+            Trigger(false, triggeredBy);
 
         LogTriggerReciever(triggerType, triggered);
     }
@@ -123,7 +124,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
             LoggerType.Trace);
     }
 
-    public void Trigger(bool activated)
+    public void Trigger(bool activated, string triggeredBy)
     {
         Activated = activated;
 
@@ -132,9 +133,9 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
         foreach (var recieveable in Room.GetEntitiesFromId<IRecieverTriggered>(Id))
             recieveable.RecievedTrigger(activated);
 
-        SendTriggerState(activated);
+        SendTriggerState(activated, triggeredBy);
     }
 
-    public void SendTriggerState(bool activated) =>
-        Room.SendSyncEvent(new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, "now", activated, 0));
+    public void SendTriggerState(bool activated, string triggeredBy) =>
+        Room.SendSyncEvent(new TriggerReceiver_SyncEvent(Id.ToString(), Room.Time, triggeredBy, activated, 0));
 }

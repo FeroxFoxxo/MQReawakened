@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Timers.Services;
 using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
@@ -25,6 +26,7 @@ public class RoomUpdate : ExternalProtocol
     public InternalAchievement InternalAchievement { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public PetAbilities PetAbilities { get; set; }
+    public TimerThread TimerThread { get; set; }
     public ILogger<RoomUpdate> Logger { get; set; }
 
     public override void Run(string[] message)
@@ -60,7 +62,7 @@ public class RoomUpdate : ExternalProtocol
 
         if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet) &&
             pet != null && PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbility))
-            Player.EquipPet(petAbility, WorldStatistics, ServerRConfig);
+            Player.EquipPet(petAbility, WorldStatistics, ServerRConfig, TimerThread);
     }
 
     private string GetGameObjectStore(Room room)

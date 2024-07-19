@@ -156,21 +156,23 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         Damage = (int)Math.Ceiling(player.Character.MaxLife * HealthRatioDamage);
 
+        var enemy = Room.GetEnemy(_id);
+        if (enemy != null)
+            Damage = WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
+                     player.Character.CalculateDefense(EffectType, ItemCatalog);
+
         Logger.LogTrace("Applying {statusEffect} to {characterName} from {prefabName}", EffectType, player.CharacterName, PrefabName);
 
         switch (EffectType)
         {
-            case ItemEffectType.Unknown:
-                return;
+            // Some hazards actually use Unknown, so don't discern by this one
+            //case ItemEffectType.Unknown:
+            //    return;
             case ItemEffectType.SlowStatusEffect:
                 ApplySlowEffect(player);
                 break;
             case ItemEffectType.BluntDamage:
-                var enemy = Room.GetEnemy(Id);
-                var damage = (float)WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Enemy, enemy.Level) -
-                             player.Character.CalculateDefense(EffectType, ItemCatalog);
-
-                player.ApplyCharacterDamage((int)damage, Id, DamageDelay, ServerRConfig, TimerThread);
+                player.ApplyCharacterDamage(Damage, _id, DamageDelay, ServerRConfig, TimerThread);
                 break;
             case ItemEffectType.PoisonDamage:
                 TimerThread.DelayCall(ApplyPoisonEffect, player,

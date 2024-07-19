@@ -26,7 +26,7 @@ public class OpenDoors : SlashCommand
             if (ServerRConfig.IgnoredDoors.Contains(triggerEntity.PrefabName))
                 continue;
 
-            triggerEntity.Trigger(true);
+            triggerEntity.Trigger(true, player.GameObjectId);
         }
 
         foreach (var vineEntity in player.Room.GetEntitiesFromType<MysticCharmTargetComp>())

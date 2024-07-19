@@ -235,11 +235,14 @@ public static class PlayerExtensions
         userInfo.Write.LastCharacterSelected = string.Empty;
     }
 
-    public static void LevelUp(this Player player, int level,
+    public static void LevelUp(this Player player, int level, WorldStatistics worldStatistics,
     ServerRConfig config, Microsoft.Extensions.Logging.ILogger logger)
     {
         player.Character.SetLevelXp(level, config);
         player.SendLevelUp();
+
+        if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(config), out var pet))
+            pet.GainEnergy(player, player.GetMaxPetEnergy(worldStatistics, config));
 
         //Temporary NCash reward until original level up system is implemented.
         player.AddNCash(config.LevelUpNCashReward);

@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using UnityEngine;
 
@@ -20,6 +21,15 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol>
     public bool DetectOnlyInPatrolZone => ComponentData.DetectOnlyInPatrolZone;
     public float PatrolZoneSizeOffset => ComponentData.PatrolZoneSizeOffset;
 
+    public ServerRConfig ServerRConfig { get; set; }
+
     // Provide Initial Position
-    public override ExtLevelEditor.ComponentSettings GetSettings() => throw new NotImplementedException();
+    public override ExtLevelEditor.ComponentSettings GetSettings()
+    {
+        var backPlaneZValue = ParentPlane == ServerRConfig.BackPlane ?
+                      ServerRConfig.Planes[ServerRConfig.FrontPlane] :
+                       ServerRConfig.Planes[ServerRConfig.BackPlane];
+
+        return [Position.X.ToString(), Position.Y.ToString(), backPlaneZValue.ToString()];
+    }
 }
