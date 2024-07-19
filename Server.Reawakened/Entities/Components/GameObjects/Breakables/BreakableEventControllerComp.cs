@@ -68,7 +68,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
             origin.SendUpdatedInventory();
 
-            if (_spawner is not null && !_spawner.HasLinkedArena)
+            if (_spawner is null || !_spawner.HasLinkedArena)
             {
                 Room.KillEntity(Id);
                 Destroy(Room, Id);
