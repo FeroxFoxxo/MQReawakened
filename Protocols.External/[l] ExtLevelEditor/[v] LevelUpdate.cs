@@ -64,7 +64,7 @@ public class RoomUpdate : ExternalProtocol
 
         if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet) &&
             pet != null && PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbility))
-            Player.EquipPet(petAbility, WorldStatistics, ServerRConfig);
+            Player.EquipPet(petAbility, WorldStatistics, ServerRConfig, TimerThread);
     }
 
     private string GetGameObjectStore(Room room)
