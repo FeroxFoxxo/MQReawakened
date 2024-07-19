@@ -39,10 +39,11 @@ public class AttackCollider(string id, Vector3 position,
             foreach (var collider in colliders)
             {
                 var collided = CheckCollision(collider);
-                var isCollidableType = collider.Type is not ColliderType.Attack and not
-                    ColliderType.Player and not ColliderType.Hazard and not ColliderType.AiAttack;
+                var isCollidable = collider.Type is not ColliderType.Attack and not
+                    ColliderType.Player and not ColliderType.Hazard and not ColliderType.AiAttack
+                    && collider.Active;
 
-                if (collided && isCollidableType)
+                if (collided && isCollidable)
                 {
                     collidedWith.Add(collider.Id);
                     collider.SendCollisionEvent(this);

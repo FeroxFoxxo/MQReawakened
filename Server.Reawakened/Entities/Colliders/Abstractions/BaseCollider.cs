@@ -15,6 +15,7 @@ public abstract class BaseCollider
     private Vector3 internalPosition = Vector3.zero;
     private Rect colliderBox = new(0, 0, 0, 0);
 
+    public bool Active;
     public Vector3 Position
     {
         get => internalPosition;
@@ -38,6 +39,7 @@ public abstract class BaseCollider
         Type = colliderType;
         BoundingBox = boundingBox;
         SpawnPosition = new Vector3(position.x, position.y, position.z);
+        Active = true;
 
         // MUST be at bottom so collider generates correctly.
         Position = new Vector3(position.x, position.y, position.z);

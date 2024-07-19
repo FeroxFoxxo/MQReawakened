@@ -226,6 +226,15 @@ public abstract class BaseEnemy : IDestructible
         Room.KillEntity(Id);
     }
 
+    public void DespawnEnemy()
+    {
+        LinkedSpawner.NotifyEnemyDefeat(Id);
+
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, 0, 1, 0, 0, string.Empty, true, false));
+        Destroy(Room, Id);
+        Room.KillEntity(Id);
+    }
+
     private void SendRewards(Player player)
     {
         //The XP Reward here is not accurate, but pretty close
