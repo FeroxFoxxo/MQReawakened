@@ -215,7 +215,7 @@ public abstract class BaseEnemy : IDestructible
     {
         if (OnDeathTargetId is not null and not "0")
             foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(OnDeathTargetId))
-                trigger.Trigger(true, Id);
+                trigger.Trigger(true, player.GameObjectId);
 
         SendRewards(player);
 

@@ -21,6 +21,7 @@ public class TemporaryDataModel
     public bool OnGround { get; set; } = false;
     public bool Underwater { get; set; } = false;
     public Timer UnderwaterTimer { get; set; } = null;
+    public Timer PetEnergyRegenTimer { get; set; } = null;
     public bool BananaBoostsElixir { get; set; }
     public bool ReputationBoostsElixir { get; set; }
     public bool IsSuperStomping { get; set; } = false;

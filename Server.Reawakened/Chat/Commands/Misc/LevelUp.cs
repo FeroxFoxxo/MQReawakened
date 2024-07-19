@@ -4,6 +4,7 @@ using Server.Reawakened.Chat.Models;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Data.Commands;
 
 namespace Server.Reawakened.Chat.Commands.Misc;
@@ -25,6 +26,7 @@ public class LevelUp : SlashCommand
 
     public override AccessLevel AccessLevel => AccessLevel.Player;
 
+    public WorldStatistics WorldStatistics { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public ILogger<LevelUp> Logger { get; set; }
 
@@ -36,7 +38,7 @@ public class LevelUp : SlashCommand
             level = ServerRConfig.MaxLevel;
         }
 
-        player.LevelUp(level, ServerRConfig, Logger);
+        player.LevelUp(level, WorldStatistics, ServerRConfig, Logger);
 
         player.Character.Write.Reputation = player.Character.ReputationForCurrentLevel;
     }

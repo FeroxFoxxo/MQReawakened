@@ -354,5 +354,46 @@
             <Item itemName="Add_OUT_FortuneHunter01_S01" count="1" />
             <Item itemName="COL_ING_G_Cotton02" count="3" />
         </RecipeInfo>
+        <!--Guardian Cadet Helmet-->
+        <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight01_S02">
+            <Item itemName="COL_ING_G_Oak01" count="8" />
+            <Item itemName="COL_ING_G_GuardianFragment01" count="5" />
+            <Item itemName="COL_ING_G_Dandelions01" count="4" />
+        </RecipeInfo>
+        <!--Guardian Cadet Armor-->
+        <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight01_TS02">
+            <Item itemName="COL_ING_G_Oak01" count="10" />
+            <Item itemName="COL_ING_G_GuardianFragment01" count="8" />
+            <Item itemName="COL_ING_G_Dandelions01" count="6" />
+        </RecipeInfo>
+        <!--Guardian Cadet Cuffs-->
+        <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight01_W02">
+            <Item itemName="COL_ING_G_Oak01" count="8" />
+            <Item itemName="COL_ING_G_GuardianFragment01" count="5" />
+            <Item itemName="COL_ING_G_Dandelions01" count="4" />
+        </RecipeInfo>
+        <!--Guardian Knight Armor-->
+        <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight02_TS01">
+            <Item itemName="COL_ING_G_Leather01" count="10" />
+            <Item itemName="COL_ING_G_GuardianFragment02" count="6" />
+            <Item itemName="COL_ING_G_GoldPebble01" count="4" />
+        </RecipeInfo>
+        <!--Guardian Knight Pants-->
+        <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight02_LS01">
+            <Item itemName="COL_ING_G_Leather01" count="8" />
+            <Item itemName="COL_ING_G_GuardianFragment02" count="5" />
+            <Item itemName="COL_ING_G_GoldPebble01" count="2" />
+        </RecipeInfo>
+        <!--Guardian Knight Cuffs-->
+        <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight02_W01">
+            <Item itemName="COL_ING_G_Leather01" count="2" />
+            <Item itemName="COL_ING_G_GuardianFragment02" count="6" />
+            <Item itemName="COL_ING_G_GoldPebble01" count="6" />
+        </RecipeInfo>
+        <!--Guardian Knight Tail Ring-->
+        <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight02_T01">
+            <Item itemName="Add_KNI_GuardKnight01_T01" count="1" />
+            <Item itemName="COL_ING_G_GuardianFragment01" count="3" />
+        </RecipeInfo>
     </RecipeType>
 </RecipeCatalog>

@@ -36,7 +36,7 @@ public static class CharacterInventoryExtensions
                     logger.LogWarning("Couldn't find equipped pet for {characterName}", player.CharacterName);
                     return;
                 }
-                pet.GainEnergy(player, usedItem);
+                pet.GainEnergy(player, effect != null ? effect.Value : 0);
                 break;
             case ItemEffectType.Healing:
             case ItemEffectType.HealthBoost:
@@ -237,7 +237,7 @@ public static class CharacterInventoryExtensions
     }
 
     public static void EquipPet(this Player player, PetAbilityParams petAbilityParams,
-        WorldStatistics worldStatistics, ServerRConfig serverRConfig)
+        WorldStatistics worldStatistics, ServerRConfig serverRConfig, TimerThread timerThread)
     {
         if (player == null || !player.Character.Hotbar.HotbarButtons.ContainsKey(serverRConfig.PetHotbarIndex))
             return;
@@ -251,7 +251,8 @@ public static class CharacterInventoryExtensions
             refillCurrentEnergy = true;
         }
 
-        currentPet.SpawnPet(player, petId, true, petAbilityParams, refillCurrentEnergy, worldStatistics, serverRConfig);
+        currentPet.SpawnPet(player, petId, true, petAbilityParams,
+            refillCurrentEnergy, worldStatistics, serverRConfig, timerThread);
     }
 
     public static string GetEquippedPetId(this Player player, ServerRConfig serverRConfig) =>
