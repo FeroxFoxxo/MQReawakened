@@ -440,7 +440,39 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Forest Ruins" id="95">
+        <!--Arena Blue Chest-->
+        <LootInfo objectId="6040" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_COM_StudEarring01_E05" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
     <Level name="The Crumbling Gates" id="93">
+        <!--1st Green Chest-->
+        <LootInfo objectId="7611" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Skate01_S02" count="1" />
+                <Item itemName="Add_COM_Skate01_TS02" count="1" />
+                <Item itemName="Add_COM_Skate01_LS02" count="1" />
+                <Item itemName="Add_COM_Skate01_BP02" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing05" count="1" />
+                <Item itemName="COL_RECIP_POT_PotionOfShielding03" count="1" />
+                <Item itemName="COL_RECIP_BUFF_GlyphProtection05" count="1" />
+                <Item itemName="COL_RECIP_BUFF_RubberBand05" count="1" />
+                <Item itemName="COL_POT_Healing05" count="1" />
+                <Item itemName="COL_POT_PotionOfShielding03" count="1" />
+                <Item itemName="COL_BUFF_GlyphProtection05" count="1" />
+                <Item itemName="COL_BUFF_RubberBand05" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+            </Items>
+        </LootInfo>
         <!--1st Arena Blue Chest-->
         <LootInfo objectId="6213" doLootWheel="true">
             <Items rewardAmount="1">
@@ -459,13 +491,38 @@
                 <Item itemName="COL_RECIP_COM_Warrior01_LS02" count="1" />
             </Items>
         </LootInfo>
-        <!--2nd Arena Purple Chest-->
-        <LootInfo objectId="6130" doLootWheel="true">
+        <LootInfo objectId="6214" doLootWheel="true">
             <Items rewardAmount="1">
-                <Item itemName="Add_OUT_CaptainBoy01_E01" count="1" />
+                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
                 <Item itemName="COL_ING_G_Amethyst" count="1" />
-                <Item itemName="WPN_PRJ_Thunderbow01" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
                 <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_OUT_LightItems01_E01" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T03" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_T02" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_LS02" count="1" />
+            </Items>
+        </LootInfo>
+        <LootInfo objectId="6215" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_ING_G_Leather01" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_OUT_LightItems01_E01" count="1" />
+                <Item itemName="Add_COM_SkullTail01_T03" count="1" />
+                <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_T02" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_LS02" count="1" />
             </Items>
         </LootInfo>
         <LootInfo objectId="6131" doLootWheel="true">
@@ -476,24 +533,27 @@
                 <Item itemName="COL_ING_G_Leather01" count="1" />
                 <Item itemName="COL_ING_G_Amethyst" count="1" />
                 <Item itemName="COL_ING_G_Diamond02" count="1" />
+                <Item itemName="COL_ING_G_Emerald02" count="1" />
                 <Item itemName="COL_ING_G_Ruby02" count="1" />
                 <Item itemName="Add_OUT_LightItems01_E01" count="1" />
                 <Item itemName="Add_COM_SkullTail01_T03" count="1" />
                 <Item itemName="COL_ING_G_Linen01" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_T02" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_LS02" count="1" />
+            </Items>
+        <!--2nd Arena Purple Chest-->
+        <LootInfo objectId="6130" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_OUT_CaptainBoy01_E01" count="1" />
+                <Item itemName="COL_ING_G_Amethyst" count="1" />
+                <Item itemName="WPN_PRJ_Thunderbow01" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_T02" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_TS02" count="1" />
+                <Item itemName="COL_RECIP_COM_Warrior01_LS02" count="1" />
             </Items>
         </LootInfo>
-    </Level>
-    <Level name="Forest Ruins" id="95">
-        <!--Arena Blue Chest-->
-        <LootInfo objectId="6040" doLootWheel="true">
-            <Items rewardAmount="1">
-                <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
-                <Item itemName="COL_ING_G_Linen01" count="1" />
-                <Item itemName="COL_ING_G_Leather01" count="1" />
-                <Item itemName="COL_ING_G_Emerald02" count="1" />
-                <Item itemName="COL_ING_G_Ruby02" count="1" />
-                <Item itemName="Add_COM_StudEarring01_E05" count="1" />
-            </Items>
         </LootInfo>
     </Level>
     <Level name="Cindertop Highland" id="96">
