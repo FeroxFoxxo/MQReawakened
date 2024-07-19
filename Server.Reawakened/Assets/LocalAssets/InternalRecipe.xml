@@ -354,12 +354,6 @@
             <Item itemName="Add_OUT_FortuneHunter01_S01" count="1" />
             <Item itemName="COL_ING_G_Cotton02" count="3" />
         </RecipeInfo>
-        <!--Guardian Knight Helmet-->
-        <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight01_S02">
-            <Item itemName="COL_ING_G_Oak01" count="8" />
-            <Item itemName="COL_ING_G_GuardianFragment01" count="5" />
-            <Item itemName="COL_ING_G_Dandelions01" count="4" />
-        </RecipeInfo>
         <!--Guardian Cadet Helmet-->
         <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight01_S02">
             <Item itemName="COL_ING_G_Oak01" count="8" />
