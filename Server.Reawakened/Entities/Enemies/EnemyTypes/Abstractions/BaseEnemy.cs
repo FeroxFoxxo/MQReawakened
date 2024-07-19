@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using AssetStudio;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
@@ -264,8 +265,11 @@ public abstract class BaseEnemy : IDestructible
             }
 
             //Achievements
-            player.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, QuestCatalog);
-            player.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, QuestCatalog);
+            foreach (var roomPlayer in Room.GetPlayers())
+            {
+                roomPlayer.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, QuestCatalog);
+                roomPlayer.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, QuestCatalog);
+            }
 
             player.CheckAchievement(AchConditionType.DefeatEnemy, [PrefabName], InternalAchievement, Logger);
             player.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory)], InternalAchievement, Logger);
