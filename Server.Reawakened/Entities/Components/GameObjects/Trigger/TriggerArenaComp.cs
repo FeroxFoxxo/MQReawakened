@@ -28,6 +28,17 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
         _hasStarted = false;
     }
 
+    public override void DelayedComponentInitialization()
+    {
+        foreach (var entity in Triggers.Where(x => x.Value == TriggerType.Activate).Select(x => x.Key))
+            if (int.Parse(entity) > 0)
+                foreach (var spawner in Room.GetEntitiesFromId<BaseSpawnerControllerComp>(entity))
+                {
+                    spawner.SetArena(this);
+                    spawner.SetActive(false);
+                }
+    }
+
     public override object[] GetInitData(Player player) => [-1];
 
     public override void Update()
@@ -64,6 +75,10 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 
             //Failsafe to prevent respawn issues when arena is defeated too quickly
             _minClearTime = Room.Time + 5;
+
+            var players = Room.GetPlayers();
+            foreach (var player in players)
+                player.TempData.CurrentArena = this;
         }
         else
         {
@@ -77,7 +92,10 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
                         trigger.Trigger(true, origin.GameObjectId);
 
                 foreach (var player in players)
+                {
                     player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, QuestCatalog);
+                    player.Character.Write.SpawnPointId = Id;
+                }
             }
             else
                 foreach (var player in players)
@@ -91,6 +109,8 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
     {
         var players = Room.GetPlayers();
         Trigger(players.FirstOrDefault(), true, false);
+        foreach (var player in players)
+            player.TempData.CurrentArena = null;
 
         foreach (var spawner in _spawners)
         {
@@ -103,6 +123,8 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
     {
         var players = Room.GetPlayers();
         Trigger(players.FirstOrDefault(), false, false);
+        foreach (var player in players)
+            player.TempData.CurrentArena = null;
 
         foreach (var spawner in _spawners)
         {

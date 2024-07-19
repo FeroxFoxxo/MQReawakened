@@ -1,9 +1,11 @@
 ﻿using A2m.Server;
+using GameError;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
+using static Server.Reawakened.Players.Extensions.PlayerStatusEffectExtensions;
 
 
 namespace Server.Reawakened.Players.Extensions;
@@ -35,32 +37,43 @@ public static class PlayerStatusEffectExtensions
         player.ApplyCharacterDamage(damage, hazardId, hurtLength, serverRConfig, timerThread);
     }
 
-    public class InvisibilityData()
+    public class StatusData()
     {
         public Player Player;
-        public bool IsInvisible;
-        public float Duration;
+        public ItemEffectType Effect;
     }
 
-    public static void TemporaryInvisibility(this Player player, float duration, TimerThread timerThread)
+    public static void TemporaryStatus(this Player player, float duration, ItemEffectType status, TimerThread timerThread)
     {
-        player.TempData.Invisible = true;
-
-        var disableInvisibilityData = new InvisibilityData()
+        switch (status)
         {
-            Player = player,
-            IsInvisible = false,
-            Duration = duration
-        };
+            case ItemEffectType.Invisibility:
+                player.TempData.Invisible = true;
+                break;
+            case ItemEffectType.Detect:
+                player.TempData.DetectInvis = true;
+                break;
+        }
 
-        timerThread.DelayCall(DisableInvisibility, disableInvisibilityData,
+        var statusData = new StatusData { Player = player, Effect = status };
+
+        timerThread.DelayCall(DisableStatus, statusData,
             TimeSpan.FromSeconds(duration), TimeSpan.Zero, 1);
     }
 
-    public static void DisableInvisibility(object data)
+    public static void DisableStatus(object data)
     {
-        var invisibilityData = (InvisibilityData)data;
-        invisibilityData.Player.TempData.Invisible = false;
+        var statusData = (StatusData)data;
+
+        switch (statusData.Effect)
+        {
+            case ItemEffectType.Invisibility:
+                statusData.Player.TempData.Invisible = false;
+                break;
+            case ItemEffectType.Detect:
+                statusData.Player.TempData.DetectInvis = false;
+                break;
+        } 
     }
 
     public class InvincibilityData()

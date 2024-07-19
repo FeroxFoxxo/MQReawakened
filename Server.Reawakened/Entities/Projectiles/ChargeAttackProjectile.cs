@@ -26,7 +26,7 @@ public class ChargeAttackProjectile : BaseProjectile
         _itemId = itemId;
         _zoneId = zoneId;
 
-        Collider = new AttackCollider(player.GameObjectId, startPosition, new Rect(0, 0, 1, 1), PrjPlane, player, damage, type, 15f, 0);
+        Collider = new AttackCollider(player.GameObjectId, startPosition, new Rect(0, 0, 1, 1), PrjPlane, player, damage, type, 15f, 0, player.TempData.DetectInvis);
 
         Room.SendSyncEvent(new ChargeAttackStart_SyncEvent(player.GameObjectId.ToString(), Room.Time,
                         endPosition.x, endPosition.y, speed.x, speed.y, itemId, zoneId));

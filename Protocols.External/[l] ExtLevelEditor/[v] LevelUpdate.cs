@@ -39,6 +39,8 @@ public class RoomUpdate : ExternalProtocol
         foreach (var enemy in Player.Room.GetEnemies())
             enemy.SendAiData(Player);
 
+        Player.TempData.CurrentArena = null;
+
         Player.Room.SendCharacterInfo(Player);
 
         foreach (var npc in Player.Room.GetEntitiesFromType<NPCControllerComp>())
@@ -61,6 +63,7 @@ public class RoomUpdate : ExternalProtocol
         if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet) &&
             pet != null && PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbility))
             Player.EquipPet(petAbility, WorldStatistics, ServerRConfig);
+
     }
 
     private string GetGameObjectStore(Room room)

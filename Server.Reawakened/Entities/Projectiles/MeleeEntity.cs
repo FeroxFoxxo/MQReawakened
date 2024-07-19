@@ -27,7 +27,7 @@ public class MeleeEntity : BaseProjectile
         var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialRange;
 
         Collider = new AttackCollider(id, position, new Rect(meleeLeft, meleeTop, meleeWidth, meleeHeight),
-            PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f
+            PrjPlane, player, damage, type, LifeTime, onGround ? 0.1f : 0.5f, player.TempData.DetectInvis
         );
 
         var hitEvent = new Melee_SyncEvent(

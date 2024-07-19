@@ -1,4 +1,5 @@
 ﻿using Server.Base.Core.Extensions;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Players.Models.Trade;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class TemporaryDataModel
     public bool PetDefensiveBarrier { get; set; }
     public bool Invincible { get; set; } = false;
     public bool Invisible { get; set; } = false;
+    public bool DetectInvis { get; set; } = false;
     public bool OnGround { get; set; } = false;
     public bool Underwater { get; set; } = false;
     public Timer UnderwaterTimer { get; set; } = null;
@@ -23,6 +25,7 @@ public class TemporaryDataModel
     public bool ReputationBoostsElixir { get; set; }
     public bool IsSuperStomping { get; set; } = false;
     public bool IsSlowed { get; set; } = false;
+    public TriggerArenaComp CurrentArena { get; set; } = null;
 
     public List<string> CollidingHazards { get; set; } = [];
     public Dictionary<int, bool> VotedForItem { get; set; } = [];

@@ -1,4 +1,5 @@
 ﻿using Server.Reawakened.Entities.Colliders.Enums;
+using Server.Reawakened.Entities.Components.GameObjects.Bouncers;
 using Server.Reawakened.Rooms;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public abstract class BaseCollider
     public readonly ColliderType Type;
     public readonly Vector3 SpawnPosition;
     public readonly Rect BoundingBox;
+    public readonly bool IsInvisible;
 
     private Vector3 internalPosition = Vector3.zero;
     private Rect colliderBox = new(0, 0, 0, 0);
@@ -40,6 +42,9 @@ public abstract class BaseCollider
         BoundingBox = boundingBox;
         SpawnPosition = new Vector3(position.x, position.y, position.z);
         Active = true;
+
+        var invis = Room.GetEntityFromId<InvisibilityControllerComp>(Id);
+        IsInvisible = invis != null && invis.ApplyInvisibility;
 
         // MUST be at bottom so collider generates correctly.
         Position = new Vector3(position.x, position.y, position.z);

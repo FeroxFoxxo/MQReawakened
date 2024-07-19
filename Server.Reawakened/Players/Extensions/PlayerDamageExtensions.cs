@@ -48,7 +48,7 @@ public static class PlayerDamageExtensions
     {
         var waterData = (UnderwaterData)underwaterData;
 
-        if (!waterData.Player.TempData.Underwater)
+        if (!waterData.Player.TempData.Underwater || waterData.Player == null)
             return;
 
         waterData.Player.Room.SendSyncEvent(new StatusEffect_SyncEvent(waterData.Player.GameObjectId, waterData.Player.Room.Time,

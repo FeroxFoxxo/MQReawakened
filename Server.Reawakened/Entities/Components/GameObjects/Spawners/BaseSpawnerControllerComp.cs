@@ -121,7 +121,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public override void DelayedComponentInitialization()
     {
         Level = Room.LevelInfo.Difficulty + LevelOffset;
-        SetActive(ComponentData.SpawnOnDetection);
+        SetActive(_arenaComp is null);
     }
 
     public void AddEnemyModel(string prefabName)
@@ -196,7 +196,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public void Spawn(TriggerArenaComp arena)
     {
-        _arenaComp = arena;
+        SetArena(arena);
 
         _activeDetectionRadius = 20;
         SetActive(true);
@@ -210,6 +210,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             enemy.Value.DespawnEnemy();
     }
 
+    public void SetArena(TriggerArenaComp arena) => _arenaComp = arena;
     public void RemoveFromArena() => _arenaComp.ArenaEntities.Remove(Id);
 
     public void Revive()

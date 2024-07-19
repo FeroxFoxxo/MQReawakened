@@ -26,6 +26,8 @@ public static class CharacterInventoryExtensions
             player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
                                 (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false));
 
+        var itemEffects = new ItemEffectsModel(usedItem.ItemEffects);
+
         switch (effect.Type)
         {
             case ItemEffectType.PetRegainEnergy:
@@ -45,23 +47,41 @@ public static class CharacterInventoryExtensions
 
                 player.HealCharacter(usedItem, timerThread, config, effect.Type);
                 break;
+            case ItemEffectType.IncreaseBluntDamage:
             case ItemEffectType.IncreaseAirDamage:
+            case ItemEffectType.IncreaseFireDamage:
+            case ItemEffectType.IncreaseEarthDamage:
+            case ItemEffectType.IncreaseIceDamage:
+            case ItemEffectType.IncreaseLightningDamage:
             case ItemEffectType.IncreaseAllResist:
-            case ItemEffectType.Shield:
+            case ItemEffectType.Defence:
+            case ItemEffectType.ResistAir:
+            case ItemEffectType.ResistFire:
+            case ItemEffectType.ResistEarth:
+            case ItemEffectType.ResistIce:
+            case ItemEffectType.ResistLightning:
+                break;
             case ItemEffectType.WaterBreathing:
+                break;
             case ItemEffectType.BananaMultiplier:
                 player.TempData.BananaBoostsElixir = true;
-                timerThread.DelayCall(SetBananaElixirTimer, player, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
+                timerThread.DelayCall(
+                    SetBananaElixirTimer,
+                    player,
+                    TimeSpan.FromSeconds(itemEffects.GetItemEffect(ItemEffectType.BananaMultiplier).Duration),
+                    TimeSpan.Zero, 1);
                 break;
             case ItemEffectType.ExperienceMultiplier:
                 player.TempData.ReputationBoostsElixir = true;
-                timerThread.DelayCall(SetXpElixirTimer, player, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
+                timerThread.DelayCall(
+                    SetXpElixirTimer,
+                    player,
+                    TimeSpan.FromSeconds(itemEffects.GetItemEffect(ItemEffectType.ExperienceMultiplier).Duration),
+                    TimeSpan.Zero, 1);
                 break;
-            case ItemEffectType.Defence:
-                break;
+            case ItemEffectType.Detect:
             case ItemEffectType.Invisibility:
-                player.TempData.Invisible = true;
-                player.TemporaryInvisibility(usedItem.ItemEffects[(int)ItemFilterCategory.Consumables].Duration, timerThread);
+                player.TemporaryStatus(itemEffects.GetItemEffect(effect.Type).Duration, effect.Type, timerThread);
                 break;
             case ItemEffectType.Invalid:
             case ItemEffectType.Unknown:
