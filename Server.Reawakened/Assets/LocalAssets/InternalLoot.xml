@@ -525,8 +525,8 @@
                 <Item itemName="COL_RECIP_COM_Warrior01_LS02" count="1" />
             </Items>
         </LootInfo>
+        <!--Puzzle Blue Chest-->
         <LootInfo objectId="6131" doLootWheel="true">
-            <!--Puzzle Blue Chest-->
             <Items rewardAmount="1">
                 <Item itemName="WPN_SPC_WaterBalloon01" count="1" />
                 <Item itemName="COL_ING_G_Linen01" count="1" />
@@ -542,6 +542,7 @@
                 <Item itemName="COL_RECIP_COM_Warrior01_TS02" count="1" />
                 <Item itemName="COL_RECIP_COM_Warrior01_LS02" count="1" />
             </Items>
+        </LootInfo>
         <!--2nd Arena Purple Chest-->
         <LootInfo objectId="6130" doLootWheel="true">
             <Items rewardAmount="1">
@@ -553,7 +554,6 @@
                 <Item itemName="COL_RECIP_COM_Warrior01_TS02" count="1" />
                 <Item itemName="COL_RECIP_COM_Warrior01_LS02" count="1" />
             </Items>
-        </LootInfo>
         </LootInfo>
     </Level>
     <Level name="Cindertop Highland" id="96">
