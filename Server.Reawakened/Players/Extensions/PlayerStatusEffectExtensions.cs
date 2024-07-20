@@ -37,28 +37,6 @@ public static class PlayerStatusEffectExtensions
         player.ApplyCharacterDamage(damage, hazardId, hurtLength, serverRConfig, timerThread);
     }
 
-    public class StatusData()
-    {
-        public Player Player;
-        public ItemEffect Effect;
-    }
-
-    public static void TemporaryStatus(this Player player, ItemEffect effect, TimerThread timerThread)
-    {
-        player.Character.AddStatusEffect(effect);
-
-        var statusData = new StatusData { Player = player, Effect = effect };
-
-        timerThread.DelayCall(DisableStatus, statusData,
-            TimeSpan.FromSeconds(effect.Duration), TimeSpan.Zero, 1);
-    }
-
-    public static void DisableStatus(object data)
-    {
-        var statusData = (StatusData)data;
-        statusData.Player.Character.RemoveStatusEffect(statusData.Effect.Type);
-    }
-
     public class InvincibilityData()
     {
         public Player Player;

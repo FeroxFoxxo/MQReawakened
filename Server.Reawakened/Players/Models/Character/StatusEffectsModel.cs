@@ -1,0 +1,50 @@
+﻿using A2m.Server;
+using Server.Reawakened.Database.Characters;
+
+namespace Server.Reawakened.Players.Models.Character;
+public class StatusEffectsModel(CharacterDbEntry entry)
+{
+    public Dictionary<ItemEffectType, StatusEffectModel> Effects = entry.StatusEffects;
+
+    public void Add(ItemEffect effect)
+    {
+        var shouldReplaceEffect = true;
+
+        if (Effects.TryGetValue(effect.Type, out var statusData))
+                if (statusData.Value > effect.Value && statusData.Expiry > DateTime.Now)
+                    shouldReplaceEffect = false;
+
+        if (shouldReplaceEffect)
+        {
+            var duration = TimeSpan.FromSeconds(effect.Duration);
+            Remove(effect.Type);
+            Effects.Add(effect.Type, new StatusEffectModel(effect.Type, effect.Value, DateTime.Now + duration));
+        }
+    }
+
+    public void Remove(ItemEffectType effect) => Effects.Remove(effect);
+
+    public float Get(ItemEffectType effect)
+    {
+        var output = 0f;
+
+        if (Effects.TryGetValue(effect, out var statusData))
+            if (statusData.Effect == effect)
+            {
+                Console.WriteLine(statusData.Expiry);
+                Console.WriteLine(DateTime.Now);
+                if (statusData.Expiry > DateTime.Now)
+                {
+                    output = statusData.Value;
+                    Console.WriteLine("Status " + effect + " is fresh with value of " + output);
+                }
+                else
+                {
+                    Remove(effect);
+                    Console.WriteLine("Status " + effect + " is old and has been removed");
+                }
+            }
+
+        return output;
+    }
+}

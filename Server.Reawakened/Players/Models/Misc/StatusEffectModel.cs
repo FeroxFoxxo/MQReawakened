@@ -1,7 +1,20 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Database.Characters;
 
-public class StatusEffectModel(ItemEffectModel status, DateTime expiry)
+public class StatusEffectModel
 {
-    public ItemEffectModel Status = status;
-    public readonly DateTime Expiry = expiry;
+    public ItemEffectType Effect;
+    public float Value;
+    public DateTime Expiry;
+
+    public StatusEffectModel()
+    {
+    }
+
+    public StatusEffectModel(ItemEffectType effect, float value, DateTime expiry)
+    {
+        Effect = effect;
+        Value = value;
+        Expiry = expiry;
+    }
 }

@@ -148,7 +148,8 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         if ((TimedHazard || EffectType == ItemEffectType.WaterBreathing) && !IsActive)
             return;
 
-        if (HitOnlyVisible && player.Character.StatusEffects.ContainsKey(ItemEffectType.Invisibility))
+        player.Character.StatusEffects.Get(ItemEffectType.Invisibility);
+        if (HitOnlyVisible && player.Character.StatusEffects.Effects.ContainsKey(ItemEffectType.Invisibility))
             return;
 
         if (EffectType == ItemEffectType.SlowStatusEffect && player.TempData.IsSlowed || player.HasNullifyEffect(ItemCatalog))

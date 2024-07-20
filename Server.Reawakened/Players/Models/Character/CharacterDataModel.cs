@@ -12,6 +12,8 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
 
     public InventoryModel Inventory => new(Write);
     public HotbarModel Hotbar => new(Write);
+
+    public StatusEffectsModel StatusEffects => new(Write);
     public CharacterResistancesModel Resistances => new(Write);
     public RecipeListModel RecipeList => new(Write);
 
@@ -49,10 +51,19 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
     public bool SpawnOnBackPlane => Write.SpawnOnBackPlane;
     public int BadgePoints => Write.BadgePoints;
     public int AbilityPower => Write.AbilityPower;
-    public Dictionary<ItemEffectType, StatusEffectModel> StatusEffects => Write.StatusEffects;
 
     public void SetPlayerData(Player player)
     {
+        var teet = Write.StatusEffects.ToList();
+        Console.WriteLine("HI HI HEE HEE HO");
+        foreach (var item in Write.Items)
+        {
+            Console.WriteLine(item.Value.ItemId);
+        }
+        foreach (var itesm in Write.StatusEffects)
+        {
+            Console.WriteLine(itesm.Value.Effect + " " + itesm.Value.Value);
+        }
         _player = player;
         _player.NetState.Identifier = CharacterName;
     }
@@ -267,45 +278,6 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
         damage += statManager.ComputeEquimentBoost(effect, itemList);
 
         return damage;
-    }
-
-    public void AddStatusEffect(ItemEffect effect)
-    {
-        var shouldReplaceEffect = true;
-
-        if (StatusEffects.ContainsKey(effect.Type))
-            if (StatusEffects[effect.Type].Status.Value > effect.Value && StatusEffects[effect.Type].Expiry > DateTime.Now)
-                shouldReplaceEffect = false;
-
-        if (shouldReplaceEffect)
-        {
-            var duration = TimeSpan.FromSeconds(effect.Duration);
-            RemoveStatusEffect(effect.Type);
-            StatusEffects.Add(effect.Type, new StatusEffectModel(new ItemEffectModel(effect), DateTime.Now + duration));
-        }
-    }
-
-    public void RemoveStatusEffect(ItemEffectType effect) => StatusEffects.Remove(effect);
-
-    public float GetStatusEffect(ItemEffectType effect)
-    {
-        var output = 0f;
-
-        if (StatusEffects.ContainsKey(effect))
-        {
-            if (StatusEffects[effect].Expiry > DateTime.Now)
-            {
-                output = StatusEffects[effect].Status.Value;
-                Console.WriteLine("Status " + effect + " is fresh with value of " + output);
-            }
-            else
-            {
-                RemoveStatusEffect(effect);
-                Console.WriteLine("Status " + effect + " is old and has been removed");
-            }
-        }
-
-        return output;
     }
 
     public PlayerListModel GetFriends() => FriendModels;

@@ -44,8 +44,8 @@ namespace Server.Reawakened.Migrations
                     b.Property<string>("Blocked")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Cash")
-                        .HasColumnType("INTEGER");
+                    b.Property<float>("Cash")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("CharacterName")
                         .HasColumnType("TEXT");
@@ -158,8 +158,8 @@ namespace Server.Reawakened.Migrations
                     b.Property<string>("Muted")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("NCash")
-                        .HasColumnType("INTEGER");
+                    b.Property<float>("NCash")
+                        .HasColumnType("REAL");
 
                     b.Property<bool>("PetAutonomous")
                         .HasColumnType("INTEGER");
@@ -205,6 +205,9 @@ namespace Server.Reawakened.Migrations
 
                     b.Property<float>("SpawnPositionY")
                         .HasColumnType("REAL");
+
+                    b.Property<string>("StatusEffects")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("TribesDiscovered")
                         .HasColumnType("TEXT");

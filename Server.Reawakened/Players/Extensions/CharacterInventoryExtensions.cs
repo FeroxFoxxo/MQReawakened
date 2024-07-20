@@ -26,8 +26,6 @@ public static class CharacterInventoryExtensions
             player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
                                 (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false));
 
-        var itemEffects = new ItemEffectsModel(usedItem.ItemEffects);
-
         switch (effect.Type)
         {
             case ItemEffectType.PetRegainEnergy:
@@ -65,7 +63,7 @@ public static class CharacterInventoryExtensions
             case ItemEffectType.Invisibility:
             case ItemEffectType.BananaMultiplier:
             case ItemEffectType.ExperienceMultiplier:
-                player.TemporaryStatus(itemEffects.GetItemEffect(effect.Type), timerThread);
+                player.Character.StatusEffects.Add(effect);
                 break;
 
             case ItemEffectType.Invalid:
