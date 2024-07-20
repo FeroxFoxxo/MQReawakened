@@ -6,6 +6,7 @@ using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.WowMoment;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -62,7 +63,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         {
             if (_spawner is not null && _spawner.OnDeathTargetID is not null and not "0")
                 foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(_spawner.OnDeathTargetID))
-                    trigger.Trigger(true, Id);
+                    trigger.TriggerStateChange(TriggerType.Activate, true, Id);
 
             origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);

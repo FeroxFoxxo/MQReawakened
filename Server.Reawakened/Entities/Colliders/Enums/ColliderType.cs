@@ -12,5 +12,6 @@ public enum ColliderType
     Mesh,
     Hazard,
     Stomper,
-    MovingPlatform
+    MovingPlatform,
+    TriggerReceiver
 }

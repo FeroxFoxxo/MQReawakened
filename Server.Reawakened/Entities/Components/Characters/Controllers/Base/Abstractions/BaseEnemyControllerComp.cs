@@ -4,6 +4,7 @@ using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
@@ -43,7 +44,13 @@ public abstract class BaseEnemyControllerComp<T> : Component<T>, IEnemyControlle
         CreateEnemy(Id, PrefabName);
     }
 
-    public BaseEnemy CreateEnemy(string id, string prefabName)
+    public override void SendDelayedData(Player player)
+    {
+        if (Room.IsObjectKilled(Id))
+            player.SendSyncEventToPlayer(new AiHealth_SyncEvent(Id, Room.Time, 0, 0, 0, 0, "now", false, false));
+    }
+
+        public BaseEnemy CreateEnemy(string id, string prefabName)
     {
         if (!InternalEnemyData.EnemyInfoCatalog.TryGetValue(prefabName, out var enemyModel))
         {

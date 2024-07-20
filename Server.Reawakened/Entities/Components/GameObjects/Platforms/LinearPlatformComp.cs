@@ -35,7 +35,7 @@ public class LinearPlatformComp : BaseMovingObjectControllerComp<LinearPlatform>
         _collider = new MovingPlatformCollider(
             Id,
             Position.ToUnityVector3(),
-            new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height),
+            Rectangle.ToRect(),
             ParentPlane,
             Room
          );

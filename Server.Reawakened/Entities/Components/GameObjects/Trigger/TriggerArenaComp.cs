@@ -15,6 +15,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
     private float _timer;
     private float _minClearTime;
     private bool _hasStarted;
+    private bool _cleared;
     private List<BaseSpawnerControllerComp> _spawners;
 
     public List<string> ArenaEntities;
@@ -26,6 +27,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
         ArenaEntities = [];
         _spawners = [];
         _hasStarted = false;
+        _cleared = false;
     }
 
     public override void DelayedComponentInitialization()
@@ -37,6 +39,17 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
                     spawner.SetArena(this);
                     spawner.SetActive(false);
                 }
+    }
+
+    public override void SendDelayedData(Player player)
+    {
+        var trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, false, "now", false);
+        if (_cleared)
+            new Trigger_SyncEvent(Id.ToString(), Room.Time, true, "now", false);
+        else if (!_cleared && _hasStarted)
+            new Trigger_SyncEvent(Id.ToString(), Room.Time, true, "now", true);
+
+        player.SendSyncEventToPlayer(trigger);
     }
 
     public override object[] GetInitData(Player player) => [-1];
@@ -117,6 +130,7 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
             spawner.Despawn();
             spawner.Destroy();
         }
+        _cleared = true;
     }
 
     private void ArenaFailure()

@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using AssetStudio;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
@@ -10,6 +9,7 @@ using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
@@ -216,7 +216,7 @@ public abstract class BaseEnemy : IDestructible
     {
         if (OnDeathTargetId is not null and not "0")
             foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(OnDeathTargetId))
-                trigger.Trigger(true, player.GameObjectId);
+                trigger.TriggerStateChange(TriggerType.Activate, true, Id);
 
         SendRewards(player);
 
