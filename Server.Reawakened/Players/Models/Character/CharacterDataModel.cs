@@ -49,6 +49,7 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
     public bool SpawnOnBackPlane => Write.SpawnOnBackPlane;
     public int BadgePoints => Write.BadgePoints;
     public int AbilityPower => Write.AbilityPower;
+    public Dictionary<string, ReportModel> Reports => Write.Reports;
 
     public void SetPlayerData(Player player)
     {

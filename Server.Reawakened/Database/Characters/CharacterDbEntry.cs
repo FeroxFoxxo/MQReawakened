@@ -80,6 +80,7 @@ public class CharacterDbEntry : PersistantData
     public bool SpawnOnBackPlane { get; set; }
     public int BadgePoints { get; set; }
     public int AbilityPower { get; set; }
+    public Dictionary<string, ReportModel> Reports { get; set; }
 
     // Character Model
     public Dictionary<int, List<int>> CollectedIdols { get; set; }
@@ -150,6 +151,7 @@ public class CharacterDbEntry : PersistantData
         Friends = [];
         Blocked = [];
         Muted = [];
+        Reports = [];
 
         // Character Model
         CollectedIdols = [];

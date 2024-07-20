@@ -1,5 +1,7 @@
 ﻿using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Helpers;
+using Server.Reawakened.Players.Models.Character;
 using System.Text;
 
 namespace Protocols.External._o__ReportMessageHandler;
@@ -8,6 +10,7 @@ public class ReportAbuse : ExternalProtocol
     public override string ProtocolName => "oa";
 
     public DiscordHandler DiscordHandler { get; set; }
+    public PlayerContainer PlayerContainer { get; set; }
 
     public override void Run(string[] message)
     {
@@ -18,6 +21,15 @@ public class ReportAbuse : ExternalProtocol
         var reportId = Guid.NewGuid();
 
         DiscordHandler.SendReport(reportId.ToString(), category, Player.CharacterName, character, reportMessage);
+
+        PlayerContainer.GetPlayerByName(character)?.Character.Reports.TryAdd(reportId.ToString(), new ReportModel
+        {
+            Id = reportId,
+            Category = category,
+            Reporter = Player.CharacterName,
+            Reported = character,
+            Description = reportMessage
+        });
 
         SendXt("oa", "1");
     }
