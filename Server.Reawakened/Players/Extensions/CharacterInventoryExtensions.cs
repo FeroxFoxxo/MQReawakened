@@ -60,8 +60,10 @@ public static class CharacterInventoryExtensions
             case ItemEffectType.ResistEarth:
             case ItemEffectType.ResistIce:
             case ItemEffectType.ResistLightning:
-                break;
             case ItemEffectType.WaterBreathing:
+            case ItemEffectType.Detect:
+            case ItemEffectType.Invisibility:
+                player.TemporaryStatus(itemEffects.GetItemEffect(effect.Type), timerThread);
                 break;
             case ItemEffectType.BananaMultiplier:
                 player.TempData.BananaBoostsElixir = true;
@@ -78,10 +80,6 @@ public static class CharacterInventoryExtensions
                     player,
                     TimeSpan.FromSeconds(itemEffects.GetItemEffect(ItemEffectType.ExperienceMultiplier).Duration),
                     TimeSpan.Zero, 1);
-                break;
-            case ItemEffectType.Detect:
-            case ItemEffectType.Invisibility:
-                player.TemporaryStatus(itemEffects.GetItemEffect(effect.Type).Duration, effect.Type, timerThread);
                 break;
             case ItemEffectType.Invalid:
             case ItemEffectType.Unknown:

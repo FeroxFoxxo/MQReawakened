@@ -40,40 +40,23 @@ public static class PlayerStatusEffectExtensions
     public class StatusData()
     {
         public Player Player;
-        public ItemEffectType Effect;
+        public ItemEffect Effect;
     }
 
-    public static void TemporaryStatus(this Player player, float duration, ItemEffectType status, TimerThread timerThread)
+    public static void TemporaryStatus(this Player player, ItemEffect effect, TimerThread timerThread)
     {
-        switch (status)
-        {
-            case ItemEffectType.Invisibility:
-                player.TempData.Invisible = true;
-                break;
-            case ItemEffectType.Detect:
-                player.TempData.DetectInvis = true;
-                break;
-        }
+        player.TempData.AddStatusEffect(effect);
 
-        var statusData = new StatusData { Player = player, Effect = status };
+        var statusData = new StatusData { Player = player, Effect = effect };
 
         timerThread.DelayCall(DisableStatus, statusData,
-            TimeSpan.FromSeconds(duration), TimeSpan.Zero, 1);
+            TimeSpan.FromSeconds(effect.Duration), TimeSpan.Zero, 1);
     }
 
     public static void DisableStatus(object data)
     {
         var statusData = (StatusData)data;
-
-        switch (statusData.Effect)
-        {
-            case ItemEffectType.Invisibility:
-                statusData.Player.TempData.Invisible = false;
-                break;
-            case ItemEffectType.Detect:
-                statusData.Player.TempData.DetectInvis = false;
-                break;
-        } 
+        statusData.Player.TempData.RemoveStatusEffect(statusData.Effect);
     }
 
     public class InvincibilityData()

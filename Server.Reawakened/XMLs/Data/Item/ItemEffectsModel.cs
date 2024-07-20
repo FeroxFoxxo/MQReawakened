@@ -1,6 +1,14 @@
-﻿public class ItemEffectNodeModel(string duration, string type, string value)
+﻿using A2m.Server;
+
+public class ItemEffectsModel(List<ItemEffect> effects)
 {
-    public string Duration = duration;
-    public string Type = type;
-    public string Value = value;
+    public List<ItemEffect> Effects = effects;
+
+    public ItemEffect GetItemEffect(ItemEffectType type)
+    {
+        foreach (var effect in Effects)
+            if (type == effect.Type)
+                return effect;
+        return null;
+    }
 }

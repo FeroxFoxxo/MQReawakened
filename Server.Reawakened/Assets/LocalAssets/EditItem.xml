@@ -573,17 +573,17 @@
         </Item>
     </GameVersion>
     <GameVersion version="v2011">
-        <Item name="COL_POT_BananaPotion01">
+        <Item name="Col_POT_BananaPotion01">
             <EditItemEffects>
-                <ItemEffect duration="3600" type="BananaMultiplier" value="110"/>
+                <ItemEffect duration="80" type="BananaMultiplier" value="2000"/>
             </EditItemEffects>
         </Item>
-        <Item name="COL_POT_ExperiencePotion01">
+        <Item name="Col_POT_ExperiencePotion01">
             <EditItemEffects>
                 <ItemEffect duration="3600" type="ExperienceMultiplier" value="110"/>
             </EditItemEffects>
         </Item>
-        <Item name="COL_POT_ExperiencePotion02">
+        <Item name="Col_POT_ExperiencePotion02">
             <EditItemEffects>
                 <ItemEffect duration="7200" type="ExperienceMultiplier" value="110"/>
             </EditItemEffects>

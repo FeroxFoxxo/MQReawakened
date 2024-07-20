@@ -16,7 +16,7 @@ public class EditItem : InternalXml
     public ServerRConfig Config { get; set; }
 
     private Dictionary<GameVersion, Dictionary<string, Dictionary<string, string>>> _editedItemAttributes;
-    private Dictionary<GameVersion, Dictionary<string, Dictionary<int, ItemEffectNodeModel>>> _editedItemEffects;
+    private Dictionary<GameVersion, Dictionary<string, Dictionary<int, ItemEffectModel>>> _editedItemEffects;
     private GameVersion[] _possibleVersions;
 
     public override void InitializeVariables()
@@ -94,7 +94,7 @@ public class EditItem : InternalXml
                             var counter = 0;
                             foreach (XmlNode itemEffect in itemAttribute.ChildNodes)
                             {
-                                var itemEffectModel = new ItemEffectNodeModel(string.Empty, string.Empty, string.Empty);
+                                var itemEffectModel = new ItemEffectModel(string.Empty, string.Empty, string.Empty);
 
                                 foreach (XmlAttribute itemEffectAttribute in itemEffect.Attributes)
                                     switch (itemEffectAttribute.Name)
