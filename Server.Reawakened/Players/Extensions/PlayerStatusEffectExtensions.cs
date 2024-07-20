@@ -45,7 +45,7 @@ public static class PlayerStatusEffectExtensions
 
     public static void TemporaryStatus(this Player player, ItemEffect effect, TimerThread timerThread)
     {
-        player.TempData.AddStatusEffect(effect);
+        player.Character.AddStatusEffect(effect);
 
         var statusData = new StatusData { Player = player, Effect = effect };
 
@@ -56,7 +56,7 @@ public static class PlayerStatusEffectExtensions
     public static void DisableStatus(object data)
     {
         var statusData = (StatusData)data;
-        statusData.Player.TempData.RemoveStatusEffect(statusData.Effect);
+        statusData.Player.Character.RemoveStatusEffect(statusData.Effect.Type);
     }
 
     public class InvincibilityData()

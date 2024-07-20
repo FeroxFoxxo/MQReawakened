@@ -17,7 +17,6 @@ public class TemporaryDataModel
     public bool PetDefense { get; set; }
     public bool PetDefensiveBarrier { get; set; }
     public bool Invincible { get; set; } = false;
-    public Dictionary<ItemEffectType, float> StatusEffects { get; set; } = [];
     public bool OnGround { get; set; } = false;
     public bool Underwater { get; set; } = false;
     public Timer UnderwaterTimer { get; set; } = null;
@@ -44,14 +43,4 @@ public class TemporaryDataModel
 
     public Vector3 CopyPosition() =>
         new(Position.x, Position.y, Position.z);
-
-    public void AddStatusEffect(ItemEffect effect)
-    {
-        if (StatusEffects.ContainsKey(effect.Type) && StatusEffects[effect.Type] < effect.Value)
-            StatusEffects[effect.Type] =  effect.Value;
-        else
-            StatusEffects.Add(effect.Type, effect.Value);
-    }
-
-    public void RemoveStatusEffect(ItemEffect effect) => StatusEffects.Remove(effect.Type);
 }

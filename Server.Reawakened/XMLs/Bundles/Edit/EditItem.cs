@@ -94,19 +94,19 @@ public class EditItem : InternalXml
                             var counter = 0;
                             foreach (XmlNode itemEffect in itemAttribute.ChildNodes)
                             {
-                                var itemEffectModel = new ItemEffectModel(string.Empty, string.Empty, string.Empty);
+                                var itemEffectModel = new ItemEffectModel(0.0f, string.Empty, 0.0f);
 
                                 foreach (XmlAttribute itemEffectAttribute in itemEffect.Attributes)
                                     switch (itemEffectAttribute.Name)
                                     {
                                         case "duration":
-                                            itemEffectModel.Duration = itemEffectAttribute.Value;
+                                            itemEffectModel.Duration = float.Parse(itemEffectAttribute.Value);
                                             break;
                                         case "type":
                                             itemEffectModel.Type = itemEffectAttribute.Value;
                                             break;
                                         case "value":
-                                            itemEffectModel.Value = itemEffectAttribute.Value;
+                                            itemEffectModel.Value = float.Parse(itemEffectAttribute.Value);
                                             break;
                                     }
                                 _editedItemEffects[gameVersion][name][counter] = itemEffectModel;
@@ -147,13 +147,13 @@ public class EditItem : InternalXml
                             switch (itemEffectAttributes.Name)
                             {
                                 case "duration":
-                                    itemEffectAttributes.Value = editedItemEffects[counter].Duration;
+                                    itemEffectAttributes.Value = editedItemEffects[counter].Duration.ToString();
                                     break;
                                 case "type":
                                     itemEffectAttributes.Value = editedItemEffects[counter].Type;
                                     break;
                                 case "value":
-                                    itemEffectAttributes.Value = editedItemEffects[counter].Value;
+                                    itemEffectAttributes.Value = editedItemEffects[counter].Value.ToString();
                                     break;
                             }
                         }

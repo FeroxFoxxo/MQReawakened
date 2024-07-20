@@ -163,7 +163,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         foreach (var player in Room.GetPlayers())
         {
             if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine) &&
-                ParentPlane == player.GetPlayersPlaneString() && !player.TempData.StatusEffects.ContainsKey(ItemEffectType.Invisibility) && 
+                ParentPlane == player.GetPlayersPlaneString() && !player.Character.StatusEffects.ContainsKey(ItemEffectType.Invisibility) && 
                 player.Character.CurrentLife > 0)
             {
                 AiData.Sync_TargetPosX = player.TempData.Position.x;

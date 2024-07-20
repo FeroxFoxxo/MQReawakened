@@ -1,9 +1,7 @@
 ﻿using A2m.Server;
 
-public class StatusEffectModel(ItemEffectModel status, bool active)
+public class StatusEffectModel(ItemEffectModel status, DateTime expiry)
 {
     public ItemEffectModel Status = status;
-    public bool Active = active;
-
-    public void SetActive(bool active) => Active = active;
+    public readonly DateTime Expiry = expiry;
 }

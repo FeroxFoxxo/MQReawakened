@@ -69,8 +69,8 @@ public class CharacterDbEntry : PersistantData
     public List<int> Friends { get; set; }
     public List<int> Blocked { get; set; }
     public List<int> Muted { get; set; }
-    public int Cash { get; set; }
-    public int NCash { get; set; }
+    public float Cash { get; set; }
+    public float NCash { get; set; }
     public int ActiveQuestId { get; set; }
     public int Reputation { get; set; }
     public int ReputationForCurrentLevel { get; set; }
@@ -80,6 +80,7 @@ public class CharacterDbEntry : PersistantData
     public bool SpawnOnBackPlane { get; set; }
     public int BadgePoints { get; set; }
     public int AbilityPower { get; set; }
+    public Dictionary<ItemEffectType, StatusEffectModel> StatusEffects { get; set; }
 
     // Character Model
     public Dictionary<int, List<int>> CollectedIdols { get; set; }
@@ -150,6 +151,7 @@ public class CharacterDbEntry : PersistantData
         Friends = [];
         Blocked = [];
         Muted = [];
+        StatusEffects = [];
 
         // Character Model
         CollectedIdols = [];

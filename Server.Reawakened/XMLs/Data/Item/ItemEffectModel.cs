@@ -1,6 +1,21 @@
-﻿public class ItemEffectModel(string duration, string type, string value)
+﻿using A2m.Server;
+
+public class ItemEffectModel
 {
-    public string Duration = duration;
-    public string Type = type;
-    public string Value = value;
+    public float Duration;
+    public string Type;
+    public float Value;
+
+    public ItemEffectModel(float duration, string type, float value)
+    {
+        Duration = duration;
+        Type = type;
+        Value = value;
+    }
+    public ItemEffectModel(ItemEffect effect)
+    {
+        Duration = effect.Duration;
+        Type = effect.Type.ToString();
+        Value = effect.Value;
+    }
 }

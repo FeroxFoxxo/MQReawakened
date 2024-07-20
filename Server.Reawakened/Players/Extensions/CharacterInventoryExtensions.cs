@@ -63,24 +63,11 @@ public static class CharacterInventoryExtensions
             case ItemEffectType.WaterBreathing:
             case ItemEffectType.Detect:
             case ItemEffectType.Invisibility:
+            case ItemEffectType.BananaMultiplier:
+            case ItemEffectType.ExperienceMultiplier:
                 player.TemporaryStatus(itemEffects.GetItemEffect(effect.Type), timerThread);
                 break;
-            case ItemEffectType.BananaMultiplier:
-                player.TempData.BananaBoostsElixir = true;
-                timerThread.DelayCall(
-                    SetBananaElixirTimer,
-                    player,
-                    TimeSpan.FromSeconds(itemEffects.GetItemEffect(ItemEffectType.BananaMultiplier).Duration),
-                    TimeSpan.Zero, 1);
-                break;
-            case ItemEffectType.ExperienceMultiplier:
-                player.TempData.ReputationBoostsElixir = true;
-                timerThread.DelayCall(
-                    SetXpElixirTimer,
-                    player,
-                    TimeSpan.FromSeconds(itemEffects.GetItemEffect(ItemEffectType.ExperienceMultiplier).Duration),
-                    TimeSpan.Zero, 1);
-                break;
+
             case ItemEffectType.Invalid:
             case ItemEffectType.Unknown:
             case ItemEffectType.Unknown_61:
@@ -92,32 +79,6 @@ public static class CharacterInventoryExtensions
         }
 
         logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for _player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
-    }
-
-    public static void SetBananaElixirTimer(object playerObj)
-    {
-        var player = (Player)playerObj;
-
-        if (player == null)
-            return;
-
-        if (player.TempData == null)
-            return;
-
-        player.TempData.BananaBoostsElixir = false;
-    }
-
-    public static void SetXpElixirTimer(object playerObj)
-    {
-        var player = (Player)playerObj;
-
-        if (player == null)
-            return;
-
-        if (player.TempData == null)
-            return;
-
-        player.TempData.ReputationBoostsElixir = false;
     }
 
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>
