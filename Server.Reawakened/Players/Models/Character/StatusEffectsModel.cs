@@ -1,10 +1,11 @@
-﻿using A2m.Server;
-using Server.Reawakened.Database.Characters;
+﻿using Server.Reawakened.Database.Characters;
+using A2m.Server;
 
 namespace Server.Reawakened.Players.Models.Character;
+
 public class StatusEffectsModel(CharacterDbEntry entry)
 {
-    public Dictionary<ItemEffectType, StatusEffectModel> Effects = entry.StatusEffects;
+    public Dictionary<ItemEffectType, StatusEffectModel> Effects => entry.StatusEffects;
 
     public void Add(ItemEffect effect)
     {

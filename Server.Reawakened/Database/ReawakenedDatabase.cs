@@ -44,7 +44,6 @@ public class ReawakenedDatabase(DbContextOptions<ReawakenedDatabase> options) : 
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Friends).HasConversion(new CustomConverter<List<int>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Blocked).HasConversion(new CustomConverter<List<int>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Muted).HasConversion(new CustomConverter<List<int>>());
-        modelBuilder.Entity<CharacterDbEntry>().Property(e => e.StatusEffects).HasConversion(new CustomConverter<Dictionary<ItemEffectType, StatusEffectModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.CollectedIdols).HasConversion(new CustomConverter<Dictionary<int, List<int>>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Emails).HasConversion(new CustomConverter<List<EmailHeaderModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.EmailMessages).HasConversion(new CustomConverter<List<EmailMessageModel>>());

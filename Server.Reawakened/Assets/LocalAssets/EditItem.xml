@@ -573,11 +573,6 @@
         </Item>
     </GameVersion>
     <GameVersion version="v2011">
-        <Item name="Col_POT_BananaPotion01">
-            <EditItemEffects>
-                <ItemEffect duration="120" type="BananaMultiplier" value="2000"/>
-            </EditItemEffects>
-        </Item>
     </GameVersion>
     <GameVersion version="Unknown">
     </GameVersion>
