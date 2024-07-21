@@ -36,6 +36,9 @@ public class CharacterDbEntry : PersistantData
     // HotbarModel
     public Dictionary<int, ItemModel> HotbarButtons { get; set; }
 
+    // StatusEffectsModel
+    public Dictionary<ItemEffectType, StatusEffectModel> StatusEffects { get; set; }
+
     // CharacterCustomDataModel
     public Dictionary<CustomDataProperties, int> Properties { get; set; }
     public Dictionary<CustomDataProperties, ColorModel> Colors { get; set; }
@@ -69,8 +72,8 @@ public class CharacterDbEntry : PersistantData
     public List<int> Friends { get; set; }
     public List<int> Blocked { get; set; }
     public List<int> Muted { get; set; }
-    public int Cash { get; set; }
-    public int NCash { get; set; }
+    public float Cash { get; set; }
+    public float NCash { get; set; }
     public int ActiveQuestId { get; set; }
     public int Reputation { get; set; }
     public int ReputationForCurrentLevel { get; set; }
@@ -131,6 +134,9 @@ public class CharacterDbEntry : PersistantData
 
         // HotbarModel
         HotbarButtons = [];
+
+        // StatusEffectsModel
+        StatusEffects = [];
 
         // CharacterCustomDataModel
         Properties = [];

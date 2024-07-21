@@ -76,9 +76,7 @@ public static class PlayerExtensions
         if (player == null)
             return;
 
-        if (player.TempData.ReputationBoostsElixir)
-            reputation = Convert.ToInt32(reputation * 0.1);
-
+        reputation *= (int)(1 + player.Character.StatusEffects.Get(ItemEffectType.ExperienceMultiplier) * 0.01);
         reputation += player.Character.Reputation;
 
         while (reputation > player.Character.ReputationForNextLevel)
@@ -131,12 +129,11 @@ public static class PlayerExtensions
             trade.TempData.TradeModel = null;
     }
 
-    public static void AddBananas(this Player player, int collectedBananas, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
+    public static void AddBananas(this Player player, float collectedBananas, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
-        if (player.TempData.BananaBoostsElixir)
-            collectedBananas = Convert.ToInt32(collectedBananas * 0.1);
+        collectedBananas *= (float)(1 + player.Character.StatusEffects.Get(ItemEffectType.BananaMultiplier) * 0.01);
 
-        player.CheckAchievement(AchConditionType.CollectBanana, [], internalAchievement, logger, collectedBananas);
+        player.CheckAchievement(AchConditionType.CollectBanana, [], internalAchievement, logger, (int)Math.Floor(collectedBananas));
 
         player.Character.Write.Cash += collectedBananas;
         player.SendCashUpdate();
@@ -175,7 +172,7 @@ public static class PlayerExtensions
     }
 
     public static void SendCashUpdate(this Player player) =>
-        player.SendXt("ca", player.Character.Cash, player.Character.NCash);
+        player.SendXt("ca", Math.Floor(player.Character.Cash), Math.Floor(player.Character.NCash));
 
     public static void SendLevelChange(this Player player, WorldHandler worldHandler)
     {

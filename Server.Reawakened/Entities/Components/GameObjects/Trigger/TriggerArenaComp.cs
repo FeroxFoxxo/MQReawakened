@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Chat.Commands.World;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
@@ -14,6 +15,8 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
     private float _timer;
     private float _minClearTime;
     private bool _hasStarted;
+    private bool _cleared;
+    private List<BaseSpawnerControllerComp> _spawners;
 
     public List<string> ArenaEntities;
 
@@ -22,18 +25,44 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
         base.InitializeComponent();
 
         ArenaEntities = [];
+        _spawners = [];
         _hasStarted = false;
+        _cleared = false;
+    }
+
+    public override void DelayedComponentInitialization()
+    {
+        foreach (var entity in Triggers.Where(x => x.Value == TriggerType.Activate).Select(x => x.Key))
+            if (int.Parse(entity) > 0)
+                foreach (var spawner in Room.GetEntitiesFromId<BaseSpawnerControllerComp>(entity))
+                {
+                    spawner.SetArena(this);
+                    spawner.SetActive(false);
+                }
+    }
+
+    public override void SendDelayedData(Player player)
+    {
+        var trigger = new Trigger_SyncEvent(Id.ToString(), Room.Time, false, "now", false);
+        if (_cleared)
+            new Trigger_SyncEvent(Id.ToString(), Room.Time, true, "now", false);
+        else if (!_cleared && _hasStarted)
+            new Trigger_SyncEvent(Id.ToString(), Room.Time, true, "now", true);
+
+        player.SendSyncEventToPlayer(trigger);
     }
 
     public override object[] GetInitData(Player player) => [-1];
 
     public override void Update()
     {
-        var players = Room.GetPlayers();
-
         if (_hasStarted)
-            if (Room.Time >= _timer || ArenaEntities.All(Room.IsObjectKilled) && Room.Time >= _minClearTime)
-                Trigger(players.FirstOrDefault(), false);
+        {
+            if (ArenaEntities.All(Room.IsObjectKilled) && Room.Time >= _minClearTime)
+                ArenaSuccess();
+            else if (Room.Time >= _timer)
+                ArenaFailure();
+        }
     }
 
     public override void Triggered(Player origin, bool isSuccess, bool isActive)
@@ -47,19 +76,22 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 
                 foreach (var spawner in Room.GetEntitiesFromId<BaseSpawnerControllerComp>(entity))
                 {
-                    // Add "PF_CRS_SpawnerBoss01" to ServerRConfig on cleanup
-                    if (spawner.PrefabName != "PF_CRS_SpawnerBoss01")
+                    if (spawner.SpawnCycleCount > 1)
                         ArenaEntities.Add(entity.ToString());
 
-                    // A special surprise tool that'll help us later!
                     spawner.Spawn(this);
+                    _spawners.Add(spawner);
                 }
             }
 
             _timer = Room.Time + ActiveDuration;
 
-            //Add to ServerRConfig eventually. This exists to stop the arena from regenerating if the spawners are defeated before it has finished initializing
-            _minClearTime = Room.Time + 12;
+            //Failsafe to prevent respawn issues when arena is defeated too quickly
+            _minClearTime = Room.Time + 5;
+
+            var players = Room.GetPlayers();
+            foreach (var player in players)
+                player.TempData.CurrentArena = this;
         }
         else
         {
@@ -73,7 +105,10 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
                         trigger.Trigger(true, origin.GameObjectId);
 
                 foreach (var player in players)
+                {
                     player.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, QuestCatalog);
+                    player.Character.Write.SpawnPointId = Id;
+                }
             }
             else
                 foreach (var player in players)
@@ -81,5 +116,37 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
         }
 
         _hasStarted = isActive;
+    }
+
+    private void ArenaSuccess()
+    {
+        var players = Room.GetPlayers();
+        Trigger(players.FirstOrDefault(), true, false);
+        foreach (var player in players)
+            player.TempData.CurrentArena = null;
+
+        foreach (var spawner in _spawners)
+        {
+            spawner.Despawn();
+            spawner.Destroy();
+        }
+        _cleared = true;
+    }
+
+    private void ArenaFailure()
+    {
+        var players = Room.GetPlayers();
+        Trigger(players.FirstOrDefault(), false, false);
+        foreach (var player in players)
+            player.TempData.CurrentArena = null;
+
+        foreach (var spawner in _spawners)
+        {
+            spawner.Despawn();
+            spawner.Revive();
+        }
+
+        ArenaEntities.Clear();
+        _spawners.Clear();
     }
 }

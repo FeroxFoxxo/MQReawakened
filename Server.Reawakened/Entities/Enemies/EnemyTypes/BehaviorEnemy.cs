@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.AI.Stats;
+using Server.Reawakened.Entities.Enemies.Behaviors;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
 using Server.Reawakened.Entities.Enemies.Extensions;
@@ -58,7 +59,7 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             Sync_PosX = Position.x,
             Sync_PosY = Position.y,
             Sync_PosZ = Position.z,
-            SyncInit_Dir = 1,
+            SyncInit_Dir = 0,
             SyncInit_ProgressRatio = Generic.Patrol_InitialProgressRatio
         };
 
@@ -125,12 +126,9 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
             Position.z + 1
         );
 
-        var minPatrolBound = AiData.Intern_MinPointX - 1.5;
-        var maxPatrolBound = AiData.Intern_MaxPointX + 1.5;
-
         return pos.x > originBounds.x && pos.x < maxBounds.x &&
             pos.y > originBounds.y && pos.y < maxBounds.y &&
-            (!limitedByPatrolLine || pos.x > minPatrolBound && pos.x < maxPatrolBound);
+            (!limitedByPatrolLine || pos.x > AiData.Intern_MinPointX && pos.x < AiData.Intern_MaxPointX);
     }
 
     public override void InternalUpdate()
@@ -146,13 +144,8 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
                 if (AiData.Intern_FireProjectile)
                     FireProjectile(false);
 
-            if (CurrentState == GenericScript.AwareBehavior)
-            {
-                if (Room.Time >= _lastUpdate + GenericScript.genericScript_AwareBehaviorDuration)
-                    CurrentBehavior.NextState();
-            }
-            else if (CurrentState == StateType.LookAround)
-                if (Room.Time >= _lastUpdate + .5f)
+            if (CurrentState == GenericScript.AwareBehavior || CurrentState == StateType.LookAround)
+                if (Room.Time >= _lastUpdate + CurrentBehavior.GetBehaviorTime())
                     CurrentBehavior.NextState();
         }
 
@@ -169,8 +162,10 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     {
         foreach (var player in Room.GetPlayers())
         {
+            player.Character.StatusEffects.Get(ItemEffectType.Invisibility);
             if (PlayerInRange(player.TempData.Position, GlobalProperties.Global_DetectionLimitedByPatrolLine) &&
-                ParentPlane == player.GetPlayersPlaneString() && !player.TempData.Invisible)
+                ParentPlane == player.GetPlayersPlaneString() && !player.Character.StatusEffects.Effects.ContainsKey(ItemEffectType.Invisibility) && 
+                player.Character.CurrentLife > 0)
             {
                 AiData.Sync_TargetPosX = player.TempData.Position.x;
                 AiData.Sync_TargetPosY = player.TempData.Position.y;
@@ -221,6 +216,10 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
     {
         lock (_enemyLock)
         {
+            // Syncs direction of client entity with server
+            if (direction == 0)
+                direction = AiData.Intern_Dir;
+
             if (AiData.Intern_PendingSpeedFactor >= 0f)
             {
                 AiData.Sync_SpeedFactor = AiData.Intern_PendingSpeedFactor;

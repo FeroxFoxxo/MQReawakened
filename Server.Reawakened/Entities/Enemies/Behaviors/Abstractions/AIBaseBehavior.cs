@@ -45,6 +45,8 @@ public abstract class AIBaseBehavior
 
     public abstract void NextState();
 
+    public virtual float GetBehaviorTime() => 1.0f;
+
     public abstract AiProperties GetProperties();
     public abstract object[] GetStartArgs();
 

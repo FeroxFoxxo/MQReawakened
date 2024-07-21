@@ -41,6 +41,8 @@ public class RoomUpdate : ExternalProtocol
         foreach (var enemy in Player.Room.GetEnemies())
             enemy.SendAiData(Player);
 
+        Player.TempData.CurrentArena = null;
+
         Player.Room.SendCharacterInfo(Player);
 
         foreach (var npc in Player.Room.GetEntitiesFromType<NPCControllerComp>())

@@ -46,6 +46,9 @@ public static class PlayerHealExtensions
         if (usedItem.InventoryCategoryID == ItemFilterCategory.WeaponAndAbilities)
             healValue = GetHealValue(player, Convert.ToInt32(player.Character.MaxLife / config.HealingStaffHealValue));
 
+        if (player.Character.CurrentLife + healValue >= player.Character.MaxLife)
+            healValue = player.Character.MaxLife - player.Character.CurrentLife;
+
         player.Room.SendSyncEvent(new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
                 player.Character.Write.CurrentLife += healValue, player.Character.MaxLife, string.Empty));
     }
@@ -101,6 +104,9 @@ public static class PlayerHealExtensions
             player.Character.CurrentLife >= player.Character.MaxLife ||
             player.Character.CurrentLife <= 0)
             return;
+
+        if (player.Character.CurrentLife + tickHealValue >= player.Character.MaxLife)
+            tickHealValue = player.Character.MaxLife - player.Character.CurrentLife;
 
         var healEvent = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
            player.Character.Write.CurrentLife += tickHealValue, player.Character.MaxLife, string.Empty);

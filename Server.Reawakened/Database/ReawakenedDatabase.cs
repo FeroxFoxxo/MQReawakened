@@ -31,6 +31,7 @@ public class ReawakenedDatabase(DbContextOptions<ReawakenedDatabase> options) : 
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.RecipeList).HasConversion(new CustomConverter<List<RecipeModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Items).HasConversion(new CustomConverter<Dictionary<int, ItemModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.HotbarButtons).HasConversion(new CustomConverter<Dictionary<int, ItemModel>>());
+        modelBuilder.Entity<CharacterDbEntry>().Property(e => e.StatusEffects).HasConversion(new CustomConverter<Dictionary<ItemEffectType, StatusEffectModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Properties).HasConversion(new CustomConverter<Dictionary<CustomDataProperties, int>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Colors).HasConversion(new CustomConverter<Dictionary<CustomDataProperties, ColorModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.EquippedItems).HasConversion(new CustomConverter<Dictionary<ItemSubCategory, int>>());
