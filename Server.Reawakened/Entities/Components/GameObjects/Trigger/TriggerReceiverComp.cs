@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -14,6 +16,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
 {
     private int _activations;
     private int _deactivations;
+    private string _triggeredBy;
 
     public bool Activated = true;
     public bool Enabled = true;
@@ -28,11 +31,23 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
     public ILogger<TriggerReceiverComp> Logger { get; set; }
     public FileLogger FileLogger { get; set; }
 
+    private TriggerReceiverCollider _collider;
+
+    public override void InitializeComponent()
+    {
+        _collider = new TriggerReceiverCollider(Id, Position.ToUnityVector3(), Rectangle.ToRect(), ParentPlane, Room);
+        if (CollisionType == TriggerReceiver.ReceiverCollisionType.Never)
+            _collider.Active = false;
+
+        Room.AddCollider(_collider);
+    }
     public override void DelayedComponentInitialization()
     {
         base.InitializeComponent();
         Trigger(ActiveByDefault, string.Empty);
     }
+
+    public override void SendDelayedData(Player player) => player.SendSyncEventToPlayer(new TriggerReceiver_SyncEvent(Id, Room.Time, _triggeredBy, Activated, 0));
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
 
@@ -127,6 +142,7 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
     public void Trigger(bool activated, string triggeredBy)
     {
         Activated = activated;
+        _triggeredBy = triggeredBy;
 
         LogTriggerRecieved();
 
@@ -134,6 +150,11 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
             recieveable.RecievedTrigger(activated);
 
         SendTriggerState(activated, triggeredBy);
+
+        if (CollisionType == TriggerReceiver.ReceiverCollisionType.WhileActivate)
+            _collider.Active = activated;
+        if (CollisionType == TriggerReceiver.ReceiverCollisionType.WhileDeactivate)
+            _collider.Active = !activated;
     }
 
     public void SendTriggerState(bool activated, string triggeredBy) =>

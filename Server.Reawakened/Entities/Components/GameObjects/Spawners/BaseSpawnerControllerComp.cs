@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AssetStudio;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
@@ -46,7 +47,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     public bool SpawnFromStart => ComponentData.SpawnFromStart;
     public bool SpawnOnDetection => ComponentData.SpawnOnDetection;
     public float DetectionRadius => ComponentData.DetectionRadius;
-    public Vector3 PatrolDistance => ComponentData.PatrolDistance;
+    public UnityEngine.Vector3 PatrolDistance => ComponentData.PatrolDistance;
     public string OnDeathTargetID => ComponentData.OnDeathTargetID;
 
     public ILogger<BaseSpawnerControllerComp> Logger { get; set; }
@@ -65,6 +66,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     private bool _spawnRequested;
     private bool _activated;
     private float _activeDetectionRadius;
+    private int _updatedSpawnCycle;
 
     private TriggerArenaComp _arenaComp;
     private BreakableEventControllerComp _breakableComp;
@@ -72,6 +74,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     private int _healthMod, _scaleMod, _resMod;
     private int _stars, _currentHealth, _maxHealth;
 
+    public bool HasLinkedArena => _arenaComp != null;
     public int Difficulty => _breakableComp != null ? _breakableComp.Damageable.DifficultyLevel : Room.LevelInfo.Difficulty;
     public int Stars => _breakableComp != null ? _breakableComp.Damageable.Stars : _stars;
     public int CurrentHealth => _breakableComp != null ? _breakableComp.Damageable.CurrentHealth : _currentHealth;
@@ -90,9 +93,10 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         _breakableComp = Room.GetEntityFromId<BreakableEventControllerComp>(Id);
 
         _spawnedEntityCount = 0;
-        _nextSpawnRequestTime = 0;
+        _nextSpawnRequestTime = -1;
         _spawnRequested = false;
         _activeDetectionRadius = DetectionRadius;
+        _updatedSpawnCycle = SpawnCycleCount;
 
         LinkedEnemies = [];
         EnemyModels = [];
@@ -116,8 +120,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public override void DelayedComponentInitialization()
     {
-        Level = Difficulty + LevelOffset;
-        SetActive(ComponentData.SpawnOnDetection);
+        Level = Room.LevelInfo.Difficulty + LevelOffset;
+        SetActive(_arenaComp is null);
     }
 
     public void AddEnemyModel(string prefabName)
@@ -171,9 +175,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     {
         if (_activated)
         {
-            var position = new Vector3(Position.X, Position.Y, Position.Z);
+            var position = new UnityEngine.Vector3(Position.X, Position.Y, Position.Z);
 
-            if (Room.IsPlayerNearby(position, _activeDetectionRadius) && LinkedEnemies.Count < 1 && _nextSpawnRequestTime == 0)
+            if (Room.IsPlayerNearby(position, _activeDetectionRadius) && LinkedEnemies.Count < 1 && _nextSpawnRequestTime <= 0)
                 Spawn();
 
             if (_spawnRequested && _nextSpawnRequestTime <= Room.Time)
@@ -184,20 +188,43 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
     public void Spawn()
     {
-        _nextSpawnRequestTime = _spawnedEntityCount == 0 ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
+        _nextSpawnRequestTime = _nextSpawnRequestTime == -1 ? Room.Time + InitialSpawnDelay : Room.Time + MinSpawnInterval;
 
-        if (_spawnedEntityCount < SpawnCycleCount)
+        if (_spawnedEntityCount < _updatedSpawnCycle)
             _spawnRequested = true;
     }
 
     public void Spawn(TriggerArenaComp arena)
     {
-        _arenaComp = arena;
+        SetArena(arena);
 
         _activeDetectionRadius = 20;
         SetActive(true);
 
         Spawn();
+    }
+
+    public void Despawn()
+    {
+        foreach (var enemy in LinkedEnemies)
+            enemy.Value.DespawnEnemy();
+    }
+
+    public void SetArena(TriggerArenaComp arena) => _arenaComp = arena;
+    public void RemoveFromArena() => _arenaComp.ArenaEntities.Remove(Id);
+
+    public void Revive()
+    {
+        _breakableComp?.Respawn();
+        SetActive(false);
+
+        _activeDetectionRadius = DetectionRadius;
+        _nextSpawnRequestTime = -1;
+        _spawnRequested = false;
+        _updatedSpawnCycle = _spawnedEntityCount + SpawnCycleCount;
+        LinkedEnemies.Clear();
+
+        Room.ToggleCollider(Id, true);
     }
 
     private void SpawnEventCalled(int delay)
@@ -238,6 +265,8 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             )
         );
 
+        _arenaComp?.ArenaEntities.Add($"{Id}_{_spawnedEntityCount}");
+
         Room.SendSyncEvent(new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount));
 
         TimerThread.DelayCall(DelayedSpawnData, templateToSpawnAt, TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
@@ -271,7 +300,6 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         var _spawnedEntityId = $"{Id}_{_spawnedEntityCount}";
 
         Room.AddEntity(_spawnedEntityId, newEntity);
-        _arenaComp?.ArenaEntities.Add(_spawnedEntityId);
 
         foreach (var component in newEntity)
         {
@@ -285,11 +313,11 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         var enemy = enemyTemplate.EnemyController.CreateEnemy(_spawnedEntityId, PrefabNameToSpawn1);
 
-        if (enemy is null)
-            return;
-
-        LinkedEnemies.Add(_spawnedEntityId, enemy);
+        if (enemy is not null)
+            LinkedEnemies.Add(_spawnedEntityId, enemy);
     }
 
     public void NotifyEnemyDefeat(string id) => LinkedEnemies.Remove(id);
+
+    public void Destroy() => Room.RemoveEnemy(Id);
 }

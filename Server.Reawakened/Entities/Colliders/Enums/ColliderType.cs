@@ -10,5 +10,8 @@ public enum ColliderType
     Player,
     AiAttack,
     Mesh,
-    Hazard
+    Hazard,
+    Stomper,
+    MovingPlatform,
+    TriggerReceiver
 }

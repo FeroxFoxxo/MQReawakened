@@ -351,7 +351,8 @@ public class ItemCatalog : ItemHandler, ILocalizationXml
                 item.Value.SubCategoryId != ItemSubCategory.SlotHead &&
                 item.Value.Currency == CurrencyType.Banana &&
                 item.Value.ProductionStatus == ProductionStatus.Ingame &&
-                item.Value.Tribe == TribeType.Crossroads)
+                item.Value.Tribe == TribeType.Crossroads &&
+                item.Value.Rarity != ItemRarity.Epic)
                 itemList.Add(item.Value);
         return itemList;
     }

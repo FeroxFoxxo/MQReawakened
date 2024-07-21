@@ -12,6 +12,8 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
 
     public InventoryModel Inventory => new(Write);
     public HotbarModel Hotbar => new(Write);
+
+    public StatusEffectsModel StatusEffects => new(Write);
     public CharacterResistancesModel Resistances => new(Write);
     public RecipeListModel RecipeList => new(Write);
 
@@ -38,8 +40,8 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
     public List<int> Friends => Write.Friends;
     public List<int> Blocked => Write.Blocked;
     public List<int> Muted => Write.Muted;
-    public int Cash => Write.Cash;
-    public int NCash => Write.NCash;
+    public float Cash => Write.Cash;
+    public float NCash => Write.NCash;
     public int ActiveQuestId => Write.ActiveQuestId;
     public int Reputation => Write.Reputation;
     public int ReputationForCurrentLevel => Write.ReputationForCurrentLevel;

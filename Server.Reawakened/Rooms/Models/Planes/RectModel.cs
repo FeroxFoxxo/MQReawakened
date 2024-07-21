@@ -1,4 +1,6 @@
-﻿namespace Server.Reawakened.Rooms.Models.Planes;
+﻿using UnityEngine;
+
+namespace Server.Reawakened.Rooms.Models.Planes;
 
 public class RectModel(float left, float top, float width, float height)
 {
@@ -9,4 +11,6 @@ public class RectModel(float left, float top, float width, float height)
 
     public override string ToString() =>
         $"({X}, {Y}) with size ({Width}, {Height})";
+
+    public Rect ToRect() => new Rect(X, Y, Width, Height);
 }
