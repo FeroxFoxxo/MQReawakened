@@ -270,7 +270,6 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
             if (!string.IsNullOrEmpty(QuestInProgressRequired))
             {
-                Console.WriteLine(QuestInProgressRequired);
                 var requiredQuest = QuestCatalog.QuestCatalogs.FirstOrDefault(q => q.Value.Name == QuestInProgressRequired).Value;
 
                 if (requiredQuest != null)

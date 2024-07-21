@@ -54,16 +54,6 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
 
     public void SetPlayerData(Player player)
     {
-        var teet = Write.StatusEffects.ToList();
-        Console.WriteLine("HI HI HEE HEE HO");
-        foreach (var item in Write.Items)
-        {
-            Console.WriteLine(item.Value.ItemId);
-        }
-        foreach (var itesm in Write.StatusEffects)
-        {
-            Console.WriteLine(itesm.Value.Effect + " " + itesm.Value.Value);
-        }
         _player = player;
         _player.NetState.Identifier = CharacterName;
     }

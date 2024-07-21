@@ -32,18 +32,10 @@ public class StatusEffectsModel(CharacterDbEntry entry)
         if (Effects.TryGetValue(effect, out var statusData))
             if (statusData.Effect == effect)
             {
-                Console.WriteLine(statusData.Expiry);
-                Console.WriteLine(DateTime.Now);
                 if (statusData.Expiry > DateTime.Now)
-                {
                     output = statusData.Value;
-                    Console.WriteLine("Status " + effect + " is fresh with value of " + output);
-                }
                 else
-                {
                     Remove(effect);
-                    Console.WriteLine("Status " + effect + " is old and has been removed");
-                }
             }
 
         return output;
