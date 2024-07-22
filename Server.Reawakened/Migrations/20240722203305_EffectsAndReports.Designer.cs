@@ -11,8 +11,8 @@ using Server.Reawakened.Database;
 namespace Server.Reawakened.Migrations
 {
     [DbContext(typeof(ReawakenedDatabase))]
-    [Migration("20240720211513_StatusEffectRebase")]
-    partial class StatusEffectRebase
+    [Migration("20240722203305_EffectsAndReports")]
+    partial class EffectsAndReports
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -184,6 +184,9 @@ namespace Server.Reawakened.Migrations
 
                     b.Property<bool>("Registered")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Reports")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Reputation")
                         .HasColumnType("INTEGER");

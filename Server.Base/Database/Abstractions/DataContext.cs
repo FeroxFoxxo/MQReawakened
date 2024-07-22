@@ -22,5 +22,10 @@ public abstract class DataContext<TContext> : BaseDataContext where TContext : D
     // The following configures EF to create a Sqlite database file in the
     // special "local" folder for your platform.
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite($"Data Source={DbPath}");
+    {
+        options.UseSqlite($"Data Source={DbPath}");
+
+        // Temporarily here to catch error deleting database tables.
+        options.LogTo(Console.WriteLine).EnableSensitiveDataLogging();
+    }
 }

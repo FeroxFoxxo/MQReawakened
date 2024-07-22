@@ -122,8 +122,8 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
         sb.Append(Id);
         sb.Append(CharacterName);
         sb.Append(Gender);
-        sb.Append(Cash);
-        sb.Append(NCash);
+        sb.Append(Math.Floor(Cash));
+        sb.Append(Math.Floor(NCash));
         sb.Append(ActiveQuestId);
         sb.Append(MaxLife);
         sb.Append(string.Empty);

@@ -71,6 +71,9 @@ public abstract class DataHandler<Entity, Database, Lock>(IServiceProvider servi
 
         lock (dbLock.Lock)
         {
+            if (entity == null)
+                return;
+
             db.Set<Entity>().Add(entity);
 
             db.SaveChanges();
@@ -86,10 +89,12 @@ public abstract class DataHandler<Entity, Database, Lock>(IServiceProvider servi
         {
             var set = db.Set<Entity>();
 
-            var dbEntry = set.Find(id);
+            var entity = set.Find(id);
 
-            if (dbEntry != null)
-                set.Remove(dbEntry);
+            if (entity == null)
+                return;
+
+            set.Remove(entity);
 
             db.SaveChanges();
         }
@@ -141,6 +146,9 @@ public abstract class DataHandler<Entity, Database, Lock>(IServiceProvider servi
         lock (dbLock.Lock)
         {
             var entity = db.Set<Entity>().Find(id);
+
+            if (entity == null)
+                return null;
 
             db.Entry(entity).State = EntityState.Detached;
 
