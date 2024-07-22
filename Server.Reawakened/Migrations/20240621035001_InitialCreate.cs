@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Server.Reawakened.Players.Models.Character;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -36,7 +34,6 @@ public partial class InitialCreate : Migration
                 SpawnPointId = table.Column<string>(type: "TEXT", nullable: true),
                 Items = table.Column<string>(type: "TEXT", nullable: true),
                 HotbarButtons = table.Column<string>(type: "TEXT", nullable: true),
-                StatusEffects = table.Column<string>(type: "TEXT", nullable: true),
                 Properties = table.Column<string>(type: "TEXT", nullable: true),
                 Colors = table.Column<string>(type: "TEXT", nullable: true),
                 EquippedItems = table.Column<string>(type: "TEXT", nullable: true),
@@ -63,9 +60,8 @@ public partial class InitialCreate : Migration
                 Friends = table.Column<string>(type: "TEXT", nullable: true),
                 Blocked = table.Column<string>(type: "TEXT", nullable: true),
                 Muted = table.Column<string>(type: "TEXT", nullable: true),
-                Reports = table.Column<string>(type: "TEXT", nullable: true),
-                Cash = table.Column<int>(type: "REAL", nullable: false),
-                NCash = table.Column<int>(type: "REAL", nullable: false),
+                Cash = table.Column<int>(type: "INTEGER", nullable: false),
+                NCash = table.Column<int>(type: "INTEGER", nullable: false),
                 ActiveQuestId = table.Column<int>(type: "INTEGER", nullable: false),
                 Reputation = table.Column<int>(type: "INTEGER", nullable: false),
                 ReputationForCurrentLevel = table.Column<int>(type: "INTEGER", nullable: false),

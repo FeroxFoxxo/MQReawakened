@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Database.Characters;
 
 public class StatusEffectModel
 {

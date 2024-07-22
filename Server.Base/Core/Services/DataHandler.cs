@@ -8,11 +8,14 @@ using Server.Base.Database.Abstractions;
 
 namespace Server.Base.Core.Services;
 
-public abstract class DataHandler<Entity, Database>(IServiceProvider services) : IService where Entity : PersistantData where Database : BaseDataContext
+public abstract class DataHandler<Entity, Database, Lock>(IServiceProvider services, Lock dbLock) :
+    IService where Entity : PersistantData where Database : BaseDataContext where Lock : DbLock
 {
     public readonly ILogger<Entity> Logger = services.GetRequiredService<ILogger<Entity>>();
     public readonly EventSink Sink = services.GetRequiredService<EventSink>();
     public readonly IServiceProvider Services = services;
+
+    public DbLock DbLock => dbLock;
 
     public abstract bool HasDefault { get; }
 
@@ -66,7 +69,7 @@ public abstract class DataHandler<Entity, Database>(IServiceProvider services) :
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<Database>();
 
-        lock (db.Lock)
+        lock (dbLock.Lock)
         {
             db.Set<Entity>().Add(entity);
 
@@ -79,7 +82,7 @@ public abstract class DataHandler<Entity, Database>(IServiceProvider services) :
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<Database>();
 
-        lock (db.Lock)
+        lock (dbLock.Lock)
         {
             var set = db.Set<Entity>();
 
@@ -97,7 +100,7 @@ public abstract class DataHandler<Entity, Database>(IServiceProvider services) :
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<Database>();
 
-        lock (db.Lock)
+        lock (dbLock.Lock)
         {
             return db.Set<Entity>().Count();
         }
@@ -108,7 +111,7 @@ public abstract class DataHandler<Entity, Database>(IServiceProvider services) :
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<Database>();
 
-        lock (db.Lock)
+        lock (dbLock.Lock)
         {
             return db.Set<Entity>().Max(a => a.Id);
         }
@@ -119,9 +122,12 @@ public abstract class DataHandler<Entity, Database>(IServiceProvider services) :
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<Database>();
 
-        lock (db.Lock)
+        lock (dbLock.Lock)
         {
-            db.Set<Entity>().Update(entity);
+            var set = db.Set<Entity>();
+
+            set.Attach(entity);
+            db.Entry(entity).State = EntityState.Modified;
 
             db.SaveChanges();
         }
@@ -132,7 +138,7 @@ public abstract class DataHandler<Entity, Database>(IServiceProvider services) :
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<Database>();
 
-        lock (db.Lock)
+        lock (dbLock.Lock)
         {
             var entity = db.Set<Entity>().Find(id);
 
