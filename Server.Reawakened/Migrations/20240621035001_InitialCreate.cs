@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Server.Reawakened.Players.Models.Character;
 
 #nullable disable
 
@@ -62,6 +63,7 @@ public partial class InitialCreate : Migration
                 Friends = table.Column<string>(type: "TEXT", nullable: true),
                 Blocked = table.Column<string>(type: "TEXT", nullable: true),
                 Muted = table.Column<string>(type: "TEXT", nullable: true),
+                Reports = table.Column<string>(type: "TEXT", nullable: true),
                 Cash = table.Column<int>(type: "REAL", nullable: false),
                 NCash = table.Column<int>(type: "REAL", nullable: false),
                 ActiveQuestId = table.Column<int>(type: "INTEGER", nullable: false),

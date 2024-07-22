@@ -158,6 +158,9 @@ namespace Server.Reawakened.Migrations
                     b.Property<string>("Muted")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Reports")
+                        .HasColumnType("TEXT");
+                        
                     b.Property<float>("NCash")
                         .HasColumnType("REAL");
 

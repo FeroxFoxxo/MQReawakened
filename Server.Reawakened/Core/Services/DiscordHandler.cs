@@ -33,6 +33,26 @@ public class DiscordHandler(DiscordRwConfig rwConfig, PlayerContainer playerCont
         socketChannel.SendMessageAsync(author + ": " + message);
     }
 
+    public void SendReport(string reportId, string category, string reporter, string reported, string message)
+    {
+        if (_socketClient == null)
+            return;
+
+        var socketChannel = (ISocketMessageChannel)_socketClient.GetChannel(rwConfig.ReportsChannelId);
+
+        var embed = new EmbedBuilder();
+        embed.WithTitle("New Report");
+        embed.WithDescription(
+            "**Report Id:** " + reportId + "\n" +
+            "**Category:** " + category + "\n" +
+            "**Reporter:** " + reporter + "\n" +
+            "**Reported:** " + reported + "\n" +
+            "**Message:** " + message
+        );
+
+        socketChannel.SendMessageAsync(null, false, embed.Build());
+    }
+
     private async Task ClientOnMessageReceived(SocketMessage socketMessage) =>
         await Task.Run(() =>
         {
