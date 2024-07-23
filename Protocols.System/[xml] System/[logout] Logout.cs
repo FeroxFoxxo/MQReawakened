@@ -15,14 +15,21 @@ public class Logout : SystemProtocol
 
     public override void Run(XmlDocument xmlDoc)
     {
-        if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet))
+        if (Player != null)
         {
-            Player.TempData.PetEnergyRegenTimer?.Stop();
-            pet.LastTimePetWasEquipped = DateTime.Now;
-            pet.HasGainedOfflineEnergy = false;
+            if (Player.Character != null)
+            {
+                if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet))
+                {
+                    Player.TempData.PetEnergyRegenTimer?.Stop();
+                    pet.LastTimePetWasEquipped = DateTime.Now;
+                    pet.HasGainedOfflineEnergy = false;
+                }
+            }
+
+            Player.Remove(Logger);
         }
 
-        Player?.Remove(Logger);
         SendXml("logout", string.Empty);
     }
 }
