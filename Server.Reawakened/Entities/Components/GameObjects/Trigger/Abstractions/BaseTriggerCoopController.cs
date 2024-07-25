@@ -24,6 +24,8 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     {
         var player = Room.GetPlayerById(ci);
 
+        var validQuestProgress = true;
+
         if (player == null && !ItemCatalog.GetItemFromId(int.Parse(ci)).IsPet() || ci == "0")
         {
             CurrentPhysicalInteractors.Remove(ci);
@@ -36,7 +38,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
             if (requiredQuest != null)
                 if (!player.Character.CompletedQuests.Contains(requiredQuest.Id))
-                    return null;
+                    validQuestProgress = false;
         }
 
         if (!string.IsNullOrEmpty(QuestInProgressRequired))
@@ -45,10 +47,10 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
             if (requiredQuest != null)
                 if (player.Character.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
-                    return null;
+                    validQuestProgress = false;
         }
+        return validQuestProgress ? player : null;
 
-        return player;
     }).Where(x => x != null).ToList();
 
     public int Interactions => CurrentInteractions + CurrentValidInteractors.Count;
@@ -246,6 +248,8 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     {
         if (CurrentPhysicalInteractors.Contains(interactionId)) return;
 
+        var validQuestProgress = true;
+
         if (Room.GetPlayerById(interactionId) != null)
         {
             if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) && !pet.InCoopState() &&
@@ -259,7 +263,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
                 if (requiredQuest != null)
                     if (!player.Character.CompletedQuests.Contains(requiredQuest.Id))
-                        return;
+                        validQuestProgress = false;
             }
 
             if (!string.IsNullOrEmpty(QuestInProgressRequired))
@@ -268,12 +272,14 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
                 if (requiredQuest != null)
                     if (player.Character.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
-                        return;
+                        validQuestProgress = false;
             }
         }
-
-        CurrentPhysicalInteractors.Add(interactionId);
-        SendInteractionUpdate();
+        if (validQuestProgress)
+        {
+            CurrentPhysicalInteractors.Add(interactionId);
+            SendInteractionUpdate();
+        }
     }
 
     public void RemovePhysicalInteractor(Player player, string interactionId)
@@ -335,7 +341,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                     Interactions < NbInteractionsNeeded)
                 return;
 
-            Trigger(player, true);
+            Trigger(player, true, true);
 
             if (DisabledAfterActivation)
                 IsEnabled = false;
@@ -356,7 +362,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
             if (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time && ActivationTimeAfterFirstInteraction > 0)
                 return;
 
-            Trigger(player, false);
+            Trigger(player, true, false);
         }
 
         LogTrigger();
@@ -447,7 +453,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         FileLogger.WriteGenericLog<TriggerCoopController>("triggered-coop", $"[Trigger {Id}]", sb.ToString(), LoggerType.Trace);
     }
 
-    public void Trigger(Player player, bool active)
+    public void Trigger(Player player, bool success, bool active)
     {
         IsActive = active;
         foreach (var trigger in Triggers)
@@ -463,8 +469,8 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
         if (player != null)
         {
-            Room.SentEntityTriggered(Id, player, true, IsActive);
-            Triggered(player, true, IsActive);
+            Room.SentEntityTriggered(Id, player, success, IsActive);
+            Triggered(player, success, IsActive);
         }
     }
 

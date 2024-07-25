@@ -197,8 +197,12 @@ public class State : ExternalProtocol
 
         var respawnPosition = Player.Room.LastCheckpoint ?? Player.Room.GetDefaultSpawnPoint();
 
-        Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                 respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
+        if (Player.TempData.CurrentArena is not null)
+            Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            Player.TempData.CurrentArena.Position.X, Player.TempData.CurrentArena.Position.Y, Player.TempData.CurrentArena.IsOnBackPlane(Logger)));
+        else
+            Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
 
         TimerThread.DelayCall(DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
     }

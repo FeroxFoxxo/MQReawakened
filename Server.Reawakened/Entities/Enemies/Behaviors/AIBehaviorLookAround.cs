@@ -25,9 +25,11 @@ public class AIBehaviorLookAround(LookAroundProperties properties, BehaviorEnemy
             Enemy.GenericScript.UnawareBehavior,
             Enemy.Position.x,
             Enemy.GenericScript.UnawareBehavior == StateType.ComeBack ? Enemy.AiData.Intern_SpawnPosY : Enemy.Position.y,
-            Enemy.Generic.Patrol_ForceDirectionX
+            Enemy.AiData.Intern_Dir
         );
 
         Enemy.CurrentBehavior.MustDoComeback();
     }
+
+    public override float GetBehaviorTime() => Enemy.Global.LookAround_LookTime != Enemy.Global.Default.LookAround_LookTime ? Enemy.Global.LookAround_LookTime : properties.lookAround_LookTime;
 }

@@ -4,6 +4,9 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.GameObjects.Breakables.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
+using Server.Reawakened.Entities.Components.GameObjects.Spawners;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.WowMoment;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -29,10 +32,15 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public bool CanBreak = true;
 
+    private BaseSpawnerControllerComp _spawner;
+
     public override void InitializeComponent()
     {
         Damageable = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
         Damageable ??= Room.GetEntityFromId<SpiderBreakableComp>(Id);
+        _spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
+        if (_spawner is not null && _spawner.HasLinkedArena)
+            CanBreak = false;
 
         var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
         var position = new Vector3(Position.X, Position.Y, Position.Z);
@@ -53,12 +61,26 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         if (Damageable.CurrentHealth <= 0)
         {
+            if (_spawner is not null && _spawner.OnDeathTargetID is not null and not "0")
+                foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(_spawner.OnDeathTargetID))
+                    trigger.TriggerStateChange(TriggerType.Activate, true, Id);
+
             origin.CheckObjective(ObjectiveEnum.Score, Id, PrefabName, 1, ItemCatalog);
             origin.GrantLoot(Id, LootCatalog, ItemCatalog, InternalAchievement, Logger);
             origin.SendUpdatedInventory();
 
-            Room.KillEntity(Id);
-            Destroy(Room, Id);
+            if (_spawner is null || !_spawner.HasLinkedArena)
+            {
+                Room.KillEntity(Id);
+                Destroy(Room, Id);
+            }
+            else
+            {
+                _spawner.SetActive(false);
+                _spawner.RemoveFromArena();
+                Room.ToggleCollider(Id, false);
+            }
+            
         }
     }
 
@@ -97,6 +119,14 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
         if (Damageable.CurrentHealth < 0)
             Damageable.CurrentHealth = 0;
+    }
+
+    public void Respawn()
+    {
+        Logger.LogInformation("Revived object: '{PrefabName}' ({Id})", PrefabName, Id);
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.MaxHealth, 0, 0, 0, string.Empty, false, false));
+        Damageable.CurrentHealth = Damageable.MaxHealth;
+        
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }

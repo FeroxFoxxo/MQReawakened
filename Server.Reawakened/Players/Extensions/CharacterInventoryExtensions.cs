@@ -45,24 +45,27 @@ public static class CharacterInventoryExtensions
 
                 player.HealCharacter(usedItem, timerThread, config, effect.Type);
                 break;
+            case ItemEffectType.IncreaseBluntDamage:
             case ItemEffectType.IncreaseAirDamage:
+            case ItemEffectType.IncreaseFireDamage:
+            case ItemEffectType.IncreaseEarthDamage:
+            case ItemEffectType.IncreaseIceDamage:
+            case ItemEffectType.IncreaseLightningDamage:
             case ItemEffectType.IncreaseAllResist:
-            case ItemEffectType.Shield:
-            case ItemEffectType.WaterBreathing:
-            case ItemEffectType.BananaMultiplier:
-                player.TempData.BananaBoostsElixir = true;
-                timerThread.DelayCall(SetBananaElixirTimer, player, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
-                break;
-            case ItemEffectType.ExperienceMultiplier:
-                player.TempData.ReputationBoostsElixir = true;
-                timerThread.DelayCall(SetXpElixirTimer, player, TimeSpan.FromMinutes(30), TimeSpan.Zero, 1);
-                break;
             case ItemEffectType.Defence:
-                break;
+            case ItemEffectType.ResistAir:
+            case ItemEffectType.ResistFire:
+            case ItemEffectType.ResistEarth:
+            case ItemEffectType.ResistIce:
+            case ItemEffectType.ResistLightning:
+            case ItemEffectType.WaterBreathing:
+            case ItemEffectType.Detect:
             case ItemEffectType.Invisibility:
-                player.TempData.Invisible = true;
-                player.TemporaryInvisibility(usedItem.ItemEffects[(int)ItemFilterCategory.Consumables].Duration, timerThread);
+            case ItemEffectType.BananaMultiplier:
+            case ItemEffectType.ExperienceMultiplier:
+                player.Character.StatusEffects.Add(effect);
                 break;
+
             case ItemEffectType.Invalid:
             case ItemEffectType.Unknown:
             case ItemEffectType.Unknown_61:
@@ -74,32 +77,6 @@ public static class CharacterInventoryExtensions
         }
 
         logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for _player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
-    }
-
-    public static void SetBananaElixirTimer(object playerObj)
-    {
-        var player = (Player)playerObj;
-
-        if (player == null)
-            return;
-
-        if (player.TempData == null)
-            return;
-
-        player.TempData.BananaBoostsElixir = false;
-    }
-
-    public static void SetXpElixirTimer(object playerObj)
-    {
-        var player = (Player)playerObj;
-
-        if (player == null)
-            return;
-
-        if (player.TempData == null)
-            return;
-
-        player.TempData.ReputationBoostsElixir = false;
     }
 
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>

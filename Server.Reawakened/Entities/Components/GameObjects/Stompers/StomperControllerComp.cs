@@ -1,6 +1,8 @@
 ﻿using Server.Base.Timers.Services;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.GameObjects.Platforms.Abstractions;
-using static Stomper_Movement;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Stompers;
 
@@ -13,49 +15,46 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
     public float VerticalDistance => ComponentData.VerticalDistance;
     public bool Hazard => ComponentData.Hazard;
 
-    private float _firstStep;
-    private float _secondStep;
-    private float _thirdStep;
-    private float _fullBehaviorTime;
-
-    public StomperState State;
+    private StomperZoneCollider _collider;
     public TimerThread TimerThread { get; set; }
+    public ServerRConfig ServerRConfig { get; set; }
 
     public override void InitializeComponent()
     {
-        _firstStep = WaitTimeUp;
-        _secondStep = _firstStep + DownMoveTime;
-        _thirdStep = _secondStep + WaitTimeDown;
-
-        _fullBehaviorTime = _thirdStep + UpMoveTime;
-
         Movement = new Stomper_Movement(DownMoveTime, WaitTimeDown, UpMoveTime, WaitTimeUp, VerticalDistance);
         Movement.Init(
-            new vector3(Position.X, Position.Y, Position.Z),
-            Movement.Activated, Room.Time, InitialProgressRatio
+            Position.ToVector3(),
+            true, 0, InitialProgressRatio
         );
+        Movement.Activate(Room.Time);
+
+        _collider = new StomperZoneCollider(
+            Id,
+            Position.ToUnityVector3(),
+            new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height),
+            ParentPlane,
+            Room,
+            Hazard,
+            TimerThread,
+            ServerRConfig
+         );
+
+        Room.AddCollider(_collider);
+
+
+        base.InitializeComponent();
     }
 
     public override void Update()
     {
         base.Update();
 
-        var movement = (Stomper_Movement)Movement;
-        movement.GetBehaviorRatio(Room.Time);
+        var movement = (Stomper_Movement )Movement;
+        movement.UpdateState(Room.Time);
 
-        State = GetState(Room.Time);
-    }
+        if (movement.CurrentStep == Stomper_Movement.StomperState.WaitDown)
+            _collider.IsColliding();
 
-    public StomperState GetState(float time)
-    {
-        var state = StomperState.WaitUp;
-        var progressRatio = time % _fullBehaviorTime;
-        if (progressRatio >= _firstStep && progressRatio <= _secondStep)
-            state = StomperState.GoingDown;
-        else if (progressRatio >= _secondStep && progressRatio <= _thirdStep)
-            state = StomperState.WaitDown;
-        else if (progressRatio >= _thirdStep && progressRatio <= _fullBehaviorTime)
-            state = StomperState.GoingUp;
-        return state;
+        _collider.Position = Position.ToUnityVector3();
     }
 }

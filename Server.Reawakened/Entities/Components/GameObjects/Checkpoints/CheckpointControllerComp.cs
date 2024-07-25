@@ -33,7 +33,7 @@ public class CheckpointControllerComp : BaseTriggerCoopController<CheckpointCont
         if (player.Room.LastCheckpoint != null)
         {
             var possibleLastCheckpoint = Room.GetEntityFromId<CheckpointControllerComp>(player.Room.LastCheckpoint.Id);
-            possibleLastCheckpoint?.Trigger(player, false);
+            possibleLastCheckpoint?.Trigger(player, true, false);
         }
 
         player.Room.LastCheckpoint = this;

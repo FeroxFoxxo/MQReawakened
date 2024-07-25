@@ -1,9 +1,11 @@
 ﻿using A2m.Server;
+using GameError;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
+using static Server.Reawakened.Players.Extensions.PlayerStatusEffectExtensions;
 
 
 namespace Server.Reawakened.Players.Extensions;
@@ -33,34 +35,6 @@ public static class PlayerStatusEffectExtensions
         (int)ItemEffectType.PoisonDamage, damage, hurtLength, true, hazardId, false));
 
         player.ApplyCharacterDamage(damage, hazardId, hurtLength, serverRConfig, timerThread);
-    }
-
-    public class InvisibilityData()
-    {
-        public Player Player;
-        public bool IsInvisible;
-        public float Duration;
-    }
-
-    public static void TemporaryInvisibility(this Player player, float duration, TimerThread timerThread)
-    {
-        player.TempData.Invisible = true;
-
-        var disableInvisibilityData = new InvisibilityData()
-        {
-            Player = player,
-            IsInvisible = false,
-            Duration = duration
-        };
-
-        timerThread.DelayCall(DisableInvisibility, disableInvisibilityData,
-            TimeSpan.FromSeconds(duration), TimeSpan.Zero, 1);
-    }
-
-    public static void DisableInvisibility(object data)
-    {
-        var invisibilityData = (InvisibilityData)data;
-        invisibilityData.Player.TempData.Invisible = false;
     }
 
     public class InvincibilityData()

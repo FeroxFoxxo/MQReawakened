@@ -15,7 +15,6 @@
         <Folder Include="[x] ItemHandler\" />
         <Folder Include="[w] WarningMessageHandler\" />
         <Folder Include="[r] RoomHandler\" />
-        <Folder Include="[o] ReportMessageHandler\" />
     </ItemGroup>
 
     <ItemGroup>
