@@ -47,7 +47,7 @@ public static class PlayerStatusEffectExtensions
         player.TempData.Invincible = true;
 
         //ItemEffectType Invincibility doesn't exist <= Late 2012.
-        var effectType = serverRConfig.GameVersion > Core.Enums.GameVersion.vLate2012 ? ItemEffectType.Invincibility : 0;
+        var effectType = serverRConfig.GameVersion > Core.Enums.GameVersion.vLate2012 ? ItemEffectType.Invincibility : ItemEffectType.Unknown;
 
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
                  (int)effectType, 0, (int)durationInSeconds, true, player.CharacterName, true));
