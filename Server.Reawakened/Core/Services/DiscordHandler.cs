@@ -33,7 +33,7 @@ public class DiscordHandler(DiscordRwConfig rwConfig, PlayerContainer playerCont
         socketChannel.SendMessageAsync(author + ": " + message);
     }
 
-    public void SendReport(string reportId, string category, string reporter, string reported, string message)
+    public void SendAbuseReport(string reportId, string category, string reporter, string reported, string message)
     {
         if (_socketClient == null)
             return;
@@ -49,6 +49,25 @@ public class DiscordHandler(DiscordRwConfig rwConfig, PlayerContainer playerCont
             "**Reported:** " + reported + "\n" +
             "**Message:** " + message
         );
+
+        socketChannel.SendMessageAsync(null, false, embed.Build());
+    }
+
+    public void SendBugReport(string reportId, string detail, string summary, string systemInfo)
+    {
+        if (_socketClient == null)
+            return;
+
+        var socketChannel = (ISocketMessageChannel)_socketClient.GetChannel(rwConfig.ReportsChannelId);
+
+        var embed = new EmbedBuilder();
+        embed.WithTitle("New Report");
+        embed.WithDescription(
+            "**Report Id:** " + reportId + "\n" +
+            "**Details:** " + detail + "\n" +
+            "**Summary:** " + summary + "\n"
+        );
+        embed.AddField("System Info:", systemInfo);
 
         socketChannel.SendMessageAsync(null, false, embed.Build());
     }

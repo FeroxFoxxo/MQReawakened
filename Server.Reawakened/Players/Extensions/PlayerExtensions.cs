@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Database.Users;
 using Server.Reawakened.Network.Extensions;
@@ -199,7 +200,11 @@ public static class PlayerExtensions
             error = e.Message;
         }
 
-        player.SendXt("lw", error, levelName, surroundingLevels);
+        // Allows early 2012 to load
+        if (worldHandler.Config.GameVersion >= GameVersion.vMinigames2012)
+            player.SendXt("lw", error, levelName, surroundingLevels);
+        else
+            player.SendXt("lw", error, levelName, string.Empty, surroundingLevels);
     }
 
     public static void SetCharacterSelected(this Player player, CharacterModel character)
