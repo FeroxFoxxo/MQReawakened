@@ -5,8 +5,6 @@ using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
-using static Server.Reawakened.Players.Extensions.PlayerStatusEffectExtensions;
-
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -43,12 +41,16 @@ public static class PlayerStatusEffectExtensions
         public bool IsInvincible;
     }
 
-    public static void TemporaryInvincibility(this Player player, TimerThread timerThread, double durationInSeconds)
+    public static void TemporaryInvincibility(this Player player, TimerThread timerThread,
+        ServerRConfig serverRConfig, double durationInSeconds)
     {
         player.TempData.Invincible = true;
 
+        //ItemEffectType Invincibility doesn't exist <= Late 2012.
+        var effectType = serverRConfig.GameVersion > Core.Enums.GameVersion.vLate2012 ? ItemEffectType.Invincibility : 0;
+
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-                 (int)ItemEffectType.Invincibility, 0, (int)durationInSeconds, true, player.CharacterName, true));
+                 (int)effectType, 0, (int)durationInSeconds, true, player.CharacterName, true));
 
         var invincibleData = new InvincibilityData()
         {
