@@ -20,7 +20,7 @@ public class ReportAbuse : ExternalProtocol
 
         var reportId = Guid.NewGuid();
 
-        DiscordHandler.SendReport(reportId.ToString(), category, Player.CharacterName, character, reportMessage);
+        DiscordHandler.SendAbuseReport(reportId.ToString(), category, Player.CharacterName, character, reportMessage);
 
         PlayerContainer.GetPlayerByName(character)?.Character.Reports.TryAdd(reportId.ToString(), new ReportModel
         {
