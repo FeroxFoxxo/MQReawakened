@@ -64,8 +64,8 @@ public class DiscordHandler(DiscordRwConfig rwConfig, PlayerContainer playerCont
         embed.WithTitle("New Report");
         embed.WithDescription(
             "**Report Id:** " + reportId + "\n" +
-            "**Category:** " + detail + "\n" +
-            "**Reporter:** " + summary + "\n"
+            "**Details:** " + detail + "\n" +
+            "**Summary:** " + summary + "\n"
         );
         embed.AddField("System Info:", systemInfo);
 
