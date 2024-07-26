@@ -12,6 +12,7 @@ using UnityEngine;
 namespace Server.Reawakened.Entities.Projectiles;
 public class ChargeAttackProjectile : BaseProjectile
 {
+    private readonly ServerRConfig _config;
     private readonly TimerThread _timerThread;
     private readonly Player _player;
 
@@ -21,6 +22,7 @@ public class ChargeAttackProjectile : BaseProjectile
     public ChargeAttackProjectile(string id, Player player, Vector3 startPosition, Vector3 endPosition, Vector2 speed, float lifeTime, int itemId, int zoneId, int damage, Elemental type, ServerRConfig config, TimerThread timerThread)
         : base(id, lifeTime, player.Room, startPosition, speed, endPosition, false, config)
     {
+        _config = config;
         _timerThread = timerThread;
         _player = player;
         _itemId = itemId;
@@ -36,7 +38,7 @@ public class ChargeAttackProjectile : BaseProjectile
     public override void Hit(string hitGoID)
     {
         _player.TempData.IsSuperStomping = false;
-        _player.TemporaryInvincibility(_timerThread, 1);
+        _player.TemporaryInvincibility(_timerThread, _config, 1);
 
         Room.SendSyncEvent(
             new ChargeAttackStop_SyncEvent(

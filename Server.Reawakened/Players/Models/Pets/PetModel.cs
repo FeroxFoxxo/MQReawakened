@@ -18,51 +18,47 @@ public class PetModel()
 {
     public string PetId { get; set; }
     public PetAbilityParams AbilityParams { get; set; }
+    public bool IsEquipped { get; set; }
     public float AbilityCooldown { get; set; }
     public int MaxEnergy { get; set; }
     public int CurrentEnergy { get; set; }
     public bool InCoopJumpState { get; set; }
     public bool InCoopSwitchState { get; set; }
-    public string CurrentTriggerId { get; set; }
+    public string CoopTriggerableId { get; set; }
     public bool HasGainedOfflineEnergy { get; set; }
     public DateTime LastTimePetWasEquipped { get; set; }
 
-    public void SpawnPet(Player petOwner, string petId, bool spawnPet, PetAbilityParams abilityParams,
-        bool refillEnergy, WorldStatistics worldStatistics, ServerRConfig config, TimerThread energyRegenerationTimer)
+    public void SetParams(string petId, PetAbilityParams petAbilityParams)
     {
         PetId = petId;
-        AbilityParams = abilityParams;
+        AbilityParams = petAbilityParams;
+    }
+
+    public void SpawnPet(Player petOwner, bool refillEnergy,
+        WorldStatistics worldStatistics, ServerRConfig serverRConfig)
+    {    
+        ResetPetData(petOwner, refillEnergy, worldStatistics, serverRConfig);
+        NotifyPet(petOwner);
+        petOwner.SendXt("ZE", petOwner.UserId, PetId, Convert.ToInt32(true));
+    }
+
+    public void DespawnPet(Player petOwner, WorldStatistics worldStatistics, ServerRConfig config)
+    {
+        ResetPetData(petOwner, false, worldStatistics, config);
+        petOwner.SendXt("ZE", petOwner.UserId, PetId, Convert.ToInt32(false));
+    }
+
+    private void ResetPetData(Player petOwner, bool refillEnergy,
+        WorldStatistics worldStatistics, ServerRConfig config)
+    {
         MaxEnergy = petOwner.GetMaxPetEnergy(worldStatistics, config);
 
-        if (!spawnPet)
-            LastTimePetWasEquipped = DateTime.Now;
-
-        if (!refillEnergy)
-        {
-            if (!HasGainedOfflineEnergy)
-            {
-                CurrentEnergy += GetOfflineRegeneratedEnergy(worldStatistics);
-                HasGainedOfflineEnergy = true;
-            }
-
-            if (CurrentEnergy < MaxEnergy)
-                StartEnergyRegeneration(petOwner, energyRegenerationTimer, worldStatistics);
-        }
-
-        else
+        if (refillEnergy)
             CurrentEnergy = MaxEnergy;
 
-        AbilityCooldown = petOwner.Room.Time + AbilityParams.CooldownTime;
         InCoopJumpState = false;
         InCoopSwitchState = false;
-        CurrentTriggerId = string.Empty;
-
-        NotifyPet(petOwner);
-
-        petOwner.Character.Write.PetItemId = int.Parse(PetId);
-
-        petOwner.SendXt("ZE", petOwner.UserId, PetId, Convert.ToInt32(spawnPet));
-        petOwner.SendXt("Zm", petOwner.UserId, true);
+        CoopTriggerableId = string.Empty;
     }
 
     private int GetOfflineRegeneratedEnergy(WorldStatistics worldStatistics)
@@ -130,13 +126,13 @@ public class PetModel()
                 break;
             case PetInformation.StateSyncType.PetStateCoopSwitch:
                 AddTriggerInteraction(petOwner, timerThread, itemRConfig.PetHoldChainDelay);
-                syncParams = CurrentTriggerId;
+                syncParams = CoopTriggerableId;
                 break;
 
             case PetInformation.StateSyncType.PetStateCoopJump:
                 var onButton = false;
 
-                if (!string.IsNullOrEmpty(CurrentTriggerId))
+                if (!string.IsNullOrEmpty(CoopTriggerableId))
                 {
                     onButton = true;
                     AddTriggerInteraction(petOwner, timerThread, itemRConfig.PetPressButtonDelay);
@@ -243,8 +239,8 @@ public class PetModel()
     public InteractionData GetInteractionData(Player player) => new()
     {
         Player = player,
-        TriggerCoopController = player.Room.GetEntityFromId<TriggerCoopControllerComp>(CurrentTriggerId),
-        MultiInteractionTrigger = player.Room.GetEntityFromId<MultiInteractionTriggerCoopControllerComp>(CurrentTriggerId)
+        TriggerCoopController = player.Room.GetEntityFromId<TriggerCoopControllerComp>(CoopTriggerableId),
+        MultiInteractionTrigger = player.Room.GetEntityFromId<MultiInteractionTriggerCoopControllerComp>(CoopTriggerableId)
     };
 
     public void AddTriggerInteraction(Player player, TimerThread timerThread, float delay) =>

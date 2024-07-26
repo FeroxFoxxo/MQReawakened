@@ -6,7 +6,6 @@ using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Bundles.Base;
-using Timer = Server.Base.Timers.Timer;
 
 namespace Protocols.External._h__HotbarHandler;
 
@@ -37,7 +36,7 @@ public class SetSlot : ExternalProtocol
 
         if (ItemCatalog.GetItemFromId(itemId).IsPet() &&
             PetAbilities.PetAbilityData.TryGetValue(itemId, out var petAbility))
-            Player.EquipPet(petAbility, WorldStatistics, ServerRConfig, TimerThread);
+            Player.EquipPet(petAbility, WorldStatistics, ServerRConfig, ItemCatalog);
 
         SendXt("hs", Player.Character.Hotbar);
     }
