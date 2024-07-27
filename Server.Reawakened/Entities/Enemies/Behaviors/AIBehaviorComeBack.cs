@@ -16,5 +16,5 @@ public class AIBehaviorComeBack(ComeBackProperties properties, BehaviorEnemy ene
     public override object[] GetStartArgs() => [Enemy.Position.x, Enemy.AiData.Intern_SpawnPosY];
 
     public override void NextState() =>
-        Enemy.ChangeBehavior(StateType.Patrol, Enemy.Position.x, Enemy.Position.y, Enemy.Generic.Patrol_ForceDirectionX);
+        Enemy.ChangeBehavior(StateType.Patrol, Enemy.Position.x, Enemy.Position.y, Enemy.AiData.Intern_Dir);
 }

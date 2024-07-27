@@ -12,6 +12,8 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
 
     public InventoryModel Inventory => new(Write);
     public HotbarModel Hotbar => new(Write);
+
+    public StatusEffectsModel StatusEffects => new(Write);
     public CharacterResistancesModel Resistances => new(Write);
     public RecipeListModel RecipeList => new(Write);
 
@@ -38,8 +40,8 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
     public List<int> Friends => Write.Friends;
     public List<int> Blocked => Write.Blocked;
     public List<int> Muted => Write.Muted;
-    public int Cash => Write.Cash;
-    public int NCash => Write.NCash;
+    public float Cash => Write.Cash;
+    public float NCash => Write.NCash;
     public int ActiveQuestId => Write.ActiveQuestId;
     public int Reputation => Write.Reputation;
     public int ReputationForCurrentLevel => Write.ReputationForCurrentLevel;
@@ -49,6 +51,7 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
     public bool SpawnOnBackPlane => Write.SpawnOnBackPlane;
     public int BadgePoints => Write.BadgePoints;
     public int AbilityPower => Write.AbilityPower;
+    public Dictionary<string, ReportModel> Reports => Write.Reports;
 
     public void SetPlayerData(Player player)
     {
@@ -119,8 +122,8 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
         sb.Append(Id);
         sb.Append(CharacterName);
         sb.Append(Gender);
-        sb.Append(Cash);
-        sb.Append(NCash);
+        sb.Append(Math.Floor(Cash));
+        sb.Append(Math.Floor(NCash));
         sb.Append(ActiveQuestId);
         sb.Append(MaxLife);
         sb.Append(string.Empty);

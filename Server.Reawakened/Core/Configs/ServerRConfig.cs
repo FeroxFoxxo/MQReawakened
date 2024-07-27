@@ -167,7 +167,7 @@ public class ServerRConfig : IRConfig
             { GameVersion.vLate2012, "TNMT_2102_ORP" },
             { GameVersion.vMinigames2012, "regnaRrewoP_2102_ORP" },
             { GameVersion.vPets2012, "regnaRrewoP_2102_ORP" },
-            { GameVersion.vEarly2012, "adnaPuFgnuK_2102_ORP" },
+            { GameVersion.vEarly2012, string.Empty },
             { GameVersion.v2011, string.Empty }
         };
 

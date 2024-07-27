@@ -48,7 +48,7 @@ public static class PlayerDamageExtensions
     {
         var waterData = (UnderwaterData)underwaterData;
 
-        if (!waterData.Player.TempData.Underwater)
+        if (!waterData.Player.TempData.Underwater || waterData.Player == null)
             return;
 
         waterData.Player.Room.SendSyncEvent(new StatusEffect_SyncEvent(waterData.Player.GameObjectId, waterData.Player.Room.Time,
@@ -91,7 +91,7 @@ public static class PlayerDamageExtensions
         if (invincibilityDuration <= 0)
             invincibilityDuration = 1;
 
-        player.TemporaryInvincibility(timerThread, invincibilityDuration);
+        player.TemporaryInvincibility(timerThread, serverRConfig, invincibilityDuration);
     }
 
     public static void ApplyDamageByPercent(this Player player, double percentage, string hazardId, float duration, ServerRConfig serverRConfig, TimerThread timerThread)

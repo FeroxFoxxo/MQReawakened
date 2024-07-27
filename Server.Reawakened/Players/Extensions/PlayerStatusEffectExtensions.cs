@@ -1,10 +1,10 @@
 ﻿using A2m.Server;
+using GameError;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
-
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -35,46 +35,22 @@ public static class PlayerStatusEffectExtensions
         player.ApplyCharacterDamage(damage, hazardId, hurtLength, serverRConfig, timerThread);
     }
 
-    public class InvisibilityData()
-    {
-        public Player Player;
-        public bool IsInvisible;
-        public float Duration;
-    }
-
-    public static void TemporaryInvisibility(this Player player, float duration, TimerThread timerThread)
-    {
-        player.TempData.Invisible = true;
-
-        var disableInvisibilityData = new InvisibilityData()
-        {
-            Player = player,
-            IsInvisible = false,
-            Duration = duration
-        };
-
-        timerThread.DelayCall(DisableInvisibility, disableInvisibilityData,
-            TimeSpan.FromSeconds(duration), TimeSpan.Zero, 1);
-    }
-
-    public static void DisableInvisibility(object data)
-    {
-        var invisibilityData = (InvisibilityData)data;
-        invisibilityData.Player.TempData.Invisible = false;
-    }
-
     public class InvincibilityData()
     {
         public Player Player;
         public bool IsInvincible;
     }
 
-    public static void TemporaryInvincibility(this Player player, TimerThread timerThread, double durationInSeconds)
+    public static void TemporaryInvincibility(this Player player, TimerThread timerThread,
+        ServerRConfig serverRConfig, double durationInSeconds)
     {
         player.TempData.Invincible = true;
 
+        //ItemEffectType Invincibility doesn't exist <= Late 2012.
+        var effectType = serverRConfig.GameVersion > Core.Enums.GameVersion.vLate2012 ? ItemEffectType.Invincibility : ItemEffectType.Unknown;
+
         player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-                 (int)ItemEffectType.Invincibility, 0, (int)durationInSeconds, true, player.CharacterName, true));
+                 (int)effectType, 0, (int)durationInSeconds, true, player.CharacterName, true));
 
         var invincibleData = new InvincibilityData()
         {

@@ -1,4 +1,5 @@
-﻿using Server.Reawakened.Entities.Colliders.Abstractions;
+﻿using A2m.Server;
+using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -9,7 +10,7 @@ using UnityEngine;
 namespace Server.Reawakened.Entities.Colliders;
 public class PlayerCollider(Player player) :
     BaseCollider(player.TempData.GameObjectId, player.TempData.CopyPosition(),
-        new Rect(0, 0, 1, 1), player.GetPlayersPlaneString(), player.Room, ColliderType.Player
+        new Rect(-0.5f, 0, 1, 1), player.GetPlayersPlaneString(), player.Room, ColliderType.Player
     )
 {
     public Player Player => player;
@@ -26,13 +27,25 @@ public class PlayerCollider(Player player) :
                 (aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
 
             player.ApplyCharacterDamage(damage, aiProjectileCollider.Id, 1, aiProjectileCollider.ServerRConfig, aiProjectileCollider.TimerThread);
-            player.TemporaryInvincibility(aiProjectileCollider.TimerThread, 1);
+            player.TemporaryInvincibility(aiProjectileCollider.TimerThread, aiProjectileCollider.ServerRConfig, 1);
 
             Room.RemoveCollider(aiProjectileCollider.PrjId);
         }
 
         if (received is HazardEffectCollider hazard)
             hazard.ApplyEffectBasedOffHazardType(hazard.Id, player);
+
+        if (received is StomperZoneCollider stomper)
+        {
+            if (!player.TempData.Invincible)
+            {
+                if (stomper.Hazard)
+                    player.ApplyDamageByPercent(0.1, stomper.Id, 1, stomper.ServerRConfig, stomper.TimerThread);
+
+                Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.StompDamage, 0, 1, true, stomper.Id, false));
+                player.TemporaryInvincibility(stomper.TimerThread, stomper.ServerRConfig, 1);
+            }
+        }
     }
 
     public override string[] IsColliding(bool isAttack)

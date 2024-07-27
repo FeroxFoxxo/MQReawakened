@@ -25,6 +25,7 @@ public class God : SlashCommand
     public InternalAchievement InternalAchievement { get; set; }
     public ILogger<God> Logger { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
 
     public override void Execute(Player player, string[] args)
     {
@@ -35,7 +36,7 @@ public class God : SlashCommand
         player.AddNCash(ServerRConfig.CashKitAmount);
         player.SendCashUpdate();
 
-        player.LevelUp(ServerRConfig.MaxLevel, ServerRConfig, Logger);
+        player.LevelUp(ServerRConfig.MaxLevel, WorldStatistics, ServerRConfig, Logger);
         player.AddPoints();
         player.DiscoverAllTribes();
 

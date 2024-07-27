@@ -12,6 +12,7 @@ using Server.Reawakened.BundleHost.Extensions;
 using Server.Reawakened.BundleHost.Helpers;
 using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Icons.Services;
 using System.Xml;
 
@@ -238,7 +239,9 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
 
             // Adding a game version check of vMinigames2012 or deleting this
             // allows early 2012 to load could be a missing cache issue
-            if (asset.Name.StartsWith("NavMesh"))
+            // this requires the 'refreshCacheDir' command to be run each time
+            // you want to go back to other versions bc NavMesh files will not be present
+            if (asset.Name.StartsWith("NavMesh") && sRConfig.GameVersion >= GameVersion.vMinigames2012)
                 asset.Type = AssetInfo.TypeAsset.NavMesh;
             else
             {

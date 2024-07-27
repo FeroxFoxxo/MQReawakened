@@ -18,36 +18,82 @@ public class PetModel()
 {
     public string PetId { get; set; }
     public PetAbilityParams AbilityParams { get; set; }
+    public bool IsEquipped { get; set; }
     public float AbilityCooldown { get; set; }
     public int MaxEnergy { get; set; }
     public int CurrentEnergy { get; set; }
-    public int RegeneratedEnergy { get; set; }
     public bool InCoopJumpState { get; set; }
     public bool InCoopSwitchState { get; set; }
-    public string CurrentTriggerId { get; set; }
+    public string CoopTriggerableId { get; set; }
+    public bool HasGainedOfflineEnergy { get; set; }
+    public DateTime LastTimePetWasEquipped { get; set; }
 
-    public void SpawnPet(Player petOwner, string petId, bool spawnPet, PetAbilityParams abilityParams,
-        bool refillEnergy, WorldStatistics worldStatistics, ServerRConfig config)
+    public void SetParams(string petId, PetAbilityParams petAbilityParams)
     {
         PetId = petId;
-        AbilityParams = abilityParams;
+        AbilityParams = petAbilityParams;
+    }
 
+    public void SpawnPet(Player petOwner, bool refillEnergy,
+        WorldStatistics worldStatistics, ServerRConfig serverRConfig)
+    {    
+        ResetPetData(petOwner, refillEnergy, worldStatistics, serverRConfig);
+        NotifyPet(petOwner);
+        petOwner.SendXt("ZE", petOwner.UserId, PetId, Convert.ToInt32(true));
+    }
+
+    public void DespawnPet(Player petOwner, WorldStatistics worldStatistics, ServerRConfig config)
+    {
+        ResetPetData(petOwner, false, worldStatistics, config);
+        petOwner.SendXt("ZE", petOwner.UserId, PetId, Convert.ToInt32(false));
+    }
+
+    private void ResetPetData(Player petOwner, bool refillEnergy,
+        WorldStatistics worldStatistics, ServerRConfig config)
+    {
         MaxEnergy = petOwner.GetMaxPetEnergy(worldStatistics, config);
 
         if (refillEnergy)
-            CurrentEnergy = petOwner.GetMaxPetEnergy(worldStatistics, config);
+            CurrentEnergy = MaxEnergy;
 
-        AbilityCooldown = petOwner.Room.Time + AbilityParams.CooldownTime;
         InCoopJumpState = false;
         InCoopSwitchState = false;
-        CurrentTriggerId = string.Empty;
+        CoopTriggerableId = string.Empty;
+    }
 
-        NotifyPet(petOwner);
+    private int GetOfflineRegeneratedEnergy(WorldStatistics worldStatistics)
+    {
+        var minutesSinceLogOff = (DateTime.Now - LastTimePetWasEquipped).TotalMinutes;
+        var regainRate = MaxEnergy / worldStatistics.GlobalStats[Globals.PetFullEnergyRegainDelay];
+        var gainedEnergy = (int)Math.Round(minutesSinceLogOff * regainRate);
 
-        petOwner.Character.Write.PetItemId = int.Parse(PetId);
+        if (CurrentEnergy + gainedEnergy > MaxEnergy)
+            gainedEnergy = MaxEnergy - CurrentEnergy;
 
-        petOwner.SendXt("ZE", petOwner.UserId, PetId, Convert.ToInt32(spawnPet));
-        petOwner.SendXt("Zm", petOwner.UserId, true);
+        return gainedEnergy;
+    }
+
+    public void StartEnergyRegeneration(Player player, TimerThread energyRegenerationTimer, WorldStatistics worldStatistics)
+    {
+        var timeToRegainEnergy = worldStatistics.GlobalStats[Globals.PetFullEnergyRegainDelay];
+        var interval = timeToRegainEnergy / MaxEnergy;
+
+        player.TempData.PetEnergyRegenTimer?.Stop();
+        player.TempData.PetEnergyRegenTimer = energyRegenerationTimer.DelayCall(RegenerateEnergy, player,
+            TimeSpan.FromMinutes((double)interval), TimeSpan.FromMinutes((double)interval), MaxEnergy - CurrentEnergy);
+    }
+
+    private void RegenerateEnergy(object player)
+    {
+        var petOwner = (Player)player;
+
+        if (CurrentEnergy >= MaxEnergy)
+        {
+            petOwner.TempData.PetEnergyRegenTimer?.Stop();
+            return;
+        }
+
+        CurrentEnergy++;
     }
 
     //Might be used for pet snacks instead.
@@ -62,7 +108,7 @@ public class PetModel()
 
         foreach (var pet in petOwner.Character.Pets.Values)
             sb.Append(PetProfile(int.Parse(petOwner.GameObjectId), int.Parse(pet.PetId),
-        (int)PetType.coop, pet.CurrentEnergy, pet.CurrentEnergy, 1, 0));
+        (int)PetType.coop, pet.CurrentEnergy, 0, 0, 0));
 
         petOwner.SendXt("Zp", petOwner.UserId, sb.ToString());
     }
@@ -80,13 +126,13 @@ public class PetModel()
                 break;
             case PetInformation.StateSyncType.PetStateCoopSwitch:
                 AddTriggerInteraction(petOwner, timerThread, itemRConfig.PetHoldChainDelay);
-                syncParams = CurrentTriggerId;
+                syncParams = CoopTriggerableId;
                 break;
 
             case PetInformation.StateSyncType.PetStateCoopJump:
                 var onButton = false;
 
-                if (!string.IsNullOrEmpty(CurrentTriggerId))
+                if (!string.IsNullOrEmpty(CoopTriggerableId))
                 {
                     onButton = true;
                     AddTriggerInteraction(petOwner, timerThread, itemRConfig.PetPressButtonDelay);
@@ -114,25 +160,21 @@ public class PetModel()
 
         player.SendXt("Zg", player.UserId, CurrentEnergy);
 
-        player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-            (int)ItemEffectType.PetEnergyValue, energyUsed, (int)AbilityParams.Duration,
-            true, player.GameObjectId, false));
+        player.SendSyncEventToPlayer(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
+            (int)ItemEffectType.PetEnergyValue, energyUsed, 1, true, player.GameObjectId, false));
     }
 
-    public void GainEnergy(Player player, ItemDescription petFoodItem)
+    public void GainEnergy(Player player, int energyAmount)
     {
-        var itemEffect = petFoodItem.ItemEffects[(int)ItemFilterCategory.Consumables];
-        var energyValue = itemEffect.Value;
-
-        CurrentEnergy += energyValue;
+        CurrentEnergy += energyAmount;
 
         if (CurrentEnergy > MaxEnergy)
             CurrentEnergy = MaxEnergy;
 
         player.SendXt("Zg", player.UserId, CurrentEnergy);
 
-        player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
-            (int)ItemEffectType.PetRegainEnergy, 0, itemEffect.Duration, true, player.GameObjectId, false));
+        player.SendSyncEventToPlayer(new StatusEffect_SyncEvent(player.GameObjectId, player.Room.Time,
+            (int)ItemEffectType.PetRegainEnergy, energyAmount, 1, true, player.GameObjectId, false));
     }
 
     public PetInformation.StateSyncType ChangePetState(Player player)
@@ -197,8 +239,8 @@ public class PetModel()
     public InteractionData GetInteractionData(Player player) => new()
     {
         Player = player,
-        TriggerCoopController = player.Room.GetEntityFromId<TriggerCoopControllerComp>(CurrentTriggerId),
-        MultiInteractionTrigger = player.Room.GetEntityFromId<MultiInteractionTriggerCoopControllerComp>(CurrentTriggerId)
+        TriggerCoopController = player.Room.GetEntityFromId<TriggerCoopControllerComp>(CoopTriggerableId),
+        MultiInteractionTrigger = player.Room.GetEntityFromId<MultiInteractionTriggerCoopControllerComp>(CoopTriggerableId)
     };
 
     public void AddTriggerInteraction(Player player, TimerThread timerThread, float delay) =>

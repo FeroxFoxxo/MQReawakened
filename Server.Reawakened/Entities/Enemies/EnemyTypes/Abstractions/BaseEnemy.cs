@@ -4,10 +4,12 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
+using Server.Reawakened.Entities.Components.GameObjects.Bouncers;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Enemies.Extensions;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
@@ -214,7 +216,7 @@ public abstract class BaseEnemy : IDestructible
     {
         if (OnDeathTargetId is not null and not "0")
             foreach (var trigger in Room.GetEntitiesFromId<TriggerReceiverComp>(OnDeathTargetId))
-                trigger.Trigger(true, Id);
+                trigger.TriggerStateChange(TriggerType.Activate, true, Id);
 
         SendRewards(player);
 
@@ -222,6 +224,15 @@ public abstract class BaseEnemy : IDestructible
         if (IsFromSpawner)
             LinkedSpawner.NotifyEnemyDefeat(Id);
 
+        Destroy(Room, Id);
+        Room.KillEntity(Id);
+    }
+
+    public void DespawnEnemy()
+    {
+        LinkedSpawner.NotifyEnemyDefeat(Id);
+
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, 0, 1, 0, 0, string.Empty, true, false));
         Destroy(Room, Id);
         Room.KillEntity(Id);
     }
@@ -254,8 +265,11 @@ public abstract class BaseEnemy : IDestructible
             }
 
             //Achievements
-            player.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, QuestCatalog);
-            player.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, QuestCatalog);
+            foreach (var roomPlayer in Room.GetPlayers())
+            {
+                roomPlayer.CheckObjective(ObjectiveEnum.Score, Id, EnemyController.PrefabName, 1, QuestCatalog);
+                roomPlayer.CheckObjective(ObjectiveEnum.Scoremultiple, Id, EnemyController.PrefabName, 1, QuestCatalog);
+            }
 
             player.CheckAchievement(AchConditionType.DefeatEnemy, [PrefabName], InternalAchievement, Logger);
             player.CheckAchievement(AchConditionType.DefeatEnemy, [Enum.GetName(EnemyModel.EnemyCategory)], InternalAchievement, Logger);

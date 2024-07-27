@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Database.Users;
 using Server.Reawakened.Network.Extensions;
@@ -76,9 +77,7 @@ public static class PlayerExtensions
         if (player == null)
             return;
 
-        if (player.TempData.ReputationBoostsElixir)
-            reputation = Convert.ToInt32(reputation * 0.1);
-
+        reputation *= (int)(1 + player.Character.StatusEffects.Get(ItemEffectType.ExperienceMultiplier) * 0.01);
         reputation += player.Character.Reputation;
 
         while (reputation > player.Character.ReputationForNextLevel)
@@ -131,12 +130,11 @@ public static class PlayerExtensions
             trade.TempData.TradeModel = null;
     }
 
-    public static void AddBananas(this Player player, int collectedBananas, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
+    public static void AddBananas(this Player player, float collectedBananas, InternalAchievement internalAchievement, Microsoft.Extensions.Logging.ILogger logger)
     {
-        if (player.TempData.BananaBoostsElixir)
-            collectedBananas = Convert.ToInt32(collectedBananas * 0.1);
+        collectedBananas *= (float)(1 + player.Character.StatusEffects.Get(ItemEffectType.BananaMultiplier) * 0.01);
 
-        player.CheckAchievement(AchConditionType.CollectBanana, [], internalAchievement, logger, collectedBananas);
+        player.CheckAchievement(AchConditionType.CollectBanana, [], internalAchievement, logger, (int)Math.Floor(collectedBananas));
 
         player.Character.Write.Cash += collectedBananas;
         player.SendCashUpdate();
@@ -175,7 +173,7 @@ public static class PlayerExtensions
     }
 
     public static void SendCashUpdate(this Player player) =>
-        player.SendXt("ca", player.Character.Cash, player.Character.NCash);
+        player.SendXt("ca", Math.Floor(player.Character.Cash), Math.Floor(player.Character.NCash));
 
     public static void SendLevelChange(this Player player, WorldHandler worldHandler)
     {
@@ -202,7 +200,11 @@ public static class PlayerExtensions
             error = e.Message;
         }
 
-        player.SendXt("lw", error, levelName, surroundingLevels);
+        // Allows early 2012 to load
+        if (worldHandler.Config.GameVersion >= GameVersion.vMinigames2012)
+            player.SendXt("lw", error, levelName, surroundingLevels);
+        else
+            player.SendXt("lw", error, levelName, string.Empty, surroundingLevels);
     }
 
     public static void SetCharacterSelected(this Player player, CharacterModel character)
@@ -235,11 +237,14 @@ public static class PlayerExtensions
         userInfo.Write.LastCharacterSelected = string.Empty;
     }
 
-    public static void LevelUp(this Player player, int level,
+    public static void LevelUp(this Player player, int level, WorldStatistics worldStatistics,
     ServerRConfig config, Microsoft.Extensions.Logging.ILogger logger)
     {
         player.Character.SetLevelXp(level, config);
         player.SendLevelUp();
+
+        if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(config), out var pet))
+            pet.GainEnergy(player, player.GetMaxPetEnergy(worldStatistics, config));
 
         //Temporary NCash reward until original level up system is implemented.
         player.AddNCash(config.LevelUpNCashReward);

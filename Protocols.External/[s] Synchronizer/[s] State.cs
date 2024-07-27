@@ -4,6 +4,7 @@ using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
@@ -60,7 +61,7 @@ public class State : ExternalProtocol
                     if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet))
                     {
                         Player.Room.SendSyncEvent(new PetState_SyncEvent(Player.GameObjectId, Player.Room.Time, PetInformation.StateSyncType.PetStateVanish, Player.GameObjectId));
-                        pet.CurrentTriggerId = string.Empty;
+                        pet.DespawnPet(Player, WorldStatistics, ServerRConfig);
                     }
                     break;
                 case SyncEvent.EventType.ChargeAttack:
@@ -70,6 +71,12 @@ public class State : ExternalProtocol
                     var attack = new ChargeAttack_SyncEvent(syncEvent);
                     var superStompDamage = (int)Math.Ceiling(WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.GlobalLevel) +
                         WorldStatistics.GlobalStats[Globals.StompDamageBonus]);
+
+                    // Needed because early 2012's ChargeAttack_SyncEvent is different
+                    // without it this causes a vs error
+                    // not fixable in reawakened it would require using the 2012 codebase
+                    if (ServerRConfig.GameVersion <= GameVersion.vPets2012)
+                        return;
 
                     Logger.LogTrace("Super attack is charging: '{Charging}' at ({X}, {Y}) in time: {Delay} " +
                         "at speed ({X}, {Y}) with max pos ({X}, {Y}) for item id: '{Id}' and zone: {Zone}",
@@ -197,8 +204,12 @@ public class State : ExternalProtocol
 
         var respawnPosition = Player.Room.LastCheckpoint ?? Player.Room.GetDefaultSpawnPoint();
 
-        Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
-                 respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
+        if (Player.TempData.CurrentArena is not null)
+            Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            Player.TempData.CurrentArena.Position.X, Player.TempData.CurrentArena.Position.Y, Player.TempData.CurrentArena.IsOnBackPlane(Logger)));
+        else
+            Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
+            respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
 
         TimerThread.DelayCall(DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
     }

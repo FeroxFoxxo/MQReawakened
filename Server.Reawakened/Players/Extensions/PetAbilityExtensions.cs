@@ -21,7 +21,8 @@ public static class PetAbilityExtensions
             )
         );
 
-    public static void SendAbility(this Player petOwner, ItemCatalog itemCatalog, ServerRConfig serverRConfig, TimerThread timerThread)
+    public static void SendAbility(this Player petOwner, ItemCatalog itemCatalog,
+        ServerRConfig serverRConfig, TimerThread timerThread, WorldStatistics worldStatistics)
     {
         if (!petOwner.Character.Pets.TryGetValue(petOwner.GetEquippedPetId(serverRConfig), out var pet))
             return;
@@ -33,11 +34,14 @@ public static class PetAbilityExtensions
         petOwner.Room.SendSyncEvent(new PetState_SyncEvent(petOwner.GameObjectId, petOwner.Room.Time,
             PetInformation.StateSyncType.Ability, petOwner.GetSyncParams(pet.AbilityParams)));
 
-        petOwner.Room.SendSyncEvent(new StatusEffect_SyncEvent(petOwner.GameObjectId, petOwner.Room.Time,
-            (int)ItemEffectType.Defence, (int)pet.AbilityParams.DefensiveBonusRatio, (int)pet.AbilityParams.Duration,
-            true, itemCatalog.GetItemFromId(int.Parse(pet.PetId)).PrefabName, false));
+        if (pet.AbilityParams.AbilityType is PetAbilityType.Defence or PetAbilityType.DefensiveBarrier)
+            petOwner.Room.SendSyncEvent(new StatusEffect_SyncEvent(petOwner.GameObjectId, petOwner.Room.Time,
+                (int)ItemEffectType.Defence, (int)pet.AbilityParams.DefensiveBonusRatio, (int)pet.AbilityParams.Duration,
+                true, itemCatalog.GetItemFromId(int.Parse(pet.PetId)).PrefabName, false));
 
         pet.UseEnergy(petOwner);
+        pet.StartEnergyRegeneration(petOwner, timerThread, worldStatistics);
+
         //Sends method of ability type after a short delay.
         timerThread.DelayCall(pet.GetAbilityType(), petOwner, TimeSpan.FromSeconds(pet.AbilityParams.InitialDelayBeforeUse),
             TimeSpan.FromSeconds(pet.AbilityParams.Frequency), pet.AbilityParams.HitCount);

@@ -41,13 +41,13 @@ public static class AISyncEventHelper
             bList.Append(bDefinesList.ToString());
         }
 
-        var behaviorList = bList.ToString();
-
         var aiInit = new AIInit_SyncEvent(
             id, room.Time,
             posX, posY, posZ, spawnX, spawnY, behaviorRatio,
             health, maxHealth, healthModifier, scaleModifier, resistanceModifier,
-            stars, level, globalProperties.ToString(), behaviorList
+            stars, level,
+            globalProperties.ToString(),
+            bList.ToString()
         );
 
         aiInit.EventDataList[2] = spawnX;

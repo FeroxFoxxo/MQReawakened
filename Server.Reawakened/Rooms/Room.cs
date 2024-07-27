@@ -333,6 +333,13 @@ public class Room : Timer
             _colliders.Remove(colliderId);
     }
 
+    public void ToggleCollider(string colliderId, bool active)
+    {
+        if (_colliders.TryGetValue(colliderId, out var collider))
+            lock (_roomLock)
+                collider.Active = active;
+    }
+
     public BaseCollider GetColliderById(string id) =>
         _colliders.TryGetValue(id, out var value) ? value : null;
 
@@ -430,10 +437,10 @@ public class Room : Timer
             _projectiles[projectile.ProjectileId] = projectile;
     }
 
-    public void RemoveProjectile(string enemyId)
+    public void RemoveProjectile(string projectileId)
     {
         lock (_roomLock)
-            _projectiles.Remove(enemyId);
+            _projectiles.Remove(projectileId);
     }
 
     public int CreateProjectileId()
