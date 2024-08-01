@@ -1,4 +1,6 @@
 ﻿using Server.Base.Core.Extensions;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.XMLs.Abstractions.Enums;
 using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
@@ -14,6 +16,8 @@ public class WorldGraph : WorldGraphXML, IBundledXml
     public int DefaultLevel;
     public int NewbZone;
     public Dictionary<int, List<DestNode>> WorldGraphNodes;
+
+    public ServerRConfig ServerRConfig { get; set; }
 
     public void InitializeVariables()
     {
@@ -32,6 +36,17 @@ public class WorldGraph : WorldGraphXML, IBundledXml
 
     public void EditDescription(XmlDocument xml)
     {
+        if (ServerRConfig.GameVersion <= GameVersion.vPets2012)
+        {
+            var node = xml.SelectNodes("/levels/level[@level_type='MiniGameTrail']");
+
+            foreach (XmlNode level in node)
+            {
+                var parent = level.ParentNode;
+
+                parent.RemoveChild(level);
+            }
+        }
     }
 
     public void ReadDescription(string xml) =>

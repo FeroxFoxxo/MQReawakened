@@ -936,7 +936,7 @@
                     <Effect duration="5" type="AirDamage" value="0" />
                 </ItemEffects>
             </Item>
-            <Item itemId="9235" itemName="Mandrill Sergeant Stick" descriptionId="1733386790" prefabName="WPN_PRJ_MandrillStick01" specialDisplayPrefab="" tribe="Bone" rarity="Epic" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0" delayUseDuration="0" binding="On Equip" level="20" levelRequirement="20" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
+            <Item itemId="9235" itemName="Mandrill Sergeant Stick" descriptionId="1733386790" prefabName="WPN_PRJ_MandrillStick01" specialDisplayPrefab="" tribe="Bone" rarity="Epic" memberOnly="true" currency="Banana" storeType="Front Store" stockPriority="0" regularPrice="0" discountPrice="-1" sellPrice="0" sellCount="0" discountedFrom="None" discountedTo="None" actionType="Throw" cooldownTime="0.8" delayUseDuration="0" binding="On Equip" level="20" levelRequirement="20" uniqueInInventory="false" lootId="-1" recipeParentItemId="-1" productionStatus="In Game" releaseDate="None">
                 <ItemEffects>
                     <Effect duration="5" type="PoisonDamage" value="0" />
                 </ItemEffects>

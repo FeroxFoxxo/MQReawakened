@@ -4,7 +4,8 @@ using Server.Base.Core.Services;
 using Server.Reawakened.Core.Configs;
 
 namespace Server.Reawakened.Database.Characters;
-public class CharacterHandler(ServerRConfig serverRConfig, IServiceProvider services) : DataHandler<CharacterDbEntry, ReawakenedDatabase>(services)
+public class CharacterHandler(ServerRConfig serverRConfig, IServiceProvider services, ReawakenedLock dbLock) :
+    DataHandler<CharacterDbEntry, ReawakenedDatabase, ReawakenedLock>(services, dbLock)
 {
     public override bool HasDefault => false;
 
@@ -24,7 +25,7 @@ public class CharacterHandler(ServerRConfig serverRConfig, IServiceProvider serv
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<ReawakenedDatabase>();
 
-        lock (db.Lock)
+        lock (DbLock.Lock)
         {
             var character = db.Characters.AsNoTracking().FirstOrDefault(c => c.CharacterName == name);
 
@@ -37,7 +38,7 @@ public class CharacterHandler(ServerRConfig serverRConfig, IServiceProvider serv
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<ReawakenedDatabase>();
 
-        lock (db.Lock)
+        lock (DbLock.Lock)
             return db.Characters.Any(a => a.CharacterName == name);
     }
 }

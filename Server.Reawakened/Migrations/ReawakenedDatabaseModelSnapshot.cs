@@ -182,6 +182,9 @@ namespace Server.Reawakened.Migrations
                     b.Property<bool>("Registered")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Reports")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Reputation")
                         .HasColumnType("INTEGER");
 

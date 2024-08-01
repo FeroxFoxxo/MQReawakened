@@ -13,9 +13,9 @@ using System.Net;
 
 namespace Server.Base.Database.Accounts;
 
-public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter,
+public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter, BaseLock bLock,
     FileLogger fileLogger, TemporaryDataStorage temporaryDataStorage, InternalRConfig config, IServiceProvider services) :
-    DataHandler<AccountDbEntry, BaseDatabase>(services)
+    DataHandler<AccountDbEntry, BaseDatabase, BaseLock>(services, bLock)
 {
     public override bool HasDefault => true;
 
@@ -54,7 +54,7 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
 
-        lock (db.Lock)
+        lock (DbLock.Lock)
         {
             var account = db.Accounts.AsNoTracking().FirstOrDefault(a => a.Username == username);
 
@@ -170,7 +170,7 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
 
-        lock (db.Lock)
+        lock (DbLock.Lock)
         {
             return db.Accounts.Any(a => a.Username == username);
         }
@@ -181,7 +181,7 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
 
-        lock (db.Lock)
+        lock (DbLock.Lock)
         {
             return db.Accounts.Any(a => a.Email == email);
         }

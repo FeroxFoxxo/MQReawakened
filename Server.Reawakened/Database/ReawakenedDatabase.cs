@@ -1,16 +1,13 @@
 ﻿using A2m.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Server.Base.Accounts.Models;
 using Server.Base.Database.Abstractions;
-using Server.Base.Database.Accounts;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Database.Users;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.Players.Models.Misc;
 using Server.Reawakened.Players.Models.Pets;
 using Server.Reawakened.Players.Models.System;
-using System.Text.Json;
 
 namespace Server.Reawakened.Database;
 public class ReawakenedDatabase(DbContextOptions<ReawakenedDatabase> options) : DataContext<ReawakenedDatabase>(options), IDataContextCreate
@@ -44,6 +41,7 @@ public class ReawakenedDatabase(DbContextOptions<ReawakenedDatabase> options) : 
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Friends).HasConversion(new CustomConverter<List<int>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Blocked).HasConversion(new CustomConverter<List<int>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Muted).HasConversion(new CustomConverter<List<int>>());
+        modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Reports).HasConversion(new CustomConverter<Dictionary<string, ReportModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.CollectedIdols).HasConversion(new CustomConverter<Dictionary<int, List<int>>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Emails).HasConversion(new CustomConverter<List<EmailHeaderModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.EmailMessages).HasConversion(new CustomConverter<List<EmailMessageModel>>());

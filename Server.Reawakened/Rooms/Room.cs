@@ -437,10 +437,10 @@ public class Room : Timer
             _projectiles[projectile.ProjectileId] = projectile;
     }
 
-    public void RemoveProjectile(string enemyId)
+    public void RemoveProjectile(string projectileId)
     {
         lock (_roomLock)
-            _projectiles.Remove(enemyId);
+            _projectiles.Remove(projectileId);
     }
 
     public int CreateProjectileId()

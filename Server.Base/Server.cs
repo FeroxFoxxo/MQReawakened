@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Core.Abstractions;
@@ -17,8 +16,25 @@ public class Server(ILogger<Server> logger) : Module(logger)
 {
     public override void AddDatabase(IServiceCollection services, Module[] modules)
     {
+        Logger.LogDebug("Loading database locks");
+
+        foreach (var service in modules.GetServices<DbLock>())
+        {
+            Logger.LogTrace("Loaded: {ServiceName}", service.Name);
+            services.AddSingleton(service);
+        }
+
+        Logger.LogInformation("Loaded database locks");
+
+        Logger.LogDebug("Loading database contexts");
+
         foreach (var type in modules.GetServices<IDataContextInitialize>())
+        {
+            Logger.LogTrace("Loaded: {ServiceName}", type.Name);
             type.GetMethod("AddContextToServiceProvider")?.Invoke(null, [services]);
+        }
+
+        Logger.LogInformation("Loaded database contexts");
     }
 
     public override void AddLogging(ILoggingBuilder loggingBuilder)

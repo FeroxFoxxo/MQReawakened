@@ -16,8 +16,8 @@ using System.Net;
 namespace Server.Reawakened.Database.Users;
 
 public class UserInfoHandler(WorldHandler worldHandler, RandomKeyGenerator randomKeyGenerator, ServerRConfig config,
-    PlayerContainer playerContainer, CharacterHandler characterHandler,
-    IServiceProvider services) : DataHandler<UserInfoDbEntry, ReawakenedDatabase>(services)
+    PlayerContainer playerContainer, CharacterHandler characterHandler, ReawakenedLock dbLock,
+    IServiceProvider services) : DataHandler<UserInfoDbEntry, ReawakenedDatabase, ReawakenedLock>(services, dbLock)
 {
     public override bool HasDefault => true;
 
