@@ -27,7 +27,7 @@ public class PlayerCollider(Player player) :
                 (aiProjectileCollider.Effect, aiProjectileCollider.ItemCatalog);
 
             player.ApplyCharacterDamage(damage, aiProjectileCollider.Id, 1, aiProjectileCollider.ServerRConfig, aiProjectileCollider.TimerThread);
-            player.TemporaryInvincibility(aiProjectileCollider.TimerThread, 1);
+            player.TemporaryInvincibility(aiProjectileCollider.TimerThread, aiProjectileCollider.ServerRConfig, 1);
 
             Room.RemoveCollider(aiProjectileCollider.PrjId);
         }
@@ -43,7 +43,7 @@ public class PlayerCollider(Player player) :
                     player.ApplyDamageByPercent(0.1, stomper.Id, 1, stomper.ServerRConfig, stomper.TimerThread);
 
                 Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId, Room.Time, (int)ItemEffectType.StompDamage, 0, 1, true, stomper.Id, false));
-                player.TemporaryInvincibility(stomper.TimerThread, 1);
+                player.TemporaryInvincibility(stomper.TimerThread, stomper.ServerRConfig, 1);
             }
         }
     }

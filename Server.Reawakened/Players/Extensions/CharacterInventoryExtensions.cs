@@ -1,7 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using PetDefines;
-using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
@@ -194,7 +193,7 @@ public static class CharacterInventoryExtensions
     }
 
     public static void EquipPet(this Player player, PetAbilityParams petAbilityParams,
-        WorldStatistics worldStatistics, ServerRConfig serverRConfig, TimerThread timerThread)
+     WorldStatistics worldStatistics, ServerRConfig serverRConfig, ItemCatalog itemCatalog)
     {
         if (player == null || !player.Character.Hotbar.HotbarButtons.ContainsKey(serverRConfig.PetHotbarIndex))
             return;
@@ -202,14 +201,39 @@ public static class CharacterInventoryExtensions
         var petId = player.GetEquippedPetId(serverRConfig);
         var refillCurrentEnergy = false;
 
+        if (petId == "0" || !itemCatalog.GetItemFromId(int.Parse(petId)).IsPet()) return;
+
         if (!player.Character.Pets.TryGetValue(petId, out var currentPet))
         {
             player.Character.Pets.Add(petId, currentPet = new PetModel());
+            currentPet.SetParams(petId, petAbilityParams);
+
             refillCurrentEnergy = true;
         }
 
-        currentPet.SpawnPet(player, petId, true, petAbilityParams,
-            refillCurrentEnergy, worldStatistics, serverRConfig, timerThread);
+        player.Character.Write.PetItemId = int.Parse(petId);
+
+        currentPet.LastTimePetWasEquipped = DateTime.Now;
+        currentPet.IsEquipped = true;
+        currentPet.SpawnPet(player, refillCurrentEnergy, worldStatistics, serverRConfig);
+    }
+
+    public static void UnequipPet(this Player player, WorldStatistics worldStatistics,
+        ServerRConfig serverRConfig, ItemCatalog itemCatalog)
+    {
+        if (player == null) return;
+
+        var petId = player.GetEquippedPetId(serverRConfig);
+
+        if (!itemCatalog.GetItemFromId(int.Parse(petId)).IsPet() ||
+            !player.Character.Pets.TryGetValue(petId, out var currentPet)) return;
+
+        else
+        {
+            player.Character.Write.PetItemId = 0;
+            currentPet.IsEquipped = false;
+            currentPet.DespawnPet(player, worldStatistics, serverRConfig);
+        }
     }
 
     public static string GetEquippedPetId(this Player player, ServerRConfig serverRConfig) =>

@@ -253,11 +253,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         if (Room.GetPlayerById(interactionId) != null)
         {
             if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) && !pet.InCoopState() &&
-                InteractType == InteractionType.PetChain || InteractType == InteractionType.PetSwitch)
-            {
+                (InteractType == InteractionType.PetChain || InteractType == InteractionType.PetSwitch))
                 if (pet != null)
-                    pet.CurrentTriggerId = Id;
-            }
+                    pet.CoopTriggerableId = Id;
 
             if (!string.IsNullOrEmpty(QuestCompletedRequired))
             {
@@ -289,7 +287,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
         if (!CurrentPhysicalInteractors.Contains(interactionId)) return;
 
         if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) && !pet.InCoopState())
-            pet.CurrentTriggerId = string.Empty;
+            pet.CoopTriggerableId = string.Empty;
 
         CurrentPhysicalInteractors.Remove(interactionId);
         SendInteractionUpdate();
@@ -358,7 +356,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 return;
 
             if (StayTriggeredOnUnpressed || player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet)
-                && Id == pet.CurrentTriggerId && pet.InCoopState())
+                && Id == pet.CoopTriggerableId && pet.InCoopState())
                 return;
 
             if (LastActivationTime + ActivationTimeAfterFirstInteraction > Room.Time && ActivationTimeAfterFirstInteraction > 0)
