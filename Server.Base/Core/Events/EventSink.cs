@@ -44,7 +44,6 @@ public class EventSink : IEventSink
     public event CreateDataEventHandler CreateData;
 
     public event WorldLoadEventHandler WorldLoad;
-    public event WorldSaveEventHandler WorldSave;
     public event WorldBroadcastEventHandler WorldBroadcast;
 
     public event NetStateRemovedHandler NetStateRemoved;
@@ -64,7 +63,6 @@ public class EventSink : IEventSink
     public void InvokeCreateData() => CreateData?.Invoke();
 
     public void InvokeWorldLoad() => WorldLoad?.Invoke();
-    public void InvokeWorldSave(WorldSaveEventArgs e) => WorldSave?.Invoke(e);
     public void InvokeWorldBroadcast(WorldBroadcastEventArgs e) => WorldBroadcast?.Invoke(e);
 
     public void InvokeNetStateRemoved(NetStateRemovedEventArgs e) => NetStateRemoved?.Invoke(e);
