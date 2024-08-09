@@ -14,6 +14,7 @@ using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles;
 using Server.Reawakened.XMLs.Bundles.Base;
 using System.Text;
 using UnityEngine;
@@ -24,10 +25,9 @@ namespace Protocols.External._s__Synchronizer;
 public class State : ExternalProtocol
 {
     public override string ProtocolName => "ss";
-
+    public PetAbilities PetAbilities { get; set; }
     public SyncEventManager SyncEventManager { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
-    public ItemRConfig ItemRConfig { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public FileLogger FileLogger { get; set; }
     public TimerThread TimerThread { get; set; }
@@ -58,10 +58,11 @@ public class State : ExternalProtocol
             switch (syncEvent.Type)
             {
                 case SyncEvent.EventType.PetState:
-                    if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet))
+                    if (Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet) &&
+                        PetAbilities.PetAbilityData.TryGetValue(int.Parse(pet.PetId), out var petAbilityParams))
                     {
                         Player.Room.SendSyncEvent(new PetState_SyncEvent(Player.GameObjectId, Player.Room.Time, PetInformation.StateSyncType.PetStateVanish, Player.GameObjectId));
-                        pet.DespawnPet(Player, WorldStatistics, ServerRConfig);
+                        pet.DespawnPet(Player, petAbilityParams, WorldStatistics, ServerRConfig);
                     }
                     break;
                 case SyncEvent.EventType.ChargeAttack:
@@ -70,7 +71,7 @@ public class State : ExternalProtocol
 
                     var attack = new ChargeAttack_SyncEvent(syncEvent);
                     var superStompDamage = (int)Math.Ceiling(WorldStatistics.GetValue(ItemEffectType.AbilityPower, WorldStatisticsGroup.Player, Player.Character.GlobalLevel) +
-                        WorldStatistics.GlobalStats[Globals.StompDamageBonus]);
+                        WorldStatistics.GlobalStats[Globals.StompDamageBonus]) * 2;
 
                     // Needed because early 2012's ChargeAttack_SyncEvent is different
                     // without it this causes a vs error
