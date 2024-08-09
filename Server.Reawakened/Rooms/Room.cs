@@ -77,6 +77,8 @@ public class Room : Timer
     public long TimeOffset { get; set; }
     public float Time => (float)((GetTime.GetCurrentUnixMilliseconds() - TimeOffset) / 1000.0);
 
+    public bool IsOpen;
+
     public Room(int roomId, Level level, IServiceProvider services, TimerThread timerThread, ServerRConfig config) :
         base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0 / config.RoomTickRate), 0, timerThread)
     {
@@ -85,6 +87,8 @@ public class Room : Timer
         _roomId = roomId;
         _config = config;
         _timerThread = timerThread;
+
+        IsOpen = true;
 
         _itemConfig = services.GetRequiredService<ItemRConfig>();
         ColliderCatalog = services.GetRequiredService<InternalColliders>();
@@ -469,10 +473,7 @@ public class Room : Timer
 
         this.SendSyncEvent(
             AISyncEventHelper.AILaunchItem(
-                ownerId, Time,
-                position.x, position.y, position.z,
-                speed.x, speed.y,
-                lifeTime, projectileId, isGrenade
+                ownerId, Time, position, speed, lifeTime, projectileId, isGrenade
             )
         );
 
@@ -550,6 +551,17 @@ public class Room : Timer
     // Cleanup
     private void CleanData()
     {
+        // Deallocate rooms.
+        foreach (var entity in _entities)
+        {
+            foreach (var component in entity.Value)
+            {
+                component.Entity.Room = null;
+            }
+        }
+
+        IsOpen = false;
+
         _gameObjectIds.Clear();
         _killedObjects.Clear();
 

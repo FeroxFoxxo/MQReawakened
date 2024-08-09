@@ -1,5 +1,6 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Logging;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
@@ -13,6 +14,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
+using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.Rooms.Services;
 using Server.Reawakened.XMLs.Bundles.Base;
 using System.Text;
@@ -211,21 +213,16 @@ public class State : ExternalProtocol
             Player.SendSyncEventToPlayer(new PhysicTeleport_SyncEvent(Player.GameObjectId.ToString(), Player.Room.Time,
             respawnPosition.Position.X, respawnPosition.Position.Y, respawnPosition.IsOnBackPlane(Logger)));
 
-        TimerThread.DelayCall(DisableInvincibility, Player, TimeSpan.FromSeconds(1.5), TimeSpan.Zero, 1);
+        TimerThread.RunDelayed(DisableInvincibility, new PlayerTimer() { Player = Player }, TimeSpan.FromSeconds(1.5));
     }
 
-    private static void DisableInvincibility(object playerObj)
+    private static void DisableInvincibility(ITimerData data)
     {
-        var player = (Player)playerObj;
-
-        if (player == null)
+        if (data is not PlayerTimer playerTimer)
             return;
 
-        if (player.TempData == null)
-            return;
-
-        if (player.TempData.Invincible)
-            player.TempData.Invincible = false;
+        if (playerTimer.Player.TempData.Invincible)
+                playerTimer.Player.TempData.Invincible = false;
     }
 
     public void LogEvent(SyncEvent syncEvent, string entityId, Room room)

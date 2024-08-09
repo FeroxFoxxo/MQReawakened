@@ -1,11 +1,9 @@
 ﻿using A2m.Server;
+using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
-using Server.Reawakened.Entities.Enemies.Extensions;
-using Server.Reawakened.Entities.Projectiles;
-using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.XMLs.Bundles.Base;
 using UnityEngine;
 
@@ -31,41 +29,38 @@ public class AIStateSpiderVenomComp : BaseAIState<AIStateSpiderVenom>
 
     public override void StartState()
     {
-        TimerThread.DelayCall(LaunchProjectile, true, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossFirstProjectileDelay), TimeSpan.Zero, 1);
-        TimerThread.DelayCall(LaunchProjectile, false, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossSecondProjectileDelay), TimeSpan.Zero, 1);
-
-        TimerThread.DelayCall(RunDropState, null, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossDropDelay), TimeSpan.Zero, 1);
+        TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile() { IsFirstProjectile = true, Component = this }, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossFirstProjectileDelay));
+        TimerThread.RunDelayed(LaunchProjectile, new SpiderProjectile() { IsFirstProjectile = false, Component = this }, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossSecondProjectileDelay));
+        TimerThread.RunDelayed(RunDropState, this, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossDropDelay));
     }
 
-    public void LaunchProjectile(object isFirstProjectile)
+    public class SpiderProjectile() : ITimerData
     {
-        var projectileId = Room.CreateProjectileId();
+        public AIStateSpiderVenomComp Component { get; set; }
+        public bool IsFirstProjectile { get; set; }
 
-        Room.SendSyncEvent(
-            AISyncEventHelper.AILaunchItem(
-                Id, Room.Time, Position.X, Position.Y + EnemyRConfig.SpiderTeaserBossProjectileYOffset, Position.Z,
-                -EnemyRConfig.SpiderTeaserBossProjectileSpeed, Convert.ToBoolean(isFirstProjectile) ? 0 : EnemyRConfig.SpiderTeaserBossProjectileSpeed,
-                EnemyRConfig.SpiderTeaserBossProjectileLifeTime, projectileId, Convert.ToBoolean(0)
-            )
-        );
-
-        Room.AddProjectile(
-            new AIProjectile(
-                Room, Id, projectileId.ToString(),
-                new Vector3(Position.X, Position.Y + EnemyRConfig.SpiderTeaserBossProjectileYOffset, Position.Z),
-                new Vector2(-EnemyRConfig.SpiderTeaserBossProjectileSpeed, Convert.ToBoolean(isFirstProjectile) ? 0 : EnemyRConfig.SpiderTeaserBossProjectileSpeed),
-                EnemyRConfig.SpiderTeaserBossProjectileLifeTime, TimerThread, 1, ItemEffectType.BluntDamage, false, ServerRConfig, ItemCatalog, ItemRConfig
-            )
-        );
+        public bool IsValid() => Component != null && Component.IsValid();
     }
 
-    public void RunDropState(object _)
+    public static void LaunchProjectile(ITimerData data)
     {
-        if (Room == null)
+        if (data is not SpiderProjectile projectile)
             return;
 
-        AddNextState<AIStateSpiderDropComp>();
+        var component = projectile.Component;
 
-        GoToNextState();
+        var position = new Vector3(component.Position.X, component.Position.Y + component.EnemyRConfig.SpiderTeaserBossProjectileYOffset, component.Position.Z);
+        var speed = new Vector2(-component.EnemyRConfig.SpiderTeaserBossProjectileSpeed, Convert.ToBoolean(projectile.IsFirstProjectile) ? 0 : component.EnemyRConfig.SpiderTeaserBossProjectileSpeed);
+
+        component.Room.AddRangedProjectile(component.Id, position, speed, component.EnemyRConfig.SpiderTeaserBossProjectileLifeTime, 1, ItemEffectType.BluntDamage, false);
+    }
+
+    public static void RunDropState(ITimerData data)
+    {
+        if (data is not AIStateSpiderVenomComp spider)
+            return;
+
+        spider.AddNextState<AIStateSpiderDropComp>();
+        spider.GoToNextState();
     }
 }

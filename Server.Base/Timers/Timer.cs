@@ -1,4 +1,5 @@
-﻿using Server.Base.Timers.Enums;
+﻿using Server.Base.Core.Abstractions;
+using Server.Base.Timers.Enums;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 
@@ -6,7 +7,7 @@ namespace Server.Base.Timers;
 
 public class Timer
 {
-    public delegate void TimerCallback(object _);
+    public delegate void TimerCallback(ITimerData timerData);
 
     private readonly TimerThread _timerThread;
 

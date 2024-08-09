@@ -1,16 +1,17 @@
 ﻿using A2m.Server;
+using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Timers;
 
 namespace Server.Reawakened.Players.Extensions;
 
 public static class PlayerDamageExtensions
 {
-    public class UnderwaterData()
+    public class UnderwaterData() : PlayerRoomTimer
     {
-        public Player Player;
         public int Damage;
         public TimerThread TimerThread;
         public ServerRConfig ServerRConfig;
@@ -22,17 +23,32 @@ public static class PlayerDamageExtensions
 
         var underwaterData = new UnderwaterData()
         {
-            Player = player,
             Damage = damage,
             TimerThread = timerThread,
-            ServerRConfig = serverRConfig
+            ServerRConfig = serverRConfig,
+            Player = player
         };
 
         var ticksTillDeath = (int)Math.Ceiling((double)player.Character.CurrentLife / damage);
 
         player.TempData.Underwater = true;
-        player.TempData.UnderwaterTimer = timerThread.DelayCall(ApplyUnderwaterDamage, underwaterData,
-            TimeSpan.FromSeconds(serverRConfig.BreathTimerDuration), TimeSpan.FromSeconds(serverRConfig.UnderwaterDamageInterval), ticksTillDeath);
+        player.TempData.UnderwaterTimer = timerThread.RunInterval(ApplyUnderwaterDamage, underwaterData,
+            TimeSpan.FromSeconds(serverRConfig.UnderwaterDamageInterval), ticksTillDeath, TimeSpan.FromSeconds(serverRConfig.BreathTimerDuration));
+    }
+
+    public static void ApplyUnderwaterDamage(ITimerData data)
+    {
+        if (data is not UnderwaterData water)
+            return;
+
+        if (!water.Player.TempData.Underwater)
+            return;
+
+        water.Player.Room.SendSyncEvent(new StatusEffect_SyncEvent(water.Player.GameObjectId, water.Player.Room.Time,
+            (int)ItemEffectType.WaterDamage, water.Damage, 1, true, water.Player.GameObjectId, false));
+
+        water.Player.ApplyCharacterDamage(water.Player.Character.MaxLife / water.ServerRConfig.UnderwaterDamageRatio,
+            string.Empty, 1, water.ServerRConfig, water.TimerThread);
     }
 
     public static void StopUnderwater(this Player player)
@@ -42,20 +58,6 @@ public static class PlayerDamageExtensions
             player.TempData.UnderwaterTimer.Stop();
             player.TempData.UnderwaterTimer = null;
         }
-    }
-
-    public static void ApplyUnderwaterDamage(object underwaterData)
-    {
-        var waterData = (UnderwaterData)underwaterData;
-
-        if (!waterData.Player.TempData.Underwater || waterData.Player == null)
-            return;
-
-        waterData.Player.Room.SendSyncEvent(new StatusEffect_SyncEvent(waterData.Player.GameObjectId, waterData.Player.Room.Time,
-            (int)ItemEffectType.WaterDamage, waterData.Damage, 1, true, waterData.Player.GameObjectId, false));
-
-        waterData.Player.ApplyCharacterDamage(waterData.Player.Character.MaxLife / waterData.ServerRConfig.UnderwaterDamageRatio,
-            string.Empty, 1, waterData.ServerRConfig, waterData.TimerThread);
     }
 
     public static void ApplyCharacterDamage(this Player player, float damage, string originId, double invincibilityDuration, ServerRConfig serverRConfig, TimerThread timerThread)

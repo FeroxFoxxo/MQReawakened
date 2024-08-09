@@ -22,13 +22,11 @@ public class ServerConsole : IService
     private readonly Thread _consoleThread;
     private readonly ServerHandler _handler;
     private readonly ILogger<ServerConsole> _logger;
-    private readonly TimerThread _timerThread;
     private readonly World _world;
 
-    public ServerConsole(TimerThread timerThread, ServerHandler handler, ILogger<ServerConsole> logger,
+    public ServerConsole(ServerHandler handler, ILogger<ServerConsole> logger,
         IHostApplicationLifetime appLifetime, InternalRConfig rConfig, InternalRwConfig rwConfig, World world)
     {
-        _timerThread = timerThread;
         _handler = handler;
         _logger = logger;
         _appLifetime = appLifetime;
@@ -76,7 +74,7 @@ public class ServerConsole : IService
             "crash",
             "Forces an exception to be thrown.",
             NetworkType.Server,
-            _ => _timerThread.DelayCall((object _) => throw new Exception("Forced Crash"), null)
+            _ => throw new Exception("Forced Crash")
         );
 
         DisplayHelp();

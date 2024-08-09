@@ -1,4 +1,5 @@
-﻿using Server.Base.Timers.Extensions;
+﻿using Server.Base.Core.Abstractions;
+using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 
@@ -15,15 +16,14 @@ public class AIStateSpiderEntranceComp : BaseAIState<AIStateSpiderEntrance>
     public TimerThread TimerThread { get; set; }
 
     public override void StartState() =>
-        TimerThread.DelayCall(RunExitEntrance, null, TimeSpan.FromSeconds(IntroDuration), TimeSpan.Zero, 1);
+        TimerThread.RunDelayed(RunExitEntrance, this, TimeSpan.FromSeconds(IntroDuration));
 
-    private void RunExitEntrance(object _)
+    private static void RunExitEntrance(ITimerData data)
     {
-        if (Room == null)
+        if (data is not AIStateSpiderEntranceComp spider)
             return;
 
-        AddNextState<AIStateSpiderDropComp>();
-
-        GoToNextState();
+        spider.AddNextState<AIStateSpiderDropComp>();
+        spider.GoToNextState();
     }
 }
