@@ -206,7 +206,6 @@ public static class CharacterInventoryExtensions
         if (!player.Character.Pets.TryGetValue(petId, out var currentPet))
         {
             player.Character.Pets.Add(petId, currentPet = new PetModel());
-            currentPet.SetParams(petId, petAbilityParams);
 
             refillCurrentEnergy = true;
         }
@@ -215,11 +214,11 @@ public static class CharacterInventoryExtensions
 
         currentPet.LastTimePetWasEquipped = DateTime.Now;
         currentPet.IsEquipped = true;
-        currentPet.SpawnPet(player, refillCurrentEnergy, worldStatistics, serverRConfig);
+        currentPet.SpawnPet(player, petAbilityParams, refillCurrentEnergy, worldStatistics, serverRConfig);
     }
 
-    public static void UnequipPet(this Player player, WorldStatistics worldStatistics,
-        ServerRConfig serverRConfig, ItemCatalog itemCatalog)
+    public static void UnequipPet(this Player player, PetAbilityParams petAbilityParams,
+        WorldStatistics worldStatistics, ServerRConfig serverRConfig, ItemCatalog itemCatalog)
     {
         if (player == null) return;
 
@@ -232,7 +231,7 @@ public static class CharacterInventoryExtensions
         {
             player.Character.Write.PetItemId = 0;
             currentPet.IsEquipped = false;
-            currentPet.DespawnPet(player, worldStatistics, serverRConfig);
+            currentPet.DespawnPet(player, petAbilityParams, worldStatistics, serverRConfig);
         }
     }
 

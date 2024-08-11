@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -18,7 +17,6 @@ public class SetSlot : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public WorldStatistics WorldStatistics { get; set; }
     public ItemRConfig ItemRConfig { get; set; }
-    public TimerThread TimerThread { get; set; }
     public ILogger<PlayerStatus> Logger { get; set; }
 
     public override void Run(string[] message)

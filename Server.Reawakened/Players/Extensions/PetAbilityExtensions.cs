@@ -180,10 +180,10 @@ public static class PetAbilityExtensions
     }
 
     private static bool EnemyInDetectionZone(this PetAbilityParams abilityParams, BaseEnemy enemy, Vector3 petPosition) =>
-        petPosition.x + abilityParams.DetectionZone.x >= enemy.Position.x &&
-           petPosition.y + abilityParams.DetectionZone.y >= enemy.Position.y &&
-           petPosition.x - abilityParams.DetectionZoneOffset.x <= enemy.Position.x &&
-           petPosition.y - abilityParams.DetectionZoneOffset.y <= enemy.Position.y;
+       petPosition.x + abilityParams.DetectionZone.x >= enemy.Position.x &&
+          petPosition.y + abilityParams.DetectionZone.y >= enemy.Position.y &&
+          petPosition.x - abilityParams.DetectionZoneOffset.x <= enemy.Position.x &&
+          petPosition.y - abilityParams.DetectionZoneOffset.y <= enemy.Position.y;
 
     private static bool EnemyInDamageZone(this PetAbilityParams abilityParams, BaseEnemy enemy, Vector3 petPosition) =>
         petPosition.x + abilityParams.DamageArea.x >= enemy.Position.x &&

@@ -30,29 +30,28 @@ public class PetModel()
     public bool HasGainedOfflineEnergy { get; set; }
     public DateTime LastTimePetWasEquipped { get; set; }
 
-    public void SetParams(string petId, PetAbilityParams petAbilityParams)
+    public void SpawnPet(Player petOwner, PetAbilityParams petAbilityParams,
+        bool refillEnergy,  WorldStatistics worldStatistics, ServerRConfig serverRConfig)
     {
-        PetId = petId;
-        AbilityParams = petAbilityParams;
-    }
-
-    public void SpawnPet(Player petOwner, bool refillEnergy,
-        WorldStatistics worldStatistics, ServerRConfig serverRConfig)
-    {    
-        ResetPetData(petOwner, refillEnergy, worldStatistics, serverRConfig);
+        ResetPetData(petOwner, petAbilityParams, refillEnergy, worldStatistics, serverRConfig);
         NotifyPet(petOwner);
         petOwner.SendXt("ZE", petOwner.UserId, PetId, Convert.ToInt32(true));
     }
 
-    public void DespawnPet(Player petOwner, WorldStatistics worldStatistics, ServerRConfig config)
+    public void DespawnPet(Player petOwner, PetAbilityParams petAbilityParams,
+        WorldStatistics worldStatistics, ServerRConfig config)
     {
-        ResetPetData(petOwner, false, worldStatistics, config);
+        ResetPetData(petOwner, petAbilityParams, false, worldStatistics, config);
         petOwner.SendXt("ZE", petOwner.UserId, PetId, Convert.ToInt32(false));
     }
 
-    private void ResetPetData(Player petOwner, bool refillEnergy,
-        WorldStatistics worldStatistics, ServerRConfig config)
+    private void ResetPetData(Player petOwner, PetAbilityParams petAbilityParams,
+        bool refillEnergy, WorldStatistics worldStatistics, ServerRConfig config)
     {
+        PetId = petOwner.GetEquippedPetId(config);
+        AbilityParams = petAbilityParams;
+
+        AbilityCooldown = 0;
         MaxEnergy = petOwner.GetMaxPetEnergy(worldStatistics, config);
 
         if (refillEnergy)
