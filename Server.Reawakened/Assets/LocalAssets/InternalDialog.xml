@@ -398,6 +398,11 @@
             <Dialog dialogId="678" conversationId="1928" minimumReputation="10" />
         </NPC>
     </Level>
+    <Level name="Outlaw Beach" id="295">
+        <NPC objectId="27997" name="Killick" descriptionId="0">
+            <Dialog dialogId="1255" conversationId="3035" minimumReputation="1" />
+        </NPC>
+    </Level>
     <Level name="Anchor Falls" id="147">
         <NPC objectId="14397" name="Lucky" descriptionId="0">
             <Dialog dialogId="691" conversationId="1941" minimumReputation="5" />

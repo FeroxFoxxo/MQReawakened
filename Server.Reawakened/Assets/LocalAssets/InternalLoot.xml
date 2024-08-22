@@ -3032,6 +3032,15 @@
                 <Item itemName="Add_SHD_Ninja01_TS02" count="1" />
                 <Item itemName="Add_COM_Knight01_T02" count="1" />
             </Items>
+            <!-- Green Chest (Custom)-->
+            <LootInfo objectId="3949" doLootWheel="true">
+                <Items rewardAmount="1">
+                    <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
+                    <Item itemName="COL_RECIP_POT_Healing01" count="1" />
+                    <Item itemName="COL_ING_G_Leather02" count="1" />
+                    <Item itemName="COL_POT_Healing01" count="1" />
+                </Items>
+            </LootInfo>
         </LootInfo>
         <!--Arena Blue Chest-->
         <LootInfo objectId="3946" doLootWheel="true">
@@ -3531,6 +3540,31 @@
             </Items>
         </LootInfo>
     </Level>
+    <Level name="Outlaw Beach" id="295">
+        <!-- Green Chest Near Magma Cragcrawler (Custom)-->
+        <LootInfo objectId="28017" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BUFF_GlyphProtection02" count="1" />
+                <Item itemName="COL_RECIP_POT_Healing01" count="1" />
+                <Item itemName="COL_ING_G_Leather02" count="1" />
+                <Item itemName="COL_POT_Healing01" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Purple Chest (Custom)-->
+        <LootInfo objectId="24565" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="COL_BOMB_FireBomb03" count="1" />
+                <Item itemName="Add_COM_FxFire01_T01" count="1" />
+                <Item itemName="Add_COM_Power01_W01" count="1" />
+                <Item itemName="COL_ING_G_Cotton02" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_COM_Panda01_S03" count="1" />
+                <Item itemName="Add_COM_Panda01_TS03" count="1" />
+                <Item itemName="Add_SHD_Shinto01_LS02" count="1" />
+                <Item itemName="Add_COM_Tiger01_T03" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
     <Level name="Anchor Falls" id="147">
         <!--Arena Blue Chest-->
         <LootInfo objectId="14885" doLootWheel="true">
@@ -3596,9 +3630,6 @@
                 <Item itemName="COL_RECIP_POT_FireResist01" count="1" />
                 <Item itemName="COL_RECIP_POT_FireElixer00" count="1" />
                 <Item itemName="COL_POT_FireResist00" count="1" />
-                <Item itemName="Add_COM_DragonFish01_FH01" count="1" />
-                <Item itemName="Add_COM_DragonFish01_TS01" count="1" />
-                <Item itemName="Add_COM_DragonFish01_LS01" count="1" />
                 <Item itemName="COL_POT_Healing02" count="1" />
                 <Item itemName="COL_POT_WaterBreath01" count="1" />
                 <Item itemName="COL_POT_FireResist01" count="1" />
@@ -3701,7 +3732,33 @@
                 <Item itemName="Add_BON_BogHunter01_W01" count="1" />
             </Items>
         </LootInfo>
-    </Level>    
+    </Level>
+    <Level name="Sunken City" id="59">
+        <!--Blue Chest (Custom)-->
+        <LootInfo objectId="17126" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_Knight01_LS02" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_TS01" count="1" />
+                <Item itemName="Add_SHD_Shinto01_LS02" count="1" />
+                <Item itemName="Add_BON_Spiritualist01_S01" count="1" />
+                <Item itemName="Add_OUT_SeaExplorer01_LS01" count="1" />
+                <Item itemName="Add_COM_Knight01_T02" count="1" />
+                <Item itemName="Add_COM_Knight01_S02" count="1" />
+            </Items>
+        </LootInfo>
+        <!--Arena Purple Chest (Custom)-->
+        <LootInfo objectId="24565" doLootWheel="true">
+            <Items rewardAmount="1">
+                <Item itemName="Add_COM_SkullTail01_T02" count="1" />
+                <Item itemName="Add_OUT_PirateHook01_T01" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_LS03" count="1" />
+                <Item itemName="COL_ING_G_Ruby02" count="1" />
+                <Item itemName="Add_COM_StudEarring01_E02" count="1" />
+                <Item itemName="Add_COM_DreadPlate01_BP03" count="1" />
+                <Item itemName="COL_RECIP_COM_DreadPlate01_W03" count="1" />
+            </Items>
+        </LootInfo>
+    </Level>
     <Level name="Pirate Deckhand Trial" id="555">
         <!--Blue Chest-->
         <LootInfo objectId="26293343" doLootWheel="true">
