@@ -1,9 +1,10 @@
 ﻿using A2m.Server;
-using GameError;
+using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Server.Reawakened.Players.Extensions;
@@ -35,12 +36,6 @@ public static class PlayerStatusEffectExtensions
         player.ApplyCharacterDamage(damage, hazardId, hurtLength, serverRConfig, timerThread);
     }
 
-    public class InvincibilityData()
-    {
-        public Player Player;
-        public bool IsInvincible;
-    }
-
     public static void TemporaryInvincibility(this Player player, TimerThread timerThread,
         ServerRConfig serverRConfig, double durationInSeconds)
     {
@@ -58,12 +53,19 @@ public static class PlayerStatusEffectExtensions
             IsInvincible = false
         };
 
-        timerThread.DelayCall(DisableInvincibility, invincibleData, TimeSpan.FromSeconds(durationInSeconds), TimeSpan.Zero, 1);
+        timerThread.RunDelayed(DisableInvincibility, invincibleData, TimeSpan.FromSeconds(durationInSeconds));
     }
 
-    public static void DisableInvincibility(object data)
+    public class InvincibilityData() : PlayerTimer
     {
-        var invincibleData = (InvincibilityData)data;
-        invincibleData.Player.TempData.Invincible = false;
+        public bool IsInvincible;
+    }
+
+    public static void DisableInvincibility(ITimerData data)
+    {
+        if (data is not InvincibilityData invincible)
+            return;
+
+        invincible.Player.TempData.Invincible = false;
     }
 }

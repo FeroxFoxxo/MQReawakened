@@ -1,15 +1,16 @@
 ﻿using Server.Base.Logging;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Models.Planes;
+using Server.Reawakened.Rooms.Models.Timers;
 using System.Text;
 
 namespace Server.Reawakened.Rooms.Models.Entities;
 
-public abstract class BaseComponent
+public abstract class BaseComponent : EntityTimer
 {
     public Entity Entity { get; private set; }
 
-    public Room Room => Entity.Room;
+    public override Room Room => Entity.Room;
 
     public string Id => Entity.GameObject.ObjectInfo.ObjectId;
     public string PrefabName => Entity.GameObject.ObjectInfo.PrefabName;

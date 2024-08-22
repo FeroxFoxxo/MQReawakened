@@ -1,5 +1,5 @@
 ﻿using A2m.Server;
-using Server.Base.Core.Extensions;
+using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
@@ -21,19 +21,18 @@ public class AIStateSpiderDropComp : BaseAIState<AIStateSpiderDrop>
     {
         Position.SetPosition(Position.X, FloorY, Position.Z);
 
-        TimerThread.DelayCall(RunIdleState, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
+        TimerThread.RunDelayed(RunIdleState, this, TimeSpan.FromSeconds(1));
     }
 
     public override ExtLevelEditor.ComponentSettings GetSettings() =>
         [Position.X.ToString(), FloorY.ToString(), Position.Z.ToString()];
 
-    public void RunIdleState(object _)
+    public static void RunIdleState(ITimerData data)
     {
-        if (Room == null)
+        if (data is not AIStateSpiderDropComp spider)
             return;
 
-        AddNextState<AIStateSpiderIdleComp>();
-
-        GoToNextState();
+        spider.AddNextState<AIStateSpiderIdleComp>();
+        spider.GoToNextState();
     }
 }

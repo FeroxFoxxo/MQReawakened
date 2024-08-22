@@ -7,7 +7,7 @@ using Server.Base.Core.Models;
 using Server.Base.Network.Enums;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
-using Server.Base.Worlds.Services;
+using Server.Base.Worlds;
 using System.Globalization;
 using static Server.Base.Core.Models.ConsoleCommand;
 
@@ -22,19 +22,17 @@ public class ServerConsole : IService
     private readonly Thread _consoleThread;
     private readonly ServerHandler _handler;
     private readonly ILogger<ServerConsole> _logger;
-    private readonly TimerThread _timerThread;
-    private readonly AutoSave _saves;
+    private readonly World _world;
 
-    public ServerConsole(TimerThread timerThread, ServerHandler handler, ILogger<ServerConsole> logger,
-        IHostApplicationLifetime appLifetime, InternalRConfig rConfig, InternalRwConfig rwConfig, AutoSave saves)
+    public ServerConsole(ServerHandler handler, ILogger<ServerConsole> logger,
+        IHostApplicationLifetime appLifetime, InternalRConfig rConfig, InternalRwConfig rwConfig, World world)
     {
-        _timerThread = timerThread;
         _handler = handler;
         _logger = logger;
         _appLifetime = appLifetime;
         _rConfig = rConfig;
         _rwConfig = rwConfig;
-        _saves = saves;
+        _world = world;
 
         _commands = [];
 
@@ -67,16 +65,16 @@ public class ServerConsole : IService
 
         AddCommand(
             "save",
-            "Forces a save.",
+            "Saves configuration files.",
             NetworkType.Server,
-            _ => _saves.Save()
+            _ => _world.Save(true)
         );
 
         AddCommand(
             "crash",
             "Forces an exception to be thrown.",
             NetworkType.Server,
-            _ => _timerThread.DelayCall((object _) => throw new Exception("Forced Crash"), null)
+            _ => throw new Exception("Forced Crash")
         );
 
         DisplayHelp();
