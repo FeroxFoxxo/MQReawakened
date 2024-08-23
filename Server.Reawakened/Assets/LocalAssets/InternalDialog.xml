@@ -398,7 +398,7 @@
             <Dialog dialogId="678" conversationId="1928" minimumReputation="10" />
         </NPC>
     </Level>
-    <Level name="Outlaw Beach" id="295">
+    <Level name="Outlaw Beach" id="295"> <!-- Custom -->
         <NPC objectId="27997" name="Killick" descriptionId="0">
             <Dialog dialogId="1255" conversationId="3035" minimumReputation="1" />
         </NPC>
