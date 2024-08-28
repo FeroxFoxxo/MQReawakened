@@ -167,7 +167,7 @@
             <Item prefabName="Add_SHD_Guard01_LS02" />
             <Item prefabName="Add_SHD_Guard01_S02" />
         </Vendor>
-        <Vendor objectId="945" name="Etok" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1318" greetingConversationId="3073" leavingConversationId="3399">
+        <Vendor objectId="945" name="Etok" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1317" greetingConversationId="3072" leavingConversationId="3377">
             <Item prefabName="Add_BON_SkullFighter01_TS01" />
             <Item prefabName="Add_BON_Ritualist01_S01" />
             <Item prefabName="Add_BON_Ritualist01_TS01" />
@@ -619,24 +619,36 @@
     
     <!-- Ootu Mystics Tribe -->
     <Level name="Swamp of Misery" id="46">
-        <Vendor objectId="945" name="Etok" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1318" greetingConversationId="3073" leavingConversationId="3399">
-                <Item prefabName="COL_POT_Healing04" />
-                <Item prefabName="COL_RECIP_PurifiedMudPie01" />
-                <Item prefabName="COL_ING_G_GloomCap01" />
-                <Item prefabName="COL_ING_C_GlacialWater01" />
-                <Item prefabName="COL_ING_C_MountainWater01" />
-                <Item prefabName="COL_ING_C_PureWater01" />
-                <Item prefabName="COL_RECIP_RefinedGloomCap01" />
-                <Item prefabName="COL_RECIP_RefinedMudPie01" />
-                <Item prefabName="COL_RECIP_RefinedDandelions01" />
-                <Item prefabName="COL_RECIP_RefinedLinen01" />
-                <Item prefabName="COL_RECIP_POT_ElixerOfLife02" />
-                <!--Rest are custom-->
-                <Item prefabName="COL_ING_C_VoodooDice01" />
-                <Item prefabName="Add_BON_SwampCrusher01_S01" />
-                <Item prefabName="Add_BON_Voodoo01_S01" />
-                <Item prefabName="Add_BON_Seer01_TS01" />
-            </Vendor>
+        <Vendor objectId="945" name="Etok" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1317" greetingConversationId="3072" leavingConversationId="3377">
+            <Item prefabName="COL_POT_Healing04" />
+            <Item prefabName="COL_RECIP_PurifiedMudPie01" />
+            <Item prefabName="COL_ING_G_GloomCap01" />
+            <Item prefabName="COL_ING_C_GlacialWater01" />
+            <Item prefabName="COL_ING_C_MountainWater01" />
+            <Item prefabName="COL_ING_C_PureWater01" />
+            <Item prefabName="COL_RECIP_RefinedGloomCap01" />
+            <Item prefabName="COL_RECIP_RefinedMudPie01" />
+            <Item prefabName="COL_RECIP_RefinedDandelions01" />
+            <Item prefabName="COL_RECIP_RefinedLinen01" />
+            <Item prefabName="COL_RECIP_POT_ElixerOfLife02" />
+            <!--Rest are custom-->
+            <Item prefabName="COL_ING_C_VoodooDice01" />
+            <Item prefabName="Add_BON_SwampCrusher01_S01" />
+            <Item prefabName="Add_BON_Voodoo01_S01" />
+            <Item prefabName="Add_BON_Seer01_TS01" />
+        </Vendor>
+        <Vendor objectId="1036" name="Bokor" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="1318" greetingConversationId="3073" leavingConversationId="3399">
+            <!--First page of vendor, rest unknown-->
+            <Item prefabName="COL_POT_Healing01" />
+            <Item prefabName="COL_PACK_NC_ColorTonic01" />
+            <Item prefabName="COL_RECIP_POT_ElixerOfLife01" />
+            <Item prefabName="COL_RECIP_POT_EarthResist00" />
+            <Item prefabName="COL_RECIP_POT_EarthElixir00" />
+            <Item prefabName="COL_FOOD_Coconut01" />
+            <Item prefabName="COL_POT_Healing02" />
+            <Item prefabName="Add_BON_Mystic01_E01" />
+            <Item prefabName="WPN_PRJ_MandrillStick01" />
+        </Vendor>
     </Level>
     <Level name="Moss Temple" id="86">
         <Vendor objectId="6251" name="Hilia" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Potions" dialogId="419" greetingConversationId="1242" leavingConversationId="1247">
