@@ -2,6 +2,7 @@
 
 public static class InternalDirectory
 {
+    private static string _baseInternalDirectory;
     private static string _baseDirectory;
 
     public static void CreateDirectory(string path)
@@ -11,6 +12,13 @@ public static class InternalDirectory
 
         if (path != null)
             Directory.CreateDirectory(path);
+    }
+
+    public static string GetInternalDirectory(string directoryName)
+    {
+        var path = Path.Combine(GetBaseInternalDirectory(), directoryName);
+        CreateDirectory(path);
+        return path;
     }
 
     public static string GetDirectory(string directoryName)
@@ -43,18 +51,17 @@ public static class InternalDirectory
     {
         if (_baseDirectory != null) return _baseDirectory;
 
-        try
-        {
-            _baseDirectory = GetExePath.Path();
-
-            if (_baseDirectory.Length > 0)
-                _baseDirectory = Path.GetDirectoryName(_baseDirectory);
-        }
-        catch
-        {
-            _baseDirectory = string.Empty;
-        }
+        _baseDirectory = ConsoleExt.ReadOrEnv("BASE_DIRECTORY", null, Path.GetDirectoryName(GetExePath.Path()));
 
         return _baseDirectory;
+    }
+
+    public static string GetBaseInternalDirectory()
+    {
+        if (_baseInternalDirectory != null) return _baseInternalDirectory;
+
+        _baseInternalDirectory = ConsoleExt.ReadOrEnv("LOCAL_ASSETS_DIRECTORY", null, Path.GetDirectoryName(GetExePath.Path()));
+
+        return _baseInternalDirectory;
     }
 }

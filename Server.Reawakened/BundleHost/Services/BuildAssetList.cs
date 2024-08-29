@@ -120,6 +120,8 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
 
     private List<InternalAssetInfo> GetAssetsFromCache(string directoryPath)
     {
+        logger.LogInformation("Loading assets from cache, this may take a while!");
+
         if (rConfig.ShouldLogAssets)
             Logger.Default = new AssetBundleLogger(logger);
 

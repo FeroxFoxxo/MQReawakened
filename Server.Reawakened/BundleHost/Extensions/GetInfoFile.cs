@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Helpers;
 using Server.Reawakened.BundleHost.Configs;
 
@@ -49,7 +50,8 @@ public static class GetInfoFile
             if (string.IsNullOrEmpty(defaultFile) || !defaultFile.EndsWith("__info"))
             {
                 logger.LogError("Please enter the absolute file path for the {Type} '__info' cache file.", lowerName);
-                defaultFile = Console.ReadLine() ?? string.Empty;
+                defaultFile = ConsoleExt.ReadOrEnv("CACHE_INFO_LOCATION", logger) ?? string.Empty;
+                logger.LogInformation("Found cache file: {Path}", defaultFile);
                 continue;
             }
 

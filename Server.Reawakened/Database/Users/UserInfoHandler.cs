@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Database.Accounts;
 using Server.Base.Network;
@@ -38,7 +39,7 @@ public class UserInfoHandler(WorldHandler worldHandler, RandomKeyGenerator rando
         {
             Logger.LogInformation("Gender: ");
 
-            if (Enum.TryParse(Console.ReadLine(), true, out gender))
+            if (Enum.TryParse(ConsoleExt.ReadOrEnv("DEFAULT_GENDER", Logger), true, out gender))
                 break;
 
             Logger.LogWarning("Incorrect input! Must be either: {Types}",
@@ -51,7 +52,7 @@ public class UserInfoHandler(WorldHandler worldHandler, RandomKeyGenerator rando
         {
             Logger.LogInformation("Date Of Birth: ");
 
-            if (DateTime.TryParse(Console.ReadLine(), out dob))
+            if (DateTime.TryParse(ConsoleExt.ReadOrEnv("DEFAULT_DOB", Logger), out dob))
                 break;
 
             Logger.LogWarning("Incorrect input! Must be a date!");

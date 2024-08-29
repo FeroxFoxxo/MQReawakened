@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Extensions;
-using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.BundleHost.Events;
 using Server.Reawakened.BundleHost.Events.Arguments;
 using Server.Reawakened.BundleHost.Extensions;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using System.Xml;
 
 namespace Server.Reawakened.BundleHost.Services;
 
 public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
-    ILogger<BuildXmlFiles> logger, AssetBundleRConfig rConfig) : IService, IInjectModules
+    ILogger<BuildXmlFiles> logger, ServerRConfig rConfig) : IService, IInjectModules
 {
     public readonly Dictionary<string, string> XmlFiles = [];
 
@@ -25,7 +25,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
 
         XmlFiles.Clear();
 
-        InternalDirectory.OverwriteDirectory(rConfig.XmlSaveDirectory);
+        InternalDirectory.OverwriteDirectory(rConfig.XMLDirectory);
 
         var bundles = services.GetRequiredServices<IBundledXml>(Modules)
             .ToDictionary(x => x.BundleName, x => x);
@@ -84,7 +84,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
 
                     localizedXmlBundle.ReadLocalization(localizedXml);
 
-                    var locPath = Path.Join(rConfig.XmlSaveDirectory, $"{localizedAsset.Name}.xml");
+                    var locPath = Path.Join(rConfig.XMLDirectory, $"{localizedAsset.Name}.xml");
 
                     File.WriteAllText(locPath, localizedXml);
 
@@ -122,7 +122,7 @@ public class BuildXmlFiles(AssetEventSink eventSink, IServiceProvider services,
 
             if (!localisedXmls.Contains(asset.Name))
             {
-                var path = Path.Join(rConfig.XmlSaveDirectory, $"{asset.Name}.xml");
+                var path = Path.Join(rConfig.XMLDirectory, $"{asset.Name}.xml");
 
                 File.WriteAllText(path, text);
 

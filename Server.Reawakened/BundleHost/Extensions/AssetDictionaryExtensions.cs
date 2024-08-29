@@ -4,6 +4,7 @@ using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.BundleHost.Services;
 using Server.Reawakened.Core.Configs;
+using static Server.Reawakened.BundleHost.Extensions.GetMainAsset;
 
 namespace Server.Reawakened.BundleHost.Extensions;
 
@@ -53,6 +54,8 @@ public static class AssetDictionaryExtensions
     public static void AddLocalXmlFiles(this Dictionary<string, InternalAssetInfo> assets,
         ILogger<BuildAssetList> logger, AssetBundleRConfig config)
     {
+        logger.LogInformation("Loading local XML files from '{LocalAssetsDirectory}'", config.LocalAssetsDirectory);
+
         foreach (var asset in Directory
                      .GetFiles(config.LocalAssetsDirectory, "*.xml")
                      .Select(file => new InternalAssetInfo
@@ -64,19 +67,19 @@ public static class AssetDictionaryExtensions
                          Path = file,
                          Version = 0
                      })
-                     .Where(a =>
-                     {
-                         if (assets.ContainsKey(a.Name))
-                         {
-                             if (!config.ForceLocalAsset.Contains(a.Name))
-                                 return false;
-                             assets.Remove(a.Name);
-                         }
+                    .Where(a =>
+                    {
+                        if (assets.ContainsKey(a.Name))
+                        {
+                            if (!config.ForceLocalAsset.Contains(a.Name))
+                                return false;
 
-                         logger.LogTrace("Adding asset {Name} from local assets.", a.Name);
-                         return true;
-                     }))
+                            assets.Remove(a.Name);
+                        }
 
+                        logger.LogTrace("Adding asset {Name} from local assets.", a.Name);
+                        return true;
+                    }))
             assets.Add(asset.Name, asset);
     }
 }

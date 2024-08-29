@@ -33,9 +33,10 @@ public class OperationMode(EventSink eventSink, ServerConsole console, InternalR
 
     private void AskForChange()
     {
+        // This should not be changed as the default values should be set to run a server via docker.
         if (logger.Ask(
                 "Are you wanting to play the game, rather than host one?",
-                true
+                false
             ))
         {
             if (logger.Ask(
@@ -89,7 +90,7 @@ public class OperationMode(EventSink eventSink, ServerConsole console, InternalR
         {
             logger.LogInformation("{Question}", question);
 
-            var serverAddress = Console.ReadLine();
+            var serverAddress = ConsoleExt.ReadOrEnv("SERVER_ADDRESS", logger);
 
             config.ServerAddress = serverAddress;
 
