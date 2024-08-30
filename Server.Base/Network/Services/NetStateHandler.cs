@@ -12,7 +12,7 @@ using Server.Base.Timers.Services;
 namespace Server.Base.Network.Services;
 
 public class NetStateHandler(FileLogger fileLogger,
-    IServiceProvider services, EventSink sink) : IService
+    IServiceProvider services, EventSink sink) : IService, ITimerData
 {
     public delegate ProtocolResponse GetProtocol(string protocol);
     public delegate void SendProtocol(NetState netState, string actionType, object protocol);
@@ -30,7 +30,7 @@ public class NetStateHandler(FileLogger fileLogger,
     public void Initialize() =>
         sink.ServerStarted += _ =>
             services.GetRequiredService<TimerThread>()
-            .DelayCall(CheckAllAlive, null, TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(1.5), 0);
+            .RunIndefiniteDelayedInterval(CheckAllAlive, this, TimeSpan.FromMinutes(1.5), TimeSpan.FromMinutes(1.0));
 
     public NetState FindUser(int userId) =>
         (
@@ -93,15 +93,16 @@ public class NetStateHandler(FileLogger fileLogger,
         }
     }
 
-    public void CheckAllAlive(object _)
+    public static void CheckAllAlive(ITimerData data)
     {
+        var handler = (NetStateHandler)data;
         var curTicks = GetTicks.Ticks;
 
-        var instanceCount = Instances.Count;
+        var instanceCount = handler.Instances.Count;
 
         while (--instanceCount >= 0)
         {
-            var instance = Instances[instanceCount];
+            var instance = handler.Instances[instanceCount];
 
             if (instance == null)
                 continue;
@@ -112,11 +113,13 @@ public class NetStateHandler(FileLogger fileLogger,
             }
             catch (Exception ex)
             {
-                TraceNetworkError(ex, instance);
+                handler.TraceNetworkError(ex, instance);
             }
         }
     }
 
     public void TraceNetworkError(Exception ex, NetState state) =>
         fileLogger.WriteGenericLog<NetState>("network-errors", $"Client {state}", ex.ToString(), LoggerType.Error);
+
+    public bool IsValid() => !Paused;
 }

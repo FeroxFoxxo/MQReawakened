@@ -1,6 +1,8 @@
-﻿using Server.Base.Timers.Extensions;
+﻿using Server.Base.Core.Abstractions;
+using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
+using Server.Reawakened.Rooms;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 public abstract class BaseAIRetreatState<T> : BaseAIState<T>
@@ -13,15 +15,17 @@ public abstract class BaseAIRetreatState<T> : BaseAIState<T>
     public override void StartState()
     {
         if (DoorId > 0)
-            TimerThread.DelayCall(OpenDoor, null, TimeSpan.FromSeconds(DelayUntilOpen), TimeSpan.Zero, 1);
+        {
+            TimerThread.RunDelayed(OpenDoor, this, TimeSpan.FromSeconds(DelayUntilOpen));
+        }
     }
 
-    public void OpenDoor(object _)
+    public static void OpenDoor(ITimerData data)
     {
-        if (Room == null)
+        if (data is not BaseAIRetreatState<T> retreat)
             return;
 
-        foreach (var trigReceiver in Room.GetEntitiesFromId<TriggerReceiverComp>(DoorId.ToString()))
-            trigReceiver.Trigger(true, Id);
+        foreach (var trigReceiver in retreat.Room.GetEntitiesFromId<TriggerReceiverComp>(retreat.DoorId.ToString()))
+            trigReceiver.Trigger(true, retreat.Id);
     }
 }

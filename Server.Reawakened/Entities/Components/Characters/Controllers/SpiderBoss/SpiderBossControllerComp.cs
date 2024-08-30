@@ -1,4 +1,5 @@
-﻿using Server.Base.Timers.Extensions;
+﻿using Server.Base.Core.Abstractions;
+using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
@@ -55,21 +56,21 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
                 Room.GetEntityFromId<AIStateSpiderEntranceComp>(Id)?.DelayBeforeEntranceDuration;
 
             if (delay.HasValue)
-                TimerThread.DelayCall(RunEntrance, null, TimeSpan.FromSeconds(delay.Value), TimeSpan.Zero, 1);
+                TimerThread.RunDelayed(RunEntrance, this, TimeSpan.FromSeconds(delay.Value));
         }
     }
 
-    public void RunEntrance(object _)
+    public static void RunEntrance(ITimerData data)
     {
-        if (Room == null)
+        if (data is not SpiderBossControllerComp spider)
             return;
 
-        if (Teaser)
-            AddNextState<AIStateSpiderTeaserEntranceComp>();
+        if (spider.Teaser)
+            spider.AddNextState<AIStateSpiderTeaserEntranceComp>();
         else
-            AddNextState<AIStateSpiderEntranceComp>();
+            spider.AddNextState<AIStateSpiderEntranceComp>();
 
-        GoToNextState();
+        spider.GoToNextState();
     }
 
     public void Destroy(Room room, string id)

@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
@@ -20,7 +21,16 @@ public class AIStateDrakePlacementComp : BaseAIState<AIStateDrakePlacement>
     public TimerThread TimerThread { get; set; }
 
     public override void StartState() =>
-        TimerThread.DelayCall(RunPatrolState, null, TimeSpan.FromSeconds(1), TimeSpan.Zero, 1);
+        TimerThread.RunDelayed(RunPatrolState, this, TimeSpan.FromSeconds(1));
+
+    public static void RunPatrolState(ITimerData data)
+    {
+        if (data is not AIStateDrakePlacementComp drake)
+            return;
+
+        drake.AddNextState<AIStatePatrolComp>();
+        drake.GoToNextState();
+    }
 
     // Provide Initial And Placement Positions
     public override ExtLevelEditor.ComponentSettings GetSettings()
@@ -31,15 +41,5 @@ public class AIStateDrakePlacementComp : BaseAIState<AIStateDrakePlacement>
 
         return [Position.X.ToString(), Position.Y.ToString(), backPlaneZValue.ToString(),
                 Position.X.ToString(), Position.Y.ToString(), backPlaneZValue.ToString()];
-    }
-
-    public void RunPatrolState(object _)
-    {
-        if (Room == null)
-            return;
-
-        AddNextState<AIStatePatrolComp>();
-
-        GoToNextState();
     }
 }

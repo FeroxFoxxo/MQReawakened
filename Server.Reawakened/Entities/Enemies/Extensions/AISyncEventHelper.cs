@@ -4,6 +4,7 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
+using UnityEngine;
 
 namespace Server.Reawakened.Entities.Enemies.Extensions;
 public static class AISyncEventHelper
@@ -93,16 +94,16 @@ public static class AISyncEventHelper
         return 0;
     }
 
-    public static AILaunchItem_SyncEvent AILaunchItem(string id, float time, float posX, float posY, float posZ, float speedX, float speedY, float lifeTime, int prjId, bool isGrenade)
+    public static AILaunchItem_SyncEvent AILaunchItem(string id, float time, Vector3 position, Vector2 speed, float lifeTime, int prjId, bool isGrenade)
     {
         var launch = new AILaunchItem_SyncEvent(new SyncEvent(id, SyncEvent.EventType.AILaunchItem, time));
 
         launch.EventDataList.Clear();
-        launch.EventDataList.Add(posX);
-        launch.EventDataList.Add(posY);
-        launch.EventDataList.Add(posZ);
-        launch.EventDataList.Add(speedX);
-        launch.EventDataList.Add(speedY);
+        launch.EventDataList.Add(position.x);
+        launch.EventDataList.Add(position.y);
+        launch.EventDataList.Add(position.z);
+        launch.EventDataList.Add(speed.x);
+        launch.EventDataList.Add(speed.y);
         launch.EventDataList.Add(lifeTime);
         launch.EventDataList.Add(prjId);
         launch.EventDataList.Add(isGrenade ? 1 : 0);

@@ -1,5 +1,6 @@
 using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
@@ -7,6 +8,7 @@ using Server.Reawakened.Entities.Projectiles;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Rooms.Models.Timers;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
@@ -75,7 +77,7 @@ public class UseSlot : ExternalProtocol
                     return;
                 }
 
-                if (usedItem.ItemEffects.Any())
+                if (usedItem.ItemEffects.Count != 0)
                 {
                     var petSnackEnergyValue = usedItem.ItemEffects.First().Value;
                     petUse.GainEnergy(Player, petSnackEnergyValue);
@@ -133,15 +135,6 @@ public class UseSlot : ExternalProtocol
         }
     }
 
-    public class ProjectileData()
-    {
-        public string ProjectileId;
-        public ItemDescription UsedItem;
-        public Vector3 Position;
-        public int Direction;
-        public bool IsGrenade;
-    }
-
     private void HandleRangedWeapon(ItemDescription usedItem, Vector3 position, int direction)
     {
         var isGrenade = usedItem.SubCategoryId is ItemSubCategory.Grenade or ItemSubCategory.Bomb;
@@ -153,28 +146,44 @@ public class UseSlot : ExternalProtocol
             Position = position,
             Direction = direction,
             IsGrenade = isGrenade,
+            Player = Player,
+            Catalog = ItemCatalog,
+            Config = ItemRConfig,
+            SConfig = ServerRConfig
         };
 
         if (isGrenade)
         {
-            TimerThread.DelayCall(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ItemRConfig.GrenadeSpawnDelay), TimeSpan.Zero, 1);
+            TimerThread.RunDelayed(LaunchProjectile, projectileData, TimeSpan.FromSeconds(ItemRConfig.GrenadeSpawnDelay));
             Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog, ItemRConfig);
         }
         else
             LaunchProjectile(projectileData);
     }
 
-    private void LaunchProjectile(object projectileData)
+    public class ProjectileData() : PlayerRoomTimer
     {
-        var prjData = (ProjectileData)projectileData;
+        public string ProjectileId;
+        public ItemDescription UsedItem;
+        public Vector3 Position;
+        public int Direction;
+        public bool IsGrenade;
+        public ItemRConfig Config;
+        public ItemCatalog Catalog;
+        public ServerRConfig SConfig;
+    }
 
-        // Add weapon stats later
-        var prj = new GenericProjectile(prjData.ProjectileId, Player, ItemRConfig.GrenadeLifeTime,
-            prjData.Position, ItemRConfig, ServerRConfig, prjData.Direction, prjData.UsedItem,
-            Player.Character.CalculateDamage(prjData.UsedItem, ItemCatalog),
-            prjData.UsedItem.Elemental, prjData.IsGrenade);
+    private static void LaunchProjectile(ITimerData data)
+    {
+        if (data is not ProjectileData projectile)
+            return;
 
-        Player.Room.AddProjectile(prj);
+        var genericProjectile = new GenericProjectile(projectile.ProjectileId, projectile.Player, projectile.Config.GrenadeLifeTime,
+            projectile.Position, projectile.Config, projectile.SConfig, projectile.Direction, projectile.UsedItem,
+            projectile.Player.Character.CalculateDamage(projectile.UsedItem, projectile.Catalog),
+            projectile.UsedItem.Elemental, projectile.IsGrenade);
+
+        projectile.Player.Room.AddProjectile(genericProjectile);
     }
 
     private void HandleMeleeWeapon(ItemDescription usedItem, Vector3 position, int direction)
