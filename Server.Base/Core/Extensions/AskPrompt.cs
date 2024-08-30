@@ -9,20 +9,23 @@ public static class AskPrompt
         logger.LogWarning("{Message}", message);
         logger.LogError("Are you sure you want to continue? (y/n) (Default: {DefaultValue})", defaultValue ? 'Y' : 'N');
 
-        var choice = char.ToLower(Console.ReadKey().KeyChar);
+        var reqLine = Console.ReadLine();
 
-        if (choice is '\n' or '\r')
-            choice = ' ';
+        if (string.IsNullOrEmpty(reqLine))
+        {
+            logger.LogInformation("Setting as default value: {DefaultValue}", defaultValue);
+            return defaultValue;
+        }
 
-        Console.WriteLine();
+        var line = reqLine.ToLower();
 
-        if (choice == 'y')
+        if (line.StartsWith('y'))
             return true;
 
-        if (choice != 'n')
+        if (!line.StartsWith('n'))
         {
             logger.LogWarning("Invalid output detected, found: '{Character}'. Defaulting to {DefaultValue}...",
-                choice, defaultValue);
+                line, defaultValue);
             return defaultValue;
         }
 

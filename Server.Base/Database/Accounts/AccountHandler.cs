@@ -5,6 +5,7 @@ using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Extensions;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Core.Configs;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Logging;
 using Server.Base.Network;
@@ -22,13 +23,13 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
     public override AccountDbEntry CreateDefault()
     {
         Logger.LogInformation("Username: ");
-        var username = Console.ReadLine();
+        var username = ConsoleExt.ReadOrEnv("DEFAULT_USERNAME", Logger);
 
         Logger.LogInformation("Password: ");
-        var password = Console.ReadLine();
+        var password = ConsoleExt.ReadOrEnv("DEFAULT_PASSWORD", Logger);
 
         Logger.LogInformation("Email: ");
-        var email = Console.ReadLine();
+        var email = ConsoleExt.ReadOrEnv("DEFAULT_EMAIL", Logger);
 
         if (username != null)
             return new AccountDbEntry(username, password, email, hasher)

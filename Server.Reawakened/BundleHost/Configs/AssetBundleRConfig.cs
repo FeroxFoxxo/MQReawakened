@@ -23,7 +23,6 @@ public class AssetBundleRConfig : IRConfig
     public string AssetSaveDirectory { get; }
     public string RemovedDuplicateDirectory { get; }
     public string CopiedCurrentBundles { get; }
-    public string XmlSaveDirectory { get; }
     public string LocalAssetsDirectory { get; }
 
     public string SaveBundleExtension { get; }
@@ -40,13 +39,12 @@ public class AssetBundleRConfig : IRConfig
 
     public AssetBundleRConfig()
     {
-        XmlSaveDirectory = InternalDirectory.GetDirectory("XMLs/XMLFiles");
-
         AssetSaveDirectory = InternalDirectory.GetDirectory("Assets/AssetDictionaries");
         BundleSaveDirectory = InternalDirectory.GetDirectory("Assets/Bundles");
         RemovedDuplicateDirectory = InternalDirectory.GetDirectory("Assets/RemovedDuplicates");
         CopiedCurrentBundles = InternalDirectory.GetDirectory("Assets/CopiedCurrentBundles");
-        LocalAssetsDirectory = InternalDirectory.GetDirectory("Assets/LocalAssets");
+
+        LocalAssetsDirectory = InternalDirectory.GetInternalDirectory("Assets/LocalAssets");
 
         AlwaysRecreateBundle = false;
         DebugInfo = false;

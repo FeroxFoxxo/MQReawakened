@@ -21,6 +21,8 @@ public class EventSink : IEventSink
 
     public delegate void ChangedOperationalModeEventHandler();
 
+    public delegate void ServerHostedHandler();
+
     public delegate void ShutdownEventHandler();
 
     public delegate void SocketConnectEventHandler(SocketConnectEventArgs @event);
@@ -34,12 +36,13 @@ public class EventSink : IEventSink
     public event CrashedEventHandler Crashed;
 
     public event ChangedOperationalModeEventHandler ChangedOperationalMode;
+    public event ServerHostedHandler ServerHosted;
 
     public event ShutdownEventHandler Shutdown;
     public event InternalShutdownEventHandler InternalShutdown;
 
-    public event ServerStartedEventHandler ServerStarted;
     public event SocketConnectEventHandler SocketConnect;
+    public event ServerStartedEventHandler ServerStarted;
 
     public event CreateDataEventHandler CreateData;
 
@@ -53,6 +56,9 @@ public class EventSink : IEventSink
 
     public void InvokeChangedOperationalMode() =>
         ChangedOperationalMode?.Invoke();
+
+    public void InvokeServerHosted() =>
+        ServerHosted?.Invoke();
 
     public void InvokeShutdown() => Shutdown?.Invoke();
     public void InvokeInternalShutdown() => InternalShutdown?.Invoke();
