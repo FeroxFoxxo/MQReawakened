@@ -136,6 +136,8 @@ public abstract class DataHandler<Entity, Database, Lock>(IServiceProvider servi
             db.Entry(entity).State = EntityState.Modified;
 
             db.SaveChanges();
+
+            db.Entry(entity).State = EntityState.Detached;
         }
     }
 
