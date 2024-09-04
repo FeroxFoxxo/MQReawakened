@@ -13,11 +13,9 @@ public class DelayCallTimer(TimeSpan delay, TimeSpan interval, int count, Timer.
         if (Callback == null)
             return;
 
-        if (data == null)
-            return;
-
-        if (!data.IsValid())
-            return;
+        if (data != null)
+            if (!data.IsValid())
+                return;
 
         Callback?.Invoke(data);
     }

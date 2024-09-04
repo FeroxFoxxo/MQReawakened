@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Razor", "Web.Razor\Web.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.WebPlayer", "Web.WebPlayer\Web.WebPlayer.csproj", "{881791A4-0F9D-4C95-B842-841727B9C006}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.AccountReset", "Web.AccountReset\Web.AccountReset.csproj", "{4C5C69F6-6DFD-4123-A03C-9A7BE4162928}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{881791A4-0F9D-4C95-B842-841727B9C006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{881791A4-0F9D-4C95-B842-841727B9C006}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{881791A4-0F9D-4C95-B842-841727B9C006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C5C69F6-6DFD-4123-A03C-9A7BE4162928}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C5C69F6-6DFD-4123-A03C-9A7BE4162928}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C5C69F6-6DFD-4123-A03C-9A7BE4162928}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C5C69F6-6DFD-4123-A03C-9A7BE4162928}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -13,8 +13,6 @@ public class LauncherRConfig : IRConfig
 
     public string HeaderFolderFilter { get; }
 
-    public string ProjectName { get; }
-
     public bool CrashOnError { get; }
     public bool LogAssets { get; }
     public bool DisableVersions { get; }
@@ -46,7 +44,6 @@ public class LauncherRConfig : IRConfig
         CacheLicense = "UNKNOWN";
 
         OverwriteGameConfig = true;
-        ProjectName = "MQReawakened";
         HeaderFolderFilter = "_data";
 
         CacheVersion = 1;

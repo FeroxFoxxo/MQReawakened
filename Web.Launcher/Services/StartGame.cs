@@ -28,7 +28,7 @@ namespace Web.Launcher.Services;
 
 public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole _console, ReawakenedEventSink reawakenedSink,
     World world, PlayerEventSink playerEventSink, RandomKeyGenerator generator, BuildAssetList assetList, GetServerAddress getSA,
-    LauncherRConfig lConfig, LauncherRwConfig lWConfig, InternalRwConfig ilWConfig, ServerRConfig sConfig) : IService
+    LauncherRConfig lConfig, LauncherRwConfig lWConfig, InternalRwConfig ilWConfig, ServerRConfig sConfig, InternalRwConfig rwConfig) : IService
 {
     private string _directory;
     private bool _dirSet = false, _appStart = false;
@@ -265,6 +265,6 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
         { "analytics.baseurl", $"{getSA.ServerAddress}/Analytics/" },
         { "analytics.enabled", lConfig.AnalyticsEnabled ? "true" : "false" },
         { "analytics.apikey", lWConfig.AnalyticsApiKey },
-        { "project.name", lConfig.ProjectName }
+        { "project.name", rwConfig.ServerName }
     };
 }

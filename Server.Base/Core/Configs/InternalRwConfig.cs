@@ -13,6 +13,8 @@ public class InternalRwConfig : IRwConfig
     public bool IndentSaves { get; set; }
     public bool RestartOnCrash { get; set; }
 
+    public string ServerName { get; }
+
     public InternalRwConfig()
     {
         IgnoreProtocolType = [];
@@ -22,6 +24,7 @@ public class InternalRwConfig : IRwConfig
         Port = 9339;
         IndentSaves = true;
         RestartOnCrash = true;
+        ServerName = "MQReawakened";
     }
 
     public string GetHostName() => $"{ServerAddress}:{Port}";
