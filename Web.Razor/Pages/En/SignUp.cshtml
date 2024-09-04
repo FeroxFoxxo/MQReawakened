@@ -2,97 +2,7 @@
 @model Web.Razor.Pages.En.SignUpModel
 
 @section Stylesheets {
-    <style>
-        .info-container {
-            background-color: #577B3D;
-            color: #fff;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .form-container {
-            background-color: #333;
-            color: #fff;
-            padding-top: 1rem;
-            padding-down: 1rem;
-            padding-left: 2rem;
-            padding-right: 2rem;
-            transition: background-color 0.3s ease; /* Smooth background color transition */
-        }
-
-        .signup-card {
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            border-radius: 20px;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            overflow: hidden;
-            transition: box-shadow 0.3s ease; /* Shadow transition for a subtle effect */
-        }
-
-            .signup-card:hover {
-                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3); /* Slightly larger shadow on hover */
-            }
-
-        .site_logo {
-            width: 50%;
-            height: auto;
-            transition: transform 0.3s ease; /* Smooth transform transition for the logo */
-        }
-
-            .site_logo:hover {
-                transform: scale(1.1); /* Logo grows slightly on hover */
-            }
-
-        .description {
-            font-size: 2rem;
-            margin-top: 2rem;
-        }
-
-        .form input[type="submit"] {
-            background-image: linear-gradient(160deg, #BB7D4C 0%, #FDB93A 100%);
-            border-radius: 20px;
-            transition: background-color 0.15s ease-in-out, transform 0.15s ease; /* Transition for button hover */
-            color: #fff !important; /* Dark text for visibility */
-            padding: 0.75rem 0; /* Increased padding for better visibility */
-            width: 100%; /* Full width */
-            border-radius: 20px;
-            cursor: pointer;
-        }
-
-            .form input[type="submit"]:hover {
-                background-image: linear-gradient(160deg, #FDB93A 0%, #e0a800 100%);
-                transform: translateY(-2px); /* Button moves up slightly on hover */
-            }
-
-        .form input[type="text"],
-        .form input[type="password"],
-        .form input[type="email"],
-        .form input[type="date"],
-        .form select,
-        .form input[type="submit"] { /* Updated to include the submit button */
-            background-color: #fff; /* Light background for inputs */
-            color: #333; /* Dark text for visibility */
-            border: none;
-            padding: 0.375rem 0.75rem;
-            margin-bottom: 1rem;
-            border-radius: 999px;
-            width: 100%; /* Ensures full width */
-        }
-
-        .form_field label {
-            display: block;
-            margin-bottom: .5rem;
-            color: #fffdfa;
-        }
-
-        .text-danger {
-            color: #BA2221;
-        }
-    </style>
+    <link href="~/_content/Web.Razor/SignUp/style.css" rel="stylesheet" />
 }
 
 @section Scripts {
@@ -171,7 +81,6 @@
                         </select>
                     </div>
 
-                    <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form_field">
                         <input type="submit" value="Sign Up">
                     </div>

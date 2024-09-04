@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Configs;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Database.Users;
 using Server.Reawakened.Players.Enums;
@@ -11,7 +12,7 @@ using System.Globalization;
 namespace Web.Razor.Pages.En;
 
 [BindProperties]
-public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfoHandler, ILogger<SignUpModel> logger) : PageModel
+public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfoHandler, ILogger<SignUpModel> logger, InternalRwConfig config) : PageModel
 {
     [TempData]
     public string StatusMessage { get; set; }
@@ -70,8 +71,12 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
         })
         .ToList();
 
+    public void OnGet() => ViewData["ServerName"] = config.ServerName;
+
     public IActionResult OnPost()
     {
+        ViewData["ServerName"] = config.ServerName;
+
         if (!ModelState.IsValid)
         {
             return Page();

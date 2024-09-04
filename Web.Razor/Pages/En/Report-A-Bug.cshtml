@@ -1,12 +1,12 @@
 ﻿@page
-@model Web.Razor.Pages.Account.AccessDeniedModel
+@model Web.Razor.Pages.En.SignUp.ReportABugModel
 
 @section Stylesheets {
     <link href="~/_content/Web.Razor/SignUp/style.css" rel="stylesheet" />
 }
 
 @{
-    ViewData["Title"] = "Access Denied";
+    ViewData["Title"] = "Help";
 }
 
 <div class="container d-flex justify-content-center align-items-center">
@@ -14,8 +14,8 @@
         <div class="grid align_item">
             <div class="register">
                 <img class="site_logo" src="~/_content/Web.Razor/logo.png" , alt="Site Logo" />
-                <h2 style="color:lightcoral">Unable to sign up</h2>
-                <h4>An account likely already exists with either that username or password.</h4>
+                <h2>Help</h2>
+                <p class="description">Please visit our Discord server to recieve help with @ViewData["ServerName"].</p>
             </div>
         </div>
     </div>

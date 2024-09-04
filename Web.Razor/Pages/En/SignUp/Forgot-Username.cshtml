@@ -1,0 +1,35 @@
+﻿@page
+@model Web.Razor.Pages.En.SignUp.Forgot_UsernameModel
+
+@section Stylesheets {
+    <link href="~/_content/Web.Razor/SignUp/style.css" rel="stylesheet" />
+}
+
+@{
+    ViewData["Title"] = "Reset Username";
+}
+
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="card signup-card">
+        <div class="row g-0">
+            <div class="col-md-6 info-container">
+                <img class="site_logo rounded-circle" src="~/_content/Web.Razor/logo.png" alt="Site Logo" />
+                <p class="description">Reset Username</p>
+            </div>
+            <div class="col-md-6 form-container">
+                <form asp-action="ForgotUsername" method="post" class="form text-center">
+                    <h3>Please enter your email, to which a link will be sent to</h3>
+                    <br />
+                    <div class="form_field">
+                        <label asp-for="Input.Email"></label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        <input asp-for="Input.Email" class="border" placeholder="info@mailaddress.com" />
+                    </div>
+                    <div class="form_field">
+                        <input type="submit" value="Reset Username">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

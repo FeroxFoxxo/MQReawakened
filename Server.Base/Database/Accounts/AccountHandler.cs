@@ -48,8 +48,24 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
     public AccountModel GetAccountFromUsername(string username) =>
         GetAccountFromId(GetIdFromUserName(username));
 
+    public AccountModel GetAccountFromEmail(string email) =>
+        GetAccountFromId(GetIdFromEmail(email));
+
     public static AccountModel GetAccountFromModel(AccountDbEntry model) =>
         model != null ? new(model) : null;
+
+    protected int GetIdFromEmail(string email)
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
+
+        lock (DbLock.Lock)
+        {
+            var account = db.Accounts.AsNoTracking().FirstOrDefault(a => a.Email == email);
+
+            return account == null ? -1 : account.Id;
+        }
+    }
 
     protected int GetIdFromUserName(string username)
     {

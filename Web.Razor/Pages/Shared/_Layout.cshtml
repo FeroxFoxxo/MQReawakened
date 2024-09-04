@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"] - MQR</title>
-    <meta name="title" content="MQReawakened">
+    <title>@ViewData["Title"] - @ViewData["ServerName"]</title>
+    <meta name="title" content="@ViewData["ServerName"]">
     <meta name="description" content="An open-source reimplementation & emulation of the backend of MQ, written from scratch without including intellectual property from the original game.">
-    <meta name="keywords" content="MQR, MQReawakened">
+    <meta name="keywords" content="@ViewData["ServerName"]">
     <meta name="robots" content="index, follow">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="language" content="English">
@@ -85,35 +85,48 @@
     @await RenderSectionAsync("Scripts", false)
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-custom">
+    <div class="content">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-custom">
+            <div class="container">
+                <!-- Logo and website name -->
+                <a class="navbar-brand" href="/">
+                    <img src="/_content/Web.Razor/logo.png" alt="Logo" style="height: 40px;">
+                    @ViewData["ServerName"]
+                </a>
+
+                <!-- Toggler/collapsible Button -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/en/signup">Sign Up</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/commands">Commands</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        @RenderBody()
+    </div>
+    <footer class="footer bg-custom text-white mt-5 navbar-dark">
         <div class="container">
-            <!-- Logo and website name -->
-            <a class="navbar-brand" href="/">
-                <img src="/_content/Web.Razor/logo.png" alt="Logo" style="height: 40px;">
-                MQReawakened
-            </a>
-
-            <!-- Toggler/collapsible Button -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Navbar links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/en/signup">Sign Up</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/commands">Commands</a>
-                    </li>
-                </ul>
+            <div class="text-center py-3">
+                <a class="nav-link" href="/en/news" style="display: inline;">News</a>
+                <a class="nav-link" href="/en/privacy-policy" style="display: inline;">Privacy Policy</a>
+                <a class="nav-link" href="/" style="display: inline;">&copy; @DateTime.Now.Year @ViewData["ServerName"]</a>
+                <a class="nav-link" href="/en/terms-of-use" style="display: inline;">Terms of Use</a>
+                <a class="nav-link" href="/en/report-a-bug" style="display: inline;">Help</a>
             </div>
         </div>
-    </nav>
-    @RenderBody()
+    </footer>
 </body>
 </html>
