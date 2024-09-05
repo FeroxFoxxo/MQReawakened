@@ -11,7 +11,6 @@ public class InternalRwConfig : IRwConfig
     public string ServerAddress { get; set; }
     public int Port { get; set; }
     public string[] UnhandledPackets { get; set; }
-    public bool IndentSaves { get; set; }
     public bool RestartOnCrash { get; set; }
 
     public string ServerName { get; set; }
@@ -24,7 +23,6 @@ public class InternalRwConfig : IRwConfig
         NetworkType = NetworkType.Unknown;
         ServerAddress = string.Empty;
         Port = 9339;
-        IndentSaves = true;
         RestartOnCrash = true;
         ServerName = "MQReawakened";
         IsHttps = false;
