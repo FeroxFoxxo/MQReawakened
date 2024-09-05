@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Server.Base.Core.Services;
 using Server.Base.Database.Abstractions;
 using Server.Reawakened.Core.Configs;
 

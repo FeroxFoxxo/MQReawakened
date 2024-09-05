@@ -1,12 +1,12 @@
 ﻿@page
-@model Web.Razor.Pages.En.SignUp.Forgot_PasswordModel
+@model Web.Razor.Pages.En.SignUp.ResetUsernameModel
 
 @section Stylesheets {
     <link href="~/_content/Web.Razor/SignUp/style.css" rel="stylesheet" />
 }
 
 @{
-    ViewData["Title"] = "Forgot Password";
+    ViewData["Title"] = "Reset Username";
 }
 
 <div class="container d-flex justify-content-center align-items-center">
@@ -14,11 +14,11 @@
         <div class="row g-0">
             <div class="col-md-6 info-container">
                 <img class="site_logo rounded-circle" src="~/_content/Web.Razor/logo.png" alt="Site Logo" />
-                <p class="description">Forgot Password</p>
+                <p class="description">Reset Username</p>
             </div>
             <div class="col-md-6 form-container">
                 <form asp-action="ForgotPassword" method="post" class="form text-center">
-                    <h3>Please enter your username, and a reset link will be sent to your email</h3>
+                    <h3>Please enter your new username</h3>
                     <br />
                     <div class="form_field">
                         <label asp-for="Input.Username"></label>

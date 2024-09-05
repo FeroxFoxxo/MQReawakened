@@ -5,12 +5,13 @@ using Server.Base.Core.Services;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Services;
+using System;
 using System.ComponentModel.DataAnnotations;
 using Web.Razor.Services;
 
 namespace Web.Razor.Pages.En.SignUp;
 
-public class Forgot_UsernameModel(InternalRwConfig iConfig, ServerRwConfig sConfig, AccountHandler aHandler,
+public class ResetUsernameModel(InternalRwConfig iConfig, ServerRwConfig sConfig, AccountHandler aHandler,
     EmailService email, TemporaryDataStorage tempStorage, RandomKeyGenerator keyGenerator) : PageModel
 {
     [BindProperty]
@@ -19,8 +20,8 @@ public class Forgot_UsernameModel(InternalRwConfig iConfig, ServerRwConfig sConf
     public class InputModel
     {
         [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        [Display(Name = "Username")]
+        public string Username { get; set; }
     }
 
     public void OnGet() => ViewData["ServerName"] = iConfig.ServerName;
@@ -30,15 +31,15 @@ public class Forgot_UsernameModel(InternalRwConfig iConfig, ServerRwConfig sConf
         if (!ModelState.IsValid)
             return Page();
 
-        if (aHandler.ContainsEmail(Input.Email))
+        if (aHandler.ContainsUsername(Input.Username))
         {
-            var account = aHandler.GetAccountFromEmail(Input.Email);
+            var account = aHandler.GetAccountFromUsername(Input.Username);
 
             var sId = keyGenerator.GetRandomKey<TemporaryDataStorage>(account.Id.ToString());
 
             tempStorage.AddData(sId, account.Write);
 
-            await email.SendUsernameResetEmailAsync(account.Email, $"https://{sConfig.DomainName}/en/signup/reset-username?id={sId}", account.Email);
+            //await email.SendPasswordResetEmailAsync(account.Email, $"https://{sConfig.DomainName}/en/signup/reset-password?id={sId}");
         }
         else
         {
@@ -49,7 +50,7 @@ public class Forgot_UsernameModel(InternalRwConfig iConfig, ServerRwConfig sConf
             await Task.Delay(delay);
         }
 
-        return RedirectToPage("ForgotUsernameConfirmation");
+        return RedirectToPage("ResetPasswordConfirmation");
     }
 
 }

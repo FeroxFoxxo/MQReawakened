@@ -3,7 +3,7 @@ using Server.Base.Core.Configs;
 
 namespace Web.Razor.Pages.En.SignUp;
 
-public class ResetUsernameConfirmationModel(InternalRwConfig iConfig) : PageModel
+public class ForgotPasswordConfirmationModel(InternalRwConfig iConfig) : PageModel
 {
     public void OnGet() => ViewData["ServerName"] = iConfig.ServerName;
 }

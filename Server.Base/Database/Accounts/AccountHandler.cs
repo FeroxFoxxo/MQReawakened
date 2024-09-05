@@ -72,6 +72,8 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
 
+        username = username.ToLower();
+
         lock (DbLock.Lock)
         {
             var account = db.Accounts.AsNoTracking().FirstOrDefault(a => a.Username == username);

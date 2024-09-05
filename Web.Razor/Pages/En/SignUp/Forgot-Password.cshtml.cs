@@ -5,7 +5,6 @@ using Server.Base.Core.Services;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Services;
-using System;
 using System.ComponentModel.DataAnnotations;
 using Web.Razor.Services;
 
@@ -39,7 +38,7 @@ public class Forgot_PasswordModel(InternalRwConfig iConfig, ServerRwConfig sConf
 
             tempStorage.AddData(sId, account.Write);
 
-            //await email.SendPasswordResetEmailAsync(account.Email, $"https://{sConfig.DomainName}/en/signup/reset-password?id={sId}");
+            await email.SendPasswordResetEmailAsync(account.Email, $"https://{sConfig.DomainName}/en/signup/reset-password?id={sId}", account.Username);
         }
         else
         {
@@ -50,7 +49,6 @@ public class Forgot_PasswordModel(InternalRwConfig iConfig, ServerRwConfig sConf
             await Task.Delay(delay);
         }
 
-        return RedirectToPage("ResetPasswordConfirmation");
+        return RedirectToPage("ForgotPasswordConfirmation");
     }
-
 }

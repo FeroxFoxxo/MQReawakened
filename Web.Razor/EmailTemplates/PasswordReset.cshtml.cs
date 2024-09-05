@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Server.Base.Core.Configs;
 using Server.Reawakened.Core.Configs;
 
-namespace Web.Razor.Templates;
+namespace Web.Razor.EmailTemplates;
 
-public class PasswordResetTemplateModel(ServerRwConfig config, InternalRwConfig iConfig) : PageModel
+public class PasswordResetModel(ServerRwConfig config, InternalRwConfig iConfig) : PageModel
 {
+    public string Username { get; set; }
     public string ResetLink { get; set; }
 
     public string Domain => config.DomainName;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
-using Server.Base.Core.Services;
+using Server.Base.Database.Abstractions;
 using Server.Base.Database.Accounts;
 using Server.Base.Network;
 using Server.Reawakened.Core.Configs;
