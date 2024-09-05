@@ -5,5 +5,6 @@ namespace Web.Razor.Pages.En;
 
 public class ReportABugModel(InternalRwConfig iConfig) : PageModel
 {
+    public string ServerId => iConfig.DiscordServerId;
     public void OnGet() => ViewData["ServerName"] = iConfig.ServerName;
 }

@@ -8,5 +8,5 @@ namespace Web.Razor;
 
 public class Razor(ILogger<Razor> logger) : WebModule(logger)
 {
-    public override void AddServices(IServiceCollection services, Module[] modules) => services.AddSingleton<EmailService>();
+    public override void AddServices(IServiceCollection services, Module[] modules) => services.AddSingleton<PagesService>();
 }

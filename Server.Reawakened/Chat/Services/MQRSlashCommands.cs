@@ -45,7 +45,7 @@ public class MQRSlashCommands(IServiceScopeFactory serviceFact, ReflectionUtils 
     private static void Log(string message, Player player) =>
         player.Chat(CannedChatChannel.Tell, "Console", message);
 
-    public void DisplayHelp(Player player) => 
+    public void DisplayHelp(Player player) =>
         Log($"You can find all slash commands, run by pressing shift + enter, here: {getSA.ServerAddress}/commands", player);
 
     public void RunCommand(Player player, string command, string[] args)

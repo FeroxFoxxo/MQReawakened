@@ -1,5 +1,5 @@
-﻿using Server.Reawakened.Database.Characters;
-using A2m.Server;
+﻿using A2m.Server;
+using Server.Reawakened.Database.Characters;
 
 namespace Server.Reawakened.Players.Models.Character;
 
@@ -12,8 +12,8 @@ public class StatusEffectsModel(CharacterDbEntry entry)
         var shouldReplaceEffect = true;
 
         if (Effects.TryGetValue(effect.Type, out var statusData))
-                if (statusData.Value > effect.Value && statusData.Expiry > DateTime.Now)
-                    shouldReplaceEffect = false;
+            if (statusData.Value > effect.Value && statusData.Expiry > DateTime.Now)
+                shouldReplaceEffect = false;
 
         if (shouldReplaceEffect)
         {

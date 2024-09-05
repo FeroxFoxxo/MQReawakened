@@ -10,7 +10,7 @@ public class ClientCommand(string commandName, string commandDescription, List<P
     public override AccessLevel AccessLevel => AccessLevel.Player;
 
     public static ClientCommand FromXmlNode(XmlNode node) =>
-        new (
+        new(
             node.Attributes["name"].Value,
             node.Attributes["description"].Value,
             ParameterModel.FromXmlNodes(node.SelectNodes("Parameter"))

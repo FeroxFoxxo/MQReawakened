@@ -3,15 +3,34 @@ using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using RazorLight;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
+using Server.Base.Core.Events;
 using Server.Reawakened.Core.Configs;
 using Web.Razor.Configs;
 using Web.Razor.EmailTemplates;
 
 namespace Web.Razor.Services;
 
-public class EmailService(InternalRwConfig iConfig, EmailRwConfig config, ILogger<EmailService> logger)
+public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
+    EmailRwConfig config, ILogger<PagesService> logger, EventSink sink) : IService
 {
+    public string ZipPath { get; set; }
+
+    public void Initialize() => sink.WorldLoad += CreateReawakened;
+
+    public void CreateReawakened()
+    {
+        foreach (var file in Directory.GetFiles(sConfig.DownloadDirectory, "*__"))
+            File.Delete(file);
+
+        var name = $"Play{iConfig.ServerName}.zip";
+
+        File.Create(Path.Join(sConfig.DownloadDirectory, $"__Place {name} Here__"));
+
+        ZipPath = Path.Join(sConfig.DownloadDirectory, name);
+    }
+
     public async Task SendPasswordResetEmailAsync(string toEmail, string resetLink, string username)
     {
         var model = new PasswordResetModel(iConfig) { ResetLink = resetLink, Username = username };
@@ -51,7 +70,7 @@ public class EmailService(InternalRwConfig iConfig, EmailRwConfig config, ILogge
     private static async Task<string> RenderTemplateAsync(string template, object model)
     {
         var engine = new RazorLightEngineBuilder()
-            .UseEmbeddedResourcesProject(typeof(EmailService).Assembly, "Web.Razor.EmailTemplates")
+            .UseEmbeddedResourcesProject(typeof(PagesService).Assembly, "Web.Razor.EmailTemplates")
             .UseMemoryCachingProvider()
             .Build();
 

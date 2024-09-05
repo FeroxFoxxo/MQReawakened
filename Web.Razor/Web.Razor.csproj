@@ -32,4 +32,10 @@
         <ProjectReference Include="..\Server.Web\Server.Web.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Downloads\__Place PlayMQReawakened.zip Here__">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
-using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Events;
 
 namespace Server.Reawakened.Core.Services;

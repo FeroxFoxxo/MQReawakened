@@ -32,7 +32,7 @@ public class ResetPasswordModel(InternalRwConfig iConfig, AccountHandler aHandle
 
         if (account == null)
         {
-            await EmailService.Delay();
+            await PagesService.Delay();
             return RedirectToPage("ResetPasswordInvalid");
         }
 
@@ -50,7 +50,7 @@ public class ResetPasswordModel(InternalRwConfig iConfig, AccountHandler aHandle
 
         if (account == null)
         {
-            await EmailService.Delay();
+            await PagesService.Delay();
             return RedirectToPage("ResetPasswordInvalid");
         }
 

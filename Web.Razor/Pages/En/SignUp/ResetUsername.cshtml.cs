@@ -36,7 +36,7 @@ public class ResetUsernameModel(InternalRwConfig iConfig, AccountHandler aHandle
 
         if (account == null)
         {
-            await EmailService.Delay();
+            await PagesService.Delay();
             return RedirectToPage("ResetUsernameInvalid");
         }
 
@@ -54,7 +54,7 @@ public class ResetUsernameModel(InternalRwConfig iConfig, AccountHandler aHandle
 
         if (account == null)
         {
-            await EmailService.Delay();
+            await PagesService.Delay();
             return RedirectToPage("ResetUsernameInvalid");
         }
 

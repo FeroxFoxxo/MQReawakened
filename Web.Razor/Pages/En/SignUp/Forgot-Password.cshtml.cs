@@ -11,7 +11,7 @@ namespace Web.Razor.Pages.En.SignUp;
 
 [BindProperties]
 public class Forgot_PasswordModel(InternalRwConfig iConfig, AccountHandler aHandler,
-    EmailService email, TemporaryDataStorage tempStorage, RandomKeyGenerator keyGenerator) : PageModel
+    PagesService email, TemporaryDataStorage tempStorage, RandomKeyGenerator keyGenerator) : PageModel
 {
     [Required(ErrorMessage = "Please Enter Username")]
     [Display(Name = "User Name")]
@@ -42,7 +42,7 @@ public class Forgot_PasswordModel(InternalRwConfig iConfig, AccountHandler aHand
         }
         else
         {
-            await EmailService.Delay();
+            await PagesService.Delay();
         }
 
         return RedirectToPage("ForgotPasswordConfirmation");

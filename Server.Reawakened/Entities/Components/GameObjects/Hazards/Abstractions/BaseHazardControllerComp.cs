@@ -257,7 +257,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
 
         // Reduces slow status effect log spam.  
         player.TempData.IsSlowed = true;
-        
+
         TimerThread.RunDelayed(DisableSlowEffect, new PlayerTimer() { Player = player }, TimeSpan.FromSeconds(0.75));
     }
 

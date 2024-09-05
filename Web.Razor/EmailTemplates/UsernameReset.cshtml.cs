@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Server.Base.Core.Configs;
-using Server.Reawakened.Core.Configs;
 
 namespace Web.Razor.EmailTemplates;
 

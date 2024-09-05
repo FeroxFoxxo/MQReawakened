@@ -85,7 +85,8 @@ public class Player(AccountModel account, UserInfoModel userInfo, NetState state
             NetState.RemoveAllData();
             NetState.Dispose();
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             logger.LogError(e, "Error when disposing on logout");
         }
     }

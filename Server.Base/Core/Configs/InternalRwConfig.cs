@@ -14,7 +14,8 @@ public class InternalRwConfig : IRwConfig
     public bool IndentSaves { get; set; }
     public bool RestartOnCrash { get; set; }
 
-    public string ServerName { get; }
+    public string ServerName { get; set; }
+    public string DiscordServerId { get; set; }
 
     public InternalRwConfig()
     {
@@ -27,6 +28,7 @@ public class InternalRwConfig : IRwConfig
         RestartOnCrash = true;
         ServerName = "MQReawakened";
         IsHttps = false;
+        DiscordServerId = string.Empty;
     }
 
     public string GetHostName() => $"{ServerAddress}:{Port}";
