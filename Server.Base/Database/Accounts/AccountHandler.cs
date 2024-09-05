@@ -32,13 +32,16 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         Logger.LogInformation("Email: ");
         var email = ConsoleExt.ReadOrEnv("DEFAULT_EMAIL", Logger);
 
-        if (username != null)
+        username = username.ToLower();
+        email = email.ToLower();
+
+        if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(email))
             return new AccountDbEntry(username, password, email, hasher)
             {
                 AccessLevel = AccessLevel.Owner
             };
 
-        Logger.LogError("Username for account is null!");
+        Logger.LogError("Username or email for account is null!");
         return null;
     }
 
@@ -58,6 +61,8 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
     {
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
+
+        email = email.ToLower();
 
         lock (DbLock.Lock)
         {
@@ -84,6 +89,8 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
 
     public AlrReason GetAccount(string username, string password, NetState netState)
     {
+        username = username.ToLower();
+
         var rejectReason = AlrReason.Invalid;
 
         if (!config.SocketBlock && !ipLimiter.Verify(netState.Address))
@@ -149,6 +156,9 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
 
     public AccountModel Create(IPAddress ipAddress, string username, string password, string email)
     {
+        username = username.ToLower();
+        email = email.ToLower();
+
         if (username.Trim().Length <= 0 || password.Trim().Length <= 0 || email.Trim().Length <= 0)
         {
             Logger.LogInformation("Login: {Address}: User post _data for '{Username}' is invalid in length!",
@@ -190,6 +200,8 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
 
+        username = username.ToLower();
+
         lock (DbLock.Lock)
         {
             return db.Accounts.Any(a => a.Username == username);
@@ -200,6 +212,8 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
     {
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
+
+        email = email.ToLower();
 
         lock (DbLock.Lock)
         {
