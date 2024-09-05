@@ -104,7 +104,11 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
 
             if (username == ".")
             {
-                account = new AccountModel(temporaryDataStorage.GetData<AccountDbEntry>(password));
+                var entry = temporaryDataStorage.GetData<AccountDbEntry>(password);
+
+                account = new AccountModel(entry);
+
+                temporaryDataStorage.RemoveData(password, entry);
 
                 if (account == null)
                     rejectReason = AlrReason.BadComm;

@@ -31,7 +31,6 @@ public class ShardController(AccountHandler accHandler, UserInfoHandler userInfo
 
         var sId = keyGenerator.GetRandomKey<TemporaryDataStorage>(uuid.ToString());
 
-        temporaryDataStorage.AddData(sId, user.Write);
         temporaryDataStorage.AddData(sId, account.Write);
 
         var json = new JObject

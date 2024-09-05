@@ -10,11 +10,11 @@ using Web.Razor.EmailTemplates;
 
 namespace Web.Razor.Services;
 
-public class EmailService(ServerRwConfig sConfig, InternalRwConfig iConfig, EmailRwConfig config, ILogger<EmailService> logger)
+public class EmailService(InternalRwConfig iConfig, EmailRwConfig config, ILogger<EmailService> logger)
 {
     public async Task SendPasswordResetEmailAsync(string toEmail, string resetLink, string username)
     {
-        var model = new PasswordResetModel(sConfig, iConfig) { ResetLink = resetLink, Username = username };
+        var model = new PasswordResetModel(iConfig) { ResetLink = resetLink, Username = username };
         var body = await RenderTemplateAsync("PasswordReset", model);
         await SendEmail("Password Reset Request", body, toEmail);
         logger.LogDebug("Password reset email sent successfully to mail: '{Mail}'", toEmail);
@@ -22,7 +22,7 @@ public class EmailService(ServerRwConfig sConfig, InternalRwConfig iConfig, Emai
 
     public async Task SendUsernameResetEmailAsync(string toEmail, string resetLink, string email)
     {
-        var model = new UsernameResetModel(sConfig, iConfig) { ResetLink = resetLink, Email = email };
+        var model = new UsernameResetModel(iConfig) { ResetLink = resetLink, Email = email };
         var body = await RenderTemplateAsync("UsernameReset", model);
         await SendEmail("Username Reset Request", body, toEmail);
         logger.LogDebug("Username reset email sent successfully to mail: '{Mail}'", toEmail);
@@ -57,4 +57,6 @@ public class EmailService(ServerRwConfig sConfig, InternalRwConfig iConfig, Emai
 
         return await engine.CompileRenderAsync(template, model);
     }
+
+    public static async Task Delay() => await Task.Delay(new Random().Next(100, 500));
 }

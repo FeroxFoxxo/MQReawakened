@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Events;
 
 namespace Server.Reawakened.Core.Services;
-public class GetServerAddress(IServer server, ServerRwConfig config, EventSink eSink, ReawakenedEventSink sink, ILogger<GetServerAddress> logger) : IService
+public class GetServerAddress(IServer server, InternalRwConfig config, EventSink eSink, ReawakenedEventSink sink, ILogger<GetServerAddress> logger) : IService
 {
     public string ServerAddress { get; set; }
 
@@ -15,7 +16,7 @@ public class GetServerAddress(IServer server, ServerRwConfig config, EventSink e
 
     private void AppStarted()
     {
-        ServerAddress = string.IsNullOrEmpty(config.DomainName) ? server.Features.Get<IServerAddressesFeature>().Addresses.First() : config.DomainName;
+        ServerAddress = string.IsNullOrEmpty(config.ServerAddress) ? server.Features.Get<IServerAddressesFeature>().Addresses.First() : config.ServerAddress;
 
         if (ServerAddress.Contains("0.0.0.0"))
             ServerAddress = ServerAddress.Replace("0.0.0.0", "localhost");

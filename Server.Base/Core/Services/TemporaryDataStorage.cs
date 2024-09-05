@@ -16,6 +16,12 @@ public class TemporaryDataStorage(EventSink sink) : IService
         return _data[id].FirstOrDefault(x => x.GetType() == typeof(T)) as T;
     }
 
+    public void RemoveData<T>(string id, T data) where T : PersistantData
+    {
+        EnsureDataExists(id);
+        _data[id].Remove(data);
+    }
+
     public void AddData(string id, PersistantData data)
     {
         EnsureDataExists(id);

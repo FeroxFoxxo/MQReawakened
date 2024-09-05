@@ -7,6 +7,7 @@ public class InternalRwConfig : IRwConfig
 {
     public string[] IgnoreProtocolType { get; set; }
     public NetworkType NetworkType { get; set; }
+    public bool IsHttps { get; set; }
     public string ServerAddress { get; set; }
     public int Port { get; set; }
     public string[] UnhandledPackets { get; set; }
@@ -25,8 +26,9 @@ public class InternalRwConfig : IRwConfig
         IndentSaves = true;
         RestartOnCrash = true;
         ServerName = "MQReawakened";
+        IsHttps = false;
     }
 
     public string GetHostName() => $"{ServerAddress}:{Port}";
-    public string GetHostAddress() => $"http://{ServerAddress}";
+    public string GetHostAddress() => (IsHttps ? "https" : "http") + $"://{ServerAddress}";
 }

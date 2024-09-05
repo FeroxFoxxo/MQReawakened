@@ -3,54 +3,79 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Services;
 using Server.Base.Database.Accounts;
-using Server.Reawakened.Core.Configs;
-using Server.Reawakened.Network.Services;
-using System;
 using System.ComponentModel.DataAnnotations;
 using Web.Razor.Services;
 
 namespace Web.Razor.Pages.En.SignUp;
 
-public class ResetUsernameModel(InternalRwConfig iConfig, ServerRwConfig sConfig, AccountHandler aHandler,
-    EmailService email, TemporaryDataStorage tempStorage, RandomKeyGenerator keyGenerator) : PageModel
+public class ResetUsernameModel(InternalRwConfig iConfig, AccountHandler aHandler,
+    TemporaryDataStorage tempStorage) : PageModel
 {
-    [BindProperty]
-    public InputModel Input { get; set; }
+    [Required(ErrorMessage = "Please Enter Username")]
+    [Display(Name = "User Name")]
+    [StringLength(10, ErrorMessage = "The {0} cannot be over {1} characters long.")]
+    public string Username { get; set; }
 
-    public class InputModel
+    [Required(ErrorMessage = "Please Confirm Username")]
+    [Display(Name = "Confirm User Name")]
+    [StringLength(10, ErrorMessage = "The {0} cannot be over {1} characters long.")]
+    [Compare("Username", ErrorMessage = "The username and confirmation username do not match.")]
+    public string ConfirmUsername { get; set; }
+
+    public async Task<IActionResult> OnGet([FromRoute] string id)
     {
-        [Required]
-        [Display(Name = "Username")]
-        public string Username { get; set; }
+        var account = tempStorage.GetData<AccountDbEntry>(id);
+
+        if (account == null)
+        {
+            await EmailService.Delay();
+            return RedirectToPage("ResetUsernameInvalid");
+        }
+
+        ViewData["ServerName"] = iConfig.ServerName;
+
+        return Page();
     }
 
-    public void OnGet() => ViewData["ServerName"] = iConfig.ServerName;
-
-    public async Task<IActionResult> OnPost()
+    public async Task<IActionResult> OnPost([FromRoute] string id)
     {
         if (!ModelState.IsValid)
             return Page();
 
-        if (aHandler.ContainsUsername(Input.Username))
+        var account = tempStorage.GetData<AccountDbEntry>(id);
+
+        if (account == null)
         {
-            var account = aHandler.GetAccountFromUsername(Input.Username);
-
-            var sId = keyGenerator.GetRandomKey<TemporaryDataStorage>(account.Id.ToString());
-
-            tempStorage.AddData(sId, account.Write);
-
-            //await email.SendPasswordResetEmailAsync(account.Email, $"https://{sConfig.DomainName}/en/signup/reset-password?id={sId}");
-        }
-        else
-        {
-            var r = new Random();
-
-            var delay = r.Next(50, 150);
-
-            await Task.Delay(delay);
+            await EmailService.Delay();
+            return RedirectToPage("ResetUsernameInvalid");
         }
 
-        return RedirectToPage("ResetPasswordConfirmation");
+        ConfirmUsername = ConfirmUsername?.Trim().ToLower();
+        Username = Username?.Trim().ToLower();
+
+        if (string.IsNullOrEmpty(Username))
+        {
+            return Page();
+        }
+
+        if (ConfirmUsername != Username)
+        {
+            return Page();
+        }
+
+        if (aHandler.ContainsUsername(Username))
+        {
+            ModelState.AddModelError("Username", "Username already exists");
+            return Page();
+        }
+
+        var newAccount = aHandler.GetAccountFromEmail(account.Email);
+        newAccount.Write.Username = Username;
+        aHandler.Update(newAccount.Write);
+
+        tempStorage.RemoveData(id, account);
+
+        return RedirectToPage("ResetUsernameSuccessful");
     }
 
 }

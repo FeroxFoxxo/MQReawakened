@@ -36,7 +36,6 @@ public class AuthenticateController(AccountHandler accHandler, UserInfoHandler u
 
         var sId = keyGenerator.GetRandomKey<TemporaryDataStorage>(account.Id.ToString());
 
-        temporaryDataStorage.AddData(sId, userInfo.Write);
         temporaryDataStorage.AddData(sId, account.Write);
 
         var loginData = account.GetLoginData(userInfo, getSA, config, rConfig);
