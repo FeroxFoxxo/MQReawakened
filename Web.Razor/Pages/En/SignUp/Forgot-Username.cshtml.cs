@@ -9,6 +9,7 @@ using Web.Razor.Services;
 
 namespace Web.Razor.Pages.En.SignUp;
 
+[BindProperties]
 public class Forgot_UsernameModel(InternalRwConfig config, AccountHandler aHandler,
     EmailService email, TemporaryDataStorage tempStorage, RandomKeyGenerator keyGenerator) : PageModel
 {

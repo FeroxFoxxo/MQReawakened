@@ -19,7 +19,7 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
 
     [Required(ErrorMessage = "Please Enter Username")]
     [Display(Name = "User Name")]
-    [StringLength(10, ErrorMessage = "The {0} cannot be over {1} characters long.")]
+    [StringLength(15, ErrorMessage = "The {0} cannot be over {1} characters long.")]
     public string Username { get; set; }
 
     [Required(ErrorMessage = "Please Enter Password")]

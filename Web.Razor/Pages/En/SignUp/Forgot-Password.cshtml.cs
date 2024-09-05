@@ -9,12 +9,13 @@ using Web.Razor.Services;
 
 namespace Web.Razor.Pages.En.SignUp;
 
+[BindProperties]
 public class Forgot_PasswordModel(InternalRwConfig iConfig, AccountHandler aHandler,
     EmailService email, TemporaryDataStorage tempStorage, RandomKeyGenerator keyGenerator) : PageModel
 {
     [Required(ErrorMessage = "Please Enter Username")]
     [Display(Name = "User Name")]
-    [StringLength(10, ErrorMessage = "The {0} cannot be over {1} characters long.")]
+    [StringLength(15, ErrorMessage = "The {0} cannot be over {1} characters long.")]
     public string Username { get; set; }
 
     public void OnGet() => ViewData["ServerName"] = iConfig.ServerName;

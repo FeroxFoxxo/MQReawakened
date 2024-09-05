@@ -9,6 +9,7 @@ using Web.Razor.Services;
 
 namespace Web.Razor.Pages.En.SignUp;
 
+[BindProperties]
 public class ResetPasswordModel(InternalRwConfig iConfig, AccountHandler aHandler,
     PasswordHasher hasher, TemporaryDataStorage tempStorage) : PageModel
 {
@@ -25,7 +26,7 @@ public class ResetPasswordModel(InternalRwConfig iConfig, AccountHandler aHandle
     [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
     public string ConfirmPassword { get; set; }
 
-    public async Task<IActionResult> OnGet([FromRoute] string id)
+    public async Task<IActionResult> OnGet(string id)
     {
         var account = tempStorage.GetData<AccountDbEntry>(id);
 
@@ -40,7 +41,7 @@ public class ResetPasswordModel(InternalRwConfig iConfig, AccountHandler aHandle
         return Page();
     }
 
-    public async Task<IActionResult> OnPost([FromRoute] string id)
+    public async Task<IActionResult> OnPost(string id)
     {
         if (!ModelState.IsValid)
             return Page();

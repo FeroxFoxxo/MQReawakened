@@ -34,6 +34,12 @@
                     </div>
 
                     <div class="form_field">
+                        <label asp-for="Password"></label>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <input asp-for="Password" class="border" placeholder="Enter Current Password Here">
+                    </div>
+
+                    <div class="form_field">
                         <input type="submit" value="Reset Username">
                     </div>
                 </form>
