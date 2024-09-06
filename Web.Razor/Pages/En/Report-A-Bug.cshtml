@@ -1,25 +1,20 @@
 ﻿@page
 @model Web.Razor.Pages.En.ReportABugModel
 
-@section Stylesheets {
-    <link href="~/_content/Web.Razor/SignUp/style.css" rel="stylesheet" />
-}
-
 @{
     ViewData["Title"] = "Help";
 }
-
 
 <div class="container d-flex justify-content-center align-items-center">
     <div class="card signup-card">
         <div class="row g-0">
             <div class="col-md-6 info-container">
-                <img class="site_logo rounded-circle" src="~/_content/Web.Razor/logo.png" alt="Site Logo" />
+                <img class="site_logo rounded-circle" src="/_content/Web.Razor/logo.png" alt="Site Logo" />
                 <p class="description">Help</p>
-                <h3 style="color: lightcoral">Please visit our Discord server to recieve help with @ViewData["ServerName"].</h3>
+                <h3 class="text-warning">Please visit our Discord server to recieve help with @ViewData["ServerName"].</h3>
             </div>
             <div class="col-md-6 form-container">
-                <iframe src="https://discord.com/widget?id=@Model.ServerId&theme=dark" style="width: 100%; height: 100%; border-radius: 15px; border: none;" allowtransparency="true"></iframe>
+                <iframe src="https://discord.com/widget?id=@Model.ServerId&theme=dark" class="discord-widget" allowtransparency="true"></iframe>
             </div>
         </div>
     </div>

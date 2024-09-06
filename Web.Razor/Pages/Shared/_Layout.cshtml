@@ -11,68 +11,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="language" content="English">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <style>
-        html {
-            height: 100%;
-        }
-
-        body {
-            background-color: #8ED8FF;
-            color: #fffdfa;
-            margin: 0;
-            min-height: 100%;
-        }
-
-        @@font-face {
-            font-family: 'grobold';
-            src: url('/_content/Web.Razor/GROBOLD.ttf');
-        }
-
-        body {
-            font-family: 'grobold' !important;
-        }
-
-        .bg-custom {
-            background-color: #216d9b;
-            transition: background-color 0.5s ease;
-        }
-
-        .navbar-dark .navbar-brand,
-        .navbar-dark .nav-link {
-            color: #fff !important;
-            transition: color 0.3s ease;
-        }
-
-            .navbar-dark .nav-link:hover,
-            .navbar-dark .nav-link:focus {
-                color: #cceeff !important;
-            }
-
-        .navbar-brand img {
-            border-radius: 50%;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-
-            margin-right: 10px;
-        }
-
-        .navbar-brand:hover img {
-            transform: scale(1.1);
-        }
-
-        .navbar {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-        }
-
-        @@media (max-width: 991px) {
-            .navbar-nav .nav-link {
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
-            }
-        }
-    </style>
-    @await RenderSectionAsync("Stylesheets", true)
+    <link href="/_content/Web.Razor/style.css" rel="stylesheet" />
+    @await RenderSectionAsync("Stylesheets", false)
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

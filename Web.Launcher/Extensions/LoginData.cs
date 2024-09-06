@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Server.Base.Core.Configs;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Core.Services;
 using Server.Reawakened.Database.Users;
@@ -8,7 +9,7 @@ namespace Web.Launcher.Extensions;
 public static class LoginData
 {
     public static JObject GetLoginData(this AccountModel account, UserInfoModel userInfo,
-        GetServerAddress getSA, LauncherRwConfig config, LauncherRConfig rConfig) =>
+        InternalRwConfig iWConfig, LauncherRwConfig config, LauncherRConfig rConfig) =>
         new()
         {
             { "status", true },
@@ -19,7 +20,7 @@ public static class LoginData
                     { "trackingShortId", userInfo.TrackingShortId },
                     { "enabled", rConfig.AnalyticsEnabled },
                     { "firstLoginToday", (DateTime.UtcNow - account.LastLogin).TotalDays >= 1 },
-                    { "baseUrl", $"{getSA.ServerAddress}/Analytics" },
+                    { "baseUrl", $"{iWConfig.GetHostAddress()}/Analytics" },
                     { "apiKey", config.AnalyticsApiKey },
                     { "firstTimeLogin", account.Created == account.LastLogin ? "true" : "false" },
                 }
