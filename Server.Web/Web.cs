@@ -32,6 +32,7 @@ public class Web(ILogger<Web> logger) : WebModule(logger)
         {
             app.UseDeveloperExceptionPage();
 
+            app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "MQR API V1");
