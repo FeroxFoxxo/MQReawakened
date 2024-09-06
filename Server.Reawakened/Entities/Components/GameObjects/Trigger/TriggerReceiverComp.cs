@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Discord;
+using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
 using Server.Reawakened.Entities.Colliders;
+using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Controller;
+using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Players;
@@ -38,13 +41,14 @@ public class TriggerReceiverComp : Component<TriggerReceiver>, ICoopTriggered
         _collider = new TriggerReceiverCollider(Id, Position.ToUnityVector3(), Rectangle.ToRect(), ParentPlane, Room);
         if (CollisionType == TriggerReceiver.ReceiverCollisionType.Never)
             _collider.Active = false;
-
-        Room.AddCollider(_collider);
     }
     public override void DelayedComponentInitialization()
     {
         base.InitializeComponent();
         Trigger(ActiveByDefault, string.Empty);
+
+        //This is placed in delayed init so that more important components take collider precedence
+        Room.AddCollider(_collider);
     }
 
     public override void SendDelayedData(Player player) => player.SendSyncEventToPlayer(new TriggerReceiver_SyncEvent(Id, Room.Time, _triggeredBy, Activated, 0));

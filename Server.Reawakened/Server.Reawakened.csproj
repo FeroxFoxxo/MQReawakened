@@ -180,5 +180,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Entities\Enemies\AI_States\" />
+    </ItemGroup>
     
 </Project>

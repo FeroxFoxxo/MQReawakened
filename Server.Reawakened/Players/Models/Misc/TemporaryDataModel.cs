@@ -2,6 +2,7 @@
 using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Players.Models.Groups;
 using Server.Reawakened.Players.Models.Trade;
+using Server.Reawakened.Rooms.Models.Entities;
 using UnityEngine;
 using Timer = Server.Base.Timers.Timer;
 
@@ -24,7 +25,7 @@ public class TemporaryDataModel
     public bool ReputationBoostsElixir { get; set; }
     public bool IsSuperStomping { get; set; } = false;
     public bool IsSlowed { get; set; } = false;
-    public TriggerArenaComp CurrentArena { get; set; } = null;
+    public BaseComponent CurrentArena { get; set; } = null;
 
     public List<string> CollidingHazards { get; set; } = [];
     public Dictionary<int, bool> VotedForItem { get; set; } = [];

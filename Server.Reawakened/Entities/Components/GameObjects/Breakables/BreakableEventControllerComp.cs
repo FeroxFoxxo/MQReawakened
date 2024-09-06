@@ -30,14 +30,19 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
 
     public IDamageable Damageable;
 
+    public BreakableObjStatusComp ObjStatus;
+
     public bool CanBreak = true;
 
     private BaseSpawnerControllerComp _spawner;
 
     public override void InitializeComponent()
     {
-        Damageable = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
+        ObjStatus = Room.GetEntityFromId<BreakableObjStatusComp>(Id);
+
+        Damageable = ObjStatus;
         Damageable ??= Room.GetEntityFromId<SpiderBreakableComp>(Id);
+
         _spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
         if (_spawner is not null && _spawner.HasLinkedArena)
             CanBreak = false;
@@ -45,7 +50,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
         var position = new Vector3(Position.X, Position.Y, Position.Z);
 
-        Room.AddCollider(new BreakableCollider(Id, position, box, ParentPlane, Room));
+        Room.AddCollider(new BreakableCollider(Id, position, box, ParentPlane, Room, ObjStatus.EnemyTarget));
     }
 
     public void Damage(int damage, Elemental damageType, Player origin)
@@ -81,6 +86,24 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
                 Room.ToggleCollider(Id, false);
             }
 
+        }
+    }
+
+    public void Damage(int damage, string enemyId)
+    {
+        if (Room.IsObjectKilled(Id) || !CanBreak || Damageable is null)
+            return;
+
+        Logger.LogInformation("Damaged object (from enemy): '{PrefabName}' ({Id})", PrefabName, Id);
+
+        RunDamage(damage, Elemental.Standard);
+
+        Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.CurrentHealth, damage, 0, 0, enemyId, false, true));
+
+        if (Damageable.CurrentHealth <= 0)
+        {
+            Room.KillEntity(Id);
+            Destroy(Room, Id);
         }
     }
 

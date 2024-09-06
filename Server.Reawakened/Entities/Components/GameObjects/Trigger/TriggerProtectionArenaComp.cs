@@ -1,27 +1,31 @@
 ﻿using A2m.Server;
+using Server.Reawakened.Chat.Commands.World;
+using Server.Reawakened.Entities.Components.GameObjects.Breakables;
 using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Abstractions;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms;
+using Server.Reawakened.Rooms.Models.Entities;
 using SmartFoxClientAPI.Data;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Trigger;
 
-public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
+public class TriggerProtectionArenaComp : BaseTriggerStatueComp<TriggerProtectionArena>
 {
-    private float _timer;
-    private float _minClearTime;
-    private List<BaseSpawnerControllerComp> _spawners;
+    public int ProtectObjectID => ComponentData.ProtectObjectID;
 
-    public List<string> ArenaEntities;
+    private float _defeatedCount;
+    private float _maxDefeatsRequired;
+    private BreakableEventControllerComp _protectObject;
+    private List<BaseSpawnerControllerComp> _spawners;
 
     public override void InitializeComponent()
     {
         base.InitializeComponent();
 
-        ArenaEntities = [];
+        _defeatedCount = 0;
         _spawners = [];
     }
 
@@ -33,19 +37,19 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
                 {
                     spawner.SetArena(this);
                     spawner.SetActive(false);
+                    _maxDefeatsRequired += spawner.SpawnCycleCount;
                 }
+
+        foreach (var breakableObj in Room.GetEntitiesFromId<BreakableEventControllerComp>(ProtectObjectID.ToString()))
+            _protectObject = breakableObj;
     }
 
     public override ArenaStatus GetArenaStatus()
     {
         var outStatus = Status == ArenaStatus.Complete ? ArenaStatus.Complete : ArenaStatus.Incomplete;
         if (HasStarted)
-        {
-            if (ArenaEntities.All(Room.IsObjectKilled) && Room.Time >= _minClearTime)
-                outStatus = ArenaStatus.Win;
-            else if (Room.Time >= _timer)
-                outStatus = ArenaStatus.Lose;
-        }
+            outStatus = _defeatedCount >= _maxDefeatsRequired ? ArenaStatus.Win : ArenaStatus.Incomplete;
+
         return outStatus;
     }
 
@@ -58,20 +62,13 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
 
             foreach (var spawner in Room.GetEntitiesFromId<BaseSpawnerControllerComp>(entity))
             {
-                if (spawner.SpawnCycleCount > 1)
-                    ArenaEntities.Add(entity.ToString());
-
                 spawner.Spawn(this);
                 _spawners.Add(spawner);
             }
         }
-
-        _timer = Room.Time + ActiveDuration;
-
-        //Failsafe to prevent respawn issues when arena is defeated too quickly
-        _minClearTime = Room.Time + 5;
     }
 
+    public void AddDefeat() => _defeatedCount += 1;
 
     public override void ArenaSuccess()
     {
@@ -94,7 +91,8 @@ public class TriggerArenaComp : BaseTriggerStatueComp<TriggerArena>
             spawner.Revive();
         }
 
-        ArenaEntities.Clear();
+        _protectObject.Respawn();
+        _defeatedCount = 0;
         _spawners.Clear();
     }
 }

@@ -68,6 +68,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     private int _updatedSpawnCycle;
 
     private TriggerArenaComp _arenaComp;
+    private TriggerProtectionArenaComp _protectArenaComp;
     private BreakableEventControllerComp _breakableComp;
 
     private int _healthMod, _scaleMod, _resMod;
@@ -197,7 +198,17 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     {
         SetArena(arena);
 
-        _activeDetectionRadius = 20;
+        _activeDetectionRadius = 100;
+        SetActive(true);
+
+        Spawn();
+    }
+
+    public void Spawn(TriggerProtectionArenaComp arena)
+    {
+        SetArena(arena);
+
+        _activeDetectionRadius = 100;
         SetActive(true);
 
         Spawn();
@@ -210,6 +221,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
     }
 
     public void SetArena(TriggerArenaComp arena) => _arenaComp = arena;
+    public void SetArena(TriggerProtectionArenaComp arena) => _protectArenaComp = arena;
     public void RemoveFromArena() => _arenaComp.ArenaEntities.Remove(Id);
 
     public void Revive()
@@ -328,7 +340,11 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
             spawner.LinkedEnemies.Add(_spawnedEntityId, newEnemy);
     }
 
-    public void NotifyEnemyDefeat(string id) => LinkedEnemies.Remove(id);
+    public void NotifyEnemyDefeat(string id)
+    {
+        LinkedEnemies.Remove(id);
+        _protectArenaComp?.AddDefeat();
+    }
 
     public void Destroy() => Room.RemoveEnemy(Id);
 }
