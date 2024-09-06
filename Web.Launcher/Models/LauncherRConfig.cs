@@ -30,6 +30,7 @@ public class LauncherRConfig : IRConfig
     public bool OnGameClosePopup { get; }
 
     public string GameFolder { get; }
+    public string LauncherFolder { get; }
 
     public LauncherRConfig()
     {
@@ -68,5 +69,6 @@ public class LauncherRConfig : IRConfig
         OnGameClosePopup = false;
 
         GameFolder = InternalDirectory.GetDirectory("Game");
+        LauncherFolder = InternalDirectory.GetDirectory("Launcher");
     }
 }
