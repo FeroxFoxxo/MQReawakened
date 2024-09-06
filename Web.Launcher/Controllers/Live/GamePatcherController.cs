@@ -5,23 +5,28 @@ using Web.Launcher.Services;
 namespace Web.Launcher.Controllers.Live;
 
 [Route("live/game/win32/{gameVersion}")]
-public class PatcherController(LoadUpdates loadUpdates, ILogger<PatcherController> logger) : Controller
+public class GamePatcherController(LoadUpdates loadUpdates, ILogger<GamePatcherController> logger) : Controller
 {
     [HttpGet]
-    public IActionResult GetFile([FromRoute] string gameVersion)
+    public async Task<IActionResult> GetFile([FromRoute] string gameVersion)
     {
         gameVersion = gameVersion.Replace(".zip", "");
 
         if (loadUpdates.ClientFiles.TryGetValue(gameVersion, out var path))
         {
-            var fileBytes = System.IO.File.ReadAllBytes(path);
+            var memory = new MemoryStream();
+
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+
+            memory.Position = 0;
 
             logger.LogInformation("Downloading patch version: {GameVersion} at path {Path}", gameVersion, path);
-            return File(fileBytes, "application/zip", gameVersion + ".zip");
+            return File(memory, "application/octet-stream", gameVersion + ".zip");
         }
         else
-        {
             return NotFound();
-        }
     }
 }
