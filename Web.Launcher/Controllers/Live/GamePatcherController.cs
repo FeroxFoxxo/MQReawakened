@@ -5,7 +5,7 @@ using Web.Launcher.Services;
 namespace Web.Launcher.Controllers.Live;
 
 [Route("live/game/win32/{gameVersion}")]
-public class PatcherController(LoadUpdates loadUpdates, ILogger<PatcherController> logger) : Controller
+public class GamePatcherController(LoadUpdates loadUpdates, ILogger<GamePatcherController> logger) : Controller
 {
     [HttpGet]
     public IActionResult GetFile([FromRoute] string gameVersion)
@@ -20,8 +20,6 @@ public class PatcherController(LoadUpdates loadUpdates, ILogger<PatcherControlle
             return File(fileBytes, "application/zip", gameVersion + ".zip");
         }
         else
-        {
             return NotFound();
-        }
     }
 }
