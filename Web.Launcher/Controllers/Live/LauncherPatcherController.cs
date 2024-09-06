@@ -8,16 +8,23 @@ namespace Web.Launcher.Controllers.Live;
 public class LauncherPatcherController(LoadUpdates loadUpdates, ILogger<LauncherPatcherController> logger) : Controller
 {
     [HttpGet]
-    public IActionResult GetFile([FromRoute] string launcherVersion)
+    public async Task<IActionResult> GetFile([FromRoute] string launcherVersion)
     {
         launcherVersion = launcherVersion.Replace(".zip", "");
 
         if (loadUpdates.LauncherFiles.TryGetValue(launcherVersion, out var path))
         {
-            var fileBytes = System.IO.File.ReadAllBytes(path);
+            var memory = new MemoryStream();
 
-            logger.LogInformation("Downloading patch version: {LauncherVersion} at path {Path}", launcherVersion, path);
-            return File(fileBytes, "application/zip", launcherVersion + ".zip");
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+
+            memory.Position = 0;
+
+            logger.LogInformation("Downloading patch version: {GameVersion} at path {Path}", launcherVersion, path);
+            return File(memory, "application/octet-stream", launcherVersion + ".zip");
         }
         else
             return NotFound();
