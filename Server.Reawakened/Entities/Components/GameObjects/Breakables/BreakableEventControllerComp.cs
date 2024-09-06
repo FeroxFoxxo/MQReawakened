@@ -43,8 +43,6 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         Damageable = ObjStatus;
         Damageable ??= Room.GetEntityFromId<SpiderBreakableComp>(Id);
 
-        var isProtectTarget = 
-
         _spawner = Room.GetEntityFromId<BaseSpawnerControllerComp>(Id);
         if (_spawner is not null && _spawner.HasLinkedArena)
             CanBreak = false;
