@@ -32,6 +32,7 @@ public class ServerRConfig : IRConfig
     public string LevelSaveDirectory { get; }
     public string LevelDataSaveDirectory { get; }
     public string XMLDirectory { get; }
+    public string DownloadDirectory { get; }
     public string DataDirectory { get; }
 
     public string[] DefaultProtocolTypeIgnore { get; }
@@ -89,10 +90,11 @@ public class ServerRConfig : IRConfig
         LevelDataSaveDirectory = InternalDirectory.GetDirectory("XMLs/LevelData");
         DataDirectory = InternalDirectory.GetDirectory("XMLs/FormattedData");
         XMLDirectory = InternalDirectory.GetDirectory("XMLs/XMLFiles");
+        DownloadDirectory = InternalDirectory.GetDirectory("Downloads");
 
         RoomTickRate = 32;
 
-        RandomKeyLength = 24;
+        RandomKeyLength = 32;
         PlayerCap = 200;
         ReservedNameCount = 4;
         MaxCharacterCount = 3;

@@ -73,7 +73,7 @@ public static class PlayerHealExtensions
     private class ItemHealOverTimeData : PlayerRoomTimer
     {
         public int OverTimeHealValue { get; set; }
-        public int TotalTicks {get;set;}
+        public int TotalTicks { get; set; }
     }
 
     private static void OverTimeHealTicks(ITimerData data)

@@ -50,7 +50,7 @@ public abstract class BaseEnemyControllerComp<T> : Component<T>, IEnemyControlle
             player.SendSyncEventToPlayer(new AiHealth_SyncEvent(Id, Room.Time, 0, 0, 0, 0, "now", false, false));
     }
 
-        public BaseEnemy CreateEnemy(string id, string prefabName)
+    public BaseEnemy CreateEnemy(string id, string prefabName)
     {
         if (!InternalEnemyData.EnemyInfoCatalog.TryGetValue(prefabName, out var enemyModel))
         {

@@ -148,7 +148,6 @@ public class NPCControllerComp : Component<NPCController>
     public void TalkToNpc(Player player)
     {
         RunObjectives(player);
-        player.CheckAchievement(AchConditionType.Talkto, [PrefabName], InternalAchievement, Logger);
 
         switch (NpcType)
         {
@@ -191,6 +190,8 @@ public class NPCControllerComp : Component<NPCController>
                 SendUnknownDialogChat(player);
                 break;
         }
+
+        player.CheckAchievement(AchConditionType.Talkto, [PrefabName], InternalAchievement, Logger);
     }
 
     public void RunObjectives(Player player)

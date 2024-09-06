@@ -2,11 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
+using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Events.Arguments;
 using Server.Base.Core.Services;
 using Server.Reawakened.Chat.Models;
-using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Players;
@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace Server.Reawakened.Chat.Services;
 public class MQRSlashCommands(IServiceScopeFactory serviceFact, ReflectionUtils reflectionUtils,
-    EventSink sink, ILogger<ServerConsole> logger, GetServerAddress getSA) : IService
+    EventSink sink, ILogger<ServerConsole> logger, InternalRwConfig config) : IService
 {
     private readonly Dictionary<string, SlashCommand> _commands = [];
     public List<CommandModel> ServerCommands = [];
@@ -45,8 +45,8 @@ public class MQRSlashCommands(IServiceScopeFactory serviceFact, ReflectionUtils 
     private static void Log(string message, Player player) =>
         player.Chat(CannedChatChannel.Tell, "Console", message);
 
-    public void DisplayHelp(Player player) => 
-        Log($"You can find all slash commands, run by pressing shift + enter, here: {getSA.ServerAddress}/commands", player);
+    public void DisplayHelp(Player player) =>
+        Log($"You can find all slash commands, run by pressing shift + enter, here: {config.GetHostAddress()}/commands", player);
 
     public void RunCommand(Player player, string command, string[] args)
     {

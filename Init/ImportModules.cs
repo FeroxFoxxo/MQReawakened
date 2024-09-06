@@ -20,7 +20,7 @@ public static class ImportModules
         var modules = new[]
         {
             typeof(Server.Web.Web),
-            typeof(Server.Base.Server),
+            typeof(Server.Base.ServerModule),
             typeof(Reawakened),
             typeof(SysProtocol),
             typeof(XtProtocol),

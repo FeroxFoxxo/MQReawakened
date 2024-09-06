@@ -1,5 +1,5 @@
 ﻿using Server.Reawakened.Entities.Colliders.Enums;
-using Server.Reawakened.Entities.Components.GameObjects.Bouncers;
+using Server.Reawakened.Entities.Components.GameObjects.Attributes;
 using Server.Reawakened.Rooms;
 using UnityEngine;
 

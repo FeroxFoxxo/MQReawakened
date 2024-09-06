@@ -4,7 +4,6 @@ using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.BundleHost.Models;
 using Server.Reawakened.BundleHost.Services;
 using Server.Reawakened.Core.Configs;
-using static Server.Reawakened.BundleHost.Extensions.GetMainAsset;
 
 namespace Server.Reawakened.BundleHost.Extensions;
 

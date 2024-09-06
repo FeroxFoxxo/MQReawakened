@@ -7,5 +7,5 @@ namespace Web.WebPlayer.Controllers.API;
 public class GetHost(InternalRwConfig config) : Controller
 {
     [HttpGet]
-    public IActionResult GetHostAddress() => Ok($"{config.ServerAddress}:{config.Port}");
+    public IActionResult GetHostAddress() => Ok(config.GetHostName());
 }

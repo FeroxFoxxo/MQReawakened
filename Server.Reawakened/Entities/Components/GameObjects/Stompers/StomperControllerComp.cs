@@ -49,7 +49,7 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
     {
         base.Update();
 
-        var movement = (Stomper_Movement )Movement;
+        var movement = (Stomper_Movement)Movement;
         movement.UpdateState(Room.Time);
 
         if (movement.CurrentStep == Stomper_Movement.StomperState.WaitDown)
