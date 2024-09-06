@@ -1,4 +1,5 @@
 ﻿using A2m.Server;
+using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
@@ -26,14 +27,17 @@ public class DroppingsControllerComp : Component<DroppingsController>
     }
 
     public void WaitDrop() =>
-        TimerThread.DelayCall(SendDrop, null, TimeSpan.FromSeconds(DropRate), TimeSpan.FromSeconds(1), 1);
+        TimerThread.RunDelayed(SendDrop, this, TimeSpan.FromSeconds(DropRate));
 
-    public void SendDrop(object _)
+    public static void SendDrop(ITimerData data)
     {
-        if (Room.IsObjectKilled(Id))
+        if (data is not DroppingsControllerComp dropping)
             return;
 
-        Position.SetPosition(_startPosition);
+        if (dropping.Room.IsObjectKilled(dropping.Id))
+            return;
+
+        dropping.Position.SetPosition(dropping._startPosition);
 
         var speed = new Vector2
         {
@@ -44,9 +48,9 @@ public class DroppingsControllerComp : Component<DroppingsController>
         var damage = 0;
         var effect = ItemEffectType.Freezing;
 
-        Room.AddRangedProjectile(Id, _startPosition, speed, 3, damage, effect, false);
+        dropping.Room.AddRangedProjectile(dropping.Id, dropping._startPosition, speed, 3, damage, effect, false);
 
-        WaitDrop();
+        dropping.WaitDrop();
     }
 
     public void FreezePlayer(Player player)

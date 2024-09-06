@@ -1,0 +1,22 @@
+services:
+  fail2ban:
+    image: lscr.io/linuxserver/fail2ban:latest
+    container_name: fail2ban
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Pacific/Auckland
+      - VERBOSITY=-vv
+    volumes:
+      - /docker/fail2ban:/config
+      - /var/log:/var/log:ro
+      - /docker/proxy/data/logs:/remotelogs/nginx:ro
+      - /docker/jellyseerr/logs:/remotelogs/overseerr:ro
+      - /docker/prowlarr/logs:/remotelogs/prowlarr:ro
+      - /docker/radarr/logs:/remotelogs/radarr:ro
+      - /docker/sonarr/logs:/remotelogs/sonarr:ro
+    restart: unless-stopped

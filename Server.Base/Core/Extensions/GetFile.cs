@@ -4,12 +4,11 @@ public static class GetFile
 {
     public static FileStream GetFileStream(string fileName, string internalDir, FileMode mode)
     {
-        var currentLog = Path.Combine(
-            InternalDirectory.GetBaseDirectory(), internalDir, fileName);
-
-        var path = Path.GetDirectoryName(currentLog);
+        var path = Path.Combine(InternalDirectory.GetBaseDirectory(), internalDir);
 
         InternalDirectory.CreateDirectory(path);
+
+        var currentLog = Path.Combine(path, fileName);
 
         return File.Open(currentLog, mode);
     }

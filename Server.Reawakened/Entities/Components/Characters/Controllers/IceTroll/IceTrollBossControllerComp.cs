@@ -1,4 +1,5 @@
-﻿using Server.Base.Timers.Extensions;
+﻿using Server.Base.Core.Abstractions;
+using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Entities.Components.Characters.Controllers.IceTroll.States;
@@ -39,17 +40,17 @@ public class IceTrollBossControllerComp : BaseAIStateMachine<IceTrollBossControl
             var delay = Room.GetEntityFromId<AIStateTrollEntranceComp>(Id)?.DelayBeforeEntranceDuration;
 
             if (delay.HasValue)
-                TimerThread.DelayCall(RunEntrance, null, TimeSpan.FromSeconds(delay.Value), TimeSpan.Zero, 1);
+                TimerThread.RunDelayed(RunEntrance, this, TimeSpan.FromSeconds(delay.Value));
         }
     }
 
-    public void RunEntrance(object _)
+    public static void RunEntrance(ITimerData data)
     {
-        if (Room == null)
+        if (data is not IceTrollBossControllerComp troll)
             return;
 
-        AddNextState<AIStateTrollEntranceComp>();
-        GoToNextState();
+        troll.AddNextState<AIStateTrollEntranceComp>();
+        troll.GoToNextState();
     }
 
     public void Destroy(Room room, string id)

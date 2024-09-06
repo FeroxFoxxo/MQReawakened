@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 using Server.Base.Database.Abstractions;
 
@@ -33,7 +34,7 @@ public abstract class DataHandler<Entity, Database, Lock>(IServiceProvider servi
 
     public abstract Entity CreateDefault();
 
-    public void CreateDefault(string name)
+    private void CreateDefault(string name)
     {
         if (!HasDefault)
             return;
@@ -135,6 +136,8 @@ public abstract class DataHandler<Entity, Database, Lock>(IServiceProvider servi
             db.Entry(entity).State = EntityState.Modified;
 
             db.SaveChanges();
+
+            db.Entry(entity).State = EntityState.Detached;
         }
     }
 

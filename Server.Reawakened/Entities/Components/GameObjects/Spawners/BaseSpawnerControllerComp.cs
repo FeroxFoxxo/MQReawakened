@@ -1,6 +1,6 @@
-﻿using AssetStudio;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Entities.Components.AI.Stats;
@@ -20,7 +20,6 @@ using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
 using Server.Reawakened.XMLs.Data.Enemy.States;
-using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Spawners;
 
@@ -281,52 +280,64 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         Room.SendSyncEvent(new Spawn_SyncEvent(Id, Room.Time, _spawnedEntityCount));
 
-        TimerThread.DelayCall(DelayedSpawnData, templateToSpawnAt, TimeSpan.FromSeconds(delay), TimeSpan.Zero, 1);
+        TimerThread.RunDelayed(DelayedSpawnData, new DelayedEnemySpawn() { Data = templateToSpawnAt, Spawner = this }, TimeSpan.FromSeconds(delay));
     }
 
-    private void DelayedSpawnData(object obj)
+    public class DelayedEnemySpawn() : ITimerData
     {
-        _nextSpawnRequestTime = 0;
+        public SpawnedEnemyData Data;
+        public BaseSpawnerControllerComp Spawner;
 
-        var enemyTemplate = obj as SpawnedEnemyData;
+        public bool IsValid() => Data != null && Spawner != null && Spawner.IsValid();
+    }
+
+    private static void DelayedSpawnData(ITimerData data)
+    {
+        if (data is not DelayedEnemySpawn spawn)
+            return;
+
+        var spawner = spawn.Spawner;
+        var enemy = spawn.Data;
+
+        spawner._nextSpawnRequestTime = 0;
 
         BaseComponent enemyComponent = null;
 
-        if (enemyTemplate.EnemyController is EnemyControllerComp controllerComp)
+        if (enemy.EnemyController is EnemyControllerComp controllerComp)
             enemyComponent = controllerComp;
-        else if (enemyTemplate.EnemyController is ArmoredEnemyControllerComp armoredEnemyController)
+        else if (enemy.EnemyController is ArmoredEnemyControllerComp armoredEnemyController)
             enemyComponent = armoredEnemyController;
         else
-            Logger.LogError("Unknown enemy component of type {Type}", enemyComponent.GetType().Name);
+            spawner.Logger.LogError("Unknown enemy component of type {Type}", enemyComponent.GetType().Name);
 
         //Set all component data
         var newEntity = new List<BaseComponent>
         {
-            enemyTemplate.Global,
-            enemyTemplate.Generic,
-            enemyTemplate.Status,
+            enemy.Global,
+            enemy.Generic,
+            enemy.Status,
             enemyComponent,
-            enemyTemplate.Hazard
+            enemy.Hazard
         };
 
-        var _spawnedEntityId = $"{Id}_{_spawnedEntityCount}";
+        var _spawnedEntityId = $"{spawner.Id}_{spawner._spawnedEntityCount}";
 
-        Room.AddEntity(_spawnedEntityId, newEntity);
+        spawner.Room.AddEntity(_spawnedEntityId, newEntity);
 
         foreach (var component in newEntity)
         {
             component.InitializeComponent();
-            Room.RemoveKilledEnemy(component.Id);
+            spawner.Room.RemoveKilledEnemy(component.Id);
         }
 
         //Fix some things before setting the enemy
-        enemyTemplate.Hazard.SetId(_spawnedEntityId);
-        enemyTemplate.Generic.SetPatrolRange(PatrolDistance);
+        enemy.Hazard.SetId(_spawnedEntityId);
+        enemy.Generic.SetPatrolRange(spawner.PatrolDistance);
 
-        var enemy = enemyTemplate.EnemyController.CreateEnemy(_spawnedEntityId, PrefabNameToSpawn1);
+        var newEnemy = enemy.EnemyController.CreateEnemy(_spawnedEntityId, spawner.PrefabNameToSpawn1);
 
-        if (enemy is not null)
-            LinkedEnemies.Add(_spawnedEntityId, enemy);
+        if (newEnemy is not null)
+            spawner.LinkedEnemies.Add(_spawnedEntityId, newEnemy);
     }
 
     public void NotifyEnemyDefeat(string id)

@@ -1,5 +1,5 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Core.Configs;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using UnityEngine;
 
@@ -21,15 +21,11 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol>
     public bool DetectOnlyInPatrolZone => ComponentData.DetectOnlyInPatrolZone;
     public float PatrolZoneSizeOffset => ComponentData.PatrolZoneSizeOffset;
 
-    public ServerRConfig ServerRConfig { get; set; }
+    public ILogger<AIStatePatrolComp> Logger { get; set; }
+
+    public override void StartState() => Position.SetPositionViaPlane(ParentPlane, PrefabName, Logger);
 
     // Provide Initial Position
-    public override ExtLevelEditor.ComponentSettings GetSettings()
-    {
-        var backPlaneZValue = ParentPlane == ServerRConfig.BackPlane ?
-                      ServerRConfig.Planes[ServerRConfig.FrontPlane] :
-                       ServerRConfig.Planes[ServerRConfig.BackPlane];
-
-        return [Position.X.ToString(), Position.Y.ToString(), backPlaneZValue.ToString()];
-    }
+    public override ExtLevelEditor.ComponentSettings GetSettings() =>
+        [Position.X.ToString(), Position.Y.ToString(), Position.Z.ToString()];
 }

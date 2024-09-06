@@ -1,8 +1,10 @@
 ﻿using A2m.Server;
+using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Rooms.Extensions;
+using Server.Reawakened.Rooms.Models.Timers;
 
 namespace Server.Reawakened.Players.Extensions;
 
@@ -59,12 +61,54 @@ public static class PlayerHealExtensions
             return;
 
         var effect = usedItem.ItemEffects.FirstOrDefault();
+
         if (effect != null)
         {
-            var healItemData = new ItemHealOverTimeData(player, effect.Value, effect.Duration / 3);
+            var healItemData = new ItemHealOverTimeData() { OverTimeHealValue = effect.Value, TotalTicks = effect.Duration / 3, Player = player };
 
-            timerThread.DelayCall(OverTimeHealTicks, healItemData, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3), healItemData.TotalTicks);
+            timerThread.RunInterval(OverTimeHealTicks, healItemData, TimeSpan.FromSeconds(3), healItemData.TotalTicks, TimeSpan.FromSeconds(3));
         }
+    }
+
+    private class ItemHealOverTimeData : PlayerRoomTimer
+    {
+        public int OverTimeHealValue { get; set; }
+        public int TotalTicks {get;set;}
+    }
+
+    private static void OverTimeHealTicks(ITimerData data)
+    {
+        var heal = (ItemHealOverTimeData)data;
+
+        if (heal == null)
+            return;
+
+        if (heal.Player == null)
+            return;
+
+        if (heal.Player.Character == null)
+            return;
+
+        if (heal.Player.Room == null)
+            return;
+
+        if (!heal.Player.Room.IsOpen)
+            return;
+
+        var player = heal.Player;
+        var tickHealValue = heal.OverTimeHealValue / heal.TotalTicks;
+
+        if (player.Character.CurrentLife >= player.Character.MaxLife ||
+            player.Character.CurrentLife <= 0)
+            return;
+
+        if (player.Character.CurrentLife + tickHealValue >= player.Character.MaxLife)
+            tickHealValue = player.Character.MaxLife - player.Character.CurrentLife;
+
+        var healEvent = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
+           player.Character.Write.CurrentLife += tickHealValue, player.Character.MaxLife, string.Empty);
+
+        player.Room.SendSyncEvent(healEvent);
     }
 
     private static void HealOverTimeType(Player player, ItemDescription usedItem, TimerThread timerThread, ItemRConfig config)
@@ -84,34 +128,6 @@ public static class PlayerHealExtensions
                 HealOnce(player, usedItem, config);
                 break;
         }
-    }
-
-    private class ItemHealOverTimeData(Player player, int overTimeHealValue, int totalTicks)
-    {
-        public Player Player => player;
-        public int OverTimeHealValue => overTimeHealValue;
-        public int TotalTicks => totalTicks;
-    }
-
-    private static void OverTimeHealTicks(object itemData)
-    {
-        var itemHealData = (ItemHealOverTimeData)itemData;
-
-        var player = itemHealData.Player;
-        var tickHealValue = itemHealData.OverTimeHealValue / itemHealData.TotalTicks;
-
-        if (player == null || player.Room == null ||
-            player.Character.CurrentLife >= player.Character.MaxLife ||
-            player.Character.CurrentLife <= 0)
-            return;
-
-        if (player.Character.CurrentLife + tickHealValue >= player.Character.MaxLife)
-            tickHealValue = player.Character.MaxLife - player.Character.CurrentLife;
-
-        var healEvent = new Health_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-           player.Character.Write.CurrentLife += tickHealValue, player.Character.MaxLife, string.Empty);
-
-        player.Room.SendSyncEvent(healEvent);
     }
 
     private static int GetHealValue(Player player, int healValue)

@@ -5,6 +5,7 @@ using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
@@ -14,7 +15,8 @@ using WorldGraphDefines;
 namespace Server.Reawakened.Rooms.Services;
 
 public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph worldGraph,
-    TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> logger) : IService
+    TimerThread timerThread, IServiceProvider services, ILogger<WorldHandler> logger,
+    CharacterHandler handler) : IService
 {
     private readonly Dictionary<int, Level> _levels = [];
     private readonly object Lock = new();
@@ -239,6 +241,8 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
             player.Character.Write.LevelId = levelInfo.LevelId;
             player.SendLevelChange(this);
         }
+
+        handler.Update(player.Character.Write);
 
         return true;
     }

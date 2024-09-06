@@ -1,4 +1,5 @@
-﻿using Server.Base.Timers.Extensions;
+﻿using Server.Base.Core.Abstractions;
+using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
@@ -14,12 +15,14 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle>
     public EnemyRConfig EnemyRConfig { get; set; }
 
     public override void StartState() =>
-        TimerThread.DelayCall(RunVenomState, null, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossFirstProjectileDelay), TimeSpan.Zero, 1);
+        TimerThread.RunDelayed(RunVenomState, this, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossFirstProjectileDelay));
 
-    public void RunVenomState(object _)
+    public static void RunVenomState(ITimerData data)
     {
-        AddNextState<AIStateSpiderVenomComp>();       
+        if (data is not AIStateSpiderIdleComp spider)
+            return;
 
-        GoToNextState();
+        spider.AddNextState<AIStateSpiderVenomComp>();       
+        spider.GoToNextState();
     }
 }

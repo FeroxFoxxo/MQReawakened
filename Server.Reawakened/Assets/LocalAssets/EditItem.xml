@@ -431,6 +431,9 @@
         </Item>
     </GameVersion>
     <GameVersion version="vLate2012">
+        <Item name="ABIL_HealingStaff01">
+            <EditAttribute key="cooldown_time" value="60"/>
+        </Item>
         <Item name="WPN_PRJ_XmasSlingshot01">
             <EditAttribute key="descriptionId" value="1000578"/>
         </Item>
