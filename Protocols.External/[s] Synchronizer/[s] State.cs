@@ -223,7 +223,7 @@ public class State : ExternalProtocol
             return;
 
         if (playerTimer.Player.TempData.Invincible)
-                playerTimer.Player.TempData.Invincible = false;
+            playerTimer.Player.TempData.Invincible = false;
     }
 
     public void LogEvent(SyncEvent syncEvent, string entityId, Room room)

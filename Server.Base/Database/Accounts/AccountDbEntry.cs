@@ -22,6 +22,9 @@ public class AccountDbEntry : PersistantData
 
     public AccountDbEntry(string username, string password, string email, PasswordHasher hasher)
     {
+        username = username.ToLower();
+        email = email.ToLower();
+
         Username = username;
         Password = hasher.GetPassword(username, password);
         Email = email;

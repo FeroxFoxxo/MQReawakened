@@ -1,18 +1,18 @@
 ﻿using A2m.Server;
-using PetDefines;
 using Microsoft.Extensions.Logging;
+using PetDefines;
+using Server.Base.Core.Abstractions;
 using Server.Base.Timers.Extensions;
 using Server.Base.Timers.Services;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Components.GameObjects.Trigger;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.XMLs.Bundles.Base;
-using Server.Reawakened.Entities.Components.GameObjects.Trigger;
-using UnityEngine;
 using Server.Reawakened.Rooms.Models.Timers;
-using Server.Base.Core.Abstractions;
+using Server.Reawakened.XMLs.Bundles.Base;
+using UnityEngine;
 
 namespace Server.Reawakened.Players.Models.Pets;
 
@@ -31,7 +31,7 @@ public class PetModel()
     public DateTime LastTimePetWasEquipped { get; set; }
 
     public void SpawnPet(Player petOwner, PetAbilityParams petAbilityParams,
-        bool refillEnergy,  WorldStatistics worldStatistics, ServerRConfig serverRConfig)
+        bool refillEnergy, WorldStatistics worldStatistics, ServerRConfig serverRConfig)
     {
         ResetPetData(petOwner, petAbilityParams, refillEnergy, worldStatistics, serverRConfig);
         NotifyPet(petOwner);

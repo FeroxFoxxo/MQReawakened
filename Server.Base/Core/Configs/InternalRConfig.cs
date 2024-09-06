@@ -15,7 +15,6 @@ public class InternalRConfig : IRConfig
     public string CrashDirectory { get; set; }
     public string LogDirectory { get; set; }
 
-    public int MaxAccountsPerIp { get; }
     public char[] ForbiddenChars { get; }
     public AccessLevel LockDownLevel { get; }
     public int MaxAddresses { get; }
@@ -25,14 +24,9 @@ public class InternalRConfig : IRConfig
     public int GlobalUpdateRange { get; }
     public int BufferSize { get; }
 
-    public int RestartWarningSeconds { get; }
-    public int RestartDelaySeconds { get; }
-    public int RestartAutomaticallyHours { get; }
+    public TimeSpan SaveWarning { get; }
+    public TimeSpan SaveAutomatically { get; }
 
-    public int SaveWarningMinutes { get; }
-    public int SaveAutomaticallyMinutes { get; }
-
-    public int BackupCapacity { get; }
     public string[] Backups { get; }
 
     public int CommandPadding { get; }
@@ -55,7 +49,6 @@ public class InternalRConfig : IRConfig
         LogDirectory = InternalDirectory.GetDirectory("Logs");
         CrashDirectory = InternalDirectory.GetDirectory("Logs/Crashes");
 
-        MaxAccountsPerIp = 5;
         ForbiddenChars =
         [
             '<', '>', ':', '"', '/', '\\', '|', '?', '*', ' ', '%'
@@ -68,16 +61,11 @@ public class InternalRConfig : IRConfig
         GlobalUpdateRange = 18;
         BufferSize = 4096;
 
-        RestartWarningSeconds = 60;
-        RestartDelaySeconds = 10;
-        RestartAutomaticallyHours = 24;
-
-        SaveWarningMinutes = 1;
-        SaveAutomaticallyMinutes = 5;
+        SaveWarning = TimeSpan.FromSeconds(5);
+        SaveAutomatically = TimeSpan.FromHours(12);
 
         CommandPadding = 8;
 
-        BackupCapacity = 64;
         Backups =
         [
             "Third Backup",

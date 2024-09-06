@@ -108,7 +108,7 @@ public class ServerWorker : IHostedService
         {
             while (!_serverHandler.IsClosing)
             {
-                _serverHandler.Signal.WaitOne();
+                _serverHandler.Wait();
 
                 _timerThread.Slice();
                 _pump.Slice();
@@ -149,7 +149,5 @@ public class ServerWorker : IHostedService
         {
             _logger.LogCritical(ex, "Unable to dispose of listeners on close.");
         }
-
-        _timerThread.Set();
     }
 }

@@ -12,7 +12,7 @@ using Server.Base.Timers.Helpers;
 
 namespace Server.Base;
 
-public class Server(ILogger<Server> logger) : Module(logger)
+public class ServerModule(ILogger<ServerModule> logger) : Module(logger)
 {
     public override void AddDatabase(IServiceCollection services, Module[] modules)
     {

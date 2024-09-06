@@ -18,7 +18,7 @@ public class UpdatePetMode : ExternalProtocol
     public ItemCatalog ItemCatalog { get; set; }
     public ServerRConfig ServerRConfig { get; set; }
     public TimerThread TimerThread { get; set; }
-    public WorldStatistics WorldStatistics { get; set; }    
+    public WorldStatistics WorldStatistics { get; set; }
     public ILogger<UpdatePetMode> Logger { get; set; }
 
     public override void Run(string[] message)

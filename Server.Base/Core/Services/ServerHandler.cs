@@ -10,7 +10,7 @@ namespace Server.Base.Core.Services;
 
 public class ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostApplicationLifetime appLifetime) : IService
 {
-    public readonly AutoResetEvent Signal = new(true);
+    private readonly AutoResetEvent _signal = new(true);
 
     public bool HasCrashed = false;
     public bool IsClosing = false;
@@ -87,5 +87,6 @@ public class ServerHandler(EventSink sink, ILogger<ServerHandler> logger, IHostA
         logger.LogCritical("Successfully quit server.");
     }
 
-    public void Set() => Signal.Set();
+    public void Set() => _signal.Set();
+    public void Wait() => _signal.WaitOne();
 }

@@ -72,7 +72,16 @@ public class World(ILogger<World> logger, IServiceProvider services, ServerHandl
         }
         catch (Exception ex)
         {
-            logger.LogCritical(ex, "FATAL: Exception in world save");
+            logger.LogCritical(ex, "FATAL: Exception in world save configs");
+        }
+
+        try
+        {
+            sink.InvokeWorldSave(new WorldSaveEventArgs(message));
+        }
+        catch (Exception e)
+        {
+            throw new Exception("FATAL: Exception in world save event", e);
         }
 
         watch.Stop();
@@ -84,7 +93,7 @@ public class World(ILogger<World> logger, IServiceProvider services, ServerHandl
         logger.LogInformation("Save finished in {Time:F2} seconds.", watch.Elapsed.TotalSeconds);
 
         if (message)
-            Broadcast($"World save done in {watch.Elapsed.TotalSeconds} seconds.");
+            Broadcast($"World save done in {watch.Elapsed.TotalSeconds:F2} seconds.");
     }
 
     public void Broadcast(string message)

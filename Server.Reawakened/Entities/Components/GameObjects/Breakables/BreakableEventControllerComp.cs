@@ -85,7 +85,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
                 _spawner.RemoveFromArena();
                 Room.ToggleCollider(Id, false);
             }
-            
+
         }
     }
 
@@ -149,7 +149,7 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         Logger.LogInformation("Revived object: '{PrefabName}' ({Id})", PrefabName, Id);
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Damageable.MaxHealth, 0, 0, 0, string.Empty, false, false));
         Damageable.CurrentHealth = Damageable.MaxHealth;
-        
+
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }

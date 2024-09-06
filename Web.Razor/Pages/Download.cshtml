@@ -1,0 +1,29 @@
+﻿@page
+@model Web.Razor.Pages.DownloadModel
+
+@{
+    ViewData["Title"] = "Download";
+}
+
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="align card signup-card">
+        <div class="grid align_item">
+            <div class="register">
+                <img class="site_logo" src="/_content/Web.Razor/logo.png" , alt="Site Logo" />
+                <h2>Starting Download</h2>
+                <p>Thanks for downloading @ViewData["ServerName"]. We hope you enjoy your time as you adventure into the land of Ook.</p>
+                <div>
+                    <p id="downloadMessage" style="display:none;">Your file is being downloaded...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        window.onload = function () {
+            window.location.href = '/StartDownload';
+        };
+    </script>
+}

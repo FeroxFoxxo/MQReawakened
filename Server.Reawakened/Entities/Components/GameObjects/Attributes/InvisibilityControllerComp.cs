@@ -1,6 +1,6 @@
 ﻿using Server.Reawakened.Rooms.Models.Entities;
 
-namespace Server.Reawakened.Entities.Components.GameObjects.Bouncers;
+namespace Server.Reawakened.Entities.Components.GameObjects.Attributes;
 
 public class InvisibilityControllerComp : Component<InvisibilityController>
 {

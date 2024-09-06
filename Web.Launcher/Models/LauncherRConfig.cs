@@ -13,8 +13,6 @@ public class LauncherRConfig : IRConfig
 
     public string HeaderFolderFilter { get; }
 
-    public string ProjectName { get; }
-
     public bool CrashOnError { get; }
     public bool LogAssets { get; }
     public bool DisableVersions { get; }
@@ -32,6 +30,7 @@ public class LauncherRConfig : IRConfig
     public bool OnGameClosePopup { get; }
 
     public string GameFolder { get; }
+    public string LauncherFolder { get; }
 
     public LauncherRConfig()
     {
@@ -46,7 +45,6 @@ public class LauncherRConfig : IRConfig
         CacheLicense = "UNKNOWN";
 
         OverwriteGameConfig = true;
-        ProjectName = "MQReawakened";
         HeaderFolderFilter = "_data";
 
         CacheVersion = 1;
@@ -71,5 +69,6 @@ public class LauncherRConfig : IRConfig
         OnGameClosePopup = false;
 
         GameFolder = InternalDirectory.GetDirectory("Game");
+        LauncherFolder = InternalDirectory.GetDirectory("Launcher");
     }
 }

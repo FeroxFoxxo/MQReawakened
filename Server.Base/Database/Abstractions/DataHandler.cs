@@ -3,11 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
-using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
-using Server.Base.Database.Abstractions;
 
-namespace Server.Base.Core.Services;
+namespace Server.Base.Database.Abstractions;
 
 public abstract class DataHandler<Entity, Database, Lock>(IServiceProvider services, Lock dbLock) :
     IService where Entity : PersistantData where Database : BaseDataContext where Lock : DbLock
@@ -47,9 +45,7 @@ public abstract class DataHandler<Entity, Database, Lock>(IServiceProvider servi
         var t = CreateDefault();
 
         if (t == null)
-        {
             Logger.LogError("Failed to create {Type}.", type);
-        }
         else
         {
             Add(t);
@@ -107,9 +103,7 @@ public abstract class DataHandler<Entity, Database, Lock>(IServiceProvider servi
         var db = scope.ServiceProvider.GetRequiredService<Database>();
 
         lock (dbLock.Lock)
-        {
             return db.Set<Entity>().Count();
-        }
     }
 
     protected int GetMax()
@@ -118,9 +112,7 @@ public abstract class DataHandler<Entity, Database, Lock>(IServiceProvider servi
         var db = scope.ServiceProvider.GetRequiredService<Database>();
 
         lock (dbLock.Lock)
-        {
             return db.Set<Entity>().Max(a => a.Id);
-        }
     }
 
     public void Update(Entity entity)
