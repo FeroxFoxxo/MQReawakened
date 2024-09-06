@@ -167,7 +167,8 @@ public class ArchivedSaves(EventSink sink, InternalRConfig rConfig, InternalRwCo
                     if (archive.LastWriteTimeUtc < threshold)
                         archive.Delete();
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     logger.LogError("Error while deleting archive: {Message}", e.Message);
                 }
             }

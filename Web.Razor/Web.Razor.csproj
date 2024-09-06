@@ -1,31 +1,41 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFramework>net8</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-        <DebugType>embedded</DebugType>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
     </PropertyGroup>
 
     <ItemGroup>
         <None Include="wwwroot\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Pages\Creator\**" />
-      <Content Remove="Pages\Creator\**" />
-      <EmbeddedResource Remove="Pages\Creator\**" />
-      <None Remove="Pages\Creator\**" />
-    </ItemGroup>
+        <Compile Remove="Pages\Creator\**" />
+        <Content Remove="Pages\Creator\**" />
+        <EmbeddedResource Remove="Pages\Creator\**" />
+        <None Remove="Pages\Creator\**" />
+        <Content Remove="EmailTemplates\PasswordReset.cshtml" />
+        <Content Remove="EmailTemplates\UsernameReset.cshtml" />
+        <EmbeddedResource Include="EmailTemplates\PasswordReset.cshtml">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="EmailTemplates\UsernameReset.cshtml">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
 
-    <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="MailKit" Version="4.7.1.1" />
         <PackageReference Include="RazorLight" Version="2.3.1" />
         <ProjectReference Include="..\Server.Reawakened\Server.Reawakened.csproj" />
         <ProjectReference Include="..\Server.Web\Server.Web.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Downloads\__Place PlayMQReawakened.zip Here__">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

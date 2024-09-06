@@ -17,7 +17,7 @@ public class NetStateHandler(FileLogger fileLogger,
     public delegate ProtocolResponse GetProtocol(string protocol);
     public delegate void SendProtocol(NetState netState, string actionType, object protocol);
 
-    public readonly object Lock = new ();
+    public readonly object Lock = new();
 
     public readonly Queue<NetState> Disposed = new();
     public readonly List<NetState> Instances = [];

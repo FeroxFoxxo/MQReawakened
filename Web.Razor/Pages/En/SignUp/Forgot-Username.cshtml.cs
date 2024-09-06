@@ -3,53 +3,50 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Services;
 using Server.Base.Database.Accounts;
-using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Network.Services;
 using System.ComponentModel.DataAnnotations;
 using Web.Razor.Services;
 
 namespace Web.Razor.Pages.En.SignUp;
 
-public class Forgot_UsernameModel(InternalRwConfig iConfig, ServerRwConfig sConfig, AccountHandler aHandler,
-    EmailService email, TemporaryDataStorage tempStorage, RandomKeyGenerator keyGenerator) : PageModel
+[BindProperties]
+public class Forgot_UsernameModel(InternalRwConfig config, AccountHandler aHandler,
+    PagesService email, TemporaryDataStorage tempStorage, RandomKeyGenerator keyGenerator) : PageModel
 {
-    [BindProperty]
-    public InputModel Input { get; set; }
+    [Required(ErrorMessage = "Please Enter Email Address")]
+    [Display(Name = "Email")]
+    [DataType(DataType.EmailAddress)]
+    [RegularExpression(".+@.+\\..+", ErrorMessage = "Please Enter Correct Email Address")]
+    public string Email { get; set; }
 
-    public class InputModel
-    {
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-    }
-
-    public void OnGet() => ViewData["ServerName"] = iConfig.ServerName;
+    public void OnGet() => ViewData["ServerName"] = config.ServerName;
 
     public async Task<IActionResult> OnPost()
     {
         if (!ModelState.IsValid)
             return Page();
 
-        if (aHandler.ContainsEmail(Input.Email))
+        Email = Email?.Trim().ToLower();
+
+        if (string.IsNullOrEmpty(Email))
+            return Page();
+
+        if (aHandler.ContainsEmail(Email))
         {
-            var account = aHandler.GetAccountFromEmail(Input.Email);
+            var account = aHandler.GetAccountFromEmail(Email);
 
             var sId = keyGenerator.GetRandomKey<TemporaryDataStorage>(account.Id.ToString());
 
             tempStorage.AddData(sId, account.Write);
 
-            //await email.SendUsernameResetEmailAsync(account.Email, $"https://{sConfig.DomainName}/en/signup/reset-username?id={sId}");
+            await email.SendUsernameResetEmailAsync(account.Email, $"{config.GetHostAddress()}/en/signup/resetusername?id={sId}", account.Email);
         }
         else
         {
-            var r = new Random();
-
-            var delay = r.Next(50, 150);
-
-            await Task.Delay(delay);
+            await PagesService.Delay();
         }
 
-        return RedirectToPage("ResetUsernameConfirmation");
+        return RedirectToPage("ForgotUsernameConfirmation");
     }
 
 }

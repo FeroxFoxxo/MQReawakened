@@ -1,0 +1,45 @@
+﻿@page
+@model Web.Razor.Pages.En.SignUp.ResetUsernameModel
+
+@{
+    ViewData["Title"] = "Reset Username";
+}
+
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="card signup-card">
+        <div class="row g-0">
+            <div class="col-md-6 info-container">
+                <img class="site_logo rounded-circle" src="/_content/Web.Razor/logo.png" alt="Site Logo" />
+                <p class="description">Reset Username</p>
+            </div>
+            <div class="col-md-6 form-container">
+                <form asp-action="ResetUsername" method="post" class="form text-center">
+                    <h3>Please enter your new username</h3>
+                    <br />
+
+                    <div class="form_field">
+                        <label asp-for="Username"></label>
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                        <input asp-for="Username" class="border" placeholder="Enter Username Here">
+                    </div>
+
+                    <div class="form_field">
+                        <label asp-for="ConfirmUsername"></label>
+                        <span asp-validation-for="ConfirmUsername" class="text-danger"></span>
+                        <input asp-for="ConfirmUsername" class="border" placeholder="Confirm Username Here">
+                    </div>
+
+                    <div class="form_field">
+                        <label asp-for="Password"></label>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <input asp-for="Password" class="border" placeholder="Enter Current Password Here">
+                    </div>
+
+                    <div class="form_field">
+                        <input type="submit" value="Reset Username">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

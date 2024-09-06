@@ -20,7 +20,7 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
     AssetBundleRConfig config, BuildXmlFiles buildXmlList) : Controller
 {
     [HttpGet]
-    public IActionResult GetAsset([FromRoute] string folder, [FromRoute] string file)
+    public async Task<IActionResult> GetAsset([FromRoute] string folder, [FromRoute] string file)
     {
         var publishConfig = config.PublishConfigs.FirstOrDefault(a => string.Equals(a.Value, file));
 
@@ -48,15 +48,15 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
                 ? xmlFile
                 : throw new FileNotFoundException(
                     $"Could not find: {name}. Did you mean:\n{string.Join('\n', buildXmlList.XmlFiles.Keys)}")
-            : WriteFixedBundle(asset);
+            : await WriteFixedBundleAsync(asset);
 
         if (config.LogAssetLoadInfo)
             logger.LogDebug("Getting asset {Name} from {File} ({Folder})", asset.Name, path, folder);
 
-        return new FileContentResult(FileIO.ReadAllBytes(path), "application/octet-stream");
+        return new FileContentResult(await FileIO.ReadAllBytesAsync(path), "application/octet-stream");
     }
 
-    private string WriteFixedBundle(InternalAssetInfo asset)
+    private async Task<string> WriteFixedBundleAsync(InternalAssetInfo asset)
     {
         var assetName = asset.Name?.Trim();
 
@@ -87,7 +87,9 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
             var unityVersion = new UnityVersion(asset.UnityVersion);
 
             var fileName = Path.GetFileName(asset.Path);
-            var data = new FixedAssetFile(asset.Path);
+
+            var data = new FixedAssetFile();
+            await data.ReadAsync(asset.Path);
 
             var metadata = new BundleMetadata(fileName, data.FileSize);
             metadata.FixMetadata((uint)metadata.GetEndianSize());
@@ -102,7 +104,7 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
             // WRITE
             try
             {
-                FileIO.WriteAllBytes(bundlePath, stream.ToArray());
+                await FileIO.WriteAllBytesAsync(bundlePath, stream.ToArray());
             }
             catch (IOException)
             {
@@ -111,12 +113,12 @@ public class AssetHostController(BuildAssetList buildAssetList, ILogger<AssetHos
 
             if (config.DebugInfo)
             {
-                FileIO.WriteAllText($"{basePath}.headerVars", JsonConvert.SerializeObject(header, Formatting.Indented));
-                FileIO.WriteAllBytes($"{basePath}.header", header.GetEndian());
+                await FileIO.WriteAllTextAsync($"{basePath}.headerVars", JsonConvert.SerializeObject(header, Formatting.Indented));
+                await FileIO.WriteAllBytesAsync($"{basePath}.header", header.GetEndian());
 
-                FileIO.WriteAllText($"{basePath}.metadataVars",
+                await FileIO.WriteAllTextAsync($"{basePath}.metadataVars",
                     JsonConvert.SerializeObject(metadata, Formatting.Indented));
-                FileIO.WriteAllBytes($"{basePath}.metadata", metadata.GetEndian());
+                await FileIO.WriteAllBytesAsync($"{basePath}.metadata", metadata.GetEndian());
                 FileIO.Copy(asset.Path!, $"{basePath}.cache", true);
             }
         }

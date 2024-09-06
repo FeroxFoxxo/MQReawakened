@@ -1,9 +1,5 @@
 ﻿@page
-@model Web.Razor.Pages.En.SignUp.NewsModel
-
-@section Stylesheets {
-    <link href="~/_content/Web.Razor/SignUp/style.css" rel="stylesheet" />
-}
+@model Web.Razor.Pages.En.NewsModel
 
 @{
     ViewData["Title"] = "News";
@@ -13,7 +9,7 @@
     <div class="card signup-card">
         <div class="row g-0">
             <div class="col-md-6 info-container">
-                <img class="site_logo rounded-circle" src="~/_content/Web.Razor/logo.png" alt="Site Logo" />
+                <img class="site_logo rounded-circle" src="/_content/Web.Razor/logo.png" alt="Site Logo" />
                 <p class="description">@ViewData["ServerName"] News</p>
                 <h3 class="text-warning">Hear all about us here!</h3>
             </div>

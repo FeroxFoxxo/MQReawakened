@@ -7,7 +7,7 @@ namespace Protocols.External._f__FriendsHandler;
 public class SearchOnlineUsers : ExternalProtocol
 {
     public override string ProtocolName => "fo";
-    
+
     public PlayerContainer PlayerContainer { get; set; }
 
     public override void Run(string[] message)

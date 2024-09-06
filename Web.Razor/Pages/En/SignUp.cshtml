@@ -1,16 +1,12 @@
 ﻿@page
 @model Web.Razor.Pages.En.SignUpModel
 
-@section Stylesheets {
-    <link href="~/_content/Web.Razor/SignUp/style.css" rel="stylesheet" />
+@{
+    ViewData["Title"] = "Sign Up";
 }
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-}
-
-@{
-    ViewData["Title"] = "Sign Up";
 }
 
 @if (!string.IsNullOrEmpty(Model.StatusMessage))
@@ -29,7 +25,7 @@
     <div class="card signup-card">
         <div class="row g-0">
             <div class="col-md-6 info-container">
-                <img class="site_logo rounded-circle" src="~/_content/Web.Razor/logo.png" alt="Site Logo" />
+                <img class="site_logo rounded-circle" src="/_content/Web.Razor/logo.png" alt="Site Logo" />
                 <p class="description">Join our community and explore!</p>
                 <h3 class="text-warning">Please only use alpha-numeric characters - no funky symbols!</h3>
             </div>
@@ -80,7 +76,7 @@
                             <option disabled selected>SELECT</option>
                         </select>
                     </div>
-
+                    <br />
                     <div class="form_field">
                         <input type="submit" value="Sign Up">
                     </div>

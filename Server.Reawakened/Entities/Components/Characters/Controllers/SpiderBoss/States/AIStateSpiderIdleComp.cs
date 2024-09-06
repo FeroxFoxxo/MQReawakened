@@ -22,7 +22,7 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle>
         if (data is not AIStateSpiderIdleComp spider)
             return;
 
-        spider.AddNextState<AIStateSpiderVenomComp>();       
+        spider.AddNextState<AIStateSpiderVenomComp>();
         spider.GoToNextState();
     }
 }

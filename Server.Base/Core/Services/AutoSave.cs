@@ -55,7 +55,7 @@ public class AutoSave(TimerThread timerThread, InternalRConfig config, World wor
             else if (m > 0)
                 world.Broadcast(string.Format("The world will save in {0} minute{1}.", m, m != 1 ? "s" : ""));
             else
-                world.Broadcast(string.Format( "The world will save in {0} second{1}.", s, s != 1 ? "s" : ""));
+                world.Broadcast(string.Format("The world will save in {0} second{1}.", s, s != 1 ? "s" : ""));
 
             timerThread.RunDelayed(Save, null, config.SaveWarning);
         }
@@ -97,7 +97,8 @@ public class AutoSave(TimerThread timerThread, InternalRConfig config, World wor
 
                     anySuccess = true;
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     logger.LogError("Exception while moving backups: {Exception}", e.Message);
                 }
             }

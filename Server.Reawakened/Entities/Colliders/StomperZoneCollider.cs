@@ -1,9 +1,9 @@
 ﻿using Server.Base.Timers.Services;
+using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Entities.Colliders.Abstractions;
 using Server.Reawakened.Entities.Colliders.Enums;
 using Server.Reawakened.Rooms;
 using UnityEngine;
-using Server.Reawakened.Core.Configs;
 
 namespace Server.Reawakened.Entities.Colliders;
 public class StomperZoneCollider(string id, Vector3 position,

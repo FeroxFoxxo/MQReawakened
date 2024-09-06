@@ -19,7 +19,7 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
 
     [Required(ErrorMessage = "Please Enter Username")]
     [Display(Name = "User Name")]
-    [StringLength(10, ErrorMessage = "The {0} cannot be over {1} characters long.")]
+    [StringLength(15, ErrorMessage = "The {0} cannot be over {1} characters long.")]
     public string Username { get; set; }
 
     [Required(ErrorMessage = "Please Enter Password")]
@@ -88,13 +88,21 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
             return Page();
         }
 
-        Username = Username?.Trim();
+        Username = Username?.Trim().ToLower();
+        Email = Email?.Trim().ToLower();
+
         ConfirmPassword = ConfirmPassword?.Trim();
         Password = Password?.Trim();
-        Email = Email?.Trim();
 
-        if (string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Email))
+        if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(Region))
+        {
             return Page();
+        }
+
+        if (ConfirmPassword != Password)
+        {
+            return Page();
+        }
 
         if (accountHandler.ContainsUsername(Username))
         {
@@ -110,8 +118,7 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
 
         var ip = Request.HttpContext.Connection.RemoteIpAddress;
 
-        if (ip == null || string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password) ||
-            string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Region))
+        if (ip == null)
         {
             StatusMessage = "A bad request occured. Try on a different device.";
             return Page();
@@ -122,9 +129,11 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
         if (account == null)
         {
             logger.LogError("Could not create account with name: {Username}", Username);
+
             StatusMessage = "Could not create an account! " +
                 "You could have too many, or have put strange characters in your username/password. " +
                 "Ensure these consist of English characters, if possible.";
+
             return Page();
         }
 
@@ -133,12 +142,13 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
         if (userInfo == null)
         {
             logger.LogError("Could not create user info with name: {Username}", Username);
+
             StatusMessage = "Could not create any user information! " +
                 "Perhaps an account already exists with this username?";
+
             return Page();
         }
 
         return RedirectToPage("Success");
     }
-
 }
