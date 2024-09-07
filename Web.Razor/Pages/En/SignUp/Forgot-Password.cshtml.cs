@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Server.Base.Core.Configs;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Network.Services;
@@ -25,7 +26,7 @@ public class Forgot_PasswordModel(InternalRwConfig iConfig, AccountHandler aHand
         if (!ModelState.IsValid)
             return Page();
 
-        Username = Username?.Trim().ToLower();
+        Username = Username.Sanitize();
 
         if (string.IsNullOrEmpty(Username))
             return Page();

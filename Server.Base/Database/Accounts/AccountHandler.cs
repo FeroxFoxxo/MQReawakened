@@ -32,8 +32,8 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         Logger.LogInformation("Email: ");
         var email = ConsoleExt.ReadOrEnv("DEFAULT_EMAIL", Logger);
 
-        username = username.ToLower();
-        email = email.ToLower();
+        username = username.Sanitize();
+        email = email.Sanitize();
 
         if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(email))
             return new AccountDbEntry(username, password, email, hasher)
@@ -62,7 +62,7 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
 
-        email = email.ToLower();
+        email = email.Sanitize();
 
         lock (DbLock.Lock)
         {
@@ -77,7 +77,7 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
 
-        username = username.ToLower();
+        username = username.Sanitize();
 
         lock (DbLock.Lock)
         {
@@ -89,7 +89,7 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
 
     public AlrReason GetAccount(string username, string password, NetState netState)
     {
-        username = username.ToLower();
+        username = username.Sanitize();
 
         var rejectReason = AlrReason.Invalid;
 
@@ -160,10 +160,10 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
 
     public AccountModel Create(IPAddress ipAddress, string username, string password, string email)
     {
-        username = username.ToLower();
-        email = email.ToLower();
+        username = username.Sanitize();
+        email = email.Sanitize();
 
-        if (username.Trim().Length <= 0 || password.Trim().Length <= 0 || email.Trim().Length <= 0)
+        if (username.Length <= 0 || password.Length <= 0 || email.Length <= 0)
         {
             Logger.LogInformation("Login: {Address}: User post _data for '{Username}' is invalid in length!",
                 ipAddress, username);
@@ -204,7 +204,7 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
 
-        username = username.ToLower();
+        username = username.Sanitize();
 
         lock (DbLock.Lock)
         {
@@ -217,7 +217,7 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<BaseDatabase>();
 
-        email = email.ToLower();
+        email = email.Sanitize();
 
         lock (DbLock.Lock)
         {

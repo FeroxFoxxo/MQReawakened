@@ -1,6 +1,7 @@
 ﻿using Server.Base.Accounts.Enums;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Accounts.Models;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Models;
 
 namespace Server.Base.Database.Accounts;
@@ -22,12 +23,12 @@ public class AccountDbEntry : PersistantData
 
     public AccountDbEntry(string username, string password, string email, PasswordHasher hasher)
     {
-        username = username.ToLower();
-        email = email.ToLower();
+        username = username.Sanitize();
+        email = email.Sanitize();
 
         Username = username;
-        Password = hasher.GetPassword(username, password);
         Email = email;
+        Password = hasher.GetPassword(username, password);
 
         AccessLevel = AccessLevel.Player;
         GameMode = GameMode.Default;

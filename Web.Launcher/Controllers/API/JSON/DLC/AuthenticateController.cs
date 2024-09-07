@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Server.Base.Core.Configs;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Database.Users;
@@ -18,8 +19,7 @@ public class AuthenticateController(AccountHandler accHandler, UserInfoHandler u
     [HttpPost]
     public IActionResult GetLoginInfo([FromForm] string username, [FromForm] string token)
     {
-        username = username?.Trim();
-        token = token?.Trim();
+        username = username.Sanitize();
 
         var account = accHandler.GetAccountFromUsername(username);
 

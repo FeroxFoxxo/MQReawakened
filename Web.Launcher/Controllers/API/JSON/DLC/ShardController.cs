@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Server.Base.Core.Configs;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Database.Users;
@@ -17,8 +18,7 @@ public class ShardController(AccountHandler accHandler, UserInfoHandler userInfo
     [HttpPost]
     public IActionResult GetShardInfo([FromForm] string username, [FromForm] string authToken, [FromForm] int uuid)
     {
-        username = username?.Trim();
-        authToken = authToken?.Trim();
+        username = username.Sanitize();
 
         var account = accHandler.GetAccountFromId(uuid);
         var user = userInfoHandler.GetUserFromId(uuid);

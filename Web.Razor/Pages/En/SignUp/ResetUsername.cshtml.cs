@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Core.Configs;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Database.Accounts;
 using System.ComponentModel.DataAnnotations;
@@ -58,8 +59,8 @@ public class ResetUsernameModel(InternalRwConfig iConfig, AccountHandler aHandle
             return RedirectToPage("ResetUsernameInvalid");
         }
 
-        ConfirmUsername = ConfirmUsername?.Trim().ToLower();
-        Username = Username?.Trim().ToLower();
+        ConfirmUsername = ConfirmUsername.Sanitize();
+        Username = Username.Sanitize();
 
         if (string.IsNullOrEmpty(Username))
         {

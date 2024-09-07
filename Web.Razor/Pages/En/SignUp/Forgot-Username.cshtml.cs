@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Server.Base.Core.Configs;
+using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Network.Services;
@@ -26,7 +27,7 @@ public class Forgot_UsernameModel(InternalRwConfig config, AccountHandler aHandl
         if (!ModelState.IsValid)
             return Page();
 
-        Email = Email?.Trim().ToLower();
+        Email = Email.Sanitize();
 
         if (string.IsNullOrEmpty(Email))
             return Page();

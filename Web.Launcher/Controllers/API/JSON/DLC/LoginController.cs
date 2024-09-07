@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Core.Configs;
+using Server.Base.Core.Extensions;
 using Server.Base.Database.Accounts;
-using Server.Reawakened.Core.Services;
 using Server.Reawakened.Database.Users;
 using Web.Launcher.Extensions;
 using Web.Launcher.Models;
@@ -18,8 +18,7 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
     [HttpPost]
     public IActionResult HandleLogin([FromForm] string username, [FromForm] string password)
     {
-        username = username?.Trim().ToLower();
-        password = password?.Trim().ToLower();
+        username = username.Sanitize();
 
         var hashedPw = passwordHasher.GetPassword(username, password);
 

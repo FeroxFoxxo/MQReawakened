@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Configs;
+using Server.Base.Core.Extensions;
 using Server.Base.Database.Accounts;
 using Server.Reawakened.Database.Users;
 using Server.Reawakened.Players.Enums;
@@ -88,11 +89,8 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
             return Page();
         }
 
-        Username = Username?.Trim().ToLower();
-        Email = Email?.Trim().ToLower();
-
-        ConfirmPassword = ConfirmPassword?.Trim();
-        Password = Password?.Trim();
+        Username = Username.Sanitize();
+        Email = Email.Sanitize();
 
         if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(Region))
         {
