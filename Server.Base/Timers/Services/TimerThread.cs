@@ -1,4 +1,5 @@
-﻿using Server.Base.Core.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
@@ -23,8 +24,9 @@ public class TimerThread : IService
     private readonly Thread _timerThread;
     private readonly World _world;
     private readonly AutoResetEvent _signal;
+    private readonly ILogger<TimerThread> _logger;
 
-    public TimerThread(InternalRConfig config, TimerChangePool pool, EventSink sink, ServerHandler handler, World world, FileLogger fileLogger)
+    public TimerThread(InternalRConfig config, TimerChangePool pool, EventSink sink, ServerHandler handler, World world, ILogger<TimerThread> logger)
     {
         _config = config;
         _pool = pool;
@@ -34,6 +36,7 @@ public class TimerThread : IService
         _queue = new Queue<Timer>();
         _world = world;
         _signal = new AutoResetEvent(false);
+        _logger = logger;
 
         _nextPriorities = Enumerable.Repeat(default(double), config.Delays.Length).ToArray();
         _timers = Enumerable.Repeat(new List<Timer>(), config.Delays.Length).ToArray();
@@ -107,7 +110,15 @@ public class TimerThread : IService
             {
                 var t = _queue.Dequeue();
 
-                t.OnTick();
+                try
+                {
+                    t.OnTick();
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError("Timer {TIMER} threw an exception {Message}.", t.Index, e.Message);
+                }
+
                 t.Queued = false;
                 ++index;
             }
