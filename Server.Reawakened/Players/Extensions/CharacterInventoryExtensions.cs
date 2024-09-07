@@ -19,63 +19,62 @@ public static class CharacterInventoryExtensions
     public static void HandleItemEffect(this Player player, ItemDescription usedItem,
         TimerThread timerThread, ItemRConfig config, ServerRConfig serverRConfig, ILogger<PlayerStatus> logger)
     {
-        var effect = usedItem.ItemEffects.FirstOrDefault();
-
-        if (usedItem.ItemEffects.Count > 0)
-            player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time,
-                                (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false));
-
-        switch (effect.Type)
+        foreach (var effect in usedItem.ItemEffects)
         {
-            case ItemEffectType.PetRegainEnergy:
-                if (!player.Character.Pets.TryGetValue(player.GetEquippedPetId(serverRConfig), out var pet))
-                {
-                    logger.LogWarning("Couldn't find equipped pet for {characterName}", player.CharacterName);
-                    return;
-                }
-                pet.GainEnergy(player, effect != null ? effect.Value : 0);
-                break;
-            case ItemEffectType.Healing:
-            case ItemEffectType.HealthBoost:
-            case ItemEffectType.IncreaseHealing:
-            case ItemEffectType.Regeneration:
-                if (player.Character.CurrentLife >= player.Character.MaxLife)
-                    return;
+            player.Room.SendSyncEvent(new StatusEffect_SyncEvent(player.GameObjectId.ToString(), player.Room.Time, (int)effect.Type, effect.Value, effect.Duration, true, usedItem.PrefabName, false));
 
-                player.HealCharacter(usedItem, timerThread, config, effect.Type);
-                break;
-            case ItemEffectType.IncreaseBluntDamage:
-            case ItemEffectType.IncreaseAirDamage:
-            case ItemEffectType.IncreaseFireDamage:
-            case ItemEffectType.IncreaseEarthDamage:
-            case ItemEffectType.IncreaseIceDamage:
-            case ItemEffectType.IncreaseLightningDamage:
-            case ItemEffectType.IncreaseAllResist:
-            case ItemEffectType.Defence:
-            case ItemEffectType.ResistAir:
-            case ItemEffectType.ResistFire:
-            case ItemEffectType.ResistEarth:
-            case ItemEffectType.ResistIce:
-            case ItemEffectType.ResistLightning:
-            case ItemEffectType.WaterBreathing:
-            case ItemEffectType.Detect:
-            case ItemEffectType.Invisibility:
-            case ItemEffectType.BananaMultiplier:
-            case ItemEffectType.ExperienceMultiplier:
-                player.Character.StatusEffects.Add(effect);
-                break;
+            switch (effect.Type)
+            {
+                case ItemEffectType.PetRegainEnergy:
+                    if (!player.Character.Pets.TryGetValue(player.GetEquippedPetId(serverRConfig), out var pet))
+                    {
+                        logger.LogWarning("Couldn't find equipped pet for {characterName}", player.CharacterName);
+                        return;
+                    }
+                    pet.GainEnergy(player, effect != null ? effect.Value : 0);
+                    break;
+                case ItemEffectType.Healing:
+                case ItemEffectType.HealthBoost:
+                case ItemEffectType.IncreaseHealing:
+                case ItemEffectType.Regeneration:
+                    if (player.Character.CurrentLife >= player.Character.MaxLife)
+                        return;
 
-            case ItemEffectType.Invalid:
-            case ItemEffectType.Unknown:
-            case ItemEffectType.Unknown_61:
-            case ItemEffectType.Unknown_70:
-            case ItemEffectType.Unknown_74:
-            default:
-                logger.LogError("Unknown ItemEffectType of ({effectType}) for item {usedItemName}", effect.Type, usedItem.PrefabName);
-                return;
+                    player.HealCharacter(usedItem, timerThread, config, effect.Type);
+                    break;
+                case ItemEffectType.IncreaseBluntDamage:
+                case ItemEffectType.IncreaseAirDamage:
+                case ItemEffectType.IncreaseFireDamage:
+                case ItemEffectType.IncreaseEarthDamage:
+                case ItemEffectType.IncreaseIceDamage:
+                case ItemEffectType.IncreaseLightningDamage:
+                case ItemEffectType.IncreaseAllResist:
+                case ItemEffectType.Defence:
+                case ItemEffectType.ResistAir:
+                case ItemEffectType.ResistFire:
+                case ItemEffectType.ResistEarth:
+                case ItemEffectType.ResistIce:
+                case ItemEffectType.ResistLightning:
+                case ItemEffectType.WaterBreathing:
+                case ItemEffectType.Detect:
+                case ItemEffectType.Invisibility:
+                case ItemEffectType.BananaMultiplier:
+                case ItemEffectType.ExperienceMultiplier:
+                    player.Character.StatusEffects.Add(effect);
+                    break;
+
+                case ItemEffectType.Invalid:
+                case ItemEffectType.Unknown:
+                case ItemEffectType.Unknown_61:
+                case ItemEffectType.Unknown_70:
+                case ItemEffectType.Unknown_74:
+                default:
+                    logger.LogError("Unknown ItemEffectType of ({effectType}) for item {usedItemName}", effect.Type, usedItem.PrefabName);
+                    return;
+            }
+
+            logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for _player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
         }
-
-        logger.LogInformation("Applied ItemEffectType of ({effectType}) from item {usedItemName} for _player {playerName}", effect.Type, usedItem.PrefabName, player.CharacterName);
     }
 
     public static bool TryGetItem(this CharacterModel characterData, int itemId, out ItemModel outItem) =>
@@ -143,7 +142,12 @@ public static class CharacterInventoryExtensions
         var sb = new SeparatedStringBuilder('|');
 
         foreach (var item in inventory.Items)
-            sb.Append(item.Value.ToString());
+        {
+            if (item.Value != null)
+                sb.Append(item.Value.ToString());
+            else
+                sb.Append(string.Empty);
+        }
 
         return sb.ToString();
     }
