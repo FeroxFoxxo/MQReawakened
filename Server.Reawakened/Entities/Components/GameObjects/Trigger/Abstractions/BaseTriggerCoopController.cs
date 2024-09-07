@@ -6,6 +6,7 @@ using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Models.Pets;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
@@ -49,6 +50,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                 if (player.Character.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
                     validQuestProgress = false;
         }
+
         return validQuestProgress ? player : null;
 
     }).Where(x => x != null).ToList();
@@ -248,12 +250,13 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     {
         if (CurrentPhysicalInteractors.Contains(interactionId)) return;
 
-        var validQuestProgress = true;
+        CurrentPhysicalInteractors.Add(interactionId);
 
         if (Room.GetPlayerById(interactionId) != null)
         {
-            if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) && !pet.InCoopState() &&
-                (InteractType == InteractionType.PetChain || InteractType == InteractionType.PetSwitch))
+            var validQuestProgress = true;
+
+            if (PlayerHasPet(player, out var pet))
                 if (pet != null)
                     pet.CoopTriggerableId = Id;
 
@@ -274,11 +277,9 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
                     if (player.Character.QuestLog.FirstOrDefault(q => q.Id == requiredQuest.Id) == null)
                         validQuestProgress = false;
             }
-        }
-        if (validQuestProgress)
-        {
-            CurrentPhysicalInteractors.Add(interactionId);
-            SendInteractionUpdate();
+
+            if (validQuestProgress)
+                SendInteractionUpdate();
         }
     }
 
@@ -286,12 +287,18 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     {
         if (!CurrentPhysicalInteractors.Contains(interactionId)) return;
 
-        if (player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out var pet) && !pet.InCoopState())
-            pet.CoopTriggerableId = string.Empty;
+        if (PlayerHasPet(player, out var pet))
+            if (pet != null)
+                pet.CoopTriggerableId = string.Empty;
 
         CurrentPhysicalInteractors.Remove(interactionId);
         SendInteractionUpdate();
     }
+
+    public bool PlayerHasPet(Player player, out PetModel pet) =>
+        player.Character.Pets.TryGetValue(player.GetEquippedPetId(ServerRConfig), out pet) && !pet.InCoopState() &&
+                (InteractType == InteractionType.PetChain || InteractType == InteractionType.PetSwitch);
+
 
     public void SendInteractionUpdate()
     {
@@ -456,6 +463,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public void Trigger(Player player, bool success, bool active)
     {
         IsActive = active;
+
         foreach (var trigger in Triggers)
         {
             var triggers = Room.GetEntitiesFromId<ICoopTriggered>(trigger.Key);
