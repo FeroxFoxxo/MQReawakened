@@ -24,8 +24,8 @@ public class PasswordHasher
     }
 
     public bool CheckPassword(AccountModel account, string plainPassword) =>
-        account.Password == GetPassword(account.Username, plainPassword);
+        account.Password == GetPassword(account.Username.ToLower(), plainPassword);
 
     public string GetPassword(string username, string password) =>
-        HashSha512(username + password);
+        HashSha512(username.ToLower() + password);
 }
