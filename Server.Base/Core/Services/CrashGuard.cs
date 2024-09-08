@@ -26,7 +26,7 @@ public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, Eve
         world.Save(false);
         Backup();
 
-        if (rwConfig.RestartOnCrash)
+        if (rwConfig.RestartOnCrash && !GetOsType.IsUnix())
             Restart(e);
     }
 
