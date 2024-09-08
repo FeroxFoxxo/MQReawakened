@@ -72,3 +72,4 @@ public class CompleteQuest : SlashCommand
 
         return questData;
     }
+}
