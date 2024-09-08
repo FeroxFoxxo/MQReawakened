@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Quest;
 public class AddAndCompleteQuest : SlashCommand
 {
-    public override string CommandName => "/AddAndCompleteQuest";
+    public override string CommandName => "/addandcompletequest";
 
     public override string CommandDescription => "This marks the provided quest as completed.";
 
