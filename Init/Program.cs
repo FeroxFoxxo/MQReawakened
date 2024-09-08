@@ -13,7 +13,7 @@ using Module = Server.Base.Core.Abstractions.Module;
 
 namespace Init;
 
-public class Initialize
+public class Program
 {
     public static async Task Main()
     {
