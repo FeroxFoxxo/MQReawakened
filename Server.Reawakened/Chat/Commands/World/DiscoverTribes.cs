@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.World;
 public class DiscoverTribes : SlashCommand
 {
-    public override string CommandName => "/DiscoverTribes";
+    public override string CommandName => "/discovertribes";
 
     public override string CommandDescription => "Discovers all tribes to unlock the map/quest log.";
 

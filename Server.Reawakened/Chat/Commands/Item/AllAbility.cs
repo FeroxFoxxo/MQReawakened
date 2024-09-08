@@ -9,7 +9,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Item;
 public class AllAbility : SlashCommand
 {
-    public override string CommandName => "/AllAbility";
+    public override string CommandName => "/allability";
 
     public override string CommandDescription => "Adds all ability items.";
 

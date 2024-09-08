@@ -9,7 +9,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.World;
 public class ClosestEntity : SlashCommand
 {
-    public override string CommandName => "/ClosestEntity";
+    public override string CommandName => "/closestentity";
 
     public override string CommandDescription => "Gets the cloesest entities near you.";
 

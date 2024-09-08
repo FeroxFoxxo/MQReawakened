@@ -6,7 +6,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.World;
 public class PlayerPos : SlashCommand
 {
-    public override string CommandName => "/PlayerPos";
+    public override string CommandName => "/playerpos";
 
     public override string CommandDescription => "Get the player's current position.";
 

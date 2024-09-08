@@ -8,7 +8,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Quest;
 public class CompleteQuestObjectives : SlashCommand
 {
-    public override string CommandName => "/CompleteQuestObjectives";
+    public override string CommandName => "/completequestobjectives";
 
     public override string CommandDescription => "Completes the provided quest's objectives.";
 

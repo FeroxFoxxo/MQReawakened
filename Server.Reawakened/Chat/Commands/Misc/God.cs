@@ -13,7 +13,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Misc;
 public class God : SlashCommand
 {
-    public override string CommandName => "/God";
+    public override string CommandName => "/god";
 
     public override string CommandDescription => "Enable's god mode.";
 

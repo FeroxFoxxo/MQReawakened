@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.World;
 public class UpdateNpcs : SlashCommand
 {
-    public override string CommandName => "/UpdateNpcs";
+    public override string CommandName => "/updatenpcs";
 
     public override string CommandDescription => "Updates all npcs in your current room.";
 

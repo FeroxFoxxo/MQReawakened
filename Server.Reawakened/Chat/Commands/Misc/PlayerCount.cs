@@ -6,7 +6,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Misc;
 public class PlayerCount : SlashCommand
 {
-    public override string CommandName => "/PlayerCount";
+    public override string CommandName => "/playercount";
 
     public override string CommandDescription => "Check how many player's there are currently.";
 

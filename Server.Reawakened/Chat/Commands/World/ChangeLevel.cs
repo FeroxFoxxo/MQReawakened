@@ -9,7 +9,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.World;
 public class ChangeLevel : SlashCommand
 {
-    public override string CommandName => "/ChangeLevel";
+    public override string CommandName => "/changelevel";
 
     public override string CommandDescription => "Allows you to warp to a new level.";
 

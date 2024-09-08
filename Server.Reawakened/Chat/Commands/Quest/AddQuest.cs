@@ -11,7 +11,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Quest;
 public class AddQuest : SlashCommand
 {
-    public override string CommandName => "/AddQuest";
+    public override string CommandName => "/addquest";
 
     public override string CommandDescription => "Add the provided quest by id.";
 

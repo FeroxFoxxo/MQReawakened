@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Quest;
 public class FindQuest : SlashCommand
 {
-    public override string CommandName => "/FindQuest";
+    public override string CommandName => "/findquest";
 
     public override string CommandDescription => "Allows you to find a quest name.";
 

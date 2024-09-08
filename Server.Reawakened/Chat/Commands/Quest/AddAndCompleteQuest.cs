@@ -4,9 +4,10 @@ using Server.Reawakened.Players;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Data.Commands;
 
-public class CompleteQuest : SlashCommand
+namespace Server.Reawakened.Chat.Commands.Quest;
+public class AddAndCompleteQuest : SlashCommand
 {
-    public override string CommandName => "/completequest";
+    public override string CommandName => "/addandcompletequest";
 
     public override string CommandDescription => "This marks the provided quest as completed.";
 
@@ -72,3 +73,4 @@ public class CompleteQuest : SlashCommand
 
         return questData;
     }
+}
