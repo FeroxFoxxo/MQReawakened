@@ -6,7 +6,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.World;
 public class GetPlayerId : SlashCommand
 {
-    public override string CommandName => "/GetPlayerId";
+    public override string CommandName => "/getplayerid";
 
     public override string CommandDescription => "Get your game object id.";
 

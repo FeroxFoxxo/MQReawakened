@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace Server.Reawakened.Chat.Commands.Misc;
 public partial class ChangeName : SlashCommand
 {
-    public override string CommandName => "/ChangeName";
+    public override string CommandName => "/changename";
 
     public override string CommandDescription => "Change your monkey's name.";
 

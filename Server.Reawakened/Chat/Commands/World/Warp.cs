@@ -9,7 +9,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.World;
 public class Warp : SlashCommand
 {
-    public override string CommandName => "/Warp";
+    public override string CommandName => "/warp";
 
     public override string CommandDescription => "Change's your level to the specified level id.";
 

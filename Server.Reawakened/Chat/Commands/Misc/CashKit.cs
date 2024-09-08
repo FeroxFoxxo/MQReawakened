@@ -10,7 +10,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Misc;
 public class CashKit : SlashCommand
 {
-    public override string CommandName => "/CashKit";
+    public override string CommandName => "/cashkit";
 
     public override string CommandDescription => "This will give 100k of bananas and monkey cash.";
 

@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Misc;
 public class SetAccess : SlashCommand
 {
-    public override string CommandName => "/SetAccess";
+    public override string CommandName => "/setaccess";
 
     public override string CommandDescription => "Allows you to set a player's access level. (Owner only)";
 

@@ -10,7 +10,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Item;
 public class ItemKit : SlashCommand
 {
-    public override string CommandName => "/ItemKit";
+    public override string CommandName => "/itemkit";
 
     public override string CommandDescription => "This will give an item kit.";
 

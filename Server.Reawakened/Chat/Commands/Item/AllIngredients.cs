@@ -9,7 +9,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Item;
 public class AllIngredients : SlashCommand
 {
-    public override string CommandName => "/AllIngredients";
+    public override string CommandName => "/allingredients";
 
     public override string CommandDescription => "Adds all crafting ingredients and recipes.";
 

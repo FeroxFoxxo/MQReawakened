@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Misc;
 public class MaxHP : SlashCommand
 {
-    public override string CommandName => "/MaxHP";
+    public override string CommandName => "/maxhp";
 
     public override string CommandDescription => "Set your monkey's health to it's maximum value.";
 

@@ -9,7 +9,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.World;
 public class OpenDoors : SlashCommand
 {
-    public override string CommandName => "/OpenDoors";
+    public override string CommandName => "/opendoors";
 
     public override string CommandDescription => "Opens all doors in your current room.";
 

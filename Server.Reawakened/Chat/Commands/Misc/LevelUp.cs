@@ -10,7 +10,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Misc;
 public class LevelUp : SlashCommand
 {
-    public override string CommandName => "/LevelUp";
+    public override string CommandName => "/levelup";
 
     public override string CommandDescription => "Level up to a specified level or default to max level.";
 

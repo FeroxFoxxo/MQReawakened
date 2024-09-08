@@ -8,7 +8,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Item;
 public class AddItem : SlashCommand
 {
-    public override string CommandName => "/AddItem";
+    public override string CommandName => "/additem";
 
     public override string CommandDescription => "Adds an item using it's prefab name.";
 

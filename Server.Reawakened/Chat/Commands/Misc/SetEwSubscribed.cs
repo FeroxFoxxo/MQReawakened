@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Misc;
 public class SetEwSubscribed : SlashCommand
 {
-    public override string CommandName => "/SetEwSubscribed";
+    public override string CommandName => "/setewsubscribed";
 
     public override string CommandDescription => "Change membership status.";
 

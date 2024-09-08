@@ -12,7 +12,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Misc;
 public class Hotbar : SlashCommand
 {
-    public override string CommandName => "/Hotbar";
+    public override string CommandName => "/hotbar";
 
     public override string CommandDescription => "Unlocks all slots and will set an item in a hotbar slot.";
 

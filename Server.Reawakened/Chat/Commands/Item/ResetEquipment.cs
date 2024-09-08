@@ -8,7 +8,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Item;
 public class ResetEquipment : SlashCommand
 {
-    public override string CommandName => "/ResetEquipment";
+    public override string CommandName => "/resetequipment";
 
     public override string CommandDescription => "Reset all of your character's equipment.";
 

@@ -8,7 +8,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Item;
 public class AllItems : SlashCommand
 {
-    public override string CommandName => "/AllItems";
+    public override string CommandName => "/allitems";
 
     public override string CommandDescription => "Adds all items to the player's inventory. (Owner only)";
 

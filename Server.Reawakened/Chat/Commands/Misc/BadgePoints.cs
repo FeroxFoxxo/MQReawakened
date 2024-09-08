@@ -7,7 +7,7 @@ using Server.Reawakened.XMLs.Data.Commands;
 namespace Server.Reawakened.Chat.Commands.Misc;
 public class BadgePoints : SlashCommand
 {
-    public override string CommandName => "/BadgePoints";
+    public override string CommandName => "/badgepoints";
 
     public override string CommandDescription => "Gives 100 of each tribe badge points.";
 

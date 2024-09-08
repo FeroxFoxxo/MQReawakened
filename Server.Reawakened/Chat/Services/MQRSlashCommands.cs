@@ -50,7 +50,7 @@ public class MQRSlashCommands(IServiceScopeFactory serviceFact, ReflectionUtils 
 
     public void RunCommand(Player player, string command, string[] args)
     {
-        var name = args.FirstOrDefault();
+        var name = args.FirstOrDefault().ToLower();
 
         if (name == null || !_commands.TryGetValue(name, out var value))
         {
