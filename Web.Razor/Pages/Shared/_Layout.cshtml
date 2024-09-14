@@ -1,13 +1,14 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewData["Title"] - @ViewData["ServerName"]</title>
     <meta name="title" content="@ViewData["ServerName"]">
     <meta name="description" content="An open-source reimplementation & emulation of the backend of MQ, written from scratch without including intellectual property from the original game.">
     <meta name="keywords" content="@ViewData["ServerName"]">
-    <meta name="robots" content="index, follow">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <meta name="robots" content="index, follow"> -->
+    <meta name="robots" content="noindex">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="language" content="English">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -17,6 +18,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     @await RenderSectionAsync("Scripts", false)
+    <script>
+        $(document).ready(function () {
+            if (!getCookie("disclaimerAccepted")) {
+                $('#disclaimerModal').modal('show');
+            }
+
+            $('#agreeButton').click(function () {
+                setCookie("disclaimerAccepted", "true", 365);
+                $('#disclaimerModal').modal('hide');
+            });
+
+            $('#returnButton').click(function () {
+                window.history.back();
+            });
+        });
+
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+    </script>
 </head>
 <body>
     <div class="content">
@@ -62,5 +100,27 @@
             </div>
         </div>
     </footer>
+    <div class="modal fade" id="disclaimerModal" tabindex="-1" role="dialog" aria-labelledby="disclaimerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="disclaimerModalLabel">Disclaimer</h5>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        This project is a fan-made remake. We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with the original developers or publishers, including any of its subsidiaries or affiliates. All trademarks, service marks, and company names are the property of their respective owners.
+                        <br /><br />
+                        This remake is created purely for entertainment purposes and to celebrate the original game. We do not intend to infringe on any copyrights or trademarks. If you are the copyright holder and believe this project violates your rights, please contact us, and we will address your concerns promptly.
+                        <br /><br />
+                        By continuing, you acknowledge that this project is unofficial and that the original developers are not responsible for any content or issues that may arise from this remake.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="returnButton">Return</button>
+                    <button type="button" class="btn btn-primary" id="agreeButton">Agree</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

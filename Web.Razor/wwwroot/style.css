@@ -372,3 +372,46 @@ h2 {
         padding-right: 0.5rem;
     }
 }
+
+.modal-content {
+    border-radius: 15px;
+    background: linear-gradient(to bottom right, #62823F, #3C5E22);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: none;
+}
+
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-title {
+    color: #fff;
+    font-weight: bold;
+}
+
+.modal-body {
+    color: #fff;
+    font-size: 1.1em;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+.btn-primary {
+    background-color: #9EB75B !important;
+    border-color: #3E4C00 !important;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.btn-secondary {
+    background-color: #FC9A2B !important;
+    border-color: #FEDF49 !important;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+    opacity: 0.8;
+}
