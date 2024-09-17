@@ -22,6 +22,9 @@
         <Reference Include="A2mCore">
             <HintPath>..\Server.Reawakened\Dependencies\A2mCore.dll</HintPath>
         </Reference>
+        <Reference Include="LitJson">
+          <HintPath>..\Server.Reawakened\Dependencies\LitJson.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine">
           <HintPath>..\Server.Reawakened\Dependencies\UnityEngine.dll</HintPath>
         </Reference>

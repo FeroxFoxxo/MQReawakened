@@ -1,6 +1,6 @@
 ﻿using Achievement.CharacterData;
+using LitJson;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.XMLs.Bundles.Internal;
@@ -31,13 +31,15 @@ public class AllAchievementController(CharacterHandler characterHandler,
         foreach (var compAch in achievements.Where(a => a.conditions.All(c => c.value == c.completionCount)))
             points += internalAchievement.Definitions.achievements.First(a => a.id == compAch.id).points;
 
-        var ach = new AllCharacterAchievements()
-        {
-            achievements = achievements,
-            points = points,
-            status = true
-        };
-
-        return Ok(JsonConvert.SerializeObject(ach));
+        return Ok(
+            JsonMapper.ToJson(
+                new AllCharacterAchievements()
+                {
+                    achievements = achievements,
+                    points = points,
+                    status = true
+                }
+            )
+        );
     }
 }

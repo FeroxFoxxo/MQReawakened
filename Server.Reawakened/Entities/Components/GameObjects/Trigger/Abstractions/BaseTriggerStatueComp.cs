@@ -1,5 +1,4 @@
 ﻿using A2m.Server;
-using Server.Reawakened.Entities.Components.GameObjects.Spawners;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Enums;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Server.Base.Accounts.Helpers;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Extensions;
@@ -44,8 +43,6 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
             return Unauthorized();
         }
 
-        var loginData = account.GetLoginData(userInfo, iWConfig, config, rConfig);
-
-        return Ok(JsonConvert.SerializeObject(loginData));
+        return Ok(account.GetLoginData(userInfo, iWConfig, config, rConfig));
     }
 }

@@ -4,7 +4,6 @@ using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
-using Server.Base.Logging;
 using Server.Base.Timers.Helpers;
 using Server.Base.Worlds;
 using System.Globalization;

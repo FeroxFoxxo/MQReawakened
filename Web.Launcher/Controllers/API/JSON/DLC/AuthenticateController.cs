@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
@@ -38,8 +37,6 @@ public class AuthenticateController(AccountHandler accHandler, UserInfoHandler u
 
         temporaryDataStorage.AddData(sId, account.Write);
 
-        var loginData = account.GetLoginData(userInfo, iWConfig, config, rConfig);
-
-        return Ok(JsonConvert.SerializeObject(loginData));
+        return Ok(account.GetLoginData(userInfo, iWConfig, config, rConfig));
     }
 }

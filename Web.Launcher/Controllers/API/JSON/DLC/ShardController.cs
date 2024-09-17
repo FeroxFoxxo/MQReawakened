@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using LitJson;
+using Microsoft.AspNetCore.Mvc;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
@@ -33,18 +32,18 @@ public class ShardController(AccountHandler accHandler, UserInfoHandler userInfo
 
         temporaryDataStorage.AddData(sId, account.Write);
 
-        var json = new JObject
-        {
-            { "status", true },
-            {
-                "sharder", new JObject
+        return Ok(
+            JsonMapper.ToJson(
+                new JsonData
                 {
-                    { "unity.login.sid", sId },
-                    { "unity.login.host", config.GetHostName() }
+                    ["status"] = true,
+                    ["sharder"] = new JsonData
+                    {
+                        ["unity.login.sid"] = sId,
+                        ["unity.login.host"] = config.GetHostName()
+                    }
                 }
-            }
-        };
-
-        return Ok(JsonConvert.SerializeObject(json));
+            )
+        );
     }
 }

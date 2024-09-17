@@ -1,63 +1,57 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using LitJson;
 using Server.Base.Core.Configs;
 using Server.Base.Database.Accounts;
-using Server.Reawakened.Core.Services;
 using Server.Reawakened.Database.Users;
 using Web.Launcher.Models;
 
 namespace Web.Launcher.Extensions;
 public static class LoginData
 {
-    public static JObject GetLoginData(this AccountModel account, UserInfoModel userInfo,
+    public static string GetLoginData(this AccountModel account, UserInfoModel userInfo,
         InternalRwConfig iWConfig, LauncherRwConfig config, LauncherRConfig rConfig) =>
-        new()
-        {
-            { "status", true },
+        JsonMapper.ToJson(
+            new JsonData()
             {
-                "analytics", new JObject
+                ["status"] = true,
+
+                ["analytics"] = new JsonData
                 {
-                    { "id", rConfig.AnalyticsId.ToString() },
-                    { "trackingShortId", userInfo.TrackingShortId },
-                    { "enabled", rConfig.AnalyticsEnabled },
-                    { "firstLoginToday", (DateTime.UtcNow - account.LastLogin).TotalDays >= 1 },
-                    { "baseUrl", $"{iWConfig.GetHostAddress()}/Analytics" },
-                    { "apiKey", config.AnalyticsApiKey },
-                    { "firstTimeLogin", account.Created == account.LastLogin ? "true" : "false" },
-                }
-            },
-            {
-                "additional", new JObject
+                    ["id"] = rConfig.AnalyticsId.ToString(),
+                    ["trackingShortId"] = userInfo.TrackingShortId,
+                    ["enabled"] = rConfig.AnalyticsEnabled,
+                    ["firstLoginToday"] = (DateTime.UtcNow - account.LastLogin).TotalDays >= 1,
+                    ["baseUrl"] = $"{iWConfig.GetHostAddress()}/Analytics",
+                    ["apiKey"] = config.AnalyticsApiKey,
+                    ["firstTimeLogin"] = account.Created == account.LastLogin ? "true" : "false"
+                },
+
+                ["additional"] = new JsonData
                 {
-                    { "signupExperience", userInfo.SignUpExperience },
-                    { "region", userInfo.Region },
-                }
-            },
-            {
-                "user", new JObject
+                    ["signupExperience"] = userInfo.SignUpExperience,
+                    ["region"] = userInfo.Region
+                },
+
+                ["user"] = new JsonData
                 {
+                    ["local"] = new JsonData
                     {
-                        "local", new JObject
-                        {
-                            { "uuid", account.Id.ToString() },
-                            { "username", account.Username },
-                            { "createdTime", ((DateTimeOffset)account.Created).ToUnixTimeSeconds() },
-                        }
+                        ["uuid"] = account.Id.ToString(),
+                        ["username"] = account.Username,
+                        ["createdTime"] = ((DateTimeOffset)account.Created).ToUnixTimeSeconds()
                     },
+
+                    ["sso"] = new JsonData
                     {
-                        "sso", new JObject
-                        {
-                            { "authToken", userInfo.AuthToken },
-                            { "gender", Enum.GetName(userInfo.Gender) },
-                            { "dob", userInfo.DateOfBirth },
-                        }
+                        ["authToken"] = userInfo.AuthToken,
+                        ["gender"] = Enum.GetName(userInfo.Gender),
+                        ["dob"] = userInfo.DateOfBirth.ToString()
                     },
+
+                    ["premium"] = new JsonData
                     {
-                        "premium", new JObject
-                        {
-                            { "membership", userInfo.Member },
-                        }
+                        ["membership"] = userInfo.Member
                     }
                 }
             }
-        };
+        );
 }
