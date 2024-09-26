@@ -312,9 +312,9 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Equip the Super Megaforce Green Ranger Pants" type="Unknown" value="" goal="1" visible="true" />
-                <Condition id="2" title="Equip the Super Megaforce Green Ranger Armour" type="Unknown" value="" goal="1" visible="true" />
-                <Condition id="3" title="Equip the Super Megaforce Green Ranger Mask" type="Unknown" value="" goal="1" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Green Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger02_LS02" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Green Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger02_TS02" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Green Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger02_FH02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="38" title="Super Megaforce Pink Power Ranger!" description="Equip the Super Megaforce Pink Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_PinkRanger_SuperMegaforce_Outfit" points="15" sortOrder="22" repeatable="false">
