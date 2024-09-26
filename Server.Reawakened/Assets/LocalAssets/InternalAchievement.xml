@@ -195,7 +195,7 @@
             <Conditions>
                 <Condition id="1" title="Collect 500,000 Bananas" type="CollectBanana" goal="500000" visible="true" />
             </Conditions>
-        </Achievement>boo"
+        </Achievement>
         <Achievement id="25" title="BANANA MILLIONAIRE!" description="Collect 1,000,000 Bananas" iconName="Collecting_Bananas_1mil" points="500" sortOrder="9" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="500" quantity="0" />
