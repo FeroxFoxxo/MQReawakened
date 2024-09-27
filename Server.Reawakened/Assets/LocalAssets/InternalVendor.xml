@@ -880,6 +880,15 @@
             <Item prefabName="Col_POT_ExperiencePotion01" />
             <Item prefabName="Add_OUT_FortuneHunter01_LS01" />
         </Vendor>
+        <Vendor objectId="2513" name="Kooz" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Traveler" dialogId="791" greetingConversationId="2220" leavingConversationId="2219">
+            <Item prefabName="COL_FOOD_Coconut01" />
+            <Item prefabName="Col_POT_BananaPotion01" />
+            <Item prefabName="COL_POT_Healing02" />
+            <Item prefabName="COL_POT_Healing03" />
+            <Item prefabName="Add_OUT_WaterBandit01_TS02" />
+            <Item prefabName="Col_POT_ExperiencePotion01" />
+            <Item prefabName="Add_OUT_FortuneHunter01_LS01" />
+        </Vendor>
     </Level>
     <Level name="Plunder Alley" id="274">
         <Vendor objectId="639" name="Cutlass" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Weapons" dialogId="1309" greetingConversationId="3307" leavingConversationId="3306">

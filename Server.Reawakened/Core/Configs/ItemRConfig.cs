@@ -128,7 +128,7 @@ public class ItemRConfig : IRConfig
             { 48, ["ABIL_GrapplingHook01", "Add_SHD_ChimFoo01_S01", "WPN_PRJ_Shuriken01"] }, // lv_shd_highway01
             { 54, ["ABIL_Glider01", "Add_OUT_SeaDragon01_S01", "WPN_MEL_FireSword01"] }, // lv_out_highway01
             { 46, ["ABIL_MysticCharm01", "Add_BON_OotuMystic01_S01", "WPN_PRJ_PoisonousFlower01"] }, // lv_bon_highway01
-            { 498, ["ABIL_SnowBoard02", "Add_WLD_IceRaider01_TS01", "WPN_MEL_IceRaiderAxe01"] }, // lv_wld_highway01
+            { 498, ["ABIL_SnowBoard02", "Add_WLD_IceRaider02_S01", "WPN_MEL_IceRaiderAxe01"] }, // lv_wld_highway01
         };
 
         PetPressButtonDelay = 0.5f;

@@ -217,7 +217,7 @@
         <!--Guardian Cadet Armor-->
         <RecipeInfo recipeName="COL_RECIP_KNI_GuardKnight01_TS01">
             <Item itemName="COL_ING_G_Oak01" count="4" />
-            <Item itemName="COL_ING_G_Oak03" count="3" />
+            <Item itemName="COL_ING_G_GuardianFragment01" count="3" />
         </RecipeInfo>
         <!--Dread Plate Helmet-->
         <RecipeInfo recipeName="COL_RECIP_COM_DreadPlate01_S01">
