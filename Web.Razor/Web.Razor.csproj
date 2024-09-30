@@ -30,6 +30,7 @@
         <PackageReference Include="RazorLight" Version="2.3.1" />
         <ProjectReference Include="..\Server.Reawakened\Server.Reawakened.csproj" />
         <ProjectReference Include="..\Server.Web\Server.Web.csproj" />
+        <ProjectReference Include="..\Web.Launcher\Web.Launcher.csproj" />
     </ItemGroup>
 
     <ItemGroup>
