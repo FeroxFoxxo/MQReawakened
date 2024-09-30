@@ -214,12 +214,12 @@
                 <Condition id="3" title="Equip Zombie Pants" type="EquipItem" value="Add_EVT_Zombie01_LS01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="27" title="Boo" description="Unknown Description. Hint: the icon is named Equip_Boo!" iconName="Equip_Boo" points="1" sortOrder="11" repeatable="false">
+        <Achievement id="27" title="Boo" description="Equip a Boo Pet" iconName="Equip_Boo" points="50" sortOrder="11" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="125" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="EquipItem" value="" goal="1" visible="true" />
+                <Condition id="1" title="Equip a Boo Pet" type="Unknown" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="28" title="Oh Deer!" description="Equip the 'Reindeer' Outfit (2013 Holiday Event Items)" iconName="Equip_Reindeer" points="10" sortOrder="12" repeatable="false">
@@ -232,9 +232,9 @@
                 <Condition id="3" title="Equip Reindeer Pants" type="EquipItem" value="Add_EVT_Reindeer02_LS01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="29" title="Pirate Amulet" description="Equip Amulet of Booty" iconName="Equip_PirateAmulet" points="1" sortOrder="13" repeatable="false">
+        <Achievement id="29" title="Pirate Amulet" description="Equip Amulet of Booty" iconName="Equip_PirateAmulet" points="5" sortOrder="13" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip Amulet of Booty" type="EquipItem" value="WPN_PRJ_PirateAmulet01" goal="1" visible="true" />
@@ -263,18 +263,35 @@
         </Achievement>
         <Achievement id="32" title="Egg-o-Maniac" description="Open 100 Pet Eggs" iconName="Collecting_Egg_o_Maniac_100" points="100" sortOrder="16" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_PET_NC_EnergyCharge02" quantity="30" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Open 100 Pet Eggs" type="OpenPetEgg" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="33" title="Unknown Achievement 33" description="Unknown Description. Hint: the icon is named Collecting_All_SuperMegaforce_Outfit!" iconName="Collecting_All_SuperMegaforce_Outfit" points="1" sortOrder="17" repeatable="false">
+        <Achievement id="33" title="Complete Megaforce" description="Equip all 6 Super Megaforce Outfits (2014 Power Ranger Event Items)" iconName="Collecting_All_SuperMegaforce_Outfit" points="100" sortOrder="17" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="500" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Blue Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_LS03" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Blue Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS03" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Blue Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_FH03" goal="1" visible="true" />
+                <Condition id="4" title="Equip the Super Megaforce Yellow Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_FH04" goal="1" visible="true" />
+                <Condition id="5" title="Equip the Super Megaforce Yellow Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS04" goal="1" visible="true" />
+                <Condition id="6" title="Equip the Super Megaforce Yellow Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_LS04" goal="1" visible="true" />
+                <Condition id="7" title="Equip the Super Megaforce Red Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_LS01" goal="1" visible="true" />
+                <Condition id="8" title="Equip the Super Megaforce Red Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS01" goal="1" visible="true" />
+                <Condition id="9" title="Equip the Super Megaforce Red Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_FH01" goal="1" visible="true" />
+                <Condition id="10" title="Equip the Super Megaforce Green Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_LS02" goal="1" visible="true" />
+                <Condition id="11" title="Equip the Super Megaforce Green Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS02" goal="1" visible="true" />
+                <Condition id="12" title="Equip the Super Megaforce Green Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_FH02" goal="1" visible="true" />
+                <Condition id="13" title="Equip the Super Megaforce Pink Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_LS05" goal="1" visible="true" />
+                <Condition id="14" title="Equip the Super Megaforce Pink Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS05" goal="1" visible="true" />
+                <Condition id="15" title="Equip the Super Megaforce Pink Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_FH05" goal="1" visible="true" />
+                <Condition id="16" title="Equip the Super Megaforce Silver Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_LS06" goal="1" visible="true" />
+                <Condition id="17" title="Equip the Super Megaforce Silver Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS06" goal="1" visible="true" />
+                <Condition id="18" title="Equip the Super Megaforce Silver Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_FH06" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="34" title="Super Megaforce Blue Power Ranger!" description="Equip the Super Megaforce Blue Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_BlueRanger_SuperMegaforce_Outfit" points="15" sortOrder="18" repeatable="false">
@@ -282,9 +299,9 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Equip the Super Megaforce Blue Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger02_LS03" goal="1" visible="true" />
-                <Condition id="2" title="Equip the Super Megaforce Blue Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger02_TS03" goal="1" visible="true" />
-                <Condition id="3" title="Equip the Super Megaforce Blue Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger02_FH03" goal="1" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Blue Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_LS03" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Blue Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS03" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Blue Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_FH03" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="35" title="Super Megaforce Yellow Power Ranger!" description="Equip the Super Megaforce Yellow Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_YellowRanger_SuperMegaforce_Outfit" points="15" sortOrder="19" repeatable="false">
@@ -292,9 +309,9 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Equip the Super Megaforce Yellow Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger02_FH04" goal="1" visible="true" />
-                <Condition id="2" title="Equip the Super Megaforce Yellow Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger02_TS04" goal="1" visible="true" />
-                <Condition id="3" title="Equip the Super Megaforce Yellow Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger02_LS04" goal="1" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Yellow Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_FH04" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Yellow Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS04" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Yellow Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_LS04" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="36" title="Super Megaforce Red Power Ranger!" description="Equip the Super Megaforce Red Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_RedRanger_SuperMegaforce_Outfit" points="15" sortOrder="20" repeatable="false">
@@ -302,9 +319,9 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Equip the Super Megaforce Red Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger02_LS01" goal="1" visible="true" />
-                <Condition id="2" title="Equip the Super Megaforce Red Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger02_TS01" goal="1" visible="true" />
-                <Condition id="3" title="Equip the Super Megaforce Red Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger02_FH01" goal="1" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Red Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_LS01" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Red Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS01" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Red Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_FH01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="37" title="Super Megaforce Green Power Ranger!" description="Equip the Super Megaforce Green Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_GreenRanger_SuperMegaforce_Outfit" points="15" sortOrder="21" repeatable="false">
@@ -312,9 +329,9 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Equip the Super Megaforce Green Ranger Pants" type="EquipItem" value="" goal="1" visible="true" />
-                <Condition id="2" title="Equip the Super Megaforce Green Ranger Armour" type="EquipItem" value="" goal="1" visible="true" />
-                <Condition id="3" title="Equip the Super Megaforce Green Ranger Mask" type="EquipItem" value="" goal="1" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Green Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_LS02" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Green Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS02" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Green Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_FH02" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="38" title="Super Megaforce Pink Power Ranger!" description="Equip the Super Megaforce Pink Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_PinkRanger_SuperMegaforce_Outfit" points="15" sortOrder="22" repeatable="false">
@@ -322,9 +339,9 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Equip the Super Megaforce Pink Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger02_LS05" goal="1" visible="true" />
-                <Condition id="2" title="Equip the Super Megaforce Pink Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger02_TS05" goal="1" visible="true" />
-                <Condition id="3" title="Equip the Super Megaforce Pink Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger02_FH05" goal="1" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Pink Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_LS05" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Pink Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS05" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Pink Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_FH05" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="39" title="Super Megaforce Silver Power Ranger!" description="Equip the Super Megaforce Silver Ranger Suit (2014 Power Ranger Event Items)" iconName="Collecting_SilverRanger_SuperMegaforce_Outfit" points="50" sortOrder="23" repeatable="false">
@@ -332,9 +349,9 @@
                 <Reward type="Xp" value="200" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Equip the Super Megaforce Silver Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger02_LS02" goal="1" visible="true" />
-                <Condition id="2" title="Equip the Super Megaforce Silver Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger02_TS02" goal="1" visible="true" />
-                <Condition id="3" title="Equip the Super Megaforce Silver Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger02_FH02" goal="1" visible="true" />
+                <Condition id="1" title="Equip the Super Megaforce Silver Ranger Pants" type="EquipItem" value="Add_EVT_PowerRanger03_LS06" goal="1" visible="true" />
+                <Condition id="2" title="Equip the Super Megaforce Silver Ranger Armour" type="EquipItem" value="Add_EVT_PowerRanger03_TS06" goal="1" visible="true" />
+                <Condition id="3" title="Equip the Super Megaforce Silver Ranger Mask" type="EquipItem" value="Add_EVT_PowerRanger03_FH06" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="40" title="Patty Whacker" description="Craft the Spatula (2014 SpongeBob Event Item)" iconName="Collecting_SpongeBob_Spatula" points="10" sortOrder="24" repeatable="false">
@@ -353,12 +370,12 @@
                 <Condition id="1" title="Craft the Bubble Blower" type="CraftItem" value="WPN_PRJ_SpongeBob_Bubble01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="42" title="Unknown Achievement 42" description="Unknown Description. Hint: the icon is named Collecting_SpongeBob_Karate_Outfit!" iconName="Collecting_SpongeBob_Karate_Outfit" points="1" sortOrder="26" repeatable="false">
+        <Achievement id="42" title="SpongeBob Karate" description="Equip SpongeBob's Karate Outfit (2014 SpongeBob Event)" iconName="Collecting_SpongeBob_Karate_Outfit" points="25" sortOrder="26" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="125" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="EquipItem" value="" goal="2" visible="true" />
+                <Condition id="1" title="Equip SpongeBob's Karate Outfit (2014 SpongeBob Event)" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="43" title="Turtle Time" description="Equip all 4 TMNT Turtle Outfits (2014 TMNT Event Items)" iconName="Collecting_TMNT_TurtleTime" points="25" sortOrder="27" repeatable="false">
@@ -423,24 +440,24 @@
                 <Condition id="1" title="Obtain 10 Pets" type="BuyPet" value="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="49" title="Gravewing" description="Equip a Gravewing Pet" iconName="Pet_Gravewing" points="1" sortOrder="33" repeatable="false">
+        <Achievement id="49" title="Gravewing" description="Equip a Gravewing Pet" iconName="Pet_Gravewing" points="50" sortOrder="33" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="125" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip a Gravewing Pet" type="EquipItem" value="PF_PET_Rig01_Skull01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="50" title="Pumpkin" description="Equip a Jax Pet" iconName="Pet_Pumpkin" points="1" sortOrder="34" repeatable="false">
+        <Achievement id="50" title="Pumpkin" description="Equip a Jax Pet" iconName="Pet_Pumpkin" points="50" sortOrder="34" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Xp" value="125" quantity="0" />
             </Rewards>
             <Conditions>
                 <Condition id="1" title="Equip a Jax Pet" type="EquipItem" value="PF_PET_Rig03_Pumpkin01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <!--Custom Name & Rewards-->
-        <Achievement id="51" title="What are these for?" description="Collect 5 Idols" iconName="Collecting_Idol_5" points="10" sortOrder="35" repeatable="false">
+        <Achievement id="51" title="Idols?" description="Collect 5 Idols" iconName="Collecting_Idol_5" points="10" sortOrder="35" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="25" quantity="0" />
             </Rewards>
@@ -458,7 +475,7 @@
             </Conditions>
         </Achievement>
         <!--Custom Name & Rewards-->
-        <Achievement id="53" title="They're everywhere!" description="Collect 25 Idols" iconName="Collecting_Idol_25" points="10" sortOrder="37" repeatable="false">
+        <Achievement id="53" title="Idol Compass" description="Collect 25 Idols" iconName="Collecting_Idol_25" points="10" sortOrder="37" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
@@ -485,7 +502,7 @@
             </Conditions>
         </Achievement>
         <!--Custom Name & Rewards-->
-        <Achievement id="56" title="Closing in on the Secret" description="Collect 200 Idols" iconName="Collecting_Idol_200" points="10" sortOrder="40" repeatable="false">
+        <Achievement id="56" title="Idol Expert" description="Collect 200 Idols" iconName="Collecting_Idol_200" points="10" sortOrder="40" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="260" quantity="0" />
             </Rewards>
@@ -857,7 +874,7 @@
                 <Condition id="1" title="Defeat Your First Enemy" type="DefeatEnemy" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="99" title="Smasher" description="Defeat 10 Enemies" iconName="Combat_Enemies_10" points="5" sortOrder="2" repeatable="false">
+        <Achievement id="99" title="Shadow Smasher" description="Defeat 10 Enemies" iconName="Combat_Enemies_10" points="5" sortOrder="2" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="15" quantity="0" />
             </Rewards>
@@ -873,7 +890,7 @@
                 <Condition id="1" title="Defeat 25 Enemies" type="DefeatEnemy" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="101" title="Defeater" description="Defeat 50 Enemies" iconName="Combat_Enemies_50" points="10" sortOrder="4" repeatable="false">
+        <Achievement id="101" title="Shadow Defeater" description="Defeat 50 Enemies" iconName="Combat_Enemies_50" points="10" sortOrder="4" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="25" quantity="0" />
             </Rewards>
@@ -889,7 +906,7 @@
                 <Condition id="1" title="Defeat 100 Enemies" type="DefeatEnemy" value="" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="103" title="Crusher" description="Defeat 250 Enemies" iconName="Combat_Enemies_250" points="75" sortOrder="6" repeatable="false">
+        <Achievement id="103" title="Shadow Crusher" description="Defeat 250 Enemies" iconName="Combat_Enemies_250" points="75" sortOrder="6" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="75" quantity="0" />
             </Rewards>
@@ -897,7 +914,7 @@
                 <Condition id="1" title="Defeat 250 Enemies" type="DefeatEnemy" value="" goal="250" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="104" title="Vanquisher" description="Defeat 500 Enemies" iconName="Combat_Enemies_500" points="150" sortOrder="7" repeatable="false">
+        <Achievement id="104" title="Shadow Vanquisher" description="Defeat 500 Enemies" iconName="Combat_Enemies_500" points="150" sortOrder="7" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="85" quantity="0" />
             </Rewards>
@@ -913,7 +930,7 @@
                 <Condition id="1" title="Defeat 1000 Enemies" type="DefeatEnemy" value="" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="106" title="Annihilator" description="Defeat 2500 Enemies" iconName="Combat_Enemies_2500" points="350" sortOrder="9" repeatable="false">
+        <Achievement id="106" title="Shadow Annihilator" description="Defeat 2500 Enemies" iconName="Combat_Enemies_2500" points="350" sortOrder="9" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="250" quantity="0" />
             </Rewards>
@@ -921,7 +938,7 @@
                 <Condition id="1" title="Defeat 2500 Enemies" type="DefeatEnemy" value="" goal="2500" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="107" title="Conqueror" description="Defeat 5000 Enemies" iconName="Combat_Enemies_5000" points="500" sortOrder="10" repeatable="false">
+        <Achievement id="107" title="Shadow Conqueror" description="Defeat 5000 Enemies" iconName="Combat_Enemies_5000" points="500" sortOrder="10" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="500" quantity="0" />
             </Rewards>
@@ -1745,12 +1762,12 @@
                 <Condition id="1" title="Defeat 1,000 Spinefish" type="DefeatEnemy" value="Spinefish" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="206" title="Unknown Achievement 206" description="Unknown Description. Hint: the icon is named Combat_zombiebat!" iconName="Combat_zombiebat" points="1" sortOrder="109" repeatable="false">
+        <Achievement id="206" title="Zombie Bat" description="Defeat a Zombie bat" iconName="Combat_zombiebat" points="10" sortOrder="109" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat a Zombie bat" type="Unknown" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="207" title="Spiderling Smasher" description="Defeat 3 Spiderlings" iconName="Combat_Smasher_Spiderling_3" points="3" sortOrder="110" repeatable="false">
@@ -1761,20 +1778,20 @@
                 <Condition id="1" title="Defeat 3 Spiderlings" type="DefeatEnemy" value="" goal="3" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="208" title="Unknown Achievement 208" description="Unknown Description. Hint: the icon is named Combat_TMNT_Shredder_3!" iconName="Combat_TMNT_Shredder_3" points="1" sortOrder="111" repeatable="false">
+        <Achievement id="208" title="Shredder" description="Defeat Shredder 3 times (2014 TMNT Event)" iconName="Combat_TMNT_Shredder_3" points="25" sortOrder="111" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat Shredder 3 times (2014 TMNT Event)" type="Unknown" value="" goal="3" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="209" title="Unknown Achievement 209" description="Unknown Description. Hint: the icon is named Combat_TMNT_FootClan_300!" iconName="Combat_TMNT_FootClan_300" points="1" sortOrder="112" repeatable="false">
+        <Achievement id="209" title="FootClan" description="Defeat 300 Footbots (2014 TMNT Event)" iconName="Combat_TMNT_FootClan_300" points="150" sortOrder="112" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Bananas" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Defeat 300 Footbots (2014 TMNT Event)" type="Unknown" value="" goal="300" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="210" title="No No Robo" description="Defeat 300 Mini Robo-Plankton Enemies (2014 SpongeBob Event)" iconName="Combat_SpongeBob_MiniRoboPlankton_300" points="50" sortOrder="113" repeatable="false">
@@ -2747,15 +2764,15 @@
                 <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete the Nest Raider Quest 1 Time" type="CompleteQuest" value="" goal="1" visible="true" />
+                <Condition id="1" title="Complete the Nest Raider Quest 1 Time" type="" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="333" title="Unknown Achievement 333 (Nest Raiders)" description="Complete the Nest Raider Quest 5 Time (2014 Easter Event)" iconName="Questing_RaidNests_5" points="10" sortOrder="11" repeatable="false">
+        <Achievement id="333" title="Nest Raiders 5" description="Complete the Nest Raider Quest 5 Time (2014 Easter Event)" iconName="Questing_RaidNests_5" points="10" sortOrder="11" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="50" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete the Nest Raider Quest 5 Time" type="CompleteQuest" value="" goal="1" visible="true" />
+                <Condition id="1" title="Complete the Nest Raider Quest 5 Time" type="" value="" goal="5" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="334" title="Repeat Raider" description="Complete the Nest Raider Quest 10 Times (2014 Easter Event)" iconName="Questing_RaidNests_10" points="15" sortOrder="12" repeatable="false">
@@ -2763,7 +2780,7 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete the Nest Raider Quest 10 Times" type="CompleteQuest" goal="10" visible="true" />
+                <Condition id="1" title="Complete the Nest Raider Quest 10 Times" type="" goal="10" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="335" title="Rockin’ Raider!" description="Complete the Nest Raider Quest 25 Times (2014 Easter Event)" iconName="Questing_RaidNests_25" points="25" sortOrder="13" repeatable="false">
@@ -2771,15 +2788,15 @@
                 <Reward type="Item" value="Add_COM_Falcon01_S01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete the Nest Raider Quest 25 Times" type="CompleteQuest" value="" goal="25" visible="true" />
+                <Condition id="1" title="Complete the Nest Raider Quest 25 Times" type="" value="" goal="25" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="336" title="Unknown Achievement 336 (Nest Raiders)" description="Complete the Nest Raider Quest 50 Times (2014 Easter Event)" iconName="Questing_RaidNests_50" points="50" sortOrder="14" repeatable="false">
+        <Achievement id="336" title="Nest Raiders 50" description="Complete the Nest Raider Quest 50 Times (2014 Easter Event)" iconName="Questing_RaidNests_50" points="50" sortOrder="14" repeatable="false">
             <Rewards>
                 <Reward type="Xp" value="300" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete the Nest Raider Quest 50 Time" type="CompleteQuest" value="" goal="50" visible="true" />
+                <Condition id="1" title="Complete the Nest Raider Quest 50 Time" type="" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
         <!--All questing medals are custom-->
@@ -3495,12 +3512,12 @@
                 <Condition id="1" title="Complete Quest Troll Battle Daily" type="CompleteQuest" value="DAY_IR_D1_01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="426" title="Unknown Achievement 426" description="Unknown Description. Hint: the icon is named Questing_SpongeBob!" iconName="Questing_SpongeBob" points="20" sortOrder="104" repeatable="false">
+        <Achievement id="426" title="SpongeBob's Quest" description="Complete SpongeBob's Quest (2014 SpongeBob Event)" iconName="Questing_SpongeBob" points="20" sortOrder="104" repeatable="false">
             <Rewards>
                 <Reward type="Bananas" value="100" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="" type="CompleteQuest" value="" goal="1" visible="true" />
+                <Condition id="1" title="Complete SpongeBob's Quest (2014 SpongeBob Event)" type="Unknown" value="" goal="1" visible="true" />
             </Conditions>
         </Achievement>
     </Category>
@@ -3529,12 +3546,13 @@
                 <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="430" title="Unknown Achievement 430" description="Unknown Description. Hint: the icon is named Games_HoopAny_CTS_Easy!" iconName="Games_HoopAny_CTS_Easy" points="1" sortOrder="4" repeatable="false">
+        <!--Custom-->
+        <Achievement id="430" title="Hooper!" description="Light up 100 Hoops in Clock Tower Square" iconName="Games_HoopAny_CTS_Easy" points="5" sortOrder="4" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_POT_ExperiencePotion01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Light up 100 Hoops in Clock Tower Square" type="HoopInLevel" value="lv_crs_townsquare01" goal="100" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="431" title="Hooper Star!" description="Light up 1,000 Hoops in Clock Tower Square" iconName="Games_HoopAny_CTS_Medium" points="25" sortOrder="5" repeatable="false">
@@ -3553,12 +3571,13 @@
                 <Condition id="1" title="Light up 10,000 Hoops in Clock Tower Square" type="HoopInLevel" value="lv_crs_townsquare01" goal="10000" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="433" title="Unknown Achievement 433" description="Unknown Description. Hint: the icon is named Games_HoopGroup_CTS_Easy!" iconName="Games_HoopGroup_CTS_Easy" points="1" sortOrder="7" repeatable="false">
+        <!--Custom-->
+        <Achievement id="433" title="Grouper!" description="Complete 1 ‘Hoop Group’ in Clock Tower Square" iconName="Games_HoopGroup_CTS_Easy" points="25" sortOrder="7" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_POT_ExperiencePotion01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete 1 ‘Hoop Group’ in Clock Tower Square" type="HoopGroupInLevel" value="lv_crs_townsquare01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="434" title="Grouper Star!" description="Complete 100 ‘Hoop Groups’ in Clock Tower Square" iconName="Games_HoopGroup_CTS_Medium" points="50" sortOrder="8" repeatable="false">
@@ -3569,12 +3588,13 @@
                 <Condition id="1" title="Complete 100 ‘Hoop Groups’ in Clock Tower Square" type="HoopGroupInLevel" value="lv_crs_townsquare01" goal="100" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="435" title="Unknown Achievement 435" description="Unknown Description. Hint: the icon is named Games_HoopGroup_CTS_Hard!" iconName="Games_HoopGroup_CTS_Hard" points="1" sortOrder="9" repeatable="false">
+        <!--Custom-->
+        <Achievement id="435" title="Grouper Duper Star!" description="Complete 1000 ‘Hoop Groups’ in Clock Tower Square" iconName="Games_HoopGroup_CTS_Hard" points="100" sortOrder="9" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <Reward type="Item" value="COL_POT_BananaPotion01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="2" visible="true" />
+                <Condition id="1" title="Complete 1000 ‘Hoop Groups’ in Clock Tower Square" type="Unknown" value="lv_crs_townsquare01" goal="1000" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="436" title="Unknown Achievement 436" description="Unknown Description. Hint: the icon is named Games_MonkeyRun_1Star!" iconName="Games_MonkeyRun_1Star" points="1" sortOrder="10" repeatable="false">
@@ -4014,7 +4034,7 @@
                 <Reward type="Xp" value="75" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Complete 25 'Flower Groups' in SpongeBob's Park (2014 Event)" type="Invalid" goal="25" visible="true" />
+                <Condition id="1" title="Complete 25 'Flower Groups' in SpongeBob's Park (2014 Event)" type="Unknown" goal="25" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="16" title="Feeling Festive" description="Light up the Holiday Tree 50 Times (2013 Holiday Event)" iconName="Daily_HolidayTree" points="25" sortOrder="65" repeatable="false">
@@ -4022,7 +4042,7 @@
                 <Reward type="Item" value="Add_EVT_Holiday01_T01" quantity="1" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Light up the Holiday Tree 50 Times" type="Invalid" value="" goal="50" visible="true" />
+                <Condition id="1" title="Light up the Holiday Tree 50 Times" type="Unknown" value="" goal="50" visible="true" />
             </Conditions>
         </Achievement>
     </Category>
@@ -4236,7 +4256,7 @@
                 <Reward type="Xp" value="10" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Meet Sigthor" type="Talkto" value="NPC_CRS_GenericMaleBrown01" goal="1" visible="true" />
+                <Condition id="1" title="Meet Sigthor" type="Talkto" value="16768" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="515" title="Way Of The Foo" description="Meet Grand Master Whisper" iconName="Social_NPC_WayOfTheFoo" points="5" sortOrder="25" repeatable="false">
@@ -4572,12 +4592,13 @@
                 <Condition id="4" title="Equip Rachnok Helmet" type="EquipItem" value="Add_COM_Spider01_S01" goal="1" visible="true" />
             </Conditions>
         </Achievement>
-        <Achievement id="555" title="SpongeBob Partier" description="Unknown Description. Hint: the icon is named Fun_Participate_SpongeBob_Tier1!" iconName="Fun_Participate_SpongeBob_Tier1" points="1" sortOrder="29" repeatable="false">
+        <Achievement id="555" title="SpongeBob Partier" description="Participate in 1 SpongeBob Party (2014 SpongeBob Event)" iconName="Fun_Participate_SpongeBob_Tier1" points="1" sortOrder="29" repeatable="false">
             <Rewards>
-                <Reward type="Bananas" value="1" quantity="0" />
+                <!--Custom Rewards-->
+                <Reward type="Xp" value="20" quantity="0" /> 
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Unknown Condition" type="Unknown" value="" goal="1" visible="true" />
+                <Condition id="1" title="Participate in 1 SpongeBob Party (2014 SpongeBob Event)" type="Invalid" goal="1" visible="true" />
             </Conditions>
         </Achievement>
         <Achievement id="556" title="Super SpongeBob Partier!" description="Participate in 25 SpongeBob Parties (2014 SpongeBob Event)" iconName="Fun_Participate_SpongeBob_Tier2" points="50" sortOrder="30" repeatable="false">
@@ -4585,7 +4606,7 @@
                 <Reward type="Xp" value="200" quantity="0" />
             </Rewards>
             <Conditions>
-                <Condition id="1" title="Participate in 25 SpongeBob Parties" type="Invalid" goal="25" visible="true" />
+                <Condition id="1" title="Participate in 25 SpongeBob Parties (2014 SpongeBob Event)" type="Invalid" goal="25" visible="true" />
             </Conditions>
         </Achievement>
     </Category>
