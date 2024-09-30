@@ -258,7 +258,7 @@ public class NetState : IDisposable
                     {
                         Task.Run(() => RunPacket(packet));
                     }
-                });
+                };
 
                 lock (AsyncLock)
                 {
