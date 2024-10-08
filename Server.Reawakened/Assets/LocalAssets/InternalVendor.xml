@@ -1150,7 +1150,6 @@
             <Item prefabName="COL_RECIP_COM_HoopEarrings02_E02" />
         </Vendor>
         <Vendor objectId="550" name="Guanyu" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="BlackSmith" dialogId="1211" greetingConversationId="3368" leavingConversationId="3367">
-            <!--Custom inventory-->
             <Item prefabName="COL_RECIP_ABIL_SmokeBomb01" />
             <Item prefabName="COL_RECIP_BUFF_Bandage03" />
             <Item prefabName="COL_RECIP_BUFF_Bandage04" />
