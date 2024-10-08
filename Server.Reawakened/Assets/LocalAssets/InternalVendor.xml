@@ -1136,16 +1136,10 @@
         </Vendor>
         <Vendor objectId="534" name="Mantila" descriptionId="0" numberOfIdolsToAccessBackStore="0" idolLevelId="0" vendorType="Cloth" dialogId="779" greetingConversationId="2148" leavingConversationId="2147">
             <Item prefabName="COL_RECIP_COM_DragonFish01_LS02" />
-            <Item prefabName="COL_RECIP_SHD_Assassin01_LS02" />
-            <Item prefabName="COL_RECIP_SHD_Samurai01_TS02" />
-            <Item prefabName="COL_RECIP_SHD_Snake01_LS02" />
-            <Item prefabName="COL_RECIP_SHD_Snake01_S02" />
             <Item prefabName="COL_RECIP_COM_Burglar01_UF02" />
-            <Item prefabName="COL_RECIP_SHD_Snake01_TS02" />
             <Item prefabName="COL_ING_C_WeakThread01" />
             <Item prefabName="COL_ING_C_MediumThread01" />
             <Item prefabName="COL_ING_C_StrongThread01" />
-            <Item prefabName="COL_RECIP_SHD_Shinto01_T03" />
             <Item prefabName="COL_RECIP_COM_Indonesian01_S02" />
             <Item prefabName="COL_RECIP_COM_Indonesian01_TS02" />
             <Item prefabName="COL_RECIP_COM_Indonesian01_LS02" />
