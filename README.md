@@ -26,7 +26,7 @@
 
 ### Information
 
-MQReawakened is a community-driven server emulator meant for **non-commercial, educational use only**. It is intended to show how games like these are created through reverse engineering and how they work, and thus is not, and should never be, commercialised in any way. It is fundamentally transformative from the original client, as it handles the inverse of requests and only shares similar data models. Users **must provide** the original game's code, assets, executables etc themselves.
+**Disclaimer:** MQReawakened is a server emulator for MQ, developed completely from scratch in C#. This project is entirely independent and not affiliated with, sponsored, or authorized by any entities associated with the original game amd contains no assets or intellectual property from the original game. Users must supply their own copy of the original game's code, assets, executables, etc.
 
 Please email me at feroxfoxxo@gmail.com if anything is in breach, which will be rectified ASAP.
 
