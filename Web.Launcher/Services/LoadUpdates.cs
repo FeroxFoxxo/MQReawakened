@@ -6,17 +6,26 @@ using Web.Launcher.Models;
 namespace Web.Launcher.Services;
 public class LoadUpdates(EventSink eventSink, LauncherRConfig rConfig) : IService
 {
-    public Dictionary<string, string> ClientFiles = [];
-    public Dictionary<string, string> LauncherFiles = [];
+    public Dictionary<string, string> WinClientFiles = [];
+    public Dictionary<string, string> WinLauncherFiles = [];
+
+    public Dictionary<string, string> OSXClientFiles = [];
+    public Dictionary<string, string> OSXLauncherFiles = [];
 
     public void Initialize() => eventSink.ServerStarted += LoadClients;
 
     private void LoadClients(ServerStartedEventArgs _)
     {
-        ClientFiles = Directory.GetFiles(rConfig.GameFolder, "*.zip", SearchOption.AllDirectories)
+        WinClientFiles = Directory.GetFiles(rConfig.WinGameFolder, "*.zip", SearchOption.AllDirectories)
             .ToDictionary(Path.GetFileNameWithoutExtension, x => x);
 
-        LauncherFiles = Directory.GetFiles(rConfig.LauncherFolder, "*.zip", SearchOption.AllDirectories)
+        WinLauncherFiles = Directory.GetFiles(rConfig.WinLauncherFolder, "*.zip", SearchOption.AllDirectories)
+            .ToDictionary(Path.GetFileNameWithoutExtension, x => x);
+
+        OSXClientFiles = Directory.GetFiles(rConfig.OSXGameFolder, "*.zip", SearchOption.AllDirectories)
+            .ToDictionary(Path.GetFileNameWithoutExtension, x => x);
+
+        OSXLauncherFiles = Directory.GetFiles(rConfig.OSXLauncherFolder, "*.zip", SearchOption.AllDirectories)
             .ToDictionary(Path.GetFileNameWithoutExtension, x => x);
     }
 }

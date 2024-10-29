@@ -29,8 +29,11 @@ public class LauncherRConfig : IRConfig
     public bool Fullscreen { get; }
     public bool OnGameClosePopup { get; }
 
-    public string GameFolder { get; }
-    public string LauncherFolder { get; }
+    public string WinGameFolder { get; }
+    public string WinLauncherFolder { get; }
+
+    public string OSXGameFolder { get; }
+    public string OSXLauncherFolder { get; }
 
     public LauncherRConfig()
     {
@@ -68,7 +71,10 @@ public class LauncherRConfig : IRConfig
         Fullscreen = false;
         OnGameClosePopup = false;
 
-        GameFolder = InternalDirectory.GetDirectory("Game");
-        LauncherFolder = InternalDirectory.GetDirectory("Launcher");
+        WinGameFolder = InternalDirectory.GetDirectory("Game/Win");
+        WinLauncherFolder = InternalDirectory.GetDirectory("Launcher/Win");
+
+        OSXGameFolder = InternalDirectory.GetDirectory("Game/OSX");
+        OSXLauncherFolder = InternalDirectory.GetDirectory("Launcher/OSX");
     }
 }

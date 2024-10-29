@@ -1,15 +1,20 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
+using Server.Reawakened.Chat.Commands.Quest;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Entities.Components.GameObjects.Global;
 using Server.Reawakened.Entities.Components.GameObjects.NPC;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
+using Server.Reawakened.Players.Models.Misc;
+using Server.Reawakened.Rooms;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
+using static A2m.Server.QuestStatus;
 
 namespace Protocols.External._n__NpcHandler;
 
@@ -31,8 +36,43 @@ public class ChooseQuestReward : ExternalProtocol
         var questId = int.Parse(message[6]);
         var itemId = int.Parse(message[7]);
         var questRewardId = int.Parse(message[8]);
+        QuestLineDescription questline = null;
 
         Player.SendXt("nq", questId);
+
+        foreach (var npc in Player.Room.GetEntitiesFromId<NPCControllerComp>(message[5]))
+        {
+            foreach (var gotQuest in npc.ValidatorQuests)
+            {
+                var matchingQuest = Player.Character.QuestLog.FirstOrDefault(q => q.Id == questId);
+
+                if (matchingQuest == null || Player.Character.CompletedQuests.Contains(questId))
+                    continue;
+
+                if (matchingQuest.QuestStatus != QuestState.TO_BE_VALIDATED)
+                    continue;
+
+                questline = QuestCatalog.GetQuestLineData(gotQuest.QuestLineId);
+            }
+            break;
+        }
+
+        var completedQuest = Player.Character.QuestLog.FirstOrDefault(x => x.Id == questId);
+
+        if (completedQuest != null)
+        {
+            Player.Character.QuestLog.Remove(completedQuest);
+
+            if (questline.QuestType == QuestType.Daily)
+                Player.Character.CurrentQuestDailies.TryAdd(completedQuest.Id.ToString(), new DailiesModel()
+                {
+                    GameObjectId = completedQuest.Id.ToString(),
+                    LevelId = Player.Room.LevelInfo.LevelId,
+                    TimeOfHarvest = DateTime.Now
+                });
+            else
+                Player.Character.CompletedQuests.Add(completedQuest.Id);
+        }
 
         if (itemId > 0)
         {
@@ -50,8 +90,6 @@ public class ChooseQuestReward : ExternalProtocol
 
             if (newQuest != null)
                 Player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {npcId}", Logger);
-
-            Player.UpdateAllNpcsInLevel();
         }
 
         var quest = QuestCatalog.QuestCatalogs[questId];
@@ -69,9 +107,11 @@ public class ChooseQuestReward : ExternalProtocol
         Player.AddBananas(quest.BananaReward, InternalAchievement, Logger);
         Player.AddReputation(quest.ReputationReward, Config);
 
+        Player.UpdateAllNpcsInLevel();
+
         foreach (var item in quest.RewardItems)
             Player.AddItem(item.Key, item.Value, ItemCatalog);
 
-        Player.SendUpdatedInventory();
+        Player.SendUpdatedInventory(true);
     }
 }
