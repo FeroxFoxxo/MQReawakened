@@ -15,8 +15,4 @@ services:
       - /docker/fail2ban:/config
       - /var/log:/var/log:ro
       - /docker/proxy/data/logs:/remotelogs/nginx:ro
-      - /docker/jellyseerr/logs:/remotelogs/overseerr:ro
-      - /docker/prowlarr/logs:/remotelogs/prowlarr:ro
-      - /docker/radarr/logs:/remotelogs/radarr:ro
-      - /docker/sonarr/logs:/remotelogs/sonarr:ro
     restart: unless-stopped
