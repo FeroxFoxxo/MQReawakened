@@ -52,7 +52,8 @@ public class RoomUpdate : ExternalProtocol
         if (Player.TempData.FirstLogin)
         {
             // Tribe selection reminder protocol
-            if (Player.Character.Allegiance == TribeType.Invalid)
+            if (Player.Character.Allegiance == TribeType.Invalid
+                && Player.Character.CompletedQuests.Contains(939))
                 SendXt("dt");
 
             MQRSlashCommands.DisplayHelp(Player);
