@@ -67,7 +67,7 @@ public class CharacterLightModel(CharacterDbEntry entry, GameVersion version)
         sb.Append((int)InteractionStatus);
         sb.Append((int)Allegiance);
 
-        if (Version >= GameVersion.v2014)
+        if (Version >= GameVersion.vEarly2014)
             sb.Append(ForceTribeSelection ? 1 : 0);
 
         return sb.ToString();

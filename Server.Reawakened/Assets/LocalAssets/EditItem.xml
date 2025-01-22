@@ -2,7 +2,11 @@
 <EditedItems>
     <!-- If you don't know what date an item was edited, please add it to Early 2013 -->
     <!-- Changes affect all preceeding versions, so there is no need to copy paste the same edits for later versions -->
-    <GameVersion version="v2014">
+    <GameVersion version="vLate2014">
+    </GameVersion>
+    <GameVersion version="vPetMasters2014">
+    </GameVersion>
+    <GameVersion version="vEarly2014">
         <Item name="Add_COM_Armor01_LS01">
             <EditAttribute key="currency" value="NickCash"/>
             <EditAttribute key="price" value="1"/>

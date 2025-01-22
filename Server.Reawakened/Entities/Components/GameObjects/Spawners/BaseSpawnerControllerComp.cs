@@ -177,6 +177,9 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
         {
             var position = new UnityEngine.Vector3(Position.X, Position.Y, Position.Z);
 
+            if (Room == null)
+                return;
+
             if (Room.IsPlayerNearby(position, _activeDetectionRadius) && LinkedEnemies.Count < 1 && _nextSpawnRequestTime <= 0)
                 Spawn();
 

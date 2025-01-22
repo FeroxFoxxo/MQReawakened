@@ -92,7 +92,9 @@ public static class PlayerExtensions
         player.SetCharacterSelected(character);
         player.PlayerContainer.AddPlayer(player);
         player.SendCharacterInfoDataTo(player, CharacterInfoType.Detailed, levelInfo);
-        player.SendXt("de", eventPrefabs.EventInfo.ToString());
+
+        if (eventPrefabs.EventInfo != null)
+            player.SendXt("de", eventPrefabs.EventInfo.ToString());
 
         foreach (var friend in player.PlayerContainer.GetPlayersByFriend(player.CharacterId)
                      .Where(p =>
