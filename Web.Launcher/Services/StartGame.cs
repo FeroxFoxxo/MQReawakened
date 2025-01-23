@@ -108,7 +108,7 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
         sConfig.LastClientUpdate = lastUpdate.ToUnixTimestamp();
 
         sConfig.GameVersion = GameVersion.Unknown;
-        sConfig.CutOffFor2014 = DateTime.ParseExact(lRConfig.ClientUpdates[GameVersion.v2014], lRConfig.TimeFilter, CultureInfo.InvariantCulture).ToUnixTimestamp();
+        sConfig.CutOffFor2014 = DateTime.ParseExact(lRConfig.ClientUpdates[GameVersion.vEarly2014], lRConfig.TimeFilter, CultureInfo.InvariantCulture).ToUnixTimestamp();
 
         foreach (var updateDate in lRConfig.ClientUpdates
             .ToDictionary(x => x.Key, x => DateTime.ParseExact(x.Value, lRConfig.TimeFilter, CultureInfo.InvariantCulture))
@@ -253,7 +253,7 @@ public class StartGame(EventSink sink, ILogger<StartGame> logger, ServerConsole 
         { $"{header}.unity.url.crisp.host", $"{address}/Chat/" },
         { "asset.log", lRConfig.LogAssets ? "true" : "false" },
         { "asset.disableversioning", lRConfig.DisableVersions ? "true" : "false" },
-        { "asset.jboss", $"{address}/Apps{(sConfig.GameVersion >= GameVersion.v2014 ? "/" : string.Empty)}" },
+        { "asset.jboss", $"{address}/Apps{(sConfig.GameVersion >= GameVersion.vEarly2014 ? "/" : string.Empty)}" },
         { "asset.bundle", $"{address}/Client/Bundles" },
         { "asset.audio", $"{address}/Client/Audio" },
         { "logout.url", $"{address}/Logout" },

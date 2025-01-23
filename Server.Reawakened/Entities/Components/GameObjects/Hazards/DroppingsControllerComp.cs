@@ -41,8 +41,8 @@ public class DroppingsControllerComp : Component<DroppingsController>
 
         var speed = new Vector2
         {
-            x = -5,
-            y = 3
+            x = 0,
+            y = -3
         };
 
         var damage = 0;

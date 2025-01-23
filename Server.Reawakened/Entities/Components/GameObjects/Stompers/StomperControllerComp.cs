@@ -47,6 +47,9 @@ public class StomperControllerComp : BaseMovingObjectControllerComp<StomperContr
 
     public override void Update()
     {
+        if (Room == null)
+            return;
+
         base.Update();
 
         var movement = (Stomper_Movement)Movement;

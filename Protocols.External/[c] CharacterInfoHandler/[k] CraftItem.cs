@@ -36,7 +36,7 @@ public class CraftItem : ExternalProtocol
             return;
         }
 
-        var amount = ServerRConfig.GameVersion >= GameVersion.v2014
+        var amount = ServerRConfig.GameVersion >= GameVersion.vEarly2014
             ? int.Parse(message[6])
             : message[6].Equals("true", StringComparison.CurrentCultureIgnoreCase) // should craft all
                 ? recipe.Ingredients.Min(ing => Player.Character.TryGetItem(ing.ItemId, out var pItem) ? 0 : pItem.Count / ing.Count)

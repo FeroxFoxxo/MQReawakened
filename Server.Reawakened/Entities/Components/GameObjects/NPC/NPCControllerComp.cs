@@ -84,7 +84,7 @@ public class NPCControllerComp : Component<NPCController>
                 .Where(x => x.ValidatorLevelId == Room.LevelInfo.LevelId)
         ];
 
-        GiverQuests = Config.GameVersion >= GameVersion.v2014
+        GiverQuests = Config.GameVersion >= GameVersion.vEarly2014
             ? ([..
                 QuestCatalog.GetQuestGiverById(int.Parse(Id))
                 .Where(x => x.QuestGiverLevelId == Room.LevelInfo.LevelId)
@@ -436,7 +436,7 @@ public class NPCControllerComp : Component<NPCController>
 
         var canStartQuest = false;
 
-        if (Config.GameVersion >= GameVersion.v2014)
+        if (Config.GameVersion >= GameVersion.vEarly2014)
         {
             canStartQuest = previousQuests.Count == 0;
 
@@ -471,7 +471,7 @@ public class NPCControllerComp : Component<NPCController>
         }
         else
         {
-            if (Config.GameVersion < GameVersion.v2014)
+            if (Config.GameVersion < GameVersion.vEarly2014)
                 previousQuests = [.. previousQuests, .. requiredQuests];
 
             Logger.LogTrace(
@@ -609,7 +609,7 @@ public class NPCControllerComp : Component<NPCController>
         if (!player.Character.CurrentQuestDailies.ContainsKey(dailyObjectId) ||
             player.Character.CurrentQuestDailies.TryGetValue(dailyObjectId, out var dailyObject) &&
             dailyObject.GameObjectId == dailyObjectId && dailyObject.LevelId == player.Room.LevelInfo.LevelId &&
-            DateTime.Now >= dailyObject.TimeOfHarvest + TimeSpan.FromDays(1))
+            DateTime.Now.Date > dailyObject.TimeOfHarvest.Date)
         {
             player.Character.CurrentQuestDailies.Remove(dailyObjectId);
             return true;

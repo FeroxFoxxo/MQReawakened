@@ -65,7 +65,9 @@ public class LauncherRConfig : IRConfig
             { GameVersion.vLate2012, "2012-10-01_12-00-00" },
             { GameVersion.vEarly2013, "2013-01-01_12-00-00" },
             { GameVersion.vLate2013, "2013-04-01_12-00-00" },
-            { GameVersion.v2014, "2013-11-22_12-00-00" }
+            { GameVersion.vEarly2014, "2013-11-22_12-00-00" },
+            { GameVersion.vPetMasters2014, "2014-05-01_12-00-00" },
+            { GameVersion.vLate2014, "2014-06-01_12-00-00" }
         };
 
         Fullscreen = false;

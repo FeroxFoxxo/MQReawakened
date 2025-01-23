@@ -50,6 +50,9 @@ public class BreakableEventControllerComp : Component<BreakableEventController>,
         var box = new Rect(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
         var position = new Vector3(Position.X, Position.Y, Position.Z);
 
+        if (ObjStatus == null)
+            return;
+
         Room.AddCollider(new BreakableCollider(Id, position, box, ParentPlane, Room, ObjStatus.EnemyTarget));
     }
 
