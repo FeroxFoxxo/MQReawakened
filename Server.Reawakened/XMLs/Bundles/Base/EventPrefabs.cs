@@ -73,6 +73,7 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                     case "yaDkoO_4102_TVE":
                     case "uneMgnippohS_4102_TVE":
                     case "slooFlirpA_4102_TVE":
+                    case "10snogarDaeS_3102_TVE":
                         parent.RemoveChild(events);
                         break;
                     default:
@@ -118,6 +119,7 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
                     case "30_3102boBegnopS_3102_TVE":
                     case "40_3102boBegnopS_3102_TVE":
                     case "50_3102boBegnopS_3102_TVE":
+                    case "10snogarDaeS_3102_TVE":
                         parent.RemoveChild(events);
                         break;
                     default:
