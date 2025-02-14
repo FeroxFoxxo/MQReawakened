@@ -23,7 +23,7 @@ public class FinishedMinigame : ExternalProtocol
     public override void Run(string[] message)
     {
         var arenaObjectId = message[5];
-        var finishedRaceTime = float.Parse(message[6]);
+        var finishedRaceTime = float.Parse(message[6]) * 1000;
 
         Logger.LogInformation("Minigame with ID ({minigameId}) has completed.", arenaObjectId);
 
