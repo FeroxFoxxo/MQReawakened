@@ -14,15 +14,19 @@ public class CannedChat : ExternalProtocol
     public ILogger<CannedChat> Logger { get; set; }
     public ServerRConfig Config { get; set; }
     public CannedChatDictionary CannedChatDict { get; set; }
+    public ItemCatalog ItemCatalog { get; set; }
 
     public override void Run(string[] message)
     {
-        var channelType = (CannedChatChannel)int.Parse(message[5]);
+        var channelType = int.Parse(message[5]);
         var chatPhraseId = int.Parse(message[6]);
-        _ = message[7]; // recipientName
+        var secondaryPhraseId = int.Parse(message[7]); // named 'specifics' in the client protocol/xml
+        var itemId = int.Parse(message[8]);
 
-        var chatPhrase = CannedChatDict.GetDialogById(chatPhraseId);
+        var secondaryPhrase = CannedChatDict.GetDialogById(secondaryPhraseId);
+        var itemName = ItemCatalog.GetItemFromId(itemId).ItemName;
 
-        Player.Room.Chat(channelType, Player.CharacterName, chatPhrase);
+        Player.SendXt("ap", channelType, Player.CharacterName, chatPhraseId, 
+            string.IsNullOrEmpty(secondaryPhrase) ? 0 : secondaryPhraseId, string.IsNullOrEmpty(itemName) ? 0 : itemId);
     }
 }

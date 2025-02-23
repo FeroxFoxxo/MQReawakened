@@ -33,7 +33,7 @@ public class CannedChatDictionary : CannedChatXML, ILocalizationXml
 
         foreach (XmlNode phraseRoot in xmlDoc.ChildNodes)
         {
-            if (!(phraseRoot.Name == "_cannedChatDict"))
+            if (!(phraseRoot.Name == "CannedChatDict"))
                 continue;
 
             foreach (XmlNode phrase in phraseRoot.ChildNodes)
