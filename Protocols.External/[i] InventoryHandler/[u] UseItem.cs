@@ -83,8 +83,6 @@ public class UseItem : ExternalProtocol
 
     private void HandleBomb(ItemDescription usedItem, Vector3 position, int direction)
     {
-        Player.CheckAchievement(AchConditionType.Bomb, [usedItem.PrefabName], InternalAchievement, Logger);
-
         Player.HandleDrop(ItemRConfig, TimerThread, Logger, usedItem, position, direction);
 
         var removeFromHotbar = true;
@@ -96,20 +94,12 @@ public class UseItem : ExternalProtocol
 
         if (removeFromHotbar)
             RemoveFromHotbar(Player.Character, usedItem);
+
+        Player.CheckAchievement(AchConditionType.Bomb, [usedItem.PrefabName], InternalAchievement, Logger);
     }
 
     private void HandleConsumable(ItemDescription usedItem)
     {
-        switch (usedItem.ItemActionType)
-        {
-            case ItemActionType.Eat:
-                Player.CheckAchievement(AchConditionType.Consumable, [usedItem.PrefabName], InternalAchievement, Logger);
-                break;
-            case ItemActionType.Drink:
-                Player.CheckAchievement(AchConditionType.Drink, [usedItem.PrefabName], InternalAchievement, Logger);
-                break;
-        }
-
         Player.HandleItemEffect(usedItem, TimerThread, ItemRConfig, ServerRConfig, Logger);
 
         var removeFromHotbar = true;
@@ -121,6 +111,16 @@ public class UseItem : ExternalProtocol
 
         if (removeFromHotbar)
             RemoveFromHotbar(Player.Character, usedItem);
+
+        switch (usedItem.ItemActionType)
+        {
+            case ItemActionType.Eat:
+                Player.CheckAchievement(AchConditionType.Consumable, [usedItem.PrefabName], InternalAchievement, Logger);
+                break;
+            case ItemActionType.Drink:
+                Player.CheckAchievement(AchConditionType.Drink, [usedItem.PrefabName], InternalAchievement, Logger);
+                break;
+        }
     }
 
     private void HandleRecipe(ItemDescription usedItem)

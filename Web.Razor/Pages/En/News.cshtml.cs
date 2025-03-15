@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Server.Base.Core.Configs;
-using Web.Launcher.Models;
 
 namespace Web.Razor.Pages.En;
 
-public class NewsModel(InternalRwConfig iConfig, LauncherRConfig conifg) : PageModel
+public class NewsModel(InternalRwConfig iConfig) : PageModel
 {
-    public string News => conifg.News;
+    public string News => $"You expected there to be news here? It's {DateTime.Now.Year}!";
 
     public void OnGet() => ViewData["ServerName"] = iConfig.ServerName;
 }

@@ -121,6 +121,8 @@ public class UseSlot : ExternalProtocol
 
         if (removeFromHotBar)
         {
+            Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog, ItemRConfig);
+
             switch (usedItem.ItemActionType)
             {
                 case ItemActionType.Eat:
@@ -130,8 +132,6 @@ public class UseSlot : ExternalProtocol
                     Player.CheckAchievement(AchConditionType.Drink, [usedItem.PrefabName], InternalAchievement, Logger);
                     break;
             }
-
-            Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog, ItemRConfig);
         }
     }
 

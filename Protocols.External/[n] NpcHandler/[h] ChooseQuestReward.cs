@@ -101,9 +101,6 @@ public class ChooseQuestReward : ExternalProtocol
             questGiver.StartNewQuest(Player);
         }
 
-        Player.CheckAchievement(AchConditionType.CompleteQuest, [quest.Name], InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
-        Player.CheckAchievement(AchConditionType.CompleteQuestInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger); // Quest by Level/Trail if any exist
-
         Player.AddBananas(quest.BananaReward, InternalAchievement, Logger);
         Player.AddReputation(quest.ReputationReward, Config);
 
@@ -112,6 +109,9 @@ public class ChooseQuestReward : ExternalProtocol
         foreach (var item in quest.RewardItems)
             Player.AddItem(item.Key, item.Value, ItemCatalog);
 
-        Player.SendUpdatedInventory(true);
+        Player.SendUpdatedInventory();
+
+        Player.CheckAchievement(AchConditionType.CompleteQuest, [quest.Name], InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
+        Player.CheckAchievement(AchConditionType.CompleteQuestInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger); // Quest by Level/Trail if any exist
     }
 }

@@ -35,16 +35,14 @@ public class BuyItems : ExternalProtocol
 
         foreach (var item in items)
         {
-            if (string.IsNullOrEmpty(item)) continue;
+            if (string.IsNullOrEmpty(item)) 
+                continue;
 
             var args = item.Split(":");
             var itemId = int.Parse(args[0]);
             var amount = int.Parse(args[1]);
 
             var itemDescription = ItemCatalog.GetItemFromId(itemId);
-
-            Player.CheckAchievement(AchConditionType.BuyItem, [itemDescription.PrefabName], InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.BuyPet, [itemDescription.PrefabName], InternalAchievement, Logger);
 
             price += itemDescription.RegularPrice * amount;
             bought.Add(new(itemDescription, amount));
@@ -60,6 +58,8 @@ public class BuyItems : ExternalProtocol
         {
             Player.RemoveNCash(item.Item1.RegularPrice * item.Item2);
             Player.AddItem(item.Item1, item.Item2, ItemCatalog);
+
+            Player.CheckAchievement(AchConditionType.BuyItem, [item.Item1.PrefabName], InternalAchievement, Logger);
         }
 
         Player.SendCashUpdate();

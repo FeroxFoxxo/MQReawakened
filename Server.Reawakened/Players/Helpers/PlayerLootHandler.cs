@@ -131,7 +131,7 @@ public static class PlayerLootHandler
         if (finalItemId > 0)
             player.AddItem(itemCatalog.GetItemFromId(finalItemId), 1, itemCatalog);
 
-        player.SendUpdatedInventory(false);
+        player.SendUpdatedInventory();
     }
 
     private static void SendLootWheel(Player player, string itemsLooted, string lootableItems, string gameObjectId)

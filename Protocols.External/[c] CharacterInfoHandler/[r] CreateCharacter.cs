@@ -22,6 +22,8 @@ public class CreateCharacter : ExternalProtocol
     public WorldGraph WorldGraph { get; set; }
     public WorldHandler WorldHandler { get; set; }
     public EventPrefabs EventPrefabs { get; set; }
+    public WorldStatistics WorldStatistics { get; set; }
+    public QuestCatalog QuestCatalog { get; set; }
 
     public override void Run(string[] message)
     {
@@ -65,6 +67,8 @@ public class CreateCharacter : ExternalProtocol
         }
         else
         {
+            characterEntry.MaxLife = WorldStatistics.GetValue(ItemEffectType.IncreaseHitPoints, WorldStatisticsGroup.Player, 1);
+            characterEntry.CurrentLife = characterEntry.MaxLife;
             characterEntry.Allegiance = tribe;
             characterEntry.CharacterName = string.Join(string.Empty, names);
             characterEntry.UserUuid = Player.UserId;
