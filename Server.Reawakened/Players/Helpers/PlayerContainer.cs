@@ -65,4 +65,10 @@ public class PlayerContainer
         lock (Lock)
             return _playerList.ToList().Find(p => p.CharacterName == characterName);
     }
+
+    public Player GetPlayerByAccountId(int accountId)
+    {
+        lock (Lock)
+            return _playerList.ToList().Find(p => p.Account.Id == accountId);
+    }
 }
