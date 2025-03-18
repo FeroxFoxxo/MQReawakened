@@ -23,10 +23,21 @@ public class CannedChat : ExternalProtocol
         var secondaryPhraseId = int.Parse(message[7]); // named 'specifics' in the client protocol/xml
         var itemId = int.Parse(message[8]);
 
-        var secondaryPhrase = CannedChatDict.GetDialogById(secondaryPhraseId);
-        var itemName = ItemCatalog.GetItemFromId(itemId).ItemName;
+        var phrase = CannedChatDict.GetDialogById(chatPhraseId);
+        var secondaryPhrase = string.Empty;
+        var item = string.Empty;
 
-        Player.SendXt("ap", channelType, Player.CharacterName, chatPhraseId, 
-            string.IsNullOrEmpty(secondaryPhrase) ? 0 : secondaryPhraseId, string.IsNullOrEmpty(itemName) ? 0 : itemId);
+        if (string.IsNullOrEmpty(CannedChatDict.GetDialogById(secondaryPhraseId)))
+            secondaryPhraseId = 0;
+        else
+            secondaryPhrase = CannedChatDict.GetDialogById(secondaryPhraseId);
+
+        if (ItemCatalog.GetItemFromId(itemId) == null)
+            itemId = 0;
+        else
+            item = ItemCatalog.GetItemFromId(itemId).ItemName;
+
+        Player.Room.Chat((CannedChatChannel)channelType, Player.CharacterName, phrase +
+            (secondaryPhraseId == 0 ? "" : secondaryPhrase) + (itemId == 0 ? "" : item));
     }
 }
