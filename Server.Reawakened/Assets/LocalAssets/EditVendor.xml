@@ -1,8 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <EditedVendors>
     <GameVersion version="vLate2014">
+        <Vendor name="CashShop_Clothes">
+            <Item name="Add_COM_Armor01_LS01"/>
+            <Item name="Add_COM_Armor01_TS01"/>
+            <Item name="Add_COM_Armor01_S01"/>
+        </Vendor>
     </GameVersion>
     <GameVersion version="vPetMasters2014">
+        <Vendor name="CashShop_Clothes">
+            <Item name="Add_COM_Armor01_LS01"/>
+            <Item name="Add_COM_Armor01_TS01"/>
+            <Item name="Add_COM_Armor01_S01"/>
+        </Vendor>
     </GameVersion>
     <GameVersion version="vEarly2014">
         <Vendor name="CashShop_Clothes">

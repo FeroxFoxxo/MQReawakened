@@ -1,16 +1,13 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Base.Logging;
-using Server.Reawakened.Chat.Commands.Quest;
 using Server.Reawakened.Core.Configs;
-using Server.Reawakened.Entities.Components.GameObjects.Global;
 using Server.Reawakened.Entities.Components.GameObjects.NPC;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Misc;
-using Server.Reawakened.Rooms;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Achievements;
@@ -95,6 +92,11 @@ public class ChooseQuestReward : ExternalProtocol
         var quest = QuestCatalog.QuestCatalogs[questId];
         var questLine = QuestCatalog.GetQuestLineData(quest.QuestLineId);
 
+        //Required early so player never misses out on items
+        foreach (var item in quest.RewardItems)
+            Player.AddItem(item.Key, item.Value, ItemCatalog);
+        Player.SendUpdatedInventory();
+
         if (questLine.QuestType == QuestType.Main)
         {
             var questGiver = Player.Room.GetEntityFromId<NPCControllerComp>(npcId.ToString());
@@ -105,11 +107,6 @@ public class ChooseQuestReward : ExternalProtocol
         Player.AddReputation(quest.ReputationReward, Config);
 
         Player.UpdateAllNpcsInLevel();
-
-        foreach (var item in quest.RewardItems)
-            Player.AddItem(item.Key, item.Value, ItemCatalog);
-
-        Player.SendUpdatedInventory();
 
         Player.CheckAchievement(AchConditionType.CompleteQuest, [quest.Name], InternalAchievement, Logger); // Specific Quest by name for example EVT_SB_1_01
         Player.CheckAchievement(AchConditionType.CompleteQuestInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger); // Quest by Level/Trail if any exist

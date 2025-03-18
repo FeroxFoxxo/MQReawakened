@@ -11,7 +11,6 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
-using Server.Reawakened.Players.Models.Misc;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
@@ -541,7 +540,8 @@ public class NPCControllerComp : Component<NPCController>
         foreach (var givenQuest in GiverQuests)
             if (GetQuestType(player, givenQuest.Id) == NPCStatus.QuestAvailable)
             {
-                var quest = player.AddQuest(givenQuest, QuestItems, ItemCatalog, FileLogger, NpcName, Logger);
+                var isDaily = QuestCatalog.GetQuestLineData(givenQuest.QuestLineId).QuestType == QuestType.Daily;
+                var quest = player.AddQuest(givenQuest, QuestItems, ItemCatalog, FileLogger, NpcName, Logger, true, isDaily);
 
                 SendNpcDialog(player, quest, QuestState.NOT_START);
 
