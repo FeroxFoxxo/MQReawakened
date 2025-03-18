@@ -134,10 +134,10 @@ public static class PlayerExtensions
     {
         collectedBananas *= (float)(1 + player.Character.StatusEffects.Get(ItemEffectType.BananaMultiplier) * 0.01);
 
-        player.CheckAchievement(AchConditionType.CollectBanana, [], internalAchievement, logger, (int)Math.Floor(collectedBananas));
-
         player.Character.Write.Cash += collectedBananas;
         player.SendCashUpdate();
+
+        player.CheckAchievement(AchConditionType.CollectBanana, [], internalAchievement, logger, (int)Math.Floor(collectedBananas));
     }
 
     public static void RemoveBananas(this Player player, int collectedBananas)

@@ -31,14 +31,14 @@ public class JoinGroup : ExternalProtocol
 
         if (accepted)
         {
-            leaderPlayer.CheckAchievement(AchConditionType.JoinGroup, [], InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.JoinGroup, [], InternalAchievement, Logger);
-
             leaderPlayer.TempData.Group.AddPlayer(Player);
             Player.TempData.Group = leaderPlayer.TempData.Group;
 
             foreach (var member in Player.TempData.Group.GetMembers())
                 member.SendXt("pj", Player.TempData.Group, joinerName);
+
+            leaderPlayer.CheckAchievement(AchConditionType.JoinGroup, [], InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.JoinGroup, [], InternalAchievement, Logger);
         }
         else
         {

@@ -88,7 +88,7 @@ public class CharacterDbEntry : PersistantData
     // Character Model
     public Dictionary<int, List<int>> CollectedIdols { get; set; }
     public List<EmailHeaderModel> Emails { get; set; }
-    public List<EmailMessageModel> EmailMessages { get; set; }
+    public Dictionary<int, EmailMessageModel> EmailMessages { get; set; }
     public List<int> Events { get; set; }
     public Dictionary<int, Dictionary<string, int>> AchievementObjectives { get; set; }
     public Dictionary<string, float> BestMinigameTimes { get; set; }

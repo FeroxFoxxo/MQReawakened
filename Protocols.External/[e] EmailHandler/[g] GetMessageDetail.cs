@@ -14,13 +14,14 @@ public class GetMessageDetail : ExternalProtocol
     {
         var messageId = int.Parse(message[5]);
 
-        if (messageId >= 0 && messageId <= Player.Character.EmailMessages.Count)
+        if (Player.Character.EmailMessages.Count > 0)
         {
-            var mail = Player.Character.EmailMessages[messageId];
+            var mail = Player.Character.EmailMessages[0];
+
+            mail.EmailHeaderModel.MessageId = messageId;
 
             Player.SendXt("eg", messageId, mail.ToString());
         }
-
         else
             Logger.LogError("Invalid messageId: {messageId}", messageId);
     }

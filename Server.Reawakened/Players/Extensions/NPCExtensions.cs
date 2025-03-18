@@ -18,14 +18,14 @@ namespace Server.Reawakened.Players.Extensions;
 public static class NpcExtensions
 {
     public static QuestStatusModel AddQuest(this Player player, QuestDescription quest, InternalQuestItem questItem,
-        ItemCatalog itemCatalog, FileLogger fileLogger, string identifier, Microsoft.Extensions.Logging.ILogger logger, bool setActive = true)
+        ItemCatalog itemCatalog, FileLogger fileLogger, string identifier, Microsoft.Extensions.Logging.ILogger logger, bool setActive = true, bool daily = false)
     {
         var questTest = player.Character.QuestLog.FirstOrDefault(q => q.Id == quest.Id);
 
         if (questTest != null)
             return questTest;
 
-        if (player.Character.CompletedQuests.Contains(quest.Id))
+        if (player.Character.CompletedQuests.Contains(quest.Id) && !daily)
             return null;
 
         if (setActive)

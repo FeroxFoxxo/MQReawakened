@@ -1,0 +1,134 @@
+﻿@page "/patchnotes"
+@model ReleaseNotesModel
+@{
+	ViewData["Title"] = "Patch Notes";
+
+	// Get the version from the query string (e.g., ?version=1.2.0)
+	string selectedVersion = Request.Query["version"];
+	int selectedIndex = 0; // Default to the first version
+
+	// Find the index of the selected version
+	if (!string.IsNullOrEmpty(selectedVersion))
+	{
+		var matchingNote = Model.ReleaseNotes.FirstOrDefault(n => n.Version == selectedVersion);
+		if (matchingNote != null)
+		{
+			selectedIndex = Model.ReleaseNotes.IndexOf(matchingNote);
+		}
+	}
+}
+
+<style>
+	ul {
+		list-style-type: disc;
+		padding-left: 20px;
+	}
+
+	li {
+		margin-bottom: 10px;
+	}
+
+	select {
+		font-size: 16px;
+		background-color: #333 !important;
+		color: white;
+		border-color: #3E4C00 !important;
+		border-radius: 20px;
+		padding: 10px 20px;
+	}
+
+		select option {
+			background-color: #333;
+			color: white;
+		}
+
+		select:hover {
+			opacity: 0.8
+		}
+
+	.release-notes {
+		display: none; /* Hide all release notes by default */
+	}
+</style>
+
+<div class="container mt-4">
+	<div class="card custom-home-card shadow-lg">
+		<div class="card-body">
+			<div class="text-center">
+				<p class="display-4"><span class="game-title">@ViewData["ServerName"] Patch Notes</span></p>
+				<p class="lead">
+					Welcome to the patch notes for <span class="game-title">@ViewData["ServerName"]</span>!
+					<br />
+					Select a version from the dropdown below to view its changes.
+				</p>
+				<br />
+				<!-- Dynamic Dropdown -->
+				<select id="versionDropdown" onchange="updateUrlWithVersion()">
+					@for (int i = 0; i < Model.ReleaseNotes.Count; i++)
+					{
+						var note = Model.ReleaseNotes[i];
+						<option value="@note.Version" selected="@(i == selectedIndex ? "selected" : null)">@(i == 0 ? "v" + note.Version + " (Latest)" : "v" + note.Version)</option>
+					}
+				</select>
+			</div>
+			<br />
+			<!-- Dynamic Release Notes Sections -->
+			<div class="form-container">
+				@for (int i = 0; i < Model.ReleaseNotes.Count; i++)
+				{
+					var note = Model.ReleaseNotes[i];
+					<div id="@($"releaseNotes{i}")" class="release-notes" style="display: @(i == selectedIndex ? "block" : "none");">
+						<div class="text-center">
+							<h3 class="card-title">
+								<span class="game-title">
+									Version @note.Version @(string.IsNullOrEmpty(note.Title) ? string.Empty : " - " + note.Title)
+								</span>
+							</h3>
+							<p class="card-text">
+								Release Date: @note.ReleaseDate
+							</p>
+						</div>
+						<br />
+						@foreach (var item in note.Notes)
+							@Html.Raw(item)
+
+					</div>
+				}
+			</div>
+		</div>
+		<script>
+			// Function to update the URL with the selected version
+			function updateUrlWithVersion() {
+				// Get the selected version from the dropdown
+				const selectedVersion = document.getElementById('versionDropdown').value;
+
+				// Update the URL with the selected version
+				const newUrl = `${window.location.pathname}?version=${selectedVersion}`;
+				window.history.pushState({}, '', newUrl);
+
+				// Show the selected release notes
+				showReleaseNotes();
+			}
+
+			// Function to show the selected release notes
+			function showReleaseNotes() {
+				// Hide all release notes sections
+				document.querySelectorAll('.release-notes').forEach(section => {
+					section.style.display = 'none';
+				});
+
+				// Get the selected version from the dropdown
+				const selectedVersion = document.getElementById('versionDropdown').value;
+
+				// Find the index of the selected version
+				const selectedIndex = Array.from(document.getElementById('versionDropdown').options).findIndex(option => option.value === selectedVersion);
+
+				// Show the selected release notes section
+				const selectedSection = document.getElementById(`releaseNotes${selectedIndex}`);
+				if (selectedSection) {
+					selectedSection.style.display = 'block';
+				}
+			}
+		</script>
+	</div>
+</div>

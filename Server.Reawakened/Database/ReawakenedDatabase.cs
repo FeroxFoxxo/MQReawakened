@@ -44,7 +44,7 @@ public class ReawakenedDatabase(DbContextOptions<ReawakenedDatabase> options) : 
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Reports).HasConversion(new CustomConverter<Dictionary<string, ReportModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.CollectedIdols).HasConversion(new CustomConverter<Dictionary<int, List<int>>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Emails).HasConversion(new CustomConverter<List<EmailHeaderModel>>());
-        modelBuilder.Entity<CharacterDbEntry>().Property(e => e.EmailMessages).HasConversion(new CustomConverter<List<EmailMessageModel>>());
+        modelBuilder.Entity<CharacterDbEntry>().Property(e => e.EmailMessages).HasConversion(new CustomConverter<Dictionary<int, EmailMessageModel>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.Events).HasConversion(new CustomConverter<List<int>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.AchievementObjectives).HasConversion(new CustomConverter<Dictionary<int, Dictionary<string, int>>>());
         modelBuilder.Entity<CharacterDbEntry>().Property(e => e.BestMinigameTimes).HasConversion(new CustomConverter<Dictionary<string, float>>());

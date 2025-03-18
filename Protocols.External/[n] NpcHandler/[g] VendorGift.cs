@@ -10,25 +10,23 @@ using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.Players.Models.System;
 using Server.Reawakened.XMLs.Bundles.Base;
 
-namespace Protocols.External._C__CashShopHandler;
+namespace Protocols.External._n__NpcHandler;
 
-public class GiftItemShop : ExternalProtocol
+public class VendorGift : ExternalProtocol
 {
-    public override string ProtocolName => "Cg";
+    public override string ProtocolName => "ng";
 
     public ItemCatalog ItemCatalog { get; set; }
     public PlayerContainer PlayerContainer { get; set; }
     public CharacterHandler CharacterHandler { get; set; }
-    public ILogger<GiftItemShop> Logger { get; set; }
+    public ILogger<VendorGift> Logger { get; set; }
     public ServerRConfig Config { get; set; }
 
     public override void Run(string[] message)
     {
-        var cashShop = (Cashshop)int.Parse(message[5]);
-
-        if (cashShop != Cashshop.CashShop)
+        if (!Player.Room.ContainsEntity(message[5]))
         {
-            Logger.LogWarning("Unknown cashshop of type {Type}!", cashShop);
+            Logger.LogWarning("Unknown vendor with id {Type}!", message[5]);
             return;
         }
 
@@ -53,8 +51,13 @@ public class GiftItemShop : ExternalProtocol
         var package = ItemCatalog.GetItemFromId(packageId);
         var item = ItemCatalog.GetItemFromId(itemId);
 
-        Player.RemoveBananas(package.RegularPrice);
-        Player.RemoveNCash(item.RegularPrice);
+        if (item.Currency == CurrencyType.NickCash)
+        {
+            Player.RemoveBananas(package.RegularPrice);
+            Player.RemoveNCash(item.RegularPrice);
+        }
+        else
+            Player.RemoveBananas(package.RegularPrice + item.RegularPrice);
 
         var mailId = isOnline ? friend.Character.EmailMessages.Count : friendImage.EmailMessages.Count;
         while (true)

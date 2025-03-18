@@ -35,7 +35,7 @@ public class Kick : SlashCommand
             return;
         }
 
-        var target = PlayerContainer.GetPlayersByCharacterId(id).FirstOrDefault();
+        var target = PlayerContainer.GetPlayerByAccountId(id);
 
         if (target == null)
         {

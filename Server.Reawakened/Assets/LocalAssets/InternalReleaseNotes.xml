@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Releases>
+    <Release title="Initial Release" version="1.0.0" release_date="April 9th, 2024">
+        <Notes>
+            <List note="Initial release" />
+        </Notes>
+    </Release>
+</Releases>

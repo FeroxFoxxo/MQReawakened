@@ -10,16 +10,16 @@ public class GetInboxStatus : ExternalProtocol
 
     public override void Run(string[] message)
     {
-        var mail = GetInboxMail(Player.Character.Emails);
+        var mail = GetInboxMail(Player.Character.EmailMessages);
         SendXt("ei", mail);
     }
 
-    public static string GetInboxMail(List<EmailHeaderModel> emails)
+    public static string GetInboxMail(Dictionary<int, EmailMessageModel> emails)
     {
         var sb = new SeparatedStringBuilder('&');
 
         foreach (var email in emails)
-            sb.Append(email);
+            sb.Append(email.Value.EmailHeaderModel.ToString());
 
         return sb.ToString();
     }

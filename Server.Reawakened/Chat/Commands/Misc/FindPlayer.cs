@@ -38,6 +38,6 @@ public class FindPlayer : SlashCommand
             return;
         }
 
-        Log($"{target.CharacterName}'s id is {target.CharacterId}", player);
+        Log($"{target.CharacterName}'s id is {target.Account.Id}", player);
     }
 }

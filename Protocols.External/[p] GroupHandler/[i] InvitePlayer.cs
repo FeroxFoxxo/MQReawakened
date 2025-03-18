@@ -26,10 +26,10 @@ public class InvitePlayer : ExternalProtocol
 
         if (!invitedCharacter.Character.Blocked.Contains(Player.CharacterId))
         {
+            invitedCharacter?.SendXt("pi", Player.TempData.Group.GetLeaderName());
+
             invitedCharacter.CheckAchievement(AchConditionType.InviteGroup, [], InternalAchievement, Logger);
             Player.CheckAchievement(AchConditionType.InviteGroup, [], InternalAchievement, Logger);
-
-            invitedCharacter?.SendXt("pi", Player.TempData.Group.GetLeaderName());
         }
     }
 }
