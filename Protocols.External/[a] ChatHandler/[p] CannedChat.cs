@@ -1,6 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.XMLs.Bundles.Base;
@@ -15,29 +16,83 @@ public class CannedChat : ExternalProtocol
     public ServerRConfig Config { get; set; }
     public CannedChatDictionary CannedChatDict { get; set; }
     public ItemCatalog ItemCatalog { get; set; }
+    public DiscordHandler DiscordHandler { get; set; }
 
     public override void Run(string[] message)
     {
-        var channelType = int.Parse(message[5]);
+        var channelType = (CannedChatChannel)int.Parse(message[5]);
         var chatPhraseId = int.Parse(message[6]);
         var secondaryPhraseId = int.Parse(message[7]); // named 'specifics' in the client protocol/xml
         var itemId = int.Parse(message[8]);
+        var recipientName = message[9];
 
-        var phrase = CannedChatDict.GetDialogById(chatPhraseId);
+        var chatPhrase = string.Empty;
         var secondaryPhrase = string.Empty;
         var item = string.Empty;
 
-        if (string.IsNullOrEmpty(CannedChatDict.GetDialogById(secondaryPhraseId)))
-            secondaryPhraseId = 0;
-        else
+        if (!string.IsNullOrEmpty(CannedChatDict.GetDialogById(chatPhraseId)))
+            chatPhrase = CannedChatDict.GetDialogById(chatPhraseId);
+
+        if (!string.IsNullOrEmpty(CannedChatDict.GetDialogById(secondaryPhraseId)))
             secondaryPhrase = CannedChatDict.GetDialogById(secondaryPhraseId);
 
-        if (ItemCatalog.GetItemFromId(itemId) == null)
-            itemId = 0;
-        else
+        if (ItemCatalog.GetItemFromId(itemId) != null)
             item = ItemCatalog.GetItemFromId(itemId).ItemName;
 
-        Player.Room.Chat((CannedChatChannel)channelType, Player.CharacterName, phrase +
-            (secondaryPhraseId == 0 ? "" : secondaryPhrase) + (itemId == 0 ? "" : item));
+        var chatMessage = chatPhrase + secondaryPhrase + item;
+
+        switch (channelType)
+        {
+            case CannedChatChannel.Speak:
+                Player.Room.Chat(channelType, Player.Character.CharacterName, chatMessage);
+
+                // Sends a chat message to Discord
+                DiscordHandler.SendMessage(Player.Character.CharacterName, chatMessage);
+                break;
+
+            case CannedChatChannel.Group:
+                foreach (
+                    var client in
+                        from client in Player.TempData.Group.GetMembers()
+                select client
+                    )
+                    client.Chat(channelType, Player.Character.CharacterName, chatMessage);
+
+                // Sends a chat message to Discord
+                DiscordHandler.SendMessage("Group -> " + Player.Character.CharacterName, chatMessage);
+                break;
+
+            case CannedChatChannel.Trade:
+                if (Player.Room.LevelInfo.Type == LevelType.City)
+                {
+                    Player.Room.Chat(channelType, Player.Character.CharacterName, chatMessage);
+
+                    // Sends a chat message to Discord
+                    DiscordHandler.SendMessage("Trade -> " + Player.Character.CharacterName, chatMessage);
+                }
+                break;
+
+            case CannedChatChannel.Tell:
+            case CannedChatChannel.Reply:
+                if (!string.IsNullOrEmpty(recipientName))
+                {
+                    var recipient = Player.PlayerContainer.GetPlayerByName(recipientName);
+
+                    if (recipient != null && !recipient.Character.Blocked.Contains(Player.CharacterId))
+                    {
+                        Player.Chat(channelType, Player.Character.CharacterName, chatMessage, recipientName);
+
+                        // Sends a chat message to Discord
+                        DiscordHandler.SendMessage("PM -> From: " + Player.Character.CharacterName +
+                            " To: " + recipientName, chatMessage);
+                    }
+                }
+                break;
+
+            default:
+                Logger.LogError("No chat handler found for {ChannelType} to '{Recipient}' for '{Message}'",
+                    channelType, recipientName, chatMessage);
+                break;
+        }
     }
 }
