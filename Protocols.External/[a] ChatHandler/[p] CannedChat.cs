@@ -4,6 +4,7 @@ using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Services;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
+using Server.Reawakened.Players.Helpers;
 using Server.Reawakened.XMLs.Bundles.Base;
 
 namespace Protocols.External._a__ChatHandler;
@@ -26,28 +27,24 @@ public class CannedChat : ExternalProtocol
         var itemId = int.Parse(message[8]);
         var recipientName = message[9];
 
-        var chatPhrase = string.Empty;
-        var secondaryPhrase = string.Empty;
-        var item = string.Empty;
+        var sb = new SeparatedStringBuilder(' ');
 
         if (!string.IsNullOrEmpty(CannedChatDict.GetDialogById(chatPhraseId)))
-            chatPhrase = CannedChatDict.GetDialogById(chatPhraseId);
+            sb.Append(CannedChatDict.GetDialogById(chatPhraseId));
 
         if (!string.IsNullOrEmpty(CannedChatDict.GetDialogById(secondaryPhraseId)))
-            secondaryPhrase = CannedChatDict.GetDialogById(secondaryPhraseId);
+            sb.Append(CannedChatDict.GetDialogById(secondaryPhraseId));
 
         if (ItemCatalog.GetItemFromId(itemId) != null)
-            item = ItemCatalog.GetItemFromId(itemId).ItemName;
-
-        var chatMessage = chatPhrase + secondaryPhrase + item;
+            sb.Append(ItemCatalog.GetItemFromId(itemId).ItemName);
 
         switch (channelType)
         {
             case CannedChatChannel.Speak:
-                Player.Room.Chat(channelType, Player.Character.CharacterName, chatMessage);
+                Player.Room.Chat(channelType, Player.Character.CharacterName, sb.ToString());
 
                 // Sends a chat message to Discord
-                DiscordHandler.SendMessage(Player.Character.CharacterName, chatMessage);
+                DiscordHandler.SendMessage(Player.Character.CharacterName, sb.ToString());
                 break;
 
             case CannedChatChannel.Group:
@@ -56,19 +53,19 @@ public class CannedChat : ExternalProtocol
                         from client in Player.TempData.Group.GetMembers()
                 select client
                     )
-                    client.Chat(channelType, Player.Character.CharacterName, chatMessage);
+                    client.Chat(channelType, Player.Character.CharacterName, sb.ToString());
 
                 // Sends a chat message to Discord
-                DiscordHandler.SendMessage("Group -> " + Player.Character.CharacterName, chatMessage);
+                DiscordHandler.SendMessage("Group -> " + Player.Character.CharacterName, sb.ToString());
                 break;
 
             case CannedChatChannel.Trade:
                 if (Player.Room.LevelInfo.Type == LevelType.City)
                 {
-                    Player.Room.Chat(channelType, Player.Character.CharacterName, chatMessage);
+                    Player.Room.Chat(channelType, Player.Character.CharacterName, sb.ToString());
 
                     // Sends a chat message to Discord
-                    DiscordHandler.SendMessage("Trade -> " + Player.Character.CharacterName, chatMessage);
+                    DiscordHandler.SendMessage("Trade -> " + Player.Character.CharacterName, sb.ToString());
                 }
                 break;
 
@@ -80,18 +77,18 @@ public class CannedChat : ExternalProtocol
 
                     if (recipient != null && !recipient.Character.Blocked.Contains(Player.CharacterId))
                     {
-                        Player.Chat(channelType, Player.Character.CharacterName, chatMessage, recipientName);
+                        Player.Chat(channelType, Player.Character.CharacterName, sb.ToString(), recipientName);
 
                         // Sends a chat message to Discord
                         DiscordHandler.SendMessage("PM -> From: " + Player.Character.CharacterName +
-                            " To: " + recipientName, chatMessage);
+                            " To: " + recipientName, sb.ToString());
                     }
                 }
                 break;
 
             default:
                 Logger.LogError("No chat handler found for {ChannelType} to '{Recipient}' for '{Message}'",
-                    channelType, recipientName, chatMessage);
+                    channelType, recipientName, sb.ToString());
                 break;
         }
     }
