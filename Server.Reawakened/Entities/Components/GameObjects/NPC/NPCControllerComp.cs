@@ -11,6 +11,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Models.Misc;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
@@ -508,10 +509,35 @@ public class NPCControllerComp : Component<NPCController>
 
             if (completedQuest != null)
             {
+                var questLine = QuestCatalog.GetQuestLineData(quest.QuestLineId);
+
+                player.Character.QuestLog.Remove(completedQuest);
+
+                if (questLine.QuestType == QuestType.Daily)
+                    player.Character.CurrentQuestDailies.TryAdd(completedQuest.Id.ToString(), new DailiesModel()
+                    {
+                        GameObjectId = completedQuest.Id.ToString(),
+                        LevelId = Room.LevelInfo.LevelId,
+                        TimeOfHarvest = DateTime.Now
+                    });
+                else
+                    player.Character.CompletedQuests.Add(completedQuest.Id);
+
                 foreach (var trigger in Room.GetEntitiesFromType<IQuestTriggered>())
                     trigger.QuestCompleted(quest, player);
 
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
+
+                player.UpdateAllNpcsInLevel();
+
+                if (quest.QuestRewards.Count > 0)
+                    foreach (var item in quest.QuestRewards)
+                    {
+                        var newQuest = QuestCatalog.GetQuestData(item.Key);
+
+                        if (newQuest != null && player.Character.CompletedQuests.Any(x => newQuest.PreviousQuests.Any(y => y.Key == x)))
+                            player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}", Logger);
+                    }
             }
 
             break;
