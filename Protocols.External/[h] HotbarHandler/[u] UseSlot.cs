@@ -197,4 +197,32 @@ public class UseSlot : ExternalProtocol
 
         Player.Room.AddProjectile(prj);
     }
+
+    private void HandlePetUse(ItemDescription usedItem)
+    {
+        if (!Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var petUse))
+        {
+            Logger.LogInformation("Could not find pet for {characterName}!", Player.CharacterName);
+            return;
+        }
+
+        if (usedItem.ItemEffects.Count != 0)
+        {
+            var petSnackEnergyValue = usedItem.ItemEffects.First().Value;
+            petUse.GainEnergy(Player, petSnackEnergyValue);
+            var removeFromHotBar = true;
+
+            if (usedItem.InventoryCategoryID is
+                ItemFilterCategory.WeaponAndAbilities or
+                ItemFilterCategory.Pets)
+                removeFromHotBar = false;
+
+            if (removeFromHotBar)
+            {
+                Player.UseItemFromHotBar(usedItem.ItemId, ItemCatalog, ItemRConfig);
+
+                Player.CheckAchievement(AchConditionType.Consumable, [usedItem.PrefabName], InternalAchievement, Logger);  
+            }
+        }
+    }
 }
