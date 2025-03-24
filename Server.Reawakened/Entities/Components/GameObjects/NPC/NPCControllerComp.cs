@@ -11,6 +11,7 @@ using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
+using Server.Reawakened.Players.Models.Misc;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
@@ -335,21 +336,6 @@ public class NPCControllerComp : Component<NPCController>
     {
         var questData = QuestCatalog.GetQuestData(questId);
 
-        if (QuestCatalog.QuestLineCatalogs.TryGetValue(questData.QuestLineId, out var questLine))
-        {
-            var giverQuest = GiverQuests.OrderBy(x => x.QuestgGiverName == questData.QuestgGiverName && questLine.ShowInJournal);
-            var validatorQuest = ValidatorQuests.OrderBy(x => x.ValidatorName == NpcName && questLine.ShowInJournal);
-
-            if (giverQuest.All(y => player.Character.CompletedQuests.Any(z => y.Id == z))
-                && validatorQuest.All(y => player.Character.CompletedQuests.Any(z => y.Id == z))
-                && !giverQuest.Any(x => player.Character.QuestLog.Any(y => x.Id == y.Id))
-                && !validatorQuest.Any(x => player.Character.QuestLog.Any(y => x.Id == y.Id)))
-            {
-                Logger.LogDebug("[{QuestLineId}] [COMPLETED QUESTLINE] Completed {NpcName}'s questline.", questData.QuestLineId, NpcName);
-                return NPCStatus.Dialog;
-            }
-        }
-
         if (player.Character.CompletedQuests.Contains(questId))
         {
             Logger.LogTrace("[{QuestName} ({QuestId})] [ALREADY COMPLETED]", questData.Name, questData.Id);
@@ -403,7 +389,7 @@ public class NPCControllerComp : Component<NPCController>
             }
         }
 
-        if (!QuestCatalog.QuestLineCatalogs.TryGetValue(questData.QuestLineId, out questLine))
+        if (!QuestCatalog.QuestLineCatalogs.TryGetValue(questData.QuestLineId, out var questLine))
         {
             Logger.LogTrace("[{QuestName} ({QuestId})] [INVALID QUESTLINE] Quest with line {QuestLineId} could not be found",
                 questData.Name, questData.Id, questData.QuestLineId);
@@ -431,7 +417,8 @@ public class NPCControllerComp : Component<NPCController>
                 return NPCStatus.Unknown;
             }
 
-        if (questData.Name == "T4IR_00_01" && !player.Character.CompletedQuests.Contains(939))
+        if (Config.GameVersion < GameVersion.vEarly2013 && questData.Name == "T4IR_00_01" 
+            && !player.Character.CompletedQuests.Contains(939))
         {
             Logger.LogTrace("[{QuestName}] ({QuestId}) [SKIPPED QUEST] Not all tribe tutorial quests are completed.", questData.Name, questData.Id);
             return NPCStatus.Unknown;
@@ -508,10 +495,35 @@ public class NPCControllerComp : Component<NPCController>
 
             if (completedQuest != null)
             {
+                var questLine = QuestCatalog.GetQuestLineData(quest.QuestLineId);
+
+                player.Character.QuestLog.Remove(completedQuest);
+
+                if (questLine.QuestType == QuestType.Daily)
+                    player.Character.CurrentQuestDailies.TryAdd(completedQuest.Id.ToString(), new DailiesModel()
+                    {
+                        GameObjectId = completedQuest.Id.ToString(),
+                        LevelId = Room.LevelInfo.LevelId,
+                        TimeOfHarvest = DateTime.Now
+                    });
+                else
+                    player.Character.CompletedQuests.Add(completedQuest.Id);
+
                 foreach (var trigger in Room.GetEntitiesFromType<IQuestTriggered>())
                     trigger.QuestCompleted(quest, player);
 
                 Logger.LogInformation("[{QuestName} ({QuestId})] [QUEST COMPLETED]", quest.Name, quest.Id);
+
+                player.UpdateAllNpcsInLevel();
+
+                if (quest.QuestRewards.Count > 0)
+                    foreach (var item in quest.QuestRewards)
+                    {
+                        var newQuest = QuestCatalog.GetQuestData(item.Key);
+
+                        if (newQuest != null && player.Character.CompletedQuests.Any(x => newQuest.PreviousQuests.Any(y => y.Key == x)))
+                            player.AddQuest(newQuest, QuestItems, ItemCatalog, FileLogger, $"Quest reward from {quest.ValidatorName}", Logger);
+                    }
             }
 
             break;
