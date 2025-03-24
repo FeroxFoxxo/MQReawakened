@@ -336,21 +336,6 @@ public class NPCControllerComp : Component<NPCController>
     {
         var questData = QuestCatalog.GetQuestData(questId);
 
-        if (QuestCatalog.QuestLineCatalogs.TryGetValue(questData.QuestLineId, out var questLine))
-        {
-            var giverQuest = GiverQuests.OrderBy(x => x.QuestgGiverName == questData.QuestgGiverName && questLine.ShowInJournal);
-            var validatorQuest = ValidatorQuests.OrderBy(x => x.ValidatorName == NpcName && questLine.ShowInJournal);
-
-            if (giverQuest.All(y => player.Character.CompletedQuests.Any(z => y.Id == z))
-                && validatorQuest.All(y => player.Character.CompletedQuests.Any(z => y.Id == z))
-                && !giverQuest.Any(x => player.Character.QuestLog.Any(y => x.Id == y.Id))
-                && !validatorQuest.Any(x => player.Character.QuestLog.Any(y => x.Id == y.Id)))
-            {
-                Logger.LogDebug("[{QuestLineId}] [COMPLETED QUESTLINE] Completed {NpcName}'s questline.", questData.QuestLineId, NpcName);
-                return NPCStatus.Dialog;
-            }
-        }
-
         if (player.Character.CompletedQuests.Contains(questId))
         {
             Logger.LogTrace("[{QuestName} ({QuestId})] [ALREADY COMPLETED]", questData.Name, questData.Id);
@@ -404,7 +389,7 @@ public class NPCControllerComp : Component<NPCController>
             }
         }
 
-        if (!QuestCatalog.QuestLineCatalogs.TryGetValue(questData.QuestLineId, out questLine))
+        if (!QuestCatalog.QuestLineCatalogs.TryGetValue(questData.QuestLineId, out var questLine))
         {
             Logger.LogTrace("[{QuestName} ({QuestId})] [INVALID QUESTLINE] Quest with line {QuestLineId} could not be found",
                 questData.Name, questData.Id, questData.QuestLineId);
