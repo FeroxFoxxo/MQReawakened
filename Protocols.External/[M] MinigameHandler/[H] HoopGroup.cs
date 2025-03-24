@@ -29,14 +29,8 @@ public class HoopGroup : ExternalProtocol
             if (!string.IsNullOrEmpty(message[7]))
                 hoopGroupName = message[7];
 
-        Player.CheckAchievement(AchConditionType.Hoop, [], InternalAchievement, Logger, numberOfHoops);
-        Player.CheckAchievement(AchConditionType.HoopInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger, numberOfHoops);
-
         if (completed)
         {
-            Player.CheckAchievement(AchConditionType.HoopGroup, [], InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.HoopGroupInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger);
-
             var hoops = Player.Room.GetEntitiesFromType<HoopControllerComp>();
 
             var masterHoop = hoops.FirstOrDefault(x => x.HoopGroupStringId == hoopGroupName && x.IsMasterController);
@@ -47,6 +41,12 @@ public class HoopGroup : ExternalProtocol
 
             foreach (var hoop in hitHoops)
                 Player.CheckObjective(ObjectiveEnum.Invalid, hoop.Id, hoop.PrefabName, 1, QuestCatalog);
+
+            Player.CheckAchievement(AchConditionType.HoopGroup, [], InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.HoopGroupInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger);
         }
+
+        Player.CheckAchievement(AchConditionType.Hoop, [], InternalAchievement, Logger, numberOfHoops);
+        Player.CheckAchievement(AchConditionType.HoopInLevel, [Player.Room.LevelInfo.Name], InternalAchievement, Logger, numberOfHoops);
     }
 }

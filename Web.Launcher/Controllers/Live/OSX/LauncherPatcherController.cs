@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Logging;
 using Web.Launcher.Services;
 
-namespace Web.Launcher.Controllers.Live;
+namespace Web.Launcher.Controllers.Live.OSX;
 
-[Route("live/launcher/win32/{launcherVersion}")]
+[Route("live/launcher/osx/{launcherVersion}")]
 public class LauncherPatcherController(LoadUpdates loadUpdates, ILogger<LauncherPatcherController> logger) : Controller
 {
     [HttpGet]
@@ -12,14 +12,12 @@ public class LauncherPatcherController(LoadUpdates loadUpdates, ILogger<Launcher
     {
         launcherVersion = launcherVersion.Replace(".zip", "");
 
-        if (loadUpdates.LauncherFiles.TryGetValue(launcherVersion, out var path))
+        if (loadUpdates.OSXLauncherFiles.TryGetValue(launcherVersion, out var path))
         {
             var memory = new MemoryStream();
 
             using (var stream = new FileStream(path, FileMode.Open))
-            {
                 await stream.CopyToAsync(memory);
-            }
 
             memory.Position = 0;
 

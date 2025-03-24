@@ -1,5 +1,7 @@
 ﻿using A2m.Server;
 using Microsoft.Extensions.Logging;
+using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
@@ -16,7 +18,9 @@ public class GiftItemShop : ExternalProtocol
 
     public ItemCatalog ItemCatalog { get; set; }
     public PlayerContainer PlayerContainer { get; set; }
+    public CharacterHandler CharacterHandler { get; set; }
     public ILogger<GiftItemShop> Logger { get; set; }
+    public ServerRConfig Config { get; set; }
 
     public override void Run(string[] message)
     {
@@ -28,6 +32,7 @@ public class GiftItemShop : ExternalProtocol
             return;
         }
 
+        var isOnline = true;
         var friendName = message[6];
         var messageDesc = message[7];
         var itemId = int.Parse(message[8]);
@@ -35,14 +40,30 @@ public class GiftItemShop : ExternalProtocol
         var packageId = int.Parse(message[10]);
 
         var friend = PlayerContainer.GetPlayerByName(friendName);
+        CharacterDbEntry friendImage = null;
+
+        //If friend is null, they're offline. Try a different way
+        if (friend is null)
+        {
+            var friendEntity = CharacterHandler.GetCharacterFromName(friendName);
+            friendImage = CharacterHandler.Get(friendEntity.Id);
+            isOnline = false;
+        }
 
         var package = ItemCatalog.GetItemFromId(packageId);
-        Player.RemoveBananas(package.RegularPrice);
-
         var item = ItemCatalog.GetItemFromId(itemId);
+
+        Player.RemoveBananas(package.RegularPrice);
         Player.RemoveNCash(item.RegularPrice);
 
-        var mailId = friend.Character.Emails.Max(x => x.MessageId) + 1;
+        var mailId = isOnline ? friend.Character.EmailMessages.Count : friendImage.EmailMessages.Count;
+        while (true)
+        {
+            if (isOnline && friend.Character.EmailMessages.ContainsKey(mailId) || !isOnline && friendImage != null && friendImage.EmailMessages.ContainsKey(mailId))
+                mailId++;
+            else
+                break;
+        }
 
         var emailHeader = new EmailHeaderModel()
         {
@@ -54,28 +75,34 @@ public class GiftItemShop : ExternalProtocol
             SentTime = Player.Room.Time.ToString(),
             Status = EmailHeader.EmailStatus.UnreadMail
         };
-        friend.Character.Emails.Add(emailHeader);
 
-        friend.SendXt("en", emailHeader.ToString());
-
-        // I don't think you can gift more than 1 item at a time,
-        // so I'm not entirely sure how attachments is supposed to be used. 
-
-        var attachments = new Dictionary<ItemDescription, int> { { item, 1 } };
-
+        var attachments = new Dictionary<int, int> { { item.ItemId, 1 } };
         var emailMessage = new EmailMessageModel()
         {
             EmailHeaderModel = emailHeader,
             Body = messageDesc,
             BackgroundId = backgroundId,
             PackageId = packageId,
-            Item = item,
+            Item = item.ItemId,
             Attachments = attachments
         };
 
-        friend.Character.EmailMessages.Add(emailMessage);
+        if (isOnline)
+            friend.Character.EmailMessages.Add(mailId, emailMessage);
+        else
+        {
+            friendImage.EmailMessages.Add(mailId, emailMessage);
+            CharacterHandler.Update(friendImage);
+        }
 
-        var mail = friend.Character.Emails;
-        friend.SendXt("ei", mail.ToString());
+        if (isOnline)
+        {
+            var sb = new SeparatedStringBuilder('&');
+            foreach (var email in friend.Character.EmailMessages)
+                sb.Append(email.Value.EmailHeaderModel.ToString());
+
+            friend.SendXt("en", emailHeader.ToString());
+            friend.SendXt("ei", sb.ToString());
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Server.Base.Core.Extensions;
 using Server.Reawakened.Core.Configs;
+using Server.Reawakened.Core.Enums;
 using Server.Reawakened.XMLs.Abstractions.Enums;
 using Server.Reawakened.XMLs.Abstractions.Interfaces;
 using Server.Reawakened.XMLs.Data.Events;
@@ -34,6 +35,124 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
 
     public void EditDescription(XmlDocument xml)
     {
+        if (RConfig.GameVersion >= GameVersion.vEarly2014)
+        {
+            var node = xml.SelectNodes("/events/event");
+
+            foreach (XmlNode events in node)
+            {
+                var parent = events.ParentNode;
+                var eventName = new string(events.Attributes["name"].Value.Reverse().ToArray());
+
+                switch (eventName)
+                {
+                    case "noitarbeleC_enuJ_10R":
+                    case "htnoM21_pihsrebmeM_TVE":
+                    case "10_steP_CN_3102_TVE":
+                    case "konhcaR_3102_TVE":
+                    case "nonnaCittefnoC_3102_TVE":
+                    case "adnaP_steP_3102_TVE":
+                    case "20_steP_CN_3102_TVE":
+                    case "wen20_steP_CN_3102_TVE":
+                    case "snruteR_ekirtsrebaS_3102_TVE":
+                    case "10reppaZnekcihC_3102_TVE":
+                    case "10_elaS_steP_CN_3102_TVE":
+                    case "neewollaH_3102_TVE":
+                    case "10yadiloH_3102_TVE":
+                    case "weiverPSTC_3102_TVE":
+                    case "20weiverPSTC_3102_TVE":
+                    case "10tePyraG_3102_TVE":
+                    case "10_3102boBegnopS_3102_TVE":
+                    case "20_3102boBegnopS_3102_TVE":
+                    case "30_3102boBegnopS_3102_TVE":
+                    case "40_3102boBegnopS_3102_TVE":
+                    case "50_3102boBegnopS_3102_TVE":
+                    case "hsaBananaB_4102_TVE":
+                    case "onitnelaV_4102_TVE":
+                    case "mooRerusaerT_4102_TVE":
+                    case "yaDkoO_4102_TVE":
+                    case "uneMgnippohS_4102_TVE":
+                    case "slooFlirpA_4102_TVE":
+                        parent.RemoveChild(events);
+                        break;
+                    default:
+                        if (eventName.Contains("1102") || eventName.Contains("2102"))
+                            parent.RemoveChild(events);
+                        break;
+                }
+            }
+        }
+        else if (RConfig.GameVersion >= GameVersion.vEarly2013)
+        {
+            var node = xml.SelectNodes("/events/event");
+
+            foreach (XmlNode events in node)
+            {
+                var parent = events.ParentNode;
+                var eventName = new string(events.Attributes["name"].Value.Reverse().ToArray());
+
+                switch (eventName)
+                {
+                    case "noitarbeleC_enuJ_10R":
+                    case "htnoM21_pihsrebmeM_TVE":
+                    case "adnaPuFgnuK_2102_ORP":
+                    case "yrasrevinnA_2102_TVE":
+                    case "steP_2102_TVE":
+                    case "semaGiniM_2102_TVE":
+                    case "10_steP_CN_3102_TVE":
+                    case "konhcaR_3102_TVE":
+                    case "nonnaCittefnoC_3102_TVE":
+                    case "adnaP_steP_3102_TVE":
+                    case "20_steP_CN_3102_TVE":
+                    case "wen20_steP_CN_3102_TVE":
+                    case "snruteR_ekirtsrebaS_3102_TVE":
+                    case "10reppaZnekcihC_3102_TVE":
+                    case "10_elaS_steP_CN_3102_TVE":
+                    case "neewollaH_3102_TVE":
+                    case "10yadiloH_3102_TVE":
+                    case "weiverPSTC_3102_TVE":
+                    case "20weiverPSTC_3102_TVE":
+                    case "10tePyraG_3102_TVE":
+                    case "10_3102boBegnopS_3102_TVE":
+                    case "20_3102boBegnopS_3102_TVE":
+                    case "30_3102boBegnopS_3102_TVE":
+                    case "40_3102boBegnopS_3102_TVE":
+                    case "50_3102boBegnopS_3102_TVE":
+                        parent.RemoveChild(events);
+                        break;
+                    default:
+                        if (eventName.Contains("1102"))
+                            parent.RemoveChild(events);
+                        break;
+                }
+            }
+        }
+        else if (RConfig.GameVersion >= GameVersion.vEarly2012)
+        {
+            var node = xml.SelectNodes("/events/event");
+
+            foreach (XmlNode events in node)
+            {
+                var parent = events.ParentNode;
+                var eventName = new string(events.Attributes["name"].Value.Reverse().ToArray());
+
+                switch (eventName)
+                {
+                    case "noitarbeleC_enuJ_10R":
+                    case "htnoM21_pihsrebmeM_TVE":
+                    case "adnaPuFgnuK_2102_ORP":
+                    case "yrasrevinnA_2102_TVE":
+                    case "steP_2102_TVE":
+                    case "semaGiniM_2102_TVE":
+                        parent.RemoveChild(events);
+                        break;
+                    default:
+                        if (eventName.Contains("1102"))
+                            parent.RemoveChild(events);
+                        break;
+                }
+            }
+        }
     }
 
     public void ReadDescription(string xml)

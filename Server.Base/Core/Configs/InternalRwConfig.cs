@@ -15,7 +15,7 @@ public class InternalRwConfig : IRwConfig
 
     public string ServerName { get; set; }
     public string DiscordServerId { get; set; }
-
+    
     public InternalRwConfig()
     {
         IgnoreProtocolType = [];

@@ -6,8 +6,6 @@ namespace Web.Launcher.Models;
 
 public class LauncherRConfig : IRConfig
 {
-    public string News { get; }
-
     public ulong AnalyticsId { get; }
     public bool AnalyticsEnabled { get; }
 
@@ -29,13 +27,14 @@ public class LauncherRConfig : IRConfig
     public bool Fullscreen { get; }
     public bool OnGameClosePopup { get; }
 
-    public string GameFolder { get; }
-    public string LauncherFolder { get; }
+    public string WinGameFolder { get; }
+    public string WinLauncherFolder { get; }
+
+    public string OSXGameFolder { get; }
+    public string OSXLauncherFolder { get; }
 
     public LauncherRConfig()
     {
-        News = $"You expected there to be news here? It's {DateTime.Now.Year}!";
-
         AnalyticsId = 0;
         AnalyticsEnabled = true;
 
@@ -57,18 +56,23 @@ public class LauncherRConfig : IRConfig
         {
             { GameVersion.v2011, "2011-03-17_12-00-00" },
             { GameVersion.vEarly2012, "2012-01-01_12-00-00" },
-            { GameVersion.vPets2012, "2012-07-01_12-00-00" },
+            { GameVersion.vPets2012, "2012-05-27_12-00-00" },
             { GameVersion.vMinigames2012, "2012-08-01_12-00-00" },
             { GameVersion.vLate2012, "2012-10-01_12-00-00" },
             { GameVersion.vEarly2013, "2013-01-01_12-00-00" },
             { GameVersion.vLate2013, "2013-04-01_12-00-00" },
-            { GameVersion.v2014, "2013-11-22_12-00-00" }
+            { GameVersion.vEarly2014, "2013-11-22_12-00-00" },
+            { GameVersion.vPetMasters2014, "2014-05-01_12-00-00" },
+            { GameVersion.vLate2014, "2014-06-01_12-00-00" }
         };
 
         Fullscreen = false;
         OnGameClosePopup = false;
 
-        GameFolder = InternalDirectory.GetDirectory("Game");
-        LauncherFolder = InternalDirectory.GetDirectory("Launcher");
+        WinGameFolder = InternalDirectory.GetDirectory("Game/Win");
+        WinLauncherFolder = InternalDirectory.GetDirectory("Launcher/Win");
+
+        OSXGameFolder = InternalDirectory.GetDirectory("Game/OSX");
+        OSXLauncherFolder = InternalDirectory.GetDirectory("Launcher/OSX");
     }
 }

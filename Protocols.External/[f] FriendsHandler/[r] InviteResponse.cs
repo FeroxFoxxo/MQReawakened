@@ -27,9 +27,6 @@ public class InviteResponse : ExternalProtocol
 
         if (accepted)
         {
-            friender.CheckAchievement(AchConditionType.AddFriend, [], InternalAchievement, Logger);
-            Player.CheckAchievement(AchConditionType.AddFriend, [], InternalAchievement, Logger);
-
             friender.Character.Friends.Add(Player.CharacterId);
             Player.Character.Friends.Add(friender.CharacterId);
 
@@ -42,6 +39,9 @@ public class InviteResponse : ExternalProtocol
             var friendData = Player.Character.GetFriends().PlayerList.First(x => x.CharacterId == friender.CharacterId);
 
             Player.SendXt("fa", friendData, isSuccess ? "1" : "0");
+
+            friender.CheckAchievement(AchConditionType.AddFriend, [], InternalAchievement, Logger);
+            Player.CheckAchievement(AchConditionType.AddFriend, [], InternalAchievement, Logger);
         }
         else
         {

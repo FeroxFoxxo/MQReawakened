@@ -3,62 +3,64 @@
 @model IndexModel
 
 @{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
-<div class="container mt-5">
-    <div class="card custom-home-card shadow-lg">
-        <div class="card-body">
-            <div class="text-center">
-                <h1 class="display-4">Relive the memory of Ook in <span class="game-title">@Model.ServerName</span>!</h1>
-                <p class="lead">
-                    Embark on a legendary journey across the world of Ook. Complete quests, fight monsters, and fend off Ka's shadow army once again!
-                </p>
-            </div>
-            <div class="features py-5">
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    Uncover the Mysteries of Ook
-                                </h5>
-                                <p class="card-text">
-                                    Explore the many trails and solve the Monkey King's secrets.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    Gear up your monkey
-                                </h5>
-                                <p class="card-text">
-                                    Defeat shadow monsters to find and craft powerful gear.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    Complete quests with your friends
-                                </h5>
-                                <p class="card-text">
-                                    Join one of the tribes in Ook and group up with your fellow monkeys to complete various quests.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="container mt-4">
+	<div class="card custom-home-card shadow-lg">
+		<div class="card-body">
+			<div class="text-center">
+				<h1 class="display-4">Relive the memory of Ook in <span class="game-title">@Model.ServerName</span>!</h1>
+				<p class="lead">
+					Embark on a legendary journey across the world of Ook. Complete quests, fight monsters, and fend off Ka's shadow army once again!
+				</p>
+				<p class="btn-secondary">Currently online: <span>@Model.PlayerCount</span></p>
+				<p class="btn-secondary">Registered players: <span>@Model.AccountCount</span></p>
+			</div>
+			<div class="features py-4">
+				<div class="row">
+					<div class="col-md-4 mb-3">
+						<div class="card h-100">
+							<div class="card-body">
+								<h5 class="card-title">
+									Uncover the Mysteries of Ook
+								</h5>
+								<p class="card-text">
+									Explore the many trails and solve the Monkey King's secrets.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4 mb-3">
+						<div class="card h-100">
+							<div class="card-body">
+								<h5 class="card-title">
+									Gear up your monkey
+								</h5>
+								<p class="card-text">
+									Defeat shadow monsters to find and craft powerful gear.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4 mb-3">
+						<div class="card h-100">
+							<div class="card-body">
+								<h5 class="card-title">
+									Complete quests with your friends
+								</h5>
+								<p class="card-text">
+									Join one of the tribes in Ook and group up with your fellow monkeys to complete various quests.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-            <div class="signup-cta text-center">
-                <a href="/en/signup" class="btn btn-primary btn-lg">Join the Adventure</a>
-            </div>
-        </div>
-    </div>
+			<div class="signup-cta text-center">
+				<a href="/en/signup" class="btn btn-primary btn-lg">Join the Adventure</a>
+			</div>
+		</div>
+	</div>
 </div>

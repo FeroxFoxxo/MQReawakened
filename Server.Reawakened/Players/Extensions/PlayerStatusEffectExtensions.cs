@@ -23,7 +23,7 @@ public static class PlayerStatusEffectExtensions
     public static bool HasNullifyEffect(this Player player, ItemCatalog itemCatalog) =>
      player.Character.Equipment.EquippedItems
          .Select(x => itemCatalog.GetItemFromId(x.Value))
-         .Any(item => item.ItemEffects.Any(effect => effect.Type == ItemEffectType.NullifySlowStatusEffect));
+         .Any(item => item != null && item.ItemEffects.Any(effect => effect.Type == ItemEffectType.NullifySlowStatusEffect));
 
     public static void StartPoisonDamage(this Player player, string hazardId, int damage, int hurtLength, ServerRConfig serverRConfig, TimerThread timerThread)
     {

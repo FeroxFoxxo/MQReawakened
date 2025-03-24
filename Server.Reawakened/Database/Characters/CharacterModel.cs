@@ -16,7 +16,7 @@ public class CharacterModel(CharacterDbEntry entry, GameVersion version) : Chara
     public string SpawnPointId => Write.SpawnPointId;
     public Dictionary<int, List<int>> CollectedIdols => Write.CollectedIdols;
     public List<EmailHeaderModel> Emails => Write.Emails;
-    public List<EmailMessageModel> EmailMessages => Write.EmailMessages;
+    public Dictionary<int, EmailMessageModel> EmailMessages => Write.EmailMessages;
     public List<int> Events => Write.Events;
     public Dictionary<int, Dictionary<string, int>> AchievementObjectives => Write.AchievementObjectives;
     public Dictionary<string, float> BestMinigameTimes => Write.BestMinigameTimes;

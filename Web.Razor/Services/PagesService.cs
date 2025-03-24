@@ -13,18 +13,21 @@ using Web.Razor.EmailTemplates;
 namespace Web.Razor.Services;
 
 public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
-    EmailRwConfig config, ILogger<PagesService> logger, EventSink sink) : IService
+    WebsiteRwConfig config, ILogger<PagesService> logger, EventSink sink) : IService
 {
     public string ZipPath { get; set; }
 
-    public void Initialize() => sink.WorldLoad += CreateReawakened;
+    public void Initialize() => sink.WorldLoad += SetupDownload;
 
-    public void CreateReawakened()
+    public void SetupDownload()
     {
         foreach (var file in Directory.GetFiles(sConfig.DownloadDirectory, "*__"))
             File.Delete(file);
 
-        var name = $"Play{iConfig.ServerName}.zip";
+        if (string.IsNullOrEmpty(config.DownloadName))
+            config.DownloadName = $"Play{iConfig.ServerName}.zip";
+
+        var name = config.DownloadName;
 
         File.Create(Path.Join(sConfig.DownloadDirectory, $"__Place {name} Here__"));
 

@@ -415,3 +415,7 @@ h2 {
 .btn-primary:hover, .btn-secondary:hover {
     opacity: 0.8;
 }
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: rgba(0, 150, 136, 0.1);
+}

@@ -15,7 +15,7 @@ public abstract class BaseMovingObjectControllerComp<T> : Component<T>, IRecieve
 
     public override void Update()
     {
-        if (Movement == null)
+        if (Movement == null || Room == null)
             return;
 
         var position = Movement.GetPositionBasedOnTime(Room.Time);

@@ -26,9 +26,6 @@ public class EquipItem : ExternalProtocol
         {
             var itemDesc = ItemCatalog.GetItemFromId(item.Value);
 
-            if (itemDesc != null)
-                Player.CheckAchievement(AchConditionType.EquipItem, [itemDesc.PrefabName], InternalAchievement, Logger);
-
             if (Player.Character.Equipment.EquippedItems.TryGetValue(item.Key, out var previouslyEquippedId))
             {
                 if (ItemAlreadyEquipped(item.Value, previouslyEquippedId))
@@ -38,6 +35,9 @@ public class EquipItem : ExternalProtocol
             }
 
             Player.RemoveItem(ItemCatalog.GetItemFromId(item.Value), 1, ItemCatalog, ItemRConfig);
+
+            if (itemDesc != null)
+                Player.CheckAchievement(AchConditionType.EquipItem, [itemDesc.PrefabName], InternalAchievement, Logger);
         }
 
         AddUnequippedToInventory(newEquipment);

@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using A2m.Server;
+using Microsoft.Extensions.Logging;
 using Server.Reawakened.Chat.Services;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Core.Enums;
 using Server.Reawakened.Entities.Components.GameObjects.NPC;
+using Server.Reawakened.Network.Extensions;
 using Server.Reawakened.Network.Protocols;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
@@ -49,6 +51,11 @@ public class RoomUpdate : ExternalProtocol
 
         if (Player.TempData.FirstLogin)
         {
+            // Tribe selection reminder protocol
+            if (Player.Character.Allegiance == TribeType.Invalid
+                && Player.Character.CompletedQuests.Contains(939))
+                SendXt("dt");
+
             MQRSlashCommands.DisplayHelp(Player);
             Player.TempData.FirstLogin = false;
         }

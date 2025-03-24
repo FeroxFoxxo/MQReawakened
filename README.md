@@ -19,22 +19,16 @@
             <img alt="Stars" src="https://img.shields.io/github/stars/feroxfoxxo/MQReawakened?color=gold&style=for-the-badge">
         </a>
     </p>
-    <h4>This server emulator is completely free from the original game's assets / intellectual property.</h4>
-    <h5>None of the repo, the tool, nor the repo owner is affiliated with, sponsored, or authorized by any affiliates of the original game.</h4>
+    <h4>This server is completely free from the original game's assets / intellectual property.</h4>
+    <h5>None of the repo, the tool, nor the repo owner is affiliated with or sponsored by any affiliates of the original game.</h4>
     <h1></h1>
 </div>
 
 ### Information
 
-MQReawakened is a community-driven server emulator meant for **non-commercial, educational use only**. It is intended to show how games like these are created through reverse engineering and how they work, and thus is not, and should never be, commercialised in any way. It is fundamentally transformative from the original client, as it handles the inverse of requests and only shares similar data models. Users **must provide** the original game's code, assets, executables etc themselves.
+If you encounter any issues with the code, please submit an issue through [the repo's issue system](https://github.com/FeroxFoxxo/MQReawakened/issues), and it will be assigned to someone accordingly.
 
-Please email me at feroxfoxxo@gmail.com if anything is in breach, which will be rectified ASAP.
-
-#### Developer information
-
-We've moved to use Discord to handle our to-do list!
-
-If you have anything you wish to report, please submit an issue through [the repo's issue system](https://github.com/FeroxFoxxo/MQReawakened/issues), and it will be assigned to someone accordingly.
+If you need to report anything about this repo, or otherwise reach out to me, you can find me at feroxfoxxo@gmail.com.
 
 ## Contributing
 
@@ -42,8 +36,8 @@ If you'd like to contribute to this project, please read [CONTRIBUTING.md](CONTR
 
 ### Prerequisites
 
-- You **must** have your *own* copy of the game and its associated asset bundles.
-- You **must** have the associated DLL for the game added to your server project to ensure it doesn't contain any copywritten code.
+- You **must** provide your *own* copy of the game and its associated asset bundles.
+- You **must** provide your *own* associated DLLs from the game, which are to be added to the server itself on compile - ensuring this repo does not contain any copywritten code.
 
 ## How to set up MQReawakened
 

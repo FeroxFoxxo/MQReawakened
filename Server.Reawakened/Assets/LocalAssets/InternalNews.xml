@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<News>
+    <News default="true" news_date="{CurrentDate}">
+        <Lines>
+            <Line note="You expected there to be news here? It's {CurrentYear}!" />
+        </Lines>
+    </News>
+</News>

@@ -73,7 +73,7 @@ public class RemoveDuplicates(ILogger<RemoveDuplicates> logger, EventSink sink,
                     if (!AreFileContentsEqual(containedAsset.Path, asset.Path))
                         continue;
 
-                    if (containedAsset.CacheTime > asset.CacheTime && config.GameVersion >= GameVersion.v2014 ||
+                    if (containedAsset.CacheTime > asset.CacheTime && config.GameVersion >= GameVersion.vEarly2014 ||
                         containedAsset.CacheTime < asset.CacheTime && config.GameVersion <= GameVersion.vLate2013)
                         assetList[assetName].Remove(containedAsset);
                     else

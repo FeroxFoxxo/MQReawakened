@@ -928,6 +928,79 @@
                 </LootTable>
                 <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0" />
             </Enemy>
+            <Enemy name="PF_Critter_Spider01_Zombie">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="1" />
+                    <FrontDetectionRangeDownY value="0.25" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="0">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="134" chance="0.5" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="135" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="136" chance="0.05" minLevel="10" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
+                </LootTable>
+                <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0" />
+            </Enemy>
+            <Enemy name="PF_Critter_Spider01_Ceiling_Shoot_Zombie">
+                <GenericScript>
+                    <AttackBehavior value="Shooting" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="Patrol" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="false" />
+                    <FrontDetectionRangeX value="6" />
+                    <FrontDetectionRangeUpY value="0" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="3" />
+                    <BackDetectionRangeUpY value="1" />
+                    <BackDetectionRangeDownY value="0" />
+                    <ViewOffsetY value="0" />
+                    <ShootOffsetY value="-2.2" />
+                    <ProjectilePrefabName value="COL_PRJ_PoisonProjectile_Lv1" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="5.6" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="6.4" moveBeyondTargetDistance="0" stayOnPatrolPath="true" attackBeyondPatrolLine="0" detectionRangeUpY="0" detectionRangeDownY="0" />
+                    <LookAround lookTime="3" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <Shooting nbBulletsPerRound="3" fireSpreadAngle="45" delayBetweenBullet="0.05" delayShoot_Anim="0.8" nbFireRounds="1" delayBetweenFireRound="1" startCoolDownTime="0.0" endCoolDownTime="1.5" projectileSpeed="5.0" fireSpreadClockwise="false" fireSpreadStartAngle="-45">
+                        <Resource type="PROJ" name="COL_PRJ_PoisonProjectile_Lv1" />
+                    </Shooting>
+                </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="134" chance="0.5" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="135" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="136" chance="0.05" minLevel="10" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
+                </LootTable>
+                <Hitbox width="1.3" height="1" offsetX="0.5" offsetY="0" />
+            </Enemy>
         </EnemyCategory>
         <EnemyCategory name="Bathog">
             <!-- Shadow Bathog (Mini-Boss) -->
@@ -1302,6 +1375,42 @@
                     <Drop type="item" id="1592" chance="0.1" minLevel="6" maxLevel="65" />
                     <Drop type="item" id="1601" chance="0.05" minLevel="6" maxLevel="65" />
                     <Drop type="randomArmor" chance="0.01" minLevel="5" maxLevel="50" />
+                </LootTable>
+                <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65" />
+            </Enemy>
+            <Enemy name="PF_Spite_Bathog_Zombie">
+                <GenericScript>
+                    <AttackBehavior value="Aggro" />
+                    <AwareBehaviorDuration value="0.5" />
+                    <AwareBehavior value="LookAround" />
+                    <UnawareBehavior value="ComeBack" />
+                    <HealthRegenAmount value="0" />
+                    <HealthRegenFrequency value="0" />
+                </GenericScript>
+                <GlobalProperties>
+                    <DetectionLimitedByPatrolLine value="true" />
+                    <FrontDetectionRangeX value="5" />
+                    <FrontDetectionRangeUpY value="3" />
+                    <FrontDetectionRangeDownY value="6" />
+                    <BackDetectionRangeX value="2" />
+                    <BackDetectionRangeUpY value="2" />
+                    <BackDetectionRangeDownY value="6" />
+                    <ViewOffsetY value="0" />
+                    <ProjectilePrefabName value="" />
+                </GlobalProperties>
+                <Behaviors>
+                    <Patrol speed="1.8" smoothMove="false" endPathWaitTime="2" />
+                    <Aggro speed="2.4" moveBeyondTargetDistance="0" stayOnPatrolPath="false" attackBeyondPatrolLine="0" detectionRangeUpY="3" detectionRangeDownY="5" />
+                    <LookAround lookTime="2" startDirection="0" forceDirection="0" initialProgressRatio="0" snapOnGround="false" />
+                    <ComeBack speed="2.4" />
+                </Behaviors>
+                <LootTable>
+                    <Drop type="item" id="107" chance="0.5" minLevel="1" maxLevel="65" />
+                    <Drop type="item" id="109" chance="0.2" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="108" chance="0.05" minLevel="10" maxLevel="65" />
+                    <Drop type="item" id="126" chance="0.1" minLevel="5" maxLevel="65" />
+                    <Drop type="item" id="137" chance="0.05" minLevel="5" maxLevel="65" />
+                    <Drop type="randomArmor" chance="0.01" minLevel="1" maxLevel="50" />
                 </LootTable>
                 <Hitbox width="0.9" height="0.9" offsetX="0.25" offsetY="0.65" />
             </Enemy>
@@ -2577,12 +2686,9 @@
         <!-- BEHAVIOR ENEMIES TO BE ADDED -->
 
         <EnemyCategory name="Bathog">
-            <Enemy name="PF_Spite_Bathog_Zombie" />
         </EnemyCategory>
         
         <EnemyCategory name="Rachnoid">
-            <Enemy name="PF_Critter_Spider_Zombie" />
-            <Enemy name="PF_Critter_Spider01_Ceiling_Shoot_Zombie" />
         </EnemyCategory>
 
         <EnemyCategory name="TMNT">

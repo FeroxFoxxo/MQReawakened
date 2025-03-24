@@ -47,6 +47,16 @@ public class NetState : IDisposable
     public Socket Socket { get; private set; }
     public bool Running { get; private set; }
 
+    private const string PolicyFileRequest = "<policy-file-request/>";
+
+    private const string AllPolicy =
+        @"<?xml version=""1.0""?>
+                        <!DOCTYPE cross-domain-policy SYSTEM ""/xml/dtds/cross-domain-policy.dtd"">
+                        <cross-domain-policy>
+                            <site-control permitted-cross-domain-policies=""all""/>
+                            <allow-access-from domain=""*"" to-ports=""*""/>
+                        </cross-domain-policy>";
+
     public NetState(Socket socket, IServiceProvider services)
     {
         Socket = socket;
@@ -239,24 +249,16 @@ public class NetState : IDisposable
                     if (string.IsNullOrEmpty(packet))
                         continue;
 
-                    const string PolicyFileRequest = "<policy-file-request/>";
-
-                    const string AllPolicy =
-                        @"<?xml version=""1.0""?>
-                        <!DOCTYPE cross-domain-policy SYSTEM ""/xml/dtds/cross-domain-policy.dtd"">
-                        <cross-domain-policy>
-                            <site-control permitted-cross-domain-policies=""all""/>
-                            <allow-access-from domain=""*"" to-ports=""*""/>
-                        </cross-domain-policy>";
-
                     if (packet == PolicyFileRequest)
                     {
                         var policy = Encoding.UTF8.GetBytes(AllPolicy);
                         socket.BeginSend(policy, 0, policy.Length, SocketFlags.None, new AsyncCallback(OnSend), socket);
                     }
                     else
-                        Task.Factory.StartNew(() => RunPacket(packet));
-                }
+                    {
+                        Task.Run(() => RunPacket(packet));
+                    }
+                };
 
                 lock (AsyncLock)
                 {
