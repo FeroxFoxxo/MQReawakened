@@ -71,17 +71,7 @@ public class UseSlot : ExternalProtocol
                 HandleRelic(usedItem);
                 break;
             case ItemActionType.PetUse:
-                if (!Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var petUse))
-                {
-                    Logger.LogInformation("Could not find pet for {characterName}!", Player.CharacterName);
-                    return;
-                }
-
-                if (usedItem.ItemEffects.Count != 0)
-                {
-                    var petSnackEnergyValue = usedItem.ItemEffects.First().Value;
-                    petUse.GainEnergy(Player, petSnackEnergyValue);
-                }
+                HandlePetUse(usedItem);
                 break;
             case ItemActionType.Pet:
                 if (!Player.Character.Pets.TryGetValue(Player.GetEquippedPetId(ServerRConfig), out var pet))
