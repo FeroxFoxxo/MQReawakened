@@ -41,6 +41,6 @@ public class IdolControllerComp : Component<IdolController>
         player.SendSyncEventToPlayer(collectedEvent);
 
         player.SetObjective(ObjectiveEnum.IdolCollect, Id, PrefabName, player.Character.CollectedIdols[levelId].Count, QuestCatalog);
-        player.CheckAchievement(AchConditionType.CollectIdol, [Room.LevelInfo.Name], Achievement, Logger, player.Character.CollectedIdols[levelId].Count);
+        player.CheckAchievement(AchConditionType.CollectIdol, [Room.LevelInfo.Name], Achievement, Logger);
     }
 }

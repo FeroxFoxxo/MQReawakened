@@ -20,18 +20,21 @@ public class CharacterRelationshipModel
         var otherPlayer = currentPlayer.PlayerContainer.GetPlayersByCharacterId(characterId)
             .FirstOrDefault(p => p.Character.Id == characterId);
 
-        CharacterName = otherCharacter.CharacterName;
+        CharacterName = otherCharacter != null ? otherCharacter.CharacterName : "unknown";
         CharacterId = characterId;
 
         IsOnline = otherPlayer != null;
 
-        Level = otherCharacter.LevelId;
+        Level = otherCharacter != null ? otherCharacter.GlobalLevel : 1;
         Location = otherPlayer != null ? otherPlayer.Room.ToString() : "unknown";
 
         IsBlocked = currentPlayer.Character.Blocked.Any(x => x == characterId);
         IsMuted = currentPlayer.Character.Muted.Any(x => x == characterId);
 
-        InteractionStatus = (int)otherCharacter.InteractionStatus;
+        InteractionStatus = otherCharacter != null ? (int)otherCharacter.InteractionStatus : 0;
+
+        if (otherCharacter == null && CharacterName == "unknown")
+            currentPlayer.Character.Write.Friends.Remove(characterId);
     }
 
     public override string ToString()
