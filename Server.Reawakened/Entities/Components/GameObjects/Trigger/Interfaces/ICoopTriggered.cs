@@ -4,5 +4,5 @@ namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 
 public interface ICoopTriggered
 {
-    public void TriggerStateChange(TriggerType triggerType, bool triggered, string triggeredBy);
+    void TriggerStateChange(TriggerType triggerType, bool triggered, string triggeredBy);
 }

@@ -2,5 +2,5 @@
 
 public interface IInjectModules
 {
-    public IEnumerable<Module> Modules { get; set; }
+    IEnumerable<Module> Modules { get; set; }
 }

@@ -188,8 +188,7 @@ public abstract class BaseEnemy : IDestructible
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health, damage, resistance, resistedDamage, player == null ? string.Empty : player.CharacterName, false, true));
 
-        if (Health <= 0)
-            KillEnemy(player);
+        NotifyDamaged(player);
     }
 
     public virtual void PetDamage(Player player)
@@ -207,7 +206,16 @@ public abstract class BaseEnemy : IDestructible
 
         Room.SendSyncEvent(new AiHealth_SyncEvent(Id.ToString(), Room.Time, Health -= petDamage, petDamage, 1, 1, player.CharacterName, false, true));
 
-        if (Health <= 0)
+        NotifyDamaged(player);
+    }
+
+    public void NotifyDamaged(Player player)
+    {
+        var isDead = Health <= 0;
+
+        DamagedEnemy(isDead);
+
+        if (isDead)
             KillEnemy(player);
     }
 
@@ -225,6 +233,12 @@ public abstract class BaseEnemy : IDestructible
 
         Destroy(Room, Id);
         Room.KillEntity(Id);
+    }
+
+    public void DamagedEnemy(bool isDead)
+    {
+        foreach (var damageComponent in Room.GetEntitiesFromId<IAIDamageEnemy>(Id))
+            damageComponent.EnemyDamaged(isDead);
     }
 
     public void DespawnEnemy()

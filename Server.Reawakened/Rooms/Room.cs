@@ -411,6 +411,11 @@ public class Room : Timer
             entities.FirstOrDefault(x => x is T and not null) as T :
             null;
 
+    public object GetEntityFromId(string id, Type t) =>
+        _entities.TryGetValue(id, out var entities) ?
+            entities.FirstOrDefault(x => x != null && t.IsInstanceOfType(x)) :
+            null;
+
     public IEnemyController GetEnemyFromId(string id)
     {
         var enemy = GetEntityFromId<EnemyControllerComp>(id);

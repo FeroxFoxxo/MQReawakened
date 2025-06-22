@@ -5,7 +5,7 @@ public interface ILocalizationXml : IBundledXml
 {
     string LocalizationName { get; }
 
-    public void EditLocalization(XmlDocument xml);
+    void EditLocalization(XmlDocument xml);
 
-    public void ReadLocalization(string xml);
+    void ReadLocalization(string xml);
 }

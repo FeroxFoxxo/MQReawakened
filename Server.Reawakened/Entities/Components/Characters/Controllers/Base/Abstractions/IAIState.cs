@@ -4,13 +4,13 @@ namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abst
 
 public interface IAIState
 {
-    public void SetStateMachine(IAIStateMachine machine);
+    void SetStateMachine(IAIStateMachine machine);
 
-    public string StateName { get; }
+    string StateName { get; }
 
-    public void StartState();
-    public void UpdateState();
-    public void StopState();
+    void StartState();
+    void UpdateState();
+    void StopState();
 
-    public ComponentSettings GetFullSettings();
+    ComponentSettings GetFullSettings();
 }

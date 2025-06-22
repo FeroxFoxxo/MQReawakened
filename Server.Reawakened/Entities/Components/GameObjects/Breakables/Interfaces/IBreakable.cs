@@ -2,6 +2,6 @@
 
 public interface IBreakable
 {
-    public int NumberOfHits { get; set; }
-    public int NumberOfHitsToBreak { get; }
+    int NumberOfHits { get; set; }
+    int NumberOfHitsToBreak { get; }
 }

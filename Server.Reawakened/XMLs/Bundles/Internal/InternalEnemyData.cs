@@ -7,6 +7,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Models;
 using Server.Reawakened.XMLs.Data.Enemy.States;
 using Server.Reawakened.XMLs.Data.LootRewards.Enums;
 using System.Xml;
+using UnityEngine;
 using ActingState = Server.Reawakened.XMLs.Data.Enemy.States.ActingState;
 
 namespace Server.Reawakened.XMLs.Bundles.Internal;
@@ -79,6 +80,32 @@ public class InternalEnemyData : InternalXml
                         foreach (XmlNode data in enemy.ChildNodes)
                             switch (data.Name)
                             {
+                                case "ComponentOverrides":
+                                    var overrides = new Dictionary<string, Dictionary<string, string>>();
+
+                                    foreach (XmlNode foundOverride in data.ChildNodes)
+                                    {
+                                        var componentOverrides = new Dictionary<string, string>();
+
+                                        foreach (XmlNode kvp in foundOverride.ChildNodes)
+                                        {
+                                            var overrideType = string.Empty;
+                                            var overrideName = string.Empty;
+
+                                            foreach (XmlAttribute overrideData in kvp.Attributes)
+                                                if (overrideData.Name.Equals("type"))
+                                                    overrideType = overrideData.Value;
+                                                else if (overrideData.Name.Equals("name"))
+                                                    overrideName = overrideData.Value;
+
+                                            if (!string.IsNullOrEmpty(overrideType))
+                                                componentOverrides.Add(overrideType, overrideName);
+                                        }
+
+                                        overrides.Add(foundOverride.Name, componentOverrides);
+                                    }
+
+                                    break;
                                 case "Behaviors":
                                     var behaviors = new Dictionary<StateType, BaseState>();
 

@@ -6,27 +6,27 @@ using UnityEngine;
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 public interface IEnemyController
 {
-    public string Name { get; }
-    public string PrefabName { get; }
-    public string ParentPlane { get; }
-    public RectModel Rectangle { get; }
-    public Vector3Model Position { get; }
-    public Vector3Model Rotation { get; }
-    public Vector3Model Scale { get; }
+    string Name { get; }
+    string PrefabName { get; }
+    string ParentPlane { get; }
+    RectModel Rectangle { get; }
+    Vector3Model Position { get; }
+    Vector3Model Rotation { get; }
+    Vector3Model Scale { get; }
 
-    public int OnKillRepPoints { get; }
-    public bool TopBounceImmune { get; }
-    public string OnKillMessageReceiver { get; }
-    public int EnemyLevelOffset { get; }
-    public string OnDeathTargetID { get; }
-    public string EnemyDisplayName { get; }
-    public int EnemyDisplayNameSize { get; }
-    public Vector3 EnemyDisplayNamePosition { get; }
-    public Color EnemyDisplayNameColor { get; }
-    public EnemyScalingType EnemyScalingType { get; }
-    public bool CanAutoScale { get; }
-    public bool CanAutoScaleResistance { get; }
-    public bool CanAutoScaleDamage { get; }
-    public ItemEffectType EnemyEffectType { get; }
-    public BaseEnemy CreateEnemy(string id, string prefabName);
+    int OnKillRepPoints { get; }
+    bool TopBounceImmune { get; }
+    string OnKillMessageReceiver { get; }
+    int EnemyLevelOffset { get; }
+    string OnDeathTargetID { get; }
+    string EnemyDisplayName { get; }
+    int EnemyDisplayNameSize { get; }
+    Vector3 EnemyDisplayNamePosition { get; }
+    Color EnemyDisplayNameColor { get; }
+    EnemyScalingType EnemyScalingType { get; }
+    bool CanAutoScale { get; }
+    bool CanAutoScaleResistance { get; }
+    bool CanAutoScaleDamage { get; }
+    ItemEffectType EnemyEffectType { get; }
+    BaseEnemy CreateEnemy(string id, string prefabName);
 }

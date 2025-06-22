@@ -39,6 +39,36 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
         NextStates.Add(state);
     }
 
+    public void AddNextState(Type t)
+    {
+        var state = Room.GetEntityFromId(Id, t);
+
+        if (state == null)
+        {
+            var stateName = t.Name;
+            var types = string.Join(", ", Room.GetEntitiesFromId<IAIState>(Id).Select(x => x.StateName));
+
+            Logger.LogError(
+                "Could not find state of {StateName} for {PrefabName}. Possible types: {Types}",
+                stateName, PrefabName, types
+            );
+
+            return;
+        }
+
+        if (state is not IAIState aiState)
+        {
+            Logger.LogError(
+                "Type {Type} for {PrefabName} is not an AI state.",
+                t.Name, PrefabName
+            );
+            return;
+        }
+
+        aiState.SetStateMachine(this);
+        NextStates.Add(aiState);
+    }
+
     public void GoToNextState()
     {
         if (Room == null || Room.IsObjectKilled(Id))

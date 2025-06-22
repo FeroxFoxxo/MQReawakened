@@ -2,5 +2,5 @@
 
 public interface IService
 {
-    public void Initialize();
+    void Initialize();
 }

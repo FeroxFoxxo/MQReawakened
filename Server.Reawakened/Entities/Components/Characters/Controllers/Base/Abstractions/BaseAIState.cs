@@ -20,6 +20,9 @@ public abstract class BaseAIState<T> : Component<T>, IAIState
     public void AddNextState<AiState>() where AiState : class, IAIState =>
         StateMachine.AddNextState<AiState>();
 
+    public void AddNextState(Type t) =>
+        StateMachine.AddNextState(t);
+
     public void GoToNextState() =>
         StateMachine.GoToNextState();
 

@@ -2,5 +2,5 @@
 
 public interface IRecieverTriggered
 {
-    public void RecievedTrigger(bool triggered);
+    void RecievedTrigger(bool triggered);
 }

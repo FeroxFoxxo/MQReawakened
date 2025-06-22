@@ -4,11 +4,11 @@ namespace Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
 
 public interface ITriggerComp
 {
-    public void RunTrigger(Player player);
-    public void ResetTrigger();
-    public void AddPhysicalInteractor(Player player, string interactionId);
-    public void RemovePhysicalInteractor(Player player, string interactionId);
-    public int GetPhysicalInteractorCount();
-    public string[] GetPhysicalInteractorIds();
+    void RunTrigger(Player player);
+    void ResetTrigger();
+    void AddPhysicalInteractor(Player player, string interactionId);
+    void RemovePhysicalInteractor(Player player, string interactionId);
+    int GetPhysicalInteractorCount();
+    string[] GetPhysicalInteractorIds();
     bool IsActive();
 }

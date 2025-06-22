@@ -4,10 +4,10 @@ namespace Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces
 
 public interface IDamageable
 {
-    public int CurrentHealth { get; set; }
-    public int MaxHealth { get; }
-    public int Stars { get; }
-    public int DifficultyLevel { get; }
+    int CurrentHealth { get; set; }
+    int MaxHealth { get; }
+    int Stars { get; }
+    int DifficultyLevel { get; }
 
-    public int GetDamageAmount(int damage, Elemental damageType);
+    int GetDamageAmount(int damage, Elemental damageType);
 }
