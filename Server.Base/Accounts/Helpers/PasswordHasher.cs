@@ -1,32 +1,69 @@
-﻿using Server.Base.Core.Extensions;
-using Server.Base.Database.Accounts;
+﻿using Server.Base.Database.Accounts;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace Server.Base.Accounts.Helpers;
 
 public class PasswordHasher
 {
-    private readonly byte[] _hashBuffer;
-    private readonly SHA512 _sha512HashProvider;
+    private const int SaltSize = 16;
+    private const int HashSize = 32;
+    private const int Iterations = 100000;
+    private static readonly HashAlgorithmName _hashAlgorithmName = HashAlgorithmName.SHA512;
 
-    public PasswordHasher()
+    public static bool CheckPassword(AccountModel account, string plainPassword)
     {
-        _sha512HashProvider = SHA512.Create();
-        _hashBuffer = new byte[256];
+        if (InternalCheckPassword(account, plainPassword))
+            return true;
+
+        if (OldPasswordHasher.CheckPassword(account, plainPassword))
+        {
+            account.Write.Password = GetPassword(plainPassword);
+            return true;
+        }
+
+        return false;
     }
 
-    public string HashSha512(string phrase)
+    private static bool InternalCheckPassword(AccountModel account, string plainPassword)
     {
-        var length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, _hashBuffer, 0);
-        var hashed = _sha512HashProvider.ComputeHash(_hashBuffer, 0, length);
+        if (string.IsNullOrEmpty(account?.Password) || string.IsNullOrEmpty(plainPassword))
+            return false;
 
-        return BitConverter.ToString(hashed);
+        try
+        {
+            var hashWithSaltBytes = Convert.FromBase64String(account.Password);
+
+            var salt = new byte[SaltSize];
+            Array.Copy(hashWithSaltBytes, 0, salt, 0, SaltSize);
+
+            var storedHash = new byte[HashSize];
+            Array.Copy(hashWithSaltBytes, SaltSize, storedHash, 0, HashSize);
+
+            using var pbkdf2 = new Rfc2898DeriveBytes(plainPassword, salt, Iterations, _hashAlgorithmName);
+            var passwordHash = pbkdf2.GetBytes(HashSize);
+
+            return CryptographicOperations.FixedTimeEquals(passwordHash, storedHash);
+        }
+        catch (Exception)
+        {
+           return false;
+        }
     }
 
-    public bool CheckPassword(AccountModel account, string plainPassword) =>
-        account.Password == GetPassword(account.Username, plainPassword);
+    public static string GetPassword(string password)
+    {
+        if (string.IsNullOrEmpty(password))
+            throw new ArgumentNullException(nameof(password));
 
-    public string GetPassword(string username, string password) =>
-        HashSha512(username.Sanitize() + password);
+        var salt = RandomNumberGenerator.GetBytes(SaltSize);
+
+        using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, _hashAlgorithmName);
+        var hash = pbkdf2.GetBytes(HashSize);
+
+        var hashWithSaltBytes = new byte[SaltSize + HashSize];
+        Array.Copy(salt, 0, hashWithSaltBytes, 0, SaltSize);
+        Array.Copy(hash, 0, hashWithSaltBytes, SaltSize, HashSize);
+
+        return Convert.ToBase64String(hashWithSaltBytes);
+    }
 }

@@ -12,14 +12,12 @@ namespace Web.Launcher.Controllers.API.JSON.DLC;
 
 [Route("api/json/dlc/login")]
 public class LoginController(AccountHandler accHandler, UserInfoHandler userInfoHandler, InternalRwConfig iWConfig,
-    LauncherRConfig rConfig, PasswordHasher passwordHasher, LauncherRwConfig config, ILogger<LoginController> logger) : Controller
+    LauncherRConfig rConfig, LauncherRwConfig config, ILogger<LoginController> logger) : Controller
 {
     [HttpPost]
     public IActionResult HandleLogin([FromForm] string username, [FromForm] string password)
     {
         username = username.Sanitize();
-
-        var hashedPw = passwordHasher.GetPassword(username, password);
 
         var account = accHandler.GetAccountFromUsername(username);
 
@@ -37,7 +35,7 @@ public class LoginController(AccountHandler accHandler, UserInfoHandler userInfo
             return BadRequest();
         }
 
-        if (account.Password != hashedPw && userInfo.AuthToken != password)
+        if (!PasswordHasher.CheckPassword(account, password) && userInfo.AuthToken != password)
         {
             logger.LogError("Account password does not match for {Username} (ID: {Id})", username, account.Id);
             return Unauthorized();

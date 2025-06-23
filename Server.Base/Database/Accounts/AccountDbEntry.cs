@@ -21,14 +21,14 @@ public class AccountDbEntry : PersistantData
 
     public AccountDbEntry() => InitializeList();
 
-    public AccountDbEntry(string username, string password, string email, PasswordHasher hasher)
+    public AccountDbEntry(string username, string password, string email)
     {
         username = username.Sanitize();
         email = email.Sanitize();
 
         Username = username;
         Email = email;
-        Password = hasher.GetPassword(username, password);
+        Password = PasswordHasher.GetPassword(password);
 
         AccessLevel = AccessLevel.Player;
         GameMode = GameMode.Default;

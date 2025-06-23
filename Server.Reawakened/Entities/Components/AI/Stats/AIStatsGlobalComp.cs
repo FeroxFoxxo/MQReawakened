@@ -116,6 +116,7 @@ public class AIStatsGlobalComp : Component<AI_Stats_Global>
         if (Aggro_AttackBeyondPatrolLine != Default.Aggro_AttackBeyondPatrolLine)
             globalProps.Aggro_AttackBeyondPatrolLine = Aggro_AttackBeyondPatrolLine;
     }
+
     public GenericScriptPropertiesModel MixGenericProperties(ClassCopier classCopier, GenericScriptPropertiesModel properties)
     {
         var baseType = typeof(AI_Stats_Global);

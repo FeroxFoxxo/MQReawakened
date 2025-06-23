@@ -15,7 +15,7 @@ using System.Net;
 
 namespace Server.Base.Database.Accounts;
 
-public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLimiter, IpLimiter ipLimiter, BaseLock bLock,
+public class AccountHandler(AccountAttackLimiter attackLimiter, IpLimiter ipLimiter, BaseLock bLock,
     FileLogger fileLogger, TemporaryDataStorage temporaryDataStorage, InternalRConfig config, IServiceProvider services) :
     DataHandler<AccountDbEntry, BaseDatabase, BaseLock>(services, bLock)
 {
@@ -36,7 +36,7 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         email = email.Sanitize();
 
         if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(email))
-            return new AccountDbEntry(username, password, email, hasher)
+            return new AccountDbEntry(username, password, email)
             {
                 AccessLevel = AccessLevel.Owner
             };
@@ -120,7 +120,7 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
                 account = GetAccountFromUsername(username);
 
                 if (account != null)
-                    if (!hasher.CheckPassword(account, password))
+                    if (!PasswordHasher.CheckPassword(account, password))
                         rejectReason = AlrReason.BadPass;
             }
 
@@ -189,7 +189,7 @@ public class AccountHandler(PasswordHasher hasher, AccountAttackLimiter attackLi
         Logger.LogInformation("Login: {Address}: Creating new account '{Username}'",
             ipAddress, username);
 
-        var account = new AccountDbEntry(username, password, email, hasher);
+        var account = new AccountDbEntry(username, password, email);
 
         Add(account);
 

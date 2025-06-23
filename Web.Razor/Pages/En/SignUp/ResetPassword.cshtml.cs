@@ -10,8 +10,7 @@ using Web.Razor.Services;
 namespace Web.Razor.Pages.En.SignUp;
 
 [BindProperties]
-public class ResetPasswordModel(InternalRwConfig iConfig, AccountHandler aHandler,
-    PasswordHasher hasher, TemporaryDataStorage tempStorage) : PageModel
+public class ResetPasswordModel(InternalRwConfig iConfig, AccountHandler aHandler, TemporaryDataStorage tempStorage) : PageModel
 {
     [Required(ErrorMessage = "Please Enter Password")]
     [StringLength(15, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -65,7 +64,7 @@ public class ResetPasswordModel(InternalRwConfig iConfig, AccountHandler aHandle
         }
 
         var newAccount = aHandler.GetAccountFromEmail(account.Email);
-        newAccount.Write.Password = hasher.GetPassword(newAccount.Username, Password);
+        newAccount.Write.Password = PasswordHasher.GetPassword(Password);
         aHandler.Update(newAccount.Write);
 
         tempStorage.RemoveData(id, account);

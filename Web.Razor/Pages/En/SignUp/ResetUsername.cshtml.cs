@@ -11,7 +11,7 @@ using Web.Razor.Services;
 namespace Web.Razor.Pages.En.SignUp;
 
 [BindProperties]
-public class ResetUsernameModel(InternalRwConfig iConfig, AccountHandler aHandler, PasswordHasher hasher,
+public class ResetUsernameModel(InternalRwConfig iConfig, AccountHandler aHandler,
     TemporaryDataStorage tempStorage) : PageModel
 {
     [Required(ErrorMessage = "Please Enter Username")]
@@ -80,16 +80,13 @@ public class ResetUsernameModel(InternalRwConfig iConfig, AccountHandler aHandle
 
         var newAccount = aHandler.GetAccountFromEmail(account.Email);
 
-        var hashedPw = hasher.GetPassword(newAccount.Username, Password);
-
-        if (newAccount.Password != hashedPw)
+        if (!PasswordHasher.CheckPassword(newAccount, Password))
         {
             ModelState.AddModelError("Password", "Incorrect Password");
             return Page();
         }
 
         newAccount.Write.Username = Username;
-        newAccount.Write.Password = hasher.GetPassword(Username, Password);
 
         aHandler.Update(newAccount.Write);
 
