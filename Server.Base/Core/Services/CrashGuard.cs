@@ -15,7 +15,7 @@ namespace Server.Base.Core.Services;
 public class CrashGuard(NetStateHandler handler, ILogger<CrashGuard> logger, EventSink sink,
     IServiceProvider services, InternalRConfig config, InternalRwConfig rwConfig, World world) : IService
 {
-    private readonly Module[] _modules = services.GetServices<Module>().ToArray();
+    private readonly Module[] _modules = [.. services.GetServices<Module>()];
 
     public void Initialize() => sink.Crashed += OnCrash;
 

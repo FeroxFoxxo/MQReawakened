@@ -18,10 +18,10 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
     public RecipeListModel RecipeList => new(Write);
 
     private PlayerListModel FriendModels =>
-        new(Friends.Select(f => new CharacterRelationshipModel(f, _player)).ToList());
+        new([.. Friends.Select(f => new CharacterRelationshipModel(f, _player))]);
 
     private PlayerListModel BlockModels =>
-        new(Blocked.Select(b => new CharacterRelationshipModel(b, _player)).ToList());
+        new([.. Blocked.Select(b => new CharacterRelationshipModel(b, _player))]);
 
     private int ChatLevel => _player?.UserInfo.ChatLevel ?? 0;
 
@@ -184,7 +184,7 @@ public class CharacterDataModel(CharacterDbEntry entry, GameVersion version) : C
     }
 
     private string[] BuildTribeDataString() =>
-        TribesProgression.Values.Select(tribeType => tribeType.ToString()).ToArray();
+        [.. TribesProgression.Values.Select(tribeType => tribeType.ToString())];
 
     public string BuildPortalData()
     {

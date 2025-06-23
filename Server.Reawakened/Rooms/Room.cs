@@ -66,7 +66,6 @@ public class Room : Timer
 
     public ItemCatalog ItemCatalog;
     public InternalColliders ColliderCatalog;
-    public InternalEnemyData InternalEnemyData;
 
     public WorldHandler World;
 
@@ -93,7 +92,6 @@ public class Room : Timer
         _itemConfig = services.GetRequiredService<ItemRConfig>();
         ColliderCatalog = services.GetRequiredService<InternalColliders>();
         ItemCatalog = services.GetRequiredService<ItemCatalog>();
-        InternalEnemyData = services.GetRequiredService<InternalEnemyData>();
         Logger = services.GetRequiredService<ILogger<Room>>();
         World = services.GetRequiredService<WorldHandler>();
 
@@ -424,13 +422,13 @@ public class Room : Timer
 
     public T[] GetEntitiesFromId<T>(string id) where T : class =>
         _entities.TryGetValue(id, out var entities) ?
-            entities.Where(x => x is T and not null).Select(x => x as T).ToArray() :
+            [.. entities.Where(x => x is T and not null).Select(x => x as T)] :
             [];
 
     public T[] GetEntitiesFromType<T>() where T : class =>
         typeof(T) == typeof(BaseComponent)
             ? _entities.Values.SelectMany(x => x).ToArray() as T[]
-            : _entities.SelectMany(x => x.Value).Where(x => x is T and not null).Select(x => x as T).ToArray();
+            : [.. _entities.SelectMany(x => x.Value).Where(x => x is T and not null).Select(x => x as T)];
 
     // Projectiles
 

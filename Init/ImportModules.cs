@@ -43,6 +43,6 @@ public static class ImportModules
 
         var provider = services.BuildServiceProvider();
 
-        return modules.Select(module => provider.GetRequiredService(module) as Module).ToArray();
+        return [.. modules.Select(module => provider.GetRequiredService(module) as Module)];
     }
 }

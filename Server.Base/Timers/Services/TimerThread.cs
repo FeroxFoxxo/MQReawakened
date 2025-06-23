@@ -37,8 +37,8 @@ public class TimerThread : IService
         _signal = new AutoResetEvent(false);
         _logger = logger;
 
-        _nextPriorities = Enumerable.Repeat(default(double), config.Delays.Length).ToArray();
-        _timers = Enumerable.Repeat(new List<Timer>(), config.Delays.Length).ToArray();
+        _nextPriorities = [.. Enumerable.Repeat(default(double), config.Delays.Length)];
+        _timers = [.. Enumerable.Repeat(new List<Timer>(), config.Delays.Length)];
 
         _timerThread = new Thread(RunTimer)
         {

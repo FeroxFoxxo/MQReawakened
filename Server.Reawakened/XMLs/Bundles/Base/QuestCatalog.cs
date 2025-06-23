@@ -49,13 +49,13 @@ public class QuestCatalog : QuestCatalogXML, IBundledXml
     }
 
     public QuestDescription[] GetQuestGiverById(int npcId) =>
-        QuestCatalogs.Values.Where(q => q.QuestGiverGoId == npcId).ToArray();
+        [.. QuestCatalogs.Values.Where(q => q.QuestGiverGoId == npcId)];
 
     public QuestDescription[] GetQuestGiverByName(string npcName) =>
-        QuestCatalogs.Values.Where(q => q.QuestgGiverName == npcName).ToArray();
+        [.. QuestCatalogs.Values.Where(q => q.QuestgGiverName == npcName)];
 
     public QuestDescription[] GetQuestValidatorById(int npcId) =>
-        QuestCatalogs.Values.Where(q => q.ValidatorGoId == npcId).ToArray();
+        [.. QuestCatalogs.Values.Where(q => q.ValidatorGoId == npcId)];
 
     public List<QuestDescription> GetQuestLineQuests(QuestLineDescription questLine) =>
         QuestLines.TryGetValue(questLine, out var v) ? v : null;

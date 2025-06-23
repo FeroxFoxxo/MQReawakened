@@ -20,7 +20,7 @@ public static class SendProtocols
         );
 
     public static void SendXt(this NetState state, string actionType, params object[] messages) =>
-        state.SendXt(actionType, messages.Select(x => x == null ? string.Empty : x.ToString()).ToArray());
+        state.SendXt(actionType, [.. messages.Select(x => x == null ? string.Empty : x.ToString())]);
 
     public static void SendXt(this NetState state, string actionType, params string[] messages) =>
         state.Send(

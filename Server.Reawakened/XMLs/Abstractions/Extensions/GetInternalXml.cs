@@ -14,7 +14,7 @@ namespace Server.Reawakened.XMLs.Abstractions.Extensions;
 public static class GetInternalXml
 {
     public static List<ItemModel> GetXmlItems(this XmlNode node, ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger) =>
-        node.GetXmlLootItems(itemCatalog, logger).Select(c => c.Value).ToList();
+        [.. node.GetXmlLootItems(itemCatalog, logger).Select(c => c.Value)];
 
     public static List<KeyValuePair<int, ItemModel>> GetXmlLootItems(this XmlNode node, ItemCatalog itemCatalog, Microsoft.Extensions.Logging.ILogger logger)
     {

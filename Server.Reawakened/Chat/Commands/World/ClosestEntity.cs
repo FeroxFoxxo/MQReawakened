@@ -43,7 +43,7 @@ public class ClosestEntity : SlashCommand
         var count = 0;
 
         if (closestGameObjects.Count > ServerRConfig.MaximumEntitiesToReturnLog)
-            closestGameObjects = closestGameObjects.Take(ServerRConfig.MaximumEntitiesToReturnLog).ToList();
+            closestGameObjects = [.. closestGameObjects.Take(ServerRConfig.MaximumEntitiesToReturnLog)];
         closestGameObjects.Reverse();
 
         foreach (var item in closestGameObjects)

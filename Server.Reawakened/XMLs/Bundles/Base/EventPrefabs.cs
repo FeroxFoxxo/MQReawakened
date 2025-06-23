@@ -42,7 +42,7 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
             foreach (XmlNode events in node)
             {
                 var parent = events.ParentNode;
-                var eventName = new string(events.Attributes["name"].Value.Reverse().ToArray());
+                var eventName = new string([.. events.Attributes["name"].Value.Reverse()]);
 
                 switch (eventName)
                 {
@@ -89,7 +89,7 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
             foreach (XmlNode events in node)
             {
                 var parent = events.ParentNode;
-                var eventName = new string(events.Attributes["name"].Value.Reverse().ToArray());
+                var eventName = new string([.. events.Attributes["name"].Value.Reverse()]);
 
                 switch (eventName)
                 {
@@ -134,7 +134,7 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
             foreach (XmlNode events in node)
             {
                 var parent = events.ParentNode;
-                var eventName = new string(events.Attributes["name"].Value.Reverse().ToArray());
+                var eventName = new string([.. events.Attributes["name"].Value.Reverse()]);
 
                 switch (eventName)
                 {
@@ -328,12 +328,12 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
         if (!string.IsNullOrEmpty(RwConfig.CurrentEventOverride))
             defaultEventName = RwConfig.CurrentEventOverride;
         else if (RConfig.CurrentEvent.TryGetValue(RConfig.GameVersion, out var defaultEventString))
-            defaultEventName = new string(defaultEventString.Reverse().ToArray());
+            defaultEventName = new string([.. defaultEventString.Reverse()]);
 
         if (!string.IsNullOrEmpty(RwConfig.CurrentTimedEventOverride))
             defaultTimedEvent = RwConfig.CurrentTimedEventOverride;
         else if (RConfig.CurrentTimedEvent.TryGetValue(RConfig.GameVersion, out var defaultTimedString))
-            defaultTimedEvent = new string(defaultTimedString.Reverse().ToArray());
+            defaultTimedEvent = new string([.. defaultTimedString.Reverse()]);
 
         var reversedDict = EventIdToNameDict.ToDictionary(
             x => x.Value,
@@ -381,15 +381,14 @@ public class EventPrefabs : EventPrefabsXML, IBundledXml
 
             EventId = defaultEvent.EventId,
 
-            SecondaryEvents = reversedDict.Values
+            SecondaryEvents = [.. reversedDict.Values
                 .Where(x => x.EventId != defaultEvent.EventId)
                 .Select(x => new SecondaryEventInfo()
                 {
                     EventId = x.EventId,
                     DisplayAd = x.HasEventAd,
                     DisplayIcon = x.HasEventPopupIcon
-                })
-                .ToList(),
+                })],
 
             TimedEventName = defaultTimedEvent,
             GameVersion = RConfig.GameVersion

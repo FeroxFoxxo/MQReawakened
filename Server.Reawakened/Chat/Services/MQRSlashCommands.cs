@@ -39,7 +39,7 @@ public class MQRSlashCommands(IServiceScopeFactory serviceFact, ReflectionUtils 
             }
         }
 
-        ServerCommands = _commands.Select(c => c.Value as CommandModel).ToList();
+        ServerCommands = [.. _commands.Select(c => c.Value as CommandModel)];
     }
 
     private static void Log(string message, Player player) =>

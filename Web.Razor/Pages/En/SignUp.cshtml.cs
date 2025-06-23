@@ -52,14 +52,14 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
     [Required(ErrorMessage = "Please Enter Region")]
     public string Region { get; set; }
 
-    public static List<SelectListItem> Genders => Enum.GetValues<Gender>()
+    public static List<SelectListItem> Genders => [.. Enum.GetValues<Gender>()
         .Select(v => new SelectListItem
         {
             Text = v.ToString(),
             Value = ((int)v).ToString()
-        }).ToList();
+        })];
 
-    public static List<SelectListItem> Regions => CultureInfo
+    public static List<SelectListItem> Regions => [.. CultureInfo
         .GetCultures(CultureTypes.SpecificCultures)
         .Select(ci => new RegionInfo(ci.ToString()))
         .DistinctBy(ci => ci.TwoLetterISORegionName)
@@ -69,8 +69,7 @@ public class SignUpModel(AccountHandler accountHandler, UserInfoHandler userInfo
             Text = x.EnglishName +
                    (x.EnglishName == x.NativeName ? string.Empty : $"/{x.NativeName}"),
             Value = x.TwoLetterISORegionName
-        })
-        .ToList();
+        })];
 
     public void OnGet() => ViewData["ServerName"] = config.ServerName;
 

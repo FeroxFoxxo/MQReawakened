@@ -63,7 +63,7 @@ public static class PlayerAchievementExtensions
         var cond = achievements.Select(
             a => new KeyValuePair<AchievementStaticData, List<AchievementDefinitionConditions>>(
                 a,
-                a.conditions.Where(c => c.typeId == type && c.description == achValue).ToList()
+                [.. a.conditions.Where(c => c.typeId == type && c.description == achValue)]
             )
         ).ToList();
 
@@ -132,7 +132,7 @@ public static class PlayerAchievementExtensions
         {
             characterId = character.Id,
             id = achievement.id,
-            conditions = achievement.conditions.Select(c =>
+            conditions = [.. achievement.conditions.Select(c =>
             {
                 var value = 0;
 
@@ -155,7 +155,7 @@ public static class PlayerAchievementExtensions
                     ctime = long.MinValue, // COMPLETION TIME
                     mtime = long.MinValue, // MODIFIED TIME
                 };
-            }).ToList(),
+            })],
             goal = achievement.goal,
 
             // UNUSED
@@ -167,7 +167,6 @@ public static class PlayerAchievementExtensions
     {
         var _characterId = character.Id;
 
-        return internalAchievement.Definitions.achievements
-            .Select(x => GetAchievement(character, x)).ToList();
+        return [.. internalAchievement.Definitions.achievements.Select(x => GetAchievement(character, x))];
     }
 }

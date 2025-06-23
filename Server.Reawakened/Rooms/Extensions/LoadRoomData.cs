@@ -8,6 +8,8 @@ using Server.Reawakened.Network.Helpers;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.Rooms.Models.Planes;
 using Server.Reawakened.Rooms.Services;
+using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Enemy.Models;
 using System.Reflection;
 using System.Text.Json;
 using System.Xml;
@@ -96,6 +98,7 @@ public static class LoadRoomData
         var reflectionUtils = services.GetRequiredService<ReflectionUtils>();
         var fileLogger = services.GetRequiredService<FileLogger>();
         var classCopier = services.GetRequiredService<ClassCopier>();
+        var internalEnemyData = services.GetRequiredService<InternalEnemyData>();
 
         var entities = new Dictionary<string, List<BaseComponent>>();
         room.UnknownEntities = [];
@@ -103,7 +106,7 @@ public static class LoadRoomData
         if (room.Planes == null)
             return entities;
 
-        var entityTransfer = new EntityTransfer(reflectionUtils, classCopier, room, fileLogger, services);
+        var entityTransfer = new EntityTransfer(reflectionUtils, classCopier, room, fileLogger, services, internalEnemyData);
 
         foreach (var plane in room.Planes)
         {
@@ -165,13 +168,14 @@ public static class LoadRoomData
     }
 
     private class EntityTransfer(ReflectionUtils reflectionUtils, ClassCopier classCopier,
-        Room room, FileLogger fileLogger, IServiceProvider serviceProvider)
+        Room room, FileLogger fileLogger, IServiceProvider serviceProvider, InternalEnemyData internalEnemyData)
     {
         public ReflectionUtils ReflectionUtils => reflectionUtils;
         public ClassCopier ClassCopier => classCopier;
         public Room Room => room;
         public FileLogger FileLogger => fileLogger;
         public IServiceProvider ServiceProvider => serviceProvider;
+        public InternalEnemyData InternalEnemyData => internalEnemyData;
     }
 
     private static List<BaseComponent> GetEntity(GameObjectModel entity, EntityTransfer vars, out List<string> unknownComponents)
@@ -179,7 +183,12 @@ public static class LoadRoomData
         var componentList = new List<BaseComponent>();
         var entityData = new Entity(entity, vars.Room, vars.FileLogger);
 
+        EnemyModel enemyInfo = null;
+
         unknownComponents = [];
+
+        if (vars.InternalEnemyData.EnemyInfoCatalog.TryGetValue(entity.ObjectInfo.PrefabName, out var foundEnemyModel))
+            enemyInfo = foundEnemyModel;
 
         foreach (var component in entity.ObjectInfo.Components)
         {
@@ -192,12 +201,19 @@ public static class LoadRoomData
                 continue;
             }
 
+            var componentAttributes = component.Value.ComponentAttributes;
+
+            if (enemyInfo != null)
+                if (enemyInfo.ComponentOverrides != null && enemyInfo.ComponentOverrides.TryGetValue(mqType.Name, out var foundValueOverrides))
+                    if (foundValueOverrides.Count > 0)
+                        componentAttributes = foundValueOverrides.Concat(componentAttributes).ToDictionary(x => x.Key, x => x.Value);
+
             var newEntity = vars.ClassCopier.GetClassAndInfo(mqType);
 
             var dataObj = newEntity.Key;
             var fields = newEntity.Value;
 
-            foreach (var componentValue in component.Value.ComponentAttributes.Where(componentValue =>
+            foreach (var componentValue in componentAttributes.Where(componentValue =>
                          !string.IsNullOrEmpty(componentValue.Value)))
             {
                 var field = fields.FirstOrDefault(f => f.Name == componentValue.Key);

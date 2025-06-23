@@ -105,6 +105,8 @@ public class InternalEnemyData : InternalXml
                                         overrides.Add(foundOverride.Name, componentOverrides);
                                     }
 
+                                    enemyModel.ComponentOverrides = overrides;
+
                                     break;
                                 case "Behaviors":
                                     var behaviors = new Dictionary<StateType, BaseState>();

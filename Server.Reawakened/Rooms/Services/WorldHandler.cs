@@ -167,11 +167,10 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
         return nodes == null
             ? []
-            : nodes
+            : [.. nodes
             .Where(x => x.ToLevelID != x.LevelID)
             .Select(x => worldGraph.GetInfoLevel(x.ToLevelID).Name)
-            .Distinct()
-            .ToList();
+            .Distinct()];
     }
 
     public void UsePortal(Player player, int levelId, int portalId, string defaultSpawnId = "")

@@ -21,7 +21,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
     public List<string> CurrentPhysicalInteractors;
     public int CurrentInteractions;
 
-    public List<Player> CurrentValidInteractors => CurrentPhysicalInteractors.ToList().Select(ci =>
+    public List<Player> CurrentValidInteractors => [.. CurrentPhysicalInteractors.ToList().Select(ci =>
     {
         var player = Room.GetPlayerById(ci);
 
@@ -53,7 +53,7 @@ public abstract class BaseTriggerCoopController<T> : Component<T>, ITriggerComp,
 
         return validQuestProgress ? player : null;
 
-    }).Where(x => x != null).ToList();
+    }).Where(x => x != null)];
 
     public int Interactions => CurrentInteractions + CurrentValidInteractors.Count;
 

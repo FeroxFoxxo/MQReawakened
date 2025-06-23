@@ -131,10 +131,9 @@ public class ServerConsole : IService
     }
 
     private static NetworkType[] GetFlags(NetworkType networkType) =>
-        Enum.GetValues(typeof(NetworkType))
+        [.. Enum.GetValues(typeof(NetworkType))
             .Cast<NetworkType>()
-            .Where(v => networkType.HasFlag(v))
-            .ToArray();
+            .Where(v => networkType.HasFlag(v))];
 
     public void DisplayHelp()
     {

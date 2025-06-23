@@ -119,9 +119,7 @@ public class ExtractIcons(IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBun
 
         foreach (DictionaryEntry entry in type)
             if ((string)entry.Key == "Icons")
-                icons = ((List<object>)entry.Value)
-                    .Select(x => (OrderedDictionary)x)
-                .ToList();
+                icons = [.. ((List<object>)entry.Value).Select(x => (OrderedDictionary)x)];
 
         var texturePaths = new Dictionary<string, int>();
 
