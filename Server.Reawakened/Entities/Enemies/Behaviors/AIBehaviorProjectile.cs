@@ -3,7 +3,7 @@ using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
-public class AIBehaviorProjectile(ProjectileProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
+public class AIBehaviorProjectile(ProjectileProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Projectile)
 {
     public override bool ShouldDetectPlayers => false;
 

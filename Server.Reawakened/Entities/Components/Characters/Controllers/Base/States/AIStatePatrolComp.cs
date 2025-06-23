@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 using Server.Reawakened.Players;
 using Server.Reawakened.Rooms.Extensions;
-using Server.Reawakened.XMLs.Data.Enemy.States;
 using UnityEngine;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.States;

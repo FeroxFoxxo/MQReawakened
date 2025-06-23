@@ -4,7 +4,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorBomber(BomberProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
+public class AIBehaviorBomber(BomberProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Bomber)
 {
     public override bool ShouldDetectPlayers => false;
 

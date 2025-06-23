@@ -5,6 +5,7 @@ using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Players.Models.Character;
 using Server.Reawakened.XMLs.Bundles.Base;
 using Server.Reawakened.XMLs.Bundles.Internal;
+using Server.Reawakened.XMLs.Data.Enemy.Models;
 using Server.Reawakened.XMLs.Data.LootRewards.Enums;
 using Server.Reawakened.XMLs.Data.LootRewards.Models;
 

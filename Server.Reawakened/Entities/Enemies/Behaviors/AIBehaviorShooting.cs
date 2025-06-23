@@ -4,7 +4,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorShooting(ShootingProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
+public class AIBehaviorShooting(ShootingProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Shooting)
 {
     public override bool ShouldDetectPlayers => false;
 

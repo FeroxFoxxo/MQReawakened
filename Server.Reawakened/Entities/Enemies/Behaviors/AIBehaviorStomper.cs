@@ -4,7 +4,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorStomper(StomperProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
+public class AIBehaviorStomper(StomperProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Stomper)
 {
     public override bool ShouldDetectPlayers => false;
 

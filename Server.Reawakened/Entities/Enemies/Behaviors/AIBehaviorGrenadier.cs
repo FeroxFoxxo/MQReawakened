@@ -4,7 +4,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorGrenadier(GrenadierProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
+public class AIBehaviorGrenadier(GrenadierProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Grenadier)
 {
     public override bool ShouldDetectPlayers => false;
 

@@ -4,7 +4,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorLookAround(LookAroundProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
+public class AIBehaviorLookAround(LookAroundProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.LookAround)
 {
     public override bool ShouldDetectPlayers => true;
 

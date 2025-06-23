@@ -3,7 +3,7 @@ using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
-public class AIBehaviorActing(ActingProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
+public class AIBehaviorActing(ActingProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Acting)
 {
     // TODO: CREATE LOGIC FLOW FOR ACTING STATES
     public ActingState ActingState = ActingState.Idle;

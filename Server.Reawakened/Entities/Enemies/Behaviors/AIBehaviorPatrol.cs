@@ -6,7 +6,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorPatrol(PatrolProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
+public class AIBehaviorPatrol(PatrolProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Patrol)
 {
     public override bool ShouldDetectPlayers => true;
 

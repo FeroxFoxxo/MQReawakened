@@ -19,7 +19,6 @@ using Server.Reawakened.XMLs.Bundles.Internal;
 using Server.Reawakened.XMLs.Data.Enemy.Abstractions;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 using Server.Reawakened.XMLs.Data.Enemy.Models;
-using Server.Reawakened.XMLs.Data.Enemy.States;
 
 namespace Server.Reawakened.Entities.Components.GameObjects.Spawners;
 
@@ -258,7 +257,7 @@ public class BaseSpawnerControllerComp : Component<BaseSpawnerController>
 
         var behaviors = new Dictionary<StateType, BaseState>
         {
-            { StateType.Idle, new IdleState([], StateType.Idle) }
+            { StateType.Idle, new BaseState([]) }
         };
 
         Room.SendSyncEvent(

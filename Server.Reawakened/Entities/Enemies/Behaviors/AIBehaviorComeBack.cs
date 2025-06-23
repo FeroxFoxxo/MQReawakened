@@ -4,7 +4,7 @@ using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
 
-public class AIBehaviorComeBack(ComeBackProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
+public class AIBehaviorComeBack(ComeBackProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.ComeBack)
 {
     public override bool ShouldDetectPlayers => true;
 

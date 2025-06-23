@@ -3,7 +3,7 @@ using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.XMLs.Data.Enemy.Enums;
 
 namespace Server.Reawakened.Entities.Enemies.Behaviors;
-public class AIBehaviorSpike(SpikeProperties properties, BehaviorEnemy enemy, StateType state) : AIBaseBehavior(enemy, state)
+public class AIBehaviorSpike(SpikeProperties properties, BehaviorEnemy enemy) : AIBaseBehavior(enemy, StateType.Spike)
 {
     public override bool ShouldDetectPlayers => false;
 
