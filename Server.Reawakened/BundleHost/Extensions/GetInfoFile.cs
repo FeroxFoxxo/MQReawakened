@@ -15,14 +15,16 @@ public static class GetInfoFile
 
         if (rwConfig.WebPlayerInfoFile == rwConfig.CacheInfoFile)
         {
-            logger.LogError("Web _player cache and saved directory should not be the same! Skipping...");
+            logger.LogError("Web player cache and saved directory should not be the same! Skipping...");
             rwConfig.WebPlayerInfoFile = string.Empty;
+            return string.Empty;
         }
 
         if (!rwConfig.WebPlayerInfoFile.Contains("appdata", StringComparison.CurrentCultureIgnoreCase))
         {
-            logger.LogError("Web _player cache has to be in the AppData/LocalLow folder! Skipping...");
+            logger.LogError("Web player cache has to be in the AppData/LocalLow folder! Skipping...");
             rwConfig.WebPlayerInfoFile = string.Empty;
+            return string.Empty;
         }
 
         return rwConfig.WebPlayerInfoFile;

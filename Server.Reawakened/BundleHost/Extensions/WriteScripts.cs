@@ -1,7 +1,6 @@
 ﻿using AssetStudio;
 using Newtonsoft.Json;
 using Server.Reawakened.BundleHost.Configs;
-using Server.Reawakened.Chat.Commands.Moderation;
 using System.Collections.Specialized;
 
 namespace Server.Reawakened.BundleHost.Extensions;
@@ -17,6 +16,7 @@ public static class WriteScripts
         }
 
         var scripts = new Dictionary<string, OrderedDictionary>();
+        var blacklistedScripts = new List<string>();
 
         foreach (var behaviour in assetFile.Objects.Where(x => x is MonoBehaviour).Select(x => x as MonoBehaviour))
         {
@@ -27,8 +27,15 @@ public static class WriteScripts
 
             var name = script.m_Name;
 
-            if (scripts.ContainsKey(name))
+            if (blacklistedScripts.Contains(name))
                 continue;
+
+            if (scripts.ContainsKey(name))
+            {
+                blacklistedScripts.Add(name);
+                scripts.Remove(name);
+                continue;
+            }
 
             var type = behaviour.ToType();
 
@@ -38,7 +45,13 @@ public static class WriteScripts
                 type = behaviour.ToType(m_Type);
             }
 
-            scripts.Add(name, type);
+            var dict = new OrderedDictionary();
+
+            foreach (var key in type.Keys)
+                if (!key.ToString().StartsWith("m_"))
+                    dict.Add(key, type[key]);
+
+            scripts.Add(name, dict);
         }
 
         File.WriteAllText(file, JsonConvert.SerializeObject(scripts, Formatting.Indented));
