@@ -8,6 +8,7 @@ public class AssetBundleRwConfig : IRwConfig
     public string WebPlayerInfoFile { get; set; }
     public bool FlushCacheOnStart { get; set; }
     public bool LogProgressBars { get; set; }
+    public int LastCalculatedLength { get; set; }
 
     public AssetBundleRwConfig()
     {
@@ -15,5 +16,6 @@ public class AssetBundleRwConfig : IRwConfig
         WebPlayerInfoFile = string.Empty;
         CacheInfoFile = string.Empty;
         LogProgressBars = false;
+        LastCalculatedLength = 0;
     }
 }

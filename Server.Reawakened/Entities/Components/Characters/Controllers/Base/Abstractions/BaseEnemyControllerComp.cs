@@ -67,7 +67,8 @@ public abstract class BaseEnemyControllerComp<T> : Component<T>, IEnemyControlle
             _ => null,
         };
 
-        Room.AddEnemy(enemy);
+        if (enemy != null)
+            Room.AddEnemy(enemy);
 
         return enemy;
     }

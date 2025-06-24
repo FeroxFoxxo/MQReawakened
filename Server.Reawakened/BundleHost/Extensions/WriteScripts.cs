@@ -1,12 +1,13 @@
 ﻿using AssetStudio;
-using Newtonsoft.Json;
 using Server.Reawakened.BundleHost.Configs;
+using Server.Reawakened.Rooms.Extensions;
 using System.Collections.Specialized;
+using System.Text.Json;
 
 namespace Server.Reawakened.BundleHost.Extensions;
 public static class WriteScripts
 {
-    public static void WriteScriptsFromBundle(this SerializedFile assetFile, string assetName, AssetBundleRConfig rConfig)
+    public static void GetScriptsFromBundle(this SerializedFile assetFile, string assetName, AssetBundleRConfig rConfig)
     {
         var file = Path.Combine(rConfig.ScriptsConfigDirectory, $"{assetName}.json");
 
@@ -54,6 +55,6 @@ public static class WriteScripts
             scripts.Add(name, dict);
         }
 
-        File.WriteAllText(file, JsonConvert.SerializeObject(scripts, Formatting.Indented));
+        File.WriteAllText(file, JsonSerializer.Serialize(scripts, LoadRoomData._jsonSerializerOptions));
     }
 }
