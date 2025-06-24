@@ -294,6 +294,9 @@ public static class LoadRoomData
                                 case var t when t == typeof(float):
                                     field.SetValue(dataObj, element.GetSingle());
                                     continue;
+                                case var t when t == typeof(bool):
+                                    field.SetValue(dataObj, element.GetInt32() == 1);
+                                    continue;
                                 default:
                                     logger.LogError("Fields didnt match {T1} {T2}.", element.ValueKind, field.FieldType);
                                     continue;
@@ -320,9 +323,34 @@ public static class LoadRoomData
                             }
                         case JsonValueKind.Null:
                             continue;
+                        case JsonValueKind.Object:
+                            switch (field.FieldType)
+                            {
+                                case var t when t == typeof(GameObject) || t == typeof(AnimationClip) || t == typeof(Transform) ||
+                                    t == typeof(Mesh) || t == typeof(Texture2D) || t == typeof(Material) || t == typeof(AudioSource):
+                                    continue;
+                                default:
+                                    logger.LogError("Fields didnt match {T1} {T2}.", element.ValueKind, field.FieldType);
+                                    continue;
+                            }
+                        case JsonValueKind.Array:
+                            switch (field.FieldType)
+                            {
+                                case var t when t == typeof(GameObject[]) || t == typeof(AnimationClip[]) || t == typeof(Transform[]) ||
+                                    t == typeof(Mesh[]) || t == typeof(Texture2D[]) || t == typeof(Material[]) || t == typeof(AudioSource[]) ||
+                                    t == typeof(List<AnimationClip>):
+                                    continue;
+                                default:
+                                    logger.LogError("Fields didnt match {T1} {T2}.", element.ValueKind, field.FieldType);
+                                    continue;
+                            }
                         default:
-                            logger.LogError("Fields didnt match {T1} {T2}.", element.ValueKind, field.FieldType);
-                            continue;
+                            switch (field.FieldType)
+                            {
+                                default:
+                                    logger.LogError("Fields didnt match {T1} {T2}.", element.ValueKind, field.FieldType);
+                                    continue;
+                            }
                     }
                 }
             }
