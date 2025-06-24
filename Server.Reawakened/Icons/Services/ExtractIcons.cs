@@ -97,13 +97,12 @@ public class ExtractIcons(IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBun
     private Dictionary<string, Texture2D> GetIcons(InternalAssetInfo asset)
     {
         var manager = new AssetsManager();
-        var assemblyLoader = new AssemblyLoader();
 
         manager.LoadFiles(asset.Path);
 
         var bank = manager.assetsFileList
-            .First().ObjectsDic.Values
-            .Where(x => x.type == ClassIDType.MonoBehaviour)
+            .First().Objects
+            .Where(x => x is MonoBehaviour)
             .Select(x => x as MonoBehaviour)
             .FirstOrDefault();
 
@@ -111,7 +110,7 @@ public class ExtractIcons(IconsRConfig rConfig, IconsRwConfig rwConfig, AssetBun
 
         if (type == null)
         {
-            var m_Type = bank.ConvertToTypeTree(assemblyLoader);
+            var m_Type = bank.ConvertToTypeTree(new AssemblyLoader());
             type = bank.ToType(m_Type);
         }
 

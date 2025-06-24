@@ -24,6 +24,7 @@ public class AssetBundleRConfig : IRConfig
     public string RemovedDuplicateDirectory { get; }
     public string CopiedCurrentBundles { get; }
     public string LocalAssetsDirectory { get; }
+    public string ScriptsConfigDirectory { get; }
 
     public string SaveBundleExtension { get; }
     public string DefaultWebPlayerCacheLocation { get; }
@@ -43,6 +44,7 @@ public class AssetBundleRConfig : IRConfig
         BundleSaveDirectory = InternalDirectory.GetDirectory("Assets/Bundles");
         RemovedDuplicateDirectory = InternalDirectory.GetDirectory("Assets/RemovedDuplicates");
         CopiedCurrentBundles = InternalDirectory.GetDirectory("Assets/CopiedCurrentBundles");
+        ScriptsConfigDirectory = InternalDirectory.GetInternalDirectory("Assets/Scripts");
 
         LocalAssetsDirectory = InternalDirectory.GetInternalDirectory("Assets/LocalAssets");
 

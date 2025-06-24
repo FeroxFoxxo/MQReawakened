@@ -200,6 +200,8 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
             return null;
         }
 
+        assetFile.WriteScriptsFromBundle(name, rConfig);
+
         var asset = new InternalAssetInfo
         {
             Name = name,
@@ -266,7 +268,6 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
 
         return asset;
     }
-
 
     private void AddPublishConfiguration(IEnumerable<InternalAssetInfo> assets, string key)
     {
