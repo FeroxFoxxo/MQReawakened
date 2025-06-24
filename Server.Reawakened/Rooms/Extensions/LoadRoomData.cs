@@ -212,8 +212,8 @@ public static class LoadRoomData
             var fields = newEntity.Value;
 
             if (prefabOverrides != null)
-                if (prefabOverrides.ContainsKey(mqType.Name))
-                    ApplyPrefabOverrides(prefabOverrides[mqType.Name], dataObj, fields, vars.Room.Logger);
+                if (prefabOverrides.TryGetValue(mqType.Name, out var value))
+                    ApplyPrefabOverrides(value, dataObj, vars.Room.Logger);
 
             var componentAttributes = component.Value.ComponentAttributes;
 
@@ -246,8 +246,10 @@ public static class LoadRoomData
         return componentList;
     }
 
-    private static void ApplyPrefabOverrides(OrderedDictionary prefabOverrides, object dataObj, FieldInfo[] fields, Microsoft.Extensions.Logging.ILogger logger)
+    private static void ApplyPrefabOverrides(OrderedDictionary prefabOverrides, object dataObj, Microsoft.Extensions.Logging.ILogger logger)
     {
+        var fields = dataObj.GetType().GetFields();
+
         if (prefabOverrides.Count > 0)
         {
             foreach (var entry in prefabOverrides.Cast<DictionaryEntry>())
