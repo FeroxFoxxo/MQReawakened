@@ -1,15 +1,19 @@
 ﻿using A2m.Server;
+using Discord;
 using Microsoft.Extensions.Logging;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Events;
 using Server.Base.Core.Extensions;
 using Server.Base.Timers.Services;
+using Server.Reawakened.BundleHost.Configs;
 using Server.Reawakened.Core.Configs;
 using Server.Reawakened.Database.Characters;
 using Server.Reawakened.Players;
 using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using Server.Reawakened.XMLs.Bundles.Base;
+using System.Collections.Specialized;
+using System.Text.Json;
 using WorldGraphDefines;
 
 namespace Server.Reawakened.Rooms.Services;
@@ -23,6 +27,7 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
 
     public Dictionary<string, Type> EntityComponents { get; private set; } = [];
     public Dictionary<string, Type> ProcessableComponents { get; private set; } = [];
+    public Dictionary<string, Dictionary<string, OrderedDictionary>> PrefabOverrides { get; private set; } = [];
 
     public ServerRConfig Config => config;
 
@@ -244,5 +249,24 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         handler.Update(player.Character.Write);
 
         return true;
+    }
+
+    public Dictionary<string, OrderedDictionary> GetPrefabOverloads(AssetBundleRConfig rConfig, string prefabName)
+    {
+        if (PrefabOverrides.TryGetValue(prefabName, out var foundValue))
+            return foundValue;
+
+        var prefabPath = Path.Combine(rConfig.ScriptsConfigDirectory, $"{prefabName.ToLower()}.json");
+        Dictionary<string, OrderedDictionary> prefabOverrides = null;
+
+        if (File.Exists(prefabPath))
+        {
+            var prefabText = File.ReadAllText(prefabPath);
+            prefabOverrides = JsonSerializer.Deserialize<Dictionary<string, OrderedDictionary>>(prefabText);
+        }
+
+        PrefabOverrides.Add(prefabName, prefabOverrides);
+
+        return prefabOverrides;
     }
 }

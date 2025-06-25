@@ -12,10 +12,9 @@ public class AIStateSpiderIdleComp : BaseAIState<AIStateSpiderIdle>
     public float[] Durations => ComponentData.Durations;
 
     public TimerThread TimerThread { get; set; }
-    public EnemyRConfig EnemyRConfig { get; set; }
 
     public override void StartState() =>
-        TimerThread.RunDelayed(RunVenomState, this, TimeSpan.FromSeconds(EnemyRConfig.SpiderTeaserBossFirstProjectileDelay));
+        TimerThread.RunDelayed(RunVenomState, this, TimeSpan.FromSeconds(Durations.FirstOrDefault()));
 
     public static void RunVenomState(ITimerData data)
     {

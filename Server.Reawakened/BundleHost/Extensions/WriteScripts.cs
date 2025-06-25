@@ -12,9 +12,7 @@ public static class WriteScripts
         var file = Path.Combine(rConfig.ScriptsConfigDirectory, $"{assetName}.json");
 
         if (File.Exists(file))
-        {
             File.Delete(file);
-        }
 
         var scripts = new Dictionary<string, OrderedDictionary>();
         var blacklistedScripts = new List<string>();

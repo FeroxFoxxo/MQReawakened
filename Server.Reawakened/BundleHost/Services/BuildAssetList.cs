@@ -115,7 +115,7 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
         sRConfig.LoadedAssets = [.. InternalAssets.Keys];
         iconExtract.ExtractAllIcons(InternalAssets);
 
-        if (Directory.GetFiles(rConfig.ScriptsConfigDirectory).Length != rwConfig.LastCalculatedLength)
+        if (sRConfig.LastClientUpdate != rwConfig.LastDecompiledScriptUpdate || forceGenerate)
         {
             logger.LogInformation("Emptying script directory as lengths don't match.");
 
@@ -143,7 +143,7 @@ public class BuildAssetList(ILogger<BuildAssetList> logger, EventSink sink, Asse
 
             logger.LogDebug("Finished loading scripts.");
 
-            rwConfig.LastCalculatedLength = Directory.GetFiles(rConfig.ScriptsConfigDirectory).Length;
+            rwConfig.LastDecompiledScriptUpdate = sRConfig.LastClientUpdate;
         }
         else
         {

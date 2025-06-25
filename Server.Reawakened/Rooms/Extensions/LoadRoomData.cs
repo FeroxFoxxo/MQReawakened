@@ -183,15 +183,7 @@ public static class LoadRoomData
     {
         var componentList = new List<BaseComponent>();
         var entityData = new Entity(entity, vars.Room, vars.FileLogger);
-
-        var prefabPath = Path.Combine(vars.AssetBundleRConfig.ScriptsConfigDirectory, $"{entity.ObjectInfo.PrefabName.ToLower()}.json");
-        Dictionary<string, OrderedDictionary> prefabOverrides = null;
-
-        if (File.Exists(prefabPath))
-        {
-            var prefabText = File.ReadAllText(prefabPath);
-            prefabOverrides = JsonSerializer.Deserialize<Dictionary<string, OrderedDictionary>>(prefabText);
-        }
+        var prefabOverrides = vars.Room.World.GetPrefabOverloads(vars.AssetBundleRConfig, entity.ObjectInfo.PrefabName);
 
         unknownComponents = [];
 
@@ -297,6 +289,9 @@ public static class LoadRoomData
                                 case var t when t == typeof(bool):
                                     field.SetValue(dataObj, element.GetInt32() == 1);
                                     continue;
+                                case var t when t.IsEnum:
+                                    field.SetValue(dataObj, Enum.ToObject(t, element.GetInt32()));
+                                    continue;
                                 default:
                                     logger.LogError("Fields didnt match {T1} {T2}.", element.ValueKind, field.FieldType);
                                     continue;
@@ -327,7 +322,20 @@ public static class LoadRoomData
                             switch (field.FieldType)
                             {
                                 case var t when t == typeof(GameObject) || t == typeof(AnimationClip) || t == typeof(Transform) ||
-                                    t == typeof(Mesh) || t == typeof(Texture2D) || t == typeof(Material) || t == typeof(AudioSource):
+                                    t == typeof(Mesh) || t == typeof(Texture2D) || t == typeof(Material) || t == typeof(AudioSource) ||
+                                    t == typeof(AudioClip):
+                                    continue;
+                                case var t when t == typeof(Vector2):
+                                    var v2Props = element.EnumerateObject().ToDictionary(x => x.Name, x => x.Value.GetSingle());
+                                    field.SetValue(dataObj, new Vector2(v2Props["x"], v2Props["y"]));
+                                    continue;
+                                case var t when t == typeof(Vector3):
+                                    var v3Props = element.EnumerateObject().ToDictionary(x => x.Name, x => x.Value.GetSingle());
+                                    field.SetValue(dataObj, new Vector3(v3Props["x"], v3Props["y"], v3Props["z"]));
+                                    continue;
+                                case var t when t == typeof(Color):
+                                    var colorProps = element.EnumerateObject().ToDictionary(x => x.Name, x => x.Value.GetSingle());
+                                    field.SetValue(dataObj, new Color(colorProps["r"], colorProps["g"], colorProps["b"], colorProps["a"]));
                                     continue;
                                 default:
                                     logger.LogError("Fields didnt match {T1} {T2}.", element.ValueKind, field.FieldType);
@@ -338,8 +346,33 @@ public static class LoadRoomData
                             {
                                 case var t when t == typeof(GameObject[]) || t == typeof(AnimationClip[]) || t == typeof(Transform[]) ||
                                     t == typeof(Mesh[]) || t == typeof(Texture2D[]) || t == typeof(Material[]) || t == typeof(AudioSource[]) ||
-                                    t == typeof(List<AnimationClip>):
+                                    t == typeof(List<AnimationClip>) || t == typeof(AudioClip[]):
                                     continue;
+                                case var t when t == typeof(List<string>):
+                                    field.SetValue(dataObj, element.EnumerateArray().Select(x => x.GetString()).ToList());
+                                    continue;
+                                case var t when t == typeof(string[]):
+                                    field.SetValue(dataObj, element.EnumerateArray().Select(x => x.GetString()).ToArray());
+                                    continue;
+                                case var t when t == typeof(int[]):
+                                    field.SetValue(dataObj, element.EnumerateArray().Select(x => x.GetInt32()).ToArray());
+                                    continue;
+                                case var t when t == typeof(float[]):
+                                    field.SetValue(dataObj, element.EnumerateArray().Select(x => x.GetSingle()).ToArray());
+                                    continue;
+                                case var t when t.IsArray && t.GetElementType().IsEnum:
+                                    var enumType = t.GetElementType();
+
+                                    var jsonArray = element.EnumerateArray().ToArray();
+                                    var typedArray = Array.CreateInstance(enumType, jsonArray.Length);
+
+                                    for (var i = 0; i < jsonArray.Length; i++)
+                                    {
+                                        var enumValue = Enum.ToObject(enumType, jsonArray[i].GetInt32());
+                                        typedArray.SetValue(enumValue, i);
+                                    }
+
+                                    field.SetValue(dataObj, typedArray); continue;
                                 default:
                                     logger.LogError("Fields didnt match {T1} {T2}.", element.ValueKind, field.FieldType);
                                     continue;
