@@ -337,6 +337,16 @@ public static class LoadRoomData
                                     var colorProps = element.EnumerateObject().ToDictionary(x => x.Name, x => x.Value.GetSingle());
                                     field.SetValue(dataObj, new Color(colorProps["r"], colorProps["g"], colorProps["b"], colorProps["a"]));
                                     continue;
+                                case var t when t.IsDefined(typeof(SerializableAttribute)):
+                                    try
+                                    {
+                                        field.SetValue(dataObj, element.Deserialize(t));
+                                    }
+                                    catch
+                                    {
+                                        logger.LogError("Could not deserialized {T}. Content: {S}.", t, element.GetRawText());
+                                    }
+                                    continue;
                                 default:
                                     logger.LogError("Fields didnt match {T1} {T2}.", element.ValueKind, field.FieldType);
                                     continue;
@@ -372,7 +382,29 @@ public static class LoadRoomData
                                         typedArray.SetValue(enumValue, i);
                                     }
 
-                                    field.SetValue(dataObj, typedArray); continue;
+                                    field.SetValue(dataObj, typedArray);
+                                    continue;
+                                case var t when t.IsArray && t.GetElementType().IsDefined(typeof(SerializableAttribute)):
+                                    var serializableType = t.GetElementType();
+
+                                    var serializedArray = element.EnumerateArray().ToArray();
+                                    var typedSerializedArray = Array.CreateInstance(serializableType, serializedArray.Length);
+
+                                    for (var i = 0; i < serializedArray.Length; i++)
+                                    {
+                                        try
+                                        {
+                                            var elementObject = serializedArray[i].Deserialize(serializableType);
+                                            typedSerializedArray.SetValue(elementObject, i);
+                                        }
+                                        catch
+                                        {
+                                            logger.LogError("Could not deserialized {T}. Content: {S}.", serializableType, element.GetRawText());
+                                        }
+                                    }
+
+                                    field.SetValue(dataObj, typedSerializedArray);
+                                    continue;
                                 default:
                                     logger.LogError("Fields didnt match {T1} {T2}.", element.ValueKind, field.FieldType);
                                     continue;

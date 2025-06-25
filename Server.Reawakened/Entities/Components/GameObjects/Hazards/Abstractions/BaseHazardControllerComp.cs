@@ -214,7 +214,7 @@ public abstract class BaseHazardControllerComp<T> : Component<T> where T : Hazar
         IsActive = false;
 
         TimerThread.RunDelayed(RestartTimerDelay, this, TimeSpan.FromSeconds(1));
-        Logger.LogInformation("Reset underwater timer for {characterName}", player.CharacterName);
+        Logger.LogDebug("Reset underwater timer for {characterName}", player.CharacterName);
     }
 
     public static void RestartTimerDelay(ITimerData data)
