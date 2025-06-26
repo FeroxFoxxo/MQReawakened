@@ -62,10 +62,9 @@ public abstract class BaseCollider
     {
     }
 
-    private bool RectOverlapsRect(Rect rA, Rect rB) =>
+    private static bool RectOverlapsRect(Rect rA, Rect rB) =>
         rA.x < rB.x + rB.width && rA.x + rA.width > rB.x && rA.y < rB.y + rB.height && rA.y + rA.height > rB.y;
-
-
+    
     public bool CheckCollision(BaseCollider collided) =>
         RectOverlapsRect(collided.colliderBox, colliderBox) && Plane == collided.Plane;
 }

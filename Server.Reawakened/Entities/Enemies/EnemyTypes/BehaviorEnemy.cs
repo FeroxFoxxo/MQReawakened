@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Base.Timers.Services;
+using Server.Reawakened.Entities.Colliders;
 using Server.Reawakened.Entities.Components.AI.Stats;
 using Server.Reawakened.Entities.Enemies.Behaviors.Abstractions;
 using Server.Reawakened.Entities.Enemies.EnemyTypes.Abstractions;
@@ -104,27 +105,6 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
         Status = spawnerTemplate.Status;
     }
 
-    public bool PlayerInRange(Vector3 pos, bool limitedByPatrolLine)
-    {
-        var originBounds = new Vector3
-        (
-            AiData.Sync_PosX - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeX : Global.Global_BackDetectionRangeX),
-            AiData.Sync_PosY - Global.Global_FrontDetectionRangeDownY - 1,
-            Position.z - 1
-        );
-
-        var maxBounds = new Vector3
-        (
-            AiData.Sync_PosX + (AiData.Intern_Dir < 0 ? Global.Global_BackDetectionRangeX : Global.Global_FrontDetectionRangeX),
-            AiData.Sync_PosY + Global.Global_FrontDetectionRangeUpY + 1,
-            Position.z + 1
-        );
-
-        return pos.x >= originBounds.x && pos.x <= maxBounds.x &&
-            pos.y + 1 >= originBounds.y && pos.y <= maxBounds.y &&
-            (!limitedByPatrolLine || pos.x > AiData.Intern_MinPointX && pos.x < AiData.Intern_MaxPointX);
-    }
-
     public override void InternalUpdate()
     {
         var hasDetected = false;
@@ -154,9 +134,20 @@ public class BehaviorEnemy(EnemyData data) : BaseEnemy(data)
 
     public bool HasDetectedPlayers()
     {
+        var rect = new Rect(
+            Hitbox.Position.x - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeX : Global.Global_BackDetectionRangeX) - Hitbox.BoundingBox.width / 2,
+            Hitbox.Position.y - (AiData.Intern_Dir < 0 ? Global.Global_FrontDetectionRangeDownY : Global.Global_BackDetectionRangeDownY) - Hitbox.BoundingBox.height / 2,
+            Global.Global_FrontDetectionRangeX + Global.Global_BackDetectionRangeX + Hitbox.BoundingBox.width,
+            Global.Global_BackDetectionRangeDownY + Global.Global_FrontDetectionRangeDownY + Hitbox.BoundingBox.height
+        );
+
+        var enemyCollider = new EnemyCollider(Id, Vector3.zero, rect, ParentPlane, Room);
+
         foreach (var player in Room.GetPlayers())
         {
-            if (PlayerInRange(player.TempData.Position, Global.Global_DetectionLimitedByPatrolLine) &&
+            if (
+                enemyCollider.CheckCollision(new PlayerCollider(player)) &&
+                (!Global.Global_DetectionLimitedByPatrolLine || player.TempData.Position.x > AiData.Intern_MinPointX && player.TempData.Position.x < AiData.Intern_MaxPointX) &&
                 ParentPlane == player.GetPlayersPlaneString() && !player.Character.StatusEffects.HasEffect(ItemEffectType.Invisibility) &&
                 player.Character.CurrentLife > 0)
             {
